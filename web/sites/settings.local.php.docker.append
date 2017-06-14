@@ -1,0 +1,16 @@
+
+$settings['hash_salt'] = 'ASK_A_TEAM_MEMBER_FOR_THIS';
+
+$databases['default']['default'] = array (
+  'database' => 'pars',
+  'username' => 'pars',
+  'password' => '123456',
+  'prefix' => '',
+  'host' => 'db',
+  'port' => '3306',
+  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+  'driver' => 'mysql',
+);
+
+$settings['trusted_host_patterns'] = array(
+);

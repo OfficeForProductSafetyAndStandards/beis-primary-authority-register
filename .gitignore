@@ -36,3 +36,6 @@ web/update.php
 # Exclude project files.
 /.idea/
 *.DS_Store
+.buildpath
+.project
+.settings/
