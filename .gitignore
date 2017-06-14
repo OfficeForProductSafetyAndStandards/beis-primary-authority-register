@@ -1,0 +1,38 @@
+# Exclude composer vendor directories.
+/drush/contrib/
+/vendor/
+/web/core/
+/web/modules/contrib/
+/web/themes/contrib/
+/web/profiles/contrib/
+/web/libraries/
+
+# Exclude the main drupal scaffold files.
+# If we want to make changes to any of these files
+# we must first remove them from gitignore and
+# exclude from drupal-scaffold in the composer.json
+web/autoload.php
+web/.csslintrc
+web/.editorconfig
+web/.eslintignore
+web/.eslintrc.json
+web/.gitattributes
+web/.htaccess
+web/index.php
+web/sites/default/default.settings.php
+web/sites/default/default.services.yml
+web/sites/development.services.yml
+web/sites/example.settings.local.php
+web/sites/example.sites.php
+web/update.php
+
+
+# Exclude Drupal files.
+/web/sites/*/files/
+
+# Ignore environment specific and sensitive information.
+/web/sites/*/settings.local.php
+
+# Exclude project files.
+/.idea/
+*.DS_Store
