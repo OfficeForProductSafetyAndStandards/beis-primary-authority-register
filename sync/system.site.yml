@@ -1,0 +1,14 @@
+uuid: cf6a0d96-4b18-4b0c-8816-b94582439899
+name: 'Primary Authority Register'
+mail: nao.yoshino@transformuk.com
+slogan: ''
+page:
+  403: ''
+  404: ''
+  front: /node
+admin_compact_mode: false
+weight_select_max: 100
+langcode: en
+default_langcode: en
+_core:
+  default_config_hash: AyT9s8OUcclfALRE_imByOMgtZ19eOlqdF6zI3p7yqo
