@@ -1,4 +1,4 @@
-uuid: f4e45801-a557-4024-9dab-09719bedc935
+uuid: aa36f649-d876-4f64-ac3b-f82dcaa8d4c3
 langcode: en
 status: true
 dependencies:
@@ -26,4 +26,5 @@ content:
     third_party_settings: {  }
     label: hidden
 hidden:
+  langcode: true
   member_for: true

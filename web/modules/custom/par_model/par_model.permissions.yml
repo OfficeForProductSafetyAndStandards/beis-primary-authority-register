@@ -1,0 +1,29 @@
+access par_entity entities:
+  title: 'Access par_entity entities'
+
+administer par_entity entities:
+  title: 'Administer par_entity entities'
+  description: 'Allow access the administration form to configure ParEntity entities.'
+  restrict access: true
+
+administer par_entity entity types:
+  title: 'Administer par_entity types'
+  description: 'Allow access to the administration form to configure ParEntity entity types.'
+  restrict access: true
+
+bypass par_entity entity access:
+  title: 'Bypass par_entity access control'
+  description: 'View, edit and delete all ParEntity content regardless of permission restrictions.'
+  restrict access: true
+
+add par_entity entities:
+  title: 'Create new par_entity entities'
+
+delete par_entity entities:
+  title: 'Delete par_entity entities'
+
+edit par_entity entities:
+  title: 'Edit par_entity entities'
+
+view unpublished par_entity entities:
+  title: 'View unpublished par_entity entities'

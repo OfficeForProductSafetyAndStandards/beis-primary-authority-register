@@ -8,6 +8,7 @@ module:
   comment: 0
   config: 0
   contact: 0
+  content_translation: 0
   contextual: 0
   datetime: 0
   dblog: 0
@@ -20,11 +21,13 @@ module:
   help: 0
   history: 0
   image: 0
+  language: 0
   link: 0
   menu_ui: 0
   node: 0
   options: 0
   page_cache: 0
+  par_model: 0
   path: 0
   quickedit: 0
   rdf: 0
@@ -35,6 +38,7 @@ module:
   text: 0
   toolbar: 0
   tour: 0
+  trance: 0
   update: 0
   user: 0
   views_ui: 0

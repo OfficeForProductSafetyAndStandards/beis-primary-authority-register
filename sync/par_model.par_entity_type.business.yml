@@ -1,0 +1,8 @@
+uuid: 0628621c-f188-4ce1-9db4-432a345bd8ef
+langcode: en
+status: true
+dependencies: {  }
+id: business
+label: Business
+description: 'The record of businesses within PAR'
+help: ''

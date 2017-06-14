@@ -1,0 +1,12 @@
+entity.par_entity.add_form:
+  route_name: par_model.add_page
+  title: 'Add Par Entity item'
+  appears_on:
+    - entity.par_entity.collection
+    - entity.par_entity.canonical
+
+par_model.type_add:
+  route_name: par_model.type_add
+  title: 'Add Par Entity type'
+  appears_on:
+    - entity.par_entity_type.collection
