@@ -10,13 +10,19 @@ web:
     - ../web:/var/www/html
     - ../vendor:/var/www/vendor
 db:
-  image: mysql:5.6
-  container_name: pars_beta_db
+  restart: always
+  image: sameersbn/postgresql:9.6-2
   ports:
-    - "3111:3306"
+    - "5411:5432"
   environment:
-    MYSQL_ROOT_PASSWORD: 123456
-    MYSQL_USER: pars
-    MYSQL_PASSWORD: 123456
-    MYSQL_DATABASE: pars
+    - DEBUG=false
+    - DB_USER=pars
+    - DB_PASS=123456
+    - DB_NAME=pars
+    - DB_TEMPLATE=
+    - DB_EXTENSION=
+    - REPLICATION_MODE=
+    - REPLICATION_USER=
+    - REPLICATION_PASS=
+    - REPLICATION_SSLMODE=
 

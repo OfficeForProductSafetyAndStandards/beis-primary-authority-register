@@ -7,9 +7,9 @@ $databases['default']['default'] = array (
   'password' => '123456',
   'prefix' => '',
   'host' => 'db',
-  'port' => '3306',
-  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
-  'driver' => 'mysql',
+  'port' => '5432',
+  'namespace' => 'Drupal\\Core\\Database\\Driver\\pgsql',
+  'driver' => 'pgsql',
 );
 
 $settings['trusted_host_patterns'] = array(
