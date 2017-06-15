@@ -4,7 +4,7 @@ Herein lies the fruits of our endevour to create a world class digital service f
 
 ## Docker development environment
 
-Install docker (or Docker for Windows, or Docker for Mac), then:
+Install [docker](https://docs.docker.com/engine/installation/linux/ubuntu/) (or [Docker for Windows](https://docs.docker.com/docker-for-windows/install/), or [Docker for Mac](https://docs.docker.com/docker-for-mac/install/)), then:
 
     cd docker
     docker-compose up -d --force-recreate --build && sh setup.sh
