@@ -754,6 +754,20 @@ $settings['file_scan_ignore_directories'] = [
   'bower_components',
 ];
 
+$services = json_decode(getenv("VCAP_SERVICES"));
+$credentials = $services->postgres[0]->credentials;
+
+$databases['default']['default'] = array (
+    'database' => 'pars-pg',
+    'username' => $credentials['username'],
+    'password' => $credentials['password'],
+    'prefix' => '',
+    'host' => $credentials['host'],
+    'port' => $credentials['port'],
+    'namespace' => 'Drupal\\Core\\Database\\Driver\\pgsql',
+    'driver' => 'pgsql',
+);
+
 /**
  * Load local development override configuration, if available.
  *
