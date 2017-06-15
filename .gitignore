@@ -39,3 +39,5 @@ web/update.php
 .buildpath
 .project
 .settings/
+
+composer.phar
