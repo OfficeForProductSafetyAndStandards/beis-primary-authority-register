@@ -9,20 +9,14 @@ web:
   volumes:
     - ../web:/var/www/html
     - ../vendor:/var/www/vendor
+    - ../sync:/var/www/sync
 db:
+  container_name: pars_beta_db
   restart: always
-  image: sameersbn/postgresql:9.6-2
+  image: postgres:9.6.3
   ports:
     - "5411:5432"
   environment:
-    - DEBUG=false
-    - DB_USER=pars
-    - DB_PASS=123456
-    - DB_NAME=pars
-    - DB_TEMPLATE=
-    - DB_EXTENSION=
-    - REPLICATION_MODE=
-    - REPLICATION_USER=
-    - REPLICATION_PASS=
-    - REPLICATION_SSLMODE=
-
+    POSTGRES_USER: pars
+    POSTGRES_PASSWORD: 123456
+    POSTGRES_DB: pars

@@ -10,7 +10,7 @@ Install docker (or Docker for Windows, or Docker for Mac), then:
     
 NOTE: Linux users will need to "sudo" all the following commands
 
-    docker-compose up -d
+    docker-compose up -d --force-recreate --build
 	
 Load the test data and setup the environment:
 
