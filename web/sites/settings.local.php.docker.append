@@ -12,5 +12,4 @@ $databases['default']['default'] = array (
   'driver' => 'pgsql',
 );
 
-$settings['trusted_host_patterns'] = array(
-);
+$settings['trusted_host_patterns'] = array('');
