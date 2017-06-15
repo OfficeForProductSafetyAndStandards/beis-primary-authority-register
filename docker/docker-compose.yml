@@ -7,9 +7,7 @@ web:
   ports:
     - "8111:80"
   volumes:
-    - ../web:/var/www/html
-    - ../vendor:/var/www/vendor
-    - ../sync:/var/www/sync
+    - ../:/var/www/html
 db:
   container_name: pars_beta_db
   restart: always
@@ -20,3 +18,4 @@ db:
     POSTGRES_USER: pars
     POSTGRES_PASSWORD: 123456
     POSTGRES_DB: pars
+   
