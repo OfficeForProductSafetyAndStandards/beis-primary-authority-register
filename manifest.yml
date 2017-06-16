@@ -1,0 +1,4 @@
+applications:
+- name: par-beta
+  memory: 2G
+  host: test
