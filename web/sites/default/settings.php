@@ -768,7 +768,7 @@ $databases['default']['default'] = array (
     'password' => $credentials->password,
     'prefix' => '',
     'host' => $credentials->host,
-    'port' => $credentials->post,
+    'port' => $credentials->port,
     'namespace' => 'Drupal\\Core\\Database\\Driver\\pgsql',
     'driver' => 'pgsql',
 );
