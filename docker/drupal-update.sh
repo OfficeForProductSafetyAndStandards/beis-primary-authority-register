@@ -1,7 +1,7 @@
 ## Commands that must be run to update a drupal instance.
 
 # Set default drush alias.
-cd ${{site_destination_directory}}/web; drush site-set @site;
+cd ${{site_destination_directory}}/web; drush site-set @{{ENV}};
 # Put the site in maintenance mode.
 cd ${{site_destination_directory}}/web; drush sset system.maintenance_mode 1;
 # Clear cache
