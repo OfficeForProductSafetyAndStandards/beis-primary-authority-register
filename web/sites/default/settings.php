@@ -755,6 +755,10 @@ $settings['file_scan_ignore_directories'] = [
   'bower_components',
 ];
 
+/**
+ * Extract the database credentials from the VCAP_SERVICES environment variable
+ * which is configured by the PaaS service manager
+ */
 $services = json_decode(getenv("VCAP_SERVICES"));
 $credentials = $services->postgres[0]->credentials;
 
