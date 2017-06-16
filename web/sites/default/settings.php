@@ -763,12 +763,12 @@ $services = json_decode(getenv("VCAP_SERVICES"));
 $credentials = $services->postgres[0]->credentials;
 
 $databases['default']['default'] = array (
-    'database' => $credentials['name'],
-    'username' => $credentials['username'],
-    'password' => $credentials['password'],
+    'database' => $credentials->name,
+    'username' => $credentials->username,
+    'password' => $credentials->password,
     'prefix' => '',
-    'host' => $credentials['host'],
-    'port' => $credentials['port'],
+    'host' => $credentials->host,
+    'port' => $credentials->post,
     'namespace' => 'Drupal\\Core\\Database\\Driver\\pgsql',
     'driver' => 'pgsql',
 );
