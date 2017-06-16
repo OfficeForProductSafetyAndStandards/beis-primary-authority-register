@@ -4,4 +4,4 @@ memory: 2G
 host: par-beta-test
 buildpack: php_buildpack
 services:
-- par-db
+- par-pg
