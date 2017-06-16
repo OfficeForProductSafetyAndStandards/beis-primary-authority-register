@@ -734,7 +734,7 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
  */
 $settings['trusted_host_patterns'] = array(
   '^par$',
-  '^par-beta*\.cloudapps\.digital',
+  '^par-beta-test\.cloudapps\.digital',
   '^par-beta\.localhost$',
   '.par-beta\.co\.uk$',
   '^par-staging\.transformcloud\.net$',
@@ -768,7 +768,7 @@ $databases['default']['default'] = array (
     'password' => $credentials->password,
     'prefix' => '',
     'host' => $credentials->host,
-    'port' => $credentials->post,
+    'port' => $credentials->port,
     'namespace' => 'Drupal\\Core\\Database\\Driver\\pgsql',
     'driver' => 'pgsql',
 );
