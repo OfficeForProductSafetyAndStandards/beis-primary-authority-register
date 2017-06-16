@@ -759,7 +759,7 @@ $services = json_decode(getenv("VCAP_SERVICES"));
 $credentials = $services->postgres[0]->credentials;
 
 $databases['default']['default'] = array (
-    'database' => 'par-data',
+    'database' => $credentials['name'],
     'username' => $credentials['username'],
     'password' => $credentials['password'],
     'prefix' => '',
