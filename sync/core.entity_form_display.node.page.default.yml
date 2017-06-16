@@ -1,4 +1,4 @@
-uuid: 7789a3c6-239a-4b0a-a2f0-c294a58b90ca
+uuid: 083cf6b9-014a-4eba-9dc0-66320465fa98
 langcode: en
 status: true
 dependencies:
@@ -27,12 +27,6 @@ content:
   created:
     type: datetime_timestamp
     weight: 10
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  langcode:
-    type: language_select
-    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }

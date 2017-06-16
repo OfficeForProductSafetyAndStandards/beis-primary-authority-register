@@ -1,4 +1,4 @@
-uuid: 06bdfcd9-4eed-4e35-a59b-398ee07d986b
+uuid: 43e82aff-2668-4079-a806-a1cd5bbb6e97
 langcode: en
 status: true
 dependencies:
@@ -53,12 +53,6 @@ content:
   field_tags:
     type: entity_reference_autocomplete_tags
     weight: 3
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  langcode:
-    type: language_select
-    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
