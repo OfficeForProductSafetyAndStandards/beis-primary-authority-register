@@ -1,4 +1,4 @@
 applications:
-- name: par-beta
+- name: par-beta-staging
   memory: 2G
   host: test
