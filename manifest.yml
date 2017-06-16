@@ -1,4 +1,5 @@
 applications:
 - name: par-beta-staging
-  memory: 2G
-  host: test
+memory: 2G
+host: test
+buildpack: php_buildpack
