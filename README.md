@@ -1,5 +1,7 @@
 # beis-par-beta
 
+[![Build Status](https://travis-ci.org/TransformCore/beis-par-beta.svg?branch=master)](https://travis-ci.org/TransformCore/beis-par-beta)
+
 Herein lies the fruits of our endevour to create a world class digital service for Regulatory Authority.
 
 ## Docker development environment
