@@ -734,6 +734,7 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
  */
 $settings['trusted_host_patterns'] = array(
   '^par$',
+  '^par-beta*\.cloudapps\.digital',
   '^par-beta\.localhost$',
   '.par-beta\.co\.uk$',
   '^par-staging\.transformcloud\.net$',
@@ -754,16 +755,20 @@ $settings['file_scan_ignore_directories'] = [
   'bower_components',
 ];
 
+/**
+ * Extract the database credentials from the VCAP_SERVICES environment variable
+ * which is configured by the PaaS service manager
+ */
 $services = json_decode(getenv("VCAP_SERVICES"));
 $credentials = $services->postgres[0]->credentials;
 
 $databases['default']['default'] = array (
-    'database' => 'par-data',
-    'username' => $credentials['username'],
-    'password' => $credentials['password'],
+    'database' => $credentials->name,
+    'username' => $credentials->username,
+    'password' => $credentials->password,
     'prefix' => '',
-    'host' => $credentials['host'],
-    'port' => $credentials['port'],
+    'host' => $credentials->host,
+    'port' => $credentials->post,
     'namespace' => 'Drupal\\Core\\Database\\Driver\\pgsql',
     'driver' => 'pgsql',
 );
