@@ -1,0 +1,20 @@
+uuid: cc40bd5a-4f36-46f0-9dfc-607e2e36c09f
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_model
+id: par_entity.field_sic_code
+field_name: field_sic_code
+entity_type: par_entity
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

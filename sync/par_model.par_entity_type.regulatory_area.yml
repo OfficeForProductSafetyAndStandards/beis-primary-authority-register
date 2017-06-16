@@ -1,0 +1,8 @@
+uuid: b9609e68-5279-4c85-9c5c-ba8af88b364e
+langcode: en
+status: true
+dependencies: {  }
+id: regulatory_area
+label: 'Regulatory Area'
+description: 'An area of regulation that can be applied to any Partnership between a Business and an Authority.'
+help: ''

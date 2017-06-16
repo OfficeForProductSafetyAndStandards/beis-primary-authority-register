@@ -1,0 +1,8 @@
+uuid: 0264527a-ff17-4899-aac7-5878fb19257a
+langcode: en
+status: true
+dependencies: {  }
+id: person
+label: Person
+description: 'A Person can be a member of any Primary Authority, Business or other legal institution that is responsible for an area of it''s operation.'
+help: ''

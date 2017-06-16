@@ -1,0 +1,36 @@
+uuid: af243d6e-6464-4ecb-a9ed-909ec2109a4f
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - par_model
+id: par_entity.field_nation
+field_name: field_nation
+entity_type: par_entity
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: England
+      label: England
+    -
+      value: Scotland
+      label: Scotland
+    -
+      value: Wales
+      label: Wales
+    -
+      value: 'Northern Ireland'
+      label: 'Northern Ireland'
+    -
+      value: 'Republic of Ireland'
+      label: 'Republic of Ireland'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

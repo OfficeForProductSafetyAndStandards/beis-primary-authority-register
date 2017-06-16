@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_authorised_premises
+    - par_model.par_entity_type.business
+id: par_entity.business.field_authorised_premises
+field_name: field_authorised_premises
+entity_type: par_entity
+bundle: business
+label: 'Authorised Premises'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: Authorised
+  off_label: Unaurotised
+field_type: boolean

@@ -1,0 +1,18 @@
+uuid: 1dd2611c-7b9a-45de-8d21-da0c0c1b1f50
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_model
+id: par_entity.field_authorised_premises
+field_name: field_authorised_premises
+entity_type: par_entity
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

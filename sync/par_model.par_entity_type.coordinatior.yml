@@ -1,0 +1,8 @@
+uuid: 067a8d77-ce1f-4a35-9c76-98e5763f90a5
+langcode: en
+status: true
+dependencies: {  }
+id: coordinatior
+label: Coordinatior
+description: 'A Coordinator is an intermediary association or franchise that can assist in the application to form a Partnership between a Business and an Authority.'
+help: ''

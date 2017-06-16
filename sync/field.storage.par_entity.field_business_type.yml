@@ -1,0 +1,21 @@
+uuid: e1f890f6-dddb-4bbc-99dd-e346fffde0d2
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_model
+id: par_entity.field_business_type
+field_name: field_business_type
+entity_type: par_entity
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
