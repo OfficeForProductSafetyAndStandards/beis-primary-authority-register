@@ -26,12 +26,14 @@ web/sites/example.settings.local.php
 web/sites/example.sites.php
 web/update.php
 
-
 # Exclude Drupal files.
 /web/sites/*/files/
 
 # Ignore environment specific and sensitive information.
 /web/sites/*/settings.local.php
+
+# Exclude test reports
+web/sites/simpletest
 
 # Exclude project files.
 /.idea/
@@ -40,4 +42,5 @@ web/update.php
 .project
 .settings/
 
+# Exclude composer package.
 composer.phar
