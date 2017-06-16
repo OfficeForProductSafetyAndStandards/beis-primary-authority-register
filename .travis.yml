@@ -35,3 +35,7 @@ deploy:
   space: sandbox
   on:
     repo: TransformCore/beis-par-beta
+branches:
+  only:
+  - master
+  - stable
