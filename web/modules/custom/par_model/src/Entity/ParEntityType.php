@@ -9,7 +9,7 @@ use Drupal\trance\TranceType;
  *
  * @ConfigEntityType(
  *   id = "par_entity_type",
- *   label = @Translation("par_entity type"),
+ *   label = @Translation("PAR Entity Type"),
  *   handlers = {
  *     "list_builder" = "Drupal\trance\TranceTypeListBuilder",
  *     "form" = {

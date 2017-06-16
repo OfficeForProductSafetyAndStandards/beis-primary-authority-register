@@ -11,7 +11,7 @@ use Drupal\trance\Trance;
  *
  * @ContentEntityType(
  *   id = "par_entity",
- *   label = @Translation("ParEntity"),
+ *   label = @Translation("PAR Entity"),
  *   bundle_label = @Translation("par_entity type"),
  *   handlers = {
  *     "storage" = "Drupal\trance\TranceStorage",

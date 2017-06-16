@@ -2,7 +2,7 @@
 entity.par_entity.collection:
   route_name: entity.par_entity.collection
   base_route: system.admin_content
-  title: 'Par entities'
+  title: 'PAR data'
 
 entity.par_entity.canonical:
   route_name: entity.par_entity.canonical

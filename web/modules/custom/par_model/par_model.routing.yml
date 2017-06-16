@@ -1,9 +1,9 @@
-# ParEntity routing definition
+# PAR Entity routing definition
 entity.par_entity.canonical:
   path: '/admin/content/par_entity/{par_entity}'
   defaults:
     _entity_view: 'par_entity'
-    _title: 'par_entity'
+    _title: 'PAR entity'
   requirements:
     _entity_access: 'par_entity.view'
   options:
@@ -13,7 +13,7 @@ entity.par_entity.collection:
   path: '/admin/content/par_entity'
   defaults:
     _entity_list: 'par_entity'
-    _title: 'Par Entity items'
+    _title: 'PAR data'
   requirements:
     _permission: 'access par_entity content'
   options:
@@ -23,7 +23,7 @@ entity.par_entity.edit_form:
   path: '/admin/content/par_entity/{par_entity}/edit'
   defaults:
     _entity_form: par_entity.edit
-    _title: 'Edit par entity item'
+    _title: 'Edit par entity'
   requirements:
     _permission: 'edit par_entity entities'
   options:
@@ -33,7 +33,7 @@ entity.par_entity.delete_form:
   path: '/admin/content/par_entity/{par_entity}/delete'
   defaults:
     _entity_form: par_entity.delete
-    _title: 'Delete par entity item'
+    _title: 'Delete par entity'
   requirements:
     _permission: 'delete par_entity entities'
   options:
@@ -43,7 +43,7 @@ par_model.add_page:
   path: '/admin/content/par_entity/add'
   defaults:
     _controller: '\Drupal\par_model\Controller\ParEntityAddController::add'
-    _title: 'Add par entity item'
+    _title: 'Add par entity'
   requirements:
     _permission: 'add par_entity entities'
 
@@ -112,12 +112,12 @@ par_model.revision_revert_translation_confirm:
   options:
     _par_entity_operation_route: TRUE
 
-# ParEntityType routing definition
+# PAR Entity Type routing definition
 entity.par_entity_type.collection:
   path: '/admin/structure/par_entity_type'
   defaults:
     _entity_list: 'par_entity_type'
-    _title: 'ParEntity content entity types'
+    _title: 'PAR data types'
   requirements:
     _permission: 'administer site configuration'
   options:
@@ -127,7 +127,7 @@ entity.par_entity_type.canonical:
   path: '/admin/structure/par_entity_type/{par_entity_type}'
   defaults:
     _entity_form: 'par_entity_type.edit'
-    _title: 'Edit ParEntity type'
+    _title: 'Edit par entity type'
   requirements:
     _permission: 'administer par_entity types'
   options:
@@ -137,7 +137,7 @@ entity.par_entity_type.add_form:
   path: '/admin/structure/par_entity_type/add'
   defaults:
     _entity_form: 'par_entity_type.add'
-    _title: 'Add ParEntity type'
+    _title: 'Add par entity type'
   requirements:
     _permission: 'administer par_entity types'
   options:
@@ -147,7 +147,7 @@ entity.par_entity_type.edit_form:
   path: '/admin/structure/par_entity_type/{par_entity_type}'
   defaults:
     _entity_form: 'par_entity_type.edit'
-    _title: 'Edit ParEntity type'
+    _title: 'Edit par entity type'
   requirements:
     _permission: 'administer par_entity types'
   options:
@@ -157,7 +157,7 @@ entity.par_entity_type.delete_form:
   path: '/admin/structure/par_entity_type/{par_entity_type}/delete'
   defaults:
     _entity_form: 'par_entity_type.delete'
-    _title: 'Delete ParEntity type'
+    _title: 'Delete par entity type'
   requirements:
     _permission: 'administer par_entity types'
   options:
@@ -167,6 +167,6 @@ par_model.type_add:
   path: '/admin/structure/par_entity_type/add'
   defaults:
     _entity_form: 'par_entity_type.add'
-    _title: 'Add ParEntity type'
+    _title: 'Add par entity type'
   requirements:
     _permission: 'administer par_entity types'
