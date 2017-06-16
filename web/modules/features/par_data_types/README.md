@@ -14,10 +14,9 @@ The data types defined by the PAR Data Model include:
 * Regulatory Area - An area of regulation that can be applied to any Partnership between a Business and an Authority.
 
 ## What are the properties of these entities?
-### Business
-
-business_id = primary_id
-phone = phone (e.g. "07884 068024")
+### Business property types
+business_id = surrogate key
+phone = phone
 comments = long plain text
 auth_premises = boolean (e.g. "N")
 employees_band = list range (e.g. "10-49")
@@ -31,10 +30,3 @@ bv3_id = int
 first_name = short plain text
 surname = short plain text
 trading_name = short plain text
-
-"50"|"07884 068024"|""|"N"|"10-49"|""|""|"Balsab Limited T/A KFC"|"balsabltd@gmail.com"|"Small"|"England"|""|"Tejpal"|"Singh"|"Balsab Limited KFC Kentucy Fried Chicken"
-"53"|"07909 962 363"|""|"N"|"250+"|""|""|"Castlebarn Limited T/A KFC"|"dcatterall@gmail.com"|"Small"|"England"|""|"David"|"Catterall"|"Castlebarn Limited KFC Kentucy Fried Chicken"^M
-"58"|"07970 618 322"|""|"N"|"50-249"|""|""|"NNA Limited T/A KFC"|"martina@gmnltd.co.uk"|"Small"|"England"|""|"Martina"|"Nicholas"|"NNA Limited KFC Kentucy Fried Chicken"^M
-"69"|"07747 792 059"|""|"N"|"50-249"|""|""|"K&Z Enterprises Limited T/A KFC"|"shahaz1@yahoo.com"|"Small"|"England"|""|"Shahaz"|"Nanji"|"K&Z Enterprises, K&Z Wallington, K&Z Newhaven KFC Kentucy Fried Chicken"^M
-"74"|"01494 524775"|""|"N"|"50-249"|""|""|"PLV Enterprises T/A KFC"|"peter.v@plventerprises.co.uk"|"Small"|"England"|""|"Peter"|"Vujasevic"|"PLV Enterprises KFC Kentucy Fried Chicken"^M
-"94"|"01788 551111"|""|"N"|"0-9"|""|""|"Sweet Let Limited"|"matthew@brownandcockerill.co.uk"|"Small"|"England"|""|"Matthew"|"Sweet"|"Brown & Cockerill Lettings"
