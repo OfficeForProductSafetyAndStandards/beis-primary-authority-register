@@ -1,3 +1,6 @@
+language: php
+php:
+- '5.6'
 before_script:
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
@@ -21,10 +24,6 @@ env:
       ''pgsql'', ''namespace'' => ''Drupal\Core\Database\Driver\pgsql'' } }]}'
 install:
 - composer install
-language: php
-php:
-- '5.6'
-- '7.1'
 script: ls
 deploy:
   provider: cloudfoundry
