@@ -3,3 +3,5 @@ applications:
 memory: 2G
 host: testing
 buildpack: php_buildpack
+services:
+- par-db
