@@ -1,47 +1,7 @@
-Cucumber Boilerplate
+Cucumberjs/Webdriverio
 ====================
 
 * Install the dependencies (`npm install` or `yarn install`)
-
-Now you are ready to write your own features.
-
-## Features
-
-- Super simple setup
-- Full integration with [WebdriverIO](http://webdriver.io/)
-- Over 150 predefined steps that cover almost everything you need, you can start writing tests right away
-- Easy integration with cloud services like [Sauce Labs](https://saucelabs.com/)
-- Integration of WebdriverIO's Multiremote functionality
-- Easy to run tests in parallel
-
-# How to write a test
-
-Tests are written in [Gherkin syntax](https://cucumber.io/docs/reference)
-that means that you write down what's supposed to happen in a real language. All test files are located in
-`./src/features/*` and have the file ending `.feature`. You will already find some test files in that
-directory. They should demonstrate, how tests could look like. Just create a new file and write your first
-test.
-
-__myFirstTest.feature__
-```gherkin
-Feature:
-    In order to keep my product stable
-    As a developer or product manager
-    I want to make sure that everything works as expected
-
-Scenario: Check title of website after search
-    Given I open the url "http://google.com"
-    When I set "WebdriverIO" to the inputfield "#gbqfq"
-    And I press "Enter"
-    Then I expect that the title is "WebdriverIO - Google Search"
-
-Scenario: Another test
-    Given ...
-
-```
-
-This test opens the browser and navigates them to google.com to check if the title contains the search
-query after doing a search. As you can see, it is pretty simple and understandable for everyone.
 
 # How to run the test
 
@@ -50,6 +10,8 @@ To run your tests just call the [WDIO runner](http://webdriver.io/guide/testrunn
 ```sh
 $ ./node_modules/.bin/wdio wdio.<ENVIRONMENT>.conf.js
 ```
+
+Environments available are: DEV
 
 # Running single feature
 Sometimes its useful to only execute a single feature file, to do so use the following command:
@@ -87,38 +49,6 @@ Feature: ...
 // only skip a single scenario
 @Pending
 Scenario: ...
-```
-
-# Adding new steps and snippets
-
-The predefined snippets allow you to do a lot of common things but you might need extra snippets which
-are better aligned with your aims. To do so you will find all step definitions in `./src/steps`. They
-are separated in `given`, `when` and `then`. 
-
-You define your snippet using regular expressions. This is pretty powerful as it allows you to create complex
-sentences with multiple options. Everything that's within `"([^"]*)?"` gets captured and appended to the
-callback. The last argument is always a callback function that you need to call when your step is done.
-You can access the browser and your WebdriverIO instance with `browser`.
-
-To assert values this boilerplate project comes with a [Chai](http://chaijs.com/) integration.
-
-# Comments
-
-You can add additional descriptive comments in your feature files.
-
-```gherkin
-###
-  This is a
-  block comment
-###
-Feature: As a bystander
-    I can watch bottles falling from a wall
-    So that I can be mildly amused
-
-# This is a single line comment
-Scenario: check if username is present
-    Given I login as "roboter" with password "test123"
-    Then the username "roboter" should be present in the header
 ```
 
 # List of predefined steps
