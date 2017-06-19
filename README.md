@@ -27,19 +27,19 @@ You can then visit the site at:
     
 ### Raw database dump
 
-    docker exec -i pars_beta_db pg_dump -U pars pars > pg_dump.sql
+    docker exec -i par_beta_db pg_dump -U par par > pg_dump.sql
     
 ### Drush dump
 
-    docker exec -i pars_beta_web  /var/www/html/vendor/bin/drush sql-dump @dev --root=/var/www/html/web --result-file=/var/www/html/docker/fresh_drupal_postgres.sql --structure-tables-key=common --skip-tables-key=common
+    docker exec -i par_beta_web  /var/www/html/vendor/bin/drush sql-dump @dev --root=/var/www/html/web --result-file=/var/www/html/docker/fresh_drupal_postgres.sql --structure-tables-key=common --skip-tables-key=common
     
 ### Drush import
 
-    docker exec -i pars_beta_web  /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < fresh_drupal_postgres.sql
+    docker exec -i par_beta_web  /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < fresh_drupal_postgres.sql
 
 ### Destroy containers
 
-    docker rm pars_beta_web pars_beta_db --force
+    docker rm par_beta_web par_beta_db --force
 
 ## Drupal site setup
 
@@ -47,9 +47,9 @@ To download all dependencies:
 
     sh composer.sh install
     
-The to configure the application:
+Then, to configure the application:
 
-    docker exec -i pars_beta_web sh /var/www/html/docker/drupal-update.sh
+    docker exec -i par_beta_web sh /var/www/html/docker/drupal-update.sh
 
 
 # Cucumberjs/Webdriverio (e2e acceptance testing)

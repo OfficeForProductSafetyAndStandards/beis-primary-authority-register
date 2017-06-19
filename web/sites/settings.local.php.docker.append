@@ -2,8 +2,8 @@
 $settings['hash_salt'] = 'ASK_A_TEAM_MEMBER_FOR_THIS';
 
 $databases['default']['default'] = array (
-  'database' => 'pars',
-  'username' => 'pars',
+  'database' => 'par',
+  'username' => 'par',
   'password' => '123456',
   'prefix' => '',
   'host' => 'db',
