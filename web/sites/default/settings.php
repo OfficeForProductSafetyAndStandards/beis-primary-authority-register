@@ -755,6 +755,8 @@ $settings['file_scan_ignore_directories'] = [
   'bower_components',
 ];
 
+$settings['hash_salt'] = 'PAR_HASH_SALT';
+
 /**
  * Extract the database credentials from the VCAP_SERVICES environment variable
  * which is configured by the PaaS service manager
