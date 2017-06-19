@@ -41,6 +41,12 @@ You can then visit the site at:
 
     docker rm pars_beta_web pars_beta_db --force
 
+## Drupal site setup
 
+To download all dependencies:
 
+    sh composer.sh install
+    
+The to configure the application:
 
+    docker exec -i pars_beta_web sh /var/www/html/docker/drupal-update.sh
