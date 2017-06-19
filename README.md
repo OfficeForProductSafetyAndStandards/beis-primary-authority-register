@@ -54,6 +54,9 @@ Then, to configure the application:
 
 # Cucumberjs/Webdriverio (e2e acceptance testing)
 
+## Initial steps
+
+* cd tests
 * Install the dependencies (`npm install` or `yarn install`)
 
 ## How to run the test
@@ -70,7 +73,7 @@ Environments available are: DEV
 Sometimes its useful to only execute a single feature file, to do so use the following command:
 
 ```sh
-$ ./node_modules/.bin/wdio --spec ./test/features/select.feature
+$ ./node_modules/.bin/wdio --spec src/features/select.feature
 ```
 
 ## Using tags
