@@ -1,8 +1,9 @@
-# Load the test data:
+# Install dependencies
 
-    sleep 5 # Time for the server to boot
-    docker exec -i pars_beta_web  /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < fresh_drupal_postgres.sql
-    
+    cd ..
+    sh composer.sh install
+    cd docker
+
 # Setup the development settings file:
 
     docker exec -i pars_beta_web cp /var/www/html/web/sites/example.settings.local.php /var/www/html/web/sites/default/settings.local.php
@@ -12,6 +13,11 @@
  
     docker exec -it pars_beta_web sed -i -e 's/html/html\/web/g' /etc/apache2/sites-available/000-default.conf
     docker restart pars_beta_web
+
+# Load the test data:
+ 
+    sleep 5 # Time for the server to boot
+    docker exec -i pars_beta_web  /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < fresh_drupal_postgres.sql
 
 
 
