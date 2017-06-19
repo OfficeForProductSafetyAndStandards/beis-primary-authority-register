@@ -1,0 +1,27 @@
+uuid: 12dd257b-6f0b-470f-acd7-574de562a121
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - par_data_entities
+id: par_entity.field_partnership_type
+field_name: field_partnership_type
+entity_type: par_entity
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: direct
+      label: Direct
+    -
+      value: coordinated
+      label: Coordinated
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

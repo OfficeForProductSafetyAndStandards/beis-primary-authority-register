@@ -1,9 +1,11 @@
-uuid: c4228c42-bee7-45c5-b315-0393c1fdc488
+uuid: 2c8a8af8-d491-4ceb-b34e-8851f30763af
 langcode: en
 status: true
 dependencies:
   module:
-    - par_model
+    - par_data_entities
+_core:
+  default_config_hash: IaZztoWXnszxE2OYRgzP9ZK92PRShei7AfQ4UIEbi8A
 id: par_entity.field_trading_name
 field_name: field_trading_name
 entity_type: par_entity

@@ -1,9 +1,11 @@
-uuid: 94cb8c4b-22ce-4b1b-8f3e-7b746a81e810
+uuid: 6218141c-664b-413f-8839-e43805aa6e3a
 langcode: en
 status: true
 dependencies:
   module:
-    - par_model
+    - par_data_entities
+_core:
+  default_config_hash: al1ZxxAT9tOPOvUMp1Jd-OgvvISY1K92uaQTdtT4nDs
 id: par_entity.field_email
 field_name: field_email
 entity_type: par_entity

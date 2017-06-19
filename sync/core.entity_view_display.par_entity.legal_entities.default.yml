@@ -1,0 +1,57 @@
+uuid: 57419988-c1fd-4926-8403-671b8dd780e1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.par_entity.legal_entities.field_entity_number
+    - field.field.par_entity.legal_entities.field_entity_type
+    - field.field.par_entity.legal_entities.field_registered_name
+    - par_data_entities.par_entity_type.legal_entities
+  module:
+    - options
+    - user
+id: par_entity.legal_entities.default
+targetEntityType: par_entity
+bundle: legal_entities
+mode: default
+content:
+  field_entity_number:
+    weight: 2
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+    region: content
+  field_entity_type:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_registered_name:
+    weight: 1
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  name:
+    label: above
+    type: string
+    weight: -4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  user_id:
+    label: hidden
+    type: author
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

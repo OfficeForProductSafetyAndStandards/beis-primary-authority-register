@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - field.storage.par_entity.field_company_type
-    - par_model.par_entity_type.business
+    - par_data_entities.par_entity_type.business
 id: par_entity.business.field_company_type
 field_name: field_company_type
 entity_type: par_entity

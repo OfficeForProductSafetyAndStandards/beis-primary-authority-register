@@ -1,9 +1,11 @@
-uuid: e1f890f6-dddb-4bbc-99dd-e346fffde0d2
+uuid: df244fdc-0e9d-485b-9ebf-962f6fd5a498
 langcode: en
 status: true
 dependencies:
   module:
-    - par_model
+    - par_data_entities
+_core:
+  default_config_hash: p_bB8Tc0ayElOJ4JJ0RNSX5h1NvBdKXM-OC59t4d3cM
 id: par_entity.field_business_type
 field_name: field_business_type
 entity_type: par_entity

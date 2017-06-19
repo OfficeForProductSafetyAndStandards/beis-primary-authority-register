@@ -1,10 +1,12 @@
-uuid: 3c62171c-65f8-4415-ace8-3dce1f9d784e
+uuid: 751ece3f-8511-4701-ba05-8f5c66f09590
 langcode: en
 status: true
 dependencies:
   module:
-    - par_model
+    - par_data_entities
     - text
+_core:
+  default_config_hash: OPibmVfrOxVeNIw-mmXN1CQyizQ18xpcIhdRhiQSlhw
 id: par_entity.field_comments
 field_name: field_comments
 entity_type: par_entity

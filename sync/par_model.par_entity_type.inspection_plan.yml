@@ -1,8 +1,0 @@
-uuid: 808bd5a5-5b3e-4f30-af01-76f3330db4e6
-langcode: en
-status: true
-dependencies: {  }
-id: inspection_plan
-label: 'Inspection Plan'
-description: 'Details of an inspection carried out against any given business.'
-help: ''

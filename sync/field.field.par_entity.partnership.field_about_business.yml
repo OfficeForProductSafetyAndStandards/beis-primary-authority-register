@@ -1,0 +1,21 @@
+uuid: 8ef1f128-65a3-434c-a860-334b8bfaf9d3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_about_business
+    - par_data_entities.par_entity_type.partnership
+  module:
+    - text
+id: par_entity.partnership.field_about_business
+field_name: field_about_business
+entity_type: par_entity
+bundle: partnership
+label: 'About Business'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

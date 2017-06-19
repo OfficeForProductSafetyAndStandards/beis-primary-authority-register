@@ -1,12 +1,14 @@
-uuid: c72061d1-f115-4e14-b784-9d3939a2dd38
+uuid: 3822f9ae-7c10-43d2-8bfd-062f6e079283
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.par_entity.field_nation
-    - par_model.par_entity_type.business
+    - par_data_entities.par_entity_type.business
   module:
     - options
+_core:
+  default_config_hash: rPowN6lxscBaa3Rhkbvar7wdLmK8wBFixgWO-K_Kk4E
 id: par_entity.business.field_nation
 field_name: field_nation
 entity_type: par_entity

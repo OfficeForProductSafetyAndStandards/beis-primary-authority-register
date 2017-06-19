@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - field.storage.par_entity.field_authorised_premises
-    - par_model.par_entity_type.business
+    - par_data_entities.par_entity_type.business
 id: par_entity.business.field_authorised_premises
 field_name: field_authorised_premises
 entity_type: par_entity
@@ -18,5 +18,5 @@ default_value:
 default_value_callback: ''
 settings:
   on_label: Authorised
-  off_label: Unaurotised
+  off_label: Unauthorised
 field_type: boolean

@@ -1,0 +1,19 @@
+uuid: 7d1d22e5-324a-4c20-bd8e-c004826e7cc8
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data_entities
+    - telephone
+id: par_entity.field_work_phone
+field_name: field_work_phone
+entity_type: par_entity
+type: telephone
+settings: {  }
+module: telephone
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

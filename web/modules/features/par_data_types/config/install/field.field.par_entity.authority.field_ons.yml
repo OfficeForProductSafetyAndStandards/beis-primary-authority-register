@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_ons
+    - par_data_entities.par_entity_type.authority
+id: par_entity.authority.field_ons
+field_name: field_ons
+entity_type: par_entity
+bundle: authority
+label: ONS
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

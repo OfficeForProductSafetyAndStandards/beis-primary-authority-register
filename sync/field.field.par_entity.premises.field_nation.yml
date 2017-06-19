@@ -1,0 +1,21 @@
+uuid: 34f92399-5b9c-49c6-89dd-8f7bb52d3ab5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_nation
+    - par_data_entities.par_entity_type.premises
+  module:
+    - options
+id: par_entity.premises.field_nation
+field_name: field_nation
+entity_type: par_entity
+bundle: premises
+label: Nation
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

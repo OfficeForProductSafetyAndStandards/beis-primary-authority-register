@@ -1,9 +1,11 @@
-uuid: cc40bd5a-4f36-46f0-9dfc-607e2e36c09f
+uuid: 66ab393b-bb19-480a-b7aa-d4174d3eabe2
 langcode: en
 status: true
 dependencies:
   module:
-    - par_model
+    - par_data_entities
+_core:
+  default_config_hash: M1-J6As1RdiRQZ8TjoNQdX3nuK5Jarwn3Ypm3h9SXzA
 id: par_entity.field_sic_code
 field_name: field_sic_code
 entity_type: par_entity

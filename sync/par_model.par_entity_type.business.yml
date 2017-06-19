@@ -1,8 +1,0 @@
-uuid: b8c0fc8e-7841-4d91-a41c-c59b23e53232
-langcode: en
-status: true
-dependencies: {  }
-id: business
-label: Business
-description: 'The business registered with PAR.'
-help: ''

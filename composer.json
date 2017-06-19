@@ -21,6 +21,8 @@
         "drupal/core": "~8.3.0",
         "drupal/csv_serialization": "~1.0.0",
         "drupal/features": "~3.5.0",
+        "drupal/file_entity": "^2.0@beta",
+        "drupal/inline_entity_form": "^1.0@beta",
         "drupal/mailsystem": "~4.1.0",
         "drupal/range": "^1.1",
         "drupal/swiftmailer": "~1.0.0-beta1",

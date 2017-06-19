@@ -1,10 +1,12 @@
-uuid: 25b8f1e7-1e5d-4008-8d13-16bf7980998b
+uuid: 9bffb776-848d-49f0-ba6e-183fb595a3f5
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.par_entity.field_authorised_premises
-    - par_model.par_entity_type.business
+    - par_data_entities.par_entity_type.business
+_core:
+  default_config_hash: qxix_6S-xg-ei3j2x1NUcppjAek7mAGXpUKrIR9diDY
 id: par_entity.business.field_authorised_premises
 field_name: field_authorised_premises
 entity_type: par_entity
@@ -19,5 +21,5 @@ default_value:
 default_value_callback: ''
 settings:
   on_label: Authorised
-  off_label: Unaurotised
+  off_label: Unauthorised
 field_type: boolean

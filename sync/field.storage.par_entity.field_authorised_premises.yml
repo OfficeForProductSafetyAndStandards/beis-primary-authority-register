@@ -1,9 +1,11 @@
-uuid: 1dd2611c-7b9a-45de-8d21-da0c0c1b1f50
+uuid: 94bb12c0-5d77-47fc-bdfd-65658850f80d
 langcode: en
 status: true
 dependencies:
   module:
-    - par_model
+    - par_data_entities
+_core:
+  default_config_hash: FMx-y8HuLDIf3PQvwGiN4NUUiMXVIYCj947O4g3RJJc
 id: par_entity.field_authorised_premises
 field_name: field_authorised_premises
 entity_type: par_entity

@@ -8,14 +8,14 @@ dependencies:
     - field.field.par_entity.business.field_company_type
     - field.field.par_entity.business.field_email
     - field.field.par_entity.business.field_first_name
+    - field.field.par_entity.business.field_last_name
     - field.field.par_entity.business.field_name
     - field.field.par_entity.business.field_nation
     - field.field.par_entity.business.field_number_employees
     - field.field.par_entity.business.field_phone
     - field.field.par_entity.business.field_sic_code
-    - field.field.par_entity.business.field_surname
     - field.field.par_entity.business.field_trading_name
-    - par_model.par_entity_type.business
+    - par_data_entities.par_entity_type.business
   module:
     - options
     - text
@@ -73,6 +73,14 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  field_last_name:
+    weight: 14
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
   field_name:
     weight: 7
     label: above
@@ -110,14 +118,6 @@ content:
       prefix_suffix: true
     third_party_settings: {  }
     type: number_integer
-    region: content
-  field_surname:
-    weight: 12
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
     region: content
   field_trading_name:
     weight: 13

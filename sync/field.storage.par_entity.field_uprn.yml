@@ -1,0 +1,21 @@
+uuid: c9bbb042-dd41-4cd9-9f7a-90e4dc1d0338
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data_entities
+id: par_entity.field_uprn
+field_name: field_uprn
+entity_type: par_entity
+type: string
+settings:
+  max_length: 30
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,19 @@
+uuid: 42448724-0b02-49a4-bc4f-a15b8b837739
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data_entities
+    - telephone
+id: par_entity.field_mobile_phone
+field_name: field_mobile_phone
+entity_type: par_entity
+type: telephone
+settings: {  }
+module: telephone
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

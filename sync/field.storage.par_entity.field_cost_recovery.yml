@@ -1,0 +1,24 @@
+uuid: 2fcc3403-1571-4e17-81b4-2a9d13cced19
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - par_data_entities
+id: par_entity.field_cost_recovery
+field_name: field_cost_recovery
+entity_type: par_entity
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: PD
+      label: PD
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

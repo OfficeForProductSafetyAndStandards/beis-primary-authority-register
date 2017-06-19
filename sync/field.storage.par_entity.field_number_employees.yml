@@ -1,10 +1,12 @@
-uuid: 68aecc67-53ca-47f9-a1f6-3f8927a03497
+uuid: e274e6b6-1b9f-4023-99b9-8d6ecd40384a
 langcode: en
 status: true
 dependencies:
   module:
     - options
-    - par_model
+    - par_data_entities
+_core:
+  default_config_hash: I_u6OKtVQ5oivQKTkPVA21tZsPurCgXD9bYCzyBes80
 id: par_entity.field_number_employees
 field_name: field_number_employees
 entity_type: par_entity

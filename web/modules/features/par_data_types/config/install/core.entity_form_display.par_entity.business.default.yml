@@ -8,14 +8,14 @@ dependencies:
     - field.field.par_entity.business.field_company_type
     - field.field.par_entity.business.field_email
     - field.field.par_entity.business.field_first_name
+    - field.field.par_entity.business.field_last_name
     - field.field.par_entity.business.field_name
     - field.field.par_entity.business.field_nation
     - field.field.par_entity.business.field_number_employees
     - field.field.par_entity.business.field_phone
     - field.field.par_entity.business.field_sic_code
-    - field.field.par_entity.business.field_surname
     - field.field.par_entity.business.field_trading_name
-    - par_model.par_entity_type.business
+    - par_data_entities.par_entity_type.business
   module:
     - telephone
     - text
@@ -71,6 +71,14 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_last_name:
+    weight: 39
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_name:
     weight: 32
     settings:
@@ -104,14 +112,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: number
-    region: content
-  field_surname:
-    weight: 37
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
     region: content
   field_trading_name:
     weight: 38

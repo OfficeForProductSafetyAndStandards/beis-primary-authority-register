@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - field.storage.par_entity.field_comments
-    - par_model.par_entity_type.business
+    - par_data_entities.par_entity_type.business
   module:
     - text
 id: par_entity.business.field_comments

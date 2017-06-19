@@ -1,0 +1,23 @@
+uuid: 3a883e1e-819a-4278-8ea2-1c8aa22e1256
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_communication_email
+    - par_data_entities.par_entity_type.partnership
+id: par_entity.partnership.field_communication_email
+field_name: field_communication_email
+entity_type: par_entity
+bundle: partnership
+label: 'Communication By Email'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Receive by email'
+  off_label: 'Do not receive by email'
+field_type: boolean

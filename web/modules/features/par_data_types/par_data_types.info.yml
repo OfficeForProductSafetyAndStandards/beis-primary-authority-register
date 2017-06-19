@@ -4,4 +4,6 @@ description: 'Feature to define the required PAR Data Model entity types'
 core: 8.x
 package: PAR
 dependencies:
-  - par_model
+  - par_data_entities
+  - telephone
+  - address

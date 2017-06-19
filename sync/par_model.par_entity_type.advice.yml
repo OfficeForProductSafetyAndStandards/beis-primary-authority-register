@@ -1,8 +1,0 @@
-uuid: 29fc9dd6-11fc-41b9-8709-20ff1462b162
-langcode: en
-status: true
-dependencies: {  }
-id: advice
-label: Advice
-description: 'Details of any advice given to a Business or an Authority pertaining to a specific Partnership..'
-help: ''

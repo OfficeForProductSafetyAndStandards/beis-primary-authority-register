@@ -1,10 +1,12 @@
-uuid: ecfd65c2-0007-4126-99f4-7c9dfcc9ede0
+uuid: 484611ac-00ef-4074-bc71-0d495679f483
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.par_entity.field_sic_code
-    - par_model.par_entity_type.business
+    - par_data_entities.par_entity_type.business
+_core:
+  default_config_hash: l-3417BYPYdg-289rZYAFYHdmztBaDEwrsYY3wM0N88
 id: par_entity.business.field_sic_code
 field_name: field_sic_code
 entity_type: par_entity

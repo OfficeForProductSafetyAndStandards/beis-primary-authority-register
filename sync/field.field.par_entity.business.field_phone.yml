@@ -1,12 +1,14 @@
-uuid: a8bd8b0a-e9c4-4113-a38d-7abe15055cd3
+uuid: 9b2c32ad-de6b-4f9b-a67d-2f116e36a29f
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.par_entity.field_phone
-    - par_model.par_entity_type.business
+    - par_data_entities.par_entity_type.business
   module:
     - telephone
+_core:
+  default_config_hash: 4HSdslgktTeIurqd_tO-MC_OgNAfBtwVvebVhIQzG7s
 id: par_entity.business.field_phone
 field_name: field_phone
 entity_type: par_entity

@@ -1,0 +1,10 @@
+uuid: ea478d83-b191-4f2c-96c8-d006adc56263
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: jPm7f1jWrXS0FpkdE4Nm2cp_3ridaeNYWcBW6l2eTWQ
+id: premises
+label: Premises
+description: 'The premises that are owned by either a Business or Coordinator.'
+help: ''

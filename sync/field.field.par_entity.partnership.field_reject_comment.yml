@@ -1,0 +1,21 @@
+uuid: 951db408-5304-48e8-a6e2-1f8c4464335c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_reject_comment
+    - par_data_entities.par_entity_type.partnership
+  module:
+    - text
+id: par_entity.partnership.field_reject_comment
+field_name: field_reject_comment
+entity_type: par_entity
+bundle: partnership
+label: 'Reject Comment'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

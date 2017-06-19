@@ -1,0 +1,19 @@
+uuid: 328bed4b-9fa6-4992-be7a-a752031509c1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_name
+    - par_data_entities.par_entity_type.coordinatior
+id: par_entity.coordinatior.field_name
+field_name: field_name
+entity_type: par_entity
+bundle: coordinatior
+label: Name
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

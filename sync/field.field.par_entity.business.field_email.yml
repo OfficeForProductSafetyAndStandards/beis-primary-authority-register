@@ -1,10 +1,12 @@
-uuid: 8fdd6375-68f5-440e-9e2b-89def62d3204
+uuid: f456f037-a85c-4727-af51-2bb8caded3fb
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.par_entity.field_email
-    - par_model.par_entity_type.business
+    - par_data_entities.par_entity_type.business
+_core:
+  default_config_hash: sEhOt82SBlXtP9ZM8FdnQxbofGu3Vxg6b5UnxQhKalg
 id: par_entity.business.field_email
 field_name: field_email
 entity_type: par_entity

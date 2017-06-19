@@ -1,0 +1,20 @@
+uuid: ab2daa75-9194-43be-ac71-f1c27aa0067e
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data_entities
+id: par_entity.field_number_eligible
+field_name: field_number_eligible
+entity_type: par_entity
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

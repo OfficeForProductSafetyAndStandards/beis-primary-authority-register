@@ -1,0 +1,28 @@
+uuid: 26bd3169-623c-4be4-8d9f-60817b0537ae
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_primary_authority
+    - par_data_entities.par_entity_type.authority
+    - par_data_entities.par_entity_type.partnership
+id: par_entity.partnership.field_primary_authority
+field_name: field_primary_authority
+entity_type: par_entity
+bundle: partnership
+label: 'Primary Authority'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_entity'
+  handler_settings:
+    target_bundles:
+      authority: authority
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

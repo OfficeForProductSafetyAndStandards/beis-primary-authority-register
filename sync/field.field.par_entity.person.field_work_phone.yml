@@ -1,0 +1,21 @@
+uuid: 29a3f7f5-ec5e-46d3-b707-b408ed187fa2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_work_phone
+    - par_data_entities.par_entity_type.person
+  module:
+    - telephone
+id: par_entity.person.field_work_phone
+field_name: field_work_phone
+entity_type: par_entity
+bundle: person
+label: 'Work Phone'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: telephone

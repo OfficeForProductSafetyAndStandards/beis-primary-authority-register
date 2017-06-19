@@ -1,10 +1,12 @@
-uuid: 75dd42d0-43bb-4939-afc7-b05412f7b74f
+uuid: cae2ea42-276b-4546-b015-2ff2bd03e93a
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.par_entity.field_company_type
-    - par_model.par_entity_type.business
+    - par_data_entities.par_entity_type.business
+_core:
+  default_config_hash: eI8aocXmwVNSQ4md5Je09o9P5fMgCe9_OGKNrErmVZY
 id: par_entity.business.field_company_type
 field_name: field_company_type
 entity_type: par_entity

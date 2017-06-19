@@ -1,0 +1,23 @@
+uuid: 2e3990d9-aa2d-4387-ba98-41b89d239a11
+langcode: en
+status: true
+dependencies:
+  module:
+    - file
+    - par_data_entities
+id: par_entity.field_inspection_plan
+field_name: field_inspection_plan
+entity_type: par_entity
+type: file
+settings:
+  display_field: false
+  display_default: false
+  uri_scheme: private
+  target_type: file
+module: file
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

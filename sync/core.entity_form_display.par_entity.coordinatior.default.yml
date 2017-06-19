@@ -1,0 +1,95 @@
+uuid: ef1f9fa8-ee3f-4b60-a4c4-47bb5115d591
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.par_entity.coordinatior.field_authorised_businesses
+    - field.field.par_entity.coordinatior.field_coordinator_type
+    - field.field.par_entity.coordinatior.field_email
+    - field.field.par_entity.coordinatior.field_name
+    - field.field.par_entity.coordinatior.field_nature_organisation
+    - field.field.par_entity.coordinatior.field_number_eligible
+    - field.field.par_entity.coordinatior.field_sic_code
+    - par_data_entities.par_entity_type.coordinatior
+id: par_entity.coordinatior.default
+targetEntityType: par_entity
+bundle: coordinatior
+mode: default
+content:
+  field_authorised_businesses:
+    weight: 30
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_coordinator_type:
+    weight: 29
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_email:
+    weight: 28
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: email_default
+    region: content
+  field_name:
+    weight: 26
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_nature_organisation:
+    weight: 31
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_number_eligible:
+    weight: 27
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_sic_code:
+    weight: 32
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  langcode:
+    type: language_select
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: -4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  user_id:
+    type: entity_reference_autocomplete
+    weight: 5
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    region: content
+    third_party_settings: {  }
+hidden: {  }

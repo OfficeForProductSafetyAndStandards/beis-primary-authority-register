@@ -1,8 +1,0 @@
-uuid: e06c0da0-9e9e-493d-9389-47e75c56488c
-langcode: en
-status: true
-dependencies: {  }
-id: partnership
-label: Partnership
-description: 'A partnership is the relationship between a Business and an Authority.'
-help: ''

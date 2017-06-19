@@ -1,8 +1,0 @@
-uuid: 3948fda5-1481-44f1-953f-4c7fedf3e988
-langcode: en
-status: true
-dependencies: {  }
-id: premises
-label: Premises
-description: 'The premises that are owned by either a Business or Coordinator.'
-help: ''

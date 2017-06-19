@@ -1,9 +1,11 @@
-uuid: 80ffc567-6f05-47e1-8cbb-f5a4985e256f
+uuid: 1b6825ec-5a26-4434-bec6-0039383832c0
 langcode: en
 status: true
 dependencies:
   module:
-    - par_model
+    - par_data_entities
+_core:
+  default_config_hash: vfvYgpMkGMwfSxYP0Ewn05Pv_6wztLd19ic8JxTGFAI
 id: par_entity.field_first_name
 field_name: field_first_name
 entity_type: par_entity
