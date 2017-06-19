@@ -37,9 +37,9 @@ You can then visit the site at:
 
     docker exec -i par_beta_web  /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < fresh_drupal_postgres.sql
 
-### Destroy containers
+### Destroy containers and images and rebuild
 
-    docker rm par_beta_web par_beta_db --force
+    docker rm --force `docker ps -qa` && docker rmi $(docker images -q) && docker-compose up -d --force-recreate --build && sh setup.sh
 
 ## Drupal site setup
 

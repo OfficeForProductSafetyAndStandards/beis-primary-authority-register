@@ -1,5 +1,5 @@
 FROM php:7.1-apache
-RUN apt-get update && apt-get install -y wget \
+RUN apt-get update && apt-get install -y wget npm \
     && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
     && sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" >> /etc/apt/sources.list.d/postgresql.list' \ 
     && apt-get update && apt-get install -y \
@@ -9,6 +9,14 @@ RUN apt-get update && apt-get install -y wget \
         libpng12-dev \
         libpq-dev \
         postgresql-client-9.6 \
+        npm \
+        node \
+        software-properties-common \
+        python-software-properties \
+    && add-apt-repository ppa:webupd8team/java \
     && docker-php-ext-install -j$(nproc) iconv mcrypt pdo pdo_pgsql \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) gd
+    && docker-php-ext-install -j$(nproc) gd \
+    && npm install -g n \
+    && n 8.1.2
+    

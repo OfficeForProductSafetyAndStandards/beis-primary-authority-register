@@ -7,6 +7,8 @@
 /web/profiles/contrib/
 /web/libraries/
 
+/tests/node_modules/
+
 # Exclude the main drupal scaffold files.
 # If we want to make changes to any of these files
 # we must first remove them from gitignore and

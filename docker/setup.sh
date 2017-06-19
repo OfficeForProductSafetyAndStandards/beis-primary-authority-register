@@ -17,6 +17,10 @@ fi
  
     docker exec -it par_beta_web sed -i -e 's/html/html\/web/g' /etc/apache2/sites-available/000-default.conf
     docker restart par_beta_web
+    
+# Install test dependencies
+ 
+    docker exec -it par_beta_web cd tests && /usr/local/n/versions/node/8.1.2/bin/npm install
 
 # Load the test data:
  
