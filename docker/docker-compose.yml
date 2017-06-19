@@ -1,7 +1,7 @@
 web:
   build: .
   dockerfile: Dockerfile-web
-  container_name: pars_beta_web
+  container_name: par_beta_web
   links:
     - db
   ports:
@@ -9,13 +9,13 @@ web:
   volumes:
     - ../:/var/www/html
 db:
-  container_name: pars_beta_db
+  container_name: par_beta_db
   restart: always
   image: postgres:9.6.3
   ports:
     - "5411:5432"
   environment:
-    POSTGRES_USER: pars
+    POSTGRES_USER: par
     POSTGRES_PASSWORD: 123456
-    POSTGRES_DB: pars
+    POSTGRES_DB: par
    

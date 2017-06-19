@@ -23,6 +23,7 @@ env:
       ''par'', ''password'': '''', ''host'': ''localhost'', ''post'': ''5432'', ''driver'':
       ''pgsql'', ''namespace'' => ''Drupal\Core\Database\Driver\pgsql'' } }]}'
 install:
+- sudo sed -e "s?PAR_HASH_SALT?$PAR_HASH_SALT?g" --in-place web/sites/default/settings.php
 - composer install
 script: ./vendor/bin/phpunit --testsuite=par --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter"
 deploy:
