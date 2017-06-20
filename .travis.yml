@@ -3,6 +3,8 @@ php:
 - '5.6'
 jdk:
 - oraclejdk8
+node_js:
+- "7"
 before_script:
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
@@ -15,10 +17,6 @@ before_script:
   - sudo cp -f build/travis-ci-apache /etc/apache2/sites-available/default
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
   - sudo service apache2 restart
-### install test dependencies
-  - cd /tmp && git clone https://github.com/tj/n
-  - cd n
-  - make install
 before_install:
 - psql -c 'create database par;' -U postgres
 env:
