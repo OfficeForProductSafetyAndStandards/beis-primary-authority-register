@@ -1,6 +1,6 @@
 require 'octokit'
 
-SCHEDULER.every '1m', :first_in => 0 do |job|
+SCHEDULER.every '10s', :first_in => 0 do |job|
   client = Octokit::Client.new(:access_token => "6b2ea5805304d73feff275fce90d59f0c5e2a8b7")
   my_organization = "TransformCore"
   repos = client.organization_repositories(my_organization).map { |repo| repo.name }
@@ -14,9 +14,8 @@ SCHEDULER.every '1m', :first_in => 0 do |job|
         creator: "@" + pull.user.login,
         })
     end
-    pulls
+    pulls[0..4]
   }
-  puts 'asdf'
 
-  send_event('PR_WIDGET_DATA_ID', { header: "Open Pull Requests", pulls: open_pull_requests })
+  send_event('github_latest_prs', { header: "Open Pull Requests", pulls: open_pull_requests })
 end
