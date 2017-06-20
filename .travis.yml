@@ -24,6 +24,7 @@ before_script:
   - sudo n 7.2.1
   - cd ../tests
   - /usr/local/n/versions/node/7.2.1/bin/npm install
+  - cd ..
   - rm -rf n
 before_install:
 - psql -c 'create database par;' -U postgres
