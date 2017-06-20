@@ -1,15 +1,25 @@
 require 'octokit'
 
-SCHEDULER.every '10s', :first_in => 0 do |job|
-  client = Octokit::Client.new(:access_token => "6b2ea5805304d73feff275fce90d59f0c5e2a8b7")
-  my_organization = "TransformCore"
-  repos = client.organization_repositories(my_organization).map { |repo| repo.name }
+stack = Faraday::RackBuilder.new do |builder|
+  builder.response :logger
+  builder.use Octokit::Response::RaiseError
+  builder.adapter Faraday.default_adapter
+end
+Octokit.middleware = stack
+Octokit.user 'kalpaitch'
+
+SCHEDULER.every '1M', :first_in => 0 do |job|
+  client = Octokit::Client.new()
+  organization = "TransformCore"
+  repos = ["beis-par-beta"]
 
   open_pull_requests = repos.inject([]) { |pulls, repo|
-    client.pull_requests("#{my_organization}/#{repo}", :state => 'open').each do |pull|
+    client.pull_requests("#{organization}/#{repo}", :state => 'open').each do |pull|
       pulls.push({
+        number: pull.number,
         title: pull.title,
         repo: repo,
+        created_at: pull.created_at.strftime("%b %-d %Y, %l:%m %p"),
         updated_at: pull.updated_at.strftime("%b %-d %Y, %l:%m %p"),
         creator: "@" + pull.user.login,
         })
@@ -17,5 +27,5 @@ SCHEDULER.every '10s', :first_in => 0 do |job|
     pulls[0..4]
   }
 
-  send_event('github_latest_prs', { header: "Open Pull Requests", pulls: open_pull_requests })
+  send_event('github_latest_prs', { pulls: open_pull_requests })
 end

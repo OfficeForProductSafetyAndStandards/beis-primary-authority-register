@@ -1,8 +1,11 @@
-<h1 class="header" data-bind="header">Test</h1>
+<h1 class="header">Open Pull Requests</h1>
 
 <ul class="list">
   <li data-foreach-pull="pulls">
-    <p class="title" data-bind="pull.title"></p>
+    <div class="title">
+      #<span class="title number" data-bind="pull.number"></span>
+      <span class="title" data-bind="pull.title"></span>
+    </div>
     <div class="pull_info">
       <span class="repo" data-bind="pull.repo"></span>
       <span>•</span>
