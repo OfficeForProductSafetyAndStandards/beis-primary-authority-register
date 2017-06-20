@@ -19,53 +19,17 @@ You can then visit the site at:
 
     http://127.0.0.1:8111
     
-## Some useful commands
+### Docker setup troubleshooting
 
-### Database client
-
-    docker exec -it postgresql sudo -u postgres psql
-    
-### Raw database dump
-
-    docker exec -i par_beta_db pg_dump -U par par > pg_dump.sql
-    
-### Drush dump
-
-    docker exec -i par_beta_web  /var/www/html/vendor/bin/drush sql-dump @dev --root=/var/www/html/web --result-file=/var/www/html/docker/fresh_drupal_postgres.sql --structure-tables-key=common --skip-tables-key=common
-    
-### Drush import
-
-    docker exec -i par_beta_web  /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < fresh_drupal_postgres.sql
-
-### Destroy containers and images and rebuild
-
-    docker rm --force `docker ps -qa` && docker rmi $(docker images -q) && docker-compose up -d --force-recreate --build && sh setup.sh
-
-## Drupal site setup
-
-To download all dependencies:
-
-    sh composer.sh install
-    
-Then, to configure the application:
-
-    docker exec -i par_beta_web sh /var/www/html/docker/drupal-update.sh
-
-
+If the installation appears to be stalled, check that you are not connected to "_The Cloud" as this blocks certain ports that are used by docker-compose.
+ 
 # Cucumberjs/Webdriverio (e2e acceptance testing)
-
-## Initial steps
-
-* cd tests
-* Install the dependencies (`npm install` or `yarn install`)
 
 ## How to run the test
 
 To run your tests just call the [WDIO runner](http://webdriver.io/guide/testrunner/gettingstarted.html):
 
-```sh
-$ ./node_modules/.bin/wdio wdio.<ENVIRONMENT>.conf.js
-```
+    docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.<ENVIRONMENT>.conf.js"
 
 Environments available are: DEV
 
@@ -106,3 +70,30 @@ Feature: ...
 @Pending
 Scenario: ...
 ```
+    
+    
+## Some useful commands
+
+### Database client
+
+    docker exec -it postgresql sudo -u postgres psql
+    
+### Raw database dump
+
+    docker exec -i par_beta_db pg_dump -U par par > pg_dump.sql
+    
+### Drush dump
+
+    docker exec -i par_beta_web  /var/www/html/vendor/bin/drush sql-dump @dev --root=/var/www/html/web --result-file=/var/www/html/docker/fresh_drupal_postgres.sql --structure-tables-key=common --skip-tables-key=common
+    
+### Drush import
+
+    docker exec -i par_beta_web  /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < fresh_drupal_postgres.sql
+
+### Destroy containers and images and rebuild
+
+    docker rm --force `docker ps -qa` && docker rmi $(docker images -q) && docker-compose up -d --force-recreate --build && sh setup.sh
+
+    
+
+
