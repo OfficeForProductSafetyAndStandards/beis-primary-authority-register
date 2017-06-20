@@ -20,7 +20,7 @@ before_script:
 ### install test dependencies
   - git clone https://github.com/tj/n
   - cd n
-  - make install
+  - sudo make install
   - n 7.2.1
   - cd ../tests
   - /usr/local/n/versions/node/7.2.1/bin/npm install
