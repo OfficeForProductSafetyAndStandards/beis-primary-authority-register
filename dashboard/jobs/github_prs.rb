@@ -27,5 +27,5 @@ SCHEDULER.every '5M', :first_in => 0 do |job|
     pulls[0..4]
   }
 
-  send_event('github_latest_prs', { pulls: open_pull_requests })
+  send_event('github_latest_prs', { header: "Open Pull Requests", pulls: open_pull_requests })
 end
