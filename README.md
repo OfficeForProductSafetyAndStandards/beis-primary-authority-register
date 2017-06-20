@@ -29,7 +29,7 @@ If the installation appears to be stalled, check that you are not connected to "
 
 To run your tests just call the [WDIO runner](http://webdriver.io/guide/testrunner/gettingstarted.html):
 
-    docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.<ENVIRONMENT>.conf.js"
+    docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.DEV.conf.js"
 
 Environments available are: DEV
 

@@ -21,7 +21,7 @@ fi
     
 # Install test dependencies
  
-    docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/8.1.2/bin/npm install"
+    docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
 
 # Load the test data:
  
