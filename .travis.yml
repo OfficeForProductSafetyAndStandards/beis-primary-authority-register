@@ -1,10 +1,6 @@
 language: php
 php:
 - '5.6'
-jdk:
-- oraclejdk8
-node_js:
-- "7"
 before_script:
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
@@ -21,7 +17,7 @@ before_script:
   - git clone https://github.com/tj/n
   - cd n
   - sudo make install
-  - n 7.2.1
+  - sudo n 7.2.1
   - cd ../tests
   - /usr/local/n/versions/node/7.2.1/bin/npm install
   - rm -rf n
