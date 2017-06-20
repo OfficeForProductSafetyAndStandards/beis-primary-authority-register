@@ -1,18 +1,35 @@
+########################
+### BUILD
+########################
+
 language: php
 php:
 - '5.6'
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
 before_script:
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
-  # enable php-fpm
+### enable php-fpm
   - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
   - sudo a2enmod rewrite actions fastcgi alias
   - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
-  # configure apache virtual hosts
+### configure apache virtual hosts
   - sudo cp -f build/travis-ci-apache /etc/apache2/sites-available/default
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
   - sudo service apache2 restart
+### install test dependencies
+  - git clone https://github.com/tj/n
+  - cd n
+  - sudo make install
+  - sudo n 7.2.1
+  - cd ../tests
+  - /usr/local/n/versions/node/7.2.1/bin/npm install
+  - cd ..
+  - rm -rf n
 before_install:
 - psql -c 'create database par;' -U postgres
 env:
@@ -25,7 +42,18 @@ env:
 install:
 - sudo sed -e "s?PAR_HASH_SALT?$PAR_HASH_SALT?g" --in-place web/sites/default/settings.php
 - composer install
+
+########################
+### TEST
+########################
+
 script: ls
+#./tests/node_modules/.bin/wdio ./tests/wdio.BUILD.conf.js
+
+########################
+### DEPLOY
+########################
+
 deploy:
   provider: cloudfoundry
   api: https://api.cloud.service.gov.uk
@@ -36,7 +64,4 @@ deploy:
   space: sandbox
   on:
     repo: TransformCore/beis-par-beta
-branches:
-  only:
-  - master
-  - stable
+    
