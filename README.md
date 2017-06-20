@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/TransformCore/beis-par-beta.svg?branch=master)](https://travis-ci.org/TransformCore/beis-par-beta)
 
-Herein lies the fruits of our endevour to create a world class digital service for Regulatory Authority.
+Herein lie the fruits of our endeavours to create a world class digital service for Regulatory Authority.
 
 ## Docker development environment
 
@@ -29,16 +29,14 @@ If the installation appears to be stalled, check that you are not connected to "
 
 To run your tests just call the [WDIO runner](http://webdriver.io/guide/testrunner/gettingstarted.html):
 
-    docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.DEV.conf.js"
+    docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
 
-Environments available are: DEV
+Environments available are: DEV (Chrome), BUILD (PhantonJS). DEV won't work when running the application using the Docker containers.
 
 ## Running single feature
 Sometimes its useful to only execute a single feature file, to do so use the following command:
 
-```sh
-$ ./node_modules/.bin/wdio --spec src/features/select.feature
-```
+    docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio --spec src/features/beis.feature wdio.BUILD.conf.js"
 
 ## Using tags
 
@@ -51,9 +49,7 @@ Feature: ...
 
 To run only the tests with specific tag(s) use the `--tags=` parameter like so:
 
-```sh
-$ ./node_modules/.bin/wdio --tags=@Tag,@AnotherTag
-```
+    docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio --tags=@Tag,@AnotherTag wdio.BUILD.conf.js"
 
 You can add multiple tags separated by a comma
 
@@ -70,7 +66,6 @@ Feature: ...
 @Pending
 Scenario: ...
 ```
-    
     
 ## Some useful commands
 
