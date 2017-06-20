@@ -8,7 +8,7 @@ end
 Octokit.middleware = stack
 Octokit.user 'kalpaitch'
 
-SCHEDULER.every '1M', :first_in => 0 do |job|
+SCHEDULER.every '5M', :first_in => 0 do |job|
   client = Octokit::Client.new()
   organization = "TransformCore"
   repos = ["beis-par-beta"]
