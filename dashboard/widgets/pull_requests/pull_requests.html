@@ -1,0 +1,17 @@
+<h1 class="header" data-bind="header"></h1>
+
+<ul class="list">
+  <li data-foreach-pull="pulls">
+    <p class="title" data-bind="pull.title"></p>
+    <div class="pull_info">
+      <span class="repo" data-bind="pull.repo"></span>
+      <span>•</span>
+      <span class="creator" data-bind="pull.creator"></span>
+      <span>•</span>
+      <span class="updated_at" data-bind="pull.updated_at"></span>
+    </div>
+  </li>
+</ul>
+
+<p class="more-info" data-bind="moreinfo"></p>
+<p class="updated-at" data-bind="updatedAtMessage"></p>
