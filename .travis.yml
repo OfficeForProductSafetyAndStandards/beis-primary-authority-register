@@ -1,3 +1,7 @@
+########################
+### BUILD
+########################
+
 language: php
 php:
 - '5.6'
@@ -38,8 +42,18 @@ env:
 install:
 - sudo sed -e "s?PAR_HASH_SALT?$PAR_HASH_SALT?g" --in-place web/sites/default/settings.php
 - composer install
+
+########################
+### TEST
+########################
+
 script: ls
 #./tests/node_modules/.bin/wdio ./tests/wdio.BUILD.conf.js
+
+########################
+### DEPLOY
+########################
+
 deploy:
   provider: cloudfoundry
   api: https://api.cloud.service.gov.uk
