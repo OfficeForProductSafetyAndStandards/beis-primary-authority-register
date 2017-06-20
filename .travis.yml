@@ -17,8 +17,14 @@ before_script:
   - sudo cp -f build/travis-ci-apache /etc/apache2/sites-available/default
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
   - sudo service apache2 restart
-  - cd tests
-  - sudo npm install
+### install test dependencies
+  - git clone https://github.com/tj/n
+  - cd n
+  - make install
+  - n 7.2.1
+  - cd ../tests
+  - /usr/local/n/versions/node/7.2.1/bin/npm install
+  - rm -rf n
 before_install:
 - psql -c 'create database par;' -U postgres
 env:
@@ -31,7 +37,8 @@ env:
 install:
 - sudo sed -e "s?PAR_HASH_SALT?$PAR_HASH_SALT?g" --in-place web/sites/default/settings.php
 - composer install
-script: ./tests/node_modules/.bin/wdio ./tests/wdio.BUILD.conf.js
+script: ls
+#./tests/node_modules/.bin/wdio ./tests/wdio.BUILD.conf.js
 deploy:
   provider: cloudfoundry
   api: https://api.cloud.service.gov.uk
