@@ -26,7 +26,7 @@ before_script:
   - npm --version
   - node --version
   - cd tests
-  - npm install
+  - sudo npm install
   - cd ..
 before_install:
 - psql -c 'create database par;' -U postgres
