@@ -1,0 +1,49 @@
+<script type='text/javascript'>
+$(function() {
+  // These settings override the defaults set in application.coffee. You can do this on a per dashboard basis.
+  Dashing.gridsterLayout('[{"col":1,"row":1,"size_x":1,"size_y":1},{"col":2,"row":1,"size_x":1,"size_y":1},{"col":3,"row":1,"size_x":1,"size_y":1},{"col":1,"row":2,"size_x":1,"size_y":1},{"col":2,"row":2,"size_x":1,"size_y":1},{"col":3,"row":2,"size_x":1,"size_y":1},{"col":5,"row":1,"size_x":1,"size_y":2},{"col":4,"row":1,"size_x":1,"size_y":2}]')
+  Dashing.widget_base_dimensions = [370, 340]
+  Dashing.numColumns = 5
+});
+</script>
+
+
+<% content_for :title do %>1080p dashboard<% end %>
+
+<div class="gridster">
+
+  <ul>
+
+    <!-- Production Monitoring Stats -->
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+        <div data-id="production_build_version" data-view="Number" data-title="Production Version" data-moreinfo="Current build version" data-prefix="#"></div>
+    </li>
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+        <div data-id="production_load" data-view="Number" data-title="Current Load" data-moreinfo="Number of concurrent users" data-prefix=""></div>
+    </li>
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+        <div data-id="production_health" data-view="HotStatus" data-title="Production Health" data-message="Uptime of service"></div>
+    </li>
+
+    <!-- Master Branch Test/Build Stats -->
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+        <div data-id="master_build_version" data-view="Number" data-title="Master Build" data-moreinfo="Master branch build version" data-prefix="#"></div>
+    </li>
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+        <div data-id="master_build_info" data-view="Text" data-title="Test Info" data-moreinfo="Master branch test information" data-prefix=""></div>
+    </li>
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
+        <div data-id="master_build_status" data-view="HotStatus" data-title="Master Status" data-message="Master branch build status"></div>
+    </li>
+
+    <!-- Dev Stats -->
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="2">
+        <div data-id="travis_latest_builds" data-view="Travis" data-unordered="true" data-title="Latest builds"></div>
+    </li>
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="2">
+        <div data-id="github_latest_prs" data-view="PullRequests" data-header="Open Pull Requests"></div>
+    </li>
+
+  </ul>
+
+</div>
