@@ -1,6 +1,6 @@
 require 'travis'
 
-SCHEDULER.every('10s', first_in: '1s') {
+SCHEDULER.every('30s', first_in: '1s') {
   repo = Travis::Repository.find("TransformCore/beis-par-beta")
 
   build = repo.branch('master')
@@ -18,5 +18,5 @@ SCHEDULER.every('10s', first_in: '1s') {
 
   send_event('master_build_status', { status: health })
   send_event('master_build_info', { text: info })
-  send_event('master_build_version', { current: number })
+  send_event('master_build_version', { text: "##{number}" })
 }
