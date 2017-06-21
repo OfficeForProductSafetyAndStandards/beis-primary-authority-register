@@ -1,16 +1,28 @@
 ## Commands that must be run to update a drupal instance.
+## Use as `sh ./docker/drupal-update.sh /var/www/par-beta`
+
+# Pass in the root of the project.
+if [ -n "$1" ]
+then
+  ROOT=$1
+else
+  echo "Must pass the project root as the first argument";
+  exit 1;
+fi
+
+echo "Current working directory is ${ROOT}/web"
 
 # Set default drush alias.
-# cd ${{site_destination_directory}}/web; drush site-set @{{ENV}};
+# cd ${ROOT}/web; ../vendor/bin/drush site-set @{{ENV}};
 # Put the site in maintenance mode.
-cd ${{site_destination_directory}}/web; drush sset system.maintenance_mode 1;
+cd ${ROOT}/web; ../vendor/bin/drush sset system.maintenance_mode 1;
 # Clear cache
-cd ${{site_destination_directory}}/web; drush cr;
+cd ${ROOT}/web; ../vendor/bin/drush cr;
 # Run db updates.
-cd ${{site_destination_directory}}/web; drush updb -y;
+cd ${ROOT}/web; ../vendor/bin/drush updb -y;
 # Import configuration twice to fix a problem with config import when new modules are added to 'core.extensions.yml'.
-cd ${{site_destination_directory}}/web; drush cim -y; drush cim -y
+cd ${ROOT}/web; ../vendor/bin/drush cim -y; ../vendor/bin/drush cim -y
 # Take the site out of maintenance mode.
-cd ${{site_destination_directory}}/web; drush sset system.maintenance_mode 0;
+cd ${ROOT}/web; ../vendor/bin/drush sset system.maintenance_mode 0;
 # Clear cache.
-cd ${{site_destination_directory}}/web; drush cr;'
+cd ${ROOT}/web; ../vendor/bin/drush cr;
