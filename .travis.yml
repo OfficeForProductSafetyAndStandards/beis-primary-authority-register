@@ -47,8 +47,7 @@ install:
 ### TEST
 ########################
 
-script: ls
-#./tests/node_modules/.bin/wdio ./tests/wdio.BUILD.conf.js
+script: ./tests/node_modules/.bin/wdio ./tests/wdio.BUILD.conf.js
 
 ########################
 ### DEPLOY
