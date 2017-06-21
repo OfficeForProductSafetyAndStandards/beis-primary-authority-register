@@ -35,6 +35,7 @@ before_script:
 before_install:
 - psql -c 'create database par;' -U postgres
 env:
+  matrix:
   - TRAVIS_NODE_VERSION="7.2.1"
   global:
     SIMPLETEST_BASE_URL: http://127.0.0.1:9000
