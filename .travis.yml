@@ -22,14 +22,10 @@ before_script:
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
   - sudo service apache2 restart
 ### install test dependencies
-  - git clone https://github.com/tj/n
-  - cd n
-  - sudo make install
-  - sudo n 7.2.1
-  - cd ../tests
-  - /usr/local/n/versions/node/7.2.1/bin/npm install
-  - cd ..
-  - rm -rf n
+  - nvm install 7.2.1
+  - npm --version
+  - node --version
+  - cd tests && npm install && cd ..
 before_install:
 - psql -c 'create database par;' -U postgres
 env:
@@ -47,7 +43,7 @@ install:
 ### TEST
 ########################
 
-script: ./tests/node_modules/.bin/wdio ./tests/wdio.BUILD.conf.js
+script: cd tests && ./node_modules/.bin/wdio ./wdio.BUILD.conf.js && cd ..
 
 ########################
 ### DEPLOY
