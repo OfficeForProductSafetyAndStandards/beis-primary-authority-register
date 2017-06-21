@@ -1,6 +1,16 @@
 require 'faraday'
 require 'benchmark'
 
+class DashboardHttpErrors < Faraday::Middleware
+  def call(env)
+    begin
+      @app.call(env)
+    rescue Faraday::Error::ConnectionFailed => e
+      # Do whatever to handle your error here, maybe raise a more semantic error
+    end
+  end
+end
+
 def time_diff(start, finish)
    (finish - start) * 1000.0
 end
@@ -9,21 +19,27 @@ concurrent_users = 0
 response_time = 0
 
 SCHEDULER.every('2s', first_in: '1s') {
-  conn = Faraday.new(:url => 'http://par.localhost')
+  conn = Faraday.new(:url => 'http://par.localhost') do |c|
+    c.use DashboardHttpErrors
+    c.use Faraday::Adapter::NetHttp
+  end
+
   time = Benchmark.realtime do |health|
     response = conn.get '/health'
   end
   new_response_time = (time*1000).to_i
 
   response = conn.get '/health'
-  if response.body.nil?
-    health = 'critical'
-  elsif
+  if response &&  !response.body.nil?
     health = 'ok'
+  elsif
+    health = 'critical'
   end
 
   response = conn.get '/build_version.txt'
-  version = response.body
+  if response && response.body.nil?
+    version = response.body
+  end
 
   new_concurrent_users = rand(100)
 
