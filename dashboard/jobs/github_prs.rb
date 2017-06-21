@@ -1,12 +1,12 @@
 require 'octokit'
 
-stack = Faraday::RackBuilder.new do |builder|
-  builder.response :logger
-  builder.use Octokit::Response::RaiseError
-  builder.adapter Faraday.default_adapter
-end
-Octokit.middleware = stack
-Octokit.user 'kalpaitch'
+#stack = Faraday::RackBuilder.new do |builder|
+#  builder.response :logger
+#  builder.use Octokit::Response::RaiseError
+#  builder.adapter Faraday.default_adapter
+#end
+#Octokit.middleware = stack
+#Octokit.user 'kalpaitch'
 
 SCHEDULER.every '5M', :first_in => 0 do |job|
   client = Octokit::Client.new()

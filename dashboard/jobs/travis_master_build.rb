@@ -5,11 +5,16 @@ SCHEDULER.every('10s', first_in: '1s') {
 
   build = repo.branch('master')
 
-  health = build.state
+  if build.green?
+    health = 'ok'
+  else
+    health = 'critical'
+  end
+
   info = "[#{build.branch_info}]"
   number = build.number
 
-  send_event('master_build_status', { text: health.capitalize })
+  send_event('master_build_status', { status: health })
   send_event('master_build_info', { text: info })
   send_event('master_build_version', { current: number })
 }

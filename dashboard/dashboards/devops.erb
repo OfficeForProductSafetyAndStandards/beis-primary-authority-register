@@ -22,7 +22,7 @@ $(function() {
         <div data-id="production_load" data-view="Number" data-title="Current Load" data-moreinfo="Number of concurrent users" data-prefix=""></div>
     </li>
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-        <div data-id="production_health" data-view="Text" data-title="Production Health" data-moreinfo="Uptime of service"></div>
+        <div data-id="production_health" data-view="HotStatus" data-title="Production Health" data-message="Uptime of service"></div>
     </li>
 
     <!-- Master Branch Test/Build Stats -->
@@ -30,10 +30,10 @@ $(function() {
         <div data-id="master_build_version" data-view="Number" data-title="Master Build" data-moreinfo="Master branch build version" data-prefix="#"></div>
     </li>
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-        <div data-id="master_build_info" data-view="Text" data-title="Master Info" data-moreinfo="Master branch build information" data-prefix=""></div>
+        <div data-id="master_build_info" data-view="Text" data-title="Test Info" data-moreinfo="Master branch test information" data-prefix=""></div>
     </li>
     <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">
-        <div data-id="master_build_status" data-view="Text" data-title="Master Status" data-moreinfo="Master branch build status" data-prefix=""></div>
+        <div data-id="master_build_status" data-view="HotStatus" data-title="Master Status" data-message="Master branch build status"></div>
     </li>
 
     <!-- Dev Stats -->
