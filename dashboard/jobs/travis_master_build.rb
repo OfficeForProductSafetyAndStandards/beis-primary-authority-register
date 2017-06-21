@@ -1,6 +1,6 @@
 require 'travis'
 
-SCHEDULER.every('10s', first_in: '1s') {
+SCHEDULER.every('30s', first_in: '1s') {
   repo = Travis::Repository.find("TransformCore/beis-par-beta")
 
   build = repo.branch('master')
