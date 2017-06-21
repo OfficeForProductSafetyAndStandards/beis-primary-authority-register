@@ -22,21 +22,12 @@ before_script:
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
   - sudo service apache2 restart
 ### install test dependencies
-  - git clone https://github.com/tj/n
-  - cd n
-  - sudo make install
-  - sudo n 7.2.1
-  - cd ../tests
-  - /usr/local/n/versions/node/7.2.1/bin/npm install
-  - cd ..
-  - rm -rf n
-  - /usr/local/n/versions/node/7.2.1/bin/npm --version
+  - nvm install 7.2.1
+  - npm --version
   - node --version
 before_install:
 - psql -c 'create database par;' -U postgres
 env:
-  matrix:
-  - TRAVIS_NODE_VERSION="7.2.1"
   global:
     SIMPLETEST_BASE_URL: http://127.0.0.1:9000
     SIMPLETEST_DB: pgsql://postgres@127.0.0.1/par
