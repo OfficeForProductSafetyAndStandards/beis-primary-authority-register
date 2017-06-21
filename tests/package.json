@@ -4,7 +4,7 @@
   "description": "Boilerplate project to run WebdriverIO tests with Cucumber",
   "homepage": "https://github.com/webdriverio/cucumber-boilerplate",
   "scripts": {
-    "test": "npm run test:validate && npm run test:features",
+    "test": "npm run test:features",
     "test:features": "./node_modules/.bin/wdio wdio.DEV.conf.js",
     "test:validate": "eslint 'src/**/*.js'"
   },
