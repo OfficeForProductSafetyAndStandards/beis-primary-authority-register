@@ -13,5 +13,5 @@ SCHEDULER.every('5m', first_in: '1s') {
       })
   end
 
-  send_event('travis_latest_builds', { items: recent_builds[0..4] })
+  send_event('travis_latest_builds', { items: recent_builds[0..5] })
 }
