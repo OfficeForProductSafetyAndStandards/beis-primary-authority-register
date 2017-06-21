@@ -30,14 +30,14 @@ SCHEDULER.every('2s', first_in: '1s') {
   new_response_time = (time*1000).to_i
 
   response = conn.get '/health'
-  if response &&  !response.body.nil?
+  if response && response.success? && !response.body.nil?
     health = 'ok'
   elsif
     health = 'critical'
   end
 
   response = conn.get '/build_version.txt'
-  if response && response.body.nil?
+  if response && response.success? && response.body.nil?
     version = response.body
   end
 
