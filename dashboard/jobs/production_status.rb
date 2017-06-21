@@ -37,7 +37,7 @@ SCHEDULER.every('2s', first_in: '1s') {
   end
 
   response = conn.get '/build_version.txt'
-  if response && response.success? && response.body.nil?
+  if response && response.success? && !response.body.nil?
     version = response.body
   end
 
