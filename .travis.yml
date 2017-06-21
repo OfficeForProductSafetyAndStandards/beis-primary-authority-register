@@ -25,7 +25,7 @@ before_script:
   - nvm install 7.2.1
   - npm --version
   - node --version
-  - npm install tests --no-bin-links
+  - cd tests && npm install tests --no-bin-links && cd ..
 before_install:
 - psql -c 'create database par;' -U postgres
 env:
