@@ -25,9 +25,7 @@ before_script:
   - nvm install 7.2.1
   - npm --version
   - node --version
-  - cd tests
-  - sudo npm install
-  - cd ..
+  - sudo npm install tests
 before_install:
 - psql -c 'create database par;' -U postgres
 env:
