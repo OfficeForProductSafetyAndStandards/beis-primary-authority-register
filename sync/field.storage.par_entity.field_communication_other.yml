@@ -1,0 +1,19 @@
+uuid: 549e90ab-5fb2-4766-8c77-552204d745e4
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data_entities
+    - text
+id: par_entity.field_communication_other
+field_name: field_communication_other
+entity_type: par_entity
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

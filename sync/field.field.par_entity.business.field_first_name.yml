@@ -1,0 +1,21 @@
+uuid: 6f9aa4e1-7f5e-43bb-bf3f-7528bee7c557
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_first_name
+    - par_data_entities.par_entity_type.business
+_core:
+  default_config_hash: 6DFFZD7n-UAQMDkUsZbEoQ6Lkjy7ereaXq6xZ3WBUOs
+id: par_entity.business.field_first_name
+field_name: field_first_name
+entity_type: par_entity
+bundle: business
+label: 'First Name'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

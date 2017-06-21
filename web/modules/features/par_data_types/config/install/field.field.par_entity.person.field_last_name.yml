@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_last_name
+    - par_data_entities.par_entity_type.person
+id: par_entity.person.field_last_name
+field_name: field_last_name
+entity_type: par_entity
+bundle: person
+label: 'Last Name'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

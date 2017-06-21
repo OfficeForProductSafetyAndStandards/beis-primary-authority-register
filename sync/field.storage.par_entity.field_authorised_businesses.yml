@@ -1,0 +1,18 @@
+uuid: aa62e0ea-dc46-4886-9ce6-d59662662ce7
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data_entities
+id: par_entity.field_authorised_businesses
+field_name: field_authorised_businesses
+entity_type: par_entity
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

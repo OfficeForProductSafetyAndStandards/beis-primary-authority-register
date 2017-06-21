@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_communication_post
+    - par_data_entities.par_entity_type.partnership
+id: par_entity.partnership.field_communication_post
+field_name: field_communication_post
+entity_type: par_entity
+bundle: partnership
+label: 'Communication By Post'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Receive by post'
+  off_label: 'Do not receive by post'
+field_type: boolean

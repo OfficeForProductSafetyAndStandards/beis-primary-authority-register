@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_number_employees
+    - par_data_entities.par_entity_type.business
+  module:
+    - options
+id: par_entity.business.field_number_employees
+field_name: field_number_employees
+entity_type: par_entity
+bundle: business
+label: 'Number of Employees'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0-9
+default_value_callback: ''
+settings: {  }
+field_type: list_string

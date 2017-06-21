@@ -1,0 +1,23 @@
+uuid: 3822f9ae-7c10-43d2-8bfd-062f6e079283
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_nation
+    - par_data_entities.par_entity_type.business
+  module:
+    - options
+_core:
+  default_config_hash: rPowN6lxscBaa3Rhkbvar7wdLmK8wBFixgWO-K_Kk4E
+id: par_entity.business.field_nation
+field_name: field_nation
+entity_type: par_entity
+bundle: business
+label: Nation
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

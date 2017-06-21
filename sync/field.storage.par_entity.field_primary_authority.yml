@@ -1,0 +1,19 @@
+uuid: e984ff8b-d7c1-4c5e-81c9-b531a526be3f
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data_entities
+id: par_entity.field_primary_authority
+field_name: field_primary_authority
+entity_type: par_entity
+type: entity_reference
+settings:
+  target_type: par_entity
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

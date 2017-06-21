@@ -1,0 +1,59 @@
+uuid: 51ada94c-7d91-477f-8552-7fa61cfec461
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.par_entity.legal_entities.field_entity_number
+    - field.field.par_entity.legal_entities.field_entity_type
+    - field.field.par_entity.legal_entities.field_registered_name
+    - par_data_entities.par_entity_type.legal_entities
+id: par_entity.legal_entities.default
+targetEntityType: par_entity
+bundle: legal_entities
+mode: default
+content:
+  field_entity_number:
+    weight: 27
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_entity_type:
+    weight: 28
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_registered_name:
+    weight: 26
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  langcode:
+    type: language_select
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: -4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  user_id:
+    type: entity_reference_autocomplete
+    weight: 5
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    region: content
+    third_party_settings: {  }
+hidden: {  }

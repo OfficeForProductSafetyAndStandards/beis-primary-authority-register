@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_sic_code
+    - par_data_entities.par_entity_type.coordinatior
+id: par_entity.coordinatior.field_sic_code
+field_name: field_sic_code
+entity_type: par_entity
+bundle: coordinatior
+label: 'SIC Code'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

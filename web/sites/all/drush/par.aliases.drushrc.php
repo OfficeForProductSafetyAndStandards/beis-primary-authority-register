@@ -332,4 +332,13 @@ $aliases['dev'] = array(
       'skip-tables-key' => 'common',
     ),
   ),
+  'root' => '/var/www/html/web'
+);
+$aliases['stage'] = array(
+  'user' => 1,
+  'root' => '/home/vcap/app/web'
+);
+$aliases['prod'] = array(
+  'user' => 1,
+  'root' => '/home/vcap/app/web'
 );

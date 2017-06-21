@@ -1,0 +1,21 @@
+uuid: 9f670579-395f-4b8b-8530-fa1fe893cab0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_mobile_phone
+    - par_data_entities.par_entity_type.person
+  module:
+    - telephone
+id: par_entity.person.field_mobile_phone
+field_name: field_mobile_phone
+entity_type: par_entity
+bundle: person
+label: 'Mobile Phone'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: telephone

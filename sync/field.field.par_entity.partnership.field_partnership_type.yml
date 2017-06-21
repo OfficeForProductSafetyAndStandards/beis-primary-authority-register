@@ -1,0 +1,21 @@
+uuid: 9bc0fbfa-39f8-4195-8788-0907201f17c1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_partnership_type
+    - par_data_entities.par_entity_type.partnership
+  module:
+    - options
+id: par_entity.partnership.field_partnership_type
+field_name: field_partnership_type
+entity_type: par_entity
+bundle: partnership
+label: 'Partnership Type'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

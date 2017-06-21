@@ -1,0 +1,23 @@
+uuid: 1b6825ec-5a26-4434-bec6-0039383832c0
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data_entities
+_core:
+  default_config_hash: vfvYgpMkGMwfSxYP0Ewn05Pv_6wztLd19ic8JxTGFAI
+id: par_entity.field_first_name
+field_name: field_first_name
+entity_type: par_entity
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,21 @@
+uuid: 751ece3f-8511-4701-ba05-8f5c66f09590
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data_entities
+    - text
+_core:
+  default_config_hash: OPibmVfrOxVeNIw-mmXN1CQyizQ18xpcIhdRhiQSlhw
+id: par_entity.field_comments
+field_name: field_comments
+entity_type: par_entity
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

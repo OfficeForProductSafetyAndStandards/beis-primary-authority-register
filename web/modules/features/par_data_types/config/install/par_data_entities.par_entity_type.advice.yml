@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: advice
+label: Advice
+description: 'Details of any advice given to a Business or an Authority pertaining to a specific Partnership..'
+help: ''

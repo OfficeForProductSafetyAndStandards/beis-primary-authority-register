@@ -1,0 +1,10 @@
+uuid: 828a9c58-6c46-411e-9177-7746c7edfcfc
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: BahjJk0uF1sm1B2Vo5FsVRMxyx6nRKe4ivl8BQoxJl8
+id: advice
+label: Advice
+description: 'Details of any advice given to a Business or an Authority pertaining to a specific Partnership..'
+help: ''

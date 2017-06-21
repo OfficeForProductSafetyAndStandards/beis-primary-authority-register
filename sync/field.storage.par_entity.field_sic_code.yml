@@ -1,0 +1,22 @@
+uuid: 66ab393b-bb19-480a-b7aa-d4174d3eabe2
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data_entities
+_core:
+  default_config_hash: M1-J6As1RdiRQZ8TjoNQdX3nuK5Jarwn3Ypm3h9SXzA
+id: par_entity.field_sic_code
+field_name: field_sic_code
+entity_type: par_entity
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

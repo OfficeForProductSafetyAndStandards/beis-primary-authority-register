@@ -1,0 +1,35 @@
+uuid: e274e6b6-1b9f-4023-99b9-8d6ecd40384a
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - par_data_entities
+_core:
+  default_config_hash: I_u6OKtVQ5oivQKTkPVA21tZsPurCgXD9bYCzyBes80
+id: par_entity.field_number_employees
+field_name: field_number_employees
+entity_type: par_entity
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: 0-9
+      label: 0-9
+    -
+      value: 10-49
+      label: 10-49
+    -
+      value: 50-249
+      label: 50-249
+    -
+      value: 250+
+      label: 250+
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

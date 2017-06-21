@@ -1,0 +1,21 @@
+uuid: 5e2ee463-73b3-4b53-bc06-c6603af8fbda
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_entity_type
+    - par_data_entities.par_entity_type.legal_entities
+  module:
+    - options
+id: par_entity.legal_entities.field_entity_type
+field_name: field_entity_type
+entity_type: par_entity
+bundle: legal_entities
+label: 'Entity Type'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

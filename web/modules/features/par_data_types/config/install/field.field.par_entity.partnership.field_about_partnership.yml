@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_about_partnership
+    - par_data_entities.par_entity_type.partnership
+  module:
+    - text
+id: par_entity.partnership.field_about_partnership
+field_name: field_about_partnership
+entity_type: par_entity
+bundle: partnership
+label: 'About Partnership'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

@@ -1,0 +1,19 @@
+uuid: 2c583ac7-9ad2-4db2-9562-fe9b5a70f5ee
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data_entities
+    - text
+id: par_entity.field_expertise
+field_name: field_expertise
+entity_type: par_entity
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

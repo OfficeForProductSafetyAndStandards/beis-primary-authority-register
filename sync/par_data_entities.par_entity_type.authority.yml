@@ -1,0 +1,10 @@
+uuid: 6845d0d3-6452-4c7e-8391-1ad9175ee337
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: cP_AgI7tou122Fo3KZr-CZbSn242Qyvw3kGJLxvlsmA
+id: authority
+label: Authority
+description: 'The Primary Authority is any authority that can provide businesses with robust and reliable regulatory advice.'
+help: ''

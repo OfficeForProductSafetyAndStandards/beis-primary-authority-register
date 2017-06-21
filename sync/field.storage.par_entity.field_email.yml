@@ -1,0 +1,20 @@
+uuid: 6218141c-664b-413f-8839-e43805aa6e3a
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data_entities
+_core:
+  default_config_hash: al1ZxxAT9tOPOvUMp1Jd-OgvvISY1K92uaQTdtT4nDs
+id: par_entity.field_email
+field_name: field_email
+entity_type: par_entity
+type: email
+settings: {  }
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

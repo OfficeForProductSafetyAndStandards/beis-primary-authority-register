@@ -1,0 +1,23 @@
+uuid: 1e94c807-5675-4d50-9ab3-2e889aba0c47
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_comments
+    - par_data_entities.par_entity_type.business
+  module:
+    - text
+_core:
+  default_config_hash: Eeb9z5HVDnIJMqgXjx_66QSY6IVq5Lgmq87T2mlk2-c
+id: par_entity.business.field_comments
+field_name: field_comments
+entity_type: par_entity
+bundle: business
+label: Comments
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

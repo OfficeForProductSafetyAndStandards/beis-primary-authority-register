@@ -1,0 +1,18 @@
+uuid: e3d88029-f827-4840-801c-5f225b8ccb10
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data_entities
+id: par_entity.field_communication_email
+field_name: field_communication_email
+entity_type: par_entity
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

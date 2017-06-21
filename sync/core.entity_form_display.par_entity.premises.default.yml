@@ -1,0 +1,71 @@
+uuid: d66442b5-14ca-4999-9a4c-a4e1f969d7e0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.par_entity.premises.field_address
+    - field.field.par_entity.premises.field_business
+    - field.field.par_entity.premises.field_nation
+    - field.field.par_entity.premises.field_uprn
+    - par_data_entities.par_entity_type.premises
+  module:
+    - address
+id: par_entity.premises.default
+targetEntityType: par_entity
+bundle: premises
+mode: default
+content:
+  field_address:
+    weight: 26
+    settings:
+      default_country: null
+    third_party_settings: {  }
+    type: address_default
+    region: content
+  field_business:
+    weight: 27
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_nation:
+    weight: 28
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uprn:
+    weight: 29
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  langcode:
+    type: language_select
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: -4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  user_id:
+    type: entity_reference_autocomplete
+    weight: 5
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    region: content
+    third_party_settings: {  }
+hidden: {  }

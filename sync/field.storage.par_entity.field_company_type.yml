@@ -1,0 +1,23 @@
+uuid: 2c4d957f-891b-46f7-97f5-ac9b57587894
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data_entities
+_core:
+  default_config_hash: 36bEFx7OgaKYzVU3odMKU8ydYJ2NgFlidnf4faAnWwQ
+id: par_entity.field_company_type
+field_name: field_company_type
+entity_type: par_entity
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

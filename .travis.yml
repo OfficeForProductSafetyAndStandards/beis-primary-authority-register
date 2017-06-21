@@ -49,7 +49,7 @@ install:
 ### TEST
 ########################
 
-script: cd tests && ./node_modules/.bin/wdio ./wdio.BUILD.conf.js && cd ..
+script: cd tests && ./node_modules/.bin/wdio ./wdio.BUILD.conf.js && cd .. && ./vendor/bin/phpunit --testsuite=par --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter"
 
 ########################
 ### DEPLOY
@@ -65,4 +65,3 @@ deploy:
   space: sandbox
   on:
     repo: TransformCore/beis-par-beta
-    

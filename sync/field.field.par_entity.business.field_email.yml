@@ -1,0 +1,21 @@
+uuid: f456f037-a85c-4727-af51-2bb8caded3fb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_email
+    - par_data_entities.par_entity_type.business
+_core:
+  default_config_hash: sEhOt82SBlXtP9ZM8FdnQxbofGu3Vxg6b5UnxQhKalg
+id: par_entity.business.field_email
+field_name: field_email
+entity_type: par_entity
+bundle: business
+label: Email
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email

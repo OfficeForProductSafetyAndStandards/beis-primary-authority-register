@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_entity.field_name
+    - par_data_entities.par_entity_type.authority
+id: par_entity.authority.field_name
+field_name: field_name
+entity_type: par_entity
+bundle: authority
+label: Name
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

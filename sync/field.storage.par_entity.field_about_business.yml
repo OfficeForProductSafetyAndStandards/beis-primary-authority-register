@@ -1,0 +1,19 @@
+uuid: eb89135f-8ce2-4a16-80b5-039a1855b3cc
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data_entities
+    - text
+id: par_entity.field_about_business
+field_name: field_about_business
+entity_type: par_entity
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
