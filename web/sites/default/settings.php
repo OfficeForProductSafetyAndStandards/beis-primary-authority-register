@@ -761,10 +761,12 @@ $settings['hash_salt'] = 'PAR_HASH_SALT';
  * Extract the database credentials from the VCAP_SERVICES environment variable
  * which is configured by the PaaS service manager
  */
-$services = json_decode(getenv("VCAP_SERVICES"));
-$credentials = $services->postgres[0]->credentials;
-
-$databases['default']['default'] = array (
+if ($env_services = getenv("VCAP_SERVICES")) {
+  $services = json_decode($env_services);
+  $credentials = isset($services->postgres) ? $services->postgres[0]->credentials : NULL;
+}
+if ($credentials) {
+  $databases['default']['default'] = array (
     'database' => $credentials->name,
     'username' => $credentials->username,
     'password' => $credentials->password,
@@ -773,7 +775,8 @@ $databases['default']['default'] = array (
     'port' => $credentials->port,
     'namespace' => 'Drupal\\Core\\Database\\Driver\\pgsql',
     'driver' => 'pgsql',
-);
+  );
+}
 
 /**
  * Load local development override configuration, if available.
