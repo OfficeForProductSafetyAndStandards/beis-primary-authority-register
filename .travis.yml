@@ -22,6 +22,7 @@ before_script:
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
   - sudo service apache2 restart
 ### install test dependencies
+  - sudo npm cache clean -f
   - git clone https://github.com/tj/n
   - cd n
   - sudo make install
@@ -30,6 +31,7 @@ before_script:
   - /usr/local/n/versions/node/7.2.1/bin/npm install
   - cd ..
   - rm -rf n
+  - sudo npm --version
 before_install:
 - psql -c 'create database par;' -U postgres
 env:
