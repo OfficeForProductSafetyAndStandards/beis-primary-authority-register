@@ -6,8 +6,9 @@ SCHEDULER.every('5m', first_in: '1s') {
 
   repo.each_build do |build|
       recent_builds.push({
-        label: "Build #{build.number}",
-        value: "[#{build.branch_info}], #{build.state} in #{build.duration}s",
+        number: "##{build.number}",
+        branch: "[#{build.branch_info}]",
+        value: "#{build.state} in #{build.duration}s",
         state: build.state
       })
   end

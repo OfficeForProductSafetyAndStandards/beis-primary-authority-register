@@ -2,7 +2,10 @@
 
 <ul class="list-nostyle">
     <li data-foreach-item="items">
-        <span class="label" data-bind="item.label"></span>
+        <p class="label">
+            <span class="number" data-bind="item.number"></span>
+            <span class="branch" data-bind="item.branch"></span>
+        </p>
         <span class="value" data-bind="item.value"></span>
     </li>
 </ul>
