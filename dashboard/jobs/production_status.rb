@@ -17,9 +17,10 @@ end
 
 concurrent_users = 0
 response_time = 0
+endpoint = ENV['PROD_ENDPOINT']
 
 SCHEDULER.every('2s', first_in: '1s') {
-  conn = Faraday.new(:url => 'http://par.localhost') do |c|
+  conn = Faraday.new(:url => endpoint || 'http://par.localhost') do |c|
     c.use DashboardHttpErrors
     c.use Faraday::Adapter::NetHttp
   end
