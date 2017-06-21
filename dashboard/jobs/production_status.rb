@@ -1,4 +1,4 @@
-SCHEDULER.every '2s' do
+SCHEDULER.every('2s', first_in: '1s') {
   version = 59
   health = 'ok'
 
@@ -8,4 +8,4 @@ SCHEDULER.every '2s' do
   send_event('production_build_version', { current: version })
   send_event('production_health', { status: health })
   send_event('production_load',   { current: current_load, last: last_load })
-end
+}

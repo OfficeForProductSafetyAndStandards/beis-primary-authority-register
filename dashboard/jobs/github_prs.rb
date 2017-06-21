@@ -8,7 +8,7 @@ require 'octokit'
 #Octokit.middleware = stack
 #Octokit.user 'kalpaitch'
 
-SCHEDULER.every '5M', :first_in => 0 do |job|
+SCHEDULER.every('5m', first_in: '1s') {
   client = Octokit::Client.new()
   organization = "TransformCore"
   repos = ["beis-par-beta"]
@@ -28,4 +28,4 @@ SCHEDULER.every '5M', :first_in => 0 do |job|
   }
 
   send_event('github_latest_prs', { header: "Open Pull Requests", pulls: open_pull_requests })
-end
+}
