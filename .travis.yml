@@ -31,6 +31,7 @@ before_script:
   - cd ..
   - rm -rf n
   - /usr/local/n/versions/node/7.2.1/bin/npm --version
+  - node --version
 before_install:
 - psql -c 'create database par;' -U postgres
 env:
