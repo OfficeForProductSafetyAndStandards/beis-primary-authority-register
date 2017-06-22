@@ -1,11 +1,11 @@
-name: PARTheme
+name: PAR Theme
 type: theme
 version: VERSION
 package: Custom
-description: A Drupal 8 theme based on the GDS GOV UK Frontend Toolkit.
+description: A Drupal 8 theme based on the GDS GOV.UK Frontend Toolkit.
 core: 8.x
 libraries:
-  - PARTheme/scripts
+  - par_theme/scripts
 regions:
   header: Header
   content: Content
