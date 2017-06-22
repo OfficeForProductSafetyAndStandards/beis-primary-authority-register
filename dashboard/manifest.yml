@@ -2,3 +2,5 @@ applications:
 - name: dashboard
   memory: 256M
   buildpack: ruby_buildpack
+  env:
+    PROD_ENDPOINT: https://par-beta-test.cloudapps.digital
