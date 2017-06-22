@@ -9,6 +9,8 @@ addons:
   apt:
     packages:
       - oracle-java8-installer
+      - gcc-5
+      - g++-5      
 before_script:
   - sudo apt-get update
   - sudo apt-get install apache2 libapache2-mod-fastcgi
