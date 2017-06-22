@@ -17,7 +17,7 @@ end
 
 concurrent_users = 0
 response_time = 0
-endpoint = 'https://par-beta-test.cloudapps.digital'
+endpoint = ENV['PROD_ENDPOINT']
 
 SCHEDULER.every('4s', first_in: '1s') {
   conn = Faraday.new(:url => endpoint || 'http://par.localhost') do |c|
