@@ -14,6 +14,7 @@ To configure the production endpoint set the environment var PROD_ENDPOINT befor
     smashing start
     
 ## Running
-Smashing starts the thin webserver so that the smashing dashboard will then be accessible at `localhost:3030/devops`
+
+Smashing starts the thin webserver so that the smashing dashboard will then be accessible at http://127.0.0.1:8112/devops
 
 Check out http://smashing.github.io/ for more information.
