@@ -14,11 +14,6 @@ if [ ! -f ../web/sites/settings.local.php ]; then
     docker exec -i par_beta_web cat /var/www/html/web/sites/settings.local.php.docker.append >> ../web/sites/default/settings.local.php
 fi
     
-# Modify the default site's web root
- 
-    docker exec -it par_beta_web sed -i -e 's/html/html\/web/g' /etc/apache2/sites-available/000-default.conf
-    docker restart par_beta_web
-    
 # Install test dependencies
  
     docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
