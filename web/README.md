@@ -7,7 +7,7 @@ The web application runs on Drupal 8.
 To configure the application run the following
 
     npm install
-    gulp
+    npm run gulp
     composer install
     sh ./docker/drupal-update.sh /var/www/html
     
