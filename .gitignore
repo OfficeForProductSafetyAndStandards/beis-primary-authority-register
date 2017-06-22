@@ -20,6 +20,7 @@ web/.eslintignore
 web/.eslintrc.json
 web/.gitattributes
 web/.htaccess
+private/.htaccess
 web/index.php
 web/sites/default/default.settings.php
 web/sites/default/default.services.yml
