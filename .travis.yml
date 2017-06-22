@@ -10,7 +10,7 @@ services:
 install:
 - composer install
 - sudo sed -e "s?PAR_HASH_SALT?$PAR_HASH_SALT?g" --in-place web/sites/default/settings.php
-- cd docker && docker-compose up -d --force-recreate --build && sh setup.sh && cd ..
+- cd docker && docker-compose up -d --force-recreate --build && cd ..
 - docker exec -i par_beta_web cp /var/www/html/web/sites/example.settings.local.php /var/www/html/web/sites/default/settings.local.php
 - docker exec -i par_beta_web cat /var/www/html/web/sites/settings.local.php.docker.append >> ../web/sites/default/settings.local.php
 - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
