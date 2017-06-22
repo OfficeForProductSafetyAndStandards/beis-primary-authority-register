@@ -22,6 +22,7 @@ before_script:
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
   - sudo service apache2 restart
 ### install test dependencies
+  - nvm install 7.2.1
   - git clone https://github.com/tj/n
   - cd n
   - sudo make install
@@ -30,7 +31,6 @@ before_script:
   - /usr/local/n/versions/node/7.2.1/bin/npm install
   - cd ..
   - rm -rf n
-  - nvm install 7.2.1
 before_install:
 - psql -c 'create database par;' -U postgres
 env:
@@ -48,7 +48,7 @@ install:
 ### TEST
 ########################
 
-script: ./vendor/bin/phpunit --testsuite=par --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter"
+script: cd tests && ./node_modules/.bin/wdio ./wdio.BUILD.conf.js && cd .. && ./vendor/bin/phpunit --testsuite=par --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter"
 
 ########################
 ### DEPLOY
