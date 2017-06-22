@@ -6,3 +6,11 @@ par_styleguide.canonical:
     _title: 'PAR Styleguide'
   requirements:
     _permission: 'access content'
+
+par_styleguide.forms:
+  path: '/styleguide/forms'
+  defaults:
+    _form: '\Drupal\par_styleguide\Form\StyleguideForm'
+    _title: 'PAR Styleguide Forms'
+  requirements:
+    _permission: 'access content'
