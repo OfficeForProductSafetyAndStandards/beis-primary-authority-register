@@ -6,7 +6,7 @@ language: php
 services:
   - docker
 before_install:
-  - docker pull parbeta/web:v1
+  - docker-compose up -d --force-recreate --build && sh setup.sh
 install:
 - sudo sed -e "s?PAR_HASH_SALT?$PAR_HASH_SALT?g" --in-place web/sites/default/settings.php
 - composer install
@@ -15,7 +15,7 @@ install:
 ### TEST
 ########################
 
-script: cd tests && ./node_modules/.bin/wdio ./wdio.BUILD.conf.js && cd .. && ./vendor/bin/phpunit --testsuite=par --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter"
+script: docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
 
 ########################
 ### DEPLOY
