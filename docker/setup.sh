@@ -10,8 +10,8 @@ if [ ! -f ../vendor/autoload.php ]; then
 # Setup the development settings file:
 
 if [ ! -f ../web/sites/settings.local.php ]; then
-    docker exec -i par_beta_web cp /var/www/html/web/sites/example.settings.local.php /var/www/html/web/sites/default/settings.local.php
-    docker exec -i par_beta_web cat /var/www/html/web/sites/settings.local.php.docker.append >> ../web/sites/default/settings.local.php
+    cp ../web/sites/example.settings.local.php ../web/sites/default/settings.local.php
+    cat ../web/sites/settings.local.php.docker.append >> ../web/sites/default/settings.local.php
 fi
     
 # Install test dependencies

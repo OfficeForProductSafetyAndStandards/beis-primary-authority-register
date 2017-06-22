@@ -3,19 +3,26 @@
 ########################
 
 language: php
+php:
+  - 7.1
 services:
   - docker
-before_install:
-  - docker pull parbeta/web:v1
 install:
-- sudo sed -e "s?PAR_HASH_SALT?$PAR_HASH_SALT?g" --in-place web/sites/default/settings.php
 - composer install
+- sudo sed -e "s?PAR_HASH_SALT?$PAR_HASH_SALT?g" --in-place web/sites/default/settings.php
+- cd docker 
+- docker-compose up -d --force-recreate --build
+- cp ../web/sites/example.settings.local.php ../web/sites/default/settings.local.php
+- cat ../web/sites/settings.local.php.docker.append >> ../web/sites/default/settings.local.php
+- docker exec -it par_beta_web bash -c "cd /var/www/html/tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
+- sleep 5 # Time for the server to boot
+- docker exec -i par_beta_web /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < fresh_drupal_postgres.sql
 
 ########################
 ### TEST
 ########################
 
-script: cd tests && ./node_modules/.bin/wdio ./wdio.BUILD.conf.js && cd .. && ./vendor/bin/phpunit --testsuite=par --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter"
+script: docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
 
 ########################
 ### DEPLOY
