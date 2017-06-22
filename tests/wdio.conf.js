@@ -34,7 +34,7 @@ exports.config = {
     // spawned. The property handles how many capabilities from the same test
     // should run tests.
     //
-    maxInstances: 5,
+    maxInstances: 1,
     //
     // If you have trouble getting all important capabilities together, check
     // out the Sauce Labs platform configurator - a great tool to configure your
@@ -44,7 +44,7 @@ exports.config = {
         // maxInstances can get overwritten per capability. So if you have an
         // in-house Selenium grid with only 5 firefox instance available you can
         // make sure that not more than 5 instance gets started at a time.
-        maxInstances: 5,
+        maxInstances: 1,
         //
         browserName: 'chrome',
     }],
@@ -128,27 +128,27 @@ exports.config = {
     // definitions.
     cucumberOpts: {
         require: [
-            './src/steps/given.js',
-            './src/steps/then.js',
-            './src/steps/when.js',
+            './src/step_definitions/given.js',
+            './src/step_definitions/then.js',
+            './src/step_definitions/when.js',
         ], // <string[]> (file/dir) require files before executing features
         backtrace: false, // <boolean> show full backtrace for errors
         compiler: [
             'js:babel-register',
         ], // <string[]> ("extension:module") require files with the given
            // EXTENSION after requiring MODULE (repeatable)
-        dryRun: false, // <boolean> invoke formatters without executing steps
+        dryRun: false, // <boolean> invoke formatters without executing step_definitions
         failFast: false, // <boolean> abort the run on first failure
         format: ['pretty'], // <string[]> (type[:path]) specify the output
                             // format, optionally supply PATH to redirect
                             // formatter output (repeatable)
         colors: true, // <boolean> disable colors in formatter output
         snippets: true, // <boolean> hide step definition snippets for pending
-                        // steps
+                        // step_definitions
         source: true, // <boolean> hide source uris
         profile: [], // <string[]> (name) specify the profile to use
         strict: true, // <boolean> fail if there are any undefined or pending
-                       // steps
+                       // step_definitions
         tags: require('./src/tagProcessor')(process.argv),
         // <string[]> (expression) only execute the features or scenarios with
         // tags matching the expression
