@@ -49,7 +49,7 @@ install:
 ### TEST
 ########################
 
-script: cd tests && ./node_modules/.bin/wdio ./wdio.BUILD.conf.js && cd .. && ./vendor/bin/phpunit --testsuite=par --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter"
+script: ./vendor/bin/phpunit --testsuite=par --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter"
 
 ########################
 ### DEPLOY
