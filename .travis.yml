@@ -31,7 +31,6 @@ before_script:
   - cd ..
   - rm -rf n
   - nvm install 7.2.1
-  - /home/travis/.nvm/versions/node/v7.2.1/bin/node /home/travis/build/TransformCore/beis-par-beta/tests/node_modules/fibers/build
 before_install:
 - psql -c 'create database par;' -U postgres
 env:
