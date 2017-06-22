@@ -26,10 +26,10 @@ function par_styleguide_help($route_name, RouteMatchInterface $route_match) {
 /**
  * Implements hook_theme().
  */
-function par_styleguide_theme() {
+function par_styleguide_theme($existing, $type, $theme, $path) {
   return [
     'par_styleguide' => [
-      'render element' => 'children',
+      'variables' => ['sections' => []],
     ],
   ];
 }
