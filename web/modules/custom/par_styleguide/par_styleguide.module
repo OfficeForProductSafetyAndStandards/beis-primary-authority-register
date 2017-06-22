@@ -29,7 +29,7 @@ function par_styleguide_help($route_name, RouteMatchInterface $route_match) {
 function par_styleguide_theme($existing, $type, $theme, $path) {
   return [
     'par_styleguide' => [
-      'variables' => ['sections' => []],
+      'variables' => ['sections' => NULL],
     ],
   ];
 }
