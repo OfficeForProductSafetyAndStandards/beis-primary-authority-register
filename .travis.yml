@@ -23,6 +23,7 @@ install:
 - docker exec -i par_beta_web /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < docker/fresh_drupal_postgres.sql
 - docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
 - sleep 5
+- echo $TRAVIS_BUILD_NUMBER > web/build_version.txt
 
 ########################
 ### TEST
