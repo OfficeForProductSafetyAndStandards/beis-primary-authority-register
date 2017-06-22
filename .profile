@@ -1,1 +1,1 @@
-sh docker/drupal-update.sh .
+sh drupal-update.sh .
