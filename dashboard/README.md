@@ -7,7 +7,7 @@ The dashboard we're using for development purposes uses Smashing, and integrates
 * Ruby gems smashing and bundler
 
 ## Install
-To configure the production endpoint set the environment var PROD_ENDPOINT before running `export PROD_ENDPOINT="http://example.com"`
+To configure the production endpoint set the environment var PROD_ENDPOINT before running `export PROD_ENDPOINT="https://par-beta-test.cloudapps.digital/"`
 
     cd dashboard
     bundle

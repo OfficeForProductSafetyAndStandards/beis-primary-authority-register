@@ -1,0 +1,4 @@
+applications:
+- name: dashboard
+  memory: 256M
+  buildpack: ruby_buildpack
