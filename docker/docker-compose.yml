@@ -1,6 +1,5 @@
 web:
-  build: .
-  dockerfile: Dockerfile-web
+  image: parbeta/web:v1
   container_name: par_beta_web
   links:
     - db
