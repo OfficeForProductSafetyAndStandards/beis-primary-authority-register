@@ -25,7 +25,9 @@ install:
 ### TEST
 ########################
 
-script: docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js" && cd ..
+script:
+- ./vendor/phpunit/phpunit/phpunit
+- docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js" && cd ..
 
 ########################
 ### DEPLOY
