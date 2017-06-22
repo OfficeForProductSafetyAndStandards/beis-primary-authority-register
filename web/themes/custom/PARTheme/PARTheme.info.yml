@@ -1,0 +1,17 @@
+name: PARTheme
+type: theme
+version: VERSION
+package: Custom
+description: A Drupal 8 theme based on the GDS GOV UK Frontend Toolkit.
+core: 8.x
+libraries:
+  - PARTheme/scripts
+regions:
+  header: Header
+  content: Content
+  footer: Footer
+  parblocks: PAR Blocks
+  npablocks: NPA Blocks
+  businessnpablocks: Business NPA Blocks
+  journeyselector: PAR Journey Selector Blocks
+screenshot: par-theme-thumb.png

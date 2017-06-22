@@ -1,0 +1,94 @@
+// GOV.UK front end toolkit
+// Sass variables, mixins and functions
+// https://github.com/alphagov/govuk_frontend_toolkit/tree/master/stylesheets
+
+// Settings (variables)                             		
+@import "govuk_frontend_toolkit/stylesheets/colours";		// Colour variables
+@import "govuk_frontend_toolkit/stylesheets/font_stack";	// Font family variables
+@import "govuk_frontend_toolkit/stylesheets/measurements";	// Widths and gutter variables
+
+// Mixins
+@import "govuk_frontend_toolkit/stylesheets/conditionals"; 	// Media query mixin
+@import "govuk_frontend_toolkit/stylesheets/css3";
+@import "govuk_frontend_toolkit/stylesheets/device-pixels";	// Retina image mixin
+@import "govuk_frontend_toolkit/stylesheets/typography";   	// Core bold and heading mixins, also external links
+@import "govuk_frontend_toolkit/stylesheets/grid_layout";  	// Basic grid layout mixin
+@import "govuk_frontend_toolkit/stylesheets/shims";        	// Inline block mixin, clearfix placeholder
+//@import "govuk_frontend_toolkit/stylesheets/design-patterns/buttons;
+
+// Mixins to generate components (chunks of UI)
+@import "govuk_frontend_toolkit/stylesheets/design-patterns/alpha-beta";
+@import "govuk_frontend_toolkit/stylesheets/design-patterns/buttons";
+@import "govuk_frontend_toolkit/stylesheets/design-patterns/breadcrumbs";
+
+// Generic (normalize/reset.css)
+// @import "govuk_elements/sass/elements/reset";
+
+// Functions
+@import "govuk_frontend_toolkit/stylesheets/url-helpers";				// Function to output image-url, or prefixed path (Rails and Compass only)
+
+// GOV.UK elements
+@import "govuk_elements/sass/elements/helpers";							// Helper functions and classes
+
+// Base (unclassed HTML elements)
+// These are predefined by govuk_template
+// If you're not using govuk_template, uncomment the line below.
+//@import "govuk_elements/sass/elements/govuk-template-base";        // Base styles set by GOV.UK template
+
+// Objects (unstyled design patterns)
+@import "govuk_elements/sass/elements/layout";                        // Main content container. Grid layout - rows and column widths
+
+// Components (chunks of UI)
+@import "govuk_elements/sass/elements/elements-typography";           // Typography
+@import "govuk_elements/sass/elements/buttons";                       // Buttons
+@import "govuk_elements/sass/elements/icons";                         // Icons - numbered steps, calendar, search
+@import "govuk_elements/sass/elements/lists";                         // Lists - numbered, bulleted
+@import "govuk_elements/sass/elements/tables";                        // Tables - regular, numeric
+@import "govuk_elements/sass/elements/details";                       // Details summary
+@import "govuk_elements/sass/elements/panels";                        // Panels with a left grey border
+@import "govuk_elements/sass/elements/forms";                         // Form - wrappers, inputs, labels
+@import "govuk_elements/sass/elements/forms/form-block-labels";       // Chunky labels for radios and checkboxes
+@import "govuk_elements/sass/elements/forms/form-date";               // Date of birth pattern
+@import "govuk_elements/sass/elements/forms/form-validation";         // Errors and validation
+@import "govuk_elements/sass/elements/breadcrumbs";                   // Breadcrumbs
+@import "govuk_elements/sass/elements/phase-banner";                  // Alpha and beta banners and tags
+@import "govuk_elements/sass/elements/components";                    // GOV.UK prefixed styles - blue highlighted box
+@import "govuk_elements/sass/elements/shame";                         // Hacks and workarounds that will go away eventually
+
+/* local styleguide includes */
+@import "styleguide/colours";
+@import "styleguide/print";
+
+// basic styles for HTML5 and other elements
+@import "basic";
+@import "accessibility";
+@import "header";
+@import "footer";
+
+//Conditionals
+
+// Grid
+.grid-row {
+  @extend %grid-row;
+}
+.column-quarter {
+	@include grid-column( 1/4 );
+}
+.column-half {
+	@include grid-column( 1/2 );
+}
+.column-third {
+	@include grid-column( 1/3 );
+}
+.column-two-thirds {
+	@include grid-column( 2/3 );
+}
+.column-desktop-third {
+	@include grid-column( 1/3, $full-width: desktop );
+}
+
+// Shims
+.this-has-floated-children {
+ @extend %contain-floats;
+}
+
