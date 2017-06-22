@@ -14,10 +14,15 @@ class StyleguideController extends ControllerBase {
   */
   public function index() {
 
-    $build = array(
+    $elements = [
       '#type' => 'markup',
       '#markup' => t('Will build to render a template shortly.'),
-    );
+    ];
+
+    $build = [
+      '#type' => 'par_styleguide',
+      '#children' => $elements,
+    ];
 
     return $build;
   }
