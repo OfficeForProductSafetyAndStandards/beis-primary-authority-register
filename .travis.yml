@@ -20,7 +20,7 @@ install:
 - docker exec -it par_beta_web bash -c "gulp build"
 - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
 - sleep 5 # Time for the server to boot
-- docker exec -i par_beta_web /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < fresh_drupal_postgres.sql
+- docker exec -i par_beta_web /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < docker/fresh_drupal_postgres.sql
 
 ########################
 ### TEST
