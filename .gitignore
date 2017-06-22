@@ -30,6 +30,10 @@ web/sites/example.settings.local.php
 web/sites/example.sites.php
 web/update.php
 
+# Ignore CSS stylesheet/maps.
+web/themes/custom/par_theme/assets/stylesheets/*.css
+web/themes/custom/par_theme/assets/stylesheets/*.map
+
 # Exclude Drupal files.
 /web/sites/*/files/
 

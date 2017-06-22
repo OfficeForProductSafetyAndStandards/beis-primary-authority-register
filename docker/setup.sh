@@ -4,8 +4,10 @@ if [ ! -f ../vendor/autoload.php ]; then
     cd ..
     sh composer.sh install
     cd docker
-    # docker exec -i par_beta_web sh /var/www/html/docker/drupal-update.sh
- fi
+fi
+
+docker exec -i par_beta_web sh /var/www/html/docker/drupal-update.sh /var/www/html
+docker exec -i par_beta_web gulp build
 
 # Setup the development settings file:
 

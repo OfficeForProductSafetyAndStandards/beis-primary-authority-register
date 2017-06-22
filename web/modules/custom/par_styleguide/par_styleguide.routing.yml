@@ -1,0 +1,8 @@
+# PAR Styleguide route definitions
+par_styleguide.canonical:
+  path: '/styleguide'
+  defaults:
+    _controller: '\Drupal\par_styleguide\Controller\StyleguideController::index'
+    _title: 'PAR Styleguide'
+  requirements:
+    _permission: 'access content'
