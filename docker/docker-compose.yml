@@ -22,6 +22,6 @@ dashboard:
   container_name: par_beta_dashboard
   image: rgcamus/alpine_smashing
   ports:
-    - "8080:3030"
+    - "8112:3030"
   volumes:
     - ../dashboard/dashboards:/dashboards
