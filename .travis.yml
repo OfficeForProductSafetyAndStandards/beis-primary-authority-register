@@ -14,7 +14,7 @@ install:
 - docker-compose up -d --force-recreate --build
 - cp ../web/sites/example.settings.local.php ../web/sites/default/settings.local.php
 - cat ../web/sites/settings.local.php.docker.append >> ../web/sites/default/settings.local.php
-- docker exec -it par_beta_web bash -c "cd /var/www/html/tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
+- docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
 - sleep 5 # Time for the server to boot
 - docker exec -i par_beta_web /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < fresh_drupal_postgres.sql
 
@@ -22,7 +22,7 @@ install:
 ### TEST
 ########################
 
-script: docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
+script: docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js" && cd ..
 
 ########################
 ### DEPLOY
