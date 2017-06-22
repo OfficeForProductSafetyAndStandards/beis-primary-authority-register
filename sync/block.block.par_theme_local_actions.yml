@@ -1,0 +1,20 @@
+uuid: a71a30be-9b73-4f31-aaf1-567169c8d54e
+langcode: en
+status: true
+dependencies:
+  theme:
+    - par_theme
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: par_theme_local_actions
+theme: par_theme
+region: content
+weight: -20
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }
