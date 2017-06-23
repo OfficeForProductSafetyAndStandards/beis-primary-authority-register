@@ -52,3 +52,5 @@ web/sites/simpletest
 
 # Exclude composer package.
 composer.phar
+
+tests/reports/
