@@ -1,0 +1,15 @@
+par_forms.par_form_flow.*:
+  type: config_entity
+  label: 'PAR Form Flow config'
+  mapping:
+    uuid:
+      type: string
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: string
+      lavel: 'Description'
