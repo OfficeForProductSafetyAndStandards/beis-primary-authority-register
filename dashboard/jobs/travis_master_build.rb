@@ -1,10 +1,11 @@
 require 'travis'
 
 SCHEDULER.every('30s', first_in: '1s') {
+  Travis::User.current.sync
   repo = Travis::Repository.find("TransformCore/beis-par-beta")
 
   build = repo.branch('master')
-
+  
   if build.green?
     health = 'ok'
   elsif build.yellow?
