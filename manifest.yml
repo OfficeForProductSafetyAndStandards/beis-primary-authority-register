@@ -1,7 +1,5 @@
 applications:
 - name: par-beta-staging
-  env:
-    PATH: /bin:/usr/bin:/home/vcap/app/php/bin/php
 memory: 2G
 host: par-beta-test
 buildpack: php_buildpack
