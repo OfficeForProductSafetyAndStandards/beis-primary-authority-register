@@ -22,15 +22,14 @@ install:
 - sleep 5 # Time for the server to boot
 - docker exec -i par_beta_web /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < docker/fresh_drupal_postgres.sql
 - docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
-- sleep 5
-- echo #$TRAVIS_BUILD_NUMBER : $(date) > web/build_version.txt
+- echo $TRAVIS_BUILD_NUMBER : $(date) > web/build_version.txt
 
 ########################
 ### TEST
 ########################
 
 script:
-- sleep 5 & docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
+- travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
 - ./vendor/phpunit/phpunit/phpunit
 
 ########################
