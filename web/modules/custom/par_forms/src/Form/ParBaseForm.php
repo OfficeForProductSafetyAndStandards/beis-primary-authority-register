@@ -22,7 +22,7 @@ abstract class ParBaseForm extends FormBase {
   /**
    * @var \Drupal\Core\Session\AccountInterface
    */
-  private $currentUser;
+  protected $currentUser;
 
   /**
    * @var \Drupal\user\PrivateTempStore
@@ -66,14 +66,70 @@ abstract class ParBaseForm extends FormBase {
     );
   }
 
-  protected function getFormHash() {
-    $key = implode('_', [$this->flow, $this->state, $this->getFormId()]);
-    // @TODO work out if Key/Value store normalizes keys itself, if so, remove.
-    return $this->normalizeKey($key);
-  }
-
+  /**
+   * @return string
+   *   Get the logger channel to use.
+   */
   protected function getLoggerChannel() {
     return 'par_forms';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $this->setTempData($form_state);
+  }
+
+  /**
+   * Retrieve the temporary data for this form.
+   *
+   * @return NULL|array
+   *   The values stored in the temp store.
+   */
+  protected function getTempData() {
+    // Start an anonymous session if required.
+    $this->startAnonymousSession();
+    $values = $this->store->get($this->getFormKey());
+    return $values ?: NULL;
+  }
+
+  /**
+   * Retrieve the temporary data for this form.
+   *
+   * @param FormStateInterface $data
+   *   The form state object that needs to be saved.
+   */
+  protected function setTempData(FormStateInterface $data) {
+    if (!$data instanceof FormStateInterface) {
+      $message = $this->t('Temporary data could not be saved for form %form_id', ['%form_id' => $this->getFormId()]);
+      $this->getLogger($this->getLoggerChannel())->error($message);
+      return;
+    }
+
+    // Start an anonymous session if required.
+    $this->startAnonymousSession();
+    $this->store->set($this->getFormKey(), $data->getValues());
+  }
+
+  /**
+   * Get the form Key.
+   *
+   * @param null $form_id
+   * @return string
+   */
+  protected function getFormKey($form_id = NULL) {
+    $form_id = !empty($form_id) ? $form_id : $this->getFormId();
+    $key = implode('_', [$this->flow, $this->state, $form_id]);
+    // @TODO work out if Key/Value store normalizes keys itself, if so, remove.
+    return $this->normalizeKey($key);
   }
 
   /**
@@ -90,7 +146,7 @@ abstract class ParBaseForm extends FormBase {
     // Nothing to do if the ID is a US ASCII string of 250 characters or less.
     $key_is_ascii = mb_check_encoding($key, 'ASCII');
     if (strlen($key) <= 250 && $key_is_ascii) {
-        return $key;
+      return $key;
     }
 
     // If we have generated a longer key, we shrink it to an
@@ -102,7 +158,7 @@ abstract class ParBaseForm extends FormBase {
     // with the hash appended.
     $hash = hash('sha1', $key);
     if (!$key_is_ascii) {
-          return $hash;
+      return $hash;
     }
     return substr($key, 0, 250 - strlen($hash)) . $hash;
   }
@@ -115,67 +171,5 @@ abstract class ParBaseForm extends FormBase {
       $_SESSION['session_started'] = true;
       $this->sessionManager->start();
     }
-  }
-
-  /**
-   * Retrieve the temporary data for this form.
-   *
-   * @return NULL|array
-   *   The temporary form object.
-   */
-  public function getTempData() {
-    // Start an anonymous session if required.
-    $this->startAnonymousSession();
-    $data = $this->store->get($this->getFormHash());
-    return $data ?: NULL;
-  }
-
-  /**
-   * Retrieve the temporary data for this form.
-   */
-  public function setTempData($data) {
-    if ($data instanceof FormStateInterface) {
-      $message = $this->t('Temporary data could not be saved for form %form_id', ['%form_id' => $this->getFormId()]);
-      $this->getLogger($this->getLoggerChannel())->error($message);
-      return;
-    }
-    // Start an anonymous session if required.
-    $this->startAnonymousSession();
-    $this->store->set($this->getFormHash(), $data);;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function buildForm(array $form, FormStateInterface $form_state) {
-    $retrieved = $this->getTempData();
-    if ($retrieved) {
-      $form_state = $retrieved;
-    }
-
-    $form['next'] = [
-      '#type' => 'submit',
-      '#value' => t('Next'),
-    ];
-    $form['save'] = [
-      '#type' => 'submit',
-      '#value' => t('Save'),
-    ];
-
-    return $form;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    $this->setTempData($form_state);
   }
 }
