@@ -10,15 +10,15 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  * @ConfigEntityType(
  *   id = "par_form_flow",
  *   label = @Translation("PAR Form Flow"),
+ *   config_prefix = "par_form_flow",
  *   handlers = {
- *     "list_builder" = "Drupal\trance\TranceTypeListBuilder",
+ *     "list_builder" = "Drupal\Core\Entity\EntityListBuilder",
  *     "form" = {
- *       "add" = "Drupal\trance\Form\TranceTypeForm",
- *       "edit" = "Drupal\trance\Form\TranceTypeForm",
- *       "delete" = "Drupal\trance\Form\TranceTypeDeleteForm"
+ *       "add" = "Drupal\Core\Entity\EntityForm",
+ *       "edit" = "Drupal\Core\Entity\EntityForm",
+ *       "delete" = "Drupal\Core\Entity\EntityConfirmFormBase"
  *     }
  *   },
- *   config_prefix = "par_forms",
  *   admin_permission = "administer site configuration",
  *   entity_keys = {
  *     "id" = "id",
@@ -34,7 +34,8 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *   config_export = {
  *     "id",
  *     "label",
- *     "description"
+ *     "description",
+ *     "steps"
  *   }
  * )
  */
@@ -62,10 +63,57 @@ class ParFormFlow extends ConfigEntityBase {
   protected $description;
 
   /**
+   * The steps for this flow.
+   *
+   * @var array
+   */
+  protected $steps;
+
+  /**
    * Get the description for this flow.
    */
   public function getDescription() {
     return $this->description;
+  }
+
+  /**
+   * Get all steps in this flow.
+   */
+  public function getSteps() {
+    return $this->steps ?: [];
+  }
+
+  /**
+   * Get a step by it's index.
+   *
+   * @param int $index
+   *   The step number that is required.
+   *
+   * @return array
+   *   An array with values for the form_id & form_route
+   */
+  public function getStep($index) {
+    return $this->steps[$index];
+  }
+
+  /**
+   * Get a step by.
+   *
+   * @param int $index
+   *   The step number that is required.
+   *
+   * @return array
+   *   An array with values for the form_id & form_route
+   */
+  public function getStepByFormId($form_id) {
+    foreach ($this->getSteps() as $key => $step) {
+      if ($step['form_id'] === $form_id) {
+        $match = [
+          'step' => $key
+        ] + $step;
+      }
+    }
+    return isset($match) ? $match : [];
   }
 
 }

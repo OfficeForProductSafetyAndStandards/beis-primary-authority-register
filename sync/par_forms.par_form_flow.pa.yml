@@ -1,7 +1,0 @@
-uuid: ba62a5a5-c7d3-4e95-b908-8547d6fccec7
-langcode: en
-status: true
-dependencies: {  }
-id: pa
-label: Partnership Application
-description: 'The default flow for creating a Partnership application.'

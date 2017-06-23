@@ -6,6 +6,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\SessionManagerInterface;
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\user\PrivateTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -23,6 +24,11 @@ abstract class ParBaseForm extends FormBase {
    * @var \Drupal\Core\Session\AccountInterface
    */
   protected $currentUser;
+
+  /**
+   * @var \Drupal\Core\Entity\EntityStorageInterface
+   */
+  protected $flowStorage;
 
   /**
    * @var \Drupal\user\PrivateTempStore
@@ -48,9 +54,10 @@ abstract class ParBaseForm extends FormBase {
    * @param \Drupal\Core\Session\SessionManagerInterface $session_manager
    * @param \Drupal\Core\Session\AccountInterface $current_user
    */
-  public function __construct(PrivateTempStoreFactory $temp_store_factory, SessionManagerInterface $session_manager, AccountInterface $current_user) {
+  public function __construct(PrivateTempStoreFactory $temp_store_factory, SessionManagerInterface $session_manager, AccountInterface $current_user, EntityStorageInterface $flow_storage) {
     $this->sessionManager = $session_manager;
     $this->currentUser = $current_user;
+    $this->flowStorage = $flow_storage;
     /** @var \Drupal\user\PrivateTempStore store */
     $this->store = $temp_store_factory->get('par_forms_flows');
   }
@@ -59,10 +66,12 @@ abstract class ParBaseForm extends FormBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
+    $entity_manager = $container->get('entity.manager');
     return new static(
       $container->get('user.private_tempstore'),
       $container->get('session_manager'),
-      $container->get('current_user')
+      $container->get('current_user'),
+      $entity_manager->getStorage('par_form_flow')
     );
   }
 
@@ -72,6 +81,22 @@ abstract class ParBaseForm extends FormBase {
    */
   protected function getLoggerChannel() {
     return 'par_forms';
+  }
+
+  /**
+   * @return string
+   *   The name of the flow.
+   */
+  protected function getFlow() {
+    return $this->flowStorage->load($this->flow);
+  }
+
+  /**
+   * @return \Drupal\Core\Entity\EntityStorageInterface
+   *   The flow storage handler.
+   */
+  protected function getFlowStorage() {
+    return $this->flowStorage;
   }
 
   /**
@@ -86,6 +111,20 @@ abstract class ParBaseForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->setTempData($form_state);
+    $form_state->setRedirect($this->getNextStep());
+  }
+
+  /**
+   * Go to next step.
+   */
+  protected function getNextStep() {
+    $flow = $this->getFlow();
+    // Lookup the current step to more accurately determine the next step.
+    $current_step = $flow->getStepByFormId($this->getFormId());
+    $next_step = isset($current_step['step']) ? $flow->getStep(++$current_step['step']) : $flow->getStep(1);
+
+    // If there is no next step we'll stay on this step.
+    return isset($next_step['route']) ? $next_step['route'] : $current_step['route'];
   }
 
   /**

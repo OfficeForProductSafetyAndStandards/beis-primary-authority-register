@@ -14,7 +14,7 @@ class ParDemoSecondForm extends ParBaseForm {
    * @var string
    *   A machine safe value representing the current form journey.
    */
-  protected $flow = 'pa';
+  protected $flow = 'example';
 
   public function getFormId() {
     return 'par_demo_second';
@@ -44,8 +44,6 @@ class ParDemoSecondForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $form_state->setRedirect('par_demo_forms.third');
-
     parent::submitForm($form, $form_state);
   }
 }

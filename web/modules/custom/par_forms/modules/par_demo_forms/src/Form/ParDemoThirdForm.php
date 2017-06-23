@@ -14,7 +14,7 @@ class ParDemoThirdForm extends ParBaseForm {
    * @var string
    *   A machine safe value representing the current form journey.
    */
-  protected $flow = 'pa';
+  protected $flow = 'example';
 
   public function getFormId() {
     return 'par_demo_third';
@@ -58,8 +58,10 @@ class ParDemoThirdForm extends ParBaseForm {
     //   ->create($data);
     // $node->save();
 
-    $form_state->setRedirect('par_demo_forms.first');
-
     parent::submitForm($form, $form_state);
+
+    // For some reason we're going to override the default
+    // redirect and go back to the beginning of this flow.
+    $form_state->setRedirect('par_demo_forms.first');
   }
 }

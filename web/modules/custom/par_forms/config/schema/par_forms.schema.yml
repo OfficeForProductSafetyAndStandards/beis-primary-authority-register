@@ -13,3 +13,14 @@ par_forms.par_form_flow.*:
     description:
       type: string
       lavel: 'Description'
+    steps:
+      type: mapping
+      label: "Steps"
+      mapping:
+        "route":
+          type: text
+          label: "Route"
+        "form_id":
+          type: text
+          label: "Form ID"
+          required: no
