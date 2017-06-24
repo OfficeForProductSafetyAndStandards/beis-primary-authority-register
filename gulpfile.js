@@ -17,7 +17,7 @@ gulp.task('sass', function () {
         'node_modules/govuk-elements-sass/public/sass'     // 2
       ]
     }).on('error', sass.logError))
-    .pipe(sourcemaps.write('../maps/'))
+    .pipe(sourcemaps.write('../map/'))
     .pipe(gulp.dest(themeDir + '/css'));
 });
 
