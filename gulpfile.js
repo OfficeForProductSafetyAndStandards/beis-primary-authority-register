@@ -21,9 +21,16 @@ gulp.task('sass', function () {
     .pipe(gulp.dest(themeDir + '/css'));
 });
 
+gulp.task('cp-assets', [], function() {
+  gulp.src([
+    "node_modules/govuk_frontend_toolkit/images/**"
+  ])
+  .pipe(gulp.dest(themeDir + '/assets/vendor'));
+});
+
 gulp.task('watch', function() {
   gulp.watch(themeDir + '/sass/**/*.scss', ['sass']);
 });
 
-gulp.task('build', ['sass']);
-gulp.task('default', ['sass']);
+gulp.task('build', ['cp-assets', 'sass']);
+gulp.task('default', ['cp-assets', 'sass']);

@@ -5,7 +5,7 @@ package: Custom
 description: A Drupal 8 theme based on the GDS GOV.UK Frontend Toolkit.
 core: 8.x
 libraries:
-  - par_theme/scripts
+  - par_theme/par-kour
 regions:
   header: Header
   content: Content

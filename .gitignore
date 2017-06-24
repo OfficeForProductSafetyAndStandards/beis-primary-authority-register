@@ -33,6 +33,7 @@ web/update.php
 # Ignore CSS stylesheet/maps.
 web/themes/custom/par_theme/css/
 web/themes/custom/par_theme/map/
+web/themes/custom/par_theme/assets/vendor/
 
 # Exclude Drupal files.
 /web/sites/*/files/
