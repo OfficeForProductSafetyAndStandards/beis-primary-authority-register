@@ -1,6 +1,5 @@
 web:
-  build: .
-  dockerfile: Dockerfile-web
+  image: parbeta/web:v1
   container_name: par_beta_web
   links:
     - db
@@ -23,6 +22,6 @@ dashboard:
   container_name: par_beta_dashboard
   image: rgcamus/alpine_smashing
   ports:
-    - "8080:3030"
+    - "8112:3030"
   volumes:
     - ../dashboard/dashboards:/dashboards

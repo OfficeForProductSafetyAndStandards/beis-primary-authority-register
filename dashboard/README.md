@@ -7,13 +7,14 @@ The dashboard we're using for development purposes uses Smashing, and integrates
 * Ruby gems smashing and bundler
 
 ## Install
-To configure the production endpoint set the environment var PROD_ENDPOINT before running `export PROD_ENDPOINT="http://example.com"`
+To configure the production endpoint set the environment var PROD_ENDPOINT before running `export PROD_ENDPOINT="https://par-beta-test.cloudapps.digital/"`
 
     cd dashboard
     bundle
     smashing start
     
 ## Running
-Smashing starts the thin webserver so that the smashing dashboard will then be accessible at `localhost:3030/devops`
+
+Smashing starts the thin webserver so that the smashing dashboard will then be accessible at http://127.0.0.1:8112/devops
 
 Check out http://smashing.github.io/ for more information.
