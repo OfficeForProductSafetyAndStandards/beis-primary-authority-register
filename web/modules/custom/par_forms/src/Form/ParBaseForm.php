@@ -26,7 +26,7 @@ abstract class ParBaseForm extends FormBase {
   protected $currentUser;
 
   /**
-   * @var \Drupal\Core\Entity\EntityStorageInterface
+   * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
    */
   protected $flowStorage;
 
@@ -44,6 +44,8 @@ abstract class ParBaseForm extends FormBase {
   /**
    * @var string
    *   A machine safe value representing any states or combination of states that alter the form behaviour.
+   *
+   * e.g. A example of a state would be whether the flow is being created, edited or reviewed.
    */
   protected $state = 'default';
 
@@ -60,6 +62,17 @@ abstract class ParBaseForm extends FormBase {
     $this->flowStorage = $flow_storage;
     /** @var \Drupal\user\PrivateTempStore store */
     $this->store = $temp_store_factory->get('par_forms_flows');
+
+    // We need to know how to handle clearing old data.
+
+    // We need to know how to persist the flow name through the flow.
+    // We can't have it looked up based on the route as the same
+    // route may exist in multiple flows.
+
+    // Similarly we need to know how to persist the state.
+    // Such that we can go through the same flow and not recall
+    // data from when we were going through the flow in another state
+    // such as adding vs editing, or as two languages.
   }
 
   /**
@@ -84,8 +97,8 @@ abstract class ParBaseForm extends FormBase {
   }
 
   /**
-   * @return string
-   *   The name of the flow.
+   * @return \Drupal\Core\Entity\EntityInterface
+   *   The flow entity.
    */
   protected function getFlow() {
     return $this->flowStorage->load($this->flow);

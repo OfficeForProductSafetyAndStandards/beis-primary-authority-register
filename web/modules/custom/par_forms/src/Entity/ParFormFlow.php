@@ -93,7 +93,7 @@ class ParFormFlow extends ConfigEntityBase {
    *   An array with values for the form_id & form_route
    */
   public function getStep($index) {
-    return $this->steps[$index];
+    return isset($this->steps['index']) ? $this->steps[$index] : NULL;
   }
 
   /**

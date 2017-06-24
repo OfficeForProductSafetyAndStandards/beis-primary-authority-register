@@ -50,16 +50,9 @@ class ParDemoFirstForm extends ParBaseForm {
     // The real validation is handled at the entity
     // validation layer.
     // @see https://www.drupal.org/docs/8/api/entity-validation-api/entity-validation-api-overview
-    // $name = $form_state->getValue('name');
-    // $form_state->setValue('name', strtoupper($name));
+    $name = $form_state->getValue('name');
+    $form_state->setValue('name', strtoupper($name));
 
     parent::validateForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
   }
 }
