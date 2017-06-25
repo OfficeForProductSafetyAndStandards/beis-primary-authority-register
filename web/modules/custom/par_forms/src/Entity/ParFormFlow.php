@@ -90,10 +90,10 @@ class ParFormFlow extends ConfigEntityBase {
    *   The step number that is required.
    *
    * @return array
-   *   An array with values for the form_id & form_route
+   *   An array with values for the form_id & route
    */
   public function getStep($index) {
-    return isset($this->steps['index']) ? $this->steps[$index] : NULL;
+    return isset($this->steps[$index]) ? $this->steps[$index] : NULL;
   }
 
   /**
@@ -103,11 +103,11 @@ class ParFormFlow extends ConfigEntityBase {
    *   The step number that is required.
    *
    * @return array
-   *   An array with values for the form_id & form_route
+   *   An array with values for the form_id & route
    */
   public function getStepByFormId($form_id) {
     foreach ($this->getSteps() as $key => $step) {
-      if ($step['form_id'] === $form_id) {
+      if (isset($step['form_id']) && $form_id === $step['form_id']) {
         $match = [
           'step' => $key
         ] + $step;
