@@ -8,10 +8,11 @@ require 'octokit'
 #Octokit.middleware = stack
 #Octokit.user 'kalpaitch'
 
-SCHEDULER.every('5m', first_in: '1s') {
+SCHEDULER.every('2m', first_in: '1m') {
   client = Octokit::Client.new()
   organization = "TransformCore"
   repos = ["beis-par-beta"]
+  pulls = []
 
   open_pull_requests = repos.inject([]) { |pulls, repo|
     client.pull_requests("#{organization}/#{repo}", :state => 'open').each do |pull|

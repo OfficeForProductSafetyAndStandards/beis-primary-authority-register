@@ -1,6 +1,6 @@
 require 'travis'
 
-SCHEDULER.every('5s', first_in: '1s') {
+SCHEDULER.every('15s', first_in: '1s') {
   client = Travis::Client.new
   repo  = client.repo("TransformCore/beis-par-beta")
 
