@@ -1,3 +1,7 @@
+# Pull the docker images
+
+docker-compose up -d --force-recreate --build
+
 # Install dependencies
 
 if [ ! -f ../vendor/autoload.php ]; then
@@ -5,9 +9,6 @@ if [ ! -f ../vendor/autoload.php ]; then
     sh composer.sh install
     cd docker
 fi
-
-docker exec -i par_beta_web sh /var/www/html/docker/drupal-update.sh /var/www/html
-docker exec -i par_beta_web gulp build
 
 # Setup the development settings file:
 
@@ -24,6 +25,14 @@ fi
  
     sleep 5 # Time for the server to boot
     docker exec -i par_beta_web /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < fresh_drupal_postgres.sql
+
+# Update Drupal
+
+    docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
+
+# Install front end dependencies
+
+    docker exec -i par_beta_web gulp build
 
 
 

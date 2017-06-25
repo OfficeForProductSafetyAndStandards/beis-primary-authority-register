@@ -1,9 +1,9 @@
-@Pending
+@Pending @alphajourney1and3
 Feature: Searching partnerships
 
     Background:
         Given I open the url "/login"
-        And I add "username" to the inputfield "#username"
+        And I add "EnforcementOfficer" to the inputfield "#username"
         And I add "password" to the inputfield "#password"
         And I press "Login"
         Then I expect that element "#logged-in-header" contains the text "Logged in"
@@ -37,7 +37,6 @@ Feature: Searching partnerships
         Then I expect that element "#header" contains the text "Primary Authority Partnerships"
         When I click on the link "#show-details"
         Then I expect that element "#about-the-business" does exist
-
 
     Scenario: Search By Primary Authority
         Given I open the url "/search-partnerships"
