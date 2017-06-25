@@ -1,7 +1,8 @@
 require 'travis'
 
 SCHEDULER.every('5s', first_in: '1s') {
-  repo = Travis::Repository.find("TransformCore/beis-par-beta")
+  client = Travis::Client.new
+  repo  = client.repo("TransformCore/beis-par-beta")
 
   build = repo.branch('master')
   
@@ -19,5 +20,5 @@ SCHEDULER.every('5s', first_in: '1s') {
   send_event('master_build_status', { status: health })
   send_event('master_build_version', { text: "##{number}" })
 
-  Travis.clear_cache!
+  client.clear_cache
 }
