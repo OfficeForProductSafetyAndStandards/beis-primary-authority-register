@@ -8,7 +8,7 @@ require 'octokit'
 #Octokit.middleware = stack
 #Octokit.user 'kalpaitch'
 
-SCHEDULER.every('2m', first_in: '1m') {
+SCHEDULER.every('4m', first_in: '1m') {
   client = Octokit::Client.new()
   organization = "TransformCore"
   repos = ["beis-par-beta"]
