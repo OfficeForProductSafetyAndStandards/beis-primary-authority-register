@@ -5,9 +5,7 @@ docker-compose up -d --force-recreate --build
 # Install dependencies
 
 if [ ! -f ../vendor/autoload.php ]; then
-    cd ..
-    sh composer.sh install
-    cd docker
+    docker exec -i par_beta_web sh composer.sh install
 fi
 
 # Setup the development settings file:
