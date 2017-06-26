@@ -1,6 +1,6 @@
 require 'travis'
 
-SCHEDULER.every('2m', first_in: '1s') {
+SCHEDULER.every('4m', first_in: '1s') {
   client = Travis::Client.new
   repo  = client.repo("TransformCore/beis-par-beta")
   recent_builds = []
