@@ -1,0 +1,22 @@
+# PAR Demo Forms routes
+par_demo_forms.first:
+  path: '/demo-formz'
+  defaults:
+    _form: '\Drupal\par_demo_forms\Form\ParDemoFirstForm'
+    _title: 'PAR Demo Forms - First'
+  requirements:
+    _permission: 'access content'
+par_demo_forms.second:
+  path: '/demo-formz/second'
+  defaults:
+    _form: '\Drupal\par_demo_forms\Form\ParDemoSecondForm'
+    _title: 'PAR Demo Forms - Second'
+  requirements:
+    _permission: 'access content'
+par_demo_forms.third:
+  path: '/demo-formz/third'
+  defaults:
+    _form: '\Drupal\par_demo_forms\Form\ParDemoThirdForm'
+    _title: 'PAR Demo Forms - Third'
+  requirements:
+    _permission: 'access content'

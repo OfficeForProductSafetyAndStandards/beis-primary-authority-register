@@ -1,7 +1,8 @@
 require 'travis'
 
-SCHEDULER.every('5m', first_in: '1s') {
-  repo = Travis::Repository.find("TransformCore/beis-par-beta")
+SCHEDULER.every('4m', first_in: '1s') {
+  client = Travis::Client.new
+  repo  = client.repo("TransformCore/beis-par-beta")
   recent_builds = []
 
   repo.each_build do |build|
@@ -14,4 +15,6 @@ SCHEDULER.every('5m', first_in: '1s') {
   end
 
   send_event('travis_latest_builds', { items: recent_builds[0..5] })
+
+  client.clear_cache
 }
