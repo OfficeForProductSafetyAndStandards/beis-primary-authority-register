@@ -1,0 +1,1 @@
+{"state":{"passed":0,"failed":0,"skipped":0},"start":"2017-06-22T09:15:22.253Z","end":"2017-06-22T09:15:26.447Z","capabilities":{"browserName":"chrome"},"host":"127.0.0.1","port":4444,"baseUrl":"http://127.0.0.1:8111","framework":"cucumber","mochaOpts":{"timeout":10000},"suites":[]}
