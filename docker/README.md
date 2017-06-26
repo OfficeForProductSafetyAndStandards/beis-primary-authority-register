@@ -3,9 +3,20 @@
 Install [docker](https://docs.docker.com/engine/installation/linux/ubuntu/) (or [Docker for Windows](https://docs.docker.com/docker-for-windows/install/), or [Docker for Mac](https://docs.docker.com/docker-for-mac/install/)), then:
 
     cd docker
-    sh setup.sh [winpty]
+    sh setup.sh
+    
+### Windows users
 
-Windows users, add the "winpty" option.
+The recommended method for installing on Windows is to use a Git Bash.
+
+Add your SSH key
+    
+    ssh-agent bash
+    ssh-add ~/.ssh/id_rsa
+    
+Then, run the setup command passing in the paramter 'winpty'
+
+    sh setup.sh winptty
     
 Request the hash salt from another member of the team and add this to the hash setting at the bottom of your local settings file:
 
