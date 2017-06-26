@@ -3,7 +3,9 @@
 Install [docker](https://docs.docker.com/engine/installation/linux/ubuntu/) (or [Docker for Windows](https://docs.docker.com/docker-for-windows/install/), or [Docker for Mac](https://docs.docker.com/docker-for-mac/install/)), then:
 
     cd docker
-    sh setup.sh
+    sh setup.sh [winpty]
+
+Windows users, add the "winpty" option.
     
 Request the hash salt from another member of the team and add this to the hash setting at the bottom of your local settings file:
 
