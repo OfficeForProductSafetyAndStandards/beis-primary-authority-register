@@ -54,14 +54,15 @@ SCHEDULER.every('30s', first_in: '1s') {
     test_file = 'tests/' + "#{number}" + '/phpunit.latest.xml'
     if (bucket.objects[test_file].exists?)
       unit_tests = Nokogiri::XML(bucket.objects[test_file].read)
-      suite = unit_tests.xpath("//testsuite[@name='par']")
-      test_results.push({
-        heading: "Unit Tests",
-        count: suite.attr('tests').value,
-        passed: suite.attr('assertions').value,
-        failed: suite.attr('failures').value,
-        skipped: suite.attr('errors').value,
-      })
+      unit_tests.xpath("/testsuites/testsuite").each do |testsuite|
+        test_results.push({
+          heading: "Unit Tests",
+          count: testsuite.attr('tests').value,
+          passed: testsuite.attr('assertions').value,
+          failed: testsuite.attr('failures').value,
+          skipped: testsuite.attr('errors').value,
+        })
+      end
     end
   rescue
     # exists? can raise an error `Aws::S3::Errors::Forbidden`
