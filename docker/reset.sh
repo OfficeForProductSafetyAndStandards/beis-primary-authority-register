@@ -1,3 +1,4 @@
+sh destroy-containers.sh
 rm ../web/sites/default/settings.local.php
 rm -rf ../vendor
 rm -rf ../node_modules
