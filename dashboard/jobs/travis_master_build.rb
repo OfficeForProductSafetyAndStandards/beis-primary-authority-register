@@ -1,6 +1,7 @@
 require 'travis'
 require 'aws-sdk'
 require 'json'
+require 'nokogiri'
 
 aws_access_key = ENV['AWS_ACCESS_KEY']
 aws_secret_key = ENV['SECRET_ACCESS_KEY']
@@ -33,16 +34,37 @@ SCHEDULER.every('30s', first_in: '1s') {
   send_event('master_build_status', { status: health })
   send_event('master_build_version', { text: "##{number}" })
 
-  functional_tests = bucket.objects['tests/' + "#{number}" + '/report.json']
-  if (functional_tests)
-    functional_test_results = JSON.parse(functional_tests.read)
-    test_results.push({
-      heading: "Functional Tests",
-      count: functional_test_results['suites'].count | 0,
-      passed: functional_test_results['state']['passed'],
-      failed: functional_test_results['state']['failed'],
-      skipped: functional_test_results['state']['skipped'],
-    })
+  begin
+    test_file = 'tests/' + "#{number}" + '/report.json'
+    if (bucket.objects[test_file].exists?)
+      functional_tests = JSON.parse(bucket.objects[test_file].read)
+      test_results.push({
+        heading: "Functional Tests",
+        count: functional_tests['suites'].count | 0,
+        passed: functional_tests['state']['passed'],
+        failed: functional_tests['state']['failed'],
+        skipped: functional_tests['state']['skipped'],
+      })
+    end
+  rescue
+    # exists? can raise an error `Aws::S3::Errors::Forbidden`
+  end
+
+  begin
+    test_file = 'tests/' + "#{number}" + '/phpunit.latest.xml'
+    if (bucket.objects[test_file].exists?)
+      unit_tests = Nokogiri::XML(bucket.objects[test_file].read)
+      suite = unit_tests.xpath("//testsuite[@name='par']")
+      test_results.push({
+        heading: "Unit Tests",
+        count: suite.attr('tests').value,
+        passed: suite.attr('assertions').value,
+        failed: suite.attr('failures').value,
+        skipped: suite.attr('errors').value,
+      })
+    end
+  rescue
+    # exists? can raise an error `Aws::S3::Errors::Forbidden`
   end
 
   send_event('master_test_results', { results: test_results })
