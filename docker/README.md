@@ -12,6 +12,10 @@ Request the hash salt from another member of the team and add this to the hash s
 You can then visit the site at:
 
     http://127.0.0.1:8111
+
+### Windows users
+
+The recommended method for installing on Windows is to use a Git Bash.
     
 ### Docker setup troubleshooting
 

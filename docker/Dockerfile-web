@@ -10,6 +10,7 @@ RUN sleep 5 && sh -c "echo debconf shared/accepted-oracle-license-v1-1 select tr
         libmcrypt-dev \
         libpng12-dev \
         libpq-dev \
+        php5-cli \
         postgresql-client-9.6 \
         git \
         software-properties-common \

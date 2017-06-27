@@ -51,7 +51,4 @@ web/sites/simpletest
 .project
 .settings/
 
-# Exclude composer package.
-composer.phar
-
 tests/reports/
