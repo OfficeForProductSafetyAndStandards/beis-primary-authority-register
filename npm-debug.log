@@ -1,0 +1,573 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/n/versions/node/7.2.1/bin/npm',
+1 verbose cli   'install' ]
+2 info using npm@3.10.10
+3 info using node@v7.2.1
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly install normalizeTree
+8 silly loadCurrentTree Finishing
+9 silly loadIdealTree Starting
+10 silly install loadIdealTree
+11 silly cloneCurrentTree Starting
+12 silly install cloneCurrentTreeToIdealTree
+13 silly cloneCurrentTree Finishing
+14 silly loadShrinkwrap Starting
+15 silly install loadShrinkwrap
+16 silly loadShrinkwrap Finishing
+17 silly loadAllDepsIntoIdealTree Starting
+18 silly install loadAllDepsIntoIdealTree
+19 silly fetchNamedPackageData govuk-elements-sass
+20 silly mapToRegistry name govuk-elements-sass
+21 silly mapToRegistry using default registry
+22 silly mapToRegistry registry https://registry.npmjs.org/
+23 silly mapToRegistry data Result {
+23 silly mapToRegistry   raw: 'govuk-elements-sass',
+23 silly mapToRegistry   scope: null,
+23 silly mapToRegistry   escapedName: 'govuk-elements-sass',
+23 silly mapToRegistry   name: 'govuk-elements-sass',
+23 silly mapToRegistry   rawSpec: '',
+23 silly mapToRegistry   spec: 'latest',
+23 silly mapToRegistry   type: 'tag' }
+24 silly mapToRegistry uri https://registry.npmjs.org/govuk-elements-sass
+25 silly fetchNamedPackageData govuk_frontend_toolkit
+26 silly mapToRegistry name govuk_frontend_toolkit
+27 silly mapToRegistry using default registry
+28 silly mapToRegistry registry https://registry.npmjs.org/
+29 silly mapToRegistry data Result {
+29 silly mapToRegistry   raw: 'govuk_frontend_toolkit',
+29 silly mapToRegistry   scope: null,
+29 silly mapToRegistry   escapedName: 'govuk_frontend_toolkit',
+29 silly mapToRegistry   name: 'govuk_frontend_toolkit',
+29 silly mapToRegistry   rawSpec: '',
+29 silly mapToRegistry   spec: 'latest',
+29 silly mapToRegistry   type: 'tag' }
+30 silly mapToRegistry uri https://registry.npmjs.org/govuk_frontend_toolkit
+31 silly fetchNamedPackageData gulp
+32 silly mapToRegistry name gulp
+33 silly mapToRegistry using default registry
+34 silly mapToRegistry registry https://registry.npmjs.org/
+35 silly mapToRegistry data Result {
+35 silly mapToRegistry   raw: 'gulp',
+35 silly mapToRegistry   scope: null,
+35 silly mapToRegistry   escapedName: 'gulp',
+35 silly mapToRegistry   name: 'gulp',
+35 silly mapToRegistry   rawSpec: '',
+35 silly mapToRegistry   spec: 'latest',
+35 silly mapToRegistry   type: 'tag' }
+36 silly mapToRegistry uri https://registry.npmjs.org/gulp
+37 silly fetchNamedPackageData gulp-cli
+38 silly mapToRegistry name gulp-cli
+39 silly mapToRegistry using default registry
+40 silly mapToRegistry registry https://registry.npmjs.org/
+41 silly mapToRegistry data Result {
+41 silly mapToRegistry   raw: 'gulp-cli',
+41 silly mapToRegistry   scope: null,
+41 silly mapToRegistry   escapedName: 'gulp-cli',
+41 silly mapToRegistry   name: 'gulp-cli',
+41 silly mapToRegistry   rawSpec: '',
+41 silly mapToRegistry   spec: 'latest',
+41 silly mapToRegistry   type: 'tag' }
+42 silly mapToRegistry uri https://registry.npmjs.org/gulp-cli
+43 silly fetchNamedPackageData gulp-sass
+44 silly mapToRegistry name gulp-sass
+45 silly mapToRegistry using default registry
+46 silly mapToRegistry registry https://registry.npmjs.org/
+47 silly mapToRegistry data Result {
+47 silly mapToRegistry   raw: 'gulp-sass',
+47 silly mapToRegistry   scope: null,
+47 silly mapToRegistry   escapedName: 'gulp-sass',
+47 silly mapToRegistry   name: 'gulp-sass',
+47 silly mapToRegistry   rawSpec: '',
+47 silly mapToRegistry   spec: 'latest',
+47 silly mapToRegistry   type: 'tag' }
+48 silly mapToRegistry uri https://registry.npmjs.org/gulp-sass
+49 silly fetchNamedPackageData gulp-sourcemaps
+50 silly mapToRegistry name gulp-sourcemaps
+51 silly mapToRegistry using default registry
+52 silly mapToRegistry registry https://registry.npmjs.org/
+53 silly mapToRegistry data Result {
+53 silly mapToRegistry   raw: 'gulp-sourcemaps',
+53 silly mapToRegistry   scope: null,
+53 silly mapToRegistry   escapedName: 'gulp-sourcemaps',
+53 silly mapToRegistry   name: 'gulp-sourcemaps',
+53 silly mapToRegistry   rawSpec: '',
+53 silly mapToRegistry   spec: 'latest',
+53 silly mapToRegistry   type: 'tag' }
+54 silly mapToRegistry uri https://registry.npmjs.org/gulp-sourcemaps
+55 verbose request uri https://registry.npmjs.org/govuk-elements-sass
+56 verbose request no auth needed
+57 info attempt registry request try #1 at 9:56:38 AM
+58 verbose request id 661a310a0be1d88b
+59 http request GET https://registry.npmjs.org/govuk-elements-sass
+60 verbose request uri https://registry.npmjs.org/govuk_frontend_toolkit
+61 verbose request no auth needed
+62 info attempt registry request try #1 at 9:56:38 AM
+63 http request GET https://registry.npmjs.org/govuk_frontend_toolkit
+64 verbose request uri https://registry.npmjs.org/gulp
+65 verbose request no auth needed
+66 info attempt registry request try #1 at 9:56:38 AM
+67 verbose etag W/"5942dabf-1d52d"
+68 verbose lastModified Thu, 15 Jun 2017 19:06:39 GMT
+69 http request GET https://registry.npmjs.org/gulp
+70 verbose request uri https://registry.npmjs.org/gulp-cli
+71 verbose request no auth needed
+72 info attempt registry request try #1 at 9:56:38 AM
+73 verbose etag W/"5949c732-86be"
+74 verbose lastModified Wed, 21 Jun 2017 01:09:06 GMT
+75 http request GET https://registry.npmjs.org/gulp-cli
+76 verbose request uri https://registry.npmjs.org/gulp-sourcemaps
+77 verbose request no auth needed
+78 info attempt registry request try #1 at 9:56:38 AM
+79 verbose etag W/"594a015d-1df2a"
+80 verbose lastModified Wed, 21 Jun 2017 05:17:17 GMT
+81 http request GET https://registry.npmjs.org/gulp-sourcemaps
+82 verbose request uri https://registry.npmjs.org/gulp-sass
+83 verbose request no auth needed
+84 info attempt registry request try #1 at 9:56:38 AM
+85 verbose etag W/"594ad414-e8eb"
+86 verbose lastModified Wed, 21 Jun 2017 20:16:20 GMT
+87 http request GET https://registry.npmjs.org/gulp-sass
+88 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+89 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+90 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+91 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+92 info attempt registry request try #2 at 9:57:08 AM
+93 http request GET https://registry.npmjs.org/govuk-elements-sass
+94 info attempt registry request try #2 at 9:57:08 AM
+95 http request GET https://registry.npmjs.org/govuk_frontend_toolkit
+96 info attempt registry request try #2 at 9:57:08 AM
+97 verbose etag W/"5949c732-86be"
+98 verbose lastModified Wed, 21 Jun 2017 01:09:06 GMT
+99 http request GET https://registry.npmjs.org/gulp-cli
+100 info attempt registry request try #2 at 9:57:08 AM
+101 verbose etag W/"5942dabf-1d52d"
+102 verbose lastModified Thu, 15 Jun 2017 19:06:39 GMT
+103 http request GET https://registry.npmjs.org/gulp
+104 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+105 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+106 info attempt registry request try #2 at 9:57:28 AM
+107 verbose etag W/"594ad414-e8eb"
+108 verbose lastModified Wed, 21 Jun 2017 20:16:20 GMT
+109 http request GET https://registry.npmjs.org/gulp-sass
+110 info attempt registry request try #2 at 9:57:28 AM
+111 verbose etag W/"594a015d-1df2a"
+112 verbose lastModified Wed, 21 Jun 2017 05:17:17 GMT
+113 http request GET https://registry.npmjs.org/gulp-sourcemaps
+114 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+115 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+116 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+117 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+118 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+119 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+120 info attempt registry request try #3 at 9:58:28 AM
+121 http request GET https://registry.npmjs.org/govuk_frontend_toolkit
+122 info attempt registry request try #3 at 9:58:28 AM
+123 http request GET https://registry.npmjs.org/govuk-elements-sass
+124 info attempt registry request try #3 at 9:58:38 AM
+125 verbose etag W/"5949c732-86be"
+126 verbose lastModified Wed, 21 Jun 2017 01:09:06 GMT
+127 http request GET https://registry.npmjs.org/gulp-cli
+128 info attempt registry request try #3 at 9:58:38 AM
+129 verbose etag W/"5942dabf-1d52d"
+130 verbose lastModified Thu, 15 Jun 2017 19:06:39 GMT
+131 http request GET https://registry.npmjs.org/gulp
+132 info attempt registry request try #3 at 9:58:48 AM
+133 verbose etag W/"594ad414-e8eb"
+134 verbose lastModified Wed, 21 Jun 2017 20:16:20 GMT
+135 http request GET https://registry.npmjs.org/gulp-sass
+136 info attempt registry request try #3 at 9:58:48 AM
+137 verbose etag W/"594a015d-1df2a"
+138 verbose lastModified Wed, 21 Jun 2017 05:17:17 GMT
+139 http request GET https://registry.npmjs.org/gulp-sourcemaps
+140 silly fetchPackageMetaData Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+140 silly fetchPackageMetaData     at errnoException (dns.js:28:10)
+140 silly fetchPackageMetaData     at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:76:26)
+140 silly fetchPackageMetaData  error for govuk-elements-sass@~3.1.0 { Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+140 silly fetchPackageMetaData     at errnoException (dns.js:28:10)
+140 silly fetchPackageMetaData     at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:76:26)
+140 silly fetchPackageMetaData   code: 'ENOTFOUND',
+140 silly fetchPackageMetaData   errno: 'ENOTFOUND',
+140 silly fetchPackageMetaData   syscall: 'getaddrinfo',
+140 silly fetchPackageMetaData   hostname: 'registry.npmjs.org',
+140 silly fetchPackageMetaData   host: 'registry.npmjs.org',
+140 silly fetchPackageMetaData   port: 443 }
+141 silly fetchPackageMetaData Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+141 silly fetchPackageMetaData     at errnoException (dns.js:28:10)
+141 silly fetchPackageMetaData     at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:76:26)
+141 silly fetchPackageMetaData  error for govuk_frontend_toolkit@~6.0.4 { Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+141 silly fetchPackageMetaData     at errnoException (dns.js:28:10)
+141 silly fetchPackageMetaData     at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:76:26)
+141 silly fetchPackageMetaData   code: 'ENOTFOUND',
+141 silly fetchPackageMetaData   errno: 'ENOTFOUND',
+141 silly fetchPackageMetaData   syscall: 'getaddrinfo',
+141 silly fetchPackageMetaData   hostname: 'registry.npmjs.org',
+141 silly fetchPackageMetaData   host: 'registry.npmjs.org',
+141 silly fetchPackageMetaData   port: 443 }
+142 silly get cb [ 304, undefined ]
+143 verbose etag https://registry.npmjs.org/gulp from cache
+144 verbose get saving gulp to /root/.npm/registry.npmjs.org/gulp/.cache.json
+145 verbose correctMkdir /root/.npm correctMkdir not in flight; initializing
+146 silly get cb [ 304, undefined ]
+147 verbose etag https://registry.npmjs.org/gulp-cli from cache
+148 verbose get saving gulp-cli to /root/.npm/registry.npmjs.org/gulp-cli/.cache.json
+149 verbose correctMkdir /root/.npm correctMkdir already in flight; waiting
+150 silly resolveWithNewModule gulp@3.9.1 checking installable status
+151 silly cache add args [ 'gulp@^3.9.1', null ]
+152 verbose cache add spec gulp@^3.9.1
+153 silly cache add parsed spec Result {
+153 silly cache add   raw: 'gulp@^3.9.1',
+153 silly cache add   scope: null,
+153 silly cache add   escapedName: 'gulp',
+153 silly cache add   name: 'gulp',
+153 silly cache add   rawSpec: '^3.9.1',
+153 silly cache add   spec: '>=3.9.1 <4.0.0',
+153 silly cache add   type: 'range' }
+154 silly addNamed gulp@>=3.9.1 <4.0.0
+155 verbose addNamed ">=3.9.1 <4.0.0" is a valid semver range for gulp
+156 silly addNameRange { name: 'gulp', range: '>=3.9.1 <4.0.0', hasData: false }
+157 silly mapToRegistry name gulp
+158 silly mapToRegistry using default registry
+159 silly mapToRegistry registry https://registry.npmjs.org/
+160 silly mapToRegistry data Result {
+160 silly mapToRegistry   raw: 'gulp',
+160 silly mapToRegistry   scope: null,
+160 silly mapToRegistry   escapedName: 'gulp',
+160 silly mapToRegistry   name: 'gulp',
+160 silly mapToRegistry   rawSpec: '',
+160 silly mapToRegistry   spec: 'latest',
+160 silly mapToRegistry   type: 'tag' }
+161 silly mapToRegistry uri https://registry.npmjs.org/gulp
+162 verbose addNameRange registry:https://registry.npmjs.org/gulp not in flight; fetching
+163 silly resolveWithNewModule gulp-cli@1.3.0 checking installable status
+164 silly cache add args [ 'gulp-cli@^1.3.0', null ]
+165 verbose cache add spec gulp-cli@^1.3.0
+166 silly cache add parsed spec Result {
+166 silly cache add   raw: 'gulp-cli@^1.3.0',
+166 silly cache add   scope: null,
+166 silly cache add   escapedName: 'gulp-cli',
+166 silly cache add   name: 'gulp-cli',
+166 silly cache add   rawSpec: '^1.3.0',
+166 silly cache add   spec: '>=1.3.0 <2.0.0',
+166 silly cache add   type: 'range' }
+167 silly addNamed gulp-cli@>=1.3.0 <2.0.0
+168 verbose addNamed ">=1.3.0 <2.0.0" is a valid semver range for gulp-cli
+169 silly addNameRange { name: 'gulp-cli', range: '>=1.3.0 <2.0.0', hasData: false }
+170 silly mapToRegistry name gulp-cli
+171 silly mapToRegistry using default registry
+172 silly mapToRegistry registry https://registry.npmjs.org/
+173 silly mapToRegistry data Result {
+173 silly mapToRegistry   raw: 'gulp-cli',
+173 silly mapToRegistry   scope: null,
+173 silly mapToRegistry   escapedName: 'gulp-cli',
+173 silly mapToRegistry   name: 'gulp-cli',
+173 silly mapToRegistry   rawSpec: '',
+173 silly mapToRegistry   spec: 'latest',
+173 silly mapToRegistry   type: 'tag' }
+174 silly mapToRegistry uri https://registry.npmjs.org/gulp-cli
+175 verbose addNameRange registry:https://registry.npmjs.org/gulp-cli not in flight; fetching
+176 verbose get https://registry.npmjs.org/gulp-cli not expired, no request
+177 silly addNameRange number 2 { name: 'gulp-cli', range: '>=1.3.0 <2.0.0', hasData: true }
+178 silly addNameRange versions [ 'gulp-cli',
+178 silly addNameRange   [ '0.1.0',
+178 silly addNameRange     '0.1.3',
+178 silly addNameRange     '0.1.4',
+178 silly addNameRange     '0.1.5',
+178 silly addNameRange     '0.2.0',
+178 silly addNameRange     '0.3.0',
+178 silly addNameRange     '1.0.0',
+178 silly addNameRange     '1.1.0',
+178 silly addNameRange     '1.1.1',
+178 silly addNameRange     '1.2.0',
+178 silly addNameRange     '1.2.1',
+178 silly addNameRange     '1.2.2',
+178 silly addNameRange     '1.3.0' ] ]
+179 silly addNamed gulp-cli@1.3.0
+180 verbose addNamed "1.3.0" is a plain semver version for gulp-cli
+181 verbose get https://registry.npmjs.org/gulp not expired, no request
+182 silly addNameRange number 2 { name: 'gulp', range: '>=3.9.1 <4.0.0', hasData: true }
+183 silly addNameRange versions [ 'gulp',
+183 silly addNameRange   [ '0.0.1',
+183 silly addNameRange     '0.0.2',
+183 silly addNameRange     '0.0.3',
+183 silly addNameRange     '0.0.4',
+183 silly addNameRange     '0.0.5',
+183 silly addNameRange     '0.0.7',
+183 silly addNameRange     '0.0.8',
+183 silly addNameRange     '0.0.9',
+183 silly addNameRange     '0.1.0',
+183 silly addNameRange     '0.2.0',
+183 silly addNameRange     '1.0.0',
+183 silly addNameRange     '1.1.0',
+183 silly addNameRange     '1.2.0',
+183 silly addNameRange     '1.2.1',
+183 silly addNameRange     '2.0.0',
+183 silly addNameRange     '2.0.1',
+183 silly addNameRange     '2.1.0',
+183 silly addNameRange     '2.2.0',
+183 silly addNameRange     '2.3.0',
+183 silly addNameRange     '2.4.0',
+183 silly addNameRange     '2.4.1',
+183 silly addNameRange     '2.6.0',
+183 silly addNameRange     '2.6.1',
+183 silly addNameRange     '2.7.0',
+183 silly addNameRange     '3.0.0',
+183 silly addNameRange     '3.1.1',
+183 silly addNameRange     '3.1.2',
+183 silly addNameRange     '3.1.3',
+183 silly addNameRange     '3.1.4',
+183 silly addNameRange     '3.2.0',
+183 silly addNameRange     '3.2.1',
+183 silly addNameRange     '3.2.2',
+183 silly addNameRange     '3.2.3',
+183 silly addNameRange     '3.2.4',
+183 silly addNameRange     '3.2.5',
+183 silly addNameRange     '3.3.0',
+183 silly addNameRange     '3.3.1',
+183 silly addNameRange     '3.3.2',
+183 silly addNameRange     '3.3.4',
+183 silly addNameRange     '3.4.0',
+183 silly addNameRange     '3.5.0',
+183 silly addNameRange     '3.5.1',
+183 silly addNameRange     '3.5.2',
+183 silly addNameRange     '3.5.5',
+183 silly addNameRange     '3.5.6',
+183 silly addNameRange     '3.6.0',
+183 silly addNameRange     '3.6.1',
+183 silly addNameRange     '3.6.2',
+183 silly addNameRange     '3.7.0',
+183 silly addNameRange     '3.8.0',
+183 silly addNameRange     '3.8.1',
+183 silly addNameRange     '3.8.2',
+183 silly addNameRange     '3.8.3',
+183 silly addNameRange     '3.8.4',
+183 silly addNameRange     '3.8.5',
+183 silly addNameRange     '3.8.6',
+183 silly addNameRange     '3.8.7',
+183 silly addNameRange     '3.8.8',
+183 silly addNameRange     '3.8.9',
+183 silly addNameRange     '3.8.10',
+183 silly addNameRange     '3.8.11',
+183 silly addNameRange     '3.9.0',
+183 silly addNameRange     '3.9.1' ] ]
+184 silly addNamed gulp@3.9.1
+185 verbose addNamed "3.9.1" is a plain semver version for gulp
+186 silly cache afterAdd gulp-cli@1.3.0
+187 verbose afterAdd /root/.npm/gulp-cli/1.3.0/package/package.json not in flight; writing
+188 verbose correctMkdir /root/.npm correctMkdir not in flight; initializing
+189 silly cache afterAdd gulp@3.9.1
+190 verbose afterAdd /root/.npm/gulp/3.9.1/package/package.json not in flight; writing
+191 verbose correctMkdir /root/.npm correctMkdir not in flight; initializing
+192 verbose afterAdd /root/.npm/gulp-cli/1.3.0/package/package.json written
+193 verbose afterAdd /root/.npm/gulp/3.9.1/package/package.json written
+194 silly get cb [ 304, undefined ]
+195 verbose etag https://registry.npmjs.org/gulp-sourcemaps from cache
+196 verbose get saving gulp-sourcemaps to /root/.npm/registry.npmjs.org/gulp-sourcemaps/.cache.json
+197 verbose correctMkdir /root/.npm correctMkdir not in flight; initializing
+198 silly get cb [ 304, undefined ]
+199 verbose etag https://registry.npmjs.org/gulp-sass from cache
+200 verbose get saving gulp-sass to /root/.npm/registry.npmjs.org/gulp-sass/.cache.json
+201 verbose correctMkdir /root/.npm correctMkdir not in flight; initializing
+202 silly resolveWithNewModule gulp-sourcemaps@2.6.0 checking installable status
+203 silly cache add args [ 'gulp-sourcemaps@^2.6.0', null ]
+204 verbose cache add spec gulp-sourcemaps@^2.6.0
+205 silly cache add parsed spec Result {
+205 silly cache add   raw: 'gulp-sourcemaps@^2.6.0',
+205 silly cache add   scope: null,
+205 silly cache add   escapedName: 'gulp-sourcemaps',
+205 silly cache add   name: 'gulp-sourcemaps',
+205 silly cache add   rawSpec: '^2.6.0',
+205 silly cache add   spec: '>=2.6.0 <3.0.0',
+205 silly cache add   type: 'range' }
+206 silly addNamed gulp-sourcemaps@>=2.6.0 <3.0.0
+207 verbose addNamed ">=2.6.0 <3.0.0" is a valid semver range for gulp-sourcemaps
+208 silly addNameRange { name: 'gulp-sourcemaps',
+208 silly addNameRange   range: '>=2.6.0 <3.0.0',
+208 silly addNameRange   hasData: false }
+209 silly mapToRegistry name gulp-sourcemaps
+210 silly mapToRegistry using default registry
+211 silly mapToRegistry registry https://registry.npmjs.org/
+212 silly mapToRegistry data Result {
+212 silly mapToRegistry   raw: 'gulp-sourcemaps',
+212 silly mapToRegistry   scope: null,
+212 silly mapToRegistry   escapedName: 'gulp-sourcemaps',
+212 silly mapToRegistry   name: 'gulp-sourcemaps',
+212 silly mapToRegistry   rawSpec: '',
+212 silly mapToRegistry   spec: 'latest',
+212 silly mapToRegistry   type: 'tag' }
+213 silly mapToRegistry uri https://registry.npmjs.org/gulp-sourcemaps
+214 verbose addNameRange registry:https://registry.npmjs.org/gulp-sourcemaps not in flight; fetching
+215 silly resolveWithNewModule gulp-sass@3.1.0 checking installable status
+216 silly cache add args [ 'gulp-sass@^3.1.0', null ]
+217 verbose cache add spec gulp-sass@^3.1.0
+218 silly cache add parsed spec Result {
+218 silly cache add   raw: 'gulp-sass@^3.1.0',
+218 silly cache add   scope: null,
+218 silly cache add   escapedName: 'gulp-sass',
+218 silly cache add   name: 'gulp-sass',
+218 silly cache add   rawSpec: '^3.1.0',
+218 silly cache add   spec: '>=3.1.0 <4.0.0',
+218 silly cache add   type: 'range' }
+219 silly addNamed gulp-sass@>=3.1.0 <4.0.0
+220 verbose addNamed ">=3.1.0 <4.0.0" is a valid semver range for gulp-sass
+221 silly addNameRange { name: 'gulp-sass', range: '>=3.1.0 <4.0.0', hasData: false }
+222 silly mapToRegistry name gulp-sass
+223 silly mapToRegistry using default registry
+224 silly mapToRegistry registry https://registry.npmjs.org/
+225 silly mapToRegistry data Result {
+225 silly mapToRegistry   raw: 'gulp-sass',
+225 silly mapToRegistry   scope: null,
+225 silly mapToRegistry   escapedName: 'gulp-sass',
+225 silly mapToRegistry   name: 'gulp-sass',
+225 silly mapToRegistry   rawSpec: '',
+225 silly mapToRegistry   spec: 'latest',
+225 silly mapToRegistry   type: 'tag' }
+226 silly mapToRegistry uri https://registry.npmjs.org/gulp-sass
+227 verbose addNameRange registry:https://registry.npmjs.org/gulp-sass not in flight; fetching
+228 verbose get https://registry.npmjs.org/gulp-sourcemaps not expired, no request
+229 silly addNameRange number 2 { name: 'gulp-sourcemaps',
+229 silly addNameRange   range: '>=2.6.0 <3.0.0',
+229 silly addNameRange   hasData: true }
+230 silly addNameRange versions [ 'gulp-sourcemaps',
+230 silly addNameRange   [ '0.2.0',
+230 silly addNameRange     '0.2.1',
+230 silly addNameRange     '0.3.0',
+230 silly addNameRange     '0.3.1',
+230 silly addNameRange     '0.4.0',
+230 silly addNameRange     '0.4.1',
+230 silly addNameRange     '0.4.2',
+230 silly addNameRange     '0.4.3',
+230 silly addNameRange     '0.4.4',
+230 silly addNameRange     '0.4.5',
+230 silly addNameRange     '0.4.6',
+230 silly addNameRange     '1.0.0',
+230 silly addNameRange     '1.1.0',
+230 silly addNameRange     '1.1.1',
+230 silly addNameRange     '1.1.2',
+230 silly addNameRange     '1.1.3',
+230 silly addNameRange     '1.1.4',
+230 silly addNameRange     '1.1.5',
+230 silly addNameRange     '1.2.0',
+230 silly addNameRange     '1.2.1',
+230 silly addNameRange     '1.2.2',
+230 silly addNameRange     '1.2.3',
+230 silly addNameRange     '1.2.4',
+230 silly addNameRange     '1.2.5',
+230 silly addNameRange     '1.2.6',
+230 silly addNameRange     '1.2.7',
+230 silly addNameRange     '1.2.8',
+230 silly addNameRange     '1.3.0',
+230 silly addNameRange     '1.4.0',
+230 silly addNameRange     '1.5.0',
+230 silly addNameRange     '1.5.1',
+230 silly addNameRange     '1.5.2',
+230 silly addNameRange     '1.6.0',
+230 silly addNameRange     '2.0.0-alpha',
+230 silly addNameRange     '1.7.1',
+230 silly addNameRange     '2.0.0',
+230 silly addNameRange     '2.0.1',
+230 silly addNameRange     '1.7.3',
+230 silly addNameRange     '1.8.1',
+230 silly addNameRange     '2.1.1',
+230 silly addNameRange     '1.9.0',
+230 silly addNameRange     '2.2.0',
+230 silly addNameRange     '1.9.2',
+230 silly addNameRange     '2.2.2',
+230 silly addNameRange     '1.9.3',
+230 silly addNameRange     '2.2.3',
+230 silly addNameRange     '1.10.0',
+230 silly addNameRange     '2.3.0',
+230 silly addNameRange     '1.9.1',
+230 silly addNameRange     '2.2.1',
+230 silly addNameRange     '1.10.1',
+230 silly addNameRange     '2.3.1',
+230 silly addNameRange     '1.11.0',
+230 silly addNameRange     '2.4.0',
+230 silly addNameRange     '1.11.1',
+230 silly addNameRange     '2.4.1',
+230 silly addNameRange     '1.12.0',
+230 silly addNameRange     '2.5.0',
+230 silly addNameRange     '2.5.1',
+230 silly addNameRange     '2.5.2',
+230 silly addNameRange     '2.6.0' ] ]
+231 silly addNamed gulp-sourcemaps@2.6.0
+232 verbose addNamed "2.6.0" is a plain semver version for gulp-sourcemaps
+233 verbose get https://registry.npmjs.org/gulp-sass not expired, no request
+234 silly addNameRange number 2 { name: 'gulp-sass', range: '>=3.1.0 <4.0.0', hasData: true }
+235 silly addNameRange versions [ 'gulp-sass',
+235 silly addNameRange   [ '0.1.0',
+235 silly addNameRange     '0.2.1',
+235 silly addNameRange     '0.2.2',
+235 silly addNameRange     '0.2.3',
+235 silly addNameRange     '0.3.0',
+235 silly addNameRange     '0.4.0',
+235 silly addNameRange     '0.4.1',
+235 silly addNameRange     '0.5.0',
+235 silly addNameRange     '0.5.1',
+235 silly addNameRange     '0.5.2',
+235 silly addNameRange     '0.6.0',
+235 silly addNameRange     '0.7.0',
+235 silly addNameRange     '0.7.1',
+235 silly addNameRange     '0.7.2',
+235 silly addNameRange     '0.7.3',
+235 silly addNameRange     '1.0.0',
+235 silly addNameRange     '1.1.0',
+235 silly addNameRange     '1.2.0',
+235 silly addNameRange     '1.2.1',
+235 silly addNameRange     '1.2.2',
+235 silly addNameRange     '1.2.3',
+235 silly addNameRange     '1.2.4',
+235 silly addNameRange     '1.3.0',
+235 silly addNameRange     '1.3.1',
+235 silly addNameRange     '1.3.2',
+235 silly addNameRange     '1.3.3',
+235 silly addNameRange     '2.0.0-alpha.1',
+235 silly addNameRange     '2.0.0',
+235 silly addNameRange     '2.0.2',
+235 silly addNameRange     '2.0.3',
+235 silly addNameRange     '2.0.4',
+235 silly addNameRange     '2.1.0-beta',
+235 silly addNameRange     '2.1.0',
+235 silly addNameRange     '2.1.1',
+235 silly addNameRange     '2.2.0',
+235 silly addNameRange     '2.3.0-beta.1',
+235 silly addNameRange     '2.3.0',
+235 silly addNameRange     '2.3.1',
+235 silly addNameRange     '2.3.2',
+235 silly addNameRange     '3.0.0',
+235 silly addNameRange     '3.1.0' ] ]
+236 silly addNamed gulp-sass@3.1.0
+237 verbose addNamed "3.1.0" is a plain semver version for gulp-sass
+238 silly cache afterAdd gulp-sourcemaps@2.6.0
+239 verbose afterAdd /root/.npm/gulp-sourcemaps/2.6.0/package/package.json not in flight; writing
+240 verbose correctMkdir /root/.npm correctMkdir not in flight; initializing
+241 silly cache afterAdd gulp-sass@3.1.0
+242 verbose afterAdd /root/.npm/gulp-sass/3.1.0/package/package.json not in flight; writing
+243 verbose correctMkdir /root/.npm correctMkdir not in flight; initializing
+244 verbose afterAdd /root/.npm/gulp-sourcemaps/2.6.0/package/package.json written
+245 verbose afterAdd /root/.npm/gulp-sass/3.1.0/package/package.json written
+246 silly rollbackFailedOptional Starting
+247 silly rollbackFailedOptional Finishing
+248 silly runTopLevelLifecycles Finishing
+249 silly install printInstalled
+250 verbose stack Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+250 verbose stack     at errnoException (dns.js:28:10)
+250 verbose stack     at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:76:26)
+251 verbose cwd /var/www/html
+252 error Linux 4.9.27-moby
+253 error argv "/usr/local/bin/node" "/usr/local/n/versions/node/7.2.1/bin/npm" "install"
+254 error node v7.2.1
+255 error npm  v3.10.10
+256 error code ENOTFOUND
+257 error errno ENOTFOUND
+258 error syscall getaddrinfo
+259 error network getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+260 error network This is most likely not a problem with npm itself
+260 error network and is related to network connectivity.
+260 error network In most cases you are behind a proxy or have bad network settings.
+260 error network
+260 error network If you are behind a proxy, please make sure that the
+260 error network 'proxy' config is set properly.  See: 'npm help config'
+261 verbose exit [ 1, true ]
