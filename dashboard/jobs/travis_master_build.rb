@@ -23,7 +23,7 @@ SCHEDULER.every('30s', first_in: '1s') {
   if build.green?
     health = 'ok'
   elsif build.yellow?
-    health = 'warning'
+    health = 'pending'
   else
     health = 'critical'
   end
