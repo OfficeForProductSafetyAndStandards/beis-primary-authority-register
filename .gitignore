@@ -52,4 +52,5 @@ web/sites/simpletest
 .project
 .settings/
 
+# Exclude test data
 tests/reports/
