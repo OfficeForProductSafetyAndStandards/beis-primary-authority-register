@@ -45,16 +45,16 @@ fi
 # Load the test data:
  
     sleep 5 # Time for the server to boot
-    $PRECOMMAND docker exec -i par_beta_web /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < fresh_drupal_postgres.sql
+    $PRECOMMAND docker exec -it par_beta_web bash -c "/var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < fresh_drupal_postgres.sql"
 
 # Update Drupal
 
-    $PRECOMMAND docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
+    $PRECOMMAND docker exec -it par_beta_web bash -c "sh /var/www/html/drupal-update.sh /var/www/html"
 
 # Install front end dependencies
 
     $PRECOMMAND docker exec -it par_beta_web bash -c "rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
-    $PRECOMMAND docker exec -i par_beta_web /usr/local/n/versions/node/7.2.1/bin/npm run gulp
+    $PRECOMMAND docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm run gulp"
 
 
 
