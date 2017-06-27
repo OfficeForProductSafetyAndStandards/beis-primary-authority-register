@@ -30,7 +30,7 @@ before_script:
  - "gem install travis-artifacts"
 
 script:
-- travis_retry docker exec -i par_beta_web -c "/var/www/html/vendor/phpunit/phpunit/phpunit"
+- travis_retry docker exec -i par_beta_web -c '/var/www/html/vendor/phpunit/phpunit/phpunit; (exit $?)'
 - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
 
 after_script:
