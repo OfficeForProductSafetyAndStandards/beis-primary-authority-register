@@ -9,6 +9,7 @@
 
 # Ignore all node_modules folders.
 node_modules/
+npm-debug.log
 
 # Exclude the main drupal scaffold files.
 # If we want to make changes to any of these files
