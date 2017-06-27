@@ -1,0 +1,16 @@
+<h1 class="header" data-bind="header"></h1>
+
+<ul class="list">
+  <li class="commit" data-foreach-commit="commits">
+    <p class="title message" data-bind="commit.message"></p>
+    <div class="commit_info">
+      <p class="hash" data-bind="commit.number"></p>
+      <span class="creator" data-bind="commit.creator"></span>
+      <span>•</span>
+      <span class="updated_at" data-bind="commit.created_at"></span>
+    </div>
+  </li>
+</ul>
+
+<p class="more-info" data-bind="moreinfo"></p>
+<p class="updated-at" data-bind="updatedAtMessage"></p>

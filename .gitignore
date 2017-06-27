@@ -9,6 +9,7 @@
 
 # Ignore all node_modules folders.
 node_modules/
+npm-debug.log
 
 # Exclude the main drupal scaffold files.
 # If we want to make changes to any of these files
@@ -51,7 +52,5 @@ web/sites/simpletest
 .project
 .settings/
 
-# Exclude composer package.
-composer.phar
-
+# Exclude test data
 tests/reports/

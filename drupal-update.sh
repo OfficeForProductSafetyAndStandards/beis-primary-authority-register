@@ -2,8 +2,7 @@
 ## Use as `sh ./docker/drupal-update.sh /var/www/par-beta`
 
 # Pass in the root of the project.
-if [ -n "$1" ]
-then
+if [ -n "$1" ]; then
   ROOT=$1
 else
   echo "Must pass the project root as the first argument";
