@@ -29,7 +29,7 @@ esac
 
 # Install dependencies
 
-    $PRECOMMAND docker exec -ti par_beta_web bash -c 'su - composer -c "cd /var/www/html && php composer.phar install"'
+    $PRECOMMAND docker exec -ti par_beta_web bash -c 'su - composer -c "cd ../../var/www/html && php composer.phar install"'
 
 # Setup the development settings file:
 
