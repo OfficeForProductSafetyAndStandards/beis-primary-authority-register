@@ -56,11 +56,11 @@ SCHEDULER.every('30s', first_in: '1s') {
       unit_tests = Nokogiri::XML(bucket.objects[test_file].read)
       unit_tests.xpath("/testsuites/testsuite").each do |testsuite|
         test_results.push({
-          heading: "Unit Tests",
-          count: testsuite.attr('tests').value,
-          passed: testsuite.attr('assertions').value,
-          failed: testsuite.attr('failures').value,
-          skipped: testsuite.attr('errors').value,
+          heading: "Unit Tests (#{testsuite.attr('name')})",
+          count: testsuite.attr('tests'),
+          passed: testsuite.attr('assertions'),
+          failed: testsuite.attr('failures'),
+          skipped: testsuite.attr('errors'),
         })
       end
     end
