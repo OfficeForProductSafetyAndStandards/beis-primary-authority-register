@@ -46,3 +46,11 @@ deploy:
   space: sandbox
   on:
     repo: TransformCore/beis-par-beta
+
+addons:
+  artifacts:
+    debug: true
+    paths:
+      - ./tests/reports
+    bucket: transform-par-beta-artifacts
+    s3_region: eu-west-1
