@@ -12,7 +12,7 @@ case "$(uname -s)" in
      echo 'Linux'
      ;;
 
-   CYGWIN*|MINGW32*|MSYS*)
+   CYGWIN*|MINGW32*|MINGW64*|MSYS*)
      echo 'MS Windows'
      dos2unix ../drupal-update.sh
      PRECOMMAND="winpty"
