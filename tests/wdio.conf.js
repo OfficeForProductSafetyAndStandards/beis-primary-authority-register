@@ -121,6 +121,7 @@ exports.config = {
     reporters: ['dot', 'json'],
     reporterOptions: {
         outputDir: './reports/',
+        filename: 'report',
         combined: true
     },
     //
@@ -150,6 +151,7 @@ exports.config = {
         strict: true, // <boolean> fail if there are any undefined or pending
                        // step_definitions
         tags: require('./src/tagProcessor')(process.argv),
+        // tags: require('./src/tagProcessor')(process.argv),
         // <string[]> (expression) only execute the features or scenarios with
         // tags matching the expression
         timeout: 20000,     // <number> timeout for step definitions

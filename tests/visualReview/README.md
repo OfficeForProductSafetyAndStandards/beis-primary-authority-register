@@ -35,3 +35,8 @@ To see the screenshots, open the VisualReview web app ([http://localhost:7000](h
 Navigate to `myProject` -> `mySuite` and open the latest run.
 
 Try changing the `spec.js` test a bit and run the test again to view and evaluate changes between runs.
+
+
+
+docker build -t visualreview .
+docker run -d visualreview
