@@ -7,6 +7,6 @@
   "dependencies": {
     "jasmine": "^2.3.1",
     "protractor": "^1.6.1",
-    "visualreview-protractor": "*"
+    "visualreview-protractor": "0.1.4"
   }
 }
