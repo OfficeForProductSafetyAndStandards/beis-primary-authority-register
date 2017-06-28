@@ -1,25 +1,48 @@
 ## Docker Development Environment
 
+### Prep
+
+If you've not got your key installed already, add your private key:
+
+    ssh-agent bash
+    ssh-add /path/to/private/key/file
+    
 Install [docker](https://docs.docker.com/engine/installation/linux/ubuntu/) (or [Docker for Windows](https://docs.docker.com/docker-for-windows/install/), or [Docker for Mac](https://docs.docker.com/docker-for-mac/install/)), then:
 
     cd docker
-    docker-compose up -d --force-recreate --build && sh setup.sh
+    sh setup.sh
     
 Request the hash salt from another member of the team and add this to the hash setting at the bottom of your local settings file:
 
-    vi ../sites/default/settings.local.php
+    vi ../web/sites/default/settings.local.php
     
 You can then visit the site at:
 
     http://127.0.0.1:8111
+
+### Ubuntu users
+
+You'll need to run setup as root
+    
+    sudo sh reset.sh
+    
+### Windows users
+
+The recommended method for installing on Windows is to use a Git Bash.
     
 ### Docker setup troubleshooting
 
-If the installation appears to be stalled, check that you are not connected to "_The Cloud" as this blocks certain ports that are used by docker-compose.
- 
+If the installation appears to be stalled, check that you are not connected to a public WiFi such as "_The Cloud" as these often block certain ports that are used by docker-compose.
+
+### When switching branches
+
+To reinstall dependencies and update Drupal:
+
+    sh refresh-dependencies.sh
+
 # Cucumberjs/Webdriverio (e2e acceptance testing)
 
-## How to run the test
+## How to run the tests
 
 To run your tests just call the [WDIO runner](http://webdriver.io/guide/testrunner/gettingstarted.html):
 

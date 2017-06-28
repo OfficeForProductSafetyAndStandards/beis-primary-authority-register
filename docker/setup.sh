@@ -1,33 +1,60 @@
+#!/usr/bin/env bash
+
+PRECOMMAND=""
+
+case "$(uname -s)" in
+
+   Darwin)
+     echo 'Mac OS X'
+     ;;
+
+   Linux)
+     echo 'Linux'
+     ;;
+
+   CYGWIN*|MINGW32*|MINGW64*|MSYS*)
+     echo 'MS Windows'
+     dos2unix ../drupal-update.sh
+     PRECOMMAND="winpty"
+     ;;
+
+   *)
+     echo 'other OS' 
+     ;;
+esac
+
+# Pull the docker images
+
+    docker-compose up -d --force-recreate
+
 # Install dependencies
 
-if [ ! -f ../vendor/autoload.php ]; then
-    cd ..
-    sh composer.sh install
-    cd docker
-    # docker exec -i par_beta_web sh /var/www/html/docker/drupal-update.sh
- fi
+    $PRECOMMAND docker exec -ti par_beta_web bash -c 'su - composer -c "cd ../../var/www/html && php composer.phar install"'
 
 # Setup the development settings file:
 
 if [ ! -f ../web/sites/settings.local.php ]; then
-    docker exec -i par_beta_web cp /var/www/html/web/sites/example.settings.local.php /var/www/html/web/sites/default/settings.local.php
-    docker exec -i par_beta_web cat /var/www/html/web/sites/settings.local.php.docker.append >> ../web/sites/default/settings.local.php
+    cp ../web/sites/example.settings.local.php ../web/sites/default/settings.local.php
+    cat ../web/sites/settings.local.php.docker.append >> ../web/sites/default/settings.local.php
 fi
-    
-# Modify the default site's web root
- 
-    docker exec -it par_beta_web sed -i -e 's/html/html\/web/g' /etc/apache2/sites-available/000-default.conf
-    docker restart par_beta_web
     
 # Install test dependencies
  
-    docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
+    $PRECOMMAND docker exec -it par_beta_web bash -c "cd /var/www/html/tests && rm -rf node_modules && ../../../../usr/local/n/versions/node/7.2.1/bin/npm install"
 
 # Load the test data:
  
     sleep 5 # Time for the server to boot
-    docker exec -i par_beta_web /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < fresh_drupal_postgres.sql
+    $PRECOMMAND docker exec -it par_beta_web bash -c "vendor/bin/drush sql-cli @dev --root=/var/www/html/web < docker/fresh_drupal_postgres.sql"
 
+# Update Drupal
+
+    $PRECOMMAND docker exec -it par_beta_web bash -c "sh drupal-update.sh /var/www/html"
+
+# Install front end dependencies
+
+    $PRECOMMAND docker exec -it par_beta_web bash -c "rm -rf node_modules && ../../../usr/local/n/versions/node/7.2.1/bin/npm install"
+    $PRECOMMAND docker exec -it par_beta_web bash -c "../../../usr/local/n/versions/node/7.2.1/bin/npm run gulp"
 
 
 

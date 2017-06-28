@@ -98,7 +98,7 @@
 .column-third,
 .column-one-third {
   float: left;
-  width: 33.3333333333%;
+  width: 33.33333%;
   padding: 0 15px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -106,7 +106,7 @@
 
 .column-two-thirds {
   float: left;
-  width: 66.6666666667%;
+  width: 66.66667%;
   padding: 0 15px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -127,7 +127,7 @@ main {
   font-size: 16px;
   line-height: 1.25;
   font-size: 19px;
-  line-height: 1.3157894737;
+  line-height: 1.31579;
   -webkit-font-smoothing: antialiased; }
 
 .font-xxlarge {
@@ -135,7 +135,7 @@ main {
   font-weight: 400;
   text-transform: none;
   font-size: 53px;
-  line-height: 1.0377358491;
+  line-height: 1.03774;
   font-size: 80px;
   line-height: 1; }
 
@@ -146,16 +146,16 @@ main {
   font-size: 32px;
   line-height: 1.09375;
   font-size: 48px;
-  line-height: 1.0416666667; }
+  line-height: 1.04167; }
 
 .font-large {
   font-family: "nta", Arial, sans-serif;
   font-weight: 400;
   text-transform: none;
   font-size: 24px;
-  line-height: 1.0416666667;
+  line-height: 1.04167;
   font-size: 36px;
-  line-height: 1.1111111111; }
+  line-height: 1.11111; }
 
 .font-medium {
   font-family: "nta", Arial, sans-serif;
@@ -173,14 +173,14 @@ main {
   font-size: 16px;
   line-height: 1.25;
   font-size: 19px;
-  line-height: 1.3157894737; }
+  line-height: 1.31579; }
 
 .font-xsmall {
   font-family: "nta", Arial, sans-serif;
   font-weight: 400;
   text-transform: none;
   font-size: 14px;
-  line-height: 1.1428571429;
+  line-height: 1.14286;
   font-size: 16px;
   line-height: 1.25; }
 
@@ -189,7 +189,7 @@ main {
   font-weight: 700;
   text-transform: none;
   font-size: 53px;
-  line-height: 1.0377358491;
+  line-height: 1.03774;
   font-size: 80px;
   line-height: 1; }
 
@@ -200,16 +200,16 @@ main {
   font-size: 32px;
   line-height: 1.09375;
   font-size: 48px;
-  line-height: 1.0416666667; }
+  line-height: 1.04167; }
 
 .bold-large {
   font-family: "nta", Arial, sans-serif;
   font-weight: 700;
   text-transform: none;
   font-size: 24px;
-  line-height: 1.0416666667;
+  line-height: 1.04167;
   font-size: 36px;
-  line-height: 1.1111111111; }
+  line-height: 1.11111; }
 
 .bold-medium {
   font-family: "nta", Arial, sans-serif;
@@ -227,14 +227,14 @@ main {
   font-size: 16px;
   line-height: 1.25;
   font-size: 19px;
-  line-height: 1.3157894737; }
+  line-height: 1.31579; }
 
 .bold-xsmall {
   font-family: "nta", Arial, sans-serif;
   font-weight: 700;
   text-transform: none;
   font-size: 14px;
-  line-height: 1.1428571429;
+  line-height: 1.14286;
   font-size: 16px;
   line-height: 1.25; }
 
@@ -248,7 +248,7 @@ main {
   font-size: 32px;
   line-height: 1.09375;
   font-size: 48px;
-  line-height: 1.0416666667;
+  line-height: 1.04167;
   margin-top: 0.46875em;
   margin-bottom: 0.9375em;
   margin-top: 0.625em;
@@ -258,9 +258,9 @@ main {
     font-weight: 400;
     text-transform: none;
     font-size: 20px;
-    line-height: 1.1111111111;
+    line-height: 1.11111;
     font-size: 27px;
-    line-height: 1.1111111111;
+    line-height: 1.11111;
     display: block;
     padding-top: 8px;
     padding-bottom: 7px;
@@ -274,13 +274,13 @@ main {
   font-weight: 700;
   text-transform: none;
   font-size: 24px;
-  line-height: 1.0416666667;
+  line-height: 1.04167;
   font-size: 36px;
-  line-height: 1.1111111111;
-  margin-top: 1.0416666667em;
-  margin-bottom: 0.4166666667em;
+  line-height: 1.11111;
+  margin-top: 1.04167em;
+  margin-bottom: 0.41667em;
   margin-top: 1.25em;
-  margin-bottom: 0.5555555556em; }
+  margin-bottom: 0.55556em; }
   .heading-large .heading-secondary {
     font-family: "nta", Arial, sans-serif;
     font-weight: 400;
@@ -308,7 +308,7 @@ main {
   margin-top: 1.25em;
   margin-bottom: 0.5em;
   margin-top: 1.875em;
-  margin-bottom: 0.8333333333em; }
+  margin-bottom: 0.83333em; }
 
 .heading-small {
   font-family: "nta", Arial, sans-serif;
@@ -317,16 +317,16 @@ main {
   font-size: 16px;
   line-height: 1.25;
   font-size: 19px;
-  line-height: 1.3157894737;
+  line-height: 1.31579;
   margin-top: 0.625em;
   margin-bottom: 0.3125em;
-  margin-top: 1.0526315789em; }
+  margin-top: 1.05263em; }
 
 p {
   margin-top: 0.3125em;
   margin-bottom: 1.25em;
-  margin-top: 0.2631578947em;
-  margin-bottom: 1.0526315789em; }
+  margin-top: 0.26316em;
+  margin-bottom: 1.05263em; }
 
 .lede {
   font-family: "nta", Arial, sans-serif;
@@ -364,7 +364,7 @@ p {
   font-weight: 400;
   text-transform: none;
   font-size: 14px;
-  line-height: 1.1428571429;
+  line-height: 1.14286;
   font-size: 16px;
   line-height: 1.25;
   margin-top: 15px;
@@ -435,8 +435,8 @@ hr {
 .data {
   margin-top: 0.3125em;
   margin-bottom: 1.25em;
-  margin-top: 0.2631578947em;
-  margin-bottom: 1.0526315789em; }
+  margin-top: 0.26316em;
+  margin-bottom: 1.05263em; }
 
 .data-item {
   display: block;
@@ -535,7 +535,7 @@ hr {
   background-image: image-url("icon-pointer.png");
   background-repeat: no-repeat;
   background-position: 100% 50%;
-  padding: 0.3684210526em 2.1578947368em 0.2105263158em 0.8421052632em; }
+  padding: 0.36842em 2.15789em 0.21053em 0.84211em; }
   @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 20 / 10), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
     .button-start,
     .button-get-started {
@@ -800,8 +800,8 @@ table {
     font-size: 16px;
     line-height: 1.25;
     font-size: 19px;
-    line-height: 1.3157894737;
-    padding: 0.6315789474em 1.0526315789em 0.4736842105em 0;
+    line-height: 1.31579;
+    padding: 0.63158em 1.05263em 0.47368em 0;
     text-align: left;
     color: #0b0c0c;
     border-bottom: 1px solid #bfc1c3; }
@@ -814,7 +814,7 @@ table {
     font-weight: 400;
     text-transform: none;
     font-size: 14px;
-    line-height: 1.1428571429;
+    line-height: 1.14286;
     font-size: 16px;
     line-height: 1.25;
     text-align: right; }
@@ -824,7 +824,7 @@ table {
   font-weight: 700;
   text-transform: none;
   font-size: 14px;
-  line-height: 1.1428571429;
+  line-height: 1.14286;
   font-size: 16px;
   line-height: 1.25; }
 
@@ -833,7 +833,7 @@ table {
   font-weight: 400;
   text-transform: none;
   font-size: 14px;
-  line-height: 1.1428571429;
+  line-height: 1.14286;
   font-size: 16px;
   line-height: 1.25; }
 
@@ -849,7 +849,7 @@ details {
     color: #005ea5;
     cursor: pointer;
     position: relative;
-    margin-bottom: 0.2631578947em; }
+    margin-bottom: 0.26316em; }
     details summary:hover {
       color: #2b8cc4; }
     details summary:focus {
@@ -867,8 +867,8 @@ details {
   clear: both;
   border-left-style: solid;
   border-color: #bfc1c3;
-  padding: 0.7894736842em;
-  margin-bottom: 0.7894736842em; }
+  padding: 0.78947em;
+  margin-bottom: 0.78947em; }
   .panel :first-child {
     margin-top: 0; }
   .panel :only-child,
@@ -941,7 +941,7 @@ textarea {
   font-size: 16px;
   line-height: 1.25;
   font-size: 19px;
-  line-height: 1.3157894737; }
+  line-height: 1.31579; }
 
 .form-label-bold {
   font-family: "nta", Arial, sans-serif;
@@ -950,7 +950,7 @@ textarea {
   font-size: 16px;
   line-height: 1.25;
   font-size: 19px;
-  line-height: 1.3157894737; }
+  line-height: 1.31579; }
 
 .form-block {
   float: left;
@@ -967,7 +967,7 @@ textarea {
   font-size: 16px;
   line-height: 1.25;
   font-size: 19px;
-  line-height: 1.3157894737;
+  line-height: 1.31579;
   display: block;
   color: #6f777b;
   font-weight: normal;
@@ -989,7 +989,7 @@ textarea {
   font-size: 16px;
   line-height: 1.25;
   font-size: 19px;
-  line-height: 1.3157894737;
+  line-height: 1.31579;
   width: 100%;
   padding: 5px 4px 4px;
   border: 2px solid #0b0c0c;
@@ -1160,7 +1160,7 @@ input[type=number] {
   font-size: 16px;
   line-height: 1.25;
   font-size: 19px;
-  line-height: 1.3157894737;
+  line-height: 1.31579;
   color: #b10e1e;
   display: block;
   clear: both;
@@ -1204,7 +1204,7 @@ input[type=number] {
     font-weight: 400;
     text-transform: none;
     font-size: 14px;
-    line-height: 1.1428571429;
+    line-height: 1.14286;
     font-size: 16px;
     line-height: 1.25;
     float: left;
@@ -1238,7 +1238,7 @@ input[type=number] {
     font-weight: 400;
     text-transform: none;
     font-size: 14px;
-    line-height: 1.1428571429;
+    line-height: 1.14286;
     font-size: 16px;
     line-height: 1.25; }
   .phase-banner .phase-tag {
@@ -1250,7 +1250,7 @@ input[type=number] {
     font-weight: 700;
     text-transform: none;
     font-size: 14px;
-    line-height: 1.1428571429;
+    line-height: 1.14286;
     font-size: 16px;
     line-height: 1.25;
     text-transform: uppercase;
@@ -1276,7 +1276,7 @@ input[type=number] {
     font-weight: 400;
     text-transform: none;
     font-size: 14px;
-    line-height: 1.1428571429;
+    line-height: 1.14286;
     font-size: 16px;
     line-height: 1.25; }
   .phase-banner-alpha .phase-tag,
@@ -1289,7 +1289,7 @@ input[type=number] {
     font-weight: 700;
     text-transform: none;
     font-size: 14px;
-    line-height: 1.1428571429;
+    line-height: 1.14286;
     font-size: 16px;
     line-height: 1.25;
     text-transform: uppercase;
@@ -1311,7 +1311,7 @@ input[type=number] {
   font-weight: 700;
   text-transform: none;
   font-size: 14px;
-  line-height: 1.1428571429;
+  line-height: 1.14286;
   font-size: 16px;
   line-height: 1.25;
   text-transform: uppercase;
@@ -1647,7 +1647,7 @@ button:focus {
       font-weight: 400;
       text-transform: none;
       font-size: 14px;
-      line-height: 1.1428571429;
+      line-height: 1.14286;
       font-size: 16px;
       line-height: 1.25;
       color: #fff;
@@ -1706,12 +1706,12 @@ button:focus {
         font-size: 12px;
         line-height: 1.25;
         font-size: 14px;
-        line-height: 1.4285714286;
+        line-height: 1.42857;
         font-family: "nta", Arial, sans-serif;
         font-weight: 700;
         text-transform: none;
         font-size: 14px;
-        line-height: 1.1428571429;
+        line-height: 1.14286;
         font-size: 16px;
         line-height: 1.25;
         line-height: 23px; }
@@ -1752,7 +1752,7 @@ button:focus {
     font-weight: 400;
     text-transform: none;
     font-size: 14px;
-    line-height: 1.1428571429;
+    line-height: 1.14286;
     font-size: 16px;
     line-height: 1.25;
     margin-top: 0;
@@ -1837,7 +1837,7 @@ button:focus {
           font-weight: 400;
           text-transform: none;
           font-size: 14px;
-          line-height: 1.1428571429;
+          line-height: 1.14286;
           font-size: 16px;
           line-height: 1.25;
           margin: 0;
@@ -1847,7 +1847,7 @@ button:focus {
       font-weight: 400;
       text-transform: none;
       font-size: 14px;
-      line-height: 1.1428571429;
+      line-height: 1.14286;
       font-size: 16px;
       line-height: 1.25;
       margin: 30px 0 0 0;
@@ -1891,7 +1891,7 @@ button:focus {
 
 .column-third {
   float: left;
-  width: 33.3333333333%;
+  width: 33.33333%;
   padding: 0 15px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -1899,7 +1899,7 @@ button:focus {
 
 .column-two-thirds {
   float: left;
-  width: 66.6666666667%;
+  width: 66.66667%;
   padding: 0 15px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -1907,10 +1907,10 @@ button:focus {
 
 .column-desktop-third {
   float: left;
-  width: 33.3333333333%;
+  width: 33.33333%;
   padding: 0 15px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-/*# sourceMappingURL=govuk-template-ie8.css.map */
+/*# sourceMappingURL=web/themes/custom/par_theme/assets/stylesheets/govuk-template-ie8.css.map */

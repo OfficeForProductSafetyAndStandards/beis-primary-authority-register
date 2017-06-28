@@ -1,6 +1,6 @@
 FROM php:7.1-apache
 RUN sleep 5 && sh -c "echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections" \
-    && sh -c "debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections" \
+    && sleep 5 && sh -c "debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections" \
     && apt-get update && apt-get install -y wget npm \
     && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
     && sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" >> /etc/apt/sources.list.d/postgresql.list' \ 
@@ -10,6 +10,7 @@ RUN sleep 5 && sh -c "echo debconf shared/accepted-oracle-license-v1-1 select tr
         libmcrypt-dev \
         libpng12-dev \
         libpq-dev \
+        php5-cli \
         postgresql-client-9.6 \
         git \
         software-properties-common \

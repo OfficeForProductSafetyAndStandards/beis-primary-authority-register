@@ -4,54 +4,37 @@
 
 language: php
 php:
-- '5.6'
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - oracle-java8-installer
-      - g++-6
-before_script:
-  - sudo apt-get update
-  - sudo apt-get install apache2 libapache2-mod-fastcgi
-### enable php-fpm
-  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-  - sudo a2enmod rewrite actions fastcgi alias
-  - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
-### configure apache virtual hosts
-  - sudo cp -f build/travis-ci-apache /etc/apache2/sites-available/default
-  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
-  - sudo service apache2 restart
-### install test dependencies
-  - nvm install 7.2.1
-  - git clone https://github.com/tj/n
-  - cd n
-  - sudo make install
-  - sudo n 7.2.1
-  - cd ../tests
-  - /usr/local/n/versions/node/7.2.1/bin/npm install
-  - cd ..
-  - rm -rf n
-before_install:
-- psql -c 'create database par;' -U postgres
-env:
-  global:
-    SIMPLETEST_BASE_URL: http://127.0.0.1:9000
-    SIMPLETEST_DB: pgsql://postgres@127.0.0.1/par
-    VCAP_SERVICES: '{''postgres'': [{''credentials'': {''database'': ''par'', ''username'':
-      ''par'', ''password'': '''', ''host'': ''localhost'', ''post'': ''5432'', ''driver'':
-      ''pgsql'', ''namespace'' => ''Drupal\Core\Database\Driver\pgsql'' } }]}'
+  - 7.1
+services:
+  - docker
 install:
-- sudo sed -e "s?PAR_HASH_SALT?$PAR_HASH_SALT?g" --in-place web/sites/default/settings.php
-- composer install
+  - composer install
+  - sudo sed -e "s?PAR_HASH_SALT?$PAR_HASH_SALT?g" --in-place web/sites/default/settings.php
+  - cd docker
+  - docker-compose up -d --force-recreate --build
+  - cp ../web/sites/example.settings.local.php ../web/sites/default/settings.local.php
+  - cat ../web/sites/settings.local.php.docker.append >> ../web/sites/default/settings.local.php
+  - cd ..
+  - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
+  - docker exec -it par_beta_web bash -c "npm run gulp"
+  - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
+  - sleep 5 # Time for the server to boot
+  - docker exec -i par_beta_web /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < docker/fresh_drupal_postgres.sql
+  - docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
+  - 'echo "#${TRAVIS_BUILD_NUMBER}: $(date -u)" > web/build_version.txt'
 
 ########################
 ### TEST
 ########################
+before_script:
+ - "gem install travis-artifacts"
 
-script: cd tests && ./node_modules/.bin/wdio ./wdio.BUILD.conf.js && cd .. && ./vendor/bin/phpunit --testsuite=par --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter"
+script:
+- travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
+- travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
+
+after_script:
+  - "travis-artifacts upload"
 
 ########################
 ### DEPLOY
@@ -67,3 +50,12 @@ deploy:
   space: sandbox
   on:
     repo: TransformCore/beis-par-beta
+
+addons:
+  artifacts:
+    debug: true
+    paths:
+      - ./tests/reports
+    target_paths: tests/$TRAVIS_BUILD_NUMBER
+    bucket: transform-par-beta-artifacts
+    s3_region: eu-west-1

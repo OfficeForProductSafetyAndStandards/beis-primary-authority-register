@@ -1,0 +1,23 @@
+<h1 class="header" data-bind="header"></h1>
+
+<ul class="list">
+  <li class="result" data-foreach-result="results">
+    <p class="title" data-bind="result.heading"></p>
+    <div class="result_info">
+      <span class="label">Total:</span>
+      <span class="count value" data-bind="result.count"></span>
+      <span>•</span>
+      <span class="label">Passed:</span>
+      <span class="passed value" data-bind="result.passed"></span>
+      <span>•</span>
+      <span class="label">Failed:</span>
+      <span class="failed value" data-bind="result.failed"></span>
+      <span>•</span>
+      <span class="label">Skipped:</span>
+      <span class="skipped value" data-bind="result.skipped"></span>
+    </div>
+  </li>
+</ul>
+
+<p class="more-info" data-bind="moreinfo"></p>
+<p class="updated-at" data-bind="updatedAtMessage"></p>

@@ -7,7 +7,9 @@
 /web/profiles/contrib/
 /web/libraries/
 
-/tests/node_modules/
+# Ignore all node_modules folders.
+node_modules/
+npm-debug.log
 
 # Exclude the main drupal scaffold files.
 # If we want to make changes to any of these files
@@ -20,6 +22,7 @@ web/.eslintignore
 web/.eslintrc.json
 web/.gitattributes
 web/.htaccess
+private/.htaccess
 web/index.php
 web/sites/default/default.settings.php
 web/sites/default/default.services.yml
@@ -27,6 +30,11 @@ web/sites/development.services.yml
 web/sites/example.settings.local.php
 web/sites/example.sites.php
 web/update.php
+
+# Ignore CSS stylesheet/maps.
+web/themes/custom/par_theme/css/
+web/themes/custom/par_theme/map/
+web/themes/custom/par_theme/assets/vendor/
 
 # Exclude Drupal files.
 /web/sites/*/files/
@@ -44,5 +52,5 @@ web/sites/simpletest
 .project
 .settings/
 
-# Exclude composer package.
-composer.phar
+# Exclude test data
+tests/reports/

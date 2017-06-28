@@ -33,7 +33,7 @@ SCHEDULER.every('4s', first_in: '1s') {
   response = conn.get '/health'
   if response && response.success? && !response.body.nil?
     health = 'ok'
-  elsif
+  else
     health = 'critical'
   end
 

@@ -20,39 +20,4 @@ class StyleguideController extends ControllerBase {
 
     return $build;
   }
-
-  /**
-   * The main page for showing all useful form field types.
-   */
-  public function forms() {
-
-    $form['textfield'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Basic textfield'),
-      '#required' => TRUE,
-      '#prefix' => '<form>',
-      '#suffix' => '(suffix)',
-    );
-    $form['checkbox'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Boolean checkbox'),
-      '#prefix' => '(prefix)',
-      '#suffix' => '(suffix)',
-    );
-    $form['textarea'] = array(
-      '#type' => 'textarea',
-      '#title' => t('Basic textarea'),
-      '#prefix' => '(prefix)',
-      '#suffix' => '(suffix)',
-    );
-    $form['submit'] = array(
-      '#type' => 'submit',
-      '#value' => t('Submit button'),
-      '#prefix' => '(prefix)',
-      '#suffix' => '(suffix)',
-    );
-
-    return $form;
-  }
-
 }
