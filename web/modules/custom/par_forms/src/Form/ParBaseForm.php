@@ -188,20 +188,37 @@ abstract class ParBaseForm extends FormBase {
   public function getFileElements(array $form) {
     $elements = [];
 
-    foreach (Element::children($form) as $key => $element) {
-      if (isset($element['#type']) && 'file' === isset($element['#type'])) {
-        $elements[$key] = true;
+    foreach ($this->getChildren($form) as $key) {
+      $element = $form[$key];
+      if (isset($element['#type']) && 'file' === $element['#type']) {
+          $elements[$key] = [$key];
       }
-      if ($children = Element::children($form)) {
-        // Recusively iterate through all elements.
-        $child_elements = $this->getFileElements($children);
-        if (!empty($child_elements)) {
-          $elements[$key] = $child_elements;
+      if ($children = $this->getChildren($element)) {
+        foreach ($children as $child_key) {
+          // Recusively iterate through all elements.
+          $file_elements[$key] = $element[$child_key];
+        }
+        $this->getFileElements($file_elements);
+        var_dump($element[$child_key], $file_elements);
+        if (!empty($file_elements)) {
+          $elements[$child_key] = [$key, $child_key];
         }
       }
     }
 
     return $elements;
+  }
+
+  /**
+   * Call the Drupal static method from a helper method to make testable.
+   *
+   * @param array $form
+   *   A standard Drupal form array.
+   *
+   * @return NULL|array
+   */
+  public function getChildren(array $form) {
+    return Element::children($form);
   }
 
   /**
