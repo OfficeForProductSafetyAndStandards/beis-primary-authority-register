@@ -33,10 +33,16 @@ The recommended method for installing on Windows is to use a Git Bash.
 ### Docker setup troubleshooting
 
 If the installation appears to be stalled, check that you are not connected to a public WiFi such as "_The Cloud" as these often block certain ports that are used by docker-compose.
- 
+
+### When switching branches
+
+To reinstall dependencies and update Drupal:
+
+    sh refresh-dependencies.sh && sh ../drupal-update.sh
+
 # Cucumberjs/Webdriverio (e2e acceptance testing)
 
-## How to run the test
+## How to run the tests
 
 To run your tests just call the [WDIO runner](http://webdriver.io/guide/testrunner/gettingstarted.html):
 
