@@ -33,6 +33,10 @@ esac
 
     $PRECOMMAND docker exec -it par_beta_web bash -c "rm -rf node_modules && ../../../usr/local/n/versions/node/7.2.1/bin/npm install"
     $PRECOMMAND docker exec -it par_beta_web bash -c "../../../usr/local/n/versions/node/7.2.1/bin/npm run gulp"
+    
+# Update Drupal
+    
+    $PRECOMMAND docker exec -it par_beta_web bash -c "sh drupal-update.sh /var/www/html"
 
 
 

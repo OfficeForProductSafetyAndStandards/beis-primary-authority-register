@@ -38,7 +38,7 @@ If the installation appears to be stalled, check that you are not connected to a
 
 To reinstall dependencies and update Drupal:
 
-    sh refresh-dependencies.sh && sh ../drupal-update.sh
+    sh refresh-dependencies.sh
 
 # Cucumberjs/Webdriverio (e2e acceptance testing)
 
