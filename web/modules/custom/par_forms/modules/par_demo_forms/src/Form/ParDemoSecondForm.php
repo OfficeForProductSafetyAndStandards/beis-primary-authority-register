@@ -26,10 +26,10 @@ class ParDemoSecondForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $retrieved = $this->getTempData();
 
-    $form['job'] = [
-      '#type' => 'textfield',
-      '#title' => t('Job'),
-      '#default_value' => $retrieved['job'] ?: '',
+    $form['file'] = [
+      '#type' => 'file',
+      '#title' => t('Upload a file'),
+      '#default_value' => isset($retrieved['file']) ? ['fids' => $retrieved['file']] : '',
     ];
 
     $form['next'] = [

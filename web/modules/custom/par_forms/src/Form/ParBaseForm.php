@@ -4,6 +4,7 @@ namespace Drupal\par_forms\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\SessionManagerInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
@@ -123,6 +124,11 @@ abstract class ParBaseForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    // Save any files
+    if ($form_state->hasFileElement()) {
+      var_dump($form);
+      exit;
+    }
     $this->setTempData($form_state);
     $form_state->setRedirect($this->getNextStep());
   }
@@ -169,6 +175,33 @@ abstract class ParBaseForm extends FormBase {
     // Start an anonymous session if required.
     $this->startAnonymousSession();
     $this->store->set($this->getFormKey(), $data->getValues());
+  }
+
+  /**
+   * Helper to get all file form elements.
+   *
+   * @param array $form
+   *   A standard Drupal form array.
+   *
+   * @return array
+   */
+  public function getFileElements(array $form) {
+    $elements = [];
+
+    foreach (Element::children($form) as $key => $element) {
+      if (isset($element['#type']) && 'file' === isset($element['#type'])) {
+        $elements[$key] = true;
+      }
+      if ($children = Element::children($form)) {
+        // Recusively iterate through all elements.
+        $child_elements = $this->getFileElements($children);
+        if (!empty($child_elements)) {
+          $elements[$key] = $child_elements;
+        }
+      }
+    }
+
+    return $elements;
   }
 
   /**
