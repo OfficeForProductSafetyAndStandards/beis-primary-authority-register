@@ -3,6 +3,6 @@ source 'https://rubygems.org'
 gem 'smashing'
 gem 'thin'
 
+gem 'aws-sdk', '< 2'
 gem 'octokit'
-
 gem 'travis'

@@ -8,29 +8,33 @@ php:
 services:
   - docker
 install:
-- composer install
-- sudo sed -e "s?PAR_HASH_SALT?$PAR_HASH_SALT?g" --in-place web/sites/default/settings.php
-- cd docker 
-- docker-compose up -d --force-recreate --build
-- cp ../web/sites/example.settings.local.php ../web/sites/default/settings.local.php
-- cat ../web/sites/settings.local.php.docker.append >> ../web/sites/default/settings.local.php
-- cd ..
-- docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
-- docker exec -it par_beta_web bash -c "npm install -g gulp-cli"
-- docker exec -it par_beta_web bash -c "gulp build"
-- docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
-- sleep 5 # Time for the server to boot
-- docker exec -i par_beta_web /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < docker/fresh_drupal_postgres.sql
-- docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
-- echo $TRAVIS_BUILD_NUMBER > web/build_version.txt
+  - composer install
+  - sudo sed -e "s?PAR_HASH_SALT?$PAR_HASH_SALT?g" --in-place web/sites/default/settings.php
+  - cd docker
+  - docker-compose up -d --force-recreate --build
+  - cp ../web/sites/example.settings.local.php ../web/sites/default/settings.local.php
+  - cat ../web/sites/settings.local.php.docker.append >> ../web/sites/default/settings.local.php
+  - cd ..
+  - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
+  - docker exec -it par_beta_web bash -c "npm run gulp"
+  - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
+  - sleep 5 # Time for the server to boot
+  - docker exec -i par_beta_web /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < docker/fresh_drupal_postgres.sql
+  - docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
+  - 'echo "#${TRAVIS_BUILD_NUMBER}: $(date -u)" > web/build_version.txt'
 
 ########################
 ### TEST
 ########################
+before_script:
+ - "gem install travis-artifacts"
 
 script:
+- travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
 - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
-- ./vendor/phpunit/phpunit/phpunit
+
+after_script:
+  - "travis-artifacts upload"
 
 ########################
 ### DEPLOY
@@ -46,3 +50,12 @@ deploy:
   space: sandbox
   on:
     repo: TransformCore/beis-par-beta
+
+addons:
+  artifacts:
+    debug: true
+    paths:
+      - ./tests/reports
+    target_paths: tests/$TRAVIS_BUILD_NUMBER
+    bucket: transform-par-beta-artifacts
+    s3_region: eu-west-1
