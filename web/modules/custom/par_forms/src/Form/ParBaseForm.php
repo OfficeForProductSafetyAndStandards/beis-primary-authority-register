@@ -43,6 +43,19 @@ abstract class ParBaseForm extends FormBase {
   protected $flow;
 
   /**
+   * Data for a form can come from the Temp Store of from an existing entity.
+   *
+   * @var string
+   *   A data form this form.
+   */
+  protected $data;
+
+  /**
+   * The location for storing all documents uploaded through this form handler.
+   */
+  const PRIVATE_DOCS_DIR = 'private://par-documents/';
+
+  /**
    * @var string
    *   A machine safe value representing any states or combination of states that alter the form behaviour.
    *
@@ -64,16 +77,7 @@ abstract class ParBaseForm extends FormBase {
     /** @var \Drupal\user\PrivateTempStore store */
     $this->store = $temp_store_factory->get('par_forms_flows');
 
-    // We need to know how to handle clearing old data.
-
-    // We need to know how to persist the flow name through the flow.
-    // We can't have it looked up based on the route as the same
-    // route may exist in multiple flows.
-
-    // Similarly we need to know how to persist the state.
-    // Such that we can go through the same flow and not recall
-    // data from when we were going through the flow in another state
-    // such as adding vs editing, or as two languages.
+    $this->data = $this->getTempData();
   }
 
   /**
@@ -114,6 +118,23 @@ abstract class ParBaseForm extends FormBase {
   }
 
   /**
+   * Get form data.
+   */
+  protected function getFormDataByKey($key, $default = NULL) {
+    if (!$default) {
+      $default = '';
+    }
+    return isset($this->data[$key]) ? $this->data[$key] : $default;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildForm(array $form, FormStateInterface $form_state) {
+    $form['#tree'] = false;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
@@ -126,9 +147,18 @@ abstract class ParBaseForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Save any files
     if ($form_state->hasFileElement()) {
-      var_dump($form);
-      exit;
+      $file_elements = $this->getFileElements($form);
+      foreach ($file_elements as $key => $element) {
+        if ($form['#tree']) {
+          $this->saveFile($key, $element, $form_state);
+        }
+        else {
+          $this->saveFile($key, $element, $form_state);
+        }
+
+      }
     }
+
     $this->setTempData($form_state);
     $form_state->setRedirect($this->getNextStep());
   }
@@ -178,6 +208,42 @@ abstract class ParBaseForm extends FormBase {
   }
 
   /**
+   * Save form file elements.
+   *
+   * @param string|array $element
+   *   The name of the file element
+   * @param string|array
+   *   The associative array of element keys.
+   * @param FormStateInterface $form_state
+   *   The Drupal Form State
+   *
+   * @return array|\Drupal\file\FileInterface|null|false
+   */
+  public function saveFile($name, $element, FormStateInterface &$form_state) {
+    $destination = self::PRIVATE_DOCS_DIR . $name;
+    file_prepare_directory($destination, FILE_CREATE_DIRECTORY);
+
+    $validators = [
+      'file_validate_extensions' => [$form_state->getValue('extensions')]
+    ];
+
+    // For some as yet unknown reason we have to loop
+    // through all the elements keys until we find the file.
+    // It's usually the first key though.
+    $all_file_keys = $all_files = \Drupal::request()->files->get('files', []);
+    foreach ($element as $key) {
+      if ($all_file_keys[$key]) {
+        $file_key = $key;
+      }
+      continue;
+    }
+    $file = file_save_upload($file_key, $validators, $destination);
+    if ($file) {
+      $form_state->setValue($element, $file);
+    }
+  }
+
+  /**
    * Helper to get all file form elements.
    *
    * @param array $form
@@ -185,28 +251,40 @@ abstract class ParBaseForm extends FormBase {
    *
    * @return array
    */
-  public function getFileElements(array $form) {
+  public function getFileElements(array $form, $parent_keys = []) {
     $elements = [];
 
-    foreach ($this->getChildren($form) as $key) {
+    foreach ($this->getChildrenKeys($form) as $key) {
       $element = $form[$key];
       if (isset($element['#type']) && 'file' === $element['#type']) {
           $elements[$key] = [$key];
       }
-      if ($children = $this->getChildren($element)) {
-        foreach ($children as $child_key) {
-          // Recusively iterate through all elements.
-          $file_elements[$key] = $element[$child_key];
-        }
-        $this->getFileElements($file_elements);
-        var_dump($element[$child_key], $file_elements);
-        if (!empty($file_elements)) {
-          $elements[$child_key] = [$key, $child_key];
+
+      if ($children = $this->getChildrenByKeys($element, $this->getChildrenKeys($element))) {
+        $parent_keys[] = $key;
+        foreach ($this->getFileElements($children, $parent_keys) as $child_key => $child) {
+          $elements[$child_key] = array_merge($parent_keys, [$child_key]);
         }
       }
     }
 
     return $elements;
+  }
+
+  /**
+   * Helper function to return multiple keys of a given array.
+   *
+   * @param array $elements
+   * @param array $keys
+   *
+   * @return array
+   */
+  public function getChildrenByKeys(array $elements, array $keys) {
+    $children = [];
+    foreach ($keys as $key) {
+      $children[$key] = $elements[$key];
+    }
+    return $children;
   }
 
   /**
@@ -217,7 +295,7 @@ abstract class ParBaseForm extends FormBase {
    *
    * @return NULL|array
    */
-  public function getChildren(array $form) {
+  public function getChildrenKeys(array $form) {
     return Element::children($form);
   }
 

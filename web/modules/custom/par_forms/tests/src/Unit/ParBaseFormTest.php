@@ -91,8 +91,11 @@ class ParBaseFormTest extends UnitTestCase {
     ];
 
     $file_elements = $this->baseForm->getFileElements($form);
-    $this->assertArrayHasKey('second_child', $file_elements, "Simple file fields found.");
-    $this->assertArrayHasKey('fourth_child', $file_elements, "Nested file fields found.");
-    $this->assertArrayNotHasKey('first_child', $file_elements, "Non-file fields have not been found.");
+    // Check the array is as expected.
+    $expected = [
+      "second_child" => ["second_child"],
+      "fourth_child" => ["third_child", "fourth_child"],
+    ];
+    $this->assertArrayEquals($expected, $file_elements, "The file elements were found.");
   }
 }
