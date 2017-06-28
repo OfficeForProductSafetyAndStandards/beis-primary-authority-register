@@ -41,6 +41,7 @@ web/themes/custom/par_theme/assets/vendor/
 
 # Ignore environment specific and sensitive information.
 /web/sites/*/settings.local.php
+/web/sites/*/services.local.yml
 
 # Exclude test reports
 web/sites/simpletest

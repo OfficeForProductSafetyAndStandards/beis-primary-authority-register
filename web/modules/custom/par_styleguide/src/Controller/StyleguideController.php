@@ -10,7 +10,7 @@ use Drupal\Core\Controller\ControllerBase;
 class StyleguideController extends ControllerBase {
 
   /**
-  * The main index page for the styleguide
+  * The main index page for the styleguide.
   */
   public function index() {
 
@@ -20,5 +20,4 @@ class StyleguideController extends ControllerBase {
 
     return $build;
   }
-
 }
