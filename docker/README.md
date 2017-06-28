@@ -1,5 +1,12 @@
 ## Docker Development Environment
 
+### Prep
+
+If you've not got your key installed already, add your private key:
+
+    ssh-agent bash
+    ssh-add /path/to/private/key/file
+    
 Install [docker](https://docs.docker.com/engine/installation/linux/ubuntu/) (or [Docker for Windows](https://docs.docker.com/docker-for-windows/install/), or [Docker for Mac](https://docs.docker.com/docker-for-mac/install/)), then:
 
     cd docker
@@ -13,6 +20,12 @@ You can then visit the site at:
 
     http://127.0.0.1:8111
 
+### Ubuntu users
+
+You'll need to run setup as root
+    
+    sudo sh reset.sh
+    
 ### Windows users
 
 The recommended method for installing on Windows is to use a Git Bash.
