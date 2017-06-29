@@ -1,12 +1,12 @@
-FROM alpine:3.4
+FROM alpine:3.2
 
-MAINTAINER Jakub Mucha
+MAINTAINER Fin Kingma
 
 # retrieve required packages
 RUN apk add --update \
     wget \
     unzip \
-    openjdk8 \
+    openjdk7 \
 	ca-certificates
 
 # variables

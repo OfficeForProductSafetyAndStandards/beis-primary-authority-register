@@ -40,3 +40,5 @@ Try changing the `spec.js` test a bit and run the test again to view and evaluat
 
 docker build -t visualreview .
 docker run -d visualreview
+sudo docker exec -i -t visualreview /bin/bash
+docker exec -it par_beta_web bash -c "../../../usr/local/n/versions/node/7.2.1/bin/npm run gulp"
