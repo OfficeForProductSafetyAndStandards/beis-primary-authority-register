@@ -13,9 +13,9 @@ field_name: field_image
 entity_type: node
 type: image
 settings:
-  uri_scheme: public
+  uri_scheme: s3public
   default_image:
-    uuid: null
+    uuid: ''
     alt: ''
     title: ''
     width: null
