@@ -1,4 +1,4 @@
-@test
+@ci
 Feature: Check site homepage
 
     Scenario: Check site homepage
