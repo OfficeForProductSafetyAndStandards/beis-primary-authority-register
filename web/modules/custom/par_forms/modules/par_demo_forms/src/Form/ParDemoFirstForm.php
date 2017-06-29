@@ -8,7 +8,7 @@ use Drupal\par_forms\Form\ParBaseForm;
 /**
  * A demo multi-step form.
  */
-class ParDemoFirstForm extends FormBase {
+class ParDemoFirstForm extends ParBaseForm {
 
   /**
    * @var string
@@ -31,12 +31,13 @@ class ParDemoFirstForm extends FormBase {
     $form['name'] = [
       '#type' => 'textfield',
       '#title' => t('Name'),
+      '#default_value' => $this->getDataValue('name'),
       '#required' => TRUE,
     ];
 
-    $form['save'] = [
+    $form['next'] = [
       '#type' => 'submit',
-      '#value' => t('Save'),
+      '#value' => t('Next'),
     ];
 
     return $form;

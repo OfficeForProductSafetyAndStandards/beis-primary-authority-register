@@ -69,6 +69,11 @@ abstract class ParBaseForm extends FormBase {
     $this->flowStorage = $flow_storage;
     /** @var \Drupal\user\PrivateTempStore store */
     $this->store = $temp_store_factory->get('par_forms_flows');
+
+    // If no flow entity exists throw a build error.
+    if (!$this->getFlow()) {
+      $this->getLogger($this->getLoggerChannel())->critical('There is no flow %flow for this form.', ['%flow' => $this->getFlowName()]);
+    }
   }
 
   /**
@@ -217,13 +222,22 @@ abstract class ParBaseForm extends FormBase {
   }
 
   /**
+   * Get the current flow name.
+   *
+   * @return string
+   */
+  public function getFlowName() {
+    return isset($this->flow) ? $this->flow : '';
+  }
+
+  /**
    * Get the current flow entity.
    *
    * @return \Drupal\Core\Entity\EntityInterface
    *   The flow entity.
    */
   protected function getFlow() {
-    return $this->getFlowStorage()->load($this->flow);
+    return $this->getFlowStorage()->load($this->getFlowName());
   }
 
   /**
@@ -237,14 +251,23 @@ abstract class ParBaseForm extends FormBase {
   }
 
   /**
+   * Get the current flow state.
+   *
+   * @return string
+   */
+  public function getState() {
+    return isset($this->state) ? $this->state : '';
+  }
+
+  /**
    * Get the form Key.
    *
    * @param null $form_id
    * @return string
    */
-  protected function getFormKey($form_id = NULL) {
+  public function getFormKey($form_id = NULL) {
     $form_id = !empty($form_id) ? $form_id : $this->getFormId();
-    $key = implode('_', [$this->flow, $this->state, $form_id]);
+    $key = implode('_', [$this->getFlowName(), $this->getState(), $form_id]);
     return $this->normalizeKey($key);
   }
 
@@ -257,7 +280,7 @@ abstract class ParBaseForm extends FormBase {
    * @return string
    *   An ASCII-encoded cache ID that is at most 250 characters long.
    */
-  protected function normalizeKey($key) {
+  public function normalizeKey($key) {
     $key = urlencode($key);
     // Nothing to do if the ID is a US ASCII string of 250 characters or less.
     $key_is_ascii = mb_check_encoding($key, 'ASCII');
@@ -282,7 +305,7 @@ abstract class ParBaseForm extends FormBase {
   /**
    * Start a manual session for anonymous users.
    */
-  protected function startAnonymousSession() {
+  public function startAnonymousSession() {
     if ($this->currentUser->isAnonymous() && !isset($_SESSION['session_started'])) {
       $_SESSION['session_started'] = true;
       $this->sessionManager->start();
