@@ -24,12 +24,11 @@ class ParDemoThirdForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $retrieved = $this->getTempData();
 
     $form['hobby'] = [
-      '#type' => 'textfield',
+      '#type' => 'textarea',
       '#title' => t('Hobbies'),
-      '#default_value' => $retrieved['hobby'] ?: '',
+      '#default_value' => $this->getDataValue('hobby'),
     ];
 
     $form['save'] = [

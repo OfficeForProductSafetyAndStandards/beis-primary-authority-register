@@ -8,7 +8,7 @@ use Drupal\par_forms\Form\ParBaseForm;
 /**
  * A demo multi-step form.
  */
-class ParDemoFirstForm extends ParBaseForm {
+class ParDemoFirstForm extends FormBase {
 
   /**
    * @var string
@@ -24,18 +24,19 @@ class ParDemoFirstForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $retrieved = $this->getTempData();
+    // If we are editing existing data we can load it here.
+    // $entity = $this->entityManager->getStorage('par_entity')->load($id);
+    // $this->setDataValue('name', $entity->get('name')->getValue());
 
     $form['name'] = [
       '#type' => 'textfield',
       '#title' => t('Name'),
-      '#default_value' => $retrieved['name'] ?: '',
       '#required' => TRUE,
     ];
 
-    $form['next'] = [
+    $form['save'] = [
       '#type' => 'submit',
-      '#value' => t('Next'),
+      '#value' => t('Save'),
     ];
 
     return $form;

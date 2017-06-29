@@ -10,11 +10,17 @@ use Drupal\Core\Session\SessionManagerInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\user\PrivateTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Component\Utility\NestedArray;
 
 /**
  * The base form controller for all PAR forms.
  */
 abstract class ParBaseForm extends FormBase {
+
+  /**
+   * The location for storing all documents uploaded through this form handler.
+   */
+  const PRIVATE_DOCS_DIR = 'private://par-documents/';
 
   /**
    * @var \Drupal\Core\Session\SessionManagerInterface
@@ -43,19 +49,6 @@ abstract class ParBaseForm extends FormBase {
   protected $flow;
 
   /**
-   * Data for a form can come from the Temp Store of from an existing entity.
-   *
-   * @var string
-   *   A data form this form.
-   */
-  protected $data;
-
-  /**
-   * The location for storing all documents uploaded through this form handler.
-   */
-  const PRIVATE_DOCS_DIR = 'private://par-documents/';
-
-  /**
    * @var string
    *   A machine safe value representing any states or combination of states that alter the form behaviour.
    *
@@ -76,8 +69,6 @@ abstract class ParBaseForm extends FormBase {
     $this->flowStorage = $flow_storage;
     /** @var \Drupal\user\PrivateTempStore store */
     $this->store = $temp_store_factory->get('par_forms_flows');
-
-    $this->data = $this->getTempData();
   }
 
   /**
@@ -94,47 +85,6 @@ abstract class ParBaseForm extends FormBase {
   }
 
   /**
-   * @return string
-   *   Get the logger channel to use.
-   */
-  protected function getLoggerChannel() {
-    return 'par_forms';
-  }
-
-  /**
-   * @return \Drupal\Core\Entity\EntityInterface
-   *   The flow entity.
-   */
-  protected function getFlow() {
-    return $this->flowStorage->load($this->flow);
-  }
-
-  /**
-   * @return \Drupal\Core\Entity\EntityStorageInterface
-   *   The flow storage handler.
-   */
-  protected function getFlowStorage() {
-    return $this->flowStorage;
-  }
-
-  /**
-   * Get form data.
-   */
-  protected function getFormDataByKey($key, $default = NULL) {
-    if (!$default) {
-      $default = '';
-    }
-    return isset($this->data[$key]) ? $this->data[$key] : $default;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['#tree'] = false;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
@@ -145,21 +95,7 @@ abstract class ParBaseForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // Save any files
-    if ($form_state->hasFileElement()) {
-      $file_elements = $this->getFileElements($form);
-      foreach ($file_elements as $key => $element) {
-        if ($form['#tree']) {
-          $this->saveFile($key, $element, $form_state);
-        }
-        else {
-          $this->saveFile($key, $element, $form_state);
-        }
-
-      }
-    }
-
-    $this->setTempData($form_state);
+    $this->setTempData($form_state->getValues());
     $form_state->setRedirect($this->getNextStep());
   }
 
@@ -177,126 +113,127 @@ abstract class ParBaseForm extends FormBase {
   }
 
   /**
-   * Retrieve the temporary data for this form.
+   * Wraps call to static NestedArray::getValue to make more testable.
    *
-   * @return NULL|array
-   *   The values stored in the temp store.
+   * @param string|array $key
+   * @param mixed $default
+   *
+   * @return mixed|null
    */
-  protected function getTempData() {
-    // Start an anonymous session if required.
-    $this->startAnonymousSession();
-    $values = $this->store->get($this->getFormKey());
-    return $values ?: NULL;
+  public function &getDataValue($key, $default = '') {
+    $exists = NULL;
+    $data = $this->getTempData();
+    $value = &NestedArray::getValue($data, (array) $key, $exists);
+    if (!$exists) {
+      $value = $default;
+    }
+
+    $this->getLogger($this->getLoggerChannel())->debug('Data item %item has been retrieved for user %user from the temporary storage %key', ['%user' => $this->currentUser->getUsername(), '%key' => $this->getFormKey(), '%item' => $key]);
+
+    return $value;
   }
 
   /**
-   * Retrieve the temporary data for this form.
+   * Wraps call to static NestedArray::setValue to make more testable.
    *
-   * @param FormStateInterface $data
-   *   The form state object that needs to be saved.
+   * @param $key
+   * @param $value
    */
-  protected function setTempData(FormStateInterface $data) {
-    if (!$data instanceof FormStateInterface) {
-      $message = $this->t('Temporary data could not be saved for form %form_id', ['%form_id' => $this->getFormId()]);
+  public function setDataValue($key, $value) {
+    $data = $this->getTempData();
+    NestedArray::setValue($data, (array) $key, $value, TRUE);
+    $this->setTempData($data);
+
+    $this->getLogger($this->getLoggerChannel())->debug('Data item %item has been set for user %user from the temporary storage %key', ['%user' => $this->currentUser->getUsername(), '%key' => $this->getFormKey(), '%item' => $key]);
+  }
+
+  /**
+   * Retrieve the temporary data for a form.
+   *
+   * @param string $form_id
+   *   The form_id to get data for, will use the current form if not set.
+   *
+   * @return array
+   *   The values stored in the temp store.
+   */
+  protected function getTempData($form_id = NULL) {
+    $form_id = !empty($form_id) ? $form_id : $this->getFormId();
+
+    // Start an anonymous session if required.
+    $this->startAnonymousSession();
+    $data = $this->store->get($this->getFormKey($form_id));
+
+    $this->getLogger($this->getLoggerChannel())->debug('Data has been retrieved for user %user from the temporary storage %key', ['%user' => $this->currentUser->getUsername(), '%key' => $this->getFormKey()]);
+
+    return $data ?: [];
+  }
+
+  /**
+   * Retrieve the temporary data for a form.
+   *
+   * @param array $data
+   *   The array of data to be saved.
+   * @param string $form_id
+   *   The form_id to set data for, will use the current form if not set.
+   */
+  protected function setTempData($data, $form_id = NULL) {
+    $form_id = !empty($form_id) ? $form_id : $this->getFormId();
+
+    if (!$data || !is_array($data)) {
+      $message = $this->t('Temporary data could not be saved for form %form_id', ['%form_id' => $form_id]);
       $this->getLogger($this->getLoggerChannel())->error($message);
       return;
     }
 
     // Start an anonymous session if required.
     $this->startAnonymousSession();
-    $this->store->set($this->getFormKey(), $data->getValues());
+    $this->store->set($this->getFormKey($form_id), $data);
+
+    $this->getLogger($this->getLoggerChannel())->debug('Data has been set for user %user from the temporary storage %key', ['%user' => $this->currentUser->getUsername(), '%key' => $this->getFormKey()]);
   }
 
   /**
-   * Save form file elements.
+   * Delete the temporary data for a form
    *
-   * @param string|array $element
-   *   The name of the file element
-   * @param string|array
-   *   The associative array of element keys.
-   * @param FormStateInterface $form_state
-   *   The Drupal Form State
-   *
-   * @return array|\Drupal\file\FileInterface|null|false
+   * @param string $form_id
+   *   The form_id to set data for, will use the current form if not set.
    */
-  public function saveFile($name, $element, FormStateInterface &$form_state) {
-    $destination = self::PRIVATE_DOCS_DIR . $name;
-    file_prepare_directory($destination, FILE_CREATE_DIRECTORY);
+  protected function deleteTempData($form_id = NULL) {
+    $form_id = !empty($form_id) ? $form_id : $this->getFormId();
 
-    $validators = [
-      'file_validate_extensions' => [$form_state->getValue('extensions')]
-    ];
+    $this->store->delete($this->getFormKey($form_id));
 
-    // For some as yet unknown reason we have to loop
-    // through all the elements keys until we find the file.
-    // It's usually the first key though.
-    $all_file_keys = $all_files = \Drupal::request()->files->get('files', []);
-    foreach ($element as $key) {
-      if ($all_file_keys[$key]) {
-        $file_key = $key;
-      }
-      continue;
-    }
-    $file = file_save_upload($file_key, $validators, $destination);
-    if ($file) {
-      $form_state->setValue($element, $file);
-    }
+    $this->getLogger($this->getLoggerChannel())->debug('Data has been deleted for user %user from the temporary storage %key', ['%user' => $this->currentUser->getUsername(), '%key' => $this->getFormKey()]);
   }
 
   /**
-   * Helper to get all file form elements.
+   * Returns the logger channel specific to errors logged by PAR Forms.
    *
-   * @param array $form
-   *   A standard Drupal form array.
-   *
-   * @return array
+   * @return string
+   *   Get the logger channel to use.
    */
-  public function getFileElements(array $form, $parent_keys = []) {
-    $elements = [];
-
-    foreach ($this->getChildrenKeys($form) as $key) {
-      $element = $form[$key];
-      if (isset($element['#type']) && 'file' === $element['#type']) {
-          $elements[$key] = [$key];
-      }
-
-      if ($children = $this->getChildrenByKeys($element, $this->getChildrenKeys($element))) {
-        $parent_keys[] = $key;
-        foreach ($this->getFileElements($children, $parent_keys) as $child_key => $child) {
-          $elements[$child_key] = array_merge($parent_keys, [$child_key]);
-        }
-      }
-    }
-
-    return $elements;
+  protected function getLoggerChannel() {
+    return 'par_forms';
   }
 
   /**
-   * Helper function to return multiple keys of a given array.
+   * Get the current flow entity.
    *
-   * @param array $elements
-   * @param array $keys
-   *
-   * @return array
+   * @return \Drupal\Core\Entity\EntityInterface
+   *   The flow entity.
    */
-  public function getChildrenByKeys(array $elements, array $keys) {
-    $children = [];
-    foreach ($keys as $key) {
-      $children[$key] = $elements[$key];
-    }
-    return $children;
+  protected function getFlow() {
+    return $this->getFlowStorage()->load($this->flow);
   }
 
   /**
-   * Call the Drupal static method from a helper method to make testable.
+   * Get the injected Flow Entity Storage.
    *
-   * @param array $form
-   *   A standard Drupal form array.
-   *
-   * @return NULL|array
+   * @return \Drupal\Core\Entity\EntityStorageInterface
+   *   The flow storage handler.
    */
-  public function getChildrenKeys(array $form) {
-    return Element::children($form);
+  protected function getFlowStorage() {
+    return $this->flowStorage;
   }
 
   /**
@@ -308,7 +245,6 @@ abstract class ParBaseForm extends FormBase {
   protected function getFormKey($form_id = NULL) {
     $form_id = !empty($form_id) ? $form_id : $this->getFormId();
     $key = implode('_', [$this->flow, $this->state, $form_id]);
-    // @TODO work out if Key/Value store normalizes keys itself, if so, remove.
     return $this->normalizeKey($key);
   }
 
