@@ -18,11 +18,6 @@ use Drupal\Component\Utility\NestedArray;
 abstract class ParBaseForm extends FormBase {
 
   /**
-   * The location for storing all documents uploaded through this form handler.
-   */
-  const PRIVATE_DOCS_DIR = 'private://par-documents/';
-
-  /**
    * @var \Drupal\Core\Session\SessionManagerInterface
    */
   private $sessionManager;
