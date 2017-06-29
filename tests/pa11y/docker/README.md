@@ -1,6 +1,5 @@
 # Pa11y Dashboard Docker Container
 
-### Your Automated Accessibility Testing Pal
 
 **Use [Pa11y Dashboard][] to run tests, save results, and monitor the accessibility of your web projects.** Pa11y Dashboard takes the power of the [Pa11y Project][] and puts it in your browser. This project makes it easy to get started with your own instance of Pa11y Dashboard, by handling all the dependencies and setup with Docker. 
 
