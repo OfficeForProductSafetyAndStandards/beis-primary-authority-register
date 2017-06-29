@@ -1,9 +1,5 @@
 version: "3"
 
-volumes:
-    docker-mac-sync:
-        external: true
-        
 services:
     web:
       image: parbeta/web:v3
@@ -13,8 +9,7 @@ services:
       ports:
         - "8111:80"
       volumes:
-        - docker-mac-sync:/syncie:rw
-      command: /bin/sh -c "cd syncie && time dd if=/dev/zero of=test.dat bs=1024 count=100000"
+        - ../:/var/www/html:cached
 
     db:
       container_name: par_beta_db
