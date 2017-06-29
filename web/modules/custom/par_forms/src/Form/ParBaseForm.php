@@ -261,7 +261,7 @@ abstract class ParBaseForm extends FormBase {
     $key = urlencode($key);
     // Nothing to do if the ID is a US ASCII string of 250 characters or less.
     $key_is_ascii = mb_check_encoding($key, 'ASCII');
-    if (strlen($key) <= 250 && $key_is_ascii) {
+    if (strlen($key) <= 240 && $key_is_ascii) {
       return $key;
     }
 
@@ -276,7 +276,7 @@ abstract class ParBaseForm extends FormBase {
     if (!$key_is_ascii) {
       return $hash;
     }
-    return substr($key, 0, 250 - strlen($hash)) . $hash;
+    return substr($key, 0, 240 - strlen($hash)) . $hash;
   }
 
   /**

@@ -70,32 +70,4 @@ class ParBaseFormTest extends UnitTestCase {
 
     return array_keys($children);
   }
-
-  /**
-   * @covers ::getFileElements
-   */
-  public function testGetFileElements() {
-    $form = [
-      'first_child' => [
-        '#type' => 'textfield',
-      ],
-      'second_child' => [
-        '#type' => 'file',
-      ],
-      'third_child' => [
-        '#type' => 'fieldset',
-        'fourth_child' => [
-          '#type' => 'file',
-        ]
-      ],
-    ];
-
-    $file_elements = $this->baseForm->getFileElements($form);
-    // Check the array is as expected.
-    $expected = [
-      "second_child" => ["second_child"],
-      "fourth_child" => ["third_child", "fourth_child"],
-    ];
-    $this->assertArrayEquals($expected, $file_elements, "The file elements were found.");
-  }
 }
