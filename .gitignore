@@ -38,6 +38,7 @@ web/themes/custom/par_theme/assets/vendor/
 
 # Exclude Drupal files.
 /web/sites/*/files/
+/private/
 
 # Ignore environment specific and sensitive information.
 /web/sites/*/settings.local.php

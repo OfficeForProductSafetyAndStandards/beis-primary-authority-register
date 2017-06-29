@@ -24,12 +24,14 @@ class ParDemoFirstForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $retrieved = $this->getTempData();
+    // If we are editing existing data we can load it here.
+    // $entity = $this->entityManager->getStorage('par_entity')->load($id);
+    // $this->setDataValue('name', $entity->get('name')->getValue());
 
     $form['name'] = [
       '#type' => 'textfield',
       '#title' => t('Name'),
-      '#default_value' => $retrieved['name'] ?: '',
+      '#default_value' => $this->getDataValue('name'),
       '#required' => TRUE,
     ];
 

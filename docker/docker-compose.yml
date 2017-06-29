@@ -1,27 +1,36 @@
-web:
-  image: parbeta/web:v3
-  container_name: par_beta_web
-  links:
-    - db
-  ports:
-    - "8111:80"
-  volumes:
-    - ../:/var/www/html
-db:
-  container_name: par_beta_db
-  restart: always
-  image: postgres:9.6.3
-  ports:
-    - "5411:5432"
-  environment:
-    POSTGRES_USER: par
-    POSTGRES_PASSWORD: 123456
-    POSTGRES_DB: par
+version: "3"
 
-dashboard:
-  container_name: par_beta_dashboard
-  image: rgcamus/alpine_smashing
-  ports:
-    - "8112:3030"
-  volumes:
-    - ../dashboard/dashboards:/dashboards
+volumes:
+    docker-mac-sync:
+        external: true
+        
+services:
+    web:
+      image: parbeta/web:v3
+      container_name: par_beta_web
+      links:
+        - db
+      ports:
+        - "8111:80"
+      volumes:
+        - docker-mac-sync:/syncie:rw
+      command: /bin/sh -c "cd syncie && time dd if=/dev/zero of=test.dat bs=1024 count=100000"
+
+    db:
+      container_name: par_beta_db
+      restart: always
+      image: postgres:9.6.3
+      ports:
+        - "5411:5432"
+      environment:
+        POSTGRES_USER: par
+        POSTGRES_PASSWORD: 123456
+        POSTGRES_DB: par
+    
+    dashboard:
+      container_name: par_beta_dashboard
+      image: rgcamus/alpine_smashing
+      ports:
+        - "8112:3030"
+      volumes:
+        - ../dashboard/dashboards:/dashboards

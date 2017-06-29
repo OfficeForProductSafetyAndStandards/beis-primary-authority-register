@@ -97,4 +97,21 @@ class ParFormFlowEntityTest extends UnitTestCase {
     $this->assertEquals('par_test_forms.third', $third_step['route'], "The route has been retrieved by form id.");
     $this->assertEquals('par_test_third', $third_step['form_id'], "The form id has been retrieved by form id.");
   }
+
+  /**
+   * @covers ::getStep
+   */
+  public function testGetFlowForms() {
+    $form_ids = $this->testFlow->getFlowForms();
+
+    // Check the route and form_id
+    $this->assertEquals(3, count($form_ids), "All forms have been found.");
+
+    $expected = [
+      'par_test_first',
+      'par_test_second',
+      'par_test_third',
+    ];
+    $this->assertArrayEquals($expected, $form_ids, "The loaded forms are correct.");
+  }
 }

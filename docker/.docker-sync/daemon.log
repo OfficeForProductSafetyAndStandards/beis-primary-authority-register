@@ -1,0 +1,169 @@
+          ok  Starting unison for sync docker-mac-sync
+          ok  docker-mac-sync container still running, restarting unison in container
+     command  docker exec docker-mac-sync supervisorctl restart unison
+          ok  starting initial sync of docker-mac-sync
+     command  docker inspect --format='{{(index (index .NetworkSettings.Ports "5000/tcp") 0).HostPort}}' docker-mac-sync
+     command  unison -testserver /app_sync "socket://127.0.0.1:32768"
+     command  docker inspect --format='{{(index (index .NetworkSettings.Ports "5000/tcp") 0).HostPort}}' docker-mac-sync
+     command  unison '/Users/Chris/git/par/beis-par-beta/docker/' -auto -batch -prefer '/Users/Chris/git/par/beis-par-beta/docker/' -copyonconflict -prefer newer -ignore='Path .git' -ignore='BelowPath .git' socket://127.0.0.1:32768
+          ok  Synced /Users/Chris/git/par/beis-par-beta/docker/
+      output  - Dockerfile-web                new file ---->            .docker-sync/daemon.log  
+new file ---->            .docker-sync/daemon.pid  
+ 99%  00:00 ETA               100%  00:00 ETA               100%  00:00 ETA               100%  00:00 ETA               100%  00:00 ETA               
+     success  Unison server started
+     command  docker inspect --format='{{(index (index .NetworkSettings.Ports "5000/tcp") 0).HostPort}}' docker-mac-sync
+     command  unison '/Users/Chris/git/par/beis-par-beta/docker/' -auto -batch -prefer '/Users/Chris/git/par/beis-par-beta/docker/' -copyonconflict -prefer newer -ignore='Path .git' -ignore='BelowPath .git' socket://127.0.0.1:32768
+          ok  Synced /Users/Chris/git/par/beis-par-beta/docker/
+      output  \ docker-sync.yml                 changed  ---->            .docker-sync/daemon.log  
+100%  00:00 ETA               100%  00:00 ETA               100%  00:00 ETA               
+     command  docker inspect --format='{{(index (index .NetworkSettings.Ports "5000/tcp") 0).HostPort}}' docker-mac-sync
+     command  unison '/Users/Chris/git/par/beis-par-beta/docker/' -auto -batch -prefer '/Users/Chris/git/par/beis-par-beta/docker/' -copyonconflict -prefer newer -ignore='Path .git' -ignore='BelowPath .git' socket://127.0.0.1:32768 -repeat watch
+Contacting server...
+Connected [//Chrismos-MacBook-Pro.local//Users/Chris/git/par/beis-par-beta/docker -> //db6927b27eb7//app_sync]
+Looking for changes
+  Waiting for changes from server
+Reconciling changes
+Propagating updates
+UNISON 2.48.4 started propagating changes at 13:21:05.50 on 29 Jun 2017
+[BGN] Updating file .docker-sync/daemon.log from /Users/Chris/git/par/beis-par-beta/docker to //db6927b27eb7//app_sync
+Failed: The source file /Users/Chris/git/par/beis-par-beta/docker/.docker-sync/daemon.log
+has been modified during synchronization.  Transfer aborted.
+UNISON 2.48.4 finished propagating changes at 13:21:05.50 on 29 Jun 2017
+Saving synchronizer state
+Synchronization incomplete at 13:21:05  (0 items transferred, 0 skipped, 1 failed)
+  failed: .docker-sync/daemon.log
+Looking for changes
+  Waiting for changes from server
+Reconciling changes
+Propagating updates
+UNISON 2.48.4 started propagating changes at 13:21:07.51 on 29 Jun 2017
+[BGN] Updating file .docker-sync/daemon.log from /Users/Chris/git/par/beis-par-beta/docker to //db6927b27eb7//app_sync
+Failed: The source file /Users/Chris/git/par/beis-par-beta/docker/.docker-sync/daemon.log
+has been modified during synchronization.  Transfer aborted.
+UNISON 2.48.4 finished propagating changes at 13:21:07.51 on 29 Jun 2017
+Saving synchronizer state
+Synchronization incomplete at 13:21:07  (0 items transferred, 0 skipped, 1 failed)
+  failed: .docker-sync/daemon.log
+Looking for changes
+  Waiting for changes from server
+Reconciling changes
+Nothing to do: replicas have not changed since last sync.
+Looking for changes
+  Waiting for changes from server
+Reconciling changes
+Propagating updates
+UNISON 2.48.4 started propagating changes at 13:21:12.52 on 29 Jun 2017
+[BGN] Updating file .docker-sync/daemon.log from /Users/Chris/git/par/beis-par-beta/docker to //db6927b27eb7//app_sync
+Failed: The source file /Users/Chris/git/par/beis-par-beta/docker/.docker-sync/daemon.log
+has been modified during synchronization.  Transfer aborted.
+UNISON 2.48.4 finished propagating changes at 13:21:12.52 on 29 Jun 2017
+Saving synchronizer state
+Synchronization incomplete at 13:21:12  (0 items transferred, 0 skipped, 1 failed)
+  failed: .docker-sync/daemon.log
+Looking for changes
+  Waiting for changes from server
+Reconciling changes
+Nothing to do: replicas have not changed since last sync.
+Looking for changes
+  Waiting for changes from server
+Reconciling changes
+Propagating updates
+UNISON 2.48.4 started propagating changes at 13:21:22.52 on 29 Jun 2017
+[BGN] Updating file .docker-sync/daemon.log from /Users/Chris/git/par/beis-par-beta/docker to //db6927b27eb7//app_sync
+Failed: The source file /Users/Chris/git/par/beis-par-beta/docker/.docker-sync/daemon.log
+has been modified during synchronization.  Transfer aborted.
+UNISON 2.48.4 finished propagating changes at 13:21:22.52 on 29 Jun 2017
+Saving synchronizer state
+Synchronization incomplete at 13:21:22  (0 items transferred, 0 skipped, 1 failed)
+  failed: .docker-sync/daemon.log
+Looking for changes
+  Waiting for changes from server
+Reconciling changes
+Nothing to do: replicas have not changed since last sync.
+Looking for changes
+  Waiting for changes from server
+Reconciling changes
+Propagating updates
+UNISON 2.48.4 started propagating changes at 13:21:42.52 on 29 Jun 2017
+[BGN] Updating file .docker-sync/daemon.log from /Users/Chris/git/par/beis-par-beta/docker to //db6927b27eb7//app_sync
+Failed: The source file /Users/Chris/git/par/beis-par-beta/docker/.docker-sync/daemon.log
+has been modified during synchronization.  Transfer aborted.
+UNISON 2.48.4 finished propagating changes at 13:21:42.52 on 29 Jun 2017
+Saving synchronizer state
+Synchronization incomplete at 13:21:42  (0 items transferred, 0 skipped, 1 failed)
+  failed: .docker-sync/daemon.log
+Looking for changes
+  Waiting for changes from server
+Reconciling changes
+Nothing to do: replicas have not changed since last sync.
+Looking for changes
+  Waiting for changes from server
+Reconciling changes
+Nothing to do: replicas have not changed since last sync.
+Looking for changes
+  Waiting for changes from server
+Reconciling changes
+Propagating updates
+UNISON 2.48.4 started propagating changes at 13:22:23.53 on 29 Jun 2017
+[BGN] Updating file .docker-sync/daemon.log from /Users/Chris/git/par/beis-par-beta/docker to //db6927b27eb7//app_sync
+Failed: The source file /Users/Chris/git/par/beis-par-beta/docker/.docker-sync/daemon.log
+has been modified during synchronization.  Transfer aborted.
+UNISON 2.48.4 finished propagating changes at 13:22:23.53 on 29 Jun 2017
+Saving synchronizer state
+Synchronization incomplete at 13:22:23  (0 items transferred, 0 skipped, 1 failed)
+  failed: .docker-sync/daemon.log
+Looking for changes
+  Waiting for changes from server
+Reconciling changes
+Nothing to do: replicas have not changed since last sync.
+Looking for changes
+  Waiting for changes from server
+Reconciling changes
+Propagating updates
+UNISON 2.48.4 started propagating changes at 13:23:43.53 on 29 Jun 2017
+[BGN] Updating file .docker-sync/daemon.log from /Users/Chris/git/par/beis-par-beta/docker to //db6927b27eb7//app_sync
+Failed: The source file /Users/Chris/git/par/beis-par-beta/docker/.docker-sync/daemon.log
+has been modified during synchronization.  Transfer aborted.
+UNISON 2.48.4 finished propagating changes at 13:23:43.53 on 29 Jun 2017
+Saving synchronizer state
+Synchronization incomplete at 13:23:43  (0 items transferred, 0 skipped, 1 failed)
+  failed: .docker-sync/daemon.log
+Looking for changes
+  Waiting for changes from server
+Reconciling changes
+Nothing to do: replicas have not changed since last sync.
+Looking for changes
+  Waiting for changes from server
+Reconciling changes
+Propagating updates
+UNISON 2.48.4 started propagating changes at 13:26:23.53 on 29 Jun 2017
+[BGN] Updating file .docker-sync/daemon.log from /Users/Chris/git/par/beis-par-beta/docker to //db6927b27eb7//app_sync
+Failed: The source file /Users/Chris/git/par/beis-par-beta/docker/.docker-sync/daemon.log
+has been modified during synchronization.  Transfer aborted.
+UNISON 2.48.4 finished propagating changes at 13:26:23.53 on 29 Jun 2017
+Saving synchronizer state
+Synchronization incomplete at 13:26:23  (0 items transferred, 0 skipped, 1 failed)
+  failed: .docker-sync/daemon.log
+Looking for changes
+  Waiting for changes from server
+Reconciling changes
+Nothing to do: replicas have not changed since last sync.
+Looking for changes
+  Waiting for changes from server
+Reconciling changes
+Propagating updates
+UNISON 2.48.4 started propagating changes at 13:26:55.23 on 29 Jun 2017
+[BGN] Updating file .docker-sync/daemon.log from /Users/Chris/git/par/beis-par-beta/docker to //db6927b27eb7//app_sync
+[BGN] Updating file README.md from /Users/Chris/git/par/beis-par-beta/docker to //db6927b27eb7//app_sync
+Failed: The source file /Users/Chris/git/par/beis-par-beta/docker/.docker-sync/daemon.log
+has been modified during synchronization.  Transfer aborted.
+[END] Updating file README.md
+UNISON 2.48.4 finished propagating changes at 13:26:55.23 on 29 Jun 2017
+Saving synchronizer state
+Synchronization incomplete at 13:26:55  (1 item transferred, 0 skipped, 1 failed)
+  failed: .docker-sync/daemon.log
+Looking for changes
+  Waiting for changes from server
+Reconciling changes
+Nothing to do: replicas have not changed since last sync.
+Fatal error: Lost connection with the server

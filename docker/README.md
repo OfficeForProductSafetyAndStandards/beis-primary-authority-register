@@ -29,6 +29,15 @@ You'll need to run setup as root
 ### Windows users
 
 The recommended method for installing on Windows is to use a Git Bash.
+
+### Mac users
+
+To speed up file synching between the web container and your host, you will need to use docker-sync. Docker for Mac is considerably (~50x) slower maintaining the link between host and container files.
+
+After following the setup steps above, run the following:
+
+    sudo gem install docker-sync
+    docker-sync-start start
     
 ### Docker setup troubleshooting
 

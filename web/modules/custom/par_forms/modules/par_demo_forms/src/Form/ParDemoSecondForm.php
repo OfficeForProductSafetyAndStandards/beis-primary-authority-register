@@ -24,12 +24,20 @@ class ParDemoSecondForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $retrieved = $this->getTempData();
 
-    $form['job'] = [
-      '#type' => 'textfield',
-      '#title' => t('Job'),
-      '#default_value' => $retrieved['job'] ?: '',
+    $form['file'] = [
+      '#type' => 'managed_file',
+      '#title' => t('Upload files'),
+      '#multiple' => true,
+      '#upload_location' => 'private://documents/file/',
+      '#default_value' => $this->getDataValue('file', []),
+    ];
+
+    $form['nested']['file2'] = [
+      '#type' => 'managed_file',
+      '#title' => t('Upload a file (nested)'),
+      '#upload_location' => 'private://documents/file2/',
+      '#default_value' => $this->getDataValue('file2', []),
     ];
 
     $form['next'] = [

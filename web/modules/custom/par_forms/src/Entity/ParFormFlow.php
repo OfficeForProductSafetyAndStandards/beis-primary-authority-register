@@ -116,4 +116,22 @@ class ParFormFlow extends ConfigEntityBase {
     return isset($match) ? $match : [];
   }
 
+  /**
+   * Get all the forms in a given flow.
+   *
+   * @return array
+   *   An array of strings representing form IDs.
+   */
+  public function getFlowForms() {
+    $forms = [];
+
+    foreach ($this->getSteps() as $step) {
+      if (isset($step['form_id'])) {
+        $forms[] = (string) $step['form_id'];
+      }
+    }
+
+    return $forms;
+  }
+
 }
