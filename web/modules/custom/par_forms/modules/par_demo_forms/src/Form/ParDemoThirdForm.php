@@ -46,10 +46,11 @@ class ParDemoThirdForm extends ParBaseForm {
     // We can perform other logic here to save the data.
     // The base class will store all the data to the
     // temporary store.
-    // $name = $form_state->getValue('name');
+    //
+    // $all_flow_data = $this->getAllTempData();
     // $data = array(
     //   'type' => 'article',
-    //   'title' => $name,
+    //   'title' => $all_flow_data['name'],
     //   'uid' => $this->currentUser->id(),
     // );
     // $node = \Drupal::entityManager()

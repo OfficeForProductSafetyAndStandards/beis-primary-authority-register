@@ -52,6 +52,14 @@ abstract class ParBaseForm extends FormBase {
   protected $state = 'default';
 
   /**
+   * @var array
+   *   Keys to be ignored for the saved data.
+   *
+   * e.g. ['save', 'next', 'cancel'].
+   */
+  protected $ignoreValues = ['save', 'next', 'cancel'];
+
+  /**
    * Constructs a \Drupal\par_forms\Form\ParBaseForm.
    *
    * @param \Drupal\user\PrivateTempStoreFactory $temp_store_factory
@@ -120,10 +128,10 @@ abstract class ParBaseForm extends FormBase {
    *
    * @return mixed|null
    */
-  public function &getDataValue($key, $default = '') {
+  public function getDataValue($key, $default = '') {
     $exists = NULL;
     $data = $this->getTempData();
-    $value = &NestedArray::getValue($data, (array) $key, $exists);
+    $value = NestedArray::getValue($data, (array) $key, $exists);
     if (!$exists) {
       $value = $default;
     }
@@ -207,6 +215,33 @@ abstract class ParBaseForm extends FormBase {
   }
 
   /**
+   * Get all the data for the current flow state.
+   */
+  protected function getAllTempData() {
+    $data = [];
+
+    foreach ($this->getFlow()->getFlowForms() as $form) {
+      $form_data = $this->getTempData($form);
+      $data = array_merge($data, $this->cleanseFormDefaults($form_data));
+    }
+
+    return $data;
+  }
+
+  /**
+   * Helper function to cleanse the drupal default values from the form values.
+   *
+   * @param array $data
+   *   The data array to cleanse.
+   *
+   * @return array
+   */
+  public function cleanseFormDefaults(array $data) {
+    $defaults = ['form_id', 'form_build_id', 'form_token', 'op'];
+    return array_diff_key($data, array_flip(array_merge($defaults, $this->getIgnoredValues())));
+  }
+
+  /**
    * Returns the logger channel specific to errors logged by PAR Forms.
    *
    * @return string
@@ -252,6 +287,15 @@ abstract class ParBaseForm extends FormBase {
    */
   public function getState() {
     return isset($this->state) ? $this->state : '';
+  }
+
+  /**
+   * Get ignored form values.
+   *
+   * @return string
+   */
+  public function getIgnoredValues() {
+    return isset($this->ignoreValues) ? (array) $this->ignoreValues : [];
   }
 
   /**
