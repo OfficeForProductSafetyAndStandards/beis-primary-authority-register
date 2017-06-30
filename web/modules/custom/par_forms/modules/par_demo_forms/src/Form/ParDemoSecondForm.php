@@ -29,14 +29,14 @@ class ParDemoSecondForm extends ParBaseForm {
       '#type' => 'managed_file',
       '#title' => t('Upload files'),
       '#multiple' => true,
-      '#upload_location' => 'private://documents/file/',
+      '#upload_location' => 's3private://documents/file/',
       '#default_value' => $this->getDataValue('file', []),
     ];
 
     $form['nested']['file2'] = [
       '#type' => 'managed_file',
       '#title' => t('Upload a file (nested)'),
-      '#upload_location' => 'private://documents/file2/',
+      '#upload_location' => 's3private://documents/file2/',
       '#default_value' => $this->getDataValue('file2', []),
     ];
 
