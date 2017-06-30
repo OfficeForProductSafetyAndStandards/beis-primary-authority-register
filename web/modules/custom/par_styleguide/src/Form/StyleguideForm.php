@@ -45,6 +45,48 @@ class StyleguideForm extends FormBase {
         '#upload_location' => 's3public://styleguide/',
     ];
     
+    $form['fieldset'] = [
+        '#type' => 'fieldset_example',
+        '#title' => t('Fieldset example'),
+        '#weight' => 5,
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+        'textfield_within_fieldset' => [
+            '#type' => 'textfield',
+            '#placeholder' => 'Placeholder text',
+            '#title' => t('Fieldset text field'),
+        ],
+    ];
+    
+    $form['selected'] = [
+        '#type' => 'select',
+        '#title' => t('Selected'),
+        '#options' => [
+            0 => t('No'),
+            1 => t('Yes'),
+            2 => t('Maybe'),
+        ],
+        '#description' => t('Set this to Yes if you would like this category to be selected by default.'),
+    ];
+    
+    $form['radios'] = array(
+        '#type' => 'radios',
+        '#title' => t('Poll status'),
+        '#options' => array(0 => t('Closed'), 1 => t('Active'), 2 => t('Dormant')),
+        '#description' => t('When a poll is closed, visitors can no longer vote for it.'),
+    );
+    
+    $form['checkbox'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Send me a copy.'),
+    );
+    
+    $form['checkboxes'] = array(
+        '#type' => 'checkboxes',
+        '#options' => array(0 => t('Closed'), 1 => t('Active'), 2 => t('Dormant')),
+        '#title' => t('What standardized tests did you take?'),
+    );
+    
     return $form;
   }
 
