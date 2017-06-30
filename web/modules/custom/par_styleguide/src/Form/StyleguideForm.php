@@ -4,7 +4,6 @@ namespace Drupal\par_styleguide\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Component\Utility\UrlHelper;
 
 /**
  * Styleguide form controller for visualising rendered form elements.
@@ -32,16 +31,17 @@ class StyleguideForm extends FormBase {
     ];
 
     $form['textarea'] = [
-        '#title' => t('Keywords'),
+        '#title' => t('Basic Textarea'),
         '#type' => 'textarea',
+        '#placeholder' => 'Placeholder text',
         '#description' => t('The comment will be unpublished if it contains any of the phrases above. Use a case-sensitive, comma-separated list of phrases. Example: funny, bungee jumping, "Company, Inc."'),
     ];
     
     $form['file_upload'] = [
-        '#title' => t('Image'),
+        '#title' => t('Upload Image'),
         '#type' => 'managed_file',
         '#progress_indictator' => 'none',
-        '#description' => t('The uploaded image will be displayed on this page using the image style choosen below.'),
+        '#description' => t('Please select an image of type GIF, JPG or TIFF.'),
         '#upload_location' => 's3public://styleguide/',
     ];
     
