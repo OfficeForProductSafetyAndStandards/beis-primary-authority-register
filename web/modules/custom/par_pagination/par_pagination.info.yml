@@ -1,0 +1,5 @@
+name: PAR Pagination
+type: module
+description: Provides a views plugin for pagination as per GDS style June 2017.
+core: 8.x
+package: PAR
