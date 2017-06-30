@@ -28,6 +28,13 @@
     'form-wrapper',
   ]
 %}
+
+{% if attributes.option_count <= 2 %}
+{% set classes = classes|merge(['inline']) %}
+{% endif %}
+
+<div class="form-group">
+
 <fieldset{{ attributes.addClass(classes) }}>
   {%
     set legend_span_classes = [
@@ -58,3 +65,4 @@
     {% endif %}
   </div>
 </fieldset>
+</div>

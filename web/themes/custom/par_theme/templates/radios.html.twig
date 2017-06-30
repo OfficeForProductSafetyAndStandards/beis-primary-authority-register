@@ -10,4 +10,8 @@
  * @see template_preprocess_radios()
  */
 #}
-<div{{ attributes }}>{{ children }}</div>
+
+<span class="form-hint">{{ attributes.placeholder }}</span>
+<div {{ attributes }}>
+    {{ children }}
+</div>

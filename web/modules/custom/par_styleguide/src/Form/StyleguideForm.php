@@ -45,7 +45,7 @@ class StyleguideForm extends FormBase {
         '#upload_location' => 's3public://styleguide/',
     ];
     
-    $form['selected'] = [
+    $form['select'] = [
         '#type' => 'select',
         '#title' => t('Basic Select Dropdown'),
         '#options' => [
@@ -56,11 +56,24 @@ class StyleguideForm extends FormBase {
         '#description' => t('Set this to Yes if you would like this category to be selected by default.'),
     ];
     
-    $form['radios'] = array(
+    $options = [0 => t('Closed'), 1 => t('Active')];
+    $form['radios_2'] = array(
         '#type' => 'radios',
-        '#title' => t('Poll status'),
-        '#options' => array(0 => t('Closed'), 1 => t('Active'), 2 => t('Dormant')),
-        '#description' => t('When a poll is closed, visitors can no longer vote for it.'),
+        '#title' => t('Two radio buttons'),
+        '#options' => $options,
+        '#attributes' => ['option_count' => count($options)],
+        '#description' => t('Two radio buttons render horizontally.'),
+    );
+    
+    $options = [0 => t('Closed'), 1 => t('Active'), 2 => t('Dormant')];
+    $form['radios_3'] = array(
+        '#type' => 'radios',
+        '#title' => t('Three radio buttons'),
+        '#options' => $options,
+        '#placeholder' => t('Be excellent to each other'),
+        '#title_display' => 'invisible',
+        '#attributes' => ['option_count' => count($options)],
+        '#description' => t('More than two radio buttons render vertically.'),
     );
     
     $form['checkbox'] = array(
