@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_styleguide\Controller;
+namespace Drupal\par_pagination\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 
