@@ -25,67 +25,26 @@ class StyleguideForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
-    $form['status_messages'] = [
-      '#type' => 'status_messages',
-    ];
-
     $form['textfield'] = [
       '#type' => 'textfield',
+      '#placeholder' => 'Placeholder text',
       '#title' => t('Basic textfield'),
-      '#required' => TRUE,
     ];
+
     $form['textarea'] = [
-      '#type' => 'textarea',
-      '#title' => t('Basic textarea'),
+        '#title' => t('Keywords'),
+        '#type' => 'textarea',
+        '#description' => t('The comment will be unpublished if it contains any of the phrases above. Use a case-sensitive, comma-separated list of phrases. Example: funny, bungee jumping, "Company, Inc."'),
     ];
-
-    $form['checkbox'] = [
-      '#type' => 'checkbox',
-      '#title' => t('Boolean checkbox'),
+    
+    $form['file_upload'] = [
+        '#title' => t('Image'),
+        '#type' => 'managed_file',
+        '#progress_indictator' => 'none',
+        '#description' => t('The uploaded image will be displayed on this page using the image style choosen below.'),
+        '#upload_location' => 's3public://styleguide/',
     ];
-    $form['checkboxes'] = [
-      '#type' => 'checkboxes',
-      '#options' => [
-        'one' => $this->t('One'),
-        'two' => $this->t('Two'),
-        'three' => $this->t('Three'),
-        'four' => $this->t('Four'),
-        'five' => $this->t('Five')
-      ],
-      '#title' => $this->t('Multiple checkboxes'),
-    ];
-
-    $form['radios'] = [
-      '#type' => 'radios',
-      '#title' => $this->t('Radios'),
-      '#default_value' => 1,
-      '#options' => [
-        'one' => $this->t('One'),
-        'two' => $this->t('Two'),
-        'three' => $this->t('Three'),
-        'four' => $this->t('Four'),
-        'five' => $this->t('Five')
-      ],
-    ];
-
-    $form['select'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Select element'),
-      '#options' => [
-        '1' => $this->t('One'),
-        '2' => [
-          '2.1' => $this->t('Two point one'),
-          '2.2' => $this->t('Two point two'),
-        ],
-        '3' => $this->t('Three'),
-      ],
-    ];
-
-    $form['submit'] = [
-      '#type' => 'submit',
-      '#value' => t('Submit button'),
-    ];
-
+    
     return $form;
   }
 
