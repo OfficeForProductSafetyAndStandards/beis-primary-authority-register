@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains par_data_entities.module.
+ * Contains par_pagination.theme.inc.
  */
 
 /**
