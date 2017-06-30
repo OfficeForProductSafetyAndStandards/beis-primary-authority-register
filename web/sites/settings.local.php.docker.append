@@ -13,3 +13,7 @@ $databases['default']['default'] = array (
 );
 
 $settings['trusted_host_patterns'] = array('');
+
+if (file_exists($app_root . '/' . $site_path . '/services.local.yml')) {
+  $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.local.yml';
+}
