@@ -45,22 +45,9 @@ class StyleguideForm extends FormBase {
         '#upload_location' => 's3public://styleguide/',
     ];
     
-    $form['fieldset'] = [
-        '#type' => 'fieldset_example',
-        '#title' => t('Fieldset example'),
-        '#weight' => 5,
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-        'textfield_within_fieldset' => [
-            '#type' => 'textfield',
-            '#placeholder' => 'Placeholder text',
-            '#title' => t('Fieldset text field'),
-        ],
-    ];
-    
     $form['selected'] = [
         '#type' => 'select',
-        '#title' => t('Selected'),
+        '#title' => t('Basic Select Dropdown'),
         '#options' => [
             0 => t('No'),
             1 => t('Yes'),
@@ -86,6 +73,19 @@ class StyleguideForm extends FormBase {
         '#options' => array(0 => t('Closed'), 1 => t('Active'), 2 => t('Dormant')),
         '#title' => t('What standardized tests did you take?'),
     );
+    
+    $form['fieldset'] = [
+        '#type' => 'fieldset_example',
+        '#title' => t('Fieldset example'),
+        '#weight' => 5,
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+        'textfield_within_fieldset' => [
+            '#type' => 'textfield',
+            '#placeholder' => 'Placeholder text',
+            '#title' => t('Fieldset text field'),
+        ],
+    ];
     
     return $form;
   }
