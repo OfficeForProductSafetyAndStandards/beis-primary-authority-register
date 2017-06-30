@@ -19,7 +19,7 @@ case "$(uname -s)" in
      ;;
 
    *)
-     echo 'other OS' 
+     echo 'other OS'
      ;;
 esac
 
@@ -29,7 +29,7 @@ esac
 
 # Install dependencies
 
-    $PRECOMMAND docker exec -ti par_beta_web bash -c 'chmod 777 vendor && rm -rf vendor/* && su - composer -c "cd ../../var/www/html && php composer.phar install"'
+    $PRECOMMAND docker exec -ti par_beta_web bash -c 'chmod -R 777 vendor && rm -rf vendor/* && su - composer -c "cd ../../var/www/html && php composer.phar install"'
 
 # Setup the development settings file:
 
@@ -37,13 +37,13 @@ if [ ! -f ../web/sites/settings.local.php ]; then
     cp ../web/sites/example.settings.local.php ../web/sites/default/settings.local.php
     cat ../web/sites/settings.local.php.docker.append >> ../web/sites/default/settings.local.php
 fi
-    
+
 # Install test dependencies
- 
+
     $PRECOMMAND docker exec -it par_beta_web bash -c "cd /var/www/html/tests && rm -rf node_modules/* && ../../../../usr/local/n/versions/node/7.2.1/bin/npm install"
 
 # Load the test data:
- 
+
     sleep 5 # Time for the server to boot
     $PRECOMMAND docker exec -it par_beta_web bash -c "vendor/bin/drush sql-cli @dev --root=/var/www/html/web < docker/fresh_drupal_postgres.sql"
 
@@ -55,7 +55,3 @@ fi
 
     $PRECOMMAND docker exec -it par_beta_web bash -c "rm -rf node_modules/* && ../../../usr/local/n/versions/node/7.2.1/bin/npm install"
     $PRECOMMAND docker exec -it par_beta_web bash -c "../../../usr/local/n/versions/node/7.2.1/bin/npm run gulp"
-
-
-
-
