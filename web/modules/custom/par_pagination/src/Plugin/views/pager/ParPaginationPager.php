@@ -1,8 +1,9 @@
 <?php
 
-namespace Drupal\views\Plugin\views\pager;
+namespace Drupal\par_pagination\Plugin\views\pager;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\views\Plugin\views\pager\SqlBase;
 
 /**
  * The plugin to handle full pager.
@@ -10,7 +11,7 @@ use Drupal\Core\Form\FormStateInterface;
  * @ingroup views_pager_plugins
  *
  * @ViewsPager(
- *   id = "gds_full",
+ *   id = "par_pagination_pager",
  *   title = @Translation("Paged output, full GDS styled pager"),
  *   short_title = @Translation("Full"),
  *   help = @Translation("Paged output, full GDS styled pager"),
@@ -18,7 +19,7 @@ use Drupal\Core\Form\FormStateInterface;
  *   register_theme = FALSE
  * )
  */
-class GDSPager extends SqlBase {
+class ParPaginationPager extends SqlBase {
 
   /**
    * {@inheritdoc}
@@ -32,8 +33,7 @@ class GDSPager extends SqlBase {
     $options['tags']['contains']['first'] = ['default' => $this->t('« First')];
     $options['tags']['contains']['last'] = ['default' => $this->t('Last »')];
 
-    unset($options['tags']['contains']).
-
+    unset($options['tags']['contains']);
 
     return $options;
   }
