@@ -7,11 +7,6 @@ sudo apt-get update -y
 apt-cache policy docker-ce    
 sudo apt-get install -y docker-ce
 sudo apt-get install -y docker-compose
-sudo apt-get install -y python-software-properties
-sudo add-apt-repository -y ppa:ondrej/php
-sudo apt-get update -y
-sudo apt-get install -y php7.1-cli
-curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
 
 cd /vagrant/docker
 sudo docker-compose up -d

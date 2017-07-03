@@ -26,6 +26,12 @@ Otherwise, you can run the setup.sh file to run through these processes, or you 
     cd /vagrant/docker
     sudo sh setup.sh
     
+#### Clearing the Drupal cache
+
+    vagrant ssh
+    cd /vagrant/docker
+    sudo sh clear-drupal-cache.sh
+    
 ### Web Application
 
 Please see the [web application readme file](https://github.com/TransformCore/beis-par-beta/blob/master/web/README.md) in the web directory for more information about Drupal and how to configure the web application.
