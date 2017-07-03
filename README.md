@@ -17,33 +17,14 @@ The Vagrant development environment wraps a virtual machine around the Docker se
 #### Create the VM
 
     vagrant up
-    vagrant ssh
-    cd /vagrant
     
-You are now inside your VM, in a directory containing a map of the repository code. Your host's .ssh directory (if you are on Ubuntu or Mac) is mapped to /vagrant/.ssh. Please modify the Vagrantfile accordingly to map to the correct SSH
-directory if you are using a different operating system.
+The Docker daemon should now be running. If you have all your dependecies (Composer, NPM, Gulp) already installed and have imported the database and run the Drupal update commands, you should be good-to-go.
 
-#### Setup the Docker development environment within the VM
+Otherwise, you can run the setup.sh file to run through these processes, or you can cherry pick from the setup.sh file to perform the stages that you need.
 
-    ssh-agent bash
-    ssh-add /vagrant/.ssh/id_rsa
-
+    vagrant ssh
     cd /vagrant/docker
     sudo sh setup.sh
-    
-#### Bringing the Docker daemon up without installing dependencies
-
-If your dependencies are already installed, you can bring the Docker daemon back up with:
-
-    vagrant ssh (if required)
-    cd /vagrant/docker
-    sudo docker-compose up -d
-    
-#### Running a Drupal Refresh
-
-    vagrant ssh (if required)
-    cd /vagrant/docker
-    docker exec -it par_beta_web bash -c "sh drupal-update.sh /var/www/html"
     
 ### Web Application
 
