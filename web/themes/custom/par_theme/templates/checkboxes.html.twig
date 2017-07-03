@@ -1,18 +1,15 @@
-
-	{% if heading %}<h2 class="heading-medium">{{ heading }}</h2>{% endif %}
-	<div class="form-group {% if errors %}form-group-error{% endif %}" id="{{ id }}">
-		<fieldset {% if isInline == TRUE %}class="inline"{% endif %}>
-			<legend class="visually-hidden">{{ heading }}</legend>
-			<span class="form-label-bold">{{label | raw}} {% if isRequired == FALSE %}(optional){% endif %}</span>
-			<span class="form-hint">{{ hint }}</span>
-			{% if errors %}
-			<span class="error-message">{{ validationErrorMessage }}</span>
-			{% endif %}
-			{% for option in optionSets %}
-				<div class="multiple-choice" {% if option.dataTarget %} data-target="{{ option.dataTarget }}" {% endif %}>
-					<input id="{{ option.id }}" type="checkbox" name="{{ name }}" value="{{ option.value }}" {% if option.isSelected %}checked{% endif %}/>
-					<label for="{{ option.id }}">{{ option.label | raw }}</label>
-				</div>
-			{% endfor %}
-		</fieldset>
-	</div>
+{#
+/**
+ * @file
+ * Theme override for a 'checkboxes' #type form element.
+ *
+ * Available variables
+ * - attributes: A list of HTML attributes for the wrapper element.
+ * - children: The rendered checkboxes.
+ *
+ * @see template_preprocess_checkboxes()
+ */
+ @todo: remove this file once https://www.drupal.org/node/1819284 is resolved.
+ This is identical to core/modules/system/templates/container.html.twig
+#}
+<div{{ attributes.addClass('form-checkboxes') }}>{{ children }}</div>
