@@ -18,19 +18,28 @@ The Vagrant development environment wraps a virtual machine around the Docker se
 
     vagrant up
     
-The Docker daemon should now be running. If you have all your dependecies (Composer, NPM, Gulp) already installed and have imported the database and run the Drupal update commands, you should be good-to-go.
+You should now have a running VM within which is a running Docker daemon. You can access the site at:
 
-Otherwise, you can run the setup.sh file to run through these processes, or you can cherry pick from the setup.sh file to perform the stages that you need.
-
-    vagrant ssh
-    cd /vagrant/docker
-    sudo sh setup.sh
+    http://http://192.168.82.68:8111/
     
 #### Clearing the Drupal cache
 
     vagrant ssh
     cd /vagrant/docker
     sudo sh clear-drupal-cache.sh
+    
+#### Reloading test data
+
+    vagrant ssh
+    docker exec -i par_beta_web bash -c "vendor/bin/drush sql-cli @dev --root=/var/www/html/web < docker/fresh_drupal_postgres.sql"
+    
+#### Reinstalling dependencies
+
+    vagrant ssh
+    docker exec -i par_beta_web bash -c 'su - composer -c "cd ../../var/www/html && php composer.phar install"'
+    docker exec -i par_beta_web bash -c "cd /var/www/html/tests && rm -rf node_modules/* && ../../../../usr/local/n/versions/node/7.2.1/bin/npm install"
+    docker exec -i par_beta_web bash -c "rm -rf node_modules/* && ../../../usr/local/n/versions/node/7.2.1/bin/npm install"
+    docker exec -i par_beta_web bash -c "../../../usr/local/n/versions/node/7.2.1/bin/npm run gulp"    
     
 ### Web Application
 
