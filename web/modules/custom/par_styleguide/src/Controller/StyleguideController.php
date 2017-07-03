@@ -20,4 +20,33 @@ class StyleguideController extends ControllerBase {
 
     return $build;
   }
+
+  /**
+   * get an internal page.
+   *
+   */
+  public function data() {
+
+    $build = [
+      '#theme' => 'par_styleguide_data',
+    ];
+
+    return $build;
+
+  }
+
+  /**
+   * get an internal page.
+   *
+   */
+  public function pagination() {
+
+    $build = [
+      '#theme' => 'par_styleguide_pagination',
+    ];
+
+    return $build;
+
+  }
+
 }

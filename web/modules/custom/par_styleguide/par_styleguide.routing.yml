@@ -14,3 +14,19 @@ par_styleguide.forms:
     _title: 'PAR Styleguide Forms'
   requirements:
     _permission: 'access content'
+
+par_styleguide.data:
+  path: '/styleguide/data'
+  defaults:
+    _controller: \Drupal\par_styleguide\Controller\StyleguideController::data
+    _title: 'PAR Styleguide Pagination'
+  requirements:
+    _permission: 'access content'
+
+par_styleguide.pagination:
+  path: '/styleguide/pagination'
+  defaults:
+    _controller: \Drupal\par_styleguide\Controller\StyleguideController::pagination
+    _title: 'PAR Styleguide Pagination'
+  requirements:
+    _permission: 'access content'
