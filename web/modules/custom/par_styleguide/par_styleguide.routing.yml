@@ -19,7 +19,7 @@ par_styleguide.data:
   path: '/styleguide/data'
   defaults:
     _controller: \Drupal\par_styleguide\Controller\StyleguideController::data
-    _title: 'PAR Styleguide Pagination'
+    _title: 'PAR Styleguide Data'
   requirements:
     _permission: 'access content'
 
