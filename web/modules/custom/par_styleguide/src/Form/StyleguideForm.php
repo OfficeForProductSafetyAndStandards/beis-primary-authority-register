@@ -106,7 +106,6 @@ class StyleguideForm extends FormBase {
       '#collapsed' => FALSE,
       'textfield_within_fieldset' => [
         '#type' => 'textfield',
-        '#placeholder' => 'Placeholder text',
         '#title' => t('Fieldset text field'),
         '#description' => t('This is a hint within a fieldset, enter some text into the box.'),
       ],
