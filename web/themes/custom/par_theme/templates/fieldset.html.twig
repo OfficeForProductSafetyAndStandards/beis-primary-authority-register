@@ -38,6 +38,7 @@
 <fieldset{{ attributes.addClass(classes) }}>
   {%
     set legend_span_classes = [
+      'heading-medium',
       'fieldset-legend',
       required ? 'js-form-required',
       required ? 'form-required',
@@ -45,22 +46,26 @@
   %}
   {#  Always wrap fieldset legends in a SPAN for CSS positioning. #}
   <legend{{ legend.attributes }}>
-    <span{{ legend_span.attributes.addClass(legend_span_classes) }}>{{ legend.title }}</span>
+    <p{{ legend_span.attributes.addClass(legend_span_classes) }}>{{ legend.title }}</p>
   </legend>
     {% if errors %}
       <div>
         {{ errors }}
       </div>
     {% endif %}
+
     {% if prefix %}
       <span class="field-prefix">{{ prefix }}</span>
     {% endif %}
+
+    {% if description.content %}
+        <div{{ description.attributes.addClass('form-hint') }}>{{ description.content }}</div>
+    {% endif %}
+
     {{ children }}
+
     {% if suffix %}
       <span class="field-suffix">{{ suffix }}</span>
-    {% endif %}
-    {% if description.content %}
-      <div{{ description.attributes.addClass('description') }}>{{ description.content }}</div>
     {% endif %}
 </fieldset>
 </div>
