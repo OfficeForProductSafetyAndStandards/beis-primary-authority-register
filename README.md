@@ -28,7 +28,7 @@ The Vagrant development environment wraps a virtual machine around the Docker se
     
 You should now have a running VM within which is a running Docker daemon. You can access the site at:
 
-    http://http://192.168.82.68:8111/
+    http://192.168.82.68:8111/
     
 #### Some useful commands
     
@@ -53,6 +53,5 @@ You should now have a running VM within which is a running Docker daemon. You ca
 
     vagrant ssh
     cd /vagrant/docker
-    sh destroy-dependencies.sh
-    sh install-dependencies.sh
+    sudo sh refresh-dependencies.sh
     

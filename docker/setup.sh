@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# Destroy dependencies
+
+    cd /vagrant/docker
+    sudo sh destroy-dependencies.sh
+    
 # Install dependencies
 
     docker exec -i par_beta_web bash -c 'su - composer -c "cd ../../var/www/html && php composer.phar install"'
