@@ -31,12 +31,14 @@ class StyleguideForm extends FormBase {
     ];
 
     $form['textarea'] = [
+      '#type' => 'textarea',
       '#title' => t('Basic textarea'),
       '#type' => 'textarea',
       '#description' => t('This is a text area hint, please enter a few sentences.'),
     ];
     
     $form['file_upload'] = [
+      '#type' => 'managed_file',
       '#title' => t('Upload image'),
       '#type' => 'managed_file',
       '#progress_indictator' => 'none',
@@ -55,19 +57,17 @@ class StyleguideForm extends FormBase {
       '#description' => t('This is a select list hint, please choose an option.'),
     ];
     
-    $form['radios_2'] = array(
+    $form['radios_2'] = [
       '#type' => 'radios',
       '#title' => t('Do you already have a personal user account?'),
       '#options' => [
         0 => t('Yes'),
         1 => t('No')
       ],
-      '#label_display' => 'invisible',
       '#description' => t('This is a hint, if you already have a user account please select ‘Yes’.'),
-    );
+    ];
     
-    $options = [0 => t('Closed'), 1 => t('Active'), 2 => t('Dormant')];
-    $form['radios_3'] = array(
+    $form['radios_3'] = [
       '#type' => 'radios',
       '#title' => t('Where do you live?'),
       '#options' => [
@@ -75,32 +75,31 @@ class StyleguideForm extends FormBase {
         1 => t('Isle of Man or the Channel Islands'),
         2 => t('I am a British citizen living abroad')
       ],
-      '#title_display' => 'invisible',
-      '#attributes' => ['option_count' => count($options)],
       '#description' => t('This is a hint, choose an option.'),
-    );
+    ];
     
-    $form['checkbox'] = array(
+    $form['checkbox'] = [
       '#type' => 'checkbox',
       '#title' => t('Send me a copy'),
       '#prefix' => '<div class="form-group">',
       '#suffix' => '</div>',
       '#description' => t('This is a hint, choose whether you would like a copy of this form.'),
-    );
+    ];
     
-    $form['checkboxes'] = array(
+    $form['checkboxes'] = [
       '#type' => 'checkboxes',
+      '#title' => t('Which types of waste do you transport regularly?'),
       '#options' => [
         0 => t('Closed'),
         1 => t('Active'),
         2 => t('Dormant')
       ],
-      '#title' => t('Which types of waste do you transport regularly?'),
+      '#attributes' => ['option_count' => 3],
       '#description' => t('This is a hint, choose whether you would like a copy of this form.'),
-    );
+    ];
     
     $form['fieldset'] = [
-      '#type' => 'fieldset_example',
+      '#type' => 'fieldset',
       '#title' => t('Fieldset example'),
       '#weight' => 5,
       '#collapsible' => FALSE,
