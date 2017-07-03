@@ -1,1 +1,152 @@
-par-pagination.html.twig
+<h1 class="heading-xlarge"><span class="heading-secondary">RPA Styleguide</span> Pagination</h1>
+
+<div class="text">
+  <p class="lede">Pagination should only be used when a large amount of records are shown. If the record count is less than '50' then don't show pagination at all.</p>
+</div>
+
+<h3 class="heading-medium">First item</h3>
+
+<div class="example">
+
+  <div class="pager">
+
+    <div class="pager-controls">
+
+      <ul class="pager-items">
+        <li>1</li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">5</a></li>
+      </ul>
+
+      <a class="pager-next" href="#">Next</a>
+
+    </div>
+
+    <div class="pager-summary">Showing 1 – 50 of 146 agents</div>
+
+ </div>
+
+</div>
+<pre><code class="prettyprint prettyprinted"><span class="pln">
+</span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"pager"</span><span class="tag">&gt;</span><span class="pln">
+
+  </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"pager-controls"</span><span class="tag">&gt;</span><span class="pln">
+
+    </span><span class="tag">&lt;ul</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"pager-items"</span><span class="tag">&gt;</span><span class="pln">
+      </span><span class="tag">&lt;li&gt;</span><span class="pln">1</span><span class="tag">&lt;/li&gt;</span><span class="pln">
+      </span><span class="tag">&lt;li&gt;&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="tag">&gt;</span><span class="pln">2</span><span class="tag">&lt;/a&gt;&lt;/li&gt;</span><span class="pln">
+      </span><span class="tag">&lt;li&gt;&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="tag">&gt;</span><span class="pln">3</span><span class="tag">&lt;/a&gt;&lt;/li&gt;</span><span class="pln">
+      </span><span class="tag">&lt;li&gt;&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="tag">&gt;</span><span class="pln">4</span><span class="tag">&lt;/a&gt;&lt;/li&gt;</span><span class="pln">
+      </span><span class="tag">&lt;li&gt;&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="tag">&gt;</span><span class="pln">5</span><span class="tag">&lt;/a&gt;&lt;/li&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/ul&gt;</span><span class="pln">
+
+    </span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"pager-next"</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="tag">&gt;</span><span class="pln">Next</span><span class="tag">&lt;/a&gt;</span><span class="pln">
+
+  </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+
+  </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"pager-summary"</span><span class="tag">&gt;</span><span class="pln">Showing 1 &amp;ndash; 50 of 146 agents</span><span class="tag">&lt;/div&gt;</span><span class="pln">
+
+</span><span class="tag">&lt;/div&gt;</span><span class="pln">
+</span></code></pre>
+
+
+<h3 class="heading-medium">Middle items</h3>
+
+<div class="example">
+
+  <div class="pager">
+
+    <div class="pager-controls">
+
+      <a class="pager-prev" href="#">Prev</a>
+
+      <ul class="pager-items">
+        <li><a href="#">71</a></li>
+        <li><a href="#">72</a></li>
+        <li>73</li>
+        <li><a href="#">74</a></li>
+        <li><a href="#">75</a></li>
+      </ul>
+
+      <a class="pager-next" href="#">Next</a>
+
+    </div>
+
+    <div class="pager-summary">Showing 25 – 50 of 146 agents</div>
+
+  </div>
+
+</div>
+<pre><code class="prettyprint prettyprinted"><span class="pln">
+</span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"pager"</span><span class="tag">&gt;</span><span class="pln">
+
+  </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"pager-controls"</span><span class="tag">&gt;</span><span class="pln">
+
+    </span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"pager-prev"</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="tag">&gt;</span><span class="pln">Prev</span><span class="tag">&lt;/a&gt;</span><span class="pln">
+
+    </span><span class="tag">&lt;ul</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"pager-items"</span><span class="tag">&gt;</span><span class="pln">
+      </span><span class="tag">&lt;li&gt;&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="tag">&gt;</span><span class="pln">71</span><span class="tag">&lt;/a&gt;&lt;/li&gt;</span><span class="pln">
+      </span><span class="tag">&lt;li&gt;&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="tag">&gt;</span><span class="pln">72</span><span class="tag">&lt;/a&gt;&lt;/li&gt;</span><span class="pln">
+      </span><span class="tag">&lt;li&gt;</span><span class="pln">73</span><span class="tag">&lt;/li&gt;</span><span class="pln">
+      </span><span class="tag">&lt;li&gt;&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="tag">&gt;</span><span class="pln">74</span><span class="tag">&lt;/a&gt;&lt;/li&gt;</span><span class="pln">
+      </span><span class="tag">&lt;li&gt;&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="tag">&gt;</span><span class="pln">75</span><span class="tag">&lt;/a&gt;&lt;/li&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/ul&gt;</span><span class="pln">
+
+    </span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"pager-next"</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="tag">&gt;</span><span class="pln">Next</span><span class="tag">&lt;/a&gt;</span><span class="pln">
+
+  </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+
+  </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"pager-summary"</span><span class="tag">&gt;</span><span class="pln">Showing 25 &amp;ndash; 50 of 146 agents</span><span class="tag">&lt;/div&gt;</span><span class="pln">
+
+</span><span class="tag">&lt;/div&gt;</span><span class="pln">
+</span></code></pre>
+
+
+<h3 class="heading-medium">Last item</h3>
+
+<div class="example">
+
+  <div class="pager">
+
+    <div class="pager-controls">
+
+      <a class="pager-prev" href="#">Prev</a>
+
+      <ul class="pager-items">
+        <li><a href="#">142</a></li>
+        <li><a href="#">143</a></li>
+        <li><a href="#">144</a></li>
+        <li><a href="#">145</a></li>
+        <li>146</li>
+      </ul>
+
+    </div>
+
+    <div class="pager-summary">Showing 50 – 50 of 146 agents</div>
+
+  </div>
+
+</div>
+<pre><code class="prettyprint prettyprinted"><span class="pln">
+</span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"pager"</span><span class="tag">&gt;</span><span class="pln">
+
+  </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"pager-controls"</span><span class="tag">&gt;</span><span class="pln">
+
+    </span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"pager-prev"</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="tag">&gt;</span><span class="pln">Prev</span><span class="tag">&lt;/a&gt;</span><span class="pln">
+
+    </span><span class="tag">&lt;ul</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"pager-items"</span><span class="tag">&gt;</span><span class="pln">
+      </span><span class="tag">&lt;li&gt;&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="tag">&gt;</span><span class="pln">142</span><span class="tag">&lt;/a&gt;&lt;/li&gt;</span><span class="pln">
+      </span><span class="tag">&lt;li&gt;&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="tag">&gt;</span><span class="pln">143</span><span class="tag">&lt;/a&gt;&lt;/li&gt;</span><span class="pln">
+      </span><span class="tag">&lt;li&gt;&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="tag">&gt;</span><span class="pln">144</span><span class="tag">&lt;/a&gt;&lt;/li&gt;</span><span class="pln">
+      </span><span class="tag">&lt;li&gt;&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#"</span><span class="tag">&gt;</span><span class="pln">145</span><span class="tag">&lt;/a&gt;&lt;/li&gt;</span><span class="pln">
+      </span><span class="tag">&lt;li&gt;</span><span class="pln">146</span><span class="tag">&lt;/li&gt;</span><span class="pln">
+    </span><span class="tag">&lt;/ul&gt;</span><span class="pln">
+
+  </span><span class="tag">&lt;/div&gt;</span><span class="pln">
+
+  </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"pager-summary"</span><span class="tag">&gt;</span><span class="pln">Showing 50 &amp;ndash; 50 of 146 agents</span><span class="tag">&lt;/div&gt;</span><span class="pln">
+
+</span><span class="tag">&lt;/div&gt;</span><span class="pln">
+</span></code></pre>
