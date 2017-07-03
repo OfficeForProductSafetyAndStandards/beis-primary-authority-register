@@ -33,14 +33,12 @@ class StyleguideForm extends FormBase {
     $form['textarea'] = [
       '#type' => 'textarea',
       '#title' => t('Basic textarea'),
-      '#type' => 'textarea',
       '#description' => t('This is a text area hint, please enter a few sentences.'),
     ];
     
     $form['file_upload'] = [
       '#type' => 'managed_file',
       '#title' => t('Upload image'),
-      '#type' => 'managed_file',
       '#progress_indictator' => 'none',
       '#upload_location' => 's3public://styleguide/',
       '#description' => t('This is an image hint, please select an image of type GIF, JPG or PNG.'),
