@@ -47,7 +47,6 @@
   <legend{{ legend.attributes }}>
     <span{{ legend_span.attributes.addClass(legend_span_classes) }}>{{ legend.title }}</span>
   </legend>
-  <div class="fieldset-wrapper">
     {% if errors %}
       <div>
         {{ errors }}
@@ -63,6 +62,5 @@
     {% if description.content %}
       <div{{ description.attributes.addClass('description') }}>{{ description.content }}</div>
     {% endif %}
-  </div>
 </fieldset>
 </div>

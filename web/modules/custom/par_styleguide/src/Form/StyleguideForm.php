@@ -62,6 +62,7 @@ class StyleguideForm extends FormBase {
         '#title' => t('Two radio buttons'),
         '#options' => $options,
         '#attributes' => ['option_count' => count($options)],
+        '#label_display' => 'invisible',
         '#description' => t('Two radio buttons render horizontally.'),
     );
     
