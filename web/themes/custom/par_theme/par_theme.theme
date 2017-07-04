@@ -1,0 +1,5 @@
+<?php
+
+function par_theme_preprocess_fieldset(array &$variables) {
+  $variables['child_count'] = count($variables['element']['#options']);
+}

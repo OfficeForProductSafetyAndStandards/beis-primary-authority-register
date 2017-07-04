@@ -26,65 +26,87 @@ class StyleguideForm extends FormBase {
 
     $form['textfield'] = [
       '#type' => 'textfield',
-      '#placeholder' => 'Placeholder text',
       '#title' => t('Basic textfield'),
+      '#description' => t('This is a textfield hint, please enter letters and spaces only. e.g. Jane Smith'),
     ];
 
     $form['textarea'] = [
-        '#title' => t('Basic Textarea'),
-        '#type' => 'textarea',
-        '#placeholder' => 'Placeholder text',
-        '#description' => t('The comment will be unpublished if it contains any of the phrases above. Use a case-sensitive, comma-separated list of phrases. Example: funny, bungee jumping, "Company, Inc."'),
+      '#type' => 'textarea',
+      '#title' => t('Basic textarea'),
+      '#description' => t('This is a text area hint, please enter a few sentences.'),
     ];
     
     $form['file_upload'] = [
-        '#title' => t('Upload Image'),
-        '#type' => 'managed_file',
-        '#progress_indictator' => 'none',
-        '#description' => t('Please select an image of type GIF, JPG or TIFF.'),
-        '#upload_location' => 's3public://styleguide/',
+      '#type' => 'managed_file',
+      '#title' => t('Upload image'),
+      '#progress_indictator' => 'none',
+      '#upload_location' => 's3public://styleguide/',
+      '#description' => t('This is an image hint, please select an image of type GIF, JPG or PNG.'),
     ];
     
-    $form['selected'] = [
-        '#type' => 'select',
-        '#title' => t('Basic Select Dropdown'),
-        '#options' => [
-            0 => t('No'),
-            1 => t('Yes'),
-            2 => t('Maybe'),
-        ],
-        '#description' => t('Set this to Yes if you would like this category to be selected by default.'),
+    $form['select'] = [
+      '#type' => 'select',
+      '#title' => t('Basic select dropdown'),
+      '#options' => [
+        0 => t('No'),
+        1 => t('Yes'),
+        2 => t('Maybe'),
+      ],
+      '#description' => t('This is a select list hint, please choose an option.'),
     ];
     
-    $form['radios'] = array(
-        '#type' => 'radios',
-        '#title' => t('Poll status'),
-        '#options' => array(0 => t('Closed'), 1 => t('Active'), 2 => t('Dormant')),
-        '#description' => t('When a poll is closed, visitors can no longer vote for it.'),
-    );
+    $form['radios_2'] = [
+      '#type' => 'radios',
+      '#title' => t('Do you already have a personal user account?'),
+      '#options' => [
+        0 => t('Yes'),
+        1 => t('No')
+      ],
+      '#description' => t('This is a hint, if you already have a user account please select ‘Yes’.'),
+    ];
     
-    $form['checkbox'] = array(
-        '#type' => 'checkbox',
-        '#title' => t('Send me a copy.'),
-    );
+    $form['radios_3'] = [
+      '#type' => 'radios',
+      '#title' => t('Where do you live?'),
+      '#options' => [
+        0 => t('Northern Ireland'),
+        1 => t('Isle of Man or the Channel Islands'),
+        2 => t('I am a British citizen living abroad')
+      ],
+      '#description' => t('This is a hint, choose an option.'),
+    ];
     
-    $form['checkboxes'] = array(
-        '#type' => 'checkboxes',
-        '#options' => array(0 => t('Closed'), 1 => t('Active'), 2 => t('Dormant')),
-        '#title' => t('What standardized tests did you take?'),
-    );
+    $form['checkbox'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Send me a copy'),
+      '#prefix' => '<div class="form-group">',
+      '#suffix' => '</div>',
+      '#description' => t('This is a hint, choose whether you would like a copy of this form.'),
+    ];
+    
+    $form['checkboxes'] = [
+      '#type' => 'checkboxes',
+      '#title' => t('Which types of waste do you transport regularly?'),
+      '#options' => [
+        0 => t('Closed'),
+        1 => t('Active'),
+        2 => t('Dormant')
+      ],
+      '#attributes' => ['option_count' => 3],
+      '#description' => t('This is a hint, choose whether you would like a copy of this form.'),
+    ];
     
     $form['fieldset'] = [
-        '#type' => 'fieldset_example',
-        '#title' => t('Fieldset example'),
-        '#weight' => 5,
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-        'textfield_within_fieldset' => [
-            '#type' => 'textfield',
-            '#placeholder' => 'Placeholder text',
-            '#title' => t('Fieldset text field'),
-        ],
+      '#type' => 'fieldset',
+      '#title' => t('Fieldset example'),
+      '#weight' => 5,
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+      'textfield_within_fieldset' => [
+        '#type' => 'textfield',
+        '#title' => t('Fieldset text field'),
+        '#description' => t('This is a hint within a fieldset, enter some text into the box.'),
+      ],
     ];
     
     return $form;
