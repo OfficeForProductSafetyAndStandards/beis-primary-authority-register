@@ -7,8 +7,13 @@ php:
   - 7.1
 services:
   - docker
+cache:
+  directories:
+    - node_modules
+    - tests/node_modules
+    - /home/composer/.composer/cache
 install:
-  - composer install
+  - composer install -v
   - sudo sed -e "s?PAR_HASH_SALT?$PAR_HASH_SALT?g" --in-place web/sites/default/settings.php
   - cd docker
   - docker-compose up -d --force-recreate --build

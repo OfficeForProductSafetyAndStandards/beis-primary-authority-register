@@ -1,4 +1,5 @@
 # Department of Business Energy and Industrial Strategy
+
 ## Primary Authority Register
 
 [![Build Status](https://travis-ci.org/TransformCore/beis-par-beta.svg?branch=master)](https://travis-ci.org/TransformCore/beis-par-beta)
@@ -54,4 +55,3 @@ You should now have a running VM within which is a running Docker daemon. You ca
     vagrant ssh
     cd /vagrant/docker
     sudo sh refresh-dependencies.sh
-    
