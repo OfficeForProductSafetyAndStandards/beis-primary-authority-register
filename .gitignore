@@ -56,3 +56,10 @@ web/sites/simpletest
 
 # Exclude test data
 tests/reports/
+
+# Exclude VM logs
+ubuntu-xenial-16.04-cloudimg-console.log
+
+# Exclude any Vagrant boxes
+package.box
+.vagrant/

@@ -12,6 +12,8 @@ $databases['default']['default'] = array (
   'driver' => 'pgsql',
 );
 
+$settings['trusted_host_patterns'] = [''];
+
 // Set flysystem to local storage for non-production environments.
 $schemes = [
   's3public' => [
