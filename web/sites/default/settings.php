@@ -755,7 +755,7 @@ $settings['file_scan_ignore_directories'] = [
   'bower_components',
 ];
 
-$settings['hash_salt'] = 'PAR_HASH_SALT';
+$settings['hash_salt'] = getenv('PAR_HASH_SALT');
 
 /**
  * Extract the database credentials from the VCAP_SERVICES environment variable
@@ -777,6 +777,47 @@ if ($credentials) {
     'driver' => 'pgsql',
   );
 }
+
+// Set flysystem
+$schemes = [
+  's3public' => [
+    'name' => 'S3 Public',
+    'description' => 'The S3 store for public files.',
+    'driver' => 's3',
+    'config' => [
+      'key'    => getenv('S3_ACCESS_KEY'),
+      'secret' => getenv('S3_SECRET_KEY'),
+      'region' => 'eu-west-1',
+      'bucket' => getenv('S3_BUCKET'),
+      'prefix' => 'public',
+      'protocol' => 'https'
+      // 'cname' => 'static.example.com',
+      // 'cname_is_bucket' => TRUE,
+    ],
+    'cache' => TRUE,
+    'serve_js' => FALSE,
+    'serve_css' => FALSE,
+  ],
+  's3private' => [
+    'name' => 'S3 Private',
+    'description' => 'The S3 store for private files.',
+    'driver' => 's3',
+    'config' => [
+      'key'    => getenv('S3_ACCESS_KEY'),
+      'secret' => getenv('S3_SECRET_KEY'),
+      'region' => 'eu-west-1',
+      'bucket' => getenv('S3_BUCKET'),
+      'prefix' => 'private',
+      'protocol' => 'https'
+      // 'cname' => 'static.example.com',
+      // 'cname_is_bucket' => TRUE,
+    ],
+    'cache' => TRUE,
+    'serve_js' => FALSE,
+    'serve_css' => FALSE,
+  ],
+];
+$settings['flysystem'] = $schemes;
 
 /**
  * Load local development override configuration, if available.

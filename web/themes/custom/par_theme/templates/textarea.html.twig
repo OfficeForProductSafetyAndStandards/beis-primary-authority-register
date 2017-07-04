@@ -1,20 +1,20 @@
+{#
+/**
+ * @file
+ * Theme override for a 'textarea' #type form element.
+ *
+ * Available variables
+ * - wrapper_attributes: A list of HTML attributes for the wrapper element.
+ * - attributes: A list of HTML attributes for the textarea element.
+ * - resizable: An indicator for whether the textarea is resizable.
+ * - required: An indicator for whether the textarea is required.
+ * - value: The textarea content.
+ *
+ * @see template_preprocess_textarea()
+ */
+#}
 
-  {% if heading %}<h2 class="heading-medium">{{ heading }}</h2>{% endif %}
-  <div class="form-group {% if errors %}form-group-error{% endif %}">
-    <label class="form-label-bold" for="{{ id }}">
-      {{ label }} {% if isRequired == FALSE %}(optional){% endif %}
-      <span class="form-hint">{{ hint }}</span>
-      {% if errors %}
-      	<span class="error-message">{{ validationErrorMessage }}</span>
-      {% endif %}
-    </label>
-    
-    {% if isDisabled == FALSE %}
-    <textarea class="form-control {% if errors %}form-control-error{% endif %}" id="{{ id }}" name="{{ name }}" cols="30" rows="10" >{{ value }}</textarea>
-    {% endif %}
-    {% if isDisabled == TRUE %}
-    <p>{{ value }}</p>
-    <input type="hidden" value={{value}} name="{{ name }}"/>
-    {% endif %}
-
-  </div>
+<span class="form-hint">{{ attributes.placeholder }}</span>
+<div{{ wrapper_attributes }}>
+  <textarea{{ attributes.addClass('form-control').addClass('form-control-3-4').removeAttribute('placeholder') }}>{{ value }}</textarea>
+</div>

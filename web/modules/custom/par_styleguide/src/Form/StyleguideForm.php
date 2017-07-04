@@ -4,7 +4,6 @@ namespace Drupal\par_styleguide\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Component\Utility\UrlHelper;
 
 /**
  * Styleguide form controller for visualising rendered form elements.
@@ -25,67 +24,91 @@ class StyleguideForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
-    $form['status_messages'] = [
-      '#type' => 'status_messages',
-    ];
-
     $form['textfield'] = [
       '#type' => 'textfield',
       '#title' => t('Basic textfield'),
-      '#required' => TRUE,
+      '#description' => t('This is a textfield hint, please enter letters and spaces only. e.g. Jane Smith'),
     ];
+
     $form['textarea'] = [
       '#type' => 'textarea',
       '#title' => t('Basic textarea'),
+      '#description' => t('This is a text area hint, please enter a few sentences.'),
     ];
-
-    $form['checkbox'] = [
-      '#type' => 'checkbox',
-      '#title' => t('Boolean checkbox'),
+    
+    $form['file_upload'] = [
+      '#type' => 'managed_file',
+      '#title' => t('Upload image'),
+      '#progress_indictator' => 'none',
+      '#upload_location' => 's3public://styleguide/',
+      '#description' => t('This is an image hint, please select an image of type GIF, JPG or PNG.'),
     ];
-    $form['checkboxes'] = [
-      '#type' => 'checkboxes',
-      '#options' => [
-        'one' => $this->t('One'),
-        'two' => $this->t('Two'),
-        'three' => $this->t('Three'),
-        'four' => $this->t('Four'),
-        'five' => $this->t('Five')
-      ],
-      '#title' => $this->t('Multiple checkboxes'),
-    ];
-
-    $form['radios'] = [
-      '#type' => 'radios',
-      '#title' => $this->t('Radios'),
-      '#default_value' => 1,
-      '#options' => [
-        'one' => $this->t('One'),
-        'two' => $this->t('Two'),
-        'three' => $this->t('Three'),
-        'four' => $this->t('Four'),
-        'five' => $this->t('Five')
-      ],
-    ];
-
+    
     $form['select'] = [
       '#type' => 'select',
-      '#title' => $this->t('Select element'),
+      '#title' => t('Basic select dropdown'),
       '#options' => [
-        '1' => $this->t('One'),
-        '2' => [
-          '2.1' => $this->t('Two point one'),
-          '2.2' => $this->t('Two point two'),
-        ],
-        '3' => $this->t('Three'),
+        0 => t('No'),
+        1 => t('Yes'),
+        2 => t('Maybe'),
+      ],
+      '#description' => t('This is a select list hint, please choose an option.'),
+    ];
+    
+    $form['radios_2'] = [
+      '#type' => 'radios',
+      '#title' => t('Do you already have a personal user account?'),
+      '#options' => [
+        0 => t('Yes'),
+        1 => t('No')
+      ],
+      '#description' => t('This is a hint, if you already have a user account please select ‘Yes’.'),
+    ];
+    
+    $form['radios_3'] = [
+      '#type' => 'radios',
+      '#title' => t('Where do you live?'),
+      '#options' => [
+        0 => t('Northern Ireland'),
+        1 => t('Isle of Man or the Channel Islands'),
+        2 => t('I am a British citizen living abroad')
+      ],
+      '#description' => t('This is a hint, choose an option.'),
+    ];
+    
+    $form['checkbox'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Send me a copy'),
+      '#prefix' => '<div class="form-group">',
+      '#suffix' => '</div>',
+      '#description' => t('This is a hint, choose whether you would like a copy of this form.'),
+    ];
+    
+    $form['checkboxes'] = [
+      '#type' => 'checkboxes',
+      '#title' => t('Which types of waste do you transport regularly?'),
+      '#options' => [
+        0 => t('Closed'),
+        1 => t('Active'),
+        2 => t('Dormant')
+      ],
+      '#attributes' => ['option_count' => 3],
+      '#description' => t('This is a hint, choose whether you would like a copy of this form.'),
+    ];
+    
+    $form['fieldset'] = [
+      '#type' => 'fieldset',
+      '#title' => t('Fieldset example'),
+      '#weight' => 5,
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+      'textfield_within_fieldset' => [
+        '#type' => 'textfield',
+        '#title' => t('Fieldset text field'),
+        '#description' => t('This is a hint within a fieldset, enter some text into the box.'),
       ],
     ];
-
-    $form['submit'] = [
-      '#type' => 'submit',
-      '#value' => t('Submit button'),
-    ];
-
+    
     return $form;
   }
 

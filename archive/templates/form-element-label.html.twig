@@ -1,7 +1,7 @@
 {#
 /**
  * @file
- * Theme override for a form element label.
+ * Default theme implementation for a form element label.
  *
  * Available variables:
  * - title: The label's text.
@@ -10,6 +10,8 @@
  * - attributes: A list of HTML attributes for the label.
  *
  * @see template_preprocess_form_element_label()
+ *
+ * @ingroup themeable
  */
 #}
 {%
@@ -18,7 +20,7 @@
     title_display == 'invisible' ? 'visually-hidden',
     required ? 'js-form-required',
     required ? 'form-required',
-    'form-label',
+    'form-label'
   ]
 %}
 {% if title is not empty or required -%}
