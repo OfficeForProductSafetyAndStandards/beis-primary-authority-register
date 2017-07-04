@@ -1,4 +1,5 @@
 # Department of Business Energy and Industrial Strategy
+
 ## Primary Authority Register
 
 [![Build Status](https://travis-ci.org/TransformCore/beis-par-beta.svg?branch=master)](https://travis-ci.org/TransformCore/beis-par-beta)
