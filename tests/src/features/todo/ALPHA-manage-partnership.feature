@@ -1,4 +1,4 @@
-@Pending  @alphajourney2
+@Pending
 Feature: View current and pending Partnerships
 
     Background:
