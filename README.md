@@ -55,4 +55,3 @@ You should now have a running VM within which is a running Docker daemon. You ca
     vagrant ssh
     cd /vagrant/docker
     sudo sh refresh-dependencies.sh
-    
