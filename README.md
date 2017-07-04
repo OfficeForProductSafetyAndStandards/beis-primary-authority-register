@@ -20,8 +20,8 @@ The Vagrant development environment wraps a virtual machine around the Docker se
 
 #### Prerequisites
 
-    [VirtualBox](https://www.virtualbox.org/wiki/Downloads) - tested with version 5.1.22
-    [Vagrant](https://www.vagrantup.com/downloads.html) - tested with version 1.9.6
+* [VirtualBox](https://www.virtualbox.org/wiki/Downloads) - tested with version 5.1.22
+* [Vagrant](https://www.vagrantup.com/downloads.html) - tested with version 1.9.6
     
 #### Create the VM
 
