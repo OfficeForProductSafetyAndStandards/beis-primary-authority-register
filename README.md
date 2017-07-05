@@ -1,10 +1,8 @@
-# Department of Business Energy and Industrial Strategy
+# Department of Business Energy and Industrial Strategy - Regulatory Authority
 
 ## Primary Authority Register
 
 [![Build Status](https://travis-ci.org/TransformCore/beis-par-beta.svg?branch=master)](https://travis-ci.org/TransformCore/beis-par-beta)
-
-Herein lie the fruits of our endeavours to create a world class digital service for Regulatory Authority.
 
 ### Web Application
 
@@ -22,6 +20,14 @@ The Vagrant development environment wraps a virtual machine around the Docker se
 
 * [VirtualBox](https://www.virtualbox.org/wiki/Downloads) - tested with version 5.1.22
 * [Vagrant](https://www.vagrantup.com/downloads.html) - tested with version 1.9.6
+
+#### Destroy everything
+
+If you already have the repository cloned, destroy it and reclone it.
+
+    rm -rf beis-par-beta
+    git clone git@github.com:TransformCore/beis-par-beta
+    cd beis-par-beta
     
 #### Create the VM
 
