@@ -7,11 +7,13 @@ sudo apt-get update -y
 apt-cache policy docker-ce    
 sudo apt-get install -y docker-ce
 sudo apt-get install -y docker-compose
+sudo adduser ubuntu docker
+newgrp docker
 
 cd /vagrant/docker
 sudo docker-compose up -d
 
-sudo sh setup.sh
+sh setup.sh
     
 date > /etc/vagrant_provisioned_at
 SCRIPT
