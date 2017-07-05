@@ -1,4 +1,5 @@
 # Department of Business Energy and Industrial Strategy
+
 ## Primary Authority Register
 
 [![Build Status](https://travis-ci.org/TransformCore/beis-par-beta.svg?branch=master)](https://travis-ci.org/TransformCore/beis-par-beta)
@@ -19,8 +20,8 @@ The Vagrant development environment wraps a virtual machine around the Docker se
 
 #### Prerequisites
 
-    [VirtualBox](https://www.virtualbox.org/wiki/Downloads) - tested with version 5.1.22
-    [Vagrant](https://www.vagrantup.com/downloads.html) - tested with version 1.9.6
+* [VirtualBox](https://www.virtualbox.org/wiki/Downloads) - tested with version 5.1.22
+* [Vagrant](https://www.vagrantup.com/downloads.html) - tested with version 1.9.6
     
 #### Create the VM
 
@@ -54,4 +55,3 @@ You should now have a running VM within which is a running Docker daemon. You ca
     vagrant ssh
     cd /vagrant/docker
     sudo sh refresh-dependencies.sh
-    
