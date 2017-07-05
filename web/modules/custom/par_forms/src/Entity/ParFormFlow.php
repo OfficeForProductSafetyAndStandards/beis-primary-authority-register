@@ -70,6 +70,13 @@ class ParFormFlow extends ConfigEntityBase {
   protected $steps;
 
   /**
+   * The caches the routes for quicker lookup.
+   *
+   * @var array
+   */
+  protected $routeCache;
+
+  /**
    * Get the description for this flow.
    */
   public function getDescription() {
