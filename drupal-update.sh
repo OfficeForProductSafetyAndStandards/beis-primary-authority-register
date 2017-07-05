@@ -1,5 +1,5 @@
 ## Commands that must be run to update a drupal instance.
-## Use as `sh ./docker/drupal-update.sh /var/www/par-beta`
+## Use as `sh ./drupal-update.sh /var/www/html`
 
 # Pass in the root of the project.
 if [ -n "$1" ]; then

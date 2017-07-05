@@ -109,8 +109,11 @@ abstract class ParBaseForm extends FormBase {
 
   /**
    * Go to next step.
+   *
+   * @return array
+   *   An array containing details of the next configured step.
    */
-  protected function getNextStep() {
+  public function getNextStep() {
     $flow = $this->getFlow();
     // Lookup the current step to more accurately determine the next step.
     $current_step = $flow->getStepByFormId($this->getFormId());
@@ -121,14 +124,20 @@ abstract class ParBaseForm extends FormBase {
   }
 
   /**
-   * Wraps call to static NestedArray::getValue to make more testable.
+   * Get specific value from the temp data store for this form.
    *
    * @param string|array $key
+   *   The key to search for.
    * @param mixed $default
+   *   The default value to return if no value was found.
+   * @param string $form_id
+   *   The form_id to get data for, will use the current form if not set.
    *
    * @return mixed|null
+   *   The value for this key.
    */
-  public function getDataValue($key, $default = '') {
+  protected function getDataValue($key, $default = '', $form_id = NULL) {
+    $form_id = !empty($form_id) ? $form_id : $this->getFormId();
     $exists = NULL;
     $data = $this->getTempData();
     $value = NestedArray::getValue($data, (array) $key, $exists);
@@ -145,9 +154,14 @@ abstract class ParBaseForm extends FormBase {
    * Wraps call to static NestedArray::setValue to make more testable.
    *
    * @param $key
-   * @param $value
+   *   The key to search for.
+   * @param mixed $value
+   *   The value to store for this key. Can be any string, integer or object.
+   * @param string $form_id
+   *   The form_id to get data for, will use the current form if not set.
    */
-  public function setDataValue($key, $value) {
+  protected function setDataValue($key, $value, $form_id = NULL) {
+    $form_id = !empty($form_id) ? $form_id : $this->getFormId();
     $data = $this->getTempData();
     NestedArray::setValue($data, (array) $key, $value, TRUE);
     $this->setTempData($data);
@@ -223,6 +237,19 @@ abstract class ParBaseForm extends FormBase {
     foreach ($this->getFlow()->getFlowForms() as $form) {
       $form_data = $this->getTempData($form);
       $data = array_merge($data, $this->cleanseFormDefaults($form_data));
+    }
+
+    return $data;
+  }
+
+  /**
+   * Delete all the data for the current flow state.
+   */
+  protected function deleteStore() {
+    $data = [];
+
+    foreach ($this->getFlow()->getFlowForms() as $form) {
+      $form_data = $this->deleteTempData($form);
     }
 
     return $data;
