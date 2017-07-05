@@ -1,5 +1,6 @@
 $script = <<SCRIPT
 echo I am provisioning...
+date > /etc/vagrant_provision_start
 
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -    
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"    
@@ -15,7 +16,7 @@ sudo docker-compose up -d
 
 sh setup.sh
     
-date > /etc/vagrant_provisioned_at
+date > /etc/vagrant_provision_end
 SCRIPT
 
 Vagrant.configure("2") do |config|
