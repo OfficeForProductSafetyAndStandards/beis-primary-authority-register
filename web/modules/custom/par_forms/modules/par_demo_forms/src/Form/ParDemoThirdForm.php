@@ -78,8 +78,11 @@ class ParDemoThirdForm extends ParBaseForm {
    * parent::submitForm($form, $form_state);
    *
    * // We can also redirect to a view page if we know the view & view page machine name.
-   * $url = Url::fromRoute('view.VIEW_MACHINE_NAME.PAGE_MACHINENAME');
-   * $form_state->setRedirectUrl($url);
+   * $route_name = 'view.VIEW_MACHINE_NAME.PAGE_MACHINENAME';
+   * $route_parameters = [
+   *   'VIEW_CONTEXTUAL_FILTER_ENTITY_ID' => 1
+   * ];
+   * $form_state->setRedirect($route_name, $route_parameters);
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
@@ -89,6 +92,6 @@ class ParDemoThirdForm extends ParBaseForm {
     // temporary store.
 
     // This is the last form, we need to decide where to go next.
-    $form_state->setRedirect('par_demo_forms.first');
+    $form_state->setRedirectUrl('par_demo_forms.first');
   }
 }
