@@ -1,5 +1,37 @@
 <?php
 
+use Drupal\views\Plugin\views\area\Result;
+
 function par_theme_preprocess_fieldset(array &$variables) {
   $variables['child_count'] = count($variables['element']['#options']);
+}
+
+/**
+ * Implements hook_preprocess_pager().
+ *
+ * Default template suggestion: pager.html.twig
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - tags: Provides link text for the next/previous links.
+ *   - element: The pager's id.
+ *   - parameters: Any extra GET parameters that should be retained, such as
+ *     exposed input.
+ */
+function par_theme_preprocess_pager(&$variables) {
+
+  global $pager_page_array, $pager_total;
+
+  $tags = &$variables['tags'];
+  $element = $variables['element'];
+  $parameters = $variables['parameters'];
+
+  $view_id = \Drupal::routeMatch()->getParameter('view_id');
+  $view = \Drupal\views\Views::getView($view_id);
+
+  //\Drupal::logger('par_pagination')->notice(print_r($view_id, 1));
+
+  // @todo figure out how to make this dynamic using Drupal\views\Plugin\views\area\Result.
+  $variables['pager_summary'] = 'Displaying 1 - 50 of 201';
+
 }
