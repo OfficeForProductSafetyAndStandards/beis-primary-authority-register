@@ -92,6 +92,6 @@ class ParDemoThirdForm extends ParBaseForm {
     // temporary store.
 
     // This is the last form, we need to decide where to go next.
-    $form_state->setRedirectUrl('par_demo_forms.first');
+    $form_state->setRedirect('par_demo_forms.first');
   }
 }
