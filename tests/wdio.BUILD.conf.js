@@ -1,7 +1,7 @@
 const config = require('./wdio.conf.js').config;
 
 config.capabilities = [{
-    browserName: 'chrome',
+    browserName: 'phantomjs',
 }];
 
 // config.services = ['selenium-'];
