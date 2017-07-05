@@ -68,21 +68,6 @@ class ParDemoThirdForm extends ParBaseForm {
     // The base class will store all the data to the
     // temporary store.
 
-    $all_flow_data = $this->getAllTempData();
-    $data = [
-      'type' => 'article',
-      'title' => $all_flow_data['name'],
-      'uid' => $this->currentUser->id(),
-    ];
-    $node = \Drupal::entityManager()
-      ->getStorage('node')
-      ->create($data);
-
-    // Make sure to only delete the store if the data was correctly saved.
-    if ($node->save()) {
-      $this->deleteStore();
-    }
-
     // This is the last form, we need to decide where to go next.
     $form_state->setRedirect('par_demo_forms.first');
   }
