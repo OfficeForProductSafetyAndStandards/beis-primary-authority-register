@@ -70,11 +70,11 @@ class ParFormFlow extends ConfigEntityBase {
   protected $steps;
 
   /**
-   * The caches the routes for quicker lookup.
-   *
-   * @var array
+   * {@inheritdoc}
    */
-  protected $routeCache;
+  public function __construct(array $values, $entity_type) {
+    parent::__construct($values, $entity_type);
+  }
 
   /**
    * Get the description for this flow.
