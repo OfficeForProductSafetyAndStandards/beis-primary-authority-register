@@ -51,19 +51,6 @@ class ParPaginationPager extends SqlBase {
       '#default_value' => $this->options['quantity'],
     ];
 
-    $form['tags']['first'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('First page link text'),
-      '#default_value' => $this->options['tags']['first'],
-      '#weight' => -10,
-    ];
-
-    $form['tags']['last'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Last page link text'),
-      '#default_value' => $this->options['tags']['last'],
-      '#weight' => 10,
-    ];
   }
 
   /**
