@@ -23,7 +23,7 @@ The Vagrant development environment wraps a virtual machine around the Docker se
 
 #### Destroy everything
 
-If you already have the repository cloned, destroy it and reclone it.
+If you already have the repository cloned, destroy it and reclone it. Also shutdown and delete any existing VirtualBox VMs for beis-par-beta.
 
     rm -rf beis-par-beta
     git clone git@github.com:TransformCore/beis-par-beta
