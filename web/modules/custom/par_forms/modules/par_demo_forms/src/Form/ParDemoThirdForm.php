@@ -60,6 +60,26 @@ class ParDemoThirdForm extends ParBaseForm {
    * if ($node->save()) {
    *   $this->deleteStore();
    * }
+   *
+   * @example
+   * // The parent submit handler _must_ run first.
+   * parent::submitForm($form, $form_state);
+   *
+   * // We can also redirect to a given path if the route name is unknown.
+   * $current_path = \Drupal::service('path.current')->getPath();
+   * $url_object = \Drupal::service('path.validator')->getUrlIfValid('redirect-to-given-path');
+   * $route_name = $url_object->getRouteName();
+   * $route_parameters = $url_object->getrouteParameters();
+   *
+   * $form_state->setRedirect($route_name, $route_parameters);
+   *
+   * @example
+   * // The parent submit handler _must_ run first.
+   * parent::submitForm($form, $form_state);
+   *
+   * // We can also redirect to a view page if we know the view & view page machine name.
+   * $url = Url::fromRoute('view.VIEW_MACHINE_NAME.PAGE_MACHINENAME');
+   * $form_state->setRedirectUrl($url);
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
