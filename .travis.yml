@@ -83,6 +83,7 @@ after_deploy:
   - cf set-env par-beta-staging S3_SECRET_KEY $S3_SECRET_KEY
   - cf set-env par-beta-staging S3_BUCKET $S3_BUCKET
   - cf set-env par-beta-staging PAR_HASH_SALT $PAR_HASH_SALT
+  - cd tests/reports/html && cf push
   
 
     
