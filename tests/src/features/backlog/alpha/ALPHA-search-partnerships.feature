@@ -1,4 +1,4 @@
-@Pending @alphajourney1and3
+@Pending
 Feature: Searching partnerships
 
     Background:

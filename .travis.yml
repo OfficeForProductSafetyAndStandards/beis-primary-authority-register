@@ -13,8 +13,11 @@ cache:
     - tests/node_modules
     - /home/composer/.composer/cache
 install:
+  - wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
+  - echo "deb http://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
+  - sudo apt-get update
+  - sudo apt-get install cf-cli
   - composer install -v
-  - sudo sed -e "s?PAR_HASH_SALT?$PAR_HASH_SALT?g" --in-place web/sites/default/settings.php
   - cd docker
   - docker-compose up -d --force-recreate --build
   - cp ../web/sites/example.settings.local.php ../web/sites/default/settings.local.php
@@ -37,10 +40,24 @@ before_script:
 script:
 - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
 - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
+- travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/allure generate --clean -o ./reports/html ./reports/allure"
 
 after_script:
   - "travis-artifacts upload"
 
+########################
+### SAVE ARTIFACTS
+########################
+
+addons:
+  artifacts:
+    debug: true
+    paths:
+      - ./tests/reports
+    target_paths: tests/$TRAVIS_BUILD_NUMBER
+    bucket: transform-par-beta-artifacts
+    s3_region: eu-west-1
+    
 ########################
 ### DEPLOY
 ########################
@@ -56,11 +73,18 @@ deploy:
   on:
     repo: TransformCore/beis-par-beta
 
-addons:
-  artifacts:
-    debug: true
-    paths:
-      - ./tests/reports
-    target_paths: tests/$TRAVIS_BUILD_NUMBER
-    bucket: transform-par-beta-artifacts
-    s3_region: eu-west-1
+########################
+### POST DEPLOY
+########################
+
+after_deploy:
+  - cf login -a api.cloud.service.gov.uk -u nao.yoshino@transformuk.com -p $CF_PASSWORD
+  - cf set-env par-beta-staging S3_ACCESS_KEY $S3_ACCESS_KEY
+  - cf set-env par-beta-staging S3_SECRET_KEY $S3_SECRET_KEY
+  - cf set-env par-beta-staging S3_BUCKET $S3_BUCKET
+  - cf set-env par-beta-staging PAR_HASH_SALT $PAR_HASH_SALT
+  - cd tests/reports/html && cf push
+  
+
+    
+    

@@ -41,27 +41,34 @@ class ParDemoThirdForm extends ParBaseForm {
 
   /**
    * {@inheritdoc}
+   *
+   * @example
+   * // The parent submit handler _must_ run first.
+   * parent::submitForm($form, $form_state);
+   *
+   * $all_flow_data = $this->getAllTempData();
+   * $data = [
+   *   'type' => 'article',
+   *   'title' => $all_flow_data['name'],
+   *   'uid' => $this->currentUser->id(),
+   * ];
+   * $node = \Drupal::entityManager()
+   *   ->getStorage('node')
+   *   ->create($data);
+   *
+   * // Make sure to only delete the store if the data was correctly saved.
+   * if ($node->save()) {
+   *   $this->deleteStore();
+   * }
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    parent::submitForm($form, $form_state);
+
     // We can perform other logic here to save the data.
     // The base class will store all the data to the
     // temporary store.
-    //
-    // $all_flow_data = $this->getAllTempData();
-    // $data = array(
-    //   'type' => 'article',
-    //   'title' => $all_flow_data['name'],
-    //   'uid' => $this->currentUser->id(),
-    // );
-    // $node = \Drupal::entityManager()
-    //   ->getStorage('node')
-    //   ->create($data);
-    // $node->save();
 
-    parent::submitForm($form, $form_state);
-
-    // For some reason we're going to override the default
-    // redirect and go back to the beginning of this flow.
+    // This is the last form, we need to decide where to go next.
     $form_state->setRedirect('par_demo_forms.first');
   }
 }

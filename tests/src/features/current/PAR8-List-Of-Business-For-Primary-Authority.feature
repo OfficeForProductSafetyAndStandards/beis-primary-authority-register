@@ -17,5 +17,4 @@ Feature: As a Primary Authority Officer
         Then I expect that element "h1" contains the text "You need to review and confirm the following partnerships"
         And I expect that element "#your-partnerships" does exist
         And I expect that element "#partnership-status" does exist
-        When I click on the radio "#partnership-1"
-        And I press "Continue"
+        When I click on the link "#partnership-1"
