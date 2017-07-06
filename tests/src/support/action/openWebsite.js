@@ -14,6 +14,5 @@ module.exports = (type, page, done) => {
     const api = supertest(url);
 
     browser.url(url);
-    api.get('/').set('Accept', 'application/json').expect(200, done);
     done();
 };
