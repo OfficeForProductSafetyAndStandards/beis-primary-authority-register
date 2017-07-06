@@ -70,6 +70,13 @@ class ParFormFlow extends ConfigEntityBase {
   protected $steps;
 
   /**
+   * {@inheritdoc}
+   */
+  public function __construct(array $values, $entity_type) {
+    parent::__construct($values, $entity_type);
+  }
+
+  /**
    * Get the description for this flow.
    */
   public function getDescription() {
