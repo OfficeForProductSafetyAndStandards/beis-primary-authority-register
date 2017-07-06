@@ -4,6 +4,7 @@ namespace Drupal\par_forms\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\par_forms\ParRedirectTrait;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\SessionManagerInterface;
@@ -11,11 +12,14 @@ use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\user\PrivateTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Entity\EntityConstraintViolationListInterface;
 
 /**
  * The base form controller for all PAR forms.
  */
 abstract class ParBaseForm extends FormBase {
+
+  use ParRedirectTrait;
 
   /**
    * @var \Drupal\Core\Session\SessionManagerInterface
@@ -100,6 +104,24 @@ abstract class ParBaseForm extends FormBase {
   }
 
   /**
+   * Set the errors for a given field.
+   *
+   * @param string $name
+   *   The name of the form element to set the error for.
+   * @param FormStateInterface
+   *   The form state to set the error on.
+   * @param \Drupal\Core\Entity\EntityConstraintViolationListInterface $violations
+   *   The violations to set.
+   */
+  public function setFieldViolations($name, &$form_state, EntityConstraintViolationListInterface $violations) {
+    if ($violations) {
+      foreach ($violations as $violation) {
+        $form_state->setErrorByName($name, t('%message', ['%message' => $violation->getMessage()->render()]));
+      }
+    }
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
@@ -117,6 +139,7 @@ abstract class ParBaseForm extends FormBase {
     $flow = $this->getFlow();
     // Lookup the current step to more accurately determine the next step.
     $current_step = $flow->getStepByFormId($this->getFormId());
+    $next_step = ++$current_step['step'];
     $next_step = isset($current_step['step']) ? $flow->getStep(++$current_step['step']) : $flow->getStep(1);
 
     // If there is no next step we'll stay on this step.
@@ -293,7 +316,7 @@ abstract class ParBaseForm extends FormBase {
    * @return \Drupal\Core\Entity\EntityInterface
    *   The flow entity.
    */
-  protected function getFlow() {
+  public function getFlow() {
     return $this->getFlowStorage()->load($this->getFlowName());
   }
 
@@ -303,7 +326,7 @@ abstract class ParBaseForm extends FormBase {
    * @return \Drupal\Core\Entity\EntityStorageInterface
    *   The flow storage handler.
    */
-  protected function getFlowStorage() {
+  public function getFlowStorage() {
     return $this->flowStorage;
   }
 
