@@ -45,6 +45,19 @@ after_script:
   - "travis-artifacts upload"
 
 ########################
+### SAVE ARTIFACTS
+########################
+
+addons:
+  artifacts:
+    debug: true
+    paths:
+      - ./tests/reports
+    target_paths: tests/$TRAVIS_BUILD_NUMBER
+    bucket: transform-par-beta-artifacts
+    s3_region: eu-west-1
+    
+########################
 ### DEPLOY
 ########################
 
@@ -70,13 +83,6 @@ after_deploy:
   - cf set-env par-beta-staging S3_BUCKET $S3_BUCKET
   - cf set-env par-beta-staging PAR_HASH_SALT $PAR_HASH_SALT
   
-addons:
-  artifacts:
-    debug: true
-    paths:
-      - ./tests/reports
-    target_paths: tests/$TRAVIS_BUILD_NUMBER
-    bucket: transform-par-beta-artifacts
-    s3_region: eu-west-1
+
     
     
