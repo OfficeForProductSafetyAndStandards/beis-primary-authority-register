@@ -4,6 +4,8 @@ config.capabilities = [{
     browserName: 'chrome',
 }];
 
+config.screenshotPath = './errorShots/';
+config.services = ['selenium-standalone'];
 config.baseUrl = 'http://127.0.0.1:8111';
-config.tags = '@ci';
+config.tags = '@ci, ~@Pending';
 exports.config = config;
