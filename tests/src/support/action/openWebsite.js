@@ -10,9 +10,10 @@ module.exports = (type, page, done) => {
      * @type {String}
      */
     const url = (type === 'url') ? page : browser.options.baseUrl + page;
+    const supertest = require('supertest');
+    const api = supertest(url);
 
     browser.url(url);
-    const pageResponse = browser.status();
-
+    api.get('/').set('Accept', 'application/json').expect(200, done);
     done();
 };
