@@ -4,8 +4,12 @@
  * Implements hook_theme().
  */
 function par_pagination_theme($existing, $type, $theme, $path) {
+
+  \Drupal::moduleHandler()->loadInclude('par_pagination', 'inc', 'par_pagination.theme');
+
   return [
     'par_advanced_pager' => [
+      'file' => 'par_pagination.theme.inc',
       'variables' => ['total_items' => NULL, 'from_item' => NULL, 'to_item' => NULL],
     ],
   ];

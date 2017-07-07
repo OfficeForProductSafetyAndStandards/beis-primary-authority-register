@@ -11,9 +11,9 @@ use Drupal\views\Plugin\views\pager\SqlBase;
  * @ingroup views_pager_plugins
  *
  * @ViewsPager(
- *   id = "par_pagination_pager",
+ *   id = "par_advanced_pager",
  *   title = @Translation("GDS Paged output with result output"),
- *   short_title = @Translation("GDS Pager"),
+ *   short_title = @Translation("gdspaper"),
  *   help = @Translation("Paged output with result count"),
  *   theme = "par_advanced_pager"
  * )
@@ -85,6 +85,7 @@ class ParAdvancedPager extends SqlBase {
       3 => $this->options['tags']['next'],
       4 => $this->options['tags']['last'],
     );
+
     return array(
       '#theme' => $this->themeFunctions(),
       '#tags' => $tags,
