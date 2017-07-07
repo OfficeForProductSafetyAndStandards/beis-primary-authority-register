@@ -9,13 +9,9 @@ exports.config = {
     // then the current working directory is where your package.json resides, so
     // `wdio` will be called from there.
     //
-    specs: [
-        './src/features/**/*.feature',
-    ],
+    specs: ['./src/features/*.feature'],
     // Patterns to exclude.
-    exclude: [
-        // 'path/to/excluded/files'
-    ],
+    exclude: ['./src/features/backlog/**/*.feature', './src/features/current/*.feature'],
     //
     // ============
     // Capabilities
@@ -98,7 +94,7 @@ exports.config = {
     //         screenWidth: [320,480,640,1024]
     //     },
     //     webdriverrtc: {},
-    //     browserevent: {}
+    //     // browserevent: {}
     // },
     //
     // Test runner services
@@ -118,11 +114,14 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: http://webdriver.io/guide/testrunner/reporters.html
-    reporters: ['json', 'spec'],
+    reporters: ['json', 'spec', 'allure'],
     reporterOptions: {
         outputDir: './reports/',
         filename: 'report',
-        combined: true
+        combined: true,
+        allure: {
+            outputDir: './reports/allure/',
+        },
     },
     //
     // If you are using Cucumber you need to specify the location of your step
