@@ -2,7 +2,7 @@
 par_styleguide.canonical:
   path: '/styleguide'
   defaults:
-    _controller: '\Drupal\par_styleguide\Controller\StyleguideController::index'
+    _controller: '\Drupal\par_styleguide\Controller\StyleguideController::content'
     _title: 'PAR Styleguide'
   requirements:
     _permission: 'access content'
@@ -18,7 +18,7 @@ par_styleguide.forms:
 par_styleguide.data:
   path: '/styleguide/data'
   defaults:
-    _controller: \Drupal\par_styleguide\Controller\StyleguideController::data
+    _controller: \Drupal\par_styleguide\Controller\StyleguideDataController::content
     _title: 'PAR Styleguide Data'
   requirements:
     _permission: 'access content'
@@ -26,7 +26,7 @@ par_styleguide.data:
 par_styleguide.pagination:
   path: '/styleguide/pagination'
   defaults:
-    _controller: \Drupal\par_styleguide\Controller\StyleguideController::pagination
+    _controller: \Drupal\par_styleguide\Controller\StyleguidePaginationController::content
     _title: 'PAR Styleguide Pagination'
   requirements:
     _permission: 'access content'
