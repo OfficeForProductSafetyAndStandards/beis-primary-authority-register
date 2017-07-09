@@ -1,8 +1,8 @@
 'use strict';
 
 var gulp = require('gulp'),
-	sass = require('gulp-sass'),
-	sourcemaps = require('gulp-sourcemaps');
+  sass = require('gulp-sass'),
+  sourcemaps = require('gulp-sourcemaps');
 
 // Drupal theme directory.
 var themeDir = './web/themes/custom/par_theme';

@@ -1,0 +1,76 @@
+// ==========================================================================
+// Pagination.
+// this file is actually
+// ==========================================================================
+
+$module: 'pager';
+
+.#{$module} {
+  margin-top: em(5, 16);
+  margin-bottom: em(20, 16);
+
+  @include media(tablet) {
+    margin-top: em(5);
+    margin-bottom: em(20);
+  }
+
+  &-items {
+    display: none;
+
+    @include media(tablet) {
+      display: inline;
+
+      li {
+        display: inline;
+        margin: 0 5px;
+
+        &:first-child {
+          margin-left: 0;
+        }
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+      }
+
+    }
+
+  }
+
+  &-prev,
+  &-next {
+    margin-right: 10px;
+
+    @include media(tablet) {
+      margin-right: 0;
+    }
+
+  }
+
+
+  &-prev {
+
+    @include media(tablet) {
+      margin-right: 10px;
+    }
+
+  }
+
+  &-next {
+
+    @include media(tablet) {
+      margin-left: 10px;
+    }
+
+  }
+
+  &-controls {
+
+    @include media(tablet) {
+      float: right;
+    }
+
+  }
+
+}
