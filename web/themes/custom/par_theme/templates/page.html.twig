@@ -72,8 +72,12 @@
         <a href="#proposition-links" class="js-header-toggle menu">Menu</a>
         <nav id="proposition-menu">
           <a href="https://www.gov.uk/service-manual" id="proposition-name">
-            {% if gdsHeadingTitle %}{{ gdsHeadingTitle }}
-            {% else %}PAR{% endif %} Pages</a>
+            {% if gdsHeadingTitle %}
+              {{ gdsHeadingTitle }}
+            {% else %}
+              PAR
+            {% endif %} Pages
+            </a>
           <ul id="proposition-links">
             <li><a href="#profile">Welcome back Sam</a></li>
             <li><a href="#logout">Logout</a></li>
@@ -87,13 +91,13 @@
 <div id="global-header-bar"></div>
 
 <main id="content" role="main" tabindex="-1">
-<div class="phase-banner">
-<p>
-  <strong class="phase-tag">ALPHA</strong>
-  <span>This is a new service – your <a href="#">feedback</a> will help us to improve it.</span>
-</p>
-</div>
-	{{ page.content }}
+  <div class="phase-banner">
+  <p>
+    <strong class="phase-tag">ALPHA</strong>
+    <span>This is a new service – your <a href="#">feedback</a> will help us to improve it.</span>
+  </p>
+  </div>
+  {{ page.content }}
 </main>
 
 <footer class="group js-footer" id="footer" role="contentinfo">
@@ -119,8 +123,6 @@
 </footer>
 
 <div id="global-app-error" class="app-error hidden"></div>
-
-<script src="/themes/custom/par_theme/assets/javascripts/govuk-template.js"></script>
 
 <script>if (typeof window.GOVUK === 'undefined') document.body.className = document.body.className.replace('js-enabled', '');</script>
 <!-- ends page template -->
