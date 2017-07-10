@@ -44,7 +44,6 @@
     embedded ? 'pagerer-scrollpane-embedded',
   ]
 %}
-{{ attach_library('pagerer/base.css') }}
 {% if items %}
     <nav {{ attributes.addClass(classes) }} role="navigation" aria-labelledby="pagination-heading"
 {%- if id %}
@@ -104,10 +103,15 @@
                 </li>
               {% elseif item.href is defined %}
                 <li class="pager__item{{ item.is_current ? ' is-active' : '' }}">
-                  <a href="{{ item.href }}" title="{{ item.title }}"{{ item.attributes|without('href', 'title') }}>
+                  {% if item.is_current %}
                     <span class="visually-hidden">{{- item.reader_text -}}</span>
                     {{- item.text -}}
-                  </a>
+                  {% else %}
+                    <a href="{{ item.href }}" title="{{ item.title }}"{{ item.attributes|without('href', 'title') }}>
+                      <span class="visually-hidden">{{- item.reader_text -}}</span>
+                      {{- item.text -}}
+                    </a>
+                  {% endif %}
                 </li>
               {% else %}
                 <li class="pager__item pager__item--ellipsis pagerer-no-link" role="presentation">{{- item.text -}}</li>

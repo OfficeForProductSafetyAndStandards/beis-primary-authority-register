@@ -13,12 +13,21 @@ div.#{$module} {
 
   div.pagerer-panes {
     display: flex;
+    flex: inherit;
+    flex-direction: column-reverse;
     align-items: center;
   }
 
   @include media(tablet) {
+
+    div.pagerer-panes {
+      display: flex;
+      flex-direction: row;
+    }
+
     margin-top: em(5);
     margin-bottom: em(20);
+
   }
 
   .pagerer-left-pane,
@@ -29,7 +38,8 @@ div.#{$module} {
 
   .pagerer-left-pane {
 
-    width: 80%;
+    // force column to stretch full width on mobile.
+    width: 100%;
 
     @include media(tablet) {
       width: 50%;
@@ -46,34 +56,46 @@ div.#{$module} {
 
   .pagerer-right-pane {
 
-    // width: 20%;
+    // force column to stretch full width on mobile.
+    width: 100%;
 
-    @include media(tablet) {
-      width: 50%;
+    // reset bullets.
+    nav, ul {
+      margin: 0px;
+      padding: 0px;
     }
 
     .pager__items {
-      float: right;
-      text-align: right;
+
+      text-align: left;
 
       .pager__item {
         display: none;
-        margin: 0 5px;
+        margin: 0 10px 0 0;
 
+        &.pager__item--previous,
         &.pager__item--next {
           display: inline;
         }
       }
 
       @include media(tablet) {
-        display: inline;
 
         .pager__item {
           display: inline;
         }
 
+        & {
+          float: right;
+          text-align: right;
+        }
+
       }
 
+    }
+
+    @include media(tablet) {
+      width: 50%;
     }
 
   }
