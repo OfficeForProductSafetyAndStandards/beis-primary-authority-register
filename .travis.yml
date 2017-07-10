@@ -3,16 +3,24 @@
 ########################
 
 language: php
+
 php:
   - 7.1
+  
 services:
   - docker
+  
 cache:
   directories:
     - node_modules
     - tests/node_modules
     - $HOME/.composer/cache/files
+    
 install:
+  - if [[ $TRAVIS_BRANCH == 'master' ]]; then wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -; fi
+  - if [[ $TRAVIS_BRANCH == 'master' ]]; then echo "deb http://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list; fi
+  - if [[ $TRAVIS_BRANCH == 'master' ]]; then sudo apt-get update; fi
+  - if [[ $TRAVIS_BRANCH == 'master' ]]; then sudo apt-get install cf-cli; fi
   - gem install travis-artifacts
   - phpenv config-rm xdebug.ini
   - composer install -v
