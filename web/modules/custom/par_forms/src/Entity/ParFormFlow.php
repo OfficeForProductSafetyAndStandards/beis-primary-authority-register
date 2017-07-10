@@ -70,13 +70,6 @@ class ParFormFlow extends ConfigEntityBase {
   protected $steps;
 
   /**
-   * {@inheritdoc}
-   */
-  public function __construct(array $values, $entity_type) {
-    parent::__construct($values, $entity_type);
-  }
-
-  /**
    * Get the description for this flow.
    */
   public function getDescription() {
@@ -106,8 +99,8 @@ class ParFormFlow extends ConfigEntityBase {
   /**
    * Get a step by.
    *
-   * @param int $index
-   *   The step number that is required.
+   * @param string $form_id
+   *   The form id to lookup.
    *
    * @return array
    *   An array with values for the form_id & route
@@ -116,7 +109,7 @@ class ParFormFlow extends ConfigEntityBase {
     foreach ($this->getSteps() as $key => $step) {
       if (isset($step['form_id']) && $form_id === $step['form_id']) {
         $match = [
-          'step' => $key
+          'step' => $key,
         ] + $step;
       }
     }
