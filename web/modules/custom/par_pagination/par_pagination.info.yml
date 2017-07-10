@@ -1,7 +1,0 @@
-name: PAR Pagination
-type: module
-description: A more advanced pagination element for GDS themes.
-core: 8.x
-package: PAR
-dependencies:
-  - views
