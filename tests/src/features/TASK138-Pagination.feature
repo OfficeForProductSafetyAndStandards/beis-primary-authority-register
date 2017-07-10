@@ -29,7 +29,7 @@ Feature: As a PAR user
 #            | Next      | Showing 41-50 of 462 results |
 
 
-    Scenario Outline: Vagination check (by url)
+    Scenario Outline: pagination check (by url)
         Given I open the url "<page link>"
         Then I expect that element "li.pager__item.pagerer-prefix span" contains the text "<page set>"
 
