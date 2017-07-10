@@ -15,7 +15,7 @@ Feature: As a PAR user
 #        And I expect that element "pager__item--next" is visible
 
     Scenario Outline: Valid Login  Id
-        When I click on the link "<page link>"
+        Given I click on the link "<page link>"
         Then I expect that element "li.pager__item.pagerer-prefix span" contains the text "<page set>"
 
         Examples:
@@ -24,3 +24,5 @@ Feature: As a PAR user
             | 3         | Showing 21-30 of 462 results |
             | 4         | Showing 31-40 of 462 results |
             | 5         | Showing 41-50 of 462 results |
+#            | Previous  | Showing 31-40 of 462 results |
+#            | Next      | Showing 41-50 of 462 results |
