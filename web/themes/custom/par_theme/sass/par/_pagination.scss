@@ -1,74 +1,98 @@
-// ==========================================================================
-// Pagination.
-// this file is actually
-// ==========================================================================
+// Pagination - this file styles the pagerer module.
 
-$module: 'pager';
+$module: 'pagerer-container';
 
-.#{$module} {
+div.#{$module} {
   margin-top: em(5, 16);
   margin-bottom: em(20, 16);
 
-  @include media(tablet) {
-    margin-top: em(5);
-    margin-bottom: em(20);
+  display: block;
+
+  div.pagerer-panes {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
   }
 
-  &-items {
-    display: none;
+  @include media(tablet) {
+
+    div.pagerer-panes {
+      display: flex;
+      flex-direction: row;
+    }
+
+    margin-top: em(5);
+    margin-bottom: em(20);
+
+  }
+
+  .pagerer-left-pane,
+  .pagerer-center-pane,
+  .pagerer-right-pane {
+    display: block;
+  }
+
+  .pagerer-left-pane,
+  .pagerer-right-pane {
+    // force column to stretch full width on mobile.
+    width: 100%;
+  }
+
+  .pagerer-left-pane {
 
     @include media(tablet) {
-      display: inline;
+      flex: auto;
+      width: auto;
+    }
 
-      li {
-        display: inline;
-        margin: 0 5px;
+    // reset bullets on the "Showing x-x of results".
+    ul, li {
+      list-style-type: none;
+      margin: 0px;
+      padding: 0px;
+    }
 
-        &:first-child {
-          margin-left: 0;
+  }
+
+  .pagerer-right-pane {
+
+    // reset bullets.
+    nav, ul {
+      margin: 0px;
+      padding: 0px;
+    }
+
+    .pager__items {
+
+      text-align: left;
+
+      .pager__item {
+        display: none;
+        margin: 0 10px 0 0;
+
+        &.pager__item--previous,
+        &.pager__item--next {
+          display: inline;
+        }
+      }
+
+      @include media(tablet) {
+
+        .pager__item {
+          display: inline;
         }
 
-        &:last-child {
-          margin-right: 0;
+        & {
+          float: right;
+          text-align: right;
         }
 
       }
 
     }
 
-  }
-
-  &-prev,
-  &-next {
-    margin-right: 10px;
-
     @include media(tablet) {
-      margin-right: 0;
-    }
-
-  }
-
-
-  &-prev {
-
-    @include media(tablet) {
-      margin-right: 10px;
-    }
-
-  }
-
-  &-next {
-
-    @include media(tablet) {
-      margin-left: 10px;
-    }
-
-  }
-
-  &-controls {
-
-    @include media(tablet) {
-      float: right;
+      width: auto;
     }
 
   }
