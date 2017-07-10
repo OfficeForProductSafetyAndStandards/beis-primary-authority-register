@@ -12,7 +12,7 @@ class StyleguideController extends ControllerBase {
   /**
   * The main index page for the styleguide.
   */
-  public function index() {
+  public function content() {
 
     $build = [
       '#theme' => 'par_styleguide',
@@ -20,4 +20,5 @@ class StyleguideController extends ControllerBase {
 
     return $build;
   }
+
 }

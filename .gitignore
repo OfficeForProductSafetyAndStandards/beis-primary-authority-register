@@ -54,9 +54,6 @@ web/sites/simpletest
 .project
 .settings/
 
-# Exclude test data
-tests/reports/
-
 # Exclude VM logs
 ubuntu-xenial-16.04-cloudimg-console.log
 

@@ -40,10 +40,24 @@ before_script:
 script:
 - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
 - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
+- travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/allure generate --clean -o ./reports/html ./reports/allure"
 
 after_script:
   - "travis-artifacts upload"
 
+########################
+### SAVE ARTIFACTS
+########################
+
+addons:
+  artifacts:
+    debug: true
+    paths:
+      - ./tests/reports
+    target_paths: tests/$TRAVIS_BUILD_NUMBER
+    bucket: transform-par-beta-artifacts
+    s3_region: eu-west-1
+    
 ########################
 ### DEPLOY
 ########################
@@ -69,14 +83,8 @@ after_deploy:
   - cf set-env par-beta-staging S3_SECRET_KEY $S3_SECRET_KEY
   - cf set-env par-beta-staging S3_BUCKET $S3_BUCKET
   - cf set-env par-beta-staging PAR_HASH_SALT $PAR_HASH_SALT
+  - cd tests/reports/html && cf push -f ../../reports-manifest.yml
   
-addons:
-  artifacts:
-    debug: true
-    paths:
-      - ./tests/reports
-    target_paths: tests/$TRAVIS_BUILD_NUMBER
-    bucket: transform-par-beta-artifacts
-    s3_region: eu-west-1
+
     
     
