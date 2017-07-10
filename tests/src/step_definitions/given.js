@@ -16,12 +16,18 @@ import compareText from '../support/check/compareText';
 import isEnabled from '../support/check/isEnabled';
 import isVisible from '../support/check/isVisible';
 import openWebsite from '../support/action/openWebsite';
+import checkResponseCode from '../support/action/checkResponseCode';
 import resizeScreenSize from '../support/action/resizeScreenSize';
 
 module.exports = function given() {
     this.Given(
         /^I open the (url|site) "([^"]*)?"$/,
         openWebsite
+    );
+
+    this.Given(
+        /^I check the homepage response code is 200$/,
+        checkResponseCode
     );
 
     this.Given(

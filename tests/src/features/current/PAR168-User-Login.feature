@@ -1,7 +1,7 @@
 @Pending
-Feature: As a Business user,
-    I need to be able to edit my business details,
-    So that the correct business details are taken into the new PAR.
+Feature: As a PAR user
+I need a login
+so that I can access PAR
 
     Background:
         Given I open the url "/login"
