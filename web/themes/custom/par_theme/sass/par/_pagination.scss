@@ -3,72 +3,77 @@
 // this file is actually
 // ==========================================================================
 
-$module: 'pager';
+$module: 'pagerer-container';
 
-.#{$module} {
+div.#{$module} {
   margin-top: em(5, 16);
   margin-bottom: em(20, 16);
+
+  display: block;
+
+  div.pagerer-panes {
+    display: flex;
+    align-items: center;
+  }
 
   @include media(tablet) {
     margin-top: em(5);
     margin-bottom: em(20);
   }
 
-  &-items {
-    display: none;
+  .pagerer-left-pane,
+  .pagerer-center-pane,
+  .pagerer-right-pane {
+    display: block;
+  }
+
+  .pagerer-left-pane {
+
+    width: 80%;
 
     @include media(tablet) {
-      display: inline;
+      width: 50%;
+    }
 
-      li {
-        display: inline;
+    // reset bullets on the "Showing x-x of results".
+    ul, li {
+      list-style-type: none;
+      margin: 0px;
+      padding: 0px;
+    }
+
+  }
+
+  .pagerer-right-pane {
+
+    // width: 20%;
+
+    @include media(tablet) {
+      width: 50%;
+    }
+
+    .pager__items {
+      float: right;
+      text-align: right;
+
+      .pager__item {
+        display: none;
         margin: 0 5px;
 
-        &:first-child {
-          margin-left: 0;
+        &.pager__item--next {
+          display: inline;
         }
+      }
 
-        &:last-child {
-          margin-right: 0;
+      @include media(tablet) {
+        display: inline;
+
+        .pager__item {
+          display: inline;
         }
 
       }
 
-    }
-
-  }
-
-  &-prev,
-  &-next {
-    margin-right: 10px;
-
-    @include media(tablet) {
-      margin-right: 0;
-    }
-
-  }
-
-
-  &-prev {
-
-    @include media(tablet) {
-      margin-right: 10px;
-    }
-
-  }
-
-  &-next {
-
-    @include media(tablet) {
-      margin-left: 10px;
-    }
-
-  }
-
-  &-controls {
-
-    @include media(tablet) {
-      float: right;
     }
 
   }

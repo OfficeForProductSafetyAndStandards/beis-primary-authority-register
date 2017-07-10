@@ -1,0 +1,157 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a pagerer style.
+ *
+ * Available variables:
+ * - style: The pagerer style being rendered.
+ * - id: The id attribute (used to link with the widget state in
+ *   drupalSettings).
+ * - embedded: Flag to indicate if the pager is embedded (used by the
+ *   scrollpane style).
+ * - items: List of pager items.
+ *   The list is keyed by the following elements:
+ *   - first: Item for the first page.
+ *   - previous: Item for the previous page.
+ *   - prefix: Text to be presented before the first page of results.
+ *   - pages: List of pages, separators, breakers, and pagerer widgets.
+ *   - suffix: Text to be presented after the last page of results.
+ *   - next: Item for the next page.
+ *   - last: Item for the last page.
+ *   Sub-sub elements:
+ *   items.first, items.previous, items.next, items.last, and each item inside
+ *   items.pages can contain the following elements:
+ *   - href: URL with appropriate query parameters for the item.
+ *   - attributes: A keyed list of HTML attributes for the item.
+ *   - text: The visible text used for the item link, such as "‹ Previous"
+ *     or "Next ›".
+ *   - title: The text for the title attribute, used to present help text to
+ *     user when hovering with the mouse on the element.
+ *   - reader_text: The text used for the item link by automated readers.
+ *   - is_current: Flag to indicate if the page displayed is the current in
+ *     the pager.
+ *   - is_separator: Flag to indicate if the item displayed is a separator.
+ *   - is_breaker: Flag to indicate if the item displayed is a breaker.
+ *   - widget: An item to be rendered as a widget.
+ *
+ * @ingroup themeable
+ */
+#}
+{%
+  set classes = [
+    'pager',
+    'pagerer-pager-' ~ style,
+    embedded ? 'pagerer-scrollpane-embedded',
+  ]
+%}
+{{ attach_library('pagerer/base.css') }}
+{% if items %}
+    <nav {{ attributes.addClass(classes) }} role="navigation" aria-labelledby="pagination-heading"
+{%- if id %}
+ id="{{ id }}"
+{% endif -%}>
+      <h4 id="pagination-heading" class="visually-hidden">{{ 'Pagination'|t }}</h4>
+      {% if embedded %}
+        {{ attach_library('pagerer/scrollpane') }}
+        <div class="pagerer-viewport">
+      {% endif %}
+          <ul class="pager__items js-pager__items">
+            {# Print first item. #}
+            {% if items.first %}
+              {% if items.first.href is defined %}
+                <li class="pager__item pager__item--first">
+                  <a href="{{ items.first.href }}" title="{{- items.first.title -}}"{{ items.first.attributes|without('href', 'title') }}>
+                    <span class="visually-hidden">{{- items.first.reader_text -}}</span>
+                    <span aria-hidden="true">{{- items.first.text -}}</span>
+                  </a>
+                </li>
+              {% else %}
+                <li class="pager__item pager__item--first">
+                  <span aria-hidden="true" role="presentation">{{- items.first.text -}}</span>
+                </li>
+              {% endif %}
+            {% endif %}
+            {# Print previous item. #}
+            {% if items.previous %}
+              {% if items.previous.href is defined %}
+                <li class="pager__item pager__item--previous">
+                  <a href="{{ items.previous.href }}" title="{{- items.previous.title -}}" rel="prev"{{ items.previous.attributes|without('href', 'title', 'rel') }}>
+                    <span class="visually-hidden">{{- items.previous.reader_text -}}</span>
+                    <span aria-hidden="true">{{- items.previous.text -}}</span>
+                  </a>
+                </li>
+              {% else %}
+                <li class="pager__item pager__item--previous">
+                  <span aria-hidden="true" role="presentation">{{- items.previous.text -}}</span>
+                </li>
+              {% endif %}
+            {% endif %}
+            {# Print prefix item. #}
+            {% if items.prefix %}
+              <li class="pager__item pagerer-prefix">
+                <span aria-hidden="true" role="presentation">{{- items.prefix.text -}}</span>
+              </li>
+            {% endif %}
+            {# Now generate the actual pager piece. #}
+            {% for key, item in items.pages %}
+              {% if item.is_breaker %}
+                <li class="pager__item pager__item--ellipsis pagerer-breaker" role="presentation">{{- item.text -}}</li>
+              {% elseif item.is_separator %}
+                <li class="pager__item pager__item--ellipsis pagerer-separator" role="presentation">{{- item.text -}}</li>
+              {% elseif item.widget %}
+                <li class="pager__item pagerer-widget">
+                  {{ item.widget }}
+                </li>
+              {% elseif item.href is defined %}
+                <li class="pager__item{{ item.is_current ? ' is-active' : '' }}">
+                  <a href="{{ item.href }}" title="{{ item.title }}"{{ item.attributes|without('href', 'title') }}>
+                    <span class="visually-hidden">{{- item.reader_text -}}</span>
+                    {{- item.text -}}
+                  </a>
+                </li>
+              {% else %}
+                <li class="pager__item pager__item--ellipsis pagerer-no-link" role="presentation">{{- item.text -}}</li>
+              {% endif %}
+            {% endfor %}
+            {# Print suffix item. #}
+            {% if items.suffix %}
+              <li class="pager__item pagerer-suffix">
+                <span aria-hidden="true" role="presentation">{{- items.suffix.text -}}</span>
+              </li>
+            {% endif %}
+            {# Print next item. #}
+            {% if items.next %}
+              {% if items.next.href is defined %}
+                <li class="pager__item pager__item--next">
+                  <a href="{{ items.next.href }}" title="{{- items.next.title -}}" rel="next"{{ items.next.attributes|without('href', 'title', 'rel') }}>
+                    <span class="visually-hidden">{{- items.next.reader_text -}}</span>
+                    <span aria-hidden="true">{{- items.next.text -}}</span>
+                  </a>
+                </li>
+              {% else %}
+                <li class="pager__item pager__item--next">
+                  <span aria-hidden="true" role="presentation">{{- items.next.text -}}</span>
+                </li>
+              {% endif %}
+            {% endif %}
+            {# Print last item. #}
+            {% if items.last %}
+              {% if items.last.href is defined %}
+                <li class="pager__item pager__item--last">
+                  <a href="{{ items.last.href }}" title="{{- items.last.title -}}"{{ items.last.attributes|without('href', 'title') }}>
+                    <span class="visually-hidden">{{- items.last.reader_text -}}</span>
+                    <span aria-hidden="true">{{- items.last.text -}}</span>
+                  </a>
+                </li>
+              {% else %}
+                <li class="pager__item pager__item--last">
+                  <span aria-hidden="true" role="presentation">{{- items.last.text -}}</span>
+                </li>
+              {% endif %}
+            {% endif %}
+          </ul>
+      {% if scrollpane %}
+        </div>
+      {% endif %}
+  </nav>
+{% endif %}
