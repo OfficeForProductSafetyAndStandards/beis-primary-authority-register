@@ -8,10 +8,6 @@ php:
 services:
   - docker
 cache:
-  directories:
-    - node_modules
-    - tests/node_modules
-    - /home/composer/.composer/cache
 install:
   - wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
   - echo "deb http://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
