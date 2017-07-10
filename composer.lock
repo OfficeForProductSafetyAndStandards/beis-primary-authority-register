@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "244a4264361d104a62738ee607379a6f",
+    "content-hash": "22f387d9f1db8d552bd6b22d7b7ddf4f",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2007,6 +2007,49 @@
             "homepage": "https://www.drupal.org/project/mailsystem",
             "support": {
                 "source": "http://cgit.drupalcode.org/mailsystem"
+            }
+        },
+        {
+            "name": "drupal/pagerer",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/pagerer",
+                "reference": "8.x-1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/pagerer-8.x-1.1.zip",
+                "reference": null,
+                "shasum": "357c917a2a94df76b2da38bb4cd01ccf1d9c65d6"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.1",
+                    "datestamp": "1474200839"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "mondrake",
+                    "homepage": "https://www.drupal.org/user/1307444"
+                }
+            ],
+            "description": "Configurable pager styles.",
+            "homepage": "https://www.drupal.org/project/pagerer",
+            "support": {
+                "source": "http://cgit.drupalcode.org/pagerer"
             }
         },
         {
@@ -6578,7 +6621,8 @@
                 "source": "http://cgit.drupalcode.org/examples",
                 "issues": "https://www.drupal.org/project/issues/examples",
                 "documentation": "https://api.drupal.org/api/examples"
-            }
+            },
+            "time": "2017-07-02 18:14:02"
         },
         {
             "name": "fabpot/goutte",
