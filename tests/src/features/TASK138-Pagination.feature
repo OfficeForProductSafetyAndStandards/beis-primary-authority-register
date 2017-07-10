@@ -15,7 +15,7 @@ Feature: As a PAR user
 #        And I expect that element "pager__item--previous" is visible
 #        And I expect that element "pager__item--next" is visible
 
-    Scenario Outline: Valid Login  Id
+    Scenario Outline: pagination check
         Given I click on the link "<page link>"
         Then I expect that element "li.pager__item.pagerer-prefix span" contains the text "<page set>"
 
@@ -27,3 +27,15 @@ Feature: As a PAR user
             | 5         | Showing 41-50 of 462 results |
 #            | Previous  | Showing 31-40 of 462 results |
 #            | Next      | Showing 41-50 of 462 results |
+
+
+    Scenario Outline: Vagination check (by url)
+        Given I open the url "<page link>"
+        Then I expect that element "li.pager__item.pagerer-prefix span" contains the text "<page set>"
+
+        Examples:
+            | page link                           | page set                     |
+            | /styleguide/pagination?page=%2C%2C1 | Showing 11-20 of 462 results |
+            | /styleguide/pagination?page=%2C%2C2 | Showing 21-30 of 462 results |
+            | /styleguide/pagination?page=%2C%2C3 | Showing 31-40 of 462 results |
+            | /styleguide/pagination?page=%2C%2C4 | Showing 41-50 of 462 results |
