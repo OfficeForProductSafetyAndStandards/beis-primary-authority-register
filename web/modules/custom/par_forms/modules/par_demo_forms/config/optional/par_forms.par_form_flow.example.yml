@@ -5,11 +5,14 @@ label: Partnership Application
 description: 'An example flow.'
 steps:
   1:
+    route: 'par_demo_forms.overview'
+    form_id: 'par_demo_overview'
+  2:
     route: 'par_demo_forms.first'
     form_id: 'par_demo_first'
-  2:
+  3:
     route: 'par_demo_forms.second'
     form_id: 'par_demo_second'
-  3:
+  4:
     route: 'par_demo_forms.third'
     form_id: 'par_demo_third'

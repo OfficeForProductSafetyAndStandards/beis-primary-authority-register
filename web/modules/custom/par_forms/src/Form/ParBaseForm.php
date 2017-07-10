@@ -10,11 +10,15 @@ use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\user\PrivateTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Entity\EntityConstraintViolationListInterface;
+use Drupal\par_forms\ParRedirectTrait;
 
 /**
  * The base form controller for all PAR forms.
  */
 abstract class ParBaseForm extends FormBase {
+
+  use ParRedirectTrait;
 
   /**
    * The Drupal session manager.
@@ -118,6 +122,24 @@ abstract class ParBaseForm extends FormBase {
   }
 
   /**
+   * Set the errors for a given field.
+   *
+   * @param string $name
+   *   The name of the form element to set the error for.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state to set the error on.
+   * @param \Drupal\Core\Entity\EntityConstraintViolationListInterface $violations
+   *   The violations to set.
+   */
+  public function setFieldViolations($name, FormStateInterface &$form_state, EntityConstraintViolationListInterface $violations) {
+    if ($violations) {
+      foreach ($violations as $violation) {
+        $form_state->setErrorByName($name, t('%message', ['%message' => $violation->getMessage()->render()]));
+      }
+    }
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
@@ -135,6 +157,7 @@ abstract class ParBaseForm extends FormBase {
     $flow = $this->getFlow();
     // Lookup the current step to more accurately determine the next step.
     $current_step = $flow->getStepByFormId($this->getFormId());
+    $next_step = ++$current_step['step'];
     $next_step = isset($current_step['step']) ? $flow->getStep(++$current_step['step']) : $flow->getStep(1);
 
     // If there is no next step we'll stay on this step.
@@ -215,7 +238,12 @@ abstract class ParBaseForm extends FormBase {
     $this->startAnonymousSession();
     $data = $this->store->get($this->getFormKey($form_id));
 
-    $this->getLogger($this->getLoggerChannel())->debug('Data has been retrieved for user %user from the temporary storage %key', ['%user' => $this->currentUser->getUsername(), '%key' => $this->getFormKey()]);
+    $message = 'Data has been retrieved for user %user from the temporary storage %key';
+    $replacements = [
+      '%user' => $this->currentUser->getUsername(),
+      '%key' => $this->getFormKey(),
+    ];
+    $this->getLogger($this->getLoggerChannel())->debug($message, $replacements);
 
     return $data ?: [];
   }
@@ -325,7 +353,7 @@ abstract class ParBaseForm extends FormBase {
    * @return \Drupal\Core\Entity\EntityInterface
    *   The flow entity.
    */
-  protected function getFlow() {
+  public function getFlow() {
     return $this->getFlowStorage()->load($this->getFlowName());
   }
 
@@ -335,7 +363,7 @@ abstract class ParBaseForm extends FormBase {
    * @return \Drupal\Core\Entity\EntityStorageInterface
    *   The flow storage handler.
    */
-  protected function getFlowStorage() {
+  public function getFlowStorage() {
     return $this->flowStorage;
   }
 
