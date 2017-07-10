@@ -6,7 +6,7 @@ Feature: As a PAR user
     Background:
         Given I open the url "/styleguide/pagination"
         And the title is "PAR Styleguide Pagination | Regulatory Authority"
-        Then I expect that element "li.pager__item.pagerer-prefix span" contains the text "Showing 1-20 of 462 results"
+        Then I expect that element "li.pager__item.pagerer-prefix span" contains the text "Showing 1-10 of 462 results"
 
     Scenario Outline: pagination check
         Given I click on the link "<page link>"
