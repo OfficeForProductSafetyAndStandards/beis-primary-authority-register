@@ -47,4 +47,14 @@ class ParDemoSecondForm extends ParBaseForm {
 
     return $form;
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    parent::submitForm($form, $form_state);
+
+    // After each child formo we go back to the overview.
+    $form_state->setRedirect('par_demo_forms.overview');
+  }
 }

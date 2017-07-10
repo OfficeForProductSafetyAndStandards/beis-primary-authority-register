@@ -1,6 +1,13 @@
 # PAR Demo Forms routes
-par_demo_forms.first:
+par_demo_forms.overview:
   path: '/demo-formz'
+  defaults:
+    _form: '\Drupal\par_demo_forms\Form\ParDemoOverviewForm'
+    _title: 'PAR Demo Forms - Overview'
+  requirements:
+    _permission: 'access content'
+par_demo_forms.first:
+  path: '/demo-formz/first'
   defaults:
     _form: '\Drupal\par_demo_forms\Form\ParDemoFirstForm'
     _title: 'PAR Demo Forms - First'
