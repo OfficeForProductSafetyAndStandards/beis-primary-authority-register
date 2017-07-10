@@ -35,7 +35,7 @@ SCHEDULER.every('30s', first_in: '1s') {
   send_event('master_build_version', { text: "##{number}" })
 
   begin
-    test_file = 'tests/' + "#{number}" + '/report.json'
+    test_file = 'tests/' + "#{number}" + '/tests/reports/report.json'
     if (bucket.objects[test_file].exists?)
       functional_tests = JSON.parse(bucket.objects[test_file].read)
       test_results.push({
@@ -51,7 +51,7 @@ SCHEDULER.every('30s', first_in: '1s') {
   end
 
   begin
-    test_file = 'tests/' + "#{number}" + '/phpunit.latest.xml'
+    test_file = 'tests/' + "#{number}" + '/tests/reports/phpunit.latest.xml'
     if (bucket.objects[test_file].exists?)
       unit_tests = Nokogiri::XML(bucket.objects[test_file].read)
       unit_tests.xpath("/testsuites/testsuite").each do |testsuite|
