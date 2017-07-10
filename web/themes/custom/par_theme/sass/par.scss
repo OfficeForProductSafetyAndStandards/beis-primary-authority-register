@@ -1,6 +1,11 @@
 /* par.scss */
 @import "govuk-template";
 
+// ==========================================================================
+// PAR Customisations outside the Gov UK template.
+// ==========================================================================
+@import 'par/manifest';
+
 /*
 main#content {
 	display: block;
