@@ -3,7 +3,6 @@
 ########################
 
 language: php
-sudo: false
 php:
   - 7.1
 services:
@@ -14,6 +13,7 @@ cache:
     - tests/node_modules
     - /home/composer/.composer/cache
 install:
+  - gem install travis-artifacts
   - phpenv config-rm xdebug.ini
   - composer install -v
   - cd docker
@@ -32,8 +32,6 @@ install:
 ########################
 ### TEST
 ########################
-before_script:
- - "gem install travis-artifacts"
 
 script:
 - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
@@ -41,7 +39,7 @@ script:
 - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/allure generate --clean -o ./reports/html ./reports/allure"
 
 after_script:
-  - "travis-artifacts upload"
+  - travis-artifacts upload
 
 ########################
 ### SAVE ARTIFACTS
