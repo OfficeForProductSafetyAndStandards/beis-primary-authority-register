@@ -11,7 +11,7 @@ cache:
   directories:
     - node_modules
     - tests/node_modules
-    - /home/composer/.composer/cache
+    - $HOME/.composer/cache/files
 install:
   - gem install travis-artifacts
   - phpenv config-rm xdebug.ini
