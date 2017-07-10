@@ -71,7 +71,7 @@
       <div class="content">
         <a href="#proposition-links" class="js-header-toggle menu">Menu</a>
         <nav id="proposition-menu">
-          <a href="https://www.gov.uk/service-manual" id="proposition-name">
+          <a href="/" id="proposition-name">
             {% if gdsHeadingTitle %}
               {{ gdsHeadingTitle }}
             {% else %}
@@ -79,10 +79,11 @@
             {% endif %} Pages
             </a>
           <ul id="proposition-links">
-            <li><a href="#profile">Welcome back Sam</a></li>
-            <li><a href="#logout">Logout</a></li>
+            <li><a href="/">Home Page</a></li>
           </ul>
         </nav>
+
+        {{page.header}}
       </div>
     </div>
   </div>
@@ -93,7 +94,7 @@
 <main id="content" role="main" tabindex="-1">
   <div class="phase-banner">
   <p>
-    <strong class="phase-tag">ALPHA</strong>
+    <strong class="phase-tag">BETA</strong>
     <span>This is a new service – your <a href="#">feedback</a> will help us to improve it.</span>
   </p>
   </div>
@@ -123,6 +124,9 @@
 </footer>
 
 <div id="global-app-error" class="app-error hidden"></div>
+
+<script src="/themes/custom/par_theme/assets/javascripts/govuk-template.js"></script>
+
 
 <script>if (typeof window.GOVUK === 'undefined') document.body.className = document.body.className.replace('js-enabled', '');</script>
 <!-- ends page template -->
