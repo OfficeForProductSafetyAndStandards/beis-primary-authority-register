@@ -10,7 +10,7 @@ Feature: As a PAR user
 #        And I press "Login"
 #        Then I expect that element "#logged-in-header" contains the text "Logged in"
         Given I open the url "/styleguide/pagination"
-        And the title is "Welcome to Regulatory Authority | Regulatory Authority"
+        And the title is "PAR Styleguide Pagination | Regulatory Authority"
 #        And I expect that element "#pagination" contains the text "Pages:"
 #        And I expect that element "pager__item--previous" is visible
 #        And I expect that element "pager__item--next" is visible
