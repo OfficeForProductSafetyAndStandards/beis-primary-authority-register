@@ -13,7 +13,6 @@ div.#{$module} {
 
   div.pagerer-panes {
     display: flex;
-    flex: inherit;
     flex-direction: column-reverse;
     align-items: center;
   }
@@ -36,13 +35,17 @@ div.#{$module} {
     display: block;
   }
 
-  .pagerer-left-pane {
-
+  .pagerer-left-pane,
+  .pagerer-right-pane {
     // force column to stretch full width on mobile.
     width: 100%;
+  }
+
+  .pagerer-left-pane {
 
     @include media(tablet) {
-      width: 50%;
+      flex: auto;
+      width: auto;
     }
 
     // reset bullets on the "Showing x-x of results".
@@ -55,9 +58,6 @@ div.#{$module} {
   }
 
   .pagerer-right-pane {
-
-    // force column to stretch full width on mobile.
-    width: 100%;
 
     // reset bullets.
     nav, ul {
@@ -95,7 +95,7 @@ div.#{$module} {
     }
 
     @include media(tablet) {
-      width: 50%;
+      width: auto;
     }
 
   }
