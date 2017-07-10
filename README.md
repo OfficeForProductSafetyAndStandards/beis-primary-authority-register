@@ -37,6 +37,14 @@ You should now have a running VM within which is a running Docker daemon. You ca
 
     http://192.168.82.68:8111/
     
+### Re-installing dependencies, clearing caches, etc...
+
+If you want to rebuild without re-cloning the repository:
+
+    vagrant ssh
+    cd /vagrant/docker
+    sh setup.sh
+    
 #### Some useful commands
     
 ##### Clearing the Drupal cache
