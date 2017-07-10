@@ -1,6 +1,6 @@
 uuid: 76af017c-5629-4f7b-8c4f-41702caab158
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - system.menu.tools
@@ -13,7 +13,7 @@ _core:
 id: par_theme_tools
 theme: par_theme
 region: header
-weight: 0
+weight: -7
 provider: null
 plugin: 'system_menu_block:tools'
 settings:
