@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="par" tests="7" assertions="17" failures="0" errors="0" time="0.090097">
+    <testsuite name="Drupal\Tests\par_forms\Unit\ParBaseFormTest" file="/var/www/html/web/modules/custom/par_forms/tests/src/Unit/ParBaseFormTest.php" tests="2" assertions="3" failures="0" errors="0" time="0.068496">
+      <testcase name="testGetFormKey" class="Drupal\Tests\par_forms\Unit\ParBaseFormTest" file="/var/www/html/web/modules/custom/par_forms/tests/src/Unit/ParBaseFormTest.php" line="85" assertions="2" time="0.067934"/>
+      <testcase name="testCleanseFormDefaults" class="Drupal\Tests\par_forms\Unit\ParBaseFormTest" file="/var/www/html/web/modules/custom/par_forms/tests/src/Unit/ParBaseFormTest.php" line="97" assertions="1" time="0.000562"/>
+    </testsuite>
+    <testsuite name="Drupal\Tests\par_forms\Unit\ParFormFlowEntityTest" file="/var/www/html/web/modules/custom/par_forms/tests/src/Unit/ParFormFlowEntityTest.php" tests="5" assertions="14" failures="0" errors="0" time="0.021601">
+      <testcase name="testGetAllSteps" class="Drupal\Tests\par_forms\Unit\ParFormFlowEntityTest" file="/var/www/html/web/modules/custom/par_forms/tests/src/Unit/ParFormFlowEntityTest.php" line="64" assertions="2" time="0.018861"/>
+      <testcase name="testGetFirstStep" class="Drupal\Tests\par_forms\Unit\ParFormFlowEntityTest" file="/var/www/html/web/modules/custom/par_forms/tests/src/Unit/ParFormFlowEntityTest.php" line="71" assertions="3" time="0.000551"/>
+      <testcase name="testNonExistentStep" class="Drupal\Tests\par_forms\Unit\ParFormFlowEntityTest" file="/var/www/html/web/modules/custom/par_forms/tests/src/Unit/ParFormFlowEntityTest.php" line="82" assertions="2" time="0.001155"/>
+      <testcase name="testStepByFormId" class="Drupal\Tests\par_forms\Unit\ParFormFlowEntityTest" file="/var/www/html/web/modules/custom/par_forms/tests/src/Unit/ParFormFlowEntityTest.php" line="92" assertions="4" time="0.000482"/>
+      <testcase name="testGetFlowForms" class="Drupal\Tests\par_forms\Unit\ParFormFlowEntityTest" file="/var/www/html/web/modules/custom/par_forms/tests/src/Unit/ParFormFlowEntityTest.php" line="104" assertions="3" time="0.000552"/>
+    </testsuite>
+  </testsuite>
+</testsuites>

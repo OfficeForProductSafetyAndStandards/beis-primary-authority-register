@@ -1,3 +1,5 @@
+# parbeta/web:v5
+
 FROM php:7.1-apache
 RUN sh -c "echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections" \
     && sh -c "echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections" \
@@ -31,4 +33,5 @@ RUN sh -c "echo debconf shared/accepted-oracle-license-v1-1 select true | debcon
     && n 7.2.1 \
     && rm `find / -name *.tar.gz` \
     && apt-get remove -y wget \
-    && adduser --disabled-password --gecos "" composer
+    && adduser --disabled-password --gecos "" composer \
+    && sed -i 's/DocumentRoot \/var\/www\/html/DocumentRoot \/var\/www\/html\/web/g' /etc/apache2/sites-available/000-default.conf
