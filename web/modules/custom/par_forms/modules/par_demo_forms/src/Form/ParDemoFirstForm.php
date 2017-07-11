@@ -5,6 +5,7 @@ namespace Drupal\par_demo_forms\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\Form\ParBaseForm;
 use Drupal\Core\Entity\EntityConstraintViolationListInterface;
+use Drupal\node\NodeInterface;
 
 /**
  * A demo multi-step form.
@@ -24,15 +25,24 @@ class ParDemoFirstForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
-    // If we are editing existing data we can load it here.
-    // $entity = $this->entityManager->getStorage('par_entity')->load($id);
-    // $this->setDataValue('name', $entity->get('name')->getValue());
+  public function buildForm(array $form, FormStateInterface $form_state, NodeInterface $node = NULL) {
+    if ($node) {
+      // If we're editing an entity we should set the state
+      // to something other than default to avoid conflicts
+      // with existing versions of the same form.
+      // You must remember to set the state in the same way
+      // on all forms in any given flow.
+      $this->setState("edit:{$node->id()}");
+
+      // If we want to use values already saved we have to tell
+      // the form about them.
+      $this->loadDataValue('name', $node->getTitle());
+    }
 
     $form['name'] = [
       '#type' => 'textfield',
       '#title' => t('Name'),
-      '#default_value' => $this->getDataValue('name'),
+      '#default_value' => $this->getDefaultValues('name'),
       '#required' => TRUE,
     ];
 
@@ -144,6 +154,6 @@ class ParDemoFirstForm extends ParBaseForm {
     // temporary store.
 
     // After each child formo we go back to the overview.
-    $form_state->setRedirect('par_demo_forms.overview');
+    $form_state->setRedirect('par_demo_forms.overview', $this->getRouteParams());
   }
 }
