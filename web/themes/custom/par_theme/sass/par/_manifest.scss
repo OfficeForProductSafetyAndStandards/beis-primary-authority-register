@@ -1,15 +1,16 @@
-// ==========================================================================
+// ======================================================================================
 // PAR Customisations.
 //
 // Inspiration can be found here.
 // https://github.com/trevorsaint/rural-payments-styleguide/tree/master/assets/sass/defra
-// ==========================================================================
+// ======================================================================================
 
-// Specifically import pagination.
+// Import custom stylesheets.
 @import 'pagination';
-// @import 'example';
+@import 'header';
 
 // Intentionally comment out other modules which also may be used from the styleguide.
+// @import 'example';
 // @import 'navigation';
 // @import 'loading';
 // @import 'appstatus';
