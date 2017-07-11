@@ -9,7 +9,7 @@ _core:
 id: par_theme_local_tasks
 theme: par_theme
 region: content
-weight: -40
+weight: -3
 provider: null
 plugin: local_tasks_block
 settings:

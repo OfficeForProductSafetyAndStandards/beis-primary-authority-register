@@ -38,6 +38,7 @@ module:
   par_data_entities: 0
   par_data_types: 0
   par_forms: 0
+  par_header: 0
   par_styleguide: 0
   path: 0
   rdf: 0
