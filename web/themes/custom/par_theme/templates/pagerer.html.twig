@@ -1,0 +1,21 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display the pagerer theme.
+ *
+ * Available variables:
+ * - pagerer: Three-pane pagerer pager.
+ *
+ * @ingroup themeable
+ */
+#}
+{% if pagerer %}
+  {{ attach_library('pagerer/multipane') }}
+  <div class="pagerer-container">
+    <div class="pagerer-panes">
+      <div class="pagerer-left-pane">{{ pagerer.left_pane }}</div>
+      <div class="pagerer-center-pane">{{ pagerer.center_pane }}</div>
+      <div class="pagerer-right-pane">{{ pagerer.right_pane }}</div>
+    </div>
+</div>
+{% endif %}
