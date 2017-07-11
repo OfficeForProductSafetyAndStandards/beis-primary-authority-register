@@ -4,58 +4,75 @@ namespace Drupal\par_forms\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\SessionManagerInterface;
-use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\user\PrivateTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Entity\EntityConstraintViolationListInterface;
+use Drupal\par_forms\ParRedirectTrait;
 
 /**
  * The base form controller for all PAR forms.
  */
 abstract class ParBaseForm extends FormBase {
 
+  use ParRedirectTrait;
+
   /**
+   * The Drupal session manager.
+   *
    * @var \Drupal\Core\Session\SessionManagerInterface
    */
   private $sessionManager;
 
   /**
+   * The current user object.
+   *
    * @var \Drupal\Core\Session\AccountInterface
    */
   protected $currentUser;
 
   /**
+   * The flow entity storage class, for loading flows.
+   *
    * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
    */
   protected $flowStorage;
 
   /**
+   * The private temporary storage for persisting multi-step form data.
+   *
+   * Each key (form) will last 1 week since it was last updated.
+   *
    * @var \Drupal\user\PrivateTempStore
    */
   protected $store;
 
   /**
+   * A machine safe value representing the current form journey.
+   *
    * @var string
-   *   A machine safe value representing the current form journey.
    */
   protected $flow;
 
   /**
-   * @var string
-   *   A machine safe value representing any states or combination of states that alter the form behaviour.
+   * A machine name representing any state(s) affecting the form behaviour.
    *
-   * e.g. A example of a state would be whether the flow is being created, edited or reviewed.
+   * Example: A example of a state would be whether the flow is being created,
+   * edited or reviewed.
+   *
+   * @var string
    */
   protected $state = 'default';
 
   /**
-   * @var array
-   *   Keys to be ignored for the saved data.
+   * Keys to be ignored for the saved data.
    *
-   * e.g. ['save', 'next', 'cancel'].
+   * Example: ['save', 'next', 'cancel'].
+   *
+   * @var array
    */
   protected $ignoreValues = ['save', 'next', 'cancel'];
 
@@ -63,10 +80,15 @@ abstract class ParBaseForm extends FormBase {
    * Constructs a \Drupal\par_forms\Form\ParBaseForm.
    *
    * @param \Drupal\user\PrivateTempStoreFactory $temp_store_factory
+   *   The private temporary store.
    * @param \Drupal\Core\Session\SessionManagerInterface $session_manager
+   *   The session manager service.
    * @param \Drupal\Core\Session\AccountInterface $current_user
+   *   The current user object.
+   * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $flow_storage
+   *   The flow entity storage handler.
    */
-  public function __construct(PrivateTempStoreFactory $temp_store_factory, SessionManagerInterface $session_manager, AccountInterface $current_user, EntityStorageInterface $flow_storage) {
+  public function __construct(PrivateTempStoreFactory $temp_store_factory, SessionManagerInterface $session_manager, AccountInterface $current_user, ConfigEntityStorageInterface $flow_storage) {
     $this->sessionManager = $session_manager;
     $this->currentUser = $current_user;
     $this->flowStorage = $flow_storage;
@@ -100,6 +122,24 @@ abstract class ParBaseForm extends FormBase {
   }
 
   /**
+   * Set the errors for a given field.
+   *
+   * @param string $name
+   *   The name of the form element to set the error for.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state to set the error on.
+   * @param \Drupal\Core\Entity\EntityConstraintViolationListInterface $violations
+   *   The violations to set.
+   */
+  public function setFieldViolations($name, FormStateInterface &$form_state, EntityConstraintViolationListInterface $violations) {
+    if ($violations) {
+      foreach ($violations as $violation) {
+        $form_state->setErrorByName($name, t('%message', ['%message' => $violation->getMessage()->render()]));
+      }
+    }
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
@@ -117,6 +157,7 @@ abstract class ParBaseForm extends FormBase {
     $flow = $this->getFlow();
     // Lookup the current step to more accurately determine the next step.
     $current_step = $flow->getStepByFormId($this->getFormId());
+    $next_step = ++$current_step['step'];
     $next_step = isset($current_step['step']) ? $flow->getStep(++$current_step['step']) : $flow->getStep(1);
 
     // If there is no next step we'll stay on this step.
@@ -145,7 +186,13 @@ abstract class ParBaseForm extends FormBase {
       $value = $default;
     }
 
-    $this->getLogger($this->getLoggerChannel())->debug('Data item %item has been retrieved for user %user from the temporary storage %key', ['%user' => $this->currentUser->getUsername(), '%key' => $this->getFormKey(), '%item' => $key]);
+    $message = 'Data item %item has been retrieved for user %user from the temporary storage %key';
+    $replacements = [
+      '%user' => $this->currentUser->getUsername(),
+      '%key' => $this->getFormKey(),
+      '%item' => $key,
+    ];
+    $this->getLogger($this->getLoggerChannel())->debug($message, $replacements);
 
     return $value;
   }
@@ -153,7 +200,7 @@ abstract class ParBaseForm extends FormBase {
   /**
    * Wraps call to static NestedArray::setValue to make more testable.
    *
-   * @param $key
+   * @param string $key
    *   The key to search for.
    * @param mixed $value
    *   The value to store for this key. Can be any string, integer or object.
@@ -166,7 +213,13 @@ abstract class ParBaseForm extends FormBase {
     NestedArray::setValue($data, (array) $key, $value, TRUE);
     $this->setTempData($data);
 
-    $this->getLogger($this->getLoggerChannel())->debug('Data item %item has been set for user %user from the temporary storage %key', ['%user' => $this->currentUser->getUsername(), '%key' => $this->getFormKey(), '%item' => $key]);
+    $message = 'Data item %item has been set for user %user from the temporary storage %key';
+    $replacements = [
+      '%user' => $this->currentUser->getUsername(),
+      '%key' => $this->getFormKey(),
+      '%item' => $key,
+    ];
+    $this->getLogger($this->getLoggerChannel())->debug($message, $replacements);
   }
 
   /**
@@ -185,7 +238,12 @@ abstract class ParBaseForm extends FormBase {
     $this->startAnonymousSession();
     $data = $this->store->get($this->getFormKey($form_id));
 
-    $this->getLogger($this->getLoggerChannel())->debug('Data has been retrieved for user %user from the temporary storage %key', ['%user' => $this->currentUser->getUsername(), '%key' => $this->getFormKey()]);
+    $message = 'Data has been retrieved for user %user from the temporary storage %key';
+    $replacements = [
+      '%user' => $this->currentUser->getUsername(),
+      '%key' => $this->getFormKey(),
+    ];
+    $this->getLogger($this->getLoggerChannel())->debug($message, $replacements);
 
     return $data ?: [];
   }
@@ -198,7 +256,7 @@ abstract class ParBaseForm extends FormBase {
    * @param string $form_id
    *   The form_id to set data for, will use the current form if not set.
    */
-  protected function setTempData($data, $form_id = NULL) {
+  protected function setTempData(array $data, $form_id = NULL) {
     $form_id = !empty($form_id) ? $form_id : $this->getFormId();
 
     if (!$data || !is_array($data)) {
@@ -215,7 +273,7 @@ abstract class ParBaseForm extends FormBase {
   }
 
   /**
-   * Delete the temporary data for a form
+   * Delete the temporary data for a form.
    *
    * @param string $form_id
    *   The form_id to set data for, will use the current form if not set.
@@ -262,6 +320,7 @@ abstract class ParBaseForm extends FormBase {
    *   The data array to cleanse.
    *
    * @return array
+   *   An array of values that represent keys to be removed from the form data.
    */
   public function cleanseFormDefaults(array $data) {
     $defaults = ['form_id', 'form_build_id', 'form_token', 'op'];
@@ -282,6 +341,7 @@ abstract class ParBaseForm extends FormBase {
    * Get the current flow name.
    *
    * @return string
+   *   The string representing the name of the current flow.
    */
   public function getFlowName() {
     return isset($this->flow) ? $this->flow : '';
@@ -293,7 +353,7 @@ abstract class ParBaseForm extends FormBase {
    * @return \Drupal\Core\Entity\EntityInterface
    *   The flow entity.
    */
-  protected function getFlow() {
+  public function getFlow() {
     return $this->getFlowStorage()->load($this->getFlowName());
   }
 
@@ -303,7 +363,7 @@ abstract class ParBaseForm extends FormBase {
    * @return \Drupal\Core\Entity\EntityStorageInterface
    *   The flow storage handler.
    */
-  protected function getFlowStorage() {
+  public function getFlowStorage() {
     return $this->flowStorage;
   }
 
@@ -311,6 +371,7 @@ abstract class ParBaseForm extends FormBase {
    * Get the current flow state.
    *
    * @return string
+   *   The string representing the current state of the flow.
    */
   public function getState() {
     return isset($this->state) ? $this->state : '';
@@ -319,7 +380,8 @@ abstract class ParBaseForm extends FormBase {
   /**
    * Get ignored form values.
    *
-   * @return string
+   * @return array
+   *   An array representing additional key names to be removed from form data.
    */
   public function getIgnoredValues() {
     return isset($this->ignoreValues) ? (array) $this->ignoreValues : [];
@@ -328,8 +390,11 @@ abstract class ParBaseForm extends FormBase {
   /**
    * Get the form Key.
    *
-   * @param null $form_id
+   * @param string $form_id
+   *   An optional form_id to get the key for.
+   *
    * @return string
+   *   The name of the key for the given form.
    */
   public function getFormKey($form_id = NULL) {
     $form_id = !empty($form_id) ? $form_id : $this->getFormId();
@@ -373,8 +438,9 @@ abstract class ParBaseForm extends FormBase {
    */
   public function startAnonymousSession() {
     if ($this->currentUser->isAnonymous() && !isset($_SESSION['session_started'])) {
-      $_SESSION['session_started'] = true;
+      $_SESSION['session_started'] = TRUE;
       $this->sessionManager->start();
     }
   }
+
 }

@@ -3,6 +3,7 @@
 namespace Drupal\par_forms\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
+use Drupal\par_forms\ParRedirectTrait;
 
 /**
  * Defines the PAR Form Flow entity.
@@ -41,6 +42,8 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  */
 class ParFormFlow extends ConfigEntityBase {
 
+  use ParRedirectTrait;
+
   /**
    * The flow ID.
    *
@@ -68,13 +71,6 @@ class ParFormFlow extends ConfigEntityBase {
    * @var array
    */
   protected $steps;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function __construct(array $values, $entity_type) {
-    parent::__construct($values, $entity_type);
-  }
 
   /**
    * Get the description for this flow.
@@ -106,8 +102,8 @@ class ParFormFlow extends ConfigEntityBase {
   /**
    * Get a step by.
    *
-   * @param int $index
-   *   The step number that is required.
+   * @param string $form_id
+   *   The form id to lookup.
    *
    * @return array
    *   An array with values for the form_id & route
@@ -116,7 +112,7 @@ class ParFormFlow extends ConfigEntityBase {
     foreach ($this->getSteps() as $key => $step) {
       if (isset($step['form_id']) && $form_id === $step['form_id']) {
         $match = [
-          'step' => $key
+          'step' => $key,
         ] + $step;
       }
     }
@@ -139,6 +135,37 @@ class ParFormFlow extends ConfigEntityBase {
     }
 
     return $forms;
+  }
+
+  /**
+   * Get route for any given step.
+   *
+   * @param integer $index
+   *   The step number to get a link for.
+   *
+   * @return Link
+   *   A Drupal link object.
+   */
+  public function getRouteByStep($index, $link_options = []) {
+    $step = $this->getStep($index);
+    return isset($step['route']) ? $step['route'] : NULL;
+  }
+
+  /**
+   * Get link for any given step.
+   *
+   * @param integer $index
+   *   The step number to get a link for.
+   * @param array $link_options
+   *   An array of options to set on the link.
+   *
+   * @return Link
+   *   A Drupal link object.
+   */
+  public function getLinkByStep($index, $link_options = []) {
+    $step = $this->getStep($index);
+    $route = $step['route'];
+    return $this->getLinkByRoute($route, $link_options);
   }
 
 }
