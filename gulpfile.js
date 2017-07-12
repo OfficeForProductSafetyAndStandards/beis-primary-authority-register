@@ -25,7 +25,7 @@ gulp.task('cp-assets', [], function() {
   gulp.src([
     "node_modules/govuk_frontend_toolkit/images/**"
   ])
-  .pipe(gulp.dest(themeDir + '/assets/vendor'));
+  .pipe(gulp.dest(themeDir + '/assets/vendor/images'));
 });
 
 gulp.task('watch', function() {
