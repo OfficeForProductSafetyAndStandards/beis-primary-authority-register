@@ -1,0 +1,78 @@
+<?php
+/**
+ * @file
+ * Installation hooks for par_data_entities module.
+ */
+
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_install().
+ */
+function par_welcome_page_install() {
+  // Create the initial welcome page.
+  $message = <<<HEREDOC
+Review and confirm your data by 14 September 2017.
+
+You don't have to do it all in one go.
+
+You can continue to make changes to your information until this deadline.
+HEREDOC;
+
+  $welcome_page = [
+    'type' => 'page',
+    'title' => t('Updating the %site_name', ['%site_name' => strip_tags(\Drupal::config('system.site')->get('name'))]),
+    'uid' => 1,
+    'body' => t($message),
+  ];
+
+  $node = \Drupal::entityManager()
+    ->getStorage('node')
+    ->create($welcome_page);
+  $node->enforceIsNew();
+
+  $node->save();
+
+  // Add a path.
+  \Drupal::service('path.alias_storage')->save("/node/" . $node->id(), "/welcome-reminder");
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function par_welcome_page_uninstall() {
+  $language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+  $internal_path = \Drupal::service('path.alias_storage')->lookupPathSource("/welcome-reminder", $language);
+
+  $params = Url::fromUri("internal:" . $internal_path)->getRouteParameters();
+
+  foreach ($params as $type=>$param) {
+    try {
+      $storage = \Drupal::entityTypeManager()->getStorage($type);
+    } catch (Exception $e) {
+      continue;
+    }
+    if (!$storage) {
+      continue;
+    }
+    if ($entity = $storage->load($param)) {
+      $entity->delete();
+    }
+  }
+}
+
+function par_welcome_page_requirements($phase) {
+  $requirements = [];
+
+  $language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+  $alias_exists = \Drupal::service('path.alias_storage')->aliasExists("/welcome-reminder", $language);
+
+  // Check that the welcome page exists.
+  if ($phase == 'runtime' && !$alias_exists) {
+    $requirements['welcome_page'] = [
+      'title' => t('PAR Welcome Page'),
+      'value' => 'The welcome page does not exist at /welcome-reminder',
+      'severity' => REQUIREMENT_ERROR,
+    ];
+  }
+}

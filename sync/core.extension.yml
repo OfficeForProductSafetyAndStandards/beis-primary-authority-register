@@ -30,6 +30,7 @@ module:
   inline_entity_form: 0
   language: 0
   link: 0
+  login_destination: 0
   menu_ui: 0
   node: 0
   options: 0

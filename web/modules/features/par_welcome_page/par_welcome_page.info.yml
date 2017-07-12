@@ -1,0 +1,7 @@
+name: PAR Welcome Page
+type: module
+description: This module creates a welcome page for new users and uses the Login Destination module to redirect new users to it.
+core: 8.x
+package: PAR
+dependencies:
+  - login_destination
