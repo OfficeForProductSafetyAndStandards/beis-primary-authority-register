@@ -62,7 +62,7 @@
   <div class="header-wrapper">
     <div class="header-global">
       <div class="header-logo">
-        <a href="https://www.gov.uk/" title="Go to the GOV.UK homepage" id="logo" class="content">
+        <a href="/" title="Go to the Primary Authority Register homepage" id="logo" class="content">
           <img src="/themes/custom/par_theme/assets/images/PAR/pa-logo-large.jpg" width="80" height="80" alt="Primary Authority Register logo">
         </a>
       </div>
@@ -71,14 +71,19 @@
       <div class="content">
         <a href="#proposition-links" class="js-header-toggle menu">Menu</a>
         <nav id="proposition-menu">
-          <a href="https://www.gov.uk/service-manual" id="proposition-name">
-            {% if gdsHeadingTitle %}{{ gdsHeadingTitle }}
-            {% else %}PAR{% endif %} Pages</a>
+          <a href="/" id="proposition-name">
+            {% if gdsHeadingTitle %}
+              {{ gdsHeadingTitle }}
+            {% else %}
+              PAR
+            {% endif %} Pages
+            </a>
           <ul id="proposition-links">
-            <li><a href="#profile">Welcome back Sam</a></li>
-            <li><a href="#logout">Logout</a></li>
+            <li><a href="/">Home Page</a></li>
           </ul>
         </nav>
+
+        {{page.header}}
       </div>
     </div>
   </div>
@@ -87,13 +92,13 @@
 <div id="global-header-bar"></div>
 
 <main id="content" role="main" tabindex="-1">
-<div class="phase-banner">
-<p>
-  <strong class="phase-tag">ALPHA</strong>
-  <span>This is a new service – your <a href="#">feedback</a> will help us to improve it.</span>
-</p>
-</div>
-	{{ page.content }}
+  <div class="phase-banner">
+  <p>
+    <strong class="phase-tag">BETA</strong>
+    <span>This is a new service – your <a href="#">feedback</a> will help us to improve it.</span>
+  </p>
+  </div>
+  {{ page.content }}
 </main>
 
 <footer class="group js-footer" id="footer" role="contentinfo">
@@ -105,9 +110,9 @@
 
         <div class="open-government-licence">
           <p class="logo"><a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">Open Government Licence</a></p>
-          
+
             <p>All content is available under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">Open Government Licence v3.0</a>, except where otherwise stated</p>
-          
+
         </div>
       </div>
 
@@ -121,6 +126,7 @@
 <div id="global-app-error" class="app-error hidden"></div>
 
 <script src="/themes/custom/par_theme/assets/javascripts/govuk-template.js"></script>
+
 
 <script>if (typeof window.GOVUK === 'undefined') document.body.className = document.body.className.replace('js-enabled', '');</script>
 <!-- ends page template -->
