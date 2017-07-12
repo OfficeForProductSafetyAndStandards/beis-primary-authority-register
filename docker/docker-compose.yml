@@ -2,7 +2,7 @@ version: "2"
 
 services:
     web:
-      image: parbeta/web:v7
+      image: parbeta/web:v8
       container_name: par_beta_web
       links:
         - db
