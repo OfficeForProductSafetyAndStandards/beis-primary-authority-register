@@ -41,6 +41,7 @@ module:
   par_forms: 0
   par_header: 0
   par_styleguide: 0
+  par_welcome_page: 0
   path: 0
   rdf: 0
   search: 0
