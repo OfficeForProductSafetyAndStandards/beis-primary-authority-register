@@ -17,13 +17,16 @@ Review and confirm your data by 14 September 2017.
 You don't have to do it all in one go.
 
 You can continue to make changes to your information until this deadline.
+
+<a class="button button-start" href="#" role="button">PENDING LINK TO DASHBOARD</a>
 HEREDOC;
 
   $welcome_page = [
     'type' => 'page',
-    'title' => t('Updating the %site_name', ['%site_name' => strip_tags(\Drupal::config('system.site')->get('name'))]),
+    'title' => t('Updating the Primary Authority Register'),
     'uid' => 1,
-    'body' => t($message),
+    'body' => ['value' => t($message), 'format' => 'full_html'],
+    'status' => 1,
   ];
 
   $node = \Drupal::entityManager()
