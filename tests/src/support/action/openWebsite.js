@@ -10,9 +10,11 @@ module.exports = (type, page, done) => {
      * @type {String}
      */
     const url = (type === 'url') ? page : browser.options.baseUrl + page;
-    const supertest = require('supertest');
-    const api = supertest(url);
-
+    browser.setViewportSize({
+        width: 1024,
+        height: 768,
+    });
     browser.url(url);
+
     done();
 };
