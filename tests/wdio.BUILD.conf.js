@@ -5,6 +5,6 @@ config.capabilities = [{
 }];
 
 config.services = ['phantomjs'];
-config.baseUrl = 'http://127.0.0.1:8111';
+config.baseUrl = 'http://127.0.0.1:80';
 config.tags = '@ci, ~@Pending';
 exports.config = config;
