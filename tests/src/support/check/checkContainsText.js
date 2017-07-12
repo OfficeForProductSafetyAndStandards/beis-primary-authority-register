@@ -47,9 +47,9 @@ module.exports = (type, element, falseCase, expectedText, done) => {
     }
 
     if (boolFalseCase) {
-        expect(text).to.not.equal(stringExpectedText);
+        expect(text).to.not.contain(stringExpectedText);
     } else {
-        expect(text).to.equal(stringExpectedText);
+        expect(text).to.contain(stringExpectedText);
     }
 
     doneCallback();

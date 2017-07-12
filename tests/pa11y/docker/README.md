@@ -9,4 +9,8 @@ Make sure you [have Docker installed][docker]. Clone or download this repository
 
 From there, run `docker-compose -f compose/docker-compose.yml up` to begin building the Docker containers. 
 
-Once you see terminal output from `web_1` and `database_1`, Pa11y Dashboard should be ready to go. Navigate to [http://localhost:8000][localhost] in your browser, and you should see the Pa11y Dashboard welcome screen.
+Once you see terminal output from `web_1` and `database_1`, Pa11y Dashboard should be ready to go. 
+
+Navigate to [http://localhost:8000][localhost] in your browser, and you should see the Pa11y Dashboard welcome screen.
+
+Click the "+" to add new url
