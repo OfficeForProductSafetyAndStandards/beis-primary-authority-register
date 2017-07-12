@@ -7,6 +7,7 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_link_alter().
@@ -20,23 +21,16 @@ function par_header_link_alter(&$variables) {
    */
   $url = $variables['url'];
 
-  // Return early where possible.
-  if ($url->isExternal()) {
-    return;
-  }
-  else {
-    $route_name = $url->getRouteName();
-    if ($route_name != 'user.page') {
+  if ($url instanceof Url && $url->isRouted()) {
+    if ($url->getRouteName() !== 'user.page') {
       return;
     }
     elseif ($variables['text'] == 'My account') {
-
-      // get current user.
+      // Get current user.
       $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
 
-      // override My Account link with username.
+      // Override My Account link with username.
       $variables['text'] = t('@username', ['@username' => $user->get('name')->value]);
-
     }
   }
 
