@@ -26,6 +26,7 @@
         "drupal/flysystem_s3": "^1.0@alpha",
         "drupal/health_check": "1.0.0",
         "drupal/inline_entity_form": "^1.0@beta",
+        "drupal/login_destination": "1.x-dev",
         "drupal/mailsystem": "~4.1.0",
         "drupal/pagerer": "~1.1.0",
         "drupal/range": "~1.1.0",
