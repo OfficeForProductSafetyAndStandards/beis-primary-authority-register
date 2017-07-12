@@ -63,7 +63,7 @@
     <div class="header-global">
       <div class="header-logo">
         <a href="/" title="Go to the Primary Authority Register homepage" id="logo" class="content">
-          <img src="/themes/custom/par_theme/assets/images/PAR/pa-logo-large.jpg" width="80" height="80" alt="Primary Authority Register logo">
+          <img src="/{{ directory }}/assets/images/PAR/pa-logo-large.jpg" width="80" height="80" alt="Primary Authority Register logo">
         </a>
       </div>
     </div>
@@ -107,7 +107,7 @@
     <div class="footer-meta">
       {{ page.footer }}
       <div class="footer-meta-inner">
-
+        {{ page.footer_inner }}
         <div class="open-government-licence">
           <p class="logo"><a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">Open Government Licence</a></p>
 
@@ -121,12 +121,12 @@
       </div>
     </div>
   </div>
+
 </footer>
 
 <div id="global-app-error" class="app-error hidden"></div>
 
-<script src="/themes/custom/par_theme/assets/javascripts/govuk-template.js"></script>
-
+<script src="/{{ directory }}/javascript/govuk-template.js"></script>
 
 <script>if (typeof window.GOVUK === 'undefined') document.body.className = document.body.className.replace('js-enabled', '');</script>
 <!-- ends page template -->
