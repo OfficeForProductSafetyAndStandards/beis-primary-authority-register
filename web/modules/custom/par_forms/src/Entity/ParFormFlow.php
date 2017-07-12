@@ -100,7 +100,7 @@ class ParFormFlow extends ConfigEntityBase {
   }
 
   /**
-   * Get a step by.
+   * Get a step by the form id.
    *
    * @param string $form_id
    *   The form id to lookup.
@@ -149,6 +149,20 @@ class ParFormFlow extends ConfigEntityBase {
   public function getRouteByStep($index, $link_options = []) {
     $step = $this->getStep($index);
     return isset($step['route']) ? $step['route'] : NULL;
+  }
+
+  /**
+   * Get a form_id by the flow step.
+   *
+   * @param integer $index
+   *   The step number to get a link for.
+   *
+   * @return array
+   *   An array with values for the form_id & route
+   */
+  public function getFormIdByStep($index) {
+    $step = $this->getStep($index);
+    return isset($step['form_id']) ? $step['form_id'] : NULL;
   }
 
   /**
