@@ -3,30 +3,35 @@
 ########################
 
 language: php
+
 php:
   - 7.1
+  
 services:
   - docker
+  
 cache:
   directories:
     - node_modules
     - tests/node_modules
-    - /home/composer/.composer/cache
+    - $HOME/.composer/cache/files
+    
 install:
-  - wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
-  - echo "deb http://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
-  - sudo apt-get update
-  - sudo apt-get install cf-cli
+  - if [[ $TRAVIS_BRANCH == 'master' ]]; then wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -; fi
+  - if [[ $TRAVIS_BRANCH == 'master' ]]; then echo "deb http://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list; fi
+  - if [[ $TRAVIS_BRANCH == 'master' ]]; then sudo apt-get update; fi
+  - if [[ $TRAVIS_BRANCH == 'master' ]]; then sudo apt-get install cf-cli; fi
+  - gem install travis-artifacts
+  - phpenv config-rm xdebug.ini
   - composer install -v
   - cd docker
-  - docker-compose up -d --force-recreate --build
+  - docker-compose up -d
   - cp ../web/sites/example.settings.local.php ../web/sites/default/settings.local.php
   - cat ../web/sites/settings.local.php.docker.append >> ../web/sites/default/settings.local.php
   - cd ..
   - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
   - docker exec -it par_beta_web bash -c "npm run gulp"
   - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
-  - sleep 5 # Time for the server to boot
   - docker exec -i par_beta_web /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < docker/fresh_drupal_postgres.sql
   - docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
   - 'echo "#${TRAVIS_BUILD_NUMBER}: $(date -u)" > web/build_version.txt'
@@ -34,8 +39,6 @@ install:
 ########################
 ### TEST
 ########################
-before_script:
- - "gem install travis-artifacts"
 
 script:
 - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
@@ -43,7 +46,7 @@ script:
 - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/allure generate --clean -o ./reports/html ./reports/allure"
 
 after_script:
-  - "travis-artifacts upload"
+  - travis-artifacts upload
 
 ########################
 ### SAVE ARTIFACTS

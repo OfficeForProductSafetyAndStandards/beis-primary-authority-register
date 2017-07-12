@@ -2,7 +2,7 @@ version: "2"
 
 services:
     web:
-      image: parbeta/web:v3
+      image: parbeta/web:v7
       container_name: par_beta_web
       links:
         - db
@@ -21,11 +21,4 @@ services:
         POSTGRES_USER: par
         POSTGRES_PASSWORD: 123456
         POSTGRES_DB: par
-    
-    dashboard:
-      container_name: par_beta_dashboard
-      image: rgcamus/alpine_smashing
-      ports:
-        - "8112:3030"
-      volumes:
-        - ../dashboard/dashboards:/dashboards
+

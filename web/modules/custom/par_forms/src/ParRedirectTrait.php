@@ -22,7 +22,8 @@ trait ParRedirectTrait {
    * Get the params for a dynamic route.
    */
   public function getRouteParams() {
-    return [];
+    // Submit the route with all the same parameters.
+    return $route_params = \Drupal::routeMatch()->getRawParameters()->all();
   }
 
 }
