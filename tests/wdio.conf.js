@@ -70,7 +70,7 @@ exports.config = {
     baseUrl: 'http://127.0.0.1:8111',
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 10000,
+    waitforTimeout: 100000,
     //
     // Default timeout in milliseconds for request
     // if Selenium Grid doesn't send response
@@ -101,7 +101,7 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They
     // enhance your test setup with almost no effort. Unlike plugins, they don't
     // add new commands. Instead, they hook themselves up into the test process.
-    services: ['selenium-standalone'],
+    // services: ['selenium-standalone'],
     //
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
@@ -153,7 +153,7 @@ exports.config = {
         // tags: require('./src/tagProcessor')(process.argv),
         // <string[]> (expression) only execute the features or scenarios with
         // tags matching the expression
-        timeout: 20000,     // <number> timeout for step definitions
+        timeout: 100000,     // <number> timeout for step definitions
         ignoreUndefinedDefinitions: false, // <boolean> Enable this config to
                                            // treat undefined definitions as
                                            // warnings.
