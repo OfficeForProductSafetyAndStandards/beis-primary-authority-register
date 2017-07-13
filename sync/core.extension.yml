@@ -58,6 +58,7 @@ module:
   user: 0
   views_ui: 0
   menu_link_content: 1
+  xmlsitemap: 1
   views: 10
   standard: 1000
 theme:

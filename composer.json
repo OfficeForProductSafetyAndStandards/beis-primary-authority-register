@@ -36,6 +36,7 @@
         "drupal/twig_tweak": "~1.8.0",
         "drupal/views_data_export": "~1.0.0-alpha4",
         "drupal/views_field_view": "~1.0.0-beta2",
+        "drupal/xmlsitemap": "^1.0@alpha",
         "drush/drush": "^8.0"
     },
     "require-dev": {
