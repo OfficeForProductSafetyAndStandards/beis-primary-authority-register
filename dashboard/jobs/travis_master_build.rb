@@ -82,7 +82,7 @@ SCHEDULER.every('30s', first_in: '1s') {
     test_file = 'tests/' + "#{number}" + '/wcag2aa_report.json'
     if (bucket.objects[test_file].exists?)
       accessibility_tests = JSON.parse(bucket.objects[test_file].read)
-      if (accessibility_tests['errors'] > 0)
+      if accessibility_tests['errors'] == 0
         accessible = 'ok'
         accessibility_message = "No errors found on #{accessibility_tests['total']} tests"
       else

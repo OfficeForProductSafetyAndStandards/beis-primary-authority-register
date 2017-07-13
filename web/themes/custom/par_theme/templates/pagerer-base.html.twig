@@ -49,7 +49,7 @@
 {%- if id %}
  id="{{ id }}"
 {% endif -%}>
-      <h4 id="pagination-heading" class="visually-hidden">{{ 'Pagination'|t }}</h4>
+      <h4 class="pagination-heading visually-hidden">{{ 'Pagination'|t }}</h4>
       {% if embedded %}
         {{ attach_library('pagerer/scrollpane') }}
         <div class="pagerer-viewport">
