@@ -1,0 +1,15 @@
+{
+    "name": "artillery-api-load-testing",
+    "version": "1.0.0",
+    "description": "Artilery API Load testing",
+    "homepage": "https://github.com/jaffamonkey/artillery-api-load-testing",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jaffamonkey/artillery-api-load-testing.git"
+    },
+    "author": "jaffamonkey",
+    "license": "MIT",
+    "dependencies": {
+        "artillery": "latest"
+    }
+}

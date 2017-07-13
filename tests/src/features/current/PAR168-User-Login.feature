@@ -7,9 +7,9 @@ so that I can access PAR
         Given I open the url "/login"
 
     Scenario Outline: Valid Login  Id
-        And I add "<user id>" to the inputfield "#username"
-        And I add "password" to the inputfield "#password"
-        And I press "Login"
+        And I add "<user id>" to the inputfield "#edit-name"
+        And I add "password" to the inputfield "#edit-pass"
+        And I press "Log in"
         Then I expect that element "#logged-in-header" contains the text "Logged in"
 
         Examples:
@@ -17,9 +17,9 @@ so that I can access PAR
             | ValidPrimaryAuthorityId | Password1 |
 
     Scenario Outline: Invalid Login Id
-        And I add "<user id>" to the inputfield "#username"
-        And I add "password" to the inputfield "#password"
-        And I press "Login"
+        And I add "<user id>" to the inputfield "#edit-name"
+        And I add "password" to the inputfield "#edit-pass"
+        And I press "Log in"
         Then I expect that element "#username-label" contains the text "Error"
 
         Examples:
@@ -27,12 +27,12 @@ so that I can access PAR
             | InvalidPrimaryAuthorityId | Password1 |
 
     Scenario Outline: Incorrect password
-        Given I add "<user id>" to the inputfield "#username"
-        And I add "<invalid password>" to the inputfield "#password"
+        And I add "<user id>" to the inputfield "#edit-name"
+        And I add "password" to the inputfield "#edit-pass"
         When I press "Login"
         Then I expect that element "#password-label" contains the text "Error"
         When I add "<valid password>" to the inputfield "#password"
-        And I press "Login"
+        And I press "Log in"
         Then I expect that element "#logged-in-header" contains the text "Logged in"
 
         Examples:
