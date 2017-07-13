@@ -31,6 +31,7 @@ SCHEDULER.every('30s', first_in: '1s') {
 
   info = "[#{build.branch_info}]"
   number = build.number
+  number = 713
 
   send_event('master_build_status', { status: health })
   send_event('master_build_version', { text: "##{number}" })
@@ -81,7 +82,7 @@ SCHEDULER.every('30s', first_in: '1s') {
     test_file = 'tests/' + "#{number}" + '/wcag2aa_report.json'
     if (bucket.objects[test_file].exists?)
       accessibility_tests = JSON.parse(bucket.objects[test_file].read)
-      if (bucket.objects[test_file].exists?)
+      if (accessibility_tests['errors'] > 0)
         accessible = 'ok'
         accessibility_message = "No errors found on #{accessibility_tests['total']} tests"
       else
