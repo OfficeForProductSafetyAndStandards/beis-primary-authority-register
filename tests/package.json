@@ -9,7 +9,6 @@
     "test:dev": "./node_modules/.bin/wdio wdio.DEV.conf.js",
     "test:validate": "eslint 'src/**/*.js'",
     "generatereport": "allure generate --clean -o ./reports/html ./reports/allure"
-
   },
   "repository": {
     "type": "git",
