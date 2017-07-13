@@ -10,6 +10,7 @@ regions:
   header: Header
   content: Content
   footer: Footer
+  footer_inner: Footer Meta Links
   parblocks: PAR Blocks
   npablocks: NPA Blocks
   businessnpablocks: Business NPA Blocks

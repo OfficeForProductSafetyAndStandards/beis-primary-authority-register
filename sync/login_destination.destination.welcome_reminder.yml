@@ -1,0 +1,15 @@
+uuid: d91b1591-8ef3-4d04-9a2b-981eb62b07b5
+langcode: en
+status: true
+dependencies: {  }
+name: welcome_reminder
+label: 'Welcome reminder'
+triggers:
+  login: login
+destination_path: 'internal:/welcome-reminder'
+pages_type: 0
+pages: ''
+roles:
+  authenticated: authenticated
+weight: 0
+enabled: true
