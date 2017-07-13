@@ -3,15 +3,15 @@ This feature is intended to define the different types of entities as set out by
 
 ## What are the different types of entities?
 The data types defined by the PAR Data Model include:
-* Advice - Details of any advice given to a Business or an Authority pertaining to a specific Partnership.
-* Authority - The Primary Authority is any authority that can provide businesses with robust and reliable regulatory advice.
-* Business - The business registered with PAR.
-* Coordinatior - A Coordinator is an intermediary association or franchise that can assist in the application to form a Partnership between a Business and an Authority.
-* Inspection Plan - Details of an inspection carried out against any given business.
-* Partnership - A partnership is the relationship between a Business and an Authority.
-* Person - A Person can be a member of any Primary Authority, Business or other legal institution that is responsible for an area of it's operation.
-* Premises - The premises that are owned by either a Business or Coordinator.
-* Regulatory Area - An area of regulation that can be applied to any Partnership between a Business and an Authority.
++ **Advice** - Details of any advice given to a Business or an Authority pertaining to a specific Partnership.
++ **Authority** - The Primary Authority is any authority that can provide businesses with robust and reliable regulatory advice.
++ **Business** - The business registered with PAR.
++ **Coordinatior** - A Coordinator is an intermediary association or franchise that can assist in the application to form a Partnership between a Business and an Authority.
++ **Inspection Plan** - Details of an inspection carried out against any given business.
++ **Partnership** - A partnership is the relationship between a Business and an Authority.
++ **Person** - A Person can be a member of any Primary Authority, Business or other legal institution that is responsible for an area of it's operation.
++ **Premises** - The premises that are owned by either a Business or Coordinator.
++ **Regulatory Area** - An area of regulation that can be applied to any Partnership between a Business and an Authority.
 
 ## What are the properties of these entities?
 To be clear as to the data properties that we're trying to add with this feature see below:
@@ -82,7 +82,7 @@ To be clear as to the data properties that we're trying to add with this feature
 + **nation** = single, string(255), limited choice (~5), plain
 + **uprn** = single, string(30), free form, plain
 
-### People properties
+### Person properties
 + **id** * = surrogate key
 + **primary_authority** = reference to Authority
 + **coordinator** = reference to Coordinator
@@ -93,7 +93,7 @@ To be clear as to the data properties that we're trying to add with this feature
 + **mobile_phone** = single, string(255), free form, plain
 + **email** = multiple, string(500), free form, plain
 
-### Legal Entities properties
+### Legal Entity properties
 + **id** * = surrogate key
 + **business** = reference to Business
 + **registered_name** = single, string(255), free form, plain
@@ -101,13 +101,37 @@ To be clear as to the data properties that we're trying to add with this feature
 + **entity_type** = single, string(20), limited choice (~5), plain
 
 ### Regulatory Area properties
-As yet unknown
++ **id** * = surrogate key
++ **name** * = surrogate key
 
 ### Advice properties
-As yet unknown
++ **id** * = surrogate key
++ **advice_type** = single, string(20), limited choice (3), plain
++ **notes** = string (long), free form, html
++ **obsolete** = single, boolean
+
++ **visibile_authority** = single, boolean
++ **visibile_coordinator** = single, boolean
++ **visibile_business** = single, boolean
 
 ### Inspection Plan properties
-As yet unknown
++ **id** * = surrogate key
++ **valid_from** = single, date
++ **valid_to** = single, date
+
++ **approved_rd_exec** = single, boolean
++ **consulted_national_regulator** = single, boolean
++ **status** = single, boolean
+
+### Enforcement Notice properties
++ **id** * = surrogate key
++ **notice_type** = single, string(20), limited choice (~5), plain
++ **notice_date** = single, date
+
+* ENFORCEMENT_NOTICE_ID NUMBER (11) F
+* ENFORCING_AUTHORITY_ID NUMBER (11) F
+* PRIMARY_AUTHORITY_ID NUMBER (11) F
+* LEGAL_ENTITY_ID NUMBER (11)
 
  `*` Indicates properties that have been altered from the Alpha Data Model.
 
