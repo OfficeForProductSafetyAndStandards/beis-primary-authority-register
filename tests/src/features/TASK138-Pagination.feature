@@ -5,7 +5,7 @@ Feature: As a PAR user
 
     Background:
         Given I open the url "/styleguide/pagination"
-        And the title is "PAR Styleguide Pagination | Regulatory Authority"
+        And the title is "PAR Styleguide Pagination | Primary Authority Register"
         Then I expect that element "li.pager__item.pagerer-prefix span" contains the text "Showing 1-10"
 
     Scenario Outline: pagination check
