@@ -2,10 +2,10 @@
     "name": "pa11y-ci-tool",
     "version": "1.0.0",
     "description": "Pa11y CI tool",
-    "homepage": "https://github.com/jaffamonkey/artillery-api-load-testing",
+    "homepage": "https://github.com/pa11y/ci.git",
     "repository": {
         "type": "git",
-        "url": "https://github.com/jaffamonkey/artillery-api-load-testing.git"
+        "url": "https://github.com/pa11y/ci.git"
     },
     "author": "jaffamonkey",
     "license": "MIT",

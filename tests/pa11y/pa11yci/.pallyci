@@ -1,17 +1,16 @@
 {
-        "defaults": {
+    "defaults": {
         "timeout": 1000,
         "page": {
             "viewport": {
                 "width": 1024,
                 "height": 768
             }
-        },
-        "concurrency": 3
+        }
     },
     "urls": [
-        "http://localhost:80",
-        "http://localhost:80/styleguide",
-        "http://localhost:80/styleguide/pagination",
+        "http://192.168.82.68:8111",
+        "http://localhost:8111/styleguide",
+        "http://localhost:8111/styleguide/pagination"
     ]
 }
