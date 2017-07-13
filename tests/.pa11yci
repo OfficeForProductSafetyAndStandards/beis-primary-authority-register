@@ -9,7 +9,6 @@
         }
     },
     "allowedStandards": ["WCAG2AA", "WCAG2 AA"],
-    "threshold": 1,
     "urls": [
         "http://localhost:80",
         "http://localhost:80/styleguide",
