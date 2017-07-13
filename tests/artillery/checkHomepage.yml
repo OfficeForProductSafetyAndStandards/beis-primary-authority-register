@@ -1,5 +1,5 @@
 config:
-  target: 'http://localhost:8111'
+  target: '[enter url]'
   phases:
     - duration: 1
       arrivalRate: 1
