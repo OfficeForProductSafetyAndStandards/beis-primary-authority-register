@@ -1,0 +1,18 @@
+{
+    "defaults": {
+        "timeout": 5000,
+        "page": {
+            "viewport": {
+                "width": 1024,
+                "height": 768
+            }
+        }
+    },
+    "allowedStandards": ["WCAG2AA", "WCAG2 AA"],
+    "urls": [
+        "http://localhost:8111",
+        "http://localhost:8111/styleguide",
+        "http://localhost:8111/styleguide/pagination",
+        "http://localhost:8111/user/login"
+            ]
+}
