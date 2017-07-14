@@ -21,7 +21,6 @@ install:
   - if [[ $TRAVIS_BRANCH == 'master' ]]; then echo "deb http://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list; fi
   - if [[ $TRAVIS_BRANCH == 'master' ]]; then sudo apt-get update; fi
   - if [[ $TRAVIS_BRANCH == 'master' ]]; then sudo apt-get install cf-cli; fi
-  - gem install travis-artifacts
   - phpenv config-rm xdebug.ini
   - composer install -v
   - cd docker
