@@ -10,9 +10,9 @@
     },
     "allowedStandards": ["WCAG2AA", "WCAG2 AA"],
     "urls": [
-        "http://localhost:8111",
-        "http://localhost:8111/styleguide",
-        "http://localhost:8111/styleguide/pagination",
-        "http://localhost:8111/user/login"
+        "http://localhost:80",
+        "http://localhost:80/styleguide",
+        "http://localhost:80/styleguide/pagination",
+        "http://localhost:80/user/login"
             ]
 }
