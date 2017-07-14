@@ -17,6 +17,7 @@ SCHEDULER.every('30s', first_in: '1s') {
   repo  = client.repo("TransformCore/beis-par-beta")
 
   test_results = []
+  accessibility_results = []
 
   build = repo.branch('master')
 
@@ -34,8 +35,9 @@ SCHEDULER.every('30s', first_in: '1s') {
   send_event('master_build_status', { status: health })
   send_event('master_build_version', { text: "##{number}" })
 
+  # Get cucumber test results.
   begin
-    test_file = 'tests/' + "#{number}" + '/tests/reports/report.json'
+    test_file = 'tests/' + "#{number}" + '/test/reports/report.json'
     if (bucket.objects[test_file].exists?)
       functional_tests = JSON.parse(bucket.objects[test_file].read)
       test_results.push({
@@ -50,8 +52,9 @@ SCHEDULER.every('30s', first_in: '1s') {
     # exists? can raise an error `Aws::S3::Errors::Forbidden`
   end
 
+  # Get phpunit test results.
   begin
-    test_file = 'tests/' + "#{number}" + '/tests/reports/phpunit.latest.xml'
+    test_file = 'tests/' + "#{number}" + '/test/reports/phpunit.latest.xml'
     if (bucket.objects[test_file].exists?)
       unit_tests = Nokogiri::XML(bucket.objects[test_file].read)
       unit_tests.xpath("/testsuites/testsuite").each do |testsuite|
@@ -71,4 +74,24 @@ SCHEDULER.every('30s', first_in: '1s') {
   send_event('master_test_results', { results: test_results })
 
   client.clear_cache
+
+  # Get the Pa11y accessibility reports.
+  accessible = 'pending'
+  begin
+    test_file = 'tests/' + "#{number}" + '/test/reports/wcag2aa_report.json'
+    if (bucket.objects[test_file].exists?)
+      accessibility_tests = JSON.parse(bucket.objects[test_file].read)
+      if accessibility_tests['errors'] == 0
+        accessible = 'ok'
+        accessibility_message = "No errors found on #{accessibility_tests['total']} tests"
+      else
+        accessible = 'critical'
+        accessibility_message = "#{accessibility_tests['errors']} errors found on #{accessibility_tests['total']} tests"
+      end
+    end
+  rescue
+    # exists? can raise an error `Aws::S3::Errors::Forbidden`
+  end
+
+  send_event('master_accessibility_status', { status: accessible, message: accessibility_message })
 }

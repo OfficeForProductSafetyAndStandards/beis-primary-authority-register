@@ -1,0 +1,9 @@
+.table-scroll-wrapper {
+
+  overflow-y: scroll;
+
+  & > table {
+    width: 100%;
+  }
+
+}

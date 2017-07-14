@@ -5,14 +5,20 @@
             "viewport": {
                 "width": 1024,
                 "height": 768
+            },
+            "headers": {
+                "X-Test": "Accessibility"
             }
-        }
+        },
+        "allowedStandards": ["WCAG2AA", "WCAG2 AA"],
+        "concurrency": 4
     },
-    "allowedStandards": ["WCAG2AA", "WCAG2 AA"],
     "urls": [
         "http://localhost:80",
         "http://localhost:80/styleguide",
+        "http://localhost:80/styleguide/data",
         "http://localhost:80/styleguide/pagination",
-        "http://localhost:80/user/login"
-            ]
+        "http://localhost:80/user/login",
+        "http://localhost:80/unknown-page-404-check"
+    ]
 }
