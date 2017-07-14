@@ -31,7 +31,6 @@ SCHEDULER.every('30s', first_in: '1s') {
 
   info = "[#{build.branch_info}]"
   number = build.number
-  number = 713
 
   send_event('master_build_status', { status: health })
   send_event('master_build_version', { text: "##{number}" })
