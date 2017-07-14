@@ -127,3 +127,7 @@ Check out all predefined snippets. You can see how they get used in [`sampleSnip
 - `I select the (\d+)(st|nd|rd|th) option for element "([^"]*)?"` <br>Select a option based on it's index
 - `I select the option with the (name|value|text) "([^"]*)?" for element "([^"]*)?"` <br>Select a option based on it's name, value or visible text
 - `I move to element "([^"]*)?"( with an offset of (\d+),(\d+))` <br>Move the mouse by an (optional) offset of the specified element
+
+## Pa11y Accessibility Checker
+
+./node_modules/.bin/pa11y-ci -j > ./reports/wcag2aa_report.json

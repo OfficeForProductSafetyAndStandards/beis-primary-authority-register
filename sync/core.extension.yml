@@ -45,6 +45,7 @@ module:
   par_welcome_page: 0
   path: 0
   rdf: 0
+  robotstxt: 0
   search: 0
   shortcut: 0
   syslog: 0
@@ -58,6 +59,7 @@ module:
   user: 0
   views_ui: 0
   menu_link_content: 1
+  xmlsitemap: 1
   views: 10
   standard: 1000
 theme:
