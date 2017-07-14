@@ -1,0 +1,1 @@
+vendor/drush/drush/drush sql-dump --result-file=/home/vcap/drush-dump.sql
