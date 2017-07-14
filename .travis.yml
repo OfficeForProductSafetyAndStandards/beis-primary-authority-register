@@ -73,7 +73,7 @@ after_deploy:
   - cf set-env par-beta-staging PAR_HASH_SALT $PAR_HASH_SALT
   - cd tests/reports/html && cf push -f ../../reports-manifest.yml
   - cf ssh par-beta-staging -c "cd app/tools && python dump.py"
-  - cf ssh par-beta-staging -c "cd app && source drupal-update-pass-envs.sh && sh drupal-update-paas.sh"
+  - cf ssh par-beta-staging -c "cd app && source drupal-update-paas-envs.sh && sh drupal-update-paas.sh"
  
 ########################
 ### SAVE ARTIFACTS
