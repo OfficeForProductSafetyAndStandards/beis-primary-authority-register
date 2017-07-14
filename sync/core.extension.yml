@@ -45,6 +45,7 @@ module:
   par_welcome_page: 0
   path: 0
   rdf: 0
+  robotstxt: 0
   search: 0
   shortcut: 0
   syslog: 0
