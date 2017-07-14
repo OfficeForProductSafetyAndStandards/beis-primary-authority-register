@@ -45,6 +45,7 @@
     "wdio-phantomjs-service": "0.2.2",
     "wdio-selenium-standalone-service": "0.0.9",
     "wdio-spec-reporter": "0.1.0",
+    "browserstack-local": "^1.0.0",
     "webdrivercss": "^1.1.10",
     "webdriverio": "4.8.0"
   }
