@@ -10,28 +10,32 @@ use Drupal\Core\Controller\ControllerBase;
 class StyleguideDataController extends ControllerBase {
 
   /**
-   * Build the pagerer example page.
+   * Build the data (tables) example page.
    *
    * @return array
    *   A render array.
    */
   public function content() {
 
-    // Data table - lists routes registered.
+    // Table headers.
     $header = [
-      ['data' => 'name'],
-      ['data' => 'path'],
+      ['data' => 'Primary Authority'],
+      ['data' => 'Business'],
+      ['data' => 'PA Ts&Cs'],
+      ['data' => 'PA Details'],
+      ['data' => 'PA Docs'],
+      ['data' => 'Bus. Ts&Cs'],
+      ['data' => 'Bus. Details']
     ];
-    $query = db_select('router', 'd')->extend('Drupal\Core\Database\Query\PagerSelectExtender')->element(2);
-    $result = $query
-      ->fields('d', ['name', 'path'])
-      ->limit(10)
-      ->orderBy('d.name')
-      ->execute();
-    $rows = [];
-    foreach ($result as $row) {
-      $rows[] = ['data' => (array) $row];
-    }
+
+    // Table data/cells.
+    $rows = [
+      ['Westminster City Council', 'Selfridges', 'Confirmed 07.08.17', 'Confirmed 07.08.17', 'Confirmed 07.08.17', 'Confirmed 10.08.17', 'Confirmed 10.08.17'],
+      ['Another County Council', 'Another Business', 'Confirmed 07.08.17', 'Confirmed 07.08.17', '80% confirmed 07.08.17', 'Confirmed 10.08.17', 'Confirmed 10.08.17'],
+      ['Another County Council', 'Another Business', 'Confirmed 07.08.17', 'Confirmed 07.08.17', '80% confirmed 07.08.17', 'Confirmed 10.08.17', 'Confirmed 10.08.17'],
+      ['Another County Council', 'Another Business', 'Confirmed 07.08.17', 'Confirmed 07.08.17', '80% confirmed 07.08.17', 'Invite sent 07.08.17', 'Not confirmed'],
+      ['Another County Council', 'Another Business', 'Confirmed 07.08.17', 'Not confirmed', 'Not confirmed', 'Invite sent 07.08.17', 'Not confirmed'],
+    ];
 
     // Create a render array ($build) which will be themed for output.
     $build = [];
@@ -56,6 +60,7 @@ class StyleguideDataController extends ControllerBase {
     ];
 
     return $build;
+
   }
 
 }

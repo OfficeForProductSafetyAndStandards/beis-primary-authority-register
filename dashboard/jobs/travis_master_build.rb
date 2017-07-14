@@ -31,14 +31,13 @@ SCHEDULER.every('30s', first_in: '1s') {
 
   info = "[#{build.branch_info}]"
   number = build.number
-  number = 713
 
   send_event('master_build_status', { status: health })
   send_event('master_build_version', { text: "##{number}" })
 
   # Get cucumber test results.
   begin
-    test_file = 'tests/' + "#{number}" + '/report.json'
+    test_file = 'tests/' + "#{number}" + '/tests/reports/report.json'
     if (bucket.objects[test_file].exists?)
       functional_tests = JSON.parse(bucket.objects[test_file].read)
       test_results.push({
@@ -55,7 +54,7 @@ SCHEDULER.every('30s', first_in: '1s') {
 
   # Get phpunit test results.
   begin
-    test_file = 'tests/' + "#{number}" + '/phpunit.latest.xml'
+    test_file = 'tests/' + "#{number}" + '/tests/reports/phpunit.latest.xml'
     if (bucket.objects[test_file].exists?)
       unit_tests = Nokogiri::XML(bucket.objects[test_file].read)
       unit_tests.xpath("/testsuites/testsuite").each do |testsuite|
@@ -79,7 +78,7 @@ SCHEDULER.every('30s', first_in: '1s') {
   # Get the Pa11y accessibility reports.
   accessible = 'pending'
   begin
-    test_file = 'tests/' + "#{number}" + '/wcag2aa_report.json'
+    test_file = 'tests/' + "#{number}" + '/tests/reports/wcag2aa_report.json'
     if (bucket.objects[test_file].exists?)
       accessibility_tests = JSON.parse(bucket.objects[test_file].read)
       if accessibility_tests['errors'] == 0
