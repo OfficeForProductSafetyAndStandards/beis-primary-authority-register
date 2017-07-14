@@ -9,7 +9,6 @@
     "test:dev": "./node_modules/.bin/wdio wdio.DEV.conf.js",
     "test:validate": "eslint 'src/**/*.js'",
     "generatereport": "allure generate --clean -o ./reports/html ./reports/allure"
-
   },
   "repository": {
     "type": "git",
@@ -28,7 +27,6 @@
   "license": "MIT",
   "dependencies": {
     "allure-commandline": "2.1.1",
-    "artillery": "latest",
     "babel-polyfill": "6.23.0",
     "babel-preset-es2015": "6.24.1",
     "babel-register": "6.24.1",
