@@ -1,0 +1,13 @@
+config:
+  target: 'http://localhost:8111'
+  phases:
+    - duration: 1
+      arrivalRate: 1
+  defaults:
+    headers:
+      Accept: '*/*'
+
+scenarios:
+  - flow:
+    - get:
+        url: "/"
