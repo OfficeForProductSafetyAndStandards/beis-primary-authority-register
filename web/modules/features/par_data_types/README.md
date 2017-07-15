@@ -19,6 +19,7 @@ The data types defined by the PAR Data Model include:
 ## There are some uniform properties that apply to all of these Entity Bundles
 + **id** = surrogate key, "An internal ID"
 + **uuid** = single, string, "A universally unique ID"
++ **type** = single, string(255), limited choice (~5), plain, "An internally used sub-type, there can just be one sub-type if none are actually required."
 + **label** = single, string(255), free form, plain, "An internally used administration name, can be generated automatically where not needed"
 + **status** = single, boolean, "Whether published or archived"
 + **uid** = single, integer "The id of the user who created it"
@@ -26,8 +27,10 @@ The data types defined by the PAR Data Model include:
 ## What are the fields of these entities?
 To be clear as to the fields that we're trying to add with this feature see below:
 
-### Advice properties
-+ **type** = single, string(255), limited choice (3), plain
+**NOTE:** All field names are prepended with 'field_' in Drupal.
+
+### Advice fields
++ **advice_type** = single, string(255), limited choice (~5), plain
 + **notes** = string (long), free form, html
 + **obsolete** = single, boolean
 + **visible_authority** = single, boolean
@@ -35,141 +38,118 @@ To be clear as to the fields that we're trying to add with this feature see belo
 + **visible_business** = single, boolean
 
 ### Inspection Plan properties
-+ **valid_from** = single, date
-+ **valid_to** = single, date
++ **valid_from** = single, _date_
++ **valid_to** = single, _date_
 + **approved_rd_exec** = single, boolean
 + **consulted_national_regulator** = single, boolean
-+ **state** = single, string(255), limited choice (~5), plain
++ **status** = single, string(255), limited choice (~5), plain
 
 ### Authority properties
 + **name** = single, string(500), free form, plain
-+ **type** = single, string(255), limited choice (3), plain
++ **authority_type** = single, string(255), limited choice (3), plain
 + **details** = single, string (long), free form, html
 + **nation** = single, string(255), limited choice (~5), plain
-+ **ons** = multiple, string(20), free form, plain
++ **ons** = single, string(255), free form, plain
 
-### Business properties
++ **person** = multiple, int(6), _reference_ to a Person
++ **premises** * = multiple, reference to Premises
+
+### Organisation (Business) properties
 + **name** = single, string(500), free form, plain
 + **size** * = single, string(255), limited choice (~5), plain
 + **number_employees** * = single, string(255), limited choice (~5), plain
 + **nation** = single, string(255), limited choice (~5), plain
 + **comments** = single, string (long), free form, html
 + **premises_mapped** = single, boolean
-+ **person** = single, int(6), reference
 + **sic_code** = multiple, int(6), reference
 + **trading_name** = multiple, string(255), free form, plain
 
-### Coordinator properties
++ **person** = multiple, int(6), _reference_ to a Person
++ **premises** * = multiple, reference to Premises
++ **legal_entity** * = multiple, reference to Premises
+
+### Organisation (Coordinator) properties
 + **name** = single, string(500), free form, plain
-+ **type** = single, string(255), limited choice (3), plain
 + **size** * = single, string(255), limited choice (~5), plain
-+ **number_employees** * = single, string(255), limited choice (~5), plain
++ **employees_band** * = single, string(255), limited choice (~5), plain
 + **nation** = single, string(255), limited choice (~5), plain
 + **comments** = single, string (long), free form, html
 + **premises_mapped** = single, boolean
-+ **person** = single, int(6), reference
 + **sic_code** = multiple, int(6), reference
 + **trading_name** = multiple, string(255), free form, plain
 + **number_eligible** = single, int(6), free form
 
-
-
-
-
-
-### Coordinator properties
-+ **id** * = surrogate key
-+ **name** = single, string(500), free form, plain
-+ **number_eligible** = int(6), free form
-+ **email** = multiple, string(500), free form, plain
-+ **coordinator_type** = single, string(255), free form, plain
-+ **auth_businesses** = single, boolean
-+ **nature_of_organisation** = single, string(255), free form, plain
-+ **sic_code** = multiple, int(6), free form
++ **person** = multiple, int(6), _reference_ to a Person
++ **premises** * = multiple, reference to Premises
++ **legal_entity** * = multiple, reference to Premises
 
 ### Partnership properties
-+ **id** * = surrogate key
-+ **business** = reference to Business
-+ **primary_authority** = reference to Authority
-+ **inspection_plan** * = multiple, file, pdf/docx
++ **partnership_type** = single, string(255), limited choice (3), plain
++ **status** = single, string(255), limited choice (~5), plain
 + **about_partnership** = single, string (long), free form, html
-+ **communication_post** * = single, boolean
-+ **approved_date** = single, date
 + **communication_email** * = single, boolean
-+ **expertise** = single, string (long), free form, html
-+ **about_business** = single, string (long), free form, html
-+ **cost_recovery** = single, string(20), limited choice (~5), plain
-+ **revocation_source** = single, string(20), limited choice (~5), plain
-+ **communication_other** * = single, string (long), free form, html
-+ **business_certificate** * = multiple, file, pdf/docx
-+ **primary_authority_certificate** * = multiple, file, pdf/docx
-+ **partnership_categories** = multiple, string(255), limited choice (100+), plain
-+ **la_change_comment** = single, string (long), free form, html
-+ **revocation_reason** = single, string (long), free form, html
-+ **business_change_comment** = single, string (long), free form, html
-+ **partnership_type** = single, string(255), free form, plain
-+ **partnership_sub_type** = single, string(255), free form, plain 
++ **communication_phone** * = single, boolean
++ **communication_notes** * = single, string (long), free form, html
++ **approved_date** = single, _date_
++ **expertise_details** = single, string (long), free form, html
++ **cost_recovery** = single, string(255), limited choice (~5), plain
 + **reject_comment** = single, string (long), free form, html
-+ **relation_categories** = multiple, string(255), limited choice (100+), plain
++ **revocation_source** = single, string(255), limited choice (~5), plain
++ **revocation_date** = single, _date_
++ **revocation_reason** = single, string (long), free form, html
++ **authority_change_comment** = single, string (long), free form, html
++ **organisation_change_comment** = single, string (long), free form, html
+
++ **organisation** = multiple, _reference_ to an Organisation
++ **authority** = single, _reference_ to an Authority
++ **advice** = multiple, _reference_ to an Advice
++ **inspection_plan** = multiple, _reference_ to an Inspection Plan
++ **person** = multiple, int(6), _reference_ to a Person
 
 ### Premises properties
-+ **id** * = surrogate key
-+ **business** * = reference to Business
-+ **address** * = single, address
-+ **nation** = single, string(255), limited choice (~5), plain
-+ **uprn** = single, string(30), free form, plain
++ **address** * = single, _address_
+  - address_line_1
+  - address_line_2
+  - post_code
+  - locality (City)
+  - administrative_area (County)
+  - country
 
 ### Person properties
-+ **id** * = surrogate key
-+ **primary_authority** = reference to Authority
-+ **coordinator** = reference to Coordinator
 + **title** = single, string(255), free form, plain
-+ **first_name** = single, string(255), free form, plain
-+ **last_name** * = single, string(255), free form, plain
++ **name** * = single, string(500), free form, plain
 + **work_phone** = single, string(255), free form, plain
 + **mobile_phone** = single, string(255), free form, plain
-+ **email** = multiple, string(500), free form, plain
++ **email** = single, string(500), free form, plain
 
 ### Legal Entity properties
-+ **id** * = surrogate key
-+ **business** = reference to Business
 + **registered_name** = single, string(255), free form, plain
-+ **entity_number** = single, int(10)
-+ **entity_type** = single, string(20), limited choice (~5), plain
++ **registered_number** = single, int(10)
++ **legal_entity_type** = single, string(255), limited choice (~5), plain
 
 ### Regulatory Area properties
-+ **id** * = surrogate key
-+ **name** * = surrogate key
-
-+ **visibile_authority** = single, boolean
-+ **visibile_coordinator** = single, boolean
-+ **visibile_business** = single, boolean
++ **name** * = single, string(500), free form, plain
 
 ### Enforcement Notice properties
-+ **id** * = surrogate key
-+ **notice_type** = single, string(20), limited choice (~5), plain
++ **notice_type** = single, string(255), limited choice (~5), plain
 + **notice_date** = single, date
 
-* ENFORCEMENT_NOTICE_ID NUMBER (11) F
-* ENFORCING_AUTHORITY_ID NUMBER (11) F
-* PRIMARY_AUTHORITY_ID NUMBER (11) F
-* LEGAL_ENTITY_ID NUMBER (11)
++ **primary_authority** = single, _reference_ to an Authority
++ **enforcing_authority** = single, _reference_ to an Authority
++ **legal_entity** * = single, reference to Premises
 
- `*` Indicates properties that have been altered from the Alpha Data Model.
 
-## What information do we need about properties to properly define them?
-When adding data properties in Drupal there are certain things that affect how the data structure is stored and can't change after the property is created.
+## What information do we need about fields to properly define them?
+When adding data properties in Drupal there are certain things that affect how the data structure is stored and can't change after the field has data in it.
 * Number of values allowed (one or many)
-* Type of value stored (string, int, boolean, date or specific drupal type of address, file or reference to another entity)
+* Type of value stored (string, int, boolean, or compound types such as date, address, files or reference to another entity)
 * Length of string and int values allowed
 * Whether the value is a limited choice (lists, checkboxes) or free form entry (textfields)
 * Expected contents of any string fields (html or plain)
 * Any restrictions on file types
-* Whether any two fields with multiple values should be grouped together. As in, must have the same number of values, and value 2 of one field correspondends to value 2 of the other field
+* Whether any two fields with multiple values should be grouped together. Typically with the provided data model if this is required they will be made their own entities, for example Premises.
 
-How these properties are stored affects the migration, the code we right, and how the site is configured. Therefore we need to get these things figured out asap.
-
-The provisional answers to these questions have been indicated above for these properties separated by commas.
+We should take another look at the answers to these questions before we run the final migration to see if we can lock these down.
 
 ## Data property requirements
 There are a number of naming conventions and requirements to meet for the GOV.UK design patterns and guidance assessments:
