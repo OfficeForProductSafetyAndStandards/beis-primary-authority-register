@@ -83,7 +83,7 @@ after_script:
   
 addons:
   artifacts:
-    debug: true
+    debug: false
     paths:
       - ./tests/reports
     target_paths: tests/$TRAVIS_BUILD_NUMBER
