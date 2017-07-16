@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_data_entities\ParamConverter;
+namespace Drupal\par_data\ParamConverter;
 
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\ParamConverter\ParamConverterInterface;
@@ -43,7 +43,7 @@ class ParEntityConverter implements ParamConverterInterface {
   public function __construct($parent, EntityManagerInterface $entity_manager, $config_factory) {
     $this->entityManager = $entity_manager;
     $this->parent = $parent;
-    $this->settings = $config_factory->get('par_data_entities.settings');
+    $this->settings = $config_factory->get('par_data.settings');
   }
 
   public function __call($method, $args) {
@@ -56,6 +56,8 @@ class ParEntityConverter implements ParamConverterInterface {
   public function convert($value, $definition, $name, array $defaults) {
     // Get stubs and generate a dummy entity.
     if ($this->settings->get('stubbed')) {
+
+      // We need to check if this is one of our entities using the ParDataManager service.
 
       // Set the entity ID to use.
       $entity_type_id = $entity_type_id = substr($definition['type'], strlen('entity:'));

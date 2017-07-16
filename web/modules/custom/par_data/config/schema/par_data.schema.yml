@@ -1,7 +1,7 @@
 # Configuration file schema.
-par_data_entities.settings:
+par_data.settings:
   type: config_object
-  label: 'Par Data Entities settings'
+  label: 'Par Data settings'
   mapping:
     stubbed:
       type: boolean

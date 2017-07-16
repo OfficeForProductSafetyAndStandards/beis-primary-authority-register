@@ -1,43 +1,37 @@
+# PAR Data entity specific routing definitions
+route_callbacks:
+  - Drupal\par_data\ParDataRoutes::routes
+
+# PAR Data generic routing definitions
+par_data.main_page:
+  path: '/admin/content/par_data'
+  defaults:
+    _controller: '\Drupal\par_data\Controller\ParDataController::content'
+    _title: 'Welcome to the PAR3 Data'
+  requirements:
+    _permission: 'add par_entity entities'
+
+
 # PAR Entity routing definition
-entity.par_entity.canonical:
-  path: '/admin/content/par_entity/{par_entity}'
-  defaults:
-    _entity_view: 'par_entity'
-    _title: 'PAR entity'
-  requirements:
-    _entity_access: 'par_entity.view'
-  options:
-    _admin_route: TRUE
-
-entity.par_entity.collection:
-  path: '/admin/content/par_entity'
-  defaults:
-    _entity_list: 'par_entity'
-    _title: 'PAR data'
-  requirements:
-    _permission: 'access par_entity content'
-  options:
-    _admin_route: TRUE
-
-entity.par_entity.edit_form:
-  path: '/admin/content/par_entity/{par_entity}/edit'
-  defaults:
-    _entity_form: par_entity.edit
-    _title: 'Edit par entity'
-  requirements:
-    _permission: 'edit par_entity entities'
-  options:
-    _admin_route: TRUE
-
-entity.par_entity.delete_form:
-  path: '/admin/content/par_entity/{par_entity}/delete'
-  defaults:
-    _entity_form: par_entity.delete
-    _title: 'Delete par entity'
-  requirements:
-    _permission: 'delete par_entity entities'
-  options:
-    _admin_route: TRUE
+#entity.par_entity.edit_form:
+#  path: '/admin/content/par_entity/{par_entity}/edit'
+#  defaults:
+#    _entity_form: par_entity.edit
+#    _title: 'Edit par entity'
+#  requirements:
+#    _permission: 'edit par_entity entities'
+#  options:
+#    _admin_route: TRUE
+#
+#entity.par_entity.delete_form:
+#  path: '/admin/content/par_entity/{par_entity}/delete'
+#  defaults:
+#    _entity_form: par_entity.delete
+#    _title: 'Delete par entity'
+#  requirements:
+#    _permission: 'delete par_entity entities'
+#  options:
+#    _admin_route: TRUE
 
 par_data_entities.add_page:
   path: '/admin/content/par_entity/add'

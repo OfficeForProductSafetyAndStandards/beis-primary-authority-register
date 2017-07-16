@@ -1,0 +1,2 @@
+permission_callbacks:
+  - Drupal\par_data\Routing\ParDataPermissions::permissions
