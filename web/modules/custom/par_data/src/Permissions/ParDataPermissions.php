@@ -45,62 +45,62 @@ class ParDataPermissions implements ContainerInjectionInterface {
     $permissions = [];
 
     foreach ($this->parDataManager->getParEntityTypes() as $definition) {
-      $type = $definition->getBundleEntityType();
-      $name = $definition->getLabel();
+      $id = $definition->id();
+      $plural = $definition->getPluralLabel();
 
       // View.
       $permissions += [
-        "access {$type} entities" => [
-          'title' => $this->t('Allow access to %entity entities', array('%entity' => $name)),
+        "access {$id} entities" => [
+          'title' => $this->t('Allow access to %entity', array('%entity' => $plural)),
         ]
       ];
 
       // View archived.
       $permissions += [
-        "view unpublished {$type} entities" => [
-          'title' => $this->t('Allow access to archived %entity entities', array('%entity' => $name)),
+        "view unpublished {$id} entities" => [
+          'title' => $this->t('Allow access to archived %entity', array('%entity' => $plural)),
         ]
       ];
 
-      // Add an administration permission.
+      // Add an administration permission for bundles.
       $permissions += [
-        "administer {$type} entities" => [
-          'title' => $this->t('Allow administration and configuration of %entity entities', array('%entity' => $name)),
+        "administer {$id} entities" => [
+          'title' => $this->t('Allow administration and configuration of %entity', array('%entity' => $plural)),
         ]
       ];
 
-      // Add an administration permission for the entities bundles.
+      // Add an administration permission for the entities types.
       $permissions += [
-        "administer {$type} entity types" => [
-          'title' => $this->t('Allow administration and configuration of %entity entity sub-types', array('%entity' => $name)),
+        "administer {$id} entity types" => [
+          'title' => $this->t('Allow administration and configuration of %entity sub-types', array('%entity' => $plural)),
         ]
       ];
 
       // By pass all access checks for this entity.
       $permissions += [
-        "bypass {$type} access" => [
-          'title' => $this->t('Allow administration and configuration of %entity entities', array('%entity' => $name)),
+        "bypass {$id} access" => [
+          'title' => $this->t('Allow administration and configuration of %entity', array('%entity' => $plural)),
         ]
       ];
 
       // Create.
       $permissions += [
-        "add {$type} entities" => [
-          'title' => $this->t('Create new %entity entities', array('%entity' => $name)),
+        "add {$id} entities" => [
+          'title' => $this->t('Create new %entity', array('%entity' => $plural)),
         ]
       ];
 
       // Update.
       $permissions += [
-        "edit {$type} entities" => [
-          'title' => $this->t('Update %entity entities', array('%entity' => $name)),
+        "edit {$id} entities" => [
+          'title' => $this->t('Update %entity', array('%entity' => $plural)),
         ]
       ];
 
       // Delete.
       $permissions += [
-        "delete {$type} entities" => [
-          'title' => $this->t('Delete %entity entities', array('%entity' => $name)),
+        "delete {$id} entities" => [
+          'title' => $this->t('Delete %entity', array('%entity' => $plural)),
         ]
       ];
     }

@@ -12,6 +12,13 @@ use Drupal\trance\Trance;
  * @ContentEntityType(
  *   id = "par_entity",
  *   label = @Translation("PAR Entity"),
+ *   label_collection = @Translation("PAR Data"),
+ *   label_singular = @Translation("PAR Entity"),
+ *   label_plural = @Translation("PAR Data"),
+ *   label_count = @PluralTranslation(
+ *     singular = "@count par data item",
+ *     plural = "@count par data items"
+ *   ),
  *   bundle_label = @Translation("par_entity type"),
  *   handlers = {
  *     "storage" = "Drupal\trance\TranceStorage",
@@ -19,7 +26,6 @@ use Drupal\trance\Trance;
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "list_builder" = "Drupal\trance\TranceListBuilder",
  *     "views_data" = "Drupal\trance\TranceViewsData",
- *
  *     "form" = {
  *       "default" = "Drupal\par_data_entities\Form\ParEntityForm",
  *       "add" = "Drupal\par_data_entities\Form\ParEntityForm",
@@ -51,6 +57,7 @@ use Drupal\trance\Trance;
  *     "delete-form" = "/admin/content/par_entity/{par_entity}/delete"
  *   },
  *   bundle_entity_type = "par_entity_type",
+ *   permission_granularity = "bundle",
  *   field_ui_base_route = "entity.par_entity_type.edit_form"
  * )
  */

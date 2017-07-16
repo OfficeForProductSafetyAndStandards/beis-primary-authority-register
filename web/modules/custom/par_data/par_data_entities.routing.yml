@@ -13,25 +13,25 @@ par_data.main_page:
 
 
 # PAR Entity routing definition
-#entity.par_entity.edit_form:
-#  path: '/admin/content/par_entity/{par_entity}/edit'
-#  defaults:
-#    _entity_form: par_entity.edit
-#    _title: 'Edit par entity'
-#  requirements:
-#    _permission: 'edit par_entity entities'
-#  options:
-#    _admin_route: TRUE
-#
-#entity.par_entity.delete_form:
-#  path: '/admin/content/par_entity/{par_entity}/delete'
-#  defaults:
-#    _entity_form: par_entity.delete
-#    _title: 'Delete par entity'
-#  requirements:
-#    _permission: 'delete par_entity entities'
-#  options:
-#    _admin_route: TRUE
+entity.par_entity.edit_form:
+  path: '/admin/content/par_entity/{par_entity}/edit'
+  defaults:
+    _entity_form: par_entity.edit
+    _title: 'Edit par entity'
+  requirements:
+    _permission: 'edit par_entity entities'
+  options:
+    _admin_route: TRUE
+
+entity.par_entity.delete_form:
+  path: '/admin/content/par_entity/{par_entity}/delete'
+  defaults:
+    _entity_form: par_entity.delete
+    _title: 'Delete par entity'
+  requirements:
+    _permission: 'delete par_entity entities'
+  options:
+    _admin_route: TRUE
 
 par_data_entities.add_page:
   path: '/admin/content/par_entity/add'
