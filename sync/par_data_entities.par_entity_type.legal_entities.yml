@@ -1,8 +1,0 @@
-uuid: 8b8f4c2c-b183-4d40-9fdf-991affe4982c
-langcode: en
-status: true
-dependencies: {  }
-id: legal_entities
-label: 'Legal Entities'
-description: 'A legal entity such as a company or charity.'
-help: ''
