@@ -16,8 +16,8 @@ use Drupal\trance\Trance;
  *   label_singular = @Translation("PAR Organisation"),
  *   label_plural = @Translation("PAR Organisations"),
  *   label_count = @PluralTranslation(
- *     singular = "@count organisation item",
- *     plural = "@count organisations items"
+ *     singular = "@count organisation",
+ *     plural = "@count organisations"
  *   ),
  *   bundle_label = @Translation("PAR Organisation type"),
  *   handlers = {

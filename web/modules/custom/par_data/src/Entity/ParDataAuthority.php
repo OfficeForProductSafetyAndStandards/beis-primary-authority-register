@@ -16,8 +16,8 @@ use Drupal\trance\Trance;
  *   label_singular = @Translation("PAR Authority"),
  *   label_plural = @Translation("PAR Authoritys"),
  *   label_count = @PluralTranslation(
- *     singular = "@count authority item",
- *     plural = "@count authoritys items"
+ *     singular = "@count authority",
+ *     plural = "@count authoritys"
  *   ),
  *   bundle_label = @Translation("PAR Authority type"),
  *   handlers = {

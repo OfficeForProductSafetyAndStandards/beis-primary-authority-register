@@ -5,11 +5,11 @@ namespace Drupal\par_data\Entity;
 use Drupal\trance\TranceType;
 
 /**
- * Defines the par_data_authority type entity.
+ * Defines the par_data_person type entity.
  *
  * @ConfigEntityType(
- *   id = "par_data_authority_type",
- *   label = @Translation("PAR Authority Type"),
+ *   id = "par_data_person_type",
+ *   label = @Translation("PAR Person Type"),
  *   handlers = {
  *     "list_builder" = "Drupal\trance\TranceTypeListBuilder",
  *     "form" = {
@@ -18,19 +18,19 @@ use Drupal\trance\TranceType;
  *       "delete" = "Drupal\trance\Form\TranceTypeDeleteForm"
  *     }
  *   },
- *   config_prefix = "par_data_authority_type",
+ *   config_prefix = "par_data_person_type",
  *   admin_permission = "administer site configuration",
- *   bundle_of = "par_data_authority",
+ *   bundle_of = "par_data_person",
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "label",
  *     "uuid" = "uuid"
  *   },
  *   links = {
- *     "canonical" = "/admin/structure/par_data/par_data_authority/{par_data_authority}",
- *     "edit-form" = "/admin/structure/par_data/par_data_authority/{par_data_authority}/edit",
- *     "delete-form" = "/admin/structure/par_data/par_data_authority/{par_data_authority}/delete",
- *     "collection" = "/admin/structure/par_data/par_data_authority"
+ *     "canonical" = "/admin/structure/par_data/par_data_person/{par_data_person}",
+ *     "edit-form" = "/admin/structure/par_data/par_data_person/{par_data_person}/edit",
+ *     "delete-form" = "/admin/structure/par_data/par_data_person/{par_data_person}/delete",
+ *     "collection" = "/admin/structure/par_data/par_data_person"
  *   },
  *   config_export = {
  *     "id",
@@ -40,6 +40,6 @@ use Drupal\trance\TranceType;
  *   }
  * )
  */
-class ParDataAuthorityType extends TranceType {
+class ParDataPersonType extends TranceType {
 
 }
