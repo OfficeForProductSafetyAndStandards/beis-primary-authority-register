@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Url;
 
 /**
-* A controller for all styleguide page output.
+* A controller managing par data admin pages.
 */
 class ParDataController extends ControllerBase {
 
