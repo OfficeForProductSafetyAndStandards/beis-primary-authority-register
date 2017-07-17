@@ -13,7 +13,8 @@ par_data.settings:
         type: integer
         label: 'Default entity'
 
-par_data_entities.*.*:
+# PAR Data Entity types
+par_data.par_data_type.*:
   type: config_entity
   label: 'PAR Data entity type config'
   mapping:

@@ -18,7 +18,7 @@ use Drupal\trance\TranceType;
  *       "delete" = "Drupal\trance\Form\TranceTypeDeleteForm"
  *     }
  *   },
- *   config_prefix = "par_data_sic_code_type",
+ *   config_prefix = "par_data_type",
  *   admin_permission = "administer site configuration",
  *   bundle_of = "par_data_sic_code",
  *   entity_keys = {
