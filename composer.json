@@ -80,6 +80,9 @@
         "patches": {
             "drupal/health_check": {
                 "Health Check doesn't check Drupal application": "https://www.drupal.org/files/issues/health_check_doesn_t-2892294-2.patch"
+            },
+            "drush/drush": {
+                "Drush sql-dump compatibility with PostgresSQL 9.5+": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/2282.patch"
             }
         }
     },
