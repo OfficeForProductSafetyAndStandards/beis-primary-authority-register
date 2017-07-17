@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_data_entities\Entity;
+namespace Drupal\par_data\Entity;
 
 use Drupal\trance\TranceType;
 
@@ -8,8 +8,8 @@ use Drupal\trance\TranceType;
  * Defines the par_entity type entity.
  *
  * @ConfigEntityType(
- *   id = "par_entity_type",
- *   label = @Translation("PAR Entity Type"),
+ *   id = "par_data_organisation_type",
+ *   label = @Translation("PAR Organisation Type"),
  *   handlers = {
  *     "list_builder" = "Drupal\trance\TranceTypeListBuilder",
  *     "form" = {
@@ -18,19 +18,19 @@ use Drupal\trance\TranceType;
  *       "delete" = "Drupal\trance\Form\TranceTypeDeleteForm"
  *     }
  *   },
- *   config_prefix = "par_entity_type",
+ *   config_prefix = "par_data_organisation_type",
  *   admin_permission = "administer site configuration",
- *   bundle_of = "par_entity",
+ *   bundle_of = "par_data_organisation",
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "label",
  *     "uuid" = "uuid"
  *   },
  *   links = {
- *     "canonical" = "/admin/structure/par_entity_type/{par_entity_type}",
- *     "edit-form" = "/admin/structure/par_entity_type/{par_entity_type}/edit",
- *     "delete-form" = "/admin/structure/par_entity_type/{par_entity_type}/delete",
- *     "collection" = "/admin/structure/par_entity_type"
+ *     "canonical" = "/admin/structure/par_data/par_organisation/{par_organisation}",
+ *     "edit-form" = "/admin/structure/par_data/par_organisation/{par_organisation}/edit",
+ *     "delete-form" = "/admin/structure/par_data/par_organisation/{par_organisation}/delete",
+ *     "collection" = "/admin/structure/par_data/par_organisation"
  *   },
  *   config_export = {
  *     "id",
@@ -40,6 +40,6 @@ use Drupal\trance\TranceType;
  *   }
  * )
  */
-class ParEntityType extends TranceType {
+class ParDataOrganisationType extends TranceType {
 
 }

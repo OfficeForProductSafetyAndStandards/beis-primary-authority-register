@@ -21,6 +21,12 @@ interface ParDataManagerInterface {
    *
    * @return \Drupal\Core\Entity\EntityTypeInterface
    */
-  public function getEntityTypeDefinition(EntityTypeInterface $definition);
+  public function getEntityBundleDefinition(EntityTypeInterface $definition);
+
+  /**
+   * @return NULL|\Drupal\Core\Entity\EntityStorageInterface
+   *   The entity storage for the given definition.
+   */
+  public function getEntityTypeStorage(EntityTypeInterface $definition);
 
 }

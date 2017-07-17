@@ -1,10 +1,10 @@
 services:
   par_data.entity_converter:
-    class: Drupal\par_data\ParamConverter\ParEntityConverter
+    class: Drupal\par_data\ParamConverter\ParDataConverter
     public: false
     decorates: paramconverter.entity
     decoration_priority: 3
-    arguments: ['@par_data_entities.entity_converter.inner', '@entity.manager', '@config.factory']
+    arguments: ['@par_data.entity_converter.inner', '@entity.manager', '@config.factory']
   par_data.manager:
     class: Drupal\par_data\ParDataManager
     arguments: ['@entity.manager']

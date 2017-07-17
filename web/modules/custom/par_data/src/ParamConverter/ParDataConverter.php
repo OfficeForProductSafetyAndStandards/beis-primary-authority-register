@@ -7,7 +7,7 @@ use Drupal\Core\ParamConverter\ParamConverterInterface;
 use Symfony\Component\Routing\Route;
 
 
-class ParEntityConverter implements ParamConverterInterface {
+class ParDataConverter implements ParamConverterInterface {
 
   /**
    * Entity manager which performs the upcasting in the end.

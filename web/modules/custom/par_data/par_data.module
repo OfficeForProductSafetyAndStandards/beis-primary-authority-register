@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains par_data_entities.module.
+ * Contains par_data.module.
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -10,10 +10,10 @@ use Drupal\Core\Routing\RouteMatchInterface;
 /**
  * Implements hook_help().
  */
-function par_data_entities_help($route_name, RouteMatchInterface $route_match) {
+function par_data_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
-    // Main module help for the par_data_entities module.
-    case 'help.page.par_data_entities':
+    // Main module help for the par_data module.
+    case 'help.page.par_data':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('The data model for PAR.') . '</p>';
@@ -26,9 +26,9 @@ function par_data_entities_help($route_name, RouteMatchInterface $route_match) {
 /**
  * Implements hook_theme().
  */
-function par_data_entities_theme() {
+function par_data_theme() {
   return [
-    'par_data_entities' => [
+    'par_data' => [
       'render element' => 'children',
     ],
   ];

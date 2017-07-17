@@ -59,7 +59,6 @@ class ExampleRoutes implements ContainerInjectionInterface {
     foreach ($this->parDataManager->getParEntityTypes() as $definition) {
       $type = $definition->getBundleEntityType();
       $type_label = $definition->getBundleLabel();
-      $bundles = $this->parDataManager->getBundles($definition);
       $id = $definition->id();
       $singular = $definition->getSingularLabel()->render();
       $plural = $definition->getPluralLabel()->render();
@@ -86,7 +85,7 @@ class ExampleRoutes implements ContainerInjectionInterface {
         "/admin/content/par_data/{$id}",
         [
           '_entity_list' => $id,
-          '_title' => "Edit {$plural}",
+          '_title' => $plural,
         ],
         [
           '_permission' => "access {$id} entities",
@@ -97,12 +96,13 @@ class ExampleRoutes implements ContainerInjectionInterface {
       );
       $route_collection->add("entity.{$id}.collection", $route);
 
-      // The collection route for viewing all of the entities.
+      // The main add page for the entity.
       $route = new Route(
         "/admin/content/par_data/{$id}/add",
         [
-          '_controller' => DONT_KNOW_YET,
-          '_title' => "Add {$plural}",
+          '_controller' => 'Drupal\par_data\Controller\ParDataAddController::addPage',
+          '_title' => "Add {$singular}",
+          'par_data_entity' => $id,
         ],
         [
           '_permission' => "add {$id} entities",
@@ -111,64 +111,56 @@ class ExampleRoutes implements ContainerInjectionInterface {
           '_admin_route' => TRUE,
         ]
       );
-      $route_collection->add("entity.{$id}.collection", $route);
+      $route_collection->add("par_data.{$id}.add_page", $route);
 
-      // Only add routes for multiple bundles if there are multiple bundles.
-      if (count($bundles) > 1) {
-        $route = new Route(
-          '/admin/content/par_data/' . $id . '/add/{' . $type . '}',
-          [
-            '_controller' => DONT_KNOW_YET,
-            '_title' => "Add {$plural}",
-          ],
-          [
-            '_permission' => "add {$id} entities",
-          ],
-          [
-            '_admin_route' => TRUE,
-          ]
-        );
-        $route_collection->add("entity.{$id}.collection", $route);
-      }
+      // The create route for specific bundles.
+      $route = new Route(
+        '/admin/content/par_data/' . $id . '/add/{' . $type . '}',
+        [
+          '_controller' => 'Drupal\par_data\Controller\ParDataAddController::addForm',
+          '_title' => "Add {$singular}",
+          'par_data_entity' => $id,
+        ],
+        [
+          '_permission' => "add {$id} entities",
+        ],
+        [
+          '_admin_route' => TRUE,
+        ]
+      );
+      $route_collection->add("entity.{$id}.add_form", $route);
 
+      // The main edit page for the entity.
+      $route = new Route(
+        '/admin/content/par_data/' . $id . '/{' . $id . '}/edit',
+        [
+          '_entity_form' => "{$id}.edit",
+          '_title' => "Edit {$singular}",
+        ],
+        [
+          '_permission' => "edit {$id} entities",
+        ],
+        [
+          '_admin_route' => TRUE,
+        ]
+      );
+      $route_collection->add("par_data.{$id}.edit_form", $route);
 
-//      entity.par_entity.edit_form:
-//  path: '/admin/content/par_entity/{par_entity}/edit'
-//  defaults:
-//    _entity_form: par_entity.edit
-//    _title: 'Edit par entity'
-//  requirements:
-//    _permission: 'edit par_entity entities'
-//  options:
-//    _admin_route: TRUE
-//
-//entity.par_entity.delete_form:
-//  path: '/admin/content/par_entity/{par_entity}/delete'
-//  defaults:
-//    _entity_form: par_entity.delete
-//    _title: 'Delete par entity'
-//  requirements:
-//    _permission: 'delete par_entity entities'
-//  options:
-//    _admin_route: TRUE
-//
-//par_data_entities.add_page:
-//  path: '/admin/content/par_entity/add'
-//  defaults:
-//    _controller: '\Drupal\par_data_entities\Controller\ParEntityAddController::add'
-//    _title: 'Add par entity'
-//  requirements:
-//    _permission: 'add par_entity entities'
-//
-//entity.par_entity.add_form:
-//  path: '/admin/content/par_entity/add/{par_entity_type}'
-//  defaults:
-//    _controller: '\Drupal\par_data_entities\Controller\ParEntityAddController::addForm'
-//    _title_callback: '\Drupal\par_data_entities\Controller\ParEntityAddController::getAddFormTitle'
-//  options:
-//    _admin_route: TRUE
-//  requirements:
-//    _permission: 'add par_entity entities'
+      // The main delete page for the entity.
+      $route = new Route(
+        '/admin/content/par_data/' . $id . '/{' . $id . '}/delete',
+        [
+          '_entity_form' => "{$id}.delete",
+          '_title' => "Add {$singular}",
+        ],
+        [
+          '_permission' => "delete {$id} entities",
+        ],
+        [
+          '_admin_route' => TRUE,
+        ]
+      );
+      $route_collection->add("par_data.{$id}.delete_form", $route);
 
 
 

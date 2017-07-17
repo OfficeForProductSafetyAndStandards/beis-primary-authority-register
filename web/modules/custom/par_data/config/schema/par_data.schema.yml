@@ -12,3 +12,28 @@ par_data.settings:
       sequence:
         type: integer
         label: 'Default entity'
+
+par_data_entities.*.*:
+  type: config_entity
+  label: 'PAR Data entity type config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: string
+      lavel: 'Description'
+    help:
+      type: string
+      label: 'Help'
+    uuid:
+      type: string
+    description:
+      type: string
+      label: 'Description'
+    help:
+      type: string
+      label: 'Help'

@@ -9,7 +9,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 /**
 * Manages all functionality universal to Par Data.
 */
-class ParDataManager {
+class ParDataManager implements ParDataManagerInterface {
 
   /**
    * The entity manager.
@@ -39,7 +39,7 @@ class ParDataManager {
       if ($definition instanceof ContentEntityType
         && substr($definition->getBundleEntityType(), 0, strlen($par_entity_prefix)) === $par_entity_prefix
       ) {
-        $par_entity_types[] = $definition;
+        $par_entity_types[$definition->id()] = $definition;
       }
     }
     return $par_entity_types ?: [];
@@ -48,15 +48,15 @@ class ParDataManager {
   /**
    * {@inheritdoc}
    */
-  public function getEntityTypeDefinition(EntityTypeInterface $definition) {
+  public function getEntityBundleDefinition(EntityTypeInterface $definition) {
     return $definition->getBundleEntityType() ? $this->entityManager->getDefinition($definition->getBundleEntityType()) : NULL;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getBundles(EntityTypeInterface $definition) {
-    return $bundles = $this->entityManager->getBundleInfo($definition->id());
+  public function getEntityTypeStorage(EntityTypeInterface $definition) {
+    return $this->entityManager->getStorage($definition->id()) ?: NULL;
   }
 
 }

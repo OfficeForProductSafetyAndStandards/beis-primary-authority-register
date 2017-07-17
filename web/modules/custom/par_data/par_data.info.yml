@@ -1,4 +1,4 @@
-name: PAR Data Model Entities
+name: PAR Data Model
 type: module
 description: The data model for PAR.
 core: 8.x
