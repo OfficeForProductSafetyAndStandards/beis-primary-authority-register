@@ -5,5 +5,5 @@ Feature: As a PAR user,
 
     Scenario: Valid Login  Id
         Given I open the url "/"
-        And I click on the link "Welcome back Sam"
-        And I click on the link "Logout"
+        When I click on the link "Log in"
+        Then I expect that element "#block-footer" is visible
