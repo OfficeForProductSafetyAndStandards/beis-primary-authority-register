@@ -50,7 +50,7 @@ To be clear as to the fields that we're trying to add with this feature see belo
 ### Inspection Plan properties
 + **valid_from** = single, _date_
 + **valid_to** = single, _date_
-+ **approved_rd_exec** = single, boolean
++ **approved_rd_executive** = single, boolean
 + **consulted_national_regulator** = single, boolean
 + **status** = single, string(255), limited choice (~5), plain
 
