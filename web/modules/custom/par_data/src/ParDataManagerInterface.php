@@ -5,7 +5,7 @@ namespace Drupal\par_data;
 use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
-* A controller for all styleguide page output.
+* Interface for the Par Data Manager.
 */
 interface ParDataManagerInterface {
 
