@@ -1,6 +1,6 @@
 # PAR Data entity specific routing definitions
-#route_callbacks:
-#  - Drupal\par_data\Routing\ParDataRoutes::routes
+route_callbacks:
+  - 'par_data.route_subscriber:routes'
 
 # PAR Data generic routing definitions
 par_data.main_page:
@@ -8,6 +8,16 @@ par_data.main_page:
   defaults:
     _controller: '\Drupal\par_data\Controller\ParDataController::content'
     _title: 'Welcome to the PAR3 Data'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+par_data.structure_page:
+  path: '/admin/structure/par_data'
+  defaults:
+    _controller: '\Drupal\par_data\Controller\ParDataController::structure'
+    _title: 'PAR3 Data Structure'
   requirements:
     _permission: 'administer site configuration'
   options:

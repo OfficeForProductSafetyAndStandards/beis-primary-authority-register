@@ -1,0 +1,30 @@
+{#
+/**
+ * @file
+ * Default theme implementation to present a list of PAR Data entity types.
+ *
+ * Available variables:
+ * - types: A collection of all the available custom entity types.
+ *   Each type contains the following:
+ *   - url: A link to add a content entity of this type.
+ *   - label: A human readable name for this entity type.
+ *   - description: A description of this content entity types.
+ *
+ * @see template_preprocess_par_data_entity_list()
+ *
+ * @ingroup themeable
+ */
+#}
+{% if types %}
+  <ul class="trance-type-list admin-list">
+    {% for type in types %}
+      <li class="clearfix"><a href="{{ type.url }}"><span class="label">{{ type.label }}</span><div class="description">{{ type.description }}</div></a></li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>
+    {% trans %}
+    You have not created any PAR Data entity types yet.
+    {% endtrans %}
+  </p>
+{% endif %}

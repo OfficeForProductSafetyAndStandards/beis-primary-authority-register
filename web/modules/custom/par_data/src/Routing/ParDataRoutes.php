@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\example\Routing;
+namespace Drupal\par_data\Routing;
 
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Defines dynamic routes.
  */
-class ExampleRoutes implements ContainerInjectionInterface {
+class ParDataRoutes implements ContainerInjectionInterface {
 
   use StringTranslationTrait;
 
@@ -100,7 +100,7 @@ class ExampleRoutes implements ContainerInjectionInterface {
       $route = new Route(
         "/admin/content/par_data/{$id}/add",
         [
-          '_controller' => 'Drupal\par_data\Controller\ParDataAddController::addPage',
+          '_controller' => 'Drupal\trance\Controller\TranceAddController::add',
           '_title' => "Add {$singular}",
           'par_data_entity' => $id,
         ],
@@ -117,7 +117,7 @@ class ExampleRoutes implements ContainerInjectionInterface {
       $route = new Route(
         '/admin/content/par_data/' . $id . '/add/{' . $type . '}',
         [
-          '_controller' => 'Drupal\par_data\Controller\ParDataAddController::addForm',
+          '_controller' => 'Drupal\trance\Controller\TranceAddController::addForm',
           '_title' => "Add {$singular}",
           'par_data_entity' => $id,
         ],
@@ -163,11 +163,10 @@ class ExampleRoutes implements ContainerInjectionInterface {
       $route_collection->add("par_data.{$id}.delete_form", $route);
 
 
-
       // The routes for the PAR Entity types.
       // The collection route for viewing all of the entities.
       $route = new Route(
-        "/admin/content/par_data/{$type}",
+        "/admin/structure/par_data/{$type}",
         [
           '_entity_list' => $type,
           '_title' => "View all {$type_label} entities",

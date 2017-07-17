@@ -5,6 +5,7 @@ namespace Drupal\par_data\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\par_data\ParDataManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Url;
 
 /**
 * A controller for all styleguide page output.
@@ -36,15 +37,37 @@ class ParDataController extends ControllerBase {
   }
 
   /**
-  * The main index page for the styleguide.
+  * The main page for listing par entities.
   */
   public function content() {
+    $types = [];
 
-    $build = [
-      '#markup' => '<p>Here you will be able to access all of the PAR 3 data.</p>',
-    ];
+    foreach ($this->parDataManager->getParEntityTypes() as $definition) {
+      $types[] = [
+        'url' => Url::fromRoute("entity.{$definition->id()}.collection"),
+        'label' => $definition->getPluralLabel()->render(),
+        'description' => $this->t('Please visit to configure this Par Data Type.'),
+      ];
+    }
 
-    return $build;
+    return ['#theme' => 'par_data_entity_list', '#types' => $types];
+  }
+
+  /**
+   * The main par for configuring par entities.
+   */
+  public function structure() {
+    $types = [];
+
+    foreach ($this->parDataManager->getParEntityTypes() as $definition) {
+      $types[] = [
+        'url' => Url::fromRoute("entity.{$definition->getBundleEntityType()}.collection"),
+        'label' => $definition->getPluralLabel()->render(),
+        'description' => $this->t('Please visit to configure this Par Data Type.'),
+      ];
+    }
+
+    return ['#theme' => 'par_data_entity_list', '#types' => $types];
   }
 
 }

@@ -31,5 +31,12 @@ function par_data_theme() {
     'par_data' => [
       'render element' => 'children',
     ],
+    'par_data_entity_list' => [
+      'render element' => 'types',
+      'variables' => [
+        'types' => NULL,
+      ],
+      'template' => 'par-data-entity-list',
+    ],
   ];
 }

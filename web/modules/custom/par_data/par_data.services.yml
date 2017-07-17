@@ -8,3 +8,6 @@ services:
   par_data.manager:
     class: Drupal\par_data\ParDataManager
     arguments: ['@entity.manager']
+  par_data.route_subscriber:
+      class: Drupal\par_data\Routing\ParDataRoutes
+      arguments: ['@par_data.manager']
