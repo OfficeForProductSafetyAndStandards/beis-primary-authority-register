@@ -1,7 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: authority
-label: Authority
-description: 'The Primary Authority is any authority that can provide businesses with robust and reliable regulatory advice.'
-help: ''
