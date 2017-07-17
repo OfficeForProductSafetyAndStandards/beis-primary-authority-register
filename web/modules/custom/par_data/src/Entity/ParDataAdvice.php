@@ -110,6 +110,7 @@ class ParDataAdvice extends Trance {
     $fields['visible_authority'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Visible to Authority'))
       ->setDescription(t('Whether this advice is visible to an Authority.'))
+      ->setRequired(TRUE)
       ->setRevisionable(TRUE)
       ->setTranslatable(FALSE)
       ->setDisplayOptions('form', [
@@ -121,6 +122,7 @@ class ParDataAdvice extends Trance {
     $fields['visible_coordinator'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Visible to Co-ordinator'))
       ->setDescription(t('Whether this advice is visible to a Co-ordinator.'))
+      ->setRequired(TRUE)
       ->setRevisionable(TRUE)
       ->setTranslatable(FALSE)
       ->setDisplayOptions('form', [
@@ -132,6 +134,7 @@ class ParDataAdvice extends Trance {
     $fields['visible_business'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Visible to Business'))
       ->setDescription(t('Whether this advice is visible to a Business.'))
+      ->setRequired(TRUE)
       ->setRevisionable(TRUE)
       ->setTranslatable(FALSE)
       ->setDisplayOptions('form', [
