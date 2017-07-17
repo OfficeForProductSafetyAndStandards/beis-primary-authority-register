@@ -52,9 +52,9 @@ use Drupal\trance\Trance;
  *   },
  *   links = {
  *     "collection" = "/admin/content/par_data/par_data_authority",
- *     "canonical" = "/admin/content/par_data/par_data_authority/{par_entity}",
- *     "edit-form" = "/admin/content/par_data/par_data_authority/{par_entity}/edit",
- *     "delete-form" = "/admin/content/par_data/par_data_authority/{par_entity}/delete"
+ *     "canonical" = "/admin/content/par_data/par_data_authority/{par_data_authority}",
+ *     "edit-form" = "/admin/content/par_data/par_data_authority/{par_data_authority}/edit",
+ *     "delete-form" = "/admin/content/par_data/par_data_authority/{par_data_authority}/delete"
  *   },
  *   bundle_entity_type = "par_data_authority_type",
  *   permission_granularity = "bundle",
