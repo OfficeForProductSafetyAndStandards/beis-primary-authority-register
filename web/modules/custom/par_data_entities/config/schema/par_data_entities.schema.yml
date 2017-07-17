@@ -1,0 +1,14 @@
+# Configuration file schema.
+par_data_entities.settings:
+  type: config_object
+  label: 'Par Data Entities settings'
+  mapping:
+    stubbed:
+      type: boolean
+      label: 'Whether to stub the entities when testing.'
+    stubs:
+      type: sequence
+      label: 'The default entities for each type.'
+      sequence:
+        type: integer
+        label: 'Default entity'
