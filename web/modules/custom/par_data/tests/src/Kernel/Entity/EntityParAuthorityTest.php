@@ -19,15 +19,17 @@ class EntityParAuthorityTest extends EntityKernelTestBase {
    * {@inheritdoc}
    */
   protected function setUp() {
+    // Must change the bytea_output to the format "escape" before running tests.
     parent::setUp();
 
     // Set up schema for par_data.
-    $this->installEntitySchema('par_data');
+    $this->installEntitySchema('par_data_authority');
     $this->installConfig('par_data');
 
     // Create the entity bundles required for testing.
     $type = ParDataAuthorityType::create([
-      'authority' => 'authority',
+      'id' => 'authority',
+      'label' => 'Authority',
     ]);
     $type->save();
   }
@@ -48,6 +50,30 @@ class EntityParAuthorityTest extends EntityKernelTestBase {
     ]);
     $violations = $entity->validate();
     $this->assertEqual(count($violations), 0, 'No violations when validating a default PAR Authority entity.');
+  }
+
+  /**
+   * Test to validate a PAR Authority entity.
+   */
+  public function testRequiredFields() {
+    $this->createUser();
+    $entity = ParDataAuthority::create([
+      'type' => 'authority',
+      'title' => 'test',
+      'uid' => 1,
+      'name' => '',
+      'authority_type' => '',
+      'nation' => '',
+      'ons_code' => '',
+    ]);
+    $violations = $entity->validate()->getByFields([
+      'name',
+      'authority_type',
+      'nation',
+      'ons_code',
+    ]);
+    $this->assertEqual(count($violations), 4, 'Required fields cannot be empty.');
+    $this->assertEqual($violations[0]->getMessage()->render(), 'This value should not be null.', 'These fields are required.');
   }
 
   /**
