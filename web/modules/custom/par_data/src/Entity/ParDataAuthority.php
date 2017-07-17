@@ -12,12 +12,12 @@ use Drupal\trance\Trance;
  * @ContentEntityType(
  *   id = "par_data_authority",
  *   label = @Translation("PAR Authority"),
- *   label_collection = @Translation("PAR Authoritys"),
+ *   label_collection = @Translation("PAR Authorities"),
  *   label_singular = @Translation("PAR Authority"),
- *   label_plural = @Translation("PAR Authoritys"),
+ *   label_plural = @Translation("PAR Authorities"),
  *   label_count = @PluralTranslation(
  *     singular = "@count authority",
- *     plural = "@count authoritys"
+ *     plural = "@count authorities"
  *   ),
  *   bundle_label = @Translation("PAR Authority type"),
  *   handlers = {
