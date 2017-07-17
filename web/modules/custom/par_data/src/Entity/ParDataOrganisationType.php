@@ -27,10 +27,10 @@ use Drupal\trance\TranceType;
  *     "uuid" = "uuid"
  *   },
  *   links = {
- *     "canonical" = "/admin/structure/par_data/par_organisation/{par_organisation}",
- *     "edit-form" = "/admin/structure/par_data/par_organisation/{par_organisation}/edit",
- *     "delete-form" = "/admin/structure/par_data/par_organisation/{par_organisation}/delete",
- *     "collection" = "/admin/structure/par_data/par_organisation"
+ *     "canonical" = "/admin/structure/par_data/par_data_organisation/{par_data_organisation}",
+ *     "edit-form" = "/admin/structure/par_data/par_data_organisation/{par_data_organisation}/edit",
+ *     "delete-form" = "/admin/structure/par_data/par_data_organisation/{par_data_organisation}/delete",
+ *     "collection" = "/admin/structure/par_data/par_data_organisation"
  *   },
  *   config_export = {
  *     "id",
