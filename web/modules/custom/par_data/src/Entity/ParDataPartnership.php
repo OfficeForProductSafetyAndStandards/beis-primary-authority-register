@@ -3,6 +3,7 @@
 namespace Drupal\par_data\Entity;
 
 use Drupal\trance\Trance;
+use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
  * Defines the par_data_partnership entity.
@@ -62,5 +63,14 @@ use Drupal\trance\Trance;
  * )
  */
 class ParDataPartnership extends Trance {
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
+    $fields = parent::baseFieldDefinitions($entity_type);
+
+    return $fields;
+  }
 
 }

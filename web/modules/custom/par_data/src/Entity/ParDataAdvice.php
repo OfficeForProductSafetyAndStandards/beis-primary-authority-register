@@ -3,6 +3,8 @@
 namespace Drupal\par_data\Entity;
 
 use Drupal\trance\Trance;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
  * Defines the par_data_advice entity.
@@ -62,5 +64,84 @@ use Drupal\trance\Trance;
  * )
  */
 class ParDataAdvice extends Trance {
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
+    $fields = parent::baseFieldDefinitions($entity_type);
+
+    // Advice Type
+    $fields['advice_type'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Advice Type'))
+      ->setDescription(t('The type of advice.'))
+      ->setRequired(TRUE)
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'string',
+        'weight' => -4,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', FALSE);
+
+    // Notes
+    $fields['notes'] = BaseFieldDefinition::create('string_long')
+      ->setLabel(t('Notes'))
+      ->setDescription(t('Notes about this advice.'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'string',
+        'weight' => 2,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'text_long',
+        'weight' => 25,
+        'settings' => [
+          'rows' => 2,
+        ],
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', FALSE);
+
+    // Authority Visible
+    $fields['visible_authority'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Visible to Authority'))
+      ->setDescription(t('Whether this advice is visible to an Authority.'))
+      ->setRevisionable(TRUE)
+      ->setTranslatable(FALSE);
+
+    // Coordinator Visible
+    $fields['visible_coordinator'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Visible to Co-ordinator'))
+      ->setDescription(t('Whether this advice is visible to a Co-ordinator.'))
+      ->setRevisionable(TRUE)
+      ->setTranslatable(FALSE);
+
+    // Business Visible
+    $fields['visible_business'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Visible to Business'))
+      ->setDescription(t('Whether this advice is visible to a Business.'))
+      ->setRevisionable(TRUE)
+      ->setTranslatable(FALSE);
+
+    return $fields;
+  }
 
 }

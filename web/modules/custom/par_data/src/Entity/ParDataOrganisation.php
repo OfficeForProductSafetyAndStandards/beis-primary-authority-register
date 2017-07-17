@@ -3,6 +3,7 @@
 namespace Drupal\par_data\Entity;
 
 use Drupal\trance\Trance;
+use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
  * Defines the par_data_organisation entity.
@@ -62,5 +63,14 @@ use Drupal\trance\Trance;
  * )
  */
 class ParDataOrganisation extends Trance {
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
+    $fields = parent::baseFieldDefinitions($entity_type);
+
+    return $fields;
+  }
 
 }
