@@ -1,0 +1,22 @@
+From 145dd25e5d6b037e59c0a457d42688a2ccc74ee0 Mon Sep 17 00:00:00 2001
+From: Chris Burgess <chris@giantrobot.co.nz>
+Date: Wed, 20 Jul 2016 12:18:56 +1200
+Subject: [PATCH] Refs #2079. Do not pass `$this->query_extra` to `pg_dump`.
+
+---
+ lib/Drush/Sql/Sqlpgsql.php | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/Drush/Sql/Sqlpgsql.php b/lib/Drush/Sql/Sqlpgsql.php
+index e8945c735..e0fc46cef 100644
+--- a/lib/Drush/Sql/Sqlpgsql.php
++++ b/lib/Drush/Sql/Sqlpgsql.php
+@@ -121,7 +121,7 @@ public function dumpCmd($table_selection) {
+     if (isset($data_only)) {
+       $extra .= ' --data-only';
+     }
+-    if ($option = drush_get_option('extra', $this->query_extra)) {
++    if ($option = drush_get_option('extra')) {
+       $extra .= " $option";
+     }
+     $exec .= $extra;

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "84c7605c31ddf165e3aa1bf623b7a6d7",
+    "content-hash": "f8e83e08eb1f5e1ee4d92d4e6d2a4c43",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2725,7 +2725,7 @@
                     "dev-master": "8.0.x-dev"
                 },
                 "patches_applied": {
-                    "Drush sql-dump compatibility with PostgresSQL 9.5+": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/2282.patch"
+                    "Drush sql-dump compatibility with PostgresSQL 9.5+": "./patches/drush-sqldump-postgres95.patch"
                 }
             },
             "autoload": {
