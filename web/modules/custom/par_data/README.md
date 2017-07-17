@@ -62,7 +62,7 @@ To be clear as to the fields that we're trying to add with this feature see belo
 + **ons** = single, string(255), free form, plain
 
 + **person** = multiple, int(6), _reference_ to a Person
-+ **premises** * = multiple, reference to Premises
++ **premises** * = multiple, _reference_ to Premises
 
 ### Organisation (Business) properties
 + **name** = single, string(500), free form, plain
@@ -71,12 +71,12 @@ To be clear as to the fields that we're trying to add with this feature see belo
 + **nation** = single, string(255), limited choice (~5), plain
 + **comments** = single, string (long), free form, html
 + **premises_mapped** = single, boolean
-+ **sic_code** = multiple, int(6), reference
 + **trading_name** = multiple, string(255), free form, plain
 
++ **sic_code** = multiple, int(6), _reference_ to a SIC Code
 + **person** = multiple, int(6), _reference_ to a Person
-+ **premises** * = multiple, reference to Premises
-+ **legal_entity** * = multiple, reference to Premises
++ **premises** * = multiple, _reference_ to Premises
++ **legal_entity** * = multiple, _reference_ to Premises
 
 ### Organisation (Coordinator) properties
 + **name** = single, string(500), free form, plain
@@ -85,13 +85,13 @@ To be clear as to the fields that we're trying to add with this feature see belo
 + **nation** = single, string(255), limited choice (~5), plain
 + **comments** = single, string (long), free form, html
 + **premises_mapped** = single, boolean
-+ **sic_code** = multiple, int(6), reference
 + **trading_name** = multiple, string(255), free form, plain
 + **number_eligible** = single, int(6), free form
 
++ **sic_code** = multiple, int(6), _reference_ to a SIC Code
 + **person** = multiple, int(6), _reference_ to a Person
-+ **premises** * = multiple, reference to Premises
-+ **legal_entity** * = multiple, reference to Premises
++ **premises** * = multiple, _reference_ to Premises
++ **legal_entity** * = multiple, _reference_ to Premises
 
 ### Partnership properties
 + **partnership_type** = single, string(255), limited choice (3), plain
@@ -146,13 +146,13 @@ To be clear as to the fields that we're trying to add with this feature see belo
 
 + **primary_authority** = single, _reference_ to an Authority
 + **enforcing_authority** = single, _reference_ to an Authority
-+ **legal_entity** * = single, reference to Premises
++ **legal_entity** * = single, _reference_ to Premises
 
 
 ## What information do we need about fields to properly define them?
 When adding data properties in Drupal there are certain things that affect how the data structure is stored and can't change after the field has data in it.
 * Number of values allowed (one or many)
-* Type of value stored (string, int, boolean, or compound types such as date, address, files or reference to another entity)
+* Type of value stored (string, int, boolean, or compound types such as date, address, files or _reference_ to another entity)
 * Length of string and int values allowed
 * Whether the value is a limited choice (lists, checkboxes) or free form entry (textfields)
 * Expected contents of any string fields (html or plain)

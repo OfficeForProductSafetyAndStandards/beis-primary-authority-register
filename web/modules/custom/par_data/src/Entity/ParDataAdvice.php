@@ -74,7 +74,7 @@ class ParDataAdvice extends Trance {
     // Advice Type
     $fields['advice_type'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Advice Type'))
-      ->setDescription(t('The type of advice.'))
+      ->setDescription(t('The type of Advice.'))
       ->setRequired(TRUE)
       ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
@@ -92,7 +92,7 @@ class ParDataAdvice extends Trance {
     // Notes
     $fields['notes'] = BaseFieldDefinition::create('string_long')
       ->setLabel(t('Notes'))
-      ->setDescription(t('Notes about this advice.'))
+      ->setDescription(t('Notes about this Advice.'))
       ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
@@ -109,7 +109,7 @@ class ParDataAdvice extends Trance {
     // Authority Visible
     $fields['visible_authority'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Visible to Authority'))
-      ->setDescription(t('Whether this advice is visible to an Authority.'))
+      ->setDescription(t('Whether this Advice is visible to an Authority.'))
       ->setRequired(TRUE)
       ->setRevisionable(TRUE)
       ->setTranslatable(FALSE)
@@ -121,7 +121,7 @@ class ParDataAdvice extends Trance {
     // Coordinator Visible
     $fields['visible_coordinator'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Visible to Co-ordinator'))
-      ->setDescription(t('Whether this advice is visible to a Co-ordinator.'))
+      ->setDescription(t('Whether this Advice is visible to a Co-ordinator.'))
       ->setRequired(TRUE)
       ->setRevisionable(TRUE)
       ->setTranslatable(FALSE)
@@ -133,7 +133,7 @@ class ParDataAdvice extends Trance {
     // Business Visible
     $fields['visible_business'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Visible to Business'))
-      ->setDescription(t('Whether this advice is visible to a Business.'))
+      ->setDescription(t('Whether this Advice is visible to a Business.'))
       ->setRequired(TRUE)
       ->setRevisionable(TRUE)
       ->setTranslatable(FALSE)

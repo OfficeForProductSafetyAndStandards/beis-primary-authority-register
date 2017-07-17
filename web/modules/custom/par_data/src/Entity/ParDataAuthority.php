@@ -74,12 +74,12 @@ class ParDataAuthority extends Trance {
     // Name
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Name'))
-      ->setDescription(t('The name of the authority.'))
+      ->setDescription(t('The name of the Authority.'))
       ->setRequired(TRUE)
       ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
-        'max_length' => 255,
+        'max_length' => 500,
         'text_processing' => 0,
       ])
       ->setDefaultValue('')
@@ -128,7 +128,7 @@ class ParDataAuthority extends Trance {
     // ONS Code
     $fields['ons_code'] = BaseFieldDefinition::create('string')
       ->setLabel(t('ONS Code'))
-      ->setDescription(t('The ONS Code for the authority.'))
+      ->setDescription(t('The ONS Code for the Authority.'))
       ->setRequired(TRUE)
       ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
@@ -145,8 +145,9 @@ class ParDataAuthority extends Trance {
 
     // Reference to Primary Person
     $fields['primary_person'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Contacts'))
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+      ->setLabel(t('Primary Contact'))
+      ->setDescription(t('The primary contact for this Authority.'))
+      ->setCardinality(1)
       ->setSetting('target_type', 'par_data_person')
       ->setSetting('handler', 'default')
       ->setSetting('handler_settings',
@@ -171,6 +172,7 @@ class ParDataAuthority extends Trance {
     // Reference to Person
     $fields['person'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Contacts'))
+      ->setDescription(t('The secondary contacts for this Authority.'))
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_person')
       ->setSetting('handler', 'default')
@@ -195,7 +197,8 @@ class ParDataAuthority extends Trance {
 
     // Reference to Premises
     $fields['premises'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Contacts'))
+      ->setLabel(t('Premises'))
+      ->setDescription(t('The premises of this Authority.'))
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_premises')
       ->setSetting('handler', 'default')

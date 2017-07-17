@@ -90,7 +90,7 @@ class ParDataInspectionPlan extends Trance {
     // Approved RD Executive
     $fields['approved_rd_executive'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Approved by RD Executive'))
-      ->setDescription(t('Whether this inspection plan has been approved by an RD Executive.'))
+      ->setDescription(t('Whether this Inspection Plan has been approved by an RD Executive.'))
       ->setRequired(TRUE)
       ->setRevisionable(TRUE)
       ->setTranslatable(FALSE)
@@ -114,7 +114,7 @@ class ParDataInspectionPlan extends Trance {
     // State
     $fields['inspection_status'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Inspection Status'))
-      ->setDescription(t('The current status of the inspeciton plan itself. For example, current, expired, replaced.'))
+      ->setDescription(t('The current status of the Inspection Plan itself. For example, current, expired, replaced.'))
       ->setRequired(TRUE)
       ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)

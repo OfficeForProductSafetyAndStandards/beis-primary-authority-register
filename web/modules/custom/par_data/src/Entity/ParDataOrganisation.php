@@ -4,6 +4,7 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\trance\Trance;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
  * Defines the par_data_organisation entity.
@@ -69,6 +70,251 @@ class ParDataOrganisation extends Trance {
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
+
+    // Name
+    $fields['name'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Name'))
+      ->setDescription(t('The name of the Organisation.'))
+      ->setRequired(TRUE)
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 500,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE);
+
+    // Size
+    $fields['size'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Size'))
+      ->setDescription(t('The size of the Organisation.'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE);
+
+    // Number of Employees
+    $fields['number_employees'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Number of Employees'))
+      ->setDescription(t('The band that best represents the number of employees.'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE);
+
+    // Nation
+    $fields['nation'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Nation'))
+      ->setDescription(t('The nation the Organisation belongs to.'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE);
+
+    // Comments
+    $fields['comments'] = BaseFieldDefinition::create('string_long')
+      ->setLabel(t('Comments'))
+      ->setDescription(t('Comments about this Organisation.'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'text_processing' => 0,
+      ])->setDisplayOptions('form', [
+        'type' => 'text_long',
+        'weight' => 25,
+        'settings' => [
+          'rows' => 2,
+        ],
+      ])
+      ->setDisplayConfigurable('form', FALSE);
+
+    // Premises Mapped
+    $fields['premises_mapped'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Premises Mapped'))
+      ->setDescription(t('Whether premises has been mapped.'))
+      ->setRevisionable(TRUE)
+      ->setTranslatable(FALSE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 3,
+      ]);
+
+    // Trading Name
+    $fields['trading_name'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Trading Name'))
+      ->setDescription(t('The tradig names for this Organisation.'))
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE);
+
+    // Reference to Primary Person
+    $fields['primary_person'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Primary Contacts'))
+      ->setDescription(t('The primary contact for this Organisation.'))
+      ->setCardinality(1)
+      ->setSetting('target_type', 'par_data_person')
+      ->setSetting('handler', 'default')
+      ->setSetting('handler_settings',
+        [
+          'target_bundles' => [
+            'person' => 'person'
+          ]
+        ]
+      )
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'entity_reference_autocomplete',
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'size' => 60,
+          'placeholder' => '',
+        ),
+      ));
+
+    // Reference to Person
+    $fields['person'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Contacts'))
+      ->setDescription(t('The secondary contacts for this Organisation.'))
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+      ->setSetting('target_type', 'par_data_person')
+      ->setSetting('handler', 'default')
+      ->setSetting('handler_settings',
+        [
+          'target_bundles' => [
+            'person' => 'person'
+          ]
+        ]
+      )
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'entity_reference_autocomplete',
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'size' => 60,
+          'placeholder' => '',
+        ),
+      ));
+
+    // Reference to Premises
+    $fields['premises'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Premises'))
+      ->setDescription(t('The premises of this Organisation.'))
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+      ->setSetting('target_type', 'par_data_premises')
+      ->setSetting('handler', 'default')
+      ->setSetting('handler_settings',
+        [
+          'target_bundles' => [
+            'premises' => 'premises'
+          ]
+        ]
+      )
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'entity_reference_autocomplete',
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'size' => 60,
+          'placeholder' => '',
+        ),
+      ));
+
+    // Reference to Legal Entity
+    $fields['legal_entity'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Legal Entities'))
+      ->setDescription(t('The Legal Entities represented by this Organisation.'))
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+      ->setSetting('target_type', 'par_data_legal_entity')
+      ->setSetting('handler', 'default')
+      ->setSetting('handler_settings',
+        [
+          'target_bundles' => [
+            'legal_entity' => 'legal_entity'
+          ]
+        ]
+      )
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'entity_reference_autocomplete',
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'size' => 60,
+          'placeholder' => '',
+        ),
+      ));
+
+    // Reference to SIC Code
+    $fields['sic_code'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('SIC Codes'))
+      ->setDescription(t('The SIC Code this Organisation belongs to.'))
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+      ->setSetting('target_type', 'par_data_sic_code')
+      ->setSetting('handler', 'default')
+      ->setSetting('handler_settings',
+        [
+          'target_bundles' => [
+            'sic_code' => 'sic_code'
+          ]
+        ]
+      )
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'entity_reference_autocomplete',
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'size' => 60,
+          'placeholder' => '',
+        ),
+      ));
 
     return $fields;
   }
