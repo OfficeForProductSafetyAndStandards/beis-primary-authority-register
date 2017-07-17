@@ -5,9 +5,9 @@ namespace Drupal\par_data\Entity;
 use Drupal\trance\Trance;
 
 /**
- * Defines the par_entity entity.
+ * Defines the par_data_organisation entity.
  *
- * @ingroup par_entity
+ * @ingroup par_data
  *
  * @ContentEntityType(
  *   id = "par_data_organisation",

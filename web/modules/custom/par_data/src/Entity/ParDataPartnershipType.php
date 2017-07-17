@@ -5,7 +5,7 @@ namespace Drupal\par_data\Entity;
 use Drupal\trance\TranceType;
 
 /**
- * Defines the par_entity type entity.
+ * Defines the par_data_partnership_type entity.
  *
  * @ConfigEntityType(
  *   id = "par_data_partnership_type",
