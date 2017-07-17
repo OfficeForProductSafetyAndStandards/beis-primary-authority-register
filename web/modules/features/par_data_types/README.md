@@ -1,13 +1,13 @@
 # PAR Data Types
-This feature is intended to define the different Entity Bundles as set out by the PAR Data Model.
+This feature is intended to define the different Entities as set out by the PAR Data Model.
 
-## What are the different types of Entity Bundles?
+## What are the different types of Entities?
 The data types defined by the PAR Data Model include:
 + **Advice** - Advice is given by a Primary Authority in the context of a Partnership. There are three known sub-types of Advice: To LA, To Business, Background Information.
 + **Inspection Plan** - An Inspection Plan is a template for carrying out particular types of inspections that has been agreed with the Primary Authority in a partnership; all enforcement officers from all local authorities have to use that plan.
 + **Authority** - An Authority is a government body, usually a local authority but occasionally a fire authority or port authority.
-+ **Business** - A Business is an Organisation - usually a commercial one, but not always - that is covered (or intends to be covered) by a Primary Authority Partnership. The latter may be indirect ("co-ordinated") or direct.
-+ **Coordinator** - A Co-ordinator is generally a trade association or a franchise group who have a Primary Authority Partnership on behalf of, or for the benefit of, their members or franchisees.
++ **Organisation (Business)** - A Business is an Organisation - usually a commercial one, but not always - that is covered (or intends to be covered) by a Primary Authority Partnership. The latter may be indirect ("co-ordinated") or direct.
++ **Organisation (Coordinator)** - A Co-ordinator is generally a trade association or a franchise group who have a Primary Authority Partnership on behalf of, or for the benefit of, their members or franchisees.
 + **Partnership** - A Partnership is a relationship between a Primary Authority and either a Business ("direct partnership") or a Co-ordinator ("co-ordinated partnership").  Note that in the latter case, the Business records may or may not be held in the PAR3 database.
 + **Person** - A Person is a named individual who can feature in a number of different ways within PAR.  A Person may, or may not, be a user of the PAR application..
 + **Premises** - Premises are a location used by either an Authority or an Organisation.
@@ -16,7 +16,7 @@ The data types defined by the PAR Data Model include:
 + **SIC Code** - An area of regulation that can be applied to any Partnership between a Business and an Authority.
 + **Enforcement Notice** - An Enforcement Notice is a legal document that contains one or more Enforcement Actions. It is initiated by an Enforcement Officer working for an Authority ("the Enforcing Authority"). It will be made against one (and only one) Legal Entity.
 
-## There are some uniform properties that apply to all of these Entity Bundles
+## There are some uniform properties that apply to all of these Entities
 + **id** = surrogate key, "An internal ID"
 + **uuid** = single, string, "A universally unique ID"
 + **type** = single, string(255), limited choice (~5), plain, "An internally used sub-type, there can just be one sub-type if none are actually required."
