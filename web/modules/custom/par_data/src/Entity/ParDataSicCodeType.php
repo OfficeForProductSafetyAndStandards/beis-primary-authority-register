@@ -5,7 +5,7 @@ namespace Drupal\par_data\Entity;
 use Drupal\trance\TranceType;
 
 /**
- * Defines the par_data_sic_code type entity.
+ * Defines the par_data_sic_code_type entity.
  *
  * @ConfigEntityType(
  *   id = "par_data_sic_code_type",
