@@ -54,6 +54,7 @@ class ParDataConverter implements ParamConverterInterface {
    * {@inheritdoc}
    */
   public function convert($value, $definition, $name, array $defaults) {
+    var_dump($name); exit;
     // Get stubs and generate a dummy entity.
     if ($this->settings->get('stubbed')) {
 

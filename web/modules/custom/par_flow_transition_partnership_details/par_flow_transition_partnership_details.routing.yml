@@ -4,6 +4,8 @@ par_flow_transition_partnership_details.overview:
   defaults:
     _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionOverviewForm'
     _title: 'Viewing/confirming partnership details'
+    par_data_authority: NULL
+    par_data_partnership: NULL
   requirements:
     _permission: 'access content'
   options:
@@ -17,7 +19,8 @@ par_flow_transition_partnership_details.first:
   defaults:
     _form: '\Drupal\par_flow_transition_partnership_details\Form\ParDemoFirstForm'
     _title: 'Edit the information about the Partnership'
-    node: NULL
+    par_data_authority: NULL
+    par_data_partnership: NULL
   requirements:
     _permission: 'access content'
   options:
@@ -30,8 +33,9 @@ par_flow_transition_partnership_details.second:
   path: '/dv/primary-authority-partnerships/{par_data_authority}/partnership/{par_data_partnership}/details/edit-secondary-contact'
   defaults:
     _form: '\Drupal\par_flow_transition_partnership_details\Form\ParDemoSecondForm'
-    _title: 'PAR Demo Forms - Second'
-    node: NULL
+    _title: 'Edit the details for the main contact at the Primary Authority'
+    par_data_authority: NULL
+    par_data_partnership: NULL
   requirements:
     _permission: 'access content'
   options:
@@ -44,8 +48,9 @@ par_flow_transition_partnership_details.third:
   path: '/dv/primary-authority-partnerships/{par_data_authority}/partnership/{par_data_partnership}/invite-business'
   defaults:
     _form: '\Drupal\par_flow_transition_partnership_details\Form\ParDemoThirdForm'
-    _title: 'PAR Demo Forms - Third'
-    node: NULL
+    _title: 'Add another contact at the Primary Authority for this Partnership'
+    par_data_authority: NULL
+    par_data_partnership: NULL
   requirements:
     _permission: 'access content'
   options:

@@ -32,6 +32,12 @@ class ParFlowTransitionSecondForm extends ParBaseForm {
       // to something other than default to avoid conflicts
       // with existing versions of the same form.
       $this->setState("edit:{$partnership->id()}");
+
+      // If we want to use values already saved we have to tell
+      // the form about them.
+      $people = $partnership->get('about_partnership')->getValue();
+
+      $this->loadDataValue('about_partnership', $partnership->get('about_partnership')->getValue());
     }
 
 
