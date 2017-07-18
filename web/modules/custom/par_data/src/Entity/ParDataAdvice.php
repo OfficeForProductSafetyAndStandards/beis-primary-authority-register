@@ -3,6 +3,8 @@
 namespace Drupal\par_data\Entity;
 
 use Drupal\trance\Trance;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
  * Defines the par_data_advice entity.
@@ -62,5 +64,85 @@ use Drupal\trance\Trance;
  * )
  */
 class ParDataAdvice extends Trance {
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
+    $fields = parent::baseFieldDefinitions($entity_type);
+
+    // Advice Type.
+    $fields['advice_type'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Advice Type'))
+      ->setDescription(t('The type of Advice.'))
+      ->setRequired(TRUE)
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE);
+
+    // Notes.
+    $fields['notes'] = BaseFieldDefinition::create('string_long')
+      ->setLabel(t('Notes'))
+      ->setDescription(t('Notes about this Advice.'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'text_processing' => 0,
+      ])->setDisplayOptions('form', [
+        'type' => 'text_long',
+        'weight' => 2,
+        'settings' => [
+          'rows' => 25,
+        ],
+      ])
+      ->setDisplayConfigurable('form', FALSE);
+
+    // Authority Visible.
+    $fields['visible_authority'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Visible to Authority'))
+      ->setDescription(t('Whether this Advice is visible to an Authority.'))
+      ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
+      ->setTranslatable(FALSE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 3,
+      ]);
+
+    // Coordinator Visible.
+    $fields['visible_coordinator'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Visible to Co-ordinator'))
+      ->setDescription(t('Whether this Advice is visible to a Co-ordinator.'))
+      ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
+      ->setTranslatable(FALSE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 4,
+      ]);
+
+    // Business Visible.
+    $fields['visible_business'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Visible to Business'))
+      ->setDescription(t('Whether this Advice is visible to a Business.'))
+      ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
+      ->setTranslatable(FALSE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 5,
+      ]);
+
+    return $fields;
+  }
 
 }

@@ -3,6 +3,8 @@
 namespace Drupal\par_data\Entity;
 
 use Drupal\trance\Trance;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
  * Defines the par_data_legal_entity entity.
@@ -62,5 +64,66 @@ use Drupal\trance\Trance;
  * )
  */
 class ParDataLegalEntity extends Trance {
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
+    $fields = parent::baseFieldDefinitions($entity_type);
+
+    // Registered Name.
+    $fields['registered_name'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Registered Name'))
+      ->setDescription(t('The registered name of the Legal Entity.'))
+      ->setRequired(TRUE)
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 500,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE);
+
+    // Registered Name.
+    $fields['registered_number'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Registered Number'))
+      ->setDescription(t('The registered number of the Legal Entity.'))
+      ->setTranslatable(FALSE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 2,
+      ])
+      ->setDisplayConfigurable('form', FALSE);
+
+    // Legal Entity Type.
+    $fields['legal_entity_type'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Legal Entity Type'))
+      ->setDescription(t('The type of Legal Entity.'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 2,
+      ])
+      ->setDisplayConfigurable('form', FALSE);
+
+    return $fields;
+  }
 
 }

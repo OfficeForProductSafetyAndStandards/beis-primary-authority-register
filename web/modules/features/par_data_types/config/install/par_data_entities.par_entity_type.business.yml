@@ -1,7 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: business
-label: Business
-description: 'The business registered with PAR.'
-help: ''

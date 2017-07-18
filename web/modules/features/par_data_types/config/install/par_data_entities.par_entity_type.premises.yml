@@ -1,7 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: premises
-label: Premises
-description: 'The premises that are owned by either a Business or Coordinator.'
-help: ''

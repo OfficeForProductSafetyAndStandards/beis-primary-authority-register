@@ -1,7 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: partnership
-label: Partnership
-description: 'A partnership is the relationship between a Business and an Authority.'
-help: ''
