@@ -59,7 +59,7 @@
     'js-form-item-' ~ name|clean_class,
     title_display not in ['after', 'before'] ? 'form-no-label',
     disabled == 'disabled' ? 'form-disabled',
-    errors ? 'form-item--error',
+    errors ? 'form-group-error',
   ]
 %}
 {%
@@ -90,6 +90,12 @@
     </div>
   {% endif %}
 
+  {% if errors %}
+    <span class="error-message">
+      {{ errors }}
+    </span>
+  {% endif %}
+
   {{ children }}
 
   {% if suffix is not empty %}
@@ -98,12 +104,6 @@
 
   {% if label_display == 'after' %}
     {{ label }}
-  {% endif %}
-
-  {% if errors %}
-    <div class="form-item--error-message">
-      {{ errors }}
-    </div>
   {% endif %}
 
   {% if description_display in ['after', 'invisible'] and description.content %}
