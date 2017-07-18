@@ -4,6 +4,7 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\trance\Trance;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
  * Defines the par_data_sic_code entity.
@@ -69,6 +70,42 @@ class ParDataSicCode extends Trance {
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
+
+    // SIC Code.
+    $fields['sic_code'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('SIC Code'))
+      ->setDescription(t('The SIC Code identification number.'))
+      ->setRequired(TRUE)
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE);
+
+    // Description.
+    $fields['description'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Description'))
+      ->setDescription(t('The human readable description for the SIC Code.'))
+      ->setRequired(TRUE)
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 500,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE);
 
     return $fields;
   }

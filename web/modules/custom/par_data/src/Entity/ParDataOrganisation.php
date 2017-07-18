@@ -71,7 +71,7 @@ class ParDataOrganisation extends Trance {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    // Name
+    // Name.
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Name'))
       ->setDescription(t('The name of the Organisation.'))
@@ -89,7 +89,7 @@ class ParDataOrganisation extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Size
+    // Size.
     $fields['size'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Size'))
       ->setDescription(t('The size of the Organisation.'))
@@ -106,7 +106,7 @@ class ParDataOrganisation extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Number of Employees
+    // Number of Employees.
     $fields['number_employees'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Number of Employees'))
       ->setDescription(t('The band that best represents the number of employees.'))
@@ -123,7 +123,7 @@ class ParDataOrganisation extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Nation
+    // Nation.
     $fields['nation'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Nation'))
       ->setDescription(t('The nation the Organisation belongs to.'))
@@ -140,7 +140,7 @@ class ParDataOrganisation extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Comments
+    // Comments.
     $fields['comments'] = BaseFieldDefinition::create('string_long')
       ->setLabel(t('Comments'))
       ->setDescription(t('Comments about this Organisation.'))
@@ -157,7 +157,7 @@ class ParDataOrganisation extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Premises Mapped
+    // Premises Mapped.
     $fields['premises_mapped'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Premises Mapped'))
       ->setDescription(t('Whether premises has been mapped.'))
@@ -168,10 +168,10 @@ class ParDataOrganisation extends Trance {
         'weight' => 6,
       ]);
 
-    // Trading Name
+    // Trading Name.
     $fields['trading_name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Trading Name'))
-      ->setDescription(t('The tradig names for this Organisation.'))
+      ->setDescription(t('The trading names for this Organisation.'))
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
@@ -186,9 +186,9 @@ class ParDataOrganisation extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Reference to Primary Person
+    // Reference to Primary Person.
     $fields['primary_person'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Primary Contacts'))
+      ->setLabel(t('Primary Person'))
       ->setDescription(t('The primary contact for this Organisation.'))
       ->setCardinality(1)
       ->setSetting('target_type', 'par_data_person')
@@ -210,10 +210,10 @@ class ParDataOrganisation extends Trance {
         ),
       ));
 
-    // Reference to Person
+    // Reference to Person.
     $fields['person'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Contacts'))
-      ->setDescription(t('The secondary contacts for this Organisation.'))
+      ->setLabel(t('Alternative Person'))
+      ->setDescription(t('The alternative contacts for this Organisation.'))
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_person')
       ->setSetting('handler', 'default')
@@ -234,7 +234,7 @@ class ParDataOrganisation extends Trance {
         ),
       ));
 
-    // Reference to Premises
+    // Reference to Premises.
     $fields['premises'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Premises'))
       ->setDescription(t('The premises of this Organisation.'))
@@ -258,9 +258,9 @@ class ParDataOrganisation extends Trance {
         ),
       ));
 
-    // Reference to Legal Entity
+    // Reference to Legal Entity.
     $fields['legal_entity'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Legal Entities'))
+      ->setLabel(t('Legal Entity'))
       ->setDescription(t('The Legal Entities represented by this Organisation.'))
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_legal_entity')
@@ -282,10 +282,10 @@ class ParDataOrganisation extends Trance {
         ),
       ));
 
-    // Reference to SIC Code
+    // Reference to SIC Code.
     $fields['sic_code'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('SIC Codes'))
-      ->setDescription(t('The SIC Code this Organisation belongs to.'))
+      ->setLabel(t('SIC Code'))
+      ->setDescription(t('The SIC Codes this Organisation belongs to.'))
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_sic_code')
       ->setSetting('handler', 'default')

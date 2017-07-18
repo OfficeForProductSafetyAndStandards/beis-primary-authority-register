@@ -141,6 +141,10 @@ To be clear as to the fields that we're trying to add with this feature see belo
 ### Regulatory Area properties
 + **name** * = single, string(500), free form, plain
 
+### SIC Code properties
++ **sic_code** = single, string(255), free form, plain
++ **description** = single, string(500), free form, plain
+
 ### Enforcement Notice properties
 + **notice_type** = single, string(255), limited choice (~5), plain
 + **notice_date** = single, date

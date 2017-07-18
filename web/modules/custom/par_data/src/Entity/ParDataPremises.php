@@ -71,7 +71,7 @@ class ParDataPremises extends Trance {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    // Address
+    // Address.
     $fields['address'] = BaseFieldDefinition::create('address')
       ->setLabel(t('Address'))
       ->setDescription(t('The address details.'))
@@ -98,7 +98,7 @@ class ParDataPremises extends Trance {
         'weight' => 1,
       ));
 
-    // Nation
+    // Nation.
     $fields['nation'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Nation'))
       ->setDescription(t('The nation the Address in is.'))
