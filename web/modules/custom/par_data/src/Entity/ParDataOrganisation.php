@@ -107,7 +107,7 @@ class ParDataOrganisation extends Trance {
       ->setDisplayConfigurable('form', FALSE);
 
     // Number of Employees.
-    $fields['number_employees'] = BaseFieldDefinition::create('string')
+    $fields['employees_band'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Number of Employees'))
       ->setDescription(t('The band that best represents the number of employees.'))
       ->setTranslatable(TRUE)
@@ -192,7 +192,6 @@ class ParDataOrganisation extends Trance {
     $fields['person'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Person'))
       ->setDescription(t('The contacts for this Organisation. The first Person will be the primary contact.'))
-      ->setRequired(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_person')
       ->setSetting('handler', 'default')
@@ -243,7 +242,6 @@ class ParDataOrganisation extends Trance {
     $fields['legal_entity'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Legal Entity'))
       ->setDescription(t('The Legal Entities represented by this Organisation.'))
-      ->setRequired(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_legal_entity')
       ->setSetting('handler', 'default')
@@ -269,7 +267,6 @@ class ParDataOrganisation extends Trance {
     $fields['sic_code'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('SIC Code'))
       ->setDescription(t('The SIC Codes this Organisation belongs to.'))
-      ->setRequired(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_sic_code')
       ->setSetting('handler', 'default')

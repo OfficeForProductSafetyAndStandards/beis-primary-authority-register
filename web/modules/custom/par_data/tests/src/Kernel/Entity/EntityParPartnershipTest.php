@@ -11,56 +11,14 @@ use Drupal\par_data\Entity\ParDataPartnershipType;
  *
  * @group PAR Data
  */
-class EntityParPartnershipTest extends EntityKernelTestBase {
-
-  static $modules = ['trance', 'par_data', 'datetime'];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    // Must change the bytea_output to the format "escape" before running tests.
-    parent::setUp();
-
-    // Set up schema for par_data.
-    $this->installEntitySchema('par_data_partnership');
-    // Config already installed so we don't need to do this.
-    // But if it changes we may need to update.
-    // $this->installConfig('par_data');
-
-    // Create the entity bundles required for testing.
-    $type = ParDataPartnershipType::create([
-      'id' => 'partnership',
-      'label' => 'Partnership',
-    ]);
-    $type->save();
-  }
+class EntityParPartnershipTest extends ParDataTestBase {
 
   /**
    * Test to validate a PAR Partnership entity.
    */
   public function testEntityValidate() {
     $this->createUser();
-    $entity = ParDataPartnership::create([
-      'type' => 'partnership',
-      'name' => 'test',
-      'uid' => 1,
-      'partnership_type' => 'Direct Partnership',
-      'partnership_status' => 'Approved',
-      'about_partnership' => $this->randomString(1000),
-      'communication_email' => TRUE,
-      'communication_phone' => TRUE,
-      'communication_notes' => $this->randomString(1000),
-      'approved_date' => '1999-12-31',
-      'expertise_details' => $this->randomString(1000),
-      'cost_recovery' => 'Cost recovered by Jo Smith',
-      'reject_comment' => $this->randomString(1000),
-      'revocation_source' => 'An RD Executive called Sue',
-      'revocation_date' => '1999-12-31',
-      'revocation_reason' => $this->randomString(1000),
-      'authority_change_comment' => $this->randomString(1000),
-      'organisation_change_comment' => $this->randomString(1000),
-    ]);
+    $entity = ParDataPartnership::create($this->getPartnershipValues());
     $violations = $entity->validate();
     $this->assertEqual(count($violations), 0, 'No violations when validating a default PAR Partnership entity.');
   }
@@ -153,26 +111,7 @@ class EntityParPartnershipTest extends EntityKernelTestBase {
    */
   public function testEntityCreate() {
     $this->createUser();
-    $entity = ParDataPartnership::create([
-      'type' => 'partnership',
-      'name' => 'test',
-      'uid' => 1,
-      'partnership_type' => 'Direct Partnership',
-      'partnership_status' => 'Approved',
-      'about_partnership' => $this->randomString(1000),
-      'communication_email' => TRUE,
-      'communication_phone' => TRUE,
-      'communication_notes' => $this->randomString(1000),
-      'approved_date' => '1999-12-31',
-      'expertise_details' => $this->randomString(1000),
-      'cost_recovery' => 'Cost recovered by Jo Smith',
-      'reject_comment' => $this->randomString(1000),
-      'revocation_source' => 'An RD Executive called Sue',
-      'revocation_date' => '1999-12-31',
-      'revocation_reason' => $this->randomString(1000),
-      'authority_change_comment' => $this->randomString(1000),
-      'organisation_change_comment' => $this->randomString(1000),
-    ]);
+    $entity = ParDataPartnership::create($this->getPartnershipValues());
     $this->assertTrue($entity->save(), 'PAR Partnership entity saved correctly.');
   }
 }

@@ -146,7 +146,7 @@ class ParDataAuthority extends Trance {
     // Reference to Person.
     $fields['person'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Person'))
-      ->setDescription(t('The contacts for this Organisation. The first Person will be the primary contact.'))
+      ->setDescription(t('The contacts for this Authority. The first Person will be the primary contact.'))
       ->setRequired(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_person')
@@ -155,6 +155,32 @@ class ParDataAuthority extends Trance {
         [
           'target_bundles' => [
             'person' => 'person'
+          ]
+        ]
+      )
+      ->setDisplayOptions('form', array(
+        'type' => 'entity_reference_autocomplete',
+        'weight' => 9,
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'size' => 60,
+          'placeholder' => '',
+        ),
+      ))
+      ->setDisplayConfigurable('form', FALSE);
+
+    // Reference to Regulatory Area.
+    $fields['regulatory_area'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Regulatory Area'))
+      ->setDescription(t('The Regulatory Areas this Authority is responsible for.'))
+      ->setRequired(TRUE)
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+      ->setSetting('target_type', 'par_data_regulatory_area')
+      ->setSetting('handler', 'default')
+      ->setSetting('handler_settings',
+        [
+          'target_bundles' => [
+            'regulatory_area' => 'regulatory_area'
           ]
         ]
       )

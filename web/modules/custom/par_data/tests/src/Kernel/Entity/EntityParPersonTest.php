@@ -11,46 +11,14 @@ use Drupal\par_data\Entity\ParDataPersonType;
  *
  * @group PAR Data
  */
-class EntityParPersonTest extends EntityKernelTestBase {
-
-  static $modules = ['trance', 'par_data'];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    // Must change the bytea_output to the format "escape" before running tests.
-    parent::setUp();
-
-    // Set up schema for par_data.
-    $this->installEntitySchema('par_data_person');
-    // Config already installed so we don't need to do this.
-    // But if it changes we may need to update.
-    // $this->installConfig('par_data');
-
-    // Create the entity bundles required for testing.
-    $type = ParDataPersonType::create([
-      'id' => 'person',
-      'label' => 'Person',
-    ]);
-    $type->save();
-  }
+class EntityParPersonTest extends ParDataTestBase {
 
   /**
    * Test to validate a PAR Person entity.
    */
   public function testEntityValidate() {
     $this->createUser();
-    $entity = ParDataPerson::create([
-      'type' => 'person',
-      'name' => 'test',
-      'uid' => 1,
-      'salutation' => 'Mrs',
-      'person_name' => 'Jo Smith',
-      'work_phone' => '01723456789',
-      'mobile_phone' => '0777777777',
-      'email' => 'abcdefghijklmnopqrstuvwxyz@example.com'
-    ]);
+    $entity = ParDataPerson::create($this->getPersonValues());
     $violations = $entity->validate();
     $this->assertEqual(count($violations), 0, 'No violations when validating a default PAR Person entity.');
   }
@@ -88,16 +56,7 @@ class EntityParPersonTest extends EntityKernelTestBase {
    */
   public function testEntityCreate() {
     $this->createUser();
-    $entity = ParDataPerson::create([
-      'type' => 'person',
-      'name' => 'test',
-      'uid' => 1,
-      'salutation' => 'Mrs',
-      'person_name' => 'Jo Smith',
-      'work_phone' => '01723456789',
-      'mobile_phone' => '0777777777',
-      'email' => 'abcdefghijklmnopqrstuvwxyz@example.com'
-    ]);
+    $entity = ParDataPerson::create($this->getPersonValues());
     $this->assertTrue($entity->save(), 'PAR Person entity saved correctly.');
   }
 }

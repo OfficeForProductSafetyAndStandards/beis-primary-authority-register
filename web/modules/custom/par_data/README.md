@@ -48,38 +48,38 @@ To be clear as to the fields that we're trying to add with this feature see belo
 + **visible_business** = single, boolean
 
 ### Inspection Plan properties
-+ **valid_from** = single, _date_
-+ **valid_to** = single, _date_
++ **valid_date** = single, _date_
 + **approved_rd_executive** = single, boolean
 + **consulted_national_regulator** = single, boolean
-+ **status** = single, string(255), limited choice (~5), plain
++ **inspection_status** = single, string(255), limited choice (~5), plain
 
 ### Authority properties
-+ **name** = single, string(500), free form, plain
++ **authority_name** = single, string(500), free form, plain
 + **authority_type** = single, string(255), limited choice (3), plain
 + **details** = single, string (long), free form, html
 + **nation** = single, string(255), limited choice (~5), plain
 + **ons** = single, string(255), free form, plain
 
-+ **person** = multiple, int(6), _reference_ to a Person
-+ **premises** * = multiple, _reference_ to Premises
++ **person** = multiple, int(6), _reference_ to a Person, required
++ **regulatory_area** = multiple, int(6), _reference_ to a Regulatory Area, required
++ **premises** * = multiple, _reference_ to Premises, required
 
 ### Organisation (Business) properties
-+ **name** = single, string(500), free form, plain
++ **organisation_name** = single, string(500), free form, plain
 + **size** * = single, string(255), limited choice (~5), plain
-+ **number_employees** * = single, string(255), limited choice (~5), plain
++ **employees_band** * = single, string(255), limited choice (~5), plain
 + **nation** = single, string(255), limited choice (~5), plain
 + **comments** = single, string (long), free form, html
 + **premises_mapped** = single, boolean
 + **trading_name** = multiple, string(255), free form, plain
 
-+ **sic_code** = multiple, int(6), _reference_ to a SIC Code
-+ **person** = multiple, int(6), _reference_ to a Person
-+ **premises** * = multiple, _reference_ to Premises
-+ **legal_entity** * = multiple, _reference_ to Premises
++ **sic_code** = multiple, int(6), _reference_ to a SIC Code, required (if not a co-ordinated business)
++ **person** = multiple, int(6), _reference_ to a Person, required (if not a co-ordinated business)
++ **premises** * = multiple, _reference_ to Premises, required (if not a co-ordinated business)
++ **legal_entity** * = multiple, _reference_ to Premises, required (if not a co-ordinated business)
 
 ### Organisation (Coordinator) properties
-+ **name** = single, string(500), free form, plain
++ **organisation_name** = single, string(500), free form, plain
 + **size** * = single, string(255), limited choice (~5), plain
 + **employees_band** * = single, string(255), limited choice (~5), plain
 + **nation** = single, string(255), limited choice (~5), plain
@@ -88,14 +88,14 @@ To be clear as to the fields that we're trying to add with this feature see belo
 + **trading_name** = multiple, string(255), free form, plain
 + **number_eligible** = single, int(6), free form
 
-+ **sic_code** = multiple, int(6), _reference_ to a SIC Code
-+ **person** = multiple, int(6), _reference_ to a Person
-+ **premises** * = multiple, _reference_ to Premises
-+ **legal_entity** * = multiple, _reference_ to Premises
++ **sic_code** = multiple, int(6), _reference_ to a SIC Code, required (if not a co-ordinated business)
++ **person** = multiple, int(6), _reference_ to a Person, required (if not a co-ordinated business)
++ **premises** * = multiple, _reference_ to Premises, required (if not a co-ordinated business)
++ **legal_entity** * = multiple, _reference_ to Premises, required (if not a co-ordinated business)
 
 ### Partnership properties
 + **partnership_type** = single, string(255), limited choice (3), plain
-+ **status** = single, string(255), limited choice (~5), plain
++ **partnership_status** = single, string(255), limited choice (~5), plain
 + **about_partnership** = single, string (long), free form, html
 + **communication_email** * = single, boolean
 + **communication_phone** * = single, boolean
@@ -127,8 +127,8 @@ To be clear as to the fields that we're trying to add with this feature see belo
   - country
 
 ### Person properties
-+ **title** = single, string(255), free form, plain
-+ **name** * = single, string(500), free form, plain
++ **salutation** = single, string(255), free form, plain
++ **person_name** * = single, string(500), free form, plain
 + **work_phone** = single, string(255), free form, plain
 + **mobile_phone** = single, string(255), free form, plain
 + **email** = single, string(500), free form, plain
@@ -139,7 +139,7 @@ To be clear as to the fields that we're trying to add with this feature see belo
 + **legal_entity_type** = single, string(255), limited choice (~5), plain
 
 ### Regulatory Area properties
-+ **name** * = single, string(500), free form, plain
++ **area_name** * = single, string(500), free form, plain
 
 ### SIC Code properties
 + **sic_code** = single, string(255), free form, plain

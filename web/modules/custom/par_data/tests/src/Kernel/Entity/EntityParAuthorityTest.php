@@ -5,51 +5,24 @@ namespace Drupal\Tests\par_data\Kernel\Entity;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataAuthorityType;
+use Drupal\par_data\Entity\ParDataOrganisation;
+use Drupal\par_data\Entity\ParDataPerson;
 
 /**
  * Tests PAR Authority entity.
  *
  * @group PAR Data
  */
-class EntityParAuthorityTest extends EntityKernelTestBase {
-
-  static $modules = ['trance', 'par_data'];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    // Must change the bytea_output to the format "escape" before running tests.
-    parent::setUp();
-
-    // Set up schema for par_data.
-    $this->installEntitySchema('par_data_authority');
-    // Config already installed so we don't need to do this.
-    // But if it changes we may need to update.
-    // $this->installConfig('par_data');
-
-    // Create the entity bundles required for testing.
-    $type = ParDataAuthorityType::create([
-      'id' => 'authority',
-      'label' => 'Authority',
-    ]);
-    $type->save();
-  }
+class EntityParAuthorityTest extends ParDataTestBase {
 
   /**
    * Test to validate a PAR Authority entity.
    */
   public function testEntityValidate() {
     $this->createUser();
-    $entity = ParDataAuthority::create([
-      'type' => 'authority',
-      'name' => 'test',
-      'uid' => 1,
-      'authority_name' => 'Test Authority',
-      'authority_type' => 'Local Authority',
-      'nation' => 'Wales',
-      'ons_code' => '123456',
-    ]);
+
+    // Now we can create our
+    $entity = ParDataAuthority::create($this->getAuthorityValues());
     $violations = $entity->validate();
     $this->assertEqual(count($violations), 0, 'No violations when validating a default PAR Authority entity.');
   }
@@ -59,6 +32,10 @@ class EntityParAuthorityTest extends EntityKernelTestBase {
    */
   public function testRequiredFields() {
     $this->createUser();
+
+    // Get the defaults.
+    $authority_values = $this->getAuthorityValues();
+
     $entity = ParDataAuthority::create([
       'type' => 'authority',
       'name' => 'test',
@@ -67,14 +44,20 @@ class EntityParAuthorityTest extends EntityKernelTestBase {
       'authority_type' => '',
       'nation' => '',
       'ons_code' => '',
-    ]);
+      'person' => [],
+      'regulatory_area' => [],
+      'premises' => [],
+    ] + $authority_values);
     $violations = $entity->validate()->getByFields([
       'authority_name',
       'authority_type',
       'nation',
       'ons_code',
+      'person',
+      'regulatory_area',
+      'premises',
     ]);
-    $this->assertEqual(count($violations), 4, 'Required fields cannot be empty.');
+    $this->assertEqual(count($violations), 7, 'Required fields cannot be empty.');
     $this->assertEqual($violations[0]->getMessage()->render(), 'This value should not be null.', 'These fields are required.');
   }
 
@@ -84,6 +67,9 @@ class EntityParAuthorityTest extends EntityKernelTestBase {
   public function testRequiredLengthFields() {
     $this->createUser();
 
+    // Get the defaults.
+    $authority_values = $this->getAuthorityValues();
+
     $entity = ParDataAuthority::create([
       'type' => 'authority',
       'name' => 'test',
@@ -92,7 +78,7 @@ class EntityParAuthorityTest extends EntityKernelTestBase {
       'authority_type' => $this->randomString(256),
       'nation' => $this->randomString(256),
       'ons_code' => $this->randomString(256),
-    ]);
+    ] + $authority_values);
     $violations = $entity->validate()->getByFields([
       'authority_name',
       'authority_type',
@@ -109,15 +95,7 @@ class EntityParAuthorityTest extends EntityKernelTestBase {
    */
   public function testEntityCreate() {
     $this->createUser();
-    $entity = ParDataAuthority::create([
-      'type' => 'authority',
-      'name' => 'test',
-      'uid' => 1,
-      'authority_name' => 'Test Authority',
-      'authority_type' => 'Local Authority',
-      'nation' => 'Wales',
-      'ons_code' => '123456',
-    ]);
+    $entity = ParDataAuthority::create($this->getAuthorityValues());
     $this->assertTrue($entity->save(), 'PAR Authority entity saved correctly.');
   }
 }
