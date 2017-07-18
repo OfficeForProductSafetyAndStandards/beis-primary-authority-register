@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Implements template_preprocess_fieldset().
+ *
+ * @param $variables
+ */
 function par_theme_preprocess_fieldset(array &$variables) {
-  $variables['child_count'] = isset($variables['element']['#options']) ? count($variables['element']['#options']) : 0;
+  $variables['child_count'] = isset($variables['element']['#options']) ?
+                              count($variables['element']['#options']) : 0;
 }
