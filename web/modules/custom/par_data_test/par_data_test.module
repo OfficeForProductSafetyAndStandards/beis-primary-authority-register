@@ -24,22 +24,210 @@ function par_data_test_help($route_name, RouteMatchInterface $route_match) {
 }
 
 function par_data_test_create_entities() {
-  $authority = \Drupal\par_data\Entity\ParDataAuthority::create([
-    'type' => 'authority',
-    'title' => 'Lower East Side Borough Council',
+
+  // Create people entities.
+  $person_1 = \Drupal\par_data\Entity\ParDataPerson::create([
+    'type' => 'person',
+    'name' => 'Big Bird',
     'uid' => 1,
-    'name' => 'Lower East Side Borough Council',
+    'salutation' => 'Mrs',
+    'person_name' => 'Big Bird',
+    'work_phone' => '01723456789',
+    'mobile_phone' => '0777777777',
+    'email' => 'bigbird@example.com'
+  ]);
+  $person_1->save();
+  $person_2 = \Drupal\par_data\Entity\ParDataPerson::create([
+    'type' => 'person',
+    'name' => 'Kermit',
+    'uid' => 1,
+    'salutation' => 'Mr',
+    'person_name' => 'Kermit the Frog',
+    'work_phone' => '01723456789',
+    'mobile_phone' => '0777777777',
+    'email' => 'kermit@example.com'
+  ]);
+  $person_2->save();
+  $person_3 = \Drupal\par_data\Entity\ParDataPerson::create([
+    'type' => 'person',
+    'name' => 'Snuffleupagus',
+    'uid' => 1,
+    'salutation' => 'Mr',
+    'person_name' => 'Snuffleupagus',
+    'work_phone' => '01723456789',
+    'mobile_phone' => '0777777777',
+    'email' => 'snuffleupagus@example.com'
+  ]);
+  $person_3->save();
+  $person_4 = \Drupal\par_data\Entity\ParDataPerson::create([
+    'type' => 'person',
+    'name' => 'Elmo',
+    'uid' => 1,
+    'salutation' => 'Mrs',
+    'person_name' => 'Elmo',
+    'work_phone' => '01723456789',
+    'mobile_phone' => '0777777777',
+    'email' => 'elmo@example.com'
+  ]);
+  $person_4->save();
+
+  // Create people entities.
+  $person_5 = \Drupal\par_data\Entity\ParDataPerson::create([
+    'type' => 'person',
+    'name' => 'Ernie',
+    'uid' => 1,
+    'salutation' => 'Mr',
+    'person_name' => 'Ernie',
+    'work_phone' => '01723456789',
+    'mobile_phone' => '0777777777',
+    'email' => 'ernie@example.com'
+  ]);
+  $person_5->save();
+  $person_6 = \Drupal\par_data\Entity\ParDataPerson::create([
+    'type' => 'person',
+    'name' => 'Bert',
+    'uid' => 1,
+    'salutation' => 'Mr',
+    'person_name' => 'Bert',
+    'work_phone' => '01723456789',
+    'mobile_phone' => '0777777777',
+    'email' => 'bert@example.com'
+  ]);
+  $person_6->save();
+  $person_7 = \Drupal\par_data\Entity\ParDataPerson::create([
+    'type' => 'person',
+    'name' => 'Oscar the Grouch',
+    'uid' => 1,
+    'salutation' => 'Mr',
+    'person_name' => 'Oscar the Grouch',
+    'work_phone' => '01723456789',
+    'mobile_phone' => '0777777777',
+    'email' => 'oscar@example.com'
+  ]);
+  $person_7->save();
+  $person_8 = \Drupal\par_data\Entity\ParDataPerson::create([
+    'type' => 'person',
+    'name' => 'Grover',
+    'uid' => 1,
+    'salutation' => 'Dr',
+    'person_name' => 'Grover',
+    'work_phone' => '01723456789',
+    'mobile_phone' => '0777777777',
+    'email' => 'groover@example.com'
+  ]);
+  $person_8->save();
+
+  // Create three organisations
+  $organisation_1 = \Drupal\par_data\Entity\ParDataOrganisation::create([
+    'type' => 'business',
+    'name' => 'ABCD Mart',
+    'uid' => 1,
+    'organisation_name' => 'ABCD Mart',
+    'size' => 'Enormous',
+    'employees_band' => '10-50',
+    'nation' => 'USA',
+    'comments' => 'ABCD Mart is a department store featured in the Sesame Street direct-to-video special Big Bird Gets Lost.',
+    'premises_mapped' => TRUE,
+    'trading_name' => [
+      'ABCD',
+      'ABCD Mart',
+    ],
+    'primary_person' => [
+      $person_1->id(),
+    ],
+    'person' => [
+      $person_2->id(),
+    ]
+  ]);
+  $organisation_1->save();
+  // Create three organisations
+  $organisation_2 = \Drupal\par_data\Entity\ParDataOrganisation::create([
+    'type' => 'business',
+    'name' => 'Charlie\'s Cafe',
+    'uid' => 1,
+    'organisation_name' => 'Charlie\'s',
+    'size' => 'Small',
+    'employees_band' => '5-10',
+    'nation' => 'USA',
+    'comments' => 'Charlie\'s is a restaurant featured in a series of Sesame Street sketches involving Grover working as a waiter at the restaurant.',
+    'premises_mapped' => TRUE,
+    'trading_name' => [
+      'Charlie\'s',
+      'Charlie\'s Cafe',
+    ],
+    'primary_person' => [
+      $person_3->id(),
+    ],
+    'person' => [
+      $person_4->id(),
+    ]
+  ]);
+  $organisation_1->save();
+
+  // Create two authorities.
+  $authority_1 = \Drupal\par_data\Entity\ParDataAuthority::create([
+    'type' => 'authority',
+    'name' => 'Lower East Side',
+    'uid' => 1,
+    'authority_name' => 'Lower East Side Borough Council',
     'authority_type' => 'Local Authority',
     'nation' => 'USA',
     'ons_code' => '123456',
+    'primary_person' => [
+      $person_5->id(),
+    ],
+    'person' => [
+      $person_6->id(),
+    ]
   ]);
-  $alternative_authority = \Drupal\par_data\Entity\ParDataAuthority::create([
+  $authority_1->save();
+  $authority_2 = \Drupal\par_data\Entity\ParDataAuthority::create([
     'type' => 'authority',
-    'title' => 'Upper West Side Borough Council',
+    'name' => 'Upper West Authority',
     'uid' => 1,
-    'name' => 'Upper West Side Borough Council',
+    'authority_name' => 'Upper West Side Borough Council',
     'authority_type' => 'Local Authority',
     'nation' => 'USA',
     'ons_code' => '123456',
+    'primary_person' => [
+      $person_7->id(),
+    ],
+    'person' => [
+      $person_8->id(),
+    ]
   ]);
+  $authority_2->save();
+
+  // The main Partnership.
+  $partnership = \Drupal\par_data\Entity\ParDataPartnership::create([
+    'type' => 'partnership',
+    'name' => 'Partnership Lower East Side and Charlie\'s',
+    'uid' => 1,
+    'partnership_type' => 'Direct Partnership',
+    'partnership_status' => 'Approved',
+    'about_partnership' => 'This is a partnership between Lower East Side and Charlie\'s Cafe.',
+    'communication_email' => TRUE,
+    'communication_phone' => TRUE,
+    'communication_notes' => '',
+    'approved_date' => '2017-06-15',
+    'expertise_details' => '',
+    'cost_recovery' => 'Cost recovered by Jo Smith',
+    'reject_comment' => '',
+    'revocation_source' => 'An RD Executive called Sue',
+    'revocation_date' => '2017-07-01',
+    'revocation_reason' => 'I saw a rat in Charlie\'s Cafe.',
+    'authority_change_comment' => '',
+    'organisation_change_comment' => '',
+    'authority' => [
+      $authority_1->id(),
+    ],
+    'organisation' => [
+      $organisation_1->id(),
+    ],
+    'person' => [
+      $person_1->id(),
+      $person_3->id(),
+    ]
+  ]);
+  $partnership->save();
 }

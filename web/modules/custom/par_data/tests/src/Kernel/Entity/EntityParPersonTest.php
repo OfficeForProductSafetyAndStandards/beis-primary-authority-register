@@ -92,10 +92,11 @@ class EntityParPersonTest extends EntityKernelTestBase {
       'type' => 'person',
       'name' => 'test',
       'uid' => 1,
-      'person_name' => 'Test Person',
-      'person_type' => 'Local Person',
-      'nation' => 'Wales',
-      'ons_code' => '123456',
+      'salutation' => 'Mrs',
+      'person_name' => 'Jo Smith',
+      'work_phone' => '01723456789',
+      'mobile_phone' => '0777777777',
+      'email' => 'abcdefghijklmnopqrstuvwxyz@example.com'
     ]);
     $this->assertTrue($entity->save(), 'PAR Person entity saved correctly.');
   }
