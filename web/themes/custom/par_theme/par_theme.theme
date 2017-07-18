@@ -14,7 +14,8 @@ function par_theme_preprocess_fieldset(array &$variables) {
   $element = &$variables['element'];
 
   // Pass elements disabled status to template.
-  $variables['disabled'] = !empty($element['#attributes']['disabled']) ? $element['#attributes']['disabled'] : NULL;
+  $variables['disabled'] = !empty($element['#attributes']['disabled']) ?
+                            $element['#attributes']['disabled'] : NULL;
 
   // Initiate errors.
   $variables['errors'] = NULL;
@@ -37,7 +38,8 @@ function par_theme_preprocess_form_element(array &$variables) {
   $element = &$variables['element'];
 
   // Pass elements disabled status to template.
-  $variables['disabled'] = !empty($element['#attributes']['disabled']) ? $element['#attributes']['disabled'] : NULL;
+  $variables['disabled'] = !empty($element['#attributes']['disabled']) ?
+                            $element['#attributes']['disabled'] : NULL;
 
   // Initiate errors.
   $variables['errors'] = NULL;
