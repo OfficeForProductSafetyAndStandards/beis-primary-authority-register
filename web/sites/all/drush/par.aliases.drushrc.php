@@ -334,11 +334,23 @@ $aliases['dev'] = array(
   ),
   'root' => '/var/www/html/web'
 );
-$aliases['stage'] = array(
+$aliases['paas-sanitized'] = array(
   'user' => 1,
+    'command-specific' => array (
+        'sql-dump' => array(
+            'ordered-dump' => TRUE,
+            'structure-tables-key' => 'common',
+            'skip-tables-key' => 'common',
+        ),
+    ),
   'root' => '/home/vcap/app/web'
 );
-$aliases['prod'] = array(
-  'user' => 1,
-  'root' => '/home/vcap/app/web'
+$aliases['paas-unsanitized'] = array(
+    'user' => 1,
+    'command-specific' => array (
+        'sql-dump' => array(
+        ),
+    ),
+    'root' => '/home/vcap/app/web'
 );
+
