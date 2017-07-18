@@ -99,7 +99,6 @@ class StyleguideForm extends FormBase {
     $form['fieldset'] = [
       '#type' => 'fieldset',
       '#title' => t('Fieldset example'),
-      '#weight' => 5,
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
       'textfield_within_fieldset' => [
@@ -115,6 +114,7 @@ class StyleguideForm extends FormBase {
     ];
 
     return $form;
+
   }
 
   /**
