@@ -51,7 +51,7 @@
         required ? 'form-required',
       ]
     %}
-    {#  Always wrap fieldset legends in a SPAN for CSS positioning. #}
+
     <legend{{ legend.attributes }}>
       <h3{{ legend_span.attributes.addClass(legend_header_classes) }}>{{ legend.title }}</h3>
       {% if description.content %}
