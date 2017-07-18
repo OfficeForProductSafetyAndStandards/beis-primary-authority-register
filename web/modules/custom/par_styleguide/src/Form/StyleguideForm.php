@@ -79,9 +79,7 @@ class StyleguideForm extends FormBase {
     $form['checkbox'] = [
       '#type' => 'checkbox',
       '#title' => t('Send me a copy'),
-      '#prefix' => '<div class="form-group">',
-      '#suffix' => '</div>',
-      '#description' => t('This is a hint, choose whether you would like a copy of this form.'),
+//      '#description' => t('This is a hint, choose whether you would like a copy of this form.'),
     ];
 
     $form['checkboxes'] = [
@@ -125,6 +123,7 @@ class StyleguideForm extends FormBase {
     $form_state->setErrorByName('textfield', $this->t("This is a test validation, the value %value for %field is invalid.", ['%value' => $form_state->getValue('textfield'), '%field' => 'textfield']));
     $form_state->setErrorByName('checkbox', $this->t("This is a test validation, the value %value for %field is invalid.", ['%value' => $form_state->getValue('checkbox'), '%field' => 'checkbox']));
     $form_state->setErrorByName('textarea', $this->t("This is a test validation, the value %value for %field is invalid.", ['%value' => $form_state->getValue('textarea'), '%field' => 'textarea']));
+    $form_state->setErrorByName('radios_3', 'hello');
   }
 
   /**
