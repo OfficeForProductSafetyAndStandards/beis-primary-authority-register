@@ -24,7 +24,9 @@ class EntityParAuthorityTest extends EntityKernelTestBase {
 
     // Set up schema for par_data.
     $this->installEntitySchema('par_data_authority');
-    $this->installConfig('par_data');
+    // Config already installed so we don't need to do this.
+    // But if it changes we may need to update.
+    // $this->installConfig('par_data');
 
     // Create the entity bundles required for testing.
     $type = ParDataAuthorityType::create([
