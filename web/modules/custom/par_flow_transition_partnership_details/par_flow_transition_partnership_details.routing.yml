@@ -1,0 +1,56 @@
+# PAR Demo Forms routes
+par_flow_transition_partnership_details.overview:
+  path: '/dv/primary-authority-partnerships/{par_data_authority}/partnership/{par_data_partnership}/details'
+  defaults:
+    _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionOverviewForm'
+    _title: 'Viewing/confirming partnership details'
+  requirements:
+    _permission: 'access content'
+  options:
+    parameters:
+      par_data_authority:
+        type: entity:par_data_authority
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_flow_transition_partnership_details.first:
+  path: '/dv/primary-authority-partnerships/{par_data_authority}/partnership/{par_data_partnership}/details/edit-about'
+  defaults:
+    _form: '\Drupal\par_flow_transition_partnership_details\Form\ParDemoFirstForm'
+    _title: 'Edit the information about the Partnership'
+    node: NULL
+  requirements:
+    _permission: 'access content'
+  options:
+    parameters:
+      par_data_authority:
+        type: entity:par_data_authority
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_flow_transition_partnership_details.second:
+  path: '/dv/primary-authority-partnerships/{par_data_authority}/partnership/{par_data_partnership}/details/edit-secondary-contact'
+  defaults:
+    _form: '\Drupal\par_flow_transition_partnership_details\Form\ParDemoSecondForm'
+    _title: 'PAR Demo Forms - Second'
+    node: NULL
+  requirements:
+    _permission: 'access content'
+  options:
+    parameters:
+      par_data_authority:
+        type: entity:par_data_authority
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_flow_transition_partnership_details.third:
+  path: '/dv/primary-authority-partnerships/{par_data_authority}/partnership/{par_data_partnership}/invite-business'
+  defaults:
+    _form: '\Drupal\par_flow_transition_partnership_details\Form\ParDemoThirdForm'
+    _title: 'PAR Demo Forms - Third'
+    node: NULL
+  requirements:
+    _permission: 'access content'
+  options:
+    parameters:
+      par_data_authority:
+        type: entity:par_data_authority
+      par_data_partnership:
+        type: entity:par_data_partnership
