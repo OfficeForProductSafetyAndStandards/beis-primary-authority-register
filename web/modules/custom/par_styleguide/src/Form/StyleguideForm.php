@@ -122,15 +122,15 @@ class StyleguideForm extends FormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // Generate errors for all fields.
-    $form_state->setErrorByName('textfield', $this->t("This is a test validation, the value '%value' is invalid.", array('%value' => $form_state->getValue('textfield'))));
-    $form_state->setErrorByName('checkbox', $this->t("This is a test validation, the value '%value' is invalid.", array('%value' => $form_state->getValue('textfield'))));
-    $form_state->setErrorByName('textarea', $this->t("This is a test validation, the value '%value' is invalid.", array('%value' => $form_state->getValue('textfield'))));
+    $form_state->setErrorByName('textfield', $this->t("This is a test validation, the value %value for %field is invalid.", ['%value' => $form_state->getValue('textfield'), '%field' => 'textfield']));
+    $form_state->setErrorByName('checkbox', $this->t("This is a test validation, the value %value for %field is invalid.", ['%value' => $form_state->getValue('checkbox'), '%field' => 'checkbox']));
+    $form_state->setErrorByName('textarea', $this->t("This is a test validation, the value %value for %field is invalid.", ['%value' => $form_state->getValue('textarea'), '%field' => 'textarea']));
   }
 
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    drupal_set_message($this->t("This form submission was sucessful."));
+    drupal_set_message($this->t("This form submission was successful."));
   }
 }
