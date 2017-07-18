@@ -134,8 +134,8 @@ To be clear as to the fields that we're trying to add with this feature see belo
 + **email** = single, string(500), free form, plain
 
 ### Legal Entity properties
-+ **registered_name** = single, string(255), free form, plain
-+ **registered_number** = single, int(10)
++ **registered_name** = single, string(500), free form, plain
++ **registered_number** = single, string(255), free form, plain
 + **legal_entity_type** = single, string(255), limited choice (~5), plain
 
 ### Regulatory Area properties

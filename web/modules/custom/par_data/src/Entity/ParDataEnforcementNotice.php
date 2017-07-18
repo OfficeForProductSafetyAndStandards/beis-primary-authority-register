@@ -4,6 +4,7 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\trance\Trance;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
  * Defines the par_data_enforcement_notice entity.
@@ -69,6 +70,112 @@ class ParDataEnforcementNotice extends Trance {
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
+
+    // Notice Type
+    $fields['notice_type'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Notice Type'))
+      ->setDescription(t('The type of Enforcement Notice.'))
+      ->setRequired(TRUE)
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE);
+
+    // Notice Date
+    $fields['notice_date'] = BaseFieldDefinition::create('datetime')
+      ->setLabel(t('Notice Date'))
+      ->setDescription(t('The date this Enforcement Notice was issued.'))
+      ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
+      ->setTranslatable(FALSE)
+      ->setSettings([
+        'datetime_type' => 'date',
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'datetime_default',
+        'weight' => 2,
+      ])
+      ->setDisplayConfigurable('form', FALSE);
+
+    // Reference to Primary Authority
+    $fields['primary_authority'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Primary Authority'))
+      ->setDescription(t('The Primary Authority that issued this Enforcement Notice.'))
+      ->setCardinality(1)
+      ->setSetting('target_type', 'par_data_authority')
+      ->setSetting('handler', 'default')
+      ->setSetting('handler_settings',
+        [
+          'target_bundles' => [
+            'authority' => 'authority',
+          ]
+        ]
+      )
+      ->setDisplayOptions('form', array(
+        'type' => 'entity_reference_autocomplete',
+        'weight' => 3,
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'size' => 60,
+          'placeholder' => '',
+        ),
+      ));
+
+    // Reference to Enforcing Authority
+    $fields['enforcing_authority'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Enforcing Authority'))
+      ->setDescription(t('The Enforcing Authority that is charged with following up on this Enforcement Notice.'))
+      ->setCardinality(1)
+      ->setSetting('target_type', 'par_data_authority')
+      ->setSetting('handler', 'default')
+      ->setSetting('handler_settings',
+        [
+          'target_bundles' => [
+            'authority' => 'authority',
+          ]
+        ]
+      )
+      ->setDisplayOptions('form', array(
+        'type' => 'entity_reference_autocomplete',
+        'weight' => 4,
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'size' => 60,
+          'placeholder' => '',
+        ),
+      ));
+
+    // Reference to Legal Entity
+    $fields['legal_entity'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Legal Entities'))
+      ->setDescription(t('The Legal Entities this Enforcement Notice is issued to.'))
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+      ->setSetting('target_type', 'par_data_legal_entity')
+      ->setSetting('handler', 'default')
+      ->setSetting('handler_settings',
+        [
+          'target_bundles' => [
+            'legal_entity' => 'legal_entity'
+          ]
+        ]
+      )
+      ->setDisplayOptions('form', array(
+        'type' => 'entity_reference_autocomplete',
+        'weight' => 5,
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'size' => 60,
+          'placeholder' => '',
+        ),
+      ));
 
     return $fields;
   }
