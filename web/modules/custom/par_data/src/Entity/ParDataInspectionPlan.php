@@ -73,7 +73,7 @@ class ParDataInspectionPlan extends Trance {
 
     // Valid Date
     $fields['valid_date'] = BaseFieldDefinition::create('daterange')
-      ->setLabel(t('Valid from'))
+      ->setLabel(t('Valid From'))
       ->setDescription(t('The date range this Inspection Plan is valid for.'))
       ->setRequired(TRUE)
       ->setRevisionable(TRUE)
@@ -101,7 +101,7 @@ class ParDataInspectionPlan extends Trance {
 
     // Approved RD Executive
     $fields['consulted_national_regulator'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('National Regulator consulted'))
+      ->setLabel(t('National Regulator Consulted'))
       ->setDescription(t('Whether the national regulator has been consulted about this Inspection Plan.'))
       ->setRequired(TRUE)
       ->setRevisionable(TRUE)
@@ -111,7 +111,7 @@ class ParDataInspectionPlan extends Trance {
         'weight' => 3,
       ]);
 
-    // State
+    // Inspection Status
     $fields['inspection_status'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Inspection Status'))
       ->setDescription(t('The current status of the Inspection Plan itself. For example, current, expired, replaced.'))

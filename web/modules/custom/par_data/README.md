@@ -114,6 +114,7 @@ To be clear as to the fields that we're trying to add with this feature see belo
 + **authority** = single, _reference_ to an Authority
 + **advice** = multiple, _reference_ to an Advice
 + **inspection_plan** = multiple, _reference_ to an Inspection Plan
++ **regulatory_area** = multiple, int(6), _reference_ to a Regulatory Area
 + **person** = multiple, int(6), _reference_ to a Person
 
 ### Premises properties

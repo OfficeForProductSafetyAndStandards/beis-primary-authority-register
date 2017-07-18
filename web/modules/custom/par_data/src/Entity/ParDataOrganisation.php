@@ -102,7 +102,7 @@ class ParDataOrganisation extends Trance {
       ->setDefaultValue('')
       ->setDisplayOptions('form', [
         'type' => 'string_textfield',
-        'weight' => 1,
+        'weight' => 2,
       ])
       ->setDisplayConfigurable('form', FALSE);
 
@@ -119,7 +119,7 @@ class ParDataOrganisation extends Trance {
       ->setDefaultValue('')
       ->setDisplayOptions('form', [
         'type' => 'string_textfield',
-        'weight' => 1,
+        'weight' => 3,
       ])
       ->setDisplayConfigurable('form', FALSE);
 
@@ -136,7 +136,7 @@ class ParDataOrganisation extends Trance {
       ->setDefaultValue('')
       ->setDisplayOptions('form', [
         'type' => 'string_textfield',
-        'weight' => 1,
+        'weight' => 4,
       ])
       ->setDisplayConfigurable('form', FALSE);
 
@@ -150,9 +150,9 @@ class ParDataOrganisation extends Trance {
         'text_processing' => 0,
       ])->setDisplayOptions('form', [
         'type' => 'text_long',
-        'weight' => 25,
+        'weight' => 5,
         'settings' => [
-          'rows' => 2,
+          'rows' => 25,
         ],
       ])
       ->setDisplayConfigurable('form', FALSE);
@@ -165,7 +165,7 @@ class ParDataOrganisation extends Trance {
       ->setTranslatable(FALSE)
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
-        'weight' => 3,
+        'weight' => 6,
       ]);
 
     // Trading Name
@@ -182,7 +182,7 @@ class ParDataOrganisation extends Trance {
       ->setDefaultValue('')
       ->setDisplayOptions('form', [
         'type' => 'string_textfield',
-        'weight' => 1,
+        'weight' => 7,
       ])
       ->setDisplayConfigurable('form', FALSE);
 
@@ -205,6 +205,7 @@ class ParDataOrganisation extends Trance {
       ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
+        'weight' => 8,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => 60,
@@ -231,6 +232,7 @@ class ParDataOrganisation extends Trance {
       ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
+        'weight' => 9,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => 60,
@@ -257,6 +259,7 @@ class ParDataOrganisation extends Trance {
       ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
+        'weight' => 10,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => 60,
@@ -283,6 +286,7 @@ class ParDataOrganisation extends Trance {
       ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
+        'weight' => 11,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => 60,
@@ -309,6 +313,7 @@ class ParDataOrganisation extends Trance {
       ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
+        'weight' => 12,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => 60,

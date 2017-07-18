@@ -99,9 +99,9 @@ class ParDataAdvice extends Trance {
         'text_processing' => 0,
       ])->setDisplayOptions('form', [
         'type' => 'text_long',
-        'weight' => 25,
+        'weight' => 2,
         'settings' => [
-          'rows' => 2,
+          'rows' => 25,
         ],
       ])
       ->setDisplayConfigurable('form', FALSE);

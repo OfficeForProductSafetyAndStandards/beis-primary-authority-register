@@ -103,7 +103,7 @@ class ParDataAuthority extends Trance {
       ->setDefaultValue('')
       ->setDisplayOptions('form', [
         'type' => 'string_textfield',
-        'weight' => 1,
+        'weight' => 2,
       ])
       ->setDisplayConfigurable('form', FALSE);
 
@@ -121,7 +121,7 @@ class ParDataAuthority extends Trance {
       ->setDefaultValue('')
       ->setDisplayOptions('form', [
         'type' => 'string_textfield',
-        'weight' => 1,
+        'weight' => 3,
       ])
       ->setDisplayConfigurable('form', FALSE);
 
@@ -139,7 +139,7 @@ class ParDataAuthority extends Trance {
       ->setDefaultValue('')
       ->setDisplayOptions('form', [
         'type' => 'string_textfield',
-        'weight' => 1,
+        'weight' => 4,
       ])
       ->setDisplayConfigurable('form', FALSE);
 
@@ -162,6 +162,7 @@ class ParDataAuthority extends Trance {
       ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
+        'weight' => 5,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => 60,
@@ -188,6 +189,7 @@ class ParDataAuthority extends Trance {
       ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
+        'weight' => 6,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => 60,
@@ -214,6 +216,7 @@ class ParDataAuthority extends Trance {
       ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
+        'weight' => 7,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => 60,
