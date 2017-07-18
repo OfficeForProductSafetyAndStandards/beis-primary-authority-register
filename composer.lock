@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f8e83e08eb1f5e1ee4d92d4e6d2a4c43",
+    "content-hash": "1425ea5475558a98b4d390d36ec4e76e",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2353,7 +2353,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/trance-8.x-1.0.zip",
-                "reference": "8.x-1.0",
+                "reference": null,
                 "shasum": "a341363bc9cebd5b39a41689b801dbe7a127f5bb"
             },
             "require": {
@@ -2370,6 +2370,9 @@
                 "drupal": {
                     "version": "8.x-1.0",
                     "datestamp": "1476112139"
+                },
+                "patches_applied": {
+                    "Don't assume base tables": "https://www.drupal.org/files/issues/don_t_assume_base_tables-2895360-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -6817,8 +6820,7 @@
                 "source": "http://cgit.drupalcode.org/examples",
                 "issues": "https://www.drupal.org/project/issues/examples",
                 "documentation": "https://api.drupal.org/api/examples"
-            },
-            "time": "2017-07-15 18:04:19"
+            }
         },
         {
             "name": "fabpot/goutte",

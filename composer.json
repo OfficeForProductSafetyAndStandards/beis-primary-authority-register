@@ -81,6 +81,9 @@
             "drupal/health_check": {
                 "Health Check doesn't check Drupal application": "https://www.drupal.org/files/issues/health_check_doesn_t-2892294-2.patch"
             },
+            "drupal/trance": {
+                "Don't assume base tables": "https://www.drupal.org/files/issues/don_t_assume_base_tables-2895360-2.patch"
+            },
             "drush/drush": {
                 "Drush sql-dump compatibility with PostgresSQL 9.5+": "./patches/drush-sqldump-postgres95.patch"
             }
