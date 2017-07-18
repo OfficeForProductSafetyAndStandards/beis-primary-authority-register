@@ -71,7 +71,7 @@ class ParDataLegalEntity extends Trance {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    // Registered Name
+    // Registered Name.
     $fields['registered_name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Registered Name'))
       ->setDescription(t('The registered name of the Legal Entity.'))
@@ -89,7 +89,7 @@ class ParDataLegalEntity extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Registered Name
+    // Registered Name.
     $fields['registered_number'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Registered Number'))
       ->setDescription(t('The registered number of the Legal Entity.'))
@@ -106,7 +106,7 @@ class ParDataLegalEntity extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Legal Entity Type
+    // Legal Entity Type.
     $fields['legal_entity_type'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Legal Entity Type'))
       ->setDescription(t('The type of Legal Entity.'))

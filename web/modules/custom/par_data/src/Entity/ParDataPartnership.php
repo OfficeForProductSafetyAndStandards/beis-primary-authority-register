@@ -71,7 +71,7 @@ class ParDataPartnership extends Trance {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    // Partnership Type
+    // Partnership Type.
     $fields['partnership_type'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Partnership Type'))
       ->setDescription(t('The type of Partnership.'))
@@ -89,7 +89,7 @@ class ParDataPartnership extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Partnership Status
+    // Partnership Status.
     $fields['partnership_status'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Partnership Status'))
       ->setDescription(t('The current status of the Partnership Plan itself. For example, current, expired, replaced.'))
@@ -107,7 +107,7 @@ class ParDataPartnership extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // About Partnership
+    // About Partnership.
     $fields['about_partnership'] = BaseFieldDefinition::create('string_long')
       ->setLabel(t('About Partnership'))
       ->setDescription(t('Details about this Partnership.'))
@@ -124,7 +124,7 @@ class ParDataPartnership extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Communication by Email
+    // Communication by Email.
     $fields['communication_email'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Communication by E-mail'))
       ->setDescription(t('Whether to allow contact by e-mail for this Partnership.'))
@@ -135,7 +135,7 @@ class ParDataPartnership extends Trance {
         'weight' => 4,
       ]);
 
-    // Communication by Phone
+    // Communication by Phone.
     $fields['communication_phone'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Communication by Phone'))
       ->setDescription(t('Whether to allow contact by phone for this Partnership.'))
@@ -146,7 +146,7 @@ class ParDataPartnership extends Trance {
         'weight' => 5,
       ]);
 
-    // Communication Notes
+    // Communication Notes.
     $fields['communication_notes'] = BaseFieldDefinition::create('string_long')
       ->setLabel(t('Communication Notes'))
       ->setDescription(t('Additional notes and communication preferences for this Partnership.'))
@@ -163,7 +163,7 @@ class ParDataPartnership extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Approved Date
+    // Approved Date.
     $fields['approved_date'] = BaseFieldDefinition::create('datetime')
       ->setLabel(t('Approved Date'))
       ->setDescription(t('The date this Partnership was approved.'))
@@ -178,9 +178,9 @@ class ParDataPartnership extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Expertise Details
+    // Expertise Details.
     $fields['expertise_details'] = BaseFieldDefinition::create('string_long')
-      ->setLabel(t('Expertise Details'))
+      ->setLabel(t('Expertise Detail'))
       ->setDescription(t('Details about the expertise for this Partnership.'))
       ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
@@ -195,7 +195,7 @@ class ParDataPartnership extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Partnership Status
+    // Partnership Status.
     $fields['cost_recovery'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Cost Recovery'))
       ->setDescription(t('How is the cost recovered by for this Partnership.'))
@@ -212,7 +212,7 @@ class ParDataPartnership extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Rejected Comment
+    // Rejected Comment.
     $fields['reject_comment'] = BaseFieldDefinition::create('string_long')
       ->setLabel(t('Reject Comment'))
       ->setDescription(t('Comments about why this Partnership was rejected.'))
@@ -229,7 +229,7 @@ class ParDataPartnership extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Recovation Source
+    // Recovation Source.
     $fields['revocation_source'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Revocation Source'))
       ->setDescription(t('Who was responsible for revoking this Partnership.'))
@@ -246,7 +246,7 @@ class ParDataPartnership extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Recovation Date
+    // Recovation Date.
     $fields['revocation_date'] = BaseFieldDefinition::create('datetime')
       ->setLabel(t('Recovation Date'))
       ->setDescription(t('The date this Partnership was revoked.'))
@@ -261,7 +261,7 @@ class ParDataPartnership extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Revocation Reason
+    // Revocation Reason.
     $fields['revocation_reason'] = BaseFieldDefinition::create('string_long')
       ->setLabel(t('Revocation Reason'))
       ->setDescription(t('Comments about why this Partnership was revoked.'))
@@ -278,7 +278,7 @@ class ParDataPartnership extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Authority Change Comment
+    // Authority Change Comment.
     $fields['authority_change_comment'] = BaseFieldDefinition::create('string_long')
       ->setLabel(t('Authority Change Comment'))
       ->setDescription(t('Comments by the Authority when this Partnership was changed.'))
@@ -295,7 +295,7 @@ class ParDataPartnership extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Organisation Change Comment
+    // Organisation Change Comment.
     $fields['organisation_change_comment'] = BaseFieldDefinition::create('string_long')
       ->setLabel(t('Organisation Change Comment'))
       ->setDescription(t('Comments by the Organisation when this Partnership was changed.'))
@@ -312,7 +312,7 @@ class ParDataPartnership extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Reference to Organisation
+    // Reference to Organisation.
     $fields['organisation'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Organisation'))
       ->setDescription(t('The Organisations for this Partnership.'))
@@ -337,7 +337,7 @@ class ParDataPartnership extends Trance {
         ),
       ));
 
-    // Reference to Authority
+    // Reference to Authority.
     $fields['authority'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Authorities'))
       ->setDescription(t('The Authorities for this Partnership.'))
@@ -361,7 +361,7 @@ class ParDataPartnership extends Trance {
         ),
       ));
 
-    // Reference to Advice
+    // Reference to Advice.
     $fields['advice'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Advice'))
       ->setDescription(t('The Advice for this Partnership.'))
@@ -385,7 +385,7 @@ class ParDataPartnership extends Trance {
         ),
       ));
 
-    // Reference to Inspection Plan
+    // Reference to Inspection Plan.
     $fields['inspection_plan'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Inspection Plan'))
       ->setDescription(t('The Inspection Plans for this Partnership.'))
@@ -409,7 +409,7 @@ class ParDataPartnership extends Trance {
         ),
       ));
 
-    // Reference to Regulatory Area
+    // Reference to Regulatory Area.
     $fields['regulatory_area'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Regulatory Area'))
       ->setDescription(t('The Regulatory Areas for this Partnership.'))
@@ -433,7 +433,7 @@ class ParDataPartnership extends Trance {
         ),
       ));
 
-    // Reference to Person
+    // Reference to Person.
     $fields['person'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Contacts'))
       ->setDescription(t('The contacts for this Partnership.'))

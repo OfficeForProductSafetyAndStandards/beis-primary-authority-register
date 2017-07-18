@@ -71,7 +71,7 @@ class ParDataAuthority extends Trance {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    // Name
+    // Name.
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Name'))
       ->setDescription(t('The name of the Authority.'))
@@ -89,7 +89,7 @@ class ParDataAuthority extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Authority Type
+    // Authority Type.
     $fields['authority_type'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Authority Type'))
       ->setDescription(t('The type of Authority.'))
@@ -107,7 +107,7 @@ class ParDataAuthority extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Nation
+    // Nation.
     $fields['nation'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Nation'))
       ->setDescription(t('The nation the Authority belongs to.'))
@@ -125,7 +125,7 @@ class ParDataAuthority extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // ONS Code
+    // ONS Code.
     $fields['ons_code'] = BaseFieldDefinition::create('string')
       ->setLabel(t('ONS Code'))
       ->setDescription(t('The ONS Code for the Authority.'))
@@ -143,9 +143,9 @@ class ParDataAuthority extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Reference to Primary Person
+    // Reference to Primary Person.
     $fields['primary_person'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Primary Contact'))
+      ->setLabel(t('Primary Person'))
       ->setDescription(t('The primary contact for this Authority.'))
       ->setCardinality(1)
       ->setSetting('target_type', 'par_data_person')
@@ -167,10 +167,10 @@ class ParDataAuthority extends Trance {
         ),
       ));
 
-    // Reference to Person
+    // Reference to Person.
     $fields['person'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Contacts'))
-      ->setDescription(t('The secondary contacts for this Authority.'))
+      ->setLabel(t('Alternative Person'))
+      ->setDescription(t('The alternative contacts for this Authority.'))
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_person')
       ->setSetting('handler', 'default')
@@ -191,7 +191,7 @@ class ParDataAuthority extends Trance {
         ),
       ));
 
-    // Reference to Premises
+    // Reference to Premises.
     $fields['premises'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Premises'))
       ->setDescription(t('The premises of this Authority.'))

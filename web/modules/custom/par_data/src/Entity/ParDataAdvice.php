@@ -71,7 +71,7 @@ class ParDataAdvice extends Trance {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    // Advice Type
+    // Advice Type.
     $fields['advice_type'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Advice Type'))
       ->setDescription(t('The type of Advice.'))
@@ -89,7 +89,7 @@ class ParDataAdvice extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Notes
+    // Notes.
     $fields['notes'] = BaseFieldDefinition::create('string_long')
       ->setLabel(t('Notes'))
       ->setDescription(t('Notes about this Advice.'))
@@ -106,7 +106,7 @@ class ParDataAdvice extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Authority Visible
+    // Authority Visible.
     $fields['visible_authority'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Visible to Authority'))
       ->setDescription(t('Whether this Advice is visible to an Authority.'))
@@ -118,7 +118,7 @@ class ParDataAdvice extends Trance {
         'weight' => 3,
       ]);
 
-    // Coordinator Visible
+    // Coordinator Visible.
     $fields['visible_coordinator'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Visible to Co-ordinator'))
       ->setDescription(t('Whether this Advice is visible to a Co-ordinator.'))
@@ -130,7 +130,7 @@ class ParDataAdvice extends Trance {
         'weight' => 4,
       ]);
 
-    // Business Visible
+    // Business Visible.
     $fields['visible_business'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Visible to Business'))
       ->setDescription(t('Whether this Advice is visible to a Business.'))

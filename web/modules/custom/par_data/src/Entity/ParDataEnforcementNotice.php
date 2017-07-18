@@ -71,7 +71,7 @@ class ParDataEnforcementNotice extends Trance {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    // Notice Type
+    // Notice Type.
     $fields['notice_type'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Notice Type'))
       ->setDescription(t('The type of Enforcement Notice.'))
@@ -89,7 +89,7 @@ class ParDataEnforcementNotice extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Notice Date
+    // Notice Date.
     $fields['notice_date'] = BaseFieldDefinition::create('datetime')
       ->setLabel(t('Notice Date'))
       ->setDescription(t('The date this Enforcement Notice was issued.'))
@@ -105,7 +105,7 @@ class ParDataEnforcementNotice extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Reference to Primary Authority
+    // Reference to Primary Authority.
     $fields['primary_authority'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Primary Authority'))
       ->setDescription(t('The Primary Authority that issued this Enforcement Notice.'))
@@ -129,7 +129,7 @@ class ParDataEnforcementNotice extends Trance {
         ),
       ));
 
-    // Reference to Enforcing Authority
+    // Reference to Enforcing Authority.
     $fields['enforcing_authority'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Enforcing Authority'))
       ->setDescription(t('The Enforcing Authority that is charged with following up on this Enforcement Notice.'))
@@ -153,9 +153,9 @@ class ParDataEnforcementNotice extends Trance {
         ),
       ));
 
-    // Reference to Legal Entity
+    // Reference to Legal Entity.
     $fields['legal_entity'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Legal Entities'))
+      ->setLabel(t('Legal Entity'))
       ->setDescription(t('The Legal Entities this Enforcement Notice is issued to.'))
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_legal_entity')

@@ -71,8 +71,8 @@ class ParDataPerson extends Trance {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    // Title
-    $fields['title'] = BaseFieldDefinition::create('string')
+    // Title.
+    $fields['salutation'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Title'))
       ->setDescription(t('The title of this Person.'))
       ->setTranslatable(TRUE)
@@ -88,7 +88,7 @@ class ParDataPerson extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Name
+    // Name.
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Name'))
       ->setDescription(t('The name of the Person.'))
@@ -105,7 +105,7 @@ class ParDataPerson extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Work Phone
+    // Work Phone.
     $fields['work_phone'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Work Phone'))
       ->setDescription(t('The work phone of this Person.'))
@@ -122,7 +122,7 @@ class ParDataPerson extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Home Phone
+    // Mobile Phone.
     $fields['mobile_phone'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Mobile Phone'))
       ->setDescription(t('The mobile phone of this Person.'))
@@ -139,7 +139,7 @@ class ParDataPerson extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Email
+    // Email.
     $fields['email'] = BaseFieldDefinition::create('string')
       ->setLabel(t('E-mail'))
       ->setDescription(t('The e-mail address of this Person.'))

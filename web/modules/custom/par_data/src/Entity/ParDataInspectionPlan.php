@@ -71,9 +71,9 @@ class ParDataInspectionPlan extends Trance {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    // Valid Date
+    // Valid Date.
     $fields['valid_date'] = BaseFieldDefinition::create('daterange')
-      ->setLabel(t('Valid From'))
+      ->setLabel(t('Valid Date'))
       ->setDescription(t('The date range this Inspection Plan is valid for.'))
       ->setRequired(TRUE)
       ->setRevisionable(TRUE)
@@ -87,7 +87,7 @@ class ParDataInspectionPlan extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Approved RD Executive
+    // Approved RD Executive.
     $fields['approved_rd_executive'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Approved by RD Executive'))
       ->setDescription(t('Whether this Inspection Plan has been approved by an RD Executive.'))
@@ -99,7 +99,7 @@ class ParDataInspectionPlan extends Trance {
         'weight' => 2,
       ]);
 
-    // Approved RD Executive
+    // Approved RD Executive.
     $fields['consulted_national_regulator'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('National Regulator Consulted'))
       ->setDescription(t('Whether the national regulator has been consulted about this Inspection Plan.'))
@@ -111,7 +111,7 @@ class ParDataInspectionPlan extends Trance {
         'weight' => 3,
       ]);
 
-    // Inspection Status
+    // Inspection Status.
     $fields['inspection_status'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Inspection Status'))
       ->setDescription(t('The current status of the Inspection Plan itself. For example, current, expired, replaced.'))
