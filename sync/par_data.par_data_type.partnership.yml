@@ -1,0 +1,8 @@
+uuid: fb8fb119-e23c-46a8-85b1-96e13f015746
+langcode: en
+status: true
+dependencies: {  }
+id: partnership
+label: Partnership
+description: 'A Partnership is a relationship between a Primary Authority and either a Business ("direct partnership") or a Co-ordinator ("co-ordinated partnership").  Note that in the latter case, the Business records may or may not be held in the PAR3 database.'
+help: ''

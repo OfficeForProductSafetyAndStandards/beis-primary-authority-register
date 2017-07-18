@@ -1,8 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: inspection_plan
-label: 'Inspection Plan'
-description: 'Details of an inspection carried out against any given business.'
-mimetypes:
-  - application/pdf
