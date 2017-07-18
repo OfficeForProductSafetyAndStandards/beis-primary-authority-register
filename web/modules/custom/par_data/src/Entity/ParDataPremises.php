@@ -4,6 +4,7 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\trance\Trance;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
  * Defines the par_data_premises entity.
@@ -69,6 +70,51 @@ class ParDataPremises extends Trance {
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
+
+    // Address
+    $fields['address'] = BaseFieldDefinition::create('address')
+      ->setLabel(t('Address'))
+      ->setDescription(t('The address details.'))
+      ->setCardinality(1)
+      ->setSetting('available_countries', ['GB' => 'GB'])
+      ->setSetting('fields',
+        [
+          "organization" => "0",
+          "dependentLocality" => "0",
+          "sortingCode" => "0",
+          "familyName" => "0",
+          "langcode_override" => "",
+          "administrativeArea" => "administrativeArea",
+          "additionalName" => "0",
+          "locality" => "locality",
+          "addressLine1" => "addressLine1",
+          "postalCode" => "postalCode",
+          "addressLine2" => "addressLine2",
+          "givenName" => "0",
+        ]
+      )
+      ->setDisplayOptions('form', array(
+        'type' => 'address_default',
+        'weight' => 1,
+      ));
+
+    // Nation
+    $fields['nation'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Nation'))
+      ->setDescription(t('The nation the Address in is.'))
+      ->setRequired(TRUE)
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 2,
+      ])
+      ->setDisplayConfigurable('form', FALSE);
 
     return $fields;
   }

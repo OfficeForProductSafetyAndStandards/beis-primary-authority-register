@@ -327,9 +327,6 @@ class ParDataPartnership extends Trance {
           ]
         ]
       )
-      ->setDisplayOptions('view', array(
-        'label' => 'above',
-      ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 16,
@@ -354,9 +351,6 @@ class ParDataPartnership extends Trance {
           ]
         ]
       )
-      ->setDisplayOptions('view', array(
-        'label' => 'above',
-      ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 17,
@@ -381,9 +375,6 @@ class ParDataPartnership extends Trance {
           ]
         ]
       )
-      ->setDisplayOptions('view', array(
-        'label' => 'above',
-      ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 18,
@@ -408,9 +399,6 @@ class ParDataPartnership extends Trance {
           ]
         ]
       )
-      ->setDisplayOptions('view', array(
-        'label' => 'above',
-      ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 19,
@@ -435,9 +423,6 @@ class ParDataPartnership extends Trance {
           ]
         ]
       )
-      ->setDisplayOptions('view', array(
-        'label' => 'above',
-      ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 20,
@@ -462,9 +447,6 @@ class ParDataPartnership extends Trance {
           ]
         ]
       )
-      ->setDisplayOptions('view', array(
-        'label' => 'above',
-      ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 21,

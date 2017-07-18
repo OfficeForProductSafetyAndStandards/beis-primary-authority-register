@@ -157,9 +157,6 @@ class ParDataAuthority extends Trance {
           ]
         ]
       )
-      ->setDisplayOptions('view', array(
-        'label' => 'above',
-      ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 5,
@@ -184,9 +181,6 @@ class ParDataAuthority extends Trance {
           ]
         ]
       )
-      ->setDisplayOptions('view', array(
-        'label' => 'above',
-      ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 6,
@@ -211,9 +205,6 @@ class ParDataAuthority extends Trance {
           ]
         ]
       )
-      ->setDisplayOptions('view', array(
-        'label' => 'above',
-      ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 7,

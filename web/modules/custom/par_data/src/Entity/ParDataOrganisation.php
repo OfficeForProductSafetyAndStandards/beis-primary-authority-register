@@ -200,9 +200,6 @@ class ParDataOrganisation extends Trance {
           ]
         ]
       )
-      ->setDisplayOptions('view', array(
-        'label' => 'above',
-      ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 8,
@@ -227,9 +224,6 @@ class ParDataOrganisation extends Trance {
           ]
         ]
       )
-      ->setDisplayOptions('view', array(
-        'label' => 'above',
-      ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 9,
@@ -254,9 +248,6 @@ class ParDataOrganisation extends Trance {
           ]
         ]
       )
-      ->setDisplayOptions('view', array(
-        'label' => 'above',
-      ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 10,
@@ -281,9 +272,6 @@ class ParDataOrganisation extends Trance {
           ]
         ]
       )
-      ->setDisplayOptions('view', array(
-        'label' => 'above',
-      ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 11,
@@ -308,9 +296,6 @@ class ParDataOrganisation extends Trance {
           ]
         ]
       )
-      ->setDisplayOptions('view', array(
-        'label' => 'above',
-      ))
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 12,
