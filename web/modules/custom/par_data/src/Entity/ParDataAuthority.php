@@ -143,34 +143,11 @@ class ParDataAuthority extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
-    // Reference to Primary Person.
-    $fields['primary_person'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Primary Person'))
-      ->setDescription(t('The primary contact for this Authority.'))
-      ->setCardinality(1)
-      ->setSetting('target_type', 'par_data_person')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
-          'target_bundles' => [
-            'person' => 'person'
-          ]
-        ]
-      )
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 5,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ));
-
     // Reference to Person.
     $fields['person'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Alternative Person'))
-      ->setDescription(t('The alternative contacts for this Authority.'))
+      ->setLabel(t('Person'))
+      ->setDescription(t('The contacts for this Organisation. The first Person will be the primary contact.'))
+      ->setRequired(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_person')
       ->setSetting('handler', 'default')
@@ -183,18 +160,20 @@ class ParDataAuthority extends Trance {
       )
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
-        'weight' => 6,
+        'weight' => 9,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => 60,
           'placeholder' => '',
         ),
-      ));
+      ))
+      ->setDisplayConfigurable('form', FALSE);
 
     // Reference to Premises.
     $fields['premises'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Premises'))
-      ->setDescription(t('The premises of this Authority.'))
+      ->setDescription(t('The premises of this Organisation. The first Premises will be the primary Premises'))
+      ->setRequired(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_premises')
       ->setSetting('handler', 'default')
@@ -207,13 +186,14 @@ class ParDataAuthority extends Trance {
       )
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
-        'weight' => 7,
+        'weight' => 10,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => 60,
           'placeholder' => '',
         ),
-      ));
+      ))
+      ->setDisplayConfigurable('form', FALSE);
 
     return $fields;
   }

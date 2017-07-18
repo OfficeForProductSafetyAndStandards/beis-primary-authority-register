@@ -96,7 +96,8 @@ class ParDataPremises extends Trance {
       ->setDisplayOptions('form', array(
         'type' => 'address_default',
         'weight' => 1,
-      ));
+      ))
+      ->setDisplayConfigurable('form', FALSE);
 
     // Nation.
     $fields['nation'] = BaseFieldDefinition::create('string')
