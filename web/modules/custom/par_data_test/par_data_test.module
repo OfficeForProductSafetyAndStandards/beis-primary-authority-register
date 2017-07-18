@@ -25,6 +25,120 @@ function par_data_test_help($route_name, RouteMatchInterface $route_match) {
 
 function par_data_test_create_entities() {
 
+  // Create Advice.
+  $advice_1 = \Drupal\par_data\Entity\ParDataAdvice::create([
+    'type' => 'advice',
+    'name' => 'Just one cookie please',
+    'uid' => 1,
+    'advice_type' => 'To Children',
+    'notes' => 'Cookie Monster Is The Life Coach You Never Knew You Needed. See http://bzfd.it/2tD0DlO for more information.',
+    'visible_authority' => TRUE,
+    'visible_coordinator' => TRUE,
+    'visible_business' => TRUE,
+  ]);
+  $advice_1->save();
+
+  // Create an Inspection Plan.
+  $inspection_plan_1 = \Drupal\par_data\Entity\ParDataInspectionPlan::create([
+    'type' => 'inspection_plan',
+    'name' => 'Cookie inspection',
+    'uid' => 1,
+    'valid_date' => [
+      'value' => '2016-01-01',
+      'end_value' => '2018-01-01',
+    ],
+    'approved_rd_executive' => TRUE,
+    'consulted_national_regulator' => TRUE,
+    'inspection_status' => 'Cookies found',
+  ]);
+  $inspection_plan_1->save();
+
+  // Create a Legal Entity.
+  $legal_entity_1 = \Drupal\par_data\Entity\ParDataLegalEntity::create([
+    'type' => 'legal_entity',
+    'name' => 'ABCD Mart',
+    'uid' => 1,
+    'registered_name' => 'ABCD Mart',
+    'registered_number' => '0123456789',
+    'legal_entity_type' => 'Fictional Company',
+  ]);
+  $legal_entity_1->save();
+
+  // Create a Legal Entity.
+  $legal_entity_2 = \Drupal\par_data\Entity\ParDataLegalEntity::create([
+    'type' => 'legal_entity',
+    'name' => 'Charlie\'s Cafe',
+    'uid' => 1,
+    'registered_name' => 'Charlie\'s Cafe',
+    'registered_number' => '0123456789',
+    'legal_entity_type' => 'Fictional Company',
+  ]);
+  $legal_entity_2->save();
+
+  // Create Premises.
+  $premises_1 = \Drupal\par_data\Entity\ParDataPremises::create([
+    'type' => 'premises',
+    'name' => '1 Sesamme St',
+    'uid' => 1,
+    'address' => [
+      'country_code' => 'GB',
+      'address_line1' => '1 Sesamme St',
+      'address_line2' => 'New York',
+      'locality' => 'New York State',
+      'administrative_area' => 'US-NY',
+      'postal_code' => '12345',
+    ],
+  ]);
+  $premises_1->save();
+
+  // Create Premises.
+  $premises_2 = \Drupal\par_data\Entity\ParDataPremises::create([
+    'type' => 'premises',
+    'name' => '2 Sesamme St',
+    'uid' => 1,
+    'address' => [
+      'country_code' => 'GB',
+      'address_line1' => '2 Sesamme St',
+      'address_line2' => 'New York',
+      'locality' => 'New York State',
+      'administrative_area' => 'US-NY',
+      'postal_code' => '12345',
+    ],
+  ]);
+  $premises_2->save();
+
+  // Create Premises.
+  $premises_3 = \Drupal\par_data\Entity\ParDataPremises::create([
+    'type' => 'premises',
+    'name' => '3 Sesamme St',
+    'uid' => 1,
+    'address' => [
+      'country_code' => 'GB',
+      'address_line1' => '3 Sesamme St',
+      'address_line2' => 'New York',
+      'locality' => 'New York State',
+      'administrative_area' => 'US-NY',
+      'postal_code' => '12345',
+    ],
+  ]);
+  $premises_3->save();
+
+  // Create Premises.
+  $premises_4 = \Drupal\par_data\Entity\ParDataPremises::create([
+    'type' => 'premises',
+    'name' => '4 Sesamme St',
+    'uid' => 1,
+    'address' => [
+      'country_code' => 'GB',
+      'address_line1' => '4 Sesamme St',
+      'address_line2' => 'New York',
+      'locality' => 'New York State',
+      'administrative_area' => 'US-NY',
+      'postal_code' => '12345',
+    ],
+  ]);
+  $premises_4->save();
+
   // Create people entities.
   $person_1 = \Drupal\par_data\Entity\ParDataPerson::create([
     'type' => 'person',
@@ -117,7 +231,27 @@ function par_data_test_create_entities() {
   ]);
   $person_8->save();
 
-  // Create three organisations
+  // Create some SIC Codes.
+  $sic_code_1 = \Drupal\par_data\Entity\ParDataSicCode::create([
+    'type' => 'sic_code',
+    'name' => 'Biscuit sales',
+    'uid' => 1,
+    'sic_code' => '111111',
+    'description' => 'This SIC Code should be used if you sell cookies.'
+  ]);
+  $sic_code_1->save();
+
+  // Create some SIC Codes.
+  $sic_code_2 = \Drupal\par_data\Entity\ParDataSicCode::create([
+    'type' => 'sic_code',
+    'name' => 'Eating of biscuits',
+    'uid' => 1,
+    'sic_code' => '111111',
+    'description' => 'This SIC Code should be used if you allow people to eat cookies on your premises.'
+  ]);
+  $sic_code_2->save();
+
+  // Create two organisations.
   $organisation_1 = \Drupal\par_data\Entity\ParDataOrganisation::create([
     'type' => 'business',
     'name' => 'ABCD Mart',
@@ -132,15 +266,23 @@ function par_data_test_create_entities() {
       'ABCD',
       'ABCD Mart',
     ],
-    'primary_person' => [
-      $person_1->id(),
-    ],
     'person' => [
+      $person_1->id(),
       $person_2->id(),
+    ],
+    'premises' => [
+      $premises_1->id(),
+    ],
+    'legal_entity' => [
+      $legal_entity_1->id()
+    ],
+    'sic_code' => [
+      $sic_code_1->save(),
     ]
   ]);
   $organisation_1->save();
-  // Create three organisations
+
+  // Create three organisations.
   $organisation_2 = \Drupal\par_data\Entity\ParDataOrganisation::create([
     'type' => 'business',
     'name' => 'Charlie\'s Cafe',
@@ -155,14 +297,39 @@ function par_data_test_create_entities() {
       'Charlie\'s',
       'Charlie\'s Cafe',
     ],
-    'primary_person' => [
-      $person_3->id(),
-    ],
     'person' => [
+      $person_3->id(),
       $person_4->id(),
+    ],
+    'premises' => [
+      $premises_2->id(),
+    ],
+    'legal_entity' => [
+      $legal_entity_1->id()
+    ],
+    'sic_code' => [
+      $sic_code_2->save(),
     ]
   ]);
   $organisation_1->save();
+
+  // Create Regulatory Area.
+  $regulatory_area_1 = \Drupal\par_data\Entity\ParDataRegulatoryArea::create([
+    'type' => 'regulatory_area',
+    'name' => 'Cookie control',
+    'uid' => 1,
+    'area_name' => 'Cookie control',
+  ]);
+  $regulatory_area_1->save();
+
+  // Create Regulatory Area.
+  $regulatory_area_2 = \Drupal\par_data\Entity\ParDataRegulatoryArea::create([
+    'type' => 'regulatory_area',
+    'name' => 'Alphabet learning',
+    'uid' => 1,
+    'area_name' => 'Alphabet learning',
+  ]);
+  $regulatory_area_2->save();
 
   // Create two authorities.
   $authority_1 = \Drupal\par_data\Entity\ParDataAuthority::create([
@@ -173,12 +340,16 @@ function par_data_test_create_entities() {
     'authority_type' => 'Local Authority',
     'nation' => 'USA',
     'ons_code' => '123456',
-    'primary_person' => [
-      $person_5->id(),
-    ],
     'person' => [
+      $person_5->id(),
       $person_6->id(),
-    ]
+    ],
+    'regulatory_area' => [
+      $regulatory_area_1->id(),
+    ],
+    'premises' => [
+      $premises_3->id(),
+    ],
   ]);
   $authority_1->save();
   $authority_2 = \Drupal\par_data\Entity\ParDataAuthority::create([
@@ -189,12 +360,16 @@ function par_data_test_create_entities() {
     'authority_type' => 'Local Authority',
     'nation' => 'USA',
     'ons_code' => '123456',
-    'primary_person' => [
-      $person_7->id(),
-    ],
     'person' => [
+      $person_7->id(),
       $person_8->id(),
-    ]
+    ],
+    'regulatory_area' => [
+      $regulatory_area_2->id(),
+    ],
+    'premises' => [
+      $premises_4->id(),
+    ],
   ]);
   $authority_2->save();
 
@@ -227,6 +402,15 @@ function par_data_test_create_entities() {
     'person' => [
       $person_1->id(),
       $person_3->id(),
+    ],
+    'regulatory_area' => [
+      $regulatory_area_1->id(),
+    ],
+    'advice' => [
+      $advice_1->id(),
+    ],
+    'inspection_plan' => [
+      $inspection_plan_1->id(),
     ]
   ]);
   $partnership->save();
