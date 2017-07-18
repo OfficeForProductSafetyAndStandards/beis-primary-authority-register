@@ -347,10 +347,6 @@ $aliases['paas-sanitized'] = array(
 );
 $aliases['paas-unsanitized'] = array(
     'user' => 1,
-    'command-specific' => array (
-        'sql-dump' => array(
-        ),
-    ),
     'root' => '/home/vcap/app/web'
 );
 
