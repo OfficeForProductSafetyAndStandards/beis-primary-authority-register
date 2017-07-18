@@ -11,12 +11,4 @@
  */
 #}
 
-{%
-  set classes = [
-    'form-control',
-    errors ? 'form-group-error'
-  ]
-%}
-
-<span class="form-hint">{{ attributes.placeholder }}</span>
-<input type="checkbox"{{ attributes.addClass(classes).removeAttribute('placeholder') }} />{{ children }}
+<input type="checkbox"{{ attributes.addClass(classes).removeAttribute('placeholder') }} />
