@@ -37,28 +37,26 @@ class EntityParOrganisationTest extends EntityKernelTestBase {
   }
 
   /**
-   * Test to validate a PAR Authority entity.
+   * Test to validate a PAR Organisation entity.
    */
   public function testEntityValidate() {
     $this->createUser();
-    $string = $this->randomString(255);
-    $long_string = $this->randomString(1000);
 
     $this->createUser();
     $entity = ParDataOrganisation::create([
       'type' => 'business',
-      'title' => 'test',
+      'name' => 'test',
       'uid' => 1,
-      'name' => 'Test Business',
+      'organisation_name' => 'Test Business',
       'size' => 'Enormous',
       'employees_band' => '10-50',
       'nation' => 'Wales',
-      'comments' => $long_string,
+      'comments' => $this->randomString(1000),
       'premises_mapped' => TRUE,
       'trading_name' => [
-        $string,
-        $string,
-        $string,
+        $this->randomString(255),
+        $this->randomString(255),
+        $this->randomString(255),
       ],
     ]);
     $violations = $entity->validate();
@@ -68,29 +66,27 @@ class EntityParOrganisationTest extends EntityKernelTestBase {
   /**
    * Test to validate a PAR Organisation entity.
    */
-  public function testRequiredFields() {
+  public function testRequiredLengthFields() {
     $this->createUser();
-    $string = $this->randomString(256);
-    $long_string = $this->randomString(1000);
 
     $entity = ParDataOrganisation::create([
       'type' => 'business',
-      'title' => 'test',
+      'name' => 'test',
       'uid' => 1,
-      'name' => $this->randomString(501),
-      'size' => $string,
-      'employees_band' => $string,
-      'nation' => $string,
-      'comments' => $long_string,
+      'organisation_name' => $this->randomString(501),
+      'size' => $this->randomString(256),
+      'employees_band' => $this->randomString(256),
+      'nation' => $this->randomString(256),
+      'comments' => $this->randomString(1000),
       'premises_mapped' => $this->randomString(10),
       'trading_name' => [
-        $string,
-        $string,
-        $string,
+        $this->randomString(256),
+        $this->randomString(256),
+        $this->randomString(256),
       ],
     ]);
     $violations = $entity->validate()->getByFields([
-      'name',
+      'organisation_name',
       'size',
       'employees_band',
       'nation',
@@ -98,7 +94,9 @@ class EntityParOrganisationTest extends EntityKernelTestBase {
       'premises_mapped',
       'trading_name',
     ]);
-    $this->assertEqual(count($violations), 7, 'Required fields cannot be empty.');
+    $this->assertEqual(count($violations), 7, 'Field values cannot be longer than their allowed lengths.');
+    $this->assertEqual($violations[0]->getMessage()->render(), t('%field: may not be longer than 500 characters.', ['%field' => 'Name']), 'The length of the Name field is correct..');
+    $this->assertEqual($violations[1]->getMessage()->render(), t('%field: may not be longer than 255 characters.', ['%field' => 'Size']), 'The length of the Size field is correct.');
   }
 
   /**
@@ -106,23 +104,21 @@ class EntityParOrganisationTest extends EntityKernelTestBase {
    */
   public function testEntityCreate() {
     $this->createUser();
-    $string = $this->randomString(255);
-    $long_string = $this->randomString(1000);
 
     $entity = ParDataOrganisation::create([
       'type' => 'business',
-      'title' => 'test',
+      'name' => 'test',
       'uid' => 1,
-      'name' => 'Test Business',
+      'organisation_name' => 'Test Business',
       'size' => 'Enormous',
       'employees_band' => '10-50',
       'nation' => 'Wales',
-      'comments' => $long_string,
+      'comments' => $long_string = $this->randomString(1000),
       'premises_mapped' => TRUE,
       'trading_name' => [
-        $string,
-        $string,
-        $string,
+        $this->randomString(255),
+        $this->randomString(255),
+        $this->randomString(255),
       ],
     ]);
     $this->assertTrue($entity->save(), 'PAR Organisation entity saved correctly.');

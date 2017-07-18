@@ -43,9 +43,9 @@ class EntityParAuthorityTest extends EntityKernelTestBase {
     $this->createUser();
     $entity = ParDataAuthority::create([
       'type' => 'authority',
-      'title' => 'test',
+      'name' => 'test',
       'uid' => 1,
-      'name' => 'Test Authority',
+      'authority_name' => 'Test Authority',
       'authority_type' => 'Local Authority',
       'nation' => 'Wales',
       'ons_code' => '123456',
@@ -61,15 +61,15 @@ class EntityParAuthorityTest extends EntityKernelTestBase {
     $this->createUser();
     $entity = ParDataAuthority::create([
       'type' => 'authority',
-      'title' => 'test',
+      'name' => 'test',
       'uid' => 1,
-      'name' => '',
+      'authority_name' => '',
       'authority_type' => '',
       'nation' => '',
       'ons_code' => '',
     ]);
     $violations = $entity->validate()->getByFields([
-      'name',
+      'authority_name',
       'authority_type',
       'nation',
       'ons_code',
@@ -79,15 +79,41 @@ class EntityParAuthorityTest extends EntityKernelTestBase {
   }
 
   /**
+   * Test to validate a PAR Authority entity.
+   */
+  public function testRequiredLengthFields() {
+    $this->createUser();
+
+    $entity = ParDataAuthority::create([
+      'type' => 'authority',
+      'name' => 'test',
+      'uid' => 1,
+      'authority_name' => $this->randomString(501),
+      'authority_type' => $this->randomString(256),
+      'nation' => $this->randomString(256),
+      'ons_code' => $this->randomString(256),
+    ]);
+    $violations = $entity->validate()->getByFields([
+      'authority_name',
+      'authority_type',
+      'nation',
+      'ons_code',
+    ]);
+    $this->assertEqual(count($violations), 4, 'Field values cannot be longer than their allowed lengths.');
+    $this->assertEqual($violations[0]->getMessage()->render(), t('%field: may not be longer than 500 characters.', ['%field' => 'Name']), 'The length of the Name field is correct..');
+    $this->assertEqual($violations[1]->getMessage()->render(), t('%field: may not be longer than 255 characters.', ['%field' => 'Authority Type']), 'The length of the Authority Type field is correct.');
+  }
+
+  /**
    * Test to create and save a PAR Authority entity.
    */
   public function testEntityCreate() {
     $this->createUser();
     $entity = ParDataAuthority::create([
       'type' => 'authority',
-      'title' => 'test',
+      'name' => 'test',
       'uid' => 1,
-      'name' => 'Test Authority',
+      'authority_name' => 'Test Authority',
       'authority_type' => 'Local Authority',
       'nation' => 'Wales',
       'ons_code' => '123456',

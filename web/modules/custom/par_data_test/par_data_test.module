@@ -22,3 +22,24 @@ function par_data_test_help($route_name, RouteMatchInterface $route_match) {
     default:
   }
 }
+
+function par_data_test_create_entities() {
+  $authority = \Drupal\par_data\Entity\ParDataAuthority::create([
+    'type' => 'authority',
+    'title' => 'Lower East Side Borough Council',
+    'uid' => 1,
+    'name' => 'Lower East Side Borough Council',
+    'authority_type' => 'Local Authority',
+    'nation' => 'USA',
+    'ons_code' => '123456',
+  ]);
+  $alternative_authority = \Drupal\par_data\Entity\ParDataAuthority::create([
+    'type' => 'authority',
+    'title' => 'Upper West Side Borough Council',
+    'uid' => 1,
+    'name' => 'Upper West Side Borough Council',
+    'authority_type' => 'Local Authority',
+    'nation' => 'USA',
+    'ons_code' => '123456',
+  ]);
+}

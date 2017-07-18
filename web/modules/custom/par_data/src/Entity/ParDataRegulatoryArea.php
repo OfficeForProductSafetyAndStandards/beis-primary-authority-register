@@ -72,7 +72,7 @@ class ParDataRegulatoryArea extends Trance {
     $fields = parent::baseFieldDefinitions($entity_type);
 
     // Name.
-    $fields['name'] = BaseFieldDefinition::create('string')
+    $fields['area_name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Name'))
       ->setDescription(t('The name of the Regulatory Area.'))
       ->setTranslatable(TRUE)

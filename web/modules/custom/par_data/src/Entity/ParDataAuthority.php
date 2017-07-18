@@ -72,7 +72,7 @@ class ParDataAuthority extends Trance {
     $fields = parent::baseFieldDefinitions($entity_type);
 
     // Name.
-    $fields['name'] = BaseFieldDefinition::create('string')
+    $fields['authority_name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Name'))
       ->setDescription(t('The name of the Authority.'))
       ->setRequired(TRUE)
