@@ -79,7 +79,6 @@ class StyleguideForm extends FormBase {
     $form['checkbox'] = [
       '#type' => 'checkbox',
       '#title' => t('Send me a copy'),
-//      '#description' => t('This is a hint, choose whether you would like a copy of this form.'),
     ];
 
     $form['checkboxes'] = [
