@@ -35,7 +35,7 @@ class StyleguideForm extends FormBase {
       '#title' => t('Basic textarea'),
       '#description' => t('This is a text area hint, please enter a few sentences.'),
     ];
-    
+
     $form['file_upload'] = [
       '#type' => 'managed_file',
       '#title' => t('Upload image'),
@@ -43,7 +43,7 @@ class StyleguideForm extends FormBase {
       '#upload_location' => 's3public://styleguide/',
       '#description' => t('This is an image hint, please select an image of type GIF, JPG or PNG.'),
     ];
-    
+
     $form['select'] = [
       '#type' => 'select',
       '#title' => t('Basic select dropdown'),
@@ -54,7 +54,7 @@ class StyleguideForm extends FormBase {
       ],
       '#description' => t('This is a select list hint, please choose an option.'),
     ];
-    
+
     $form['radios_2'] = [
       '#type' => 'radios',
       '#title' => t('Do you already have a personal user account?'),
@@ -64,7 +64,7 @@ class StyleguideForm extends FormBase {
       ],
       '#description' => t('This is a hint, if you already have a user account please select ‘Yes’.'),
     ];
-    
+
     $form['radios_3'] = [
       '#type' => 'radios',
       '#title' => t('Where do you live?'),
@@ -75,7 +75,7 @@ class StyleguideForm extends FormBase {
       ],
       '#description' => t('This is a hint, choose an option.'),
     ];
-    
+
     $form['checkbox'] = [
       '#type' => 'checkbox',
       '#title' => t('Send me a copy'),
@@ -83,7 +83,7 @@ class StyleguideForm extends FormBase {
       '#suffix' => '</div>',
       '#description' => t('This is a hint, choose whether you would like a copy of this form.'),
     ];
-    
+
     $form['checkboxes'] = [
       '#type' => 'checkboxes',
       '#title' => t('Which types of waste do you transport regularly?'),
@@ -95,7 +95,7 @@ class StyleguideForm extends FormBase {
       '#attributes' => ['option_count' => 3],
       '#description' => t('This is a hint, choose whether you would like a copy of this form.'),
     ];
-    
+
     $form['fieldset'] = [
       '#type' => 'fieldset',
       '#title' => t('Fieldset example'),
@@ -108,7 +108,12 @@ class StyleguideForm extends FormBase {
         '#description' => t('This is a hint within a fieldset, enter some text into the box.'),
       ],
     ];
-    
+
+    $form['next'] = [
+      '#type' => 'submit',
+      '#value' => t('Next')
+    ];
+
     return $form;
   }
 
