@@ -13,6 +13,7 @@ module:
   content_translation: 0
   contextual: 0
   datetime: 0
+  datetime_range: 0
   dblog: 0
   dynamic_page_cache: 0
   editor: 0
@@ -37,6 +38,7 @@ module:
   options: 0
   page_cache: 0
   pagerer: 0
+  par_data: 0
   par_forms: 0
   par_header: 0
   par_styleguide: 0

@@ -5,7 +5,7 @@ This module is intended to create the PAR Data entity types required as set out 
 This module should define the base entity definitions for each entity in the Physical model.
 
 ### What should it not do?
-This module should not contain any entities, including entity type config entities, these should reside in a separate feature module.
+This module should not define the validation or configuration for the PAR Data other than that required to setup the schema. Validation and configuration of field options should be handled by a separate module.
 
 ### Why are we using custom entities?
 We have decided to use custom entities because the schema and relationship requirements for some of the entities are likely to vary from standard pages.
