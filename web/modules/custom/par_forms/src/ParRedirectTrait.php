@@ -9,8 +9,8 @@ trait ParRedirectTrait {
   /**
    * Get link for any given step.
    */
-  public function getLinkByRoute($route, $link_options = []) {
-    $route_params = $this->getRouteParams();
+  public function getLinkByRoute($route, $route_params = [], $link_options = []) {
+    $route_params += $this->getRouteParams();
     $link_options += [
       'absolute' => TRUE,
       'attributes' => ['class' => 'flow-link']
