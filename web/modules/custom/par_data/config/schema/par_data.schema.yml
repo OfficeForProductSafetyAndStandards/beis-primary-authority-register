@@ -6,12 +6,6 @@ par_data.settings:
     stubbed:
       type: boolean
       label: 'Whether to stub the entities when testing.'
-    stubs:
-      type: sequence
-      label: 'The default entities for each type.'
-      sequence:
-        type: integer
-        label: 'Default entity'
 
 # PAR Data Entity types
 par_data.par_data_type.*:
