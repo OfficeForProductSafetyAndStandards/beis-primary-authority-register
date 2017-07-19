@@ -45,6 +45,7 @@ class ParFlowTransitionSecondForm extends ParBaseForm {
       $this->loadDataValue("person_{$par_data_person->id()}_salutation", $par_data_person->get('salutation')->getString());
       $this->loadDataValue("person_{$par_data_person->id()}_name", $par_data_person->get('person_name')->getString());
       $this->loadDataValue("person_{$par_data_person->id()}_phone", $par_data_person->get('work_phone')->getString());
+      $this->loadDataValue("person_{$par_data_person->id()}_mobile_phone", $par_data_person->get('mobile_phone')->getString());
       $this->loadDataValue("person_{$par_data_person->id()}_email", $par_data_person->get('email')->getString());
     }
     $this->loadDataValue('person_id', $par_data_person->id());
@@ -88,6 +89,14 @@ class ParFlowTransitionSecondForm extends ParBaseForm {
     ];
 
     // The Person's work phone number.
+    $form['mobile_phone'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Mobile Phone'),
+      '#default_value' => $this->getDefaultValues("person_{$this->getDefaultValues('person_id')}_mobile_phone"),
+      '#required' => TRUE,
+    ];
+
+    // The Person's work phone number.
     $form['email'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Email'),
@@ -114,6 +123,7 @@ class ParFlowTransitionSecondForm extends ParBaseForm {
     $person->set('salutation', $this->getTempDataValue('salutation'));
     $person->set('person_name', $this->getTempDataValue('person_name'));
     $person->set('work_phone', $this->getTempDataValue('work_phone'));
+    $person->set('mobile_phone', $this->getTempDataValue('mobile_phone'));
     $person->set('email', $this->getTempDataValue('email'));
     if ($person->save()) {
       $this->deleteStore();
