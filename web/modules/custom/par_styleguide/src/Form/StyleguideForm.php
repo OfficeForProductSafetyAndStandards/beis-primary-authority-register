@@ -122,7 +122,13 @@ class StyleguideForm extends FormBase {
     $form_state->setErrorByName('textfield', $this->t("This is a test validation, the value %value for %field is invalid.", ['%value' => $form_state->getValue('textfield'), '%field' => 'textfield']));
     $form_state->setErrorByName('checkbox', $this->t("This is a test validation, the value %value for %field is invalid.", ['%value' => $form_state->getValue('checkbox'), '%field' => 'checkbox']));
     $form_state->setErrorByName('textarea', $this->t("This is a test validation, the value %value for %field is invalid.", ['%value' => $form_state->getValue('textarea'), '%field' => 'textarea']));
+    $form_state->setErrorByName('file_upload', $this->t('This is a test validation for a radio without any option'));
+    $form_state->setErrorByName('select', $this->t('This is a test validation for a radio without any option'));
+    $form_state->setErrorByName('radios_1', $this->t('This is a test validation for a radio without any option'));
+    $form_state->setErrorByName('radios_2', $this->t('This is a test validation for a radio without any option'));
     $form_state->setErrorByName('radios_3', $this->t('This is a test validation for a radio without any option'));
+    $form_state->setErrorByName('checkboxes', $this->t('This is a test validation for a checkboxes.'));
+    $form_state->setErrorByName('textfield_within_fieldset', $this->t('This is a test validation for a radio without any option'));
   }
 
   /**
