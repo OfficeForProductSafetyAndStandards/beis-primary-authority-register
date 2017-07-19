@@ -1,14 +1,29 @@
-## Commands that must be run to update a drupal instance.
-## Use as `sh ./drupal-update.sh /var/www/html`
+USAGE="Usage: drupal-update.sh project_root drupal_env target_filename"
 
-# Pass in the root of the project.
 if [ -n "$1" ]; then
-  ROOT=$1
+  PROJECT_ROOT=$1
 else
-  echo "Must pass the project root as the first argument";
+  echo $USAGE;
   exit 1;
 fi
 
-echo "Current working directory is ${ROOT}/web"
+if [ -n "$2" ]; then
+  DRUPAL_ENV=$2
+else
+  echo $USAGE;
+  exit 1;
+fi
 
-cd ${ROOT}/web; ../vendor/drush/drush/drush sql-dump --result-file=/home/vcap/drush-dump.sql
+if [ -n "$3" ]; then
+  FILEPATH=$3
+else
+  echo $USAGE;
+  exit 1;
+fi
+
+echo "Current working directory is ${PROJECT_ROOT}/web"
+COMMAND="../vendor/drush/drush/drush sql-dump @$DRUPAL_ENV --result-file=/home/vcap/$FILEPATH"
+echo $COMMAND
+
+cd ${PROJECT_ROOT}/web; $COMMAND
+

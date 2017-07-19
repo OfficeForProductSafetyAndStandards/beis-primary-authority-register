@@ -19,6 +19,8 @@ interface ParDataManagerInterface {
   /**
    * Gets the entity definition for the class that defines an entities bundles.
    *
+   * @param \Drupal\Core\Entity\EntityTypeInterface
+   *
    * @return \Drupal\Core\Entity\EntityTypeInterface
    */
   public function getEntityBundleDefinition(EntityTypeInterface $definition);

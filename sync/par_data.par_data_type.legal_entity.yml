@@ -1,0 +1,8 @@
+uuid: 732b6901-7e63-43eb-b62e-bd7ff908d827
+langcode: en
+status: true
+dependencies: {  }
+id: legal_entity
+label: 'Legal Entity'
+description: 'A Legal Entity is a representation of an Organisation via some formal method of registration or else a less formal declaration.'
+help: ''

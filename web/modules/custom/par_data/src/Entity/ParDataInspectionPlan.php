@@ -3,6 +3,8 @@
 namespace Drupal\par_data\Entity;
 
 use Drupal\trance\Trance;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
  * Defines the par_data_inspection_plan entity.
@@ -62,5 +64,72 @@ use Drupal\trance\Trance;
  * )
  */
 class ParDataInspectionPlan extends Trance {
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
+    $fields = parent::baseFieldDefinitions($entity_type);
+
+    // Valid Date.
+    $fields['valid_date'] = BaseFieldDefinition::create('daterange')
+      ->setLabel(t('Valid Date'))
+      ->setDescription(t('The date range this Inspection Plan is valid for.'))
+      ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
+      ->setTranslatable(FALSE)
+      ->setSettings([
+        'datetime_type' => 'date',
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'daterange_default',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE);
+
+    // Approved RD Executive.
+    $fields['approved_rd_executive'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Approved by RD Executive'))
+      ->setDescription(t('Whether this Inspection Plan has been approved by an RD Executive.'))
+      ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
+      ->setTranslatable(FALSE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 2,
+      ]);
+
+    // Approved RD Executive.
+    $fields['consulted_national_regulator'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('National Regulator Consulted'))
+      ->setDescription(t('Whether the national regulator has been consulted about this Inspection Plan.'))
+      ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
+      ->setTranslatable(FALSE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 3,
+      ]);
+
+    // Inspection Status.
+    $fields['inspection_status'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Inspection Status'))
+      ->setDescription(t('The current status of the Inspection Plan itself. For example, current, expired, replaced.'))
+      ->setRequired(TRUE)
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 4,
+      ])
+      ->setDisplayConfigurable('form', FALSE);
+
+    return $fields;
+  }
 
 }

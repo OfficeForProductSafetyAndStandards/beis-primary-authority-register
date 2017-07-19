@@ -1,7 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: coordinatior
-label: Coordinatior
-description: 'A Coordinator is an intermediary association or franchise that can assist in the application to form a Partnership between a Business and an Authority.'
-help: ''

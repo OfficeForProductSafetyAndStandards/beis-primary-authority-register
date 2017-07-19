@@ -1,7 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: regulatory_area
-label: 'Regulatory Area'
-description: 'An area of regulation that can be applied to any Partnership between a Business and an Authority.'
-help: ''
