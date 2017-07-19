@@ -55,7 +55,7 @@ class EntityParOrganisationTest extends ParDataTestBase {
       'trading_name',
     ]);
     $this->assertEqual(count($violations), 6, 'Field values cannot be longer than their allowed lengths.');
-    $this->assertEqual($violations[0]->getMessage()->render(), t('%field: may not be longer than 500 characters.', ['%field' => 'Name']), 'The length of the Name field is correct..');
+    $this->assertEqual($violations[0]->getMessage()->render(), t('%field: may not be longer than 500 characters.', ['%field' => 'Name']), 'The length of the Name field is correct.');
     $this->assertEqual($violations[1]->getMessage()->render(), t('%field: may not be longer than 255 characters.', ['%field' => 'Size']), 'The length of the Size field is correct.');
   }
 
