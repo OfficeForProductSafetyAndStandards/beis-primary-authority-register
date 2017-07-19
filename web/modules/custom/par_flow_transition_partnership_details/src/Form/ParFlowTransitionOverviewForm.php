@@ -35,6 +35,25 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       // If we want to use values already saved we have to tell
       // the form about them.
       $this->loadDataValue('about_partnership', $par_data_partnership->get('about_partnership')->getString());
+
+      $people = $par_data_partnership->get('person')->referencedEntities();
+      $primary_person = array_shift($people);
+
+      // Primary Contacts.
+      $this->loadDataValue('primary_person_name', $primary_person->get('person_name')->getString());
+      $this->loadDataValue('primary_person_phone', $primary_person->get('work_phone')->getString());
+      $this->loadDataValue('primary_person_email', $primary_person->get('email')->getString());
+      // Currently Unknown Field.
+      // $this->loadDataValue('primary_person_hours', $primary_person->get('primary_person_hours')->getString());
+
+      // Secondary Contacts.
+      foreach ($people as $person) {
+        $this->loadDataValue('alernative_person_ ' . $person->id() . '_name', $person->get('person_name')->getString());
+        $this->loadDataValue('alernative_person_ ' . $person->id() . '_phone', $person->get('work_phone')->getString());
+        $this->loadDataValue('alernative_person_ ' . $person->id() . '_email', $person->get('email')->getString());
+        // Currently Unknown Field.
+        // $this->loadDataValue('primary_person_hours', $primary_person->get('primary_person_hours')->getString());
+      }
     }
 
     // Section 1.
@@ -64,10 +83,10 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $form['second_section']['primary_person'] = [
       '#type' => 'markup',
       '#markup' => t('%name <br>%phone <br>%email <br>%hours', [
-        '%name' => '',
-        '%phone' => '',
-        '%email' => '',
-        '%hours' => '',
+        '%name' => $this->getDefaultValues('primary_person_name', '', $this->getFlow()->getFormIdByStep(2)),
+        '%phone' => $this->getDefaultValues('primary_person_phone', '', $this->getFlow()->getFormIdByStep(2)),
+        '%email' => $this->getDefaultValues('primary_person_email', '', $this->getFlow()->getFormIdByStep(2)),
+        '%hours' => $this->getDefaultValues('primary_person_hours', 'Currently Unknown', $this->getFlow()->getFormIdByStep(2)),
       ]),
     ];
     // We can get a link to a given form step like so.
@@ -79,24 +98,32 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     // Section 3.
     $form['third_section'] = [
       '#type' => 'fieldset',
-      '#title' => t('Secondary Primary Authority contact'),
+      '#title' => t('Secondary Primary Authority contacts'),
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-    $form['third_section']['alternative_people'] = [
-      '#type' => 'markup',
-      '#markup' => t('%name <br>%phone <br>%email <br>%hours', [
-        '%name' => '',
-        '%phone' => '',
-        '%email' => '',
-        '%hours' => '',
-      ]),
-    ];
-    // We can get a link to a given form step like so.
-    $form['third_section']['edit'] = [
-      '#type' => 'markup',
-      '#markup' => t('<br>%link', ['%link' => $this->getFlow()->getLinkByStep(4)->setText('edit')->toString()]),
-    ];
+    foreach ($people as $person) {
+      $form['third_section'][$person->id()] = [
+        '#type' => 'fieldset',
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+      $form['third_section']['alternative_people'][$person->id()] = [
+        '#type' => 'markup',
+        '#markup' => t('%name <br>%phone <br>%email <br>%hours', [
+          '%name' => $this->getDefaultValues('alernative_person_ ' . $person->id() . '_name', '', $this->getFlow()->getFormIdByStep(2)),
+          '%phone' => $this->getDefaultValues('alernative_person_ ' . $person->id() . '_phone', '', $this->getFlow()->getFormIdByStep(2)),
+          '%email' => $this->getDefaultValues('alernative_person_ ' . $person->id() . '_email', '', $this->getFlow()->getFormIdByStep(2)),
+          '%hours' => $this->getDefaultValues('alernative_person_' . $person->id() . '_hours', 'Currently Unknown', $this->getFlow()->getFormIdByStep(2)),
+        ]),
+      ];
+
+      // We can get a link to a given form step like so.
+      $form['third_section']['edit'][$person->id()] = [
+        '#type' => 'markup',
+        '#markup' => t('<br>%link', ['%link' => $this->getFlow()->getLinkByStep(4)->setText('edit')->toString()]),
+      ];
+    }
 
     $form['next'] = [
       '#type' => 'submit',
