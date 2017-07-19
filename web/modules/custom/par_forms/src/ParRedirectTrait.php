@@ -26,4 +26,11 @@ trait ParRedirectTrait {
     return $route_params = \Drupal::routeMatch()->getRawParameters()->all();
   }
 
+  /**
+   * Get a specific route parameter.
+   */
+  public function getRouteParam($key) {
+    return $route_params = \Drupal::routeMatch()->getParameter($key);
+  }
+
 }

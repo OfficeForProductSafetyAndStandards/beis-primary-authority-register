@@ -78,11 +78,11 @@ function par_data_test_create_entities() {
   // Create Premises.
   $premises_1 = \Drupal\par_data\Entity\ParDataPremises::create([
     'type' => 'premises',
-    'name' => '1 Sesamme St',
+    'name' => '1 sesame St',
     'uid' => 1,
     'address' => [
       'country_code' => 'GB',
-      'address_line1' => '1 Sesamme St',
+      'address_line1' => '1 sesame St',
       'address_line2' => 'New York',
       'locality' => 'New York State',
       'administrative_area' => 'US-NY',
@@ -94,11 +94,11 @@ function par_data_test_create_entities() {
   // Create Premises.
   $premises_2 = \Drupal\par_data\Entity\ParDataPremises::create([
     'type' => 'premises',
-    'name' => '2 Sesamme St',
+    'name' => '2 sesame St',
     'uid' => 1,
     'address' => [
       'country_code' => 'GB',
-      'address_line1' => '2 Sesamme St',
+      'address_line1' => '2 sesame St',
       'address_line2' => 'New York',
       'locality' => 'New York State',
       'administrative_area' => 'US-NY',
@@ -110,11 +110,11 @@ function par_data_test_create_entities() {
   // Create Premises.
   $premises_3 = \Drupal\par_data\Entity\ParDataPremises::create([
     'type' => 'premises',
-    'name' => '3 Sesamme St',
+    'name' => '3 sesame St',
     'uid' => 1,
     'address' => [
       'country_code' => 'GB',
-      'address_line1' => '3 Sesamme St',
+      'address_line1' => '3 sesame St',
       'address_line2' => 'New York',
       'locality' => 'New York State',
       'administrative_area' => 'US-NY',
@@ -126,11 +126,11 @@ function par_data_test_create_entities() {
   // Create Premises.
   $premises_4 = \Drupal\par_data\Entity\ParDataPremises::create([
     'type' => 'premises',
-    'name' => '4 Sesamme St',
+    'name' => '4 sesame St',
     'uid' => 1,
     'address' => [
       'country_code' => 'GB',
-      'address_line1' => '4 Sesamme St',
+      'address_line1' => '4 sesame St',
       'address_line2' => 'New York',
       'locality' => 'New York State',
       'administrative_area' => 'US-NY',
@@ -380,7 +380,7 @@ function par_data_test_create_entities() {
     'uid' => 1,
     'partnership_type' => 'Direct Partnership',
     'partnership_status' => 'Approved',
-    'about_partnership' => 'This is a partnership between Lower East Side and Charlie\'s Cafe.',
+    'about_partnership' => 'This is a partnership between Lower East Side and Charlie\'s Cafe on Sesame Street.',
     'communication_email' => TRUE,
     'communication_phone' => TRUE,
     'communication_notes' => '',
