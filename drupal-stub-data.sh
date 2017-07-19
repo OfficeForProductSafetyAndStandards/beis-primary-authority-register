@@ -14,4 +14,4 @@ echo "Current working directory is ${ROOT}/web"
 # Enable the test content.
 cd ${ROOT}/web; ../vendor/drush/drush/drush en par_data_test -y;
 # Put the site in maintenance mode.
-cd ${ROOT}/web; ../vendor/drush/drush/drush config-set par_data.settings stubbed true;
+cd ${ROOT}/web; ../vendor/drush/drush/drush config-set par_data.settings stubbed true -y;
