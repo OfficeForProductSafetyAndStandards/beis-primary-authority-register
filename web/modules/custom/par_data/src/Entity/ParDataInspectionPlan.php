@@ -97,7 +97,8 @@ class ParDataInspectionPlan extends Trance {
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => 2,
-      ]);
+      ])
+      ->setDisplayConfigurable('form', FALSE);
 
     // Approved RD Executive.
     $fields['consulted_national_regulator'] = BaseFieldDefinition::create('boolean')
@@ -109,7 +110,8 @@ class ParDataInspectionPlan extends Trance {
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => 3,
-      ]);
+      ])
+      ->setDisplayConfigurable('form', FALSE);
 
     // Inspection Status.
     $fields['inspection_status'] = BaseFieldDefinition::create('string')

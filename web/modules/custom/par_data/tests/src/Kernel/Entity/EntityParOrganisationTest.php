@@ -11,56 +11,16 @@ use Drupal\par_data\Entity\ParDataOrganisationType;
  *
  * @group PAR Data
  */
-class EntityParOrganisationTest extends EntityKernelTestBase {
-
-  static $modules = ['trance', 'par_data'];
+class EntityParOrganisationTest extends ParDataTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected function setUp() {
-    // Must change the bytea_output to the format "escape" before running tests.
-    parent::setUp();
-
-    // Set up schema for par_data.
-    $this->installEntitySchema('par_data_organisation');
-    // Config already installed so we don't need to do this.
-    // But if it changes we may need to update.
-    // $this->installConfig('par_data');
-
-    // Create the entity bundles required for testing.
-    $type = ParDataOrganisationType::create([
-      'id' => 'business',
-      'label' => 'Business',
-    ]);
-    $type->save();
-  }
-
-  /**
-   * Test to validate a PAR Authority entity.
+   * Test to validate a PAR Organisation entity.
    */
   public function testEntityValidate() {
     $this->createUser();
-    $string = $this->randomString(255);
-    $long_string = $this->randomString(1000);
 
     $this->createUser();
-    $entity = ParDataOrganisation::create([
-      'type' => 'business',
-      'title' => 'test',
-      'uid' => 1,
-      'name' => 'Test Business',
-      'size' => 'Enormous',
-      'employees_band' => '10-50',
-      'nation' => 'Wales',
-      'comments' => $long_string,
-      'premises_mapped' => TRUE,
-      'trading_name' => [
-        $string,
-        $string,
-        $string,
-      ],
-    ]);
+    $entity = ParDataOrganisation::create($this->getOrganisationValues());
     $violations = $entity->validate();
     $this->assertEqual(count($violations), 0, 'No violations when validating a default PAR Organisation entity of type Business.');
   }
@@ -68,29 +28,25 @@ class EntityParOrganisationTest extends EntityKernelTestBase {
   /**
    * Test to validate a PAR Organisation entity.
    */
-  public function testRequiredFields() {
+  public function testRequiredLengthFields() {
     $this->createUser();
-    $string = $this->randomString(256);
-    $long_string = $this->randomString(1000);
 
     $entity = ParDataOrganisation::create([
       'type' => 'business',
-      'title' => 'test',
+      'name' => 'test',
       'uid' => 1,
-      'name' => $this->randomString(501),
-      'size' => $string,
-      'employees_band' => $string,
-      'nation' => $string,
-      'comments' => $long_string,
+      'organisation_name' => $this->randomString(501),
+      'size' => $this->randomString(256),
+      'employees_band' => $this->randomString(256),
+      'nation' => $this->randomString(256),
+      'comments' => $this->randomString(1000),
       'premises_mapped' => $this->randomString(10),
       'trading_name' => [
-        $string,
-        $string,
-        $string,
+        $this->randomString(256),
       ],
-    ]);
+    ] + $this->getOrganisationValues());
     $violations = $entity->validate()->getByFields([
-      'name',
+      'organisation_name',
       'size',
       'employees_band',
       'nation',
@@ -98,7 +54,9 @@ class EntityParOrganisationTest extends EntityKernelTestBase {
       'premises_mapped',
       'trading_name',
     ]);
-    $this->assertEqual(count($violations), 7, 'Required fields cannot be empty.');
+    $this->assertEqual(count($violations), 6, 'Field values cannot be longer than their allowed lengths.');
+    $this->assertEqual($violations[0]->getMessage()->render(), t('%field: may not be longer than 500 characters.', ['%field' => 'Name']), 'The length of the Name field is correct..');
+    $this->assertEqual($violations[1]->getMessage()->render(), t('%field: may not be longer than 255 characters.', ['%field' => 'Size']), 'The length of the Size field is correct.');
   }
 
   /**
@@ -106,25 +64,8 @@ class EntityParOrganisationTest extends EntityKernelTestBase {
    */
   public function testEntityCreate() {
     $this->createUser();
-    $string = $this->randomString(255);
-    $long_string = $this->randomString(1000);
 
-    $entity = ParDataOrganisation::create([
-      'type' => 'business',
-      'title' => 'test',
-      'uid' => 1,
-      'name' => 'Test Business',
-      'size' => 'Enormous',
-      'employees_band' => '10-50',
-      'nation' => 'Wales',
-      'comments' => $long_string,
-      'premises_mapped' => TRUE,
-      'trading_name' => [
-        $string,
-        $string,
-        $string,
-      ],
-    ]);
+    $entity = ParDataOrganisation::create($this->getOrganisationValues());
     $this->assertTrue($entity->save(), 'PAR Organisation entity saved correctly.');
   }
 }
