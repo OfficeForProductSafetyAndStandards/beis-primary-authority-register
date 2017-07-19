@@ -3,6 +3,7 @@
 namespace Drupal\par_forms\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
+use Drupal\Core\Link;
 use Drupal\par_forms\ParRedirectTrait;
 
 /**
@@ -170,16 +171,18 @@ class ParFormFlow extends ConfigEntityBase {
    *
    * @param integer $index
    *   The step number to get a link for.
+   * @param array $route_params
+   *   Additional route parameters to add to the route.
    * @param array $link_options
    *   An array of options to set on the link.
    *
    * @return Link
    *   A Drupal link object.
    */
-  public function getLinkByStep($index, $link_options = []) {
+  public function getLinkByStep($index, $route_params = [], $link_options = []) {
     $step = $this->getStep($index);
     $route = $step['route'];
-    return $this->getLinkByRoute($route, $link_options);
+    return $this->getLinkByRoute($route, $route_params, $link_options);
   }
 
 }

@@ -15,6 +15,3 @@ steps:
   3:
     route: par_flow_transition_partnership_details.second
     form_id: par_flow_transition_partnership_primary_contact
-  4:
-    route: par_flow_transition_partnership_details.third
-    form_id: par_flow_transition_partnership_alternative_contact
