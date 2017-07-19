@@ -74,7 +74,7 @@ class ParDataConverter implements ParamConverterInterface {
       $entity_definitions = $this->parDataManager->getParEntityTypes();
 
       // Set the entity ID to use.
-      if ($this->parDataManager->getEntityTypeStorage($entity_definitions[$entity_type_id])->load($value)) {
+      if ($entity_definitions[$entity_type_id] && $this->parDataManager->getEntityTypeStorage($entity_definitions[$entity_type_id])->load($value)) {
         $entity = $this->parent->convert($value, $definition, $name, $defaults);
       }
       elseif (isset($entity_definitions[$entity_type_id])) {

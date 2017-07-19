@@ -23,19 +23,32 @@ class ParFlowTransitionFirstForm extends ParBaseForm {
   }
 
   /**
-   * {@inheritdoc}
+   * Helper to get all the editable values when editing or
+   * revisiting a previously edited page.
+   *
+   * @param ParDataAuthority $par_data_authority
+   *   The Authority being retrieved.
+   * @param ParDataPartnership $par_data_partnership
+   *   The Partnership being retrieved.
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $authority = NULL, ParDataPartnership $partnership = NULL) {
-    if ($partnership) {
+  public function retrieveEditableValues(ParDataAuthority $par_data_authority = NULL, ParDataPartnership $par_data_partnership = NULL) {
+    if ($par_data_partnership) {
       // If we're editing an entity we should set the state
       // to something other than default to avoid conflicts
       // with existing versions of the same form.
-      $this->setState("edit:{$partnership->id()}");
+      $this->setState("edit:{$par_data_partnership->id()}");
 
       // If we want to use values already saved we have to tell
       // the form about them.
-      $this->loadDataValue('about_partnership', $partnership->get('about_partnership')->getString());
+      $this->loadDataValue('about_partnership', $par_data_partnership->get('about_partnership')->getString());
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL, ParDataPartnership $par_data_partnership = NULL) {
+    $this->retrieveEditableValues($par_data_authority, $par_data_partnership);
 
     $form['about_partnership'] = [
       '#type' => 'textarea',
