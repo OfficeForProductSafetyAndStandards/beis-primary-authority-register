@@ -35,7 +35,7 @@
             </h2>
 
             {% if messages|length > 1 %}
-                <ul>
+                <ul class="error-summary-list">
                     {% for message in messages %}
                         <li>{{ message }}</li>
                     {% endfor %}
