@@ -25,23 +25,17 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $authority = NULL, ParDataPartnership $partnership = NULL) {
-    if ($partnership) {
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL, ParDataPartnership $par_data_partnership = NULL) {
+    if ($par_data_partnership) {
       // If we're editing an entity we should set the state
       // to something other than default to avoid conflicts
       // with existing versions of the same form.
-      $this->setState("edit:{$partnership->id()}");
+      $this->setState("edit:{$par_data_partnership->id()}");
 
       // If we want to use values already saved we have to tell
       // the form about them.
-      $this->loadDataValue('about_partnership', $partnership->get('about_partnership')->getValue());
+      $this->loadDataValue('about_partnership', $par_data_partnership->get('about_partnership')->getString());
     }
-
-//    var_dump($this->getFlowName(), $this->getFlowStorage()->loadMultiple());
-foreach ($this->getFlowStorage()->loadMultiple() as $flow) {
-//      var_dump($flow->id());
-}
-    $flow = $this->getFlow();
 
     // Section 1.
     $form['first_section'] = [
@@ -63,35 +57,45 @@ foreach ($this->getFlowStorage()->loadMultiple() as $flow) {
     // Section 2.
     $form['second_section'] = [
       '#type' => 'fieldset',
-      '#title' => t('This is the second section'),
+      '#title' => t('Main Primary Authority contact'),
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-    $form['second_section']['name'] = [
+    $form['second_section']['primary_person'] = [
       '#type' => 'markup',
-      '#markup' => t('Files: %files', ['%files' => 'You have some files']),
+      '#markup' => t('%name <br>%phone <br>%email <br>%hours', [
+        '%name' => '',
+        '%phone' => '',
+        '%email' => '',
+        '%hours' => '',
+      ]),
     ];
     // We can get a link to a given form step like so.
     $form['second_section']['edit'] = [
       '#type' => 'markup',
-      '#markup' => t('<br>Edit: %link', ['%link' => $this->getFlow()->getLinkByStep(3)->setText('Files')->toString()]),
+      '#markup' => t('<br>%link', ['%link' => $this->getFlow()->getLinkByStep(3)->setText('edit')->toString()]),
     ];
 
     // Section 3.
     $form['third_section'] = [
       '#type' => 'fieldset',
-      '#title' => t('This is the third section'),
+      '#title' => t('Secondary Primary Authority contact'),
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-    $form['third_section']['hobby'] = [
+    $form['third_section']['alternative_people'] = [
       '#type' => 'markup',
-      '#markup' => t('Hobbies: <br>%hobbies', ['%hobbies' => $this->getDefaultValues('hobby', '', $this->getFlow()->getFormIdByStep(4))]),
+      '#markup' => t('%name <br>%phone <br>%email <br>%hours', [
+        '%name' => '',
+        '%phone' => '',
+        '%email' => '',
+        '%hours' => '',
+      ]),
     ];
     // We can get a link to a given form step like so.
     $form['third_section']['edit'] = [
       '#type' => 'markup',
-      '#markup' => t('<br>Edit: %link', ['%link' => $this->getFlow()->getLinkByStep(4)->setText('Hobbies')->toString()]),
+      '#markup' => t('<br>%link', ['%link' => $this->getFlow()->getLinkByStep(4)->setText('edit')->toString()]),
     ];
 
     $form['next'] = [

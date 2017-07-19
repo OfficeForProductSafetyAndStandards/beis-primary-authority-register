@@ -4,7 +4,7 @@ services:
     public: false
     decorates: paramconverter.entity
     decoration_priority: 3
-    arguments: ['@par_data.entity_converter.inner', '@entity.manager', '@config.factory']
+    arguments: ['@par_data.entity_converter.inner', '@entity.manager', '@par_data.manager', '@config.factory']
   par_data.manager:
     class: Drupal\par_data\ParDataManager
     arguments: ['@entity.manager']

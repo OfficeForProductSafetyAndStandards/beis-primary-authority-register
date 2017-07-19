@@ -34,11 +34,11 @@ class ParFlowTransitionFirstForm extends ParBaseForm {
 
       // If we want to use values already saved we have to tell
       // the form about them.
-      $this->loadDataValue('about_partnership', $partnership->get('about_partnership')->getValue());
+      $this->loadDataValue('about_partnership', $partnership->get('about_partnership')->getString());
     }
 
     $form['about_partnership'] = [
-      '#type' => 'textfield',
+      '#type' => 'textarea',
       '#title' => $this->t('About'),
       '#description' => $this->t('Use this section to give a brief overview of the project.<br>Include any information you feel may be useful to enforcing authorities.'),
       '#default_value' => $this->getDefaultValues('about_partnership'),
@@ -70,7 +70,8 @@ class ParFlowTransitionFirstForm extends ParBaseForm {
 
     // Save the value for the about_partnership field.
     $partnership = $this->getRouteParam('par_data_partnership');
-    if ($partnership->setValue($this->getTempDataValue('about_partnership'))->save()) {
+    $partnership->set('about_partnership', $this->getTempDataValue('about_partnership'));
+    if ($partnership->save()) {
       $this->deleteStore();
     }
     else {
