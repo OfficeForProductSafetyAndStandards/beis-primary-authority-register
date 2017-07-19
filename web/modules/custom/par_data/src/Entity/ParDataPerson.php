@@ -89,7 +89,7 @@ class ParDataPerson extends Trance {
       ->setDisplayConfigurable('form', FALSE);
 
     // Name.
-    $fields['name'] = BaseFieldDefinition::create('string')
+    $fields['person_name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Name'))
       ->setDescription(t('The name of the Person.'))
       ->setTranslatable(TRUE)
@@ -146,7 +146,7 @@ class ParDataPerson extends Trance {
       ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
-        'max_length' => 255,
+        'max_length' => 500,
         'text_processing' => 0,
       ])
       ->setDefaultValue('')

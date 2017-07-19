@@ -133,7 +133,8 @@ class ParDataPartnership extends Trance {
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => 4,
-      ]);
+      ])
+      ->setDisplayConfigurable('form', FALSE);
 
     // Communication by Phone.
     $fields['communication_phone'] = BaseFieldDefinition::create('boolean')
@@ -144,7 +145,8 @@ class ParDataPartnership extends Trance {
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => 5,
-      ]);
+      ])
+      ->setDisplayConfigurable('form', FALSE);
 
     // Communication Notes.
     $fields['communication_notes'] = BaseFieldDefinition::create('string_long')
@@ -316,6 +318,7 @@ class ParDataPartnership extends Trance {
     $fields['organisation'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Organisation'))
       ->setDescription(t('The Organisations for this Partnership.'))
+      ->setRequired(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_organisation')
       ->setSetting('handler', 'default')
@@ -335,12 +338,14 @@ class ParDataPartnership extends Trance {
           'size' => 60,
           'placeholder' => '',
         ),
-      ));
+      ))
+      ->setDisplayConfigurable('form', FALSE);
 
     // Reference to Authority.
     $fields['authority'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Authorities'))
       ->setDescription(t('The Authorities for this Partnership.'))
+      ->setRequired(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_authority')
       ->setSetting('handler', 'default')
@@ -359,7 +364,8 @@ class ParDataPartnership extends Trance {
           'size' => 60,
           'placeholder' => '',
         ),
-      ));
+      ))
+      ->setDisplayConfigurable('form', FALSE);
 
     // Reference to Advice.
     $fields['advice'] = BaseFieldDefinition::create('entity_reference')
@@ -383,7 +389,8 @@ class ParDataPartnership extends Trance {
           'size' => 60,
           'placeholder' => '',
         ),
-      ));
+      ))
+      ->setDisplayConfigurable('form', FALSE);
 
     // Reference to Inspection Plan.
     $fields['inspection_plan'] = BaseFieldDefinition::create('entity_reference')
@@ -407,12 +414,14 @@ class ParDataPartnership extends Trance {
           'size' => 60,
           'placeholder' => '',
         ),
-      ));
+      ))
+      ->setDisplayConfigurable('form', FALSE);
 
     // Reference to Regulatory Area.
     $fields['regulatory_area'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Regulatory Area'))
       ->setDescription(t('The Regulatory Areas for this Partnership.'))
+      ->setRequired(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_regulatory_area')
       ->setSetting('handler', 'default')
@@ -431,12 +440,14 @@ class ParDataPartnership extends Trance {
           'size' => 60,
           'placeholder' => '',
         ),
-      ));
+      ))
+      ->setDisplayConfigurable('form', FALSE);
 
     // Reference to Person.
     $fields['person'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Contacts'))
-      ->setDescription(t('The contacts for this Partnership.'))
+      ->setDescription(t('The contacts for this Partnership. The first Person will be the primary contact.'))
+      ->setRequired(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_person')
       ->setSetting('handler', 'default')
@@ -455,7 +466,8 @@ class ParDataPartnership extends Trance {
           'size' => 60,
           'placeholder' => '',
         ),
-      ));
+      ))
+      ->setDisplayConfigurable('form', FALSE);
 
     return $fields;
   }

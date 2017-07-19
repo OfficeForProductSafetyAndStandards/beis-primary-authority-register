@@ -116,7 +116,8 @@ class ParDataAdvice extends Trance {
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => 3,
-      ]);
+      ])
+      ->setDisplayConfigurable('form', FALSE);
 
     // Coordinator Visible.
     $fields['visible_coordinator'] = BaseFieldDefinition::create('boolean')
@@ -128,7 +129,8 @@ class ParDataAdvice extends Trance {
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => 4,
-      ]);
+      ])
+      ->setDisplayConfigurable('form', FALSE);
 
     // Business Visible.
     $fields['visible_business'] = BaseFieldDefinition::create('boolean')
@@ -140,7 +142,8 @@ class ParDataAdvice extends Trance {
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => 5,
-      ]);
+      ])
+      ->setDisplayConfigurable('form', FALSE);
 
     return $fields;
   }

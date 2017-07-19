@@ -109,6 +109,7 @@ class ParDataEnforcementNotice extends Trance {
     $fields['primary_authority'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Primary Authority'))
       ->setDescription(t('The Primary Authority that issued this Enforcement Notice.'))
+      ->setRequired(TRUE)
       ->setCardinality(1)
       ->setSetting('target_type', 'par_data_authority')
       ->setSetting('handler', 'default')
@@ -127,12 +128,14 @@ class ParDataEnforcementNotice extends Trance {
           'size' => 60,
           'placeholder' => '',
         ),
-      ));
+      ))
+      ->setDisplayConfigurable('form', FALSE);
 
     // Reference to Enforcing Authority.
     $fields['enforcing_authority'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Enforcing Authority'))
       ->setDescription(t('The Enforcing Authority that is charged with following up on this Enforcement Notice.'))
+      ->setRequired(TRUE)
       ->setCardinality(1)
       ->setSetting('target_type', 'par_data_authority')
       ->setSetting('handler', 'default')
@@ -151,12 +154,14 @@ class ParDataEnforcementNotice extends Trance {
           'size' => 60,
           'placeholder' => '',
         ),
-      ));
+      ))
+      ->setDisplayConfigurable('form', FALSE);
 
     // Reference to Legal Entity.
     $fields['legal_entity'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Legal Entity'))
       ->setDescription(t('The Legal Entities this Enforcement Notice is issued to.'))
+      ->setRequired(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_legal_entity')
       ->setSetting('handler', 'default')
@@ -175,7 +180,8 @@ class ParDataEnforcementNotice extends Trance {
           'size' => 60,
           'placeholder' => '',
         ),
-      ));
+      ))
+      ->setDisplayConfigurable('form', FALSE);
 
     return $fields;
   }

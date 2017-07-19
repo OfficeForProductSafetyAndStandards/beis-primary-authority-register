@@ -1,0 +1,30 @@
+<?php
+/**
+ * @file
+ * Installation hooks for par_data_test module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function par_data_test_install() {
+  // Create the test entities.
+  par_data_test_create_entities();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function par_data_test_uninstall() {
+  // Delete all the entities when we uninstall.
+  // Must be removed before we do the final migration.
+  // This should just be used for testing while we
+  // have no other content in the database.
+  $par_data_manager = \Drupal::service('par_data.manager');
+  foreach ($par_data_manager->getParEntityTypes() as $entity_definition) {
+    $entity_storage = $par_data_manager->getEntityTypeStorage($entity_definition);
+    foreach ($entity_storage->loadMultiple() as $entity) {
+      $entity->delete();
+    }
+  }
+}
