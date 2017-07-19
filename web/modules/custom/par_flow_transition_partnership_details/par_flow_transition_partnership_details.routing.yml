@@ -1,19 +1,11 @@
 # PAR Demo Forms routes
 par_flow_transition_partnership_details.overview:
-  path: '/dv/primary-authority-partnerships/{par_data_authority}/partnership/{par_data_partnership}/details'
+  path: '/dv/primary-authority-partnerships'
   defaults:
     _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionOverviewForm'
     _title: 'Viewing/confirming partnership details'
-    par_data_authority: NULL
-    par_data_partnership: NULL
   requirements:
     _permission: 'access content'
-  options:
-    parameters:
-      par_data_authority:
-        type: entity:par_data_authority
-      par_data_partnership:
-        type: entity:par_data_partnership
 par_flow_transition_partnership_details.first:
   path: '/dv/primary-authority-partnerships/{par_data_authority}/partnership/{par_data_partnership}/details/edit-about'
   defaults:
