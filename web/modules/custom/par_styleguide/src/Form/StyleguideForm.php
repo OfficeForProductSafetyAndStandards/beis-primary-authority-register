@@ -41,13 +41,13 @@ class StyleguideForm extends FormBase {
       '#description' => t('This is a text area hint, please enter a few sentences.'),
     ];
 
-    $form['file_upload'] = [
-      '#type' => 'managed_file',
-      '#title' => t('Upload image'),
-      '#progress_indictator' => 'none',
-      '#upload_location' => 's3public://styleguide/',
-      '#description' => t('This is an image hint, please select an image of type GIF, JPG or PNG.'),
-    ];
+//    $form['file_upload'] = [
+//      '#type' => 'managed_file',
+//      '#title' => t('Upload image'),
+//      '#progress_indictator' => 'none',
+//      '#upload_location' => 's3public://styleguide/',
+//      '#description' => t('This is an image hint, please select an image of type GIF, JPG or PNG.'),
+//    ];
 
     $form['select'] = [
       '#type' => 'select',
@@ -94,7 +94,6 @@ class StyleguideForm extends FormBase {
         1 => t('Active'),
         2 => t('Dormant')
       ],
-      '#attributes' => ['option_count' => 3],
       '#description' => t('This is a hint, choose whether you would like a copy of this form.'),
     ];
 
@@ -143,15 +142,52 @@ class StyleguideForm extends FormBase {
   public function setErrorLink($name, FormStateInterface $form_state) {
 
     $options = array(
-      'fragment' => &NestedArray::getValue($form_state->getCompleteForm(), (array) [$name])['#id']
+      'fragment' => $this->getFormElementPageAnchor($name, $form_state)
     );
 
-    // @todo tbc and decide if %value is strictly necessary.
     $message = $this->t("This is a test validation, %field is invalid.", ['%field' => $name]);
 
     $link = Link::fromTextAndUrl($message, Url::fromUri('internal:' . \Drupal::request()->getRequestUri(), $options))->toString();
 
     $form_state->setErrorByName($name, $link);
+
+  }
+
+  /**
+   * Find form element anchor/HTML id.
+   *
+   * @param string $name
+   *   The name of the form element to set the error for.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state to set the error on.
+   *
+   * @return string $form_element_page_anchor
+   *   Form element/wrapper anchor ID.
+   */
+  public function getFormElementPageAnchor($name, FormStateInterface &$form_state) {
+
+    $form_element = &NestedArray::getValue($form_state->getCompleteForm(), [$name]);
+
+    // Catch some potential FAPI mistakes.
+    if (!isset($form_element['#type']) ||
+        !isset($form_element['#id'])) {
+      return false;
+    }
+
+    // Several options e.g. radios, checkboxes are appended with --wrapper.
+    switch ($form_element['#type']) {
+
+      case 'radios':
+      case 'checkboxes':
+        $form_element_page_anchor = $form_element['#id'] . '--wrapper';
+      break;
+      default:
+        $form_element_page_anchor = $form_element['#id'];
+      break;
+
+    }
+
+    return $form_element_page_anchor;
 
   }
 

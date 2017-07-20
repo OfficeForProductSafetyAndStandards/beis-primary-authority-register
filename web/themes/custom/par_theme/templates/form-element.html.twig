@@ -75,7 +75,7 @@
   </div>
 {% endif %}
 
-<fieldset{{ attributes.addClass(classes) }}>
+<div{{ attributes.addClass(classes) }}>
   {% if label_display in ['before', 'invisible'] %}
     {{ label }}
   {% endif %}
@@ -86,7 +86,7 @@
     </span>
   {% endif %}
 
-  {% if description_display == 'before' and description.content or errors %}
+  {% if description_display == 'before' and description.content %}
     <div{{ description.attributes.addClass(description_classes) }}>
       {{ description.content }}
     </div>
@@ -119,4 +119,4 @@
       {{ description.content }}
     </div>
   {% endif %}
-</fieldset>
+</div>
