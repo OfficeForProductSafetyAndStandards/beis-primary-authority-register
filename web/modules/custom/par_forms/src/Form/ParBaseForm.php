@@ -226,7 +226,7 @@ abstract class ParBaseForm extends FormBase {
     if ($violations) {
       foreach ($violations as $violation) {
         $options = [
-          'fragment' => $this->getFormElementId($name, $form_state)
+          'fragment' => $this->getFormElementPageAnchor($name, $form_state)
         ];
 
         $message = $this->t("This is a test validation, %field is invalid.", ['%field' => $name]);
@@ -277,18 +277,41 @@ abstract class ParBaseForm extends FormBase {
   }
 
   /**
-   * Find form element ID
+   * Find form element anchor/HTML id.
    *
    * @param string $name
    *   The name of the form element to set the error for.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state to set the error on.
    *
-   * @return string
-   *   Form element ID.
+   * @return string $form_element_page_anchor
+   *   Form element/wrapper anchor ID.
    */
-  public function getFormElementId($name, FormStateInterface &$form_state) {
-    return NestedArray::getValue($form_state->getCompleteForm(), [$name])['#id'];
+  public function getFormElementPageAnchor($name, FormStateInterface &$form_state) {
+
+    $form_element = &NestedArray::getValue($form_state->getCompleteForm(), [$name]);
+
+    // Catch some potential FAPI mistakes.
+    if (!isset($form_element['#type']) ||
+      !isset($form_element['#id'])) {
+      return false;
+    }
+
+    // Several options e.g. radios, checkboxes are appended with --wrapper.
+    switch ($form_element['#type']) {
+
+      case 'radios':
+      case 'checkboxes':
+        $form_element_page_anchor = $form_element['#id'] . '--wrapper';
+        break;
+      default:
+        $form_element_page_anchor = $form_element['#id'];
+        break;
+
+    }
+
+    return $form_element_page_anchor;
+
   }
 
   /**
