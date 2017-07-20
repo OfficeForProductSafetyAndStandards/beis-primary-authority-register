@@ -26,11 +26,7 @@ par_data.par_data_type.*:
       label: 'Help'
     uuid:
       type: string
-#    configuration:
-#      type: string
-#      label: 'Configuration'
-#      nullable: true
-    configurattion:
+    configuration:
       type: sequence
       label: 'Configuration elements'
       nullable: true
