@@ -143,7 +143,7 @@ class StyleguideForm extends FormBase {
   public function setErrorLink($name, FormStateInterface $form_state) {
 
     $options = array(
-      'fragment' => $this->getFormElementId($name, $form_state)
+      'fragment' => $this->getFormElementPageAnchor($name, $form_state)
     );
 
     $message = $this->t("This is a test validation, %field is invalid.", ['%field' => $name]);
