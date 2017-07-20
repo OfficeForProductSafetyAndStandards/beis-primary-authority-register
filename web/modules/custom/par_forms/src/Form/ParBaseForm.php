@@ -7,6 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\SessionManagerInterface;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
+use Drupal\par_data\ParDataManagerInterface;
 use Drupal\user\PrivateTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Utility\NestedArray;
@@ -40,6 +41,13 @@ abstract class ParBaseForm extends FormBase {
    * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
    */
   protected $flowStorage;
+
+  /**
+   * The PAR data manager for acting upon PAR Data.
+   *
+   * @var \Drupal\par_data\ParDataManagerInterface
+   */
+  protected $parDataManager;
 
   /**
    * The private temporary storage for persisting multi-step form data.
@@ -94,11 +102,14 @@ abstract class ParBaseForm extends FormBase {
    *   The current user object.
    * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $flow_storage
    *   The flow entity storage handler.
+   * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
+   *   The current user object.
    */
-  public function __construct(PrivateTempStoreFactory $temp_store_factory, SessionManagerInterface $session_manager, AccountInterface $current_user, ConfigEntityStorageInterface $flow_storage) {
+  public function __construct(PrivateTempStoreFactory $temp_store_factory, SessionManagerInterface $session_manager, AccountInterface $current_user, ConfigEntityStorageInterface $flow_storage, ParDataManagerInterface $par_data_manager) {
     $this->sessionManager = $session_manager;
     $this->currentUser = $current_user;
     $this->flowStorage = $flow_storage;
+    $this->parDataManager = $par_data_manager;
     /** @var \Drupal\user\PrivateTempStore store */
     $this->store = $temp_store_factory->get('par_forms_flows');
 
@@ -117,7 +128,8 @@ abstract class ParBaseForm extends FormBase {
       $container->get('user.private_tempstore'),
       $container->get('session_manager'),
       $container->get('current_user'),
-      $entity_manager->getStorage('par_form_flow')
+      $entity_manager->getStorage('par_form_flow'),
+      $container->get('par_data.manager')
     );
   }
 
@@ -129,6 +141,16 @@ abstract class ParBaseForm extends FormBase {
    */
   protected function getLoggerChannel() {
     return 'par_forms';
+  }
+
+  /**
+   * Returns the PAR data manager.
+   *
+   * @return string
+   *   Get the logger channel to use.
+   */
+  protected function getParDataManager() {
+    return $this->parDataManager;
   }
 
   /**
@@ -489,12 +511,21 @@ abstract class ParBaseForm extends FormBase {
   }
 
   /**
-   * Runs on a newly created form
+   * Helper to decide whether what the entity value should be
+   * saved as for a boolean input.
+   *
+   * @param mixed $input
+   *   The input value to check.
+   * @param mixed $on
+   *   The expected value of the on state.
+   * @param mixed $off
+   *   The expected value of the off state.
+   *
+   * @return mixed
+   *   The new value for the entity.
    */
-  public function lookupData() {
-    // Get route parameters.
-
-    // Lookup data.
+  public function decideBooleanValue($input, $on, $off) {
+    return $input === $on ? $on : $off;
   }
 
   /**

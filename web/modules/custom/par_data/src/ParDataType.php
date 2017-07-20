@@ -20,12 +20,30 @@ abstract class ParDataType extends TranceType {
   public $configuration;
 
   /**
-   * Get the configuratino for a given element.
+   * Get the configuration for a given element.
+   *
+   * @param string $element
+   *   The element to retrieve additional configuration for, either a field, property or 'entity'.
    *
    * @return mixed
    */
   public function getConfiguration($element) {
     return isset($this->configuration[$element]) ? $this->configuration[$element] : NULL;
+  }
+
+  /**
+   * Get the configuration for a given element by type.
+   *
+   * @param string $element
+   *   The element to retrieve additional configuration for, either a field, property or 'entity'.
+   * @param string $type
+   *   The type of additional configuration to get.
+   *
+   * @return mixed
+   */
+  public function getConfigurationByType($element, $type) {
+    $element_configuration = $this->getConfiguration($element);
+    return isset($element_configuration[$type]['value']) ? $element_configuration[$type]['value'] : NULL;
   }
 
 }

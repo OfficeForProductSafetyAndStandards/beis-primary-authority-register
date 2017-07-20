@@ -12,15 +12,15 @@ configuration:
       type: 'map'
       name: 'Allowed Values'
       value:
-        -
+        0:
           type: 'string'
           name: 'Awaiting Review'
           value: 'awaiting_review'
-        -
+        1:
           type: 'string'
           name: 'Confimed by Authority'
           value: 'confirmed_authority'
-        -
+        2:
           type: 'string'
           name: 'Confimed by Business'
           value: 'confirmed_business'

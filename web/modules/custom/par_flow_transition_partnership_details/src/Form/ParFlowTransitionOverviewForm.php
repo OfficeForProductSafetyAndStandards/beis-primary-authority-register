@@ -66,8 +66,20 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       foreach ($regulatory_areas as $regulatory_area) {
         $areas[] = $regulatory_area->get('area_name')->getString();
       }
-
       $this->loadDataValue('regulatory_areas', $areas);
+
+      // Partnership Confirmation.
+      $partnership_bundle_definition = $this->parDataManager->getEntityBundleDefinition($par_data_partnership->getEntityType());
+      $partnership_bundle_storage = $this->parDataManager->getEntityTypeStorage($partnership_bundle_definition);
+      $partnership_bundle = $partnership_bundle_storage->load($par_data_partnership->bundle());
+      $allowed_values = $partnership_bundle->getConfigurationByType('partnership_status', 'allowed_values');
+      // Set the on and off values so we don't have to do that again.
+      $this->loadDataValue('confirmation_set_value', $allowed_values[1]['value']);
+      $this->loadDataValue('confirmation_unset_value', $allowed_values[0]['value']);
+      $partnership_status = $par_data_partnership->get('partnership_status')->getString();
+      if ($partnership_status === $allowed_values[1]['value']) {
+        $this->loadDataValue('confirmation', TRUE);
+      }
     }
   }
 
@@ -184,6 +196,8 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#type' => 'checkbox',
       '#title' => t('I confirm that the partnership information above is correct.'),
       '#prefix' => '<div class="form-group">',
+      '#default_value' => $this->getDefaultValues('confirmation', FALSE),
+      '#return_value' => $this->getDefaultValues('confirmation_value', 0),
       '#suffix' => '</div>',
     ];
 
@@ -206,16 +220,22 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Save the value for the about_partnership field.
-    $partnership = $this->getRouteParam('par_data_partnership');
-    if ($this->getTempDataValue('confirmation', 0) === 1) {
-      // @TODO Get allowed values from configuration.
-      $partnership->set('partnership_status', 'Confirmed by Authority');
+    $par_data_authority = $this->getRouteParam('par_data_authority');
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    $this->retrieveEditableValues($par_data_authority, $par_data_partnership);
 
-      if ($partnership->save()) {
+    // Save the value for the about_partnership field.
+    $partnership_status = $this->decideBooleanValue(
+      $this->getTempDataValue('confirmation'),
+      $this->getDefaultValues('confirmation_set_value', NULL),
+      $this->getDefaultValues('confirmation_unset_value', NULL)
+    );
+
+    // Save only if the value is different from the one currently set.
+    if ($partnership_status !== $par_data_partnership->get('partnership_status')->getString()) {
+      if ($par_data_partnership->save()) {
         $this->deleteStore();
-      }
-      else {
+      } else {
         $message = $this->t('The %field field could not be saved for %form_id');
         $replacements = [
           '%field' => 'confirmation',
