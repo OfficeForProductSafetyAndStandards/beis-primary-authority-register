@@ -44,6 +44,7 @@
         "behat/mink": "~1.7",
         "behat/mink-goutte-driver": "~1.2",
         "drupal/coder": "~8.2.0",
+        "drupal/config_inspector": "^1.0@beta",
         "drupal/console": "~1.0.0",
         "drupal/devel": "~1.0.0-rc2",
         "drupal/examples": "dev-1.x",

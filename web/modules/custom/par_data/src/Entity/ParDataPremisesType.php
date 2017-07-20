@@ -36,10 +36,27 @@ use Drupal\trance\TranceType;
  *     "id",
  *     "label",
  *     "description",
- *     "help"
+ *     "help",
+ *     "configuration"
  *   }
  * )
  */
 class ParDataPremisesType extends TranceType {
+
+  /**
+   * The additional configuration options for this entity.
+   *
+   * Note: Whether a field is 'required' will be dictated by the field storage.
+   *
+   * @var array
+   */
+  public $configuration;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getConfiguration() {
+    return $this->configuration;
+  }
 
 }

@@ -8,6 +8,7 @@ module:
   color: 0
   comment: 0
   config: 0
+  config_inspector: 0
   config_update: 0
   contact: 0
   content_translation: 0
