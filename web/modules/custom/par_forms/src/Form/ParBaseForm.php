@@ -225,7 +225,14 @@ abstract class ParBaseForm extends FormBase {
   public function setFieldViolations($name, FormStateInterface &$form_state, EntityConstraintViolationListInterface $violations) {
     if ($violations) {
       foreach ($violations as $violation) {
-        $form_state->setErrorByName($name, t('%message', ['%message' => $violation->getMessage()->render()]));
+        $options = [
+          'fragment' => $this->getFormElementId($name, $form_state)
+        ];
+
+        $message = $this->t("This is a test validation, %field is invalid.", ['%field' => $name]);
+        $link = $this->getFlow()->getLinkByStep($this->getCurrentStep(), [], $options)->setText($message)->toString();
+
+        $form_state->setErrorByName($name, $link);
       }
     }
   }
@@ -244,15 +251,44 @@ abstract class ParBaseForm extends FormBase {
    * @return array
    *   An array containing details of the next configured step.
    */
-  public function getNextStep() {
+  public function getCurrentStep() {
     $flow = $this->getFlow();
     // Lookup the current step to more accurately determine the next step.
     $current_step = $flow->getStepByFormId($this->getFormId());
-    $next_step = ++$current_step['step'];
-    $next_step = isset($current_step['step']) ? $flow->getStep(++$current_step['step']) : $flow->getStep(1);
+
+    return isset($current_step['step']) ? $current_step['step'] : NULL;
+  }
+
+  /**
+   * Go to next step.
+   *
+   * @return array
+   *   An array containing details of the next configured step.
+   */
+  public function getNextStep() {
+    $flow = $this->getFlow();
+    if ($current_step = $this->getCurrentStep()) {
+      $next_index = ++$current_step;
+    }
+    $next_step = isset($next_index) ? $flow->getStep($next_index) : $flow->getStep(1);
 
     // If there is no next step we'll stay on this step.
     return isset($next_step['route']) ? $next_step['route'] : $current_step['route'];
+  }
+
+  /**
+   * Find form element ID
+   *
+   * @param string $name
+   *   The name of the form element to set the error for.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state to set the error on.
+   *
+   * @return string
+   *   Form element ID.
+   */
+  public function getFormElementId($name, FormStateInterface &$form_state) {
+    return NestedArray::getValue($form_state->getCompleteForm(), [$name])['#id'];
   }
 
   /**
