@@ -86,6 +86,9 @@
             },
             "drush/drush": {
                 "Drush sql-dump compatibility with PostgresSQL 9.5+": "./patches/drush-sqldump-postgres95.patch"
+            },
+            "drupal/flysystem": {
+                "Add Drush commands for sending and receiving files": "./patches/flysystem-drush-command.patch"
             }
         }
     },
