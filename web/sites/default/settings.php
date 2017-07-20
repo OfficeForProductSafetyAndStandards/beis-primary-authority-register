@@ -816,16 +816,16 @@ $schemes = [
     'serve_js' => FALSE,
     'serve_css' => FALSE,
   ],
-  's3artifacts' => [
-    'name' => 'S3 Private Artifacts',
-    'description' => 'The S3 store for private artifacts.',
+  's3backups' => [
+    'name' => 'S3 Database Backups',
+    'description' => 'The S3 store for database backups.',
     'driver' => 's3',
       'config' => [
       'key'    => getenv('S3_ACCESS_KEY'),
       'secret' => getenv('S3_SECRET_KEY'),
       'region' => 'eu-west-1',
       'bucket' => getenv('S3_BUCKET_ARTIFACTS'),
-      'prefix' => 'private',
+      'prefix' => 'backups',
       'protocol' => 'https'
     ],
     'cache' => TRUE,
