@@ -75,7 +75,7 @@
   </div>
 {% endif %}
 
-<fieldset{{ attributes.addClass(classes) }}>
+<div{{ attributes.addClass(classes) }}>
   {% if label_display in ['before', 'invisible'] %}
     {{ label }}
   {% endif %}
@@ -119,4 +119,4 @@
       {{ description.content }}
     </div>
   {% endif %}
-</fieldset>
+</div>
