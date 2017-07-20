@@ -133,6 +133,8 @@ class StyleguideForm extends FormBase {
     $this->setErrorLink('radios_2', $form_state);
     $this->setErrorLink('radios_3', $form_state);
 
+    $this->setErrorLink('textfield_within_fieldset', $form_state);
+
     $this->setErrorLink('checkbox', $form_state);
     $this->setErrorLink('checkboxes', $form_state);
 
@@ -140,13 +142,12 @@ class StyleguideForm extends FormBase {
 
   public function setErrorLink($name, FormStateInterface $form_state) {
 
-    // @todo refactor to allow 'textfield_within_fieldset' to work as demo above.
     $options = array(
-      'fragment' => &NestedArray::getValue($form_state->getCompleteForm(), (array) [$name])['#id'] // @todo #id is always not available.
+      'fragment' => &NestedArray::getValue($form_state->getCompleteForm(), (array) [$name])['#id']
     );
 
-    $message = $this->t("This is a test validation, the value %value for %field is invalid.",
-                        ['%value' => $form_state->getValue($name, ''), '%field' => $name]);
+    // @todo tbc and decide if %value is strictly necessary.
+    $message = $this->t("This is a test validation, %field is invalid.", ['%field' => $name]);
 
     $link = Link::fromTextAndUrl($message, Url::fromUri('internal:' . \Drupal::request()->getRequestUri(), $options))->toString();
 
