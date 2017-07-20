@@ -1,9 +1,9 @@
 diff --git a/flysystem.drush.inc b/flysystem.drush.inc
 new file mode 100644
-index 0000000..16936c7
+index 0000000..b9578de
 --- /dev/null
 +++ b/flysystem.drush.inc
-@@ -0,0 +1,83 @@
+@@ -0,0 +1,81 @@
 +<?php
 +
 +/**
@@ -27,11 +27,9 @@ index 0000000..16936c7
 +    'description' => 'Get a file from a Flysystem stream',
 +    'aliases' => ['fsg'],
 +    'arguments' => [
-+      'arguments' => [
-+          'scheme' => 'Name of the Flysystem scheme',
-+          'remote-path' => 'Path to the file on the remote file system, including filename',
-+          'local-path' => 'Path to the file on the local file system, including filename',
-+      ],
++      'scheme' => 'Name of the Flysystem scheme',
++      'remote-path' => 'Path to the file on the remote file system, including filename',
++      'local-path' => 'Path to the file on the local file system, including filename',
 +    ],
 +    'examples' => [
 +      'drush fsg s3public tests/report.json /home/me/report.json' => 'Get tests/report.json from the s3public Flysystem',
