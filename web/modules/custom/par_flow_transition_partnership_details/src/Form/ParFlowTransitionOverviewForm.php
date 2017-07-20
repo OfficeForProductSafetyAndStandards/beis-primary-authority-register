@@ -171,6 +171,14 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       ];
     }
 
+    // Partnership Confirmation.
+    $form['confirmation'] = [
+      '#type' => 'checkbox',
+      '#title' => t('I confirm that the partnership information above is correct.'),
+      '#prefix' => '<div class="form-group">',
+      '#suffix' => '</div>',
+    ];
+
     $form['next'] = [
       '#type' => 'submit',
       '#value' => t('Next'),
@@ -189,6 +197,25 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
+
+    // Save the value for the about_partnership field.
+    $partnership = $this->getRouteParam('par_data_partnership');
+    if ($this->getTempDataValue('confirmation', 0) === 1) {
+      // @TODO Get allowed values from configuration.
+      $partnership->set('partnership_status', 'Confirmed by Authority');
+
+      if ($partnership->save()) {
+        $this->deleteStore();
+      }
+      else {
+        $message = $this->t('The %field field could not be saved for %form_id');
+        $replacements = [
+          '%field' => 'confirmation',
+          '%form_id' => $this->getFormId(),
+        ];
+        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+      }
+    }
 
     // We're not in kansas any more, after submitting the overview let's go home.
     $form_state->setRedirect('<front>');
