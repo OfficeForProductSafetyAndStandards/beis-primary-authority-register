@@ -145,7 +145,8 @@ class StyleguideForm extends FormBase {
       'fragment' => &NestedArray::getValue($form_state->getCompleteForm(), (array) [$name])['#id'] // @todo #id is always not available.
     );
 
-    $message = $this->t("This is a test validation, the value %value for %field is invalid.", ['%value' => $form_state->getValue($name), '%field' => $name]);
+    $message = $this->t("This is a test validation, the value %value for %field is invalid.",
+                        ['%value' => $form_state->getValue($name, ''), '%field' => $name]);
 
     $link = Link::fromTextAndUrl($message, Url::fromUri('internal:' . \Drupal::request()->getRequestUri(), $options))->toString();
 
