@@ -4,6 +4,7 @@ namespace Drupal\par_data\ParamConverter;
 
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\ParamConverter\ParamConverterInterface;
+use Drupal\par_data\ParDataManagerInterface;
 use Symfony\Component\Routing\Route;
 
 
@@ -15,6 +16,13 @@ class ParDataConverter implements ParamConverterInterface {
    * @var \Drupal\Core\Entity\EntityManagerInterface
    */
   protected $entityManager;
+
+  /**
+   * The entity manager.
+   *
+   * @var \Drupal\Core\Entity\EntityManagerInterface
+   */
+  protected $parDataManager;
 
   /**
    * The inner parent service being decorated.
@@ -37,11 +45,14 @@ class ParDataConverter implements ParamConverterInterface {
    *   The param converter that is being decorated.
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *   The entity manager.
+   * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
+   *   The par data manager.
    * @param \Drupal\Core\Config\ConfigFactory $config_factory
    *   The conig factory.
    */
-  public function __construct($parent, EntityManagerInterface $entity_manager, $config_factory) {
+  public function __construct($parent, EntityManagerInterface $entity_manager, ParDataManagerInterface $par_data_manager, $config_factory) {
     $this->entityManager = $entity_manager;
+    $this->parDataManager = $par_data_manager;
     $this->parent = $parent;
     $this->settings = $config_factory->get('par_data.settings');
   }
@@ -56,21 +67,19 @@ class ParDataConverter implements ParamConverterInterface {
   public function convert($value, $definition, $name, array $defaults) {
     // Get stubs and generate a dummy entity.
     if ($this->settings->get('stubbed')) {
+      // Set the entity Type to use.
+      $entity_type_id = substr($definition['type'], strlen('entity:'));
 
       // We need to check if this is one of our entities using the ParDataManager service.
+      $entity_definitions = $this->parDataManager->getParEntityTypes();
 
       // Set the entity ID to use.
-      $entity_type_id = $entity_type_id = substr($definition['type'], strlen('entity:'));
-      if ($storage = $this->entityManager->getStorage($entity_type_id)) {
-        $stub = $this->settings->get('stubs')[$entity_type_id];
-        if (is_numeric($stub)) {
-          $entity = $this->parent->convert($value, $definition, $name, $defaults);
-        }
-        else {
-          $entity = current($storage->loadByProperties([
-            'uuid' => $this->settings->get('stubs')[$entity_type_id]
-          ]));
-        }
+      if ($entity_definitions[$entity_type_id] && $this->parDataManager->getEntityTypeStorage($entity_definitions[$entity_type_id])->load($value)) {
+        $entity = $this->parent->convert($value, $definition, $name, $defaults);
+      }
+      elseif (isset($entity_definitions[$entity_type_id])) {
+        $entities = $this->parDataManager->getEntityTypeStorage($entity_definitions[$entity_type_id])->loadMultiple();
+        $entity = !empty($entities) ? current($entities) : NULL;
       }
 
       return isset($entity) ? $entity : NULL;
@@ -84,8 +93,6 @@ class ParDataConverter implements ParamConverterInterface {
    * {@inheritdoc}
    */
   public function applies($definition, $name, Route $route) {
-
-
     if ($this->settings->get('stubbed')) {
       return TRUE;
     }

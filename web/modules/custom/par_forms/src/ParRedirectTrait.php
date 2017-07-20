@@ -9,8 +9,8 @@ trait ParRedirectTrait {
   /**
    * Get link for any given step.
    */
-  public function getLinkByRoute($route, $link_options = []) {
-    $route_params = $this->getRouteParams();
+  public function getLinkByRoute($route, $route_params = [], $link_options = []) {
+    $route_params += $this->getRouteParams();
     $link_options += [
       'absolute' => TRUE,
       'attributes' => ['class' => 'flow-link']
@@ -24,6 +24,13 @@ trait ParRedirectTrait {
   public function getRouteParams() {
     // Submit the route with all the same parameters.
     return $route_params = \Drupal::routeMatch()->getRawParameters()->all();
+  }
+
+  /**
+   * Get a specific route parameter.
+   */
+  public function getRouteParam($key) {
+    return $route_params = \Drupal::routeMatch()->getParameter($key);
   }
 
 }

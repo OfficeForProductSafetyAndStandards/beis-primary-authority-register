@@ -31,3 +31,10 @@ To run code sniffer against any given module run
 More examples of running PHP Code Sniffer can be found in the [Drupal documentation](https://www.drupal.org/node/1419988)
 
 ## ESLint
+
+
+## Test Content and Stubs
+To test before we have any content it is probably better to:
+
+First enable the test content `/PATH/TO/PROJECT/ROOT/vendor/bin/drush en par_data_test -y`
+Then enable stubs `/PATH/TO/PROJECT/ROOT/vendor/bin/drush config-set par_data.settings stubbed true`

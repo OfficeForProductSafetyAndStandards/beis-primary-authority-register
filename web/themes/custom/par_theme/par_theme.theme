@@ -1,5 +1,5 @@
 <?php
 
 function par_theme_preprocess_fieldset(array &$variables) {
-  $variables['child_count'] = count($variables['element']['#options']);
+  $variables['child_count'] = isset($variables['element']['#options']) ? count($variables['element']['#options']) : 0;
 }
