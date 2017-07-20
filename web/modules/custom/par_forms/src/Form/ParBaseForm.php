@@ -246,10 +246,10 @@ abstract class ParBaseForm extends FormBase {
   }
 
   /**
-   * Go to next step.
+   * Get current step.
    *
-   * @return array
-   *   An array containing details of the next configured step.
+   * @return string
+   *   A string containing the current step.
    */
   public function getCurrentStep() {
     $flow = $this->getFlow();
