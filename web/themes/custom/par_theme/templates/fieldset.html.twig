@@ -36,6 +36,15 @@
   ]
 %}
 
+{%
+  set legend_header_classes = [
+    'heading-medium',
+    'fieldset-legend',
+    required ? 'js-form-required',
+    required ? 'form-required',
+  ]
+%}
+
 {% if child_count <= 2 %}
   {% set classes = classes|merge(['inline']) %}
 {% endif %}
@@ -43,14 +52,6 @@
 <div{{ attributes.addClass(wrapper_classes) }}>
 
   <fieldset{{ attributes.addClass(classes).removeClass('form-group-error') }}>
-    {%
-      set legend_header_classes = [
-        'heading-medium',
-        'fieldset-legend',
-        required ? 'js-form-required',
-        required ? 'form-required',
-      ]
-    %}
 
     <legend{{ legend.attributes }}>
       <h3{{ legend_span.attributes.addClass(legend_header_classes) }}>{{ legend.title }}</h3>
