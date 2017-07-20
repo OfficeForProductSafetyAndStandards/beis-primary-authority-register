@@ -1,4 +1,4 @@
-@ci
+@ci @ie8bug
 Feature: As a PAR user
     I need pagination system
     In order to break down information into easier views
