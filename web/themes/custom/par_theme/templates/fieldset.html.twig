@@ -61,7 +61,7 @@
 
     {% if errors %}
       <span class="error-message">
-        {{ errors }}
+        {{ errors | striptags('<p>') }}
       </span>
     {% endif %}
 
