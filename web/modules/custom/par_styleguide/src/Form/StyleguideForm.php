@@ -41,13 +41,13 @@ class StyleguideForm extends FormBase {
       '#description' => t('This is a text area hint, please enter a few sentences.'),
     ];
 
-    $form['file_upload'] = [
-      '#type' => 'managed_file',
-      '#title' => t('Upload image'),
-      '#progress_indictator' => 'none',
-      '#upload_location' => 's3public://styleguide/',
-      '#description' => t('This is an image hint, please select an image of type GIF, JPG or PNG.'),
-    ];
+//    $form['file_upload'] = [
+//      '#type' => 'managed_file',
+//      '#title' => t('Upload image'),
+//      '#progress_indictator' => 'none',
+//      '#upload_location' => 's3public://styleguide/',
+//      '#description' => t('This is an image hint, please select an image of type GIF, JPG or PNG.'),
+//    ];
 
     $form['select'] = [
       '#type' => 'select',
