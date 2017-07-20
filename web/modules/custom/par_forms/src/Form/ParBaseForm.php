@@ -229,7 +229,7 @@ abstract class ParBaseForm extends FormBase {
           'fragment' => $this->getFormElementPageAnchor($name, $form_state)
         ];
 
-        $message = $this->t("This is a test validation, %field is invalid.", ['%field' => $name]);
+        $message = t('%message', ['%message' => $violation->getMessage()->render()]);
         $link = $this->getFlow()->getLinkByStep($this->getCurrentStep(), [], $options)->setText($message)->toString();
 
         $form_state->setErrorByName($name, $link);
