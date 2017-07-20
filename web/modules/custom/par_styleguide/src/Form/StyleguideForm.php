@@ -5,6 +5,11 @@ namespace Drupal\par_styleguide\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
+use Drupal\Component\Utility\NestedArray;
+
+use Drupal\Core\Link;
+use Drupal\Core\Url;
+
 /**
  * Styleguide form controller for visualising rendered form elements.
  *
@@ -118,17 +123,34 @@ class StyleguideForm extends FormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    // Generate errors for all fields.
-    $form_state->setErrorByName('textfield', $this->t("This is a test validation, the value %value for %field is invalid.", ['%value' => $form_state->getValue('textfield'), '%field' => 'textfield']));
-    $form_state->setErrorByName('checkbox', $this->t("This is a test validation, the value %value for %field is invalid.", ['%value' => $form_state->getValue('checkbox'), '%field' => 'checkbox']));
-    $form_state->setErrorByName('textarea', $this->t("This is a test validation, the value %value for %field is invalid.", ['%value' => $form_state->getValue('textarea'), '%field' => 'textarea']));
-    $form_state->setErrorByName('file_upload', $this->t('This is a test validation for a radio without any option'));
-    $form_state->setErrorByName('select', $this->t('This is a test validation for a radio without any option'));
-    $form_state->setErrorByName('radios_1', $this->t('This is a test validation for a radio without any option'));
-    $form_state->setErrorByName('radios_2', $this->t('This is a test validation for a radio without any option'));
-    $form_state->setErrorByName('radios_3', $this->t('This is a test validation for a radio without any option'));
-    $form_state->setErrorByName('checkboxes', $this->t('This is a test validation for a checkboxes.'));
-    $form_state->setErrorByName('textfield_within_fieldset', $this->t('This is a test validation for a radio without any option'));
+
+    // Custom error link creation for form header errors section.
+    $this->setErrorLink('textarea', $form_state);
+
+    $this->setErrorLink('file_upload', $form_state);
+
+    $this->setErrorLink('select', $form_state);
+    $this->setErrorLink('radios_2', $form_state);
+    $this->setErrorLink('radios_3', $form_state);
+
+    $this->setErrorLink('checkbox', $form_state);
+    $this->setErrorLink('checkboxes', $form_state);
+
+  }
+
+  public function setErrorLink($name, FormStateInterface $form_state) {
+
+    // @todo refactor to allow 'textfield_within_fieldset' to work as demo above.
+    $options = array(
+      'fragment' => &NestedArray::getValue($form_state->getCompleteForm(), (array) [$name])['#id'] // @todo #id is always not available.
+    );
+
+    $message = $this->t("This is a test validation, the value %value for %field is invalid.", ['%value' => $form_state->getValue($name), '%field' => $name]);
+
+    $link = Link::fromTextAndUrl($message, Url::fromUri('internal:' . \Drupal::request()->getRequestUri(), $options))->toString();
+
+    $form_state->setErrorByName($name, $link);
+
   }
 
   /**
