@@ -94,7 +94,6 @@ class StyleguideForm extends FormBase {
         1 => t('Active'),
         2 => t('Dormant')
       ],
-      '#attributes' => ['option_count' => 3],
       '#description' => t('This is a hint, choose whether you would like a copy of this form.'),
     ];
 
