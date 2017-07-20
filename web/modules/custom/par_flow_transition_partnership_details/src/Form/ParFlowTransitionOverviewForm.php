@@ -172,6 +172,14 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     }
 
     // Partnership Confirmation.
+    $form['partnership_agreement'] = [
+      '#type' => 'checkbox',
+      '#title' => t('A written summary of partnership agreement, such as Memorandum of Understanding, has been agreed with the Business.'),
+      '#prefix' => '<div class="form-group">',
+      '#suffix' => '</div>',
+    ];
+
+    // Partnership Confirmation.
     $form['confirmation'] = [
       '#type' => 'checkbox',
       '#title' => t('I confirm that the partnership information above is correct.'),
