@@ -33,9 +33,11 @@
           <h2 class="visually-hidden">{{ status_headings[type] }}</h2>
         {% endif %}
 
+        {% if type == 'error' %}
         <h2 class="heading-medium error-summary-heading" id="error-summary-heading-example-1">
           You need to complete this section
         </h2>
+        {% endif %}
 
         {% if messages|length > 1 %}
         <ul class="error-summary-list">
