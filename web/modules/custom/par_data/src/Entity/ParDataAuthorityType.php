@@ -2,7 +2,7 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\trance\TranceType;
+use Drupal\par_data\ParDataType;
 
 /**
  * Defines the par_data_authority_type entity.
@@ -41,22 +41,6 @@ use Drupal\trance\TranceType;
  *   }
  * )
  */
-class ParDataAuthorityType extends TranceType {
-
-  /**
-   * The additional configuration options for this entity.
-   *
-   * Note: Whether a field is 'required' will be dictated by the field storage.
-   *
-   * @var array
-   */
-  public $configuration;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getConfiguration() {
-    return $this->configuration;
-  }
+class ParDataAuthorityType extends ParDataType {
 
 }
