@@ -5,7 +5,7 @@ namespace Drupal\par_styleguide\Controller;
 use Drupal\Core\Controller\ControllerBase;
 
 /**
- * Controller class for Pagerer example.
+ * Controller class for Components.
  */
 class StyleguideComponentsController extends ControllerBase {
 
