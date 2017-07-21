@@ -2,20 +2,20 @@
 
 /**
  * @file
- * Contains \Drupal\Tests\par_forms\Unit\ParFormFlowEntityTest
+ * Contains \Drupal\Tests\par_flows\Unit\ParFlowEntityTest
  */
 
-namespace Drupal\Tests\par_forms\Unit;
+namespace Drupal\Tests\par_flows\Unit;
 
 use Drupal\Tests\UnitTestCase;
-use Drupal\par_forms\Form\ParBaseForm;
+use Drupal\par_flows\Form\ParBaseForm;
 
 /**
  * Test the logical methods of the base form.
  *
- * @coversDefaultClass \Drupal\par_forms\Form\ParBaseForm
+ * @coversDefaultClass \Drupal\par_flows\Form\ParBaseForm
  *
- * @group par_forms
+ * @group par_flows
  */
 class ParBaseFormTest extends UnitTestCase {
 
@@ -49,7 +49,7 @@ class ParBaseFormTest extends UnitTestCase {
     // Mock entity repository.
     $entity_repository = $this->getMock('Drupal\Core\Entity\EntityStorageInterface');
 
-    $this->baseForm = $this->getMockBuilder('Drupal\par_forms\Form\ParBaseForm')
+    $this->baseForm = $this->getMockBuilder('Drupal\par_flows\Form\ParBaseForm')
       ->setMethods(['getFlowName', 'getState', 'getIgnoredValues'])
       ->setConstructorArgs([$private_temp_store_factory, $session_manager_interface, $account_interface, $entity_repository])
       ->disableOriginalConstructor()
