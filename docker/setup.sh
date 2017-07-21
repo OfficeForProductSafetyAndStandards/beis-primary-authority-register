@@ -21,9 +21,11 @@ fi
 
 # Load the test data:
 
-    sleep 5 # Time for the server to boot
-    docker exec -i par_beta_web bash -c "vendor/bin/drush sql-cli @dev --root=/var/www/html/web < docker/fresh_drupal_postgres.sql"
+    docker exec -i par_beta_web bash -c "vendor/bin/drush cc drush"
+    docker exec -i par_beta_web bash -c "vendor/bin/drush fsg backups/drush-dump-post-drush-updates-sanitized-201707211405.sql.tar.gz ./dump.sql.tar.gz"
+    #docker exec -i par_beta_web bash -c "tar -zxvf dump.sql.tar.gz"
+    #docker exec -i par_beta_web bash -c "vendor/bin/drush sql-cli @dev --root=/var/www/html/web < ./dump.sql && rm ./dump.sql"
 
 # Update Drupal
 
-    docker exec -i par_beta_web bash -c "sh drupal-update.sh /var/www/html"
+    #docker exec -i par_beta_web bash -c "sh drupal-update.sh /var/www/html"

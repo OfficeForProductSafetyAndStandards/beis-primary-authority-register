@@ -29,6 +29,16 @@ If you already have the repository cloned, destroy it and reclone it. Also shutd
     git clone git@github.com:TransformCore/beis-par-beta
     cd beis-par-beta
     
+#### Setup environment variables
+
+Create a .env file in the root of the project. Please get the values from another team member.
+
+S3_ACCESS_KEY=
+S3_SECRET_KEY=
+S3_BUCKET=
+S3_BUCKET_ARTIFACTS=
+PAR_HASH_SALT=
+    
 #### Create the VM
 
     vagrant up

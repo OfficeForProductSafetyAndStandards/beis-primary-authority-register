@@ -1,4 +1,8 @@
 <?php
+$root_path = dirname(__DIR__) . '/../../';
+require "{$root_path}/vendor/autoload.php";
+$dotenv = new Dotenv\Dotenv($root_path);
+$dotenv->load();
 
 /**
  * @file
