@@ -31,7 +31,7 @@
 
 {%
   set wrapper_classes = [
-    'form-group',
+    'form-group-wrapper',
     errors ? 'form-group-error'
   ]
 %}
@@ -49,7 +49,11 @@
   {% set classes = classes|merge(['inline']) %}
 {% endif %}
 
-<div{{ attributes.addClass(wrapper_classes) }}>
+{% if errors %}
+<div class="form-group-error">
+{% else %}
+<div>
+{% endif %}
 
   <fieldset{{ attributes.addClass(classes).removeClass('form-group-error') }}>
 
