@@ -27,3 +27,7 @@ echo $COMMAND
 
 cd ${PROJECT_ROOT}/web; $COMMAND
 
+COMMAND="../vendor/drush/drush/drush fsp s3backups $FILEPATH"
+echo $COMMAND
+
+cd ${PROJECT_ROOT}/web; $COMMAND
