@@ -98,15 +98,6 @@ class ParFlowTransitionPAListOfTasks extends ParBaseForm {
     ];
     $primary_person_id = $this->getDefaultValues('primary_person_id');
 
-//    $form['second_section']['primary_person'] = [
-//      '#type' => 'markup',
-//      '#markup' => t('%name <br>%phone <br>%email', [
-//        '%name' => $this->getDefaultValues("person_{$primary_person_id}_name", '', $this->getFlow()->getFormIdByStep(3)),
-//        '%phone' => $this->getDefaultValues("person_{$primary_person_id}_phone", '', $this->getFlow()->getFormIdByStep(3)),
-//        '%email' => $this->getDefaultValues("person_{$primary_person_id}_email", '', $this->getFlow()->getFormIdByStep(3)),
-//      ]),
-//    ];
-
     $form['second_section']['primary_person'] = [
       '#theme' => 'par_components_business_primary_contact',
       '#name' => $this->getDefaultValues("person_{$primary_person_id}_name", '', $this->getFlow()->getFormIdByStep(2)),
