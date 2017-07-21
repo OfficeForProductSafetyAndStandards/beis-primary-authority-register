@@ -5,4 +5,4 @@ So that I can contact the Helpdesk if I require assistance.
 
     Scenario: Valid Login  Id
         Given I open the url "/"
-        Then I expect that element "#logged-in-header" contains the text "Helpdesk telephone number"
+        Then the element "#logged-in-header" contains the text "Helpdesk telephone number"

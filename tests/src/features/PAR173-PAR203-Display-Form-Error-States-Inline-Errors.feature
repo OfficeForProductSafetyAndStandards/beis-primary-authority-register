@@ -9,4 +9,4 @@ Feature: As a PAR user
         When I click on the button "#edit-next"
         And I wait on element ".error-message" for 1000ms to be visible
         Then I should see "6" occurrences of validation messages
-        And I expect that element ".error-summary-list" is visible
+        And the element ".error-summary-list" is visible

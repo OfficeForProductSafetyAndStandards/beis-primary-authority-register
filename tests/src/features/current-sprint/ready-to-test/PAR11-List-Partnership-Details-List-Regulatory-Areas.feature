@@ -5,4 +5,4 @@ Feature: As a Primary Authority Officer, I need to be able to see a list of my e
         Given I open the url "/dv/primary-authority-partnerships/1/partnership/1"
 
     Scenario: List Partnership Details: List Regulatory Areas
-        Given I expect that element "h1" contains the text "You need to review and confirm the following partnerships"
+        Given the element "h1" contains the text "You need to review and confirm the following partnerships"

@@ -8,5 +8,5 @@ Feature: As a Business user,
         And I add "PrimaryAuthority" to the inputfield "#username"
         And I add "password" to the inputfield "#password"
         And I press "Login"
-        Then I expect that element "#logged-in-header" contains the text "Logged in"
+        Then the element "#logged-in-header" contains the text "Logged in"
 

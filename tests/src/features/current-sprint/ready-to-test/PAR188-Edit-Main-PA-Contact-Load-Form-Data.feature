@@ -7,4 +7,4 @@ Feature: Edit Main Primary Authority Contact: Load form data - As a Primary Auth
         Given I open the url "/dv/primary-authority-partnerships/1/partnership/1/details"
 
     Scenario: List Partnership Details: Load summary elements Load data into the form
-        Then I expect that element "h1" contains the text "Viewing/confirming partnership details"
+        Then the element "h1" contains the text "Viewing/confirming partnership details"
