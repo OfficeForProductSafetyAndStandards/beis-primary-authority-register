@@ -609,13 +609,13 @@ abstract class ParBaseForm extends FormBase {
    *   The passed in cache ID.
    *
    * @return string
-   *   An ASCII-encoded cache ID that is at most 250 characters long.
+   *   An ASCII-encoded cache ID that is at most 64 characters long.
    */
   public function normalizeKey($key) {
     $key = urlencode($key);
-    // Nothing to do if the ID is a US ASCII string of 250 characters or less.
+    // Nothing to do if the ID is a US ASCII string of 64 characters or less.
     $key_is_ascii = mb_check_encoding($key, 'ASCII');
-    if (strlen($key) <= 240 && $key_is_ascii) {
+    if (strlen($key) <= 64 && $key_is_ascii) {
       return $key;
     }
 
@@ -630,7 +630,7 @@ abstract class ParBaseForm extends FormBase {
     if (!$key_is_ascii) {
       return $hash;
     }
-    return substr($key, 0, 240 - strlen($hash)) . $hash;
+    return substr($key, 0, 64 - strlen($hash)) . $hash;
   }
 
   /**
