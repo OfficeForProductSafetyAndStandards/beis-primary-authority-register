@@ -22,7 +22,7 @@ gulp.task('sass', function () {
 });
 
 gulp.task('cp-assets', [], function() {
-  gulp.src([
+  return gulp.src([
     "node_modules/govuk_frontend_toolkit/images/**"
   ])
   .pipe(gulp.dest(themeDir + '/assets/vendor/images'));

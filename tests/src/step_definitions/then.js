@@ -23,6 +23,7 @@ import compareText from '../support/check/compareText';
 import isEnabled from '../support/check/isEnabled';
 import isExisting from '../support/check/isExisting';
 import isVisible from '../support/check/isVisible';
+import checkErrorCount from '../support/check/checkErrorCount';
 import waitFor from '../support/action/waitFor';
 import waitForVisible from '../support/action/waitForVisible';
 
@@ -35,6 +36,11 @@ module.exports = function then() {
     this.Then(
         /^I expect that element "([^"]*)?" is( not)* visible$/,
         isVisible
+    );
+
+    this.Then(
+        /^I should see "([^"]*)?" occurrences of validation messages$/,
+        checkErrorCount
     );
 
     this.Then(

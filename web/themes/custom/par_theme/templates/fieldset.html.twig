@@ -29,37 +29,49 @@
   ]
 %}
 
+{%
+  set wrapper_classes = [
+    'form-group-wrapper',
+    errors ? 'form-group-error'
+  ]
+%}
+
+{%
+  set legend_header_classes = [
+    'heading-medium',
+    'fieldset-legend',
+    required ? 'js-form-required',
+    required ? 'form-required',
+  ]
+%}
+
 {% if child_count <= 2 %}
-{% set classes = classes|merge(['inline']) %}
+  {% set classes = classes|merge(['inline']) %}
 {% endif %}
 
-<div class="form-group">
+{% if errors %}
+<div class="form-group-error">
+{% else %}
+<div>
+{% endif %}
 
-<fieldset{{ attributes.addClass(classes) }}>
-  {%
-    set legend_span_classes = [
-      'heading-medium',
-      'fieldset-legend',
-      required ? 'js-form-required',
-      required ? 'form-required',
-    ]
-  %}
-  {#  Always wrap fieldset legends in a SPAN for CSS positioning. #}
-  <legend{{ legend.attributes }}>
-    <p{{ legend_span.attributes.addClass(legend_span_classes) }}>{{ legend.title }}</p>
-  </legend>
+  <fieldset{{ attributes.addClass(classes).removeClass('form-group-error') }}>
+
+    <legend{{ legend.attributes }}>
+      <h3{{ legend_span.attributes.addClass(legend_header_classes) }}>{{ legend.title }}</h3>
+      {% if description.content %}
+        <span{{ description.attributes.addClass('form-hint') }}>{{ description.content }}</span>
+      {% endif %}
+    </legend>
+
     {% if errors %}
-      <div>
-        {{ errors }}
-      </div>
+      <span class="error-message">
+        {{ errors | striptags('<p>') }}
+      </span>
     {% endif %}
 
     {% if prefix %}
       <span class="field-prefix">{{ prefix }}</span>
-    {% endif %}
-
-    {% if description.content %}
-        <div{{ description.attributes.addClass('form-hint') }}>{{ description.content }}</div>
     {% endif %}
 
     {{ children }}
@@ -67,5 +79,6 @@
     {% if suffix %}
       <span class="field-suffix">{{ suffix }}</span>
     {% endif %}
-</fieldset>
+  </fieldset>
+
 </div>
