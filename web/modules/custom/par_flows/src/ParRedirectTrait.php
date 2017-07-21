@@ -19,6 +19,14 @@ trait ParRedirectTrait {
   }
 
   /**
+   * Get the current route.
+   */
+  public function getCurrentRoute() {
+    // Submit the route with all the same parameters.
+    return $route_params = \Drupal::routeMatch()->getRouteName();
+  }
+
+  /**
    * Get the params for a dynamic route.
    */
   public function getRouteParams() {

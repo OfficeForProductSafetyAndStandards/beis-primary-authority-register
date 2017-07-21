@@ -41,7 +41,7 @@ use Drupal\par_flows\ParRedirectTrait;
  *   }
  * )
  */
-class ParFlow extends ConfigEntityBase {
+class ParFlow extends ConfigEntityBase implements ParFlowInterface {
 
   use ParRedirectTrait;
 
@@ -74,40 +74,51 @@ class ParFlow extends ConfigEntityBase {
   protected $steps;
 
   /**
-   * Get the description for this flow.
+   * {@inheritdoc}
    */
   public function getDescription() {
     return $this->description;
   }
 
   /**
-   * Get all steps in this flow.
+   * {@inheritdoc}
    */
   public function getSteps() {
     return $this->steps ?: [];
   }
 
   /**
-   * Get a step by it's index.
-   *
-   * @param int $index
-   *   The step number that is required.
-   *
-   * @return array
-   *   An array with values for the form_id & route
+   * {@inheritdoc}
    */
   public function getStep($index) {
     return isset($this->steps[$index]) ? $this->steps[$index] : NULL;
   }
 
   /**
-   * Get a step by the form id.
-   *
-   * @param string $form_id
-   *   The form id to lookup.
-   *
-   * @return array
-   *   An array with values for the step, form_id & route
+   * {@inheritdoc}
+   */
+  public function getCurrentStep() {
+    // Lookup the current step to more accurately determine the next step.
+    $current_step = $this->getStepByRoute($this->getCurrentRoute());
+
+    return isset($current_step['step']) ? $current_step['step'] : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getNextStep() {
+    if ($current_step = $this->getCurrentStep()) {
+      $next_index = ++$current_step;
+    }
+    $next_step = isset($next_index) ? $this->getStep($next_index) : $this->getStep(1);
+
+    // If there is no next step we'll go back to the beginning.
+    return isset($next_step['step']) ? $next_step['step'] : 1;
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function getStepByFormId($form_id) {
     foreach ($this->getSteps() as $key => $step) {
@@ -117,17 +128,13 @@ class ParFlow extends ConfigEntityBase {
         ] + $step;
       }
     }
-    return isset($match) ? $match : [];
+
+    // If there is no next step we'll go back to the beginning.
+    return isset($match['step']) ? $match['step'] : 1;
   }
 
   /**
-   * Get a step by the route.
-   *
-   * @param string $route
-   *   The string representing a given route to lookup.
-   *
-   * @return array
-   *   An array with values for the step, form_id & route
+   * {@inheritdoc}
    */
   public function getStepByRoute($route) {
     foreach ($this->getSteps() as $key => $step) {
@@ -137,31 +144,21 @@ class ParFlow extends ConfigEntityBase {
           ] + $step;
       }
     }
-    return isset($match) ? $match : [];
+
+    // If there is no next step we'll go back to the beginning.
+    return isset($match['step']) ? $match['step'] : 1;
   }
 
   /**
-   * Get route for any given step.
-   *
-   * @param integer $index
-   *   The step number to get a link for.
-   *
-   * @return Link
-   *   A Drupal link object.
+   * {@inheritdoc}
    */
-  public function getRouteByStep($index, $link_options = []) {
+  public function getRouteByStep($index) {
     $step = $this->getStep($index);
     return isset($step['route']) ? $step['route'] : NULL;
   }
 
   /**
-   * Get a form_id by the flow step.
-   *
-   * @param integer $index
-   *   The step number to get a link for.
-   *
-   * @return array
-   *   An array with values for the form_id & route
+   * {@inheritdoc}
    */
   public function getFormIdByStep($index) {
     $step = $this->getStep($index);
@@ -169,10 +166,7 @@ class ParFlow extends ConfigEntityBase {
   }
 
   /**
-   * Get all the forms in a given flow.
-   *
-   * @return array
-   *   An array of strings representing form IDs.
+   * {@inheritdoc}
    */
   public function getFlowForms() {
     $forms = [];
@@ -187,19 +181,9 @@ class ParFlow extends ConfigEntityBase {
   }
 
   /**
-   * Get link for any given step.
-   *
-   * @param integer $index
-   *   The step number to get a link for.
-   * @param array $route_params
-   *   Additional route parameters to add to the route.
-   * @param array $link_options
-   *   An array of options to set on the link.
-   *
-   * @return Link
-   *   A Drupal link object.
+   * {@inheritdoc}
    */
-  public function getLinkByStep($index, $route_params = [], $link_options = []) {
+  public function getLinkByStep($index, array $route_params = [], array $link_options = []) {
     $step = $this->getStep($index);
     $route = $step['route'];
     return $this->getLinkByRoute($route, $route_params, $link_options);

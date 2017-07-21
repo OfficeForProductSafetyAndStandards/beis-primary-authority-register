@@ -8,6 +8,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\SessionManagerInterface;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\par_data\ParDataManagerInterface;
+use Drupal\par_flows\ParBaseInterface;
 use Drupal\user\PrivateTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Utility\NestedArray;
@@ -17,7 +18,7 @@ use Drupal\par_flows\ParRedirectTrait;
 /**
  * The base form controller for all PAR forms.
  */
-abstract class ParBaseForm extends FormBase {
+abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
   use ParRedirectTrait;
 
@@ -139,7 +140,7 @@ abstract class ParBaseForm extends FormBase {
    * @return string
    *   Get the logger channel to use.
    */
-  protected function getLoggerChannel() {
+  public function getLoggerChannel() {
     return 'par_flows';
   }
 
@@ -149,7 +150,7 @@ abstract class ParBaseForm extends FormBase {
    * @return string
    *   Get the logger channel to use.
    */
-  protected function getParDataManager() {
+  public function getParDataManager() {
     return $this->parDataManager;
   }
 
@@ -252,7 +253,7 @@ abstract class ParBaseForm extends FormBase {
         ];
 
         $message = t('%message', ['%message' => $violation->getMessage()->render()]);
-        $link = $this->getFlow()->getLinkByStep($this->getCurrentStep(), [], $options)->setText($message)->toString();
+        $link = $this->getFlow()->getLinkByStep($this->getFlow()->getCurrentStep(), [], $options)->setText($message)->toString();
 
         $form_state->setErrorByName($name, $link);
       }
@@ -264,38 +265,9 @@ abstract class ParBaseForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->setFormTempData($form_state->getValues());
-    $form_state->setRedirect($this->getNextStep(), $this->getRouteParams());
-  }
 
-  /**
-   * Get current step.
-   *
-   * @return string
-   *   A string containing the current step.
-   */
-  public function getCurrentStep() {
-    $flow = $this->getFlow();
-    // Lookup the current step to more accurately determine the next step.
-    $current_step = $flow->getStepByFormId($this->getFormId());
-
-    return isset($current_step['step']) ? $current_step['step'] : NULL;
-  }
-
-  /**
-   * Go to next step.
-   *
-   * @return array
-   *   An array containing details of the next configured step.
-   */
-  public function getNextStep() {
-    $flow = $this->getFlow();
-    if ($current_step = $this->getCurrentStep()) {
-      $next_index = ++$current_step;
-    }
-    $next_step = isset($next_index) ? $flow->getStep($next_index) : $flow->getStep(1);
-
-    // If there is no next step we'll stay on this step.
-    return isset($next_step['route']) ? $next_step['route'] : $current_step['route'];
+    $next = $this->getFlow()->getRouteByStep($this->getFlow()->getNextStep());
+    $form_state->setRedirect($next, $this->getRouteParams());
   }
 
   /**
