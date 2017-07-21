@@ -87,15 +87,23 @@ class ParFlowEntityTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::getStep
+   * @covers ::getStepByFormId
    */
   public function testStepByFormId() {
     $third_step = $this->testFlow->getStepByFormId('par_test_third');
 
-    // Check the route and form_id
-    $this->assertEquals(3, $third_step['step'], "The step number has been retrieved by form id.");
-    $this->assertEquals('par_test_forms.third', $third_step['route'], "The route has been retrieved by form id.");
-    $this->assertEquals('par_test_third', $third_step['form_id'], "The form id has been retrieved by form id.");
+    // Check the correct step was retrieved.
+    $this->assertEquals(3, $third_step, "The step number has been retrieved by form id.");
+  }
+
+  /**
+   * @covers ::getStepByRoute
+   */
+  public function testStepByRoute() {
+    $fourth_step = $this->testFlow->getStepByRoute('par_test_forms.confirmation');
+
+    // Check the correct step was retrieved.
+    $this->assertEquals(4, $fourth_step, "The step number has been retrieved by form id.");
   }
 
   /**
