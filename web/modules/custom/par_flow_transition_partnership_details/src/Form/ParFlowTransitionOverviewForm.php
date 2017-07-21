@@ -246,7 +246,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     }
 
     // We're not in kansas any more, after submitting the overview let's go home.
-    $form_state->setRedirect('<front>');
+    $form_state->setRedirect('par_flow_transition_partnership_details.list_of_tasks', $this->getRouteParams());
   }
 
 }
