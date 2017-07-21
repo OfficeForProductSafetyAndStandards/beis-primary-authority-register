@@ -1,0 +1,5 @@
+par_flows.flow_add:
+  route_name: par_flows.flow_add
+  title: 'Add Flow'
+  appears_on:
+    - entity.par_flow.collection

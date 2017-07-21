@@ -1,18 +1,18 @@
 <?php
 
-namespace Drupal\par_forms\Entity;
+namespace Drupal\par_flows\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\Core\Link;
-use Drupal\par_forms\ParRedirectTrait;
+use Drupal\par_flows\ParRedirectTrait;
 
 /**
  * Defines the PAR Form Flow entity.
  *
  * @ConfigEntityType(
- *   id = "par_form_flow",
+ *   id = "par_flow",
  *   label = @Translation("PAR Form Flow"),
- *   config_prefix = "par_form_flow",
+ *   config_prefix = "par_flow",
  *   handlers = {
  *     "list_builder" = "Drupal\Core\Entity\EntityListBuilder",
  *     "form" = {
@@ -28,10 +28,10 @@ use Drupal\par_forms\ParRedirectTrait;
  *     "uuid" = "uuid"
  *   },
  *   links = {
- *     "canonical" = "/admin/config/par/form-flow/{par_entity_type}",
- *     "edit-form" = "/admin/config/par/form-flow/{par_entity_type}/edit",
- *     "delete-form" = "/admin/config/par/form-flow/{par_entity_type}/delete",
- *     "collection" = "/admin/config/par/form-flow"
+ *     "canonical" = "/admin/config/par/flow/{par_entity_type}",
+ *     "edit-form" = "/admin/config/par/flow/{par_entity_type}/edit",
+ *     "delete-form" = "/admin/config/par/flow/{par_entity_type}/delete",
+ *     "collection" = "/admin/config/par/flow"
  *   },
  *   config_export = {
  *     "id",
@@ -41,7 +41,7 @@ use Drupal\par_forms\ParRedirectTrait;
  *   }
  * )
  */
-class ParFormFlow extends ConfigEntityBase {
+class ParFlow extends ConfigEntityBase {
 
   use ParRedirectTrait;
 
@@ -107,7 +107,7 @@ class ParFormFlow extends ConfigEntityBase {
    *   The form id to lookup.
    *
    * @return array
-   *   An array with values for the form_id & route
+   *   An array with values for the step, form_id & route
    */
   public function getStepByFormId($form_id) {
     foreach ($this->getSteps() as $key => $step) {
@@ -121,21 +121,23 @@ class ParFormFlow extends ConfigEntityBase {
   }
 
   /**
-   * Get all the forms in a given flow.
+   * Get a step by the route.
+   *
+   * @param string $route
+   *   The string representing a given route to lookup.
    *
    * @return array
-   *   An array of strings representing form IDs.
+   *   An array with values for the step, form_id & route
    */
-  public function getFlowForms() {
-    $forms = [];
-
-    foreach ($this->getSteps() as $step) {
-      if (isset($step['form_id'])) {
-        $forms[] = (string) $step['form_id'];
+  public function getStepByRoute($route) {
+    foreach ($this->getSteps() as $key => $step) {
+      if (isset($step['route']) && $route === $step['route']) {
+        $match = [
+            'step' => $key,
+          ] + $step;
       }
     }
-
-    return $forms;
+    return isset($match) ? $match : [];
   }
 
   /**
@@ -164,6 +166,24 @@ class ParFormFlow extends ConfigEntityBase {
   public function getFormIdByStep($index) {
     $step = $this->getStep($index);
     return isset($step['form_id']) ? $step['form_id'] : NULL;
+  }
+
+  /**
+   * Get all the forms in a given flow.
+   *
+   * @return array
+   *   An array of strings representing form IDs.
+   */
+  public function getFlowForms() {
+    $forms = [];
+
+    foreach ($this->getSteps() as $step) {
+      if (isset($step['form_id'])) {
+        $forms[] = (string) $step['form_id'];
+      }
+    }
+
+    return $forms;
   }
 
   /**

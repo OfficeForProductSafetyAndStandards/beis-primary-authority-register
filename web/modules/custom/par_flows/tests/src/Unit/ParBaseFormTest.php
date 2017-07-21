@@ -2,20 +2,20 @@
 
 /**
  * @file
- * Contains \Drupal\Tests\par_forms\Unit\ParFormFlowEntityTest
+ * Contains \Drupal\Tests\par_flows\Unit\ParFlowEntityTest
  */
 
-namespace Drupal\Tests\par_forms\Unit;
+namespace Drupal\Tests\par_flows\Unit;
 
 use Drupal\Tests\UnitTestCase;
-use Drupal\par_forms\Form\ParBaseForm;
+use Drupal\par_flows\Form\ParBaseForm;
 
 /**
  * Test the logical methods of the base form.
  *
- * @coversDefaultClass \Drupal\par_forms\Form\ParBaseForm
+ * @coversDefaultClass \Drupal\par_flows\Form\ParBaseForm
  *
- * @group par_forms
+ * @group par_flows
  */
 class ParBaseFormTest extends UnitTestCase {
 
@@ -49,7 +49,7 @@ class ParBaseFormTest extends UnitTestCase {
     // Mock entity repository.
     $entity_repository = $this->getMock('Drupal\Core\Entity\EntityStorageInterface');
 
-    $this->baseForm = $this->getMockBuilder('Drupal\par_forms\Form\ParBaseForm')
+    $this->baseForm = $this->getMockBuilder('Drupal\par_flows\Form\ParBaseForm')
       ->setMethods(['getFlowName', 'getState', 'getIgnoredValues'])
       ->setConstructorArgs([$private_temp_store_factory, $session_manager_interface, $account_interface, $entity_repository])
       ->disableOriginalConstructor()
@@ -85,9 +85,11 @@ class ParBaseFormTest extends UnitTestCase {
   public function testGetFormKey() {
     $string = "random_string_" . $this->getRandomGenerator()->name(300);
     $key = $this->baseForm->getFormKey($string);
-    $this->assertLessThan(255, $key, "The key length has been limited.");
+    $this->assertLessThan(64, $key, "The key length has been limited.");
 
-    $starts_with = 'test_default_random_string_';
+    // 40 is the length of an sha1 hash so we should get the
+    // first 24 characters or our original key at a minimum.
+    $starts_with = substr('test_default_random_string_', 0, (64-40));
     $this->assertEquals($starts_with, substr($key, 0, strlen($starts_with)), "The key has been normalized.");
   }
 

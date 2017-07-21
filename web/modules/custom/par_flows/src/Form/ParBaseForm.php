@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_forms\Form;
+namespace Drupal\par_flows\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -12,7 +12,7 @@ use Drupal\user\PrivateTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityConstraintViolationListInterface;
-use Drupal\par_forms\ParRedirectTrait;
+use Drupal\par_flows\ParRedirectTrait;
 
 /**
  * The base form controller for all PAR forms.
@@ -92,7 +92,7 @@ abstract class ParBaseForm extends FormBase {
   protected $ignoreValues = ['save', 'next', 'cancel'];
 
   /**
-   * Constructs a \Drupal\par_forms\Form\ParBaseForm.
+   * Constructs a \Drupal\par_flows\Form\ParBaseForm.
    *
    * @param \Drupal\user\PrivateTempStoreFactory $temp_store_factory
    *   The private temporary store.
@@ -111,7 +111,7 @@ abstract class ParBaseForm extends FormBase {
     $this->flowStorage = $flow_storage;
     $this->parDataManager = $par_data_manager;
     /** @var \Drupal\user\PrivateTempStore store */
-    $this->store = $temp_store_factory->get('par_forms_flows');
+    $this->store = $temp_store_factory->get('par_flows_flows');
 
     // If no flow entity exists throw a build error.
     if (!$this->getFlow()) {
@@ -128,7 +128,7 @@ abstract class ParBaseForm extends FormBase {
       $container->get('user.private_tempstore'),
       $container->get('session_manager'),
       $container->get('current_user'),
-      $entity_manager->getStorage('par_form_flow'),
+      $entity_manager->getStorage('par_flow'),
       $container->get('par_data.manager')
     );
   }
@@ -140,7 +140,7 @@ abstract class ParBaseForm extends FormBase {
    *   Get the logger channel to use.
    */
   protected function getLoggerChannel() {
-    return 'par_forms';
+    return 'par_flows';
   }
 
   /**
@@ -609,13 +609,13 @@ abstract class ParBaseForm extends FormBase {
    *   The passed in cache ID.
    *
    * @return string
-   *   An ASCII-encoded cache ID that is at most 250 characters long.
+   *   An ASCII-encoded cache ID that is at most 64 characters long.
    */
   public function normalizeKey($key) {
     $key = urlencode($key);
-    // Nothing to do if the ID is a US ASCII string of 250 characters or less.
+    // Nothing to do if the ID is a US ASCII string of 64 characters or less.
     $key_is_ascii = mb_check_encoding($key, 'ASCII');
-    if (strlen($key) <= 240 && $key_is_ascii) {
+    if (strlen($key) <= 64 && $key_is_ascii) {
       return $key;
     }
 
@@ -630,7 +630,7 @@ abstract class ParBaseForm extends FormBase {
     if (!$key_is_ascii) {
       return $hash;
     }
-    return substr($key, 0, 240 - strlen($hash)) . $hash;
+    return substr($key, 0, 64 - strlen($hash)) . $hash;
   }
 
   /**
