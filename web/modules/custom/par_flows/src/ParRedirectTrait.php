@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_forms;
+namespace Drupal\par_flows;
 
 use Drupal\Core\Link;
 

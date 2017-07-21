@@ -3,7 +3,7 @@
 namespace Drupal\par_demo_forms\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_forms\Form\ParBaseForm;
+use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\Core\Entity\EntityConstraintViolationListInterface;
 use Drupal\node\NodeInterface;
 
