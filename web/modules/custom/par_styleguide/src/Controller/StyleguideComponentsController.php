@@ -36,6 +36,9 @@ class StyleguideComponentsController extends ControllerBase {
       '#theme' => 'par_components_business_primary_contact',
       // @todo change to getter fn.
       '#name' => 'Jasper Thomas',
+      '#role' => 'CTO',
+      '#telephone' => '0207 111 1111',
+      '#email' => 'jasper.thomas@example.com',
       '#prefix' => '<div class="styleguide-example">',
       '#suffix' => '</div>'
     ];
