@@ -39,9 +39,10 @@ module:
   options: 0
   page_cache: 0
   pagerer: 0
+  par_components: 0
   par_data: 0
   par_flow_transition_partnership_details: 0
-  par_forms: 0
+  par_flows: 0
   par_header: 0
   par_styleguide: 0
   par_welcome_page: 0

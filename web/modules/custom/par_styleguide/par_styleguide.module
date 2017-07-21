@@ -36,6 +36,9 @@ function par_styleguide_theme($existing, $type, $theme, $path) {
     ],
     'par_styleguide_pagination' => [
       'variables' => ['sections' => NULL],
+    ],
+    'par_styleguide_components' => [
+      'variables' => ['sections' => NULL],
     ]
   ];
 }

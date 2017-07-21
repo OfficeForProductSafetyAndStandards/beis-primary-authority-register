@@ -5,7 +5,7 @@ namespace Drupal\par_flow_transition_partnership_details\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_forms\Form\ParBaseForm;
+use Drupal\par_flows\Form\ParBaseForm;
 
 /**
  * The Overview form for the partnership details steps of the

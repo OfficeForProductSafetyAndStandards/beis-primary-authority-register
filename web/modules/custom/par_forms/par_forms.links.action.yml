@@ -1,5 +1,0 @@
-par_forms.flow_add:
-  route_name: par_forms.flow_add
-  title: 'Add Form Flow'
-  appears_on:
-    - entity.par_form_flow.collection

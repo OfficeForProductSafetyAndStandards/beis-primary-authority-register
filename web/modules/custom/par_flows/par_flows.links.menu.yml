@@ -1,0 +1,6 @@
+# PAR Form Flow menu items definition
+entity.par_entity_type.collection:
+  title: 'PAR Flows'
+  route_name: entity.par_flow.collection
+  description: 'Manage PAR flows'
+  parent: system.admin_config
