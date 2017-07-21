@@ -21,13 +21,21 @@ else
   exit 1;
 fi
 
+LOCALPATH=/home/vcap/$FILEPATH
+REMOTEPATH=$FILEPATH.tar.gz
+
 echo "Current working directory is ${PROJECT_ROOT}/web"
-COMMAND="../vendor/drush/drush/drush sql-dump @$DRUPAL_ENV --result-file=/home/vcap/$FILEPATH"
+COMMAND="../vendor/drush/drush/drush sql-dump @$DRUPAL_ENV --result-file=$LOCALPATH"
 echo $COMMAND
 
 cd ${PROJECT_ROOT}/web; $COMMAND
 
-COMMAND="../vendor/drush/drush/drush fsp s3backups /home/vcap/$FILEPATH $FILEPATH"
+COMMAND="tar -zcvf $LOCALPATH.tar.gz $LOCALPATH"
+echo $COMMAND
+
+cd ${PROJECT_ROOT}/web; $COMMAND
+
+COMMAND="../vendor/drush/drush/drush fsp s3backups $LOCALPATH.tar.gz $REMOTEPATH"
 echo $COMMAND
 
 cd ${PROJECT_ROOT}/web; $COMMAND
