@@ -24,7 +24,7 @@ class EntityParAuthorityTest extends ParDataTestBase {
     // Now we can create our
     $entity = ParDataAuthority::create($this->getAuthorityValues());
     $violations = $entity->validate();
-    $this->assertEqual(count($violations), 0, 'No violations when validating a default PAR Authority entity.');
+    $this->assertEqual(count($violations->getFieldNames()), 0, 'No violations when validating a default PAR Authority entity.');
   }
 
   /**
@@ -57,7 +57,7 @@ class EntityParAuthorityTest extends ParDataTestBase {
       'regulatory_area',
       'premises',
     ]);
-    $this->assertEqual(count($violations), 7, 'Required fields cannot be empty.');
+    $this->assertEqual(count($violations->getFieldNames()), 7, 'Required fields cannot be empty.');
     $this->assertEqual($violations[0]->getMessage()->render(), 'This value should not be null.', 'These fields are required.');
   }
 
@@ -85,7 +85,7 @@ class EntityParAuthorityTest extends ParDataTestBase {
       'nation',
       'ons_code',
     ]);
-    $this->assertEqual(count($violations), 4, 'Field values cannot be longer than their allowed lengths.');
+    $this->assertEqual(count($violations->getFieldNames()), 4, 'Field values cannot be longer than their allowed lengths.');
     $this->assertEqual($violations[0]->getMessage()->render(), t('%field: may not be longer than 500 characters.', ['%field' => 'Name']), 'The length of the Name field is correct.');
     $this->assertEqual($violations[1]->getMessage()->render(), t('%field: may not be longer than 255 characters.', ['%field' => 'Authority Type']), 'The length of the Authority Type field is correct.');
   }
