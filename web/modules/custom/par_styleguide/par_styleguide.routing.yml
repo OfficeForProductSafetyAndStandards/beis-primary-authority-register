@@ -30,3 +30,11 @@ par_styleguide.pagination:
     _title: 'PAR Styleguide Pagination'
   requirements:
     _permission: 'access content'
+
+par_styleguide.components:
+  path: '/styleguide/components'
+  defaults:
+    _controller: \Drupal\par_styleguide\Controller\StyleguideComponentsController::content
+    _title: 'PAR Styleguide Components'
+  requirements:
+    _permission: 'access content'
