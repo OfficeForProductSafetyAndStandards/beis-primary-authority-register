@@ -6,7 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_forms\Form\ParBaseForm;
+use Drupal\par_flows\Form\ParBaseForm;
 
 /**
  * The primary contact form for the partnership details steps of the

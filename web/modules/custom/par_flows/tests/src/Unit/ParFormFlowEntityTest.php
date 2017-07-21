@@ -2,22 +2,22 @@
 
 /**
  * @file
- * Contains \Drupal\Tests\par_forms\Unit\ParFormFlowEntityTest
+ * Contains \Drupal\Tests\par_flows\Unit\ParFlowEntityTest
  */
 
-namespace Drupal\Tests\par_forms\Unit;
+namespace Drupal\Tests\par_flows\Unit;
 
 use Drupal\Tests\UnitTestCase;
-use Drupal\par_forms\Entity\ParFormFlow;
+use Drupal\par_flows\Entity\ParFlow;
 
 /**
  * Test the step lookup methods of the flow entity.
  *
- * @coversDefaultClass \Drupal\par_forms\Entity\ParFormFlow
+ * @coversDefaultClass \Drupal\par_flows\Entity\ParFlow
  *
- * @group par_forms
+ * @group par_flows
  */
-class ParFormFlowEntityTest extends UnitTestCase {
+class ParFlowEntityTest extends UnitTestCase {
 
   /**
    * The test flow class to run the tests on.
@@ -52,7 +52,7 @@ class ParFormFlowEntityTest extends UnitTestCase {
         ],
       ],
     );
-    $this->testFlow = new ParFormFlow($values, 'par_form_flow');
+    $this->testFlow = new ParFlow($values, 'par_flow');
 
     // Check the entity is loaded with the default methods.
     $this->assertEquals('test', $this->testFlow->id());
