@@ -78,10 +78,6 @@ class ParFlowTransitionPAListOfTasks extends ParBaseForm {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-    $form['first_section']['about_partnership'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('@about', ['@about' => $this->getDefaultValues('about_partnership', '', $this->getFlow()->getFormIdByStep(1))]),
-    ];
 
     $form['first_section']['about_partnership'] = [
       '#theme' => 'par_components_business_name_address',
@@ -96,6 +92,7 @@ class ParFlowTransitionPAListOfTasks extends ParBaseForm {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
+
     $primary_person_id = $this->getDefaultValues('primary_person_id');
 
     $form['second_section']['primary_person'] = [
