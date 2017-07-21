@@ -75,7 +75,6 @@ class ParFlowTransitionPAListOfTasks extends ParBaseForm {
     // About the Partnership.
     $form['first_section'] = [
       '#type' => 'fieldset',
-//      '#title' => t('About the Partnership'),
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
@@ -86,6 +85,7 @@ class ParFlowTransitionPAListOfTasks extends ParBaseForm {
 
     $form['first_section']['about_partnership'] = [
       '#theme' => 'par_components_business_name_address',
+      // @todo get business name/address from Organisation/business entity ref.
       '#name' => 'Selfridges & Co',
       '#address' => '400 Oxford Street, London, W1A 1AB',
     ];
