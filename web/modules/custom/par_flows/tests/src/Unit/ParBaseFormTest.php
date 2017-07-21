@@ -85,9 +85,11 @@ class ParBaseFormTest extends UnitTestCase {
   public function testGetFormKey() {
     $string = "random_string_" . $this->getRandomGenerator()->name(300);
     $key = $this->baseForm->getFormKey($string);
-    $this->assertLessThan(255, $key, "The key length has been limited.");
+    $this->assertLessThan(64, $key, "The key length has been limited.");
 
-    $starts_with = 'test_default_random_string_';
+    // 40 is the length of an sha1 hash so we should get the
+    // first 24 characters or our original key at a minimum.
+    $starts_with = substr('test_default_random_string_', 0, (64-40));
     $this->assertEquals($starts_with, substr($key, 0, strlen($starts_with)), "The key has been normalized.");
   }
 
