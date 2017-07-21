@@ -3,3 +3,5 @@ type: module
 description: Defines the base level form opperations for the site.
 core: 8.x
 package: PAR
+dependencies:
+  - par_data

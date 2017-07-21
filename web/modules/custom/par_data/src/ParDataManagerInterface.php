@@ -10,11 +10,21 @@ use Drupal\Core\Entity\EntityTypeInterface;
 interface ParDataManagerInterface {
 
   /**
-  * Gets a list of all entity types for PAR Data.
+   * Gets a list of all entity types for PAR Data.
    *
    * @return \Drupal\Core\Entity\EntityTypeInterface[]
   */
   public function getParEntityTypes();
+
+  /**
+   * Gets a list of all entity types for PAR Data.
+   *
+   * @param string $type
+   *   The type to return.
+   *
+   * @return \Drupal\Core\Entity\EntityTypeInterface
+  */
+  public function getParEntityType(string $type);
 
   /**
    * Gets the entity definition for the class that defines an entities bundles.

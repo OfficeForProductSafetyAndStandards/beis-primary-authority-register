@@ -44,6 +44,7 @@
         "behat/mink": "~1.7",
         "behat/mink-goutte-driver": "~1.2",
         "drupal/coder": "~8.2.0",
+        "drupal/config_inspector": "^1.0@beta",
         "drupal/console": "~1.0.0",
         "drupal/devel": "~1.0.0-rc2",
         "drupal/examples": "dev-1.x",
@@ -86,6 +87,9 @@
             },
             "drush/drush": {
                 "Drush sql-dump compatibility with PostgresSQL 9.5+": "./patches/drush-sqldump-postgres95.patch"
+            },
+            "drupal/flysystem": {
+                "Add Drush commands for sending and receiving files": "./patches/flysystem-drush-command.patch"
             }
         }
     },

@@ -20,7 +20,7 @@ class EntityParPartnershipTest extends ParDataTestBase {
     $this->createUser();
     $entity = ParDataPartnership::create($this->getPartnershipValues());
     $violations = $entity->validate();
-    $this->assertEqual(count($violations), 0, 'No violations when validating a default PAR Partnership entity.');
+    $this->assertEqual(count($violations->getFieldNames()), 0, 'No violations when validating a default PAR Partnership entity.');
   }
 
   /**
@@ -53,7 +53,7 @@ class EntityParPartnershipTest extends ParDataTestBase {
       'authority_change_comment',
       'organisation_change_comment',
     ]);
-    $this->assertEqual(count($violations), 2, 'Required fields cannot be empty.');
+    $this->assertEqual(count($violations->getFieldNames()), 2, 'Required fields cannot be empty.');
     $this->assertEqual($violations[0]->getMessage()->render(), 'This value should not be null.', 'These fields are required.');
   }
 
@@ -100,7 +100,7 @@ class EntityParPartnershipTest extends ParDataTestBase {
       'authority_change_comment',
       'organisation_change_comment',
     ]);
-    $this->assertEqual(count($violations), 8, 'Field values cannot be longer than their allowed lengths.');
+    $this->assertEqual(count($violations->getFieldNames()), 8, 'Field values cannot be longer than their allowed lengths.');
     $this->assertEqual($violations[0]->getMessage()->render(), t('%field: may not be longer than 255 characters.', ['%field' => 'Partnership Type']), 'The length of the Partnership Type field is correct..');
     $this->assertEqual($violations[3]->getMessage()->render(), 'This value should be of the correct primitive type.', 'The input type of the Communication by Phone field is correct.');
     $this->assertEqual($violations[4]->getMessage()->render(), 'This value should be of the correct primitive type.', 'The input type of the Approved Date field is correct.');
