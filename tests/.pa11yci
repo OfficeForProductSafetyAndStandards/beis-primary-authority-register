@@ -17,6 +17,7 @@
         "http://localhost:80",
         "http://localhost:80/styleguide",
         "http://localhost:80/styleguide/data",
+        "http://localhost:80/styleguide/forms",
         "http://localhost:80/styleguide/pagination",
         "http://localhost:80/user/login",
         "http://localhost:80/unknown-page-404-check"

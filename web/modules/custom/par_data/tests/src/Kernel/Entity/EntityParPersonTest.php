@@ -20,7 +20,7 @@ class EntityParPersonTest extends ParDataTestBase {
     $this->createUser();
     $entity = ParDataPerson::create($this->getPersonValues());
     $violations = $entity->validate();
-    $this->assertEqual(count($violations), 0, 'No violations when validating a default PAR Person entity.');
+    $this->assertEqual(count($violations->getFieldNames()), 0, 'No violations when validating a default PAR Person entity.');
   }
 
   /**
@@ -46,7 +46,7 @@ class EntityParPersonTest extends ParDataTestBase {
       'mobile_phone',
       'email',
     ]);
-    $this->assertEqual(count($violations), 4, 'Field values cannot be longer than their allowed lengths.');
+    $this->assertEqual(count($violations->getFieldNames()), 4, 'Field values cannot be longer than their allowed lengths.');
     $this->assertEqual($violations[3]->getMessage()->render(), t('%field: may not be longer than 500 characters.', ['%field' => 'E-mail']), 'The length of the E-mail field is correct..');
     $this->assertEqual($violations[1]->getMessage()->render(), t('%field: may not be longer than 255 characters.', ['%field' => 'Work Phone']), 'The length of the Work Phone field is correct.');
   }

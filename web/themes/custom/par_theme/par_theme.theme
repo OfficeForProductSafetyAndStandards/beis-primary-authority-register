@@ -1,5 +1,52 @@
 <?php
 
+/**
+ * Implements hook_preprocess_fieldset().
+ *
+ * @param array $variables
+ */
 function par_theme_preprocess_fieldset(array &$variables) {
-  $variables['child_count'] = isset($variables['element']['#options']) ? count($variables['element']['#options']) : 0;
+
+  $variables['child_count'] = isset($variables['element']['#options']) ?
+                              count($variables['element']['#options']) : 0;
+
+  // Get the form element.
+  $element = &$variables['element'];
+
+  // Pass elements disabled status to template.
+  $variables['disabled'] = !empty($element['#attributes']['disabled']) ?
+                            $element['#attributes']['disabled'] : NULL;
+
+  // Initiate errors.
+  $variables['errors'] = NULL;
+
+  // Make {{ errors }} available in template file.
+  if (!empty($element['#errors']) && empty($element['#error_use_parent'])) {
+    $variables['errors'] = $element['#errors'];
+  }
+
+}
+
+/**
+ * Implements hook_preprocess_form_element().
+ *
+ * @param array $variables
+ */
+function par_theme_preprocess_form_element(array &$variables) {
+
+  // Get the form element.
+  $element = &$variables['element'];
+
+  // Pass elements disabled status to template.
+  $variables['disabled'] = !empty($element['#attributes']['disabled']) ?
+                            $element['#attributes']['disabled'] : NULL;
+
+  // Initiate errors.
+  $variables['errors'] = NULL;
+
+  // Make {{ errors }} available in template file.
+  if (!empty($element['#errors']) && empty($element['#error_use_parent'])) {
+    $variables['errors'] = $element['#errors'];
+  }
+
 }

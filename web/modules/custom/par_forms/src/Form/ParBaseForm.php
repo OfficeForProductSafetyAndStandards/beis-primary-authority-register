@@ -7,6 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\SessionManagerInterface;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
+use Drupal\par_data\ParDataManagerInterface;
 use Drupal\user\PrivateTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Utility\NestedArray;
@@ -40,6 +41,13 @@ abstract class ParBaseForm extends FormBase {
    * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
    */
   protected $flowStorage;
+
+  /**
+   * The PAR data manager for acting upon PAR Data.
+   *
+   * @var \Drupal\par_data\ParDataManagerInterface
+   */
+  protected $parDataManager;
 
   /**
    * The private temporary storage for persisting multi-step form data.
@@ -94,11 +102,14 @@ abstract class ParBaseForm extends FormBase {
    *   The current user object.
    * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $flow_storage
    *   The flow entity storage handler.
+   * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
+   *   The current user object.
    */
-  public function __construct(PrivateTempStoreFactory $temp_store_factory, SessionManagerInterface $session_manager, AccountInterface $current_user, ConfigEntityStorageInterface $flow_storage) {
+  public function __construct(PrivateTempStoreFactory $temp_store_factory, SessionManagerInterface $session_manager, AccountInterface $current_user, ConfigEntityStorageInterface $flow_storage, ParDataManagerInterface $par_data_manager) {
     $this->sessionManager = $session_manager;
     $this->currentUser = $current_user;
     $this->flowStorage = $flow_storage;
+    $this->parDataManager = $par_data_manager;
     /** @var \Drupal\user\PrivateTempStore store */
     $this->store = $temp_store_factory->get('par_forms_flows');
 
@@ -117,7 +128,8 @@ abstract class ParBaseForm extends FormBase {
       $container->get('user.private_tempstore'),
       $container->get('session_manager'),
       $container->get('current_user'),
-      $entity_manager->getStorage('par_form_flow')
+      $entity_manager->getStorage('par_form_flow'),
+      $container->get('par_data.manager')
     );
   }
 
@@ -129,6 +141,16 @@ abstract class ParBaseForm extends FormBase {
    */
   protected function getLoggerChannel() {
     return 'par_forms';
+  }
+
+  /**
+   * Returns the PAR data manager.
+   *
+   * @return string
+   *   Get the logger channel to use.
+   */
+  protected function getParDataManager() {
+    return $this->parDataManager;
   }
 
   /**
@@ -225,7 +247,14 @@ abstract class ParBaseForm extends FormBase {
   public function setFieldViolations($name, FormStateInterface &$form_state, EntityConstraintViolationListInterface $violations) {
     if ($violations) {
       foreach ($violations as $violation) {
-        $form_state->setErrorByName($name, t('%message', ['%message' => $violation->getMessage()->render()]));
+        $options = [
+          'fragment' => $this->getFormElementPageAnchor($name, $form_state)
+        ];
+
+        $message = t('%message', ['%message' => $violation->getMessage()->render()]);
+        $link = $this->getFlow()->getLinkByStep($this->getCurrentStep(), [], $options)->setText($message)->toString();
+
+        $form_state->setErrorByName($name, $link);
       }
     }
   }
@@ -239,6 +268,20 @@ abstract class ParBaseForm extends FormBase {
   }
 
   /**
+   * Get current step.
+   *
+   * @return string
+   *   A string containing the current step.
+   */
+  public function getCurrentStep() {
+    $flow = $this->getFlow();
+    // Lookup the current step to more accurately determine the next step.
+    $current_step = $flow->getStepByFormId($this->getFormId());
+
+    return isset($current_step['step']) ? $current_step['step'] : NULL;
+  }
+
+  /**
    * Go to next step.
    *
    * @return array
@@ -246,13 +289,51 @@ abstract class ParBaseForm extends FormBase {
    */
   public function getNextStep() {
     $flow = $this->getFlow();
-    // Lookup the current step to more accurately determine the next step.
-    $current_step = $flow->getStepByFormId($this->getFormId());
-    $next_step = ++$current_step['step'];
-    $next_step = isset($current_step['step']) ? $flow->getStep(++$current_step['step']) : $flow->getStep(1);
+    if ($current_step = $this->getCurrentStep()) {
+      $next_index = ++$current_step;
+    }
+    $next_step = isset($next_index) ? $flow->getStep($next_index) : $flow->getStep(1);
 
     // If there is no next step we'll stay on this step.
     return isset($next_step['route']) ? $next_step['route'] : $current_step['route'];
+  }
+
+  /**
+   * Find form element anchor/HTML id.
+   *
+   * @param string $name
+   *   The name of the form element to set the error for.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state to set the error on.
+   *
+   * @return string $form_element_page_anchor
+   *   Form element/wrapper anchor ID.
+   */
+  public function getFormElementPageAnchor($name, FormStateInterface &$form_state) {
+
+    $form_element = &NestedArray::getValue($form_state->getCompleteForm(), [$name]);
+
+    // Catch some potential FAPI mistakes.
+    if (!isset($form_element['#type']) ||
+      !isset($form_element['#id'])) {
+      return false;
+    }
+
+    // Several options e.g. radios, checkboxes are appended with --wrapper.
+    switch ($form_element['#type']) {
+
+      case 'radios':
+      case 'checkboxes':
+        $form_element_page_anchor = $form_element['#id'] . '--wrapper';
+        break;
+      default:
+        $form_element_page_anchor = $form_element['#id'];
+        break;
+
+    }
+
+    return $form_element_page_anchor;
+
   }
 
   /**
@@ -489,12 +570,21 @@ abstract class ParBaseForm extends FormBase {
   }
 
   /**
-   * Runs on a newly created form
+   * Helper to decide whether what the entity value should be
+   * saved as for a boolean input.
+   *
+   * @param mixed $input
+   *   The input value to check.
+   * @param mixed $on
+   *   The expected value of the on state.
+   * @param mixed $off
+   *   The expected value of the off state.
+   *
+   * @return mixed
+   *   The new value for the entity.
    */
-  public function lookupData() {
-    // Get route parameters.
-
-    // Lookup data.
+  public function decideBooleanValue($input, $on, $off) {
+    return $input === $on ? $on : $off;
   }
 
   /**

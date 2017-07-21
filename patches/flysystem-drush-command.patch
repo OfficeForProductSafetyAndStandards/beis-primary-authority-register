@@ -1,0 +1,87 @@
+diff --git a/flysystem.drush.inc b/flysystem.drush.inc
+new file mode 100644
+index 0000000..b9578de
+--- /dev/null
++++ b/flysystem.drush.inc
+@@ -0,0 +1,81 @@
++<?php
++
++/**
++ * Implements hook_drush_command().
++ */
++function flysystem_drush_command() {
++  $commands = [];
++  $commands['flysystem-put'] = [
++    'description' => 'Upload a file to a Flysystem stream',
++      'aliases' => ['fsp'],
++      'arguments' => [
++          'scheme' => 'Name of the Flysystem scheme',
++          'local-path' => 'Path to the file on the local file system, including filename',
++          'remote-path' => 'Path to the file on the remote file system, including filename',
++      ],
++      'examples' => [
++          'drush fsp s3public /home/me/report.json tests/report.json' => 'Put tests/report.json on the s3public Flysystem',
++      ],
++  ];
++  $commands['flysystem-get'] = [
++    'description' => 'Get a file from a Flysystem stream',
++    'aliases' => ['fsg'],
++    'arguments' => [
++      'scheme' => 'Name of the Flysystem scheme',
++      'remote-path' => 'Path to the file on the remote file system, including filename',
++      'local-path' => 'Path to the file on the local file system, including filename',
++    ],
++    'examples' => [
++      'drush fsg s3public tests/report.json /home/me/report.json' => 'Get tests/report.json from the s3public Flysystem',
++    ],
++  ];
++  return $commands;
++}
++
++/**
++ * Get an instance of the Flysystem scheme 
++ * 
++ * $param string $scheme - the name of the flysystem scheme
++ * 
++ * @return \League\Flysystem\FilesystemInterface
++ */
++function get_fs_scheme($scheme)
++{
++    /**
++     * @var Drupal\flysystem\FlysystemFactory $fsFactory
++     */
++    $fsFactory = \Drupal::service('flysystem_factory');
++    
++    return $fsFactory->getFilesystem($scheme);
++}
++
++function drush_flysystem_put($scheme = null, $localPath = null, $remotePath = null)
++{
++    if (!$scheme || !$localPath || !$remotePath) {
++        return 'Usage: drush fsp scheme local-path remote-path';
++    }
++    
++    $flysystem = get_fs_scheme($scheme);
++    $resource = fopen($localPath, 'r');
++    $flysystem->writeStream($remotePath, $resource);
++    fclose($resource);
++    
++    return $localPath . ' written to ' . $scheme . ':' . $remotePath;
++}
++
++function drush_flysystem_get($scheme = null, $remotePath = null, $localPath = null)
++{
++    if (!$scheme || !$remotePath || !$localPath) {
++        return 'Usage: drush fsg scheme remote-path local-path';
++    }
++    
++    $flysystem = get_fs_scheme($scheme);
++    $stream = $flysystem->readStream($remotePath);
++    $contents = stream_get_contents($stream);
++    fclose($stream);
++    
++    file_put_contents($localPath, $contents);
++    
++    return $localPath . ' retrieved from ' . $scheme . ':' . $remotePath;
++}
++

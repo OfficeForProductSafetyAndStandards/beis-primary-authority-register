@@ -11,7 +11,7 @@ exports.config = {
     //
     specs: ['./src/features/*.feature'],
     // Patterns to exclude.
-    exclude: ['./src/features/backlog/**/*.feature', './src/features/current/*.feature'],
+    exclude: ['./src/features/backlog/**/*.feature'],
     //
     // ============
     // Capabilities
