@@ -37,6 +37,9 @@ function par_components_theme($existing, $type, $theme, $path) {
     'par_components_business_primary_contact' => [
       'variables' => [
         'name' => NULL,
+        'telephone' => NULL,
+        'email' => NULL,
+        'role' => NULL
       ],
     ],
   ];

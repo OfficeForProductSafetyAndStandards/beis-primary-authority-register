@@ -57,11 +57,12 @@ class ParFlowTransitionPAListOfTasks extends ParBaseForm {
     $primary_person = array_shift($people);
     $this->loadDataValue('people', $people);
 
-    // Primary Contacts.
+    // Primary Contact.
     $this->loadDataValue('primary_person_id', $primary_person->id());
     $this->loadDataValue("person_{$primary_person->id()}_name", $primary_person->get('person_name')->getString());
     $this->loadDataValue("person_{$primary_person->id()}_phone", $primary_person->get('work_phone')->getString());
     $this->loadDataValue("person_{$primary_person->id()}_email", $primary_person->get('email')->getString());
+    $this->loadDataValue("person_{$primary_person->id()}_role", $primary_person->get('role')->getString());
 
   }
 
@@ -74,13 +75,19 @@ class ParFlowTransitionPAListOfTasks extends ParBaseForm {
     // About the Partnership.
     $form['first_section'] = [
       '#type' => 'fieldset',
-      '#title' => t('About the Partnership'),
+//      '#title' => t('About the Partnership'),
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
     $form['first_section']['about_partnership'] = [
       '#type' => 'markup',
       '#markup' => $this->t('@about', ['@about' => $this->getDefaultValues('about_partnership', '', $this->getFlow()->getFormIdByStep(1))]),
+    ];
+
+    $form['first_section']['about_partnership'] = [
+      '#theme' => 'par_components_business_name_address',
+      '#name' => 'Selfridges & Co',
+      '#address' => '400 Oxford Street, London, W1A 1AB',
     ];
 
     $form['second_section'] = [
@@ -91,13 +98,21 @@ class ParFlowTransitionPAListOfTasks extends ParBaseForm {
     ];
     $primary_person_id = $this->getDefaultValues('primary_person_id');
 
+//    $form['second_section']['primary_person'] = [
+//      '#type' => 'markup',
+//      '#markup' => t('%name <br>%phone <br>%email', [
+//        '%name' => $this->getDefaultValues("person_{$primary_person_id}_name", '', $this->getFlow()->getFormIdByStep(3)),
+//        '%phone' => $this->getDefaultValues("person_{$primary_person_id}_phone", '', $this->getFlow()->getFormIdByStep(3)),
+//        '%email' => $this->getDefaultValues("person_{$primary_person_id}_email", '', $this->getFlow()->getFormIdByStep(3)),
+//      ]),
+//    ];
+
     $form['second_section']['primary_person'] = [
-      '#type' => 'markup',
-      '#markup' => t('%name <br>%phone <br>%email', [
-        '%name' => $this->getDefaultValues("person_{$primary_person_id}_name", '', $this->getFlow()->getFormIdByStep(3)),
-        '%phone' => $this->getDefaultValues("person_{$primary_person_id}_phone", '', $this->getFlow()->getFormIdByStep(3)),
-        '%email' => $this->getDefaultValues("person_{$primary_person_id}_email", '', $this->getFlow()->getFormIdByStep(3)),
-      ]),
+      '#theme' => 'par_components_business_primary_contact',
+      '#name' => $this->getDefaultValues("person_{$primary_person_id}_name", '', $this->getFlow()->getFormIdByStep(2)),
+      '#telephone' => $this->getDefaultValues("person_{$primary_person_id}_phone", '', $this->getFlow()->getFormIdByStep(2)),
+      '#email' => $this->getDefaultValues("person_{$primary_person_id}_email", '', $this->getFlow()->getFormIdByStep(2)),
+      '#role' => $this->getDefaultValues("person_{$primary_person_id}_role", '', $this->getFlow()->getFormIdByStep(2)),
     ];
 
     // Table headers.

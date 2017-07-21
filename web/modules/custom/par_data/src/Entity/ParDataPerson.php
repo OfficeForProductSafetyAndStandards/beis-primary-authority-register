@@ -156,6 +156,23 @@ class ParDataPerson extends Trance {
       ])
       ->setDisplayConfigurable('form', FALSE);
 
+    // Role.
+    $fields['role'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Role'))
+      ->setDescription(t('The role of this Person.'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 5,
+      ])
+      ->setDisplayConfigurable('form', FALSE);
+
     return $fields;
   }
 
