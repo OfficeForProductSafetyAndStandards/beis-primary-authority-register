@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1425ea5475558a98b4d390d36ec4e76e",
+    "content-hash": "39c12160b297dfca65d9a726dd87593c",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -6348,6 +6348,61 @@
             "time": "2017-03-18T10:28:49+00:00"
         },
         {
+            "name": "drupal/config_inspector",
+            "version": "1.0.0-beta1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/config_inspector",
+                "reference": "8.x-1.0-beta1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/config_inspector-8.x-1.0-beta1.zip",
+                "reference": null,
+                "shasum": "3ba3a31ea02323203ceae7ef7f80c091ced2e2f3"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-beta1",
+                    "datestamp": "1448357340"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Gábor Hojtsy",
+                    "homepage": "https://www.drupal.org/user/4166"
+                },
+                {
+                    "name": "Jose Reyero",
+                    "homepage": "https://www.drupal.org/user/4299"
+                },
+                {
+                    "name": "aspilicious",
+                    "homepage": "https://www.drupal.org/user/172527"
+                },
+                {
+                    "name": "vijaycs85",
+                    "homepage": "https://www.drupal.org/user/93488"
+                }
+            ],
+            "description": "Provides a configuration data and structure inspector tool.",
+            "homepage": "https://www.drupal.org/project/config_inspector",
+            "support": {
+                "source": "http://cgit.drupalcode.org/config_inspector"
+            }
+        },
+        {
             "name": "drupal/console",
             "version": "1.0.0-rc25",
             "source": {
@@ -6820,7 +6875,8 @@
                 "source": "http://cgit.drupalcode.org/examples",
                 "issues": "https://www.drupal.org/project/issues/examples",
                 "documentation": "https://api.drupal.org/api/examples"
-            }
+            },
+            "time": "2017-07-18 17:32:36"
         },
         {
             "name": "fabpot/goutte",
@@ -8423,6 +8479,7 @@
         "drupal/inline_entity_form": 10,
         "drupal/login_destination": 20,
         "drupal/xmlsitemap": 15,
+        "drupal/config_inspector": 10,
         "drupal/examples": 20
     },
     "prefer-stable": true,

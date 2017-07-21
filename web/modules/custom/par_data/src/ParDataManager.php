@@ -45,6 +45,11 @@ class ParDataManager implements ParDataManagerInterface {
     return $par_entity_types ?: [];
   }
 
+  public function getParEntityType(string $type) {
+    $types = $this->getParEntityTypes();
+    return isset($types[$type]) ? $types[$type] : NULL;
+  }
+
   /**
    * {@inheritdoc}
    */
