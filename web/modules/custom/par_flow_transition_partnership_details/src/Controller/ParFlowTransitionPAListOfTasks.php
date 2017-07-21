@@ -88,7 +88,6 @@ class ParFlowTransitionPAListOfTasks extends ParBaseForm {
 
     $form['second_section'] = [
       '#type' => 'fieldset',
-      '#title' => t('Main Primary Authority contact'),
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
