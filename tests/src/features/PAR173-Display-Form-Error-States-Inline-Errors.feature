@@ -8,4 +8,4 @@ Feature: As a PAR user
 #        When I submit the form "#par-styleguide-form-controller"
         When I click on the button "#edit-next"
         And I wait on element ".error-message" for 1000ms to be visible
-        Then I should see "7" occurrences of validation messages
+        Then I should see "6" occurrences of validation messages
