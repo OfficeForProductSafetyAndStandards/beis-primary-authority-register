@@ -129,7 +129,7 @@ class ParFlowTransitionSecondForm extends ParBaseForm {
       $this->deleteStore();
     }
     else {
-      $message = $this->t('This %person field could not be saved for %form_id');
+      $message = $this->t('This %person could not be saved for %form_id');
       $replacements = [
         '%field' => $this->getTempDataValue('person_name'),
         '%form_id' => $this->getFormId(),
