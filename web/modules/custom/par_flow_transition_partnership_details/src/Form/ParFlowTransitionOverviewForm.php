@@ -104,7 +104,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $form['first_section']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('<br>%link', [
-        '%link' => $this->getFlow()->getLinkByStep(2)->setText('edit')->toString()
+        '%link' => $this->getFlow()->getLinkByStep(3)->setText('edit')->toString()
       ]),
     ];
 
@@ -119,16 +119,16 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $form['second_section']['primary_person'] = [
       '#type' => 'markup',
       '#markup' => t('%name <br>%phone <br>%email', [
-        '%name' => $this->getDefaultValues("person_{$primary_person_id}_name", '', $this->getFlow()->getFormIdByStep(2)),
-        '%phone' => $this->getDefaultValues("person_{$primary_person_id}_phone", '', $this->getFlow()->getFormIdByStep(2)),
-        '%email' => $this->getDefaultValues("person_{$primary_person_id}_email", '', $this->getFlow()->getFormIdByStep(2)),
+        '%name' => $this->getDefaultValues("person_{$primary_person_id}_name", '', $this->getFlow()->getFormIdByStep(3)),
+        '%phone' => $this->getDefaultValues("person_{$primary_person_id}_phone", '', $this->getFlow()->getFormIdByStep(3)),
+        '%email' => $this->getDefaultValues("person_{$primary_person_id}_email", '', $this->getFlow()->getFormIdByStep(3)),
       ]),
     ];
     // We can get a link to a given form step like so.
     $form['second_section']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('<br>%link', [
-        '%link' => $this->getFlow()->getLinkByStep(3, [
+        '%link' => $this->getFlow()->getLinkByStep(4, [
           'par_data_person' => $this->getDefaultValues('primary_person_id')
         ])->setText('edit')->toString()
       ]),
@@ -160,7 +160,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       $form['third_section']['edit'][$person->id()] = [
         '#type' => 'markup',
         '#markup' => t('<br>%link', [
-          '%link' => $this->getFlow()->getLinkByStep(3, [
+          '%link' => $this->getFlow()->getLinkByStep(2, [
             'par_data_person' => $person->id()
           ])->setText('edit')->toString()
         ]),

@@ -44,6 +44,7 @@ class ParFlowTransitionSecondForm extends ParBaseForm {
       // Contact.
       $this->loadDataValue("person_{$par_data_person->id()}_salutation", $par_data_person->get('salutation')->getString());
       $this->loadDataValue("person_{$par_data_person->id()}_name", $par_data_person->get('person_name')->getString());
+      $this->loadDataValue("person_{$par_data_person->id()}_role", $par_data_person->get('role')->getString());
       $this->loadDataValue("person_{$par_data_person->id()}_phone", $par_data_person->get('work_phone')->getString());
       $this->loadDataValue("person_{$par_data_person->id()}_mobile_phone", $par_data_person->get('mobile_phone')->getString());
       $this->loadDataValue("person_{$par_data_person->id()}_email", $par_data_person->get('email')->getString());
@@ -77,6 +78,14 @@ class ParFlowTransitionSecondForm extends ParBaseForm {
       '#type' => 'textfield',
       '#title' => $this->t('Name'),
       '#default_value' => $this->getDefaultValues("person_{$this->getDefaultValues('person_id')}_name"),
+      '#required' => TRUE,
+    ];
+
+    // The Person's role.
+    $form['person_role'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Role'),
+      '#default_value' => $this->getDefaultValues("person_{$this->getDefaultValues('person_id')}_role"),
       '#required' => TRUE,
     ];
 
