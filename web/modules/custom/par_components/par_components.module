@@ -42,5 +42,13 @@ function par_components_theme($existing, $type, $theme, $path) {
         'role' => NULL
       ],
     ],
+    'par_components_business_secondary_contact' => [
+      'variables' => [
+        'name' => NULL,
+        'telephone' => NULL,
+        'email' => NULL,
+        'role' => NULL
+      ],
+    ],
   ];
 }

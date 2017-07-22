@@ -52,12 +52,14 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       $this->loadDataValue("person_{$primary_person->id()}_name", $primary_person->get('person_name')->getString());
       $this->loadDataValue("person_{$primary_person->id()}_phone", $primary_person->get('work_phone')->getString());
       $this->loadDataValue("person_{$primary_person->id()}_email", $primary_person->get('email')->getString());
+      $this->loadDataValue("person_{$primary_person->id()}_role", $primary_person->get('role')->getString());
 
       // Secondary Contacts.
       foreach ($people as $person) {
         $this->loadDataValue("person_{$person->id()}_name", $person->get('person_name')->getString());
         $this->loadDataValue("person_{$person->id()}_phone", $person->get('work_phone')->getString());
         $this->loadDataValue("person_{$person->id()}_email", $person->get('email')->getString());
+        $this->loadDataValue("person_{$person->id()}_role", $person->get('role')->getString());
       }
 
       // Regulatory Areas.
@@ -117,13 +119,13 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#collapsed' => FALSE,
     ];
     $primary_person_id = $this->getDefaultValues('primary_person_id');
+
     $form['second_section']['primary_person'] = [
-      '#type' => 'markup',
-      '#markup' => t('%name <br>%phone <br>%email', [
-        '%name' => $this->getDefaultValues("person_{$primary_person_id}_name", '', $this->getFlow()->getFormIdByStep(2)),
-        '%phone' => $this->getDefaultValues("person_{$primary_person_id}_phone", '', $this->getFlow()->getFormIdByStep(2)),
-        '%email' => $this->getDefaultValues("person_{$primary_person_id}_email", '', $this->getFlow()->getFormIdByStep(2)),
-      ]),
+      '#theme' => 'par_components_business_primary_contact',
+      '#name' => $this->getDefaultValues("person_{$primary_person_id}_name", '', $this->getFlow()->getFormIdByStep(2)),
+      '#telephone' => $this->getDefaultValues("person_{$primary_person_id}_phone", '', $this->getFlow()->getFormIdByStep(2)),
+      '#email' => $this->getDefaultValues("person_{$primary_person_id}_email", '', $this->getFlow()->getFormIdByStep(2)),
+      '#role' => $this->getDefaultValues("person_{$primary_person_id}_role", '', $this->getFlow()->getFormIdByStep(2)),
     ];
 
     // We can get a link to a given form step like so.
@@ -149,13 +151,13 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
+
       $form['third_section']['alternative_people'][$person->id()] = [
-        '#type' => 'markup',
-        '#markup' => t('%name <br>%phone <br>%email', [
-          '%name' => $this->getDefaultValues("person_{$person->id()}_name", '', $this->getFlow()->getFormIdByStep(2)),
-          '%phone' => $this->getDefaultValues("person_{$person->id()}_phone", '', $this->getFlow()->getFormIdByStep(2)),
-          '%email' => $this->getDefaultValues("person_{$person->id()}_email", '', $this->getFlow()->getFormIdByStep(2)),
-        ]),
+        '#theme' => 'par_components_business_secondary_contact',
+        '#name' => $this->getDefaultValues("person_{$person->id()}_name", '', $this->getFlow()->getFormIdByStep(2)),
+        '#telephone' => $this->getDefaultValues("person_{$person->id()}_phone", '', $this->getFlow()->getFormIdByStep(2)),
+        '#email' => $this->getDefaultValues("person_{$person->id()}_email", '', $this->getFlow()->getFormIdByStep(2)),
+        '#role' => $this->getDefaultValues("person_{$person->id()}_role", '', $this->getFlow()->getFormIdByStep(2)),
       ];
 
       // We can get a link to a given form step like so.
