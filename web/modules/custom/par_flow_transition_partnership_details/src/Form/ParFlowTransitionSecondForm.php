@@ -134,6 +134,7 @@ class ParFlowTransitionSecondForm extends ParBaseForm {
     $person->set('work_phone', $this->getTempDataValue('work_phone'));
     $person->set('mobile_phone', $this->getTempDataValue('mobile_phone'));
     $person->set('email', $this->getTempDataValue('email'));
+    $person->set('role', $this->getTempDataValue('person_role'));
     if ($person->save()) {
       $this->deleteStore();
     }
