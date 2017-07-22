@@ -6,32 +6,17 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_flows\ParBaseInterface;
+use Drupal\par_flows\Controller\ParBaseController;
 
 /**
  * A controller for all PAR Flow Transition pages.
  */
-class ParFlowTransitionPAListOfTasks extends ParBaseForm {
-
-  /**
-   * The main index page for the whatever.
-   */
+class ParFlowTransitionPAListOfTasks extends ParBaseController  {
 
   /**
    * {@inheritdoc}
    */
   protected $flow = 'transition_partnership_details';
-
-  /**
-   * Returns a unique string identifying the form.
-   *
-   * @return string
-   *   The unique string identifying the form.
-   */
-  public function getFormId() {
-    return 'par_flow_transition_partnership_details_list_of_tasks';
-  }
 
   /**
    * Helper to get all the editable values when editing or
@@ -59,7 +44,7 @@ class ParFlowTransitionPAListOfTasks extends ParBaseForm {
 
     // Get referenced organisation for use with Business name/address component.
     $organisation = $par_data_partnership->get('organisation')->referencedEntities();
-    $organisation = array_shift($organisation);
+    $organisation = current($organisation);
 
     $this->loadDataValue("organisation_name", $organisation->get('name')->getString());
 
@@ -94,7 +79,7 @@ class ParFlowTransitionPAListOfTasks extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL, ParDataPartnership $par_data_partnership = NULL) {
+  public function content(ParDataAuthority $par_data_authority = NULL, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_authority, $par_data_partnership);
 
     // About the Partnership.
