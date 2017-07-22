@@ -1,3 +1,8 @@
+
+if (empty($settings['hash_salt'])) {
+	$settings['hash_salt'] = 'PLEASE_CREATE_A_DOTENV_FILE_IN_PROJECT_ROOT';
+}
+
 $databases['default']['default'] = array (
   'database' => 'par',
   'username' => 'par',
