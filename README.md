@@ -31,14 +31,8 @@ If you already have the repository cloned, destroy it and reclone it. Also shutd
     
 #### Setup environment variables
 
-Create a .env file in the root of the project. Please get the values from another team member.
+In the root of the project, copy .env.example to .env . Please get the values from another team member.
 
-S3_ACCESS_KEY=
-S3_SECRET_KEY=
-S3_BUCKET=
-S3_BUCKET_ARTIFACTS=
-PAR_HASH_SALT=
-    
 #### Create the VM
 
     vagrant up

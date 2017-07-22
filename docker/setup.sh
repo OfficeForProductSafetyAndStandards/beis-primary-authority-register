@@ -21,10 +21,13 @@ fi
 
 # Load the test data:
 
-    docker exec -i par_beta_web bash -c "vendor/bin/drush cc drush"
-    docker exec -i par_beta_web bash -c "vendor/bin/drush fsg backups/drush-dump-post-drush-updates-sanitized-201707211405.sql.tar.gz ./dump.sql.tar.gz"
-    #docker exec -i par_beta_web bash -c "tar -zxvf dump.sql.tar.gz"
-    #docker exec -i par_beta_web bash -c "vendor/bin/drush sql-cli @dev --root=/var/www/html/web < ./dump.sql && rm ./dump.sql"
+	docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
+    docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
+    docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush fsg s3backups drush-dump-post-drush-updates-sanitized-201707211405.sql.tar.gz /dump.sql.tar.gz"
+    docker exec -i par_beta_web bash -c "cd / && tar --no-same-owner -zxvf dump.sql.tar.gz"
+    docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sql-cli @dev --root=/var/www/html/web < /home/vcap/drush-dump-post-drush-updates-sanitized-201707211405.sql && rm /home/vcap/drush-dump-post-drush-updates-sanitized-201707211405.sql"
+	docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
+    docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
 
 # Update Drupal
 
