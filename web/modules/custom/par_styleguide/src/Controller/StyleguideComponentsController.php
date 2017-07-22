@@ -25,7 +25,7 @@ class StyleguideComponentsController extends ControllerBase {
     $build['business_name_address'] = [
       '#theme' => 'par_components_business_name_address',
       '#name' => 'Selfridges & Co',
-      '#address' => '400 Oxford Street, London, W1A 1AB',
+      '#address' => ['address_line1' => '400 Oxford Street', 'address_line2' => 'London', 'postal_code' => 'W1A 1AB'],
       '#prefix' => '<div class="styleguide-example">',
       '#suffix' => '</div>'
     ];

@@ -63,6 +63,7 @@ class ParFlowTransitionPAListOfTasks extends ParBaseForm {
 
     $this->loadDataValue("organisation_name", $organisation->get('name')->getString());
 
+    // Get organisation address.
     $premises = $organisation->get('premises')->referencedEntities();
     $premises = array_shift($premises);
 
@@ -74,6 +75,19 @@ class ParFlowTransitionPAListOfTasks extends ParBaseForm {
     $this->loadDataValue("person_{$primary_person->id()}_phone", $primary_person->get('work_phone')->getString());
     $this->loadDataValue("person_{$primary_person->id()}_email", $primary_person->get('email')->getString());
     $this->loadDataValue("person_{$primary_person->id()}_role", $primary_person->get('role')->getString());
+
+  }
+
+  /**
+   * @param ParDataPartnership $partnership_status
+   *
+   * @return boolean
+   */
+  public function arePartnershipDetailsConfirmed(ParDataPartnership $partnership) {
+
+    $partnership_status = $partnership->get('partnership_status')->getString();
+
+    return ($partnership_status == 'Approved') ? true : false;
 
   }
 
@@ -119,7 +133,7 @@ class ParFlowTransitionPAListOfTasks extends ParBaseForm {
     $rows = [
       [$this->getLinkByRoute('par_flow_transition_partnership_details.overview')
         ->setText('Review and confirm your partnership details')
-        ->toString(), 'awaiting review / confirmed'],
+        ->toString(), $this->arePartnershipDetailsConfirmed($par_data_partnership) ? 'Approved' : 'awaiting review'],
       [$this->getLinkByRoute('par_flow_transition_partnership_details.overview')
         ->setText('Invite the business to confirm their details')
         ->toString(), 'awaiting review / confirmed'],
