@@ -10,10 +10,9 @@ So that users are reminded about key data validation deadlines
         And I add "<user id>" to the inputfield "#username"
         And I add "password" to the inputfield "#password"
         And I press "Login"
-        Then I expect that element "#list-deadlines" is visible
+        Then the element "#list-deadlines" is visible
 
         Examples:
             | user id                 | password  |
             | ValidPrimaryAuthorityId | Password1 |
 
-   

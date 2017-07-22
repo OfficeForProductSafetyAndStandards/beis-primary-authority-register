@@ -6,5 +6,5 @@ Feature: As a PAR user,
     Scenario: Valid Login  Id
         Given I open the url "/"
         When I click on the link "Log in"
-        Then I expect that element "#edit-name" is visible
-        And I expect that element "#edit-pass" is visible
+        Then the element "#edit-name" is visible
+        And the element "#edit-pass" is visible
