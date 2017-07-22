@@ -100,11 +100,12 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#type' => 'markup',
       '#markup' => $this->t('%about', ['%about' => $this->getDefaultValues('about_partnership', '', $this->getFlow()->getFormIdByStep(2))]),
     ];
+
     // Go to the second step.
     $form['first_section']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('<br>%link', [
-        '%link' => $this->getFlow()->getLinkByStep(3)->setText('edit')->toString()
+        '%link' => $this->getFlow()->getLinkByStep(2)->setText('edit')->toString()
       ]),
     ];
 
@@ -119,16 +120,17 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $form['second_section']['primary_person'] = [
       '#type' => 'markup',
       '#markup' => t('%name <br>%phone <br>%email', [
-        '%name' => $this->getDefaultValues("person_{$primary_person_id}_name", '', $this->getFlow()->getFormIdByStep(3)),
-        '%phone' => $this->getDefaultValues("person_{$primary_person_id}_phone", '', $this->getFlow()->getFormIdByStep(3)),
-        '%email' => $this->getDefaultValues("person_{$primary_person_id}_email", '', $this->getFlow()->getFormIdByStep(3)),
+        '%name' => $this->getDefaultValues("person_{$primary_person_id}_name", '', $this->getFlow()->getFormIdByStep(2)),
+        '%phone' => $this->getDefaultValues("person_{$primary_person_id}_phone", '', $this->getFlow()->getFormIdByStep(2)),
+        '%email' => $this->getDefaultValues("person_{$primary_person_id}_email", '', $this->getFlow()->getFormIdByStep(2)),
       ]),
     ];
+
     // We can get a link to a given form step like so.
     $form['second_section']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('<br>%link', [
-        '%link' => $this->getFlow()->getLinkByStep(4, [
+        '%link' => $this->getFlow()->getLinkByStep(3, [
           'par_data_person' => $this->getDefaultValues('primary_person_id')
         ])->setText('edit')->toString()
       ]),
@@ -160,12 +162,14 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       $form['third_section']['edit'][$person->id()] = [
         '#type' => 'markup',
         '#markup' => t('<br>%link', [
-          '%link' => $this->getFlow()->getLinkByStep(2, [
+          '%link' => $this->getFlow()->getLinkByStep(3, [
             'par_data_person' => $person->id()
           ])->setText('edit')->toString()
         ]),
       ];
     }
+
+
 
     // Areas of Regulatory Advice.
     $form['fourth_section'] = [
