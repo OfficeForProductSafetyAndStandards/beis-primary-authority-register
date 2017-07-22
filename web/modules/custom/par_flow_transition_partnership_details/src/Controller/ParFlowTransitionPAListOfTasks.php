@@ -5,6 +5,7 @@ namespace Drupal\par_flow_transition_partnership_details\Controller;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_flows\ParBaseInterface;
 
@@ -56,6 +57,12 @@ class ParFlowTransitionPAListOfTasks extends ParBaseForm {
     $primary_person = array_shift($people);
     $this->loadDataValue('people', $people);
 
+    // Get referenced organisation for use with Business name/address component.
+    $organisation = $par_data_partnership->get('organisation')->referencedEntities();
+    $organisation = array_shift($organisation);
+
+    $this->loadDataValue("organisation_name", $organisation->get('name')->getString());
+
     // Primary Contact.
     $this->loadDataValue('primary_person_id', $primary_person->id());
     $this->loadDataValue("person_{$primary_person->id()}_name", $primary_person->get('person_name')->getString());
@@ -80,8 +87,8 @@ class ParFlowTransitionPAListOfTasks extends ParBaseForm {
 
     $form['first_section']['about_partnership'] = [
       '#theme' => 'par_components_business_name_address',
-      // @todo get business name/address from Organisation/business entity ref.
-      '#name' => 'Selfridges & Co',
+      '#name' => $this->getDefaultValues("organisation_name", '', $this->getFlow()->getFormIdByStep(2)),
+      // @todo get "premises" / address from Organisation/business entity ref.
       '#address' => '400 Oxford Street, London, W1A 1AB',
     ];
 
@@ -117,7 +124,7 @@ class ParFlowTransitionPAListOfTasks extends ParBaseForm {
         ->toString(), 'awaiting review / confirmed'],
       // @todo replace @business_name with just organisation/business name.
       [$this->getLinkByRoute('par_flow_transition_partnership_details.overview')
-        ->setText($this->t('Review and confirm your documentation for @business_name', ['@business_name' => $this->getDefaultValues('about_partnership', '', $this->getFlow()->getFormIdByStep(3))]))
+        ->setText($this->t('Review and confirm your documentation for @business_name', ['@business_name' => $this->getDefaultValues('organisation_name', '', $this->getFlow()->getFormIdByStep(3))]))
         ->toString(), 'awaiting review / confirmed'],
     ];
 
