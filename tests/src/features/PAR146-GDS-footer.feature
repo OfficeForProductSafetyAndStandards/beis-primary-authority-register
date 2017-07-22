@@ -5,9 +5,9 @@ Feature: As a PAR user,
 
     Scenario Outline: Valid Login  Id
         Given I open the url "<url>"
-        Then I expect that element "#block-footer" is visible
+        Then the element "#block-footer" is visible
         When I click on the link "Contact"
-        Then I expect that element "h1" contains the text "Website feedback"
+        Then the element "h1" contains the text "Website feedback"
 #        When I open the url "<url>"
 #        And I click on the link "Open Government Licence v3.0"
 #        Then I expect that the url is "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
