@@ -27,7 +27,7 @@ class ParFlowTransitionPAListOfTasks extends ParBaseForm {
    *   The unique string identifying the form.
    */
   public function getFormId() {
-    return 'par_flow_transition_partnership_details_list_of_task123s';
+    return 'par_flow_transition_partnership_details_list_of_tasks';
   }
 
   /**
