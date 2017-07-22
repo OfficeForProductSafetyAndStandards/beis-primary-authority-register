@@ -63,6 +63,11 @@ class ParFlowTransitionPAListOfTasks extends ParBaseForm {
 
     $this->loadDataValue("organisation_name", $organisation->get('name')->getString());
 
+    $premises = $organisation->get('premises')->referencedEntities();
+    $premises = array_shift($premises);
+
+    $this->loadDataValue("organisation_address", $premises->get('address'));
+
     // Primary Contact.
     $this->loadDataValue('primary_person_id', $primary_person->id());
     $this->loadDataValue("person_{$primary_person->id()}_name", $primary_person->get('person_name')->getString());
@@ -88,8 +93,7 @@ class ParFlowTransitionPAListOfTasks extends ParBaseForm {
     $form['first_section']['about_partnership'] = [
       '#theme' => 'par_components_business_name_address',
       '#name' => $this->getDefaultValues("organisation_name", '', $this->getFlow()->getFormIdByStep(2)),
-      // @todo get "premises" / address from Organisation/business entity ref.
-      '#address' => '400 Oxford Street, London, W1A 1AB',
+      '#address' => $this->getDefaultValues("organisation_address", '')
     ];
 
     $form['second_section'] = [
