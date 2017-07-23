@@ -2,8 +2,6 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\par_data\ParDataType;
-
 /**
  * Defines the par_data_legal_entity_type entity.
  *

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_data;
+namespace Drupal\par_data\Entity;
 
 use Drupal\trance\TranceType;
 
@@ -8,7 +8,7 @@ use Drupal\trance\TranceType;
  * The base PAR entity type class.
  *
  */
-abstract class ParDataType extends TranceType {
+abstract class ParDataType extends TranceType implements ParDataTypeInterface {
 
   /**
    * The additional configuration options for this entity.
@@ -20,26 +20,14 @@ abstract class ParDataType extends TranceType {
   public $configuration;
 
   /**
-   * Get the configuration for a given element.
-   *
-   * @param string $element
-   *   The element to retrieve additional configuration for, either a field, property or 'entity'.
-   *
-   * @return mixed
+   * {@inheritdoc}
    */
   public function getConfiguration($element) {
     return isset($this->configuration[$element]) ? $this->configuration[$element] : NULL;
   }
 
   /**
-   * Get the configuration for a given element by type.
-   *
-   * @param string $element
-   *   The element to retrieve additional configuration for, either a field, property or 'entity'.
-   * @param string $type
-   *   The type of additional configuration to get.
-   *
-   * @return mixed
+   * {@inheritdoc}
    */
   public function getConfigurationByType($element, $type) {
     $element_configuration = $this->getConfiguration($element);

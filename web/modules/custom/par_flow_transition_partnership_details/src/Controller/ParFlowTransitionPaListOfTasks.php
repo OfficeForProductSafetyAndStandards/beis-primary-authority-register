@@ -11,7 +11,7 @@ use Drupal\par_flows\Controller\ParBaseController;
 /**
  * A controller for all PAR Flow Transition pages.
  */
-class ParFlowTransitionPAListOfTasks extends ParBaseController  {
+class ParFlowTransitionPaListOfTasks extends ParBaseController  {
 
   /**
    * {@inheritdoc}

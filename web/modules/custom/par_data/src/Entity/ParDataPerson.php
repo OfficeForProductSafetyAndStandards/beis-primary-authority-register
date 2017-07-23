@@ -2,7 +2,6 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\trance\Trance;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
@@ -63,7 +62,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   field_ui_base_route = "entity.par_data_person_type.edit_form"
  * )
  */
-class ParDataPerson extends Trance {
+class ParDataPerson extends ParDataEntity {
 
   /**
    * {@inheritdoc}
@@ -147,23 +146,6 @@ class ParDataPerson extends Trance {
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 500,
-        'text_processing' => 0,
-      ])
-      ->setDefaultValue('')
-      ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => 5,
-      ])
-      ->setDisplayConfigurable('form', FALSE);
-
-    // Role.
-    $fields['role'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Role'))
-      ->setDescription(t('The role of this Person.'))
-      ->setTranslatable(TRUE)
-      ->setRevisionable(TRUE)
-      ->setSettings([
-        'max_length' => 255,
         'text_processing' => 0,
       ])
       ->setDefaultValue('')

@@ -2,7 +2,6 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\trance\Trance;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
@@ -63,7 +62,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   field_ui_base_route = "entity.par_data_advice_type.edit_form"
  * )
  */
-class ParDataAdvice extends Trance {
+class ParDataAdvice extends ParDataEntity {
 
   /**
    * {@inheritdoc}
