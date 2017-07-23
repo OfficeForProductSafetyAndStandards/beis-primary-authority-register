@@ -80,7 +80,7 @@ class ParFlowTransitionPAListOfTasks extends ParBaseController  {
    * {@inheritdoc}
    */
   public function content(ParDataAuthority $par_data_authority = NULL, ParDataPartnership $par_data_partnership = NULL) {
-    $this->retrieveEditableValues($par_data_authority, $par_data_partnership);
+    //$this->retrieveEditableValues($par_data_authority, $par_data_partnership);
 
     // About the Partnership.
     $form['first_section'] = [
@@ -101,8 +101,19 @@ class ParFlowTransitionPAListOfTasks extends ParBaseController  {
       '#collapsed' => FALSE,
     ];
 
-    $primary_person_id = $this->getDefaultValues('primary_person_id');
-
+    // I think it would be awesome if we could do something like.
+    // Get all the people and divide them into primary and alternative contacts.
+    $partnership_people = $par_data_partnership->get('person')->referencedEntities();
+    $partnership_primary_person = array_shift($partnership_people);
+    // I'd like to make this getViewBuilder method something we could call on the entity itself.
+    $par_data_person_vb = \Drupal::entityTypeManager()->getViewBuilder($partnership_primary_person->getEntityTypeId());
+    // This would return the render array.
+    $par_data_person_vb->view($partnership_primary_person->getEntityTypeId(), 'full');
+    // What we can do in each entity's view builder is control the output so it always comes out as a component like below.
+    // I've got lots of examples of manipulating view builders and it's all quite nice and simple really.
+    // Then we don't ever need to worry about building up these arrays ourselves :)
+    // The thing about building our own render arrays is that we loose a lot of functionality like cache keys,
+    // so let's keep to the way entities build them as much as possible.
     $form['second_section']['primary_person'] = [
       '#theme' => 'par_components_business_primary_contact',
       '#name' => $this->getDefaultValues("person_{$primary_person_id}_name", '', $this->getFlow()->getFormIdByStep(2)),
@@ -127,7 +138,7 @@ class ParFlowTransitionPAListOfTasks extends ParBaseController  {
         ->toString(), 'awaiting review / confirmed'],
       // @todo replace @business_name with just organisation/business name.
       [$this->getLinkByRoute('par_flow_transition_partnership_details.overview')
-        ->setText($this->t('Review and confirm your documentation for @business_name', ['@business_name' => $this->getDefaultValues('organisation_name', '', $this->getFlow()->getFormIdByStep(3))]))
+        ->setText($this->t('Review and confirm your documentation for @organisation_name', ['@organisation_name' => $this->getDefaultValues('organisation_name', '', $this->getFlow()->getFormIdByStep(3))]))
         ->toString(), 'awaiting review / confirmed'],
     ];
 

@@ -5,7 +5,7 @@ par_flow_transition_partnership_details.overview:
     _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionOverviewForm'
     _title: 'Viewing/confirming partnership details'
   requirements:
-    _permission: 'access content'
+    _permission: 'access par journey transition partnership details'
   options:
     parameters:
       par_data_authority:
@@ -18,7 +18,7 @@ par_flow_transition_partnership_details.list_of_tasks:
     _form: '\Drupal\par_flow_transition_partnership_details\Controller\ParFlowTransitionPAListOfTasks::content'
     _title: 'Updating the Primary Authority Register'
   requirements:
-    _permission: 'access content'
+    _permission: 'access par journey transition partnership details'
   options:
     parameters:
       par_data_authority:
@@ -31,7 +31,7 @@ par_flow_transition_partnership_details.first:
     _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionFirstForm'
     _title: 'Edit the information about the Partnership'
   requirements:
-    _permission: 'access content'
+    _permission: 'access par journey transition partnership details'
   options:
     parameters:
       par_data_authority:
@@ -44,7 +44,7 @@ par_flow_transition_partnership_details.second:
     _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionSecondForm'
     _title: 'Edit the details for the contact at the Primary Authority'
   requirements:
-    _permission: 'access content'
+    _permission: 'access par journey transition partnership details'
   options:
     parameters:
       par_data_authority:
