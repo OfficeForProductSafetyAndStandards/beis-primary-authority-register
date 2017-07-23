@@ -12,6 +12,15 @@ use Drupal\trance\Trance;
 class ParDataEntity extends Trance implements ParDataEntityInterface {
 
   /**
+   * Get bundle entity.
+   */
+  public function getBundleEntity() {
+    $bundle_definition = $this->parDataManager->getEntityBundleDefinition($this->getEntityType());
+    $bundle_storage = $this->parDataManager->getEntityTypeStorage($bundle_definition);
+    return $bundle = $bundle_storage->load($this->bundle());
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getViewBuilder() {
@@ -21,8 +30,22 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
-  public function view() {
-    return \Drupal::entityTypeManager()->getViewBuilder($this->getEntityTypeId());
+  public function getParStatus() {
+    // TODO: Implement getParStatus() method.
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCompletionPercentage() {
+    // TODO: Implement getCompletionPercentage() method.
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCompletionFields() {
+    // TODO: Implement getCompletionFields() method.
   }
 
 }

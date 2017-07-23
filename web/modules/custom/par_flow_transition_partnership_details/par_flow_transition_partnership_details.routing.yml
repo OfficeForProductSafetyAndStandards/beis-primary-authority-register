@@ -1,9 +1,9 @@
 # PAR Data Transition Journey 1 - Partnership Details
-par_flow_transition_partnership_details.overview:
-  path: '/dv/primary-authority-partnerships/{par_data_authority}/partnership/{par_data_partnership}/details'
+par_flow_transition_partnership_details.list_of_tasks:
+  path: '/dv/primary-authority-partnerships/{par_data_authority}/partnership/{par_data_partnership}'
   defaults:
-    _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionOverviewForm'
-    _title: 'Viewing/confirming partnership details'
+    _controller: '\Drupal\par_flow_transition_partnership_details\Controller\ParFlowTransitionPaListOfTasks::content'
+    _title: 'Updating the Primary Authority Register'
   requirements:
     _permission: 'access par journey transition partnership details'
   options:
@@ -12,11 +12,11 @@ par_flow_transition_partnership_details.overview:
         type: entity:par_data_authority
       par_data_partnership:
         type: entity:par_data_partnership
-par_flow_transition_partnership_details.list_of_tasks:
-  path: '/dv/primary-authority-partnerships/{par_data_authority}/partnership/{par_data_partnership}'
+par_flow_transition_partnership_details.overview:
+  path: '/dv/primary-authority-partnerships/{par_data_authority}/partnership/{par_data_partnership}/details'
   defaults:
-    _form: '\Drupal\par_flow_transition_partnership_details\Controller\ParFlowTransitionPAListOfTasks::content'
-    _title: 'Updating the Primary Authority Register'
+    _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionOverviewForm'
+    _title: 'Viewing/confirming partnership details'
   requirements:
     _permission: 'access par journey transition partnership details'
   options:
