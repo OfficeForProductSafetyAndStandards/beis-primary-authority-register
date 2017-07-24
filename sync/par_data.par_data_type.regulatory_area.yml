@@ -1,9 +1,0 @@
-uuid: 625a107d-40d6-460a-ac81-eddaf6985826
-langcode: en
-status: true
-dependencies: {  }
-id: regulatory_area
-label: 'Regulatory Area'
-description: 'PAR3 will cover 7 high-level Regulatory Areas: Environmental Health, Trading Standards, Fire Safety, Licensing, Petrol Storage Certification, Explosives Licensing, Health and Safety (Scotland)'
-help: ''
-configuration: null

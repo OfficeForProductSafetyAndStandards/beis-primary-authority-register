@@ -1,8 +1,0 @@
-status: true
-dependencies:
-  module:
-    - par_data
-id: par_data_authority.full
-label: Full
-targetEntityType: par_data_authority
-cache: true

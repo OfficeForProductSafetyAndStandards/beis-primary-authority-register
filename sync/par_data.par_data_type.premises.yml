@@ -1,9 +1,0 @@
-uuid: ad876f79-68c6-4772-b50d-15ca12448a1e
-langcode: en
-status: true
-dependencies: {  }
-id: premises
-label: Premises
-description: 'Premises are a location used by either an Authority or an Organisation.'
-help: ''
-configuration: null

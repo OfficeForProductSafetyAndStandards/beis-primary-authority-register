@@ -1,8 +1,0 @@
-status: true
-dependencies:
-  module:
-    - par_data
-id: par_data_organisation.title
-label: Title
-targetEntityType: par_data_organisation
-cache: true

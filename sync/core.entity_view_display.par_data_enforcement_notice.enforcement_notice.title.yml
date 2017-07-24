@@ -1,0 +1,35 @@
+uuid: 3cbca436-b973-47c0-88fd-3e7f599a4fde
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_enforcement_notice.title
+    - par_data.par_data_enforcement_notice_type.enforcement_notice
+  module:
+    - user
+id: par_data_enforcement_notice.enforcement_notice.title
+targetEntityType: par_data_enforcement_notice
+bundle: enforcement_notice
+mode: title
+content:
+  name:
+    label: above
+    type: string
+    weight: -4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  user_id:
+    label: hidden
+    type: author
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  enforcing_authority: true
+  legal_entity: true
+  notice_date: true
+  notice_type: true
+  primary_authority: true

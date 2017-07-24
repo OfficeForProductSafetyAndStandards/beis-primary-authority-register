@@ -16,9 +16,9 @@ namespace Drupal\par_data\Entity;
  *       "delete" = "Drupal\trance\Form\TranceTypeDeleteForm"
  *     }
  *   },
- *   config_prefix = "par_data_type",
+ *   config_prefix = "par_data_enforcement_notice_type",
  *   admin_permission = "administer site configuration",
- *   bundle_of = "par_data_authority",
+ *   bundle_of = "par_data_enforcement_notice",
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "label",

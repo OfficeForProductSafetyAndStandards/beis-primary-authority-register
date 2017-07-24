@@ -1,0 +1,9 @@
+uuid: 99219f8a-5ce1-4fb7-be1b-5039e50293c5
+langcode: en
+status: true
+dependencies: {  }
+id: sic_code
+label: 'SIC Code'
+description: 'An SIC is a Standard Industry Classification, used to describe the major areas that an Organisation does.'
+help: ''
+configuration: null

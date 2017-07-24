@@ -1,0 +1,34 @@
+uuid: 7ef26f7b-a862-4878-9cbc-6f913761b88d
+langcode: en
+status: true
+dependencies:
+  config:
+    - par_data.par_data_person_type.person
+  module:
+    - user
+id: par_data_person.person.default
+targetEntityType: par_data_person
+bundle: person
+mode: default
+content:
+  name:
+    label: above
+    type: string
+    weight: -4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  user_id:
+    label: hidden
+    type: author
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  email: true
+  mobile_phone: true
+  person_name: true
+  salutation: true
+  work_phone: true

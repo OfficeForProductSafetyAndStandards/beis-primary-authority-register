@@ -1,9 +1,0 @@
-uuid: 01752dff-d1e6-498c-9f64-c4d52bb8c3fa
-langcode: en
-status: true
-dependencies: {  }
-id: advice
-label: Advice
-description: 'Advice is given by a Primary Authority in the context of a Partnership.'
-help: ''
-configuration: null

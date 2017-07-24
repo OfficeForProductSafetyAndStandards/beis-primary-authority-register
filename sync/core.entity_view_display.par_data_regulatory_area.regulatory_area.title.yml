@@ -1,0 +1,31 @@
+uuid: 1c488ded-cbeb-490d-84e2-1cf6e5f35484
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_regulatory_area.title
+    - par_data.par_data_regulatory_area_type.regulatory_area
+  module:
+    - user
+id: par_data_regulatory_area.regulatory_area.title
+targetEntityType: par_data_regulatory_area
+bundle: regulatory_area
+mode: title
+content:
+  name:
+    label: above
+    type: string
+    weight: -4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  user_id:
+    label: hidden
+    type: author
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  area_name: true
