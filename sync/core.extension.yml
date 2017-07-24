@@ -1,5 +1,4 @@
 module:
-  PAR_par_ckeditor: 0
   address: 0
   automated_cron: 0
   block: 0
@@ -9,6 +8,7 @@ module:
   color: 0
   comment: 0
   config: 0
+  config_inspector: 0
   config_update: 0
   contact: 0
   content_translation: 0
@@ -39,10 +39,11 @@ module:
   options: 0
   page_cache: 0
   pagerer: 0
+  par_components: 0
   par_ckeditor: 0
   par_data: 0
   par_flow_transition_partnership_details: 0
-  par_forms: 0
+  par_flows: 0
   par_header: 0
   par_styleguide: 0
   par_welcome_page: 0

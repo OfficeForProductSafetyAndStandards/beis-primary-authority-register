@@ -10,7 +10,7 @@ so that I can access PAR
         And I add "<user id>" to the inputfield "#edit-name"
         And I add "password" to the inputfield "#edit-pass"
         And I press "Log in"
-        Then I expect that element "#logged-in-header" contains the text "Logged in"
+        Then the element "#logged-in-header" contains the text "Logged in"
 
         Examples:
             | user id                 | password  |
@@ -20,7 +20,7 @@ so that I can access PAR
         And I add "<user id>" to the inputfield "#edit-name"
         And I add "password" to the inputfield "#edit-pass"
         And I press "Log in"
-        Then I expect that element "#username-label" contains the text "Error"
+        Then the element "#username-label" contains the text "Error"
 
         Examples:
             | user id                   | password  |
@@ -30,10 +30,10 @@ so that I can access PAR
         And I add "<user id>" to the inputfield "#edit-name"
         And I add "password" to the inputfield "#edit-pass"
         When I press "Login"
-        Then I expect that element "#password-label" contains the text "Error"
+        Then the element "#password-label" contains the text "Error"
         When I add "<valid password>" to the inputfield "#password"
         And I press "Log in"
-        Then I expect that element "#logged-in-header" contains the text "Logged in"
+        Then the element "#logged-in-header" contains the text "Logged in"
 
         Examples:
             | user id                 | invalid password | valid password |

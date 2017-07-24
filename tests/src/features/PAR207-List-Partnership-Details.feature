@@ -14,15 +14,15 @@ Feature: As a Primary Authority Officer,
         And I add "PrimaryAuthority" to the inputfield "#username"
         And I add "password" to the inputfield "#password"
         And I press "Login"
-        Then I expect that element "#logged-in-header" contains the text "Thank you for registering"
+        Then the element "#logged-in-header" contains the text "Thank you for registering"
 
     Scenario: Create New Partnership
         Given I press "Continue"
         And I click on the checkbox "#toc"
         And I press "Continue"
-        Then I expect that element "h1" contains the text "You need to review and confirm the following partnerships"
-        And I expect that element "#your-partnerships" does exist
-        And I expect that element "#partnership-status" does exist
+        Then the element "h1" contains the text "You need to review and confirm the following partnerships"
+        And the element "#your-partnerships" does exist
+        And the element "#partnership-status" does exist
         When I click on the link "#partnership-1"
         Then the element "#partnership-details" is visible
 

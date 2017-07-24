@@ -70,7 +70,9 @@ after_deploy:
   - cf set-env par-beta-staging S3_ACCESS_KEY $S3_ACCESS_KEY
   - cf set-env par-beta-staging S3_SECRET_KEY $S3_SECRET_KEY
   - cf set-env par-beta-staging S3_BUCKET $S3_BUCKET
+  - cf set-env par-beta-staging S3_BUCKET_ARTIFACTS $S3_BUCKET_ARTIFACTS
   - cf set-env par-beta-staging PAR_HASH_SALT $PAR_HASH_SALT
+  - cf restage par-beta-staging
   - cd tests/reports/html && cf push -f ../../reports-manifest.yml
   - cf ssh par-beta-staging -c "cd app/tools && python extract_postgres_env_vars.py"
   - cf ssh par-beta-staging -c "cd app && source drupal-update-paas-envs.sh && sh drupal-update-paas.sh"

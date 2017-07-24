@@ -51,7 +51,7 @@
 
 {%
   set classes = [
-    type in ['checkbox', 'radio'] ? 'multiple-choice' : 'form-group',
+    type in ['radio'] ? 'multiple-choice' : 'form-group',
     'js-form-item',
     'form-item',
     'js-form-type-' ~ type|clean_class,
@@ -59,7 +59,7 @@
     'js-form-item-' ~ name|clean_class,
     title_display not in ['after', 'before'] ? 'form-no-label',
     disabled == 'disabled' ? 'form-disabled',
-    errors ? 'form-item--error',
+    errors and type not in ['radio', 'checkbox'] ? 'form-group-error'
   ]
 %}
 {%
@@ -69,7 +69,7 @@
   ]
 %}
 
-{% if description_display == 'outside' and description.content %}
+{% if description_display == 'outside' and description.content and errors is empty %}
   <div{{ description.attributes.addClass(description_classes) }}>
       {{ description.content }}
   </div>
@@ -80,14 +80,24 @@
     {{ label }}
   {% endif %}
 
-  {% if prefix is not empty %}
-    <span class="field-prefix">{{ prefix }}</span>
+  {% if errors and type not in ['radio', 'checkbox'] %}
+    <span class="error-message">
+      {{ errors | striptags('<p>') }}
+    </span>
   {% endif %}
 
   {% if description_display == 'before' and description.content %}
     <div{{ description.attributes.addClass(description_classes) }}>
       {{ description.content }}
     </div>
+  {% endif %}
+
+  {% if type in ['checkbox'] %}
+  <div class="multiple-choice">
+  {% endif %}
+
+  {% if prefix is not empty %}
+    <span class="field-prefix">{{ prefix }}</span>
   {% endif %}
 
   {{ children }}
@@ -100,10 +110,8 @@
     {{ label }}
   {% endif %}
 
-  {% if errors %}
-    <div class="form-item--error-message">
-      {{ errors }}
-    </div>
+  {% if type in ['checkbox'] %}
+  </div>
   {% endif %}
 
   {% if description_display in ['after', 'invisible'] and description.content %}

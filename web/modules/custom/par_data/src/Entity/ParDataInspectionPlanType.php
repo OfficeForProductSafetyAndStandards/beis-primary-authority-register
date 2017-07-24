@@ -2,7 +2,7 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\trance\TranceType;
+use Drupal\par_data\ParDataType;
 
 /**
  * Defines the par_data_inspection_plan_type entity.
@@ -36,10 +36,11 @@ use Drupal\trance\TranceType;
  *     "id",
  *     "label",
  *     "description",
- *     "help"
+ *     "help",
+ *     "configuration"
  *   }
  * )
  */
-class ParDataInspectionPlanType extends TranceType {
+class ParDataInspectionPlanType extends ParDataType {
 
 }
