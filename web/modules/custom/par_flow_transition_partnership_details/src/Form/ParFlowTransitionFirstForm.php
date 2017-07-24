@@ -5,7 +5,7 @@ namespace Drupal\par_flow_transition_partnership_details\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_forms\Form\ParBaseForm;
+use Drupal\par_flows\Form\ParBaseForm;
 
 /**
  * The about partnership form for the partnership details steps of the
@@ -50,11 +50,12 @@ class ParFlowTransitionFirstForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_authority, $par_data_partnership);
 
+    // Partnership details.
     $form['about_partnership'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('About'),
-      '#description' => $this->t('Use this section to give a brief overview of the project.<br>Include any information you feel may be useful to enforcing authorities.'),
+      '#title' => $this->t('Information about the partnership'),
       '#default_value' => $this->getDefaultValues('about_partnership'),
+      '#description' => 'Use this section to give a brief overview of the project.<br>Include any information you feel may be useful to enforcing authorities.',
       '#required' => TRUE,
     ];
 

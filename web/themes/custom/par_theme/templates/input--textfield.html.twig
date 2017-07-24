@@ -11,5 +11,12 @@
  */
 #}
 
+{%
+  set classes = [
+    'form-control',
+    errors ? 'form-group-error'
+  ]
+%}
+
 <span class="form-hint">{{ attributes.placeholder }}</span>
-<input{{ attributes.addClass('form-control').removeAttribute('placeholder') }} />{{ children }}
+<input{{ attributes.addClass(classes).removeAttribute('placeholder') }} />{{ children }}

@@ -1,0 +1,27 @@
+par_flows.par_flow.*:
+  type: config_entity
+  label: 'PAR Flow config'
+  mapping:
+    uuid:
+      type: string
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: string
+      lavel: 'Description'
+    steps:
+      type: mapping
+      label: "Steps"
+      mapping:
+        "route":
+          type: text
+          label: "Route"
+        "form_id":
+          type: text
+          label: "Form ID"
+          required: no
+          nullable: true
