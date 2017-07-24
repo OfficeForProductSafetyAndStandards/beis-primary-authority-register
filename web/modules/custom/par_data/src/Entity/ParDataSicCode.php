@@ -2,7 +2,6 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\trance\Trance;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
@@ -63,7 +62,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   field_ui_base_route = "entity.par_data_sic_code_type.edit_form"
  * )
  */
-class ParDataSicCode extends Trance {
+class ParDataSicCode extends ParDataEntity {
 
   /**
    * {@inheritdoc}
@@ -87,7 +86,8 @@ class ParDataSicCode extends Trance {
         'type' => 'string_textfield',
         'weight' => 1,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Description.
     $fields['description'] = BaseFieldDefinition::create('string')
@@ -105,7 +105,8 @@ class ParDataSicCode extends Trance {
         'type' => 'string_textfield',
         'weight' => 1,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
   }

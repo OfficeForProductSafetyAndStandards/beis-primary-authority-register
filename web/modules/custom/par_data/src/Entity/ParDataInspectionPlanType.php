@@ -2,8 +2,6 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\par_data\ParDataType;
-
 /**
  * Defines the par_data_inspection_plan_type entity.
  *
@@ -18,9 +16,9 @@ use Drupal\par_data\ParDataType;
  *       "delete" = "Drupal\trance\Form\TranceTypeDeleteForm"
  *     }
  *   },
- *   config_prefix = "par_data_type",
+ *   config_prefix = "par_data_inspection_plan_type",
  *   admin_permission = "administer site configuration",
- *   bundle_of = "par_data_authority",
+ *   bundle_of = "par_data_inspection_plan",
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "label",

@@ -2,7 +2,6 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\trance\Trance;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
@@ -63,7 +62,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   field_ui_base_route = "entity.par_data_premises_type.edit_form"
  * )
  */
-class ParDataPremises extends Trance {
+class ParDataPremises extends ParDataEntity {
 
   /**
    * {@inheritdoc}
@@ -97,7 +96,8 @@ class ParDataPremises extends Trance {
         'type' => 'address_default',
         'weight' => 1,
       ))
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Nation.
     $fields['nation'] = BaseFieldDefinition::create('string')
@@ -114,7 +114,8 @@ class ParDataPremises extends Trance {
         'type' => 'string_textfield',
         'weight' => 2,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
   }

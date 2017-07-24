@@ -1,0 +1,10 @@
+uuid: 34f19c8c-c7e8-4a8b-921a-054b1e4dd5e5
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_advice.full
+label: Full
+targetEntityType: par_data_advice
+cache: true

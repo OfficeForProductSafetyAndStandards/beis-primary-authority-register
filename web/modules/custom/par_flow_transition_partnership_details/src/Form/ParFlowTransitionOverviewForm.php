@@ -69,15 +69,12 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       $this->loadDataValue('regulatory_areas', $areas);
 
       // Partnership Confirmation.
-      $partnership_bundle_definition = $this->parDataManager->getEntityBundleDefinition($par_data_partnership->getEntityType());
-      $partnership_bundle_storage = $this->parDataManager->getEntityTypeStorage($partnership_bundle_definition);
-      $partnership_bundle = $partnership_bundle_storage->load($par_data_partnership->bundle());
-      $allowed_values = $partnership_bundle->getConfigurationByType('partnership_status', 'allowed_values');
+      $allowed_values = $par_data_partnership->type->entity->getConfigurationByType('partnership_status', 'allowed_values');
       // Set the on and off values so we don't have to do that again.
-      $this->loadDataValue('confirmation_set_value', $allowed_values[1]['value']);
-      $this->loadDataValue('confirmation_unset_value', $allowed_values[0]['value']);
-      $partnership_status = $par_data_partnership->get('partnership_status')->getString();
-      if ($partnership_status === $allowed_values[1]['value']) {
+      $this->loadDataValue('confirmation_set_value', $allowed_values['confirmed_authority']);
+      $this->loadDataValue('confirmation_unset_value', $allowed_values['awaiting_review']);
+      $partnership_status = $par_data_partnership->getParStatus();
+      if ($partnership_status === $allowed_values['confirmed_authority']) {
         $this->loadDataValue('confirmation', TRUE);
       }
     }
@@ -100,11 +97,12 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#type' => 'markup',
       '#markup' => $this->t('%about', ['%about' => $this->getDefaultValues('about_partnership', '', $this->getFlow()->getFormIdByStep(2))]),
     ];
+
     // Go to the second step.
     $form['first_section']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('<br>%link', [
-        '%link' => $this->getFlow()->getLinkByStep(2)->setText('edit')->toString()
+        '%link' => $this->getFlow()->getLinkByStep(4)->setText('edit')->toString()
       ]),
     ];
 
@@ -116,19 +114,19 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#collapsed' => FALSE,
     ];
     $primary_person_id = $this->getDefaultValues('primary_person_id');
+
     $form['second_section']['primary_person'] = [
-      '#type' => 'markup',
-      '#markup' => t('%name <br>%phone <br>%email', [
-        '%name' => $this->getDefaultValues("person_{$primary_person_id}_name", '', $this->getFlow()->getFormIdByStep(2)),
-        '%phone' => $this->getDefaultValues("person_{$primary_person_id}_phone", '', $this->getFlow()->getFormIdByStep(2)),
-        '%email' => $this->getDefaultValues("person_{$primary_person_id}_email", '', $this->getFlow()->getFormIdByStep(2)),
-      ]),
+      '#theme' => 'par_components_business_primary_contact',
+      '#name' => $this->getDefaultValues("person_{$primary_person_id}_name", '', $this->getFlow()->getFormIdByStep(2)),
+      '#telephone' => $this->getDefaultValues("person_{$primary_person_id}_phone", '', $this->getFlow()->getFormIdByStep(2)),
+      '#email' => $this->getDefaultValues("person_{$primary_person_id}_email", '', $this->getFlow()->getFormIdByStep(2)),
     ];
+
     // We can get a link to a given form step like so.
     $form['second_section']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('<br>%link', [
-        '%link' => $this->getFlow()->getLinkByStep(3, [
+        '%link' => $this->getFlow()->getLinkByStep(5, [
           'par_data_person' => $this->getDefaultValues('primary_person_id')
         ])->setText('edit')->toString()
       ]),
@@ -147,20 +145,19 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
+
       $form['third_section']['alternative_people'][$person->id()] = [
-        '#type' => 'markup',
-        '#markup' => t('%name <br>%phone <br>%email', [
-          '%name' => $this->getDefaultValues("person_{$person->id()}_name", '', $this->getFlow()->getFormIdByStep(2)),
-          '%phone' => $this->getDefaultValues("person_{$person->id()}_phone", '', $this->getFlow()->getFormIdByStep(2)),
-          '%email' => $this->getDefaultValues("person_{$person->id()}_email", '', $this->getFlow()->getFormIdByStep(2)),
-        ]),
+        '#theme' => 'par_components_business_secondary_contact',
+        '#name' => $this->getDefaultValues("person_{$person->id()}_name", '', $this->getFlow()->getFormIdByStep(2)),
+        '#telephone' => $this->getDefaultValues("person_{$person->id()}_phone", '', $this->getFlow()->getFormIdByStep(2)),
+        '#email' => $this->getDefaultValues("person_{$person->id()}_email", '', $this->getFlow()->getFormIdByStep(2)),
       ];
 
       // We can get a link to a given form step like so.
       $form['third_section']['edit'][$person->id()] = [
         '#type' => 'markup',
         '#markup' => t('<br>%link', [
-          '%link' => $this->getFlow()->getLinkByStep(3, [
+          '%link' => $this->getFlow()->getLinkByStep(5, [
             'par_data_person' => $person->id()
           ])->setText('edit')->toString()
         ]),
@@ -197,7 +194,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#title' => t('I confirm that the partnership information above is correct.'),
       '#prefix' => '<div class="form-group">',
       '#default_value' => $this->getDefaultValues('confirmation', FALSE),
-      '#return_value' => $this->getDefaultValues('confirmation_value', 0),
+      '#return_value' => $this->getDefaultValues('confirmation_set_value', 0),
       '#suffix' => '</div>',
     ];
 
@@ -208,7 +205,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     // We can get a link to a custom route like so.
     $form['cancel'] = [
       '#type' => 'markup',
-      '#markup' => t('<br>%link', ['%link' => $this->getLinkByRoute('<front>')->setText('Cancel')->toString()]),
+      '#markup' => t('<br>%link', ['%link' => $this->getFlow()->getLinkByStep(2)->setText('Cancel')->toString()]),
     ];
 
     return $form;
@@ -233,6 +230,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
     // Save only if the value is different from the one currently set.
     if ($partnership_status !== $par_data_partnership->get('partnership_status')->getString()) {
+      $par_data_partnership->set('partnership_status', $partnership_status);
       if ($par_data_partnership->save()) {
         $this->deleteStore();
       } else {
@@ -246,7 +244,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     }
 
     // We're not in kansas any more, after submitting the overview let's go home.
-    $form_state->setRedirect('<front>');
+    $form_state->setRedirect('par_flow_transition_partnership_details.list_of_tasks', $this->getRouteParams());
   }
 
 }

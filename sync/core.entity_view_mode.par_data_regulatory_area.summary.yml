@@ -1,0 +1,10 @@
+uuid: a0a66868-eab9-4afd-96a8-d992209ee8a3
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_regulatory_area.summary
+label: Summary
+targetEntityType: par_data_regulatory_area
+cache: true

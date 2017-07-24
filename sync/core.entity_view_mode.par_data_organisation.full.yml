@@ -1,0 +1,10 @@
+uuid: f8b6e82f-cecc-4cec-aa40-7f18f7473528
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_organisation.full
+label: Full
+targetEntityType: par_data_organisation
+cache: true
