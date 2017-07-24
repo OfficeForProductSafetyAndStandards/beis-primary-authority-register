@@ -9,17 +9,9 @@ Feature: As a Primary Authority Officer,
     So that I can review my partnership details
 
     Background:
-<<<<<<< HEAD
-        Given I open url "/login"
-        And I am logged in as PAR user "testuser" with password "testpwd"
-        Given I open the url "/login"
-        And I add "PrimaryAuthority" to the inputfield "#username"
-        And I add "password" to the inputfield "#password"
-=======
         Given I open the url "/user/login"
         And I add "testuser" to the inputfield "#edit-name"
         And I add "password" to the inputfield "#edit-pass"
->>>>>>> master
         And I press "Login"
 
     Scenario: Create New Partnership
