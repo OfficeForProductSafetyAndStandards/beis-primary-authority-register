@@ -10,13 +10,6 @@ namespace Drupal\par_data\Entity;
 interface ParDataEntityInterface {
 
   /**
-   * Get the bundle instance for this entity.
-   *
-   * @return \Drupal\Core\Config\Entity\ConfigEntityInterface
-   */
-  public function getBundleEntity();
-
-  /**
    * Get the view builder for the entity.
    *
    * @return \Drupal\Core\Entity\EntityViewBuilderInterface

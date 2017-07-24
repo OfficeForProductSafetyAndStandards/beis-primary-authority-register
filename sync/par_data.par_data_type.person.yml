@@ -6,3 +6,4 @@ id: person
 label: Person
 description: 'A Person is a named individual who can feature in a number of different ways within PAR.  A Person may, or may not, be a user of the PAR application.'
 help: ''
+configuration: null

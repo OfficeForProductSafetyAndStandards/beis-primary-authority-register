@@ -7,14 +7,17 @@ label: 'Transition Partnership Details'
 description: 'The Partnership Details section of the Data Validation/Transition Journey 1.'
 steps:
   1:
-    route: par_flow_transition_partnership_details.overview
-    form_id: par_flow_transition_partnership_details_overview
+    route: par_flow_transition_partnership_details.list_of_businesses
+    form_id: par_flow_transition_partnership_details_list_of_businesses
   2:
     route: par_flow_transition_partnership_details.list_of_tasks
     form_id: par_flow_transition_partnership_details_list_of_tasks
   3:
+    route: par_flow_transition_partnership_details.overview
+    form_id: par_flow_transition_partnership_details_overview
+  4:
     route: par_flow_transition_partnership_details.first
     form_id: par_flow_transition_partnership_details_about
-  4:
+  5:
     route: par_flow_transition_partnership_details.second
     form_id: par_flow_transition_partnership_primary_contact

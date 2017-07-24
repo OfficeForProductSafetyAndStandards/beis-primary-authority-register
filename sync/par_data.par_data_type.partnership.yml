@@ -7,20 +7,25 @@ label: Partnership
 description: 'A Partnership is a relationship between a Primary Authority and either a Business ("direct partnership") or a Co-ordinator ("co-ordinated partnership").  Note that in the latter case, the Business records may or may not be held in the PAR3 database.'
 help: ''
 configuration:
+  entity:
+    status_field:
+      type: string
+      name: 'Status Field'
+      value: partnership_status
   partnership_status:
     allowed_values:
-      type: 'map'
+      type: map
       name: 'Allowed Values'
       value:
-        0:
-          type: 'string'
+        -
+          type: string
           name: 'Awaiting Review'
-          value: 'awaiting_review'
-        1:
-          type: 'string'
+          value: awaiting_review
+        -
+          type: string
           name: 'Confimed by Authority'
-          value: 'confirmed_authority'
-        2:
-          type: 'string'
+          value: confirmed_authority
+        -
+          type: string
           name: 'Confimed by Business'
-          value: 'confirmed_business'
+          value: confirmed_business

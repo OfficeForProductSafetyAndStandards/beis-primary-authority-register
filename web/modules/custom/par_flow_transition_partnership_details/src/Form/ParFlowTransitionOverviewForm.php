@@ -69,11 +69,11 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       $this->loadDataValue('regulatory_areas', $areas);
 
       // Partnership Confirmation.
-      $allowed_values = $par_data_partnership->getBundleEntity()->getConfigurationByType('partnership_status', 'allowed_values');
+      $allowed_values = $par_data_partnership->type->entity->getConfigurationByType('partnership_status', 'allowed_values');
       // Set the on and off values so we don't have to do that again.
       $this->loadDataValue('confirmation_set_value', $allowed_values[1]['value']);
       $this->loadDataValue('confirmation_unset_value', $allowed_values[0]['value']);
-      $partnership_status = $par_data_partnership->get('partnership_status')->getString();
+      $partnership_status = $par_data_partnership->getParStatus();
       if ($partnership_status === $allowed_values[1]['value']) {
         $this->loadDataValue('confirmation', TRUE);
       }
@@ -102,7 +102,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $form['first_section']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('<br>%link', [
-        '%link' => $this->getFlow()->getLinkByStep(2)->setText('edit')->toString()
+        '%link' => $this->getFlow()->getLinkByStep(4)->setText('edit')->toString()
       ]),
     ];
 
@@ -126,7 +126,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $form['second_section']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('<br>%link', [
-        '%link' => $this->getFlow()->getLinkByStep(3, [
+        '%link' => $this->getFlow()->getLinkByStep(5, [
           'par_data_person' => $this->getDefaultValues('primary_person_id')
         ])->setText('edit')->toString()
       ]),
@@ -157,14 +157,12 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       $form['third_section']['edit'][$person->id()] = [
         '#type' => 'markup',
         '#markup' => t('<br>%link', [
-          '%link' => $this->getFlow()->getLinkByStep(3, [
+          '%link' => $this->getFlow()->getLinkByStep(5, [
             'par_data_person' => $person->id()
           ])->setText('edit')->toString()
         ]),
       ];
     }
-
-
 
     // Areas of Regulatory Advice.
     $form['fourth_section'] = [
@@ -207,7 +205,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     // We can get a link to a custom route like so.
     $form['cancel'] = [
       '#type' => 'markup',
-      '#markup' => t('<br>%link', ['%link' => $this->getLinkByRoute('<front>')->setText('Cancel')->toString()]),
+      '#markup' => t('<br>%link', ['%link' => $this->getFlow()->getLinkByStep(2)->setText('Cancel')->toString()]),
     ];
 
     return $form;
