@@ -31,7 +31,7 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
    */
   public function getConfigurationByType($element, $type) {
     $element_configuration = $this->getConfiguration($element);
-    return isset($element_configuration[$type]['value']) ? $element_configuration[$type]['value'] : NULL;
+    return isset($element_configuration[$type]) ? $element_configuration[$type] : NULL;
   }
 
 }

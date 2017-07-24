@@ -59,20 +59,22 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         }
       }
     }
+
+    return ($completed / $total) * 100;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getCompletionFields() {
+  public function getCompletionFields($include_required = FALSE) {
     $fields = [];
 
     // Get the names of any extra fields required for completion.
-    $required_fields = $this->getBundleEntity()->getConfigurationByType('entity', 'required_fields');
+    $required_fields = $this->type->entity->getConfigurationByType('entity', 'required_fields');
 
     // Get all the required fields on an entity.
     foreach ($this->getFieldDefinitions() as $field_name => $field_definition) {
-      if ($field_definition->isRequired()) {
+      if ($include_required && $field_definition->isRequired() && !in_array($field_name, $this->excludedFields())) {
         $fields[] = $field_name;
       }
       elseif (isset($required_fields) && in_array($field_name, $required_fields)) {
@@ -81,6 +83,21 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     }
 
     return $fields;
+  }
+
+  /**
+   * System fields excluded from user input.
+   */
+  protected function excludedFields() {
+    return [
+      'id',
+      'type',
+      'uuid',
+      'user_id',
+      'created',
+      'changed',
+      'name'
+    ];
   }
 
 }

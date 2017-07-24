@@ -8,24 +8,11 @@ description: 'A Partnership is a relationship between a Primary Authority and ei
 help: ''
 configuration:
   entity:
-    status_field:
-      type: string
-      name: 'Status Field'
-      value: partnership_status
+    status_field: partnership_status
+    required_fields:
+      - about_partnership
   partnership_status:
     allowed_values:
-      type: map
-      name: 'Allowed Values'
-      value:
-        -
-          type: string
-          name: 'Awaiting Review'
-          value: awaiting_review
-        -
-          type: string
-          name: 'Confimed by Authority'
-          value: confirmed_authority
-        -
-          type: string
-          name: 'Confimed by Business'
-          value: confirmed_business
+      awaiting_review: awaiting_review
+      confirmed_authority: confirmed_authority
+      confirmed_business: confirmed_business

@@ -23,12 +23,12 @@ class ParFlowTransitionPaListOfTasks extends ParBaseController  {
 
     // Organisation summary.
     $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
-    $form['organisation_summary'] = $par_data_organisation->view('teaser');
+    $form['organisation_summary'] = $par_data_organisation->view('summary');
 
     // Primary contact summary
     $par_data_people = $par_data_partnership->get('person')->referencedEntities();
     $par_data_primary_person = array_shift($par_data_people);
-    $build['primary_contact'] = $par_data_primary_person->view('teaser');
+    $build['primary_contact'] = $par_data_primary_person->view('summary');
 
     // Table headers.
     $header = [];

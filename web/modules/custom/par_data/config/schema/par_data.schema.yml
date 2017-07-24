@@ -8,7 +8,7 @@ par_data.settings:
       label: 'Whether to stub the entities when testing.'
 
 # PAR Data Entity types
-par_data.par_data_*_type.*:
+par_data.par_data_type.*:
   type: config_entity
   label: 'PAR Data entity type config'
   mapping:
@@ -29,63 +29,14 @@ par_data.par_data_*_type.*:
     configuration:
       type: par_data.configuration
       nullable: true
-
-par_data.configuration:
-  type: config_object
-  label: 'Configuration elements'
-  sequence:
-    type: sequence
-    label: 'Element (entity or field name)'
-    nullable: true
-    sequence:
-      type: sequence
-      label: 'Configuration rules'
-      nullable: true
       sequence:
-        type: mapping
-        label: 'Rule'
-        mapping:
-          type:
-            type: string
-            label: 'Value Type'
-          name:
-            type: string
-            label: 'Rule name'
-          value:
-            type: par_data.configuration_value.[type]
-
-par_data.configuration_value.default:
-  type: config_object
-  label: 'Default configuration value'
-  mapping:
-    type:
-      type: string
-      label: 'String'
-    value:
-      type: string
-      label: 'Default value'
-
-par_data.configuration_value.integer:
-  type: config_object
-  label: 'Integer configuration value'
-  mapping:
-    type:
-      type: string
-      label: 'Integer'
-    value:
-      type: integer
-      label: 'Numeric value'
-
-par_data.configuration_value.map:
-  type: config_object
-  label: 'Array map configuration value'
-  mapping:
-    type:
-      type: string
-      label: 'Map'
-    value:
-      type: sequence
-      label: 'Map keys'
-      nullable: true
-      sequence:
-        type: par_data.configuration_value.[type]
+        type: sequence
+        label: 'Element (entity or field name)'
+        nullable: true
+        sequence:
+          type: sequence
+          label: 'Configuration rules'
+          nullable: true
+          sequence:
+            type: mapping
+            label: 'Rule'

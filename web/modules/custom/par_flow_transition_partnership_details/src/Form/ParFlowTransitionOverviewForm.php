@@ -71,10 +71,10 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       // Partnership Confirmation.
       $allowed_values = $par_data_partnership->type->entity->getConfigurationByType('partnership_status', 'allowed_values');
       // Set the on and off values so we don't have to do that again.
-      $this->loadDataValue('confirmation_set_value', $allowed_values[1]['value']);
-      $this->loadDataValue('confirmation_unset_value', $allowed_values[0]['value']);
+      $this->loadDataValue('confirmation_set_value', $allowed_values['confirmed_authority']);
+      $this->loadDataValue('confirmation_unset_value', $allowed_values['awaiting_review']);
       $partnership_status = $par_data_partnership->getParStatus();
-      if ($partnership_status === $allowed_values[1]['value']) {
+      if ($partnership_status === $allowed_values['confirmed_authority']) {
         $this->loadDataValue('confirmation', TRUE);
       }
     }
