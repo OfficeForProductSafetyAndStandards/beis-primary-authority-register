@@ -4,6 +4,10 @@ Feature: Edit About the Partnership: Save form data	- As a Primary Authority Off
     So that the correct details are taken forward into the new PAR
 
     Background:
+        Given I open the url "/user/login"
+        And I add "testuser" to the inputfield "#edit-name"
+        And I add "password" to the inputfield "#edit-pass"
+        And I press "Login"
         Given I open the url "/dv/primary-authority-partnerships/1/partnership/1/details/edit-about"
 
     Scenario: Edit About the Partnership: Save form data
