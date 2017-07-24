@@ -27,6 +27,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     if (isset($field_name) && $this->hasField($field_name)) {
       $status = $this->get($field_name)->getString();
     }
+
     return isset($status) ? $status : NULL;
   }
 

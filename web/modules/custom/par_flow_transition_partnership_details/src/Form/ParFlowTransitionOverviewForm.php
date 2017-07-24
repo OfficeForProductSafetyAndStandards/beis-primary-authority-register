@@ -194,7 +194,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#title' => t('I confirm that the partnership information above is correct.'),
       '#prefix' => '<div class="form-group">',
       '#default_value' => $this->getDefaultValues('confirmation', FALSE),
-      '#return_value' => $this->getDefaultValues('confirmation_value', 0),
+      '#return_value' => $this->getDefaultValues('confirmation_set_value', 0),
       '#suffix' => '</div>',
     ];
 
@@ -230,6 +230,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
     // Save only if the value is different from the one currently set.
     if ($partnership_status !== $par_data_partnership->get('partnership_status')->getString()) {
+      $par_data_partnership->set('partnership_status', $partnership_status);
       if ($par_data_partnership->save()) {
         $this->deleteStore();
       } else {
