@@ -18,6 +18,7 @@ import isVisible from '../support/check/isVisible';
 import openWebsite from '../support/action/openWebsite';
 import checkResponseCode from '../support/action/checkResponseCode';
 import resizeScreenSize from '../support/action/resizeScreenSize';
+import loginAsUser from 'support/action/loginAsUser'
 
 module.exports = function given() {
     this.Given(
@@ -68,6 +69,11 @@ module.exports = function given() {
     this.Given(
         /^the (element|inputfield) "([^"]*)?"( not)* matches the text "([^"]*)?"$/,
         checkEqualsText
+    );
+    
+    this.Given(
+        /^I am logged in as PAR user"([^"]*)?" with password "([^"]*)?"$/,
+        loginAsUser
     );
 
     this.Given(

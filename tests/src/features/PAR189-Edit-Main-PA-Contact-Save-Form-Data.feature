@@ -4,6 +4,8 @@ I need to be able to edit the field 'Main Primary Authority Contact' in the exis
 So that the correct details are taken forward into the new PAR
 
     Background:
+        Given I open url "/login"
+        And I am logged in as PAR user "testuser" with password "testpwd"
         Given I open the url "/dv/primary-authority-partnerships/1/partnership/1/details/edit-contact/1"
 
     Scenario: List Partnership Details: Load summary elements Load data into the form

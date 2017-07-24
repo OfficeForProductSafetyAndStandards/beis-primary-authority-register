@@ -10,6 +10,8 @@ Feature: As a Primary Authority Officer,
 
 
     Background:
+        Given I open url "/login"
+        And I am logged in as PAR user "testuser" with password "testpwd"
         Given I open the url "/login"
         And I add "PrimaryAuthority" to the inputfield "#username"
         And I add "password" to the inputfield "#password"

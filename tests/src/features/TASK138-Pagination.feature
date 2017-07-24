@@ -4,6 +4,8 @@ Feature: As a PAR user
     In order to break down information into easier views
 
     Background:
+        Given I open url "/login"
+        And I am logged in as PAR user "testuser" with password "testpwd"
         Given I open the url "/styleguide/pagination"
         And the title is "PAR Styleguide Pagination | Primary Authority Register"
         Then the element "li.pager__item.pagerer-prefix span" contains the text "Showing 1-10"

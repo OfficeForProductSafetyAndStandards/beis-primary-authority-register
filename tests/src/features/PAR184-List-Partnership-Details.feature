@@ -2,7 +2,9 @@
 Feature: List Partnership Details: Load summary elements Load data into the form
 
     Background:
-        Given I open the url "/dv/primary-authority-partnerships/1/partnership/1/details"
+    Given I open url "/login"
+    And I am logged in as PAR user "testuser" with password "testpwd"
+        And I open the url "/dv/primary-authority-partnerships/1/partnership/1/details"
 
     Scenario: List Partnership Details: Load summary elements Load data into the form
         Then the element "h1" contains the text "Viewing/confirming partnership details"
