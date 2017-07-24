@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - par_data.par_data_type.partnership
+    - par_data.par_data_partnership_type.partnership
   module:
     - par_data
 id: par_data_transition_journey_1_step_1
