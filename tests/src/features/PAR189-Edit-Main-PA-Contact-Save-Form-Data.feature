@@ -8,9 +8,10 @@ So that the correct details are taken forward into the new PAR
         And I add "testuser" to the inputfield "#edit-name"
         And I add "password" to the inputfield "#edit-pass"
         And I press "Login"
-        And I open the url "/dv/primary-authority-partnerships/1/partnership/1/details/edit-contact/1"
+        Given I open the url "/dv/primary-authority-partnerships/1/partnership/1/details/edit-about"
 
     Scenario: List Partnership Details: Load summary elements Load data into the form
+        Given I open the url "/dv/primary-authority-partnerships/1/partnership/1/details/edit-contact/1"
         Then the element "h1" contains the text "Edit the details for the contact at the Primary Authority"
         And I add "Mr" to the inputfield "#edit-salutation"
         And I add "Grover" to the inputfield "#edit-person-name"

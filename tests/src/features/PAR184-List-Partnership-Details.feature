@@ -2,8 +2,11 @@
 Feature: List Partnership Details: Load summary elements Load data into the form
 
     Background:
-    Given I open url "/login"
-    And I am logged in as PAR user "testuser" with password "testpwd"
+        Given I open the url "/user/login"
+        And I add "testuser" to the inputfield "#edit-name"
+        And I add "password" to the inputfield "#edit-pass"
+        When I press "Login"
+        And I expect that element "error-message" is not visible
         And I open the url "/dv/primary-authority-partnerships/1/partnership/1/details"
 
     Scenario: List Partnership Details: Load summary elements Load data into the form

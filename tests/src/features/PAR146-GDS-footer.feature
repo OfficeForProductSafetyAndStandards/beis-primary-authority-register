@@ -2,10 +2,6 @@
 Feature: As a PAR user,
     I need to see the standard GDS Footer across the site
     so that I know I'm on the Primary Authority Register
-
-    Background:
-    Given I open url "/login"
-    And I am logged in as PAR user "testuser" with password "testpwd"
     
     Scenario Outline: Valid Login  Id
         Given I open the url "<url>"

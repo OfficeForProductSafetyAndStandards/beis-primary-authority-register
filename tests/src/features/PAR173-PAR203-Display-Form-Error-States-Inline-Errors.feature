@@ -2,10 +2,6 @@
 Feature: As a PAR user
     I need to know whenever I submit an invalid form
     So that I can correct my form submission
-
-    Background:
-    Given I open url "/login"
-    And I am logged in as PAR user "testuser" with password "testpwd"
     
     Scenario: Error display check
         Given I open the url "/styleguide/forms"
