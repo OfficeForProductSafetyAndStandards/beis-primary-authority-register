@@ -8,10 +8,10 @@ Feature: As a PAR user,
         Then the element "#block-footer" is visible
         When I click on the link "Contact"
         Then the element "h1" contains the text "Website feedback"
-       When I open the url "<url>"
-       And I click on the link "Open Government Licence v3.0"
-       When I open the url "<url>"
-       And I click on the link "© Crown copyright"
+        When I open the url "<url>"
+        And I click on the link "Open Government Licence v3.0"
+        When I open the url "<url>"
+        And I click on the link "© Crown copyright"
 
         Examples:
             | url |
