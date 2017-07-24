@@ -85,7 +85,8 @@ class ParDataPerson extends ParDataEntity {
         'type' => 'string_textfield',
         'weight' => 1,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Name.
     $fields['person_name'] = BaseFieldDefinition::create('string')
@@ -102,7 +103,8 @@ class ParDataPerson extends ParDataEntity {
         'type' => 'string_textfield',
         'weight' => 2,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Work Phone.
     $fields['work_phone'] = BaseFieldDefinition::create('string')
@@ -119,7 +121,8 @@ class ParDataPerson extends ParDataEntity {
         'type' => 'string_textfield',
         'weight' => 3,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Mobile Phone.
     $fields['mobile_phone'] = BaseFieldDefinition::create('string')
@@ -136,7 +139,8 @@ class ParDataPerson extends ParDataEntity {
         'type' => 'string_textfield',
         'weight' => 4,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Email.
     $fields['email'] = BaseFieldDefinition::create('string')
@@ -153,7 +157,8 @@ class ParDataPerson extends ParDataEntity {
         'type' => 'string_textfield',
         'weight' => 5,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
   }

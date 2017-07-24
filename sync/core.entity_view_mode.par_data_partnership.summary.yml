@@ -1,0 +1,10 @@
+uuid: 68e85e6c-6f82-4180-949e-2b924e810fed
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_partnership.summary
+label: Summary
+targetEntityType: par_data_partnership
+cache: true

@@ -86,7 +86,8 @@ class ParDataOrganisation extends ParDataEntity {
         'type' => 'string_textfield',
         'weight' => 1,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Size.
     $fields['size'] = BaseFieldDefinition::create('string')
@@ -103,7 +104,8 @@ class ParDataOrganisation extends ParDataEntity {
         'type' => 'string_textfield',
         'weight' => 2,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Number of Employees.
     $fields['employees_band'] = BaseFieldDefinition::create('string')
@@ -120,7 +122,8 @@ class ParDataOrganisation extends ParDataEntity {
         'type' => 'string_textfield',
         'weight' => 3,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Nation.
     $fields['nation'] = BaseFieldDefinition::create('string')
@@ -137,7 +140,8 @@ class ParDataOrganisation extends ParDataEntity {
         'type' => 'string_textfield',
         'weight' => 4,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Comments.
     $fields['comments'] = BaseFieldDefinition::create('string_long')
@@ -154,7 +158,8 @@ class ParDataOrganisation extends ParDataEntity {
           'rows' => 25,
         ],
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Premises Mapped.
     $fields['premises_mapped'] = BaseFieldDefinition::create('boolean')
@@ -166,7 +171,8 @@ class ParDataOrganisation extends ParDataEntity {
         'type' => 'boolean_checkbox',
         'weight' => 6,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Trading Name.
     $fields['trading_name'] = BaseFieldDefinition::create('string')
@@ -185,7 +191,8 @@ class ParDataOrganisation extends ParDataEntity {
         'type' => 'string_textfield',
         'weight' => 7,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Person.
     $fields['person'] = BaseFieldDefinition::create('entity_reference')
@@ -210,7 +217,8 @@ class ParDataOrganisation extends ParDataEntity {
           'placeholder' => '',
         ),
       ))
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Premises.
     $fields['premises'] = BaseFieldDefinition::create('entity_reference')
@@ -235,7 +243,8 @@ class ParDataOrganisation extends ParDataEntity {
           'placeholder' => '',
         ),
       ))
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Legal Entity.
     $fields['legal_entity'] = BaseFieldDefinition::create('entity_reference')
@@ -260,7 +269,8 @@ class ParDataOrganisation extends ParDataEntity {
           'placeholder' => '',
         ),
       ))
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Reference to SIC Code.
     $fields['sic_code'] = BaseFieldDefinition::create('entity_reference')
@@ -285,7 +295,8 @@ class ParDataOrganisation extends ParDataEntity {
           'placeholder' => '',
         ),
       ))
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
   }

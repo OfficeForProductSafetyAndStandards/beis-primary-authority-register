@@ -86,7 +86,8 @@ class ParDataSicCode extends ParDataEntity {
         'type' => 'string_textfield',
         'weight' => 1,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Description.
     $fields['description'] = BaseFieldDefinition::create('string')
@@ -104,7 +105,8 @@ class ParDataSicCode extends ParDataEntity {
         'type' => 'string_textfield',
         'weight' => 1,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
   }

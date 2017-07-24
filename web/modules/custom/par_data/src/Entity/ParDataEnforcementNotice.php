@@ -86,7 +86,8 @@ class ParDataEnforcementNotice extends ParDataEntity {
         'type' => 'string_textfield',
         'weight' => 1,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Notice Date.
     $fields['notice_date'] = BaseFieldDefinition::create('datetime')
@@ -102,7 +103,8 @@ class ParDataEnforcementNotice extends ParDataEntity {
         'type' => 'datetime_default',
         'weight' => 2,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Primary Authority.
     $fields['primary_authority'] = BaseFieldDefinition::create('entity_reference')
@@ -128,7 +130,8 @@ class ParDataEnforcementNotice extends ParDataEntity {
           'placeholder' => '',
         ),
       ))
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Enforcing Authority.
     $fields['enforcing_authority'] = BaseFieldDefinition::create('entity_reference')
@@ -154,7 +157,8 @@ class ParDataEnforcementNotice extends ParDataEntity {
           'placeholder' => '',
         ),
       ))
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Legal Entity.
     $fields['legal_entity'] = BaseFieldDefinition::create('entity_reference')
@@ -180,7 +184,8 @@ class ParDataEnforcementNotice extends ParDataEntity {
           'placeholder' => '',
         ),
       ))
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
   }

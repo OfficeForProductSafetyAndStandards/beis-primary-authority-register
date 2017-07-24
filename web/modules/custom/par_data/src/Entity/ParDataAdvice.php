@@ -86,7 +86,8 @@ class ParDataAdvice extends ParDataEntity {
         'type' => 'string_textfield',
         'weight' => 1,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Notes.
     $fields['notes'] = BaseFieldDefinition::create('string_long')
@@ -103,7 +104,8 @@ class ParDataAdvice extends ParDataEntity {
           'rows' => 25,
         ],
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Authority Visible.
     $fields['visible_authority'] = BaseFieldDefinition::create('boolean')
@@ -116,7 +118,8 @@ class ParDataAdvice extends ParDataEntity {
         'type' => 'boolean_checkbox',
         'weight' => 3,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Coordinator Visible.
     $fields['visible_coordinator'] = BaseFieldDefinition::create('boolean')
@@ -129,7 +132,8 @@ class ParDataAdvice extends ParDataEntity {
         'type' => 'boolean_checkbox',
         'weight' => 4,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Business Visible.
     $fields['visible_business'] = BaseFieldDefinition::create('boolean')
@@ -142,7 +146,8 @@ class ParDataAdvice extends ParDataEntity {
         'type' => 'boolean_checkbox',
         'weight' => 5,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
   }

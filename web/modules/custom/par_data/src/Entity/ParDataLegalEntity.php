@@ -86,7 +86,8 @@ class ParDataLegalEntity extends ParDataEntity {
         'type' => 'string_textfield',
         'weight' => 1,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Registered Name.
     $fields['registered_number'] = BaseFieldDefinition::create('string')
@@ -103,7 +104,8 @@ class ParDataLegalEntity extends ParDataEntity {
         'type' => 'string_textfield',
         'weight' => 2,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Legal Entity Type.
     $fields['legal_entity_type'] = BaseFieldDefinition::create('string')
@@ -120,7 +122,8 @@ class ParDataLegalEntity extends ParDataEntity {
         'type' => 'string_textfield',
         'weight' => 2,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
   }

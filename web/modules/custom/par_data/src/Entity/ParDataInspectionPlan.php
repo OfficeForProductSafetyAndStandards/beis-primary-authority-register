@@ -84,7 +84,8 @@ class ParDataInspectionPlan extends ParDataEntity {
         'type' => 'daterange_default',
         'weight' => 1,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Approved RD Executive.
     $fields['approved_rd_executive'] = BaseFieldDefinition::create('boolean')
@@ -97,7 +98,8 @@ class ParDataInspectionPlan extends ParDataEntity {
         'type' => 'boolean_checkbox',
         'weight' => 2,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Approved RD Executive.
     $fields['consulted_national_regulator'] = BaseFieldDefinition::create('boolean')
@@ -110,7 +112,8 @@ class ParDataInspectionPlan extends ParDataEntity {
         'type' => 'boolean_checkbox',
         'weight' => 3,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Inspection Status.
     $fields['inspection_status'] = BaseFieldDefinition::create('string')
@@ -128,7 +131,8 @@ class ParDataInspectionPlan extends ParDataEntity {
         'type' => 'string_textfield',
         'weight' => 4,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
   }

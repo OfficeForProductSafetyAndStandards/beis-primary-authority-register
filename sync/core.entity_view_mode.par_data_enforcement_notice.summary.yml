@@ -1,0 +1,10 @@
+uuid: f9157778-541f-4286-be6e-ea0fa62875c8
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_enforcement_notice.summary
+label: Summary
+targetEntityType: par_data_enforcement_notice
+cache: true
