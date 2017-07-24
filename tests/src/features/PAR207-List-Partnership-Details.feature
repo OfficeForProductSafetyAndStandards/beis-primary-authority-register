@@ -1,4 +1,4 @@
-@Pending
+@ci
 Feature: As a Primary Authority Officer,
     I need to be able to see a list of my existing partnership details including;
     -About the Partnership
@@ -11,11 +11,9 @@ Feature: As a Primary Authority Officer,
     Background:
         Given I open the url "/user/login"
         And I add "testuser" to the inputfield "#edit-name"
-        And I add "password" to the inputfield "#edit-pass"
-        And I press "Login"
-        And I expect that element "error-message" is not visible
-
-
+        And I add "testpwd" to the inputfield "#edit-pass"
+        When I press "#edit-submit"
+        Then I expect that element ".error-message" is not visible
 
     Scenario: Create New Partnership
         Given I press "Continue"
