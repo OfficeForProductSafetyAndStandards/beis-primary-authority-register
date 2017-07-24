@@ -13,7 +13,7 @@ Feature: As a Primary Authority Officer,
         And I add "testuser" to the inputfield "#edit-name"
         And I add "password" to the inputfield "#edit-pass"
         And I press "Login"
-        And I expect that element ".error-message" is not visible
+        And I expect that element "error-message" is not visible
 
 
 
