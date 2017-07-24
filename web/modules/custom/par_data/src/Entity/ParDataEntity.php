@@ -19,6 +19,13 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
+   * @param $view_mode
+   */
+  public function view($view_mode) {
+    $this->getViewBuilder()->view($this, $view_mode);
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getParStatus() {

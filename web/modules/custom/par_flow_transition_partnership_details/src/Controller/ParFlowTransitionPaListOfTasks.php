@@ -23,12 +23,12 @@ class ParFlowTransitionPaListOfTasks extends ParBaseController  {
 
     // Organisation summary.
     $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
-    $form['organisation_summary'] = $par_data_organisation->getViewBuilder()->view($par_data_organisation, 'teaser');
+    $form['organisation_summary'] = $par_data_organisation->view('teaser');
 
     // Primary contact summary
     $par_data_people = $par_data_partnership->get('person')->referencedEntities();
     $par_data_primary_person = array_shift($par_data_people);
-    $build['primary_contact'] = $par_data_primary_person->getViewBuilder()->view($par_data_primary_person, 'teaser');
+    $build['primary_contact'] = $par_data_primary_person->view('teaser');
 
     // Table headers.
     $header = [];
@@ -43,6 +43,17 @@ class ParFlowTransitionPaListOfTasks extends ParBaseController  {
         $par_data_partnership->getParStatus(),
       ]
     ];
+
+    // Task List.
+    // $form['basic_table_title'] = ['#markup' => '<h2 class="heading-medium">' . $this->t("Basic data table") . '</h2>'];
+    $build['basic_table'] = [
+      '#theme' => 'par_some_custom_theme',
+      '#header' => $header,
+      'title' => $rows,
+      'name' => $this->t("No tasks could be found."),
+    ];
+
+
 
     // Task List.
     // $form['basic_table_title'] = ['#markup' => '<h2 class="heading-medium">' . $this->t("Basic data table") . '</h2>'];
