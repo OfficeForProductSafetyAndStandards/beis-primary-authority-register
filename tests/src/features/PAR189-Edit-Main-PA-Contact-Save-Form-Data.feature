@@ -4,9 +4,17 @@ I need to be able to edit the field 'Main Primary Authority Contact' in the exis
 So that the correct details are taken forward into the new PAR
 
     Background:
+<<<<<<< HEAD
         Given I open url "/login"
         And I am logged in as PAR user "testuser" with password "testpwd"
         Given I open the url "/dv/primary-authority-partnerships/1/partnership/1/details/edit-contact/1"
+=======
+        Given I open the url "/user/login"
+        And I add "testuser" to the inputfield "#edit-name"
+        And I add "password" to the inputfield "#edit-pass"
+        And I press "Login"
+        And I open the url "/dv/primary-authority-partnerships/1/partnership/1/details/edit-contact/1"
+>>>>>>> master
 
     Scenario: List Partnership Details: Load summary elements Load data into the form
         Then the element "h1" contains the text "Edit the details for the contact at the Primary Authority"
