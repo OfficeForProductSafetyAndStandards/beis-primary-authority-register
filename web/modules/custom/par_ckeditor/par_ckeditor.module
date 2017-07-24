@@ -23,6 +23,6 @@ function par_ckeditor_ckeditor_css_alter(array &$css, Editor $editor) {
   ];
 
   if (in_array($editor->getFilterFormat()->id(), $known_formats)) {
-    $css[] = drupal_get_path('theme', 'par_theme') . '/css/par.css';
+    $css[] = drupal_get_path('theme', 'par_theme') . '/css/ckeditor.css?v1';
   }
 }
