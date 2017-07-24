@@ -40,13 +40,13 @@
     "pa11y-ci": "latest",
     "supertest": "^3.0.0",
     "wdio-allure-reporter": "^0.1.2",
-    "wdio-cucumber-framework": "0.3.0",
+    "wdio-cucumber-framework": "0.3.1",
     "wdio-json-reporter": "0.2.1",
     "wdio-phantomjs-service": "0.2.2",
     "wdio-selenium-standalone-service": "0.0.9",
     "wdio-spec-reporter": "0.1.0",
     "wdio-browserstack-service": "latest",
     "webdrivercss": "^1.1.10",
-    "webdriverio": "4.6.2"
+    "webdriverio": "4.7.1"
   }
 }
