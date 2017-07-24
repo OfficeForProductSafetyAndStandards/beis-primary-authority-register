@@ -1,4 +1,4 @@
-@ci
+@Pending
 Feature: As a Primary Authority Officer,
     I need to be able to see a list of my existing partnership details including;
     -About the Partnership
