@@ -1,0 +1,9 @@
+name: 'PAR CKEditor settings'
+description: 'Settings for CKEditors. Things such as buttons and filters.'
+type: module
+core: 8.x
+dependencies:
+  - ckeditor
+  - editor
+  - filter
+package: PAR

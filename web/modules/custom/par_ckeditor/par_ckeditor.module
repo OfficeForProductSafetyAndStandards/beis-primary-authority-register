@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Contains par_header.module.
+ */
+
+use Drupal\editor\Entity\Editor;
+
+/**
+ * Implements hook_ckeditor_css_alter().
+ *
+ * Injects our CSS sheets anytime CKEditor has loaded.
+ */
+function par_ckeditor_ckeditor_css_alter(array &$css, Editor $editor) {
+  if (!$editor->hasAssociatedFilterFormat()) {
+    return;
+  }
+
+  $known_formats = [
+    'basic_html',
+    'full_html',
+  ];
+
+  if (in_array($editor->getFilterFormat()->id(), $known_formats)) {
+    $css[] = drupal_get_path('theme', 'par_theme') . '/css/par.css';
+  }
+}
