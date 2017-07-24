@@ -2,10 +2,10 @@ $script = <<SCRIPT
 echo I am provisioning...
 date > /etc/vagrant_provision_start
 
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -    
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"    
-sudo apt-get update -y   
-apt-cache policy docker-ce    
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt-get update -y
+apt-cache policy docker-ce
 sudo apt-get install -y docker-ce
 sudo apt-get install -y docker-compose
 sudo adduser ubuntu docker
@@ -15,7 +15,7 @@ cd /vagrant/docker
 sudo docker-compose up -d
 
 sh setup.sh
-    
+
 date > /etc/vagrant_provision_end
 SCRIPT
 
@@ -24,7 +24,12 @@ Vagrant.configure("2") do |config|
   config.vm.network "private_network", ip: "192.168.82.68"
   config.vm.network "forwarded_port", guest: 8111, host: 8111
   config.vm.network "forwarded_port", guest: 5411, host: 5411
-  
+
   config.vm.synced_folder ".", "/vagrant", type: "nfs"
   config.vm.provision "shell", inline: $script
+
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 3096
+    v.cpus = 4
+  end
 end
