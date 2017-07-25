@@ -22,7 +22,7 @@ fi
 # Load the test data:
 
     sleep 5 # Time for the server to boot
-    docker exec -i par_beta_web bash -c "vendor/bin/drush @dev --root=/var/www/html/web sql-drop"
+    docker exec -i par_beta_web bash -c "vendor/bin/drush @dev --root=/var/www/html/web sql-drop --yes"
     docker exec -i par_beta_web bash -c "vendor/bin/drush sql-cli @dev --root=/var/www/html/web < docker/fresh_drupal_postgres.sql"
 
 # Update Drupal
