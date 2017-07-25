@@ -100,8 +100,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   public function getCurrentStep() {
     // Lookup the current step to more accurately determine the next step.
     $current_step = $this->getStepByRoute($this->getCurrentRoute());
-
-    return isset($current_step['step']) ? $current_step['step'] : NULL;
+    return isset($current_step) ? $current_step : NULL;
   }
 
   /**
@@ -111,10 +110,11 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     if ($current_step = $this->getCurrentStep()) {
       $next_index = ++$current_step;
     }
+
     $next_step = isset($next_index) ? $this->getStep($next_index) : $this->getStep(1);
 
     // If there is no next step we'll go back to the beginning.
-    return isset($next_step['step']) ? $next_step['step'] : 1;
+    return isset($next_step['route']) ? $next_index : 1;
   }
 
   /**
@@ -122,12 +122,26 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getPrevStep() {
     if ($current_step = $this->getCurrentStep()) {
-      $next_index = --$current_step;
+      $prev_index = --$current_step;
     }
-    $next_step = isset($next_index) ? $this->getStep($next_index) : $this->getStep(1);
+    $prev_step = isset($prev_index) ? $this->getStep($prev_index) : $this->getStep(1);
 
     // If there is no next step we'll go back to the beginning.
-    return isset($next_step['step']) ? $next_step['step'] : 1;
+    return isset($prev_step['route']) ? $prev_index : 1;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getNextRoute() {
+    return $this->getRouteByStep($this->getNextStep());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPrevRoute() {
+    return $this->getRouteByStep($this->getPrevStep());
   }
 
   /**

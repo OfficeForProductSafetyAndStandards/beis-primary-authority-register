@@ -11,7 +11,7 @@ use Drupal\par_flows\Form\ParBaseForm;
  * The about partnership form for the partnership details steps of the
  * 1st Data Validation/Transition User Journey.
  */
-class ParFlowTransitionFirstForm extends ParBaseForm {
+class ParFlowTransitionTermsForm extends ParBaseForm {
 
   /**
    * {@inheritdoc}
@@ -19,7 +19,7 @@ class ParFlowTransitionFirstForm extends ParBaseForm {
   protected $flow = 'transition_partnership_details';
 
   public function getFormId() {
-    return 'par_flow_transition_partnership_details_about';
+    return 'par_flow_transition_partnership_details_terms';
   }
 
   /**
@@ -38,9 +38,8 @@ class ParFlowTransitionFirstForm extends ParBaseForm {
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()}");
 
-      // If we want to use values already saved we have to tell
-      // the form about them.
-      $this->loadDataValue('about_partnership', $par_data_partnership->get('about_partnership')->getString());
+      // We need to get the value of the terms and conditions checkbox.
+
     }
   }
 
@@ -50,13 +49,25 @@ class ParFlowTransitionFirstForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_authority, $par_data_partnership);
 
+    // If the terms and conditions have already been set
+    // we want to go immediately to the next step.
+    if ($this->getDefaultValues('terms_conditions', FALSE)) {
+      return $this->redirect($this->getFlow()->getNextRoute(), $this->getRouteParams());
+    }
+
+    $form['terms_summary'] = [
+      '#markup' => "Please Review the new Primary Authority terms and conditions and confirm that you agree with them.<br>The New terms will come into effect from <em>01 October 2017</em>.<br>What's changed?",
+    ];
+
+    // @stemont will need your input on componentizing this summary box.
+    $form['terms_summary'] = [
+      '#markup' => "<ul><li>The scheme is expanding to include more types of businesses.</li><li>The process of revoking a partnership will be more formalised.</li><li>The process for updating an inspection plan has been updated.</li></ul>",
+    ];
+
     // Partnership details.
-    $form['about_partnership'] = [
-      '#type' => 'textarea',
-      '#title' => $this->t('Information about the partnership'),
-      '#default_value' => $this->getDefaultValues('about_partnership'),
-      '#description' => 'Use this section to give a brief overview of the project.<br>Include any information you feel may be useful to enforcing authorities.',
-      '#required' => TRUE,
+    $form['terms_conditions'] = [
+      '#type' => 'checkbox',
+      '#title' => t('(NOT YET SAVED) Iconfirm that my authority agrees to the new Terms and Conditions.'),
     ];
 
     $form['next'] = [
@@ -87,7 +98,7 @@ class ParFlowTransitionFirstForm extends ParBaseForm {
 
     // Save the value for the about_partnership field.
     $partnership = $this->getRouteParam('par_data_partnership');
-    $partnership->set('about_partnership', $this->getTempDataValue('about_partnership'));
+    // @TODO Still need to save/acknowledge the acceptance of the terms.
     if ($partnership->save()) {
       $this->deleteStore();
     }
@@ -101,6 +112,6 @@ class ParFlowTransitionFirstForm extends ParBaseForm {
     }
 
     // Go back to the overview.
-    $form_state->setRedirect($this->getFlow()->getRouteByStep(4), $this->getRouteParams());
+    $form_state->setRedirect($this->getFlow()->getNextRoute(), $this->getRouteParams());
   }
 }
