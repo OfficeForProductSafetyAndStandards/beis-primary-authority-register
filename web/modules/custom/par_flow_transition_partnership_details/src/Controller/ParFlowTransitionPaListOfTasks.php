@@ -23,7 +23,6 @@ class ParFlowTransitionPaListOfTasks extends ParBaseController {
 
     // Organisation summary.
     $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
-    $organisation_view_builder = $par_data_organisation->getViewBuilder();
 
     // Premises.
     $par_data_premises = current($par_data_organisation->get('premises')->referencedEntities());
