@@ -28,14 +28,14 @@ install:
   
   - cd docker
   - docker-compose up -d
-  - cd ..
 
 #--------------------------------
 # Setup local config defaults
 #--------------------------------
   
-  - cp web/sites/example.settings.local.php web/sites/default/settings.local.php
-  - cat web/sites/settings.local.php.travis.append >> web/sites/default/settings.local.php
+  - cp ../web/sites/example.settings.local.php ../web/sites/default/settings.local.php
+  - cat ../web/sites/settings.local.php.travis.append >> ../web/sites/default/settings.local.php
+  - cd ..
   
 #--------------------------------
 # Install dependencies
