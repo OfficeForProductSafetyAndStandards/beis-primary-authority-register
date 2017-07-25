@@ -109,7 +109,10 @@ class ParFlowTransitionSecondForm extends ParBaseForm {
       '#value' => t('Next'),
     ];
 
-    return $form;
+    // Make sure to add the person cacheability data to this form.
+    $this->addCacheableDependency($par_data_person);
+
+    return parent::buildForm($form, $form_state);
   }
 
   /**

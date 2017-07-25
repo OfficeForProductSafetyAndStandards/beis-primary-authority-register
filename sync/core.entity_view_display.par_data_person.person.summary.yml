@@ -5,31 +5,44 @@ dependencies:
   config:
     - core.entity_view_mode.par_data_person.summary
     - par_data.par_data_person_type.person
-  module:
-    - user
 id: par_data_person.person.summary
 targetEntityType: par_data_person
 bundle: person
 mode: summary
 content:
-  name:
-    label: above
+  email:
     type: string
-    weight: -4
+    weight: 1
     region: content
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  user_id:
+  mobile_phone:
+    type: string
+    weight: 3
+    region: content
     label: hidden
-    type: author
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  person_name:
+    type: string
     weight: 0
     region: content
-    settings: {  }
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  work_phone:
+    type: string
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
 hidden:
-  email: true
-  mobile_phone: true
-  person_name: true
+  name: true
   salutation: true
-  work_phone: true
+  user_id: true

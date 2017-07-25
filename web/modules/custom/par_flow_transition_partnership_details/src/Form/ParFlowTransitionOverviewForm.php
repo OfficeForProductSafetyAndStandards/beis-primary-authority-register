@@ -42,24 +42,6 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       // the form about them.
       $this->loadDataValue('about_partnership', $par_data_partnership->get('about_partnership')->getString());
 
-      // Get all the people and divide them into primary and alternative contacts.
-      $people = $par_data_partnership->get('person')->referencedEntities();
-      $primary_person = array_shift($people);
-      $this->loadDataValue('people', $people);
-
-      // Primary Contacts.
-      $this->loadDataValue('primary_person_id', $primary_person->id());
-      $this->loadDataValue("person_{$primary_person->id()}_name", $primary_person->get('person_name')->getString());
-      $this->loadDataValue("person_{$primary_person->id()}_phone", $primary_person->get('work_phone')->getString());
-      $this->loadDataValue("person_{$primary_person->id()}_email", $primary_person->get('email')->getString());
-
-      // Secondary Contacts.
-      foreach ($people as $person) {
-        $this->loadDataValue("person_{$person->id()}_name", $person->get('person_name')->getString());
-        $this->loadDataValue("person_{$person->id()}_phone", $person->get('work_phone')->getString());
-        $this->loadDataValue("person_{$person->id()}_email", $person->get('email')->getString());
-      }
-
       // Regulatory Areas.
       $regulatory_areas = $par_data_partnership->get('regulatory_area')->referencedEntities();
       $areas = [];
@@ -93,10 +75,10 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-    $form['first_section']['about_partnership'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('%about', ['%about' => $this->getDefaultValues('about_partnership', '', $this->getFlow()->getFormIdByStep(2))]),
-    ];
+
+    $partnership_view_builder = $par_data_partnership->getViewBuilder();
+
+    $form['first_section']['about_partnership'] = $par_data_partnership ? $partnership_view_builder->view($par_data_partnership, 'about_partnership') : '';
 
     // Go to the second step.
     $form['first_section']['edit'] = [
@@ -113,21 +95,18 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-    $primary_person_id = $this->getDefaultValues('primary_person_id');
 
-    $form['second_section']['primary_person'] = [
-      '#theme' => 'par_components_business_primary_contact',
-      '#name' => $this->getDefaultValues("person_{$primary_person_id}_name", '', $this->getFlow()->getFormIdByStep(2)),
-      '#telephone' => $this->getDefaultValues("person_{$primary_person_id}_phone", '', $this->getFlow()->getFormIdByStep(2)),
-      '#email' => $this->getDefaultValues("person_{$primary_person_id}_email", '', $this->getFlow()->getFormIdByStep(2)),
-    ];
+    $primary_person = current($par_data_partnership->get('person')->referencedEntities());
+    $person_view_builder = $primary_person->getViewBuilder();
+
+    $form['second_section']['primary_person'] = $primary_person ? $person_view_builder->view($primary_person, 'summary') : '';
 
     // We can get a link to a given form step like so.
     $form['second_section']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('<br>%link', [
         '%link' => $this->getFlow()->getLinkByStep(5, [
-          'par_data_person' => $this->getDefaultValues('primary_person_id')
+          'par_data_person' => $primary_person->id()
         ])->setText('edit')->toString()
       ]),
     ];
@@ -139,6 +118,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
+
     foreach ($this->getDefaultValues('people', []) as $person) {
       $form['third_section'][$person->id()] = [
         '#type' => 'fieldset',
@@ -146,12 +126,8 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
         '#collapsed' => FALSE,
       ];
 
-      $form['third_section']['alternative_people'][$person->id()] = [
-        '#theme' => 'par_components_business_secondary_contact',
-        '#name' => $this->getDefaultValues("person_{$person->id()}_name", '', $this->getFlow()->getFormIdByStep(2)),
-        '#telephone' => $this->getDefaultValues("person_{$person->id()}_phone", '', $this->getFlow()->getFormIdByStep(2)),
-        '#email' => $this->getDefaultValues("person_{$person->id()}_email", '', $this->getFlow()->getFormIdByStep(2)),
-      ];
+      $person_view_builder = $person->getViewBuilder();
+      $form['third_section']['alternative_people'][$person->id()] = $person ? $person_view_builder->view($person, 'summary') : '';
 
       // We can get a link to a given form step like so.
       $form['third_section']['edit'][$person->id()] = [
@@ -171,19 +147,16 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-    foreach ($this->getDefaultValues('regulatory_areas', []) as $regulatory_area) {
-      $form['fourth_section'][] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('%area', [
-          '%area' => $regulatory_area,
-        ]),
-      ];
+    $regulatory_areas = $par_data_partnership->get('regulatory_area')->referencedEntities();
+    $regulatory_area_view_builder = current($regulatory_areas)->getViewBuilder();
+    foreach ($par_data_partnership->get('regulatory_area')->referencedEntities() as $regulatory_area) {
+      $form['fourth_section'][] = $regulatory_area_view_builder->view($regulatory_area, 'title');
     }
 
     // Partnership Confirmation.
     $form['partnership_agreement'] = [
       '#type' => 'checkbox',
-      '#title' => t('A written summary of partnership agreement, such as Memorandum of Understanding, has been agreed with the Business.'),
+      '#title' => t('(NOT YET SAVED) A written summary of partnership agreement, such as Memorandum of Understanding, has been agreed with the Business.'),
       '#prefix' => '<div class="form-group">',
       '#suffix' => '</div>',
     ];
@@ -208,7 +181,10 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#markup' => t('<br>%link', ['%link' => $this->getFlow()->getLinkByStep(2)->setText('Cancel')->toString()]),
     ];
 
-    return $form;
+    // Make sure to add the partnership cacheability data to this form.
+    $this->addCacheableDependency($par_data_partnership);
+
+    return parent::buildForm($form, $form_state);
   }
 
   /**

@@ -9,7 +9,7 @@ use Drupal\par_flows\Controller\ParBaseController;
 /**
  * A controller for all PAR Flow Transition pages.
  */
-class ParFlowTransitionPaListOfTasks extends ParBaseController  {
+class ParFlowTransitionPaListOfTasks extends ParBaseController {
 
   /**
    * {@inheritdoc}
@@ -23,12 +23,18 @@ class ParFlowTransitionPaListOfTasks extends ParBaseController  {
 
     // Organisation summary.
     $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
-    $form['organisation_summary'] = $par_data_organisation->view('summary');
 
-    // Primary contact summary
-    $par_data_people = $par_data_partnership->get('person')->referencedEntities();
-    $par_data_primary_person = array_shift($par_data_people);
-    $build['primary_contact'] = $par_data_primary_person->view('summary');
+    // Premises.
+    $par_data_premises = current($par_data_organisation->get('premises')->referencedEntities());
+    $premises_view_builder = $par_data_premises->getViewBuilder();
+
+    $build['premises'] = $premises_view_builder->view($par_data_premises, 'summary');
+
+    // Primary contact summary.
+    $par_data_primary_person = current($par_data_partnership->get('person')->referencedEntities());
+    $primary_person_view_builder = $par_data_primary_person->getViewBuilder();
+
+    $build['primary_contact'] = $primary_person_view_builder->view($par_data_primary_person, 'summary');
 
     // Table headers.
     $header = [];
@@ -82,7 +88,10 @@ class ParFlowTransitionPaListOfTasks extends ParBaseController  {
       ]),
     ];
 
-    return $build;
+    // Make sure to add the person cacheability data to this form.
+    $this->addCacheableDependency($par_data_partnership);
+
+    return parent::build($build);
 
   }
 

@@ -1,14 +1,14 @@
-uuid: 9a9703f7-d448-4caf-8d06-21fa5e71d383
+uuid: 72e07e37-10fb-4857-88dd-54c6011e8b83
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.par_data_organisation.summary
+    - core.entity_view_mode.par_data_organisation.about_partnership
     - par_data.par_data_organisation_type.business
-id: par_data_organisation.business.summary
+id: par_data_organisation.business.about_partnership
 targetEntityType: par_data_organisation
 bundle: business
-mode: summary
+mode: about_partnership
 content: {  }
 hidden:
   comments: true
