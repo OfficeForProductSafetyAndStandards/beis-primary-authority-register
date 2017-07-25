@@ -1,0 +1,10 @@
+uuid: 0de6d554-bc2a-4620-91e4-01cbe9ec376d
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_premises.summary
+label: Summary
+targetEntityType: par_data_premises
+cache: true

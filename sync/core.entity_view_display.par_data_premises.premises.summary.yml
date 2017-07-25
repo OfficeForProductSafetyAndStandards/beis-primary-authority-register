@@ -1,0 +1,25 @@
+uuid: 23edc8be-81f5-4e07-ae96-ff9396aed2ec
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_premises.summary
+    - par_data.par_data_premises_type.premises
+  module:
+    - address
+id: par_data_premises.premises.summary
+targetEntityType: par_data_premises
+bundle: premises
+mode: summary
+content:
+  address:
+    type: address_default
+    weight: 0
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  name: true
+  nation: true
+  user_id: true

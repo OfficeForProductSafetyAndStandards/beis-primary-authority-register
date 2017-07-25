@@ -1,0 +1,10 @@
+uuid: c4315bb9-c255-4df5-a748-20398c149844
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_advice.summary
+label: Summary
+targetEntityType: par_data_advice
+cache: true

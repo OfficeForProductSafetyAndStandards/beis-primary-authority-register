@@ -1,0 +1,32 @@
+uuid: a160a3eb-6b1c-4a32-bc00-a4dc5c3c6039
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_sic_code.summary
+    - par_data.par_data_sic_code_type.sic_code
+  module:
+    - user
+id: par_data_sic_code.sic_code.summary
+targetEntityType: par_data_sic_code
+bundle: sic_code
+mode: summary
+content:
+  name:
+    label: above
+    type: string
+    weight: -4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  user_id:
+    label: hidden
+    type: author
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  description: true
+  sic_code: true

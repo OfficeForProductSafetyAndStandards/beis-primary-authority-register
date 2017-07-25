@@ -1,0 +1,13 @@
+# par_entity menu items definition
+par_data.main_page:
+  title: 'PAR data'
+  route_name: par_data.main_page
+  description: 'List par entities'
+  parent: system.admin_content
+
+# par_entity type menu items definition
+par_data.structure_page:
+  title: 'PAR data types'
+  route_name: par_data.structure_page
+  description: 'Manage par entity bundles'
+  parent: system.admin_structure

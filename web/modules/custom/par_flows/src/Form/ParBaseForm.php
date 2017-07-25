@@ -2,6 +2,8 @@
 
 namespace Drupal\par_flows\Form;
 
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -21,6 +23,7 @@ use Drupal\par_flows\ParRedirectTrait;
 abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
   use ParRedirectTrait;
+  use RefinableCacheableDependencyTrait;
 
   /**
    * The Drupal session manager.
@@ -135,6 +138,13 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    return ['user.roles', 'route'];
+  }
+
+  /**
    * Returns the logger channel specific to errors logged by PAR Forms.
    *
    * @return string
@@ -226,6 +236,21 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     if (isset($values)) {
       $this->ignoreValues = $values;
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildForm(array $form, FormStateInterface $form_state) {
+    $cache = array(
+      '#cache' => array(
+        'contexts' => $this->getCacheContexts(),
+        'tags' => $this->getCacheTags(),
+        'max-age' => $this->getCacheMaxAge(),
+      )
+    );
+
+    return $form + $cache;
   }
 
   /**

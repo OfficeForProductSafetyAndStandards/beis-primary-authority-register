@@ -2,7 +2,6 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\trance\Trance;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
@@ -63,7 +62,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   field_ui_base_route = "entity.par_data_partnership_type.edit_form"
  * )
  */
-class ParDataPartnership extends Trance {
+class ParDataPartnership extends ParDataEntity {
 
   /**
    * {@inheritdoc}
@@ -87,7 +86,8 @@ class ParDataPartnership extends Trance {
         'type' => 'string_textfield',
         'weight' => 1,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Partnership Status.
     $fields['partnership_status'] = BaseFieldDefinition::create('string')
@@ -105,7 +105,8 @@ class ParDataPartnership extends Trance {
         'type' => 'string_textfield',
         'weight' => 2,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // About Partnership.
     $fields['about_partnership'] = BaseFieldDefinition::create('string_long')
@@ -122,7 +123,8 @@ class ParDataPartnership extends Trance {
           'rows' => 3,
         ],
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Communication by Email.
     $fields['communication_email'] = BaseFieldDefinition::create('boolean')
@@ -134,7 +136,8 @@ class ParDataPartnership extends Trance {
         'type' => 'boolean_checkbox',
         'weight' => 4,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Communication by Phone.
     $fields['communication_phone'] = BaseFieldDefinition::create('boolean')
@@ -146,7 +149,8 @@ class ParDataPartnership extends Trance {
         'type' => 'boolean_checkbox',
         'weight' => 5,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Communication Notes.
     $fields['communication_notes'] = BaseFieldDefinition::create('string_long')
@@ -163,7 +167,8 @@ class ParDataPartnership extends Trance {
           'rows' => 25,
         ],
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Approved Date.
     $fields['approved_date'] = BaseFieldDefinition::create('datetime')
@@ -178,7 +183,8 @@ class ParDataPartnership extends Trance {
         'type' => 'datetime_default',
         'weight' => 7,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Expertise Details.
     $fields['expertise_details'] = BaseFieldDefinition::create('string_long')
@@ -195,7 +201,8 @@ class ParDataPartnership extends Trance {
           'rows' => 25,
         ],
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Partnership Status.
     $fields['cost_recovery'] = BaseFieldDefinition::create('string')
@@ -212,7 +219,8 @@ class ParDataPartnership extends Trance {
         'type' => 'string_textfield',
         'weight' => 9,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Rejected Comment.
     $fields['reject_comment'] = BaseFieldDefinition::create('string_long')
@@ -229,7 +237,8 @@ class ParDataPartnership extends Trance {
           'rows' => 25,
         ],
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Recovation Source.
     $fields['revocation_source'] = BaseFieldDefinition::create('string')
@@ -246,7 +255,8 @@ class ParDataPartnership extends Trance {
         'type' => 'string_textfield',
         'weight' => 11,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Recovation Date.
     $fields['revocation_date'] = BaseFieldDefinition::create('datetime')
@@ -261,7 +271,8 @@ class ParDataPartnership extends Trance {
         'type' => 'datetime_default',
         'weight' => 12,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Revocation Reason.
     $fields['revocation_reason'] = BaseFieldDefinition::create('string_long')
@@ -278,7 +289,8 @@ class ParDataPartnership extends Trance {
           'rows' => 25,
         ],
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Authority Change Comment.
     $fields['authority_change_comment'] = BaseFieldDefinition::create('string_long')
@@ -295,7 +307,8 @@ class ParDataPartnership extends Trance {
           'rows' => 25,
         ],
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Organisation Change Comment.
     $fields['organisation_change_comment'] = BaseFieldDefinition::create('string_long')
@@ -312,7 +325,8 @@ class ParDataPartnership extends Trance {
           'rows' => 25,
         ],
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Organisation.
     $fields['organisation'] = BaseFieldDefinition::create('entity_reference')
@@ -339,7 +353,8 @@ class ParDataPartnership extends Trance {
           'placeholder' => '',
         ),
       ))
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Authority.
     $fields['authority'] = BaseFieldDefinition::create('entity_reference')
@@ -365,7 +380,8 @@ class ParDataPartnership extends Trance {
           'placeholder' => '',
         ),
       ))
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Advice.
     $fields['advice'] = BaseFieldDefinition::create('entity_reference')
@@ -390,7 +406,8 @@ class ParDataPartnership extends Trance {
           'placeholder' => '',
         ),
       ))
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Inspection Plan.
     $fields['inspection_plan'] = BaseFieldDefinition::create('entity_reference')
@@ -415,7 +432,8 @@ class ParDataPartnership extends Trance {
           'placeholder' => '',
         ),
       ))
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Regulatory Area.
     $fields['regulatory_area'] = BaseFieldDefinition::create('entity_reference')
@@ -441,7 +459,8 @@ class ParDataPartnership extends Trance {
           'placeholder' => '',
         ),
       ))
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Person.
     $fields['person'] = BaseFieldDefinition::create('entity_reference')
@@ -467,7 +486,8 @@ class ParDataPartnership extends Trance {
           'placeholder' => '',
         ),
       ))
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
   }

@@ -2,7 +2,6 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\trance\Trance;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
@@ -63,7 +62,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   field_ui_base_route = "entity.par_data_enforcement_notice_type.edit_form"
  * )
  */
-class ParDataEnforcementNotice extends Trance {
+class ParDataEnforcementNotice extends ParDataEntity {
 
   /**
    * {@inheritdoc}
@@ -87,7 +86,8 @@ class ParDataEnforcementNotice extends Trance {
         'type' => 'string_textfield',
         'weight' => 1,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Notice Date.
     $fields['notice_date'] = BaseFieldDefinition::create('datetime')
@@ -103,7 +103,8 @@ class ParDataEnforcementNotice extends Trance {
         'type' => 'datetime_default',
         'weight' => 2,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Primary Authority.
     $fields['primary_authority'] = BaseFieldDefinition::create('entity_reference')
@@ -129,7 +130,8 @@ class ParDataEnforcementNotice extends Trance {
           'placeholder' => '',
         ),
       ))
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Enforcing Authority.
     $fields['enforcing_authority'] = BaseFieldDefinition::create('entity_reference')
@@ -155,7 +157,8 @@ class ParDataEnforcementNotice extends Trance {
           'placeholder' => '',
         ),
       ))
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Legal Entity.
     $fields['legal_entity'] = BaseFieldDefinition::create('entity_reference')
@@ -181,7 +184,8 @@ class ParDataEnforcementNotice extends Trance {
           'placeholder' => '',
         ),
       ))
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
   }

@@ -1,0 +1,10 @@
+uuid: 7c0f9ff7-a827-4245-a5c1-290b884153d6
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_organisation.about_partnership
+label: 'About Partnership'
+targetEntityType: par_data_organisation
+cache: true
