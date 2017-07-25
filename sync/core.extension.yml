@@ -40,6 +40,7 @@ module:
   page_cache: 0
   pagerer: 0
   par_components: 0
+  par_ckeditor: 0
   par_data: 0
   par_flow_transition_partnership_details: 0
   par_flows: 0
