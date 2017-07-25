@@ -29,6 +29,10 @@ If you already have the repository cloned, destroy it and reclone it. Also shutd
     git clone git@github.com:TransformCore/beis-par-beta
     cd beis-par-beta
     
+#### Setup environment variables
+
+In the root of the project, copy .env.example to .env . Please get the values from another team member.
+
 #### Create the VM
 
     vagrant up

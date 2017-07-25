@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "934f009abd2374e888c74f064a0abf90",
+    "content-hash": "d8d4f9b0059d7d6d3f7dfcdc9ceaae56",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1226,71 +1226,6 @@
             "homepage": "https://www.drupal.org/project/clamav",
             "support": {
                 "source": "http://cgit.drupalcode.org/clamav"
-            }
-        },
-        {
-            "name": "drupal/composer_manager",
-            "version": "1.0.0-rc2",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupal.org/project/composer_manager",
-                "reference": "8.x-1.0-rc2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/composer_manager-8.x-1.0-rc2.zip",
-                "reference": "8.x-1.0-rc2",
-                "shasum": "ebefa69933a4751bec93ed89a7fc4624c1dc9a1b"
-            },
-            "require": {
-                "drupal/core": "~8.0"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.0-rc2",
-                    "datestamp": "1464714999"
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "See contributors",
-                    "homepage": "http://drupal.org/node/1929436/committers",
-                    "role": "Developer"
-                },
-                {
-                    "name": "cpliakas",
-                    "homepage": "https://www.drupal.org/user/266779"
-                },
-                {
-                    "name": "deviantintegral",
-                    "homepage": "https://www.drupal.org/user/71291"
-                },
-                {
-                    "name": "nhoag",
-                    "homepage": "https://www.drupal.org/user/2423844"
-                },
-                {
-                    "name": "pcambra",
-                    "homepage": "https://www.drupal.org/user/122101"
-                },
-                {
-                    "name": "psynaptic",
-                    "homepage": "https://www.drupal.org/user/93429"
-                }
-            ],
-            "description": "Composer Manager is a bridge to best-in-breed, standards compliant PHP libraries that are managed by Composer and Packagist.",
-            "homepage": "http://drupal.org/project/composer_manager",
-            "support": {
-                "source": "http://cgit.drupalcode.org/composer_manager",
-                "issues": "http://drupal.org/project/issues/composer_manager"
             }
         },
         {
@@ -5551,6 +5486,56 @@
             "time": "2015-06-12T11:33:28+00:00"
         },
         {
+            "name": "vlucas/phpdotenv",
+            "version": "v2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vlucas/phpdotenv.git",
+                "reference": "3cc116adbe4b11be5ec557bf1d24dc5e3a21d18c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/3cc116adbe4b11be5ec557bf1d24dc5e3a21d18c",
+                "reference": "3cc116adbe4b11be5ec557bf1d24dc5e3a21d18c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8 || ^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Dotenv\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause-Attribution"
+            ],
+            "authors": [
+                {
+                    "name": "Vance Lucas",
+                    "email": "vance@vancelucas.com",
+                    "homepage": "http://www.vancelucas.com"
+                }
+            ],
+            "description": "Loads environment variables from `.env` to `getenv()`, `$_ENV` and `$_SERVER` automagically.",
+            "keywords": [
+                "dotenv",
+                "env",
+                "environment"
+            ],
+            "time": "2016-09-01T10:05:43+00:00"
+        },
+        {
             "name": "webmozart/assert",
             "version": "1.2.0",
             "source": {
@@ -6778,7 +6763,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/examples",
-                "reference": "7d3e4f173a3cb09cf11a57a1e90bb635a5bb0f33"
+                "reference": "7b60cd85beb0d14984f47496c7d3b41d3a2b7f5c"
             },
             "require": {
                 "drupal/core": "*"
@@ -6794,7 +6779,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1500142141"
+                    "datestamp": "1500930842"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -6874,7 +6859,7 @@
                 "issues": "https://www.drupal.org/project/issues/examples",
                 "documentation": "https://api.drupal.org/api/examples"
             },
-            "time": "2017-07-18 17:32:36"
+            "time": "2017-07-25 00:00:14"
         },
         {
             "name": "fabpot/goutte",
@@ -8380,56 +8365,6 @@
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
             "time": "2017-07-11T07:12:11+00:00"
-        },
-        {
-            "name": "vlucas/phpdotenv",
-            "version": "v2.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/vlucas/phpdotenv.git",
-                "reference": "3cc116adbe4b11be5ec557bf1d24dc5e3a21d18c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/3cc116adbe4b11be5ec557bf1d24dc5e3a21d18c",
-                "reference": "3cc116adbe4b11be5ec557bf1d24dc5e3a21d18c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.9"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.8 || ^5.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.4-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Dotenv\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause-Attribution"
-            ],
-            "authors": [
-                {
-                    "name": "Vance Lucas",
-                    "email": "vance@vancelucas.com",
-                    "homepage": "http://www.vancelucas.com"
-                }
-            ],
-            "description": "Loads environment variables from `.env` to `getenv()`, `$_ENV` and `$_SERVER` automagically.",
-            "keywords": [
-                "dotenv",
-                "env",
-                "environment"
-            ],
-            "time": "2016-09-01T10:05:43+00:00"
         },
         {
             "name": "webflo/drupal-finder",
