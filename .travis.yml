@@ -32,6 +32,12 @@ install:
   - docker exec -it par_beta_web bash -c "npm run gulp"
   - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
   - docker exec -i par_beta_web /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < docker/fresh_drupal_postgres.sql
+  - cat S3_BUCKET_ARTIFACTS=$S3_BUCKET_ARTIFACTS > .env
+  - cat S3_BUCKET=$S3_BUCKET >> .env
+  - cat S3_ACCESS_KEY=$S3_ACCESS_KEY >> .env
+  - cat S3_SECRET_KEY=$S3_SECRET_KEY >> .env
+  - cat PAR_HASH_SALT=$PAR_HASH_SALT >> .env
+  - cat .env
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush fsg s3backups latest.sql.tar.gz /dump.sql.tar.gz"
