@@ -141,7 +141,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function getCacheContexts() {
-    return ['user.role', 'route'];
+    return ['user.roles', 'route'];
   }
 
   /**

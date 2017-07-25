@@ -67,7 +67,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function getCacheContexts() {
-    return ['user.role', 'route'];
+    return ['user.roles', 'route'];
   }
 
   /**
