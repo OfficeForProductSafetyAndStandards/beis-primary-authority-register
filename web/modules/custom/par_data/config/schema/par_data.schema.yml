@@ -48,7 +48,7 @@ par_data.par_data_authority_type.*:
       label: 'Label'
     description:
       type: string
-      lavel: 'Description'
+      label: 'Description'
     help:
       type: string
       label: 'Help'
@@ -76,7 +76,7 @@ par_data.par_data_enforcement_notice_type.*:
       label: 'Label'
     description:
       type: string
-      lavel: 'Description'
+      label: 'Description'
     help:
       type: string
       label: 'Help'
@@ -104,7 +104,7 @@ par_data.par_data_inspection_plan_type.*:
       label: 'Label'
     description:
       type: string
-      lavel: 'Description'
+      label: 'Description'
     help:
       type: string
       label: 'Help'
@@ -132,7 +132,7 @@ par_data.par_data_legal_entity_type.*:
       label: 'Label'
     description:
       type: string
-      lavel: 'Description'
+      label: 'Description'
     help:
       type: string
       label: 'Help'
@@ -160,7 +160,7 @@ par_data.par_data_organisation_type.*:
       label: 'Label'
     description:
       type: string
-      lavel: 'Description'
+      label: 'Description'
     help:
       type: string
       label: 'Help'
@@ -188,7 +188,7 @@ par_data.par_data_partnership_type.*:
       label: 'Label'
     description:
       type: string
-      lavel: 'Description'
+      label: 'Description'
     help:
       type: string
       label: 'Help'
@@ -216,7 +216,7 @@ par_data.par_data_person_type.*:
       label: 'Label'
     description:
       type: string
-      lavel: 'Description'
+      label: 'Description'
     help:
       type: string
       label: 'Help'
@@ -244,7 +244,7 @@ par_data.par_data_premises_type.*:
       label: 'Label'
     description:
       type: string
-      lavel: 'Description'
+      label: 'Description'
     help:
       type: string
       label: 'Help'
@@ -272,7 +272,7 @@ par_data.par_data_regulatory_area_type.*:
       label: 'Label'
     description:
       type: string
-      lavel: 'Description'
+      label: 'Description'
     help:
       type: string
       label: 'Help'
@@ -300,7 +300,7 @@ par_data.par_data_sic_code_type.*:
       label: 'Label'
     description:
       type: string
-      lavel: 'Description'
+      label: 'Description'
     help:
       type: string
       label: 'Help'
