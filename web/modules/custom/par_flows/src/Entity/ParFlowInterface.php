@@ -53,6 +53,14 @@ interface ParFlowInterface {
   public function getNextStep();
 
   /**
+   * Go to previous step.
+   *
+   * @return mixed
+   *   An key for the previous step.
+   */
+  public function getPrevStep();
+
+  /**
    * Get a step by the form id.
    *
    * @param string $form ID

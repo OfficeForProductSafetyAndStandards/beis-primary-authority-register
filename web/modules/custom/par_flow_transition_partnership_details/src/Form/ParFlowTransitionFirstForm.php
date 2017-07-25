@@ -64,7 +64,10 @@ class ParFlowTransitionFirstForm extends ParBaseForm {
       '#value' => $this->t('Next'),
     ];
 
-    return $form;
+    // Make sure to add the partnership cacheability data to this form.
+    $this->addCacheableDependency($par_data_partnership);
+
+    return parent::buildForm($form, $form_state);
   }
 
   /**

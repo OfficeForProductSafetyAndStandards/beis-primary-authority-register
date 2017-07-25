@@ -2,6 +2,7 @@
 
 namespace Drupal\par_flows\Controller;
 
+use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\par_data\ParDataManagerInterface;
@@ -15,6 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class ParBaseController extends ControllerBase implements ParBaseInterface {
 
   use ParRedirectTrait;
+  use RefinableCacheableDependencyTrait;
 
   /**
    * The flow entity storage class, for loading flows.
@@ -59,6 +61,28 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
       $entity_manager->getStorage('par_flow'),
       $container->get('par_data.manager')
     );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    return ['user.roles', 'route'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function build($build) {
+    $cache = array(
+      '#cache' => array(
+        'contexts' => $this->getCacheContexts(),
+        'tags' => $this->getCacheTags(),
+        'max-age' => $this->getCacheMaxAge(),
+      )
+    );
+
+    return $build + $cache;
   }
 
   /**

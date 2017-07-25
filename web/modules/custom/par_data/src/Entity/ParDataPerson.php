@@ -2,7 +2,6 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\trance\Trance;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
@@ -27,7 +26,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     "storage_schema" = "Drupal\trance\TranceStorageSchema",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "list_builder" = "Drupal\trance\TranceListBuilder",
- *     "views_data" = "Drupal\trance\TranceViewsData",
+ *     "views_data" = "Drupal\par_data\Views\ParDataViewsData",
  *     "form" = {
  *       "default" = "Drupal\trance\Form\ParEntityForm",
  *       "add" = "Drupal\trance\Form\ParEntityForm",
@@ -63,7 +62,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   field_ui_base_route = "entity.par_data_person_type.edit_form"
  * )
  */
-class ParDataPerson extends Trance {
+class ParDataPerson extends ParDataEntity {
 
   /**
    * {@inheritdoc}
@@ -86,7 +85,8 @@ class ParDataPerson extends Trance {
         'type' => 'string_textfield',
         'weight' => 1,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Name.
     $fields['person_name'] = BaseFieldDefinition::create('string')
@@ -103,7 +103,8 @@ class ParDataPerson extends Trance {
         'type' => 'string_textfield',
         'weight' => 2,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Work Phone.
     $fields['work_phone'] = BaseFieldDefinition::create('string')
@@ -120,7 +121,8 @@ class ParDataPerson extends Trance {
         'type' => 'string_textfield',
         'weight' => 3,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Mobile Phone.
     $fields['mobile_phone'] = BaseFieldDefinition::create('string')
@@ -137,7 +139,8 @@ class ParDataPerson extends Trance {
         'type' => 'string_textfield',
         'weight' => 4,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Email.
     $fields['email'] = BaseFieldDefinition::create('string')
@@ -154,7 +157,8 @@ class ParDataPerson extends Trance {
         'type' => 'string_textfield',
         'weight' => 5,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
   }

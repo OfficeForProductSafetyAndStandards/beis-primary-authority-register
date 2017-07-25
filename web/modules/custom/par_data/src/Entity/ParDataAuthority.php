@@ -2,7 +2,6 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\trance\Trance;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
@@ -27,7 +26,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     "storage_schema" = "Drupal\trance\TranceStorageSchema",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "list_builder" = "Drupal\trance\TranceListBuilder",
- *     "views_data" = "Drupal\trance\TranceViewsData",
+ *     "views_data" = "Drupal\par_data\Views\TranceViewsData",
  *     "form" = {
  *       "default" = "Drupal\trance\Form\ParEntityForm",
  *       "add" = "Drupal\trance\Form\ParEntityForm",
@@ -63,7 +62,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   field_ui_base_route = "entity.par_data_authority_type.edit_form"
  * )
  */
-class ParDataAuthority extends Trance {
+class ParDataAuthority extends ParDataEntity {
 
   /**
    * {@inheritdoc}
@@ -87,7 +86,8 @@ class ParDataAuthority extends Trance {
         'type' => 'string_textfield',
         'weight' => 1,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Authority Type.
     $fields['authority_type'] = BaseFieldDefinition::create('string')
@@ -105,7 +105,8 @@ class ParDataAuthority extends Trance {
         'type' => 'string_textfield',
         'weight' => 2,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Nation.
     $fields['nation'] = BaseFieldDefinition::create('string')
@@ -123,7 +124,8 @@ class ParDataAuthority extends Trance {
         'type' => 'string_textfield',
         'weight' => 3,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // ONS Code.
     $fields['ons_code'] = BaseFieldDefinition::create('string')
@@ -141,7 +143,8 @@ class ParDataAuthority extends Trance {
         'type' => 'string_textfield',
         'weight' => 4,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Person.
     $fields['person'] = BaseFieldDefinition::create('entity_reference')
@@ -167,7 +170,8 @@ class ParDataAuthority extends Trance {
           'placeholder' => '',
         ),
       ))
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Regulatory Area.
     $fields['regulatory_area'] = BaseFieldDefinition::create('entity_reference')
@@ -193,7 +197,8 @@ class ParDataAuthority extends Trance {
           'placeholder' => '',
         ),
       ))
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Premises.
     $fields['premises'] = BaseFieldDefinition::create('entity_reference')
@@ -219,7 +224,8 @@ class ParDataAuthority extends Trance {
           'placeholder' => '',
         ),
       ))
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
   }

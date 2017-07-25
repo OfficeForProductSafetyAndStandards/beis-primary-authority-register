@@ -1,8 +1,0 @@
-uuid: 1d1b5f0c-f816-46d1-9ee5-ed300ee200d2
-langcode: en
-status: true
-dependencies: {  }
-id: business
-label: Business
-description: 'A Business is an Organisation - usually a commercial one, but not always - that is covered (or intends to be covered) by a Primary Authority Partnership.'
-help: ''

@@ -2,7 +2,6 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\trance\Trance;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
@@ -27,7 +26,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     "storage_schema" = "Drupal\trance\TranceStorageSchema",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "list_builder" = "Drupal\trance\TranceListBuilder",
- *     "views_data" = "Drupal\trance\TranceViewsData",
+ *     "views_data" = "Drupal\par_data\Views\ParDataViewsData",
  *     "form" = {
  *       "default" = "Drupal\trance\Form\ParEntityForm",
  *       "add" = "Drupal\trance\Form\ParEntityForm",
@@ -63,7 +62,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   field_ui_base_route = "entity.par_data_inspection_plan_type.edit_form"
  * )
  */
-class ParDataInspectionPlan extends Trance {
+class ParDataInspectionPlan extends ParDataEntity {
 
   /**
    * {@inheritdoc}
@@ -85,7 +84,8 @@ class ParDataInspectionPlan extends Trance {
         'type' => 'daterange_default',
         'weight' => 1,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Approved RD Executive.
     $fields['approved_rd_executive'] = BaseFieldDefinition::create('boolean')
@@ -98,7 +98,8 @@ class ParDataInspectionPlan extends Trance {
         'type' => 'boolean_checkbox',
         'weight' => 2,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Approved RD Executive.
     $fields['consulted_national_regulator'] = BaseFieldDefinition::create('boolean')
@@ -111,7 +112,8 @@ class ParDataInspectionPlan extends Trance {
         'type' => 'boolean_checkbox',
         'weight' => 3,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Inspection Status.
     $fields['inspection_status'] = BaseFieldDefinition::create('string')
@@ -129,7 +131,8 @@ class ParDataInspectionPlan extends Trance {
         'type' => 'string_textfield',
         'weight' => 4,
       ])
-      ->setDisplayConfigurable('form', FALSE);
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
   }
