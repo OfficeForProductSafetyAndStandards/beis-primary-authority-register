@@ -1,6 +1,6 @@
-@Pending
-Feature:  Edit Main Primary Authority Contact: Save form data - As a Primary Authority Officer
-I need to be able to edit the field 'Main Primary Authority Contact' in the existing partnership details;
+@ci
+Feature: Edit Second Primary Authority Contact: Save form data	- As a Primary Authority Officer
+I need to be able to edit the field 'Second Primary Authority Contact' in the existing partnership details;
 So that the correct details are taken forward into the new PAR
 
     # Background:
@@ -8,10 +8,10 @@ So that the correct details are taken forward into the new PAR
     #     And I add "testuser" to the inputfield "#edit-name"
     #     And I add "testpwd" to the inputfield "#edit-pass"
     #     When I press "#edit-submit"
-    #     Then I expect that element ".error-message" is not visible
-
-    Scenario: List Partnership Details: Load summary elements Load data into the form
-        Given I open the url "/dv/primary-authority-partnerships/1/partnership/1/details/edit-contact/1"
+    #     Then I expect that element ".error-message" is not visible        
+    
+    Scenario: Edit Second Primary Authority Contact: Save form data
+        Given I open the url "/dv/primary-authority-partnerships/1/partnership/1/details/edit-contact/3"
         Then the element "h1" contains the text "Edit the details for the contact at the Primary Authority"
         # And I add "Mr" to the inputfield "#edit-salutation"
         And I add "Grover" to the inputfield "#edit-person-name"
@@ -20,7 +20,8 @@ So that the correct details are taken forward into the new PAR
         And I add "grover@example.com" to the inputfield "#edit-email"
         When I click on the button "#edit-next"
         # Then the element "#edit-second-section" contains the text "Mr"
-        And the element "#edit-second-section" contains the text "Grover"
-        And the element "#edit-second-section" contains the text "9876543210"
-        # And the element "#edit-second-section" contains the text "099999999"
-        And the element "#edit-second-section" contains the text "grover@example.com"
+        And the element "#edit-third-section" contains the text "Grover"
+        And the element "#edit-third-section" contains the text "9876543210"
+        # And the element "#edit-third-section" contains the text "099999999"
+        And the element "#edit-third-section" contains the text "grover@example.com"
+
