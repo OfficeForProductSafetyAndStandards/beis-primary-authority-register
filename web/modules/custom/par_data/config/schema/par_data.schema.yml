@@ -1,4 +1,4 @@
-# Configuration file schema.
+# Generic settings for the Par Data module.
 par_data.settings:
   type: config_object
   label: 'Par Data settings'
@@ -7,10 +7,10 @@ par_data.settings:
       type: boolean
       label: 'Whether to stub the entities when testing.'
 
-# PAR Data Entity types
-par_data.par_data_type.*:
+# The config for all PAR Data entity types.
+par_data.par_data_advice_type.*:
   type: config_entity
-  label: 'PAR Data entity type config'
+  label: 'PAR Data Advice entity type config'
   mapping:
     id:
       type: string
@@ -27,16 +27,309 @@ par_data.par_data_type.*:
     uuid:
       type: string
     configuration:
-      type: par_data.configuration
+      type: sequence
       nullable: true
       sequence:
         type: sequence
         label: 'Element (entity or field name)'
         nullable: true
         sequence:
-          type: sequence
+          type: par_data.configuration_type.[%key]
           label: 'Configuration rules'
-          nullable: true
-          sequence:
-            type: mapping
-            label: 'Rule'
+par_data.par_data_authority_type.*:
+  type: config_entity
+  label: 'PAR Data Authority entity type config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: string
+      lavel: 'Description'
+    help:
+      type: string
+      label: 'Help'
+    uuid:
+      type: string
+    configuration:
+      type: sequence
+      nullable: true
+      sequence:
+        type: sequence
+        label: 'Element (entity or field name)'
+        nullable: true
+        sequence:
+          type: par_data.configuration_type.[%key]
+          label: 'Configuration rules'
+par_data.par_data_enforcement_notice_type.*:
+  type: config_entity
+  label: 'PAR Data Enforcement Notice entity type config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: string
+      lavel: 'Description'
+    help:
+      type: string
+      label: 'Help'
+    uuid:
+      type: string
+    configuration:
+      type: sequence
+      nullable: true
+      sequence:
+        type: sequence
+        label: 'Element (entity or field name)'
+        nullable: true
+        sequence:
+          type: par_data.configuration_type.[%key]
+          label: 'Configuration rules'
+par_data.par_data_inspection_plan_type.*:
+  type: config_entity
+  label: 'PAR Data Inspection Plan entity type config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: string
+      lavel: 'Description'
+    help:
+      type: string
+      label: 'Help'
+    uuid:
+      type: string
+    configuration:
+      type: sequence
+      nullable: true
+      sequence:
+        type: sequence
+        label: 'Element (entity or field name)'
+        nullable: true
+        sequence:
+          type: par_data.configuration_type.[%key]
+          label: 'Configuration rules'
+par_data.par_data_legal_entity_type.*:
+  type: config_entity
+  label: 'PAR Data Legal Entity entity type config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: string
+      lavel: 'Description'
+    help:
+      type: string
+      label: 'Help'
+    uuid:
+      type: string
+    configuration:
+      type: sequence
+      nullable: true
+      sequence:
+        type: sequence
+        label: 'Element (entity or field name)'
+        nullable: true
+        sequence:
+          type: par_data.configuration_type.[%key]
+          label: 'Configuration rules'
+par_data.par_data_organisation_type.*:
+  type: config_entity
+  label: 'PAR Data Organisation entity type config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: string
+      lavel: 'Description'
+    help:
+      type: string
+      label: 'Help'
+    uuid:
+      type: string
+    configuration:
+      type: sequence
+      nullable: true
+      sequence:
+        type: sequence
+        label: 'Element (entity or field name)'
+        nullable: true
+        sequence:
+          type: par_data.configuration_type.[%key]
+          label: 'Configuration rules'
+par_data.par_data_partnership_type.*:
+  type: config_entity
+  label: 'PAR Data Partnership entity type config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: string
+      lavel: 'Description'
+    help:
+      type: string
+      label: 'Help'
+    uuid:
+      type: string
+    configuration:
+      type: sequence
+      nullable: true
+      sequence:
+        type: sequence
+        label: 'Element (entity or field name)'
+        nullable: true
+        sequence:
+          type: par_data.configuration_type.[%key]
+          label: 'Configuration rules'
+par_data.par_data_person_type.*:
+  type: config_entity
+  label: 'PAR Data Person entity type config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: string
+      lavel: 'Description'
+    help:
+      type: string
+      label: 'Help'
+    uuid:
+      type: string
+    configuration:
+      type: sequence
+      nullable: true
+      sequence:
+        type: sequence
+        label: 'Element (entity or field name)'
+        nullable: true
+        sequence:
+          type: par_data.configuration_type.[%key]
+          label: 'Configuration rules'
+par_data.par_data_premises_type.*:
+  type: config_entity
+  label: 'PAR Data Premises entity type config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: string
+      lavel: 'Description'
+    help:
+      type: string
+      label: 'Help'
+    uuid:
+      type: string
+    configuration:
+      type: sequence
+      nullable: true
+      sequence:
+        type: sequence
+        label: 'Element (entity or field name)'
+        nullable: true
+        sequence:
+          type: par_data.configuration_type.[%key]
+          label: 'Configuration rules'
+par_data.par_data_regulatory_area_type.*:
+  type: config_entity
+  label: 'PAR Data Regulatory Area entity type config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: string
+      lavel: 'Description'
+    help:
+      type: string
+      label: 'Help'
+    uuid:
+      type: string
+    configuration:
+      type: sequence
+      nullable: true
+      sequence:
+        type: sequence
+        label: 'Element (entity or field name)'
+        nullable: true
+        sequence:
+          type: par_data.configuration_type.[%key]
+          label: 'Configuration rules'
+par_data.par_data_sic_code_type.*:
+  type: config_entity
+  label: 'PAR Data SIC Code entity type config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: string
+      lavel: 'Description'
+    help:
+      type: string
+      label: 'Help'
+    uuid:
+      type: string
+    configuration:
+      type: sequence
+      nullable: true
+      sequence:
+        type: sequence
+        label: 'Element (entity or field name)'
+        nullable: true
+        sequence:
+          type: par_data.configuration_type.[%key]
+          label: 'Configuration rules'
+
+# Allowed configuration values are listed below.
+par_data.configuration_type.status_field:
+  type: string
+  label: 'Status Field'
+par_data.configuration_type.required_fields:
+  type: sequence
+  label: 'Requried Fields'
+  sequence:
+    type: string
+    label: 'Required Field'
+par_data.configuration_type.allowed_values:
+  type: sequence
+  label: 'Allowed Values'
+  sequence:
+    type: string
+    label: 'Allowed Value'
