@@ -93,10 +93,10 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-    $form['first_section']['about_partnership'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('%about', ['%about' => $this->getDefaultValues('about_partnership', '', $this->getFlow()->getFormIdByStep(2))]),
-    ];
+
+    $primary_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
+
+    $form['first_section']['about_partnership'] = $primary_organisation ? $primary_organisation->view('summary') : '';
 
     // Go to the second step.
     $form['first_section']['edit'] = [
@@ -113,21 +113,17 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-    $primary_person_id = $this->getDefaultValues('primary_person_id');
 
-    $form['second_section']['primary_person'] = [
-      '#theme' => 'par_components_business_primary_contact',
-      '#name' => $this->getDefaultValues("person_{$primary_person_id}_name", '', $this->getFlow()->getFormIdByStep(2)),
-      '#telephone' => $this->getDefaultValues("person_{$primary_person_id}_phone", '', $this->getFlow()->getFormIdByStep(2)),
-      '#email' => $this->getDefaultValues("person_{$primary_person_id}_email", '', $this->getFlow()->getFormIdByStep(2)),
-    ];
+    $primary_person = current($par_data_partnership->get('person')->referencedEntities());
+
+    $form['second_section']['primary_person'] = $primary_person ? $primary_person->view('summary') : '';
 
     // We can get a link to a given form step like so.
     $form['second_section']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('<br>%link', [
         '%link' => $this->getFlow()->getLinkByStep(5, [
-          'par_data_person' => $this->getDefaultValues('primary_person_id')
+          'par_data_person' => $primary_person->id()
         ])->setText('edit')->toString()
       ]),
     ];
@@ -139,6 +135,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
+
     foreach ($this->getDefaultValues('people', []) as $person) {
       $form['third_section'][$person->id()] = [
         '#type' => 'fieldset',
@@ -146,12 +143,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
         '#collapsed' => FALSE,
       ];
 
-      $form['third_section']['alternative_people'][$person->id()] = [
-        '#theme' => 'par_components_business_secondary_contact',
-        '#name' => $this->getDefaultValues("person_{$person->id()}_name", '', $this->getFlow()->getFormIdByStep(2)),
-        '#telephone' => $this->getDefaultValues("person_{$person->id()}_phone", '', $this->getFlow()->getFormIdByStep(2)),
-        '#email' => $this->getDefaultValues("person_{$person->id()}_email", '', $this->getFlow()->getFormIdByStep(2)),
-      ];
+      $form['third_section']['alternative_people'][$person->id()] = $person ? $person->view('summary') : '';
 
       // We can get a link to a given form step like so.
       $form['third_section']['edit'][$person->id()] = [
