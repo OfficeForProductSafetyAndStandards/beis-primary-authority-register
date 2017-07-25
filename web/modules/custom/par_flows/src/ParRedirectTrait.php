@@ -3,6 +3,7 @@
 namespace Drupal\par_flows;
 
 use Drupal\Core\Link;
+use Drupal\Core\Routing\RouteProvider;
 
 trait ParRedirectTrait {
 
@@ -10,7 +11,16 @@ trait ParRedirectTrait {
    * Get link for any given step.
    */
   public function getLinkByRoute($route, $route_params = [], $link_options = []) {
-    $route_params += $this->getRouteParams();
+    $route_provider = \Drupal::service('router.route_provider');
+    $path_variables = $route_provider->getRouteByName($route)->compile()->getPathVariables();
+
+    // Automatically add the route params from the current route if needed.
+    foreach ($this->getRouteParams() as $current_route_param => $value) {
+      if (in_array($current_route_param, $path_variables)) {
+        $route_params[$current_route_param] = $value;
+      }
+    }
+
     $link_options += [
       'absolute' => TRUE,
       'attributes' => ['class' => 'flow-link']
