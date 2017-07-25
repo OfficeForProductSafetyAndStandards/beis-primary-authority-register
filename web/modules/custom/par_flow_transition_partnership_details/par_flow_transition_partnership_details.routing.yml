@@ -1,15 +1,4 @@
 # PAR Data Transition Journey 1 - Partnership Details
-par_flow_transition_partnership_details.list_of_businesses:
-  path: '/dv/primary-authority-partnerships/{par_data_authority}'
-  defaults:
-    _controller: '\Drupal\par_flow_transition_partnership_details\Controller\ParFlowTransitionPaListOfTasks::content'
-    _title: 'Updating the Primary Authority Register'
-  requirements:
-    _permission: 'access par journey transition partnership details'
-  options:
-    parameters:
-      par_data_authority:
-        type: entity:par_data_authority
 par_flow_transition_partnership_details.list_of_tasks:
   path: '/dv/primary-authority-partnerships/{par_data_authority}/partnership/{par_data_partnership}'
   defaults:
