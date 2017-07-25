@@ -20,7 +20,7 @@ par_data.par_data_advice_type.*:
       label: 'Label'
     description:
       type: string
-      lavel: 'Description'
+      label: 'Description'
     help:
       type: string
       label: 'Help'
