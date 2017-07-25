@@ -30,7 +30,7 @@ install:
   - cd docker
   - docker-compose up -d
   - cp ../web/sites/example.settings.local.php ../web/sites/default/settings.local.php
-  - cat ../web/sites/settings.local.php.docker.append >> ../web/sites/default/settings.local.php
+  - cat ../web/sites/settings.local.php.travis.append >> ../web/sites/default/settings.local.php
   - cd ..
   - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
   - docker exec -it par_beta_web bash -c "npm run gulp"

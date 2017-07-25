@@ -1,4 +1,10 @@
 <?php
+$root_path = dirname(__DIR__) . '/../../';
+require "{$root_path}/vendor/autoload.php";
+if (file_exists($root_path . '.env')) {
+    $dotenv = new Dotenv\Dotenv($root_path);
+    $dotenv->load();
+}
 
 /**
  * @file

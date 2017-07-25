@@ -61,3 +61,6 @@ ubuntu-xenial-16.04-cloudimg-console.log
 package.box
 .vagrant/
 
+# Exclude local environment settings
+.env
+
