@@ -96,7 +96,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
     $primary_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
     $organisation_view_builder = $primary_organisation->getViewBuilder();
-    $form['first_section']['about_partnership'] = $primary_organisation ? $organisation_view_builder->view($primary_organisation, 'summary') : '';
+    $form['first_section']['about_partnership'] = $primary_organisation ? $organisation_view_builder->view($primary_organisation, 'about_partnership') : '';
 
     // Go to the second step.
     $form['first_section']['edit'] = [
