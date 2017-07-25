@@ -38,12 +38,13 @@ install:
   - echo "S3_ACCESS_KEY=$S3_ACCESS_KEY" >> .env
   - echo "S3_SECRET_KEY=$S3_SECRET_KEY" >> .env
   - echo "PAR_HASH_SALT=$PAR_HASH_SALT" >> .env
+  - echo "DATAFILE=$DATAFILE" >> .env
   - cat .env
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush fsg s3backups latest.sql.tar.gz /dump.sql.tar.gz"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush fsg s3backups $DATAFILE.tar.gz /dump.sql.tar.gz"
   - docker exec -i par_beta_web bash -c "cd / && tar --no-same-owner -zxvf dump.sql.tar.gz"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sql-cli @dev --root=/var/www/html/web < /home/vcap/latest.sql"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sql-cli @dev --root=/var/www/html/web < /home/vcap/$DATAFILE"
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
   - docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
