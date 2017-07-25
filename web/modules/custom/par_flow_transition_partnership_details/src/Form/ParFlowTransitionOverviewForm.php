@@ -76,9 +76,9 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#collapsed' => FALSE,
     ];
 
-    $primary_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
-    $organisation_view_builder = $primary_organisation->getViewBuilder();
-    $form['first_section']['about_partnership'] = $primary_organisation ? $organisation_view_builder->view($primary_organisation, 'about_partnership') : '';
+    $partnership_view_builder = $par_data_partnership->getViewBuilder();
+
+    $form['first_section']['about_partnership'] = $par_data_partnership ? $partnership_view_builder->view($par_data_partnership, 'about_partnership') : '';
 
     // Go to the second step.
     $form['first_section']['edit'] = [
@@ -98,6 +98,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
     $primary_person = current($par_data_partnership->get('person')->referencedEntities());
     $person_view_builder = $primary_person->getViewBuilder();
+
     $form['second_section']['primary_person'] = $primary_person ? $person_view_builder->view($primary_person, 'summary') : '';
 
     // We can get a link to a given form step like so.
@@ -125,6 +126,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
         '#collapsed' => FALSE,
       ];
 
+      $person_view_builder = $person->getViewBuilder();
       $form['third_section']['alternative_people'][$person->id()] = $person ? $person_view_builder->view($person, 'summary') : '';
 
       // We can get a link to a given form step like so.
