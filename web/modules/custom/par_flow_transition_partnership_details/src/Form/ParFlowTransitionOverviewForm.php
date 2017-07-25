@@ -42,24 +42,6 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       // the form about them.
       $this->loadDataValue('about_partnership', $par_data_partnership->get('about_partnership')->getString());
 
-      // Get all the people and divide them into primary and alternative contacts.
-      $people = $par_data_partnership->get('person')->referencedEntities();
-      $primary_person = array_shift($people);
-      $this->loadDataValue('people', $people);
-
-      // Primary Contacts.
-      $this->loadDataValue('primary_person_id', $primary_person->id());
-      $this->loadDataValue("person_{$primary_person->id()}_name", $primary_person->get('person_name')->getString());
-      $this->loadDataValue("person_{$primary_person->id()}_phone", $primary_person->get('work_phone')->getString());
-      $this->loadDataValue("person_{$primary_person->id()}_email", $primary_person->get('email')->getString());
-
-      // Secondary Contacts.
-      foreach ($people as $person) {
-        $this->loadDataValue("person_{$person->id()}_name", $person->get('person_name')->getString());
-        $this->loadDataValue("person_{$person->id()}_phone", $person->get('work_phone')->getString());
-        $this->loadDataValue("person_{$person->id()}_email", $person->get('email')->getString());
-      }
-
       // Regulatory Areas.
       $regulatory_areas = $par_data_partnership->get('regulatory_area')->referencedEntities();
       $areas = [];
@@ -163,19 +145,16 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-    foreach ($this->getDefaultValues('regulatory_areas', []) as $regulatory_area) {
-      $form['fourth_section'][] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('%area', [
-          '%area' => $regulatory_area,
-        ]),
-      ];
+    $regulatory_areas = $par_data_partnership->get('regulatory_area')->referencedEntities();
+    $regulatory_area_view_builder = current($regulatory_areas)->getViewBuilder();
+    foreach ($par_data_partnership->get('regulatory_area')->referencedEntities() as $regulatory_area) {
+      $form['fourth_section'][] = $regulatory_area_view_builder->view($regulatory_area, 'title');
     }
 
     // Partnership Confirmation.
     $form['partnership_agreement'] = [
       '#type' => 'checkbox',
-      '#title' => t('A written summary of partnership agreement, such as Memorandum of Understanding, has been agreed with the Business.'),
+      '#title' => t('(NOT YET SAVED) A written summary of partnership agreement, such as Memorandum of Understanding, has been agreed with the Business.'),
       '#prefix' => '<div class="form-group">',
       '#suffix' => '</div>',
     ];
@@ -200,7 +179,10 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#markup' => t('<br>%link', ['%link' => $this->getFlow()->getLinkByStep(2)->setText('Cancel')->toString()]),
     ];
 
-    return $form;
+    // Make sure to add the partnership cacheability data to this form.
+    $this->addCacheableDependency($par_data_partnership);
+
+    return parent::buildForm($form, $form_state);
   }
 
   /**

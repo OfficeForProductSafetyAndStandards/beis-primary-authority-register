@@ -83,7 +83,10 @@ class ParFlowTransitionPaListOfTasks extends ParBaseController {
       ]),
     ];
 
-    return $build;
+    // Make sure to add the person cacheability data to this form.
+    $this->addCacheableDependency($par_data_partnership);
+
+    return parent::build($build);
 
   }
 
