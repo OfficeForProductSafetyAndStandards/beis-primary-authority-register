@@ -20,6 +20,7 @@ module.exports = (method, value, element, done) => {
     if (!value) {
         browser[command](element, '');
     } else {
+        browser.clearElement(element);
         browser[command](element, value);
     }
 

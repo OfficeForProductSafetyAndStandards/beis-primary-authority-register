@@ -8,12 +8,12 @@ Feature: As a Primary Authority Officer,
     -Business Contact email
     So that I can review my partnership details
 
-    Background:
-        Given I open the url "/user/login"
-        And I add "testuser" to the inputfield "#edit-name"
-        And I add "testpwd" to the inputfield "#edit-pass"
-        When I press "#edit-submit"
-        Then I expect that element ".error-message" is not visible
+    # Background:
+    #     Given I open the url "/user/login"
+    #     And I add "testuser" to the inputfield "#edit-name"
+    #     And I add "testpwd" to the inputfield "#edit-pass"
+    #     When I press "#edit-submit"
+    #     Then I expect that element ".error-message" is not visible
 
     Scenario: Create New Partnership
         Given I press "Continue"
