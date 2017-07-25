@@ -5,7 +5,7 @@ namespace Drupal\par_styleguide\Controller;
 use Drupal\Core\Controller\ControllerBase;
 
 /**
- * Controller class for Pagerer example.
+ * Controller class for Components.
  */
 class StyleguideComponentsController extends ControllerBase {
 
@@ -25,7 +25,7 @@ class StyleguideComponentsController extends ControllerBase {
     $build['business_name_address'] = [
       '#theme' => 'par_components_business_name_address',
       '#name' => 'Selfridges & Co',
-      '#address' => '400 Oxford Street, London, W1A 1AB',
+      '#address' => ['address_line1' => '400 Oxford Street', 'address_line2' => 'London', 'postal_code' => 'W1A 1AB'],
       '#prefix' => '<div class="styleguide-example">',
       '#suffix' => '</div>'
     ];
@@ -36,6 +36,9 @@ class StyleguideComponentsController extends ControllerBase {
       '#theme' => 'par_components_business_primary_contact',
       // @todo change to getter fn.
       '#name' => 'Jasper Thomas',
+      '#role' => 'CTO',
+      '#telephone' => '0207 111 1111',
+      '#email' => 'jasper.thomas@example.com',
       '#prefix' => '<div class="styleguide-example">',
       '#suffix' => '</div>'
     ];

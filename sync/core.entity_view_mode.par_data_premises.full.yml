@@ -1,0 +1,10 @@
+uuid: 4781bccd-746b-43fc-839f-e0207377ef5f
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_premises.full
+label: Full
+targetEntityType: par_data_premises
+cache: true

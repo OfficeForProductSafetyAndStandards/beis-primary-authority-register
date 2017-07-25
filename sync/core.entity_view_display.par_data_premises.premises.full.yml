@@ -1,0 +1,32 @@
+uuid: 8359c284-ce1c-4164-ae60-09093810fb14
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_premises.full
+    - par_data.par_data_premises_type.premises
+  module:
+    - user
+id: par_data_premises.premises.full
+targetEntityType: par_data_premises
+bundle: premises
+mode: full
+content:
+  name:
+    label: above
+    type: string
+    weight: -4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  user_id:
+    label: hidden
+    type: author
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  address: true
+  nation: true

@@ -120,6 +120,19 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  public function getPrevStep() {
+    if ($current_step = $this->getCurrentStep()) {
+      $next_index = --$current_step;
+    }
+    $next_step = isset($next_index) ? $this->getStep($next_index) : $this->getStep(1);
+
+    // If there is no next step we'll go back to the beginning.
+    return isset($next_step['step']) ? $next_step['step'] : 1;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getStepByFormId($form_id) {
     foreach ($this->getSteps() as $key => $step) {
       if (isset($step['form_id']) && $form_id === $step['form_id']) {

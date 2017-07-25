@@ -16,7 +16,6 @@
         "drupal/address": "~1.1.0",
         "drupal/better_exposed_filters": "~3.0.0-alpha2",
         "drupal/clamav": "~1.0.0",
-        "drupal/composer_manager": "~1.0.0-rc2",
         "drupal/config_update": "~1.3.0",
         "drupal/core": "~8.3.0",
         "drupal/csv_serialization": "~1.0.0",
@@ -32,7 +31,7 @@
         "drupal/range": "~1.1.0",
         "drupal/robotstxt": "~1.1.0",
         "drupal/swiftmailer": "~1.0.0-beta1",
-        "drupal/trance": "~1.0.0",
+        "drupal/trance": "~1.1.0",
         "drupal/twig_field_value": "~1.1.0",
         "drupal/twig_tweak": "~1.8.0",
         "drupal/views_data_export": "~1.0.0-alpha4",
@@ -82,9 +81,6 @@
         "patches": {
             "drupal/health_check": {
                 "Health Check doesn't check Drupal application": "https://www.drupal.org/files/issues/health_check_doesn_t-2892294-2.patch"
-            },
-            "drupal/trance": {
-                "Don't assume base tables": "https://www.drupal.org/files/issues/don_t_assume_base_tables-2895360-2.patch"
             },
             "drush/drush": {
                 "Drush sql-dump compatibility with PostgresSQL 9.5+": "./patches/drush-sqldump-postgres95.patch"

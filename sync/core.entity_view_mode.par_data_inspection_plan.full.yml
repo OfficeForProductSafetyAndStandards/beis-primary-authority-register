@@ -1,0 +1,10 @@
+uuid: a7d49e4a-9160-475f-8372-f8f67524d36f
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_inspection_plan.full
+label: Full
+targetEntityType: par_data_inspection_plan
+cache: true

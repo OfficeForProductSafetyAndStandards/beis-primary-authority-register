@@ -27,4 +27,9 @@ function par_data_test_uninstall() {
       $entity->delete();
     }
   }
+
+  $user = reset(\Drupal::entityTypeManager()->getStorage('user')
+    ->loadByProperties(['name' => 'testuser']));
+  $user->delete();
+
 }

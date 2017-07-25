@@ -1,8 +1,0 @@
-uuid: 74e19925-5025-4da2-bd56-edf52fcb1541
-langcode: en
-status: true
-dependencies: {  }
-id: authority
-label: Authority
-description: 'An Authority is a government body, usually a local authority but occasionally a fire authority or port authority.'
-help: ''
