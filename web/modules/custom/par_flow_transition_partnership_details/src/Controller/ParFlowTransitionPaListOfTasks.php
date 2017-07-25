@@ -73,7 +73,7 @@ class ParFlowTransitionPaListOfTasks extends ParBaseController {
     $build['save_and_continue'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getLinkByRoute('par_flow_transition_partnership_details.overview', $this->getRouteParams(), ['attributes' => ['class' => 'button']])
+        '@link' => $this->getFlow()->getLinkByStep(1, $this->getRouteParams(), ['attributes' => ['class' => 'button']])
           ->setText('Save and continue')
           ->toString()
       ]),
