@@ -17,8 +17,8 @@ steps:
     route: par_flow_transition_partnership_details.overview
     form_id: par_flow_transition_partnership_details_overview
   5:
-    route: par_flow_transition_partnership_details.first
+    route: par_flow_transition_partnership_details.about
     form_id: par_flow_transition_partnership_details_about
   6:
-    route: par_flow_transition_partnership_details.second
+    route: par_flow_transition_partnership_details.contact
     form_id: par_flow_transition_partnership_primary_contact
