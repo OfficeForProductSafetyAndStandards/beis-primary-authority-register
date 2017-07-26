@@ -29,6 +29,7 @@ module:
   flysystem_s3: 0
   health_check: 0
   help: 0
+  http_response_headers: 0
   image: 0
   inline_entity_form: 0
   language: 0
