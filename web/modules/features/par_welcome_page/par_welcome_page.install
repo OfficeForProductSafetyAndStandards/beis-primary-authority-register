@@ -12,7 +12,7 @@ use Drupal\Core\Link;
  */
 function par_welcome_page_install() {
   // Create the initial welcome page.
-  $url = Url::fromRoute('view.par_data_transition_journey_1_step_1.dv_journey_1_step_1', ['par_data_authority' => 1]);
+  $url = Url::fromRoute('view.par_data_transition_journey_1_step_1.dv_journey_1_step_1');
   $message = <<<HEREDOC
 Review and confirm your data by 14 September 2017.
 
@@ -86,6 +86,14 @@ function par_welcome_page_requirements($phase) {
  * Changes have been made to the welcome page, re-adding to update the page.
  */
 function par_welcome_page_update_8000() {
+  par_welcome_page_uninstall();
+  par_welcome_page_install();
+}
+
+/**
+ * Changed the URL for the welcome page CTA.
+ */
+function par_welcome_page_update_8001() {
   par_welcome_page_uninstall();
   par_welcome_page_install();
 }
