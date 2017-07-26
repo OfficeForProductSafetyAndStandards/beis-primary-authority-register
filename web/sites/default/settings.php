@@ -842,6 +842,17 @@ $schemes = [
 $settings['flysystem'] = $schemes;
 
 /**
+ * Set GovUK Notify settings.
+ *
+ * These are confidential and should be set with ENV variables.
+ *
+ * SPECIAL ATTENTION MUST BE MADE TO ENSURE THE PRODUCTION KEY
+ * CAN NEVER BE SET ON ANYTHING BUT PRODUCTION ENVIRONMENT.
+ */
+$config['govuk_notify.settings']['api_key'] = getenv('PAR_GOVUK_NOTIFY_KEY');
+$config['govuk_notify.settings']['default_template_id'] = getenv('PAR_GOVUK_NOTIFY_TEMPLATE');
+
+/**
  * Load local development override configuration, if available.
  *
  * Use settings.local.php to override variables on secondary (staging,
