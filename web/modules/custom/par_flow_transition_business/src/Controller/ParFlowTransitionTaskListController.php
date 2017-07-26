@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_flow_transition_partnership_details\Controller;
+namespace Drupal\par_flow_transition_business\Controller;
 
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataPartnership;
@@ -9,17 +9,17 @@ use Drupal\par_flows\Controller\ParBaseController;
 /**
  * A controller for all PAR Flow Transition pages.
  */
-class ParFlowTransitionPaListOfTasks extends ParBaseController {
+class ParFlowTransitionTaskListController extends ParBaseController {
 
   /**
    * {@inheritdoc}
    */
-  protected $flow = 'transition_partnership_details';
+  protected $flow = 'transition_business';
 
   /**
    * {@inheritdoc}
    */
-  public function content(ParDataAuthority $par_data_authority = NULL, ParDataPartnership $par_data_partnership = NULL) {
+  public function content(ParDataPartnership $par_data_partnership = NULL, $termporary_no_crashy_variable = NULL) {
 
     // Organisation summary.
     $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());

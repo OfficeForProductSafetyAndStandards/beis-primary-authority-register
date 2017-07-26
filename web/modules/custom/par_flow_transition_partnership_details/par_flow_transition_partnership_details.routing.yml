@@ -1,69 +1,65 @@
 # PAR Data Transition Journey 1 - Partnership Details
-par_flow_transition_partnership_details.list_of_tasks:
-  path: '/dv/primary-authority-partnerships/{par_data_authority}/partnership/{par_data_partnership}'
+par_flow_transition_partnership_details.task_list:
+  path: '/dv/primary-authority-partnerships/{par_data_partnership}'
   defaults:
-    _controller: '\Drupal\par_flow_transition_partnership_details\Controller\ParFlowTransitionPaListOfTasks::content'
+    _controller: '\Drupal\par_flow_transition_partnership_details\Controller\ParFlowTransitionTaskListController::content'
     _title: 'Updating the Primary Authority Register'
   requirements:
     _permission: 'access par journey transition partnership details'
+    par_data_partnership: \d+
   options:
     parameters:
-      par_data_authority:
-        type: entity:par_data_authority
       par_data_partnership:
         type: entity:par_data_partnership
 par_flow_transition_partnership_details.terms:
-  path: '/dv/primary-authority-partnerships/{par_data_authority}/partnership/{par_data_partnership}/terms'
+  path: '/dv/primary-authority-partnerships/{par_data_partnership}/terms'
   defaults:
     _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionTermsForm'
     _title: 'Terms & Conditions'
   requirements:
     _permission: 'access par journey transition partnership details'
+    par_data_partnership: \d+
   options:
     parameters:
-      par_data_authority:
-        type: entity:par_data_authority
       par_data_partnership:
         type: entity:par_data_partnership
       par_data_person:
         type: entity:par_data_person
 par_flow_transition_partnership_details.overview:
-  path: '/dv/primary-authority-partnerships/{par_data_authority}/partnership/{par_data_partnership}/details'
+  path: '/dv/primary-authority-partnerships/{par_data_partnership}/details'
   defaults:
     _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionOverviewForm'
     _title: 'Viewing/confirming partnership details'
   requirements:
     _permission: 'access par journey transition partnership details'
+    par_data_partnership: \d+
   options:
     parameters:
-      par_data_authority:
-        type: entity:par_data_authority
       par_data_partnership:
         type: entity:par_data_partnership
-par_flow_transition_partnership_details.first:
-  path: '/dv/primary-authority-partnerships/{par_data_authority}/partnership/{par_data_partnership}/details/edit-about'
+par_flow_transition_partnership_details.about:
+  path: '/dv/primary-authority-partnerships/{par_data_partnership}/details/about'
   defaults:
-    _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionFirstForm'
+    _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionAboutForm'
     _title: 'Edit the information about the Partnership'
   requirements:
     _permission: 'access par journey transition partnership details'
+    par_data_partnership: \d+
   options:
     parameters:
-      par_data_authority:
-        type: entity:par_data_authority
       par_data_partnership:
         type: entity:par_data_partnership
-par_flow_transition_partnership_details.second:
-  path: '/dv/primary-authority-partnerships/{par_data_authority}/partnership/{par_data_partnership}/details/edit-contact/{par_data_person}'
+par_flow_transition_partnership_details.contact:
+  path: '/dv/primary-authority-partnerships/{par_data_partnership}/details/contact/{par_data_person}'
   defaults:
-    _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionSecondForm'
+    _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionContactForm'
     _title: 'Edit the details for the contact at the Primary Authority'
   requirements:
     _permission: 'access par journey transition partnership details'
+    par_data_partnership: \d+
+    par_data_person: \d+
   options:
     parameters:
-      par_data_authority:
-        type: entity:par_data_authority
       par_data_partnership:
         type: entity:par_data_partnership
       par_data_person:

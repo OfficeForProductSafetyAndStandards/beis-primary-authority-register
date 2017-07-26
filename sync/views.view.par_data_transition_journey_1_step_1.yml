@@ -210,7 +210,7 @@ display:
             alter_text: true
             text: 'Review & confirm'
             make_link: true
-            path: '/dv/primary-authority-partnerships/1/partnership/{{id}}/terms'
+            path: '/dv/primary-authority-partnerships/{{id}}/terms'
             absolute: false
             external: false
             replace_spaces: false
@@ -336,7 +336,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: dv/primary-authority-partnerships/%par_data_authority
+      path: dv/primary-authority-partnerships
     cache_metadata:
       max-age: 0
       contexts:
