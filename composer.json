@@ -23,6 +23,7 @@
         "drupal/file_entity": "~2.0.0@beta",
         "drupal/flysystem": "~1.0.0",
         "drupal/flysystem_s3": "~1.0.0@alpha",
+        "drupal/govuk_notify": "1.x-dev",
         "drupal/health_check": "1.0.0",
         "drupal/http_response_headers": "dev-2.x",
         "drupal/inline_entity_form": "~1.0.0@beta",
