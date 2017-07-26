@@ -12,5 +12,5 @@ So that the correct details are taken forward into the new PAR
         Then I expect that element ".error-message" is not visible        
           
     Scenario: Edit Second Primary Authority Contact: Load form data
-        Given I open the url "/dv/primary-authority-partnerships/1/details/edit-contact/3"
+        Given I open the url "/dv/primary-authority-partnerships/1/details/contact/3"
         Then the element "h1" contains the text "You need to review and confirm the following partnerships"

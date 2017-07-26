@@ -11,7 +11,7 @@ Feature: Edit About the Partnership: Save form data	- As a Primary Authority Off
         Then I expect that element ".error-message" is not visible
 
     Scenario: Edit About the Partnership: Save form data
-        Given I open the url "/dv/primary-authority-partnerships/1/details/edit-about"
+        Given I open the url "/dv/primary-authority-partnerships/1/details/about"
         And the element "h1" contains the text "Edit the information about the Partnership"
         And I add "test change" to the inputfield "#edit-about-partnership"
         When I click on the button "#edit-next"

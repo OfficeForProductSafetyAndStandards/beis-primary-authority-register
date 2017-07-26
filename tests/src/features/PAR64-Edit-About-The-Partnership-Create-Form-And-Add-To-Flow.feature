@@ -11,5 +11,5 @@ Feature: Edit About the Partnership: Create form and add to flow - As a Primary 
         Then I expect that element ".error-message" is not visible
 
     Scenario: Edit About the Partnership: Create form and add to flow
-        Given I open the url "/dv/primary-authority-partnerships/1/details/edit-about"
+        Given I open the url "/dv/primary-authority-partnerships/1/details/about"
         Then the element "h1" contains the text "Edit the information about the Partnership"
