@@ -65,6 +65,45 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataPartnership extends ParDataEntity {
 
   /**
+   * Get the organisation contacts for this Partnership.
+   */
+  public function getOrganisationPeople() {
+    $people = [];
+    foreach ($this->get('person')->referencedEntities() as $person) {
+      $people[$person->id()] = $person;
+    }
+
+    $organisation_people = [];
+    foreach ($this->get('organisation')->referencedEntities() as $organisation) {
+      foreach ($organisation->get('person')->referencedEntities() as $person) {
+        $organisation_people[$person->id()] = $person;
+      }
+    }
+var_dump('organisation', array_keys(array_intersect_key($people, $organisation_people)));
+    return !empty($people) && !empty($organisation_people) ? array_intersect_key($people, $organisation_people) : [];
+  }
+
+  /**
+   * Get the authority contacts for this Partnership.
+   */
+  public function getAuthorityPeople() {
+    $people = [];
+    foreach ($this->get('person')->referencedEntities() as $person) {
+      $people[$person->id()] = $person;
+    }
+
+    $authority_people = [];
+    foreach ($this->get('authority')->referencedEntities() as $organisation) {
+      foreach ($organisation->get('person')->referencedEntities() as $person) {
+        $authority_people[$person->id()] = $person;
+      }
+    }
+var_dump('authority', array_keys(array_intersect_key($people, $authority_people)));
+
+    return !empty($people) && !empty($authority_people) ? array_intersect_key($people, $authority_people) : [];
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
