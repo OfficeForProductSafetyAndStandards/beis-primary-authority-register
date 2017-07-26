@@ -11,7 +11,7 @@ So that the correct details are taken forward into the new PAR
         Then I expect that element ".error-message" is not visible
 
     Scenario: List Partnership Details: Load summary elements Load data into the form
-        Given I open the url "/dv/primary-authority-partnerships/1/partnership/1/details/edit-contact/6"
+        Given I open the url "/dv/primary-authority-partnerships/1/details/edit-contact/6"
         Then the element "h1" contains the text "Edit the details for the contact at the Primary Authority"
         And I add "Grover" to the inputfield "#edit-person-name"
         And I add "9876543210" to the inputfield "#edit-work-phone"
