@@ -5,27 +5,19 @@ dependencies:
   config:
     - core.entity_view_mode.par_data_partnership.title
     - par_data.par_data_partnership_type.partnership
-  module:
-    - user
 id: par_data_partnership.partnership.title
 targetEntityType: par_data_partnership
 bundle: partnership
 mode: title
 content:
-  name:
-    label: above
-    type: string
-    weight: -4
-    region: content
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  user_id:
-    label: hidden
-    type: author
+  organisation:
+    type: entity_reference_entity_view
     weight: 0
     region: content
-    settings: {  }
+    label: hidden
+    settings:
+      link: true
+      view_mode: default
     third_party_settings: {  }
 hidden:
   about_partnership: true
@@ -39,7 +31,7 @@ hidden:
   cost_recovery: true
   expertise_details: true
   inspection_plan: true
-  organisation: true
+  name: true
   organisation_change_comment: true
   partnership_status: true
   partnership_type: true
@@ -49,3 +41,4 @@ hidden:
   revocation_date: true
   revocation_reason: true
   revocation_source: true
+  user_id: true

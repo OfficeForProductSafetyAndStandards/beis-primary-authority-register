@@ -38,18 +38,6 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()}");
 
-      // If we want to use values already saved we have to tell
-      // the form about them.
-      $this->loadDataValue('about_partnership', $par_data_partnership->get('about_partnership')->getString());
-
-      // Regulatory Areas.
-      $regulatory_areas = $par_data_partnership->get('regulatory_area')->referencedEntities();
-      $areas = [];
-      foreach ($regulatory_areas as $regulatory_area) {
-        $areas[] = $regulatory_area->get('area_name')->getString();
-      }
-      $this->loadDataValue('regulatory_areas', $areas);
-
       // Partnership Confirmation.
       $allowed_values = $par_data_partnership->type->entity->getConfigurationByType('partnership_status', 'allowed_values');
       // Set the on and off values so we don't have to do that again.
@@ -84,60 +72,110 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $form['first_section']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('<br>%link', [
-        '%link' => $this->getFlow()->getLinkByStep(4)->setText('edit')->toString()
+        '%link' => $this->getFlow()->getLinkByStep(5)->setText('edit')->toString()
       ]),
     ];
 
-    // Main Primary Authority contact.
-    $form['second_section'] = [
-      '#type' => 'fieldset',
-      '#title' => t('Main Primary Authority contact'),
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
+    // List Authority contacts.
+    $authority_people = $par_data_partnership->getAuthorityPeople();
+    $authority_primary_person = array_shift($authority_people);
+    $person_view_builder = $authority_primary_person ? $authority_primary_person->getViewBuilder() : NULL;
 
-    $primary_person = current($par_data_partnership->get('person')->referencedEntities());
-    $person_view_builder = $primary_person->getViewBuilder();
+    // List the Primary Authority contact.
+    if ($authority_primary_person) {
+      $form['authority_contacts'] = [
+        '#type' => 'fieldset',
+        '#title' => t('Main Primary Authority contacts'),
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+      $form['authority_contacts']['primary_person'] = $person_view_builder->view($authority_primary_person, 'summary');
 
-    $form['second_section']['primary_person'] = $primary_person ? $person_view_builder->view($primary_person, 'summary') : '';
+      // We can get a link to a given form step like so.
+      $form['authority_contacts']['edit'] = [
+        '#type' => 'markup',
+        '#markup' => t('<br>%link', [
+          '%link' => $this->getFlow()->getLinkByStep(6, [
+            'par_data_person' => $authority_primary_person->id()
+          ])->setText('edit')->toString()
+        ]),
+      ];
+    }
 
-    // We can get a link to a given form step like so.
-    $form['second_section']['edit'] = [
-      '#type' => 'markup',
-      '#markup' => t('<br>%link', [
-        '%link' => $this->getFlow()->getLinkByStep(5, [
-          'par_data_person' => $primary_person->id()
-        ])->setText('edit')->toString()
-      ]),
-    ];
-
-    // Secondary Primary Authority contacts.
-    $form['third_section'] = [
-      '#type' => 'fieldset',
-      '#title' => t('Secondary Primary Authority contacts'),
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    foreach ($this->getDefaultValues('people', []) as $person) {
-      $form['third_section'][$person->id()] = [
+    // List the secondary Primary Authority contacts.
+    if ($authority_people) {
+      $form['authority_contacts']['alternative_people'] = [
         '#type' => 'fieldset',
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
 
-      $person_view_builder = $person->getViewBuilder();
-      $form['third_section']['alternative_people'][$person->id()] = $person ? $person_view_builder->view($person, 'summary') : '';
+      foreach ($authority_people as $person) {
+        $person_view_builder = $person->getViewBuilder();
+        $form['authority_contacts']['alternative_people'][$person->id()] = $person_view_builder->view($person, 'summary');
+
+        // We can get a link to a given form step like so.
+        $form['authority_contacts']['alternative_people'][$person->id() . '_edit'] = [
+          '#type' => 'markup',
+          '#markup' => t('<br>%link', [
+            '%link' => $this->getFlow()->getLinkByStep(6, [
+              'par_data_person' => $person->id()
+            ])->setText('edit')->toString()
+          ]),
+        ];
+      }
+    }
+
+    // List Organisation contacts.
+    $organisation_people = $par_data_partnership->getOrganisationPeople();
+    $organisation_primary_person = array_shift($organisation_people);
+    $person_view_builder = $organisation_primary_person ? $organisation_primary_person->getViewBuilder() : NULL;
+
+    // List the Primary Organisation contact.
+    if ($organisation_primary_person) {
+      $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
+      $form['organisation_contacts'] = [
+        '#type' => 'fieldset',
+        '#title' => t('Main %organisation_type contact', ['%organisation_type' => $par_data_organisation->type->entity->label()]),
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+
+      $form['organisation_contacts']['primary_person'] = $person_view_builder->view($organisation_primary_person, 'summary');
 
       // We can get a link to a given form step like so.
-      $form['third_section']['edit'][$person->id()] = [
+      $form['organisation_contacts']['edit'] = [
         '#type' => 'markup',
         '#markup' => t('<br>%link', [
-          '%link' => $this->getFlow()->getLinkByStep(5, [
-            'par_data_person' => $person->id()
+          '%link' => $this->getFlow()->getLinkByStep(6, [
+            'par_data_person' => $organisation_primary_person->id()
           ])->setText('edit')->toString()
         ]),
       ];
+    }
+
+    // List the secondary Primary Organisation contacts.
+    if ($organisation_people) {
+      $form['organisation_contacts']['alternative_people'] = [
+        '#type' => 'fieldset',
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+
+      foreach ($organisation_people as $person) {
+        $person_view_builder = $person->getViewBuilder();
+        $form['organisation_contacts']['alternative_people'][$person->id()] = $person_view_builder->view($person, 'summary');
+
+        // We can get a link to a given form step like so.
+        $form['organisation_contacts']['alternative_people'][$person->id() . '_edit'] = [
+          '#type' => 'markup',
+          '#markup' => t('<br>%link', [
+            '%link' => $this->getFlow()->getLinkByStep(6, [
+              'par_data_person' => $person->id()
+            ])->setText('edit')->toString()
+          ]),
+        ];
+      }
     }
 
     // Areas of Regulatory Advice.
@@ -157,18 +195,14 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $form['partnership_agreement'] = [
       '#type' => 'checkbox',
       '#title' => t('(NOT YET SAVED) A written summary of partnership agreement, such as Memorandum of Understanding, has been agreed with the Business.'),
-      '#prefix' => '<div class="form-group">',
-      '#suffix' => '</div>',
     ];
 
     // Partnership Confirmation.
     $form['confirmation'] = [
       '#type' => 'checkbox',
       '#title' => t('I confirm that the partnership information above is correct.'),
-      '#prefix' => '<div class="form-group">',
       '#default_value' => $this->getDefaultValues('confirmation', FALSE),
       '#return_value' => $this->getDefaultValues('confirmation_set_value', 0),
-      '#suffix' => '</div>',
     ];
 
     $form['next'] = [
@@ -176,9 +210,10 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#value' => t('Next'),
     ];
     // We can get a link to a custom route like so.
+    $previous_link = $this->getFlow()->getLinkByStep($this->getFlow()->getPrevStep())->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
-      '#markup' => t('<br>%link', ['%link' => $this->getFlow()->getLinkByStep(2)->setText('Cancel')->toString()]),
+      '#markup' => t('<br>%link', ['%link' => $previous_link]),
     ];
 
     // Make sure to add the partnership cacheability data to this form.
@@ -220,7 +255,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     }
 
     // We're not in kansas any more, after submitting the overview let's go home.
-    $form_state->setRedirect('par_flow_transition_partnership_details.list_of_tasks', $this->getRouteParams());
+    $form_state->setRedirect($this->getFlow()->getPrevRoute(), $this->getRouteParams());
   }
 
 }

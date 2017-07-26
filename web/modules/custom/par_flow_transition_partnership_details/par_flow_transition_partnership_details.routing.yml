@@ -12,6 +12,21 @@ par_flow_transition_partnership_details.list_of_tasks:
         type: entity:par_data_authority
       par_data_partnership:
         type: entity:par_data_partnership
+par_flow_transition_partnership_details.terms:
+  path: '/dv/primary-authority-partnerships/{par_data_authority}/partnership/{par_data_partnership}/terms'
+  defaults:
+    _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionTermsForm'
+    _title: 'Terms & Conditions'
+  requirements:
+    _permission: 'access par journey transition partnership details'
+  options:
+    parameters:
+      par_data_authority:
+        type: entity:par_data_authority
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_person:
+        type: entity:par_data_person
 par_flow_transition_partnership_details.overview:
   path: '/dv/primary-authority-partnerships/{par_data_authority}/partnership/{par_data_partnership}/details'
   defaults:

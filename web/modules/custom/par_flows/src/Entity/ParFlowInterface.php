@@ -61,6 +61,22 @@ interface ParFlowInterface {
   public function getPrevStep();
 
   /**
+   * Get the next route.
+   *
+   * @return mixed
+   *   A route id for the next step.
+   */
+  public function getNextRoute();
+
+  /**
+   * Get the previous route.
+   *
+   * @return mixed
+   *   A route id for the previous step.
+   */
+  public function getPrevRoute();
+
+  /**
    * Get a step by the form id.
    *
    * @param string $form ID
