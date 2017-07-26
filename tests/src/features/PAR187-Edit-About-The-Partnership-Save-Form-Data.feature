@@ -1,4 +1,4 @@
-@Pending
+@ci
 Feature: Edit About the Partnership: Save form data	- As a Primary Authority Officer
     I need to be able to edit the field 'About the Partnership' in the existing partnership details
     So that the correct details are taken forward into the new PAR
@@ -7,7 +7,7 @@ Feature: Edit About the Partnership: Save form data	- As a Primary Authority Off
         Given I open the url "/user/login"
         And I add "testuser" to the inputfield "#edit-name"
         And I add "testpwd" to the inputfield "#edit-pass"
-        When I press "#edit-submit"
+        When I click on the button "#edit-submit"
         Then I expect that element ".error-message" is not visible
 
     Scenario: Edit About the Partnership: Save form data
