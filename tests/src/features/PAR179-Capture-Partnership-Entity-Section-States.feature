@@ -9,6 +9,6 @@ Feature: Capture the state of a section in an entity; ie., whether or not an ent
         Then I expect that element ".error-message" is not visible
 
     Scenario: Capture the state of a section in an entity
-        Given I open the url "/dv/primary-authority-partnerships"
+        Given I open the url "/dv/primary-authority-partnerships/1"
         # Then the element "h1" contains the text "Viewing/confirming partnership details"
         Then I expect that element "#view-partnership-status-table-column" is visible
