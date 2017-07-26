@@ -14,7 +14,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
   /**
    * {@inheritdoc}
    */
-  protected $flow = 'transition_partnership_details';
+  protected $flow = 'transition_business';
 
   /**
    * {@inheritdoc}
