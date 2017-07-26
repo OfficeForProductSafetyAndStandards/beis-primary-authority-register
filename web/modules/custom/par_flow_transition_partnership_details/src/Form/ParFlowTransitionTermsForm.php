@@ -55,7 +55,7 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
       return $this->redirect($this->getFlow()->getNextRoute(), $this->getRouteParams());
     }
 
-    $form['terms_summary'] = [
+    $form['terms_intro'] = [
       '#markup' => "Please Review the new Primary Authority terms and conditions and confirm that you agree with them.<br>The New terms will come into effect from <em>01 October 2017</em>.<br>What's changed?",
     ];
 
