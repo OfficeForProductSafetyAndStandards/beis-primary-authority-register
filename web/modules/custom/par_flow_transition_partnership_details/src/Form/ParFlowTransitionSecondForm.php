@@ -141,6 +141,6 @@ class ParFlowTransitionSecondForm extends ParBaseForm {
     }
 
     // Go back to the overview.
-    $form_state->setRedirect('par_flow_transition_partnership_details.overview', $this->getRouteParams());
+    $form_state->setRedirect($this->getFlow()->getRouteByStep(4), $this->getRouteParams());
   }
 }
