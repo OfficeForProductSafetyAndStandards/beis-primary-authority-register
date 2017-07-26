@@ -13,7 +13,7 @@ bundle: premises
 mode: summary
 content:
   address:
-    type: address_default
+    type: address_plain
     weight: 0
     region: content
     label: hidden
