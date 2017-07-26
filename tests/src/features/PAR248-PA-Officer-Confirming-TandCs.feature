@@ -14,4 +14,4 @@ so that my Partnerships remain valid after 1st October.
     Scenario: List Partnership Details: Load summary elements Load data into the form
         Given I open the url "/dv/primary-authority-partnerships/1/partnership/1/details"
         And I scroll to element "#edit-confirmation"
-        Then I expect that element "#edit-confirmation" is visible
+        Then I click on the checkbox "#edit-confirmation"
