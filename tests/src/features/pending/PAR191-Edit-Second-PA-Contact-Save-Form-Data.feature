@@ -19,7 +19,7 @@ So that the correct details are taken forward into the new PAR
         # And I add "099999999" to the inputfield "#edit-mobile-phone"
         And I add "grover@example.com" to the inputfield "#edit-email"
         When I click on the button "#edit-next"
-        # Then the element "#edit-second-section" contains the text "Mr"
+        # Then the element "#edit-authority-contacts" contains the text "Mr"
         And the element "#edit-third-section" contains the text "Grover"
         And the element "#edit-third-section" contains the text "9876543210"
         # And the element "#edit-third-section" contains the text "099999999"

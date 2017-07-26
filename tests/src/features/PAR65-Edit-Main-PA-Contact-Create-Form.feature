@@ -11,11 +11,11 @@ Feature: Edit Main Primary Authority Contact: Create form - As a Primary Authori
         Then I expect that element ".error-message" is not visible
 
     Scenario: List Partnership Details: Load summary elements Load data into the form
-        Given I open the url "/dv/primary-authority-partnerships/1/partnership/1/details/edit-contact/1"
+        Given I open the url "/dv/primary-authority-partnerships/1/partnership/1/details/edit-contact/6"
         And I add "Grover" to the inputfield "#edit-person-name"
         And I add "9876543210" to the inputfield "#edit-work-phone"
         And I add "grover@example.com" to the inputfield "#edit-email"
         When I click on the button "#edit-next"
-        And the element "#edit-second-section" contains the text "Grover"
-        And the element "#edit-second-section" contains the text "9876543210"
-        And the element "#edit-second-section" contains the text "grover@example.com"
+        And the element "#edit-authority-contacts" contains the text "Grover"
+        And the element "#edit-authority-contacts" contains the text "9876543210"
+        And the element "#edit-authority-contacts" contains the text "grover@example.com"
