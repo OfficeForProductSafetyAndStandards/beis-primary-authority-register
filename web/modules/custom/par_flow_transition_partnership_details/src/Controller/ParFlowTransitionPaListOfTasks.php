@@ -40,7 +40,7 @@ class ParFlowTransitionPaListOfTasks extends ParBaseController {
     $header = [];
 
     // Table data/cells.
-    $overview_link = $this->getFlow()->getLinkByStep(3)
+    $overview_link = $this->getFlow()->getLinkByStep(4)
       ->setText('Review and confirm your partnership details')
       ->toString();
     $rows = [

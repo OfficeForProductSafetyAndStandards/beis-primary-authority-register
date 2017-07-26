@@ -84,7 +84,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $form['first_section']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('<br>%link', [
-        '%link' => $this->getFlow()->getLinkByStep(4)->setText('edit')->toString()
+        '%link' => $this->getFlow()->getLinkByStep(5)->setText('edit')->toString()
       ]),
     ];
 
@@ -105,7 +105,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $form['second_section']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('<br>%link', [
-        '%link' => $this->getFlow()->getLinkByStep(5, [
+        '%link' => $this->getFlow()->getLinkByStep(6, [
           'par_data_person' => $primary_person->id()
         ])->setText('edit')->toString()
       ]),
@@ -133,7 +133,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       $form['third_section']['edit'][$person->id()] = [
         '#type' => 'markup',
         '#markup' => t('<br>%link', [
-          '%link' => $this->getFlow()->getLinkByStep(5, [
+          '%link' => $this->getFlow()->getLinkByStep(6, [
             'par_data_person' => $person->id()
           ])->setText('edit')->toString()
         ]),
@@ -157,18 +157,14 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $form['partnership_agreement'] = [
       '#type' => 'checkbox',
       '#title' => t('(NOT YET SAVED) A written summary of partnership agreement, such as Memorandum of Understanding, has been agreed with the Business.'),
-      '#prefix' => '<div class="form-group">',
-      '#suffix' => '</div>',
     ];
 
     // Partnership Confirmation.
     $form['confirmation'] = [
       '#type' => 'checkbox',
       '#title' => t('I confirm that the partnership information above is correct.'),
-      '#prefix' => '<div class="form-group">',
       '#default_value' => $this->getDefaultValues('confirmation', FALSE),
       '#return_value' => $this->getDefaultValues('confirmation_set_value', 0),
-      '#suffix' => '</div>',
     ];
 
     $form['next'] = [
@@ -176,9 +172,10 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#value' => t('Next'),
     ];
     // We can get a link to a custom route like so.
+    $previous_link = $this->getFlow()->getLinkByStep($this->getFlow()->getPrevStep())->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
-      '#markup' => t('<br>%link', ['%link' => $this->getFlow()->getLinkByStep(2)->setText('Cancel')->toString()]),
+      '#markup' => t('<br>%link', ['%link' => $previous_link]),
     ];
 
     // Make sure to add the partnership cacheability data to this form.
@@ -220,7 +217,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     }
 
     // We're not in kansas any more, after submitting the overview let's go home.
-    $form_state->setRedirect('par_flow_transition_partnership_details.list_of_tasks', $this->getRouteParams());
+    $form_state->setRedirect($this->getFlow()->getPrevRoute(), $this->getRouteParams());
   }
 
 }
