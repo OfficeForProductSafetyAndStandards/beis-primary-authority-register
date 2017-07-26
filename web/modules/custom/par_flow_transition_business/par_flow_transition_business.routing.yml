@@ -33,7 +33,7 @@ par_flow_transition_business.task_list:
       par_data_partnership:
         type: entity:par_data_partnership
 par_flow_transition_business.overview:
-  path: '/business-partnerships/{par_data_partnership}/details'
+  path: '/dv/business-partnerships/{par_data_partnership}/details'
   defaults:
     _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionTaskListController::content'
 #    _form: '\Drupal\par_flow_transition_business\Form\ParFlowTransitionTermsForm'

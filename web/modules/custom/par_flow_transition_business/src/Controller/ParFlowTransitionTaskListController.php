@@ -19,7 +19,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
   /**
    * {@inheritdoc}
    */
-  public function content(ParDataPartnership $par_data_partnership = NULL) {
+  public function content(ParDataPartnership $par_data_partnership = NULL, $termporary_no_crashy_variable = NULL) {
 
     // Organisation summary.
     $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
