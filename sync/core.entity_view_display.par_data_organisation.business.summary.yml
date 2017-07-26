@@ -9,16 +9,31 @@ id: par_data_organisation.business.summary
 targetEntityType: par_data_organisation
 bundle: business
 mode: summary
-content: {  }
+content:
+  organisation_name:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  premises:
+    type: entity_reference_entity_view
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
 hidden:
   comments: true
   employees_band: true
   legal_entity: true
   name: true
   nation: true
-  organisation_name: true
   person: true
-  premises: true
   premises_mapped: true
   sic_code: true
   size: true

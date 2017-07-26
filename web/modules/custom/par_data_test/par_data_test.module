@@ -414,6 +414,8 @@ function par_data_test_create_entities() {
     'person' => [
       $person_1->id(),
       $person_3->id(),
+      $person_6->id(),
+      $person_2->id(),
     ],
     'regulatory_area' => [
       $regulatory_area_1->id(),

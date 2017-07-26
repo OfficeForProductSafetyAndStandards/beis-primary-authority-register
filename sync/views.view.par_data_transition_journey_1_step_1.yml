@@ -210,7 +210,7 @@ display:
             alter_text: true
             text: 'Review & confirm'
             make_link: true
-            path: '/dv/primary-authority-partnerships/1/partnership/{{id}}'
+            path: '/dv/primary-authority-partnerships/1/partnership/{{id}}/terms'
             absolute: false
             external: false
             replace_spaces: false
