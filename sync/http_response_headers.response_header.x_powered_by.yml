@@ -1,4 +1,4 @@
-uuid: 9565ccbb-a8c4-4287-86ff-04f3f8aa7356
+uuid: b6c5660e-ab6f-4caf-9213-c10c770cdd32
 langcode: en
 status: true
 dependencies: {  }
@@ -9,4 +9,4 @@ label: X-Powered-By
 description: 'The X-Powered-By header gives information on the technology that''s supporting the Web Server. It is best not to provide this information.'
 group: Security
 name: X-Powered-By
-value: ''
+value: Turbo-Kittens
