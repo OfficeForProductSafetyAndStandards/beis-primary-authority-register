@@ -9,7 +9,7 @@ Feature:Create a view structured as illustrated in the attached image.
         Then I expect that element ".error-message" is not visible
 
     Scenario: List Partnership Details: Load summary elements Load data into the form
-        Given I open the url "/dv/primary-authority-partnerships/1"
+        Given I open the url "/dv/primary-authority-partnerships"
         # Then the element "h1" contains the text "Updating the Primary Authority Register"
         Then I expect that element "#view-organisation-table-column" is visible    
 
