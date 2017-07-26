@@ -79,7 +79,7 @@ class ParDataPartnership extends ParDataEntity {
         $organisation_people[$person->id()] = $person;
       }
     }
-var_dump('organisation', array_keys(array_intersect_key($people, $organisation_people)));
+
     return !empty($people) && !empty($organisation_people) ? array_intersect_key($people, $organisation_people) : [];
   }
 
@@ -98,7 +98,6 @@ var_dump('organisation', array_keys(array_intersect_key($people, $organisation_p
         $authority_people[$person->id()] = $person;
       }
     }
-var_dump('authority', array_keys(array_intersect_key($people, $authority_people)));
 
     return !empty($people) && !empty($authority_people) ? array_intersect_key($people, $authority_people) : [];
   }
