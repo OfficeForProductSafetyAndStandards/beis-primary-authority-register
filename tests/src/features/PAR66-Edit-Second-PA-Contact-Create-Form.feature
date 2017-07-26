@@ -7,7 +7,7 @@ Feature: Edit Second Primary Authority Contact: Create form	- As a Primary Autho
         Given I open the url "/user/login"
         And I add "testuser" to the inputfield "#edit-name"
         And I add "testpwd" to the inputfield "#edit-pass"
-        When I press "#edit-submit"
+        When I click on the button "#edit-submit"
         Then I expect that element ".error-message" is not visible
 
     Scenario: Edit Second Primary Authority Contact: Create form

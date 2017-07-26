@@ -5,7 +5,7 @@ Feature: List Partnership Details: Load summary elements Load data into the form
         Given I open the url "/user/login"
         And I add "testuser" to the inputfield "#edit-name"
         And I add "testpwd" to the inputfield "#edit-pass"
-        When I press "#edit-submit"
+        When I click on the button "#edit-submit"
         Then I expect that element ".error-message" is not visible
 
     Scenario: List Partnership Details: Load summary elements Load data into the form
