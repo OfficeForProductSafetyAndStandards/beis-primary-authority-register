@@ -323,7 +323,7 @@ function par_data_test_create_entities() {
       $sic_code_2->save(),
     ]
   ]);
-  $organisation_1->save();
+  $organisation_2->save();
 
   // Create Regulatory Area.
   $regulatory_area_1 = \Drupal\par_data\Entity\ParDataRegulatoryArea::create([

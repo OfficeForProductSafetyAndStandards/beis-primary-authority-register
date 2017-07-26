@@ -12,6 +12,6 @@ so that my Partnerships remain valid after 1st October.
         Then I expect that element ".error-message" is not visible
 
     Scenario: List Partnership Details: Load summary elements Load data into the form
-        Given I open the url "/dv/primary-authority-partnerships/1/partnership/1/details"
+        Given I open the url "/dv/primary-authority-partnerships/1/details"
         And I scroll to element "#edit-confirmation"
         Then I click on the checkbox "#edit-confirmation"

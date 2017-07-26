@@ -1,0 +1,28 @@
+uuid: d64e258c-720d-4a2b-bb78-8a098016ad49
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 3sz6M4IyJ9TfcHpZzWna8kZdxDBY46xp9GzoDjxTfrM
+id: transition_business
+label: 'Transition Business'
+description: 'The Partnership Details section of the Data Validation/Transition Journey 2.'
+steps:
+  1:
+    route: par_flow_transition_business.unknown
+  2:
+    route: par_flow_transition_business.terms
+  3:
+    route: par_flow_transition_business.task_list
+  4:
+    route: par_flow_transition_business.overview
+  5:
+    route: par_flow_transition_business.about
+  6:
+    route: par_flow_transition_business.address
+  7:
+    route: par_flow_transition_business.contact
+  8:
+    route: par_flow_transition_business.legal
+  9:
+    route: par_flow_transition_business.trading_name
