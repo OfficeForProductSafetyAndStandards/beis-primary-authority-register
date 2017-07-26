@@ -9,7 +9,7 @@ use Drupal\par_flows\Controller\ParBaseController;
 /**
  * A controller for all PAR Flow Transition pages.
  */
-class ParFlowTransitionPaListOfTasks extends ParBaseController {
+class ParFlowTransitionTaskListController extends ParBaseController {
 
   /**
    * {@inheritdoc}
@@ -19,7 +19,7 @@ class ParFlowTransitionPaListOfTasks extends ParBaseController {
   /**
    * {@inheritdoc}
    */
-  public function content(ParDataAuthority $par_data_authority = NULL, ParDataPartnership $par_data_partnership = NULL) {
+  public function content(ParDataPartnership $par_data_partnership = NULL) {
 
     // Organisation summary.
     $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());

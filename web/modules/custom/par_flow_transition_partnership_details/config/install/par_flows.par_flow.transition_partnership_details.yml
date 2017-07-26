@@ -12,7 +12,7 @@ steps:
     route: par_flow_transition_partnership_details.terms
     form_id: par_flow_transition_partnership_details_terms
   3:
-    route: par_flow_transition_partnership_details.list_of_tasks
+    route: par_flow_transition_partnership_details.task_list
   4:
     route: par_flow_transition_partnership_details.overview
     form_id: par_flow_transition_partnership_details_overview

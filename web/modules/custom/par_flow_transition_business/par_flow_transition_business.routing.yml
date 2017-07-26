@@ -2,111 +2,123 @@
 par_flow_transition_business.unknown:
   path: '/dv/business-partnerships'
   defaults:
-    _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionPaListOfTasks::content'
+    _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionTaskListController::content'
     _title: 'Updating the Primary Authority Register'
   requirements:
     _permission: 'access par journey transition business'
 par_flow_transition_business.terms:
-  path: '/dv/business-partnerships/business/{par_data_organisation}/terms'
+  path: '/dv/business-partnerships/{par_data_partnership}/terms'
   defaults:
-    _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionPaListOfTasks::content'
+    _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionTaskListController::content'
 #    _form: '\Drupal\par_flow_transition_business\Form\ParFlowTransitionTermsForm'
     _title: 'Terms & Conditions'
   requirements:
     _permission: 'access par journey transition business'
+    par_data_partnership: \d+
   options:
     parameters:
-      par_data_organisation:
-        type: entity:par_data_organisation
-par_flow_transition_business.list_of_tasks:
-  path: '/dv/business-partnerships/business/{par_data_organisation}'
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_flow_transition_business.task_list:
+  path: '/dv/business-partnerships/{par_data_partnership}'
   defaults:
-    _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionPaListOfTasks::content'
+    _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionTaskListController::content'
 #    _form: '\Drupal\par_flow_transition_business\Form\ParFlowTransitionTermsForm'
     _title: 'Viewing/confirming partnership details'
   requirements:
     _permission: 'access par journey transition business'
+    par_data_partnership: \d+
   options:
     parameters:
-      par_data_organisation:
-        type: entity:par_data_organisation
+      par_data_partnership:
+        type: entity:par_data_partnership
 par_flow_transition_business.overview:
-  path: '/business-partnerships/business/{par_data_organisation}/details'
+  path: '/business-partnerships/{par_data_partnership}/details'
   defaults:
-    _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionPaListOfTasks::content'
+    _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionTaskListController::content'
 #    _form: '\Drupal\par_flow_transition_business\Form\ParFlowTransitionTermsForm'
     _title: 'Edit the information about the Partnership'
   requirements:
     _permission: 'access par journey transition business'
+    par_data_partnership: \d+
   options:
     parameters:
-      par_data_organisation:
-        type: entity:par_data_organisation
+      par_data_partnership:
+        type: entity:par_data_partnership
 par_flow_transition_business.about:
-  path: '/dv/business-partnerships/business/{par_data_organisation}/about'
+  path: '/dv/business-partnerships/{par_data_partnership}/about'
   defaults:
-    _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionPaListOfTasks::content'
+    _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionTaskListController::content'
 #    _form: '\Drupal\par_flow_transition_business\Form\ParFlowTransitionTermsForm'
     _title: 'Edit the details for the contact at the Primary Authority'
   requirements:
     _permission: 'access par journey transition business'
+    par_data_partnership: \d+
   options:
     parameters:
-      par_data_organisation:
-        type: entity:par_data_organisation
+      par_data_partnership:
+        type: entity:par_data_partnership
 par_flow_transition_business.address:
-  path: '/dv/business-partnerships/business/{par_data_organisation}/address/{par_data_premises}'
+  path: '/dv/business-partnerships/{par_data_partnership}/address/{par_data_premises}'
   defaults:
-    _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionPaListOfTasks::content'
+    _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionTaskListController::content'
 #    _form: '\Drupal\par_flow_transition_business\Form\ParFlowTransitionTermsForm'
     _title: 'Edit the details for the contact at the Primary Authority'
   requirements:
     _permission: 'access par journey transition business'
+    par_data_partnership: \d+
+    par_data_premises: \d+
   options:
     parameters:
-      par_data_organisation:
-        type: entity:par_data_organisation
+      par_data_partnership:
+        type: entity:par_data_partnership
       par_data_premises:
         type: entity:par_data_premises
 par_flow_transition_business.contact:
-  path: '/dv/business-partnerships/business/{par_data_organisation}/contact/{par_data_person}'
+  path: '/dv/business-partnerships/{par_data_partnership}/contact/{par_data_person}'
   defaults:
-    _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionPaListOfTasks::content'
+    _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionTaskListController::content'
 #    _form: '\Drupal\par_flow_transition_business\Form\ParFlowTransitionTermsForm'
     _title: 'Edit the details for the contact at the Primary Authority'
   requirements:
     _permission: 'access par journey transition business'
+    par_data_partnership: \d+
+    par_data_person: \d+
   options:
     parameters:
-      par_data_organisation:
-        type: entity:par_data_organisation
+      par_data_partnership:
+        type: entity:par_data_partnership
       par_data_person:
         type: entity:par_data_person
 par_flow_transition_business.legal:
-  path: '/dv/business-partnerships/business/{par_data_organisation}/contact/{par_data_legal_entity}'
+  path: '/dv/business-partnerships/{par_data_partnership}/contact/{par_data_legal_entity}'
   defaults:
-    _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionPaListOfTasks::content'
+    _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionTaskListController::content'
 #    _form: '\Drupal\par_flow_transition_business\Form\ParFlowTransitionTermsForm'
     _title: 'Edit the details for the contact at the Primary Authority'
   requirements:
     _permission: 'access par journey transition business'
+    par_data_partnership: \d+
+    par_data_legal_entity: \d+
   options:
     parameters:
-      par_data_organisation:
-        type: entity:par_data_organisation
+      par_data_partnership:
+        type: entity:par_data_partnership
       par_data_legal_entity:
         type: entity:par_data_legal_entity
 par_flow_transition_business.trading_name:
-  path: '/dv/business-partnerships/business/{par_data_organisation}/trading-name/{trading_name_delta}'
+  path: '/dv/business-partnerships/{par_data_partnership}/trading-name/{trading_name_delta}'
   defaults:
-    _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionPaListOfTasks::content'
+    _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionTaskListController::content'
 #    _form: '\Drupal\par_flow_transition_business\Form\ParFlowTransitionTermsForm'
     _title: 'Edit the details for the contact at the Primary Authority'
   requirements:
     _permission: 'access par journey transition business'
+    par_data_partnership: \d+
+    trading_name_delta: \d+
   options:
     parameters:
-      par_data_organisation:
-        type: entity:par_data_organisation
+      par_data_partnership:
+        type: entity:par_data_partnership
       trading_name_delta:
         type: entity:trading_name_delta

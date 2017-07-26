@@ -9,7 +9,7 @@ use Drupal\par_flows\Controller\ParBaseController;
 /**
  * A controller for all PAR Flow Transition pages.
  */
-class ParFlowTransitionPaListOfTasks extends ParBaseController {
+class ParFlowTransitionTaskListController extends ParBaseController {
 
   /**
    * {@inheritdoc}
