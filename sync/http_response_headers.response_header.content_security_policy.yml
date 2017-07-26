@@ -1,0 +1,12 @@
+uuid: bed65b30-3022-49e5-94a3-d4caad09a63f
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 8PRdPXuJiE_b1jhRFlE7kM0CefUym_9MMvH31NPP_eQ
+id: content_security_policy
+label: Content-Security-Policy
+description: 'This HTTP header parameter allows you to define a whitelist of approved sources of content for your site. By restricting the assets that a browser can load for your site you will have extra level of protection from XSS attacks.'
+group: Security
+name: Content-Security-Policy
+value: ''
