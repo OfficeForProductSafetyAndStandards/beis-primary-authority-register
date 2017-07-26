@@ -1,0 +1,9 @@
+uuid: c3e5a791-a541-4b2a-a858-2ccfb28509fc
+langcode: en
+status: true
+dependencies: {  }
+id: par_helpdesk
+label: 'PAR Helpdesk'
+weight: 6
+is_admin: null
+permissions: {  }

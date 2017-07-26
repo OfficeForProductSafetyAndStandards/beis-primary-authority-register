@@ -1,0 +1,9 @@
+uuid: c51910e8-fd07-410e-aea6-6151a9a80fb8
+langcode: en
+status: true
+dependencies: {  }
+id: par_authority
+label: 'PAR Authority'
+weight: 3
+is_admin: null
+permissions: {  }

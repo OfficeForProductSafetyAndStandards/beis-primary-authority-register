@@ -1,0 +1,14 @@
+uuid: edadf264-a625-45a4-896d-c0683e76f3c5
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.par_coordinator
+  module:
+    - user
+id: user_remove_role_action.par_coordinator
+label: 'Remove the PAR Coordinator role from the selected users'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: par_coordinator

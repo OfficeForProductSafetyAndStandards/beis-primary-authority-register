@@ -1,0 +1,14 @@
+uuid: 66ec99a6-2786-48ac-a4b7-7fe372407126
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.par_helpdesk
+  module:
+    - user
+id: user_add_role_action.par_helpdesk
+label: 'Add the PAR Helpdesk role to the selected users'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: par_helpdesk

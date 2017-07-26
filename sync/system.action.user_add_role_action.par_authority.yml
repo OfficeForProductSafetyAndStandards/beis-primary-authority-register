@@ -1,0 +1,14 @@
+uuid: bf229ad3-f3e7-409e-8d2a-d674c626964c
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.par_authority
+  module:
+    - user
+id: user_add_role_action.par_authority
+label: 'Add the PAR Authority role to the selected users'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: par_authority

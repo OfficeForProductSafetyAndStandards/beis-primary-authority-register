@@ -1,0 +1,9 @@
+uuid: eb264bd2-9769-4cd5-a620-06faf3754e4f
+langcode: en
+status: true
+dependencies: {  }
+id: par_coordinator
+label: 'PAR Coordinator'
+weight: 5
+is_admin: null
+permissions: {  }
