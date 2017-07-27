@@ -41,7 +41,7 @@ fi
 
     # The tar.gz maintains the tar folder structure, so it exports in /home/vcap to maintain consistency.
     
-    docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sql-cli @dev --root=/var/www/html/web < /home/vcap/$DATAFILE && rm $DATAFILE"
+    docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sql-cli @dev --root=/var/www/html/web < $DATAFILE && rm $DATAFILE"
 
     docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
     docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
