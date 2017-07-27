@@ -1,8 +1,11 @@
-uuid: 2d015322-7ff8-4f39-b998-1088bffe4d1d
+uuid: c0096f3c-7761-4b9d-acb5-8db9473dc483
 langcode: en
 status: true
 dependencies: {  }
+_core:
+  default_config_hash: 2k1OkHZ4bc-K8UQHGqzoLguq9FHrkE_CQyygvPJpNXU
 id: coordinator
 label: Co-ordinator
 description: 'A Co-ordinator is generally a trade association or a franchise group who have a Primary Authority Partnership on behalf of, or for the benefit of, their members or franchisees.'
 help: ''
+configuration: null

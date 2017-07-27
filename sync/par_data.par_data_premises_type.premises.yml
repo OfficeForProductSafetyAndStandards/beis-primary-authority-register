@@ -1,8 +1,11 @@
-uuid: ad876f79-68c6-4772-b50d-15ca12448a1e
+uuid: 99380ef6-6c1a-4f57-b123-f674d454bbda
 langcode: en
 status: true
 dependencies: {  }
+_core:
+  default_config_hash: kUivJx70YWH9XWZwe1Ifzf6xS5iO-by8CqvYy8Vrsi4
 id: premises
 label: Premises
 description: 'Premises are a location used by either an Authority or an Organisation.'
 help: ''
+configuration: null

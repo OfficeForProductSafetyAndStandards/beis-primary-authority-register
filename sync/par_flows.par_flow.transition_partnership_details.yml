@@ -2,16 +2,25 @@ uuid: 63de8238-0769-4cf8-8543-bebe95d25bac
 langcode: en
 status: true
 dependencies: {  }
+_core:
+  default_config_hash: 5rfkLhHraXKPp7u1kTY8BOTGlCGdFMgTPxLinMqOGTI
 id: transition_partnership_details
 label: 'Transition Partnership Details'
 description: 'The Partnership Details section of the Data Validation/Transition Journey 1.'
 steps:
   1:
+    route: view.par_data_transition_journey_1_step_1.dv_journey_1_step_1
+  2:
+    route: par_flow_transition_partnership_details.terms
+    form_id: par_flow_transition_partnership_details_terms
+  3:
+    route: par_flow_transition_partnership_details.task_list
+  4:
     route: par_flow_transition_partnership_details.overview
     form_id: par_flow_transition_partnership_details_overview
-  2:
-    route: par_flow_transition_partnership_details.first
+  5:
+    route: par_flow_transition_partnership_details.about
     form_id: par_flow_transition_partnership_details_about
-  3:
-    route: par_flow_transition_partnership_details.second
+  6:
+    route: par_flow_transition_partnership_details.contact
     form_id: par_flow_transition_partnership_primary_contact
