@@ -22,7 +22,6 @@ par_flow_transition_business.task_list:
   path: '/dv/business-partnerships/{par_data_partnership}'
   defaults:
     _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionTaskListController::content'
-#    _form: '\Drupal\par_flow_transition_business\Form\ParFlowTransitionTermsForm'
     _title: 'Viewing/confirming partnership details'
   requirements:
     _permission: 'access par journey transition business'
