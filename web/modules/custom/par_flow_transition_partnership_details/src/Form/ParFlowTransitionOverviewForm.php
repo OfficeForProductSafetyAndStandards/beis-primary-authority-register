@@ -136,7 +136,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
       $form['organisation_contacts'] = [
         '#type' => 'fieldset',
-        '#title' => t('Main %organisation_type contact', ['%organisation_type' => $par_data_organisation->type->entity->label()]),
+        '#title' => t('Main @organisation_type contact', ['@organisation_type' => $par_data_organisation->type->entity->label()]),
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
