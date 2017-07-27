@@ -1,0 +1,36 @@
+uuid: 77abc511-311f-4655-9a42-84b2fe917e89
+langcode: en
+status: true
+dependencies:
+  config:
+    - par_data.par_data_enforcement_notice_type.enforcement_notice
+  module:
+    - user
+_core:
+  default_config_hash: IjvTqxUu4bEKPyqQIhbKzc8KGX7LhwKeYSGRJmrltLw
+id: par_data_enforcement_notice.enforcement_notice.default
+targetEntityType: par_data_enforcement_notice
+bundle: enforcement_notice
+mode: default
+content:
+  name:
+    label: above
+    type: string
+    weight: -4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  user_id:
+    label: hidden
+    type: author
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  enforcing_authority: true
+  legal_entity: true
+  notice_date: true
+  notice_type: true
+  primary_authority: true

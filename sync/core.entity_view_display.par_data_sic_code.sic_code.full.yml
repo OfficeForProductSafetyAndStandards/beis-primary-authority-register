@@ -1,0 +1,34 @@
+uuid: 5bbeff74-2225-4067-91d4-6d10871853b0
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_sic_code.full
+    - par_data.par_data_sic_code_type.sic_code
+  module:
+    - user
+_core:
+  default_config_hash: gPXRZVCBMvnXpfNfDupb-QC0Ibw7mAhUuPsk2DMmwbA
+id: par_data_sic_code.sic_code.full
+targetEntityType: par_data_sic_code
+bundle: sic_code
+mode: full
+content:
+  name:
+    label: above
+    type: string
+    weight: -4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  user_id:
+    label: hidden
+    type: author
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  description: true
+  sic_code: true

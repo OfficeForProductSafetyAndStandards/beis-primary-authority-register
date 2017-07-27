@@ -1,0 +1,12 @@
+uuid: a7a11559-9f75-4d93-aa30-94c6bb9cacbc
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+_core:
+  default_config_hash: BS_T3FgSanWrDmWhr3rR5d1cecDoE-FfHGAEzde69VM
+id: par_data_legal_entity.title
+label: Title
+targetEntityType: par_data_legal_entity
+cache: true

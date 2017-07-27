@@ -1,0 +1,36 @@
+uuid: 92c19c6a-94bc-4c3d-a3d9-e7f5ee51f31d
+langcode: en
+status: true
+dependencies:
+  config:
+    - par_data.par_data_advice_type.advice
+  module:
+    - user
+_core:
+  default_config_hash: xWNw6vh1C_nGYBSNMRuUcLR5b53lfAY3WBiTIbMyViQ
+id: par_data_advice.advice.default
+targetEntityType: par_data_advice
+bundle: advice
+mode: default
+content:
+  name:
+    label: above
+    type: string
+    weight: -4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  user_id:
+    label: hidden
+    type: author
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  advice_type: true
+  notes: true
+  visible_authority: true
+  visible_business: true
+  visible_coordinator: true

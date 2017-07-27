@@ -1,0 +1,12 @@
+uuid: d9bfc04a-e4d7-4f20-850c-e8c4b8af5201
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+_core:
+  default_config_hash: 69Dv5zcZscjPk1P_VIqqcsR9QWIBLl-1XQSU4KFWbr4
+id: par_data_sic_code.full
+label: Full
+targetEntityType: par_data_sic_code
+cache: true

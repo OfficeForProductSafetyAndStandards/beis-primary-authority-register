@@ -1,0 +1,35 @@
+uuid: 1e3d202a-bd95-44cd-944e-3bea7db08ff3
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_organisation.title
+    - par_data.par_data_organisation_type.business
+_core:
+  default_config_hash: T09U4f0eeFyhMcFFOcTkIj5lnzbPbKqk8rsLfMTzfuA
+id: par_data_organisation.business.title
+targetEntityType: par_data_organisation
+bundle: business
+mode: title
+content:
+  organisation_name:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  comments: true
+  employees_band: true
+  legal_entity: true
+  name: true
+  nation: true
+  person: true
+  premises: true
+  premises_mapped: true
+  sic_code: true
+  size: true
+  trading_name: true
+  user_id: true

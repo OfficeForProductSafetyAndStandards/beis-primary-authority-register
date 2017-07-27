@@ -1,0 +1,12 @@
+uuid: 8711b89f-f5e4-4de4-8e8d-61cfd3f7fe8b
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+_core:
+  default_config_hash: '-IolKgCSeKpB_fTM9sH1QVW7-0MKTbng0rDlt3RnbT4'
+id: par_data_person.title
+label: Title
+targetEntityType: par_data_person
+cache: true

@@ -1,0 +1,12 @@
+uuid: 8d359902-47a2-452f-9a05-e0e019aca80e
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+_core:
+  default_config_hash: wKPfFU-tybEgwMv_0l9c9AlZyKuGX6qfitcVWAo4eUk
+id: par_data_enforcement_notice.full
+label: Full
+targetEntityType: par_data_enforcement_notice
+cache: true

@@ -1,0 +1,33 @@
+uuid: f7917aea-9ae0-431f-8320-b529a8e76d62
+langcode: en
+status: true
+dependencies:
+  config:
+    - par_data.par_data_premises_type.premises
+  module:
+    - user
+_core:
+  default_config_hash: qvvIlX1z2QBC3xtqnMhxX05Xxmk95BXZt9V_v8w70fU
+id: par_data_premises.premises.default
+targetEntityType: par_data_premises
+bundle: premises
+mode: default
+content:
+  name:
+    label: above
+    type: string
+    weight: -4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  user_id:
+    label: hidden
+    type: author
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  address: true
+  nation: true

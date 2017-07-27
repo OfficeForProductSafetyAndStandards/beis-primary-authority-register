@@ -1,0 +1,12 @@
+uuid: 70275128-4121-4f7d-87f2-a44b69474c88
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+_core:
+  default_config_hash: gkFNF0kPwH_iqPQhvOoCP29PZprvGd_OoBeVeaKj39Q
+id: par_data_authority.title
+label: Title
+targetEntityType: par_data_authority
+cache: true

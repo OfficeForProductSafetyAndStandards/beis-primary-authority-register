@@ -1,0 +1,12 @@
+uuid: 1f2f29b7-091d-499a-8b08-fa29f06cecbd
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+_core:
+  default_config_hash: JP432wgg0NrDmadm58yPtBd_hT2L4EK9lZ2mrq4S-Tc
+id: par_data_legal_entity.summary
+label: Summary
+targetEntityType: par_data_legal_entity
+cache: true

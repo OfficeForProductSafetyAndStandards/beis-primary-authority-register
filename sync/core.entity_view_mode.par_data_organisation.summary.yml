@@ -1,0 +1,12 @@
+uuid: 0cbc33d9-2318-4a8f-8087-bc01278f07a3
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+_core:
+  default_config_hash: SZk4gDfdc1PBcviRz2iZoNfzoc-l1UDi-1sThJizqlA
+id: par_data_organisation.summary
+label: Summary
+targetEntityType: par_data_organisation
+cache: true
