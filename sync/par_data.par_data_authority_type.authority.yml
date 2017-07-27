@@ -2,6 +2,8 @@ uuid: 8baac969-2228-4bc0-ad03-9181b13b020c
 langcode: en
 status: true
 dependencies: {  }
+_core:
+  default_config_hash: LCTrjePYCJjWSME7_rhEX40MawJugbzeBprEHJJcSJg
 id: authority
 label: Authority
 description: 'An Authority is a government body, usually a local authority but occasionally a fire authority or port authority.'

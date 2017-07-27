@@ -1,0 +1,39 @@
+primary-authority-partnershipsstatus: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_organisation.full
+    - par_data.par_data_organisation_type.business
+  module:
+    - user
+id: par_data_organisation.business.full
+targetEntityType: par_data_organisation
+bundle: business
+mode: full
+content:
+  name:
+    label: above
+    type: string
+    weight: -4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  user_id:
+    label: hidden
+    type: author
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  comments: true
+  employees_band: true
+  legal_entity: true
+  nation: true
+  organisation_name: true
+  person: true
+  premises: true
+  premises_mapped: true
+  sic_code: true
+  size: true
+  trading_name: true

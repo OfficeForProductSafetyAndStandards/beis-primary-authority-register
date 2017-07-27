@@ -7,6 +7,8 @@ dependencies:
     - par_data.par_data_sic_code_type.sic_code
   module:
     - user
+_core:
+  default_config_hash: bcbMMNXR2BI42fU7iNcvx73CS4HAodG9BMDYVlKdD5U
 id: par_data_sic_code.sic_code.summary
 targetEntityType: par_data_sic_code
 bundle: sic_code

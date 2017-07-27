@@ -7,6 +7,8 @@ dependencies:
     - par_data.par_data_organisation_type.coordinator
   module:
     - user
+_core:
+  default_config_hash: lq4g-yly64xFmwI8Me4xaoHJFqVBmz6YYYiDJJTL1eA
 id: par_data_organisation.coordinator.full
 targetEntityType: par_data_organisation
 bundle: coordinator
