@@ -2,6 +2,8 @@ uuid: ec1d1386-4e86-4b59-bbf5-131118bb6ceb
 langcode: en
 status: true
 dependencies: {  }
+_core:
+  default_config_hash: fFcYtvx1tl5kqk9MPFtuVVtEhNct8ppuDnNIhrMtJlg
 id: advice
 label: Advice
 description: 'Advice is given by a Primary Authority in the context of a Partnership.'
