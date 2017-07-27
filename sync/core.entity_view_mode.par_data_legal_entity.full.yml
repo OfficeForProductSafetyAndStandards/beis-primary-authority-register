@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: ueFZMG82-4JyOCoSuznwRxHsWf-EeYZU_BfSFi0mejI
 id: par_data_legal_entity.full
 label: Full
 targetEntityType: par_data_legal_entity

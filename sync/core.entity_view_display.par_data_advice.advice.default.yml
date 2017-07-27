@@ -6,6 +6,8 @@ dependencies:
     - par_data.par_data_advice_type.advice
   module:
     - user
+_core:
+  default_config_hash: xWNw6vh1C_nGYBSNMRuUcLR5b53lfAY3WBiTIbMyViQ
 id: par_data_advice.advice.default
 targetEntityType: par_data_advice
 bundle: advice

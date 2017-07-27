@@ -1,5 +1,6 @@
 import clearInputField from '../support/action/clearInputField';
 import clickElement from '../support/action/clickElement';
+import clickChildElement from '../support/action/clickElement';
 import closeLastOpenedWindow from '../support/action/closeLastOpenedWindow';
 import deleteCookie from '../support/action/deleteCookie';
 import dragElement from '../support/action/dragElement';
@@ -20,6 +21,11 @@ module.exports = function when() {
     this.When(
         /^I (click|doubleclick) on the (link|button|radio|checkbox|element) "([^"]*)?"$/,
         clickElement
+    );
+
+    this.When(
+        /^I click on the link "([^"]*)?" in the page area "([^"]*)?"$/,
+        clickChildElement
     );
 
     this.When(

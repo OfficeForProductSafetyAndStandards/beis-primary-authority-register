@@ -7,6 +7,8 @@ dependencies:
     - par_data.par_data_premises_type.premises
   module:
     - user
+_core:
+  default_config_hash: 46omQdVRbCmiVklmjVwzs8_AX_9BzCub9ZVhA_AgaMY
 id: par_data_premises.premises.full
 targetEntityType: par_data_premises
 bundle: premises

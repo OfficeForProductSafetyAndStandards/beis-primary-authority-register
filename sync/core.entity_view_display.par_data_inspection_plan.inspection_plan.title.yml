@@ -7,6 +7,8 @@ dependencies:
     - par_data.par_data_inspection_plan_type.inspection_plan
   module:
     - user
+_core:
+  default_config_hash: oQ9XVDyA5FEPcE_ipnYHwWsv-bSJwU99avwJT8_UwlU
 id: par_data_inspection_plan.inspection_plan.title
 targetEntityType: par_data_inspection_plan
 bundle: inspection_plan

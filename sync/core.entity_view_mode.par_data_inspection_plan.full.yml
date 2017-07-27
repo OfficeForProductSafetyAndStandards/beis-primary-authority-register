@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: aCVrclPdPVrpMYSAD591F0AKYjUSXAngw04o_UiPDoU
 id: par_data_inspection_plan.full
 label: Full
 targetEntityType: par_data_inspection_plan

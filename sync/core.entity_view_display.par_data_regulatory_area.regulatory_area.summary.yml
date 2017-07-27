@@ -5,6 +5,10 @@ dependencies:
   config:
     - core.entity_view_mode.par_data_regulatory_area.summary
     - par_data.par_data_regulatory_area_type.regulatory_area
+  module:
+    - user
+_core:
+  default_config_hash: rBykToI_gSD0ibxfJtpGSQMgNbdkVSseWYCDfPujIRE
 id: par_data_regulatory_area.regulatory_area.summary
 targetEntityType: par_data_regulatory_area
 bundle: regulatory_area
