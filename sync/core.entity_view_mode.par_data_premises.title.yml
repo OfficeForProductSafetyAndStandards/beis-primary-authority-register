@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: eBw6IqjE8__QpayDljnZIwLvhvyorxkaIZYZR_5Jhhs
 id: par_data_premises.title
 label: Title
 targetEntityType: par_data_premises

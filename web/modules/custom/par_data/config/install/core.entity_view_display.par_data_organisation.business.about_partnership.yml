@@ -1,0 +1,24 @@
+primary-authority-partnershipsstatus: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_organisation.about_partnership
+    - par_data.par_data_organisation_type.business
+id: par_data_organisation.business.about_partnership
+targetEntityType: par_data_organisation
+bundle: business
+mode: about_partnership
+content: {  }
+hidden:
+  comments: true
+  employees_band: true
+  legal_entity: true
+  name: true
+  nation: true
+  organisation_name: true
+  person: true
+  premises: true
+  premises_mapped: true
+  sic_code: true
+  size: true
+  trading_name: true
+  user_id: true

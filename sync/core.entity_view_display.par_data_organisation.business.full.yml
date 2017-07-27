@@ -7,6 +7,8 @@ dependencies:
     - par_data.par_data_organisation_type.business
   module:
     - user
+_core:
+  default_config_hash: 8xajb8tEFI3LoJrhwwCqK0TKtkD8q8Ccca0CR3ods7Q
 id: par_data_organisation.business.full
 targetEntityType: par_data_organisation
 bundle: business

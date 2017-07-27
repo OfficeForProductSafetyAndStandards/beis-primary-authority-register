@@ -1,0 +1,28 @@
+primary-authority-partnershipsstatus: true
+dependencies:
+  config:
+    - par_data.par_data_regulatory_area_type.regulatory_area
+  module:
+    - user
+id: par_data_regulatory_area.regulatory_area.default
+targetEntityType: par_data_regulatory_area
+bundle: regulatory_area
+mode: default
+content:
+  name:
+    label: above
+    type: string
+    weight: -4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  user_id:
+    label: hidden
+    type: author
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  area_name: true
