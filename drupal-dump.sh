@@ -15,27 +15,34 @@ else
 fi
 
 if [ -n "$3" ]; then
-  FILEPATH=$3
+  SQL_FILENAME=$3
 else
   echo $USAGE;
   exit 1;
 fi
 
-LOCALPATH=/home/vcap/$FILEPATH
-REMOTEPATH=$FILEPATH.tar.gz
+TAR_PATH=/home/vcap
 
-echo "Current working directory is ${PROJECT_ROOT}/web"
-COMMAND="../vendor/drush/drush/drush sql-dump @$DRUPAL_ENV --result-file=$LOCALPATH"
+cd ${PROJECT_ROOT}/web
+COMMAND="../vendor/drush/drush/drush sql-dump @$DRUPAL_ENV --result-file=$TAR_PATH/$SQL_FILENAME"
+echo '========================================================================================'
+pwd
+echo '----------------------------------------------------------------------------------------'
 echo $COMMAND
-
-cd ${PROJECT_ROOT}/web; $COMMAND
-
-COMMAND="tar -zcvf $LOCALPATH.tar.gz $LOCALPATH"
+$COMMAND
+echo '----------------------------------------------------------------------------------------'
+ls -la /home/vcap
+echo '----------------------------------------------------------------------------------------'
+COMMAND="tar -zcvf $SQL_FILENAME.tar.gz -C $TAR_PATH $SQL_FILENAME"
+echo '----------------------------------------------------------------------------------------'
 echo $COMMAND
-
-cd ${PROJECT_ROOT}/web; $COMMAND
-
-COMMAND="../vendor/drush/drush/drush fsp s3backups $LOCALPATH.tar.gz $REMOTEPATH"
+echo '----------------------------------------------------------------------------------------'
+$COMMAND
+echo '----------------------------------------------------------------------------------------'
+COMMAND="../vendor/drush/drush/drush fsp s3backups $SQL_FILENAME.tar.gz $SQL_FILENAME.tar.gz"
+echo '========================================================================================'
+pwd
+echo '----------------------------------------------------------------------------------------'
 echo $COMMAND
-
-cd ${PROJECT_ROOT}/web; $COMMAND
+$COMMAND
+echo '========================================================================================'

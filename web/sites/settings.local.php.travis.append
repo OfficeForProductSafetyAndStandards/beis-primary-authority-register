@@ -14,36 +14,6 @@ $databases['default']['default'] = array (
 
 $settings['trusted_host_patterns'] = [''];
 
-// Set flysystem to local storage for non-production environments.
-$schemes = [
-  's3public' => [
-    'name' => 'Local Public',
-    'description' => 'The local store for public files.',
-    'driver' => 'local',
-    'config' => [
-      'root' => $settings['file_public_path'],
-      'public' => TRUE,
-    ],
-    'cache' => FALSE,
-    'serve_js' => TRUE,
-    'serve_css' => TRUE,
-  ],
-  's3private' => [
-    'name' => 'Local Private',
-    'description' => 'The local store for private files.',
-    'driver' => 'local',
-    'config' => [
-      'root' => $settings['file_private_path'],
-    ],
-    'cache' => FALSE,
-    'serve_js' => FALSE,
-    'serve_css' => FALSE,
-  ],
-];
-$settings['flysystem'] = $schemes;
-
-$settings['trusted_host_patterns'] = array('');
-
 if (file_exists($app_root . '/' . $site_path . '/services.local.yml')) {
   $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.local.yml';
 }
