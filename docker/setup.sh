@@ -21,7 +21,7 @@ fi
 
 # Load the test data:
 
-    DATAFILE=drush-dump-post-drush-updates-sanitized-201707222304.sql
+    DATAFILE=drush-dump-post-drush-updates-sanitized-201707270857.sql
     
     # Time for the server to boot
     sleep 5
