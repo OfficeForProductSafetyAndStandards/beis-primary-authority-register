@@ -321,6 +321,7 @@ display:
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
+      css_class: view_dv_journey_1_step_1
     cache_metadata:
       max-age: 0
       contexts:
