@@ -89,7 +89,9 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
-      $form['authority_contacts']['primary_person'] = $person_view_builder->view($authority_primary_person, 'summary');
+
+      $primary_person = $person_view_builder->view($authority_primary_person, 'summary');
+      $form['authority_contacts']['primary_person'] = $this->renderMarkupField($primary_person);
 
       // We can get a link to a given form step like so.
       $form['authority_contacts']['edit'] = [
@@ -112,7 +114,9 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
       foreach ($authority_people as $person) {
         $person_view_builder = $person->getViewBuilder();
-        $form['authority_contacts']['alternative_people'][$person->id()] = $person_view_builder->view($person, 'summary');
+
+        $alternative_person = $person_view_builder->view($person, 'summary');
+        $form['authority_contacts']['alternative_people'][$person->id()] = $this->renderMarkupField($alternative_person);
 
         // We can get a link to a given form step like so.
         $form['authority_contacts']['alternative_people'][$person->id() . '_edit'] = [
@@ -128,6 +132,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
     // List Organisation contacts.
     $organisation_people = $par_data_partnership->getOrganisationPeople();
+
     $organisation_primary_person = array_shift($organisation_people);
     $person_view_builder = $organisation_primary_person ? $organisation_primary_person->getViewBuilder() : NULL;
 
@@ -136,12 +141,13 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
       $form['organisation_contacts'] = [
         '#type' => 'fieldset',
-        '#title' => t('Main %organisation_type contact', ['%organisation_type' => $par_data_organisation->type->entity->label()]),
+        '#title' => t('Main @organisation_type contact', ['@organisation_type' => $par_data_organisation->type->entity->label()]),
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
 
-      $form['organisation_contacts']['primary_person'] = $person_view_builder->view($organisation_primary_person, 'summary');
+      $organisation_person = $person_view_builder->view($organisation_primary_person, 'summary');
+      $form['organisation_contacts']['primary_person'] = $this->renderMarkupField($organisation_person);
 
       // We can get a link to a given form step like so.
       $form['organisation_contacts']['edit'] = [
@@ -164,7 +170,10 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
       foreach ($organisation_people as $person) {
         $person_view_builder = $person->getViewBuilder();
-        $form['organisation_contacts']['alternative_people'][$person->id()] = $person_view_builder->view($person, 'summary');
+
+        $person_field = $person_view_builder->view($person, 'summary');
+
+        $form['organisation_contacts']['alternative_people'][$person->id()] = $this->renderMarkupField($person_field);
 
         // We can get a link to a given form step like so.
         $form['organisation_contacts']['alternative_people'][$person->id() . '_edit'] = [
@@ -188,7 +197,8 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $regulatory_areas = $par_data_partnership->get('regulatory_area')->referencedEntities();
     $regulatory_area_view_builder = current($regulatory_areas)->getViewBuilder();
     foreach ($par_data_partnership->get('regulatory_area')->referencedEntities() as $regulatory_area) {
-      $form['fourth_section'][] = $regulatory_area_view_builder->view($regulatory_area, 'title');
+      $regulatory_area_field = $regulatory_area_view_builder->view($regulatory_area, 'title');
+      $form['fourth_section'][] = $this->renderMarkupField($regulatory_area_field);
     }
 
     // Partnership Confirmation.

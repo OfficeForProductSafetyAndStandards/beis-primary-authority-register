@@ -1,0 +1,26 @@
+.view-dv-journey-1-step-1 {
+
+  // reset ul.
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  .views-element-container {
+    @extend .grid-row;
+  }
+
+  .views-exposed-form {
+    @extend .column-one-third;
+  }
+
+  .views-exposed-form-inner {
+    background: $grey-4;
+    padding: 20px;
+
+    input[type='text'] {
+      width: 100%;
+    }
+  }
+
+}
