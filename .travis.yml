@@ -117,6 +117,8 @@ after_deploy:
   - cf set-env par-beta-staging S3_BUCKET $S3_BUCKET
   - cf set-env par-beta-staging S3_BUCKET_ARTIFACTS $S3_BUCKET_ARTIFACTS
   - cf set-env par-beta-staging PAR_HASH_SALT $PAR_HASH_SALT
+  - cf set-env par-beta-staging PAR_GOVUK_NOTIFY_KEY $PAR_GOVUK_NOTIFY_KEY
+  - cf set-env par-beta-staging PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE
   - cf restage par-beta-staging
   - cd tests/reports/html && cf push -f ../../reports-manifest.yml
   - cf ssh par-beta-staging -c "cd app/tools && python extract_postgres_env_vars.py"
