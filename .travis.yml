@@ -69,7 +69,7 @@ install:
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush fsg s3backups $DATAFILE.tar.gz /dump.sql.tar.gz"
   - docker exec -i par_beta_web bash -c "cd / && tar --no-same-owner -zxvf dump.sql.tar.gz"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sql-cli @dev --root=/var/www/html/web < /home/vcap/$DATAFILE"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sql-cli @dev --root=/var/www/html/web < $DATAFILE"
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
   
