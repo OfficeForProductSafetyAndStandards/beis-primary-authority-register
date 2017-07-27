@@ -29,6 +29,7 @@ module:
   flysystem_s3: 0
   health_check: 0
   help: 0
+  http_response_headers: 0
   image: 0
   inline_entity_form: 0
   language: 0
@@ -39,9 +40,10 @@ module:
   options: 0
   page_cache: 0
   pagerer: 0
-  par_components: 0
   par_ckeditor: 0
+  par_components: 0
   par_data: 0
+  par_flow_transition_business: 0
   par_flow_transition_partnership_details: 0
   par_flows: 0
   par_header: 0

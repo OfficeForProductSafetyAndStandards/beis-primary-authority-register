@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_flow_transition_partnership_details\Controller;
+namespace Drupal\par_flow_transition_business\Controller;
 
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataPartnership;
@@ -9,17 +9,17 @@ use Drupal\par_flows\Controller\ParBaseController;
 /**
  * A controller for all PAR Flow Transition pages.
  */
-class ParFlowTransitionPaListOfTasks extends ParBaseController {
+class ParFlowTransitionTaskListController extends ParBaseController {
 
   /**
    * {@inheritdoc}
    */
-  protected $flow = 'transition_partnership_details';
+  protected $flow = 'transition_business';
 
   /**
    * {@inheritdoc}
    */
-  public function content(ParDataAuthority $par_data_authority = NULL, ParDataPartnership $par_data_partnership = NULL) {
+  public function content(ParDataPartnership $par_data_partnership = NULL, $termporary_no_crashy_variable = NULL) {
 
     // Organisation summary.
     $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
@@ -70,23 +70,23 @@ class ParFlowTransitionPaListOfTasks extends ParBaseController {
       '#empty' => $this->t("No tasks could be found."),
     ];
 
-    $build['save_and_continue'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getLinkByStep(1, $this->getRouteParams(), ['attributes' => ['class' => 'button']])
-          ->setText('Save and continue')
-          ->toString()
-      ]),
-    ];
-
-    $build['cancel'] = [
-      '#type' => 'markup',
-      '#markup' => t('<br>%link', [
-        '%link' => $this->getFlow()->getLinkByStep(1)
-          ->setText('Cancel')
-          ->toString()
-      ]),
-    ];
+//    $build['save_and_continue'] = [
+//      '#type' => 'markup',
+//      '#markup' => t('@link', [
+//        '@link' => $this->getFlow()->getLinkByStep(1, $this->getRouteParams(), ['attributes' => ['class' => 'button']])
+//          ->setText('Save and continue')
+//          ->toString()
+//      ]),
+//    ];
+//
+//    $build['cancel'] = [
+//      '#type' => 'markup',
+//      '#markup' => t('<br>%link', [
+//        '%link' => $this->getFlow()->getLinkByStep(1)
+//          ->setText('Cancel')
+//          ->toString()
+//      ]),
+//    ];
 
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);

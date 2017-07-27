@@ -7,6 +7,8 @@ dependencies:
     - par_data.par_data_enforcement_notice_type.enforcement_notice
   module:
     - user
+_core:
+  default_config_hash: IqRww6k_4UBSsh3cMbJiVNSX13nKYlZlCHfc4zU4TAI
 id: par_data_enforcement_notice.enforcement_notice.full
 targetEntityType: par_data_enforcement_notice
 bundle: enforcement_notice

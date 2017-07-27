@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: SZk4gDfdc1PBcviRz2iZoNfzoc-l1UDi-1sThJizqlA
 id: par_data_organisation.summary
 label: Summary
 targetEntityType: par_data_organisation

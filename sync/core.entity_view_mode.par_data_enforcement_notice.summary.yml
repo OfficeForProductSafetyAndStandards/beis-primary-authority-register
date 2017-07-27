@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: vml2dQhFGWSRYE4IFiFmn53LeCrxKbRfFh9QHs9KdkE
 id: par_data_enforcement_notice.summary
 label: Summary
 targetEntityType: par_data_enforcement_notice

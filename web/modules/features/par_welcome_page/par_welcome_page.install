@@ -12,7 +12,7 @@ use Drupal\Core\Link;
  */
 function par_welcome_page_install() {
   // Create the initial welcome page.
-  $url = Url::fromRoute('view.par_data_transition_journey_1_step_1.dv_journey_1_step_1', ['par_data_authority' => 1]);
+  $url = Url::fromRoute('view.par_data_transition_journey_1_step_1.dv_journey_1_step_1');
   $message = <<<HEREDOC
 Review and confirm your data by 14 September 2017.
 
@@ -49,7 +49,7 @@ function par_welcome_page_uninstall() {
   $language = \Drupal::languageManager()->getCurrentLanguage()->getId();
   $internal_path = \Drupal::service('path.alias_storage')->lookupPathSource("/welcome-reminder", $language);
 
-  $params = Url::fromUri("internal:" . $internal_path)->getRouteParameters();
+  $params = $internal_path ? Url::fromUri("internal:" . trim('/', $internal_path))->getRouteParameters() : [];
 
   foreach ($params as $type=>$param) {
     try {
