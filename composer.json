@@ -92,6 +92,9 @@
             },
             "drupal/http_response_headers": {
                 "Version 2 patch": "https://www.drupal.org/files/issues/more_complete_d8_port-2863718-6.patch"
+            },
+            "drupal/govuk_notify": {
+                "Allowing system mails to be sent through Notify": "https://www.drupal.org/files/issues/allowing_system_mails-2897707-3.patch"
             }
         }
     },
