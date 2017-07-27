@@ -12,7 +12,7 @@ use Drupal\par_flows\Form\ParBaseForm;
  * The primary contact form for the partnership details steps of the
  * 1st Data Validation/Transition User Journey.
  */
-class ParFlowTransitionSecondForm extends ParBaseForm {
+class ParFlowTransitionContactForm extends ParBaseForm {
 
   /**
    * @var string

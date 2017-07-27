@@ -24,6 +24,7 @@
         "drupal/flysystem": "~1.0.0",
         "drupal/flysystem_s3": "~1.0.0@alpha",
         "drupal/health_check": "1.0.0",
+        "drupal/http_response_headers": "dev-2.x",
         "drupal/inline_entity_form": "~1.0.0@beta",
         "drupal/login_destination": "1.x-dev",
         "drupal/mailsystem": "~4.1.0",
@@ -87,6 +88,9 @@
             },
             "drupal/flysystem": {
                 "Add Drush commands for sending and receiving files": "./patches/flysystem-drush-command.patch"
+            },
+            "drupal/http_response_headers": {
+                "Version 2 patch": "https://www.drupal.org/files/issues/more_complete_d8_port-2863718-6.patch"
             }
         }
     },
