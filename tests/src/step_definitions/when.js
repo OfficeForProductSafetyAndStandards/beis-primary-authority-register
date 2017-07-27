@@ -24,7 +24,7 @@ module.exports = function when() {
     );
 
     this.When(
-        /^I (click|doubleclick) on the child (link|button|radio|checkbox|element) "([^"]*)?" in page area "([^"]*)?"$/,
+        /^I click on the link "([^"]*)?" in the page area "([^"]*)?"$/,
         clickChildElement
     );
 
