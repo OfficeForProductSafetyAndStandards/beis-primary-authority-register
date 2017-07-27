@@ -796,9 +796,6 @@ $schemes = [
       'region' => 'eu-west-1',
       'bucket' => getenv('S3_BUCKET'),
       'prefix' => 'public',
-      'protocol' => 'https'
-      // 'cname' => 'static.example.com',
-      // 'cname_is_bucket' => TRUE,
     ],
     'cache' => TRUE,
     'serve_js' => FALSE,
@@ -814,9 +811,6 @@ $schemes = [
       'region' => 'eu-west-1',
       'bucket' => getenv('S3_BUCKET'),
       'prefix' => 'private',
-      'protocol' => 'https'
-      // 'cname' => 'static.example.com',
-      // 'cname_is_bucket' => TRUE,
     ],
     'cache' => TRUE,
     'serve_js' => FALSE,
@@ -832,7 +826,6 @@ $schemes = [
       'region' => 'eu-west-1',
       'bucket' => getenv('S3_BUCKET_ARTIFACTS'),
       'prefix' => 'backups',
-      'protocol' => 'https'
     ],
     'cache' => TRUE,
     'serve_js' => FALSE,
