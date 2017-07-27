@@ -70,23 +70,23 @@ class ParFlowTransitionTaskListController extends ParBaseController {
       '#empty' => $this->t("No tasks could be found."),
     ];
 
-    $build['save_and_continue'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getLinkByStep(1, $this->getRouteParams(), ['attributes' => ['class' => 'button']])
-          ->setText('Save and continue')
-          ->toString()
-      ]),
-    ];
-
-    $build['cancel'] = [
-      '#type' => 'markup',
-      '#markup' => t('<br>%link', [
-        '%link' => $this->getFlow()->getLinkByStep(1)
-          ->setText('Cancel')
-          ->toString()
-      ]),
-    ];
+//    $build['save_and_continue'] = [
+//      '#type' => 'markup',
+//      '#markup' => t('@link', [
+//        '@link' => $this->getFlow()->getLinkByStep(1, $this->getRouteParams(), ['attributes' => ['class' => 'button']])
+//          ->setText('Save and continue')
+//          ->toString()
+//      ]),
+//    ];
+//
+//    $build['cancel'] = [
+//      '#type' => 'markup',
+//      '#markup' => t('<br>%link', [
+//        '%link' => $this->getFlow()->getLinkByStep(1)
+//          ->setText('Cancel')
+//          ->toString()
+//      ]),
+//    ];
 
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
