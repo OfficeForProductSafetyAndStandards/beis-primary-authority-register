@@ -21,13 +21,27 @@ fi
 
 # Load the test data:
 
-    DATAFILE=drush-dump-post-drush-updates-sanitized-201707270857.sql
+    DATAFILE=drush-dump-post-drush-updates-sanitized-201707271133.sql
     
     # Time for the server to boot
     sleep 5
 
+    # Must load a database before "cr" and "fsg" commands can be bootstrapped
+
     docker exec -i par_beta_web bash -c "vendor/bin/drush @dev --root=/var/www/html/web sql-drop -y"
     docker exec -i par_beta_web bash -c "vendor/bin/drush sql-cli @dev --root=/var/www/html/web < docker/fresh_drupal_postgres.sql"
+
+    docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
+    docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
+
+    docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush fsg s3backups $DATAFILE.tar.gz /dump.sql.tar.gz"
+    docker exec -i par_beta_web bash -c "cd / && tar --no-same-owner -zxvf dump.sql.tar.gz"
+
+    docker exec -i par_beta_web bash -c "vendor/bin/drush @dev --root=/var/www/html/web sql-drop -y"
+
+    # The tar.gz maintains the tar folder structure, so it exports in /home/vcap to maintain consistency.
+    
+    docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sql-cli @dev --root=/var/www/html/web < /home/vcap/$DATAFILE && rm $DATAFILE"
 
     docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
     docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
