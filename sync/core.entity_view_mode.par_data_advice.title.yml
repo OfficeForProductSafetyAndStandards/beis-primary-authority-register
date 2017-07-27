@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: 5FxKOH5CnrchH5zSMUG0Vhjn5qAuCUvIUL7_xrOPaKs
 id: par_data_advice.title
 label: Title
 targetEntityType: par_data_advice

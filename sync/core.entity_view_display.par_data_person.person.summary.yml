@@ -5,6 +5,8 @@ dependencies:
   config:
     - core.entity_view_mode.par_data_person.summary
     - par_data.par_data_person_type.person
+_core:
+  default_config_hash: 8-2p8CXAz6cBMVV3eNu-5WRk70hTMZsp1rpmmjrOCCc
 id: par_data_person.person.summary
 targetEntityType: par_data_person
 bundle: person

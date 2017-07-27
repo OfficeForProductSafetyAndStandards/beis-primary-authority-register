@@ -6,6 +6,8 @@ dependencies:
     - par_data.par_data_regulatory_area_type.regulatory_area
   module:
     - user
+_core:
+  default_config_hash: 2Pt7JBlvJGKNn4mwfJTNGrpkIS27GPfigyGnzEiz6jM
 id: par_data_regulatory_area.regulatory_area.default
 targetEntityType: par_data_regulatory_area
 bundle: regulatory_area

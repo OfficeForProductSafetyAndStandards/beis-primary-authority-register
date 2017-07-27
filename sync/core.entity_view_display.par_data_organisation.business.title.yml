@@ -5,6 +5,8 @@ dependencies:
   config:
     - core.entity_view_mode.par_data_organisation.title
     - par_data.par_data_organisation_type.business
+_core:
+  default_config_hash: T09U4f0eeFyhMcFFOcTkIj5lnzbPbKqk8rsLfMTzfuA
 id: par_data_organisation.business.title
 targetEntityType: par_data_organisation
 bundle: business
