@@ -11,5 +11,5 @@ Feature:Create a view structured as illustrated in the attached image.
 
     Scenario: List Partnership Details: Load summary elements Load data into the form
         Given I open the url "/dv/primary-authority-partnerships"
-        Then the element "h1" contains the text "List of Partnerships for a Primary Authority"
-        Then I expect that element "#view-organisation-table-column" is visible
+        Then the element ".view-dv-journey-1-step-1" contains the text "Partnership details and documentation for"
+
