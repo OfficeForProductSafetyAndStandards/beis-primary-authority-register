@@ -51,15 +51,12 @@ class ParFlowTransitionTaskListController extends ParBaseController {
     ];
 
     // Task List.
-    // $form['basic_table_title'] = ['#markup' => '<h2 class="heading-medium">' . $this->t("Basic data table") . '</h2>'];
     $build['basic_table'] = [
-      '#theme' => 'par_some_custom_theme',
+      '#theme' => 'table',
       '#header' => $header,
-      'title' => $rows,
-      'name' => $this->t("No tasks could be found."),
+      '#rows' => $rows,
+      '#empty' => $this->t("No tasks could be found."),
     ];
-
-
 
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
