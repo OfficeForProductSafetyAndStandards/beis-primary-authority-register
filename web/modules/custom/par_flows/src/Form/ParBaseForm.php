@@ -6,6 +6,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Renderer;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\SessionManagerInterface;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
@@ -108,12 +109,15 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    *   The flow entity storage handler.
    * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
    *   The current user object.
+   * @param \Drupal\Core\Render\Renderer $render
+   *   Drupal renderer.
    */
-  public function __construct(PrivateTempStoreFactory $temp_store_factory, SessionManagerInterface $session_manager, AccountInterface $current_user, ConfigEntityStorageInterface $flow_storage, ParDataManagerInterface $par_data_manager) {
+  public function __construct(PrivateTempStoreFactory $temp_store_factory, SessionManagerInterface $session_manager, AccountInterface $current_user, ConfigEntityStorageInterface $flow_storage, ParDataManagerInterface $par_data_manager, Renderer $renderer) {
     $this->sessionManager = $session_manager;
     $this->currentUser = $current_user;
     $this->flowStorage = $flow_storage;
     $this->parDataManager = $par_data_manager;
+    $this->renderer = $renderer;
     /** @var \Drupal\user\PrivateTempStore store */
     $this->store = $temp_store_factory->get('par_flows_flows');
 
@@ -133,7 +137,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       $container->get('session_manager'),
       $container->get('current_user'),
       $entity_manager->getStorage('par_flow'),
-      $container->get('par_data.manager')
+      $container->get('par_data.manager'),
+      $container->get('renderer')
     );
   }
 
@@ -330,6 +335,23 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     }
 
     return $form_element_page_anchor;
+
+  }
+
+  /**
+   * Render view mode.
+   * This prevents the form showing view modes w/ incorrect display weights.
+   *
+   * @param array $field
+   *
+   * @return array
+   */
+  public function renderMarkupField($field) {
+
+    return [
+      '#type' => 'markup',
+      '#markup' => $this->renderer->render($field)
+    ];
 
   }
 
