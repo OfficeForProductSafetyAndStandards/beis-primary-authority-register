@@ -14,7 +14,7 @@ targetEntityType: par_data_regulatory_area
 bundle: regulatory_area
 mode: title
 content:
-  name:
+  area_name:
     label: above
     type: string
     weight: -4
@@ -30,4 +30,4 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  area_name: true
+  name: true

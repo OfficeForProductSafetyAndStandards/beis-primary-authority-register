@@ -33,9 +33,10 @@
  */
 #}
 <p class="address" translate="no">
-  {% if address_line1 %}{{ address_line1 }},{% endif %}
-  {% if address_line2 %}{{ address_line2 }}{% endif %}
-  {% if dependent_locality.code %},{{ dependent_locality.code }}{% endif %}
-  {% if locality.code or postal_code or administrative_area.code %}, {{ locality.code }} {{ postal_code }} {{ administrative_area.code }}{% endif %}
-  {% if country.name %}, {{ country.name }}{% endif %}
+{% if address_line1 %}{{ address_line1 }}{% endif %}
+{% if address_line2 %}, {{ address_line2 }}{% endif %}
+{% if dependent_locality.code %}, {{ dependent_locality.code }}{% endif %}
+{% if locality.code or administrative_area.code %}, {{ locality.code }}{{ administrative_area.code }}{% endif %}
+{% if postal_code %}, {{ postal_code }}{% endif %}
+{% if country.name %}, {{ country.name }}{% endif %}
 </p>
