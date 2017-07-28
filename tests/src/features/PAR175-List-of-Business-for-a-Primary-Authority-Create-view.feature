@@ -7,7 +7,7 @@ Feature:Create a view structured as illustrated in the attached image.
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         Then I expect that element ".error-message" is not visible
-        And the element"#block-sitewidehelpdeskmessage" contains the text "0121 345 1201"
+        And the element "#block-sitewidehelpdeskmessage" contains the text "0121 345 1201"
 
     Scenario: List Partnership Details: Load summary elements Load data into the form
         Given I open the url "/dv/primary-authority-partnerships"

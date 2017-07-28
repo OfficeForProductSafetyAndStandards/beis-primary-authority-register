@@ -1,4 +1,4 @@
-@PAR124 @ci
+@Pending
 Feature: User journey
 
 Scenario: User Journey Flow

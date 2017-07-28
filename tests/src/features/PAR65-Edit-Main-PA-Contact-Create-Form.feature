@@ -11,7 +11,8 @@ Feature: Edit Main Primary Authority Contact: Create form - As a Primary Authori
         Then I expect that element ".error-message" is not visible
 
     Scenario: List Partnership Details: Load summary elements Load data into the form
-        Given I open the url "/dv/primary-authority-partnerships/1/details/contact/6"
+        Given I open the url "/dv/primary-authority-partnerships/1/details"
+        And I click on the link "a.flow-link:nth-child(1)"
         And I add "Grover" to the inputfield "#edit-person-name"
         And I add "9876543210" to the inputfield "#edit-work-phone"
         And I add "grover@example.com" to the inputfield "#edit-email"

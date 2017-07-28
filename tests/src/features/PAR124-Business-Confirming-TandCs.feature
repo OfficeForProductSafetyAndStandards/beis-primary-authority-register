@@ -1,4 +1,4 @@
-@ci
+@Pending @todo
 Feature: Business confirming Terms and Conditions
 
     Background:
@@ -10,7 +10,8 @@ Feature: Business confirming Terms and Conditions
 
     Scenario: User Journey Flow
         Given I open the url "/dv/primary-authority-partnerships/1"
-        And I click on the link "Save and continue"
-        When I click on the link "Review & confirm"
+        And I press "Save and continue"
+        When I press "Review & confirm"
+        And I press "ABCD Mart"
         Then the element "#par-flow-transition-partnership-details-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them."
    
