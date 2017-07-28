@@ -16,7 +16,7 @@ content:
     region: content
     label: hidden
     settings:
-      link_to_entity: true
+      link_to_entity: false
     third_party_settings: {  }
   premises:
     type: entity_reference_entity_view

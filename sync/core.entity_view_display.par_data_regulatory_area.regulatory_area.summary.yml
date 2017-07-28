@@ -5,19 +5,27 @@ dependencies:
   config:
     - core.entity_view_mode.par_data_regulatory_area.summary
     - par_data.par_data_regulatory_area_type.regulatory_area
+  module:
+    - user
 id: par_data_regulatory_area.regulatory_area.summary
 targetEntityType: par_data_regulatory_area
 bundle: regulatory_area
 mode: summary
 content:
-  area_name:
+  name:
+    label: above
     type: string
-    weight: 0
+    weight: -4
     region: content
-    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  user_id:
+    label: hidden
+    type: author
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
-  name: true
-  user_id: true
+  area_name: true

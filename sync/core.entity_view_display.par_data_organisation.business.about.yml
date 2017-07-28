@@ -1,0 +1,32 @@
+uuid: bdd743bd-2b2b-4612-9429-96abe87ee746
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_organisation.about
+    - par_data.par_data_organisation_type.business
+id: par_data_organisation.business.about
+targetEntityType: par_data_organisation
+bundle: business
+mode: about
+content:
+  comments:
+    type: basic_string
+    weight: 0
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  employees_band: true
+  legal_entity: true
+  name: true
+  nation: true
+  organisation_name: true
+  person: true
+  premises: true
+  premises_mapped: true
+  sic_code: true
+  size: true
+  trading_name: true
+  user_id: true
