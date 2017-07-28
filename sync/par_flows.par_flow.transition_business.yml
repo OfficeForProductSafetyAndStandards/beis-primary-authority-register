@@ -9,7 +9,7 @@ label: 'Transition Business'
 description: 'The Partnership Details section of the Data Validation/Transition Journey 2.'
 steps:
   1:
-    route: par_flow_transition_business.unknown
+    route: view.par_data_transition_journey_1_step_1.dv_journey_1_step_1
   2:
     route: par_flow_transition_business.terms
   3:

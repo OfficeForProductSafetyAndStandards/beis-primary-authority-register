@@ -64,4 +64,9 @@ class ParDataManager implements ParDataManagerInterface {
     return $this->entityManager->getStorage($definition->id()) ?: NULL;
   }
 
+  public function getUserPeople() {
+
+
+  }
+
 }
