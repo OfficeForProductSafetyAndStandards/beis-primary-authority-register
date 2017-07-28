@@ -21,20 +21,21 @@ class ParFlowTransitionTaskListController extends ParBaseController {
    */
   public function content(ParDataPartnership $par_data_partnership = NULL, $termporary_no_crashy_variable = NULL) {
 
-    // Organisation summary.
-    $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
+    $par_data_authority = current($par_data_partnership->get('authority')->referencedEntities());
 
-    // Premises.
-    $par_data_premises = current($par_data_organisation->get('premises')->referencedEntities());
-    $premises_view_builder = $par_data_premises->getViewBuilder();
-
-    $build['premises'] = $premises_view_builder->view($par_data_premises, 'summary');
-
-    // Primary contact summary.
-    $par_data_primary_person = current($par_data_partnership->get('person')->referencedEntities());
+    $par_data_primary_person = current($par_data_authority->get('person')->referencedEntities());
     $primary_person_view_builder = $par_data_primary_person->getViewBuilder();
+    $primary_person = $primary_person_view_builder->view($par_data_primary_person, 'summary');
 
-    $build['primary_contact'] = $primary_person_view_builder->view($par_data_primary_person, 'summary');
+
+    $build['intro'] = [
+      '#markup' => t('Review and confirm the details of your partnership with %primary_authority by 14 September 2017',
+        ['%primary_authority' => $par_data_authority->authority_name->getValue()[0]['value']]),
+    ];
+
+    $build['contact'] = [
+      '#markup' => t("<h3>Main contact at the Authority</h3>") . render(($primary_person)),
+    ];
 
     // Table headers.
     $header = [];

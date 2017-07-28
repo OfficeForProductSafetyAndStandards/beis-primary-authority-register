@@ -34,7 +34,7 @@ par_flow_transition_business.overview:
   path: '/dv/business-partnerships/{par_data_partnership}/details'
   defaults:
     _form: '\Drupal\par_flow_transition_business\Form\ParFlowTransitionDetailsForm'
-    _title: 'Edit the information about the Partnership'
+    _title: 'Updating the Primary Authority Register'
   requirements:
     _permission: 'access par journey transition business'
     par_data_partnership: \d+
