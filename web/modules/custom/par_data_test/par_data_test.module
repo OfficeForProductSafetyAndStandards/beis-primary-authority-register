@@ -26,15 +26,39 @@ function par_data_test_help($route_name, RouteMatchInterface $route_match) {
 
 function par_data_test_create_entities() {
 
-  // First let's create a test user.
-  $user = User::create([
-    'name' => 'testuser',
-    'pass' => 'testpwd',
-    'mail' => 'testuser@example.com',
+  // First let's create a few test users.
+  $authority_user = User::create([
+    'name' => 'par_authority@example.com',
+    'pass' => 'TestPassword',
+    'mail' => 'par_authority@example.com',
     'status' => 1,
-    'roles' => ['administrator'],
+    'roles' => ['par_authority'],
   ]);
-  $user->save();
+  $authority_user->save();
+  $coordinator_user = User::create([
+    'name' => 'par_coordinator@example.com',
+    'pass' => 'TestPassword',
+    'mail' => 'par_coordinator@example.com',
+    'status' => 1,
+    'roles' => ['par_coordinator'],
+  ]);
+  $coordinator_user->save();
+  $business_user = User::create([
+    'name' => 'par_business@example.com',
+    'pass' => 'TestPassword',
+    'mail' => 'par_business@example.com',
+    'status' => 1,
+    'roles' => ['par_business'],
+  ]);
+  $business_user->save();
+  $helpdesk_user = User::create([
+    'name' => 'par_helpdesk@example.com',
+    'pass' => 'TestPassword',
+    'mail' => 'par_helpdesk@example.com',
+    'status' => 1,
+    'roles' => ['par_helpdesk'],
+  ]);
+  $helpdesk_user->save();
 
   // Create Advice.
   $advice_1 = \Drupal\par_data\Entity\ParDataAdvice::create([
