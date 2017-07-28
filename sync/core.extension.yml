@@ -13,11 +13,13 @@ module:
   contact: 0
   content_translation: 0
   contextual: 0
+  ctools: 0
   datetime: 0
   datetime_range: 0
   dblog: 0
   dynamic_page_cache: 0
   editor: 0
+  email_registration: 0
   features: 0
   features_ui: 0
   field: 0
@@ -50,6 +52,7 @@ module:
   par_header: 0
   par_styleguide: 0
   par_welcome_page: 0
+  password_policy: 0
   path: 0
   rdf: 0
   robotstxt: 0
