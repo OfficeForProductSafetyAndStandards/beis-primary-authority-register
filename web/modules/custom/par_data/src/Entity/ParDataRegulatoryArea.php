@@ -72,7 +72,7 @@ class ParDataRegulatoryArea extends ParDataEntity {
 
     // Name.
     $fields['area_name'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Name'))
+      ->setLabel(t('Regulatory Area Name'))
       ->setDescription(t('The name of the Regulatory Area.'))
       ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
