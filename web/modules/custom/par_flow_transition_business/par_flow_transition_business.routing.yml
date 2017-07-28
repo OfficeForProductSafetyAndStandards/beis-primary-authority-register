@@ -47,7 +47,7 @@ par_flow_transition_business.about:
   defaults:
     _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionTaskListController::content'
 #    _form: '\Drupal\par_flow_transition_business\Form\ParFlowTransitionTermsForm'
-    _title: 'Edit the details for the contact at the Primary Authority'
+    _title: 'Updating the Primary Authority Register'
   requirements:
     _permission: 'access par journey transition business'
     par_data_partnership: \d+
@@ -60,7 +60,7 @@ par_flow_transition_business.address:
   defaults:
     _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionTaskListController::content'
 #    _form: '\Drupal\par_flow_transition_business\Form\ParFlowTransitionTermsForm'
-    _title: 'Edit the details for the contact at the Primary Authority'
+    _title: 'Updating the Primary Authority Register'
   requirements:
     _permission: 'access par journey transition business'
     par_data_partnership: \d+
@@ -76,7 +76,7 @@ par_flow_transition_business.contact:
   defaults:
     _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionTaskListController::content'
 #    _form: '\Drupal\par_flow_transition_business\Form\ParFlowTransitionTermsForm'
-    _title: 'Edit the details for the contact at the Primary Authority'
+    _title: 'Updating the Primary Authority Register'
   requirements:
     _permission: 'access par journey transition business'
     par_data_partnership: \d+
@@ -92,7 +92,7 @@ par_flow_transition_business.legal:
   defaults:
     _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionTaskListController::content'
 #    _form: '\Drupal\par_flow_transition_business\Form\ParFlowTransitionTermsForm'
-    _title: 'Edit the details for the contact at the Primary Authority'
+    _title: 'Updating the Primary Authority Register'
   requirements:
     _permission: 'access par journey transition business'
     par_data_partnership: \d+
@@ -108,7 +108,7 @@ par_flow_transition_business.trading_name:
   defaults:
     _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionTaskListController::content'
 #    _form: '\Drupal\par_flow_transition_business\Form\ParFlowTransitionTermsForm'
-    _title: 'Edit the details for the contact at the Primary Authority'
+    _title: 'Updating the Primary Authority Register'
   requirements:
     _permission: 'access par journey transition business'
     par_data_partnership: \d+

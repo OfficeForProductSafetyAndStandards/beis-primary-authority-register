@@ -2,7 +2,7 @@
 Feature: Edit Second Primary Authority Contact: Create form	- As a Primary Authority Officer
     I need to be able to edit the field 'Second Primary Authority Contact' in the existing partnership details;
     So that the correct details are taken forward into the new PAR
-    
+
     Background:
         Given I open the url "/user/login"
         And I add "testuser" to the inputfield "#edit-name"
@@ -12,4 +12,4 @@ Feature: Edit Second Primary Authority Contact: Create form	- As a Primary Autho
 
     Scenario: Edit Second Primary Authority Contact: Create form
         Given I open the url "/dv/primary-authority-partnerships/1/details/contact/3"
-        Then the element "h1" contains the text "Edit the details for the contact at the Primary Authority"
+        Then the element "h1" contains the text "Updating the Primary Authority Register"
