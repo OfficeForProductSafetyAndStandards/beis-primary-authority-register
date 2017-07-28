@@ -6,4 +6,5 @@ id: par_authority
 label: 'PAR Authority'
 weight: 3
 is_admin: null
-permissions: {  }
+permissions:
+  - 'access par journey transition partnership details'

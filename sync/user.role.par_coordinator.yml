@@ -6,4 +6,5 @@ id: par_coordinator
 label: 'PAR Coordinator'
 weight: 5
 is_admin: null
-permissions: {  }
+permissions:
+  - 'access par journey transition business'

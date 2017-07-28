@@ -6,4 +6,6 @@ id: par_helpdesk
 label: 'PAR Helpdesk'
 weight: 6
 is_admin: null
-permissions: {  }
+permissions:
+  - 'access par journey transition business'
+  - 'access par journey transition partnership details'

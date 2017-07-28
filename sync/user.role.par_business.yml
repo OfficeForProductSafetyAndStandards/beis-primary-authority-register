@@ -6,4 +6,5 @@ id: par_business
 label: 'PAR Business'
 weight: 4
 is_admin: null
-permissions: {  }
+permissions:
+  - 'access par journey transition business'
