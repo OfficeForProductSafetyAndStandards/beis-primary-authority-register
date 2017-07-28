@@ -53,7 +53,7 @@ par_flow_transition_partnership_details.contact:
   path: '/dv/primary-authority-partnerships/{par_data_partnership}/details/contact/{par_data_person}'
   defaults:
     _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionContactForm'
-    _title: 'Edit the details for the contact at the Primary Authority'
+    _title: 'Updating the Primary Authority Register'
   requirements:
     _permission: 'access par journey transition partnership details'
     par_data_partnership: \d+
