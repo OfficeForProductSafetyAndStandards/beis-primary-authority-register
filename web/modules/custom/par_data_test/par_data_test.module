@@ -183,7 +183,7 @@ function par_data_test_create_entities() {
     'person_name' => 'Big Bird',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
-    'email' => 'bigbird@example.com',
+    'email' => 'par_authority@example.com',
     'role' => 'CTO'
   ]);
   $person_1->save();
@@ -195,7 +195,7 @@ function par_data_test_create_entities() {
     'person_name' => 'Kermit the Frog',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
-    'email' => 'kermit@example.com'
+    'email' => 'par_authority@example.com'
   ]);
   $person_2->save();
   $person_3 = \Drupal\par_data\Entity\ParDataPerson::create([
@@ -206,7 +206,7 @@ function par_data_test_create_entities() {
     'person_name' => 'Snuffleupagus',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
-    'email' => 'snuffleupagus@example.com'
+    'email' => 'par_business@example.com'
   ]);
   $person_3->save();
   $person_4 = \Drupal\par_data\Entity\ParDataPerson::create([
@@ -217,7 +217,7 @@ function par_data_test_create_entities() {
     'person_name' => 'Elmo',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
-    'email' => 'elmo@example.com'
+    'email' => 'par_business@example.com'
   ]);
   $person_4->save();
 
@@ -230,7 +230,7 @@ function par_data_test_create_entities() {
     'person_name' => 'Ernie',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
-    'email' => 'ernie@example.com'
+    'email' => 'par_coordinator@example.com'
   ]);
   $person_5->save();
   $person_6 = \Drupal\par_data\Entity\ParDataPerson::create([
@@ -241,7 +241,7 @@ function par_data_test_create_entities() {
     'person_name' => 'Bert',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
-    'email' => 'bert@example.com'
+    'email' => 'par_coordinator@example.com'
   ]);
   $person_6->save();
   $person_7 = \Drupal\par_data\Entity\ParDataPerson::create([
@@ -252,7 +252,7 @@ function par_data_test_create_entities() {
     'person_name' => 'Oscar the Grouch',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
-    'email' => 'oscar@example.com'
+    'email' => 'par_coordinator@example.com'
   ]);
   $person_7->save();
   $person_8 = \Drupal\par_data\Entity\ParDataPerson::create([
@@ -263,7 +263,7 @@ function par_data_test_create_entities() {
     'person_name' => 'Grover',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
-    'email' => 'groover@example.com'
+    'email' => 'par_authority@example.com'
   ]);
   $person_8->save();
 

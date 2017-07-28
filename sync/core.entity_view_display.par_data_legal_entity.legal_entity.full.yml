@@ -14,30 +14,22 @@ targetEntityType: par_data_legal_entity
 bundle: legal_entity
 mode: full
 content:
-  legal_entity_type:
+  name:
+    label: above
     type: string
-    weight: 2
+    weight: -4
     region: content
-    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  registered_name:
-    type: string
+  user_id:
+    label: hidden
+    type: author
     weight: 0
     region: content
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  registered_number:
-    type: string
-    weight: 1
-    region: content
-    label: hidden
-    settings:
-      link_to_entity: false
+    settings: {  }
     third_party_settings: {  }
 hidden:
-  name: true
-  user_id: true
+  legal_entity_type: true
+  registered_name: true
+  registered_number: true

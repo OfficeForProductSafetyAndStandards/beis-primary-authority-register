@@ -15,29 +15,23 @@ bundle: coordinator
 mode: summary
 content:
   organisation_name:
-    label: above
     type: string
-    weight: -4
-    region: content
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  user_id:
-    label: hidden
-    type: author
     weight: 0
     region: content
-    settings: {  }
+    label: above
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
 hidden:
   comments: true
   employees_band: true
   legal_entity: true
-  nation: true
   name: true
+  nation: true
   person: true
   premises: true
   premises_mapped: true
   sic_code: true
   size: true
   trading_name: true
+  user_id: true

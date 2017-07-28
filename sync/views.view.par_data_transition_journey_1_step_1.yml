@@ -7,6 +7,7 @@ dependencies:
   module:
     - pagerer
     - par_data
+    - user
 id: par_data_transition_journey_1_step_1
 label: 'Par Data Transition Journey 1 Step 1'
 module: views
@@ -24,8 +25,9 @@ display:
     position: 0
     display_options:
       access:
-        type: none
-        options: {  }
+        type: perm
+        options:
+          perm: 'access partnerships dashboard'
       cache:
         type: tag
         options: {  }
@@ -147,7 +149,7 @@ display:
             alter_text: false
             text: ''
             make_link: true
-            path: '/dv/primary-authority-partnerships/{{id}}/terms'
+            path: '/dv/partnerships/{{id}}'
             absolute: false
             external: false
             replace_spaces: false
@@ -444,6 +446,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user.permissions
       tags: {  }
   dv_journey_1_step_1:
     display_plugin: page
@@ -452,7 +455,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: dv/primary-authority-partnerships
+      path: dv/partnership-dashboard
     cache_metadata:
       max-age: 0
       contexts:
@@ -460,4 +463,5 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user.permissions
       tags: {  }

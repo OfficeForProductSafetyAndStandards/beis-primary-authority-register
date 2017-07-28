@@ -65,10 +65,100 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataPerson extends ParDataEntity {
 
   /**
+   * Get the User account.
+   */
+  public function getUserAccount() {
+    $entities = $this->get('user_account')->referencedEntities();
+    return $entities ? current($entities) : NULL;
+  }
+
+  /**
+   * Get the User account.
+   *
+   * @param boolean $link_up
+   *   Whether or not to link up the accounts if any are found that aren't already linked.
+   *
+   * @return array
+   *   Returns any other PAR Person records if found.
+   */
+  public function getSimilarPeople($link_up = TRUE) {
+    $account = $this->getUserAccount();
+
+    // Link this entity to the Drupal User if one exists.
+    if (!$account && $link_up) {
+      $account = $this->linkAccounts();
+    }
+
+    // Return all similar people.
+    if ($account) {
+      $accounts = \Drupal::entityTypeManager()
+        ->getStorage($this->getEntityTypeId())
+        ->loadByProperties(['email' => $account->get('mail')->getString()]);
+    }
+
+    return isset($accounts) ? $accounts : [];
+  }
+
+  /**
+   * Get the User accounts that have the same email as this PAR Person.
+   *
+   * @return mixed|null
+   *   Returns a Drupal User account if found.
+   */
+  public function lookupUserAccount() {
+    $entities = \Drupal::entityTypeManager()
+      ->getStorage('user')
+      ->loadByProperties(['mail' => $this->get('email')->getString()]);
+    return $entities ? current($entities) : NULL;
+  }
+
+  /**
+   * Link up the PAR Person to a Drupal User account.
+   *
+   * @return bool|int
+   *   If there was an account to link to, that wasn't already linked to.
+   */
+  public function linkAccounts() {
+    $saved = FALSE;
+    $new_account = $this->lookupUserAccount();
+    if ($new_account) {
+      $this->set('user_account', $new_account);
+      $saved = $this->save();
+    }
+    return $saved ? $new_account : NULL;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
+
+    // List the Drupal user account the user is related to.
+    $fields['user_account'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('User Account'))
+      ->setDescription(t('The user account that this entity is linked to.'))
+      ->setRevisionable(TRUE)
+      ->setSetting('target_type', 'user')
+      ->setSetting('handler', 'default')
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'author',
+        'weight' => 0,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'entity_reference_autocomplete',
+        'weight' => 5,
+        'settings' => [
+          'match_operator' => 'CONTAINS',
+          'size' => '60',
+          'autocomplete_type' => 'tags',
+          'placeholder' => '',
+        ],
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Title.
     $fields['salutation'] = BaseFieldDefinition::create('string')
