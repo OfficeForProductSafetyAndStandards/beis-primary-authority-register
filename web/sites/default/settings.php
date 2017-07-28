@@ -740,6 +740,7 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
  */
 $settings['trusted_host_patterns'] = array(
   '^par$',
+  '^par-beta-demo\.cloudapps\.digital',
   '^par-beta-test\.cloudapps\.digital',
   '^par-beta\.localhost$',
   '.par-beta\.co\.uk$',
