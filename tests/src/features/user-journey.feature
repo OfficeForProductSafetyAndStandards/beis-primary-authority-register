@@ -1,4 +1,4 @@
-@Pending
+@PAR124 @ci
 Feature: User journey
 
 Scenario: User Journey Flow
@@ -8,7 +8,9 @@ Scenario: User Journey Flow
     When I click on the button "#edit-submit"
     Then I expect that element ".error-message" is not visible
     And I open the url "/dv/primary-authority-partnerships/1"
+    
     And I click on the link "Review & confirm"
+    Then the element "#edit-first-section" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them."
     And I click on the checkbox "#edit-terms-conditions"
     And I click on the button "#edit-next"
     And I click on the link "Review and confirm your partnership details"
