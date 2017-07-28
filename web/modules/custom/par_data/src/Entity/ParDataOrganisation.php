@@ -72,7 +72,7 @@ class ParDataOrganisation extends ParDataEntity {
 
     // Name.
     $fields['organisation_name'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Name'))
+      ->setLabel(t('Organisation Name'))
       ->setDescription(t('The name of the Organisation.'))
       ->setRequired(TRUE)
       ->setTranslatable(TRUE)

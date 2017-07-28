@@ -86,7 +86,7 @@ class EntityParAuthorityTest extends ParDataTestBase {
       'ons_code',
     ]);
     $this->assertEqual(count($violations->getFieldNames()), 4, 'Field values cannot be longer than their allowed lengths.');
-    $this->assertEqual($violations[0]->getMessage()->render(), t('%field: may not be longer than 500 characters.', ['%field' => 'Name']), 'The length of the Name field is correct.');
+    $this->assertEqual($violations[0]->getMessage()->render(), t('%field: may not be longer than 500 characters.', ['%field' => 'Authority Name']), 'The length of the Authority Name field is correct.');
     $this->assertEqual($violations[1]->getMessage()->render(), t('%field: may not be longer than 255 characters.', ['%field' => 'Authority Type']), 'The length of the Authority Type field is correct.');
   }
 
