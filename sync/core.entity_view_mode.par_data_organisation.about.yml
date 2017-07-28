@@ -1,0 +1,10 @@
+uuid: 5f47c0ab-042c-4e81-8ec6-f6ff62d94cd6
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_organisation.about
+label: 'About Organisation'
+targetEntityType: par_data_organisation
+cache: true
