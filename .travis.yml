@@ -1,6 +1,6 @@
-########################
-### BUILD
-########################
+##############################################################################
+### BUILD                                                                    #
+##############################################################################
 
 language: php
 
@@ -21,34 +21,77 @@ install:
   - if [[ $TRAVIS_BRANCH == 'master' ]]; then echo "deb http://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list; fi
   - if [[ $TRAVIS_BRANCH == 'master' ]]; then sudo apt-get update; fi
   - if [[ $TRAVIS_BRANCH == 'master' ]]; then sudo apt-get install cf-cli; fi
-  - phpenv config-rm xdebug.ini
-  - composer install -v
+  
+#--------------------------------
+# Bring up Docker containers
+#-------------------------------- 
+  
   - cd docker
   - docker-compose up -d
-  - cp ../web/sites/example.settings.local.php ../web/sites/default/settings.local.php
-  - cat ../web/sites/settings.local.php.travis.append >> ../web/sites/default/settings.local.php
   - cd ..
+
+#--------------------------------
+# Install dependencies
+#--------------------------------
+  
+  - phpenv config-rm xdebug.ini
+  - composer install -v  
   - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
   - docker exec -it par_beta_web bash -c "npm run gulp"
   - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
-  - docker exec -i par_beta_web /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < docker/fresh_drupal_postgres.sql
+  
+#--------------------------------
+# Setup local config defaults
+#--------------------------------
+  
+  - cp web/sites/example.settings.local.php web/sites/default/settings.local.php
+  - cat web/sites/settings.local.php.travis.append >> web/sites/default/settings.local.php
+  
+#--------------------------------
+# Create .env file
+#--------------------------------
+  
+  - echo "S3_BUCKET_ARTIFACTS=$S3_BUCKET_ARTIFACTS" > .env
+  - echo "S3_ACCESS_KEY=$S3_ACCESS_KEY" >> .env
+  - echo "S3_SECRET_KEY=$S3_SECRET_KEY" >> .env
+  - echo "PAR_HASH_SALT=$PAR_HASH_SALT" >> .env
+  - echo "DATAFILE=$DATAFILE" >> .env
+  - cat .env
+  
+#--------------------------------
+# Import dev data from S3
+#--------------------------------
+
+  - sleep 5
+  - docker exec -i par_beta_web /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < docker/fresh_drupal_postgres.sql  
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush fsg s3backups $DATAFILE.tar.gz /dump.sql.tar.gz"
+  - docker exec -i par_beta_web bash -c "cd / && tar --no-same-owner -zxvf dump.sql.tar.gz"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sql-cli @dev --root=/var/www/html/web < /$DATAFILE"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
+  
+#--------------------------------
+# Run further Drush commands
+#--------------------------------
+  
   - docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
   - docker exec -i par_beta_web sh /var/www/html/drupal-stub-data.sh /var/www/html
   - 'echo "#${TRAVIS_BUILD_NUMBER}: $(date -u)" > web/build_version.txt'
 
-########################
-### TEST
-########################
+##############################################################################
+### TEST                                                                   ###
+##############################################################################
 
 script:
 - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
 - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
-- travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/allure generate --clean -o ./reports/html ./reports/allure"
 - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/pa11y-ci -T 1 -j -s 'http://localhost/sitemap.xml' -f 'https://par-beta-test.cloudapps.digital' -r 'http://localhost:80' > ./reports/wcag2aa_report.json"
 
-########################
-### DEPLOY
-########################
+##############################################################################
+### DEPLOY                                                                 ###
+##############################################################################
 
 deploy:
   provider: cloudfoundry
@@ -60,26 +103,29 @@ deploy:
   space: sandbox
   on:
     repo: TransformCore/beis-par-beta
-
-########################
-### POST DEPLOY
-########################
+    
+##############################################################################
+### POST DEPLOY                                                            ###
+##############################################################################
 
 after_deploy:
   - cf login -a api.cloud.service.gov.uk -u nao.yoshino@transformuk.com -p $CF_PASSWORD
   - cf set-env par-beta-staging S3_ACCESS_KEY $S3_ACCESS_KEY
   - cf set-env par-beta-staging S3_SECRET_KEY $S3_SECRET_KEY
-  - cf set-env par-beta-staging S3_BUCKET $S3_BUCKET
+  - cf set-env par-beta-staging S3_BUCKET_PUBLIC $S3_BUCKET_PUBLIC
+  - cf set-env par-beta-staging S3_BUCKET_PRIVATE $S3_BUCKET_PRIVATE
   - cf set-env par-beta-staging S3_BUCKET_ARTIFACTS $S3_BUCKET_ARTIFACTS
   - cf set-env par-beta-staging PAR_HASH_SALT $PAR_HASH_SALT
+  - cf set-env par-beta-staging PAR_GOVUK_NOTIFY_KEY $PAR_GOVUK_NOTIFY_KEY
+  - cf set-env par-beta-staging PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE
   - cf restage par-beta-staging
   - cd tests/reports/html && cf push -f ../../reports-manifest.yml
   - cf ssh par-beta-staging -c "cd app/tools && python extract_postgres_env_vars.py"
   - cf ssh par-beta-staging -c "cd app && source drupal-update-paas-envs.sh && sh drupal-update-paas.sh"
  
-########################
-### SAVE ARTIFACTS
-########################
+##############################################################################
+### STORE ARTIFACTS                                                        ###
+##############################################################################
 
 after_script:
   - travis-artifacts upload

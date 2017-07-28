@@ -1,0 +1,33 @@
+primary-authority-partnershipsstatus: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_advice.title
+    - par_data.par_data_advice_type.advice
+  module:
+    - user
+id: par_data_advice.advice.title
+targetEntityType: par_data_advice
+bundle: advice
+mode: title
+content:
+  name:
+    label: above
+    type: string
+    weight: -4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  user_id:
+    label: hidden
+    type: author
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  advice_type: true
+  notes: true
+  visible_authority: true
+  visible_business: true
+  visible_coordinator: true

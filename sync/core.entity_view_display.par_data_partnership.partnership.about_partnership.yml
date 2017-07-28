@@ -5,6 +5,8 @@ dependencies:
   config:
     - core.entity_view_mode.par_data_partnership.about_partnership
     - par_data.par_data_partnership_type.partnership
+_core:
+  default_config_hash: wntQozPV1eBkc5Ldbs_Aa_E5vkuMMjkS0TzJ4IYVJ9I
 id: par_data_partnership.partnership.about_partnership
 targetEntityType: par_data_partnership
 bundle: partnership

@@ -6,6 +6,8 @@ dependencies:
     - par_data.par_data_partnership_type.partnership
   module:
     - user
+_core:
+  default_config_hash: fIgfWxIDk6EYPpcnjk-ycKYDaa1mFzogbwJp1lS3EmU
 id: par_data_partnership.partnership.default
 targetEntityType: par_data_partnership
 bundle: partnership

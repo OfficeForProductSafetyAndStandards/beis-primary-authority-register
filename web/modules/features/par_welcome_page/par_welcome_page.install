@@ -49,7 +49,7 @@ function par_welcome_page_uninstall() {
   $language = \Drupal::languageManager()->getCurrentLanguage()->getId();
   $internal_path = \Drupal::service('path.alias_storage')->lookupPathSource("/welcome-reminder", $language);
 
-  $params = Url::fromUri("internal:" . $internal_path)->getRouteParameters();
+  $params = $internal_path ? Url::fromUri("internal:" . trim('/', $internal_path))->getRouteParameters() : [];
 
   foreach ($params as $type=>$param) {
     try {
@@ -86,14 +86,6 @@ function par_welcome_page_requirements($phase) {
  * Changes have been made to the welcome page, re-adding to update the page.
  */
 function par_welcome_page_update_8000() {
-  par_welcome_page_uninstall();
-  par_welcome_page_install();
-}
-
-/**
- * Changed the URL for the welcome page CTA.
- */
-function par_welcome_page_update_8001() {
   par_welcome_page_uninstall();
   par_welcome_page_install();
 }

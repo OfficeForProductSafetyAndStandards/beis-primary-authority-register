@@ -5,6 +5,10 @@ dependencies:
   config:
     - core.entity_view_mode.par_data_legal_entity.full
     - par_data.par_data_legal_entity_type.legal_entity
+  module:
+    - user
+_core:
+  default_config_hash: mwpuWF5BBUI8JjiUu0uNPnieSUE0U_HuMHJVbJ_LbEw
 id: par_data_legal_entity.legal_entity.full
 targetEntityType: par_data_legal_entity
 bundle: legal_entity
