@@ -5,13 +5,14 @@ Feature: Edit Main Primary Authority Contact: Create form - As a Primary Authori
 
     Background:
         Given I open the url "/user/login"
-        And I add "testuser" to the inputfield "#edit-name"
-        And I add "testpwd" to the inputfield "#edit-pass"
+        And I add "par_authority@example.com" to the inputfield "#edit-name"
+        And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         Then I expect that element ".error-message" is not visible
 
     Scenario: List Partnership Details: Load summary elements Load data into the form
-        Given I open the url "/dv/primary-authority-partnerships/1/details/contact/6"
+        Given I open the url "/dv/primary-authority-partnerships/1/details"
+        And I click on the link "a.flow-link:nth-child(1)"
         And I add "Grover" to the inputfield "#edit-person-name"
         And I add "9876543210" to the inputfield "#edit-work-phone"
         And I add "grover@example.com" to the inputfield "#edit-email"
