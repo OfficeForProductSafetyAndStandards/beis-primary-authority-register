@@ -35,7 +35,7 @@ use Drupal\user\UserInterface;
  *       "edit" = "Drupal\trance\Form\ParEntityForm",
  *       "delete" = "Drupal\trance\Form\TranceDeleteForm",
  *     },
- *     "access" = "Drupal\trance\Access\TranceAccessControlHandler",
+ *     "access" = "Drupal\par_data\Access\ParDataAccessControlHandler",
  *   },
  *   base_table = "par_partnerships",
  *   data_table = "par_partnerships_field_data",

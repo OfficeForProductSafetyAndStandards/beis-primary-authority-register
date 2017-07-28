@@ -4,6 +4,7 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\user\UserInterface;
 
 /**
  * Defines the par_data_person entity.
@@ -33,7 +34,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *       "edit" = "Drupal\trance\Form\ParEntityForm",
  *       "delete" = "Drupal\trance\Form\TranceDeleteForm",
  *     },
- *     "access" = "Drupal\trance\Access\TranceAccessControlHandler",
+ *     "access" = "Drupal\par_data\Access\ParDataAccessControlHandler",
  *   },
  *   base_table = "par_people",
  *   data_table = "par_people_field_data",
@@ -115,17 +116,23 @@ class ParDataPerson extends ParDataEntity {
   /**
    * Link up the PAR Person to a Drupal User account.
    *
+   * @param UserInterface $account
+   *   An optional user account to lookup.
+   *
    * @return bool|int
    *   If there was an account to link to, that wasn't already linked to.
    */
-  public function linkAccounts() {
+  public function linkAccounts(UserInterface $account = NULL) {
     $saved = FALSE;
-    $new_account = $this->lookupUserAccount();
-    if ($new_account) {
-      $this->set('user_account', $new_account);
+    if (!$account) {
+      $account = $this->lookupUserAccount();
+    }
+    $current_user_account = current($this->get('user_account')->referencedEntities());
+    if ($account && (!$current_user_account || !$account->id() !== $current_user_account->id())) {
+      $this->set('user_account', $account);
       $saved = $this->save();
     }
-    return $saved ? $new_account : NULL;
+    return $saved ? $account : NULL;
   }
 
   /**
