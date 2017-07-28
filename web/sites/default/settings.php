@@ -784,18 +784,15 @@ if ($credentials) {
   );
 }
 
-// Set flysystem
-$schemes = [
+// Set flysystem configuration.
+$settings['flysystem'] = [
   's3public' => [
     'name' => 'S3 Public',
     'description' => 'The S3 store for public files.',
-    'driver' => 's3',
+    'driver' => 'local',
     'config' => [
-      'key'    => getenv('S3_ACCESS_KEY'),
-      'secret' => getenv('S3_SECRET_KEY'),
-      'region' => 'eu-west-1',
-      'bucket' => getenv('S3_BUCKET'),
-      'prefix' => 'public',
+      'root' => $settings['file_public_path'],
+      'public' => TRUE,
     ],
     'cache' => TRUE,
     'serve_js' => FALSE,
@@ -804,13 +801,9 @@ $schemes = [
   's3private' => [
     'name' => 'S3 Private',
     'description' => 'The S3 store for private files.',
-    'driver' => 's3',
+    'driver' => 'local',
     'config' => [
-      'key'    => getenv('S3_ACCESS_KEY'),
-      'secret' => getenv('S3_SECRET_KEY'),
-      'region' => 'eu-west-1',
-      'bucket' => getenv('S3_BUCKET'),
-      'prefix' => 'private',
+      'root' => $settings['file_private_path'],
     ],
     'cache' => TRUE,
     'serve_js' => FALSE,
@@ -820,7 +813,7 @@ $schemes = [
     'name' => 'S3 Database Backups',
     'description' => 'The S3 store for database backups.',
     'driver' => 's3',
-      'config' => [
+    'config' => [
       'key'    => getenv('S3_ACCESS_KEY'),
       'secret' => getenv('S3_SECRET_KEY'),
       'region' => 'eu-west-1',
@@ -832,7 +825,34 @@ $schemes = [
     'serve_css' => FALSE,
   ],
 ];
-$settings['flysystem'] = $schemes;
+
+// Only use S3 public store when required.
+if ($private_prod_bucket = getenv('S3_BUCKET_PUBLIC')) {
+  $settings['flysystem']['s3public'] = [
+    'driver' => 's3',
+    'config' => [
+      'key'    => getenv('S3_ACCESS_KEY'),
+      'secret' => getenv('S3_SECRET_KEY'),
+      'region' => 'eu-west-1',
+      'bucket' => getenv('S3_BUCKET_PUBLIC'),
+      'prefix' => 'public',
+    ],
+  ] + $settings['flysystem']['s3public'];
+}
+
+// Only use S3 private store when required.
+if ($private_prod_bucket = getenv('S3_BUCKET_PRIVATE')) {
+  $settings['flysystem']['s3private'] = [
+    'driver' => 's3',
+    'config' => [
+      'key'    => getenv('S3_ACCESS_KEY'),
+      'secret' => getenv('S3_SECRET_KEY'),
+      'region' => 'eu-west-1',
+      'bucket' => getenv('S3_BUCKET_PRIVATE'),
+      'prefix' => 'public',
+    ],
+  ] + $settings['flysystem']['s3private'];
+}
 
 /**
  * Set GovUK Notify settings.
