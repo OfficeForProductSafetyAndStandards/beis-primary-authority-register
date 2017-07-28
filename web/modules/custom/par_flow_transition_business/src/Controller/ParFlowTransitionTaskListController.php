@@ -30,11 +30,18 @@ class ParFlowTransitionTaskListController extends ParBaseController {
 
     $build['intro'] = [
       '#markup' => t('Review and confirm the details of your partnership with %primary_authority by 14 September 2017',
-        ['%primary_authority' => $par_data_authority->authority_name->getValue()[0]['value']]),
+        ['%primary_authority' => $par_data_authority->get('authority_name')->getValue()[0]['value']]),
     ];
 
     $build['contact'] = [
-      '#markup' => t("<h3>Main contact at the Authority</h3>") . render(($primary_person)),
+      '#type' => 'fieldset',
+      '#title' => t('Main contact at the Authority'),
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    $build['contact']['name'] = [
+      $primary_person,
     ];
 
     // Table headers.
