@@ -10,6 +10,6 @@ Feature:Create a view structured as illustrated in the attached image.
         And the element "#block-sitewidehelpdeskmessage" contains the text "0121 345 1201"
 
     Scenario: List Partnership Details: Load summary elements Load data into the form
-        Given I open the url "/dv/primary-authority-partnerships"
+        Given I open the url "/dv/partnership-dashboard"
         Then the element ".view-dv-journey-1-step-1" contains the text "Partnership details and documentation for"
 
