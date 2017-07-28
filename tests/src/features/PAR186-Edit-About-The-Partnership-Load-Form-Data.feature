@@ -11,6 +11,14 @@ Feature: Edit About the Partnership: Load form data - As a Primary Authority Off
         Then I expect that element ".error-message" is not visible
 
     Scenario: Edit About the Partnership: Load form data
-        Given I open the url "/dv/primary-authority-partnerships/1/details/about"
-        Then the element "h1" contains the text "Edit the information about the Partnership"
-        And the element "#edit-next" is visible
+        Given I click on the button "Continue to your Partnerships"
+        And I click on the business "ABCD Mart"
+        And I click on the checkbox "#edit-terms-conditions"
+        And I click on the button "#edit-next"
+        And I click on the link "Review and confirm your partnership details"
+        And I click on the link "edit"
+        And I add "test change information about the partnership" to the inputfield "#edit-about-partnership"
+        And I click on the button "#edit-next"
+        Then the element "#edit-first-section" contains the text "test change information about the partnership"
+        
+    
