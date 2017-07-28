@@ -6,7 +6,7 @@ dependencies:
     - core.entity_view_mode.par_data_premises.full
     - par_data.par_data_premises_type.premises
   module:
-    - user
+    - address
 _core:
   default_config_hash: 46omQdVRbCmiVklmjVwzs8_AX_9BzCub9ZVhA_AgaMY
 id: par_data_premises.premises.full
@@ -14,21 +14,14 @@ targetEntityType: par_data_premises
 bundle: premises
 mode: full
 content:
-  name:
-    label: above
-    type: string
-    weight: -4
-    region: content
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  user_id:
-    label: hidden
-    type: author
+  address:
+    type: address_default
     weight: 0
     region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
 hidden:
-  address: true
+  name: true
   nation: true
+  user_id: true
