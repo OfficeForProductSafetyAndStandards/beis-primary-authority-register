@@ -56,7 +56,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     $organisation_builder = $par_data_organisation->getViewBuilder();
 
     $form['details_intro'] = [
-      '#markup' => "Review and confirm the details of your partnership with " . $par_data_authority->name->getValue()[0]['value'],
+      '#markup' => "Review and confirm the details of your partnership with " . $par_data_authority->authority_name->getValue()[0]['value'],
     ];
 
     $form['business_name'] = [

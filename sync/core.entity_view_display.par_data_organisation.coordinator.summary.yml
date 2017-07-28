@@ -14,7 +14,7 @@ targetEntityType: par_data_organisation
 bundle: coordinator
 mode: summary
 content:
-  name:
+  organisation_name:
     label: above
     type: string
     weight: -4
@@ -34,7 +34,7 @@ hidden:
   employees_band: true
   legal_entity: true
   nation: true
-  organisation_name: true
+  name: true
   person: true
   premises: true
   premises_mapped: true

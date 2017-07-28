@@ -72,7 +72,7 @@ class ParDataAuthority extends ParDataEntity {
 
     // Name.
     $fields['authority_name'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Name'))
+      ->setLabel(t('Authority Name'))
       ->setDescription(t('The name of the Authority.'))
       ->setRequired(TRUE)
       ->setTranslatable(TRUE)
