@@ -40,9 +40,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
       '#collapsed' => FALSE,
     ];
 
-    $build['contact']['name'] = [
-      $primary_person,
-    ];
+    $build['contact']['name'] = $this->renderMarkupField($primary_person);
 
     // Table headers.
     $header = [];
