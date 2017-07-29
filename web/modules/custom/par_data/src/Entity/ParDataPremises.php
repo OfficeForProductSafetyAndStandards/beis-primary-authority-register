@@ -33,7 +33,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *       "edit" = "Drupal\trance\Form\ParEntityForm",
  *       "delete" = "Drupal\trance\Form\TranceDeleteForm",
  *     },
- *     "access" = "Drupal\trance\Access\TranceAccessControlHandler",
+ *     "access" = "Drupal\par_data\Access\ParDataAccessControlHandler",
  *   },
  *   base_table = "par_premises",
  *   data_table = "par_premises_field_data",

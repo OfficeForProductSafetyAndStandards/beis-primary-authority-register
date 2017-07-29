@@ -4,6 +4,7 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\user\UserInterface;
 
 /**
  * Defines the par_data_person entity.
@@ -33,7 +34,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *       "edit" = "Drupal\trance\Form\ParEntityForm",
  *       "delete" = "Drupal\trance\Form\TranceDeleteForm",
  *     },
- *     "access" = "Drupal\trance\Access\TranceAccessControlHandler",
+ *     "access" = "Drupal\par_data\Access\ParDataAccessControlHandler",
  *   },
  *   base_table = "par_people",
  *   data_table = "par_people_field_data",
@@ -65,10 +66,166 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataPerson extends ParDataEntity {
 
   /**
+   * Get the User account.
+   */
+  public function getUserAccount() {
+    $entities = $this->get('user_account')->referencedEntities();
+    return $entities ? current($entities) : NULL;
+  }
+
+  /**
+   * Get the User account.
+   *
+   * @param boolean $link_up
+   *   Whether or not to link up the accounts if any are found that aren't already linked.
+   *
+   * @return array
+   *   Returns any other PAR Person records if found.
+   */
+  public function getSimilarPeople($link_up = TRUE) {
+    $account = $this->getUserAccount();
+
+    // Link this entity to the Drupal User if one exists.
+    if (!$account && $link_up) {
+      $account = $this->linkAccounts();
+    }
+
+    // Return all similar people.
+    if ($account) {
+      $accounts = \Drupal::entityTypeManager()
+        ->getStorage($this->getEntityTypeId())
+        ->loadByProperties(['email' => $account->get('mail')->getString()]);
+    }
+
+    return isset($accounts) ? $accounts : [];
+  }
+
+  /**
+   * Get the User accounts that have the same email as this PAR Person.
+   *
+   * @return mixed|null
+   *   Returns a Drupal User account if found.
+   */
+  public function lookupUserAccount() {
+    $entities = \Drupal::entityTypeManager()
+      ->getStorage('user')
+      ->loadByProperties(['mail' => $this->get('email')->getString()]);
+    return $entities ? current($entities) : NULL;
+  }
+
+  /**
+   * Link up the PAR Person to a Drupal User account.
+   *
+   * @param UserInterface $account
+   *   An optional user account to lookup.
+   *
+   * @return bool|int
+   *   If there was an account to link to, that wasn't already linked to.
+   */
+  public function linkAccounts(UserInterface $account = NULL) {
+    $saved = FALSE;
+    if (!$account) {
+      $account = $this->lookupUserAccount();
+    }
+    $current_user_account = current($this->get('user_account')->referencedEntities());
+    if ($account && (!$current_user_account || !$account->id() !== $current_user_account->id())) {
+      $this->set('user_account', $account);
+      $saved = $this->save();
+    }
+    return $saved ? $account : NULL;
+  }
+
+  /**
+   * Get any Authorities this user is a member of.
+   *
+   * @return mixed|null
+   *   Returns any business records found.
+   */
+  public function getBusinesses() {
+    $entities = \Drupal::entityTypeManager()
+      ->getStorage('par_data_organisation')
+      ->loadByProperties([
+        'type' => ['business'],
+        'person' => $this->id(),
+      ]);
+    return $entities ? current($entities) : NULL;
+  }
+
+  public function isBusinessMember() {
+    return (bool) $this->getBusinesses();
+  }
+
+  /**
+   * Get any Authorities this user is a member of.
+   *
+   * @return mixed|null
+   *   Returns any business records found.
+   */
+  public function getCoordinators() {
+    $entities = \Drupal::entityTypeManager()
+      ->getStorage('par_data_organisation')
+      ->loadByProperties([
+        'type' => ['coordinator'],
+        'person' => $this->id(),
+      ]);
+    return $entities ? current($entities) : NULL;
+  }
+
+  public function isCoordinatorMember() {
+    return (bool) $this->getCoordinators();
+  }
+
+  /**
+   * Get any Authorities this user is a member of.
+   *
+   * @return mixed|null
+   *   Returns any business records found.
+   */
+  public function getAuthorities() {
+    $entities = \Drupal::entityTypeManager()
+      ->getStorage('par_data_authority')
+      ->loadByProperties([
+        'type' => ['business'],
+        'person' => $this->id(),
+      ]);
+    return $entities ? current($entities) : NULL;
+  }
+
+  public function isAuthorityMember() {
+    return (bool) $this->getAuthorities();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
+
+    // List the Drupal user account the user is related to.
+    $fields['user_account'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('User Account'))
+      ->setDescription(t('The user account that this entity is linked to.'))
+      ->setRevisionable(TRUE)
+      ->setSetting('target_type', 'user')
+      ->setSetting('handler', 'default')
+      ->setTranslatable(TRUE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'author',
+        'weight' => 0,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'entity_reference_autocomplete',
+        'weight' => 5,
+        'settings' => [
+          'match_operator' => 'CONTAINS',
+          'size' => '60',
+          'autocomplete_type' => 'tags',
+          'placeholder' => '',
+        ],
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
 
     // Title.
     $fields['salutation'] = BaseFieldDefinition::create('string')
