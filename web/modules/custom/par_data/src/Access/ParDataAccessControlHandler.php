@@ -40,7 +40,7 @@ class ParDataAccessControlHandler extends EntityAccessControlHandler {
         if (!$entity->isPublished()) {
           return AccessResult::allowedIfHasPermission($account, 'view unpublished ' . $this->entityTypeId . ' entities');
         }
-        return AccessResult::allowedIfHasPermission($account, 'access ' . $this->entityTypeId . ' content');
+        return AccessResult::allowedIfHasPermission($account, 'access ' . $this->entityTypeId . ' entities');
 
       case 'update':
         return AccessResult::allowedIfHasPermission($account, 'edit ' . $this->entityTypeId . ' entities');

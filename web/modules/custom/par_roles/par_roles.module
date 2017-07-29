@@ -22,3 +22,11 @@ function par_roles_help($route_name, RouteMatchInterface $route_match) {
     default:
   }
 }
+
+function par_roles_user_insert($account) {
+  \Drupal::service('par_data.manager')->linkPeople($account);
+}
+
+function par_roles_user_update($account) {
+  \Drupal::service('par_data.manager')->linkPeople($account);
+}
