@@ -53,7 +53,7 @@ exports.config = {
     }],
     services: ['chromedriver'],
     baseUrl: 'http://127.0.0.1:80',
-    tags: '@ci, ~@Pending',
+    tags: '@ci, ~@Pending, ~@Bug',
     //
     // ===================
     // Test Configurations
