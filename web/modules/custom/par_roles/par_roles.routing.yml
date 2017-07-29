@@ -5,7 +5,7 @@ par_roles.dashboard:
     _controller: '\Drupal\par_roles\Controller\ParPartnershipDashboardController::content'
     _title: 'Parnership Dashboard'
   requirements:
-    _permission: 'access partnership dashboard'
+    _permission: 'access partnerships dashboard'
     par_data_partnership: \d+
   options:
     parameters:

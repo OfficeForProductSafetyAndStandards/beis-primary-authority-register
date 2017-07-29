@@ -136,6 +136,66 @@ class ParDataPerson extends ParDataEntity {
   }
 
   /**
+   * Get any Authorities this user is a member of.
+   *
+   * @return mixed|null
+   *   Returns any business records found.
+   */
+  public function getBusinesses() {
+    $entities = \Drupal::entityTypeManager()
+      ->getStorage('par_data_organisation')
+      ->loadByProperties([
+        'type' => ['business'],
+        'person' => $this->id(),
+      ]);
+    return $entities ? current($entities) : NULL;
+  }
+
+  public function isBusinessMember() {
+    return (bool) $this->getBusinesses();
+  }
+
+  /**
+   * Get any Authorities this user is a member of.
+   *
+   * @return mixed|null
+   *   Returns any business records found.
+   */
+  public function getCoordinators() {
+    $entities = \Drupal::entityTypeManager()
+      ->getStorage('par_data_organisation')
+      ->loadByProperties([
+        'type' => ['coordinator'],
+        'person' => $this->id(),
+      ]);
+    return $entities ? current($entities) : NULL;
+  }
+
+  public function isCoordinatorMember() {
+    return (bool) $this->getCoordinators();
+  }
+
+  /**
+   * Get any Authorities this user is a member of.
+   *
+   * @return mixed|null
+   *   Returns any business records found.
+   */
+  public function getAuthorities() {
+    $entities = \Drupal::entityTypeManager()
+      ->getStorage('par_data_authority')
+      ->loadByProperties([
+        'type' => ['business'],
+        'person' => $this->id(),
+      ]);
+    return $entities ? current($entities) : NULL;
+  }
+
+  public function isAuthorityMember() {
+    return (bool) $this->getAuthorities();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
