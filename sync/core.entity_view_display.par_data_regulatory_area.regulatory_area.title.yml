@@ -5,6 +5,8 @@ dependencies:
   config:
     - core.entity_view_mode.par_data_regulatory_area.title
     - par_data.par_data_regulatory_area_type.regulatory_area
+  module:
+    - user
 _core:
   default_config_hash: RUehvRPVFXt6eOOBRGDKAu2ms4B8-1vwcsIKek6rJKM
 id: par_data_regulatory_area.regulatory_area.title
@@ -13,13 +15,19 @@ bundle: regulatory_area
 mode: title
 content:
   area_name:
-    label: hidden
+    label: above
     type: string
-    weight: 0
+    weight: -4
     region: content
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  user_id:
+    label: hidden
+    type: author
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   name: true
-  user_id: true

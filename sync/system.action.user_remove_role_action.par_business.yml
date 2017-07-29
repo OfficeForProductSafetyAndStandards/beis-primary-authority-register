@@ -1,0 +1,14 @@
+uuid: db5568c1-61e5-4702-800e-da5b4184456a
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.par_business
+  module:
+    - user
+id: user_remove_role_action.par_business
+label: 'Remove the PAR Business role from the selected users'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: par_business

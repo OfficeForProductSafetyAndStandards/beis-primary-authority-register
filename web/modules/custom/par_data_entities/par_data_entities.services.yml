@@ -1,7 +1,0 @@
-services:
-  par_data_entities.entity_converter:
-    class: Drupal\par_data_entities\ParamConverter\ParEntityConverter
-    public: false
-    decorates: paramconverter.entity
-    decoration_priority: 3
-    arguments: ['@par_data_entities.entity_converter.inner', '@entity.manager', '@config.factory']

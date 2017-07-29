@@ -4,6 +4,8 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\user\UserInterface;
 
 /**
  * Defines the par_data_partnership entity.
@@ -33,7 +35,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *       "edit" = "Drupal\trance\Form\ParEntityForm",
  *       "delete" = "Drupal\trance\Form\TranceDeleteForm",
  *     },
- *     "access" = "Drupal\trance\Access\TranceAccessControlHandler",
+ *     "access" = "Drupal\par_data\Access\ParDataAccessControlHandler",
  *   },
  *   base_table = "par_partnerships",
  *   data_table = "par_partnerships_field_data",
@@ -84,6 +86,19 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
+   * Check if a user is a member of the organisation.
+   *
+   * @param ParDataPerson $person
+   *   A PAR Person to check for.
+   *
+   * @return boolean
+   *   Whether the user is an organisation member or not.
+   */
+  public function isOrganisationMember(ParDataPerson $person) {
+    return isset($this->getOrganisationPeople()[$person->id()]);
+  }
+
+  /**
    * Get the authority contacts for this Partnership.
    */
   public function getAuthorityPeople() {
@@ -100,6 +115,19 @@ class ParDataPartnership extends ParDataEntity {
     }
 
     return !empty($people) && !empty($authority_people) ? array_intersect_key($people, $authority_people) : [];
+  }
+
+  /**
+   * Check if a user is a member of the Authority.
+   *
+   * @param ParDataPerson $person
+   *   A PAR Person to check for.
+   *
+   * @return boolean
+   *   Whether the user is an authority member or not.
+   */
+  public function isAuthorityMember(ParDataPerson $person) {
+    return isset($this->getAuthorityPeople()[$person->id()]);
   }
 
   /**

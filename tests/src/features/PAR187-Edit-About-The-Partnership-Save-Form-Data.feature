@@ -5,8 +5,8 @@ Feature: Edit About the Partnership: Save form data	- As a Primary Authority Off
 
     Background:
         Given I open the url "/user/login"
-        And I add "testuser" to the inputfield "#edit-name"
-        And I add "testpwd" to the inputfield "#edit-pass"
+        And I add "par_authority@example.com" to the inputfield "#edit-name"
+        And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         Then I expect that element ".error-message" is not visible
 
