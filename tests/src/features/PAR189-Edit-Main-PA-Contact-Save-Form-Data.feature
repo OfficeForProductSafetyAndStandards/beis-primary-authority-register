@@ -13,7 +13,7 @@ So that the correct details are taken forward into the new PAR
     Scenario: List Partnership Details: Load summary elements Load data into the form
         Given I open the url "/dv/primary-authority-partnerships/1/details"
         And I click on the link "a=*Edit" in the page area "#edit-authority-contacts"
-        Then the element "h1" contains the text "Edit the details for the contact at the Primary Authority"
+        Then the element "h1" contains the text "Updating the Primary Authority Register"
         And I add "Grover" to the inputfield "#edit-person-name"
         And I add "9876543210" to the inputfield "#edit-work-phone"
         And I add "grover@example.com" to the inputfield "#edit-email"
