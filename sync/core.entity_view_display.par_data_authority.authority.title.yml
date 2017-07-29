@@ -5,8 +5,6 @@ dependencies:
   config:
     - core.entity_view_mode.par_data_authority.title
     - par_data.par_data_authority_type.authority
-_core:
-  default_config_hash: 6ONFzzJy6hO3hAlbZxT4WOWfAnYbmkZMEzYoQ-tWrL8
 id: par_data_authority.authority.title
 targetEntityType: par_data_authority
 bundle: authority
