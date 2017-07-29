@@ -8,6 +8,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParBaseInterface;
 use Drupal\par_flows\ParRedirectTrait;
+use Drupal\par_flows\ParDisplayTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -17,6 +18,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
 
   use ParRedirectTrait;
   use RefinableCacheableDependencyTrait;
+  use ParDisplayTrait;
 
   /**
    * The flow entity storage class, for loading flows.
