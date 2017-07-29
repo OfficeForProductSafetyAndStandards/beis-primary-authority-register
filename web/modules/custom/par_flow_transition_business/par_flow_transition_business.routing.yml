@@ -72,8 +72,7 @@ par_flow_transition_business.address:
 par_flow_transition_business.contact:
   path: '/dv/business-partnerships/{par_data_partnership}/details/contact/{par_data_person}'
   defaults:
-    _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionTaskListController::content'
-#    _form: '\Drupal\par_flow_transition_business\Form\ParFlowTransitionTermsForm'
+    _form: '\Drupal\par_flow_transition_business\Form\ParFlowTransitionContactForm'
     _title: 'Updating the Primary Authority Register'
   requirements:
     _permission: 'access par journey transition business'
