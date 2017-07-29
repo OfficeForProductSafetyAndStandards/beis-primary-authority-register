@@ -83,7 +83,13 @@ install:
   
   - docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
   - docker exec -i par_beta_web sh /var/www/html/drupal-stub-data.sh /var/www/html
+  
+#-----------------------------------------------------------------------------
+# Stamp the code with the build number and data seed version
+#-----------------------------------------------------------------------------
+
   - 'echo "#${TRAVIS_BUILD_NUMBER} ${TRAVIS_TAG}: $(date -u)" > web/build_version.txt'
+  - 'echo "#${DATAFILE}" > web/datafile.txt'
 
 ##############################################################################
 ### TEST                                                                   ###
