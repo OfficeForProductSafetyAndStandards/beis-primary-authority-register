@@ -94,6 +94,10 @@ script:
 ##############################################################################
 
 deploy:
+#--------------------------------
+# Master branch deploys to "dev test" environment
+#--------------------------------
+  
   - provider: cloudfoundry
     api: https://api.cloud.service.gov.uk
     username: nao.yoshino@transformuk.com
@@ -103,6 +107,11 @@ deploy:
     space: sandbox
     on:
       repo: TransformCore/beis-par-beta
+      
+#--------------------------------
+# Tagged master branch deploys to "demo" environment
+#--------------------------------
+        
   - provider: cloudfoundry
     api: https://api.cloud.service.gov.uk
     username: nao.yoshino@transformuk.com
@@ -113,6 +122,7 @@ deploy:
     space: sandbox
     on:
       repo: TransformCore/beis-par-beta
+      branch: master
       tags: true
 
 ##############################################################################
@@ -121,6 +131,11 @@ deploy:
 
 after_deploy:
   - cf login -a api.cloud.service.gov.uk -u nao.yoshino@transformuk.com -p $CF_PASSWORD
+  
+#--------------------------------
+# Set environment variables on PaaS instance
+#--------------------------------
+    
   - cf set-env par-beta-staging S3_ACCESS_KEY $S3_ACCESS_KEY
   - cf set-env par-beta-staging S3_SECRET_KEY $S3_SECRET_KEY
   - cf set-env par-beta-staging S3_BUCKET_PUBLIC $S3_BUCKET_PUBLIC
@@ -130,7 +145,17 @@ after_deploy:
   - cf set-env par-beta-staging PAR_GOVUK_NOTIFY_KEY $PAR_GOVUK_NOTIFY_KEY
   - cf set-env par-beta-staging PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE
   - cf restage par-beta-staging
+  
+#--------------------------------
+# Publish test reports
+#--------------------------------
+    
   - cd tests/reports/html && cf push -f ../../reports-manifest.yml
+  
+#--------------------------------
+# Update Drupal, sync config, etc...
+#--------------------------------
+    
   - cf ssh par-beta-staging -c "cd app/tools && python extract_postgres_env_vars.py"
   - cf ssh par-beta-staging -c "cd app && source drupal-update-paas-envs.sh && sh drupal-update-paas.sh"
  
