@@ -42,6 +42,7 @@
         "drupal/views_data_export": "~1.0.0-alpha4",
         "drupal/views_field_view": "~1.0.0-beta2",
         "drupal/xmlsitemap": "~1.0.0@alpha",
+        "drush/config-extra": "^1.0",
         "drush/drush": "~8.1.0",
         "vlucas/phpdotenv": "~2.4.0"
     },
