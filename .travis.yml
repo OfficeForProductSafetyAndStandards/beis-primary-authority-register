@@ -97,9 +97,7 @@ install:
 ##############################################################################
 
 script:
-- docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush updb -n 1> /dev/null"
-- docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush updb -n 2> /dev/null"
-- docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cex -n 1> /dev/null"
+- docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cex --skip-modules=devel,simpletest,par_data_test,config_inspector -n 1> /dev/null"
 - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cex -n 2> /dev/null"
 - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
 - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
