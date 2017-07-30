@@ -1,0 +1,62 @@
+<?php
+
+/**
+ * @file
+ * Contains par_roles.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function par_roles_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the par_roles module.
+    case 'help.page.par_roles':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Defines roles for PAR Users and funnels users down the right journey&#039;s depending on their roles.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+function par_roles_user_insert($account) {
+  $par_data_manager = \Drupal::service('par_data.manager');
+  $account = $par_data_manager->linkPeople($account);
+
+  if ($account) {
+    foreach ($par_data_manager->getUserPeople as $person) {
+      if ($person->isAuthorityMember()) {
+        $account->addRole('par_authority');
+      }
+      if ($person->isCoordinatorMember()) {
+        $account->addRole('par_coordinator');
+      }
+      if ($person->isBusinessMember()) {
+        $account->addRole('par_buiness');
+      }
+    }
+  }
+}
+
+function par_roles_user_update($account) {
+  $par_data_manager = \Drupal::service('par_data.manager');
+  $account = $par_data_manager->linkPeople($account);
+
+  if ($account) {
+    foreach ($par_data_manager->getUserPeople as $person) {
+      if ($person->isAuthorityMember()) {
+        $account->addRole('par_authority');
+      }
+      if ($person->isCoordinatorMember()) {
+        $account->addRole('par_coordinator');
+      }
+      if ($person->isBusinessMember()) {
+        $account->addRole('par_buiness');
+      }
+    }
+  }
+}

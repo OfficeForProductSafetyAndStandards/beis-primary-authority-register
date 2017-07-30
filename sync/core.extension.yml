@@ -9,15 +9,18 @@ module:
   comment: 0
   config: 0
   config_inspector: 0
+  config_readonly: 0
   config_update: 0
   contact: 0
   content_translation: 0
   contextual: 0
+  ctools: 0
   datetime: 0
   datetime_range: 0
   dblog: 0
   dynamic_page_cache: 0
   editor: 0
+  email_registration: 0
   features: 0
   features_ui: 0
   field: 0
@@ -48,8 +51,15 @@ module:
   par_flow_transition_partnership_details: 0
   par_flows: 0
   par_header: 0
+  par_roles: 0
   par_styleguide: 0
   par_welcome_page: 0
+  password_policy: 0
+  password_policy_character_types: 0
+  password_policy_characters: 0
+  password_policy_history: 0
+  password_policy_length: 0
+  password_policy_username: 0
   path: 0
   rdf: 0
   robotstxt: 0

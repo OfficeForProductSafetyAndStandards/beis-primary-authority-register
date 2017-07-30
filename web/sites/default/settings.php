@@ -301,6 +301,7 @@ $settings['install_profile'] = 'standard';
  *   $settings['hash_salt'] = file_get_contents('/home/example/salt.txt');
  * @endcode
  */
+$settings['hash_salt'] = getenv('PAR_HASH_SALT');
 
 /**
  * Deployment identifier.
@@ -762,7 +763,14 @@ $settings['file_scan_ignore_directories'] = [
   'bower_components',
 ];
 
-$settings['hash_salt'] = getenv('PAR_HASH_SALT');
+/**
+ * Ensure that config changes cannot be made through the UI.
+ *
+ * Restricts users from making changes that would be reset
+ * if another deployment were made without exporting the values
+ * to their config yaml files.
+ */
+$settings['config_readonly'] = TRUE;
 
 /**
  * Extract the database credentials from the VCAP_SERVICES environment variable
@@ -785,7 +793,9 @@ if ($credentials) {
   );
 }
 
-// Set flysystem configuration.
+// Set flysystem configuration to use local files for all environments,
+// and S3 buckets for production files. We also have an artifact bucket
+// for database backups and test reports.
 $settings['flysystem'] = [
   's3public' => [
     'name' => 'S3 Public',
@@ -828,7 +838,7 @@ $settings['flysystem'] = [
 ];
 
 // Only use S3 public store when required.
-if ($private_prod_bucket = getenv('S3_BUCKET_PUBLIC')) {
+if (getenv('S3_BUCKET_PUBLIC')) {
   $settings['flysystem']['s3public'] = [
     'driver' => 's3',
     'config' => [
@@ -842,7 +852,7 @@ if ($private_prod_bucket = getenv('S3_BUCKET_PUBLIC')) {
 }
 
 // Only use S3 private store when required.
-if ($private_prod_bucket = getenv('S3_BUCKET_PRIVATE')) {
+if (getenv('S3_BUCKET_PRIVATE')) {
   $settings['flysystem']['s3private'] = [
     'driver' => 's3',
     'config' => [

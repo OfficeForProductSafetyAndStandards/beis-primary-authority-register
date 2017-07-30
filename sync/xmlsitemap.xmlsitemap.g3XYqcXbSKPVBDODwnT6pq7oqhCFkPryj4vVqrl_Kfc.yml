@@ -5,8 +5,8 @@ dependencies: {  }
 id: g3XYqcXbSKPVBDODwnT6pq7oqhCFkPryj4vVqrl_Kfc
 label: 'Public sitemap'
 chunks: 1
-links: 3
-max_filesize: 488
+links: 2
+max_filesize: 377
 context:
   language: en
-updated: 1500892915
+updated: 1501250454

@@ -20,7 +20,7 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
   protected $flow = 'transition_business';
 
   public function getFormId() {
-    return 'par_flow_transition_partnership_primary_contact';
+    return 'par_flow_transition_business_address';
   }
 
   /**
