@@ -29,6 +29,7 @@
         "drupal/health_check": "1.0.0",
         "drupal/http_response_headers": "~2.0.0",
         "drupal/inline_entity_form": "~1.0.0@beta",
+        "drupal/invite": "~1.0.0",
         "drupal/login_destination": "1.x-dev",
         "drupal/mailsystem": "~4.1.0",
         "drupal/pagerer": "~1.1.0",
