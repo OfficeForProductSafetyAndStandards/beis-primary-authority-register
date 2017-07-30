@@ -44,7 +44,7 @@ content:
     weight: 5
     settings:
       match_operator: CONTAINS
-      size: '60'
+      size: 60
       placeholder: ''
     region: content
     third_party_settings: {  }
@@ -69,7 +69,7 @@ content:
     weight: 5
     settings:
       match_operator: CONTAINS
-      size: '60'
+      size: 60
       placeholder: ''
     region: content
     third_party_settings: {  }
