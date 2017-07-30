@@ -1,0 +1,22 @@
+uuid: ed34ac63-3ca3-4d02-b8e6-4a690cb483e7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.invite.field_invite_email_address
+  module:
+    - invite
+_core:
+  default_config_hash: iQElwR5_avQvkVJ1W6dxJhFH8dq7mgoPWvWeyfRRh9g
+id: invite.invite.field_invite_email_address
+field_name: field_invite_email_address
+entity_type: invite
+bundle: invite
+label: Email
+description: 'Type the e-mail address of the person you wish to invite.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email
