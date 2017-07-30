@@ -87,6 +87,11 @@ HEREDOC;
       '#default_value' => $this->currentUser->getEmail(),
       '#description' => 'You cannot change your email here. If you want to send this invite from a different email address please contact the helpdesk.',
     ];
+    $form['inviter'] = [
+      '#type' => 'hidden',
+      '#title' => t('Inviter'),
+      '#value' => $this->currentUser->id(),
+    ];
 
     // Get Recipient.
     $form['business_member'] = [
@@ -150,7 +155,11 @@ HEREDOC;
     $person->set('salutation', $this->getTempDataValue('salutation'));
     $person->set('person_name', $this->getTempDataValue('person_name'));
 
-    $invite = Invite::create(['type' => 'invite_organisation_member']);
+    $invite = Invite::create([
+      'type' => 'invite_organisation_member',
+      'user_id' => $this->getTempDataValue('inviter'),
+      'invitee' => $this->getTempDataValue('business_member'),
+    ]);
     $invite->set('field_invite_email_address', $this->getTempDataValue('business_member'));
     $invite->set('field_invite_email_subject', $this->getTempDataValue('email_subject'));
     $invite->set('field_invite_email_body', $this->getTempDataValue('email_body'));
