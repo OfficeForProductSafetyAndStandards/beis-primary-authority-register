@@ -8,6 +8,7 @@ use Drupal\invite\Entity\Invite;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\user\Entity\User;
 
 /**
  * Class InviteByEmailBlockForm.
@@ -41,9 +42,30 @@ class ParFlowTransitionInviteForm extends ParBaseForm {
       $this->setState("edit:{$par_data_partnership->id()},{$par_data_person->id()}");
     }
     if ($par_data_person) {
-      // Contact.
+      // Set the default subject for the invite email, this can be changed by the user.
       $this->loadDataValue("email_subject", 'Important updates to the Primary Authority Register');
-      $this->loadDataValue("email_body", $this->getMessageBody($par_data_person));
+
+      $account = User::load($this->currentUser()->id());
+      $authority_person_name = '';
+      foreach ($this->parDataManager->getUserPeople($account) as $authority_person) {
+        if ($par_data_partnership->isAuthorityMember($authority_person)) {
+          $authority_person_name = $authority_person->get('person_name')->getString();
+          break 1;
+        }
+      }
+      $message_body = <<<HEREDOC
+Dear {$par_data_person->get('person_name')->getString()},
+
+I'm writing to ask you to check and update if necessary the information held about your business in the Primary Authority Register. To do this, please follow this link:
+
+[LINK]
+
+The Department for Business, Energy and Industrial Strategy is making changes to the Primary Authority scheme. From October, a new version of the Primary Authority Register website will be launched. We're asking all businesses like yours to update their details in the Register so that all information in the new website is correct when it launches.
+
+Thanks for your help.
+{$authority_person_name}
+HEREDOC;
+      $this->loadDataValue("email_body", $message_body);
     }
   }
 
@@ -58,36 +80,22 @@ class ParFlowTransitionInviteForm extends ParBaseForm {
 
     // Get Sender.
     $form['authority_member'] = [
-      '#type' => 'fieldset',
+      '#type' => 'textfield',
       '#title' => t('Your email'),
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-      'authority_email' => [
-        '#type' => 'textfield',
-        '#required' => TRUE,
-        '#hidden' => TRUE,
-      ],
-      'authority_email_display' => [
-        '#type' => 'markup',
-        '#markup' => t('par_authority@example.com'),
-      ],
+      '#required' => TRUE,
+      '#disabled' => TRUE,
+      '#default_value' => $this->currentUser->getEmail(),
+      '#description' => 'You cannot change your email here. If you want to send this invite from a different email address please contact the helpdesk.',
     ];
 
     // Get Recipient.
     $form['business_member'] = [
-      '#type' => 'fieldset',
+      '#type' => 'textfield',
       '#title' => t('Business contact email'),
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-      'business_email' => [
-        '#type' => 'textfield',
-        '#required' => TRUE,
-        '#hidden' => TRUE,
-      ],
-      'business_email_display' => [
-        '#type' => 'markup',
-        '#markup' => t('par_business@example.com'),
-      ],
+      '#required' => TRUE,
+      '#disabled' => TRUE,
+      '#default_value' => 'par_business@example.com',
+      '#description' => 'This is the businesses primary contact and cannot be changed here. If you need to send this invite to another person please contact the helpdesk.',
     ];
 
     // Allow the message subject to be changed.
@@ -100,8 +108,9 @@ class ParFlowTransitionInviteForm extends ParBaseForm {
 
     // Allow the message body to be changed.
     $form['email_body'] = array(
-      '#type' => 'textfield',
+      '#type' => 'textarea',
       '#required' => TRUE,
+      '#rows' => 18,
       '#title' => t('Message'),
       '#default_value' => $this->getDefaultValues('email_body'),
     );
@@ -118,15 +127,32 @@ class ParFlowTransitionInviteForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $invite_type = $form_state->getBuildInfo()['args'][0];
-    $invite = Invite::create(array('type' => $invite_type));
-    $invite->field_invite_email_address->value = $form_state->getValue('email');
-    $subject = $form_state->getValue('email_subject');
-    if (!empty($subject)) {
-      $invite->field_invite_email_subject->value = $subject;
-    }
+    parent::submitForm($form, $form_state);
+
+    // Save the value for the about_partnership field.
+    $person = $this->getRouteParam('par_data_person');
+    $person->set('salutation', $this->getTempDataValue('salutation'));
+    $person->set('person_name', $this->getTempDataValue('person_name'));
+
+    $invite = Invite::create(['type' => 'invite_organisation_member']);
+    $invite->set('field_invite_email_address', $this->getTempDataValue('business_member'));
+    $invite->set('field_invite_email_subject', $this->getTempDataValue('email_subject'));
     $invite->setPlugin('invite_by_email');
-    $invite->save();
+    if ($invite->save()) {
+      $this->deleteStore();
+    }
+    else {
+      $message = $this->t('This invite could not be sent for %person on %form_id');
+      $replacements = [
+        '%invite' => $this->getTempDataValue('person_name'),
+        '%person' => $this->getTempDataValue('business_member'),
+        '%form_id' => $this->getFormId(),
+      ];
+      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+    }
+
+    // Go back to the overview.
+    $form_state->setRedirect($this->getFlow()->getRouteByStep(3), $this->getRouteParams());
   }
 
 }
