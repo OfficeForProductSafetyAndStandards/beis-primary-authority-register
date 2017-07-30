@@ -86,12 +86,11 @@ install:
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cex -n 1> /dev/null"
 
 #-----------------------------------------------------------------------------
-# Stamp the code with the build number and data seed version
+# Stamp the code with the build number
 #-----------------------------------------------------------------------------
 
   - 'echo "#${TRAVIS_BUILD_NUMBER} ${TRAVIS_TAG}: $(date -u)" > web/build_version.txt'
-  - 'echo "#${DATAFILE}" > web/datafile.txt'
-
+  
 ##############################################################################
 ### TEST                                                                   ###
 ##############################################################################
@@ -168,8 +167,8 @@ after_deploy:
 # Update Drupal, sync config, etc...
 #-----------------------------------------------------------------------------
     
-  - cf ssh par-beta-staging -c "cd app/tools && python extract_postgres_env_vars.py"
-  - cf ssh par-beta-staging -c "cd app && source drupal-update-paas-envs.sh && sh drupal-update-paas.sh"
+  - if [[ -z "$TRAVIS_TAG" ]]; then cf ssh par-beta-staging -c "cd app/tools && python extract_postgres_env_vars.py"
+  - if [[ -z "$TRAVIS_TAG" ]]; then cf ssh par-beta-staging -c "cd app && source drupal-update-paas-envs.sh && sh drupal-update-paas.sh"
  
 ##############################################################################
 ### STORE ARTIFACTS                                                        ###
