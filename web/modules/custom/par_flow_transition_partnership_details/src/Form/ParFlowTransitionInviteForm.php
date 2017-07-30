@@ -58,7 +58,7 @@ Dear {$par_data_person->get('person_name')->getString()},
 
 I'm writing to ask you to check and update if necessary the information held about your business in the Primary Authority Register. To do this, please follow this link:
 
-[LINK]
+[invite:invite-accept-link]
 
 The Department for Business, Energy and Industrial Strategy is making changes to the Primary Authority scheme. From October, a new version of the Primary Authority Register website will be launched. We're asking all businesses like yours to update their details in the Register so that all information in the new website is correct when it launches.
 
@@ -120,7 +120,23 @@ HEREDOC;
       '#value' => t('Send Invitation'),
     );
 
+    // Make sure to add the partnership cacheability data to this form.
+    $this->addCacheableDependency($par_data_partnership);
+    $this->addCacheableDependency($par_data_person);
+
     return $form;
+  }
+
+  /**
+   * Validate the form to make sure the correct values have been entered.
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    // Check that the email body contains an invite accept link.
+    if (!strpos($form_state->getValue('email_body'), '[invite:invite-accept-link]')) {
+      $form_state->setErrorByName('email_body', "Please make sure you have the invite token '[invite:invite-accept-link]' somewhere in your message.");
+    }
+
+    parent::validateForm($form, $form_state);
   }
 
   /**
@@ -137,6 +153,7 @@ HEREDOC;
     $invite = Invite::create(['type' => 'invite_organisation_member']);
     $invite->set('field_invite_email_address', $this->getTempDataValue('business_member'));
     $invite->set('field_invite_email_subject', $this->getTempDataValue('email_subject'));
+    $invite->set('field_invite_email_body', $this->getTempDataValue('email_body'));
     $invite->setPlugin('invite_by_email');
     if ($invite->save()) {
       $this->deleteStore();
