@@ -28,7 +28,7 @@ class ParFlowTransitionAboutForm extends ParBaseForm {
    * @param ParDataPartnership $par_data_partnership
    *   The Partnership being retrieved.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
+  public function retrieveEditableValues( ParDataPartnership $par_data_partnership = NULL) {
     if ($par_data_partnership) {
       // If we're editing an entity we should set the state
       // to something other than default to avoid conflicts

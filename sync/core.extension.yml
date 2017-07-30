@@ -38,6 +38,7 @@ module:
   inline_entity_form: 0
   invite: 0
   invite_by_email: 0
+  invite_link: 0
   language: 0
   link: 0
   login_destination: 0
