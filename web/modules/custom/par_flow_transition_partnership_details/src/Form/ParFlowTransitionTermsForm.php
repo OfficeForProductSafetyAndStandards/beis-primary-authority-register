@@ -43,8 +43,8 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL, ParDataPartnership $par_data_partnership = NULL) {
-    $this->retrieveEditableValues($par_data_authority, $par_data_partnership);
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+    $this->retrieveEditableValues($par_data_partnership);
 
     // If the terms and conditions have already been set
     // we want to go immediately to the next step.
