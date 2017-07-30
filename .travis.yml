@@ -68,12 +68,13 @@ install:
 #-----------------------------------------------------------------------------
 
   - sleep 5
-  - docker exec -i par_beta_web /var/www/html/vendor/bin/drush sql-cli @dev --root=/var/www/html/web < docker/fresh_drupal_postgres.sql  
+  - docker exec -i par_beta_web /var/www/html/vendor/bin/drush sql-cli @dev < docker/fresh_drupal_postgres.sql
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush fsg s3backups $DATAFILE.tar.gz /dump.sql.tar.gz"
   - docker exec -i par_beta_web bash -c "cd / && tar --no-same-owner -zxvf dump.sql.tar.gz"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sql-cli @dev --root=/var/www/html/web < /$DATAFILE"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sql-cli @dev < /$DATAFILE"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sqlsan @dev < /$DATAFILE"
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
   
@@ -96,6 +97,7 @@ install:
 ##############################################################################
 
 script:
+- docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush  updb -n 1> /dev/null"
 - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush  cex -n 1> /dev/null"
 - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
 - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"

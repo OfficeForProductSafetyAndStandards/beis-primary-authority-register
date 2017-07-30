@@ -286,67 +286,79 @@
  * Some examples appear below.  Remove the leading hash signs to enable.
  */
 
-#$aliases['stage'] = array(
+#$aliases['stage'] = [
 #    'uri' => 'http://stage.example.com',
 #    'root' => '/path/to/remote/drupal/root',
 #    'remote-host' => 'mystagingserver.myisp.com',
 #    'remote-user' => 'publisher',
 #    'os' => 'Linux',
-#    'path-aliases' => array(
+#    'path-aliases' => [
 #      '%drush' => '/path/to/drush',
 #      '%drush-script' => '/path/to/drush/drush',
 #      '%files' => 'sites/mydrupalsite.com/files',
 #      '%custom' => '/my/custom/path',
-#     ),
-#     'command-specific' => array (
-#       'sql-sync' => array (
+#     ],
+#     'command-specific' => [
+#       'sql-sync' => [
 #         'no-dump' => TRUE,
-#       ),
-#     ),
+#       ,
+#     ],
 #     # This shell alias will run `mycommand` when executed via
 #     # `drush @stage site-specific-alias`
-#     'shell-aliases' => array (
+#     'shell-aliases' => [
 #       'site-specific-alias' => '!mycommand',
-#     ),
-#  );
-#$aliases['dev'] = array(
+#     ],
+#  ];
+#$aliases['dev'] = [
 #    'uri' => 'http://dev.example.com',
 #    'root' => '/path/to/drupal/root',
-#  );
-#$aliases['server'] = array(
+#  ];
+#$aliases['server'] = [
 #    'remote-host' => 'mystagingserver.myisp.com',
 #    'remote-user' => 'publisher',
 #    'os' => 'Linux',
-#  );
-#$aliases['live'] = array(
+#  ];
+#$aliases['live'] = [
 #    'uri' => 'http://example.com',
 #    'root' => $aliases['dev']['root'],
-#  ) + $aliases['server'];
+#  ] + $aliases['server'];
 
-$aliases['dev'] = array(
+$aliases['dev'] = [
   'user' => 1,
-  'command-specific' => array (
-    'sql-dump' => array(
+  'command-specific' => [
+    'sql-dump' => [
       'ordered-dump' => TRUE,
       'structure-tables-key' => 'common',
       'skip-tables-key' => 'common',
-    ),
-  ),
-  'root' => '/var/www/html/web'
-);
-$aliases['paas-sanitized'] = array(
+    ],
+    'sql-sanitize' => [
+      'sanitize-password' => 'TestPassword'
+    ],
+  ],
+  'root' => '/var/www/html/web',
+];
+$aliases['paas-sanitized'] = [
   'user' => 1,
-    'command-specific' => array (
-        'sql-dump' => array(
+    'command-specific' => [
+        'sql-dump' => [
             'ordered-dump' => TRUE,
             'structure-tables-key' => 'common',
             'skip-tables-key' => 'common',
-        ),
-    ),
+        ],
+        'sql-sanitize' => [
+            'sanitize-password' => 'TestPassword'
+        ],
+    ],
   'root' => '/home/vcap/app/web'
-);
-$aliases['paas-unsanitized'] = array(
-    'user' => 1,
-    'root' => '/home/vcap/app/web'
-);
+];
+$aliases['paas-unsanitized'] = [
+  'user' => 1,
+  'root' => '/home/vcap/app/web',
+  'command-specific' => [
+    'sql-sanitize' => [
+      'sanitize-password' => 'no',
+      'sanitize-email' => 'no',
+    ],
+  ],
+];
 
