@@ -85,12 +85,11 @@ install:
   - docker exec -i par_beta_web sh /var/www/html/drupal-stub-data.sh /var/www/html
   
 #-----------------------------------------------------------------------------
-# Stamp the code with the build number and data seed version
+# Stamp the code with the build number
 #-----------------------------------------------------------------------------
 
   - 'echo "#${TRAVIS_BUILD_NUMBER} ${TRAVIS_TAG}: $(date -u)" > web/build_version.txt'
-  - 'echo "#${DATAFILE}" > web/datafile.txt'
-
+  
 ##############################################################################
 ### TEST                                                                   ###
 ##############################################################################
@@ -167,8 +166,8 @@ after_deploy:
 # Update Drupal, sync config, etc...
 #-----------------------------------------------------------------------------
     
-  - cf ssh par-beta-staging -c "cd app/tools && python extract_postgres_env_vars.py"
-  - cf ssh par-beta-staging -c "cd app && source drupal-update-paas-envs.sh && sh drupal-update-paas.sh"
+  - [ -z "$TRAVIS_TAG" ] && cf ssh par-beta-staging -c "cd app/tools && python extract_postgres_env_vars.py"
+  - [ -z "$TRAVIS_TAG" ] && cf ssh par-beta-staging -c "cd app && source drupal-update-paas-envs.sh && sh drupal-update-paas.sh"
  
 ##############################################################################
 ### STORE ARTIFACTS                                                        ###
