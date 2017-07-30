@@ -167,8 +167,8 @@ after_deploy:
 # Update Drupal, sync config, etc...
 #-----------------------------------------------------------------------------
     
-  - if [[ -z "$TRAVIS_TAG" ]]; then cf ssh par-beta-staging -c "cd app/tools && python extract_postgres_env_vars.py"
-  - if [[ -z "$TRAVIS_TAG" ]]; then cf ssh par-beta-staging -c "cd app && source drupal-update-paas-envs.sh && sh drupal-update-paas.sh"
+  - if [[ $TRAVIS_TAG != "" ]]; then cf ssh par-beta-staging -c "cd app/tools && python extract_postgres_env_vars.py"; fi
+  - if [[ $TRAVIS_TAG != "" ]]; then cf ssh par-beta-staging -c "cd app && source drupal-update-paas-envs.sh && sh drupal-update-paas.sh"; fi
  
 ##############################################################################
 ### STORE ARTIFACTS                                                        ###
