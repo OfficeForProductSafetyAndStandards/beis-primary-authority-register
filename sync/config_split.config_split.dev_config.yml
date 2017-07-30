@@ -7,6 +7,7 @@ label: 'Dev Config'
 folder: ../sync-dev
 module:
   config_inspector: 0
+  dblog: 0
   devel: 0
   par_data_test: 0
 theme: {  }
