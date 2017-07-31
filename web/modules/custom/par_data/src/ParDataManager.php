@@ -77,4 +77,22 @@ class ParDataManager implements ParDataManagerInterface {
     }
   }
 
+  /**
+   * Calculate the average percentage completion for an entity.
+   *
+   * @param array $values
+   *   An array of integer values.
+   *
+   * @return integer
+   *   The calculated average.
+   */
+  public function calculateAverage(array $values) {
+    $count = count($values);
+    $sum = array_sum($values);
+    $median = $sum / $count;
+    $average = ceil($median);
+
+    return $average;
+  }
+
 }

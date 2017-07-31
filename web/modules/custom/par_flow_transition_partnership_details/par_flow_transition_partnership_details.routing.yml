@@ -77,3 +77,42 @@ par_flow_transition_partnership_details.invite:
         type: entity:par_data_partnership
       par_data_person:
         type: entity:par_data_person
+par_flow_transition_partnership_details.inspection_plans:
+  path: '/dv/primary-authority-partnerships/{par_data_partnership}/documents'
+  defaults:
+    _controller: '\Drupal\par_flow_transition_partnership_details\Controller\ParFlowTransitionAdviceListController::content'
+    _title: 'Updating the Primary Authority Register'
+  requirements:
+    _permission: 'access par journey transition partnership details'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_flow_transition_partnership_details.documents_list:
+  path: '/dv/primary-authority-partnerships/{par_data_partnership}/documents'
+  defaults:
+    _controller: '\Drupal\par_flow_transition_partnership_details\Controller\ParFlowTransitionAdviceListController::content'
+    _title: 'Updating the Primary Authority Register'
+  requirements:
+    _permission: 'access par journey transition partnership details'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_flow_transition_partnership_details.advice_document:
+  path: '/dv/primary-authority-partnerships/{par_data_partnership}/document/{par_data_advice}'
+  defaults:
+    _form: '\Drupal\par_flow_transition_partnership_details\Controller\ParFlowTransitionAdviceForm'
+    _title: 'Updating the Primary Authority Register'
+  requirements:
+    _permission: 'access par journey transition partnership details'
+    par_data_partnership: \d+
+    par_data_advice: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_advice:
+        type: entity:par_data_advice
