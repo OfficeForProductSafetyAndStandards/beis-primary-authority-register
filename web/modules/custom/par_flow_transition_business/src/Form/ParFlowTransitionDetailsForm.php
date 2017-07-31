@@ -273,7 +273,15 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
           ]),
         ];
       }
+
+      $form['trading_names']['add'] = [
+        '#type' => 'markup',
+        '#markup' => t('<br>%link', [
+          '%link' => $this->getFlow()->getLinkByStep(11)->setText('add another trading name')->toString()
+          ]),
+      ];
     }
+
 
     $form['confirmation'] = [
       '#type' => 'checkbox',

@@ -2,6 +2,5 @@ composer.json
 composer.lock
 composer.sh
 dashboard/
-docker/
 web/sites/default/settings.local.php
 
