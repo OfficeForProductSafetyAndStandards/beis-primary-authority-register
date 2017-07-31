@@ -57,7 +57,13 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
-    $rows = [];
+    // Show the task links in table format.
+    $form['document_list'] = array(
+      '#type' => 'table',
+      '#title' => 'Inspection plans',
+      '#header' => ['Confirm', 'Inspection Plan'],
+      '#empty' => $this->t("There is no inspection plan for this partnership."),
+    );
 
     // Get all the inspection plans for this partnership.
     foreach ($par_data_partnership->get('inspection_plan')->referencedEntities() as $inspection_plan) {
@@ -67,30 +73,23 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
       $inspection_plan_summary = $inspection_plan_view_builder->view($inspection_plan, 'summary');
 
       // Inspection Plan Confirmation.
-      $confirmation = [
-        '#type' => 'checkbox',
-        '#title' => t('I confirm that the partnership information above is correct.'),
-        '#default_value' => $this->getDefaultValues("inspection_plan_{$inspection_plan->id()}_confirmation", FALSE),
-        '#return_value' => $this->getDefaultValues("inspection_plan_{$inspection_plan->id()}_confirmation_value", 0),
+      $form['document_list'][] = [
+        'name' => [
+          '#type' => 'checkbox',
+          '#title' => t(''),
+          '#default_value' => $this->getDefaultValues("inspection_plan_{$inspection_plan->id()}_confirmation", FALSE),
+          '#return_value' => $this->getDefaultValues("inspection_plan_{$inspection_plan->id()}_confirmation_value", 0),
+        ],
+        'inspection_plan' => $this->renderMarkupField($inspection_plan_summary),
       ];
-
-      if ($confirmation && $inspection_plan_summary) {
-        $row[] = [
-          $confirmation,
-          $this->renderMarkupField($inspection_plan_summary),
-        ];
-      }
 
       // Make sure to add the document cacheability data to this form.
       $this->addCacheableDependency($inspection_plan);
     }
 
-    // Show the task links in table format.
-    $build['task_list'] = [
-      '#theme' => 'table',
-      '#header' => [],
-      '#rows' => $rows,
-      '#empty' => $this->t("There is no documentation for this Partnership."),
+    $form['helpdesk'] = [
+      '#type' => 'markup',
+      '#markup' => "<p>To upload a new inspection plan, please email it to the <a href='mailto:pa@bis.gsi.gov.uk'>Help Desk</a>.</p>"
     ];
 
     $form['next'] = [

@@ -67,7 +67,7 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
       '#theme' => 'table',
       '#header' => [],
       '#rows' => $rows,
-      '#empty' => $this->t("There is no documentation for this Partnership."),
+      '#empty' => $this->t("There is no documentation for this partnership."),
     ];
 
     $build['cancel'] = [

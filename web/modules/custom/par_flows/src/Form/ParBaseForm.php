@@ -10,6 +10,7 @@ use Drupal\Core\Render\Renderer;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\SessionManagerInterface;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParBaseInterface;
 use Drupal\user\PrivateTempStoreFactory;
@@ -27,6 +28,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   use ParRedirectTrait;
   use RefinableCacheableDependencyTrait;
   use ParDisplayTrait;
+  use StringTranslationTrait;
 
   /**
    * The Drupal session manager.
