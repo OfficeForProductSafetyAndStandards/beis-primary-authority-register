@@ -38,8 +38,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       // Partnership Confirmation.
       $allowed_values = $par_data_partnership->type->entity->getConfigurationByType('partnership_status', 'allowed_values');
       // Set the on and off values so we don't have to do that again.
-      $this->loadDataValue('confirmation_set_value', $allowed_values['confirmed_authority']);
-      $this->loadDataValue('confirmation_unset_value', $allowed_values['awaiting_review']);
+      $this->loadDataValue('confirmation_value', $allowed_values['confirmed_authority']);
       $partnership_status = $par_data_partnership->getParStatus();
       if ($partnership_status === $allowed_values['confirmed_authority']) {
         $this->loadDataValue('confirmation', TRUE);
@@ -209,7 +208,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#type' => 'checkbox',
       '#title' => t('I confirm that the partnership information above is correct.'),
       '#default_value' => $this->getDefaultValues('confirmation', FALSE),
-      '#return_value' => $this->getDefaultValues('confirmation_set_value', 0),
+      '#return_value' => $this->getDefaultValues('confirmation_value', 0),
     ];
 
     $form['next'] = [
@@ -235,19 +234,17 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $par_data_authority = $this->getRouteParam('par_data_authority');
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
-    $this->retrieveEditableValues($par_data_authority, $par_data_partnership);
+    $this->retrieveEditableValues($par_data_partnership);
 
     // Save the value for the about_partnership field.
     $partnership_status = $this->decideBooleanValue(
       $this->getTempDataValue('confirmation'),
-      $this->getDefaultValues('confirmation_set_value', NULL),
-      $this->getDefaultValues('confirmation_unset_value', NULL)
+      $this->getDefaultValues('confirmation_set_value', NULL)
     );
 
     // Save only if the value is different from the one currently set.
-    if ($partnership_status !== $par_data_partnership->get('partnership_status')->getString()) {
+    if ($partnership_status && $partnership_status !== $par_data_partnership->get('partnership_status')->getString()) {
       $par_data_partnership->set('partnership_status', $partnership_status);
       if ($par_data_partnership->save()) {
         $this->deleteStore();

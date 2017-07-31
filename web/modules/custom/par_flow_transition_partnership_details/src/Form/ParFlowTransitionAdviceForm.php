@@ -8,10 +8,9 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 
 /**
- * The primary contact form for the partnership details steps of the
- * 1st Data Validation/Transition User Journey.
+ * The advice document form for Transition Journey 1.
  */
-class ParFlowTransitionAdviceForm extends ParBaseForm {
+class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
 
   /**
    * @var string
@@ -29,6 +28,8 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
    *
    * @param ParDataPartnership $par_data_partnership
    *   The Partnership being retrieved.
+   * @param ParDataAdvice $par_data_inspection_plan
+   *   The advice document being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
     if ($par_data_partnership && $par_data_advice) {

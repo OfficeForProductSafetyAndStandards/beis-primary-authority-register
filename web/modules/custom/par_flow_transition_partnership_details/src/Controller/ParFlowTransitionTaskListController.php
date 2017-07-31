@@ -7,7 +7,8 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Controller\ParBaseController;
 
 /**
- * A controller for all PAR Flow Transition pages.
+ * A controller for displaying all tasks that can
+ * be performed on a partnership.
  */
 class ParFlowTransitionTaskListController extends ParBaseController {
 

@@ -583,7 +583,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * @return mixed
    *   The new value for the entity.
    */
-  public function decideBooleanValue($input, $on, $off) {
+  public function decideBooleanValue($input, $on, $off = NULL) {
     return $input === $on ? $on : $off;
   }
 
