@@ -48,14 +48,23 @@ class ParFlowTransitionTradingForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership);
     $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
 
-    $form['intro'] = [
-      '#markup' => $this->t('Change the legal entity of your business'),
-    ];
+    if (empty($trading_name_delta)) {
+      $form['intro'] = [
+        '#markup' => $this->t('Add a legal entity for your business'),
+      ];
+
+    }
+    else {
+      $form['intro'] = [
+        '#markup' => $this->t('Change the legal entity of your business'),
+      ];
+
+    }
 
     $form['trading_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Name of legal entity'),
-      '#default_value' => $par_data_organisation->get('trading_name')->getValue()[$trading_name_delta],
+      '#default_value' => !empty($trading_name_delta) ? $par_data_organisation->get('trading_name')->getValue()[$trading_name_delta] : '',
       '#description' => $this->t('Sometimes companies trade under a different name to their registered, legal name. This is known as a \'trading name\'. State any trading names used by the business.'),
       '#required' => TRUE,
     ];
@@ -90,7 +99,13 @@ class ParFlowTransitionTradingForm extends ParBaseForm {
 
     $items = $par_data_organisation->get('trading_name')->getValue();
 
-    $items[$trading_name_delta] =  $this->getTempDataValue('trading_name');
+    if (empty($trading_name_delta)) {
+      $items[] =  $this->getTempDataValue('trading_name');
+    }
+    else {
+      $items[$trading_name_delta] =  $this->getTempDataValue('trading_name');
+    }
+
     $par_data_organisation->set('trading_name', $items);
 
     if ($par_data_organisation->save()) {
