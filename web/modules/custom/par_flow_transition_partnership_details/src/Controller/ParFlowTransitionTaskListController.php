@@ -36,54 +36,45 @@ class ParFlowTransitionTaskListController extends ParBaseController {
 
     $build['primary_contact'] = $primary_person_view_builder->view($par_data_primary_person, 'summary');
 
-    // Table headers.
-    $header = [];
-
-    // Table data/cells.
+    // Generate the links for each task.
     $overview_link = $this->getFlow()->getLinkByStep(4)
       ->setText('Review and confirm your partnership details')
       ->toString();
+
+    $organisation_people = $par_data_partnership->getOrganisationPeople();
+    if ($organisation_primary_person = array_shift($organisation_people)) {
+      $invite_link = $this->getFlow()->getLinkByStep(7, [
+        'par_data_person' => $organisation_primary_person->id()
+      ])
+        ->setText('Invite the business to confirm their details')
+        ->toString();
+    }
     $rows = [
       [
         $overview_link,
         $par_data_partnership->getParStatus(),
-      ]
+      ],
     ];
+    if ($invite_link) {
+      $rows[] = [
+        $invite_link,
+        '',
+      ];
+    }
 
-    // Task List.
-    // $form['basic_table_title'] = ['#markup' => '<h2 class="heading-medium">' . $this->t("Basic data table") . '</h2>'];
-    $build['basic_table'] = [
-      '#theme' => 'par_some_custom_theme',
-      '#header' => $header,
-      'title' => $rows,
-      'name' => $this->t("No tasks could be found."),
-    ];
-
-
-
-    // Task List.
-    // $form['basic_table_title'] = ['#markup' => '<h2 class="heading-medium">' . $this->t("Basic data table") . '</h2>'];
-    $build['basic_table'] = [
+    // Show the task links in table format.
+    $build['task_list'] = [
       '#theme' => 'table',
-      '#header' => $header,
+      '#header' => [],
       '#rows' => $rows,
       '#empty' => $this->t("No tasks could be found."),
-    ];
-
-    $build['save_and_continue'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getLinkByStep(1, $this->getRouteParams(), ['attributes' => ['class' => 'button']])
-          ->setText('Save and continue')
-          ->toString()
-      ]),
     ];
 
     $build['cancel'] = [
       '#type' => 'markup',
       '#markup' => t('<br>%link', [
-        '%link' => $this->getFlow()->getLinkByStep(1)
-          ->setText('Cancel')
+        '%link' => $this->getFlow()->getLinkByStep(1, $this->getRouteParams(), ['attributes' => ['class' => 'button']])
+          ->setText('Go back to your partnerships')
           ->toString()
       ]),
     ];

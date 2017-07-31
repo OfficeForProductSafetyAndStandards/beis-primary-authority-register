@@ -11,6 +11,8 @@ fi
 
 echo "Current working directory is ${ROOT}/web"
 
+
+
 # Set default drush alias.
 # cd ${ROOT}/web; ../vendor/drush/drush/drush site-set @{{ENV}};
 # Put the site in maintenance mode.

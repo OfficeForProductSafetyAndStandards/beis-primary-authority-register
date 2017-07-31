@@ -1,0 +1,70 @@
+uuid: aa85b238-934e-4a89-84c6-c1f34052b8d1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.invite.invite.field_invite_email_address
+    - field.field.invite.invite.field_invite_email_body
+    - field.field.invite.invite.field_invite_email_subject
+  module:
+    - invite
+    - user
+_core:
+  default_config_hash: 02mOthAJbGLv87aQbX27GdFfX8KwwV8xwTVXFRWap5Y
+id: invite.invite.default
+targetEntityType: invite
+bundle: invite
+mode: default
+content:
+  field_invite_email_address:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_invite_email_body:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_invite_email_subject:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  invitee:
+    label: hidden
+    type: author
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  reg_code:
+    label: above
+    type: string
+    weight: -4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  type:
+    label: above
+    type: string
+    weight: -4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  user_id:
+    label: hidden
+    type: author
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

@@ -24,3 +24,6 @@ steps:
   6:
     route: par_flow_transition_partnership_details.contact
     form_id: par_flow_transition_partnership_primary_contact
+  7:
+    route: par_flow_transition_partnership_details.invite
+    form_id: par_flow_transition_partnership_details.invite
