@@ -5,6 +5,7 @@ namespace Drupal\par_data;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\user\UserInterface;
 
 /**
 * Manages all functionality universal to Par Data.
@@ -62,6 +63,18 @@ class ParDataManager implements ParDataManagerInterface {
    */
   public function getEntityTypeStorage(EntityTypeInterface $definition) {
     return $this->entityManager->getStorage($definition->id()) ?: NULL;
+  }
+
+  public function getUserPeople(UserInterface $account) {
+    return \Drupal::entityTypeManager()
+      ->getStorage('par_data_person')
+      ->loadByProperties(['email' => $account->get('mail')->getString()]);
+  }
+
+  public function linkPeople(UserInterface $account) {
+    foreach ($this->getUserPeople($account) as $par_person) {
+      $par_person->linkAccounts();
+    }
   }
 
 }

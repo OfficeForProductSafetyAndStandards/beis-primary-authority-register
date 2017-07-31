@@ -23,8 +23,6 @@ par_flow_transition_partnership_details.terms:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-      par_data_person:
-        type: entity:par_data_person
 par_flow_transition_partnership_details.overview:
   path: '/dv/primary-authority-partnerships/{par_data_partnership}/details'
   defaults:

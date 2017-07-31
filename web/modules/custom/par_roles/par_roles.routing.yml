@@ -1,0 +1,13 @@
+# PAR Data Transition Journey 1 - Partnership Details
+par_roles.dashboard:
+  path: '/dv/partnerships/{par_data_partnership}'
+  defaults:
+    _controller: '\Drupal\par_roles\Controller\ParPartnershipDashboardController::content'
+    _title: 'Parnership Dashboard'
+  requirements:
+    _permission: 'access partnerships dashboard'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership

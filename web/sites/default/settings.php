@@ -828,7 +828,7 @@ $settings['flysystem'] = [
 ];
 
 // Only use S3 public store when required.
-if ($private_prod_bucket = getenv('S3_BUCKET_PUBLIC')) {
+if (getenv('S3_BUCKET_PUBLIC')) {
   $settings['flysystem']['s3public'] = [
     'driver' => 's3',
     'config' => [
@@ -842,7 +842,7 @@ if ($private_prod_bucket = getenv('S3_BUCKET_PUBLIC')) {
 }
 
 // Only use S3 private store when required.
-if ($private_prod_bucket = getenv('S3_BUCKET_PRIVATE')) {
+if (getenv('S3_BUCKET_PRIVATE')) {
   $settings['flysystem']['s3private'] = [
     'driver' => 's3',
     'config' => [

@@ -1,0 +1,4 @@
+access partnerships dashboard:
+  title: 'Access the PAR Dashboard'
+  description: 'A permission to allow access to the PAR dashboard.'
+  restrict access: TRUE

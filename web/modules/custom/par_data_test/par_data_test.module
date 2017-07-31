@@ -175,7 +175,7 @@ function par_data_test_create_entities() {
   $premises_4->save();
 
   // Create people entities.
-  $person_1 = \Drupal\par_data\Entity\ParDataPerson::create([
+  $authority_person_1 = \Drupal\par_data\Entity\ParDataPerson::create([
     'type' => 'person',
     'name' => 'Big Bird',
     'uid' => 1,
@@ -183,11 +183,11 @@ function par_data_test_create_entities() {
     'person_name' => 'Big Bird',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
-    'email' => 'bigbird@example.com',
+    'email' => 'par_authority@example.com',
     'role' => 'CTO'
   ]);
-  $person_1->save();
-  $person_2 = \Drupal\par_data\Entity\ParDataPerson::create([
+  $authority_person_1->save();
+  $authority_person_2 = \Drupal\par_data\Entity\ParDataPerson::create([
     'type' => 'person',
     'name' => 'Kermit',
     'uid' => 1,
@@ -195,10 +195,10 @@ function par_data_test_create_entities() {
     'person_name' => 'Kermit the Frog',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
-    'email' => 'kermit@example.com'
+    'email' => 'par_authority@example.com'
   ]);
-  $person_2->save();
-  $person_3 = \Drupal\par_data\Entity\ParDataPerson::create([
+  $authority_person_2->save();
+  $business_person_3 = \Drupal\par_data\Entity\ParDataPerson::create([
     'type' => 'person',
     'name' => 'Snuffleupagus',
     'uid' => 1,
@@ -206,10 +206,10 @@ function par_data_test_create_entities() {
     'person_name' => 'Snuffleupagus',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
-    'email' => 'snuffleupagus@example.com'
+    'email' => 'par_business@example.com'
   ]);
-  $person_3->save();
-  $person_4 = \Drupal\par_data\Entity\ParDataPerson::create([
+  $business_person_3->save();
+  $business_person_4 = \Drupal\par_data\Entity\ParDataPerson::create([
     'type' => 'person',
     'name' => 'Elmo',
     'uid' => 1,
@@ -217,12 +217,12 @@ function par_data_test_create_entities() {
     'person_name' => 'Elmo',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
-    'email' => 'elmo@example.com'
+    'email' => 'par_business@example.com'
   ]);
-  $person_4->save();
+  $business_person_4->save();
 
   // Create people entities.
-  $person_5 = \Drupal\par_data\Entity\ParDataPerson::create([
+  $coordinator_person_5 = \Drupal\par_data\Entity\ParDataPerson::create([
     'type' => 'person',
     'name' => 'Ernie',
     'uid' => 1,
@@ -230,10 +230,10 @@ function par_data_test_create_entities() {
     'person_name' => 'Ernie',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
-    'email' => 'ernie@example.com'
+    'email' => 'par_coordinator@example.com'
   ]);
-  $person_5->save();
-  $person_6 = \Drupal\par_data\Entity\ParDataPerson::create([
+  $coordinator_person_5->save();
+  $coordinator_person_6 = \Drupal\par_data\Entity\ParDataPerson::create([
     'type' => 'person',
     'name' => 'Bert',
     'uid' => 1,
@@ -241,10 +241,10 @@ function par_data_test_create_entities() {
     'person_name' => 'Bert',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
-    'email' => 'bert@example.com'
+    'email' => 'par_coordinator@example.com'
   ]);
-  $person_6->save();
-  $person_7 = \Drupal\par_data\Entity\ParDataPerson::create([
+  $coordinator_person_6->save();
+  $business_person_7 = \Drupal\par_data\Entity\ParDataPerson::create([
     'type' => 'person',
     'name' => 'Oscar the Grouch',
     'uid' => 1,
@@ -252,10 +252,10 @@ function par_data_test_create_entities() {
     'person_name' => 'Oscar the Grouch',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
-    'email' => 'oscar@example.com'
+    'email' => 'par_coordinator@example.com'
   ]);
-  $person_7->save();
-  $person_8 = \Drupal\par_data\Entity\ParDataPerson::create([
+  $business_person_7->save();
+  $authority_person_8 = \Drupal\par_data\Entity\ParDataPerson::create([
     'type' => 'person',
     'name' => 'Grover',
     'uid' => 1,
@@ -263,9 +263,9 @@ function par_data_test_create_entities() {
     'person_name' => 'Grover',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
-    'email' => 'groover@example.com'
+    'email' => 'par_authority@example.com'
   ]);
-  $person_8->save();
+  $authority_person_8->save();
 
   // Create some SIC Codes.
   $sic_code_1 = \Drupal\par_data\Entity\ParDataSicCode::create([
@@ -303,8 +303,8 @@ function par_data_test_create_entities() {
       'ABCD Mart',
     ],
     'person' => [
-      $person_1->id(),
-      $person_2->id(),
+      $business_person_3->id(),
+      $business_person_4->id(),
     ],
     'premises' => [
       $premises_1->id(),
@@ -334,8 +334,8 @@ function par_data_test_create_entities() {
       'Charlie\'s Cafe',
     ],
     'person' => [
-      $person_3->id(),
-      $person_4->id(),
+      $business_person_7->id(),
+      $business_person_4->id(),
     ],
     'premises' => [
       $premises_2->id(),
@@ -377,8 +377,8 @@ function par_data_test_create_entities() {
     'nation' => 'USA',
     'ons_code' => '123456',
     'person' => [
-      $person_5->id(),
-      $person_6->id(),
+      $authority_person_1->id(),
+      $authority_person_2->id(),
     ],
     'regulatory_area' => [
       $regulatory_area_1->id(),
@@ -397,8 +397,8 @@ function par_data_test_create_entities() {
     'nation' => 'USA',
     'ons_code' => '123456',
     'person' => [
-      $person_7->id(),
-      $person_8->id(),
+      $authority_person_8->id(),
+      $authority_person_2->id(),
     ],
     'regulatory_area' => [
       $regulatory_area_2->id(),
@@ -436,10 +436,12 @@ function par_data_test_create_entities() {
       $organisation_1->id(),
     ],
     'person' => [
-      $person_1->id(),
-      $person_3->id(),
-      $person_6->id(),
-      $person_2->id(),
+      $authority_person_1->id(),
+      $authority_person_2->id(),
+      $authority_person_8->id(),
+      $business_person_3->id(),
+      $business_person_4->id(),
+      $business_person_7->id(),
     ],
     'regulatory_area' => [
       $regulatory_area_1->id(),
