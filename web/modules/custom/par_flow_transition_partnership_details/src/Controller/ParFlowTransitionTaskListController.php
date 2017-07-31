@@ -57,7 +57,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
       ->setText('Review and confirm your inspection plan')
       ->toString();
     $par_data_inspection_plan = current($par_data_partnership->get('inspection_plan')->referencedEntities());
-    $inspection_plan_completion = $par_data_inspection_plan->getCompletionPercentage();
+    $inspection_plan_completion = $par_data_inspection_plan->getParStatus();
 
     // Generate the link for confirming all advice documents.
     $documents_list_link = $this->getFlow()->getLinkByStep(9)
