@@ -13,5 +13,7 @@ pages_type: 0
 pages: ''
 roles:
   par_authority: par_authority
+  par_business: par_business
+  par_coordinator: par_coordinator
 weight: 0
 enabled: true
