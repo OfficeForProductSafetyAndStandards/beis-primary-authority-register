@@ -44,6 +44,12 @@ web/themes/custom/par_theme/assets/vendor/
 /web/sites/*/settings.local.php
 /web/sites/*/services.local.yml
 
+# Exclude configuration for developer only modules.
+/sync/devel.*
+/sync/simpletest.*
+/sync/par_data_test.*
+/sync/config_inspector.*
+
 # Exclude test reports
 web/sites/simpletest
 
