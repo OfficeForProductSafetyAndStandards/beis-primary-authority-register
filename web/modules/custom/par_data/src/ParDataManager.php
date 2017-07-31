@@ -88,6 +88,10 @@ class ParDataManager implements ParDataManagerInterface {
    */
   public function calculateAverage(array $values) {
     $count = count($values);
+    if (!$count > 0) {
+      return 0;
+    }
+
     $sum = array_sum($values);
     $median = $sum / $count;
     $average = ceil($median);

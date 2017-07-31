@@ -43,7 +43,7 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
       // The third column contains a list of actions that can be performed on this document.
       $document_actions = implode(PHP_EOL, [
         $this->getFlow()
-          ->getLinkByStep(6, ['par_data_advice' => $document->id()])
+          ->getLinkByStep(10, ['par_data_advice' => $document->id()])
           ->setText('edit')
           ->toString(),
       ]);
@@ -66,7 +66,7 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
       '#theme' => 'table',
       '#header' => [],
       '#rows' => $rows,
-      '#empty' => $this->t("No tasks could be found."),
+      '#empty' => $this->t("There is no documentation for this Partnership."),
     ];
 
     $build['cancel'] = [

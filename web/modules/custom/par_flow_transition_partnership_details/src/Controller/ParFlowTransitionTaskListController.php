@@ -60,14 +60,14 @@ class ParFlowTransitionTaskListController extends ParBaseController {
 
     // Generate the link for confirming all advice documents.
     $documents_list_link = $this->getFlow()->getLinkByStep(9)
-      ->setText('Review and confirm your documentation for %business', ['%business' => $par_data_organisation->get('organisation_name')->getString()])
+      ->setText($this->t('Review and confirm your documentation for %business', ['%business' => $par_data_organisation->get('organisation_name')->getString()]))
       ->toString();
     // Calculate the average completion of all documentation.
     $document_completion = [];
     foreach ($par_data_partnership->get('advice')->referencedEntities() as $document) {
       $document_completion[] = $document->getCompletionPercentage();
     }
-    $documentation_completion = !empty($document_completion) ? $this->parDataManager->calculateAverage() : 0;
+    $documentation_completion = !empty($document_completion) ? $this->parDataManager->calculateAverage($document_completion) : 0;
 
     // Build the task list able rows.
     $rows = [
@@ -85,11 +85,13 @@ class ParFlowTransitionTaskListController extends ParBaseController {
       ]
     ];
     if (isset($invite_link)) {
-      $rows[] = [
+      $rows[1] = [
         $invite_link,
         '',
       ];
     }
+    // Sort the array by descired keys.
+    ksort($rows);
 
     // Show the task links in table format.
     $build['task_list'] = [
