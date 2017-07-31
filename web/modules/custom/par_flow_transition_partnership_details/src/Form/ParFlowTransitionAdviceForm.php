@@ -41,9 +41,14 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
       $allowed_types = $par_data_advice->type->entity->getConfigurationByType('advice_type', 'allowed_values');
       // Set the on and off values so we don't have to do that again.
       $this->loadDataValue('allowed_types', $allowed_types);
-      $advice_type = $par_data_partnership->get('advice_type')->getString();
-      if (in_array($advice_type, $allowed_types)) {
+      $advice_type = $par_data_advice->get('advice_type')->getString();
+      if (is_array($allowed_types) && in_array($advice_type, $allowed_types)) {
         $this->loadDataValue('document_type', $advice_type);
+      }
+
+      // @TODO We need to work out how to get a list of regulatory functions.
+      if ($we_know_the_regulatory_functions = FALSE) {
+        $this->loadDataValue('regulatory_functions', []);
       }
     }
   }
@@ -56,6 +61,7 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
 
     // Render the document in view mode to allow users to
     // see which one they're confirming details for.
+    // @TODO We don't have a reference to the document yet.
     $document_view_builder = $par_data_advice ? $par_data_advice->getViewBuilder() : NULL;
     $document = $document_view_builder->view($par_data_advice, 'summary');
     $form['document'] = $this->renderMarkupField($document) + [
@@ -75,8 +81,8 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
     $form['regulatory_functions'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Regulatory functions this document covers'),
-      '#options' => ['coming shortly'],
-      '#default_value' => $this->getDefaultValues("document_type"),
+      '#options' => $this->getDefaultValues("allowed_types", []),
+      '#default_value' => $this->getDefaultValues("regulatory_functions", []),
     ];
 
     $form['next'] = [
