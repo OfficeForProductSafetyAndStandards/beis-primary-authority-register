@@ -69,7 +69,7 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
 
     $form['next'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Next'),
+      '#value' => $this->t('Continue'),
     ];
 
     // Make sure to add the partnership cacheability data to this form.

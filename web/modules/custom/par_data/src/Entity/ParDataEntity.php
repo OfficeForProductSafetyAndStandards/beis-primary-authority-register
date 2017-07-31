@@ -53,7 +53,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       }
     }
 
-    return ($completed / $total) * 100;
+    return $total > 0 ? ($completed / $total) * 100 : 0;
   }
 
   /**

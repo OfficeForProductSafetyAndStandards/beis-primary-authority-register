@@ -214,7 +214,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
     $form['next'] = [
       '#type' => 'submit',
-      '#value' => t('Next'),
+      '#value' => t('Save'),
     ];
     // We can get a link to a custom route like so.
     $previous_link = $this->getFlow()->getLinkByStep($this->getFlow()->getPrevStep())->setText('Cancel')->toString();
