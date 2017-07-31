@@ -77,11 +77,11 @@ class ParFlowTransitionTaskListController extends ParBaseController {
       ],
       2 => [
         $inspection_plan_link,
-        $inspection_plan_completion,
+        $inspection_plan_completion . '%',
       ],
       3 => [
         $documents_list_link,
-        $documentation_completion,
+        $documentation_completion . '%',
       ]
     ];
     if (isset($invite_link)) {

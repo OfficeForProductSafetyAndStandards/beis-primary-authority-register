@@ -36,6 +36,15 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
       // to something other than default to avoid conflicts
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()},{$par_data_advice->id()}");
+
+      // Partnership Confirmation.
+      $allowed_types = $par_data_advice->type->entity->getConfigurationByType('advice_type', 'allowed_values');
+      // Set the on and off values so we don't have to do that again.
+      $this->loadDataValue('allowed_types', $allowed_types);
+      $advice_type = $par_data_partnership->get('advice_type')->getString();
+      if (in_array($advice_type, $allowed_types)) {
+        $this->loadDataValue('document_type', $advice_type);
+      }
     }
   }
 
@@ -57,7 +66,7 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
     $form['document_type'] = [
       '#type' => 'radios',
       '#title' => $this->t('Type of Document'),
-      '#options' => ['coming shortly'],
+      '#options' => $this->getDefaultValues("allowed_types", []),
       '#default_value' => $this->getDefaultValues("document_type"),
       '#required' => TRUE,
     ];

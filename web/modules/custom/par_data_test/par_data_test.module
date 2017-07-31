@@ -85,7 +85,7 @@ function par_data_test_create_entities() {
     'type' => 'advice',
     'name' => 'Just one cookie please',
     'uid' => 1,
-    'advice_type' => 'To Children',
+    'advice_type' => 'background_information',
     'notes' => 'Cookie Monster Is The Life Coach You Never Knew You Needed. See http://bzfd.it/2tD0DlO for more information.',
     'visible_authority' => TRUE,
     'visible_coordinator' => TRUE,
