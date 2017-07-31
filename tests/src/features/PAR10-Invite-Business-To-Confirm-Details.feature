@@ -16,4 +16,5 @@ so that the business information is up to date in the new PAR
         Then I expect that element "#edit-authority-member" is not enabled
         And I expect that element "#edit-business-member" is not enabled
         And I expect that element "#edit-email-subject" is enabled
-        
+        # When I click on the button "#edit-send"
+        # Then the element "h1" contains the text "Invite business to the Primary Authority Register"
