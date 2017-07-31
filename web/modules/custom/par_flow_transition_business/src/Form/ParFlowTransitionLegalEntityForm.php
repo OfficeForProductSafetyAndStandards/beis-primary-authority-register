@@ -55,14 +55,22 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataLegalEntity $par_data_legal_entity = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_legal_entity);
 
-    $form['intro'] = [
-      '#markup' => $this->t('Change the legal entity of your business'),
-    ];
+    if (!empty($par_data_legal_entity)) {
+      $id = $par_data_legal_entity->id();
+      $form['intro'] = [
+        '#markup' => $this->t('Change the legal entity of your business'),
+      ];
+    }
+    else {
+      $form['intro'] = [
+        '#markup' => $this->t('Add a legal entity for your business'),
+      ];
+    }
 
     $form['registered_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Name of legal entity'),
-      '#default_value' => $this->getDefaultValues("legal_entity_{$par_data_legal_entity->id()}_registered_name"),
+      '#default_value' => isset($id) ? $this->getDefaultValues("legal_entity_{$id}_registered_name") : '',
       '#description' => $this->t('A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisation such as trusts and charities.'),
       '#required' => TRUE,
     ];
@@ -78,7 +86,7 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
     $form['Legal_entity_type'] = [
       '#type' => 'select',
       '#title' => $this->t('Type of Legal Entity'),
-      '#default_value' => $this->getDefaultValues("legal_entity_{$par_data_legal_entity->id()}_legal_entity_type"),
+      '#default_value' => isset($id) ? $this->getDefaultValues("legal_entity_{$id}_legal_entity_type") : '',
       '#options' => array_combine($title_options, $title_options),
       '#required' => TRUE,
     ];
@@ -87,7 +95,7 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
     $form['company_house_no'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Companies House Number'),
-      '#default_value' => $this->getDefaultValues("legal_entity_{$par_data_legal_entity->id()}_registered_number"),
+      '#default_value' => isset($id) ? $this->getDefaultValues("legal_entity_{$id}_registered_number") : '',
       '#required' => TRUE,
     ];
 
@@ -116,21 +124,54 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
 
     // Save the value for the about_partnership field.
     $legal_entity = $this->getRouteParam('par_data_legal_entity');
+    if (!empty($legal_entity)) {
+          $legal_entity->set('registered_name', $this->getTempDataValue('registered_name'));
+          $legal_entity->set('legal_entity_type', $this->getTempDataValue('Legal_entity_type'));
+          $legal_entity->set('registered_number', $this->getTempDataValue('company_house_no'));
 
-    $legal_entity->set('registered_name', $this->getTempDataValue('registered_name'));
-    $legal_entity->set('legal_entity_type', $this->getTempDataValue('Legal_entity_type'));
-    $legal_entity->set('registered_number', $this->getTempDataValue('company_house_no'));
-
-    if ($legal_entity->save()) {
-      $this->deleteStore();
+          if ($legal_entity->save()) {
+            $this->deleteStore();
+          }
+          else {
+            $message = $this->t('This %field could not be saved for %form_id');
+            $replacements = [
+              '%field' => $this->getTempDataValue('registered_name'),
+              '%form_id' => $this->getFormId(),
+            ];
+            $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+          }
     }
     else {
-      $message = $this->t('This %field could not be saved for %form_id');
-      $replacements = [
-        '%field' => $this->getTempDataValue('registered_name'),
-        '%form_id' => $this->getFormId(),
-      ];
-      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+      // Adding a new legal entity.
+      $legal_entity = ParDataLegalEntity::create([
+        'type' => 'legal_entity',
+        'name' => $this->getTempDataValue('registered_name'),
+        'uid' => 1,
+        'registered_name' => $this->getTempDataValue('registered_name'),
+        'registered_number' => $this->getTempDataValue('company_house_no'),
+        'legal_entity_type' => $this->getTempDataValue('Legal_entity_type'),
+      ]);
+      $legal_entity->save();
+
+      // Now add the legal entity to the organisation.
+      $par_data_partnership = $this->getRouteParam('par_data_partnership');
+      $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
+      $legal_entities = $par_data_organisation->get('legal_entity')->referencedEntities();
+
+      $legal_entities[] = $legal_entity;
+      $par_data_organisation->set('legal_entity', $legal_entities);
+
+      if ($par_data_organisation->save()) {
+        $this->deleteStore();
+      }
+      else {
+        $message = $this->t('This %field could not be saved for %form_id');
+        $replacements = [
+          '%field' => $this->getTempDataValue('registered_name'),
+          '%form_id' => $this->getFormId(),
+        ];
+        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+      }
     }
 
     // Go back to the overview.
