@@ -95,8 +95,7 @@ par_flow_transition_business.legal:
 par_flow_transition_business.trading_name:
   path: '/dv/business-partnerships/{par_data_partnership}/details/trading-name/{trading_name_delta}'
   defaults:
-    _controller: '\Drupal\par_flow_transition_business\Controller\ParFlowTransitionTaskListController::content'
-#    _form: '\Drupal\par_flow_transition_business\Form\ParFlowTransitionTermsForm'
+    _form: '\Drupal\par_flow_transition_business\Form\ParFlowTransitionTradingForm'
     _title: 'Updating the Primary Authority Register'
   requirements:
     _permission: 'access par journey transition business'
@@ -106,5 +105,3 @@ par_flow_transition_business.trading_name:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-      trading_name_delta:
-        type: entity:trading_name_delta
