@@ -45,8 +45,8 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
       $this->loadDataValue("legal_entity_{$par_data_legal_entity->id()}_registered_name", $par_data_legal_entity->get('registered_name')->getString());
       $this->loadDataValue("legal_entity_{$par_data_legal_entity->id()}_registered_number", $par_data_legal_entity->get('registered_number')->getString());
       $this->loadDataValue("legal_entity_{$par_data_legal_entity->id()}_legal_entity_type", $par_data_legal_entity->get('legal_entity_type')->getString());
+      $this->loadDataValue('legal_entity_id', $par_data_legal_entity->id());
     }
-    $this->loadDataValue('legal_entity_id', $par_data_legal_entity->id());
   }
 
   /**
