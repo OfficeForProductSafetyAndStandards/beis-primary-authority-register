@@ -36,6 +36,9 @@ module:
   http_response_headers: 0
   image: 0
   inline_entity_form: 0
+  invite: 0
+  invite_by_email: 0
+  invite_link: 0
   language: 0
   link: 0
   login_destination: 0

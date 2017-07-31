@@ -26,11 +26,12 @@
         "drupal/file_entity": "~2.0.0",
         "drupal/flysystem": "~1.0.0",
         "drupal/flysystem_s3": "~1.0.0",
-        "drupal/govuk_notify": "1.x-dev",
+        "drupal/govuk_notify": "1.x-dev#7acf4e43582dcf2d65ed4972fdb57e5734f5c94d",
         "drupal/health_check": "1.0.0",
         "drupal/http_response_headers": "~2.0.0",
         "drupal/inline_entity_form": "~1.0.0",
-        "drupal/login_destination": "1.x-dev",
+        "drupal/invite": "1.x-dev#a25b6e11580660f2653c36b0c4669b73ef453f7c",
+        "drupal/login_destination": "1.x-dev#98892eb84eba6fe69d4fc48dc5b1fdaccb21c8a7",
         "drupal/mailsystem": "~4.1.0",
         "drupal/pagerer": "~1.1.0",
         "drupal/password_policy": "~3.0.0",
@@ -96,7 +97,7 @@
                 "Add Drush commands for sending and receiving files": "./patches/flysystem-drush-command.patch"
             },
             "drupal/govuk_notify": {
-                "Allowing system mails to be sent through Notify": "https://www.drupal.org/files/issues/allowing_system_mails-2897707-3.patch"
+                "Allowing system mails to be sent through Notify": "https://www.drupal.org/files/issues/allowing_system_mails-2897707-4.patch"
             }
         }
     },

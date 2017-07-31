@@ -3,7 +3,6 @@
 namespace Drupal\par_flow_transition_partnership_details\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 
@@ -26,12 +25,10 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
-   * @param ParDataAuthority $par_data_authority
-   *   The Authority being retrieved.
    * @param ParDataPartnership $par_data_partnership
    *   The Partnership being retrieved.
    */
-  public function retrieveEditableValues(ParDataAuthority $par_data_authority = NULL, ParDataPartnership $par_data_partnership = NULL) {
+  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
     if ($par_data_partnership) {
       // If we're editing an entity we should set the state
       // to something other than default to avoid conflicts
@@ -46,8 +43,8 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL, ParDataPartnership $par_data_partnership = NULL) {
-    $this->retrieveEditableValues($par_data_authority, $par_data_partnership);
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+    $this->retrieveEditableValues($par_data_partnership);
 
     // If the terms and conditions have already been set
     // we want to go immediately to the next step.
