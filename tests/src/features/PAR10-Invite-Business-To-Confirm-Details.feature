@@ -13,6 +13,7 @@ so that the business information is up to date in the new PAR
     Scenario:
         Given I open the url "/dv/primary-authority-partnerships/1/details/invite/3"
         Then the element "h1" contains the text "Invite business to the Primary Authority Register"
-        Then I expect that element "#edit-authority-member" is visible
-        And I expect that element "#edit-business-member" is visible
-        And I expect that element "#edit-email-subject" is visible
+        Then I expect that element "#edit-authority-member" is not enabled
+        And I expect that element "#edit-business-member" is not enabled
+        And I expect that element "#edit-email-subject" is enabled
+        
