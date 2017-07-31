@@ -60,6 +60,26 @@ function par_data_test_create_entities() {
   ]);
   $helpdesk_user->save();
 
+  // Create documents.
+  $path = DRUPAL_ROOT . '/' . Drupal::service('module_handler')
+    ->getModule('par_data_test')->getPath() . '/assets/';
+  $files = scandir($path);
+  if (!$files) {
+    $files = [];
+  }
+  // There are 6 $uploaded_files, 2 images and 4 pdf
+  // documents, which can be used in any of the
+  // entities below as required.
+  $uploaded_files = [];
+  foreach($files as $filename) {
+    $directory = 'private://par-data-test/';
+    if (file_prepare_directory($directory, FILE_CREATE_DIRECTORY) && is_file($path . $filename)) {
+      $handle = fopen($path . $filename, 'r');
+      $uploaded_files[] = file_save_data($handle, $directory . basename($filename));
+      fclose($handle);
+    }
+  }
+
   // Create Advice.
   $advice_1 = \Drupal\par_data\Entity\ParDataAdvice::create([
     'type' => 'advice',

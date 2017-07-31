@@ -28,6 +28,20 @@ function par_data_test_uninstall() {
     }
   }
 
+  // We also want to delete all files when we uninstall the module.
+  $path = DRUPAL_ROOT . '/' . Drupal::service('module_handler')
+      ->getModule('par_data_test')->getPath() . '/assets/';
+  $files = scandir($path);
+  if (!$files) {
+    $files = [];
+  }
+  foreach (\Drupal::entityTypeManager()->getStorage('file')->loadMultiple() as $file) {
+    if (in_array($file->getFilename(), $files)) {
+      $file->delete();
+    }
+
+  }
+
   $users = \Drupal::entityTypeManager()->getStorage('user')
     ->loadByProperties(['name' => [
       'par_authority@example.com',
