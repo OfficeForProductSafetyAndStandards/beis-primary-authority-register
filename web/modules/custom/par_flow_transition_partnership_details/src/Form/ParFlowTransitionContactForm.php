@@ -103,7 +103,7 @@ class ParFlowTransitionContactForm extends ParBaseForm {
 
     $form['next'] = [
       '#type' => 'submit',
-      '#value' => t('Next'),
+      '#value' => t('Save'),
     ];
 
     // Make sure to add the person cacheability data to this form.

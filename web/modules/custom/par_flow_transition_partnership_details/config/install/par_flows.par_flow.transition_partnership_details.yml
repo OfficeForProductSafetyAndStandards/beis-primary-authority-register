@@ -24,4 +24,11 @@ steps:
     form_id: par_flow_transition_partnership_primary_contact
   7:
     route: par_flow_transition_partnership_details.invite
-    form_id: par_flow_transition_partnership_details.invite
+    form_id: par_flow_transition_partnership_invite_business
+  8:
+    route: par_flow_transition_partnership_details.inspection_plans
+  9:
+    route: par_flow_transition_partnership_details.documents_list
+  10:
+    route: par_flow_transition_partnership_details.advice_document
+    form_id: par_flow_transition_partnership_advice_document

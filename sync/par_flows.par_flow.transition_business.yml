@@ -26,3 +26,7 @@ steps:
     route: par_flow_transition_business.legal
   9:
     route: par_flow_transition_business.trading_name
+  10:
+    route: par_flow_transition_business.legal_add
+  11:
+    route: par_flow_transition_business.trading_name_add
