@@ -60,7 +60,7 @@ function par_data_test_create_entities() {
   ]);
   $helpdesk_user->save();
 
-  // Create documents.
+  // Create documents and images for use by any test data.
   $path = DRUPAL_ROOT . '/' . Drupal::service('module_handler')
     ->getModule('par_data_test')->getPath() . '/assets/';
   $files = scandir($path);
