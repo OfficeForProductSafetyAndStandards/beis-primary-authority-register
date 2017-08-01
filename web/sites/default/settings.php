@@ -806,8 +806,8 @@ $settings['flysystem'] = [
       'public' => TRUE,
     ],
     'cache' => TRUE,
-    'serve_js' => FALSE,
-    'serve_css' => FALSE,
+    'serve_js' => TRUE,
+    'serve_css' => TRUE,
   ],
   's3private' => [
     'name' => 'S3 Private',
