@@ -7,7 +7,8 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Controller\ParBaseController;
 
 /**
- * A controller for all PAR Flow Transition pages.
+ * A controller for rendering a list of advice documents
+ * relevant to a partnership.
  */
 class ParFlowTransitionAdviceListController extends ParBaseController {
 
@@ -70,7 +71,7 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
       '#theme' => 'table',
       '#header' => [],
       '#rows' => $rows,
-      '#empty' => $this->t("There is no documentation for this Partnership."),
+      '#empty' => $this->t("There is no documentation for this partnership."),
     ];
 
     $build['cancel'] = [

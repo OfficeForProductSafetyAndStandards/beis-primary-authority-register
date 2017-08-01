@@ -27,6 +27,7 @@ steps:
     form_id: par_flow_transition_partnership_invite_business
   8:
     route: par_flow_transition_partnership_details.inspection_plans
+    form_id: par_flow_transition_partnership_inspection_plan
   9:
     route: par_flow_transition_partnership_details.documents_list
   10:

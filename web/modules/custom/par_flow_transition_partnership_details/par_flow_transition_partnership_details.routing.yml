@@ -78,9 +78,9 @@ par_flow_transition_partnership_details.invite:
       par_data_person:
         type: entity:par_data_person
 par_flow_transition_partnership_details.inspection_plans:
-  path: '/dv/primary-authority-partnerships/{par_data_partnership}/documents'
+  path: '/dv/primary-authority-partnerships/{par_data_partnership}/inspection-plans'
   defaults:
-    _controller: '\Drupal\par_flow_transition_partnership_details\Controller\ParFlowTransitionAdviceListController::content'
+    _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionInspectionPlanForm'
     _title: 'Updating the Primary Authority Register'
   requirements:
     _permission: 'access par journey transition partnership details'
