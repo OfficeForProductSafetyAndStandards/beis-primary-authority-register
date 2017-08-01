@@ -21,5 +21,5 @@ So that the correct details are taken forward into the new PAR
         # And I press "a.flow-link:last"
         And I add "Trading Name Change" to the inputfield "#edit-trading-name"
         When I click on the button "#edit-next"
-        Then the element "#edit-0" contains the text "Trading Name Change"
+        Then the element "#par-flow-transition-business-details" contains the text "Trading Name Change"
  
