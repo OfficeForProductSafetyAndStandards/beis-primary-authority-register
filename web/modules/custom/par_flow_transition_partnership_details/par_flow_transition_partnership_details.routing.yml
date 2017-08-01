@@ -104,7 +104,7 @@ par_flow_transition_partnership_details.documents_list:
 par_flow_transition_partnership_details.advice_document:
   path: '/dv/primary-authority-partnerships/{par_data_partnership}/document/{par_data_advice}'
   defaults:
-    _form: '\Drupal\par_flow_transition_partnership_details\Controller\ParFlowTransitionAdviceForm'
+    _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionAdviceForm'
     _title: 'Updating the Primary Authority Register'
   requirements:
     _permission: 'access par journey transition partnership details'

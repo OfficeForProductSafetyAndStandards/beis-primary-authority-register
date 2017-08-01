@@ -1,6 +1,6 @@
 uuid: edb901ec-4a38-4f57-8035-6e7d16de03b7
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - core.entity_view_mode.file.thumbnail
