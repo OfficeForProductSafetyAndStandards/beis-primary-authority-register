@@ -8,8 +8,7 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 
 /**
- * The primary contact form for the partnership details steps of the
- * 1st Data Validation/Transition User Journey.
+ * The advice document form for Transition Journey 1.
  */
 class ParFlowTransitionAdviceForm extends ParBaseForm {
 
@@ -29,6 +28,8 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
    *
    * @param ParDataPartnership $par_data_partnership
    *   The Partnership being retrieved.
+   * @param ParDataAdvice $par_data_inspection_plan
+   *   The advice document being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
     if ($par_data_partnership && $par_data_advice) {
@@ -36,6 +37,20 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
       // to something other than default to avoid conflicts
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()},{$par_data_advice->id()}");
+
+      // Partnership Confirmation.
+      $allowed_types = $par_data_advice->type->entity->getConfigurationByType('advice_type', 'allowed_values');
+      // Set the on and off values so we don't have to do that again.
+      $this->loadDataValue('allowed_types', $allowed_types);
+      $advice_type = $par_data_advice->get('advice_type')->getString();
+      if (is_array($allowed_types) && in_array($advice_type, $allowed_types)) {
+        $this->loadDataValue('document_type', $advice_type);
+      }
+
+      // @TODO We need to work out how to get a list of regulatory functions.
+      if ($we_know_the_regulatory_functions = FALSE) {
+        $this->loadDataValue('regulatory_functions', []);
+      }
     }
   }
 
@@ -47,6 +62,7 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
 
     // Render the document in view mode to allow users to
     // see which one they're confirming details for.
+    // @TODO We don't have a reference to the document yet.
     $document_view_builder = $par_data_advice ? $par_data_advice->getViewBuilder() : NULL;
     $document = $document_view_builder->view($par_data_advice, 'summary');
     $form['document'] = $this->renderMarkupField($document) + [
@@ -57,7 +73,7 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
     $form['document_type'] = [
       '#type' => 'radios',
       '#title' => $this->t('Type of Document'),
-      '#options' => ['coming shortly'],
+      '#options' => $this->getDefaultValues("allowed_types", []),
       '#default_value' => $this->getDefaultValues("document_type"),
       '#required' => TRUE,
     ];
@@ -66,8 +82,8 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
     $form['regulatory_functions'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Regulatory functions this document covers'),
-      '#options' => ['coming shortly'],
-      '#default_value' => $this->getDefaultValues("document_type"),
+      '#options' => $this->getDefaultValues("allowed_types", []),
+      '#default_value' => $this->getDefaultValues("regulatory_functions", []),
     ];
 
     $form['next'] = [

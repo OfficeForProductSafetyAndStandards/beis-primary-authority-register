@@ -6,7 +6,7 @@ dependencies:
     - core.entity_view_mode.par_data_inspection_plan.summary
     - par_data.par_data_inspection_plan_type.inspection_plan
   module:
-    - user
+    - datetime_range
 _core:
   default_config_hash: d4czAfeq_OFvX3ScXQFesI6gUwuFv_0TshLJF4bN20A
 id: par_data_inspection_plan.inspection_plan.summary
@@ -14,23 +14,19 @@ targetEntityType: par_data_inspection_plan
 bundle: inspection_plan
 mode: summary
 content:
-  name:
-    label: above
-    type: string
-    weight: -4
-    region: content
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  user_id:
-    label: hidden
-    type: author
+  valid_date:
+    type: daterange_default
     weight: 0
     region: content
-    settings: {  }
+    label: hidden
+    settings:
+      separator: '-'
+      format_type: medium
+      timezone_override: ''
     third_party_settings: {  }
 hidden:
   approved_rd_executive: true
   consulted_national_regulator: true
   inspection_status: true
-  valid_date: true
+  name: true
+  user_id: true
