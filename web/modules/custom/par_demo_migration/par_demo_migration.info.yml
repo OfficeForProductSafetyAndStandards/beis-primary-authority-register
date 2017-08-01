@@ -1,0 +1,9 @@
+name: Par Demo Migration
+type: module
+description: A demo migration for migrating pages.
+core: 8.x
+package: Migration
+dependencies:
+  - migrate_source_csv
+  - migrate_plus
+  - migrate_tools
