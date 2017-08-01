@@ -11,8 +11,8 @@ config.capabilities = [{
 }];
 
 config.services = ['browserstack'];
-config.user = 'euniceaidoo1';
-config.key = 'z8aabpqRzKvWZDHKTKff';
+config.user = '';
+config.key = '';
 config.browserstackLocal = true;
 config.host = 'hub-cloud.browserstack.com';
 config.baseUrl = 'https://par-beta-test.cloudapps.digital';

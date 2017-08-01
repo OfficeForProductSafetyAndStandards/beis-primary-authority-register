@@ -1,4 +1,4 @@
-@Pending @userjourney1
+@Pending
 Feature: User Journey 1 (happy path)
 
 Scenario: User Journey 1 (happy path)    
@@ -16,7 +16,7 @@ Scenario: User Journey 1 (happy path)
     And I click on the link "ABCD Mart"
     # TERMS AND CONDITIONS SCREEN
     And I click on the checkbox "#edit-terms-conditions"
-    And I click on the checkbox "#edit-next"
+    And I click on the button "#edit-next"
     # PARTERSHIP TASKS SCREEN
     # When I click on the link "Invite the business to confirm their details"
     # # BUSINESS EMAIL INVITATION
@@ -27,7 +27,7 @@ Scenario: User Journey 1 (happy path)
     # Then the element "h1" contains the text "Updating the Primary Authority Register"
     # Then the element "#edit-email-subject" contains the text "Test change subject line"
     # Then the element "#edit-email-body" contains the text "Test change meassage body [invite:invite-accept-link]"
-    # When I click on the link "Review and confirm your partnership details"
+    When I click on the link "Review and confirm your partnership details"
     # REVIEW PARTNERSHIPS DETAILS
     And I click on the link "edit"
     And I add "test partnership info change" to the inputfield "#edit-about-partnership"
@@ -76,6 +76,10 @@ Scenario: User Journey 1 (happy path)
     And I click on the checkbox "#edit-confirmation"
     And I click on the button "#edit-next"
     Then the element "#block-par-theme-content" contains the text "confirmed_authority"
+    When I click on the link "Review and confirm your inspection plan"
+    Then the element "#edit-document-list" contains the text "Inspection Plan"
+    And I click on the checkbox "#edit-document-list-12-confirm"
+    And I click on the button "#edit-next"
     When I click on the link "Go back to your partnerships"
     Then the element "h1" contains the text "List of Partnerships for a Primary Authority"
     And I click on the link "Log out"
