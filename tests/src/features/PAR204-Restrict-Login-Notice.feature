@@ -15,4 +15,4 @@ Scenario Outline: Login notices
 Examples:
         | userid                    | password     | area                     |text                             |
         | par_authority@example.com | TestPassword | #block-par-theme-content | Review and confirm your data by |
-        | par_business@example.com  | TestPassword | .form-label              | Search                          |
+        | par_business@example.com  | TestPassword | #block-par-theme-content | Review and confirm your data by |

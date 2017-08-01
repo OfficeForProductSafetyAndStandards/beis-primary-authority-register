@@ -9,7 +9,7 @@ So that the correct details are taken forward into the new PAR
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         Then I expect that element ".error-message" is not visible
-
+        When I click on the button ".button-start"
 
     Scenario: Edit Trading Name
         Given I click on the link "ABCD Mart"
