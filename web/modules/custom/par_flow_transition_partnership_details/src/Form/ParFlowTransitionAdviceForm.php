@@ -10,7 +10,7 @@ use Drupal\par_flows\Form\ParBaseForm;
 /**
  * The advice document form for Transition Journey 1.
  */
-class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
+class ParFlowTransitionAdviceForm extends ParBaseForm {
 
   /**
    * @var string
