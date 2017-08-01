@@ -16,3 +16,8 @@ function par_data_update_8000() {
   // Ensure the user_account field is created.
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
+
+function par_data_update_8001() {
+  // Ensure the user_account field is created.
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}

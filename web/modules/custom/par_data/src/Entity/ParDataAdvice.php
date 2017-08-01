@@ -149,6 +149,22 @@ class ParDataAdvice extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayConfigurable('view', TRUE);
 
+
+    // Documents.
+    $fields['document'] = BaseFieldDefinition::create('file')
+      ->setLabel(t('Document'))
+      ->setDescription(t('Documents relating to the advice.'))
+      ->setSetting('target_type', 'file')
+      ->setSetting('file_extensions', 'jpg jpeg doc docx')
+      ->setSetting('file_directory', 'documents/advice')
+      ->setDisplayOptions('form', array(
+        'type' => 'file',
+        'weight' => 6,
+      ))
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setReadOnly(TRUE);
+
     return $fields;
   }
 

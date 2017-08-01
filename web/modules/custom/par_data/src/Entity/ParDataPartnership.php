@@ -192,50 +192,6 @@ class ParDataPartnership extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayConfigurable('view', TRUE);
 
-    // Communication by Email.
-    $fields['communication_email'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Communication by E-mail'))
-      ->setDescription(t('Whether to allow contact by e-mail for this Partnership.'))
-      ->setRevisionable(TRUE)
-      ->setTranslatable(FALSE)
-      ->setDisplayOptions('form', [
-        'type' => 'boolean_checkbox',
-        'weight' => 4,
-      ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Communication by Phone.
-    $fields['communication_phone'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Communication by Phone'))
-      ->setDescription(t('Whether to allow contact by phone for this Partnership.'))
-      ->setRevisionable(TRUE)
-      ->setTranslatable(FALSE)
-      ->setDisplayOptions('form', [
-        'type' => 'boolean_checkbox',
-        'weight' => 5,
-      ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Communication Notes.
-    $fields['communication_notes'] = BaseFieldDefinition::create('string_long')
-      ->setLabel(t('Communication Notes'))
-      ->setDescription(t('Additional notes and communication preferences for this Partnership.'))
-      ->setTranslatable(TRUE)
-      ->setRevisionable(TRUE)
-      ->setSettings([
-        'text_processing' => 0,
-      ])->setDisplayOptions('form', [
-        'type' => 'text_long',
-        'weight' => 6,
-        'settings' => [
-          'rows' => 25,
-        ],
-      ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayConfigurable('view', TRUE);
-
     // Approved Date.
     $fields['approved_date'] = BaseFieldDefinition::create('datetime')
       ->setLabel(t('Approved Date'))
@@ -552,6 +508,84 @@ class ParDataPartnership extends ParDataEntity {
           'placeholder' => '',
         ),
       ))
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Terms and conditions agreed by organisation.
+    $fields['tc_organisation_agreed'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Terms and Conditions - Organisation'))
+      ->setDescription(t('Terms and Conditions agreed by organisation.'))
+      ->setRevisionable(TRUE)
+      ->setTranslatable(FALSE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 22,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Terms and conditions agreed by authority.
+    $fields['tc_authority_agreed'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Terms and Conditions - Authority'))
+      ->setDescription(t('Terms and Conditions agreed by authority.'))
+      ->setRevisionable(TRUE)
+      ->setTranslatable(FALSE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 23,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Coordinator suitable.
+    $fields['coordinator_suitable'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Coordinator Suitable'))
+      ->setDescription(t('Is coordinator suitable.'))
+      ->setRevisionable(TRUE)
+      ->setTranslatable(FALSE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 24,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Partnership info confirmed by authority.
+    $fields['partnership_info_agreed_authority'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Partnership information agreed by Authority'))
+      ->setDescription(t('The partnership information has been agreed by the authority.'))
+      ->setRevisionable(TRUE)
+      ->setTranslatable(FALSE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 25,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Partnership info confirmed by business.
+    $fields['partnership_info_agreed_business'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Partnership information agreed by Business'))
+      ->setDescription(t('The partnership information has been agreed by the business.'))
+      ->setRevisionable(TRUE)
+      ->setTranslatable(FALSE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 26,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Written summary agreed.
+    $fields['written_summary_agreed'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Written summary agreed'))
+      ->setDescription(t('This is the agreement of the written summary.'))
+      ->setRevisionable(TRUE)
+      ->setTranslatable(FALSE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 27,
+      ])
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayConfigurable('view', TRUE);
 

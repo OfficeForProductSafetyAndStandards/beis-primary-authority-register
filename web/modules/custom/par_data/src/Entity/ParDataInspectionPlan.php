@@ -115,6 +115,21 @@ class ParDataInspectionPlan extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayConfigurable('view', TRUE);
 
+    // Documents.
+    $fields['document'] = BaseFieldDefinition::create('file')
+      ->setLabel(t('Document'))
+      ->setDescription(t('Documents relating to the inspection.'))
+      ->setSetting('target_type', 'file')
+      ->setSetting('file_extensions', 'jpg jpeg doc docx')
+      ->setSetting('file_directory', 'documents/inspection')
+      ->setDisplayOptions('form', array(
+        'type' => 'file',
+        'weight' => 4,
+      ))
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setReadOnly(TRUE);
+
     // Inspection Status.
     $fields['inspection_status'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Inspection Status'))
@@ -129,7 +144,7 @@ class ParDataInspectionPlan extends ParDataEntity {
       ->setDefaultValue('')
       ->setDisplayOptions('form', [
         'type' => 'string_textfield',
-        'weight' => 4,
+        'weight' => 5,
       ])
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayConfigurable('view', TRUE);

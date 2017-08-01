@@ -117,6 +117,24 @@ class ParDataPremises extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayConfigurable('view', TRUE);
 
+    // Nation.
+    $fields['uprn'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Unique Property Reference Number'))
+      ->setDescription(t('The unique reference number for the property.'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 2,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
+
     return $fields;
   }
 

@@ -106,6 +106,24 @@ class ParDataEnforcementNotice extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayConfigurable('view', TRUE);
 
+    // Summary.
+    $fields['summary'] = BaseFieldDefinition::create('string_long')
+      ->setLabel(t('Summary'))
+      ->setDescription(t('Summary about this enforcement notice.'))
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'text_processing' => 0,
+      ])->setDisplayOptions('form', [
+        'type' => 'text_long',
+        'weight' => 3,
+        'settings' => [
+          'rows' => 25,
+        ],
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
+
     // Reference to Primary Authority.
     $fields['primary_authority'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Primary Authority'))
@@ -123,7 +141,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
       )
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
-        'weight' => 3,
+        'weight' => 4,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => 60,
@@ -150,7 +168,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
       )
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
-        'weight' => 4,
+        'weight' => 5,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => 60,
@@ -177,7 +195,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
       )
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
-        'weight' => 5,
+        'weight' => 6,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => 60,

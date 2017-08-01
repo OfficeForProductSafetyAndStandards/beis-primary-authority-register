@@ -194,6 +194,46 @@ class ParDataOrganisation extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayConfigurable('view', TRUE);
 
+    // Coordinator number eligible.
+    $fields['coordinator_eligible_number'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Coordinator number'))
+      ->setDescription(t('Number of eligible coordinators.'))
+      ->setRequired(TRUE)
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 6,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 8,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Coordinator type.
+    $fields['coordinator_type'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Coordinator type'))
+      ->setDescription(t('Type of coordinator.'))
+      ->setRequired(TRUE)
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+      ->setTranslatable(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 20,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 9,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
+
     // Reference to Person.
     $fields['person'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Person'))
@@ -210,7 +250,7 @@ class ParDataOrganisation extends ParDataEntity {
       )
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
-        'weight' => 9,
+        'weight' => 10,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => 60,
@@ -236,7 +276,7 @@ class ParDataOrganisation extends ParDataEntity {
       )
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
-        'weight' => 10,
+        'weight' => 11,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => 60,
@@ -262,7 +302,7 @@ class ParDataOrganisation extends ParDataEntity {
       )
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
-        'weight' => 11,
+        'weight' => 12,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => 60,
@@ -288,7 +328,7 @@ class ParDataOrganisation extends ParDataEntity {
       )
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
-        'weight' => 12,
+        'weight' => 13,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => 60,
