@@ -241,6 +241,13 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
       }
     }
 
+    $form['legal_entity']['alternative']['add'] = [
+      '#type' => 'markup',
+      '#markup' => t('<br>%link', [
+        '%link' => $this->getFlow()->getLinkByStep(10)->setText('add another legal entity')->toString()
+      ]),
+    ];
+
     // Trading names.
     $par_data_trading_names = $par_data_organisation->get('trading_name')->getValue();
     if ($par_data_trading_names) {
@@ -266,7 +273,15 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
           ]),
         ];
       }
+
+      $form['trading_names']['add'] = [
+        '#type' => 'markup',
+        '#markup' => t('<br>%link', [
+          '%link' => $this->getFlow()->getLinkByStep(11)->setText('add another trading name')->toString()
+          ]),
+      ];
     }
+
 
     $form['confirmation'] = [
       '#type' => 'checkbox',
