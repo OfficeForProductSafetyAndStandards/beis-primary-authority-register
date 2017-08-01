@@ -50,7 +50,6 @@ install:
 #-----------------------------------------------------------------------------
   
   - cp web/sites/example.settings.local.php web/sites/default/settings.local.php
-  - cat web/sites/settings.local.php.travis.append >> web/sites/default/settings.local.php
   
 #-----------------------------------------------------------------------------
 # Create .env file

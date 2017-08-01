@@ -16,7 +16,6 @@
 
 if [ ! -f ../web/sites/settings.local.php ]; then
     cp ../web/sites/example.settings.local.php ../web/sites/default/settings.local.php
-    cat ../web/sites/settings.local.php.docker.append >> ../web/sites/default/settings.local.php
 fi
 
 # Load the test data:
