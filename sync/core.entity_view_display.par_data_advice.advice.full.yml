@@ -5,8 +5,6 @@ dependencies:
   config:
     - core.entity_view_mode.par_data_advice.full
     - par_data.par_data_advice_type.advice
-  module:
-    - user
 _core:
   default_config_hash: yRyProYto-90hFLBqPfC1UiFAfZnl-NgMjjWLgDSC4M
 id: par_data_advice.advice.full
@@ -14,24 +12,18 @@ targetEntityType: par_data_advice
 bundle: advice
 mode: full
 content:
-  name:
-    label: above
+  advice_type:
     type: string
-    weight: -4
+    weight: 0
     region: content
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  user_id:
-    label: hidden
-    type: author
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
-  advice_type: true
+  name: true
   notes: true
+  user_id: true
   visible_authority: true
   visible_business: true
   visible_coordinator: true

@@ -1,0 +1,36 @@
+uuid: e07077cf-c5eb-448e-b4a1-0c17bc06085b
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.file.summary
+    - file_entity.type.document
+  module:
+    - file
+id: file.document.summary
+targetEntityType: file
+bundle: document
+mode: summary
+content:
+  filemime:
+    type: file_filemime
+    weight: 1
+    region: content
+    label: above
+    settings:
+      link_to_file: false
+      filemime_image: false
+    third_party_settings: {  }
+  filename:
+    type: file_link
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      link_to_file: true
+    third_party_settings: {  }
+hidden:
+  filesize: true
+  langcode: true
+  uid: true
+  uri: true
