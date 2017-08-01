@@ -139,7 +139,7 @@ exports.config = {
            // EXTENSION after requiring MODULE (repeatable)
         dryRun: false, // <boolean> invoke formatters without executing step_definitions
         failFast: false, // <boolean> abort the run on first failure
-        format: ['pretty'], // <string[]> (type[:path]) specify the output
+        format: ['pretty', 'progress'], // <string[]> (type[:path]) specify the output
                             // format, optionally supply PATH to redirect
                             // formatter output (repeatable)
         colors: true, // <boolean> disable colors in formatter output
