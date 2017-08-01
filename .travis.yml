@@ -142,7 +142,8 @@ deploy:
 
 after_deploy:
   - cf login -a api.cloud.service.gov.uk -u nao.yoshino@transformuk.com -p $CF_PASSWORD
-  - if [[ $TRAVIS_TAG == '' ]]; then PAAS_APP_INSTANCE='par-beta-staging'; else PAAS_APP_INSTANCE='par-beta-demo'; fi 
+  - if [[ $TRAVIS_TAG == '' ]]; then PAAS_APP_INSTANCE='par-beta-staging'; else PAAS_APP_INSTANCE='par-beta-demo'; fi
+  - echo $PAAS_APP_INSTANCE
   
 #-----------------------------------------------------------------------------
 # Set environment variables on PaaS instance
