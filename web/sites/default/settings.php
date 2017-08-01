@@ -893,3 +893,17 @@ if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
   include $app_root . '/' . $site_path . '/settings.local.php';
 }
 
+$appEnv = getenv('APP_ENV');
+
+if (file_exists($app_root . '/' . $site_path . '/services.local.yml')) {
+    $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.local.yml';
+}
+
+if (!empty($appEnv)) {
+    $filepath = $app_root . '/' . $site_path . '/settings.' . $appEnv . '.php';
+
+    if (file_exists($filepath)) {
+        include $filepath;
+    }
+}
+
