@@ -6,7 +6,8 @@ config.capabilities = [{
         device: null,
         os: 'Windows',
         os_version: '7',
-        resolution: '1024x768'
+        resolution: '1024x768',
+        debug: true
 }];
 
 config.services = ['browserstack'];
@@ -14,6 +15,9 @@ config.user = 'euniceaidoo1';
 config.key = 'z8aabpqRzKvWZDHKTKff';
 config.browserstackLocal = true;
 config.host = 'hub-cloud.browserstack.com';
-config.baseUrl = 'https://localhost:80';
+config.baseUrl = 'https://par-beta-test.cloudapps.digital';
 config.tags = '@ci, ~@Pending, ~@ie8bug';
 exports.config = config;
+
+
+
