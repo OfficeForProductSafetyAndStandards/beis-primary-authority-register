@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * Implements hook_form_alter().
+ */
+function par_flow_transition_partnership_details_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+
+  // Journey 1 Step 1 (List of Partnerships) Views Exposed Filter customisation.
+  if ($form['#id'] == 'views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1') {
+
+    $form['actions']['submit']['#attributes']['class'][] = 'btn-link';
+    $form['actions']['submit']['#value'] = 'Update details';
+
+  }
+
+}

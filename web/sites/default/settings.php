@@ -806,8 +806,8 @@ $settings['flysystem'] = [
       'public' => TRUE,
     ],
     'cache' => TRUE,
-    'serve_js' => FALSE,
-    'serve_css' => FALSE,
+    'serve_js' => TRUE,
+    'serve_css' => TRUE,
   ],
   's3private' => [
     'name' => 'S3 Private',
@@ -892,3 +892,14 @@ $config['govuk_notify.settings']['default_template_id'] = getenv('PAR_GOVUK_NOTI
 if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
   include $app_root . '/' . $site_path . '/settings.local.php';
 }
+
+$appEnv = getenv('APP_ENV');
+
+if (!empty($appEnv)) {
+    $filepath = $app_root . '/' . $site_path . '/settings.local.' . $appEnv . '.php';
+
+    if (file_exists($filepath)) {
+        include $filepath;
+    }
+}
+
