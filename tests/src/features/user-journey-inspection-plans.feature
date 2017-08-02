@@ -1,4 +1,4 @@
-@Pending @userjourney1
+@ci @userjourney1
 Feature: User Journey 1 (happy path)
 
 Scenario: User Journey 1 - Inspection Plans 
