@@ -279,7 +279,7 @@ class ParDataEnforcementAction extends ParDataEntity {
 
     // Reference to Regulatory Function.
     $fields['regulatory_function'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Regulatory Area'))
+      ->setLabel(t('Regulatory Function'))
       ->setDescription(t('The Regulatory Functions this Authority is responsible for.'))
       ->setRequired(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)

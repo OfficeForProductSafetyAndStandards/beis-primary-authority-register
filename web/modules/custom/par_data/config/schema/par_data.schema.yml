@@ -262,7 +262,7 @@ par_data.par_data_premises_type.*:
           label: 'Configuration rules'
 par_data.par_data_regulatory_function_type.*:
   type: config_entity
-  label: 'PAR Data Regulatory Area entity type config'
+  label: 'PAR Data Regulatory Function entity type config'
   mapping:
     id:
       type: string

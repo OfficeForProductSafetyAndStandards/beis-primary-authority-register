@@ -37,7 +37,7 @@ hidden:
   partnership_status: true
   partnership_type: true
   person: true
-  regulatory_area: true
+  regulatory_function: true
   reject_comment: true
   revocation_date: true
   revocation_reason: true

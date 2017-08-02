@@ -1,4 +1,4 @@
-uuid: fbf8fe3c-1ed8-487b-93ba-75f80683a512
+uuid: fbf8fe3c-1ed8-487b-93ba-75f80683a112
 langcode: en
 status: true
 dependencies:
@@ -6,7 +6,7 @@ dependencies:
     - par_data
 _core:
   default_config_hash: eBuxU9HJo32xOkP1iSS9nWNQLAeYnhTCNFfDoRdG45A
-id: par_data_regulatory_area.title
+id: par_data_regulatory_function.title
 label: Title
-targetEntityType: par_data_regulatory_area
+targetEntityType: par_data_regulatory_function
 cache: true

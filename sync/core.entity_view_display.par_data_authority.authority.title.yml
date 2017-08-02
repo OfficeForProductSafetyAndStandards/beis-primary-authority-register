@@ -1,4 +1,4 @@
-uuid: 2f3c89d3-4488-40c1-b236-819265c0b43e
+uuid: 2f3c89d3-4488-40c1-b236-819265c0a43e
 langcode: en
 status: true
 dependencies:
@@ -27,5 +27,5 @@ hidden:
   ons_code: true
   person: true
   premises: true
-  regulatory_area: true
+  regulatory_function: true
   user_id: true

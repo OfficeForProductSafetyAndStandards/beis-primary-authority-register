@@ -35,4 +35,4 @@ hidden:
   ons_code: true
   person: true
   premises: true
-  regulatory_area: true
+  regulatory_function: true

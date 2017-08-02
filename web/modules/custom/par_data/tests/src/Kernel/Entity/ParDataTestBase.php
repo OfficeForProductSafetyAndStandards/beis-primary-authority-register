@@ -129,7 +129,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     // Create the entity bundles required for testing.
     $type = ParDataRegulatoryFunctionT::create([
       'id' => 'regulatory_function',
-      'label' => 'Regulatory Area',
+      'label' => 'Regulatory Function',
     ]);
     $type->save();
 
@@ -164,7 +164,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     $person = ParDataPerson::create($this->getPersonValues());
     $person->save();
 
-    // We need to create a Regulatory Area first.
+    // We need to create a Regulatory Function first.
     $regulatory_function = ParDataRegulatoryFunction::create($this->getRegulatoryAreaValues());
     $regulatory_function->save();
 
@@ -304,7 +304,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     $inspection_plan = ParDataInspectionPlan::create($this->getInspectionPlanValues());
     $inspection_plan->save();
 
-    // We need to create a Regulatory Area first.
+    // We need to create a Regulatory Function first.
     $regulatory_function = ParDataRegulatoryFunction::create($this->getRegulatoryAreaValues());
     $regulatory_function->save();
 

@@ -1,19 +1,20 @@
-uuid: db200b9b-b5ef-4fb4-a900-91eca7a79565
+uuid: 1c488ded-cbeb-490d-84e2-1cf6e5f35477
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.par_data_regulatory_function.title
     - par_data.par_data_regulatory_function_type.regulatory_function
   module:
     - user
 _core:
-  default_config_hash: 2Pt7JBlvJGKNn4mwfJTNGrpkIS27GPfigyGnzEiz6jM
-id: par_data_regulatory_function.regulatory_function.default
+  default_config_hash: RUehvRPVFXt6eOOBRGDKAu2ms4B8-1vwcsIKek6rJKM
+id: par_data_regulatory_function.regulatory_function.title
 targetEntityType: par_data_regulatory_function
 bundle: regulatory_function
-mode: default
+mode: title
 content:
-  name:
+  area_name:
     label: above
     type: string
     weight: -4
@@ -29,4 +30,4 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  area_name: true
+  name: true

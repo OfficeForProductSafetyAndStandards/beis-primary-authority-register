@@ -448,7 +448,7 @@ function par_data_test_create_entities() {
       $authority_person_2->id(),
       $authority_person_8->id(),
     ],
-    'business_person' => [
+    'organisation_person' => [
       $business_person_3->id(),
       $business_person_4->id(),
       $business_person_7->id(),

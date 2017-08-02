@@ -1,17 +1,17 @@
-uuid: 5f6a5a2b-4987-486e-82f0-1f89707f7988
+uuid: 5f6a5a2b-4987-486e-82f0-1f89707f7608
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.par_data_regulatory_area.full
-    - par_data.par_data_regulatory_area_type.regulatory_area
+    - core.entity_view_mode.par_data_regulatory_function.full
+    - par_data.par_data_regulatory_function_type.regulatory_function
   module:
     - user
 _core:
   default_config_hash: 0OQczKQGkMITIl85Crxv5b7p0oiVKmUKQeuVmU1Qn-Q
-id: par_data_regulatory_area.regulatory_area.full
-targetEntityType: par_data_regulatory_area
-bundle: regulatory_area
+id: par_data_regulatory_function.regulatory_function.full
+targetEntityType: par_data_regulatory_function
+bundle: regulatory_function
 mode: full
 content:
   name:

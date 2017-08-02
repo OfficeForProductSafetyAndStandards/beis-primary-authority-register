@@ -192,9 +192,12 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#collapsed' => FALSE,
     ];
     $regulatory_functions = $par_data_partnership->get('regulatory_function')->referencedEntities();
+    dump($regulatory_functions);
     $regulatory_function_view_builder = current($regulatory_functions)->getViewBuilder();
     foreach ($par_data_partnership->get('regulatory_function')->referencedEntities() as $regulatory_function) {
       $regulatory_function_field = $regulatory_function_view_builder->view($regulatory_function, 'title');
+      dump($regulatory_function_field);
+      dump($this->renderMarkupField($regulatory_function_field));
       $form['fourth_section'][] = $this->renderMarkupField($regulatory_function_field);
     }
 

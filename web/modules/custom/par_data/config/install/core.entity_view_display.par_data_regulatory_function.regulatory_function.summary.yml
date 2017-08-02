@@ -1,17 +1,18 @@
-uuid: db200b9b-b5ef-4fb4-a900-91eca7a79565
+uuid: 00205c2a-81e0-48d1-8f61-a4f9079d3d05
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.par_data_regulatory_function.summary
     - par_data.par_data_regulatory_function_type.regulatory_function
   module:
     - user
 _core:
-  default_config_hash: 2Pt7JBlvJGKNn4mwfJTNGrpkIS27GPfigyGnzEiz6jM
-id: par_data_regulatory_function.regulatory_function.default
+  default_config_hash: rBykToI_gSD0ibxfJtpGSQMgNbdkVSseWYCDfPujIRE
+id: par_data_regulatory_function.regulatory_function.summary
 targetEntityType: par_data_regulatory_function
 bundle: regulatory_function
-mode: default
+mode: summary
 content:
   name:
     label: above

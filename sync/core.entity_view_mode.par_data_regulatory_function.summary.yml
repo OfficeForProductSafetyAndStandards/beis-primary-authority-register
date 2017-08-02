@@ -1,4 +1,4 @@
-uuid: a0a66868-eab9-4afd-96a8-d992209ee8a3
+uuid: a0a66868-eab9-4afd-96a8-d992209ee8c3
 langcode: en
 status: true
 dependencies:
@@ -6,7 +6,7 @@ dependencies:
     - par_data
 _core:
   default_config_hash: uf1LDxJ_ZWwNy8YsD2M8sYXOhn9W7zJ68r0k5szL2bI
-id: par_data_regulatory_area.summary
+id: par_data_regulatory_function.summary
 label: Summary
-targetEntityType: par_data_regulatory_area
+targetEntityType: par_data_regulatory_function
 cache: true

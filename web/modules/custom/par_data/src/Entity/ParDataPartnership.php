@@ -70,19 +70,7 @@ class ParDataPartnership extends ParDataEntity {
    * Get the organisation contacts for this Partnership.
    */
   public function getOrganisationPeople() {
-    $people = [];
-    foreach ($this->get('person')->referencedEntities() as $person) {
-      $people[$person->id()] = $person;
-    }
-
-    $organisation_people = [];
-    foreach ($this->get('organisation')->referencedEntities() as $organisation) {
-      foreach ($organisation->get('person')->referencedEntities() as $person) {
-        $organisation_people[$person->id()] = $person;
-      }
-    }
-
-    return !empty($people) && !empty($organisation_people) ? array_intersect_key($people, $organisation_people) : [];
+    return $this->get('organisation_person')->referencedEntities();
   }
 
   /**
@@ -102,19 +90,7 @@ class ParDataPartnership extends ParDataEntity {
    * Get the authority contacts for this Partnership.
    */
   public function getAuthorityPeople() {
-    $people = [];
-    foreach ($this->get('person')->referencedEntities() as $person) {
-      $people[$person->id()] = $person;
-    }
-
-    $authority_people = [];
-    foreach ($this->get('authority')->referencedEntities() as $organisation) {
-      foreach ($organisation->get('person')->referencedEntities() as $person) {
-        $authority_people[$person->id()] = $person;
-      }
-    }
-
-    return !empty($people) && !empty($authority_people) ? array_intersect_key($people, $authority_people) : [];
+    return $this->get('authority_person')->referencedEntities();
   }
 
   /**
@@ -459,8 +435,8 @@ class ParDataPartnership extends ParDataEntity {
 
     // Reference to Regulatory Function.
     $fields['regulatory_function'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Regulatory Area'))
-      ->setDescription(t('The Regulatory Areas for this Partnership.'))
+      ->setLabel(t('Regulatory Function'))
+      ->setDescription(t('The Regulatory Functions for this Partnership.'))
       ->setRequired(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_regulatory_function')
@@ -511,7 +487,7 @@ class ParDataPartnership extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayConfigurable('view', TRUE);    // Reference to Person.
 
-    $fields['business_person'] = BaseFieldDefinition::create('entity_reference')
+    $fields['organisation_person'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Business Contacts'))
       ->setDescription(t('The business contacts for this Partnership. The first Person will be the primary contact.'))
       ->setRequired(TRUE)

@@ -155,9 +155,9 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     // Save the value for the about_partnership field.
     $person = $this->getRouteParam('par_data_person');
 
-    $name = trim($this->getTempDataValue('first_name') . ' ' . $this->getTempDataValue('last_name'));
     $person->set('salutation', $this->getTempDataValue('salutation'));
-    $person->set('person_name', $name);
+    $person->set('first_name', $this->getTempDataValue('first_name'));
+    $person->set('last_name', $this->getTempDataValue('last_name'));
     $person->set('work_phone', $this->getTempDataValue('work_phone'));
     $person->set('mobile_phone', $this->getTempDataValue('mobile_phone'));
     $person->set('email', $this->getTempDataValue('email'));

@@ -31,7 +31,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
     $build['premises'] = $premises_view_builder->view($par_data_premises, 'summary');
 
     // Primary contact summary.
-    $par_data_primary_person = current($par_data_partnership->get('person')->referencedEntities());
+    $par_data_primary_person = current($par_data_partnership->get('authority_person')->referencedEntities());
     $primary_person_view_builder = $par_data_primary_person->getViewBuilder();
 
     $build['primary_contact'] = $primary_person_view_builder->view($par_data_primary_person, 'summary');

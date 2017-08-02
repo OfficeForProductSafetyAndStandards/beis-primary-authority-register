@@ -167,8 +167,8 @@ class ParDataAdvice extends ParDataEntity {
 
     // Reference to Regulatory Function.
     $fields['regulatory_function'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Regulatory Area'))
-      ->setDescription(t('The Regulatory Areas for this Partnership.'))
+      ->setLabel(t('Regulatory Function'))
+      ->setDescription(t('The Regulatory Functions for this Partnership.'))
       ->setRequired(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_regulatory_function')

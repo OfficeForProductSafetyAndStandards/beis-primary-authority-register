@@ -1,9 +1,13 @@
-primary-authority-partnershipsstatus: true
+uuid: a991c587-29bc-4b9a-b8f8-cfc96a36c99f
+langcode: en
+status: true
 dependencies:
   config:
     - par_data.par_data_partnership_type.partnership
   module:
     - user
+_core:
+  default_config_hash: fIgfWxIDk6EYPpcnjk-ycKYDaa1mFzogbwJp1lS3EmU
 id: par_data_partnership.partnership.default
 targetEntityType: par_data_partnership
 bundle: partnership
@@ -41,7 +45,7 @@ hidden:
   partnership_status: true
   partnership_type: true
   person: true
-  regulatory_area: true
+  regulatory_function: true
   reject_comment: true
   revocation_date: true
   revocation_reason: true
