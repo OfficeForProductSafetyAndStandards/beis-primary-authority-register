@@ -15,14 +15,14 @@ content:
     type: basic_string
     weight: 9
     region: content
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
   employees_band:
     type: string
     weight: 5
     region: content
-    label: above
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
@@ -30,7 +30,7 @@ content:
     type: entity_reference_entity_view
     weight: 2
     region: content
-    label: above
+    label: hidden
     settings:
       view_mode: summary
       link: false
@@ -39,7 +39,7 @@ content:
     type: string
     weight: 6
     region: content
-    label: above
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
@@ -47,23 +47,24 @@ content:
     type: string
     weight: 0
     region: content
-    label: above
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
   person:
-    type: entity_reference_label
+    type: entity_reference_entity_view
     weight: 8
     region: content
-    label: above
+    label: hidden
     settings:
-      link: true
+      view_mode: summary
+      link: false
     third_party_settings: {  }
   premises:
     type: entity_reference_entity_view
     weight: 7
     region: content
-    label: above
+    label: hidden
     settings:
       view_mode: summary
       link: false
@@ -72,7 +73,7 @@ content:
     type: entity_reference_entity_view
     weight: 3
     region: content
-    label: above
+    label: hidden
     settings:
       view_mode: summary
       link: false
@@ -81,7 +82,7 @@ content:
     type: string
     weight: 4
     region: content
-    label: above
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
@@ -89,7 +90,7 @@ content:
     type: string
     weight: 1
     region: content
-    label: above
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }

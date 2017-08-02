@@ -108,7 +108,7 @@ class ParDataEnforcementAction extends ParDataEntity {
 
     // Enforcement status.
     $fields['ea_status'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Enforcement Action status'))
+      ->setLabel(t('Enforcement Action Status'))
       ->setDescription(t('The status of the current enforcement action.'))
       ->setRequired(TRUE)
       ->setTranslatable(TRUE)
@@ -145,7 +145,7 @@ class ParDataEnforcementAction extends ParDataEntity {
 
     // PA status.
     $fields['pa_status'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Primary Authority status'))
+      ->setLabel(t('Primary Authority Status'))
       ->setDescription(t('The status of the primary authority on this action.'))
       ->setRequired(TRUE)
       ->setTranslatable(TRUE)
@@ -200,9 +200,9 @@ class ParDataEnforcementAction extends ParDataEntity {
 
     // Enforcement notice.
     $fields['enforcement_notice'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Enforcement notice'))
-      ->setDescription(t('The Enforcement Notice.'))
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+      ->setLabel(t('Enforcement Notice'))
+      ->setDescription(t('The Enforcement Notice this action belongs to.'))
+      ->setCardinality(1)
       ->setSetting('target_type', 'par_data_enforcement_notice')
       ->setSetting('handler', 'default')
       ->setSetting('handler_settings',
@@ -225,10 +225,10 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setDisplayConfigurable('view', TRUE);
 
     // Blocked by advice.
-    $fields['enforcement_notice'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Blocked by advice'))
+    $fields['blocked_advice'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Blocked by Advice'))
       ->setDescription(t('The advice that is blocking this action.'))
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+      ->setCardinality(1)
       ->setSetting('target_type', 'par_data_advice')
       ->setSetting('handler', 'default')
       ->setSetting('handler_settings',
@@ -252,7 +252,7 @@ class ParDataEnforcementAction extends ParDataEntity {
 
     // Referred from action.
     $fields['action_referral'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Action referred from'))
+      ->setLabel(t('Action Referred From'))
       ->setDescription(t('The action relating to this action.'))
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_enforcement_action')
@@ -280,9 +280,9 @@ class ParDataEnforcementAction extends ParDataEntity {
     // Reference to Regulatory Function.
     $fields['regulatory_function'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Regulatory Function'))
-      ->setDescription(t('The Regulatory Functions this Authority is responsible for.'))
+      ->setDescription(t('The Regulatory Function this notice is relevant to.'))
       ->setRequired(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+      ->setCardinality(1)
       ->setSetting('target_type', 'par_data_regulatory_function')
       ->setSetting('handler', 'default')
       ->setSetting('handler_settings',

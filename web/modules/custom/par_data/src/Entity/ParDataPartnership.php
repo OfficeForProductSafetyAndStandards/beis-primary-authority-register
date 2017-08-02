@@ -515,8 +515,8 @@ class ParDataPartnership extends ParDataEntity {
 
     // Terms and conditions agreed by organisation.
     $fields['tc_organisation_agreed'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Terms and Conditions - Organisation'))
-      ->setDescription(t('Terms and Conditions agreed by organisation.'))
+      ->setLabel(t('Organisation Terms and Conditions'))
+      ->setDescription(t('Terms and Conditions agreed by Organisation.'))
       ->setRevisionable(TRUE)
       ->setTranslatable(FALSE)
       ->setDisplayOptions('form', [
@@ -528,8 +528,8 @@ class ParDataPartnership extends ParDataEntity {
 
     // Terms and conditions agreed by authority.
     $fields['tc_authority_agreed'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Terms and Conditions - Authority'))
-      ->setDescription(t('Terms and Conditions agreed by authority.'))
+      ->setLabel(t('Authority Terms and Conditions'))
+      ->setDescription(t('Terms and Conditions agreed by Authority.'))
       ->setRevisionable(TRUE)
       ->setTranslatable(FALSE)
       ->setDisplayOptions('form', [
@@ -554,8 +554,8 @@ class ParDataPartnership extends ParDataEntity {
 
     // Partnership info confirmed by authority.
     $fields['partnership_info_agreed_authority'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Partnership information agreed by Authority'))
-      ->setDescription(t('The partnership information has been agreed by the authority.'))
+      ->setLabel(t('Authority Information Agreed'))
+      ->setDescription(t('The Partnership information has been agreed by the Authority.'))
       ->setRevisionable(TRUE)
       ->setTranslatable(FALSE)
       ->setDisplayOptions('form', [
@@ -567,8 +567,8 @@ class ParDataPartnership extends ParDataEntity {
 
     // Partnership info confirmed by business.
     $fields['partnership_info_agreed_business'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Partnership information agreed by Business'))
-      ->setDescription(t('The partnership information has been agreed by the business.'))
+      ->setLabel(t('Business Information Agreed'))
+      ->setDescription(t('The Partnership information has been agreed by the Business.'))
       ->setRevisionable(TRUE)
       ->setTranslatable(FALSE)
       ->setDisplayOptions('form', [
@@ -580,8 +580,8 @@ class ParDataPartnership extends ParDataEntity {
 
     // Written summary agreed.
     $fields['written_summary_agreed'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Written summary agreed'))
-      ->setDescription(t('This is the agreement of the written summary.'))
+      ->setLabel(t('Written Summary Agreed'))
+      ->setDescription(t('A written summary has been agreed between the Authority and the Organisation.'))
       ->setRevisionable(TRUE)
       ->setTranslatable(FALSE)
       ->setDisplayOptions('form', [

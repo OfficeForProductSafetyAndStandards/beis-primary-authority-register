@@ -5,6 +5,8 @@ dependencies:
   config:
     - core.entity_view_mode.par_data_advice.title
     - par_data.par_data_advice_type.advice
+  module:
+    - file_entity
 _core:
   default_config_hash: rRJvf4DzLhR9dV6QQdLlfF5DokX6k65zDMPyyQvEPfY
 id: par_data_advice.advice.title
@@ -12,17 +14,20 @@ targetEntityType: par_data_advice
 bundle: advice
 mode: title
 content:
-  advice_type:
-    type: string
+  document:
+    type: file_download_link
     weight: 0
     region: content
     label: hidden
     settings:
-      link_to_entity: false
+      access_message: 'You don''t have access to download this file.'
+      text: 'Download [file:name]'
     third_party_settings: {  }
 hidden:
+  advice_type: true
   name: true
   notes: true
+  regulatory_function: true
   user_id: true
   visible_authority: true
   visible_business: true

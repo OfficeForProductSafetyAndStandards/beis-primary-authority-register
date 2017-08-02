@@ -19,16 +19,6 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-  tc_organisation_agreed:
-    type: boolean
-    weight: 8
-    region: content
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
 hidden:
   advice: true
   approved_date: true
@@ -57,5 +47,6 @@ hidden:
   revocation_reason: true
   revocation_source: true
   tc_authority_agreed: true
+  tc_organisation_agreed: true
   user_id: true
   written_summary_agreed: true

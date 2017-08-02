@@ -6,7 +6,7 @@ dependencies:
     - core.entity_view_mode.par_data_enforcement_notice.full
     - par_data.par_data_enforcement_notice_type.enforcement_notice
   module:
-    - user
+    - datetime
 _core:
   default_config_hash: IqRww6k_4UBSsh3cMbJiVNSX13nKYlZlCHfc4zU4TAI
 id: par_data_enforcement_notice.enforcement_notice.full
@@ -14,24 +14,57 @@ targetEntityType: par_data_enforcement_notice
 bundle: enforcement_notice
 mode: full
 content:
-  name:
-    label: above
-    type: string
-    weight: -4
+  enforcing_authority:
+    type: entity_reference_entity_view
+    weight: 4
     region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+  legal_entity:
+    type: entity_reference_entity_view
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+  notice_date:
+    type: datetime_default
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+  notice_type:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  user_id:
-    label: hidden
-    type: author
-    weight: 0
+  primary_authority:
+    type: entity_reference_entity_view
+    weight: 5
     region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+  summary:
+    type: basic_string
+    weight: 2
+    region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
 hidden:
-  enforcing_authority: true
-  legal_entity: true
-  notice_date: true
-  notice_type: true
-  primary_authority: true
+  name: true
+  user_id: true
