@@ -16,9 +16,5 @@ function par_data_install() {
  * Update the PAR entities.
  */
 function par_data_update_8001() {
-  $entity_update_manager = \Drupal::entityDefinitionUpdateManager();
-  $entity_type = $entity_update_manager->getEntityType('par_data_regulatory_area');
-  $entity_update_manager->uninstallEntityType($entity_type);
-  // Ensure the user_account field is created.
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
