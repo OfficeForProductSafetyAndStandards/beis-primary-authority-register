@@ -1,5 +1,5 @@
 @ci
-Feature:Create a view structured as illustrated in the attached image.
+Feature: Capture the state of a section in an entity; ie., whether or not an entity has been confirmed.
 
     Background:
         Given I open the url "/user/login"
@@ -7,9 +7,8 @@ Feature:Create a view structured as illustrated in the attached image.
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         Then I expect that element ".error-message" is not visible
-        And the element "#block-sitewidehelpdeskmessage" contains the text "0121 345 1201"
 
-    Scenario: List Partnership Details: Load summary elements Load data into the form
+    Scenario: Capture the state of a section in an entity
         Given I open the url "/dv/partnership-dashboard"
-        Then the element ".view-dv-journey-1-step-1" contains the text "Partnership details and documentation for"
-
+        Then the element "h1" contains the text "List of Partnerships for a Primary Authority"
+        Then I expect that element "#view-partnership-status-table-column" is visible
