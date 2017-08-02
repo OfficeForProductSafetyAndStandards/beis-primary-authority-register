@@ -32,8 +32,7 @@ class ParDocuments extends SqlBase {
   public function query() {
     return $this->select($this->table, 'b')
       ->fields('b', ['document_id', 'owning_object_type', 'owning_object_id', 'role_within_object', 'document_path', 'document_name', 'size_in_bytes', 'file_type', 'document_content'])
-      ->orderBy('size_in_bytes', 'asc')
-      ->range(0, 100);
+      ->orderBy('size_in_bytes', 'asc');
   }
 
   /**

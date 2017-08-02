@@ -15,7 +15,7 @@ function par2_db_query() {
   $query = $db->select('par_documents', 'docs')
     ->fields('docs', ['document_id', 'size_in_bytes', 'file_type'])
     ->orderBy('size_in_bytes', 'asc')
-    ->range(0, 10);
+    ->condition('size_in_bytes', 10000, '>');
   $records = $query->execute();
 
   echo $records->rowCount();
