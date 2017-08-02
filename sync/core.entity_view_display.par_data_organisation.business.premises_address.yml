@@ -1,6 +1,6 @@
 uuid: ac166cdf-7a0c-4c20-97be-3cf2282caae8
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - core.entity_view_mode.par_data_organisation.premises_address
@@ -21,6 +21,8 @@ content:
     third_party_settings: {  }
 hidden:
   comments: true
+  coordinator_eligible_number: true
+  coordinator_type: true
   employees_band: true
   legal_entity: true
   name: true

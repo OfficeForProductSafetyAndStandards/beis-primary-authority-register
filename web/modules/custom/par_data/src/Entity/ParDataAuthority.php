@@ -218,6 +218,33 @@ class ParDataAuthority extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayConfigurable('view', TRUE);
 
+    // Reference to Regulatory Function.
+    $fields['allowed_regulatory_function'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Allowed Regulatory Functions'))
+      ->setDescription(t('The Regulatory Functions this Authority is allowed to serve.'))
+      ->setRequired(TRUE)
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+      ->setSetting('target_type', 'par_data_regulatory_function')
+      ->setSetting('handler', 'default')
+      ->setSetting('handler_settings',
+        [
+          'target_bundles' => [
+            'regulatory_function' => 'regulatory_function'
+          ]
+        ]
+      )
+      ->setDisplayOptions('form', array(
+        'type' => 'entity_reference_autocomplete',
+        'weight' => 9,
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'size' => 60,
+          'placeholder' => '',
+        ),
+      ))
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
+
     // Reference to Premises.
     $fields['premises'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Premises'))

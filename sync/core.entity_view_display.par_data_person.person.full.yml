@@ -5,8 +5,6 @@ dependencies:
   config:
     - core.entity_view_mode.par_data_person.full
     - par_data.par_data_person_type.person
-  module:
-    - user
 _core:
   default_config_hash: A3B0Q06-cNGLzOOoutjJhsPAaWe1QHMRmRylI0lrs5c
 id: par_data_person.person.full
@@ -14,24 +12,68 @@ targetEntityType: par_data_person
 bundle: person
 mode: full
 content:
-  name:
-    label: above
+  email:
     type: string
-    weight: -4
+    weight: 6
     region: content
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  user_id:
+  first_name:
+    type: string
+    weight: 1
+    region: content
     label: hidden
-    type: author
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  job_title:
+    type: string
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  last_name:
+    type: string
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  mobile_phone:
+    type: string
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  salutation:
+    type: string
     weight: 0
     region: content
-    settings: {  }
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  work_phone:
+    type: string
+    weight: 4
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
 hidden:
-  email: true
-  mobile_phone: true
+  communication_email: true
+  communication_mobile: true
+  communication_notes: true
+  communication_phone: true
+  name: true
   person_name: true
-  salutation: true
-  work_phone: true
+  user_account: true
+  user_id: true

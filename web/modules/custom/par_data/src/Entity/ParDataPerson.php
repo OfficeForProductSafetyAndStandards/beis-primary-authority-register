@@ -372,8 +372,8 @@ class ParDataPerson extends ParDataEntity {
 
     // Communication by Phone.
     $fields['communication_phone'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Communication by Phone'))
-      ->setDescription(t('Whether to allow contact by phone for this Partnership.'))
+      ->setLabel(t('Communication by Work Phone'))
+      ->setDescription(t('Whether to allow contact by work phone for this Partnership.'))
       ->setRevisionable(TRUE)
       ->setTranslatable(FALSE)
       ->setDisplayOptions('form', [
@@ -385,7 +385,7 @@ class ParDataPerson extends ParDataEntity {
 
     // Communication by Mobile.
     $fields['communication_mobile'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Communication by Mobile'))
+      ->setLabel(t('Communication by Mobile Phone'))
       ->setDescription(t('Whether to allow contact by mobile for this Partnership.'))
       ->setRevisionable(TRUE)
       ->setTranslatable(FALSE)

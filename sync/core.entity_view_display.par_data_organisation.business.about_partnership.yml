@@ -1,6 +1,6 @@
 uuid: 72e07e37-10fb-4857-88dd-54c6011e8b83
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - core.entity_view_mode.par_data_organisation.about_partnership
@@ -14,6 +14,8 @@ mode: about_partnership
 content: {  }
 hidden:
   comments: true
+  coordinator_eligible_number: true
+  coordinator_type: true
   employees_band: true
   legal_entity: true
   name: true
