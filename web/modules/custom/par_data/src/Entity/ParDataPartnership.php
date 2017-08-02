@@ -457,18 +457,18 @@ class ParDataPartnership extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayConfigurable('view', TRUE);
 
-    // Reference to Regulatory Area.
-    $fields['regulatory_area'] = BaseFieldDefinition::create('entity_reference')
+    // Reference to Regulatory Function.
+    $fields['regulatory_function'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Regulatory Area'))
       ->setDescription(t('The Regulatory Areas for this Partnership.'))
       ->setRequired(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSetting('target_type', 'par_data_regulatory_area')
+      ->setSetting('target_type', 'par_data_regulatory_function')
       ->setSetting('handler', 'default')
       ->setSetting('handler_settings',
         [
           'target_bundles' => [
-            'regulatory_area' => 'regulatory_area',
+            'regulatory_function' => 'regulatory_function',
           ]
         ]
       )
@@ -485,9 +485,35 @@ class ParDataPartnership extends ParDataEntity {
       ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Person.
-    $fields['person'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Contacts'))
-      ->setDescription(t('The contacts for this Partnership. The first Person will be the primary contact.'))
+    $fields['authority_person'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Authority Contacts'))
+      ->setDescription(t('The authority contacts for this Partnership. The first Person will be the primary contact.'))
+      ->setRequired(TRUE)
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+      ->setSetting('target_type', 'par_data_person')
+      ->setSetting('handler', 'default')
+      ->setSetting('handler_settings',
+        [
+          'target_bundles' => [
+            'person' => 'person'
+          ]
+        ]
+      )
+      ->setDisplayOptions('form', array(
+        'type' => 'entity_reference_autocomplete',
+        'weight' => 21,
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'size' => 60,
+          'placeholder' => '',
+        ),
+      ))
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);    // Reference to Person.
+
+    $fields['business_person'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Business Contacts'))
+      ->setDescription(t('The business contacts for this Partnership. The first Person will be the primary contact.'))
       ->setRequired(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_person')

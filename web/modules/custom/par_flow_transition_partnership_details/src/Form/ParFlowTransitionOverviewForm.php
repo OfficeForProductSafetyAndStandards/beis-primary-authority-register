@@ -191,11 +191,11 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-    $regulatory_areas = $par_data_partnership->get('regulatory_area')->referencedEntities();
-    $regulatory_area_view_builder = current($regulatory_areas)->getViewBuilder();
-    foreach ($par_data_partnership->get('regulatory_area')->referencedEntities() as $regulatory_area) {
-      $regulatory_area_field = $regulatory_area_view_builder->view($regulatory_area, 'title');
-      $form['fourth_section'][] = $this->renderMarkupField($regulatory_area_field);
+    $regulatory_functions = $par_data_partnership->get('regulatory_function')->referencedEntities();
+    $regulatory_function_view_builder = current($regulatory_functions)->getViewBuilder();
+    foreach ($par_data_partnership->get('regulatory_function')->referencedEntities() as $regulatory_function) {
+      $regulatory_function_field = $regulatory_function_view_builder->view($regulatory_function, 'title');
+      $form['fourth_section'][] = $this->renderMarkupField($regulatory_function_field);
     }
 
     // Partnership Confirmation.

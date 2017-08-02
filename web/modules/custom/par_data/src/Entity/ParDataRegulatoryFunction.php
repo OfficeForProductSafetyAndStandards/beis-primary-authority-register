@@ -6,21 +6,21 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
- * Defines the par_data_regulatory_area entity.
+ * Defines the par_data_regulatory_function entity.
  *
  * @ingroup par_data
  *
  * @ContentEntityType(
- *   id = "par_data_regulatory_area",
- *   label = @Translation("PAR Regulatory Area"),
- *   label_collection = @Translation("PAR Regulatory Areas"),
- *   label_singular = @Translation("PAR Regulatory Area"),
- *   label_plural = @Translation("PAR Regulatory Areas"),
+ *   id = "par_data_regulatory_function",
+ *   label = @Translation("PAR Regulatory Function"),
+ *   label_collection = @Translation("PAR Regulatory Functions"),
+ *   label_singular = @Translation("PAR Regulatory Function"),
+ *   label_plural = @Translation("PAR Regulatory Functions"),
  *   label_count = @PluralTranslation(
- *     singular = "@count regulatory area",
- *     plural = "@count regulatory areas"
+ *     singular = "@count regulatory function",
+ *     plural = "@count regulatory functions"
  *   ),
- *   bundle_label = @Translation("PAR Regulatory Area type"),
+ *   bundle_label = @Translation("PAR Regulatory Function type"),
  *   handlers = {
  *     "storage" = "Drupal\trance\TranceStorage",
  *     "storage_schema" = "Drupal\trance\TranceStorageSchema",
@@ -35,11 +35,11 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     },
  *     "access" = "Drupal\par_data\Access\ParDataAccessControlHandler",
  *   },
- *   base_table = "par_regulatory_areas",
- *   data_table = "par_regulatory_areas_field_data",
- *   revision_table = "par_regulatory_areas_revision",
- *   revision_data_table = "par_regulatory_areas_field_revision",
- *   admin_permission = "administer par_data_regulatory_area entities",
+ *   base_table = "par_regulatory_functions",
+ *   data_table = "par_regulatory_functions_field_data",
+ *   revision_table = "par_regulatory_functions_revision",
+ *   revision_data_table = "par_regulatory_functions_field_revision",
+ *   admin_permission = "administer par_data_regulatory_function entities",
  *   translatable = TRUE,
  *   entity_keys = {
  *     "id" = "id",
@@ -52,17 +52,17 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     "status" = "status"
  *   },
  *   links = {
- *     "collection" = "/admin/content/par_data/par_data_regulatory_area",
- *     "canonical" = "/admin/content/par_data/par_data_regulatory_area/{par_data_regulatory_area}",
- *     "edit-form" = "/admin/content/par_data/par_data_regulatory_area/{par_data_regulatory_area}/edit",
- *     "delete-form" = "/admin/content/par_data/par_data_regulatory_area/{par_data_regulatory_area}/delete"
+ *     "collection" = "/admin/content/par_data/par_data_regulatory_function",
+ *     "canonical" = "/admin/content/par_data/par_data_regulatory_function/{par_data_regulatory_function}",
+ *     "edit-form" = "/admin/content/par_data/par_data_regulatory_function/{par_data_regulatory_function}/edit",
+ *     "delete-form" = "/admin/content/par_data/par_data_regulatory_function/{par_data_regulatory_function}/delete"
  *   },
- *   bundle_entity_type = "par_data_regulatory_area_type",
+ *   bundle_entity_type = "par_data_regulatory_function_t",
  *   permission_granularity = "bundle",
- *   field_ui_base_route = "entity.par_data_regulatory_area_type.edit_form"
+ *   field_ui_base_route = "entity.par_data_regulatory_function_t.edit_form"
  * )
  */
-class ParDataRegulatoryArea extends ParDataEntity {
+class ParDataRegulatoryFunction extends ParDataEntity {
 
   /**
    * {@inheritdoc}
@@ -71,9 +71,9 @@ class ParDataRegulatoryArea extends ParDataEntity {
     $fields = parent::baseFieldDefinitions($entity_type);
 
     // Name.
-    $fields['area_name'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Regulatory Area Name'))
-      ->setDescription(t('The name of the Regulatory Area.'))
+    $fields['function_name'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Regulatory Function Name'))
+      ->setDescription(t('The name of the Regulatory Function.'))
       ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([

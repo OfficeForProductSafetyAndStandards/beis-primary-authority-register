@@ -42,13 +42,14 @@ class ParFlowTransitionContactForm extends ParBaseForm {
 
     if ($par_data_person) {
       // Contact.
-      $this->loadDataValue("person_{$par_data_person->id()}_salutation", $par_data_person->get('salutation')->getString());
-      $this->loadDataValue("person_{$par_data_person->id()}_name", $par_data_person->get('person_name')->getString());
-      $this->loadDataValue("person_{$par_data_person->id()}_phone", $par_data_person->get('work_phone')->getString());
-      $this->loadDataValue("person_{$par_data_person->id()}_mobile_phone", $par_data_person->get('mobile_phone')->getString());
-      $this->loadDataValue("person_{$par_data_person->id()}_email", $par_data_person->get('email')->getString());
+      $this->loadDataValue("person_salutation", $par_data_person->get('salutation')->getString());
+      $this->loadDataValue("person_first_name", $par_data_person->get('first_name')->getString());
+      $this->loadDataValue("person_last_name", $par_data_person->get('last_name')->getString());
+      $this->loadDataValue("person_phone", $par_data_person->get('work_phone')->getString());
+      $this->loadDataValue("person_mobile_phone", $par_data_person->get('mobile_phone')->getString());
+      $this->loadDataValue("person_email", $par_data_person->get('email')->getString());
+      $this->loadDataValue('person_id', $par_data_person->id());
     }
-    $this->loadDataValue('person_id', $par_data_person->id());
   }
 
   /**
@@ -67,24 +68,21 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     $form['salutation'] = [
       '#type' => 'select',
       '#title' => $this->t('Title (optional)'),
-      '#default_value' => $this->getDefaultValues("person_{$this->getDefaultValues('person_id')}_salutation"),
+      '#default_value' => $this->getDefaultValues("person_salutation"),
       '#options' => array_combine($title_options, $title_options),
     ];
-
-    // The Person's name.
-    $name = explode(" ", $this->getDefaultValues("person_{$this->getDefaultValues('person_id')}_name"), 2);
 
     $form['first_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('First Name'),
-      '#default_value' => !empty($name[0]) ? $name[0] : '',
+      '#default_value' => $this->getDefaultValues("person_first_name"),
       '#required' => TRUE,
     ];
 
     $form['last_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Last Name'),
-      '#default_value' => !empty($name[1]) ? $name[1] : '',
+      '#default_value' => $this->getDefaultValues("person_last_name"),
       '#required' => TRUE,
     ];
 
@@ -92,7 +90,7 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     $form['work_phone'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Work Phone'),
-      '#default_value' => $this->getDefaultValues("person_{$this->getDefaultValues('person_id')}_phone"),
+      '#default_value' => $this->getDefaultValues("person_phone"),
       '#required' => TRUE,
     ];
 
@@ -100,14 +98,14 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     $form['mobile_phone'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Mobile Phone (optional)'),
-      '#default_value' => $this->getDefaultValues("person_{$this->getDefaultValues('person_id')}_mobile_phone"),
+      '#default_value' => $this->getDefaultValues("person_mobile_phone"),
     ];
 
     // The Person's work phone number.
     $form['email'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Email'),
-      '#default_value' => $this->getDefaultValues("person_{$this->getDefaultValues('person_id')}_email"),
+      '#default_value' => $this->getDefaultValues("person_email"),
       '#required' => TRUE,
     ];
 
@@ -121,7 +119,7 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     $form['contact_method'] = [
       '#type' => 'radios',
       '#title' => $this->t('(NOT SAVED) Preferred method of contact (optional)'),
-      '#default_value' => $this->getDefaultValues("person_{$this->getDefaultValues('person_id')}_contact_method"),
+      '#default_value' => $this->getDefaultValues("person_contact_method"),
       '#options' => array_combine($title_options, $title_options),
     ];
 

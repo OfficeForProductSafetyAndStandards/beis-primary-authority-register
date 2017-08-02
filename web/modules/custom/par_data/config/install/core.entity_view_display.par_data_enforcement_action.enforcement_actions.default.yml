@@ -1,0 +1,36 @@
+uuid: c917dbdd-3eff-489f-a977-c2130b9042c2
+langcode: en
+status: true
+dependencies:
+  config:
+    - par_data.par_data_enforcement_action_type.enforcement_actions
+id: par_data_enforcement_action.enforcement_actions.default
+targetEntityType: par_data_enforcement_action
+bundle: enforcement_actions
+mode: default
+content:
+  details:
+    type: basic_string
+    weight: 1
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  title:
+    type: basic_string
+    weight: 0
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  action_referral: true
+  ea_notes: true
+  ea_status: true
+  enforcement_notice: true
+  name: true
+  pa_notes: true
+  pa_status: true
+  referral_notes: true
+  regulatory_function: true
+  user_id: true

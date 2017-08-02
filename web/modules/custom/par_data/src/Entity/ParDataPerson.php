@@ -135,6 +135,10 @@ class ParDataPerson extends ParDataEntity {
     return $saved ? $account : NULL;
   }
 
+  public function getFullName() {
+    return $this->get('first_name') . ' ' . $this->get('last_name');
+  }
+
   /**
    * Get any Authorities this user is a member of.
    *

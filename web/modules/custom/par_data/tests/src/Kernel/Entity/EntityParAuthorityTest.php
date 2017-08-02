@@ -45,7 +45,7 @@ class EntityParAuthorityTest extends ParDataTestBase {
       'nation' => '',
       'ons_code' => '',
       'person' => [],
-      'regulatory_area' => [],
+      'regulatory_function' => [],
       'premises' => [],
     ] + $authority_values);
     $violations = $entity->validate()->getByFields([
@@ -54,7 +54,7 @@ class EntityParAuthorityTest extends ParDataTestBase {
       'nation',
       'ons_code',
       'person',
-      'regulatory_area',
+      'regulatory_function',
       'premises',
     ]);
     $this->assertEqual(count($violations->getFieldNames()), 7, 'Required fields cannot be empty.');

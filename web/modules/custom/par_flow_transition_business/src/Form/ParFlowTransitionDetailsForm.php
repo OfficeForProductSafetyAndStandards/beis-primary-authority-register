@@ -139,7 +139,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
 
     // Contacts.
     // Primary contact summary.
-    $par_data_contacts = $par_data_partnership->get('person')->referencedEntities();
+    $par_data_contacts = $par_data_partnership->get('business_person')->referencedEntities();
     $par_data_primary_person = array_shift($par_data_contacts);
     $primary_person_view_builder = $par_data_primary_person->getViewBuilder();
 

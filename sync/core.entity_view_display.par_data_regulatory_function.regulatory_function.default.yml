@@ -1,0 +1,22 @@
+uuid: 1f3e0120-e48f-4353-9453-9948920db90c
+langcode: en
+status: true
+dependencies:
+  config:
+    - par_data.par_data_regulatory_function_t.regulatory_function
+id: par_data_regulatory_function.regulatory_function.default
+targetEntityType: par_data_regulatory_function
+bundle: regulatory_function
+mode: default
+content:
+  function_name:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  name: true
+  user_id: true

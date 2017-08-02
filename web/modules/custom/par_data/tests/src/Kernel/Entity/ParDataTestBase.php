@@ -19,8 +19,8 @@ use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPersonType;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_data\Entity\ParDataPremisesType;
-use Drupal\par_data\Entity\ParDataRegulatoryArea;
-use Drupal\par_data\Entity\ParDataRegulatoryAreaType;
+use Drupal\par_data\Entity\ParDataRegulatoryFunction;
+use Drupal\par_data\Entity\ParDataRegulatoryFunctionT;
 use Drupal\par_data\Entity\ParDataSicCode;
 use Drupal\par_data\Entity\ParDataSicCodeType;
 
@@ -50,7 +50,7 @@ class ParDataTestBase extends EntityKernelTestBase {
       'par_data_partnership',
       'par_data_person',
       'par_data_premises',
-      'par_data_regulatory_area',
+      'par_data_regulatory_function',
       'par_data_sic_code',
     ];
 
@@ -127,8 +127,8 @@ class ParDataTestBase extends EntityKernelTestBase {
     $type->save();
 
     // Create the entity bundles required for testing.
-    $type = ParDataRegulatoryAreaType::create([
-      'id' => 'regulatory_area',
+    $type = ParDataRegulatoryFunctionT::create([
+      'id' => 'regulatory_function',
       'label' => 'Regulatory Area',
     ]);
     $type->save();
@@ -165,8 +165,8 @@ class ParDataTestBase extends EntityKernelTestBase {
     $person->save();
 
     // We need to create a Regulatory Area first.
-    $regulatory_area = ParDataRegulatoryArea::create($this->getRegulatoryAreaValues());
-    $regulatory_area->save();
+    $regulatory_function = ParDataRegulatoryFunction::create($this->getRegulatoryAreaValues());
+    $regulatory_function->save();
 
     // We need to create an Organisation first.
     $premises = ParDataPremises::create($this->getPremisesValues());
@@ -181,8 +181,8 @@ class ParDataTestBase extends EntityKernelTestBase {
       'person' => [
         $person->id(),
       ],
-      'regulatory_area' => [
-        $regulatory_area->id(),
+      'regulatory_function' => [
+        $regulatory_function->id(),
       ],
       'premises' => [
         $premises->id(),
@@ -305,8 +305,8 @@ class ParDataTestBase extends EntityKernelTestBase {
     $inspection_plan->save();
 
     // We need to create a Regulatory Area first.
-    $regulatory_area = ParDataRegulatoryArea::create($this->getRegulatoryAreaValues());
-    $regulatory_area->save();
+    $regulatory_function = ParDataRegulatoryFunction::create($this->getRegulatoryAreaValues());
+    $regulatory_function->save();
 
     // We need to create a Person first.
     $person = ParDataPerson::create($this->getPersonValues());
@@ -341,8 +341,8 @@ class ParDataTestBase extends EntityKernelTestBase {
         'inspection_plan' => [
           $inspection_plan->id(),
         ],
-        'regulatory_area' => [
-          $regulatory_area->id(),
+        'regulatory_function' => [
+          $regulatory_function->id(),
         ],
         'person' => [
           $person->id(),
@@ -377,7 +377,7 @@ class ParDataTestBase extends EntityKernelTestBase {
 
   public function getRegulatoryAreaValues() {
     return [
-      'type' => 'regulatory_area',
+      'type' => 'regulatory_function',
       'area_name' => 'Health and Safety',
     ] + $this->getBaseValues();
   }

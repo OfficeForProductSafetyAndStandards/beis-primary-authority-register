@@ -191,18 +191,18 @@ class ParDataAuthority extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayConfigurable('view', TRUE);
 
-    // Reference to Regulatory Area.
-    $fields['regulatory_area'] = BaseFieldDefinition::create('entity_reference')
+    // Reference to Regulatory Function.
+    $fields['regulatory_function'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Regulatory Area'))
-      ->setDescription(t('The Regulatory Areas this Authority is responsible for.'))
+      ->setDescription(t('The Regulatory Functions this Authority is responsible for.'))
       ->setRequired(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSetting('target_type', 'par_data_regulatory_area')
+      ->setSetting('target_type', 'par_data_regulatory_function')
       ->setSetting('handler', 'default')
       ->setSetting('handler_settings',
         [
           'target_bundles' => [
-            'regulatory_area' => 'regulatory_area'
+            'regulatory_function' => 'regulatory_function'
           ]
         ]
       )
