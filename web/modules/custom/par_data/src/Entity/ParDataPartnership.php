@@ -488,8 +488,8 @@ class ParDataPartnership extends ParDataEntity {
       ->setDisplayConfigurable('view', TRUE);    // Reference to Person.
 
     $fields['organisation_person'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Business Contacts'))
-      ->setDescription(t('The business contacts for this Partnership. The first Person will be the primary contact.'))
+      ->setLabel(t('Organisation Contacts'))
+      ->setDescription(t('The organisation contacts for this Partnership. The first Person will be the primary contact.'))
       ->setRequired(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_person')

@@ -27,14 +27,19 @@ hidden:
   approved_date: true
   authority: true
   authority_change_comment: true
+  authority_person: true
   communication_email: true
   communication_notes: true
   communication_phone: true
+  coordinator_suitable: true
   cost_recovery: true
   expertise_details: true
   inspection_plan: true
   name: true
   organisation_change_comment: true
+  organisation_person: true
+  partnership_info_agreed_authority: true
+  partnership_info_agreed_business: true
   partnership_status: true
   partnership_type: true
   person: true
@@ -43,4 +48,7 @@ hidden:
   revocation_date: true
   revocation_reason: true
   revocation_source: true
+  tc_authority_agreed: true
+  tc_organisation_agreed: true
   user_id: true
+  written_summary_agreed: true

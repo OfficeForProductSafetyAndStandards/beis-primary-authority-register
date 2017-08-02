@@ -30,4 +30,5 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  function_name: true
   name: true

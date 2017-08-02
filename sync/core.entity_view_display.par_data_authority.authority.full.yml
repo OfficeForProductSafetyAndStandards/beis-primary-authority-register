@@ -32,6 +32,7 @@ content:
 hidden:
   authority_name: true
   authority_type: true
+  comments: true
   nation: true
   ons_code: true
   person: true

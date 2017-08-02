@@ -30,3 +30,4 @@ content:
     third_party_settings: {  }
 hidden:
   area_name: true
+  function_name: true
