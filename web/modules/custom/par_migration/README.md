@@ -6,7 +6,7 @@ The source for all the data is the PAR3 transition database. This is an MS SQL S
 
 We require the Drupal driver for SQL Server module version 2.x to connect to this database - https://www.drupal.org/project/sqlsrv
 
-This module has a dependency on a paid PHP MSSQL library - http://www.drupalonwindows.com/en/content/phpmssql
+This module has a dependency on a paid PHP MSSQL library (requires access to the private repository) - http://www.drupalonwindows.com/en/content/phpmssql
 
 This library has a dependency on the Microsoft PDO for Linux Driver (this is the only dependency not installed or configured by composer) - https://www.microsoft.com/en-us/sql-server/developer-get-started/php/ubuntu/
 
