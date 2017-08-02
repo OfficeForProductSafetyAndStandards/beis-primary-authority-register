@@ -1,3 +1,7 @@
+<?php
+
+$settings['hash_salt'] = 'THIS_IS_THE_HASH_SALT';
+
 $databases['default']['default'] = array (
   'database' => 'par',
   'username' => 'par',
@@ -13,7 +17,7 @@ $settings['trusted_host_patterns'] = [''];
 
 $settings['config_readonly'] = FALSE;
 
-$config['config_split.config_split.dev_config']['status'] = TRUE;
+$config['config_split.config_split.dev_config']['status']= TRUE;
 
 if (file_exists($app_root . '/' . $site_path . '/services.local.yml')) {
   $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.local.yml';

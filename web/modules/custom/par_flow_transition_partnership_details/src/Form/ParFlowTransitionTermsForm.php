@@ -7,8 +7,8 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 
 /**
- * The about partnership form for the partnership details steps of the
- * 1st Data Validation/Transition User Journey.
+ * The Terms and Conditions form for the acceptance of
+ * new Primary Authority Register regulations.
  */
 class ParFlowTransitionTermsForm extends ParBaseForm {
 

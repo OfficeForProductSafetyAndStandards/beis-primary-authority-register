@@ -7,7 +7,8 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Controller\ParBaseController;
 
 /**
- * A controller for all PAR Flow Transition pages.
+ * A controller for displaying all tasks that can
+ * be performed on a partnership.
  */
 class ParFlowTransitionTaskListController extends ParBaseController {
 
@@ -56,7 +57,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
       ->setText('Review and confirm your inspection plan')
       ->toString();
     $par_data_inspection_plan = current($par_data_partnership->get('inspection_plan')->referencedEntities());
-    $inspection_plan_completion = $par_data_inspection_plan->getCompletionPercentage();
+    $inspection_plan_completion = $par_data_inspection_plan->getParStatus();
 
     // Generate the link for confirming all advice documents.
     $documents_list_link = $this->getFlow()->getLinkByStep(9)
@@ -77,11 +78,11 @@ class ParFlowTransitionTaskListController extends ParBaseController {
       ],
       2 => [
         $inspection_plan_link,
-        $inspection_plan_completion,
+        $inspection_plan_completion . '%',
       ],
       3 => [
         $documents_list_link,
-        $documentation_completion,
+        $documentation_completion . '%',
       ]
     ];
     if (isset($invite_link)) {

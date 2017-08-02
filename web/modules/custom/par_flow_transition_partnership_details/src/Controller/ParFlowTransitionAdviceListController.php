@@ -7,7 +7,8 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Controller\ParBaseController;
 
 /**
- * A controller for all PAR Flow Transition pages.
+ * A controller for rendering a list of advice documents
+ * relevant to a partnership.
  */
 class ParFlowTransitionAdviceListController extends ParBaseController {
 
@@ -29,7 +30,7 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
     foreach ($documents as $document) {
       $document_view_builder = $document->getViewBuilder();
       // The first column contains a rendered summary of the document.
-      $document_summary = $document_view_builder->view($document, 'summary');
+      $document_summary = $this->renderMarkupField($document_view_builder->view($document, 'summary'));
 
       // The second column contains a summary of the confirmed details.
       $document_details = 'Awaiting confirmation';
@@ -41,22 +42,26 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
       }
 
       // The third column contains a list of actions that can be performed on this document.
-      $document_actions = implode(PHP_EOL, [
-        $this->getFlow()
-          ->getLinkByStep(10, ['par_data_advice' => $document->id()])
-          ->setText('edit')
-          ->toString(),
-      ]);
+      $links = [
+        [
+          '#type' => 'markup',
+          '#markup' => $this->getFlow()
+            ->getLinkByStep(10, ['par_data_advice' => $document->id()])
+            ->setText('edit')
+            ->toString(),
+        ]
+      ];
+      $document_actions = $this->getRenderer()->render($links);
 
       // Fourth column contains the completion status of the document.
       $completion = $document->getCompletionPercentage();
 
       if ($document_summary && $document_details && $document_actions && $completion) {
-        $row[] = [
-          $document_summary,
+        $rows[] = [
+          "Documents are not yet attached...",
           $document_details,
           $document_actions,
-          $completion,
+          $completion . '%',
         ];
       }
     }
@@ -66,13 +71,13 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
       '#theme' => 'table',
       '#header' => [],
       '#rows' => $rows,
-      '#empty' => $this->t("There is no documentation for this Partnership."),
+      '#empty' => $this->t("There is no documentation for this partnership."),
     ];
 
     $build['cancel'] = [
       '#type' => 'markup',
       '#markup' => t('<br>%link', [
-        '%link' => $this->getFlow()->getLinkByStep(4, $this->getRouteParams(), ['attributes' => ['class' => 'button']])
+        '%link' => $this->getFlow()->getLinkByStep(3, $this->getRouteParams(), ['attributes' => ['class' => 'button']])
           ->setText('Save')
           ->toString()
       ]),

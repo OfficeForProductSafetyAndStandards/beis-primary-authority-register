@@ -5,6 +5,7 @@ namespace Drupal\par_flows\Controller;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParBaseInterface;
 use Drupal\par_flows\ParRedirectTrait;
@@ -19,6 +20,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   use ParRedirectTrait;
   use RefinableCacheableDependencyTrait;
   use ParDisplayTrait;
+  use StringTranslationTrait;
 
   /**
    * The flow entity storage class, for loading flows.

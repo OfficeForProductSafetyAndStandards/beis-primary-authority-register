@@ -9,6 +9,7 @@ Feature: As the (coordinated) Business User,
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         Then I expect that element ".error-message" is not visible
+        And the element "#block-par-theme-content" contains the text "Review and confirm your data by"
 
     Scenario:
         Given I open the url "/dv/business-partnerships/1/details/address/1"
