@@ -44,6 +44,9 @@ web/themes/custom/par_theme/assets/vendor/
 /web/sites/*/settings.local.php
 /web/sites/*/services.local.yml
 
+# Exclude additional database driver files.
+/web/drivers/
+
 # Exclude configuration for developer only modules.
 /sync/devel.*
 /sync/simpletest.*
