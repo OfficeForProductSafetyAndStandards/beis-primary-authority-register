@@ -1,9 +1,0 @@
-uuid: d40bc14a-eac4-41ff-b825-a909ca9a96d6
-langcode: en
-status: true
-dependencies: {  }
-id: enforcement_actions
-label: 'Enforcement Actions'
-description: ''
-help: ''
-configuration: null

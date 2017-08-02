@@ -198,32 +198,6 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayConfigurable('view', TRUE);
 
-    // Enforcement notice.
-    $fields['enforcement_notice'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Enforcement Notice'))
-      ->setDescription(t('The Enforcement Notice this action belongs to.'))
-      ->setCardinality(1)
-      ->setSetting('target_type', 'par_data_enforcement_notice')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
-          'target_bundles' => [
-            'enforcement_notice' => 'enforcement_notice',
-          ]
-        ]
-      )
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 4,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayConfigurable('view', TRUE);
-
     // Blocked by advice.
     $fields['blocked_advice'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Blocked by Advice'))

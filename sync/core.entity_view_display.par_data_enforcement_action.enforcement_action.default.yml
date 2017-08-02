@@ -3,10 +3,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - par_data.par_data_enforcement_action_type.enforcement_actions
-id: par_data_enforcement_action.enforcement_actions.default
+    - par_data.par_data_enforcement_action_type.enforcement_action
+id: par_data_enforcement_action.enforcement_action.default
 targetEntityType: par_data_enforcement_action
-bundle: enforcement_actions
+bundle: enforcement_action
 mode: default
 content:
   details:
@@ -25,6 +25,7 @@ content:
     third_party_settings: {  }
 hidden:
   action_referral: true
+  blocked_advice: true
   ea_notes: true
   ea_status: true
   enforcement_notice: true

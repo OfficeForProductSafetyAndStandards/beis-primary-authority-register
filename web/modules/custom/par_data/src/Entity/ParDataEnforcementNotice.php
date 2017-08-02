@@ -183,7 +183,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
       ->setLabel(t('Legal Entity'))
       ->setDescription(t('The Legal Entities this Enforcement Notice is issued to.'))
       ->setRequired(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+      ->setCardinality(1)
       ->setSetting('target_type', 'par_data_legal_entity')
       ->setSetting('handler', 'default')
       ->setSetting('handler_settings',
@@ -196,6 +196,32 @@ class ParDataEnforcementNotice extends ParDataEntity {
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 6,
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'size' => 60,
+          'placeholder' => '',
+        ),
+      ))
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Enforcement action.
+    $fields['enforcement_action'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Enforcement Actions'))
+      ->setDescription(t('Enforcement Actions that relate to this Notice.'))
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+      ->setSetting('target_type', 'par_data_enforcement_action')
+      ->setSetting('handler', 'default')
+      ->setSetting('handler_settings',
+        [
+          'target_bundles' => [
+            'enforcement_action' => 'enforcement_action',
+          ]
+        ]
+      )
+      ->setDisplayOptions('form', array(
+        'type' => 'entity_reference_autocomplete',
+        'weight' => 4,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => 60,
