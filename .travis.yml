@@ -142,7 +142,8 @@ deploy:
 
 after_deploy:
   - cf login -a api.cloud.service.gov.uk -u nao.yoshino@transformuk.com -p $CF_PASSWORD
-  - if [[ $TRAVIS_TAG == '' ]]; then PAAS_APP_INSTANCE='par-beta-staging'; else PAAS_APP_INSTANCE='par-beta-demo'; fi
+  - if [[ $TRAVIS_TAG == '' ]]; then APP_ENV='staging'; else APP_ENV='demo'; fi
+  - PAAS_APP_INSTANCE="par-beta-$APP_ENV";
   - echo $PAAS_APP_INSTANCE
   
 #-----------------------------------------------------------------------------
@@ -157,6 +158,7 @@ after_deploy:
   - cf set-env $PAAS_APP_INSTANCE PAR_HASH_SALT $PAR_HASH_SALT
   - cf set-env $PAAS_APP_INSTANCE PAR_GOVUK_NOTIFY_KEY $PAR_GOVUK_NOTIFY_KEY
   - cf set-env $PAAS_APP_INSTANCE PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE
+  - cf set-env $PAAS_APP_INSTANCE APP_ENV $APP_ENV
   - cf restage $PAAS_APP_INSTANCE
   
 #-----------------------------------------------------------------------------
