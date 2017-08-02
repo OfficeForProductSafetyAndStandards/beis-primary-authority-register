@@ -63,7 +63,6 @@ class ParPartnershipDashboardController extends ControllerBase {
         $businesses = $person->isBusinessMember();
         $coordinators = $person->isCoordinatorMember();
         $authorities = $person->isAuthorityMember();
-        var_dump($authorities, $businesses, $coordinators);
         if ($par_data_partnership->isAuthorityMember($person) && !isset($route)) {
           // Get the start of an authority journey.
           $route = $this->flowStorage->load('transition_partnership_details')->getRouteByStep(2);

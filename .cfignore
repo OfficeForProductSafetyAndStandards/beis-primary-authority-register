@@ -3,4 +3,5 @@ composer.lock
 composer.sh
 dashboard/
 web/sites/default/settings.local.php
+.env
 
