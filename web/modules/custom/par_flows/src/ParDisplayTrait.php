@@ -31,13 +31,13 @@ trait ParDisplayTrait {
   }
 
   /**
-   * Render percentage number as tickbox.
+   * Render completion percentages as a tick.
    *
    * @param $percentage
-   *   The input percentage.
+   *   A percentage.
    *
    * @return mixed
-   *   Rendered markup field with a tickbox e.g. ✔.
+   *   A tick e.g. ✔ or XXX%.
    */
 
   public function renderPercentageTick($percentage = 0) {
