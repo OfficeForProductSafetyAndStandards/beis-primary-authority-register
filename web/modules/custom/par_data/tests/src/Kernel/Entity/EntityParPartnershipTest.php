@@ -26,7 +26,7 @@ class EntityParPartnershipTest extends ParDataTestBase {
   /**
    * Test all partnership fields exist.
    */
-  public function testBusinessFieldsExist() {
+  public function testParFieldsExist() {
     $values = $this->getPartnershipValues();
     $entity = ParDataPartnership::create($values);
 

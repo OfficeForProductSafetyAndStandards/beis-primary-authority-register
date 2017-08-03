@@ -35,6 +35,8 @@ class ParDataTestBase extends EntityKernelTestBase {
 
   static $modules = ['trance', 'par_data', 'par_data_config', 'address', 'datetime', 'datetime_range', 'file', 'file_entity'];
 
+  protected $account = 1;
+
   /**
    * {@inheritdoc}
    */
@@ -42,6 +44,12 @@ class ParDataTestBase extends EntityKernelTestBase {
     // Must change the bytea_output to the format "escape" before running tests.
     parent::setUp();
 
+    $this->account = $this->createUser();
+
+    // Mimic some of the functionality in \Drupal\Tests\file\Kernel\FileManagedUnitTestBase
+    $this->setUpFilesystem();
+
+    // Install out entity hooks.
     $entity_types = [
       'par_data_advice',
       'par_data_authority',
@@ -163,30 +171,12 @@ class ParDataTestBase extends EntityKernelTestBase {
   public function getBaseValues() {
     return [
       'name' => 'test',
-      'uid' => 1,
+      'uid' => $this->account,
       'type' => 'UNKNOWN',
     ];
   }
 
-  public function createManagedFile($type = 'pdf') {
-    $types = [
-      'png' => [
-        'contents' => 'aHR0cDovL3d3dy5jcWMub3JnLnVrL3NpdGVzL2FsbC90aGVtZXMvY3FjL2ltYWdlcy9zdGF0dXNfdGlja3MvZ3JlZW5fdGlja19zbWFsbC5wbmc=',
-        'name' => $this->randomMachineName(8) . '.png',
-      ],
-      'pdf' => [
-        'contents' => 'aHR0cHM6Ly9ibG9ncy5hZG9iZS5jb20vc2VjdXJpdHkvU2FtcGxlU2lnbmVkUERGRG9jdW1lbnQucGRm',
-        'name' => $this->randomMachineName(8) . '.pdf',
-      ]
-    ];
-
-    return isset($types[$type]) ? file_save_data($types[$type]['contents'], $types[$type]['name']) : NULL;
-  }
-
   public function getAdviceValues() {
-    // We need to create a file entity.
-    $file = $this->createManagedFile();
-
     // We need to create a Regulatory Function first.
     $regulatory_function = ParDataRegulatoryFunction::create($this->getRegulatoryFunctionValues());
     $regulatory_function->save();
@@ -199,7 +189,7 @@ class ParDataTestBase extends EntityKernelTestBase {
       'visible_coordinator' => TRUE,
       'visible_business' => TRUE,
       'document' => [
-        $file->id()
+        ''
       ],
       'regulatory_function' => [
         $regulatory_function->id(),
@@ -309,9 +299,6 @@ class ParDataTestBase extends EntityKernelTestBase {
   }
 
   public function getInspectionPlanValues() {
-    // We need to create a file entity.
-    $file = $this->createManagedFile();
-
     return [
       'type' => 'inspection_plan',
       'valid_date' => [
@@ -322,7 +309,7 @@ class ParDataTestBase extends EntityKernelTestBase {
       'consulted_national_regulator' => TRUE,
       'inspection_status' => 'Active',
       'document' => [
-        $file->id()
+        ''
       ],
     ] + $this->getBaseValues();
   }
@@ -457,8 +444,12 @@ class ParDataTestBase extends EntityKernelTestBase {
     $regulatory_function->save();
 
     // We need to create a Person first.
-    $person = ParDataPerson::create($this->getPersonValues());
-    $person->save();
+    $person_1 = ParDataPerson::create($this->getPersonValues());
+    $person_1->save();
+
+    // We need to create a Person first.
+    $person_2 = ParDataPerson::create($this->getPersonValues());
+    $person_2->save();
 
     return [
         'type' => 'partnership',
@@ -496,10 +487,10 @@ class ParDataTestBase extends EntityKernelTestBase {
           $regulatory_function->id(),
         ],
         'authority_person' => [
-          $person->id(),
+          $person_1->id(),
         ],
         'organisation_person' => [
-          $person->id(),
+          $person_2->id(),
         ]
       ] + $this->getBaseValues();
   }
@@ -519,7 +510,7 @@ class ParDataTestBase extends EntityKernelTestBase {
       'communication_mobile' => TRUE,
       'communication_notes' => $this->randomString(1000),
       'user_account' => [
-        1,
+        $this->account->id(),
       ]
     ] + $this->getBaseValues();
   }
