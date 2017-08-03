@@ -99,12 +99,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *
    * @return string
    */
-  public function setDefaultTitle() {
-    $title = [];
-    foreach ($this->getCompletionFields() as $field) {
-      $title[] = $this->get($field)->getString();
-    }
-    return !empty($title) ? substr(implode(', ', $title), 0, 255) : uniqid();
+  public static function setDefaultTitle() {
+    return uniqid();
   }
 
   /**
