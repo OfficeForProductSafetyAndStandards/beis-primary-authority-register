@@ -16,6 +16,31 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
+  enforcement_action_notes:
+    label: hidden
+    type: text_default
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  enforcement_action_status:
+    label: hidden
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  primary_authority_notes:
+    label: hidden
+    type: text_default
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  primary_authority_status:
+    label: hidden
+    type: text_default
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   title:
     type: basic_string
     weight: 0

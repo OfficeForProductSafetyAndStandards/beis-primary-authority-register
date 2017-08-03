@@ -30,15 +30,16 @@ content:
       link_to_entity: false
     third_party_settings: {  }
   field_coordinated_businesses:
-    weight: 10
+    weight: 11
     label: above
     settings:
-      link: true
+      view_mode: summary
+      link: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_entity_view
     region: content
   field_coordinator_number:
-    weight: 11
+    weight: 12
     label: above
     settings:
       link_to_entity: false
@@ -46,7 +47,7 @@ content:
     type: string
     region: content
   field_coordinator_type:
-    weight: 12
+    weight: 10
     label: above
     settings:
       link_to_entity: false

@@ -34,6 +34,9 @@ hidden:
   coordinator_eligible_number: true
   coordinator_type: true
   employees_band: true
+  field_coordinated_businesses: true
+  field_coordinator_number: true
+  field_coordinator_type: true
   legal_entity: true
   name: true
   nation: true

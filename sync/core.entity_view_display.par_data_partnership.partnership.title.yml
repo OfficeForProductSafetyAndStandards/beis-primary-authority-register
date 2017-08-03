@@ -50,5 +50,7 @@ hidden:
   revocation_source: true
   tc_authority_agreed: true
   tc_organisation_agreed: true
+  terms_authority_agreed: true
+  terms_organisation_agreed: true
   user_id: true
   written_summary_agreed: true

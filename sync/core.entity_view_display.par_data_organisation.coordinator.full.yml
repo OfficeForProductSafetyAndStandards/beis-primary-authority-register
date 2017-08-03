@@ -98,6 +98,9 @@ content:
 hidden:
   coordinator_eligible_number: true
   coordinator_type: true
+  field_coordinated_businesses: true
+  field_coordinator_number: true
+  field_coordinator_type: true
   name: true
   premises_mapped: true
   user_id: true

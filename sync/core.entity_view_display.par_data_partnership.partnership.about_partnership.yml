@@ -5,6 +5,8 @@ dependencies:
   config:
     - core.entity_view_mode.par_data_partnership.about_partnership
     - par_data.par_data_partnership_type.partnership
+  module:
+    - text
 _core:
   default_config_hash: wntQozPV1eBkc5Ldbs_Aa_E5vkuMMjkS0TzJ4IYVJ9I
 id: par_data_partnership.partnership.about_partnership
@@ -13,11 +15,12 @@ bundle: partnership
 mode: about_partnership
 content:
   about_partnership:
-    type: basic_string
+    type: text_trimmed
     weight: 0
     region: content
     label: hidden
-    settings: {  }
+    settings:
+      trim_length: 600
     third_party_settings: {  }
 hidden:
   advice: true
@@ -48,5 +51,7 @@ hidden:
   revocation_source: true
   tc_authority_agreed: true
   tc_organisation_agreed: true
+  terms_authority_agreed: true
+  terms_organisation_agreed: true
   user_id: true
   written_summary_agreed: true

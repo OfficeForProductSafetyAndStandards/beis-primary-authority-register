@@ -7,6 +7,7 @@ dependencies:
     - par_data.par_data_partnership_type.partnership
   module:
     - datetime
+    - text
 _core:
   default_config_hash: R6nzRIg-IybAJndsgZ5pFmGsfbLQnoH_3N7YHZW9GAc
 id: par_data_partnership.partnership.full
@@ -15,11 +16,12 @@ bundle: partnership
 mode: full
 content:
   about_partnership:
-    type: basic_string
+    type: text_trimmed
     weight: 6
     region: content
     label: hidden
-    settings: {  }
+    settings:
+      trim_length: 600
     third_party_settings: {  }
   advice:
     type: entity_reference_entity_view
@@ -129,5 +131,7 @@ hidden:
   revocation_source: true
   tc_authority_agreed: true
   tc_organisation_agreed: true
+  terms_authority_agreed: true
+  terms_organisation_agreed: true
   user_id: true
   written_summary_agreed: true

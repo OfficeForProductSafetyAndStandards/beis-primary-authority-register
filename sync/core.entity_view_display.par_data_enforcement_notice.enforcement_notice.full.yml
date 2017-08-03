@@ -14,6 +14,13 @@ targetEntityType: par_data_enforcement_notice
 bundle: enforcement_notice
 mode: full
 content:
+  enforcement_action:
+    label: hidden
+    region: content
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
   enforcing_authority:
     type: entity_reference_entity_view
     weight: 4

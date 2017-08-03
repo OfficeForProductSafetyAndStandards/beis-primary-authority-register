@@ -98,7 +98,8 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
-      ])->setDisplayOptions('form', [
+      ])
+      ->setDisplayOptions('form', [
         'type' => 'text_textarea',
         'weight' => 2,
         'settings' => [
@@ -116,8 +117,6 @@ class ParDataEnforcementAction extends ParDataEntity {
     $fields['enforcement_action_status'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Enforcement Action Status'))
       ->setDescription(t('The status of the current enforcement action.'))
-      ->setRequired(TRUE)
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -141,7 +140,8 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
-      ])->setDisplayOptions('form', [
+      ])
+      ->setDisplayOptions('form', [
         'type' => 'text_textarea',
         'weight' => 4,
         'settings' => [
@@ -159,8 +159,6 @@ class ParDataEnforcementAction extends ParDataEntity {
     $fields['primary_authority_status'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Primary Authority Status'))
       ->setDescription(t('The status of the primary authority on this action.'))
-      ->setRequired(TRUE)
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -174,7 +172,6 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
-        'type' => 'text_default',
       ])
       ->setDisplayConfigurable('view', TRUE);
 
