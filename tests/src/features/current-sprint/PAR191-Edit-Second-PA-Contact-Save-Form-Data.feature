@@ -1,7 +1,7 @@
 @Pending
 Feature: Edit Second Primary Authority Contact: Save form data	- As a Primary Authority Officer
-I need to be able to edit the field 'Second Primary Authority Contact' in the existing partnership details;
-So that the correct details are taken forward into the new PAR
+    I need to be able to edit the field 'Second Primary Authority Contact' in the existing partnership details;
+    So that the correct details are taken forward into the new PAR
 
     Background:
         Given I open the url "/user/login"
