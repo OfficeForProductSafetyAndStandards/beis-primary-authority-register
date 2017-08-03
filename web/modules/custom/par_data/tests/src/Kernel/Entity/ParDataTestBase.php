@@ -20,7 +20,7 @@ use Drupal\par_data\Entity\ParDataPersonType;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_data\Entity\ParDataPremisesType;
 use Drupal\par_data\Entity\ParDataRegulatoryFunction;
-use Drupal\par_data\Entity\ParDataRegulatoryFunctionT;
+use Drupal\par_data\Entity\ParDataRegulatoryFunctionType;
 use Drupal\par_data\Entity\ParDataSicCode;
 use Drupal\par_data\Entity\ParDataSicCodeType;
 
@@ -127,7 +127,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     $type->save();
 
     // Create the entity bundles required for testing.
-    $type = ParDataRegulatoryFunctionT::create([
+    $type = ParDataRegulatoryFunctionType::create([
       'id' => 'regulatory_function',
       'label' => 'Regulatory Function',
     ]);
@@ -305,7 +305,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     $inspection_plan->save();
 
     // We need to create a Regulatory Function first.
-    $regulatory_function = ParDataRegulatoryFunction::create($this->getRegulatoryAreaValues());
+    $regulatory_function = ParDataRegulatoryFunction::create($this->getRegulatoryFunctionValues());
     $regulatory_function->save();
 
     // We need to create a Person first.
@@ -354,7 +354,8 @@ class ParDataTestBase extends EntityKernelTestBase {
     return [
       'type' => 'person',
       'salutation' => 'Mrs',
-      'person_name' => 'Jo Smith',
+      'first_name' => 'Smith',
+      'last_name' => 'Smith',
       'work_phone' => '01723456789',
       'mobile_phone' => '0777777777',
       'email' => 'abcdefghijklmnopqrstuvwxyz@example.com'
@@ -375,10 +376,10 @@ class ParDataTestBase extends EntityKernelTestBase {
     ] + $this->getBaseValues();
   }
 
-  public function getRegulatoryAreaValues() {
+  public function getRegulatoryFunctionValues() {
     return [
       'type' => 'regulatory_function',
-      'area_name' => 'Health and Safety',
+      'function_name' => 'Health and Safety',
     ] + $this->getBaseValues();
   }
 
@@ -387,6 +388,6 @@ class ParDataTestBase extends EntityKernelTestBase {
       'type' => 'sic_code',
       'sic_code' => '012345',
       'description' => 'This is an example SIC Code.'
-    ] + $this->getBaseValues();;
+    ] + $this->getBaseValues();
   }
 }
