@@ -1,4 +1,4 @@
-@ci @journey3
+@Pending @journey3
 Feature: As the (coordinated) Business User,
     I need to be able to see landing page for my co-ordinated Partnership,
     so that I can access the tasks required of me.
