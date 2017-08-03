@@ -1,7 +1,7 @@
 @ci @journey3
-Feature: As a Business User	
-I need to be able to edit the field 'Trading Name' in the existing business details 	
-So that the correct details are taken forward into the new PAR 
+Feature: As a Business User
+    I need to be able to edit the field 'Trading Name' in the existing business details
+    So that the correct details are taken forward into the new PAR
 
     Background:
         Given I open the url "/user/login"
@@ -24,5 +24,5 @@ So that the correct details are taken forward into the new PAR
         Then the element "#par-flow-transition-business-details" contains the text "Trading Name Change"
         And I click on the link "add another trading name"
         And I add "Trading Name Add" to the inputfield "#edit-trading-name"
-        When I click on the button "#edit-next"
+        When I click on the button "edit-next"
         Then the element "#par-flow-transition-business-details" contains the text "Trading Name Add"
