@@ -94,7 +94,12 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     ];
   }
 
-  protected function setDefaultTitle() {
+  /**
+   * Set a default administrative title for entities where we don't really need one.
+   *
+   * @return string
+   */
+  public function setDefaultTitle() {
     $title = [];
     foreach ($this->getCompletionFields() as $field) {
       $title[] = $this->get($field)->getString();
