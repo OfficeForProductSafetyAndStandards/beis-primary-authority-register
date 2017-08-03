@@ -19,7 +19,7 @@ trait ParDisplayTrait {
    *
    * @param array $field
    *
-   * @return array
+   * @return mixed
    */
   public function renderMarkupField($field) {
 
@@ -27,6 +27,28 @@ trait ParDisplayTrait {
       '#type' => 'markup',
       '#markup' => $this->getRenderer()->render($field)
     ];
+
+  }
+
+  /**
+   * Render percentage number as tickbox.
+   *
+   * @param $percentage
+   *   The input percentage.
+   *
+   * @return mixed
+   *   Rendered markup field with a tickbox e.g. ✔.
+   */
+
+  public function renderPercentageTick($percentage = 0) {
+
+    // @todo decide if this percentage should show at all.
+    if ($percentage !== 100) {
+      return $percentage . '%';
+    }
+
+    // show a UTF-8 ✔.
+    return '✔';
 
   }
 
