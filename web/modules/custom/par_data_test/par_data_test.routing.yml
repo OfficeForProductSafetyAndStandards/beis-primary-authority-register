@@ -1,0 +1,10 @@
+# PAR Styleguide route definitions
+par_data_test.reset:
+  path: '/admin/par-data-test-reset'
+  defaults:
+    _controller: '\Drupal\par_data_test\Controller\ParDataTestController::reset'
+    _title: 'PAR Data Test Reset'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
