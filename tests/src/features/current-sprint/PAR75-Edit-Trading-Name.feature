@@ -1,7 +1,7 @@
 @ci @journey3
-Feature: As a Business User	
-I need to be able to edit the field 'Trading Name' in the existing business details 	
-So that the correct details are taken forward into the new PAR 
+Feature: As a Business User
+    I need to be able to edit the field 'Trading Name' in the existing business details
+    So that the correct details are taken forward into the new PAR
 
     Background:
         Given I open the url "/user/login"

@@ -3,13 +3,13 @@ Feature: As the (coordinated) Business User,
     I need to be able to see landing page for my co-ordinated Partnership,
     so that I can access the tasks required of me.
 
-Background:
-    Given I open the url "/user/login"
-    And I add "dadmin" to the inputfield "#edit-name"
-    And I add "password" to the inputfield "#edit-pass"
-    And I click on the button "#edit-submit"
-    And I open the url "/admin/par-data-test-reset"
-    And I open the url "/user/logout"
+    Background:
+        Given I open the url "/user/login"
+        And I add "dadmin" to the inputfield "#edit-name"
+        And I add "password" to the inputfield "#edit-pass"
+        And I click on the button "#edit-submit"
+        And I open the url "/admin/par-data-test-reset"
+        And I open the url "/user/logout"
 
     Scenario: Manage business name and summary
         Given I open the url "/user/login"
@@ -41,4 +41,3 @@ Background:
         And I add "Trading Name Add" to the inputfield "#edit-trading-name"
         And I click on the button "#edit-next"
         Then the element "#par-flow-transition-business-details" contains the text "Trading Name Add"
-        
