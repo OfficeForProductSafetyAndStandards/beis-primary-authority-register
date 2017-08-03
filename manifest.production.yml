@@ -1,0 +1,8 @@
+applications:
+- name: par-beta-production
+memory: 2G
+disk_quota: 2048M
+host: par-beta-production
+buildpack: php_buildpack
+services:
+- par-pg-production
