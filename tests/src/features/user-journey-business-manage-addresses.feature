@@ -9,7 +9,7 @@ Background:
     And I add "password" to the inputfield "#edit-pass"
     And I click on the button "#edit-submit"
     And I open the url "/admin/par-data-test-reset"
-    And I click on the link "Log out"
+    And I open the url "/user/logout"
 
     Scenario: Manage business related addresses
         Given I open the url "/user/login"
@@ -23,5 +23,5 @@ Background:
         # TERMS AND CONDITIONS SCREEN
         And I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
-        Then the element "h1" contains the text "Main contact at the Authority"
-        When I click on the link "Review and confirm your partnership details"
+        Then the element "h3" contains the text "Main contact at the Authority"
+        When I click on the link "Review and confirm your business details"

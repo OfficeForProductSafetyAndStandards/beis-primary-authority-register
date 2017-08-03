@@ -9,7 +9,7 @@ Background:
     And I add "password" to the inputfield "#edit-pass"
     And I click on the button "#edit-submit"
     And I open the url "/admin/par-data-test-reset"
-    And I click on the link "Log out"
+    And I open the url "/user/logout"
 
     Scenario: Manage business name and summary
         Given I open the url "/user/login"
@@ -29,7 +29,7 @@ Background:
         And the element "#edit-legal-entity" contains the text "Legal Entities"
         And the element "#edit-primary-contact" contains the text "Main business contact"
         And the element "#edit-0" contains the text "Trading Names"
-        When I click on the link "a.flow-link:first-child()"
+        When I click on the link "edit"
         And I add "Change to the about business details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-next"
         Then the element "#edit-about-business" contains the text "Change to the about business details section"

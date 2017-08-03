@@ -7,12 +7,11 @@ Background:
     And I add "password" to the inputfield "#edit-pass"
     And I click on the button "#edit-submit"
     And I open the url "/admin/par-data-test-reset"
-    And I click on the link "Log out"
+    And I open the url "/user/logout"
 
 Scenario: User Journey 1 - Inspection Plans 
     # HOMEPAGE 
-    Given I open the url "/"
-    And I click on the link "Log in"
+    Given I open the url "/user/login"
     # LOGIN SCREEN
     And I add "par_authority@example.com" to the inputfield "#edit-name"
     And I add "TestPassword" to the inputfield "#edit-pass"

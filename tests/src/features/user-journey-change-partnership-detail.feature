@@ -7,7 +7,7 @@ Background:
     And I add "password" to the inputfield "#edit-pass"
     And I click on the button "#edit-submit"
     And I open the url "/admin/par-data-test-reset"
-    And I click on the link "Log out"
+    And I open the url "/user/logout"
 
 Scenario: User Journey 1 - Change partnership details
     # HOMEPAGE 
