@@ -5,7 +5,7 @@ namespace Drupal\par_data_test\Controller;
 use Drupal\Core\Controller\ControllerBase;
 
 /**
-* A controller for all styleguide page output.
+* A controller for resetting par data test content.
 */
 class ParDataTestController extends ControllerBase {
 
