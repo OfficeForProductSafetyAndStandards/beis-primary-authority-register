@@ -186,7 +186,6 @@ exports.config = {
         global.assert = chai.assert;
         global.should = chai.should();
     },
-    //
     // Hook that gets executed before the suite starts
     // beforeSuite: function beforeSuite(suite) {
     // },

@@ -2,7 +2,7 @@
 Feature: As a PAR user
     I need to know whenever I submit an invalid form
     So that I can correct my form submission
-    
+
     Scenario: Error display check
         Given I open the url "/styleguide/forms"
 #        When I submit the form "#par-styleguide-form-controller"
