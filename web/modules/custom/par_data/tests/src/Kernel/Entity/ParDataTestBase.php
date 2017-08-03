@@ -33,7 +33,7 @@ use Drupal\par_data\Entity\ParDataSicCodeType;
  */
 class ParDataTestBase extends EntityKernelTestBase {
 
-  static $modules = ['trance', 'par_data', 'address', 'datetime', 'datetime_range', 'file'];
+  static $modules = ['trance', 'par_data', 'par_data_config', 'address', 'datetime', 'datetime_range', 'file', 'file_entity'];
 
   /**
    * {@inheritdoc}
@@ -62,8 +62,7 @@ class ParDataTestBase extends EntityKernelTestBase {
       $this->installEntitySchema($type);
     }
 
-    // Config already installed so we don't need to do this.
-    // But if it changes we may need to update.
+    // Install config for par_data if required.
     $this->installConfig('par_data');
 
     // Create the entity bundles required for testing.
@@ -158,7 +157,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     $type->save();
 
     // Install the feature config
-    $this->installConfig('par_data_configuration');
+    $this->installConfig('par_data_config');
   }
 
   public function getBaseValues() {
