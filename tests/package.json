@@ -8,7 +8,7 @@
     "test:build": "./node_modules/.bin/wdio wdio.BUILD.conf.js",
     "test:dev": "./node_modules/.bin/wdio wdio.DEV.conf.js",
     "test:validate": "eslint 'src/**/*.js'"
-      },
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/webdriverio/cucumber-boilerplate.git"
@@ -33,17 +33,19 @@
     "eslint": "3.19.0",
     "eslint-config-airbnb-base": "11.2.0",
     "eslint-plugin-import": "2.3.0",
+    "execute-shell-promise": "^1.0.1",
     "http-server": "0.10.0",
     "jest": "20.0.4",
     "pa11y-ci": "latest",
+    "promise-exec": "^0.1.0",
     "supertest": "^3.0.0",
+    "wdio-browserstack-service": "latest",
+    "wdio-chromedriver-service": "latest",
     "wdio-cucumber-framework": "0.3.1",
     "wdio-json-reporter": "0.2.1",
     "wdio-phantomjs-service": "0.2.2",
     "wdio-selenium-standalone-service": "0.0.9",
     "wdio-spec-reporter": "0.1.0",
-    "wdio-browserstack-service": "latest",
-    "wdio-chromedriver-service": "latest",
     "webdrivercss": "^1.1.10",
     "webdriverio": "4.7.1"
   }
