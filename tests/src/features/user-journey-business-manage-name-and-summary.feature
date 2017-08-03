@@ -41,3 +41,4 @@ Background:
         And I add "Trading Name Add" to the inputfield "#edit-trading-name"
         And I click on the button "#edit-next"
         Then the element "#par-flow-transition-business-details" contains the text "Trading Name Add"
+        

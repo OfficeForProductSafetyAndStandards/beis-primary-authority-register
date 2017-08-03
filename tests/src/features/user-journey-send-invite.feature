@@ -39,3 +39,4 @@ Scenario: User Journmey 1 - Send invitiation to business
     # When I click on the link "Go back to your partnerships"
     # Then the element "h1" contains the text "List of Partnerships for a Primary Authority"
     # And I click on the link "Log out"
+    
