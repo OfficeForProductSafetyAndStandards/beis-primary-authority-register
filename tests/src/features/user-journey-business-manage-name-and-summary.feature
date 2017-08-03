@@ -3,14 +3,20 @@ Feature: As the (coordinated) Business User,
     I need to be able to see landing page for my co-ordinated Partnership,
     so that I can access the tasks required of me.
 
-    Background:
+Background:
+    Given I open the url "/user/login"
+    And I add "par_authority@example.com" to the inputfield "#edit-name"
+    And I add "TestPassword" to the inputfield "#edit-pass"
+    And I click on the button "#edit-submit"
+    And I open the url "/admin/par-data-test-reset"
+    And I click on the link "Log out"
+
+    Scenario: Manage business name and summary
         Given I open the url "/user/login"
         And I add "par_business@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         Then I expect that element ".error-message" is not visible
-
-    Scenario: Manage business name and summary
         When I click on the button ".button-start"
         # PARTNERSHIPS DASHBOARD
         And I click on the link "ABCD Mart"

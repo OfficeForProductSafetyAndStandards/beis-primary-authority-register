@@ -1,6 +1,14 @@
 @ci @userjourney1 @par204 @PAR10
 Feature: User Journey 1 (happy path)
 
+Background:
+    Given I open the url "/user/login"
+    And I add "par_authority@example.com" to the inputfield "#edit-name"
+    And I add "TestPassword" to the inputfield "#edit-pass"
+    And I click on the button "#edit-submit"
+    And I open the url "/admin/par-data-test-reset"
+    And I click on the link "Log out"
+
 Scenario: User Journmey 1 - Send invitiation to business    
     # HOMEPAGE 
     Given I open the url "/"
@@ -25,7 +33,6 @@ Scenario: User Journmey 1 - Send invitiation to business
     And I add "Test change meassage subject" to the inputfield "#edit-email-body"
     And I press "Send Invitation"
     # Then the element ".placeholder" not contains the text "Error"
-
     # # PARTERSHIP TASKS SCREEN
     # Then the element "h1" contains the text "Updating the Primary Authority Register"
     # Then the element "#edit-email-subject" contains the text "Test change subject line"
