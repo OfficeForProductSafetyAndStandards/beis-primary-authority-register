@@ -73,9 +73,8 @@ class ParDataOrganisation extends ParDataEntity {
     // Name.
     $fields['organisation_name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Organisation Name'))
-      ->setDescription(t('The name of the Organisation.'))
+      ->setDescription(t('The name of the organisation.'))
       ->setRequired(TRUE)
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 500,
@@ -87,13 +86,15 @@ class ParDataOrganisation extends ParDataEntity {
         'weight' => 1,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Size.
     $fields['size'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Size'))
-      ->setDescription(t('The size of the Organisation.'))
-      ->setTranslatable(TRUE)
+      ->setDescription(t('The size of the organisation.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -105,13 +106,15 @@ class ParDataOrganisation extends ParDataEntity {
         'weight' => 2,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Number of Employees.
     $fields['employees_band'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Number of Employees'))
       ->setDescription(t('The band that best represents the number of employees.'))
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -123,13 +126,15 @@ class ParDataOrganisation extends ParDataEntity {
         'weight' => 3,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Nation.
     $fields['nation'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Nation'))
-      ->setDescription(t('The nation the Organisation belongs to.'))
-      ->setTranslatable(TRUE)
+      ->setDescription(t('The nation the organisation belongs to.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -141,24 +146,29 @@ class ParDataOrganisation extends ParDataEntity {
         'weight' => 4,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Comments.
     $fields['comments'] = BaseFieldDefinition::create('string_long')
       ->setLabel(t('Comments'))
-      ->setDescription(t('Comments about this Organisation.'))
-      ->setTranslatable(TRUE)
+      ->setDescription(t('Comments about this organisation.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
       ])->setDisplayOptions('form', [
-        'type' => 'text_long',
+        'type' => 'string_textarea',
         'weight' => 5,
         'settings' => [
           'rows' => 25,
         ],
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Premises Mapped.
@@ -166,22 +176,23 @@ class ParDataOrganisation extends ParDataEntity {
       ->setLabel(t('Premises Mapped'))
       ->setDescription(t('Whether premises has been mapped.'))
       ->setRevisionable(TRUE)
-      ->setTranslatable(FALSE)
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => 6,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Trading Name.
     $fields['trading_name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Trading Name'))
-      ->setDescription(t('The trading names for this Organisation.'))
+      ->setDescription(t('The trading names for this organisation.'))
       ->setRequired(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSettings([
         'max_length' => 255,
         'text_processing' => 0,
@@ -192,6 +203,9 @@ class ParDataOrganisation extends ParDataEntity {
         'weight' => 7,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Coordinator number eligible.
@@ -199,9 +213,8 @@ class ParDataOrganisation extends ParDataEntity {
       ->setLabel(t('Coordinator number'))
       ->setDescription(t('Number of eligible coordinators.'))
       ->setRequired(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSettings([
         'max_length' => 6,
         'text_processing' => 0,
@@ -212,6 +225,9 @@ class ParDataOrganisation extends ParDataEntity {
         'weight' => 8,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Coordinator type.
@@ -219,9 +235,8 @@ class ParDataOrganisation extends ParDataEntity {
       ->setLabel(t('Coordinator type'))
       ->setDescription(t('Type of coordinator.'))
       ->setRequired(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSettings([
         'max_length' => 20,
         'text_processing' => 0,
@@ -232,22 +247,26 @@ class ParDataOrganisation extends ParDataEntity {
         'weight' => 9,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Person.
     $fields['person'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Person'))
-      ->setDescription(t('The contacts for this Organisation. The first Person will be the primary contact.'))
+      ->setDescription(t('The contacts for this organisation. The first person will be the primary contact.'))
+      ->setRevisionable(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSetting('target_type', 'par_data_person')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
+      ->setSettings([
+        'target_type' => 'par_data_person',
+        'handler' => 'default',
+        'handler_settings' => [
           'target_bundles' => [
-            'person' => 'person'
-          ]
-        ]
-      )
+            'person' => 'person',
+          ],
+        ],
+      ])
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 10,
@@ -258,22 +277,26 @@ class ParDataOrganisation extends ParDataEntity {
         ),
       ))
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Premises.
     $fields['premises'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Premises'))
-      ->setDescription(t('The premises of this Organisation. The first Premises will be the primary Premises'))
+      ->setDescription(t('The premises of this organisation. The first premises will be the primary premises'))
+      ->setRevisionable(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSetting('target_type', 'par_data_premises')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
+      ->setSettings([
+        'target_type' => 'par_data_premises',
+        'handler' => 'default',
+        'handler_settings' => [
           'target_bundles' => [
-            'premises' => 'premises'
-          ]
-        ]
-      )
+            'premises' => 'premises',
+          ],
+        ],
+      ])
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 11,
@@ -284,22 +307,26 @@ class ParDataOrganisation extends ParDataEntity {
         ),
       ))
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Legal Entity.
     $fields['legal_entity'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Legal Entity'))
-      ->setDescription(t('The Legal Entities represented by this Organisation.'))
+      ->setDescription(t('The legal entities represented by this organisation.'))
+      ->setRevisionable(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSetting('target_type', 'par_data_legal_entity')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
+      ->setSettings([
+        'target_type' => 'par_data_legal_entity',
+        'handler' => 'default',
+        'handler_settings' => [
           'target_bundles' => [
-            'legal_entity' => 'legal_entity'
-          ]
-        ]
-      )
+            'legal_entity' => 'legal_entity',
+          ],
+        ],
+      ])
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 12,
@@ -310,22 +337,26 @@ class ParDataOrganisation extends ParDataEntity {
         ),
       ))
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Reference to SIC Code.
     $fields['sic_code'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('SIC Code'))
-      ->setDescription(t('The SIC Codes this Organisation belongs to.'))
+      ->setDescription(t('The SIC codes this organisation operates in.'))
+      ->setRevisionable(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSetting('target_type', 'par_data_sic_code')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
+      ->setSettings([
+        'target_type' => 'par_data_sic_code',
+        'handler' => 'default',
+        'handler_settings' => [
           'target_bundles' => [
-            'sic_code' => 'sic_code'
-          ]
-        ]
-      )
+            'sic_code' => 'sic_code',
+          ],
+        ],
+      ])
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 13,
@@ -336,6 +367,9 @@ class ParDataOrganisation extends ParDataEntity {
         ),
       ))
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     return $fields;

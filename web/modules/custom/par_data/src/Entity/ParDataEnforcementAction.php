@@ -71,43 +71,49 @@ class ParDataEnforcementAction extends ParDataEntity {
     $fields = parent::baseFieldDefinitions($entity_type);
 
     // Summary.
-    $fields['title'] = BaseFieldDefinition::create('string_long')
+    $fields['title'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Title'))
       ->setDescription(t('Title of the enforcement action.'))
-      ->setTranslatable(TRUE)
+      ->setRequired(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
+        'max_length' => 500,
         'text_processing' => 0,
-      ])->setDisplayOptions('form', [
-        'type' => 'text_long',
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
         'weight' => 1,
-        'settings' => [
-          'rows' => 25,
-        ],
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Details.
-    $fields['details'] = BaseFieldDefinition::create('string_long')
+    $fields['details'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Summary'))
       ->setDescription(t('Details about this enforcement action.'))
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
       ])->setDisplayOptions('form', [
-        'type' => 'text_long',
-        'weight' => 3,
+        'type' => 'text_textarea',
+        'weight' => 2,
         'settings' => [
           'rows' => 25,
         ],
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'text_default',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Enforcement status.
-    $fields['ea_status'] = BaseFieldDefinition::create('string')
+    $fields['enforcement_action_status'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Enforcement Action Status'))
       ->setDescription(t('The status of the current enforcement action.'))
       ->setRequired(TRUE)
@@ -120,31 +126,37 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setDefaultValue('')
       ->setDisplayOptions('form', [
         'type' => 'string_textfield',
-        'weight' => 1,
+        'weight' => 3,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Enforcement notes.
-    $fields['ea_notes'] = BaseFieldDefinition::create('string_long')
+    $fields['enforcement_action_notes'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Enforcement Action Notes'))
       ->setDescription(t('Notes about this enforcement action.'))
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
       ])->setDisplayOptions('form', [
-        'type' => 'text_long',
-        'weight' => 3,
+        'type' => 'text_textarea',
+        'weight' => 4,
         'settings' => [
           'rows' => 25,
         ],
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'text_default',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // PA status.
-    $fields['pa_status'] = BaseFieldDefinition::create('string')
+    // Primary Authority status.
+    $fields['primary_authority_status'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Primary Authority Status'))
       ->setDescription(t('The status of the primary authority on this action.'))
       ->setRequired(TRUE)
@@ -157,64 +169,75 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setDefaultValue('')
       ->setDisplayOptions('form', [
         'type' => 'string_textfield',
-        'weight' => 1,
+        'weight' => 5,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'text_default',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // PA notes.
-    $fields['pa_notes'] = BaseFieldDefinition::create('string_long')
+    $fields['primary_authority_notes'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Primary Authority Notes'))
       ->setDescription(t('Notes about this enforcement action from the primary authority.'))
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
       ])->setDisplayOptions('form', [
-        'type' => 'text_long',
-        'weight' => 3,
+        'type' => 'text_textarea',
+        'weight' => 6,
         'settings' => [
           'rows' => 25,
         ],
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'text_default',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Referral notes.
-    $fields['referral_notes'] = BaseFieldDefinition::create('string_long')
+    $fields['referral_notes'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Referral Notes'))
       ->setDescription(t('Referral notes.'))
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
       ])->setDisplayOptions('form', [
-        'type' => 'text_long',
-        'weight' => 3,
+        'type' => 'text_textarea',
+        'weight' => 7,
         'settings' => [
           'rows' => 25,
         ],
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'text_default',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Blocked by advice.
     $fields['blocked_advice'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Blocked by Advice'))
       ->setDescription(t('The advice that is blocking this action.'))
+      ->setRevisionable(TRUE)
       ->setCardinality(1)
-      ->setSetting('target_type', 'par_data_advice')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
+      ->setSettings([
+        'target_type' => 'par_data_advice',
+        'handler' => 'default',
+        'handler_settings' => [
           'target_bundles' => [
             'advice' => 'advice',
-          ]
-        ]
-      )
+          ],
+        ],
+      ])
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
-        'weight' => 4,
+        'weight' => 8,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => 60,
@@ -222,50 +245,26 @@ class ParDataEnforcementAction extends ParDataEntity {
         ),
       ))
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Referred from action.
     $fields['action_referral'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Action Referred From'))
       ->setDescription(t('The action relating to this action.'))
+      ->setRevisionable(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSetting('target_type', 'par_data_enforcement_action')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
+      ->setSettings([
+        'target_type' => 'par_data_enforcement_action',
+        'handler' => 'default',
+        'handler_settings' => [
           'target_bundles' => [
             'enforcement_action' => 'enforcement_action',
-          ]
-        ]
-      )
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 4,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayConfigurable('view', TRUE);
-
-
-    // Reference to Regulatory Function.
-    $fields['regulatory_function'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Regulatory Function'))
-      ->setDescription(t('The Regulatory Function this notice is relevant to.'))
-      ->setRequired(TRUE)
-      ->setCardinality(1)
-      ->setSetting('target_type', 'par_data_regulatory_function')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
-          'target_bundles' => [
-            'regulatory_function' => 'regulatory_function'
-          ]
-        ]
-      )
+          ],
+        ],
+      ])
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 9,
@@ -276,6 +275,41 @@ class ParDataEnforcementAction extends ParDataEntity {
         ),
       ))
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+
+    // Reference to Regulatory Function.
+    $fields['regulatory_function'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Regulatory Function'))
+      ->setDescription(t('The Regulatory Function this notice is relevant to.'))
+      ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
+      ->setCardinality(1)
+      ->setSettings([
+        'target_type' => 'par_data_regulatory_function',
+        'handler' => 'default',
+        'handler_settings' => [
+          'target_bundles' => [
+            'regulatory_function' => 'regulatory_function',
+          ],
+        ],
+      ])
+      ->setDisplayOptions('form', array(
+        'type' => 'entity_reference_autocomplete',
+        'weight' => 10,
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'size' => 60,
+          'placeholder' => '',
+        ),
+      ))
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     return $fields;

@@ -210,9 +210,10 @@ class ParDataPerson extends ParDataEntity {
       ->setLabel(t('User Account'))
       ->setDescription(t('The user account that this entity is linked to.'))
       ->setRevisionable(TRUE)
-      ->setSetting('target_type', 'user')
-      ->setSetting('handler', 'default')
-      ->setTranslatable(TRUE)
+      ->setSettings([
+        'target_type' => 'user',
+        'handler' => 'default',
+      ])
       ->setDisplayOptions('view', [
         'label' => 'hidden',
         'type' => 'author',
@@ -229,13 +230,15 @@ class ParDataPerson extends ParDataEntity {
         ],
       ])
       ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Title.
     $fields['salutation'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Title'))
-      ->setDescription(t('The title of this Person.'))
-      ->setTranslatable(TRUE)
+      ->setDescription(t('The title of this person.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -247,13 +250,15 @@ class ParDataPerson extends ParDataEntity {
         'weight' => 1,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // First Name.
     $fields['first_name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('First Name'))
-      ->setDescription(t('The first name of the Person.'))
-      ->setTranslatable(TRUE)
+      ->setDescription(t('The first name of the person.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 500,
@@ -265,13 +270,15 @@ class ParDataPerson extends ParDataEntity {
         'weight' => 2,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Last Name.
     $fields['last_name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Last Name'))
-      ->setDescription(t('The last name of the Person.'))
-      ->setTranslatable(TRUE)
+      ->setDescription(t('The last name of the person.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 500,
@@ -283,13 +290,15 @@ class ParDataPerson extends ParDataEntity {
         'weight' => 3,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Job title.
     $fields['job_title'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Job title'))
-      ->setDescription(t('The job title of the Person.'))
-      ->setTranslatable(TRUE)
+      ->setDescription(t('The job title of the person.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 500,
@@ -301,13 +310,15 @@ class ParDataPerson extends ParDataEntity {
         'weight' => 4,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Work Phone.
     $fields['work_phone'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Work Phone'))
-      ->setDescription(t('The work phone of this Person.'))
-      ->setTranslatable(TRUE)
+      ->setDescription(t('The work phone of this person.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -319,13 +330,15 @@ class ParDataPerson extends ParDataEntity {
         'weight' => 5,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Mobile Phone.
     $fields['mobile_phone'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Mobile Phone'))
-      ->setDescription(t('The mobile phone of this Person.'))
-      ->setTranslatable(TRUE)
+      ->setDescription(t('The mobile phone of this person.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -337,13 +350,15 @@ class ParDataPerson extends ParDataEntity {
         'weight' => 6,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Email.
     $fields['email'] = BaseFieldDefinition::create('string')
       ->setLabel(t('E-mail'))
-      ->setDescription(t('The e-mail address of this Person.'))
-      ->setTranslatable(TRUE)
+      ->setDescription(t('The e-mail address of this person.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 500,
@@ -355,63 +370,74 @@ class ParDataPerson extends ParDataEntity {
         'weight' => 7,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Communication by Email.
     $fields['communication_email'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Communication by E-mail'))
-      ->setDescription(t('Whether to allow contact by e-mail for this Partnership.'))
+      ->setDescription(t('Whether to allow contact by e-mail for this partnership.'))
       ->setRevisionable(TRUE)
-      ->setTranslatable(FALSE)
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => 8,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Communication by Phone.
     $fields['communication_phone'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Communication by Work Phone'))
-      ->setDescription(t('Whether to allow contact by work phone for this Partnership.'))
+      ->setDescription(t('Whether to allow contact by work phone for this partnership.'))
       ->setRevisionable(TRUE)
-      ->setTranslatable(FALSE)
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => 9,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Communication by Mobile.
     $fields['communication_mobile'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Communication by Mobile Phone'))
-      ->setDescription(t('Whether to allow contact by mobile for this Partnership.'))
+      ->setDescription(t('Whether to allow contact by mobile for this partnership.'))
       ->setRevisionable(TRUE)
-      ->setTranslatable(FALSE)
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => 10,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Communication Notes.
-    $fields['communication_notes'] = BaseFieldDefinition::create('string_long')
+    $fields['communication_notes'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Communication Notes'))
-      ->setDescription(t('Additional notes and communication preferences for this Partnership.'))
-      ->setTranslatable(TRUE)
+      ->setDescription(t('Additional notes and communication preferences for this partnership.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
       ])->setDisplayOptions('form', [
-        'type' => 'text_long',
+        'type' => 'text_textarea',
         'weight' => 11,
         'settings' => [
           'rows' => 25,
         ],
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     return $fields;

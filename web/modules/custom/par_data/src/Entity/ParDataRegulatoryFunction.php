@@ -73,8 +73,7 @@ class ParDataRegulatoryFunction extends ParDataEntity {
     // Name.
     $fields['function_name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Regulatory Function Name'))
-      ->setDescription(t('The name of the Regulatory Function.'))
-      ->setTranslatable(TRUE)
+      ->setDescription(t('The name of the regulatory function.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -86,6 +85,9 @@ class ParDataRegulatoryFunction extends ParDataEntity {
         'weight' => 1,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     return $fields;

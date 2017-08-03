@@ -73,9 +73,8 @@ class ParDataEnforcementNotice extends ParDataEntity {
     // Notice Type.
     $fields['notice_type'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Notice Type'))
-      ->setDescription(t('The type of Enforcement Notice.'))
+      ->setDescription(t('The type of enforcement notice.'))
       ->setRequired(TRUE)
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -87,15 +86,17 @@ class ParDataEnforcementNotice extends ParDataEntity {
         'weight' => 1,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Notice Date.
     $fields['notice_date'] = BaseFieldDefinition::create('datetime')
       ->setLabel(t('Notice Date'))
-      ->setDescription(t('The date this Enforcement Notice was issued.'))
+      ->setDescription(t('The date this enforcement notice was issued.'))
       ->setRequired(TRUE)
       ->setRevisionable(TRUE)
-      ->setTranslatable(FALSE)
       ->setSettings([
         'datetime_type' => 'date',
       ])
@@ -104,41 +105,48 @@ class ParDataEnforcementNotice extends ParDataEntity {
         'weight' => 2,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Summary.
-    $fields['summary'] = BaseFieldDefinition::create('string_long')
+    $fields['summary'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Summary'))
       ->setDescription(t('Summary about this enforcement notice.'))
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
       ])->setDisplayOptions('form', [
-        'type' => 'text_long',
+        'type' => 'text_textarea',
         'weight' => 3,
         'settings' => [
           'rows' => 25,
         ],
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'text_default',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Primary Authority.
     $fields['primary_authority'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Primary Authority'))
-      ->setDescription(t('The Primary Authority that issued this Enforcement Notice.'))
+      ->setDescription(t('The primary authority that issued this enforcement notice.'))
       ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
       ->setCardinality(1)
-      ->setSetting('target_type', 'par_data_authority')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
+      ->setSettings([
+        'target_type' => 'par_data_authority',
+        'handler' => 'default',
+        'handler_settings' => [
           'target_bundles' => [
             'authority' => 'authority',
-          ]
-        ]
-      )
+          ],
+        ],
+      ])
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 4,
@@ -149,23 +157,27 @@ class ParDataEnforcementNotice extends ParDataEntity {
         ),
       ))
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Enforcing Authority.
     $fields['enforcing_authority'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Enforcing Authority'))
-      ->setDescription(t('The Enforcing Authority that is charged with following up on this Enforcement Notice.'))
+      ->setDescription(t('The enforcing authority that is charged with following up on this enforcement notice.'))
       ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
       ->setCardinality(1)
-      ->setSetting('target_type', 'par_data_authority')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
+      ->setSettings([
+        'target_type' => 'par_data_authority',
+        'handler' => 'default',
+        'handler_settings' => [
           'target_bundles' => [
             'authority' => 'authority',
-          ]
-        ]
-      )
+          ],
+        ],
+      ])
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 5,
@@ -176,23 +188,27 @@ class ParDataEnforcementNotice extends ParDataEntity {
         ),
       ))
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Reference to Legal Entity.
     $fields['legal_entity'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Legal Entity'))
-      ->setDescription(t('The Legal Entities this Enforcement Notice is issued to.'))
+      ->setDescription(t('The legal entities this enforcement notice is issued to.'))
       ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
       ->setCardinality(1)
-      ->setSetting('target_type', 'par_data_legal_entity')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
+      ->setSettings([
+        'target_type' => 'par_data_legal_entity',
+        'handler' => 'default',
+        'handler_settings' => [
           'target_bundles' => [
-            'legal_entity' => 'legal_entity'
-          ]
-        ]
-      )
+            'legal_entity' => 'legal_entity',
+          ],
+        ],
+      ])
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
         'weight' => 6,
@@ -203,25 +219,29 @@ class ParDataEnforcementNotice extends ParDataEntity {
         ),
       ))
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Enforcement action.
     $fields['enforcement_action'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Enforcement Actions'))
-      ->setDescription(t('Enforcement Actions that relate to this Notice.'))
+      ->setDescription(t('Enforcement actions that relate to this notice.'))
+      ->setRevisionable(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSetting('target_type', 'par_data_enforcement_action')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
+      ->setSettings([
+        'target_type' => 'par_data_enforcement_action',
+        'handler' => 'default',
+        'handler_settings' => [
           'target_bundles' => [
             'enforcement_action' => 'enforcement_action',
-          ]
-        ]
-      )
+          ],
+        ],
+      ])
       ->setDisplayOptions('form', array(
         'type' => 'entity_reference_autocomplete',
-        'weight' => 4,
+        'weight' => 7,
         'settings' => array(
           'match_operator' => 'CONTAINS',
           'size' => 60,
@@ -229,6 +249,9 @@ class ParDataEnforcementNotice extends ParDataEntity {
         ),
       ))
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     return $fields;

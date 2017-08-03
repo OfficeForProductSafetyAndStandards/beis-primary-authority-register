@@ -73,9 +73,8 @@ class ParDataLegalEntity extends ParDataEntity {
     // Registered Name.
     $fields['registered_name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Registered Name'))
-      ->setDescription(t('The registered name of the Legal Entity.'))
+      ->setDescription(t('The registered name of the legal entity.'))
       ->setRequired(TRUE)
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 500,
@@ -87,13 +86,15 @@ class ParDataLegalEntity extends ParDataEntity {
         'weight' => 1,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Registered Name.
     $fields['registered_number'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Registered Number'))
-      ->setDescription(t('The registered number of the Legal Entity.'))
-      ->setTranslatable(FALSE)
+      ->setDescription(t('The registered number of the legal entity.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -105,13 +106,15 @@ class ParDataLegalEntity extends ParDataEntity {
         'weight' => 2,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Legal Entity Type.
     $fields['legal_entity_type'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Legal Entity Type'))
       ->setDescription(t('The type of Legal Entity.'))
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -123,6 +126,9 @@ class ParDataLegalEntity extends ParDataEntity {
         'weight' => 2,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     return $fields;

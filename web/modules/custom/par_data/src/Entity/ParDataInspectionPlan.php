@@ -73,10 +73,9 @@ class ParDataInspectionPlan extends ParDataEntity {
     // Valid Date.
     $fields['valid_date'] = BaseFieldDefinition::create('daterange')
       ->setLabel(t('Valid Date'))
-      ->setDescription(t('The date range this Inspection Plan is valid for.'))
+      ->setDescription(t('The date range this inspection plan is valid for.'))
       ->setRequired(TRUE)
       ->setRevisionable(TRUE)
-      ->setTranslatable(FALSE)
       ->setSettings([
         'datetime_type' => 'date',
       ])
@@ -85,57 +84,70 @@ class ParDataInspectionPlan extends ParDataEntity {
         'weight' => 1,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Approved RD Executive.
     $fields['approved_rd_executive'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Approved by RD Executive'))
-      ->setDescription(t('Whether this Inspection Plan has been approved by an RD Executive.'))
+      ->setDescription(t('Whether this inspection plan has been approved by an RD executive.'))
       ->setRequired(TRUE)
       ->setRevisionable(TRUE)
-      ->setTranslatable(FALSE)
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => 2,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Approved RD Executive.
     $fields['consulted_national_regulator'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('National Regulator Consulted'))
-      ->setDescription(t('Whether the national regulator has been consulted about this Inspection Plan.'))
+      ->setDescription(t('Whether the national regulator has been consulted about this inspection plan.'))
       ->setRequired(TRUE)
       ->setRevisionable(TRUE)
-      ->setTranslatable(FALSE)
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => 3,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Documents.
     $fields['document'] = BaseFieldDefinition::create('file')
       ->setLabel(t('Document'))
       ->setDescription(t('Documents relating to the inspection.'))
-      ->setSetting('target_type', 'file')
-      ->setSetting('file_extensions', 'jpg jpeg doc docx')
-      ->setSetting('file_directory', 'documents/inspection')
-      ->setDisplayOptions('form', array(
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'target_type' => 'file',
+        'uri_scheme' => 's3private',
+        'max_filesize' => '20 MB',
+        'file_extensions' => 'jpg jpeg gif png tif pdf txt rdf doc docx odt xls xlsx csv ods ppt pptx odp pot potx pps',
+        'file_directory' => 'documents/advice',
+      ])
+      ->setDisplayOptions('form', [
         'type' => 'file',
         'weight' => 4,
-      ))
+      ])
       ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayConfigurable('view', TRUE)
-      ->setReadOnly(TRUE);
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
 
     // Inspection Status.
     $fields['inspection_status'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Inspection Status'))
-      ->setDescription(t('The current status of the Inspection Plan itself. For example, current, expired, replaced.'))
+      ->setDescription(t('The current status of the inspection plan itself. For example, current, expired, replaced.'))
       ->setRequired(TRUE)
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -147,6 +159,9 @@ class ParDataInspectionPlan extends ParDataEntity {
         'weight' => 5,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
