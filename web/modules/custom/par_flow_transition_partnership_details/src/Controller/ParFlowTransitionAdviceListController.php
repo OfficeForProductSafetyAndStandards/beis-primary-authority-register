@@ -22,6 +22,12 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
    */
   public function content(ParDataPartnership $par_data_partnership = NULL) {
 
+    // Table headers.
+    $header = ['data' => 'Document',
+              'Type of document and regulatory functions',
+              'Actions',
+              'Confirmed'];
+
     $rows = [];
 
     // Organisation summary.
@@ -57,19 +63,42 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
       $completion = $document->getCompletionPercentage();
 
       if ($document_summary && $document_details && $document_actions && $completion) {
-        $rows[] = [
-          "Documents are not yet attached...",
-          $document_details,
-          $document_actions,
-          $completion . '%',
+        $rows = [
+          'data' => [
+            "Documents are not yet attached...",
+            $document_details,
+            $document_actions,
+            $this->renderPercentageTick($completion)
+          ]
         ];
       }
+
     }
+
+    // Organisation.
+    $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
+
+    $organisation_name = $par_data_organisation->get('name')->getString();
+
+    $build['intro']['help_text_1'] = [
+      '#type' => 'markup',
+      '#markup' => t('<p>Review and confirm your documents for @organisation are still relevant</p>', ['@organisation' => $organisation_name])
+    ];
+
+    $build['intro']['help_text_2'] = [
+      '#type' => 'markup',
+      '#markup' => t('<p>You don\'t have to do it all in one go</p>')
+    ];
+
+    $build['intro']['help_text_3'] = [
+      '#type' => 'markup',
+      '#markup' => t('<p>You can continue to make changes to your information until 14 September 2017</p>')
+    ];
 
     // Show the task links in table format.
     $build['task_list'] = [
       '#theme' => 'table',
-      '#header' => [],
+      '#header' => $header,
       '#rows' => $rows,
       '#empty' => $this->t("There is no documentation for this partnership."),
     ];
