@@ -31,7 +31,7 @@ use Drupal\par_data\Entity\ParDataSicCodeType;
  */
 class ParDataTestBase extends EntityKernelTestBase {
 
-  static $modules = ['trance', 'par_data', 'address', 'datetime', 'datetime_range'];
+  static $modules = ['trance', 'par_data', 'address', 'datetime', 'datetime_range', 'file'];
 
   /**
    * {@inheritdoc}
