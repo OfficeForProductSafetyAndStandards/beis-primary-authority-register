@@ -2,7 +2,6 @@
 
 namespace Drupal\par_flow_transition_business\Controller;
 
-use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Controller\ParBaseController;
 
@@ -26,7 +25,6 @@ class ParFlowTransitionTaskListController extends ParBaseController {
     $par_data_primary_person = current($par_data_authority->get('person')->referencedEntities());
     $primary_person_view_builder = $par_data_primary_person->getViewBuilder();
     $primary_person = $primary_person_view_builder->view($par_data_primary_person, 'summary');
-
 
     $build['intro'] = [
       '#markup' => t('Review and confirm the details of your partnership with %primary_authority by 14 September 2017',
@@ -53,7 +51,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
       [
         $overview_link,
         $par_data_partnership->getParStatus(),
-      ]
+      ],
     ];
 
     // Task List.
@@ -72,4 +70,3 @@ class ParFlowTransitionTaskListController extends ParBaseController {
   }
 
 }
-

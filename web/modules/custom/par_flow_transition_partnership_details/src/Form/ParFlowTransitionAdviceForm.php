@@ -18,6 +18,9 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
    */
   protected $flow = 'transition_partnership_details';
 
+  /**
+   * {@inheritdoc}
+   */
   public function getFormId() {
     return 'par_flow_transition_partnership_advice_document';
   }
@@ -26,9 +29,9 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
-   * @param ParDataPartnership $par_data_partnership
+   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The Partnership being retrieved.
-   * @param ParDataAdvice $par_data_inspection_plan
+   * @param \Drupal\par_data\Entity\ParDataAdvice $par_data_inspection_plan
    *   The advice document being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
@@ -125,4 +128,5 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
     // Go back to the overview.
     $form_state->setRedirect($this->getFlow()->getRouteByStep(4), $this->getRouteParams());
   }
+
 }

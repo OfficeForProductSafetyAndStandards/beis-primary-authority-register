@@ -2,7 +2,6 @@
 
 namespace Drupal\par_flow_transition_partnership_details\Form;
 
-use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\invite\Entity\Invite;
 use Drupal\par_data\Entity\ParDataPartnership;
@@ -23,6 +22,9 @@ class ParFlowTransitionInviteForm extends ParBaseForm {
    */
   protected $flow = 'transition_partnership_details';
 
+  /**
+   * {@inheritdoc}
+   */
   public function getFormId() {
     return 'par_flow_transition_partnership_invite_business';
   }
@@ -31,7 +33,7 @@ class ParFlowTransitionInviteForm extends ParBaseForm {
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
-   * @param ParDataPartnership $par_data_partnership
+   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, $par_data_person = NULL) {
@@ -104,26 +106,26 @@ HEREDOC;
     ];
 
     // Allow the message subject to be changed.
-    $form['email_subject'] = array(
+    $form['email_subject'] = [
       '#type' => 'textfield',
       '#required' => TRUE,
       '#title' => t('Message subject'),
       '#default_value' => $this->getDefaultValues('email_subject'),
-    );
+    ];
 
     // Allow the message body to be changed.
-    $form['email_body'] = array(
+    $form['email_body'] = [
       '#type' => 'textarea',
       '#required' => TRUE,
       '#rows' => 18,
       '#title' => t('Message'),
       '#default_value' => $this->getDefaultValues('email_body'),
-    );
+    ];
 
-    $form['send'] = array(
+    $form['send'] = [
       '#type' => 'submit',
       '#value' => t('Send Invitation'),
-    );
+    ];
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);

@@ -19,6 +19,9 @@ class ParFlowTransitionContactForm extends ParBaseForm {
    */
   protected $flow = 'transition_partnership_details';
 
+  /**
+   * {@inheritdoc}
+   */
   public function getFormId() {
     return 'par_flow_transition_partnership_primary_contact';
   }
@@ -27,7 +30,7 @@ class ParFlowTransitionContactForm extends ParBaseForm {
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
-   * @param ParDataPartnership $par_data_partnership
+   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, $par_data_person = NULL) {
@@ -140,4 +143,5 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     // Go back to the overview.
     $form_state->setRedirect($this->getFlow()->getRouteByStep(4), $this->getRouteParams());
   }
+
 }

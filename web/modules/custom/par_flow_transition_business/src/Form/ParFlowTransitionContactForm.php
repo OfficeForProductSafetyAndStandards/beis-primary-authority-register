@@ -19,6 +19,9 @@ class ParFlowTransitionContactForm extends ParBaseForm {
    */
   protected $flow = 'transition_business';
 
+  /**
+   * {@inheritdoc}
+   */
   public function getFormId() {
     return 'par_flow_transition_business_contact';
   }
@@ -27,9 +30,9 @@ class ParFlowTransitionContactForm extends ParBaseForm {
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
-   * @param ParDataPartnership $par_data_partnership
+   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The Partnership being retrieved.
-   * @param ParDataPerson $par_data_person
+   * @param \Drupal\par_data\Entity\ParDataPerson $par_data_person
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
@@ -111,7 +114,6 @@ class ParFlowTransitionContactForm extends ParBaseForm {
       '#required' => TRUE,
     ];
 
-
     // Method of contact.
     $title_options = [
       'Work phone',
@@ -140,7 +142,8 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     $previous_link = $this->getFlow()->getLinkByStep(4)->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
-      '#markup' => t('<br>%link', ['%link' => $previous_link]),
+      '#prefix' => '<br>',
+      '#markup' => t('@link', ['@link' => $previous_link]),
     ];
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($par_data_person);
@@ -178,4 +181,5 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     // Go back to the overview.
     $form_state->setRedirect($this->getFlow()->getRouteByStep(4), $this->getRouteParams());
   }
+
 }
