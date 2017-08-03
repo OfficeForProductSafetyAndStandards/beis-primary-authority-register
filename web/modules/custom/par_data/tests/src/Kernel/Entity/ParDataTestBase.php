@@ -64,7 +64,7 @@ class ParDataTestBase extends EntityKernelTestBase {
 
     // Config already installed so we don't need to do this.
     // But if it changes we may need to update.
-    // $this->installConfig('par_data');
+    $this->installConfig('par_data');
 
     // Create the entity bundles required for testing.
     $type = ParDataAdviceType::create([
@@ -156,12 +156,16 @@ class ParDataTestBase extends EntityKernelTestBase {
       'label' => 'SIC Code',
     ]);
     $type->save();
+
+    // Install the feature config
+    $this->installConfig('par_data_configuration');
   }
 
   public function getBaseValues() {
     return [
       'name' => 'test',
       'uid' => 1,
+      'type' => 'UNKNOWN',
     ];
   }
 

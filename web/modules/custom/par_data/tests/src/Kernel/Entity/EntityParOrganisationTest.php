@@ -36,7 +36,7 @@ class EntityParOrganisationTest extends ParDataTestBase {
     $values = $this->getOrganisationBusinessValues();
     $entity = ParDataOrganisation::create($values);
 
-    foreach ($values as $field => $value) {
+    foreach (array_diff_key($values, $this->getBaseValues()) as $field => $value) {
       $this->assertTrue($entity->hasField($field), t('Field %field exists for Business.', ['%field' => $field]));
     }
   }

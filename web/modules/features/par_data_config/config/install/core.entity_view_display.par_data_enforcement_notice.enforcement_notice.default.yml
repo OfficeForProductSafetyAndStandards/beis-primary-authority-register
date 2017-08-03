@@ -1,0 +1,73 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - par_data.par_data_enforcement_notice_type.enforcement_notice
+  module:
+    - datetime
+id: par_data_enforcement_notice.enforcement_notice.default
+targetEntityType: par_data_enforcement_notice
+bundle: enforcement_notice
+mode: default
+content:
+  enforcement_action:
+    label: hidden
+    region: content
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  enforcing_authority:
+    type: entity_reference_entity_view
+    weight: 4
+    region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+  legal_entity:
+    type: entity_reference_entity_view
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+  notice_date:
+    type: datetime_default
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+  notice_type:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  primary_authority:
+    type: entity_reference_entity_view
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+  summary:
+    type: basic_string
+    weight: 2
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  name: true
+  user_id: true
