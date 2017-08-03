@@ -110,8 +110,15 @@ class ParDataTestBase extends EntityKernelTestBase {
 
     // Create the entity bundles required for testing.
     $type = ParDataOrganisationType::create([
+      'id' => 'coordinator',
+      'label' => 'Coordinator Organisation',
+    ]);
+    $type->save();
+
+    // Create the entity bundles required for testing.
+    $type = ParDataOrganisationType::create([
       'id' => 'business',
-      'label' => 'Organisation',
+      'label' => 'Business Organisation',
     ]);
     $type->save();
 
