@@ -82,17 +82,23 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
 
     $build['intro']['help_text_1'] = [
       '#type' => 'markup',
-      '#markup' => t('<p>Review and confirm your documents for @organisation are still relevant</p>', ['@organisation' => $organisation_name])
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
+      '#markup' => t('Review and confirm your documents for @organisation are still relevant', ['@organisation' => $organisation_name])
     ];
 
     $build['intro']['help_text_2'] = [
       '#type' => 'markup',
-      '#markup' => t('<p>You don\'t have to do it all in one go</p>')
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
+      '#markup' => t('You don\'t have to do it all in one go')
     ];
 
     $build['intro']['help_text_3'] = [
       '#type' => 'markup',
-      '#markup' => t('<p>You can continue to make changes to your information until 14 September 2017</p>')
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
+      '#markup' => t('You can continue to make changes to your information until 14 September 2017')
     ];
 
     // Show the task links in table format.
@@ -105,7 +111,8 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
 
     $build['cancel'] = [
       '#type' => 'markup',
-      '#markup' => t('<br>@link', [
+      '#prefix' => '<br>',
+      '#markup' => t('@link', [
         '@link' => $this->getFlow()->getLinkByStep(3, $this->getRouteParams(), ['attributes' => ['class' => 'button']])
           ->setText('Save')
           ->toString()
