@@ -1,12 +1,12 @@
-@Pending @journey3
+@ci @journey3
 Feature: As the (coordinated) Business User,
     I need to be able to see landing page for my co-ordinated Partnership,
     so that I can access the tasks required of me.
 
 Background:
     Given I open the url "/user/login"
-    And I add "par_authority@example.com" to the inputfield "#edit-name"
-    And I add "TestPassword" to the inputfield "#edit-pass"
+    And I add "dadmin" to the inputfield "#edit-name"
+    And I add "password" to the inputfield "#edit-pass"
     And I click on the button "#edit-submit"
     And I open the url "/admin/par-data-test-reset"
     And I click on the link "Log out"

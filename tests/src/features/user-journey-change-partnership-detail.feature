@@ -1,11 +1,10 @@
 @ci @userjourney1
 Feature: User Journey 1 (happy path)
 
-
 Background:
     Given I open the url "/user/login"
-    And I add "par_authority@example.com" to the inputfield "#edit-name"
-    And I add "TestPassword" to the inputfield "#edit-pass"
+    And I add "dadmin" to the inputfield "#edit-name"
+    And I add "password" to the inputfield "#edit-pass"
     And I click on the button "#edit-submit"
     And I open the url "/admin/par-data-test-reset"
     And I click on the link "Log out"
