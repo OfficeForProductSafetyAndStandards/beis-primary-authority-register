@@ -6,7 +6,13 @@ dependencies:
     - field.field.par_data_organisation.coordinator.field_coordinated_businesses
     - field.field.par_data_organisation.coordinator.field_coordinator_number
     - field.field.par_data_organisation.coordinator.field_coordinator_type
+    - field.field.par_data_organisation.coordinator.field_legal_entity
+    - field.field.par_data_organisation.coordinator.field_person
+    - field.field.par_data_organisation.coordinator.field_premises
+    - field.field.par_data_organisation.coordinator.field_sic_code
     - par_data.par_data_organisation_type.coordinator
+  module:
+    - text
 id: par_data_organisation.coordinator.default
 targetEntityType: par_data_organisation
 bundle: coordinator
@@ -36,6 +42,42 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_legal_entity:
+    weight: 29
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_person:
+    weight: 30
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_premises:
+    weight: 31
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_sic_code:
+    weight: 32
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   langcode:
     type: language_select

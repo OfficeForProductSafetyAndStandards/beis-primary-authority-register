@@ -23,16 +23,16 @@ class ParFlowTransitionTaskListController extends ParBaseController {
   public function content(ParDataPartnership $par_data_partnership = NULL) {
 
     // Organisation summary.
-    $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
+    $par_data_organisation = current($par_data_partnership->getOrganisation());
 
     // Premises.
-    $par_data_premises = current($par_data_organisation->get('premises')->referencedEntities());
+    $par_data_premises = current($par_data_organisation->getPremises());
     $premises_view_builder = $par_data_premises->getViewBuilder();
 
     $build['premises'] = $premises_view_builder->view($par_data_premises, 'summary');
 
     // Primary contact summary.
-    $par_data_primary_person = current($par_data_partnership->get('authority_person')->referencedEntities());
+    $par_data_primary_person = current($par_data_partnership->getAuthorityPeople());
     $primary_person_view_builder = $par_data_primary_person->getViewBuilder();
 
     $build['primary_contact'] = $primary_person_view_builder->view($par_data_primary_person, 'summary');
@@ -65,7 +65,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
       ->toString();
     // Calculate the average completion of all documentation.
     $document_completion = [];
-    foreach ($par_data_partnership->get('advice')->referencedEntities() as $document) {
+    foreach ($par_data_partnership->getAdvice() as $document) {
       $document_completion[] = $document->getCompletionPercentage();
     }
     $documentation_completion = !empty($document_completion) ? $this->parDataManager->calculateAverage($document_completion) : 0;

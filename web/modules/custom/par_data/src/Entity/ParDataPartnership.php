@@ -70,7 +70,7 @@ class ParDataPartnership extends ParDataEntity {
    * Get the organisation contacts for this Partnership.
    */
   public function getOrganisationPeople() {
-    return $this->get('organisation_person')->referencedEntities();
+    return $this->get('field_organisation_person')->referencedEntities();
   }
 
   /**
@@ -90,7 +90,7 @@ class ParDataPartnership extends ParDataEntity {
    * Get the authority contacts for this Partnership.
    */
   public function getAuthorityPeople() {
-    return $this->get('authority_person')->referencedEntities();
+    return $this->get('field_authority_person')->referencedEntities();
   }
 
   /**
@@ -104,6 +104,26 @@ class ParDataPartnership extends ParDataEntity {
    */
   public function isAuthorityMember(ParDataPerson $person) {
     return isset($this->getAuthorityPeople()[$person->id()]);
+  }
+
+  public function getOrganisation() {
+    return $this->get('field_organisation')->referencedEntities();
+  }
+
+  public function getAuthority() {
+    return $this->get('field_authority')->referencedEntities();
+  }
+
+  public function getAdvice() {
+    return $this->get('field_advice')->referencedEntities();
+  }
+
+  public function getInspectionPlan() {
+    return $this->get('field_inspection_plan')->referencedEntities();
+  }
+
+  public function getRegulatoryFunction() {
+    return $this->get('field_regulatory_function')->referencedEntities();
   }
 
   /**
@@ -439,222 +459,6 @@ class ParDataPartnership extends ParDataEntity {
         'type' => 'boolean_checkbox',
         'weight' => 27,
       ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Reference to Organisation.
-    $fields['organisation'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Organisation'))
-      ->setDescription(t('The organisations for this partnership.'))
-      ->setRequired(TRUE)
-      ->setRevisionable(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSettings([
-        'target_type' => 'par_data_organisation',
-        'handler' => 'default',
-        'handler_settings' => [
-          'target_bundles' => [
-            'coordinator' => 'coordinator',
-            'business' => 'business',
-          ]
-        ],
-      ])
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 16,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Reference to Authority.
-    $fields['authority'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Authorities'))
-      ->setDescription(t('The authorities for this partnership.'))
-      ->setRequired(TRUE)
-      ->setRevisionable(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSettings([
-        'target_type' => 'par_data_authority',
-        'handler' => 'default',
-        'handler_settings' => [
-          'target_bundles' => [
-            'authority' => 'authority',
-          ]
-        ],
-      ])
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 17,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Reference to Advice.
-    $fields['advice'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Advice'))
-      ->setDescription(t('The advice for this partnership.'))
-      ->setRevisionable(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSettings([
-        'target_type' => 'par_data_advice',
-        'handler' => 'default',
-        'handler_settings' => [
-          'target_bundles' => [
-            'advice' => 'advice',
-          ]
-        ],
-      ])
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 18,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Reference to Inspection Plan.
-    $fields['inspection_plan'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Inspection Plan'))
-      ->setDescription(t('The inspection plans for this partnership.'))
-      ->setRevisionable(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSettings([
-        'target_type' => 'par_data_inspection_plan',
-        'handler' => 'default',
-        'handler_settings' => [
-          'target_bundles' => [
-            'inspection_plan' => 'inspection_plan',
-          ]
-        ],
-      ])
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 19,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Reference to Regulatory Function.
-    $fields['regulatory_function'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Regulatory Function'))
-      ->setDescription(t('The regulatory functions for this partnership.'))
-      ->setRequired(TRUE)
-      ->setRevisionable(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSettings([
-        'target_type' => 'par_data_regulatory_function',
-        'handler' => 'default',
-        'handler_settings' => [
-          'target_bundles' => [
-            'regulatory_function' => 'regulatory_function',
-          ]
-        ],
-      ])
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 20,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Reference to Authority People.
-    $fields['authority_person'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Authority Contacts'))
-      ->setDescription(t('The authority contacts for this partnership. The first person will be the primary contact.'))
-      ->setRequired(TRUE)
-      ->setRevisionable(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSettings([
-        'target_type' => 'par_data_person',
-        'handler' => 'default',
-        'handler_settings' => [
-          'target_bundles' => [
-            'person' => 'person',
-          ]
-        ],
-      ])
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 21,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Reference to Organisation People.
-    $fields['organisation_person'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Organisation Contacts'))
-      ->setDescription(t('The organisation contacts for this partnership. The first person will be the primary contact.'))
-      ->setRequired(TRUE)
-      ->setRevisionable(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSettings([
-        'target_type' => 'par_data_person',
-        'handler' => 'default',
-        'handler_settings' => [
-          'target_bundles' => [
-            'person' => 'person',
-          ]
-        ],
-      ])
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 21,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',

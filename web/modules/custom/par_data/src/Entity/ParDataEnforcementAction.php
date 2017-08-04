@@ -64,6 +64,18 @@ use Drupal\Core\Field\BaseFieldDefinition;
  */
 class ParDataEnforcementAction extends ParDataEntity {
 
+  public function getBlockedAdvice() {
+    return $this->get('field_blocked_advices')->referencedEntities();
+  }
+
+  public function getActionReferral() {
+    return $this->get('field_action_referral')->referencedEntities();
+  }
+
+  public function getRegulatoryFunction() {
+    return $this->get('field_regulatory_function')->referencedEntity();
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -214,98 +226,6 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setDisplayOptions('view', [
         'label' => 'hidden',
         'type' => 'text_default',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Blocked by advice.
-    $fields['blocked_advice'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Blocked by Advice'))
-      ->setDescription(t('The advice that is blocking this action.'))
-      ->setRevisionable(TRUE)
-      ->setCardinality(1)
-      ->setSettings([
-        'target_type' => 'par_data_advice',
-        'handler' => 'default',
-        'handler_settings' => [
-          'target_bundles' => [
-            'advice' => 'advice',
-          ],
-        ],
-      ])
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 8,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Referred from action.
-    $fields['action_referral'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Action Referred From'))
-      ->setDescription(t('The action relating to this action.'))
-      ->setRevisionable(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSettings([
-        'target_type' => 'par_data_enforcement_action',
-        'handler' => 'default',
-        'handler_settings' => [
-          'target_bundles' => [
-            'enforcement_action' => 'enforcement_action',
-          ],
-        ],
-      ])
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 9,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-
-    // Reference to Regulatory Function.
-    $fields['regulatory_function'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Regulatory Function'))
-      ->setDescription(t('The Regulatory Function this notice is relevant to.'))
-      ->setRequired(TRUE)
-      ->setRevisionable(TRUE)
-      ->setCardinality(1)
-      ->setSettings([
-        'target_type' => 'par_data_regulatory_function',
-        'handler' => 'default',
-        'handler_settings' => [
-          'target_bundles' => [
-            'regulatory_function' => 'regulatory_function',
-          ],
-        ],
-      ])
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 10,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
       ])
       ->setDisplayConfigurable('view', TRUE);
 

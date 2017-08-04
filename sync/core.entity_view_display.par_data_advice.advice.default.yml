@@ -3,9 +3,11 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.par_data_advice.advice.field_regulatory_function
     - par_data.par_data_advice_type.advice
   module:
     - file_entity
+    - text
 _core:
   default_config_hash: xWNw6vh1C_nGYBSNMRuUcLR5b53lfAY3WBiTIbMyViQ
 id: par_data_advice.advice.default
@@ -30,12 +32,21 @@ content:
       access_message: 'You don''t have access to download this file.'
       text: 'Download [file:name]'
     third_party_settings: {  }
+  field_regulatory_function:
+    weight: 4
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
   notes:
-    type: basic_string
+    type: text_trimmed
     weight: 3
     region: content
     label: hidden
-    settings: {  }
+    settings:
+      trim_length: 600
     third_party_settings: {  }
   regulatory_function:
     type: entity_reference_entity_view

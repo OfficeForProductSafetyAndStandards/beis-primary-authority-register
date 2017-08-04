@@ -155,11 +155,8 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
 
       // Now add the legal entity to the organisation.
       $par_data_partnership = $this->getRouteParam('par_data_partnership');
-      $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
-      $legal_entities = $par_data_organisation->get('legal_entity')->referencedEntities();
-
-      $legal_entities[] = $legal_entity;
-      $par_data_organisation->set('legal_entity', $legal_entities);
+      $par_data_organisation = current($par_data_partnership->getOrganisationPeople());
+      $par_data_organisation->addLegalEntity($legal_entity);
 
       if ($par_data_organisation->save()) {
         $this->deleteStore();

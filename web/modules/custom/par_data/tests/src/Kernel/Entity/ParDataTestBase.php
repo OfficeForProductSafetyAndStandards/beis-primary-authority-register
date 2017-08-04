@@ -272,16 +272,16 @@ class ParDataTestBase extends EntityKernelTestBase {
         $this->randomString(255),
         $this->randomString(255),
       ],
-      'sic_code' => [
+      'field_sic_code' => [
         $sic_code->id(),
       ],
-      'person' => [
+      'field_person' => [
         $person->id(),
       ],
-      'premises' => [
+      'field_premises' => [
         $premises->id(),
       ],
-      'legal_entity' => [
+      'field_legal_entity' => [
         $legal_entity->id(),
       ]
     ] + $this->getBaseValues();

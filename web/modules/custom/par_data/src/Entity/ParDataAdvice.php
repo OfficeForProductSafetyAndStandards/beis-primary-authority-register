@@ -64,6 +64,10 @@ use Drupal\Core\Field\BaseFieldDefinition;
  */
 class ParDataAdvice extends ParDataEntity {
 
+  public function getRegulatoryFunction() {
+    $this->get('field_regulatory_function')->referencedEntities();
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -172,39 +176,9 @@ class ParDataAdvice extends ParDataEntity {
         'file_directory' => 'documents/advice',
       ])
       ->setDisplayOptions('form', [
-        'type' => 'file',
         'weight' => 6,
-      ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Reference to Regulatory Function.
-    $fields['regulatory_function'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Regulatory Function'))
-      ->setDescription(t('The regulatory functions for this partnership.'))
-      ->setRequired(TRUE)
-      ->setRevisionable(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSettings([
-        'target_type' => 'par_data_regulatory_function',
-        'handler' => 'default',
-        'handler_settings' => [
-          'target_bundles' => [
-            'regulatory_function' => 'regulatory_function',
-          ],
-        ],
-      ])
-      ->setDisplayOptions('form', [
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 20,
-        'settings' => [
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ],
+        'default_widget' => "file_generic",
+    'default_formatter' => "file_default",
       ])
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [

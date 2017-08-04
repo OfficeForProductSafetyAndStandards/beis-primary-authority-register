@@ -12,30 +12,23 @@ targetEntityType: par_data_organisation
 bundle: business
 mode: summary
 content:
-  organisation_name:
-    type: string
+  comments:
+    type: basic_string
     weight: 0
     region: content
     label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  premises:
-    type: entity_reference_entity_view
-    weight: 1
-    region: content
-    label: hidden
-    settings:
-      view_mode: summary
-      link: false
+    settings: {  }
     third_party_settings: {  }
 hidden:
-  comments: true
+  coordinator_eligible_number: true
+  coordinator_type: true
   employees_band: true
   legal_entity: true
   name: true
   nation: true
+  organisation_name: true
   person: true
+  premises: true
   premises_mapped: true
   sic_code: true
   size: true

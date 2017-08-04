@@ -64,6 +64,28 @@ use Drupal\Core\Field\BaseFieldDefinition;
  */
 class ParDataOrganisation extends ParDataEntity {
 
+  public function getPerson() {
+    return $this->get('field_person')->referencedEntities();
+  }
+
+  public function getLegalEntity() {
+    return $this->get('field_legal_entity')->referencedEntities();
+  }
+
+  public function addLegalEntity($legal_entity) {
+    $legal_entities = $this->getLegalEntity();
+    $legal_entities[] = $legal_entity;
+    $this->set('field_legal_entity', $legal_entities);
+  }
+
+  public function getPremises() {
+    return $this->get('field_premises')->referencedEntities();
+  }
+
+  public function getSicCode() {
+    return $this->get('field_sic_code')->referencedEntities();
+  }
+  /**
   /**
    * {@inheritdoc}
    */
@@ -152,14 +174,14 @@ class ParDataOrganisation extends ParDataEntity {
       ->setDisplayConfigurable('view', TRUE);
 
     // Comments.
-    $fields['comments'] = BaseFieldDefinition::create('string_long')
+    $fields['comments'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Comments'))
       ->setDescription(t('Comments about this organisation.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
       ])->setDisplayOptions('form', [
-        'type' => 'string_textarea',
+        'type' => 'text_textarea',
         'weight' => 5,
         'settings' => [
           'rows' => 25,
@@ -202,170 +224,6 @@ class ParDataOrganisation extends ParDataEntity {
         'type' => 'string_textfield',
         'weight' => 7,
       ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Coordinator number eligible.
-    $fields['coordinator_eligible_number'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Coordinator number'))
-      ->setDescription(t('Number of eligible coordinators.'))
-      ->setRequired(TRUE)
-      ->setRevisionable(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSettings([
-        'max_length' => 6,
-        'text_processing' => 0,
-      ])
-      ->setDefaultValue('')
-      ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => 8,
-      ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Coordinator type.
-    $fields['coordinator_type'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Coordinator type'))
-      ->setDescription(t('Type of coordinator.'))
-      ->setRequired(TRUE)
-      ->setRevisionable(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSettings([
-        'max_length' => 20,
-        'text_processing' => 0,
-      ])
-      ->setDefaultValue('')
-      ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => 9,
-      ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Reference to Person.
-    $fields['person'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Person'))
-      ->setDescription(t('The contacts for this organisation. The first person will be the primary contact.'))
-      ->setRevisionable(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSettings([
-        'target_type' => 'par_data_person',
-        'handler' => 'default',
-        'handler_settings' => [
-          'target_bundles' => [
-            'person' => 'person',
-          ],
-        ],
-      ])
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 10,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Reference to Premises.
-    $fields['premises'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Premises'))
-      ->setDescription(t('The premises of this organisation. The first premises will be the primary premises'))
-      ->setRevisionable(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSettings([
-        'target_type' => 'par_data_premises',
-        'handler' => 'default',
-        'handler_settings' => [
-          'target_bundles' => [
-            'premises' => 'premises',
-          ],
-        ],
-      ])
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 11,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Reference to Legal Entity.
-    $fields['legal_entity'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Legal Entity'))
-      ->setDescription(t('The legal entities represented by this organisation.'))
-      ->setRevisionable(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSettings([
-        'target_type' => 'par_data_legal_entity',
-        'handler' => 'default',
-        'handler_settings' => [
-          'target_bundles' => [
-            'legal_entity' => 'legal_entity',
-          ],
-        ],
-      ])
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 12,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Reference to SIC Code.
-    $fields['sic_code'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('SIC Code'))
-      ->setDescription(t('The SIC codes this organisation operates in.'))
-      ->setRevisionable(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSettings([
-        'target_type' => 'par_data_sic_code',
-        'handler' => 'default',
-        'handler_settings' => [
-          'target_bundles' => [
-            'sic_code' => 'sic_code',
-          ],
-        ],
-      ])
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 13,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',

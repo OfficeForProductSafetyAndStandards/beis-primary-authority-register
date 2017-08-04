@@ -134,7 +134,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
     // List the Primary Organisation contact.
     if ($organisation_primary_person) {
-      $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
+      $par_data_organisation = current($par_data_partnership->getOrganisation());
       $form['organisation_contacts'] = [
         '#type' => 'fieldset',
         '#title' => t('Main @organisation_type contact', ['@organisation_type' => $par_data_organisation->type->entity->label()]),
@@ -190,9 +190,9 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-    $regulatory_functions = $par_data_partnership->get('regulatory_function')->referencedEntities();
+    $regulatory_functions = $par_data_partnership->getRegulatoryFunction();
     $regulatory_function_view_builder = current($regulatory_functions)->getViewBuilder();
-    foreach ($par_data_partnership->get('regulatory_function')->referencedEntities() as $regulatory_function) {
+    foreach ($par_data_partnership->getRegulatoryFunction() as $regulatory_function) {
       $regulatory_function_field = $regulatory_function_view_builder->view($regulatory_function, 'title');
       $form['fourth_section'][] = $this->renderMarkupField($regulatory_function_field);
     }

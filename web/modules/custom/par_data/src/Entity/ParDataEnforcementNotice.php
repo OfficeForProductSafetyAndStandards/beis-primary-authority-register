@@ -64,6 +64,22 @@ use Drupal\Core\Field\BaseFieldDefinition;
  */
 class ParDataEnforcementNotice extends ParDataEntity {
 
+  public function getPrimaryAuthority() {
+    return $this->get('field_primary_authority')->referencedEntities();
+  }
+
+  public function getEnforcingAuthority() {
+    return $this->get('field_enforcing_authority')->referencedEntities();
+  }
+
+  public function getLegalEntity() {
+    return $this->get('field_legal_entity')->referencedEntity();
+  }
+
+  public function getEnforcementAction() {
+    return $this->get('field_enforcement_action')->referencedEntity();
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -128,129 +144,6 @@ class ParDataEnforcementNotice extends ParDataEntity {
       ->setDisplayOptions('view', [
         'label' => 'hidden',
         'type' => 'text_default',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Reference to Primary Authority.
-    $fields['primary_authority'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Primary Authority'))
-      ->setDescription(t('The primary authority that issued this enforcement notice.'))
-      ->setRequired(TRUE)
-      ->setRevisionable(TRUE)
-      ->setCardinality(1)
-      ->setSettings([
-        'target_type' => 'par_data_authority',
-        'handler' => 'default',
-        'handler_settings' => [
-          'target_bundles' => [
-            'authority' => 'authority',
-          ],
-        ],
-      ])
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 4,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Reference to Enforcing Authority.
-    $fields['enforcing_authority'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Enforcing Authority'))
-      ->setDescription(t('The enforcing authority that is charged with following up on this enforcement notice.'))
-      ->setRequired(TRUE)
-      ->setRevisionable(TRUE)
-      ->setCardinality(1)
-      ->setSettings([
-        'target_type' => 'par_data_authority',
-        'handler' => 'default',
-        'handler_settings' => [
-          'target_bundles' => [
-            'authority' => 'authority',
-          ],
-        ],
-      ])
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 5,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Reference to Legal Entity.
-    $fields['legal_entity'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Legal Entity'))
-      ->setDescription(t('The legal entities this enforcement notice is issued to.'))
-      ->setRequired(TRUE)
-      ->setRevisionable(TRUE)
-      ->setCardinality(1)
-      ->setSettings([
-        'target_type' => 'par_data_legal_entity',
-        'handler' => 'default',
-        'handler_settings' => [
-          'target_bundles' => [
-            'legal_entity' => 'legal_entity',
-          ],
-        ],
-      ])
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 6,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Enforcement action.
-    $fields['enforcement_action'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Enforcement Actions'))
-      ->setDescription(t('Enforcement actions that relate to this notice.'))
-      ->setRevisionable(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSettings([
-        'target_type' => 'par_data_enforcement_action',
-        'handler' => 'default',
-        'handler_settings' => [
-          'target_bundles' => [
-            'enforcement_action' => 'enforcement_action',
-          ],
-        ],
-      ])
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 7,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
       ])
       ->setDisplayConfigurable('view', TRUE);
 

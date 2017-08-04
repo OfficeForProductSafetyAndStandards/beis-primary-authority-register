@@ -3,6 +3,13 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.par_data_partnership.partnership.field_advice
+    - field.field.par_data_partnership.partnership.field_authority
+    - field.field.par_data_partnership.partnership.field_authority_person
+    - field.field.par_data_partnership.partnership.field_inspection_plan
+    - field.field.par_data_partnership.partnership.field_organisation
+    - field.field.par_data_partnership.partnership.field_organisation_person
+    - field.field.par_data_partnership.partnership.field_regulatory_function
     - par_data.par_data_partnership_type.partnership
   module:
     - datetime
@@ -66,6 +73,62 @@ content:
     settings:
       trim_length: 600
     third_party_settings: {  }
+  field_advice:
+    weight: 16
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_authority:
+    weight: 17
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_authority_person:
+    weight: 13
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_inspection_plan:
+    weight: 15
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_organisation:
+    weight: 18
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_organisation_person:
+    weight: 12
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_regulatory_function:
+    weight: 14
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
   organisation:
     type: entity_reference_entity_view
     weight: 4

@@ -46,7 +46,7 @@ class ParFlowTransitionTradingForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $trading_name_delta = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
-    $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
+    $par_data_organisation = current($par_data_partnership->getOrganisation());
 
     if (empty($trading_name_delta)) {
       $form['intro'] = [
@@ -94,7 +94,7 @@ class ParFlowTransitionTradingForm extends ParBaseForm {
 
     // Save the value for the trading name field.
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
-    $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
+    $par_data_organisation = current($par_data_partnership->getOrganisation());
     $trading_name_delta = $this->getRouteParam('trading_name_delta');
 
     $items = $par_data_organisation->get('trading_name')->getValue();

@@ -69,10 +69,19 @@ class ParDataPerson extends ParDataEntity {
    * Get the User account.
    */
   public function getUserAccount() {
-    $entities = $this->get('user_account')->referencedEntities();
+    $entities = $this->get('field_user_account')->referencedEntities();
     return $entities ? current($entities) : NULL;
   }
 
+  /**
+   * Set the user account.
+   *
+   * @param mixed $account
+   *   Drupal user account.
+   */
+  public function setUserAccount($account) {
+    $this->set('field_user_account', $account);
+  }
   /**
    * Get the User account.
    *
@@ -127,9 +136,9 @@ class ParDataPerson extends ParDataEntity {
     if (!$account) {
       $account = $this->lookupUserAccount();
     }
-    $current_user_account = current($this->get('user_account')->referencedEntities());
+    $current_user_account = $this->getUserAccount();
     if ($account && (!$current_user_account || !$account->id() !== $current_user_account->id())) {
-      $this->set('user_account', $account);
+      $this->setUserAccount($account);
       $saved = $this->save();
     }
     return $saved ? $account : NULL;
@@ -204,36 +213,6 @@ class ParDataPerson extends ParDataEntity {
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
-
-    // List the Drupal user account the user is related to.
-    $fields['user_account'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('User Account'))
-      ->setDescription(t('The user account that this entity is linked to.'))
-      ->setRevisionable(TRUE)
-      ->setSettings([
-        'target_type' => 'user',
-        'handler' => 'default',
-      ])
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-        'type' => 'author',
-        'weight' => 0,
-      ])
-      ->setDisplayOptions('form', [
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 5,
-        'settings' => [
-          'match_operator' => 'CONTAINS',
-          'size' => '60',
-          'autocomplete_type' => 'tags',
-          'placeholder' => '',
-        ],
-      ])
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
 
     // Title.
     $fields['salutation'] = BaseFieldDefinition::create('string')

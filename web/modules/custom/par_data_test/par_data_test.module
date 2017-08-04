@@ -330,17 +330,17 @@ function par_data_test_create_entities() {
       'ABCD',
       'ABCD Mart',
     ],
-    'person' => [
+    'field_person' => [
       $business_person_3->id(),
       $business_person_4->id(),
     ],
-    'premises' => [
+    'field_premises' => [
       $premises_1->id(),
     ],
-    'legal_entity' => [
+    'field_legal_entity' => [
       $legal_entity_1->id()
     ],
-    'sic_code' => [
+    'field_sic_code' => [
       $sic_code_1->save(),
     ]
   ]);
@@ -361,17 +361,17 @@ function par_data_test_create_entities() {
       'Charlie\'s',
       'Charlie\'s Cafe',
     ],
-    'person' => [
+    'field_person' => [
       $business_person_7->id(),
       $business_person_4->id(),
     ],
-    'premises' => [
+    'field_premises' => [
       $premises_2->id(),
     ],
-    'legal_entity' => [
+    'field_legal_entity' => [
       $legal_entity_1->id()
     ],
-    'sic_code' => [
+    'field_sic_code' => [
       $sic_code_2->save(),
     ]
   ]);
@@ -404,7 +404,7 @@ function par_data_test_create_entities() {
     'authority_type' => 'Local Authority',
     'nation' => 'USA',
     'ons_code' => '123456',
-    'person' => [
+    'field_person' => [
       $authority_person_1->id(),
       $authority_person_2->id(),
     ],
@@ -424,7 +424,7 @@ function par_data_test_create_entities() {
     'authority_type' => 'Local Authority',
     'nation' => 'USA',
     'ons_code' => '123456',
-    'person' => [
+    'field_person' => [
       $authority_person_8->id(),
       $authority_person_2->id(),
     ],
