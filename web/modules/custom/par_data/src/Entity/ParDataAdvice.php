@@ -178,7 +178,7 @@ class ParDataAdvice extends ParDataEntity {
       ->setDisplayOptions('form', [
         'weight' => 6,
         'default_widget' => "file_generic",
-    'default_formatter' => "file_default",
+        'default_formatter' => "file_default",
       ])
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [

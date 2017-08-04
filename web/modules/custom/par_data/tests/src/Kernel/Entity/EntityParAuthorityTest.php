@@ -45,16 +45,16 @@ class EntityParAuthorityTest extends ParDataTestBase {
       'authority_type' => '',
       'nation' => '',
       'ons_code' => '',
-      'person' => [
+      'field_person' => [
         '',
       ],
-      'regulatory_function' => [
+      'field_regulatory_function' => [
         '',
       ],
-      'allowed_regulatory_function' => [
+      'field_allowed_regulatory_function' => [
         '',
       ],
-      'premises' => [
+      'field_premises' => [
         '',
       ],
     ];

@@ -44,19 +44,19 @@ class EntityParPartnershipTest extends ParDataTestBase {
     $values = [
       'partnership_type' => '',
       'partnership_status' => '',
-      'organisation' => [
+      'field_organisation' => [
         '',
       ],
-      'authority' => [
+      'field_authority' => [
         '',
       ],
-      'regulatory_function' => [
+      'field_regulatory_function' => [
         '',
       ],
-      'authority_person' => [
+      'field_authority_person' => [
         '',
       ],
-      'organisation_person' => [
+      'field_organisation_person' => [
         '',
       ],
     ];

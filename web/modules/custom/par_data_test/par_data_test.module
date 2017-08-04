@@ -408,10 +408,10 @@ function par_data_test_create_entities() {
       $authority_person_1->id(),
       $authority_person_2->id(),
     ],
-    'regulatory_function' => [
+    'field_regulatory_function' => [
       $regulatory_function_1->id(),
     ],
-    'premises' => [
+    'field_premises' => [
       $premises_3->id(),
     ],
   ]);
@@ -428,10 +428,10 @@ function par_data_test_create_entities() {
       $authority_person_8->id(),
       $authority_person_2->id(),
     ],
-    'regulatory_function' => [
+    'field_regulatory_function' => [
       $regulatory_function_2->id(),
     ],
-    'premises' => [
+    'field_premises' => [
       $premises_4->id(),
     ],
   ]);
@@ -457,29 +457,29 @@ function par_data_test_create_entities() {
     'revocation_reason' => 'I saw a rat in Charlie\'s Cafe.',
     'authority_change_comment' => '',
     'organisation_change_comment' => '',
-    'authority' => [
+    'field_authority' => [
       $authority_1->id(),
     ],
-    'organisation' => [
+    'field_organisation' => [
       $organisation_1->id(),
     ],
-    'authority_person' => [
+    'field_authority_person' => [
       $authority_person_1->id(),
       $authority_person_2->id(),
       $authority_person_8->id(),
     ],
-    'organisation_person' => [
+    'field_organisation_person' => [
       $business_person_3->id(),
       $business_person_4->id(),
       $business_person_7->id(),
     ],
-    'regulatory_function' => [
+    'field_regulatory_function' => [
       $regulatory_function_1->id(),
     ],
-    'advice' => [
+    'field_advice' => [
       $advice_1->id(),
     ],
-    'inspection_plan' => [
+    'field_inspection_plan' => [
       $inspection_plan_1->id(),
     ]
   ]);

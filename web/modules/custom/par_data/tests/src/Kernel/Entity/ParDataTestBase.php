@@ -191,7 +191,7 @@ class ParDataTestBase extends EntityKernelTestBase {
       'document' => [
         ''
       ],
-      'regulatory_function' => [
+      'field_regulatory_function' => [
         $regulatory_function->id(),
       ],
     ] + $this->getBaseValues();
@@ -217,16 +217,16 @@ class ParDataTestBase extends EntityKernelTestBase {
       'nation' => 'Wales',
       'ons_code' => '123456',
       'comments' => $this->randomString(1000),
-      'person' => [
+      'field_person' => [
         $person->id(),
       ],
-      'regulatory_function' => [
+      'field_regulatory_function' => [
         $regulatory_function->id(),
       ],
-      'allowed_regulatory_function' => [
+      'field_allowed_regulatory_function' => [
         $regulatory_function->id(),
       ],
-      'premises' => [
+      'field_premises' => [
         $premises->id(),
       ]
     ] + $this->getBaseValues();
@@ -250,10 +250,10 @@ class ParDataTestBase extends EntityKernelTestBase {
         'primary_authority_status' => 'Enforced',
         'primary_authority_notes' => $this->randomString(1000),
         'referral_notes' => $this->randomString(1000),
-        'blocked_advice' => [
+        'field_blocked_advice' => [
           $advice->id(),
         ],
-        'regulatory_function' => [
+        'field_regulatory_function' => [
           $regulatory_function->id(),
         ],
       ] + $this->getBaseValues();
@@ -282,16 +282,16 @@ class ParDataTestBase extends EntityKernelTestBase {
       'notice_type' => 'Closure',
       'notice_date' => '2017-10-01',
       'summary' => $this->randomString(1000),
-      'primary_authority' => [
+      'field_primary_authority' => [
         $primary_authority->id(),
       ],
-      'enforcing_authority' => [
+      'field_enforcing_authority' => [
         $enforcing_authority->id(),
       ],
-      'legal_entity' => [
+      'field_legal_entity' => [
         $legal_entity->id(),
       ],
-      'enforcement_action' => [
+      'field_enforcement_action' => [
         $enforcement_action->id(),
       ],
     ] + $this->getBaseValues();
@@ -407,16 +407,16 @@ class ParDataTestBase extends EntityKernelTestBase {
           $this->randomString(255),
           $this->randomString(255),
         ],
-        'sic_code' => [
+        'field_sic_code' => [
           $sic_code->id(),
         ],
-        'person' => [
+        'field_person' => [
           $person->id(),
         ],
-        'premises' => [
+        'field_premises' => [
           $premises->id(),
         ],
-        'legal_entity' => [
+        'field_legal_entity' => [
           $legal_entity->id(),
         ]
       ] + $this->getBaseValues();
@@ -471,25 +471,25 @@ class ParDataTestBase extends EntityKernelTestBase {
         'partnership_info_agreed_authority' => TRUE,
         'partnership_info_agreed_business' => TRUE,
         'written_summary_agreed' => TRUE,
-        'organisation' => [
+        'field_organisation' => [
           $organisation->id(),
         ],
-        'authority' => [
+        'field_authority' => [
           $authority->id(),
         ],
-        'advice' => [
+        'field_advice' => [
           $advice->id(),
         ],
-        'inspection_plan' => [
+        'field_inspection_plan' => [
           $inspection_plan->id(),
         ],
-        'regulatory_function' => [
+        'field_regulatory_function' => [
           $regulatory_function->id(),
         ],
-        'authority_person' => [
+        'field_authority_person' => [
           $person_1->id(),
         ],
-        'organisation_person' => [
+        'field_organisation_person' => [
           $person_2->id(),
         ]
       ] + $this->getBaseValues();
@@ -509,7 +509,7 @@ class ParDataTestBase extends EntityKernelTestBase {
       'communication_phone' => TRUE,
       'communication_mobile' => TRUE,
       'communication_notes' => $this->randomString(1000),
-      'user_account' => [
+      'field_user_account' => [
         $this->account->id(),
       ]
     ] + $this->getBaseValues();

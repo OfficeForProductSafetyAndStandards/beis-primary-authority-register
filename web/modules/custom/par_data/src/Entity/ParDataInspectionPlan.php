@@ -134,8 +134,9 @@ class ParDataInspectionPlan extends ParDataEntity {
         'file_directory' => 'documents/advice',
       ])
       ->setDisplayOptions('form', [
-        'type' => 'file',
         'weight' => 4,
+        'default_widget' => "file_generic",
+        'default_formatter' => "file_default",
       ])
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
