@@ -1,0 +1,100 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_organisation.full
+    - par_data.par_data_organisation_type.business
+id: par_data_organisation.business.full
+targetEntityType: par_data_organisation
+bundle: business
+mode: full
+content:
+  comments:
+    type: basic_string
+    weight: 9
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  employees_band:
+    type: string
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  legal_entity:
+    type: entity_reference_entity_view
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+  nation:
+    type: string
+    weight: 6
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  organisation_name:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  person:
+    type: entity_reference_entity_view
+    weight: 8
+    region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+  premises:
+    type: entity_reference_entity_view
+    weight: 7
+    region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+  sic_code:
+    type: entity_reference_entity_view
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+  size:
+    type: string
+    weight: 4
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  trading_name:
+    type: string
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  coordinator_eligible_number: true
+  coordinator_type: true
+  name: true
+  premises_mapped: true
+  user_id: true
