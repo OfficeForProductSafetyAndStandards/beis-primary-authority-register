@@ -1,7 +1,7 @@
 @ci
-Feature:  As a Primary Authority Officer,	
-I need to be able to agree to the Primary Authority Terms and Conditions (for each Partnership),	
-so that my Partnerships remain valid after 1st October.
+Feature:  As a Primary Authority Officer,
+    I need to be able to agree to the Primary Authority Terms and Conditions (for each Partnership),
+    so that my Partnerships remain valid after 1st October.
 
     Background:
         Given I open the url "/user/login"
