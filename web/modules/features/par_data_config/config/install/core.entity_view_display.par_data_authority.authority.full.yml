@@ -77,5 +77,9 @@ content:
     third_party_settings: {  }
 hidden:
   allowed_regulatory_function: true
+  field_allowed_regulatory_fn: true
+  field_person: true
+  field_premises: true
+  field_regulatory_function: true
   name: true
   user_id: true

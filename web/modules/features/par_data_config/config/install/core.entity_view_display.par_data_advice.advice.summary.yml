@@ -29,6 +29,7 @@ content:
       text: 'Download [file:name]'
     third_party_settings: {  }
 hidden:
+  field_regulatory_function: true
   name: true
   notes: true
   regulatory_function: true

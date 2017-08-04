@@ -25,6 +25,7 @@ content:
     third_party_settings: {  }
 hidden:
   advice_type: true
+  field_regulatory_function: true
   name: true
   notes: true
   regulatory_function: true

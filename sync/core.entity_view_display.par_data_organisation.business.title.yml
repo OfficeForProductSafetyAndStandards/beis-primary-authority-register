@@ -25,6 +25,10 @@ hidden:
   coordinator_eligible_number: true
   coordinator_type: true
   employees_band: true
+  field_legal_entity: true
+  field_person: true
+  field_premises: true
+  field_sic_code: true
   legal_entity: true
   name: true
   nation: true

@@ -31,6 +31,13 @@ hidden:
   coordinator_suitable: true
   cost_recovery: true
   expertise_details: true
+  field_advice: true
+  field_authority: true
+  field_authority_person: true
+  field_inspection_plan: true
+  field_organisation: true
+  field_organisation_person: true
+  field_regulatory_function: true
   inspection_plan: true
   name: true
   organisation_change_comment: true

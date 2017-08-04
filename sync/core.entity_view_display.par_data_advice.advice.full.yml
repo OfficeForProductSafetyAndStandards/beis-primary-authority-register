@@ -48,6 +48,7 @@ content:
       link: false
     third_party_settings: {  }
 hidden:
+  field_regulatory_function: true
   name: true
   user_id: true
   visible_authority: true

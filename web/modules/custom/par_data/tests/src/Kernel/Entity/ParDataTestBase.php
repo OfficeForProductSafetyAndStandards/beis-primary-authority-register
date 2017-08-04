@@ -223,7 +223,7 @@ class ParDataTestBase extends EntityKernelTestBase {
       'field_regulatory_function' => [
         $regulatory_function->id(),
       ],
-      'field_allowed_regulatory_function' => [
+      'field_allowed_regulatory_fn' => [
         $regulatory_function->id(),
       ],
       'field_premises' => [
