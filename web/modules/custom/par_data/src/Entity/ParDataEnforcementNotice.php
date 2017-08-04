@@ -82,14 +82,14 @@ class ParDataEnforcementNotice extends ParDataEntity {
    * Get the legal entity for this Enforcement Notice.
    */
   public function getLegalEntity() {
-    return $this->get('field_legal_entity')->referencedEntity();
+    return $this->get('field_legal_entity')->referencedEntities();
   }
 
   /**
    * Get the enforcement action for this Enforcement Notice.
    */
   public function getEnforcementAction() {
-    return $this->get('field_enforcement_action')->referencedEntity();
+    return $this->get('field_enforcement_action')->referencedEntities();
   }
 
   /**
