@@ -73,5 +73,9 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_enforcement_action: true
+  field_enforcingauthority: true
+  field_legal_entity: true
+  field_primary_authority: true
   name: true
   user_id: true

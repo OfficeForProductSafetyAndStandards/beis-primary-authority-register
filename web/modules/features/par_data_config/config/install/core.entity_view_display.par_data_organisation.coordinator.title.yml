@@ -25,6 +25,10 @@ hidden:
   field_coordinated_businesses: true
   field_coordinator_number: true
   field_coordinator_type: true
+  field_legal_entity: true
+  field_person: true
+  field_premises: true
+  field_sic_code: true
   legal_entity: true
   name: true
   nation: true

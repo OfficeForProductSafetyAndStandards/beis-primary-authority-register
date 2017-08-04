@@ -62,6 +62,7 @@ hidden:
   communication_mobile: true
   communication_notes: true
   communication_phone: true
+  field_user_account: true
   job_title: true
   name: true
   salutation: true

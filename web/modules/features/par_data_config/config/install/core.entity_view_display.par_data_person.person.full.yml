@@ -70,6 +70,7 @@ hidden:
   communication_mobile: true
   communication_notes: true
   communication_phone: true
+  field_user_account: true
   name: true
   person_name: true
   user_account: true
