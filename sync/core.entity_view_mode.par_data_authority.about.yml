@@ -1,0 +1,10 @@
+uuid: d182ecc3-adc5-4c46-9ec6-558e572d7ee4
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_authority.about
+label: 'About'
+targetEntityType: par_data_authority
+cache: true
