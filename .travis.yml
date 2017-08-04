@@ -96,9 +96,16 @@ install:
 ##############################################################################
 
 script:
-- travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
-- travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
-- travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/pa11y-ci -T 1 -j -s 'http://localhost/sitemap.xml' -f 'https://par-beta-test.cloudapps.digital' -r 'http://localhost:80' > ./reports/wcag2aa_report.json"
+  - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
+  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
+  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/pa11y-ci -T 1 -j -s 'http://localhost/sitemap.xml' -f 'https://par-beta-test.cloudapps.digital' -r 'http://localhost:80' > ./reports/wcag2aa_report.json"
+
+##############################################################################
+### PRE-DEPLOY                                                             ###
+##############################################################################
+
+after_script:
+  - rm .env
 
 ##############################################################################
 ### DEPLOY                                                                 ###
@@ -134,8 +141,17 @@ deploy:
     space: sandbox
     on:
       repo: TransformCore/beis-par-beta
-      branch: master
       tags: true
+      
+  - provider: s3
+    access_key_id: $S3_ACCESS_KEY
+    secret_access_key: $S3_SECRET_KEY
+    bucket: "transform-par-beta-artifacts"
+    upload-dir: travis-builds
+    skip_cleanup: true
+    on:
+      repo: TransformCore/beis-par-beta
+      tags: true      
 
 ##############################################################################
 ### POST DEPLOY                                                            ###
@@ -173,8 +189,25 @@ after_deploy:
 #-----------------------------------------------------------------------------
     
   - cf ssh $PAAS_APP_INSTANCE -c "cd app/tools && python extract_postgres_env_vars.py"
-  - cf ssh $PAAS_APP_INSTANCE -c "cd app && source drupal-update-paas-envs.sh && sh drupal-update.sh /home/vcap/app && sh drupal-update-paas.sh"
+  - cf ssh $PAAS_APP_INSTANCE -c "cd app && source drupal-update-paas-envs.sh && sh drupal-update-paas.sh"
+
+##############################################################################
+### PACKAGE AND STORE                                                      ###
+##############################################################################
+
+#-----------------------------------------------------------------------------
+# Remove environment file that was created earlier in this process
+#-----------------------------------------------------------------------------
  
+  - rm .env
+  
+#-----------------------------------------------------------------------------
+# Tar up contents of the directory
+#-----------------------------------------------------------------------------  
+  
+  - if [[ $TRAVIS_TAG != '' ]]; then tar zcvf $TRAVIS_TAG.tar.gz *; fi
+  -  
+  
 ##############################################################################
 ### STORE ARTIFACTS                                                        ###
 ##############################################################################
