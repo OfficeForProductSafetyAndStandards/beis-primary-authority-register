@@ -111,21 +111,17 @@ class ParFlowTransitionContactForm extends ParBaseForm {
 
 
     // Method of contact.
-    $title_options = [
-      'Work phone',
-      'Mobile Phone',
-      'Email',
-    ];
+    $contact_methods = $par_data_person->getPreferredCommunicationMethods();
     $form['contact_method'] = [
       '#type' => 'radios',
       '#title' => $this->t('(NOT SAVED) Preferred method of contact (optional)'),
       '#default_value' => $this->getDefaultValues("person_contact_method"),
-      '#options' => array_combine($title_options, $title_options),
+      '#options' => array_combine($contact_methods, $contact_methods),
     ];
 
     $form['notes'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('(NOT SAVED) Contact notes (optional)'),
+      '#title' => $this->t('Contact notes (optional)'),
       '#default_value' => $this->getDefaultValues('notes'),
       '#description' => 'Add any additional notes about how best to contact this person.',
     ];
@@ -161,6 +157,8 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     $person->set('work_phone', $this->getTempDataValue('work_phone'));
     $person->set('mobile_phone', $this->getTempDataValue('mobile_phone'));
     $person->set('email', $this->getTempDataValue('email'));
+//    $person->setPreferredCommunication($this->getTempDataValue('contact_method'));
+
     if ($person->save()) {
       $this->deleteStore();
     }

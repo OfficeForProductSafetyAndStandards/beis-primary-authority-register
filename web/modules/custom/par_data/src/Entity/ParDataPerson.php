@@ -145,7 +145,7 @@ class ParDataPerson extends ParDataEntity {
   }
 
   public function getFullName() {
-    return $this->get('first_name') . ' ' . $this->get('last_name');
+    return $this->get('first_name')->getString() . ' ' . $this->get('last_name')->getString();
   }
 
   /**
@@ -208,6 +208,26 @@ class ParDataPerson extends ParDataEntity {
     return (bool) $this->getAuthorities();
   }
 
+  /**
+   * Get any Authorities this user is a member of.
+   *
+   * @return mixed|null
+   *   Returns any business records found.
+   */
+  public function setPreferredCommunication($method) {
+    $methods = ['phone', 'mobile', 'email'];
+
+//    communication_mobile
+dump('setPreferredComminspectionunication');
+  }
+
+  public function getPreferredCommunicationMethods() {
+    return [
+      'Work phone',
+      'Mobile Phone',
+      'Email',
+    ];
+  }
   /**
    * {@inheritdoc}
    */

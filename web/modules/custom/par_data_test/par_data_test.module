@@ -382,7 +382,7 @@ function par_data_test_create_entities() {
     'type' => 'regulatory_function',
     'name' => 'Cookie control',
     'uid' => 1,
-    'area_name' => 'Cookie control',
+    'function_name' => 'Cookie control',
   ]);
   $regulatory_function_1->save();
 
@@ -391,7 +391,7 @@ function par_data_test_create_entities() {
     'type' => 'regulatory_function',
     'name' => 'Alphabet learning',
     'uid' => 1,
-    'area_name' => 'Alphabet learning',
+    'function_name' => 'Alphabet learning',
   ]);
   $regulatory_function_2->save();
 
