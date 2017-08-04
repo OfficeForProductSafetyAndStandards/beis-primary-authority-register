@@ -1,4 +1,3 @@
-uuid: bb1b81b4-3645-4ac9-b781-b0cb3e3f8364
 langcode: en
 status: false
 dependencies:
@@ -15,8 +14,6 @@ dependencies:
   module:
     - datetime
     - text
-_core:
-  default_config_hash: fIgfWxIDk6EYPpcnjk-ycKYDaa1mFzogbwJp1lS3EmU
 id: par_data_partnership.partnership.about
 targetEntityType: par_data_partnership
 bundle: partnership

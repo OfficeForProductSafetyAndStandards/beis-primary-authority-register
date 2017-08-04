@@ -4,18 +4,25 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_organisation.about
+    - field.field.par_data_organisation.business.field_legal_entity
+    - field.field.par_data_organisation.business.field_person
+    - field.field.par_data_organisation.business.field_premises
+    - field.field.par_data_organisation.business.field_sic_code
     - par_data.par_data_organisation_type.business
+  module:
+    - text
 id: par_data_organisation.business.about
 targetEntityType: par_data_organisation
 bundle: business
 mode: about
 content:
   comments:
-    type: basic_string
+    type: text_trimmed
     weight: 0
     region: content
     label: hidden
-    settings: {  }
+    settings:
+      trim_length: 600
     third_party_settings: {  }
 hidden:
   coordinator_eligible_number: true

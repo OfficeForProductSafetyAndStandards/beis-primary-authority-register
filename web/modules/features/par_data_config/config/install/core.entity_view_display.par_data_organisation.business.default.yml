@@ -7,17 +7,20 @@ dependencies:
     - field.field.par_data_organisation.business.field_premises
     - field.field.par_data_organisation.business.field_sic_code
     - par_data.par_data_organisation_type.business
+  module:
+    - text
 id: par_data_organisation.business.default
 targetEntityType: par_data_organisation
 bundle: business
 mode: default
 content:
   comments:
-    type: basic_string
+    type: text_trimmed
     weight: 9
     region: content
     label: hidden
-    settings: {  }
+    settings:
+      trim_length: 600
     third_party_settings: {  }
   employees_band:
     type: string

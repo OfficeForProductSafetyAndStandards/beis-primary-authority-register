@@ -2,24 +2,28 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.par_data_organisation.premises_address
+    - core.entity_view_mode.par_data_organisation.about
+    - field.field.par_data_organisation.business.field_legal_entity
+    - field.field.par_data_organisation.business.field_person
+    - field.field.par_data_organisation.business.field_premises
+    - field.field.par_data_organisation.business.field_sic_code
     - par_data.par_data_organisation_type.business
-id: par_data_organisation.business.premises_address
+  module:
+    - text
+id: par_data_organisation.business.about
 targetEntityType: par_data_organisation
 bundle: business
-mode: premises_address
+mode: about
 content:
-  premises:
-    type: entity_reference_entity_view
+  comments:
+    type: text_trimmed
     weight: 0
     region: content
     label: hidden
     settings:
-      view_mode: title
-      link: false
+      trim_length: 600
     third_party_settings: {  }
 hidden:
-  comments: true
   coordinator_eligible_number: true
   coordinator_type: true
   employees_band: true
@@ -32,6 +36,7 @@ hidden:
   nation: true
   organisation_name: true
   person: true
+  premises: true
   premises_mapped: true
   sic_code: true
   size: true

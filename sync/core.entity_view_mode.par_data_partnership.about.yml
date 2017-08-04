@@ -1,9 +1,10 @@
+uuid: f00c7b19-6962-4556-98b0-354f320b04cb
 langcode: en
 status: true
 dependencies:
   module:
     - par_data
-id: par_data_partnership.about_partnership
-label: 'About Partnership'
+id: par_data_partnership.about
+label: About
 targetEntityType: par_data_partnership
 cache: true
