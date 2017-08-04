@@ -2,6 +2,10 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.par_data_organisation.business.field_legal_entity
+    - field.field.par_data_organisation.business.field_person
+    - field.field.par_data_organisation.business.field_premises
+    - field.field.par_data_organisation.business.field_sic_code
     - par_data.par_data_organisation_type.business
 id: par_data_organisation.business.default
 targetEntityType: par_data_organisation
@@ -23,6 +27,38 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  field_legal_entity:
+    weight: 11
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_person:
+    weight: 10
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_premises:
+    weight: 12
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_sic_code:
+    weight: 13
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
   legal_entity:
     type: entity_reference_entity_view
     weight: 2

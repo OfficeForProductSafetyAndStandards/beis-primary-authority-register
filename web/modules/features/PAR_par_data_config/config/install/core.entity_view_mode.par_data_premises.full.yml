@@ -1,9 +1,0 @@
-langcode: en
-status: true
-dependencies:
-  module:
-    - par_data
-id: par_data_premises.full
-label: Full
-targetEntityType: par_data_premises
-cache: true

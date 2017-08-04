@@ -1,9 +1,0 @@
-langcode: en
-status: true
-dependencies:
-  module:
-    - par_data
-id: par_data_regulatory_function.title
-label: Title
-targetEntityType: par_data_regulatory_function
-cache: true
