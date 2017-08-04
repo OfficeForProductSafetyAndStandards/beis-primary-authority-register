@@ -64,14 +64,23 @@ use Drupal\Core\Field\BaseFieldDefinition;
  */
 class ParDataEnforcementAction extends ParDataEntity {
 
+  /**
+   * Get the blocked advice for this Enforcement Action.
+   */
   public function getBlockedAdvice() {
     return $this->get('field_blocked_advices')->referencedEntities();
   }
 
+  /**
+   * Get the action referrals for this Enforcement Action.
+   */
   public function getActionReferral() {
     return $this->get('field_action_referral')->referencedEntities();
   }
 
+  /**
+   * Get the regulatory function for this Enforcement Action.
+   */
   public function getRegulatoryFunction() {
     return $this->get('field_regulatory_function')->referencedEntity();
   }

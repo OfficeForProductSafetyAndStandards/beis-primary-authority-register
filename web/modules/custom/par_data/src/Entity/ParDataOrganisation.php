@@ -64,28 +64,47 @@ use Drupal\Core\Field\BaseFieldDefinition;
  */
 class ParDataOrganisation extends ParDataEntity {
 
+  /**
+   * Get the contacts for this Organisation.
+   */
   public function getPerson() {
     return $this->get('field_person')->referencedEntities();
   }
 
+  /**
+   * Get the legal entites for this Organisation.
+   */
   public function getLegalEntity() {
     return $this->get('field_legal_entity')->referencedEntities();
   }
 
-  public function addLegalEntity($legal_entity) {
+  /**
+   * Add a legal entity for this Organisation.
+   *
+   * @param ParDataLegalEntity $legal_entity
+   *   A PAR Legal Entity to add.
+
+   */
+  public function addLegalEntity(ParDataLegalEntity $legal_entity) {
     $legal_entities = $this->getLegalEntity();
     $legal_entities[] = $legal_entity;
     $this->set('field_legal_entity', $legal_entities);
   }
 
+  /**
+   * Get the premises for this Organisation.
+   */
   public function getPremises() {
     return $this->get('field_premises')->referencedEntities();
   }
 
+  /**
+   * Get the SIC Code for this Organisation.
+   */
   public function getSicCode() {
     return $this->get('field_sic_code')->referencedEntities();
   }
-  /**
+
   /**
    * {@inheritdoc}
    */

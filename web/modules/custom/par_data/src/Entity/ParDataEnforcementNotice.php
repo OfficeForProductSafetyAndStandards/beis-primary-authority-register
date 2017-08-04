@@ -64,18 +64,30 @@ use Drupal\Core\Field\BaseFieldDefinition;
  */
 class ParDataEnforcementNotice extends ParDataEntity {
 
+  /**
+   * Get the primary authority for this Enforcement Notice.
+   */
   public function getPrimaryAuthority() {
     return $this->get('field_primary_authority')->referencedEntities();
   }
 
+  /**
+   * Get the enforcing authority for this Enforcement Notice.
+   */
   public function getEnforcingAuthority() {
     return $this->get('field_enforcing_authority')->referencedEntities();
   }
 
+  /**
+   * Get the legal entity for this Enforcement Notice.
+   */
   public function getLegalEntity() {
     return $this->get('field_legal_entity')->referencedEntity();
   }
 
+  /**
+   * Get the enforcement action for this Enforcement Notice.
+   */
   public function getEnforcementAction() {
     return $this->get('field_enforcement_action')->referencedEntity();
   }
