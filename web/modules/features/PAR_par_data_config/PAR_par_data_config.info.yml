@@ -1,0 +1,18 @@
+name: 'PAR Data Config'
+description: 'The configuration required to correctly setup the PAR Data entities.'
+type: module
+core: 8.x
+dependencies:
+  - address
+  - datetime
+  - datetime_range
+  - field
+  - file
+  - file_entity
+  - pagerer
+  - par_data
+  - par_data_config
+  - text
+  - user
+  - views
+package: PAR
