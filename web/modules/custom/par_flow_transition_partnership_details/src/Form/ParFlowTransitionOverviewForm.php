@@ -62,7 +62,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
     $partnership_view_builder = $par_data_partnership->getViewBuilder();
 
-    $form['first_section']['about_partnership'] = $par_data_partnership ? $partnership_view_builder->view($par_data_partnership, 'about_partnership') : '';
+    $form['first_section']['about_partnership'] = $par_data_partnership ? $partnership_view_builder->view($par_data_partnership, 'about') : '';
 
     // Go to the second step.
     $form['first_section']['edit'] = [

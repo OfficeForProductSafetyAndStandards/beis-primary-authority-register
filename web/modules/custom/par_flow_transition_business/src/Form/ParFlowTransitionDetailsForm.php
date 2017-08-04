@@ -75,7 +75,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
       '#collapsed' => FALSE,
     ];
 
-    $about_organisation = $par_data_organisation ? $organisation_builder->view($par_data_organisation, 'about_organisation') : '';
+    $about_organisation = $par_data_organisation ? $organisation_builder->view($par_data_organisation, 'about') : '';
     $form['about_business']['info'] = $this->renderMarkupField($about_organisation);
 
     $form['about_business']['edit'] = [
