@@ -62,7 +62,7 @@ function par_data_drush_sql_sync_sanitize($site) {
   ];
 
   // Set the replacement fields.
-  $replacements = $replacement_people[rand(0,count($replacement_people))] + [
+  $replacements = $replacement_people[rand(0,count($replacement_people)-1)] + [
     "work_phone='00441234567890'",
     "mobile_phone='00449876543210'",
   ];
