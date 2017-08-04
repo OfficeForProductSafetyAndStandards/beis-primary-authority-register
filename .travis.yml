@@ -112,6 +112,7 @@ deploy:
   - provider: cloudfoundry
     api: https://api.cloud.service.gov.uk
     username: nao.yoshino@transformuk.com
+    manifest: manifest.continuous.yml
     password:
       secure: fh6ePSKsJUnXEeZVwUU4gwGxIwLAfaug6O+4Zs0Wmus5dYXuRgVXQ3RLP1rSyp4Hc6/Nt4CPt3A8ygFW5WGNRKNXXR3F47wXLGnixOKCDmLCz6VytUXesEXlqDkzXSBT7WZGqOTKdTLKJOhaV4Z9Oum/CL5QckKbHlBHinhL3IpH4zi+4tBERc1C6R6oRC9ZPiEsFr9FYOE0hqvFA8Vw0SkB5C3uyQaFh0WotNLkhdd4fUUotxzjA5Cr2KAUTaUcRw0Ceq90UPlWnwBJDxjaNokuEcO6S13HDXTTi/RXNZi4oRhePokbs6z01GssOSiVencbRHX+RT7a4jHwF0hZI9OMgXelnmYb4Jdq5FeVPBD9OenIXGCAo2nyxJ/EU+7InUlQAN6HDh5QO7B10aSJpaWfNt2X65+FeOP89rbLPyfisqxFtbGZW1/ur9VlXOt0c8h9f6vdled8pocT6sMO6duKhMM5xFhRyDBVv01ZCZxTXOGTgOPRUN9EsVsrxX2X8mtRMmr0hJ+vml4eb1I/3AEJX10SDi4e/S8i8mJ4oAaVK4kAR7oLnKT+feBbKqHha/xkU87kp49jm3k65FzkwJzGUNe5GStjEvXXWvK8EaSX2t42iFU4SgbsMi/BIsAyy2NMyB8ua9SziYG7JGwv5z+brl7QJrvniYzkom3JSso=
     organization: beis-nmo-trial
@@ -142,7 +143,7 @@ deploy:
 
 after_deploy:
   - cf login -a api.cloud.service.gov.uk -u nao.yoshino@transformuk.com -p $CF_PASSWORD
-  - if [[ $TRAVIS_TAG == '' ]]; then APP_ENV='staging'; else APP_ENV='demo'; fi
+  - if [[ $TRAVIS_TAG == '' ]]; then APP_ENV='continuous'; else APP_ENV='demo'; fi
   - PAAS_APP_INSTANCE="par-beta-$APP_ENV";
   - echo $PAAS_APP_INSTANCE
   

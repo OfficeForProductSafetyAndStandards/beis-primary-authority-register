@@ -739,13 +739,12 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
  * will allow the site to run off of all variants of example.com and
  * example.org, with all subdomains included.
  */
+
+$appEnv = getenv('APP_ENV');
+
 $settings['trusted_host_patterns'] = array(
-  '^par$',
-  '^par-beta-demo\.cloudapps\.digital',
-  '^par-beta-test\.cloudapps\.digital',
-  '^par-beta\.localhost$',
+  '^par-beta-' . $appEnv . '\.cloudapps\.digital',
   '.par-beta\.co\.uk$',
-  '^par-staging\.transformcloud\.net$',
 );
 
 /**
@@ -892,8 +891,6 @@ $config['govuk_notify.settings']['default_template_id'] = getenv('PAR_GOVUK_NOTI
 if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
   include $app_root . '/' . $site_path . '/settings.local.php';
 }
-
-$appEnv = getenv('APP_ENV');
 
 if (!empty($appEnv)) {
     $filepath = $app_root . '/' . $site_path . '/settings.local.' . $appEnv . '.php';
