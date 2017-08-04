@@ -1,15 +1,13 @@
-uuid: 2e507a40-14e4-4cd8-aaac-f4f1378d0e2d
+uuid: 1710d746-ab44-4c70-bf06-890a0965fe1b
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.par_data_partnership.about_partnership
+    - core.entity_view_mode.par_data_partnership.about
     - par_data.par_data_partnership_type.partnership
   module:
     - text
-_core:
-  default_config_hash: wntQozPV1eBkc5Ldbs_Aa_E5vkuMMjkS0TzJ4IYVJ9I
-id: par_data_partnership.partnership.about_partnership
+id: par_data_partnership.partnership.about
 targetEntityType: par_data_partnership
 bundle: partnership
 mode: about_partnership
