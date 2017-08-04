@@ -104,8 +104,14 @@ script:
 ### PRE-DEPLOY                                                             ###
 ##############################################################################
 
+#-----------------------------------------------------------------------------
+# Remove .env file created in previous steps.
+# If tagged build, tar up the files ready for S3.
+#-----------------------------------------------------------------------------
+
 after_script:
   - rm .env
+  - if [[ $TRAVIS_TAG != '' ]]; then tar zcf --remove-files $TRAVIS_TAG.tar.gz *; fi
 
 ##############################################################################
 ### DEPLOY                                                                 ###
@@ -147,24 +153,22 @@ deploy:
 
 after_deploy:
   - cf login -a api.cloud.service.gov.uk -u nao.yoshino@transformuk.com -p $CF_PASSWORD
-  - if [[ $TRAVIS_TAG == '' ]]; then APP_ENV='continuous'; else APP_ENV='demo'; fi
-  - PAAS_APP_INSTANCE="par-beta-$APP_ENV";
-  - echo $PAAS_APP_INSTANCE
+  - PAAS_APP_INSTANCE="par-beta-continuous";
   
 #-----------------------------------------------------------------------------
 # Set environment variables on PaaS instance
 #-----------------------------------------------------------------------------
    
-  - if [[ $APP_ENV == 'continuous' ]]; then cf set-env $PAAS_APP_INSTANCE S3_ACCESS_KEY $S3_ACCESS_KEY; fi
-  - if [[ $APP_ENV == 'continuous' ]]; then cf set-env $PAAS_APP_INSTANCE S3_SECRET_KEY $S3_SECRET_KEY; fi
-  - if [[ $APP_ENV == 'continuous' ]]; then cf set-env $PAAS_APP_INSTANCE S3_BUCKET_PUBLIC $S3_BUCKET_PUBLIC; fi
-  - if [[ $APP_ENV == 'continuous' ]]; then cf set-env $PAAS_APP_INSTANCE S3_BUCKET_PRIVATE $S3_BUCKET_PRIVATE; fi
-  - if [[ $APP_ENV == 'continuous' ]]; then cf set-env $PAAS_APP_INSTANCE S3_BUCKET_ARTIFACTS $S3_BUCKET_ARTIFACTS; fi
-  - if [[ $APP_ENV == 'continuous' ]]; then cf set-env $PAAS_APP_INSTANCE PAR_HASH_SALT $PAR_HASH_SALT; fi
-  - if [[ $APP_ENV == 'continuous' ]]; then cf set-env $PAAS_APP_INSTANCE PAR_GOVUK_NOTIFY_KEY $PAR_GOVUK_NOTIFY_KEY; fi
-  - if [[ $APP_ENV == 'continuous' ]]; then cf set-env $PAAS_APP_INSTANCE PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE; fi
-  - if [[ $APP_ENV == 'continuous' ]]; then cf set-env $PAAS_APP_INSTANCE APP_ENV $APP_ENV; fi
-  - if [[ $APP_ENV == 'continuous' ]]; then cf restage $PAAS_APP_INSTANCE; fi
+  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE S3_ACCESS_KEY $S3_ACCESS_KEY; fi
+  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE S3_SECRET_KEY $S3_SECRET_KEY; fi
+  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE S3_BUCKET_PUBLIC $S3_BUCKET_PUBLIC; fi
+  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE S3_BUCKET_PRIVATE $S3_BUCKET_PRIVATE; fi
+  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE S3_BUCKET_ARTIFACTS $S3_BUCKET_ARTIFACTS; fi
+  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE PAR_HASH_SALT $PAR_HASH_SALT; fi
+  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE PAR_GOVUK_NOTIFY_KEY $PAR_GOVUK_NOTIFY_KEY; fi
+  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE; fi
+  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE APP_ENV $APP_ENV; fi
+  - if [[ $TRAVIS_TAG == '' ]]; then cf restage $PAAS_APP_INSTANCE; fi
   
 #-----------------------------------------------------------------------------
 # Publish test reports
@@ -176,8 +180,8 @@ after_deploy:
 # Update Drupal, sync config, etc...
 #-----------------------------------------------------------------------------
     
-  - if [[ $APP_ENV == 'continuous' ]]; then cf ssh $PAAS_APP_INSTANCE -c "cd app/tools && python extract_postgres_env_vars.py"; fi
-  - if [[ $APP_ENV == 'continuous' ]]; then cf ssh $PAAS_APP_INSTANCE -c "cd app && source drupal-update-paas-envs.sh && sh drupal-update-paas.sh"; fi
+  - if [[ $TRAVIS_TAG == '' ]]; then cf ssh $PAAS_APP_INSTANCE -c "cd app/tools && python extract_postgres_env_vars.py"; fi
+  - if [[ $TRAVIS_TAG == '' ]]; then cf ssh $PAAS_APP_INSTANCE -c "cd app && source drupal-update-paas-envs.sh && sh drupal-update-paas.sh"; fi
 
 ##############################################################################
 ### STORE ARTIFACTS                                                        ###
