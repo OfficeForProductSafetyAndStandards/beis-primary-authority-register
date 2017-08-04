@@ -173,7 +173,7 @@ after_deploy:
 #-----------------------------------------------------------------------------
     
   - cf ssh $PAAS_APP_INSTANCE -c "cd app/tools && python extract_postgres_env_vars.py"
-  - cf ssh $PAAS_APP_INSTANCE -c "cd app && source drupal-update-paas-envs.sh && sh drupal-update.sh /home/vcap/app && sh drupal-update-paas.sh"
+  - cf ssh $PAAS_APP_INSTANCE -c "cd app && source drupal-update-paas-envs.sh && sh drupal-update-paas.sh"
  
 ##############################################################################
 ### STORE ARTIFACTS                                                        ###

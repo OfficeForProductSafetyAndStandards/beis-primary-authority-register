@@ -742,10 +742,10 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
 
 $appEnv = getenv('APP_ENV');
 
-$settings['trusted_host_patterns'] = array(
+$settings['trusted_host_patterns'] = [
   '^par-beta-' . $appEnv . '\.cloudapps\.digital',
   '.par-beta\.co\.uk$',
-);
+];
 
 /**
  * The default list of directories that will be ignored by Drupal's file API.
