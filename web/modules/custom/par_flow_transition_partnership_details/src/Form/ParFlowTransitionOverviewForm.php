@@ -102,7 +102,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
     // List the secondary Primary Authority contacts.
     if ($authority_people) {
-      $form['authority_contacts']['alternative_people'] = [
+      $form['authority_contacts']['authority_alternative_contacts'] = [
         '#type' => 'fieldset',
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
@@ -112,10 +112,10 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
         $person_view_builder = $person->getViewBuilder();
 
         $alternative_person = $person_view_builder->view($person, 'summary');
-        $form['authority_contacts']['alternative_people'][$person->id()] = $this->renderMarkupField($alternative_person);
+        $form['authority_contacts']['authority_alternative_contacts'][$person->id()] = $this->renderMarkupField($alternative_person);
 
         // We can get a link to a given form step like so.
-        $form['authority_contacts']['alternative_people'][$person->id() . '_edit'] = [
+        $form['authority_contacts']['authority_alternative_contacts'][$person->id() . '_edit'] = [
           '#type' => 'markup',
           '#markup' => t('<br>%link', [
             '%link' => $this->getFlow()->getLinkByStep(6, [
@@ -158,7 +158,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
     // List the secondary Primary Organisation contacts.
     if ($organisation_people) {
-      $form['organisation_contacts']['alternative_people'] = [
+      $form['organisation_contacts']['buisness_alternative_contacts'] = [
         '#type' => 'fieldset',
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
@@ -169,10 +169,10 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
         $person_field = $person_view_builder->view($person, 'summary');
 
-        $form['organisation_contacts']['alternative_people'][$person->id()] = $this->renderMarkupField($person_field);
+        $form['organisation_contacts']['buisness_alternative_contacts'][$person->id()] = $this->renderMarkupField($person_field);
 
         // We can get a link to a given form step like so.
-        $form['organisation_contacts']['alternative_people'][$person->id() . '_edit'] = [
+        $form['organisation_contacts']['buisness_alternative_contacts'][$person->id() . '_edit'] = [
           '#type' => 'markup',
           '#markup' => t('<br>%link', [
             '%link' => $this->getFlow()->getLinkByStep(6, [
