@@ -106,7 +106,9 @@ script:
 #-----------------------------------------------------------------------------
   
   - rm .env
-  - if [[ $TRAVIS_TAG != '' ]]; then tar zcf --remove-files $TRAVIS_TAG.tar.gz *; fi  
+  - if [[ $TRAVIS_TAG != '' ]]; then tar zcf $TRAVIS_TAG.tar.gz *; fi
+  - mkdir $TRAVIS_TAG
+  - mv $TRAVIS_TAG.tar.gz $TRAVIS_TAG
 
 ##############################################################################
 ### DEPLOY                                                                 ###
@@ -138,6 +140,7 @@ deploy:
     bucket: "transform-par-beta-artifacts"
     upload-dir: travis-builds
     skip_cleanup: true
+    local_dir: $TRAVIS_TAG
     on:
       repo: TransformCore/beis-par-beta
       tags: true      
