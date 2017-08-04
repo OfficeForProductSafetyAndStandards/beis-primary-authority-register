@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.par_data_organisation.about
     - field.field.par_data_organisation.coordinator.field_coordinated_businesses
     - field.field.par_data_organisation.coordinator.field_coordinator_number
     - field.field.par_data_organisation.coordinator.field_coordinator_type
@@ -12,10 +13,10 @@ dependencies:
     - par_data.par_data_organisation_type.coordinator
   module:
     - text
-id: par_data_organisation.coordinator.default
+id: par_data_organisation.coordinator.about
 targetEntityType: par_data_organisation
 bundle: coordinator
-mode: default
+mode: about
 content:
   comments:
     type: text_trimmed
