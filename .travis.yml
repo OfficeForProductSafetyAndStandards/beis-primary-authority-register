@@ -130,18 +130,6 @@ deploy:
 #-----------------------------------------------------------------------------
 # Tagged master branch deploys to "demo" environment
 #-----------------------------------------------------------------------------
-        
-  - provider: cloudfoundry
-    api: https://api.cloud.service.gov.uk
-    username: nao.yoshino@transformuk.com
-    manifest: manifest.demo.yml
-    password:
-      secure: fh6ePSKsJUnXEeZVwUU4gwGxIwLAfaug6O+4Zs0Wmus5dYXuRgVXQ3RLP1rSyp4Hc6/Nt4CPt3A8ygFW5WGNRKNXXR3F47wXLGnixOKCDmLCz6VytUXesEXlqDkzXSBT7WZGqOTKdTLKJOhaV4Z9Oum/CL5QckKbHlBHinhL3IpH4zi+4tBERc1C6R6oRC9ZPiEsFr9FYOE0hqvFA8Vw0SkB5C3uyQaFh0WotNLkhdd4fUUotxzjA5Cr2KAUTaUcRw0Ceq90UPlWnwBJDxjaNokuEcO6S13HDXTTi/RXNZi4oRhePokbs6z01GssOSiVencbRHX+RT7a4jHwF0hZI9OMgXelnmYb4Jdq5FeVPBD9OenIXGCAo2nyxJ/EU+7InUlQAN6HDh5QO7B10aSJpaWfNt2X65+FeOP89rbLPyfisqxFtbGZW1/ur9VlXOt0c8h9f6vdled8pocT6sMO6duKhMM5xFhRyDBVv01ZCZxTXOGTgOPRUN9EsVsrxX2X8mtRMmr0hJ+vml4eb1I/3AEJX10SDi4e/S8i8mJ4oAaVK4kAR7oLnKT+feBbKqHha/xkU87kp49jm3k65FzkwJzGUNe5GStjEvXXWvK8EaSX2t42iFU4SgbsMi/BIsAyy2NMyB8ua9SziYG7JGwv5z+brl7QJrvniYzkom3JSso=
-    organization: beis-nmo-trial
-    space: sandbox
-    on:
-      repo: TransformCore/beis-par-beta
-      tags: true
       
   - provider: s3
     access_key_id: $S3_ACCESS_KEY
@@ -167,16 +155,16 @@ after_deploy:
 # Set environment variables on PaaS instance
 #-----------------------------------------------------------------------------
    
-  - cf set-env $PAAS_APP_INSTANCE S3_ACCESS_KEY $S3_ACCESS_KEY
-  - cf set-env $PAAS_APP_INSTANCE S3_SECRET_KEY $S3_SECRET_KEY
-  - cf set-env $PAAS_APP_INSTANCE S3_BUCKET_PUBLIC $S3_BUCKET_PUBLIC
-  - cf set-env $PAAS_APP_INSTANCE S3_BUCKET_PRIVATE $S3_BUCKET_PRIVATE
-  - cf set-env $PAAS_APP_INSTANCE S3_BUCKET_ARTIFACTS $S3_BUCKET_ARTIFACTS
-  - cf set-env $PAAS_APP_INSTANCE PAR_HASH_SALT $PAR_HASH_SALT
-  - cf set-env $PAAS_APP_INSTANCE PAR_GOVUK_NOTIFY_KEY $PAR_GOVUK_NOTIFY_KEY
-  - cf set-env $PAAS_APP_INSTANCE PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE
-  - cf set-env $PAAS_APP_INSTANCE APP_ENV $APP_ENV
-  - cf restage $PAAS_APP_INSTANCE
+  - if [[ $APP_ENV == 'continuous' ]]; then cf set-env $PAAS_APP_INSTANCE S3_ACCESS_KEY $S3_ACCESS_KEY; fi
+  - if [[ $APP_ENV == 'continuous' ]]; then cf set-env $PAAS_APP_INSTANCE S3_SECRET_KEY $S3_SECRET_KEY; fi
+  - if [[ $APP_ENV == 'continuous' ]]; then cf set-env $PAAS_APP_INSTANCE S3_BUCKET_PUBLIC $S3_BUCKET_PUBLIC; fi
+  - if [[ $APP_ENV == 'continuous' ]]; then cf set-env $PAAS_APP_INSTANCE S3_BUCKET_PRIVATE $S3_BUCKET_PRIVATE; fi
+  - if [[ $APP_ENV == 'continuous' ]]; then cf set-env $PAAS_APP_INSTANCE S3_BUCKET_ARTIFACTS $S3_BUCKET_ARTIFACTS; fi
+  - if [[ $APP_ENV == 'continuous' ]]; then cf set-env $PAAS_APP_INSTANCE PAR_HASH_SALT $PAR_HASH_SALT; fi
+  - if [[ $APP_ENV == 'continuous' ]]; then cf set-env $PAAS_APP_INSTANCE PAR_GOVUK_NOTIFY_KEY $PAR_GOVUK_NOTIFY_KEY; fi
+  - if [[ $APP_ENV == 'continuous' ]]; then cf set-env $PAAS_APP_INSTANCE PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE; fi
+  - if [[ $APP_ENV == 'continuous' ]]; then cf set-env $PAAS_APP_INSTANCE APP_ENV $APP_ENV; fi
+  - if [[ $APP_ENV == 'continuous' ]]; then cf restage $PAAS_APP_INSTANCE; fi
   
 #-----------------------------------------------------------------------------
 # Publish test reports
@@ -188,26 +176,9 @@ after_deploy:
 # Update Drupal, sync config, etc...
 #-----------------------------------------------------------------------------
     
-  - cf ssh $PAAS_APP_INSTANCE -c "cd app/tools && python extract_postgres_env_vars.py"
-  - cf ssh $PAAS_APP_INSTANCE -c "cd app && source drupal-update-paas-envs.sh && sh drupal-update-paas.sh"
+  - if [[ $APP_ENV == 'continuous' ]]; then cf ssh $PAAS_APP_INSTANCE -c "cd app/tools && python extract_postgres_env_vars.py"; fi
+  - if [[ $APP_ENV == 'continuous' ]]; then cf ssh $PAAS_APP_INSTANCE -c "cd app && source drupal-update-paas-envs.sh && sh drupal-update-paas.sh"; fi
 
-##############################################################################
-### PACKAGE AND STORE                                                      ###
-##############################################################################
-
-#-----------------------------------------------------------------------------
-# Remove environment file that was created earlier in this process
-#-----------------------------------------------------------------------------
- 
-  - rm .env
-  
-#-----------------------------------------------------------------------------
-# Tar up contents of the directory
-#-----------------------------------------------------------------------------  
-  
-  - if [[ $TRAVIS_TAG != '' ]]; then tar zcvf $TRAVIS_TAG.tar.gz *; fi
-  -  
-  
 ##############################################################################
 ### STORE ARTIFACTS                                                        ###
 ##############################################################################
