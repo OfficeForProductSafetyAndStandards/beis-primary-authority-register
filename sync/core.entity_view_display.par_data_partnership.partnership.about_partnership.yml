@@ -1,8 +1,9 @@
+uuid: 1710d746-ab44-4c70-bf06-890a0965fe1b
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.par_data_partnership.about_partnership
+    - core.entity_view_mode.par_data_partnership.about
     - par_data.par_data_partnership_type.partnership
   module:
     - text

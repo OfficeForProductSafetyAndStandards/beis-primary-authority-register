@@ -5,6 +5,6 @@ dependencies:
   module:
     - par_data
 id: par_data_partnership.about
-label: 'About'
+label: About
 targetEntityType: par_data_partnership
 cache: true
