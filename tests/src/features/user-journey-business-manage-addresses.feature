@@ -60,7 +60,7 @@ Feature: As the (coordinated) Business User,
         And the element "#edit-primary-contact" contains the text "2079999999"
         And the element "#edit-primary-contact" contains the text "78659999999"
         # EDIT ALTERNATE CONTACT
-        When I click on the link "form#par-flow-transition-business-details #edit-primary-contact #edit-alternative-people a.flow-link"
+        When I click on the button "form#par-flow-transition-business-details #edit-primary-contact #edit-alternative-people a.flow-link"
         And I add "Miss" to the inputfield "#edit-first-name"
         And I add "Piggy" to the inputfield "#edit-last-name"
         And I add "01723999999" to the inputfield "#edit-work-phone"
@@ -83,7 +83,7 @@ Feature: As the (coordinated) Business User,
         Then the element "#edit-legal-entity" contains the text "987654321"
         Then the element "#edit-legal-entity" contains the text "Dr"
         # ADD LEGAL ENTITIES
-        When I click on the link "add another legal entity"
+        When I click on the button "add another legal entity"
         And I add "Another Legal Entity" to the inputfield "#edit-registered-name"
         And I select the option with the text "Fictional Company" for element "#edit-legal-entity-type"
         And I add "1234567890" to the inputfield "#edit-company-house-no"
