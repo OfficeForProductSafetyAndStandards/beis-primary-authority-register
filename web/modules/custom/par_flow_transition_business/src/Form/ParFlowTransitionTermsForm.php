@@ -81,7 +81,7 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
   }
 
   /**
-   * {@inheritdoc}   *.
+   * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
