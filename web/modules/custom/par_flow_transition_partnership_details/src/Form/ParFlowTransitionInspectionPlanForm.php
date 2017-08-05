@@ -38,7 +38,7 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()}");
 
-      foreach ($par_data_partnership->get('inspection_plan')->referencedEntities() as $inspection_plan) {
+      foreach ($par_data_partnership->getInspectionPlan() as $inspection_plan) {
         // Partnership Confirmation.
         $allowed_values = $inspection_plan->type->entity->getConfigurationByType('inspection_status', 'allowed_values');
         // Set the on and off values so we don't have to do that again.
@@ -66,7 +66,7 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
     ];
 
     // Get all the inspection plans for this partnership.
-    foreach ($par_data_partnership->get('inspection_plan')->referencedEntities() as $inspection_plan) {
+    foreach ($par_data_partnership->getInspectionPlan() as $inspection_plan) {
       $inspection_plan_view_builder = $inspection_plan->getViewBuilder();
 
       // The first column contains a rendered summary of the document.
@@ -116,7 +116,7 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership);
 
     // Get all the inspection plans for this partnership.
-    foreach ($par_data_partnership->get('inspection_plan')->referencedEntities() as $inspection_plan) {
+    foreach ($par_data_partnership->getInspectionPlan() as $inspection_plan) {
       // Save the value for the about_partnership field.
       $inspection_plan_status = $this->decideBooleanValue(
         $this->getTempDataValue(['document_list', $inspection_plan->id(), 'confirm']),

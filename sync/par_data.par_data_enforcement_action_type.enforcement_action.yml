@@ -1,0 +1,9 @@
+uuid: afd74fb7-e398-4839-beb6-9e25dc05b3f2
+langcode: en
+status: true
+dependencies: {  }
+id: enforcement_action
+label: 'Enforcement Action'
+description: ''
+help: ''
+configuration: null

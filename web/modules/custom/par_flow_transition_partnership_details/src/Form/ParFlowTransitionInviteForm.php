@@ -51,12 +51,12 @@ class ParFlowTransitionInviteForm extends ParBaseForm {
       $authority_person_name = '';
       foreach ($this->parDataManager->getUserPeople($account) as $authority_person) {
         if ($par_data_partnership->isAuthorityMember($authority_person)) {
-          $authority_person_name = $authority_person->get('person_name')->getString();
+          $authority_person_name = $authority_person->getFullName();
           break 1;
         }
       }
       $message_body = <<<HEREDOC
-Dear {$par_data_person->get('person_name')->getString()},
+Dear {$par_data_person->getFullName()},
 
 I'm writing to ask you to check and update if necessary the information held about your business in the Primary Authority Register. To do this, please follow this link:
 
@@ -152,11 +152,6 @@ HEREDOC;
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Save the value for the about_partnership field.
-    $person = $this->getRouteParam('par_data_person');
-    $person->set('salutation', $this->getTempDataValue('salutation'));
-    $person->set('person_name', $this->getTempDataValue('person_name'));
-
     $invite = Invite::create([
       'type' => 'invite_organisation_member',
       'user_id' => $this->getTempDataValue('inviter'),
@@ -172,7 +167,7 @@ HEREDOC;
     else {
       $message = $this->t('This invite could not be sent for %person on %form_id');
       $replacements = [
-        '%invite' => $this->getTempDataValue('person_name'),
+        '%invite' => $this->getTempDataValue('first_name') . ' ' . $this->getTempDataValue('last_name'),
         '%person' => $this->getTempDataValue('business_member'),
         '%form_id' => $this->getFormId(),
       ];

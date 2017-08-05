@@ -43,7 +43,8 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     if ($par_data_person) {
       // Contact.
       $this->loadDataValue("person_{$par_data_person->id()}_salutation", $par_data_person->get('salutation')->getString());
-      $this->loadDataValue("person_{$par_data_person->id()}_name", $par_data_person->get('person_name')->getString());
+      $this->loadDataValue("person_{$par_data_person->id()}_first_name", $par_data_person->get('first_name')->getString());
+      $this->loadDataValue("person_{$par_data_person->id()}_last_name", $par_data_person->get('last_name')->getString());
       $this->loadDataValue("person_{$par_data_person->id()}_phone", $par_data_person->get('work_phone')->getString());
       $this->loadDataValue("person_{$par_data_person->id()}_mobile_phone", $par_data_person->get('mobile_phone')->getString());
       $this->loadDataValue("person_{$par_data_person->id()}_email", $par_data_person->get('email')->getString());
@@ -73,10 +74,17 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     ];
 
     // The Person's name.
-    $form['person_name'] = [
+    $form['first_name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Name'),
-      '#default_value' => $this->getDefaultValues("person_{$this->getDefaultValues('person_id')}_name"),
+      '#title' => $this->t('First Name'),
+      '#default_value' => $this->getDefaultValues("person_{$this->getDefaultValues('person_id')}_first_name"),
+      '#required' => TRUE,
+    ];
+
+    $form['last_name'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Last Name'),
+      '#default_value' => $this->getDefaultValues("person_{$this->getDefaultValues('person_id')}_last_name"),
       '#required' => TRUE,
     ];
 
@@ -124,7 +132,8 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     // Save the value for the about_partnership field.
     $person = $this->getRouteParam('par_data_person');
     $person->set('salutation', $this->getTempDataValue('salutation'));
-    $person->set('person_name', $this->getTempDataValue('person_name'));
+    $person->set('first_name', $this->getTempDataValue('first_name'));
+    $person->set('last_name', $this->getTempDataValue('last_name'));
     $person->set('work_phone', $this->getTempDataValue('work_phone'));
     $person->set('mobile_phone', $this->getTempDataValue('mobile_phone'));
     $person->set('email', $this->getTempDataValue('email'));

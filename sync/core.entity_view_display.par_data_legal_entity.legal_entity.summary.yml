@@ -15,7 +15,7 @@ bundle: legal_entity
 mode: summary
 content:
   name:
-    label: above
+    label: hidden
     type: string
     weight: -4
     region: content

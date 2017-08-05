@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\trance\Trance;
 
 /**
@@ -91,6 +92,30 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       'changed',
       'name'
     ];
+  }
+
+  /**
+   * Set a default administrative title for entities where we don't really need one.
+   *
+   * @return string
+   */
+  public static function setDefaultTitle() {
+    return uniqid();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
+    $fields = parent::baseFieldDefinitions($entity_type);
+
+    $fields['name'] = $fields['name']->setDefaultValueCallback(__CLASS__ . '::setDefaultTitle')
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ]);
+
+    return $fields;
   }
 
 }
