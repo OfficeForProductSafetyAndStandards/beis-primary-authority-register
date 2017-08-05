@@ -43,7 +43,7 @@ Feature: As the (coordinated) Business User,
         Then the element "span.postal-code" contains the text "change"
         Then the element "span.country" contains the text "United Kingdom"
         # EDIT MAIN BUSINESS CONTACT
-        And I click on the button "form#par-flow-transition-partnership-details-overview #edit-primary-contact a.flow-link"
+        And I click on the button "form#par-flow-transition-business-details #edit-primary-contact a.flow-link"
         And I add "Fozzie" to the inputfield "#edit-first-name"
         And I add "Bear" to the inputfield "#edit-last-name"
         And I add "999999999" to the inputfield "#edit-work-phone"
@@ -59,7 +59,7 @@ Feature: As the (coordinated) Business User,
         And the element "#edit-primary-contact" contains the text "2079999999"
         And the element "#edit-primary-contact" contains the text "78659999999"
         # EDIT ALTERNATE CONTACT
-        And I click on the link "form#par-flow-transition-partnership-details-overview #edit-authority-contacts #edit-alternative-people a.flow-link"
+        And I click on the link "form#par-flow-transition-business-details #edit-authority-contacts #edit-alternative-people a.flow-link"
         And I add "Miss" to the inputfield "#edit-first-name"
         And I add "Piggy" to the inputfield "#edit-last-name"
         And I add "01723999999" to the inputfield "#edit-work-phone"
