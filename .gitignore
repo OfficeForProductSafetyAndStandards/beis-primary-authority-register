@@ -44,6 +44,9 @@ web/themes/custom/par_theme/assets/vendor/
 /web/sites/*/settings.local.php
 /web/sites/*/services.local.yml
 
+# Exclude additional database driver files.
+/web/drivers/
+
 # Ignore backups directory used to store a local back of the database.
 /backups/
 

@@ -5,6 +5,10 @@
     "license": "",
     "repositories": [
         {
+            "type": "git",
+            "url": "git@gitlab.com:david-garcia-garcia/mssql.git"
+        },
+        {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         }
@@ -12,6 +16,7 @@
     "require": {
         "composer/installers": "^1.2",
         "cweagans/composer-patches": "^1.6",
+        "david/mssql": "dev-master",
         "drupal-composer/drupal-scaffold": "~2.3.0",
         "drupal/address": "~1.1.0",
         "drupal/better_exposed_filters": "~3.0.0",
@@ -33,10 +38,14 @@
         "drupal/invite": "1.x-dev#a25b6e11580660f2653c36b0c4669b73ef453f7c",
         "drupal/login_destination": "1.x-dev#98892eb84eba6fe69d4fc48dc5b1fdaccb21c8a7",
         "drupal/mailsystem": "~4.1.0",
+        "drupal/migrate_plus": "dev-4.x",
+        "drupal/migrate_source_csv": "^2.0.0-rc2",
+        "drupal/migrate_tools": "dev-4.x",
         "drupal/pagerer": "~1.1.0",
         "drupal/password_policy": "~3.0.0",
         "drupal/range": "~1.1.0",
         "drupal/robotstxt": "~1.1.0",
+        "drupal/sqlsrv": "~2.13.0",
         "drupal/swiftmailer": "~1.0.0-beta1",
         "drupal/trance": "~1.1.0",
         "drupal/twig_field_value": "~1.1.0",
@@ -108,7 +117,9 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "@composer drupal-scaffold"
+            "@composer drupal-scaffold",
+            "alias drush='/var/www/par-beta/vendor/bin/drush'",
+            "cp -r web/modules/contrib/sqlsrv/drivers web/drivers"
         ],
         "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
     }
