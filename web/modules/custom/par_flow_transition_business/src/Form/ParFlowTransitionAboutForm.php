@@ -17,6 +17,9 @@ class ParFlowTransitionAboutForm extends ParBaseForm {
    */
   protected $flow = 'transition_business';
 
+  /**
+   * {@inheritdoc}
+   */
   public function getFormId() {
     return 'par_flow_transition_business_about';
   }
@@ -25,10 +28,10 @@ class ParFlowTransitionAboutForm extends ParBaseForm {
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
-   * @param ParDataPartnership $par_data_partnership
+   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The Partnership being retrieved.
    */
-  public function retrieveEditableValues( ParDataPartnership $par_data_partnership = NULL) {
+  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
     if ($par_data_partnership) {
       // If we're editing an entity we should set the state
       // to something other than default to avoid conflicts
@@ -66,7 +69,8 @@ class ParFlowTransitionAboutForm extends ParBaseForm {
     $previous_link = $this->getFlow()->getLinkByStep($this->getFlow()->getPrevStep())->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
-      '#markup' => t('<br>%link', ['%link' => $previous_link]),
+      '#prefix' => '<br>',
+      '#markup' => t('@link', ['@link' => $previous_link]),
     ];
 
     // Make sure to add the partnership cacheability data to this form.
@@ -76,11 +80,10 @@ class ParFlowTransitionAboutForm extends ParBaseForm {
   }
 
   /**
-   * {@inheritdoc}   *
+   * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
-
     parent::validateForm($form, $form_state);
   }
 

@@ -19,6 +19,9 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
    */
   protected $flow = 'transition_business';
 
+  /**
+   * {@inheritdoc}
+   */
   public function getFormId() {
     return 'par_flow_transition_business_legal_entity';
   }
@@ -27,9 +30,9 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
-   * @param ParDataPartnership $par_data_partnership
+   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The Partnership being retrieved.
-   * @param ParDataLegalEntity $par_data_legal_entity
+   * @param \Drupal\par_data\Entity\ParDataLegalEntity $par_data_legal_entity
    *   The Authority being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataLegalEntity $par_data_legal_entity = NULL) {
@@ -107,7 +110,8 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
     $previous_link = $this->getFlow()->getLinkByStep(4)->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
-      '#markup' => t('<br>%link', ['%link' => $previous_link]),
+      '#prefix' => '<br>',
+      '#markup' => t('@link', ['@link' => $previous_link]),
     ];
 
     // Make sure to add the person cacheability data to this form.
@@ -125,21 +129,21 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
     // Save the value for the about_partnership field.
     $legal_entity = $this->getRouteParam('par_data_legal_entity');
     if (!empty($legal_entity)) {
-          $legal_entity->set('registered_name', $this->getTempDataValue('registered_name'));
-          $legal_entity->set('legal_entity_type', $this->getTempDataValue('Legal_entity_type'));
-          $legal_entity->set('registered_number', $this->getTempDataValue('company_house_no'));
+      $legal_entity->set('registered_name', $this->getTempDataValue('registered_name'));
+      $legal_entity->set('legal_entity_type', $this->getTempDataValue('Legal_entity_type'));
+      $legal_entity->set('registered_number', $this->getTempDataValue('company_house_no'));
 
-          if ($legal_entity->save()) {
-            $this->deleteStore();
-          }
-          else {
-            $message = $this->t('This %field could not be saved for %form_id');
-            $replacements = [
-              '%field' => $this->getTempDataValue('registered_name'),
-              '%form_id' => $this->getFormId(),
-            ];
-            $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-          }
+      if ($legal_entity->save()) {
+        $this->deleteStore();
+      }
+      else {
+        $message = $this->t('This %field could not be saved for %form_id');
+        $replacements = [
+          '%field' => $this->getTempDataValue('registered_name'),
+          '%form_id' => $this->getFormId(),
+        ];
+        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+      }
     }
     else {
       // Adding a new legal entity.
@@ -174,4 +178,5 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
     // Go back to the overview.
     $form_state->setRedirect($this->getFlow()->getRouteByStep(4), $this->getRouteParams());
   }
+
 }
