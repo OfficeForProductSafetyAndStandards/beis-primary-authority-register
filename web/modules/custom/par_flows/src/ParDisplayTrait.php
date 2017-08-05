@@ -39,7 +39,6 @@ trait ParDisplayTrait {
    * @return mixed
    *   A tick e.g. ✔ or XXX%.
    */
-
   public function renderPercentageTick($percentage = 0) {
 
     // @todo decide if this percentage should show at all.
