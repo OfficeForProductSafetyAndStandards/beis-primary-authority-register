@@ -69,10 +69,19 @@ class ParDataPerson extends ParDataEntity {
    * Get the User account.
    */
   public function getUserAccount() {
-    $entities = $this->get('user_account')->referencedEntities();
+    $entities = $this->get('field_user_account')->referencedEntities();
     return $entities ? current($entities) : NULL;
   }
 
+  /**
+   * Set the user account.
+   *
+   * @param mixed $account
+   *   Drupal user account.
+   */
+  public function setUserAccount($account) {
+    $this->set('field_user_account', $account);
+  }
   /**
    * Get the User account.
    *
@@ -127,12 +136,16 @@ class ParDataPerson extends ParDataEntity {
     if (!$account) {
       $account = $this->lookupUserAccount();
     }
-    $current_user_account = current($this->get('user_account')->referencedEntities());
+    $current_user_account = $this->getUserAccount();
     if ($account && (!$current_user_account || !$account->id() !== $current_user_account->id())) {
-      $this->set('user_account', $account);
+      $this->setUserAccount($account);
       $saved = $this->save();
     }
     return $saved ? $account : NULL;
+  }
+
+  public function getFullName() {
+    return $this->get('first_name')->getString() . ' ' . $this->get('last_name')->getString();
   }
 
   /**
@@ -141,13 +154,18 @@ class ParDataPerson extends ParDataEntity {
    * @return mixed|null
    *   Returns any business records found.
    */
-  public function getBusinesses() {
+  public function getBusinesses($entity = NULL) {
+    $properties = [
+      'type' => ['authority'],
+      'field_person' => $this->id(),
+    ];
+    if ($entity) {
+      $properties['id'] = $entity->id();
+    }
     $entities = \Drupal::entityTypeManager()
       ->getStorage('par_data_organisation')
-      ->loadByProperties([
-        'type' => ['business'],
-        'person' => $this->id(),
-      ]);
+      ->loadByProperties($properties);
+
     return $entities ? current($entities) : NULL;
   }
 
@@ -161,13 +179,18 @@ class ParDataPerson extends ParDataEntity {
    * @return mixed|null
    *   Returns any business records found.
    */
-  public function getCoordinators() {
+  public function getCoordinators($entity = NULL) {
+    $properties = [
+      'type' => ['authority'],
+      'field_person' => $this->id(),
+    ];
+    if ($entity) {
+      $properties['id'] = $entity->id();
+    }
     $entities = \Drupal::entityTypeManager()
       ->getStorage('par_data_organisation')
-      ->loadByProperties([
-        'type' => ['coordinator'],
-        'person' => $this->id(),
-      ]);
+      ->loadByProperties($properties);
+
     return $entities ? current($entities) : NULL;
   }
 
@@ -181,13 +204,18 @@ class ParDataPerson extends ParDataEntity {
    * @return mixed|null
    *   Returns any business records found.
    */
-  public function getAuthorities() {
+  public function getAuthorities($entity = NULL) {
+    $properties = [
+      'type' => ['authority'],
+      'field_person' => $this->id(),
+    ];
+    if ($entity) {
+      $properties['id'] = $entity->id();
+    }
     $entities = \Drupal::entityTypeManager()
       ->getStorage('par_data_authority')
-      ->loadByProperties([
-        'type' => ['business'],
-        'person' => $this->id(),
-      ]);
+      ->loadByProperties($properties);
+
     return $entities ? current($entities) : NULL;
   }
 
@@ -196,42 +224,35 @@ class ParDataPerson extends ParDataEntity {
   }
 
   /**
+   * Get any Authorities this user is a member of.
+   *
+   * @return mixed|null
+   *   Returns any business records found.
+   */
+  public function setPreferredCommunication($method) {
+    $methods = ['phone', 'mobile', 'email'];
+
+//    communication_mobile
+dump('setPreferredComminspectionunication');
+  }
+
+  public function getPreferredCommunicationMethods() {
+    return [
+      'Work phone',
+      'Mobile Phone',
+      'Email',
+    ];
+  }
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    // List the Drupal user account the user is related to.
-    $fields['user_account'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('User Account'))
-      ->setDescription(t('The user account that this entity is linked to.'))
-      ->setRevisionable(TRUE)
-      ->setSetting('target_type', 'user')
-      ->setSetting('handler', 'default')
-      ->setTranslatable(TRUE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-        'type' => 'author',
-        'weight' => 0,
-      ])
-      ->setDisplayOptions('form', [
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 5,
-        'settings' => [
-          'match_operator' => 'CONTAINS',
-          'size' => '60',
-          'autocomplete_type' => 'tags',
-          'placeholder' => '',
-        ],
-      ])
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
-
     // Title.
     $fields['salutation'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Title'))
-      ->setDescription(t('The title of this Person.'))
-      ->setTranslatable(TRUE)
+      ->setDescription(t('The title of this person.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -243,13 +264,15 @@ class ParDataPerson extends ParDataEntity {
         'weight' => 1,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Name.
-    $fields['person_name'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Name'))
-      ->setDescription(t('The name of the Person.'))
-      ->setTranslatable(TRUE)
+    // First Name.
+    $fields['first_name'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('First Name'))
+      ->setDescription(t('The first name of the person.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 500,
@@ -261,49 +284,15 @@ class ParDataPerson extends ParDataEntity {
         'weight' => 2,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Work Phone.
-    $fields['work_phone'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Work Phone'))
-      ->setDescription(t('The work phone of this Person.'))
-      ->setTranslatable(TRUE)
-      ->setRevisionable(TRUE)
-      ->setSettings([
-        'max_length' => 255,
-        'text_processing' => 0,
-      ])
-      ->setDefaultValue('')
-      ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => 3,
-      ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Mobile Phone.
-    $fields['mobile_phone'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Mobile Phone'))
-      ->setDescription(t('The mobile phone of this Person.'))
-      ->setTranslatable(TRUE)
-      ->setRevisionable(TRUE)
-      ->setSettings([
-        'max_length' => 255,
-        'text_processing' => 0,
-      ])
-      ->setDefaultValue('')
-      ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => 4,
-      ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Email.
-    $fields['email'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('E-mail'))
-      ->setDescription(t('The e-mail address of this Person.'))
-      ->setTranslatable(TRUE)
+    // Last Name.
+    $fields['last_name'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Last Name'))
+      ->setDescription(t('The last name of the person.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 500,
@@ -312,9 +301,157 @@ class ParDataPerson extends ParDataEntity {
       ->setDefaultValue('')
       ->setDisplayOptions('form', [
         'type' => 'string_textfield',
+        'weight' => 3,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Job title.
+    $fields['job_title'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Job title'))
+      ->setDescription(t('The job title of the person.'))
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 500,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 4,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Work Phone.
+    $fields['work_phone'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Work Phone'))
+      ->setDescription(t('The work phone of this person.'))
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
         'weight' => 5,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Mobile Phone.
+    $fields['mobile_phone'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Mobile Phone'))
+      ->setDescription(t('The mobile phone of this person.'))
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 6,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Email.
+    $fields['email'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('E-mail'))
+      ->setDescription(t('The e-mail address of this person.'))
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 500,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 7,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Communication by Email.
+    $fields['communication_email'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Communication by E-mail'))
+      ->setDescription(t('Whether to allow contact by e-mail for this partnership.'))
+      ->setRevisionable(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 8,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Communication by Phone.
+    $fields['communication_phone'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Communication by Work Phone'))
+      ->setDescription(t('Whether to allow contact by work phone for this partnership.'))
+      ->setRevisionable(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 9,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Communication by Mobile.
+    $fields['communication_mobile'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Communication by Mobile Phone'))
+      ->setDescription(t('Whether to allow contact by mobile for this partnership.'))
+      ->setRevisionable(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 10,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Communication Notes.
+    $fields['communication_notes'] = BaseFieldDefinition::create('text_long')
+      ->setLabel(t('Communication Notes'))
+      ->setDescription(t('Additional notes and communication preferences for this partnership.'))
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'text_processing' => 0,
+      ])->setDisplayOptions('form', [
+        'type' => 'text_textarea',
+        'weight' => 11,
+        'settings' => [
+          'rows' => 25,
+        ],
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     return $fields;

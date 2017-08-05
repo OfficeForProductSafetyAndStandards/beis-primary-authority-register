@@ -37,7 +37,7 @@ class ParFlowTransitionAboutForm extends ParBaseForm {
 
       // If we want to use values already saved we have to tell
       // the form about them.
-      $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
+      $par_data_organisation = current($par_data_partnership->getOrganisation());
 
       $this->loadDataValue('about_business', $par_data_organisation->get('comments')->getString());
     }
@@ -92,7 +92,7 @@ class ParFlowTransitionAboutForm extends ParBaseForm {
 
     // Save the value for the about_partnership field.
     $partnership = $this->getRouteParam('par_data_partnership');
-    $par_data_organisation = current($partnership->get('organisation')->referencedEntities());
+    $par_data_organisation = current($partnership->getOrganisation());
     $par_data_organisation->set('comments', $this->getTempDataValue('about_business'));
     if ($par_data_organisation->save()) {
       $this->deleteStore();

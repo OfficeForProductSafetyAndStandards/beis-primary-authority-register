@@ -21,9 +21,9 @@ class ParFlowTransitionTaskListController extends ParBaseController {
    */
   public function content(ParDataPartnership $par_data_partnership = NULL, $termporary_no_crashy_variable = NULL) {
 
-    $par_data_authority = current($par_data_partnership->get('authority')->referencedEntities());
+    $par_data_authority = current($par_data_partnership->getAuthority());
 
-    $par_data_primary_person = current($par_data_authority->get('person')->referencedEntities());
+    $par_data_primary_person = current($par_data_authority->getPerson());
     $primary_person_view_builder = $par_data_primary_person->getViewBuilder();
     $primary_person = $primary_person_view_builder->view($par_data_primary_person, 'summary');
 

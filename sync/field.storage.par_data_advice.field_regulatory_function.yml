@@ -1,0 +1,19 @@
+uuid: f48744f6-2a7f-492b-9f89-2d4de15d4ba4
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_advice.field_regulatory_function
+field_name: field_regulatory_function
+entity_type: par_data_advice
+type: entity_reference
+settings:
+  target_type: par_data_regulatory_function
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
