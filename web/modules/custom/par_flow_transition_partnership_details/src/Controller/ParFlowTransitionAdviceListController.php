@@ -2,7 +2,6 @@
 
 namespace Drupal\par_flow_transition_partnership_details\Controller;
 
-use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Controller\ParBaseController;
 
@@ -55,7 +54,7 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
             ->getLinkByStep(10, ['par_data_advice' => $document->id()])
             ->setText('edit')
             ->toString(),
-        ]
+        ],
       ];
       $document_actions = $this->getRenderer()->render($links);
 
@@ -115,7 +114,7 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
       '#markup' => t('@link', [
         '@link' => $this->getFlow()->getLinkByStep(3, $this->getRouteParams(), ['attributes' => ['class' => 'button']])
           ->setText('Save')
-          ->toString()
+          ->toString(),
       ]),
     ];
 
@@ -127,4 +126,3 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
   }
 
 }
-
