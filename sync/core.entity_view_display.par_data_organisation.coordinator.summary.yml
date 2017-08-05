@@ -15,7 +15,7 @@ bundle: coordinator
 mode: summary
 content:
   organisation_name:
-    label: above
+    label: hidden
     type: string
     weight: -4
     region: content
@@ -31,7 +31,16 @@ content:
     third_party_settings: {  }
 hidden:
   comments: true
+  coordinator_eligible_number: true
+  coordinator_type: true
   employees_band: true
+  field_coordinated_businesses: true
+  field_coordinator_number: true
+  field_coordinator_type: true
+  field_legal_entity: true
+  field_person: true
+  field_premises: true
+  field_sic_code: true
   legal_entity: true
   name: true
   nation: true

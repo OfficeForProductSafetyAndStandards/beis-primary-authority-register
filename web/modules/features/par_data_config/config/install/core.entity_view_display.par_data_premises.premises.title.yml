@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_premises.title
+    - par_data.par_data_premises_type.premises
+  module:
+    - address
+    - user
+id: par_data_premises.premises.title
+targetEntityType: par_data_premises
+bundle: premises
+mode: title
+content:
+  address:
+    type: address_plain
+    weight: 0
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  name: true
+  nation: true
+  user_id: true

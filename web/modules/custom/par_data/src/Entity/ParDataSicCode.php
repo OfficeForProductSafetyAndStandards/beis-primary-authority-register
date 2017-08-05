@@ -73,9 +73,8 @@ class ParDataSicCode extends ParDataEntity {
     // SIC Code.
     $fields['sic_code'] = BaseFieldDefinition::create('string')
       ->setLabel(t('SIC Code'))
-      ->setDescription(t('The SIC Code identification number.'))
+      ->setDescription(t('The SIC code identification number.'))
       ->setRequired(TRUE)
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -87,14 +86,16 @@ class ParDataSicCode extends ParDataEntity {
         'weight' => 1,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Description.
     $fields['description'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Description'))
-      ->setDescription(t('The human readable description for the SIC Code.'))
+      ->setDescription(t('The human readable description for the SIC code.'))
       ->setRequired(TRUE)
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 500,
@@ -106,6 +107,9 @@ class ParDataSicCode extends ParDataEntity {
         'weight' => 1,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     return $fields;

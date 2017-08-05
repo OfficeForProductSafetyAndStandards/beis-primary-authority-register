@@ -25,7 +25,7 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
     $rows = [];
 
     // Organisation summary.
-    $documents = $par_data_partnership->get('advice')->referencedEntities();
+    $documents = $par_data_partnership->getAdvice();
 
     foreach ($documents as $document) {
       $document_view_builder = $document->getViewBuilder();

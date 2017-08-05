@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+id: enforcement_action
+label: 'Enforcement Action'
+description: ''
+help: ''
+configuration: null
