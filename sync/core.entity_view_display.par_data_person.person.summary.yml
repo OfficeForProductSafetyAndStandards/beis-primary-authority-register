@@ -14,6 +14,22 @@ mode: summary
 content:
   email:
     type: string
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  first_name:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  last_name:
+    type: string
     weight: 1
     region: content
     label: hidden
@@ -22,7 +38,7 @@ content:
     third_party_settings: {  }
   mobile_phone:
     type: string
-    weight: 3
+    weight: 4
     region: content
     label: hidden
     settings:
@@ -38,13 +54,20 @@ content:
     third_party_settings: {  }
   work_phone:
     type: string
-    weight: 2
+    weight: 3
     region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
 hidden:
+  communication_email: true
+  communication_mobile: true
+  communication_notes: true
+  communication_phone: true
+  field_user_account: true
+  job_title: true
   name: true
   salutation: true
+  user_account: true
   user_id: true

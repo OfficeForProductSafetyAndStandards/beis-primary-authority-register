@@ -7,7 +7,7 @@ namespace Drupal\par_data\Entity;
  *
  * @ConfigEntityType(
  *   id = "par_data_sic_code_type",
- *   label = @Translation("PAR Authority Type"),
+ *   label = @Translation("PAR SIC Code Type"),
  *   handlers = {
  *     "list_builder" = "Drupal\trance\TranceTypeListBuilder",
  *     "form" = {

@@ -1,0 +1,33 @@
+uuid: 1c488ded-cbeb-490d-84e2-1cf6e5f35477
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_regulatory_function.title
+    - par_data.par_data_regulatory_function_t.regulatory_function
+_core:
+  default_config_hash: RUehvRPVFXt6eOOBRGDKAu2ms4B8-1vwcsIKek6rJKM
+id: par_data_regulatory_function.regulatory_function.title
+targetEntityType: par_data_regulatory_function
+bundle: regulatory_function
+mode: title
+content:
+  area_name:
+    label: above
+    type: string
+    weight: -4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  function_name:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  name: true
+  user_id: true

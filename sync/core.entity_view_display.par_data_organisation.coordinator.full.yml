@@ -5,8 +5,6 @@ dependencies:
   config:
     - core.entity_view_mode.par_data_organisation.full
     - par_data.par_data_organisation_type.coordinator
-  module:
-    - user
 _core:
   default_config_hash: lq4g-yly64xFmwI8Me4xaoHJFqVBmz6YYYiDJJTL1eA
 id: par_data_organisation.coordinator.full
@@ -14,30 +12,99 @@ targetEntityType: par_data_organisation
 bundle: coordinator
 mode: full
 content:
-  name:
-    label: above
-    type: string
-    weight: -4
+  comments:
+    type: basic_string
+    weight: 9
     region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  employees_band:
+    type: string
+    weight: 5
+    region: content
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  user_id:
+  legal_entity:
+    type: entity_reference_entity_view
+    weight: 2
+    region: content
     label: hidden
-    type: author
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+  nation:
+    type: string
+    weight: 6
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  organisation_name:
+    type: string
     weight: 0
     region: content
-    settings: {  }
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  person:
+    type: entity_reference_entity_view
+    weight: 8
+    region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+  premises:
+    type: entity_reference_entity_view
+    weight: 7
+    region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+  sic_code:
+    type: entity_reference_entity_view
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+  size:
+    type: string
+    weight: 4
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  trading_name:
+    type: string
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
 hidden:
-  comments: true
-  employees_band: true
-  legal_entity: true
-  nation: true
-  organisation_name: true
-  person: true
-  premises: true
+  coordinator_eligible_number: true
+  coordinator_type: true
+  field_coordinated_businesses: true
+  field_coordinator_number: true
+  field_coordinator_type: true
+  field_legal_entity: true
+  field_person: true
+  field_premises: true
+  field_sic_code: true
+  name: true
   premises_mapped: true
-  sic_code: true
-  size: true
-  trading_name: true
+  user_id: true

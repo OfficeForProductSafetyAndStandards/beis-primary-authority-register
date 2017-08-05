@@ -83,15 +83,6 @@ function par_welcome_page_requirements($phase) {
 }
 
 /**
- * Changes have been made to the welcome page, re-adding to update the page.
- */
-function par_welcome_page_update_8000() {
-  par_welcome_page_uninstall();
-  par_welcome_page_install();
-}
-
-
-/**
  * Changes have been made to the welcome page link, re-adding to update the page.
  */
 function par_welcome_page_update_8001() {

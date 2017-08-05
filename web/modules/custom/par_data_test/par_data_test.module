@@ -200,7 +200,8 @@ function par_data_test_create_entities() {
     'name' => 'Big Bird',
     'uid' => 1,
     'salutation' => 'Mrs',
-    'person_name' => 'Big Bird',
+    'first_name' => 'Big',
+    'last_name' => 'Bird',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
     'email' => 'par_authority@example.com',
@@ -212,7 +213,8 @@ function par_data_test_create_entities() {
     'name' => 'Kermit',
     'uid' => 1,
     'salutation' => 'Mr',
-    'person_name' => 'Kermit the Frog',
+    'first_name' => 'Kermit',
+    'last_name' => 'the Frog',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
     'email' => 'par_authority@example.com'
@@ -223,7 +225,8 @@ function par_data_test_create_entities() {
     'name' => 'Snuffleupagus',
     'uid' => 1,
     'salutation' => 'Mr',
-    'person_name' => 'Snuffleupagus',
+    'first_name' => 'Snuffleupagus',
+    'last_name' => 'Muppet',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
     'email' => 'par_business@example.com'
@@ -234,7 +237,8 @@ function par_data_test_create_entities() {
     'name' => 'Elmo',
     'uid' => 1,
     'salutation' => 'Mrs',
-    'person_name' => 'Elmo',
+    'first_name' => 'Elmo',
+    'last_name' => 'Muppet',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
     'email' => 'par_business@example.com'
@@ -247,7 +251,8 @@ function par_data_test_create_entities() {
     'name' => 'Ernie',
     'uid' => 1,
     'salutation' => 'Mr',
-    'person_name' => 'Ernie',
+    'first_name' => 'Ernie',
+    'last_name' => 'Muppet',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
     'email' => 'par_coordinator@example.com'
@@ -258,7 +263,8 @@ function par_data_test_create_entities() {
     'name' => 'Bert',
     'uid' => 1,
     'salutation' => 'Mr',
-    'person_name' => 'Bert',
+    'first_name' => 'Bert',
+    'last_name' => 'Muppet',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
     'email' => 'par_coordinator@example.com'
@@ -269,7 +275,8 @@ function par_data_test_create_entities() {
     'name' => 'Oscar the Grouch',
     'uid' => 1,
     'salutation' => 'Mr',
-    'person_name' => 'Oscar the Grouch',
+    'first_name' => 'Oscar',
+    'last_name' => 'the Grouch',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
     'email' => 'par_coordinator@example.com'
@@ -280,7 +287,8 @@ function par_data_test_create_entities() {
     'name' => 'Grover',
     'uid' => 1,
     'salutation' => 'Dr',
-    'person_name' => 'Grover',
+    'first_name' => 'Grover',
+    'last_name' => 'Muppet',
     'work_phone' => '01723456789',
     'mobile_phone' => '0777777777',
     'email' => 'par_authority@example.com'
@@ -322,17 +330,17 @@ function par_data_test_create_entities() {
       'ABCD',
       'ABCD Mart',
     ],
-    'person' => [
+    'field_person' => [
       $business_person_3->id(),
       $business_person_4->id(),
     ],
-    'premises' => [
+    'field_premises' => [
       $premises_1->id(),
     ],
-    'legal_entity' => [
+    'field_legal_entity' => [
       $legal_entity_1->id()
     ],
-    'sic_code' => [
+    'field_sic_code' => [
       $sic_code_1->save(),
     ]
   ]);
@@ -353,39 +361,39 @@ function par_data_test_create_entities() {
       'Charlie\'s',
       'Charlie\'s Cafe',
     ],
-    'person' => [
+    'field_person' => [
       $business_person_7->id(),
       $business_person_4->id(),
     ],
-    'premises' => [
+    'field_premises' => [
       $premises_2->id(),
     ],
-    'legal_entity' => [
+    'field_legal_entity' => [
       $legal_entity_1->id()
     ],
-    'sic_code' => [
+    'field_sic_code' => [
       $sic_code_2->save(),
     ]
   ]);
   $organisation_2->save();
 
   // Create Regulatory Area.
-  $regulatory_area_1 = \Drupal\par_data\Entity\ParDataRegulatoryArea::create([
-    'type' => 'regulatory_area',
+  $regulatory_function_1 = \Drupal\par_data\Entity\ParDataRegulatoryFunction::create([
+    'type' => 'regulatory_function',
     'name' => 'Cookie control',
     'uid' => 1,
-    'area_name' => 'Cookie control',
+    'function_name' => 'Cookie control',
   ]);
-  $regulatory_area_1->save();
+  $regulatory_function_1->save();
 
   // Create Regulatory Area.
-  $regulatory_area_2 = \Drupal\par_data\Entity\ParDataRegulatoryArea::create([
-    'type' => 'regulatory_area',
+  $regulatory_function_2 = \Drupal\par_data\Entity\ParDataRegulatoryFunction::create([
+    'type' => 'regulatory_function',
     'name' => 'Alphabet learning',
     'uid' => 1,
-    'area_name' => 'Alphabet learning',
+    'function_name' => 'Alphabet learning',
   ]);
-  $regulatory_area_2->save();
+  $regulatory_function_2->save();
 
   // Create two authorities.
   $authority_1 = \Drupal\par_data\Entity\ParDataAuthority::create([
@@ -396,14 +404,14 @@ function par_data_test_create_entities() {
     'authority_type' => 'Local Authority',
     'nation' => 'USA',
     'ons_code' => '123456',
-    'person' => [
+    'field_person' => [
       $authority_person_1->id(),
       $authority_person_2->id(),
     ],
-    'regulatory_area' => [
-      $regulatory_area_1->id(),
+    'field_regulatory_function' => [
+      $regulatory_function_1->id(),
     ],
-    'premises' => [
+    'field_premises' => [
       $premises_3->id(),
     ],
   ]);
@@ -416,14 +424,14 @@ function par_data_test_create_entities() {
     'authority_type' => 'Local Authority',
     'nation' => 'USA',
     'ons_code' => '123456',
-    'person' => [
+    'field_person' => [
       $authority_person_8->id(),
       $authority_person_2->id(),
     ],
-    'regulatory_area' => [
-      $regulatory_area_2->id(),
+    'field_regulatory_function' => [
+      $regulatory_function_2->id(),
     ],
-    'premises' => [
+    'field_premises' => [
       $premises_4->id(),
     ],
   ]);
@@ -449,27 +457,29 @@ function par_data_test_create_entities() {
     'revocation_reason' => 'I saw a rat in Charlie\'s Cafe.',
     'authority_change_comment' => '',
     'organisation_change_comment' => '',
-    'authority' => [
+    'field_authority' => [
       $authority_1->id(),
     ],
-    'organisation' => [
+    'field_organisation' => [
       $organisation_1->id(),
     ],
-    'person' => [
+    'field_authority_person' => [
       $authority_person_1->id(),
       $authority_person_2->id(),
       $authority_person_8->id(),
+    ],
+    'field_organisation_person' => [
       $business_person_3->id(),
       $business_person_4->id(),
       $business_person_7->id(),
     ],
-    'regulatory_area' => [
-      $regulatory_area_1->id(),
+    'field_regulatory_function' => [
+      $regulatory_function_1->id(),
     ],
-    'advice' => [
+    'field_advice' => [
       $advice_1->id(),
     ],
-    'inspection_plan' => [
+    'field_inspection_plan' => [
       $inspection_plan_1->id(),
     ]
   ]);

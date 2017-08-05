@@ -1,7 +1,0 @@
-primary-authority-partnershipsstatus: true
-dependencies: {  }
-id: authority
-label: Authority
-description: 'An Authority is a government body, usually a local authority but occasionally a fire authority or port authority.'
-help: ''
-configuration: null

@@ -15,9 +15,6 @@ config.user = '';
 config.key = '';
 config.browserstackLocal = true;
 config.host = 'hub-cloud.browserstack.com';
-config.baseUrl = 'https://par-beta-test.cloudapps.digital';
+config.baseUrl = '';
 config.tags = '@ci, ~@Pending, ~@ie8bug';
 exports.config = config;
-
-
-

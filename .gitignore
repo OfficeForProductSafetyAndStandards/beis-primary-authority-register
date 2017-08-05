@@ -47,6 +47,9 @@ web/themes/custom/par_theme/assets/vendor/
 # Exclude additional database driver files.
 /web/drivers/
 
+# Ignore backups directory used to store a local back of the database.
+/backups/
+
 # Exclude configuration for developer only modules.
 /sync/devel.*
 /sync/simpletest.*

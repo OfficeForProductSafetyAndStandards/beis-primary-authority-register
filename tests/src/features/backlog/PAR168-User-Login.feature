@@ -1,7 +1,7 @@
 @Pending
 Feature: As a PAR user
-I need a login
-so that I can access PAR
+    I need a login
+    so that I can access PAR
 
     Background:
         Given I open the url "/login"

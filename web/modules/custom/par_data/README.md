@@ -61,7 +61,7 @@ To be clear as to the fields that we're trying to add with this feature see belo
 + **ons** = single, string(255), free form, plain
 
 + **person** = multiple, int(6), _reference_ to a Person, required
-+ **regulatory_area** = multiple, int(6), _reference_ to a Regulatory Area, required
++ **regulatory_function** = multiple, int(6), _reference_ to a Regulatory Function, required
 + **premises** * = multiple, _reference_ to Premises, required
 
 ### Organisation (Business) properties
@@ -114,7 +114,7 @@ To be clear as to the fields that we're trying to add with this feature see belo
 + **authority** = single, _reference_ to an Authority
 + **advice** = multiple, _reference_ to an Advice
 + **inspection_plan** = multiple, _reference_ to an Inspection Plan
-+ **regulatory_area** = multiple, int(6), _reference_ to a Regulatory Area
++ **regulatory_function** = multiple, int(6), _reference_ to a Regulatory Function
 + **person** = multiple, int(6), _reference_ to a Person
 
 ### Premises properties

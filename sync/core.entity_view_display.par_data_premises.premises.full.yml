@@ -21,7 +21,22 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
+  nation:
+    type: string
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  uprn:
+    type: string
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
 hidden:
   name: true
-  nation: true
   user_id: true
