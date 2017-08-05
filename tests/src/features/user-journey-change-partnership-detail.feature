@@ -66,7 +66,7 @@ Feature: User Journey 1 (happy path)
         And the element "#edit-organisation-contacts" contains the text "par_business_fozzie@example.com"
         And the element "#edit-organisation-contacts" contains the text "91723456789"
         And the element "#edit-organisation-contacts" contains the text "9777777777"
-        When I click on the button "form#par-flow-transition-partnership-details-overview #edit-organisation-contacts #edit-authority-organisation-contacts a.flow-link"
+        When I click on the button "form#par-flow-transition-partnership-details-overview #edit-organisation-contacts #edit-organisation-alternative-contacts a.flow-link"
         And I add "917234567899" to the inputfield "#edit-work-phone"
         And I add "97777777779" to the inputfield "#edit-mobile-phone"
         And I add "Pepe" to the inputfield "#edit-first-name"
