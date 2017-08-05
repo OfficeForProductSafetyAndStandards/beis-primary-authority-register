@@ -3,52 +3,32 @@ Cucumberjs/Webdriverio
 
 * Install the dependencies (`npm install` or `yarn install`)
 
-# How to run the test
+# How to run a test
 
 To run your tests just call the [WDIO runner](http://webdriver.io/guide/testrunner/gettingstarted.html):
 
-```sh
-$ ./node_modules/.bin/wdio wdio.<ENVIRONMENT>.conf.js
+```
+$ ./node_modules/.bin/wdio wdio.<CONFIG>.conf.js
 ```
 
-Environments available are: DEV
+Environments available are: 
+* DEV (when testing on your local machine)
+* BUILD (travis)
+* BROWSERSTACK 
 
 # Running single feature
 Sometimes its useful to only execute a single feature file, to do so use the following command:
 
 ```sh
-$ ./node_modules/.bin/wdio --spec ./test/features/select.feature
+$ ./node_modules/.bin/wdio --spec ./test/features/select.feature wdio.<CONFIG>.conf.js
 ```
 
 # Using tags
 
-If you want to run only specific tests you can mark your features with tags. These tags will be placed before each feature like so:
-
-```gherkin
-@Tag
-Feature: ...
-```
-
 To run only the tests with specific tag(s) use the `--tags=` parameter like so:
 
 ```sh
-$ ./node_modules/.bin/wdio --tags=@Tag,@AnotherTag
-```
-
-You can add multiple tags separated by a comma
-
-# Pending test
-
-If you have failing or unimplemented tests you can mark them as "Pending" so they will get skipped.
-
-```gherkin
-// skip whole feature file
-@Pending
-Feature: ...
-
-// only skip a single scenario
-@Pending
-Scenario: ...
+$ ./node_modules/.bin/wdio --tags=@Tag,@AnotherTag wdio.<CONFIG>.conf.js
 ```
 
 # List of predefined steps

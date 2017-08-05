@@ -46,13 +46,13 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
-    $par_data_authority = current($par_data_partnership->get('authority')->referencedEntities());
+    $par_data_authority = current($par_data_partnership->getAuthority());
     $par_data_authority_builder = $par_data_authority->getViewBuilder();
 
     $authority_name = $par_data_authority_builder->view($par_data_authority, 'title');
 
     // Organisation summary.
-    $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
+    $par_data_organisation = current($par_data_partnership->getOrganisation());
     $organisation_builder = $par_data_organisation->getViewBuilder();
 
     $form['details_intro'] = [
@@ -86,7 +86,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     ];
 
     // Registered address.
-    $par_data_premises = $par_data_organisation->get('premises')->referencedEntities();
+    $par_data_premises = $par_data_organisation->getPremises();
     $registered_premises = array_shift($par_data_premises);
     $premises_view_builder = $registered_premises->getViewBuilder();
 
@@ -139,7 +139,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
 
     // Contacts.
     // Primary contact summary.
-    $par_data_contacts = $par_data_partnership->get('person')->referencedEntities();
+    $par_data_contacts = $par_data_partnership->getOrganisationPeople();
     $par_data_primary_person = array_shift($par_data_contacts);
     $primary_person_view_builder = $par_data_primary_person->getViewBuilder();
 
@@ -190,7 +190,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     }
 
     // Legal Entities.
-    $par_data_legal_entities = $par_data_organisation->get('legal_entity')->referencedEntities();
+    $par_data_legal_entities = $par_data_organisation->getLegalEntity();
     $par_data_legal_entity = array_shift($par_data_legal_entities);
     $legal_view_builder = $par_data_legal_entity->getViewBuilder();
 

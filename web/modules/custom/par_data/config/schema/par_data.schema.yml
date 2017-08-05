@@ -260,9 +260,9 @@ par_data.par_data_premises_type.*:
         sequence:
           type: par_data.configuration_type.[%key]
           label: 'Configuration rules'
-par_data.par_data_regulatory_area_type.*:
+par_data.par_data_regulatory_function_t.*:
   type: config_entity
-  label: 'PAR Data Regulatory Area entity type config'
+  label: 'PAR Data Regulatory Function entity type config'
   mapping:
     id:
       type: string
@@ -316,7 +316,34 @@ par_data.par_data_sic_code_type.*:
         sequence:
           type: par_data.configuration_type.[%key]
           label: 'Configuration rules'
-
+par_data.par_data_enforcement_action_type.*:
+  type: config_entity
+  label: 'PAR Data Enforcement Action entity type config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: string
+      label: 'Description'
+    help:
+      type: string
+      label: 'Help'
+    uuid:
+      type: string
+    configuration:
+      type: sequence
+      nullable: true
+      sequence:
+        type: sequence
+        label: 'Element (entity or field name)'
+        nullable: true
+        sequence:
+          type: par_data.configuration_type.[%key]
+          label: 'Configuration rules'
 # Allowed configuration values are listed below.
 par_data.configuration_type.status_field:
   type: string

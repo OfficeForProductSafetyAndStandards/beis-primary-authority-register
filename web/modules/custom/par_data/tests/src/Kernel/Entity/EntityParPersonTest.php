@@ -17,38 +17,42 @@ class EntityParPersonTest extends ParDataTestBase {
    * Test to validate a PAR Person entity.
    */
   public function testEntityValidate() {
-    $this->createUser();
     $entity = ParDataPerson::create($this->getPersonValues());
     $violations = $entity->validate();
     $this->assertEqual(count($violations->getFieldNames()), 0, 'No violations when validating a default PAR Person entity.');
   }
 
   /**
-   * Test to validate a PAR Person entity.
+   * Test all authority fields exist.
    */
-  public function testRequiredLengthFields() {
+  public function testPersonFieldsExist() {
+    $values = $this->getPersonValues();
+    $entity = ParDataPerson::create($values);
+
+    foreach (array_diff_key($values, $this->getBaseValues()) as $field => $value) {
+      $this->assertTrue($entity->hasField($field), t('Field %field exists for Person.', ['%field' => $field]));
+    }
+  }
+
+  /**
+   * Test to validate an authority entity.
+   */
+  public function testPersonRequiredLengthFields() {
     $this->createUser();
 
-    $entity = ParDataPerson::create([
-      'type' => 'person',
-      'name' => 'test',
-      'uid' => 1,
-      'salutation' => 'Mrs',
-      'person_name' => $this->randomString(501),
+    $values = [
+      'salutation' => $this->randomString(256),
+      'first_name' => $this->randomString(501),
+      'last_name' => $this->randomString(501),
+      'job_title' => $this->randomString(501),
       'work_phone' => $this->randomString(256),
       'mobile_phone' => $this->randomString(256),
-      'email' => $this->randomString(501)
-    ]);
-    $violations = $entity->validate()->getByFields([
-      'salutation',
-      'person_name',
-      'work_phone',
-      'mobile_phone',
-      'email',
-    ]);
-    $this->assertEqual(count($violations->getFieldNames()), 4, 'Field values cannot be longer than their allowed lengths.');
-    $this->assertEqual($violations[3]->getMessage()->render(), t('%field: may not be longer than 500 characters.', ['%field' => 'E-mail']), 'The length of the E-mail field is correct..');
-    $this->assertEqual($violations[1]->getMessage()->render(), t('%field: may not be longer than 255 characters.', ['%field' => 'Work Phone']), 'The length of the Work Phone field is correct.');
+      'email' => $this->randomString(501),
+    ];
+
+    $entity = ParDataPerson::create($values + $this->getPersonValues());
+    $violations = $entity->validate()->getByFields(array_keys($values));
+    $this->assertEqual(count($violations->getFieldNames()), count($values), t('Field values cannot be longer than their allowed lengths for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
   }
 
   /**

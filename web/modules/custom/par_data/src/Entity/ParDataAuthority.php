@@ -65,6 +65,34 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataAuthority extends ParDataEntity {
 
   /**
+   * Get the contacts for this Authority.
+   */
+  public function getPerson() {
+    return $this->get('field_person')->referencedEntities();
+  }
+
+  /**
+   * Get the regulatory functions for this Authority.
+   */
+  public function getRegulatoryFunction() {
+    return $this->get('field_regulatory_function')->referencedEntities();
+  }
+
+  /**
+   * Get the allowed regulatory functions for this Authority.
+   */
+  public function getAllowedRegulatoryFunction() {
+    return $this->get('field_allowed_regulatory_fn')->referencedEntities();
+  }
+
+  /**
+   * Get the premises for this Authority.
+   */
+  public function getPremises() {
+    return $this->get('field_premises')->referencedEntities();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
@@ -73,9 +101,8 @@ class ParDataAuthority extends ParDataEntity {
     // Name.
     $fields['authority_name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Authority Name'))
-      ->setDescription(t('The name of the Authority.'))
+      ->setDescription(t('The name of the authority.'))
       ->setRequired(TRUE)
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 500,
@@ -87,14 +114,16 @@ class ParDataAuthority extends ParDataEntity {
         'weight' => 1,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Authority Type.
     $fields['authority_type'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Authority Type'))
-      ->setDescription(t('The type of Authority.'))
+      ->setDescription(t('The type of authority.'))
       ->setRequired(TRUE)
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -106,14 +135,16 @@ class ParDataAuthority extends ParDataEntity {
         'weight' => 2,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Nation.
     $fields['nation'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Nation'))
-      ->setDescription(t('The nation the Authority belongs to.'))
+      ->setDescription(t('The nation the authority belongs to.'))
       ->setRequired(TRUE)
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -125,14 +156,16 @@ class ParDataAuthority extends ParDataEntity {
         'weight' => 3,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // ONS Code.
     $fields['ons_code'] = BaseFieldDefinition::create('string')
       ->setLabel(t('ONS Code'))
-      ->setDescription(t('The ONS Code for the Authority.'))
+      ->setDescription(t('The ONS code for the authority.'))
       ->setRequired(TRUE)
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -144,87 +177,30 @@ class ParDataAuthority extends ParDataEntity {
         'weight' => 4,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Reference to Person.
-    $fields['person'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Person'))
-      ->setDescription(t('The contacts for this Authority. The first Person will be the primary contact.'))
-      ->setRequired(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSetting('target_type', 'par_data_person')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
-          'target_bundles' => [
-            'person' => 'person'
-          ]
-        ]
-      )
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 9,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
+    // Comments.
+    $fields['comments'] = BaseFieldDefinition::create('text_long')
+      ->setLabel(t('Comments'))
+      ->setDescription(t('Comments about this authority.'))
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'text_processing' => 0,
+      ])->setDisplayOptions('form', [
+        'type' => 'text_textarea',
+        'weight' => 5,
+        'settings' => [
+          'rows' => 25,
+        ],
+      ])
       ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Reference to Regulatory Area.
-    $fields['regulatory_area'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Regulatory Area'))
-      ->setDescription(t('The Regulatory Areas this Authority is responsible for.'))
-      ->setRequired(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSetting('target_type', 'par_data_regulatory_area')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
-          'target_bundles' => [
-            'regulatory_area' => 'regulatory_area'
-          ]
-        ]
-      )
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 9,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Reference to Premises.
-    $fields['premises'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Premises'))
-      ->setDescription(t('The premises of this Organisation. The first Premises will be the primary Premises'))
-      ->setRequired(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSetting('target_type', 'par_data_premises')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
-          'target_bundles' => [
-            'premises' => 'premises'
-          ]
-        ]
-      )
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 10,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'text_default',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     return $fields;

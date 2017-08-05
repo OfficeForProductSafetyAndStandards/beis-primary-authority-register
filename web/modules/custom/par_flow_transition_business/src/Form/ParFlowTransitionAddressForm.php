@@ -50,6 +50,7 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
       $this->loadDataValue("address_{$par_data_premises->id()}_locality", $address->get('locality')->getString());
       $this->loadDataValue("address_{$par_data_premises->id()}_administrative_area", $address->get('administrative_area')->getString());
       $this->loadDataValue("address_{$par_data_premises->id()}_country_code", $address->get('country_code')->getString());
+      $this->loadDataValue("address_{$par_data_premises->id()}_uprn", $par_data_premises->get('uprn')->getString());
     }
     $this->loadDataValue('premises_id', $par_data_premises->id());
   }
@@ -121,7 +122,7 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
     // UPRN.
     $form['uprn'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('(NOT SAVED) UPRN'),
+      '#title' => $this->t('UPRN'),
       '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_uprn"),
       '#description' => t('The Unique Property Reference Number (UPRN) is a unique identification number for every address in Great Britain. If you know the UPRN , enter it here.')
     ];
@@ -161,6 +162,7 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
     ];
 
     $premises->set('address', $address);
+    $premises->set('uprn', $this->getTempDataValue('uprn'));
 
     if ($premises->save()) {
       $this->deleteStore();

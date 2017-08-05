@@ -1,0 +1,10 @@
+uuid: 8561cdbd-0558-4a06-b40c-ca56d8f30129
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_enforcement_action.full
+label: Full
+targetEntityType: par_data_enforcement_action
+cache: true

@@ -1,0 +1,28 @@
+uuid: 9e519051-ac8e-4718-9e9a-c7fe9ad93e2f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_enforcement_notice.field_enforcingauthority
+    - par_data.par_data_authority_type.authority
+    - par_data.par_data_enforcement_notice_type.enforcement_notice
+id: par_data_enforcement_notice.enforcement_notice.field_enforcingauthority
+field_name: field_enforcingauthority
+entity_type: par_data_enforcement_notice
+bundle: enforcement_notice
+label: 'Enforcing Authority'
+description: 'The enforcing authority that is charged with following up on this enforcement notice.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_authority'
+  handler_settings:
+    target_bundles:
+      authority: authority
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,7 +1,7 @@
 @Pending
 Feature: As a PAR user,
-I need to be able to access the Primary Authority Terms and Conditions in the footer across the site,
-So that I can see the Primary Authority Terms and Conditions
+    I need to be able to access the Primary Authority Terms and Conditions in the footer across the site,
+    So that I can see the Primary Authority Terms and Conditions
 
     Background:
         Given I open the url "/login"
