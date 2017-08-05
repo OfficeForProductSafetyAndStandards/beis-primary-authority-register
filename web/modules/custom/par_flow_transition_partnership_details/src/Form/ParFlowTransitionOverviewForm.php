@@ -158,7 +158,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
     // List the secondary Primary Organisation contacts.
     if ($organisation_people) {
-      $form['organisation_contacts']['buisness_alternative_contacts'] = [
+      $form['organisation_contacts']['organisation_alternative_contacts'] = [
         '#type' => 'fieldset',
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
@@ -169,10 +169,10 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
         $person_field = $person_view_builder->view($person, 'summary');
 
-        $form['organisation_contacts']['buisness_alternative_contacts'][$person->id()] = $this->renderMarkupField($person_field);
+        $form['organisation_contacts']['organisation_alternative_contacts'][$person->id()] = $this->renderMarkupField($person_field);
 
         // We can get a link to a given form step like so.
-        $form['organisation_contacts']['buisness_alternative_contacts'][$person->id() . '_edit'] = [
+        $form['organisation_contacts']['organisation_alternative_contacts'][$person->id() . '_edit'] = [
           '#type' => 'markup',
           '#markup' => t('<br>%link', [
             '%link' => $this->getFlow()->getLinkByStep(6, [
