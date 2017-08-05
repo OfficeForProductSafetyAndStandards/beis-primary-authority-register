@@ -21,22 +21,53 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
    */
   public function content(ParDataPartnership $par_data_partnership = NULL) {
 
-    $rows = [];
+    // Organisation.
+    $par_data_organisation = current($par_data_partnership->get('field_organisation')->referencedEntities());
 
-    // Organisation summary.
-    $documents = $par_data_partnership->getAdvice();
+    $organisation_name = $par_data_organisation->get('name')->getString();
 
-    foreach ($documents as $document) {
-      $document_view_builder = $document->getViewBuilder();
+    $build['intro']['help_text_1'] = [
+      '#type' => 'markup',
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
+      '#markup' => t('Review and confirm your documents for @organisation are still relevant', ['@organisation' => $organisation_name])
+    ];
+
+    $build['intro']['help_text_2'] = [
+      '#type' => 'markup',
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
+      '#markup' => t('You don\'t have to do it all in one go')
+    ];
+
+    $build['intro']['help_text_3'] = [
+      '#type' => 'markup',
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
+      '#markup' => t('You can continue to make changes to your information until 14 September 2017')
+    ];
+
+    // Show the documents in table format.
+    $build['documentation_list'] = [
+      '#theme' => 'table',
+      '#title' => 'Advice documentation',
+      '#header' => ['Document', 'Type of document and regulatory functions', 'Actions', 'Confirmed'],
+      '#empty' => $this->t("There is no documentation for this partnership."),
+    ];
+
+    // Get each Advice document and add as a table row.
+    foreach ($par_data_partnership->getAdvice() as $advice) {
+      $advice_view_builder = $advice->getViewBuilder();
+
       // The first column contains a rendered summary of the document.
-      $document_summary = $this->renderMarkupField($document_view_builder->view($document, 'summary'));
+      $advice_summary = $advice_view_builder->view($advice, 'summary');
 
       // The second column contains a summary of the confirmed details.
-      $document_details = 'Awaiting confirmation';
-      if ($advice_type = $document->get('advice_type')->getString()) {
-        $document_details = "{$advice_type}";
+      $advice_details = 'Awaiting confirmation';
+      if ($advice_type = $advice->get('advice_type')->getString()) {
+        $advice_details = "{$advice_type}";
         if ($we_create_reference_between_documents_and_regulatory_function = FALSE) {
-          $document_details .= "covering:" . PHP_EOL . PHP_EOL;
+          $advice_details .= "covering:" . PHP_EOL . PHP_EOL;
         }
       }
 
@@ -45,33 +76,30 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
         [
           '#type' => 'markup',
           '#markup' => $this->getFlow()
-            ->getLinkByStep(10, ['par_data_advice' => $document->id()])
+            ->getLinkByStep(10, ['par_data_advice' => $advice->id()])
             ->setText('edit')
             ->toString(),
         ],
       ];
-      $document_actions = $this->getRenderer()->render($links);
+      $advice_actions = $this->getRenderer()->render($links);
 
       // Fourth column contains the completion status of the document.
-      $completion = $document->getCompletionPercentage();
+      $completion = $advice->getCompletionPercentage();
 
-      if ($document_summary && $document_details && $document_actions && $completion) {
-        $rows[] = [
-          "Documents are not yet attached...",
-          $document_details,
-          $document_actions,
-          $completion . '%',
+      if ($advice_summary && $advice_details && $advice_actions && $completion) {
+        $build['documentation_list']['#rows'][] = [
+          'data' => [
+            'document' => $this->getRenderer()->render($advice_summary),
+            'type' => $advice_details,
+            'actions' => $advice_actions,
+            'confirmed' => $this->renderPercentageTick($completion),
+          ],
         ];
       }
-    }
 
-    // Show the task links in table format.
-    $build['task_list'] = [
-      '#theme' => 'table',
-      '#header' => [],
-      '#rows' => $rows,
-      '#empty' => $this->t("There is no documentation for this partnership."),
-    ];
+      // Make sure to add the document cacheability data to this form.
+      $this->addCacheableDependency($advice);
+    }
 
     $build['cancel'] = [
       '#type' => 'markup',
@@ -83,7 +111,7 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
       ]),
     ];
 
-    // Make sure to add the person cacheability data to this form.
+    // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
 
     return parent::build($build);
