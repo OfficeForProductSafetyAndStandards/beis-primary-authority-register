@@ -1,17 +1,17 @@
 uuid: 101688ff-57b9-4fb1-97d5-16df2623c852
 langcode: en
 status: true
-id: par_migration_advice
+id: par_migration_advice_documents
 dependencies:
   enforced:
     module:
       - par_migration
-label: PAR Migration of advice
+label: PAR Migration of advice documents
 migration_group: PAR2
 migration_tags:
   - 'MS-SQL'
 source:
-  plugin: par_migration_advice
+  plugin: par_migration_advice_documents
   constants:
     destination_base_path: 'private://documents/advice'
 process:
