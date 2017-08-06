@@ -23,6 +23,8 @@ permissions:
   - 'create files'
   - 'delete own document files'
   - 'delete own image files'
+  - 'download any document files'
+  - 'download any image files'
   - 'download own document files'
   - 'download own image files'
   - 'edit own document files'

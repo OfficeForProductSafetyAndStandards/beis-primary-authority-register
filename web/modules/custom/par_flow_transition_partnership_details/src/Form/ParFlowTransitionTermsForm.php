@@ -17,6 +17,9 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
    */
   protected $flow = 'transition_partnership_details';
 
+  /**
+   * {@inheritdoc}
+   */
   public function getFormId() {
     return 'par_flow_transition_partnership_details_terms';
   }
@@ -25,7 +28,7 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
-   * @param ParDataPartnership $par_data_partnership
+   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
@@ -36,7 +39,6 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
       $this->setState("edit:{$par_data_partnership->id()}");
 
       // We need to get the value of the terms and conditions checkbox.
-
     }
   }
 
@@ -56,7 +58,7 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
       '#markup' => "<p>Please Review the new Primary Authority terms and conditions and confirm that you agree with them.</p><p>The New terms will come into effect from <em>01 October 2017</em>.</p><p>What's changed?</p>",
     ];
 
-    // @stemont will need your input on componentizing this summary box.
+    // @todo stemont will need your input on componentizing this summary box.
     $form['terms_summary'] = [
       '#markup' => "<ul class='list list-bullet'><li>The scheme is expanding to include more types of businesses.</li><li>The process of revoking a partnership will be more formalised.</li><li>The process for updating an inspection plan has been updated.</li></ul>",
     ];
@@ -83,7 +85,6 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
-
     parent::validateForm($form, $form_state);
   }
 
@@ -111,4 +112,5 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
     // Go back to the overview.
     $form_state->setRedirect($this->getFlow()->getNextRoute(), $this->getRouteParams());
   }
+
 }
