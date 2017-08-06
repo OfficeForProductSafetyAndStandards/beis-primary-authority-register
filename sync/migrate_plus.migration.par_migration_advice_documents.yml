@@ -1,7 +1,7 @@
-uuid: a18805c5-c204-472c-8049-6e6bdbb5dcd1
+uuid: 189dbd85-d64e-4ff1-be67-963fe389318b
 langcode: en
 status: true
-id: par_migration_documents
+id: par_migration_advice_documents
 dependencies:
   enforced:
     module:
@@ -11,9 +11,9 @@ migration_group: PAR2
 migration_tags:
   - 'MS-SQL'
 source:
-  plugin: par_migration_documents
+  plugin: par_migration_advice_documents
   constants:
-    destination_base_path: 'private://migration-files'
+    destination_base_path: 'private://documents/advice'
 process:
   filename:
     -
