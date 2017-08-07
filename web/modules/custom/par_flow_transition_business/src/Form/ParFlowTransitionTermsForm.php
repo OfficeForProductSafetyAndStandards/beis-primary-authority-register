@@ -36,7 +36,10 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
       $this->setState("edit:{$par_data_partnership->id()}");
 
       // We need to get the value of the terms and conditions checkbox.
-
+      if ($par_data_partnership) {
+        // Terms agreed?
+        $this->loadDataValue("terms_organisation_agreed", $par_data_partnership->get('terms_organisation_agreed')->getString());
+      }
     }
   }
 
@@ -61,10 +64,11 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
       '#markup' => "<ul><li>The scheme is expanding to include more types of businesses.</li><li>The process of revoking a partnership will be more formalised.</li><li>The process for updating an inspection plan has been updated.</li></ul>",
     ];
 
-    // Partnership details.
+    // Partnership agree terms.
     $form['terms_conditions'] = [
       '#type' => 'checkbox',
-      '#title' => t('(NOT YET SAVED) I confirm that my authority agrees to the new Terms and Conditions.'),
+      '#title' => t('I confirm that my authority agrees to the new Terms and Conditions.'),
+      '#disabled' => $this->getDefaultValues("terms_organisation_agreed"),
     ];
 
     $form['next'] = [
@@ -95,7 +99,7 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
 
     // Save the value for the about_partnership field.
     $partnership = $this->getRouteParam('par_data_partnership');
-    // @TODO Still need to save/acknowledge the acceptance of the terms.
+    $partnership->set('terms_organisation_agreed', $this->getTempDataValue('terms_organisation_agreed'));
     if ($partnership->save()) {
       $this->deleteStore();
     }

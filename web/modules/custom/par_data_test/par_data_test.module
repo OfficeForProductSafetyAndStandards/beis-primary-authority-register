@@ -143,6 +143,7 @@ function par_data_test_create_entities() {
       'administrative_area' => 'US-NY',
       'postal_code' => '12345',
     ],
+    'nation' => 'GB-WLS',
   ]);
   $premises_1->save();
 
@@ -159,6 +160,7 @@ function par_data_test_create_entities() {
       'administrative_area' => 'US-NY',
       'postal_code' => '12345',
     ],
+    'nation' => 'GB-SCT',
   ]);
   $premises_2->save();
 
@@ -175,6 +177,7 @@ function par_data_test_create_entities() {
       'administrative_area' => 'US-NY',
       'postal_code' => '12345',
     ],
+    'nation' => 'GB-NIR',
   ]);
   $premises_3->save();
 
@@ -191,6 +194,7 @@ function par_data_test_create_entities() {
       'administrative_area' => 'US-NY',
       'postal_code' => '12345',
     ],
+    'nation' => 'GB-ENG',
   ]);
   $premises_4->save();
 

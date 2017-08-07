@@ -68,21 +68,21 @@ class ParDataAuthority extends ParDataEntity {
    * Get the contacts for this Authority.
    */
   public function getPerson() {
-    return $this->get('field_person')->referencedEntity();
+    return $this->get('field_person')->referencedEntities();
   }
 
   /**
    * Get the regulatory functions for this Authority.
    */
   public function getRegulatoryFunction() {
-    return $this->get('field_regulatory_function')->referencedEntity();
+    return $this->get('field_regulatory_function')->referencedEntities();
   }
 
   /**
    * Get the allowed regulatory functions for this Authority.
    */
   public function getAllowedRegulatoryFunction() {
-    return $this->get('field_allowed_regulatory_fn')->referencedEntity();
+    return $this->get('field_allowed_regulatory_fn')->referencedEntities();
   }
 
   /**

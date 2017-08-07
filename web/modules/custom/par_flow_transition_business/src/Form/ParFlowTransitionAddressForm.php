@@ -49,10 +49,10 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
       $this->loadDataValue("address_{$par_data_premises->id()}_address_line2", $address->get('address_line2')->getString());
       $this->loadDataValue("address_{$par_data_premises->id()}_locality", $address->get('locality')->getString());
       $this->loadDataValue("address_{$par_data_premises->id()}_administrative_area", $address->get('administrative_area')->getString());
-      $this->loadDataValue("address_{$par_data_premises->id()}_country_code", $address->get('country_code')->getString());
+      $this->loadDataValue("address_{$par_data_premises->id()}_country_code", $par_data_premises->get('nation')->getString());
       $this->loadDataValue("address_{$par_data_premises->id()}_uprn", $par_data_premises->get('uprn')->getString());
+      $this->loadDataValue('premises_id', $par_data_premises->id());
     }
-    $this->loadDataValue('premises_id', $par_data_premises->id());
   }
 
   /**
@@ -112,9 +112,11 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
     ];
 
     // Country.
+    $country_list = $par_data_premises->getCountryList();
     $form['country'] = [
-      '#type' => 'textfield',
+      '#type' => 'select',
       '#title' => $this->t('Country'),
+      '#options' => $country_list,
       '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_country_code"),
       '#required' => TRUE,
     ];
@@ -162,6 +164,7 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
     ];
 
     $premises->set('address', $address);
+    $premises->set('nation', $this->getTempDataValue('country'));
     $premises->set('uprn', $this->getTempDataValue('uprn'));
 
     if ($premises->save()) {

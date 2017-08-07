@@ -36,7 +36,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
       $this->setState("edit:{$par_data_partnership->id()}");
 
       // We need to get the value of the terms and conditions checkbox.
-
+      $this->loadDataValue("partnership_info_agreed_business", $par_data_partnership->get('partnership_info_agreed_business')->getString());
     }
   }
 
@@ -47,9 +47,6 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership);
 
     $par_data_authority = current($par_data_partnership->getAuthority());
-    $par_data_authority_builder = $par_data_authority->getViewBuilder();
-
-    $authority_name = $par_data_authority_builder->view($par_data_authority, 'title');
 
     // Organisation summary.
     $par_data_organisation = current($par_data_partnership->getOrganisation());
@@ -98,7 +95,6 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
-
       $registered_address = $premises_view_builder->view($registered_premises, 'full');
       $form['registered_address']['address'] = $this->renderMarkupField($registered_address);
 
@@ -286,6 +282,8 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     $form['confirmation'] = [
       '#type' => 'checkbox',
       '#title' => t('I confirm that the information above is correct.'),
+      '#default_value' => $this->getDefaultValues('partnership_info_agreed_business'),
+      '#disabled' => $this->getDefaultValues('partnership_info_agreed_business'),
     ];
 
     $form['next'] = [
@@ -316,7 +314,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
 
     // Save the value for the about_partnership field.
     $partnership = $this->getRouteParam('par_data_partnership');
-    // @TODO Still need to save/acknowledge the acceptance of the terms.
+    $partnership->set('partnership_info_agreed_business', $this->getTempDataValue('confirmation'));
     if ($partnership->save()) {
       $this->deleteStore();
     }
