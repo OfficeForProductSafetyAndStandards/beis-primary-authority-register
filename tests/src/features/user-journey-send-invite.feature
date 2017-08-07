@@ -21,11 +21,13 @@ Feature: User Journey 1 (happy path)
         And the element "#block-par-theme-content" contains the text "Review and confirm your data by"
         When I click on the button ".button-start"
         # PARTNERSHIPS DASHBOARD
+        And I scroll to element "#block-par-theme-content"
         And I click on the link "ABCD Mart"
         # TERMS AND CONDITIONS SCREEN
         And I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
         # PARTERSHIP TASKS SCREEN
+        And I scroll to element "#block-par-theme-content"
         When I click on the link "Invite the business to confirm their details"
         # BUSINESS EMAIL INVITATION
         And I add "Test change meassage body [invite:invite-accept-link]" to the inputfield "#edit-email-body"

@@ -20,11 +20,13 @@ Feature: User Journey 1 (happy path)
         Then I expect that element ".error-message" is not visible
         When I click on the button ".button-start"
         # PARTNERSHIPS DASHBOARD
+        And I scroll to element "#block-par-theme-content"
         And I click on the link "ABCD Mart"
         # TERMS AND CONDITIONS SCREEN
         And I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
         # DOCUMENTATION
+        And I scroll to element "#block-par-theme-content"
         When I click on the link "Review and confirm your documentation for ABCD Mart"
         And I click on the link "edit"
         And I click on the radio "#edit-document-type-authority-advice"

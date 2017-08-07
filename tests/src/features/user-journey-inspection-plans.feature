@@ -21,11 +21,13 @@ Feature: User Journey 1 (happy path)
         And the element "#block-sitewidehelpdeskmessage" contains the text "0121 345 1201"
         When I click on the button ".button-start"
         # PARTNERSHIPS DASHBOARD
+        And I scroll to element "#block-par-theme-content"
         And I click on the link "ABCD Mart"
         # TERMS AND CONDITIONS SCREEN
         And I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
         # INSPECTION PLANS
+        And I scroll to element "#block-par-theme-content"
         When I click on the link "Review and confirm your inspection plan"
         Then the element "#edit-document-list" contains the text "Inspection Plan"
         And I click on the checkbox ".form-checkbox"
