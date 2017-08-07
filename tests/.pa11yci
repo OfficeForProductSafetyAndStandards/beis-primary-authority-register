@@ -13,12 +13,6 @@
         "allowedStandards": ["WCAG2AA", "WCAG2 AA"],
         "concurrency": 4
     },
-    actions: [
-            "set field #edit-name to par_authority@example.com"
-            "set field #edit-pass to TestPassword"
-            "click element #edit-submit"
-            "wait for path to not be /user/login"
-    ],
     "urls": [
         "http://localhost:80/styleguide",
         "http://localhost:80/styleguide/data",
