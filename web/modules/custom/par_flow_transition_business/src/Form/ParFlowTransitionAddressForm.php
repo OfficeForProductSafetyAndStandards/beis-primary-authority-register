@@ -19,6 +19,9 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
    */
   protected $flow = 'transition_business';
 
+  /**
+   * {@inheritdoc}
+   */
   public function getFormId() {
     return 'par_flow_transition_business_address';
   }
@@ -27,9 +30,9 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
-   * @param ParDataPartnership $par_data_partnership
+   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The Partnership being retrieved.
-   * @param ParDataPremises $par_data_premises
+   * @param \Drupal\par_data\Entity\ParDataPremises $par_data_premises
    *   The PRemises being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataPremises $par_data_premises = NULL) {
@@ -50,6 +53,7 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
       $this->loadDataValue("address_{$par_data_premises->id()}_locality", $address->get('locality')->getString());
       $this->loadDataValue("address_{$par_data_premises->id()}_administrative_area", $address->get('administrative_area')->getString());
       $this->loadDataValue("address_{$par_data_premises->id()}_country_code", $address->get('country_code')->getString());
+      $this->loadDataValue("address_{$par_data_premises->id()}_uprn", $par_data_premises->get('uprn')->getString());
     }
     $this->loadDataValue('premises_id', $par_data_premises->id());
   }
@@ -121,9 +125,9 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
     // UPRN.
     $form['uprn'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('(NOT SAVED) UPRN'),
+      '#title' => $this->t('UPRN'),
       '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_uprn"),
-      '#description' => t('The Unique Property Reference Number (UPRN) is a unique identification number for every address in Great Britain. If you know the UPRN , enter it here.')
+      '#description' => t('The Unique Property Reference Number (UPRN) is a unique identification number for every address in Great Britain. If you know the UPRN , enter it here.'),
     ];
 
     $form['next'] = [
@@ -134,7 +138,8 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
     $previous_link = $this->getFlow()->getLinkByStep(4)->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
-      '#markup' => t('<br>%link', ['%link' => $previous_link]),
+      '#prefix' => '<br>',
+      '#markup' => t('@link', ['@link' => $previous_link]),
     ];
 
     // Make sure to add the person cacheability data to this form.
@@ -161,6 +166,7 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
     ];
 
     $premises->set('address', $address);
+    $premises->set('uprn', $this->getTempDataValue('uprn'));
 
     if ($premises->save()) {
       $this->deleteStore();
@@ -177,4 +183,5 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
     // Go back to the overview.
     $form_state->setRedirect($this->getFlow()->getRouteByStep(4), $this->getRouteParams());
   }
+
 }

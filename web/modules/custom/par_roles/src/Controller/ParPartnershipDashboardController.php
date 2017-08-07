@@ -60,9 +60,6 @@ class ParPartnershipDashboardController extends ControllerBase {
     // We can use this information to figure out what journey to send the user down.
     if ($current_user_people) {
       foreach ($current_user_people as $person) {
-        $businesses = $person->isBusinessMember();
-        $coordinators = $person->isCoordinatorMember();
-        $authorities = $person->isAuthorityMember();
         if ($par_data_partnership->isAuthorityMember($person) && !isset($route)) {
           // Get the start of an authority journey.
           $route = $this->flowStorage->load('transition_partnership_details')->getRouteByStep(2);

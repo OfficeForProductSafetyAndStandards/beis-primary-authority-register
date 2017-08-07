@@ -12,15 +12,6 @@ targetEntityType: file
 bundle: document
 mode: summary
 content:
-  filemime:
-    type: file_filemime
-    weight: 1
-    region: content
-    label: above
-    settings:
-      link_to_file: false
-      filemime_image: false
-    third_party_settings: {  }
   filename:
     type: file_link
     label: hidden
@@ -29,8 +20,15 @@ content:
     settings:
       link_to_file: true
     third_party_settings: {  }
+  uri:
+    type: uri_link
+    weight: 1
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
 hidden:
+  filemime: true
   filesize: true
   langcode: true
   uid: true
-  uri: true

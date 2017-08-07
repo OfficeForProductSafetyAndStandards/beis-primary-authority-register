@@ -17,6 +17,9 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
    */
   protected $flow = 'transition_business';
 
+  /**
+   * {@inheritdoc}
+   */
   public function getFormId() {
     return 'par_flow_transition_business_terms';
   }
@@ -25,7 +28,7 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
-   * @param ParDataPartnership $par_data_partnership
+   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The Authority being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
@@ -36,7 +39,6 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
       $this->setState("edit:{$par_data_partnership->id()}");
 
       // We need to get the value of the terms and conditions checkbox.
-
     }
   }
 
@@ -79,11 +81,10 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
   }
 
   /**
-   * {@inheritdoc}   *
+   * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
-
     parent::validateForm($form, $form_state);
   }
 
@@ -111,4 +112,5 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
     // Go back to the overview.
     $form_state->setRedirect($this->getFlow()->getNextRoute(), $this->getRouteParams());
   }
+
 }

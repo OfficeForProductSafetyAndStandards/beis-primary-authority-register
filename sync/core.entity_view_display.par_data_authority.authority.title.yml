@@ -16,16 +16,23 @@ content:
     type: string
     weight: 0
     region: content
-    label: above
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
 hidden:
+  allowed_regulatory_function: true
   authority_type: true
+  comments: true
+  field_allowed_regulatory_fn: true
+  field_person: true
+  field_premises: true
+  field_regulatory_function: true
   name: true
   nation: true
   ons_code: true
   person: true
   premises: true
   regulatory_area: true
+  regulatory_function: true
   user_id: true

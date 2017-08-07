@@ -12,7 +12,9 @@ function par_data_install() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
 
-function par_data_update_8000() {
-  // Ensure the user_account field is created.
+/**
+ * Update the PAR entities.
+ */
+function par_data_update_8001() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }

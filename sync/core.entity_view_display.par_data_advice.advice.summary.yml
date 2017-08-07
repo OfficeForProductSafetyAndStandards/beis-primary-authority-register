@@ -4,7 +4,10 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_advice.summary
+    - field.field.par_data_advice.advice.field_regulatory_function
     - par_data.par_data_advice_type.advice
+  module:
+    - file_entity
 _core:
   default_config_hash: 2UR8deNkdfxUSB9sY7A1vktZ5fkD8P404y6FauKBEGM
 id: par_data_advice.advice.summary
@@ -12,17 +15,21 @@ targetEntityType: par_data_advice
 bundle: advice
 mode: summary
 content:
-  advice_type:
-    type: string
+  document:
+    type: file_download_link
     weight: 0
     region: content
     label: hidden
     settings:
-      link_to_entity: false
+      access_message: 'You don''t have access to download this file.'
+      text: 'Download [file:name]'
     third_party_settings: {  }
 hidden:
+  advice_type: true
+  field_regulatory_function: true
   name: true
   notes: true
+  regulatory_function: true
   user_id: true
   visible_authority: true
   visible_business: true
