@@ -65,7 +65,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataLegalEntity extends ParDataEntity {
 
   public function getLegalEntityTypes() {
-    return $this->type->entity->getConfigurationByType('legal_entity_types', 'values');
+    return $this->type->entity->getConfigurationByType('legal_entity_types', 'allowed_values');
   }
 
   /**

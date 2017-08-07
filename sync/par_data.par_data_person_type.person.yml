@@ -10,12 +10,12 @@ description: 'A Person is a named individual who can feature in a number of diff
 help: ''
 configuration:
   partnership_preferred_communications:
-    values:
+    allowed_values:
       phone: 'Work Phone'
       mobile: 'Mobile Phone'
       email: 'Email'
   title_options:
-    values:
+    allowed_values:
       Ms: 'Ms'
       Mrs: 'Mrs'
       Mr: 'Mr'

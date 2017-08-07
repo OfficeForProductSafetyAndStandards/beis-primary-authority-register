@@ -10,7 +10,7 @@ description: 'A Legal Entity is a representation of an Organisation via some for
 help: ''
 configuration:
   legal_entity_types:
-    values:
+    allowed_values:
       limited_company: 'Limited Company'
       sole_trader: 'Sole Trader'
       registered_charity: 'Registered Charity'

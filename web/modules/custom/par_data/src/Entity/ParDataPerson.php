@@ -245,7 +245,7 @@ class ParDataPerson extends ParDataEntity {
    * @return array
    */
   public function getPreferredCommunicationMethods() {
-    return $this->type->entity->getConfigurationByType('partnership_preferred_communications', 'values');
+    return $this->type->entity->getConfigurationByType('partnership_preferred_communications', 'allowed_values');
   }
 
   /**
@@ -254,7 +254,7 @@ class ParDataPerson extends ParDataEntity {
    * @return array
    */
   public function getTitleOptions() {
-    return $this->type->entity->getConfigurationByType('title_options', 'values');
+    return $this->type->entity->getConfigurationByType('title_options', 'allowed_values');
   }
 
   /**

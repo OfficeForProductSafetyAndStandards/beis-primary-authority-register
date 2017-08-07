@@ -65,7 +65,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataPremises extends ParDataEntity {
 
   public function getCountryList() {
-    return $this->type->entity->getConfigurationByType('country_options', 'values');
+    return $this->type->entity->getConfigurationByType('country_options', 'allowed_values');
   }
 
   /**
