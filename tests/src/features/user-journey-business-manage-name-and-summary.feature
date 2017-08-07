@@ -33,7 +33,7 @@ Feature: As the (coordinated) Business User,
         And I add "Change to the about business details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-next"
         Then the element "#edit-about-business" contains the text "Change to the about business details section"
-        When I click on the button "html.js body.js-enabled main#content div div#block-par-theme-content form#par-flow-transition-business-details.par-flow-transition-business-details div fieldset#edit-0.js-form-item.form-item.js-form-wrapper.form-wrapper.inline em.placeholder a.flow-link"
+        When I click on the button "form#par-flow-transition-business-details #edit-0.js-form-item a.flow-link"
         And I add "Trading Name Change" to the inputfield "#edit-trading-name"
         And I click on the button "#edit-next"
         Then the element "#par-flow-transition-business-details" contains the text "Trading Name Change"

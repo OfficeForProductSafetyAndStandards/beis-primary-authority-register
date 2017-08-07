@@ -742,10 +742,10 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
 
 $appEnv = getenv('APP_ENV');
 
-$settings['trusted_host_patterns'] = array(
+$settings['trusted_host_patterns'] = [
   '^par-beta-' . $appEnv . '\.cloudapps\.digital',
   '.par-beta\.co\.uk$',
-);
+];
 
 /**
  * The default list of directories that will be ignored by Drupal's file API.
@@ -879,6 +879,15 @@ $config['govuk_notify.settings']['api_key'] = getenv('PAR_GOVUK_NOTIFY_KEY');
 $config['govuk_notify.settings']['default_template_id'] = getenv('PAR_GOVUK_NOTIFY_TEMPLATE');
 
 /**
+ * Environment settings override.
+ *
+ * Load specific settings for each app environment.
+ */
+if (!empty($appEnv) && file_exists("{$app_root}/{$site_path}/settings.local.{$appEnv}.php")) {
+  include "{$app_root}/{$site_path}/settings.local.{$appEnv}.php";
+}
+
+/**
  * Load local development override configuration, if available.
  *
  * Use settings.local.php to override variables on secondary (staging,
@@ -888,15 +897,7 @@ $config['govuk_notify.settings']['default_template_id'] = getenv('PAR_GOVUK_NOTI
  *
  * Keep this code block at the end of this file to take full effect.
  */
-if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
-  include $app_root . '/' . $site_path . '/settings.local.php';
-}
-
-if (!empty($appEnv)) {
-    $filepath = $app_root . '/' . $site_path . '/settings.local.' . $appEnv . '.php';
-
-    if (file_exists($filepath)) {
-        include $filepath;
-    }
+if (file_exists("{$app_root}/{$site_path}/settings.local.php")) {
+  include "{$app_root}/{$site_path}/settings.local.php";
 }
 

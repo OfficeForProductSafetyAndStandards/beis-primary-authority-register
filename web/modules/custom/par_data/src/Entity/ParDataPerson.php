@@ -154,13 +154,18 @@ class ParDataPerson extends ParDataEntity {
    * @return mixed|null
    *   Returns any business records found.
    */
-  public function getBusinesses() {
+  public function getBusinesses($entity = NULL) {
+    $properties = [
+      'type' => ['authority'],
+      'field_person' => $this->id(),
+    ];
+    if ($entity) {
+      $properties['id'] = $entity->id();
+    }
     $entities = \Drupal::entityTypeManager()
       ->getStorage('par_data_organisation')
-      ->loadByProperties([
-        'type' => ['business'],
-        'person' => $this->id(),
-      ]);
+      ->loadByProperties($properties);
+
     return $entities ? current($entities) : NULL;
   }
 
@@ -174,13 +179,18 @@ class ParDataPerson extends ParDataEntity {
    * @return mixed|null
    *   Returns any business records found.
    */
-  public function getCoordinators() {
+  public function getCoordinators($entity = NULL) {
+    $properties = [
+      'type' => ['authority'],
+      'field_person' => $this->id(),
+    ];
+    if ($entity) {
+      $properties['id'] = $entity->id();
+    }
     $entities = \Drupal::entityTypeManager()
       ->getStorage('par_data_organisation')
-      ->loadByProperties([
-        'type' => ['coordinator'],
-        'person' => $this->id(),
-      ]);
+      ->loadByProperties($properties);
+
     return $entities ? current($entities) : NULL;
   }
 
@@ -194,13 +204,18 @@ class ParDataPerson extends ParDataEntity {
    * @return mixed|null
    *   Returns any business records found.
    */
-  public function getAuthorities() {
+  public function getAuthorities($entity = NULL) {
+    $properties = [
+      'type' => ['authority'],
+      'field_person' => $this->id(),
+    ];
+    if ($entity) {
+      $properties['id'] = $entity->id();
+    }
     $entities = \Drupal::entityTypeManager()
       ->getStorage('par_data_authority')
-      ->loadByProperties([
-        'type' => ['business'],
-        'person' => $this->id(),
-      ]);
+      ->loadByProperties($properties);
+
     return $entities ? current($entities) : NULL;
   }
 

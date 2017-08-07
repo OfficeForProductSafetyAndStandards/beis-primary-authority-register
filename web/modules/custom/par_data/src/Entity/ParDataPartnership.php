@@ -83,7 +83,12 @@ class ParDataPartnership extends ParDataEntity {
    *   Whether the user is an organisation member or not.
    */
   public function isOrganisationMember(ParDataPerson $person) {
-    return isset($this->getOrganisationPeople()[$person->id()]);
+    foreach ($this->getOrganisationPeople() as $organisation_person) {
+      if ($organisation_person->id() === $person->id()) {
+        return TRUE;
+      }
+    }
+    return FALSE;
   }
 
   /**
@@ -103,7 +108,12 @@ class ParDataPartnership extends ParDataEntity {
    *   Whether the user is an authority member or not.
    */
   public function isAuthorityMember(ParDataPerson $person) {
-    return isset($this->getAuthorityPeople()[$person->id()]);
+    foreach ($this->getAuthorityPeople() as $authority_person) {
+      if ($authority_person->id() === $person->id()) {
+        return TRUE;
+      }
+    }
+    return FALSE;
   }
 
   /**

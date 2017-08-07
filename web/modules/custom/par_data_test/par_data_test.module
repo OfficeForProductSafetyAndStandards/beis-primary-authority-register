@@ -90,6 +90,9 @@ function par_data_test_create_entities() {
     'visible_authority' => TRUE,
     'visible_coordinator' => TRUE,
     'visible_business' => TRUE,
+    'document' => [
+      $uploaded_files[rand(0, count($uploaded_files)-1)],
+    ],
   ]);
   $advice_1->save();
 
@@ -105,6 +108,9 @@ function par_data_test_create_entities() {
     'approved_rd_executive' => TRUE,
     'consulted_national_regulator' => TRUE,
     'inspection_status' => 'Cookies found',
+    'document' => [
+      $uploaded_files[rand(0, count($uploaded_files)-1)],
+    ]
   ]);
   $inspection_plan_1->save();
 

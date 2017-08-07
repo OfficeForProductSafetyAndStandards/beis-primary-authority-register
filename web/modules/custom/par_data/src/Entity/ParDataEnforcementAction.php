@@ -82,7 +82,7 @@ class ParDataEnforcementAction extends ParDataEntity {
    * Get the regulatory function for this Enforcement Action.
    */
   public function getRegulatoryFunction() {
-    return $this->get('field_regulatory_function')->referencedEntity();
+    return $this->get('field_regulatory_function')->referencedEntities();
   }
 
   /**
