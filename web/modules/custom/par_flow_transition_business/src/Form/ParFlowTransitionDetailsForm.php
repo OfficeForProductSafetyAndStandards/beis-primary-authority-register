@@ -17,6 +17,9 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
    */
   protected $flow = 'transition_business';
 
+  /**
+   * {@inheritdoc}
+   */
   public function getFormId() {
     return 'par_flow_transition_business_details';
   }
@@ -25,7 +28,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
-   * @param ParDataPartnership $par_data_partnership
+   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The Authority being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
@@ -36,7 +39,6 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
       $this->setState("edit:{$par_data_partnership->id()}");
 
       // We need to get the value of the terms and conditions checkbox.
-
     }
   }
 
@@ -46,13 +48,13 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
-    $par_data_authority = current($par_data_partnership->get('authority')->referencedEntities());
+    $par_data_authority = current($par_data_partnership->getAuthority());
     $par_data_authority_builder = $par_data_authority->getViewBuilder();
 
     $authority_name = $par_data_authority_builder->view($par_data_authority, 'title');
 
     // Organisation summary.
-    $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
+    $par_data_organisation = current($par_data_partnership->getOrganisation());
     $organisation_builder = $par_data_organisation->getViewBuilder();
 
     $form['details_intro'] = [
@@ -80,13 +82,14 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
 
     $form['about_business']['edit'] = [
       '#type' => 'markup',
-      '#markup' => t('<br>%link', [
-        '%link' => $this->getFlow()->getLinkByStep(5)->setText('edit')->toString()
+      '#prefix' => '<br>',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlow()->getLinkByStep(5)->setText('edit')->toString(),
       ]),
     ];
 
     // Registered address.
-    $par_data_premises = $par_data_organisation->get('premises')->referencedEntities();
+    $par_data_premises = $par_data_organisation->getPremises();
     $registered_premises = array_shift($par_data_premises);
     $premises_view_builder = $registered_premises->getViewBuilder();
 
@@ -104,10 +107,10 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
 
       $form['registered_address']['edit'] = [
         '#type' => 'markup',
-        '#markup' => t('<br>%link', [
-          '%link' => $this->getFlow()->getLinkByStep(6, [
-            'par_data_premises' => $registered_premises->id()
-          ])->setText('edit')->toString()
+        '#markup' => t('@link', [
+          '@link' => $this->getFlow()->getLinkByStep(6, [
+            'par_data_premises' => $registered_premises->id(),
+          ])->setText('edit')->toString(),
         ]),
       ];
     }
@@ -128,10 +131,11 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
         // We can get a link to a given form step like so.
         $form['registered_address']['alternative_premises'][$premises->id() . '_edit'] = [
           '#type' => 'markup',
-          '#markup' => t('<br>%link', [
-            '%link' => $this->getFlow()->getLinkByStep(6, [
-              'par_data_premises' => $premises->id()
-            ])->setText('edit')->toString()
+          '#prefix' => '<br>',
+          '#markup' => t('@link', [
+            '@link' => $this->getFlow()->getLinkByStep(6, [
+              'par_data_premises' => $premises->id(),
+            ])->setText('edit')->toString(),
           ]),
         ];
       }
@@ -139,7 +143,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
 
     // Contacts.
     // Primary contact summary.
-    $par_data_contacts = $par_data_partnership->get('person')->referencedEntities();
+    $par_data_contacts = $par_data_partnership->getOrganisationPeople();
     $par_data_primary_person = array_shift($par_data_contacts);
     $primary_person_view_builder = $par_data_primary_person->getViewBuilder();
 
@@ -156,10 +160,10 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
 
       $form['primary_contact']['edit'] = [
         '#type' => 'markup',
-        '#markup' => t('<br>%link', [
-          '%link' => $this->getFlow()->getLinkByStep(7, [
-            'par_data_person' => $par_data_primary_person->id()
-          ])->setText('edit')->toString()
+        '#markup' => t('@link', [
+          '@link' => $this->getFlow()->getLinkByStep(7, [
+            'par_data_person' => $par_data_primary_person->id(),
+          ])->setText('edit')->toString(),
         ]),
       ];
     }
@@ -180,17 +184,18 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
         // We can get a link to a given form step like so.
         $form['primary_contact']['alternative_people'][$person->id() . '_edit'] = [
           '#type' => 'markup',
-          '#markup' => t('<br>%link', [
-            '%link' => $this->getFlow()->getLinkByStep(7, [
-              'par_data_person' => $person->id()
-            ])->setText('edit')->toString()
+          '#prefix' => '<br>',
+          '#markup' => t('@link', [
+            '@link' => $this->getFlow()->getLinkByStep(7, [
+              'par_data_person' => $person->id(),
+            ])->setText('edit')->toString(),
           ]),
         ];
       }
     }
 
     // Legal Entities.
-    $par_data_legal_entities = $par_data_organisation->get('legal_entity')->referencedEntities();
+    $par_data_legal_entities = $par_data_organisation->getLegalEntity();
     $par_data_legal_entity = array_shift($par_data_legal_entities);
     $legal_view_builder = $par_data_legal_entity->getViewBuilder();
 
@@ -208,10 +213,10 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
 
       $form['legal_entity']['edit'] = [
         '#type' => 'markup',
-        '#markup' => t('<br>%link', [
-          '%link' => $this->getFlow()->getLinkByStep(8, [
-            'par_data_legal_entity' => $par_data_legal_entity->id()
-          ])->setText('edit')->toString()
+        '#markup' => t('@link', [
+          '@link' => $this->getFlow()->getLinkByStep(8, [
+            'par_data_legal_entity' => $par_data_legal_entity->id(),
+          ])->setText('edit')->toString(),
         ]),
       ];
     }
@@ -232,10 +237,11 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
         // We can get a link to a given form step like so.
         $form['legal_entity']['alternative'][$legal_entity_item->id() . '_edit'] = [
           '#type' => 'markup',
-          '#markup' => t('<br>%link', [
-            '%link' => $this->getFlow()->getLinkByStep(8, [
-              'par_data_legal_entity' => $legal_entity_item->id()
-            ])->setText('edit')->toString()
+          '#prefix' => '<br>',
+          '#markup' => t('@link', [
+            '@link' => $this->getFlow()->getLinkByStep(8, [
+              'par_data_legal_entity' => $legal_entity_item->id(),
+            ])->setText('edit')->toString(),
           ]),
         ];
       }
@@ -243,8 +249,9 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
 
     $form['legal_entity']['alternative']['add'] = [
       '#type' => 'markup',
-      '#markup' => t('<br>%link', [
-        '%link' => $this->getFlow()->getLinkByStep(10)->setText('add another legal entity')->toString()
+      '#prefix' => '<br>',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlow()->getLinkByStep(10)->setText('add another legal entity')->toString(),
       ]),
     ];
 
@@ -266,22 +273,23 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
 
         $form['trading_names'][$key]['edit'] = [
           '#type' => 'markup',
-          '#markup' => t('<br>%link', [
-            '%link' => $this->getFlow()->getLinkByStep(9, [
-              'trading_name_delta' => $key
-            ])->setText('edit')->toString()
+          '#prefix' => '<br>',
+          '#markup' => t('@link', [
+            '@link' => $this->getFlow()->getLinkByStep(9, [
+              'trading_name_delta' => $key,
+            ])->setText('edit')->toString(),
           ]),
         ];
       }
 
       $form['trading_names']['add'] = [
         '#type' => 'markup',
-        '#markup' => t('<br>%link', [
-          '%link' => $this->getFlow()->getLinkByStep(11)->setText('add another trading name')->toString()
-          ]),
+        '#prefix' => '<br>',
+        '#markup' => t('@link', [
+          '@link' => $this->getFlow()->getLinkByStep(11)->setText('add another trading name')->toString(),
+        ]),
       ];
     }
-
 
     $form['confirmation'] = [
       '#type' => 'checkbox',
@@ -304,7 +312,6 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
-
     parent::validateForm($form, $form_state);
   }
 
@@ -332,4 +339,5 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     // Go back to the overview.
     $form_state->setRedirect($this->getFlow()->getPrevRoute(), $this->getRouteParams());
   }
+
 }

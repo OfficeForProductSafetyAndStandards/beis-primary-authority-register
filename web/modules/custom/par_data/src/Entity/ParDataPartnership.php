@@ -70,19 +70,7 @@ class ParDataPartnership extends ParDataEntity {
    * Get the organisation contacts for this Partnership.
    */
   public function getOrganisationPeople() {
-    $people = [];
-    foreach ($this->get('person')->referencedEntities() as $person) {
-      $people[$person->id()] = $person;
-    }
-
-    $organisation_people = [];
-    foreach ($this->get('organisation')->referencedEntities() as $organisation) {
-      foreach ($organisation->get('person')->referencedEntities() as $person) {
-        $organisation_people[$person->id()] = $person;
-      }
-    }
-
-    return !empty($people) && !empty($organisation_people) ? array_intersect_key($people, $organisation_people) : [];
+    return $this->get('field_organisation_person')->referencedEntities();
   }
 
   /**
@@ -95,26 +83,19 @@ class ParDataPartnership extends ParDataEntity {
    *   Whether the user is an organisation member or not.
    */
   public function isOrganisationMember(ParDataPerson $person) {
-    return isset($this->getOrganisationPeople()[$person->id()]);
+    foreach ($this->getOrganisationPeople() as $organisation_person) {
+      if ($organisation_person->id() === $person->id()) {
+        return TRUE;
+      }
+    }
+    return FALSE;
   }
 
   /**
    * Get the authority contacts for this Partnership.
    */
   public function getAuthorityPeople() {
-    $people = [];
-    foreach ($this->get('person')->referencedEntities() as $person) {
-      $people[$person->id()] = $person;
-    }
-
-    $authority_people = [];
-    foreach ($this->get('authority')->referencedEntities() as $organisation) {
-      foreach ($organisation->get('person')->referencedEntities() as $person) {
-        $authority_people[$person->id()] = $person;
-      }
-    }
-
-    return !empty($people) && !empty($authority_people) ? array_intersect_key($people, $authority_people) : [];
+    return $this->get('field_authority_person')->referencedEntities();
   }
 
   /**
@@ -127,7 +108,47 @@ class ParDataPartnership extends ParDataEntity {
    *   Whether the user is an authority member or not.
    */
   public function isAuthorityMember(ParDataPerson $person) {
-    return isset($this->getAuthorityPeople()[$person->id()]);
+    foreach ($this->getAuthorityPeople() as $authority_person) {
+      if ($authority_person->id() === $person->id()) {
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
+  /**
+   * Get the organisation for this Partnership.
+   */
+  public function getOrganisation() {
+    return $this->get('field_organisation')->referencedEntities();
+  }
+
+  /**
+   * Get the authority for this Partnership.
+   */
+  public function getAuthority() {
+    return $this->get('field_authority')->referencedEntities();
+  }
+
+  /**
+   * Get the advice for this Partnership.
+   */
+  public function getAdvice() {
+    return $this->get('field_advice')->referencedEntities();
+  }
+
+  /**
+   * Get the inspection plans for this Partnership.
+   */
+  public function getInspectionPlan() {
+    return $this->get('field_inspection_plan')->referencedEntities();
+  }
+
+  /**
+   * Get the regulatory functions for this Partnership.
+   */
+  public function getRegulatoryFunction() {
+    return $this->get('field_regulatory_function')->referencedEntities();
   }
 
   /**
@@ -139,9 +160,8 @@ class ParDataPartnership extends ParDataEntity {
     // Partnership Type.
     $fields['partnership_type'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Partnership Type'))
-      ->setDescription(t('The type of Partnership.'))
+      ->setDescription(t('The type of partnership.'))
       ->setRequired(TRUE)
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -153,14 +173,16 @@ class ParDataPartnership extends ParDataEntity {
         'weight' => 1,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Partnership Status.
     $fields['partnership_status'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Partnership Status'))
-      ->setDescription(t('The current status of the Partnership Plan itself. For example, current, expired, replaced.'))
+      ->setDescription(t('The current status of the partnership plan itself. For example, current, expired, replaced.'))
       ->setRequired(TRUE)
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -172,76 +194,37 @@ class ParDataPartnership extends ParDataEntity {
         'weight' => 2,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // About Partnership.
-    $fields['about_partnership'] = BaseFieldDefinition::create('string_long')
+    $fields['about_partnership'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('About Partnership'))
-      ->setDescription(t('Details about this Partnership.'))
-      ->setTranslatable(TRUE)
+      ->setDescription(t('Details about this partnership.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
-      ])->setDisplayOptions('form', [
-        'type' => 'text_long',
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'text_textarea',
         'weight' => 25,
         'settings' => [
           'rows' => 3,
         ],
       ])
       ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Communication by Email.
-    $fields['communication_email'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Communication by E-mail'))
-      ->setDescription(t('Whether to allow contact by e-mail for this Partnership.'))
-      ->setRevisionable(TRUE)
-      ->setTranslatable(FALSE)
-      ->setDisplayOptions('form', [
-        'type' => 'boolean_checkbox',
-        'weight' => 4,
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
       ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Communication by Phone.
-    $fields['communication_phone'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Communication by Phone'))
-      ->setDescription(t('Whether to allow contact by phone for this Partnership.'))
-      ->setRevisionable(TRUE)
-      ->setTranslatable(FALSE)
-      ->setDisplayOptions('form', [
-        'type' => 'boolean_checkbox',
-        'weight' => 5,
-      ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Communication Notes.
-    $fields['communication_notes'] = BaseFieldDefinition::create('string_long')
-      ->setLabel(t('Communication Notes'))
-      ->setDescription(t('Additional notes and communication preferences for this Partnership.'))
-      ->setTranslatable(TRUE)
-      ->setRevisionable(TRUE)
-      ->setSettings([
-        'text_processing' => 0,
-      ])->setDisplayOptions('form', [
-        'type' => 'text_long',
-        'weight' => 6,
-        'settings' => [
-          'rows' => 25,
-        ],
-      ])
-      ->setDisplayConfigurable('form', FALSE)
       ->setDisplayConfigurable('view', TRUE);
 
     // Approved Date.
     $fields['approved_date'] = BaseFieldDefinition::create('datetime')
       ->setLabel(t('Approved Date'))
-      ->setDescription(t('The date this Partnership was approved.'))
+      ->setDescription(t('The date this partnership was approved.'))
       ->setRevisionable(TRUE)
-      ->setTranslatable(FALSE)
       ->setSettings([
         'datetime_type' => 'date',
       ])
@@ -250,31 +233,36 @@ class ParDataPartnership extends ParDataEntity {
         'weight' => 7,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Expertise Details.
-    $fields['expertise_details'] = BaseFieldDefinition::create('string_long')
+    $fields['expertise_details'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Expertise Detail'))
-      ->setDescription(t('Details about the expertise for this Partnership.'))
-      ->setTranslatable(TRUE)
+      ->setDescription(t('Details about the expertise for this partnership.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
-      ])->setDisplayOptions('form', [
-        'type' => 'text_long',
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'text_textarea',
         'weight' => 8,
         'settings' => [
           'rows' => 25,
         ],
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Partnership Status.
     $fields['cost_recovery'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Cost Recovery'))
-      ->setDescription(t('How is the cost recovered by for this Partnership.'))
-      ->setTranslatable(TRUE)
+      ->setDescription(t('How is the cost recovered by for this partnership.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -286,31 +274,36 @@ class ParDataPartnership extends ParDataEntity {
         'weight' => 9,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Rejected Comment.
-    $fields['reject_comment'] = BaseFieldDefinition::create('string_long')
+    $fields['reject_comment'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Reject Comment'))
-      ->setDescription(t('Comments about why this Partnership was rejected.'))
-      ->setTranslatable(TRUE)
+      ->setDescription(t('Comments about why this partnership was rejected.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
-      ])->setDisplayOptions('form', [
-        'type' => 'text_long',
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'text_textarea',
         'weight' => 10,
         'settings' => [
           'rows' => 25,
         ],
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Recovation Source.
     $fields['revocation_source'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Revocation Source'))
-      ->setDescription(t('Who was responsible for revoking this Partnership.'))
-      ->setTranslatable(TRUE)
+      ->setDescription(t('Who was responsible for revoking this partnership.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -322,12 +315,15 @@ class ParDataPartnership extends ParDataEntity {
         'weight' => 11,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Recovation Date.
     $fields['revocation_date'] = BaseFieldDefinition::create('datetime')
       ->setLabel(t('Recovation Date'))
-      ->setDescription(t('The date this Partnership was revoked.'))
+      ->setDescription(t('The date this partnership was revoked.'))
       ->setRevisionable(TRUE)
       ->setTranslatable(FALSE)
       ->setSettings([
@@ -338,221 +334,160 @@ class ParDataPartnership extends ParDataEntity {
         'weight' => 12,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Revocation Reason.
-    $fields['revocation_reason'] = BaseFieldDefinition::create('string_long')
+    $fields['revocation_reason'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Revocation Reason'))
-      ->setDescription(t('Comments about why this Partnership was revoked.'))
-      ->setTranslatable(TRUE)
+      ->setDescription(t('Comments about why this partnership was revoked.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
       ])->setDisplayOptions('form', [
-        'type' => 'text_long',
+        'type' => 'text_textarea',
         'weight' => 13,
         'settings' => [
           'rows' => 25,
         ],
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Authority Change Comment.
-    $fields['authority_change_comment'] = BaseFieldDefinition::create('string_long')
+    $fields['authority_change_comment'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Authority Change Comment'))
-      ->setDescription(t('Comments by the Authority when this Partnership was changed.'))
-      ->setTranslatable(TRUE)
+      ->setDescription(t('Comments by the authority when this partnership was changed.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
       ])->setDisplayOptions('form', [
-        'type' => 'text_long',
+        'type' => 'text_textarea',
         'weight' => 14,
         'settings' => [
           'rows' => 25,
         ],
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Organisation Change Comment.
-    $fields['organisation_change_comment'] = BaseFieldDefinition::create('string_long')
+    $fields['organisation_change_comment'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Organisation Change Comment'))
-      ->setDescription(t('Comments by the Organisation when this Partnership was changed.'))
-      ->setTranslatable(TRUE)
+      ->setDescription(t('Comments by the organisation when this partnership was changed.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
       ])->setDisplayOptions('form', [
-        'type' => 'text_long',
+        'type' => 'text_textarea',
         'weight' => 15,
         'settings' => [
           'rows' => 25,
         ],
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Reference to Organisation.
-    $fields['organisation'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Organisation'))
-      ->setDescription(t('The Organisations for this Partnership.'))
-      ->setRequired(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSetting('target_type', 'par_data_organisation')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
-          'target_bundles' => [
-            'coordinator' => 'coordinator',
-            'business' => 'business',
-          ]
-        ]
-      )
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 16,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
+    // Terms and conditions agreed by organisation.
+    $fields['terms_organisation_agreed'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Organisation Terms and Conditions'))
+      ->setDescription(t('Terms and conditions agreed by organisation.'))
+      ->setRevisionable(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 22,
+      ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Reference to Authority.
-    $fields['authority'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Authorities'))
-      ->setDescription(t('The Authorities for this Partnership.'))
-      ->setRequired(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSetting('target_type', 'par_data_authority')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
-          'target_bundles' => [
-            'authority' => 'authority',
-          ]
-        ]
-      )
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 17,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
+    // Terms and conditions agreed by authority.
+    $fields['terms_authority_agreed'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Authority Terms and Conditions'))
+      ->setDescription(t('Terms and conditions agreed by authority.'))
+      ->setRevisionable(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 23,
+      ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Reference to Advice.
-    $fields['advice'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Advice'))
-      ->setDescription(t('The Advice for this Partnership.'))
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSetting('target_type', 'par_data_advice')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
-          'target_bundles' => [
-            'advice' => 'advice',
-          ]
-        ]
-      )
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 18,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
+    // Coordinator suitable.
+    $fields['coordinator_suitable'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Coordinator Suitable'))
+      ->setDescription(t('Is coordinator suitable.'))
+      ->setRevisionable(TRUE)
+      ->setTranslatable(FALSE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 24,
+      ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Reference to Inspection Plan.
-    $fields['inspection_plan'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Inspection Plan'))
-      ->setDescription(t('The Inspection Plans for this Partnership.'))
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSetting('target_type', 'par_data_inspection_plan')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
-          'target_bundles' => [
-            'inspection_plan' => 'inspection_plan',
-          ]
-        ]
-      )
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 19,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
+    // Partnership info confirmed by authority.
+    $fields['partnership_info_agreed_authority'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Authority Information Agreed'))
+      ->setDescription(t('The partnership information has been agreed by the authority.'))
+      ->setRevisionable(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 25,
+      ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Reference to Regulatory Area.
-    $fields['regulatory_area'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Regulatory Area'))
-      ->setDescription(t('The Regulatory Areas for this Partnership.'))
-      ->setRequired(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSetting('target_type', 'par_data_regulatory_area')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
-          'target_bundles' => [
-            'regulatory_area' => 'regulatory_area',
-          ]
-        ]
-      )
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 20,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
+    // Partnership info confirmed by business.
+    $fields['partnership_info_agreed_business'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Business Information Agreed'))
+      ->setDescription(t('The partnership information has been agreed by the business.'))
+      ->setRevisionable(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 26,
+      ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Reference to Person.
-    $fields['person'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Contacts'))
-      ->setDescription(t('The contacts for this Partnership. The first Person will be the primary contact.'))
-      ->setRequired(TRUE)
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setSetting('target_type', 'par_data_person')
-      ->setSetting('handler', 'default')
-      ->setSetting('handler_settings',
-        [
-          'target_bundles' => [
-            'person' => 'person'
-          ]
-        ]
-      )
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 21,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => 60,
-          'placeholder' => '',
-        ),
-      ))
+    // Written summary agreed.
+    $fields['written_summary_agreed'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Written Summary Agreed'))
+      ->setDescription(t('A written summary has been agreed between the authority and the organisation.'))
+      ->setRevisionable(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 27,
+      ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     return $fields;

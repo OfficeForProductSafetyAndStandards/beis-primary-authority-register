@@ -1,0 +1,19 @@
+uuid: b62582f6-a897-4e97-802a-8ba65cba575c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_organisation.field_coordinator_type
+    - par_data.par_data_organisation_type.coordinator
+id: par_data_organisation.coordinator.field_coordinator_type
+field_name: field_coordinator_type
+entity_type: par_data_organisation
+bundle: coordinator
+label: 'Coordinator Type'
+description: 'A type of coordinator, generally a trade association or a franchise group who have a Primary Authority Partnership on behalf of, or for the benefit of, their members or franchisees.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

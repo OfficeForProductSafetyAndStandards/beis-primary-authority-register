@@ -74,10 +74,11 @@ class ParDataPremises extends ParDataEntity {
     $fields['address'] = BaseFieldDefinition::create('address')
       ->setLabel(t('Address'))
       ->setDescription(t('The address details.'))
+      ->setRevisionable(TRUE)
       ->setCardinality(1)
-      ->setSetting('available_countries', ['GB' => 'GB'])
-      ->setSetting('fields',
-        [
+      ->setSettings([
+        'available_countries' => ['GB' => 'GB'],
+        'fields' => [
           "organization" => "0",
           "dependentLocality" => "0",
           "sortingCode" => "0",
@@ -90,20 +91,22 @@ class ParDataPremises extends ParDataEntity {
           "postalCode" => "postalCode",
           "addressLine2" => "addressLine2",
           "givenName" => "0",
-        ]
-      )
+        ],
+      ])
       ->setDisplayOptions('form', array(
         'type' => 'address_default',
         'weight' => 1,
       ))
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     // Nation.
     $fields['nation'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Nation'))
       ->setDescription(t('The nation the Address in is.'))
-      ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -115,6 +118,29 @@ class ParDataPremises extends ParDataEntity {
         'weight' => 2,
       ])
       ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Unique Property Reference Number.
+    $fields['uprn'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Unique Property Reference Number'))
+      ->setDescription(t('The unique reference number for the property.'))
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 2,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
       ->setDisplayConfigurable('view', TRUE);
 
     return $fields;

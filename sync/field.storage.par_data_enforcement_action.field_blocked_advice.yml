@@ -1,0 +1,19 @@
+uuid: 84ff682c-294f-43fe-a884-286896a2911b
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_enforcement_action.field_blocked_advice
+field_name: field_blocked_advice
+entity_type: par_data_enforcement_action
+type: entity_reference
+settings:
+  target_type: par_data_advice
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

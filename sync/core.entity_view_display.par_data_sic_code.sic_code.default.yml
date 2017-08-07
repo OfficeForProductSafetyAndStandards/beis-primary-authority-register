@@ -4,8 +4,6 @@ status: true
 dependencies:
   config:
     - par_data.par_data_sic_code_type.sic_code
-  module:
-    - user
 _core:
   default_config_hash: zpsX3n_0G69-wF4wG0CdcMphXMAsJIeXJ3QOpE9To5Q
 id: par_data_sic_code.sic_code.default
@@ -13,21 +11,22 @@ targetEntityType: par_data_sic_code
 bundle: sic_code
 mode: default
 content:
-  name:
-    label: above
+  description:
     type: string
-    weight: -4
+    weight: 1
     region: content
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  user_id:
-    label: hidden
-    type: author
+  sic_code:
+    type: string
     weight: 0
     region: content
-    settings: {  }
+    label: hidden
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
 hidden:
-  description: true
-  sic_code: true
+  name: true
+  user_id: true

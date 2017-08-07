@@ -1,7 +1,0 @@
-primary-authority-partnershipsstatus: true
-dependencies: {  }
-id: premises
-label: Premises
-description: 'Premises are a location used by either an Authority or an Organisation.'
-help: ''
-configuration: null

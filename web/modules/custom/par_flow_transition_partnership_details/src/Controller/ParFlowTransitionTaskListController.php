@@ -2,7 +2,6 @@
 
 namespace Drupal\par_flow_transition_partnership_details\Controller;
 
-use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Controller\ParBaseController;
 
@@ -23,16 +22,16 @@ class ParFlowTransitionTaskListController extends ParBaseController {
   public function content(ParDataPartnership $par_data_partnership = NULL) {
 
     // Organisation summary.
-    $par_data_organisation = current($par_data_partnership->get('organisation')->referencedEntities());
+    $par_data_organisation = current($par_data_partnership->getOrganisation());
 
     // Premises.
-    $par_data_premises = current($par_data_organisation->get('premises')->referencedEntities());
+    $par_data_premises = current($par_data_organisation->getPremises());
     $premises_view_builder = $par_data_premises->getViewBuilder();
 
     $build['premises'] = $premises_view_builder->view($par_data_premises, 'summary');
 
     // Primary contact summary.
-    $par_data_primary_person = current($par_data_partnership->get('person')->referencedEntities());
+    $par_data_primary_person = current($par_data_partnership->getAuthorityPeople());
     $primary_person_view_builder = $par_data_primary_person->getViewBuilder();
 
     $build['primary_contact'] = $primary_person_view_builder->view($par_data_primary_person, 'summary');
@@ -46,7 +45,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
     $organisation_people = $par_data_partnership->getOrganisationPeople();
     if ($organisation_primary_person = array_shift($organisation_people)) {
       $invite_link = $this->getFlow()->getLinkByStep(7, [
-        'par_data_person' => $organisation_primary_person->id()
+        'par_data_person' => $organisation_primary_person->id(),
       ])
         ->setText('Invite the business to confirm their details')
         ->toString();
@@ -56,16 +55,16 @@ class ParFlowTransitionTaskListController extends ParBaseController {
     $inspection_plan_link = $this->getFlow()->getLinkByStep(8)
       ->setText('Review and confirm your inspection plan')
       ->toString();
-    $par_data_inspection_plan = current($par_data_partnership->get('inspection_plan')->referencedEntities());
+    $par_data_inspection_plan = current($par_data_partnership->getInspectionPlan());
     $inspection_plan_completion = $par_data_inspection_plan->getParStatus();
 
     // Generate the link for confirming all advice documents.
     $documents_list_link = $this->getFlow()->getLinkByStep(9)
-      ->setText($this->t('Review and confirm your documentation for %business', ['%business' => $par_data_organisation->get('organisation_name')->getString()]))
+      ->setText($this->t('Review and confirm your documentation for @business', ['@business' => $par_data_organisation->get('organisation_name')->getString()]))
       ->toString();
     // Calculate the average completion of all documentation.
     $document_completion = [];
-    foreach ($par_data_partnership->get('advice')->referencedEntities() as $document) {
+    foreach ($par_data_partnership->getAdvice() as $document) {
       $document_completion[] = $document->getCompletionPercentage();
     }
     $documentation_completion = !empty($document_completion) ? $this->parDataManager->calculateAverage($document_completion) : 0;
@@ -83,7 +82,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
       3 => [
         $documents_list_link,
         $documentation_completion . '%',
-      ]
+      ],
     ];
     if (isset($invite_link)) {
       $rows[1] = [
@@ -104,10 +103,11 @@ class ParFlowTransitionTaskListController extends ParBaseController {
 
     $build['cancel'] = [
       '#type' => 'markup',
-      '#markup' => t('<br>%link', [
-        '%link' => $this->getFlow()->getLinkByStep(1, $this->getRouteParams(), ['attributes' => ['class' => 'button']])
+      '#prefix' => '<br>',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlow()->getLinkByStep(1, $this->getRouteParams(), ['attributes' => ['class' => 'button']])
           ->setText('Go back to your partnerships')
-          ->toString()
+          ->toString(),
       ]),
     ];
 
@@ -119,4 +119,3 @@ class ParFlowTransitionTaskListController extends ParBaseController {
   }
 
 }
-

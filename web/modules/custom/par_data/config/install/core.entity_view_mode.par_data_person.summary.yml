@@ -1,8 +1,0 @@
-primary-authority-partnershipsstatus: true
-dependencies:
-  module:
-    - par_data
-id: par_data_person.summary
-label: Summary
-targetEntityType: par_data_person
-cache: true
