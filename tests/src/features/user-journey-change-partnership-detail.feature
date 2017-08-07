@@ -86,16 +86,3 @@ Feature: User Journey 1 (happy path)
         When I click on the link "Go back to your partnerships"
         Then the element "h1" contains the text "List of Partnerships for a Primary Authority"
         And I click on the link "Log out"
-
-
-
-
-git add README.md
-git add src/features/user-journey-business-manage-addresses.feature
-git add src/features/user-journey-business-manage-name-and-summary.feature
-git add src/features/user-journey-change-partnership-detail.feature
-git add src/features/user-journey-documentation.feature
-git add src/features/user-journey-inspection-plans.feature
-git add src/features/user-journey-send-invite.feature
-git add src/step_definitions/when.js
-git add src/support/action/fillInForm.js
