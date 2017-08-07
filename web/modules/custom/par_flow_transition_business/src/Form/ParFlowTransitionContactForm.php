@@ -63,18 +63,14 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
 
     // The Person's title.
-    $title_options = [
-      'Ms',
-      'Mrs',
-      'Mr',
-      'Dr',
-    ];
-    $form['salutation'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Title (optional)'),
-      '#default_value' => $this->getDefaultValues("person_salutation"),
-      '#options' => array_combine($title_options, $title_options),
-    ];
+    if ($title_options = $par_data_person->getTitleOptions()) {
+      $form['salutation'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Title (optional)'),
+        '#default_value' => $this->getDefaultValues("person_salutation"),
+        '#options' => $title_options,
+      ];
+    }
 
     $form['first_name'] = [
       '#type' => 'textfield',
@@ -114,12 +110,12 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     ];
 
     // Method of contact.
-    $contact_methods = $par_data_person->getPreferredCommunicationMethods();
+    $preferred_communications = $par_data_person->getPreferredCommunicationMethods();
     $form['contact_method'] = [
       '#type' => 'radios',
       '#title' => $this->t('Preferred method of contact (optional)'),
       '#default_value' => $this->getDefaultValues("person_contact_method"),
-      '#options' => $contact_methods,
+      '#options' => $preferred_communications,
     ];
 
     $form['notes'] = [

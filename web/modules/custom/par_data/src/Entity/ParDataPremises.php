@@ -65,12 +65,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataPremises extends ParDataEntity {
 
   public function getCountryList() {
-    return [
-      'GB-ENG' => 'England',
-      'GB-SCT' => 'Scotland',
-      'GB-WLS' => 'Wales',
-      'GB-NIR' => 'Northern Ireland',
-    ];
+    return $this->type->entity->getConfigurationByType('country_options', 'values');
   }
 
   /**

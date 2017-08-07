@@ -8,4 +8,9 @@ id: legal_entity
 label: 'Legal Entity'
 description: 'A Legal Entity is a representation of an Organisation via some formal method of registration or else a less formal declaration.'
 help: ''
-configuration: null
+configuration:
+  legal_entity_types:
+    values:
+      limited_company: 'Limited Company'
+      sole_trader: 'Sole Trader'
+      registered_charity: 'Registered Charity'

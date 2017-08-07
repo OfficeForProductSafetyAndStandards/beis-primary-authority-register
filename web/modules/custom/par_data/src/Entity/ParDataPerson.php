@@ -241,14 +241,20 @@ class ParDataPerson extends ParDataEntity {
 
   /**
    * Get list of preferred communication methods.
+   *
    * @return array
    */
   public function getPreferredCommunicationMethods() {
-    return [
-      'phone' => 'Work phone',
-      'mobile' => 'Mobile Phone',
-      'email' => 'Email',
-    ];
+    return $this->type->entity->getConfigurationByType('partnership_preferred_communications', 'values');
+  }
+
+  /**
+   * Get list of title options.
+   *
+   * @return array
+   */
+  public function getTitleOptions() {
+    return $this->type->entity->getConfigurationByType('title_options', 'values');
   }
 
   /**
