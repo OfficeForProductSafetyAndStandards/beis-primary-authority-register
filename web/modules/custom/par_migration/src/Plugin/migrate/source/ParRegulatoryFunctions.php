@@ -7,18 +7,18 @@ use Drupal\migrate\Row;
 use Drupal\migrate\MigrateException;
 
 /**
- * Migration of PAR2 SIC Codes.
+ * Migration of PAR2 Regulatory Functions.
  *
  * @MigrateSource(
- *   id = "par_migration_sic_code"
+ *   id = "par_migration_regulatory_functions"
  * )
  */
-class ParSicCode extends SqlBase {
+class ParRegulatoryFunctions extends SqlBase {
 
   /**
    * @var string $table The name of the database table.
    */
-  protected $table = 'par_sic_codes';
+  protected $table = 'par_regulatory_functions';
 
   /**
    * {@inheritdoc}
@@ -26,9 +26,8 @@ class ParSicCode extends SqlBase {
   public function query() {
     return $this->select($this->table, 'b')
       ->fields('b', [
-        'sic_code_id',
-        'sic_code',
-        'description',
+        'regulatory_function_id',
+        'name',
       ]);
   }
 
@@ -37,9 +36,8 @@ class ParSicCode extends SqlBase {
    */
   public function fields() {
     $fields = [
-      'sic_code_id' => $this->t('SIC Code ID'),
-      'sic_code' => $this->t('SIC Code'),
-      'description' => $this->t('Description'),
+      'regulatory_function_id' => $this->t('Regulatory Function ID'),
+      'name' => $this->t('Name'),
     ];
     return $fields;
   }
@@ -49,7 +47,7 @@ class ParSicCode extends SqlBase {
    */
   public function getIds() {
     return array(
-      'sic_code_id' => array(
+      'regulatory_function_id' => array(
         'type' => 'integer',
       ),
     );

@@ -1,15 +1,18 @@
 uuid: f310046d-2029-48ae-aed5-d223b8f77a3e
 langcode: en
 status: true
-id: par_migration_advice_documents
 dependencies:
   enforced:
     module:
       - par_migration
-label: PAR Migration of advice documents
-migration_group: PAR2
+id: par_migration_advice_documents
+class: null
+field_plugin_method: null
+cck_plugin_method: null
 migration_tags:
-  - 'MS-SQL'
+  - MS-SQL
+migration_group: PAR2
+label: 'PAR Migration of advice documents'
 source:
   plugin: par_migration_advice_documents
   constants:
@@ -18,13 +21,13 @@ process:
   filename:
     -
       plugin: concat
-      delimiter: '.'
+      delimiter: .
       source:
         - document_id
         - document_name
     -
       plugin: trim_characters
-      characters: '.'
+      characters: .
   destination_full_path:
     -
       plugin: concat
@@ -41,4 +44,4 @@ process:
       - document_content
 destination:
   plugin: 'entity:file'
-migration_dependencies: { }
+migration_dependencies: {  }
