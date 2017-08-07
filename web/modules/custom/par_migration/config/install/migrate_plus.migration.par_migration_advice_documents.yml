@@ -1,4 +1,4 @@
-uuid: 101688ff-57b9-4fb1-97d5-16df2623c852
+uuid: f310046d-2029-48ae-aed5-d223b8f77a3e
 langcode: en
 status: true
 id: par_migration_advice_documents
@@ -22,6 +22,9 @@ process:
       source:
         - document_id
         - document_name
+    -
+      plugin: trim_characters
+      characters: '.'
   destination_full_path:
     -
       plugin: concat
@@ -38,6 +41,4 @@ process:
       - document_content
 destination:
   plugin: 'entity:file'
-migration_dependencies:
-  required: {}
-  optional: {}
+migration_dependencies: { }

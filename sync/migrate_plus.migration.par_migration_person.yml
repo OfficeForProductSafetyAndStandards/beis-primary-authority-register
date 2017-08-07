@@ -1,0 +1,52 @@
+uuid: 02031dbf-3406-4c53-b63e-5acc4c5dbb7e
+langcode: en
+status: true
+id: par_migration_person
+dependencies:
+  enforced:
+    module:
+      - par_migration
+label: PAR Migration of people
+migration_group: PAR2
+migration_tags:
+  - 'MS-SQL'
+source:
+  plugin: par_migration_person
+process:
+  id: person_id
+  type:
+    plugin: default_value
+    default_value: 'person'
+  uid:
+    plugin: default_value
+    default_value: 1
+  title: title
+  first_name: first_name
+  last_name: last_name
+  job_title: job_title
+  work_phone: work_phone
+  mobile_phone: mobile_phone
+  email: email
+  work_phone_preferred:
+    plugin: static_map
+    source: work_phone_preferred
+    map:
+      Y: 1
+      N: 0
+  mobile_phone_preferred:
+    plugin: static_map
+    source: mobile_phone_preferred
+    map:
+      Y: 1
+      N: 0
+  email_phone_preferred:
+    plugin: static_map
+    source: email_phone_preferred
+    map:
+      Y: 1
+      N: 0
+destination:
+  plugin: 'entity:par_data_person'
+migration_dependencies:
+  required: {}
+  optional: {}

@@ -1,0 +1,47 @@
+uuid: 2ca42b30-ab04-4ff8-82f0-576e70ffe10a
+langcode: en
+status: true
+id: par_migration_premises
+dependencies:
+  enforced:
+    module:
+      - par_migration
+label: PAR Migration of Premises
+migration_group: PAR2
+migration_tags:
+  - 'MS-SQL'
+source:
+  plugin: par_migration_premises
+process:
+  id: premises_id
+  type:
+    plugin: default_value
+    default_value: 'premises'
+  uid:
+    plugin: default_value
+    default_value: 1
+  field_date_address/administrativeArea: town
+  field_date_address/locality: country
+  field_date_address/addressLine1: line_1
+  field_date_address/addressLine2:
+    -
+      plugin: concat
+      delimiter: ', '
+      source:
+        - line_2
+        - line_3
+    -
+      plugin: trim_characters
+      characters: ', '
+  field_date_address/postalCode: postcode
+  nation:
+    plugin: static_map
+    source: country
+    map:
+      England: GB-ENG
+      Wales: GB-WLS
+      Scotland: GB-SCT
+      Northern Ireland: GB-NIR
+destination:
+  plugin: 'entity:par_data_premises'
+migration_dependencies: { }

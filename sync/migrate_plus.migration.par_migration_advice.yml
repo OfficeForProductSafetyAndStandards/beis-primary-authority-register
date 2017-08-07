@@ -34,3 +34,4 @@ destination:
 migration_dependencies:
   required:
     - par_migration_advice_documents
+  optional: {}

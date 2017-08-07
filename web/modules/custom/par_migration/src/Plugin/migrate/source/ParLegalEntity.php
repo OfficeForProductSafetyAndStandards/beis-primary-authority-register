@@ -7,33 +7,30 @@ use Drupal\migrate\Row;
 use Drupal\migrate\MigrateException;
 
 /**
- * Migration of PAR2 Advice.
+ * Migration of PAR2 Legal Entities.
  *
  * @MigrateSource(
- *   id = "par_migration_advice"
+ *   id = "par_migration_legal_entity"
  * )
  */
-class ParAdvice extends SqlBase {
+class ParLegalEntity extends SqlBase {
 
   /**
    * @var string $table The name of the database table.
    */
-  protected $table = 'par_advice';
+  protected $table = 'par_legal_entities';
 
   /**
    * {@inheritdoc}
    */
   public function query() {
-    $query = $this->select($this->table, 'a');
+    $query = $this->select($this->table, 'b');
     $query->fields('b', [
-        'advice_id',
-        'partnership_id',
-        'advice_type',
-        'authority_visible',
-        'coordinator_visible',
-        'business_visible',
-        'obsolete',
-        'notes',
+        'legal_entity_id',
+        'organisation_id',
+        'legal_entity_type_id',
+        'name',
+        'registered_no',
       ]);
 
     return $query;
@@ -44,14 +41,11 @@ class ParAdvice extends SqlBase {
    */
   public function fields() {
     $fields = [
-      'advice_id' => $this->t('Advice ID'),
-      'partnership_id' => $this->t('Partnership ID'),
-      'advice_type' => $this->t('Advice type'),
-      'authority_visible' => $this->t('Authority visibility'),
-      'coordinator_visible' => $this->t('Coordinatory visibility'),
-      'business_visible' => $this->t('Business visibility'),
-      'obsolete' => $this->t('Is obsolete'),
-      'notes' => $this->t('Adice notes'),
+      'legal_entity_id' => $this->t('Legal Entity ID'),
+      'organisation_id' => $this->t('Organisation ID'),
+      'legal_entity_type_id' => $this->t('Legal Entity Type ID'),
+      'name' => $this->t('Name'),
+      'registered_no' => $this->t('Registered number'),
     ];
     return $fields;
   }
@@ -61,7 +55,7 @@ class ParAdvice extends SqlBase {
    */
   public function getIds() {
     return array(
-      'advice_id' => array(
+      'legal_entity_id' => array(
         'type' => 'integer',
       ),
     );

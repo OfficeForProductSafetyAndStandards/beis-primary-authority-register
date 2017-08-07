@@ -1,4 +1,4 @@
-uuid: 189dbd85-d64e-4ff1-be67-963fe389318b
+uuid: f310046d-2029-48ae-aed5-d223b8f77a3e
 langcode: en
 status: true
 id: par_migration_advice_documents
@@ -6,7 +6,7 @@ dependencies:
   enforced:
     module:
       - par_migration
-label: PAR Migration of documents
+label: PAR Migration of advice documents
 migration_group: PAR2
 migration_tags:
   - 'MS-SQL'
@@ -22,6 +22,9 @@ process:
       source:
         - document_id
         - document_name
+    -
+      plugin: trim_characters
+      characters: '.'
   destination_full_path:
     -
       plugin: concat

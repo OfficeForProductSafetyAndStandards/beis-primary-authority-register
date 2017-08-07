@@ -1,0 +1,26 @@
+uuid: 101e7593-c5b4-44e0-9300-e6353cceedca
+langcode: en
+status: true
+id: par_migration_regulatory_functions
+dependencies:
+  enforced:
+    module:
+      - par_migration
+label: PAR Migration of Regulatory Functions
+migration_group: PAR2
+migration_tags:
+  - 'MS-SQL'
+source:
+  plugin: par_migration_regulatory_functions
+process:
+  id: regulatory_function_id
+  type:
+    plugin: default_value
+    default_value: 'regulatory_function'
+  uid:
+    plugin: default_value
+    default_value: 1
+  function_name: name
+destination:
+  plugin: 'entity:par_data_regulatory_function'
+migration_dependencies: { }
