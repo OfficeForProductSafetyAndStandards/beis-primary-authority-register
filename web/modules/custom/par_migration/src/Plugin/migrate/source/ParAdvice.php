@@ -26,7 +26,7 @@ class ParAdvice extends SqlBase {
   public function query() {
     $query = $this->select($this->table, 'a');
     $query->leftJoin('par_documents', 'd', "a.advice_id=d.owning_object_id AND d.owning_object_type='Advice'");
-    $query->fields('b', [
+    $query->fields('a', [
         'advice_id',
         'partnership_id',
         'advice_type',
