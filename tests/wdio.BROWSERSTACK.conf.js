@@ -7,14 +7,16 @@ config.capabilities = [{
         os: 'Windows',
         os_version: '7',
         resolution: '1024x768',
-        debug: true
+        'browserstack.local': true,
+        'browserstack.debug': true
+        // debug: true
 }];
 
 config.services = ['browserstack'];
-config.user = '';
-config.key = '';
+config.user = 'euniceaidoo1';
+config.key = 'z8aabpqRzKvWZDHKTKff';
 config.browserstackLocal = true;
-config.host = 'hub-cloud.browserstack.com';
-config.baseUrl = '';
+// config.host = 'hub-cloud.browserstack.com';
+config.baseUrl = 'http://localhost:8111';
 config.tags = '@ci, ~@Pending, ~@ie8bug';
 exports.config = config;

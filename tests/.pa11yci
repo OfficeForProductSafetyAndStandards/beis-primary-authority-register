@@ -13,14 +13,23 @@
         "allowedStandards": ["WCAG2AA", "WCAG2 AA"],
         "concurrency": 4
     },
+    actions: [
+            "set field #edit-name to par_authority@example.com"
+            "set field #edit-pass to TestPassword"
+            "click element #edit-submit"
+            "wait for path to not be /user/login"
+    ],
     "urls": [
-        "http://localhost:80",
         "http://localhost:80/styleguide",
         "http://localhost:80/styleguide/data",
         "http://localhost:80/styleguide/forms",
-        "http://localhost:80/styleguide/pagination",
+        "http://localhost:80/dv/partnership-dashboard",
         "http://localhost:80/styleguide/components",
-        "http://localhost:80/user/login",
-        "http://localhost:80/unknown-page-404-check"
+        "http://localhost:8111/dv/primary-authority-partnerships/97/terms",
+        "http://localhost:80/unknown-page-404-check",
+        "http://localhost:80/dv/primary-authority-partnerships/97/details",
+        "http://localhost:80/dv/primary-authority-partnerships/97/details/contact/769",
+        "http://localhost:80/dv/primary-authority-partnerships/97/details/invite/771",
+        "http://localhost:80/dv/primary-authority-partnerships/97/inspection-plans",
     ]
 }
