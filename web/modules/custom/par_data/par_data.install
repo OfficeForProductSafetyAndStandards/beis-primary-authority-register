@@ -18,3 +18,10 @@ function par_data_install() {
 function par_data_update_8001() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
+
+/**
+ * Update the PAR entities again.
+ */
+function par_data_update_8002() {
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
