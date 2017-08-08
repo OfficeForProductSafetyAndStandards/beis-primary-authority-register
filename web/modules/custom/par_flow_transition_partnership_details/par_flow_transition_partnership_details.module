@@ -38,25 +38,28 @@ function par_flow_transition_partnership_details_views_pre_render(ViewExecutable
     // Override CSV Feed icon.
     $feed_icon = &$view->feedIcons[0];
 
-    // Get URL from Drupal Views Data Export module.
-    $url = Url::fromUri($feed_icon['#url']);
+    if (isset($feed_icon)) {
 
-    // Create link.
-    $link = Link::fromTextAndUrl('Download as CSV', $url)->toString();
+      // Get URL from Drupal Views Data Export module.
+      $url = Url::fromUri($feed_icon['#url']);
 
-    // Feed icon as markup.
-    $feed_icon = [
-      '#type' => 'markup',
-      '#markup' => $link,
-      '#theme_wrappers' => [
-        'container' => [
-          '#attributes' => [
-            'class' => ['views-data-export-csv-feed']
+      // Create link.
+      $link = Link::fromTextAndUrl('Download as CSV', $url)->toString();
+
+      // Feed icon as markup.
+      $feed_icon = [
+        '#type' => 'markup',
+        '#markup' => $link,
+        '#theme_wrappers' => [
+          'container' => [
+            '#attributes' => [
+              'class' => ['views-data-export-csv-feed']
+            ],
           ],
         ],
-      ],
-    ];
+      ];
 
+    }
 
   }
 
