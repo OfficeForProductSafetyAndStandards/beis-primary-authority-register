@@ -20,10 +20,10 @@ Feature: As the (coordinated) Business User,
         When I click on the button ".button-start"
         # PARTNERSHIPS DASHBOARD
         And I scroll to element "#block-par-theme-content"
-        And I add "DCBA" to the inputfield "edit-name"
+        And I add "DCBA" to the inputfield "#edit-name"
         And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
         Then the element ".views-field views-field-field-premises" not contains the text "ABCDMart"
-        When I add "ABCD" to the inputfield "edit-name"
+        When I add "ABCD" to the inputfield "#edit-name"
         And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
         Then the element ".views-field views-field-field-premises" contains the text "ABCD Mart"
         When I select the option with the text "Awaiting Review" for element "edit-partnership-status"
