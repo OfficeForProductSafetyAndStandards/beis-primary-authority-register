@@ -42,9 +42,24 @@ class ParFlowTransitionDetailsForm extends ParFlowTransitionDetailsBusinessForm 
   }
 
   /**
+   * Helper to get all the editable values when editing or
+   * revisiting a previously edited page.
+   *
+   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
+   *   The Partnership being retrieved.
+   */
+  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
+
+    if ($par_data_partnership) {
+      $this->loadDataValue("coordinator_suitable", $par_data_partnership->get('coordinator_suitable')->getString());
+    }
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+    $this->retrieveEditableValues($par_data_partnership);
     $form = parent::buildForm($form, $form_state, $par_data_partnership);
     $par_data_organisation = current($par_data_partnership->getOrganisation());
     $size = $par_data_organisation->get('size')->getString();
@@ -69,6 +84,13 @@ class ParFlowTransitionDetailsForm extends ParFlowTransitionDetailsBusinessForm 
 
     $form = $this->array_insert_after($form, 'about_business', $form_business);
 
+    $form_confirm_suitable['suitable_nomination'] = [
+      '#type' => 'checkbox',
+      '#title' => t('I confirm the co-ordinator is suitable for nomination as a co-ordinating partner.'),
+      '#default_value' => $this->getDefaultValues('coordinator_suitable'),
+    ];
+    $form = $this->array_insert_after($form, 'trading_names', $form_confirm_suitable);
+
     return $form;
   }
 
@@ -84,6 +106,9 @@ class ParFlowTransitionDetailsForm extends ParFlowTransitionDetailsBusinessForm 
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    // Save the value for the about_partnership field.
+    $partnership = $this->getRouteParam('par_data_partnership');
+    $partnership->set('coordinator_suitable', $this->getTempDataValue('suitable_nomination'));
     parent::submitForm($form, $form_state);
   }
 
