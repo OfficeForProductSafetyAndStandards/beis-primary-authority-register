@@ -235,7 +235,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'PA T''s and C''s'
+          label: 'PA T&Cs'
           exclude: false
           alter:
             alter_text: false
@@ -302,7 +302,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Organisation Terms and Conditions'
+          label: 'Organisation T&Cs'
           exclude: false
           alter:
             alter_text: false
@@ -525,73 +525,6 @@ display:
           empty_zero: false
           hide_alter_empty: false
           plugin_id: custom
-        status:
-          id: status
-          table: par_organisations_field_data
-          field: status
-          relationship: field_organisation
-          group_type: group
-          admin_label: ''
-          label: 'Publishing status'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: boolean
-          settings:
-            format: default
-            format_custom_true: ''
-            format_custom_false: ''
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          entity_type: par_data_organisation
-          entity_field: status
-          plugin_id: field
       filters:
         partnership_status:
           id: partnership_status
@@ -624,7 +557,7 @@ display:
               par_helpdesk: '0'
           is_grouped: true
           group_info:
-            label: 'Partnership Status'
+            label: Status
             description: ''
             identifier: partnership_status
             optional: true
@@ -666,22 +599,7 @@ display:
           plugin_id: standard
       arguments: {  }
       display_extenders: {  }
-    cache_metadata:
-      max-age: 0
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - url
-        - user.roles
-      tags: {  }
-  par_rd_helpdesk_dashboard:
-    display_plugin: page
-    id: par_rd_helpdesk_dashboard
-    display_title: Page
-    position: 1
-    display_options:
-      display_extenders: {  }
-      path: dv/rd-dashboard
+      css_class: par_rd_helpdesk_dashboard
     cache_metadata:
       max-age: 0
       contexts:
