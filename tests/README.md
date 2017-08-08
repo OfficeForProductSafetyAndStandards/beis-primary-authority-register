@@ -116,5 +116,4 @@ Check out all predefined snippets. You can see how they get used in [`sampleSnip
 
 docker exec -it par_beta_web /var/www/html/vendor/bin/drush --root=/var/www/html/web cr
 docker exec -it par_beta_web /var/www/html/vendor/bin/drush --root=/var/www/html/web cim
-
 docker exec -it par_beta_web bash -c 'php composer.phar install' && docker exec -it par_beta_web /var/www/html/vendor/bin/drush --root=/var/www/html/web config-import && docker exec -it par_beta_web /var/www/html/vendor/bin/drush --root=/var/www/html/web cr

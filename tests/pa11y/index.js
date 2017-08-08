@@ -2,12 +2,13 @@
 'use strict';
 
 var pa11y = require('pa11y');
-var url = 'http://localhost:8111/dv/primary-authority-partnerships/1';
+var url = 'http://localhost:8111/dv/partnership-dashboard';
 
 // Create a test instance with some default options
 var test = pa11y({
     parameters: {
         reporter: 'html'
+
     },
     // actions: [
     //     'set field #edit-name to par_helpdesk@example.com',
