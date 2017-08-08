@@ -17,4 +17,5 @@ cf restage par-beta-$1
 cf ssh par-beta-$1 -c "cd app/tools && python extract_postgres_env_vars.py"
 cf ssh par-beta-$1 -c "cd app && source drupal-update-paas-envs.sh && sh drupal-update.sh /home/vcap/app"
 
+cd cf
 sh update-domain-$1.sh
