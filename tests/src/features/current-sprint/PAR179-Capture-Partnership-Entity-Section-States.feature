@@ -10,5 +10,5 @@ Feature: Capture the state of a section in an entity; ie., whether or not an ent
 
     Scenario: Capture the state of a section in an entity
         Given I open the url "/dv/partnership-dashboard"
-        Then the element "h1" contains the text "List of Partnerships for a Primary Authority"
+        Then the element "h1" contains the text "List of Partnerships"
         Then I expect that element "#view-partnership-status-table-column" is visible
