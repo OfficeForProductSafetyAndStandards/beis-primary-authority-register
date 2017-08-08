@@ -23,18 +23,33 @@ class ParFlowTransitionTaskListController extends ParBaseController {
 
     // Organisation summary.
     $par_data_organisation = current($par_data_partnership->getOrganisation());
+    $organisation_name = $par_data_organisation->get('name')->getString();
 
     // Premises.
     $par_data_premises = current($par_data_organisation->getPremises());
     $premises_view_builder = $par_data_premises->getViewBuilder();
 
-    $build['premises'] = $premises_view_builder->view($par_data_premises, 'summary');
+    // Organisation Name & Address.
+    $build['organisation']['label'] = [
+      '#type' => 'markup',
+      '#prefix' => '<h2>',
+      '#suffix' => '</h2>',
+      '#markup' => $organisation_name
+    ];
+
+    $build['organisation']['premises_address'] = $premises_view_builder->view($par_data_premises, 'summary');
 
     // Primary contact summary.
     $par_data_primary_person = current($par_data_partnership->getAuthorityPeople());
     $primary_person_view_builder = $par_data_primary_person->getViewBuilder();
 
-    $build['primary_contact'] = $primary_person_view_builder->view($par_data_primary_person, 'summary');
+    $build['primary_contact']['label'] = [
+      '#type' => 'markup',
+      '#prefix' => '<h4>',
+      '#suffix' => '</h4>',
+      '#markup' => 'Main contact:'
+    ];
+    $build['primary_contact']['person'] = $primary_person_view_builder->view($par_data_primary_person, 'summary');
 
     // Generate the link for confirming partnership details.
     $overview_link = $this->getFlow()->getLinkByStep(4)
