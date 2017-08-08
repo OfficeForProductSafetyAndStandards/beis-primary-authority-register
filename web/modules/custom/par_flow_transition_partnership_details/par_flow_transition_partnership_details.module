@@ -64,3 +64,26 @@ function par_flow_transition_partnership_details_views_pre_render(ViewExecutable
   }
 
 }
+
+/**
+ * Implements hook_views_query_alter().
+ *
+ * @param \Drupal\views\ViewExecutable $view
+ * @param $query
+ */
+function par_flow_transition_partnership_details_views_query_alter(ViewExecutable $view, $query) {
+
+  // PostgreSQL case insensitive query alter.
+  foreach ($query->where as $group_key => $group) {
+    foreach ($group['conditions'] as $key => $condition) {
+
+      // Only apply to combined fields, Views stamps in queries are useful!
+      if (preg_match('/:views_combine/', $condition['field'])) {
+        // ILIKE is proprietary to PostgreSQL.
+        $query->where[$group_key]['conditions'][$key]['field'] = str_replace('LIKE', 'ILIKE', $condition['field']);
+      }
+
+    }
+  }
+
+}
