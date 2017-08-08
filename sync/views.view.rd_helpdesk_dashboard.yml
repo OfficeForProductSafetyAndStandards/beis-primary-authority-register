@@ -3,13 +3,18 @@ langcode: en
 status: true
 dependencies:
   config:
+    - system.menu.account
     - user.role.administrator
     - user.role.par_helpdesk
   module:
     - better_exposed_filters
+    - csv_serialization
     - pagerer
     - par_data
+    - rest
+    - serialization
     - user
+    - views_data_export
 id: rd_helpdesk_dashboard
 label: 'RD Helpdesk Dashboard'
 module: views
@@ -616,6 +621,31 @@ display:
     display_options:
       display_extenders: {  }
       path: dv/rd-dashboard
+      footer: {  }
+      defaults:
+        footer: false
+        empty: false
+      menu:
+        type: normal
+        title: Dashboard
+        description: ''
+        expanded: false
+        parent: ''
+        weight: 1
+        context: '0'
+        menu_name: account
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: '<p>Sorry, there are no results for your search.</p>'
+          plugin_id: text_custom
     cache_metadata:
       max-age: 0
       contexts:
@@ -623,5 +653,57 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user.roles
+      tags: {  }
+  rd_helpdesk_dashboard_csv_export:
+    display_plugin: data_export
+    id: rd_helpdesk_dashboard_csv_export
+    display_title: 'CSV Export'
+    position: 2
+    display_options:
+      display_extenders: {  }
+      path: dv/rd-dashboard/csv
+      filename: rd-dashboard-export.csv
+      auth: {  }
+      displays:
+        par_rd_helpdesk_dashboard_page: par_rd_helpdesk_dashboard_page
+        default: '0'
+      pager:
+        type: some
+        options:
+          items_per_page: 100
+          offset: 0
+      display_description: ''
+      style:
+        type: data_export
+        options:
+          formats:
+            csv: csv
+          csv_settings:
+            delimiter: ','
+            enclosure: '"'
+            escape_char: \
+            strip_tags: true
+            trim: true
+            encoding: utf8
+          xls_settings:
+            xls_format: Excel2007
+            metadata:
+              creator: ''
+              last_modified_by: ''
+              title: ''
+              description: ''
+              subject: ''
+              keywords: ''
+              category: ''
+              manager: ''
+              company: ''
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - request_format
+        - url
         - user.roles
       tags: {  }
