@@ -44,10 +44,19 @@ function par_flow_transition_partnership_details_views_pre_render(ViewExecutable
     // Create link.
     $link = Link::fromTextAndUrl('Download as CSV', $url)->toString();
 
-    // Make basic markup to override feed icon.
-    $feed_icon['#theme'] = 'markup';
-    $feed_icon['#markup'] = $link;
-    $feed_icon['#attributes'] = ['class' => 'csv_download_link'];
+    // Feed icon as markup.
+    $feed_icon = [
+      '#type' => 'markup',
+      '#markup' => $link,
+      '#theme_wrappers' => [
+        'container' => [
+          '#attributes' => [
+            'class' => ['views-data-export-csv-feed']
+          ],
+        ],
+      ],
+    ];
+
 
   }
 
