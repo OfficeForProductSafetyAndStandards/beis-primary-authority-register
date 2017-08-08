@@ -36,18 +36,18 @@ function par_flow_transition_partnership_details_views_pre_render(ViewExecutable
   if ($view->current_display == 'par_rd_helpdesk_dashboard_page') {
 
     // Override CSV Feed icon.
-    $feedIcon = &$view->feedIcons[0];
+    $feed_icon = &$view->feedIcons[0];
 
     // Get URL from Drupal Views Data Export module.
-    $url = Url::fromUri($feedIcon['#url']);
+    $url = Url::fromUri($feed_icon['#url']);
 
     // Create link.
     $link = Link::fromTextAndUrl('Download as CSV', $url)->toString();
 
     // Make basic markup to override feed icon.
-    $feedIcon['#theme'] = 'markup';
-    $feedIcon['#markup'] = $link;
-    $feedIcon['#attributes'] = ['class' => 'csv_download_link'];
+    $feed_icon['#theme'] = 'markup';
+    $feed_icon['#markup'] = $link;
+    $feed_icon['#attributes'] = ['class' => 'csv_download_link'];
 
   }
 
