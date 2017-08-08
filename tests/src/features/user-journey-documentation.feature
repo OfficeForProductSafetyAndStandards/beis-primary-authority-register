@@ -27,7 +27,9 @@ Feature: User Journey 1 (happy path)
         And I click on the button "#edit-next"
         # DOCUMENTATION
         And I scroll to element "#block-par-theme-content"
-        When I click on the link "Review and confirm your documentation for ABCD Mart"
+        #PAR-321
+        Then the element "#block-par-theme-content" contains the text "ABCD Mart"
+        And I click on the link "Review and confirm your documentation for ABCD Mart"
         And I click on the link "edit"
         And I click on the radio "#edit-document-type-authority-advice"
         And I click on the checkbox "#edit-regulatory-functions-business-advice"
