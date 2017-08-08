@@ -171,6 +171,7 @@ class ParDataAdvice extends ParDataEntity {
       ->setLabel(t('Document'))
       ->setDescription(t('Documents relating to the advice.'))
       ->setRevisionable(TRUE)
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSettings([
         'target_type' => 'file',
         'uri_scheme' => 's3private',
