@@ -595,11 +595,36 @@ display:
           relationship: none
           group_type: group
           admin_label: 'Partnership''s Organisation'
-          required: false
+          required: true
+          plugin_id: standard
+        field_authority:
+          id: field_authority
+          table: par_data_partnership_revision__field_authority
+          field: field_authority
+          relationship: none
+          group_type: group
+          admin_label: 'Partnership''s Authority'
+          required: true
           plugin_id: standard
       arguments: {  }
       display_extenders: {  }
       css_class: par_rd_helpdesk_dashboard
+    cache_metadata:
+      max-age: 0
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - user.roles
+      tags: {  }
+  page_1:
+    display_plugin: page
+    id: page_1
+    display_title: Page
+    position: 1
+    display_options:
+      display_extenders: {  }
+      path: dv/rd-helpdesk
     cache_metadata:
       max-age: 0
       contexts:
