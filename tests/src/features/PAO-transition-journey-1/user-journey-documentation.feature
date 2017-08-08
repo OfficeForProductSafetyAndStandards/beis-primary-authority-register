@@ -24,6 +24,7 @@ Feature: User Journey 1 (happy path)
 
         # PARTNERSHIPS DASHBOARD
 
+        And I scroll to element ".table-scroll-wrapper"
         And I click on the link "ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN
@@ -33,6 +34,7 @@ Feature: User Journey 1 (happy path)
 
         # DOCUMENTATION
 
+        And I scroll to element ".table-scroll-wrapper"
         When I click on the link "Review and confirm your documentation for ABCD Mart"
         And I click on the link "edit"
         And I click on the radio "#edit-document-type-authority-advice"

@@ -22,13 +22,14 @@ Feature: As the (coordinated) Business User,
         When I click on the button ".button-start"
 
         # PARTNERSHIPS DASHBOARD
-
+        And I scroll to element ".table-scroll-wrapper"
         And I click on the link "ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN
 
         And I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
+        And I scroll to element ".table-scroll-wrapper"
         When I click on the link "Review and confirm your business details"
         Then the element "#edit-about-business" contains the text "About the business"
         And the element "#edit-legal-entity" contains the text "Legal Entities"
@@ -99,7 +100,7 @@ Feature: As the (coordinated) Business User,
 
         # ADD LEGAL ENTITIES
 
-        When I click on the button "add another legal entity"
+        When I click on the link "add another legal entity"
         And I add "Another Legal Entity" to the inputfield "#edit-registered-name"
         And I select the option with the text "Fictional Company" for element "#edit-legal-entity-type"
         And I add "1234567890" to the inputfield "#edit-company-house-no"

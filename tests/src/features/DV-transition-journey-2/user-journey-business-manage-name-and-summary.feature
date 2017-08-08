@@ -23,6 +23,7 @@ Feature: As the (coordinated) Business User,
 
         # PARTNERSHIPS DASHBOARD
 
+        And I scroll to element ".table-scroll-wrapper"
         And I click on the link "ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN

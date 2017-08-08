@@ -25,6 +25,7 @@ Feature: User Journey 1 (happy path)
 
         # PARTNERSHIPS DASHBOARD
 
+        And I scroll to element ".table-scroll-wrapper"
         And I click on the link "ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN
@@ -34,6 +35,7 @@ Feature: User Journey 1 (happy path)
 
         # INSPECTION PLANS
 
+        And I scroll to element ".table-scroll-wrapper"
         When I click on the link "Review and confirm your inspection plan"
         Then the element "#edit-document-list" contains the text "Inspection Plan"
         And I click on the checkbox ".form-checkbox"

@@ -26,12 +26,14 @@ Feature: User Journey 1 (happy path)
 
         # PARTNERSHIPS DASHBOARD
 
+        And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
         And I click on the link "ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN
 
         And I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
+        And I scroll to element ".table-scroll-wrapper"
         When I click on the link "Review and confirm your partnership details"
 
         # REVIEW PARTNERSHIPS DETAILS
