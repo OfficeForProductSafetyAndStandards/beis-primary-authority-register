@@ -31,5 +31,5 @@ Feature: User Journey 1 (happy path)
         And I click on the checkbox ".form-checkbox"
         And I click on the button "#edit-next"
         When I click on the link "Go back to your partnerships"
-        Then the element "h1" contains the text "List of Partnerships for a Primary Authority"
+        Then the element "h1" contains the text "List of Partnerships"
         And I click on the link "Log out"
