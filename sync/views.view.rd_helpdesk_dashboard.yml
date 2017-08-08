@@ -6,6 +6,7 @@ dependencies:
     - user.role.administrator
     - user.role.par_helpdesk
   module:
+    - better_exposed_filters
     - par_data
     - user
 id: rd_helpdesk_dashboard
@@ -41,7 +42,7 @@ display:
           query_comment: ''
           query_tags: {  }
       exposed_form:
-        type: basic
+        type: bef
         options:
           submit_button: Apply
           reset_button: false
@@ -50,6 +51,20 @@ display:
           expose_sort_order: true
           sort_asc_label: Asc
           sort_desc_label: Desc
+          input_required: false
+          text_input_required: 'Select any filter and click on Apply to see results'
+          bef:
+            general:
+              allow_secondary: false
+              secondary_label: 'Advanced options'
+              autosubmit: false
+              autosubmit_hide: false
+            partnership_status:
+              bef_format: default
+              more_options:
+                is_secondary: false
+                placeholder_text: ''
+          text_input_required_format: basic_html
       pager:
         type: some
         options:
@@ -103,7 +118,7 @@ display:
           field: id
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: 'Primary Authority ID'
           label: ''
           exclude: true
           alter:
@@ -433,7 +448,7 @@ display:
           field: nothing
           relationship: none
           group_type: group
-          admin_label: 'PA View Link'
+          admin_label: 'Primary Authority View Link'
           label: 'PA View'
           exclude: false
           alter:
@@ -482,7 +497,7 @@ display:
           field: nothing
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: 'Business View Link'
           label: 'Business View'
           exclude: false
           alter:
@@ -603,7 +618,7 @@ display:
           field: field_authority
           relationship: none
           group_type: group
-          admin_label: 'Partnership''s Authority'
+          admin_label: 'Partnership''s Primary Authority'
           required: true
           plugin_id: standard
       arguments: {  }
