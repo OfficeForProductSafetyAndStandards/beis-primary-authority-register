@@ -2,9 +2,13 @@
 'use strict';
 
 var pa11y = require('pa11y');
+var url = 'http://localhost:8111/dv/primary-authority-partnerships/1';
 
 // Create a test instance with some default options
 var test = pa11y({
+    parameters: {
+        reporter: 'html'
+    },
     // actions: [
     //     'set field #edit-name to par_helpdesk@example.com',
     //     'set field #edit-pass to TestPassword',
@@ -13,7 +17,6 @@ var test = pa11y({
     //     'click element a.button-start',
     //     'wait for path to not be /welcome-reminder'
     // ],
-    reporter: 'html',
     // Log what's happening to the console
     log: {
         debug: console.log.bind(console),
@@ -46,11 +49,11 @@ var test = pa11y({
             }, 20, function () {
                 // Redirect to the page test page
                 page.evaluate(function () {
-                    window.location.href = 'http://localhost:8111/dv/primary-authority-partnerships/1';
+                    window.location.href = url;
                 });
                 waitUntil(function () {
                     // Wait until the page has been loaded before running pa11y
-                    return window.location.href === 'http://localhost:8111/dv/primary-authority-partnerships/1';
+                    return window.location.href === url;
                 }, 20, next);
             });
         });
@@ -59,6 +62,7 @@ var test = pa11y({
 
 // Test http://example.com/
 test.run('localhost:8111/user/login', function (error, result) {
+
     if (error) {
         return console.error(error.message);
     }
