@@ -5,4 +5,25 @@ id: business
 label: Business
 description: 'A Business is an Organisation - usually a commercial one, but not always - that is covered (or intends to be covered) by a Primary Authority Partnership.'
 help: ''
-configuration: null
+configuration:
+  premises_mapped:
+    boolean_values:
+      0: 'Not mapped'
+      1: Mapped
+  nation:
+    allowed_values:
+      GB-ENG: 'England'
+      GB-SCT: 'Scotland'
+      GB-WLS: 'Wales'
+      GB-NIR: 'Northern Ireland'
+  employees_band:
+    allowed_values:
+      50: '10-49'
+      250: '50-249'
+      1000: '250+'
+      10: '0-9'
+  size:
+    allowed_values:
+      small: 'Small'
+      medium: 'Medium'
+      large: 'Large'

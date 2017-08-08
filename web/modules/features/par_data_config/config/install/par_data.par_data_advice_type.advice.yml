@@ -15,3 +15,15 @@ configuration:
       business_advice: 'Primary Authority advice for the business'
       authority_advice: 'Primary Authority advice to Local Authorities'
       background_information: 'Background information'
+  visible_authority:
+    boolean_values:
+      1: 'Visible to Authority'
+      0: 'Hidden from Authority'
+  visible_coordinator:
+    boolean_values:
+      1: 'Visible to Co-ordinator'
+      0: 'Hidden from Co-ordinator'
+  visible_business:
+    boolean_values:
+      1: 'Visible to Business'
+      0: 'Hidden from Business'

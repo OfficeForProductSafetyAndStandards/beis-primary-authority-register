@@ -5,4 +5,20 @@ id: person
 label: Person
 description: 'A Person is a named individual who can feature in a number of different ways within PAR.  A Person may, or may not, be a user of the PAR application.'
 help: ''
-configuration: null
+configuration:
+  entity:
+    label_fields:
+      - first_name
+      - last_name
+  communication_email:
+    boolean_values:
+      0: 'Do not communicate by email'
+      1: 'Please communicate by email'
+  communication_phone:
+    boolean_values:
+      0: 'Do not communicate by email'
+      1: 'Please communicate by email'
+  communication_mobile:
+    boolean_values:
+      0: 'Do not communicate by email'
+      1: 'Please communicate by email'

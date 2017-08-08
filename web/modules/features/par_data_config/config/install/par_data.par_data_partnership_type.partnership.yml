@@ -12,6 +12,30 @@ configuration:
       - about_partnership
   partnership_status:
     allowed_values:
-      awaiting_review: awaiting_review
-      confirmed_authority: confirmed_authority
-      confirmed_business: confirmed_business
+      awaiting_review: Awaiting Review
+      confirmed_authority: Confirmed by the Authority
+      confirmed_business: Confirmed by the Organisation
+  terms_organisation_agreed:
+    boolean_values:
+      0: 'Not yet agreed'
+      0: 'Terms agreed by the organisation'
+  terms_authority_agreed:
+    boolean_values:
+      0: 'Not yet agreed'
+      0: 'Terms agreed by the authority'
+  coordinator_suitable:
+    boolean_values:
+      0: 'Not suitable'
+      0: 'Suitable for co-ordinators'
+  partnership_info_agreed_authority:
+    boolean_values:
+      0: 'Not yet agreed'
+      0: 'Partnership information agreed by the authority'
+  partnership_info_agreed_business:
+    boolean_values:
+      0: 'Not yet agreed'
+      0: 'Partnership information agreed by the business'
+  written_summary_agreed:
+    boolean_values:
+      0: 'Not yet agreed'
+      0: 'Written summary agreed with the business'
