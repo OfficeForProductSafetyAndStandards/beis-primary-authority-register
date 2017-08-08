@@ -5,8 +5,9 @@ Cucumberjs/Webdriverio
 
 # Features and testing
 
-* PAO-transition-journey-1: https://gist.github.com/jaffamonkey/b19ac650ca32ca9946d5e531401585eb
-* DV-transition-journey-2: https://gist.github.com/jaffamonkey/9f60de6cc569888f85d5cef47f900e83
+* PAO-transition-journey-1 : https://gist.github.com/jaffamonkey/b19ac650ca32ca9946d5e531401585eb
+* DV-transition-journey-2  : https://gist.github.com/jaffamonkey/9f60de6cc569888f85d5cef47f900e83
+* DV-transition-journey-3  : https://gist.github.com/jaffamonkey/4fdc697979e723ef3ba546205f74f4da
 
 # How to run a test
 
@@ -28,13 +29,12 @@ Sometimes its useful to only execute a single feature file, to do so use the fol
 $ ./node_modules/.bin/wdio --spec ./test/features/select.feature wdio.<CONFIG>.conf.js
 ```
 
-# Using tags
+## Maintaining tests (Gherkin)
 
-To run only the tests with specific tag(s) use the `--tags=` parameter like so:
+Most maintenance of tests involves updating things such as the way elements are referenced.  
 
-```sh
-$ ./node_modules/.bin/wdio --tags=@Tag,@AnotherTag wdio.<CONFIG>.conf.js
-```
+This is within the Gherkin, so easy to update. 
+
 
 # List of predefined steps
 

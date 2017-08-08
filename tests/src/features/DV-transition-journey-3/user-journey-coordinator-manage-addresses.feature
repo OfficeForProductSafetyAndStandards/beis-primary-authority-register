@@ -1,5 +1,5 @@
-@ci @journey2
-Feature: Business User - Manage Addresses
+@ci @journey3
+Feature: Coordinator User - Manage Addresses
 
     Background:
         Given I open the url "/user/login"
@@ -13,7 +13,7 @@ Feature: Business User - Manage Addresses
         # LOGIN SCREEN
 
         Given I open the url "/user/login"
-        And I add "par_business@example.com" to the inputfield "#edit-name"
+        And I add "par_coordinator@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         Then I expect that element ".error-message" is not visible
@@ -37,24 +37,24 @@ Feature: Business User - Manage Addresses
         # EDIT REGISTERED ADDRESS
 
         And I click on the button "form#par-flow-transition-business-details #edit-registered-address a.flow-link"
-        And I add "change" to the inputfield "#edit-postcode"
-        And I add "1 Change St" to the inputfield "#edit-address-line1"
-        And I add "New Change" to the inputfield "#edit-address-line2"
-        And I add "New Change State" to the inputfield "#edit-town-city"
-        And I add "US-CH" to the inputfield "#edit-county"
-        And I add "ChangeCountry" to the inputfield "#edit-country"
+        And I add "change postcode" to the inputfield "#edit-postcode"
+        And I add "1 Change Road" to the inputfield "#edit-address-line1"
+        And I add "A Change" to the inputfield "#edit-address-line2"
+        And I add "Change Town" to the inputfield "#edit-town-city"
+        And I add "Change County" to the inputfield "#edit-county"
+        And I add "Change Country" to the inputfield "#edit-country"
         And I click on the button "#edit-next"
-        Then the element "span.address-line1" contains the text "1 Change St"
-        Then the element "span.address-line2" contains the text "New Change"
-        Then the element "span.locality" contains the text "New Change State"
-        Then the element "span.postal-code" contains the text "change"
-        Then the element "span.country" contains the text "United Kingdom"
+        Then the element "span.address-line1" contains the text "1 Change Road"
+        Then the element "span.address-line2" contains the text "A Change"
+        Then the element "span.locality" contains the text "Change Town"
+        Then the element "span.postal-code" contains the text "Change County"
+        Then the element "span.country" contains the text "Change Country"
 
         # EDIT MAIN BUSINESS CONTACT
 
         When I click on the button "form#par-flow-transition-business-details #edit-primary-contact a.flow-link"
-        And I add "Fozzie" to the inputfield "#edit-first-name"
-        And I add "Bear" to the inputfield "#edit-last-name"
+        And I add "Jim" to the inputfield "#edit-first-name"
+        And I add "Henson" to the inputfield "#edit-last-name"
         And I add "999999999" to the inputfield "#edit-work-phone"
         And I add "1111111111111" to the inputfield "#edit-mobile-phone"
         And I add "02079999999" to the inputfield "#edit-work-phone"
@@ -63,8 +63,8 @@ Feature: Business User - Manage Addresses
         And I click on the radio "#edit-contact-method-mobile-phone"
         And I add "Some additional notes" to the inputfield "#edit-notes"
         And I click on the button "#edit-next"
-        Then the element "#edit-primary-contact" contains the text "Fozzie"
-        Then the element "#edit-primary-contact" contains the text "Bear"
+        Then the element "#edit-primary-contact" contains the text "Jim"
+        Then the element "#edit-primary-contact" contains the text "Henson"
         And the element "#edit-primary-contact" contains the text "par_business_change@example.com"
         And the element "#edit-primary-contact" contains the text "2079999999"
         And the element "#edit-primary-contact" contains the text "78659999999"
@@ -72,15 +72,15 @@ Feature: Business User - Manage Addresses
         # EDIT ALTERNATE CONTACT
 
         When I click on the button "form#par-flow-transition-business-details #edit-primary-contact #edit-alternative-people a.flow-link"
-        And I add "Miss" to the inputfield "#edit-first-name"
-        And I add "Piggy" to the inputfield "#edit-last-name"
+        And I add "Frank" to the inputfield "#edit-first-name"
+        And I add "Oz" to the inputfield "#edit-last-name"
         And I add "01723999999" to the inputfield "#edit-work-phone"
         And I add "08654999999" to the inputfield "#edit-mobile-phone"
         And I add "par_business_change@example.com" to the inputfield "#edit-email"
         And I click on the radio "#edit-contact-method-mobile-phone"
         And I click on the button "#edit-next"
-        Then the element "#edit-alternative-people" contains the text "Miss"
-        Then the element "#edit-alternative-people" contains the text "Piggy"
+        Then the element "#edit-alternative-people" contains the text "Frank"
+        Then the element "#edit-alternative-people" contains the text "Oz"
         Then the element "#edit-alternative-people" contains the text "par_business_change@example.com"
         Then the element "#edit-alternative-people" contains the text "01723999999"
         Then the element "#edit-alternative-people" contains the text "08654999999"

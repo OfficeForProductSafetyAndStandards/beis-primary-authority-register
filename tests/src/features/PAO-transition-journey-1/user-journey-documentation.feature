@@ -1,5 +1,5 @@
 @ci @journey1
-Feature: User Journey 1 (happy path)
+Feature: PAR User - Documentation
 
     Background:
         Given I open the url "/user/login"

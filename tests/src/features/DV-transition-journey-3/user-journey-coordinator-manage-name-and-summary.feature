@@ -1,5 +1,5 @@
-@ci @journey2
-Feature: Business User - Manage name and summary detail
+@ci @journey3
+Feature: Coordinator User - Manage Addresses
 
     Background:
         Given I open the url "/user/login"
@@ -13,7 +13,7 @@ Feature: Business User - Manage name and summary detail
         # LOGIN SCREEN
 
         Given I open the url "/user/login"
-        And I add "par_business@example.com" to the inputfield "#edit-name"
+        And I add "par_coordinator@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         Then I expect that element ".error-message" is not visible
