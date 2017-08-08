@@ -18,24 +18,24 @@ configuration:
   terms_organisation_agreed:
     boolean_values:
       0: 'Not yet agreed'
-      0: 'Terms agreed by the organisation'
+      1: 'Terms agreed by the organisation'
   terms_authority_agreed:
     boolean_values:
       0: 'Not yet agreed'
-      0: 'Terms agreed by the authority'
+      1: 'Terms agreed by the authority'
   coordinator_suitable:
     boolean_values:
       0: 'Not suitable'
-      0: 'Suitable for co-ordinators'
+      1: 'Suitable for co-ordinators'
   partnership_info_agreed_authority:
     boolean_values:
       0: 'Not yet agreed'
-      0: 'Partnership information agreed by the authority'
+      1: 'Partnership information agreed by the authority'
   partnership_info_agreed_business:
     boolean_values:
       0: 'Not yet agreed'
-      0: 'Partnership information agreed by the business'
+      1: 'Partnership information agreed by the business'
   written_summary_agreed:
     boolean_values:
       0: 'Not yet agreed'
-      0: 'Written summary agreed with the business'
+      1: 'Written summary agreed with the business'
