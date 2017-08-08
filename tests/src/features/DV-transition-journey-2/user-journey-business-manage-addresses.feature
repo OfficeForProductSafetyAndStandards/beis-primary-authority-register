@@ -2,6 +2,7 @@
 Feature: Business User - Manage Addresses
 
     Background:
+        # TEST DATA RESET
         Given I open the url "/user/login"
         And I add "dadmin" to the inputfield "#edit-name"
         And I add "password" to the inputfield "#edit-pass"
@@ -20,6 +21,18 @@ Feature: Business User - Manage Addresses
         When I click on the button ".button-start"
 
         # PARTNERSHIPS DASHBOARD
+#        And I add "DCBA" to the inputfield "edit-name"
+#        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+#        Then the element ".views-field views-field-field-premises" not contains the text "ABCDMart"
+#        When I add "ABCD" to the inputfield "edit-name"
+#        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+#        Then the element ".views-field views-field-field-premises" contains the text "ABCD Mart"
+#        When I select the option with the text "Awaiting Review" for element "edit-partnership-status"
+#        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+#        Then the element ".views-field views-field-field-premises" not contains the text "ABCD Mart"
+#        When I select the option with the text "Approved" for element "edit-partnership-status"
+#        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+#        Then the element ".views-field views-field-field-premises" contains the text "ABCD Mart"
         And I scroll to element ".table-scroll-wrapper"
         And I click on the link "ABCD Mart"
 

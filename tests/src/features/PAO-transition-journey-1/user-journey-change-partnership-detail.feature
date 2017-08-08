@@ -2,6 +2,7 @@
 Feature: PAR User - Change Partnership Details
 
     Background:
+        # TEST DATA RESET
         Given I open the url "/user/login"
         And I add "dadmin" to the inputfield "#edit-name"
         And I add "password" to the inputfield "#edit-pass"
