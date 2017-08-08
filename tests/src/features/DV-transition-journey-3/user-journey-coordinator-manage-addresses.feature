@@ -48,7 +48,7 @@ Feature: Coordinator User - Manage Addresses
         Then the element "span.address-line2" contains the text "A Change"
         Then the element "span.locality" contains the text "Change Town"
         Then the element "span.postal-code" contains the text "Change Postcode"
-        Then the element "span.country" contains the text "Change Country"
+#        Then the element "span.country" contains the text "Change Country"
 
         # EDIT MAIN BUSINESS CONTACT
 
