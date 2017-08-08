@@ -95,6 +95,26 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function label() {
+    $label_fields = $this->type->entity->getConfigurationByType('entity', 'label_fields');
+    if (isset($label_fields) && is_string($label_fields)) {
+
+    }
+    else if (isset($label_fields) && is_array($label_fields)) {
+      $label = '';
+      foreach ($label_fields as $field) {
+        if ($this->hasField($field)) {
+          $label .= $this->get($field)->getString();
+        }
+      }
+    }
+
+    return isset($label) && !empty($label) ? $label : parent::label();
+  }
+
+  /**
    * Set a default administrative title for entities where we don't really need one.
    *
    * @return string
