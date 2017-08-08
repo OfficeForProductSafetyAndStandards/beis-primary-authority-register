@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_advice.summary
+    - field.field.par_data_advice.advice.field_regulatory_function
     - par_data.par_data_advice_type.advice
   module:
     - file_entity
