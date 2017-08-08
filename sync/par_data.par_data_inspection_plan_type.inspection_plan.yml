@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: i4IV9vEH5Y5dFGKMXNe2xNXYIDzOXcocW-f7r785Vxw
+  default_config_hash: ti6n3BPG8Vpc1-5qDvGvCdVitx5_fCSPQ6Vn5S1EcTI
 id: inspection_plan
 label: 'Inspection Plan'
 description: 'An Inspection Plan is a template for carrying out particular types of inspections that has been agreed with the Primary Authority in a partnership; all enforcement officers from all local authorities have to use that plan.'
@@ -13,6 +13,15 @@ configuration:
     status_field: inspection_status
   inspection_status:
     allowed_values:
-      awaiting_review: awaiting_review
-      confirmed_authority: confirmed_authority
-      confirmed_business: confirmed_business
+      current: Current
+      expired: Expired
+      in_progress: 'In Progress'
+      revoked: Revoked
+  approved_rd_executive:
+    boolean_values:
+      - 'Awaiting approval'
+      - 'Approved by RD executive'
+  consulted_national_regulator:
+    boolean_values:
+      - 'Awaiting national regulator consultation'
+      - 'National regulator consulted'

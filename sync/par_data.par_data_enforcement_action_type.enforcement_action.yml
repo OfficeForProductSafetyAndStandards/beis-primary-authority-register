@@ -2,8 +2,21 @@ uuid: afd74fb7-e398-4839-beb6-9e25dc05b3f2
 langcode: en
 status: true
 dependencies: {  }
+_core:
+  default_config_hash: x0PLFgYiHSWxulFVwU4VPLPxkl7d8iDha1hgTXSFv6s
 id: enforcement_action
 label: 'Enforcement Action'
 description: ''
 help: ''
-configuration: null
+configuration:
+  entity:
+    status_field: enforcement_action_status
+  enforcement_action_status:
+    unknown: Unknown
+    deferred: Deferred
+    served: Served
+    no_action: 'No Further Action'
+    ready_serve: 'Ready To Serve'
+  primary_authority_status:
+    allowed: Allowed
+    blocked: Blocked

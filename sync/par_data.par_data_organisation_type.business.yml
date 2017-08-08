@@ -3,9 +3,30 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: tUGIpCOVI9PeGkPb65MBrE3L1syb3SbvEWwCkyhywg8
+  default_config_hash: mVoytu_kRyzqTXrul_CDdC_pzNhytmSW6BVpp0dza9U
 id: business
 label: Business
 description: 'A Business is an Organisation - usually a commercial one, but not always - that is covered (or intends to be covered) by a Primary Authority Partnership.'
 help: ''
-configuration: null
+configuration:
+  premises_mapped:
+    boolean_values:
+      - 'Not mapped'
+      - Mapped
+  nation:
+    allowed_values:
+      GB-ENG: England
+      GB-SCT: Scotland
+      GB-WLS: Wales
+      GB-NIR: 'Northern Ireland'
+  employees_band:
+    allowed_values:
+      50: 10-49
+      250: 50-249
+      1000: 250+
+      10: 0-9
+  size:
+    allowed_values:
+      small: Small
+      medium: Medium
+      large: Large

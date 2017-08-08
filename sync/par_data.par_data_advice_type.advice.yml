@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: fFcYtvx1tl5kqk9MPFtuVVtEhNct8ppuDnNIhrMtJlg
+  default_config_hash: WryXlJRuFD4NLDueO78Xtk_Dggeb_eKmEK6UtDr4y2Y
 id: advice
 label: Advice
 description: 'Advice is given by a Primary Authority in the context of a Partnership.'
@@ -18,3 +18,15 @@ configuration:
       business_advice: 'Primary Authority advice for the business'
       authority_advice: 'Primary Authority advice to Local Authorities'
       background_information: 'Background information'
+  visible_authority:
+    boolean_values:
+      1: 'Visible to Authority'
+      0: 'Hidden from Authority'
+  visible_coordinator:
+    boolean_values:
+      1: 'Visible to Co-ordinator'
+      0: 'Hidden from Co-ordinator'
+  visible_business:
+    boolean_values:
+      1: 'Visible to Business'
+      0: 'Hidden from Business'
