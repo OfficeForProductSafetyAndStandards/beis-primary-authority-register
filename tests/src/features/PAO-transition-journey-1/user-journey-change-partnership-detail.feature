@@ -1,4 +1,4 @@
-@ci @userjourney1
+@ci @journey1
 Feature: User Journey 1 (happy path)
 
     Background:
@@ -12,20 +12,30 @@ Feature: User Journey 1 (happy path)
     Scenario: User Journey 1 - Change partnership details
         # HOMEPAGE
         Given I open the url "/user/login"
+
         # LOGIN SCREEN
+
         And I add "par_authority@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
+
         # WELCOME SCREEN
+
         Then I expect that element ".error-message" is not visible
         When I click on the button ".button-start"
+
         # PARTNERSHIPS DASHBOARD
+
         And I click on the link "ABCD Mart"
+
         # TERMS AND CONDITIONS SCREEN
+
         And I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
         When I click on the link "Review and confirm your partnership details"
+
         # REVIEW PARTNERSHIPS DETAILS
+
         And I click on the link "edit"
         And I add "test partnership info change" to the inputfield "#edit-about-partnership"
         And I click on the button "#edit-next"
