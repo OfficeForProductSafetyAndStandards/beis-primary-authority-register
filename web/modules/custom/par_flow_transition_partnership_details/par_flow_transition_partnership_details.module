@@ -16,7 +16,7 @@ function par_flow_transition_partnership_details_form_alter(&$form, FormStateInt
       $form['#id'] == 'views-exposed-form-rd-helpdesk-dashboard-par-rd-helpdesk-dashboard-page') {
 
     $form['actions']['submit']['#attributes']['class'][] = 'btn-link';
-    $form['actions']['submit']['#value'] = 'Update details';
+    $form['actions']['submit']['#value'] = 'Update results';
 
   }
 
