@@ -5,6 +5,9 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\views\ViewExecutable;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_form_alter().
@@ -17,6 +20,34 @@ function par_flow_transition_partnership_details_form_alter(&$form, FormStateInt
 
     $form['actions']['submit']['#attributes']['class'][] = 'btn-link';
     $form['actions']['submit']['#value'] = 'Update results';
+
+  }
+
+}
+
+/**
+ * Implements hook_views_pre_render().
+ *
+ * @param \Drupal\views\ViewExecutable $view
+ */
+function par_flow_transition_partnership_details_views_pre_render(ViewExecutable $view) {
+
+  // Customise RD Helpdesk Dashboard.
+  if ($view->current_display == 'par_rd_helpdesk_dashboard_page') {
+
+    // Override CSV Feed icon.
+    $feedIcon = &$view->feedIcons[0];
+
+    // Get URL from Drupal Views Data Export module.
+    $url = Url::fromUri($feedIcon['#url']);
+
+    // Create link.
+    $link = Link::fromTextAndUrl('Download as CSV', $url)->toString();
+
+    // Make basic markup to override feed icon.
+    $feedIcon['#theme'] = 'markup';
+    $feedIcon['#markup'] = $link;
+    $feedIcon['#attributes'] = ['class' => 'csv_download_link'];
 
   }
 
