@@ -9,15 +9,23 @@ dependencies:
   module:
     - file_entity
 _core:
-  default_config_hash: 2UR8deNkdfxUSB9sY7A1vktZ5fkD8P404y6FauKBEGM
+  default_config_hash: 68-JWI-Bndp_6nbgLhEpu5pFLnxKRLV--k2QW0_YSJI
 id: par_data_advice.advice.summary
 targetEntityType: par_data_advice
 bundle: advice
 mode: summary
 content:
+  advice_type:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
   document:
     type: file_download_link
-    weight: 0
+    weight: 1
     region: content
     label: hidden
     settings:
@@ -25,7 +33,6 @@ content:
       text: 'Download [file:name]'
     third_party_settings: {  }
 hidden:
-  advice_type: true
   field_regulatory_function: true
   name: true
   notes: true
