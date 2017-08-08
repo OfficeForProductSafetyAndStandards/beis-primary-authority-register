@@ -521,6 +521,51 @@ display:
           hide_alter_empty: false
           plugin_id: custom
       filters:
+        combine:
+          id: combine
+          table: views
+          field: combine
+          relationship: none
+          group_type: group
+          admin_label: 'PA/Business Name Search'
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: combine_op
+            label: 'PA / Business Name'
+            description: 'Enter keyword(s)'
+            use_operator: false
+            operator: combine_op
+            identifier: keywords
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              par_authority: '0'
+              par_business: '0'
+              par_coordinator: '0'
+              par_helpdesk: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          fields:
+            authority_name: authority_name
+            organisation_name: organisation_name
+          plugin_id: combine
         partnership_status:
           id: partnership_status
           table: par_partnerships_field_revision
@@ -553,7 +598,7 @@ display:
           is_grouped: true
           group_info:
             label: Status
-            description: ''
+            description: 'Filter by partnership status'
             identifier: partnership_status
             optional: true
             widget: select
@@ -604,6 +649,10 @@ display:
       arguments: {  }
       display_extenders: {  }
       css_class: par_rd_helpdesk_dashboard
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
     cache_metadata:
       max-age: 0
       contexts:
@@ -669,10 +718,21 @@ display:
         par_rd_helpdesk_dashboard_page: par_rd_helpdesk_dashboard_page
         default: '0'
       pager:
-        type: some
+        type: pagerer
         options:
-          items_per_page: 100
+          preset: gds_list_pagination
+          items_per_page: 25
           offset: 0
+          id: '0'
+          total_pages: ''
+          expose:
+            items_per_page: 0
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: 0
+            items_per_page_options_all_label: '- All -'
+            offset: 0
+            offset_label: Offset
       display_description: ''
       style:
         type: data_export
@@ -969,5 +1029,6 @@ display:
         - 'languages:language_interface'
         - request_format
         - url
+        - url.query_args
         - user.roles
       tags: {  }
