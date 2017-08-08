@@ -37,7 +37,7 @@ Feature: Coordinator User - Manage Addresses
         # EDIT REGISTERED ADDRESS
 
         And I click on the button "form#par-flow-transition-business-details #edit-registered-address a.flow-link"
-        And I add "change postcode" to the inputfield "#edit-postcode"
+        And I add "Change Postcode" to the inputfield "#edit-postcode"
         And I add "1 Change Road" to the inputfield "#edit-address-line1"
         And I add "A Change" to the inputfield "#edit-address-line2"
         And I add "Change Town" to the inputfield "#edit-town-city"
@@ -47,7 +47,7 @@ Feature: Coordinator User - Manage Addresses
         Then the element "span.address-line1" contains the text "1 Change Road"
         Then the element "span.address-line2" contains the text "A Change"
         Then the element "span.locality" contains the text "Change Town"
-        Then the element "span.postal-code" contains the text "Change County"
+        Then the element "span.postal-code" contains the text "Change Postcode"
         Then the element "span.country" contains the text "Change Country"
 
         # EDIT MAIN BUSINESS CONTACT
