@@ -17,7 +17,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function label() {
-    $label_fields = $this->type->entity->getConfigurationByType('entity', 'label_fields');
+    $label_fields = $this->getTypeEntity()->getConfigurationElementByType('entity', 'label_fields');
     if (isset($label_fields) && is_string($label_fields)) {
 
     }
@@ -25,12 +25,19 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       $label = '';
       foreach ($label_fields as $field) {
         if ($this->hasField($field)) {
-          $label .= $this->get($field)->getString();
+          $label .= " " . $this->get($field)->getString();
         }
       }
     }
 
     return isset($label) && !empty($label) ? $label : parent::label();
+  }
+
+  /**
+   * Get the type entity.
+   */
+  public function getTypeEntity() {
+    return $this->type->entity;
   }
 
   /**
@@ -44,7 +51,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function getParStatus() {
-    $field_name = $this->type->entity->getConfigurationByType('entity', 'status_field');
+    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
 
     if (isset($field_name) && $this->hasField($field_name)) {
       $status = $this->get($field_name)->getString();
@@ -85,7 +92,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     $fields = [];
 
     // Get the names of any extra fields required for completion.
-    $required_fields = $this->type->entity->getConfigurationByType('entity', 'required_fields');
+    $required_fields = $this->getTypeEntity()->getConfigurationElementByType('entity', 'required_fields');
 
     // Get all the required fields on an entity.
     foreach ($this->getFieldDefinitions() as $field_name => $field_definition) {
@@ -104,7 +111,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function getBooleanFieldLabel($field_name, bool $value = FALSE) {
-    $boolean_values = $this->type->entity->getConfigurationByType($field_name, 'boolean_values');
+    $boolean_values = $this->getTypeEntity()->getConfigurationElementByType($field_name, 'boolean_values');
     $key = $value ? 1 : 0;
     return $this->hasField($field_name) && isset($boolean_values[$key]) ? $boolean_values[$key] : FALSE;
   }
@@ -112,8 +119,16 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  public function getAllowedValues($field_name) {
+    $allowed_values = $this->getTypeEntity()->getConfigurationElementByType($field_name, 'allowed_values');
+    return $allowed_values ?: [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getAllowedFieldlabel($field_name, $value = FALSE) {
-    $allowed_values = $this->type->entity->getConfigurationByType($field_name, 'allowed_values');
+    $allowed_values = $this->getTypeEntity()->getConfigurationElementByType($field_name, 'allowed_values');
     return $this->hasField($field_name) && isset($allowed_values[$value]) ? $allowed_values[$value] : $value;
   }
 

@@ -115,11 +115,10 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
     ];
 
     // Country.
-    $country_list = $par_data_premises->getCountryList();
     $form['country'] = [
       '#type' => 'select',
       '#title' => $this->t('Country'),
-      '#options' => $country_list,
+      '#options' => $par_data_premises->getAllowedValues('nation'),
       '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_country_code"),
       '#required' => TRUE,
     ];

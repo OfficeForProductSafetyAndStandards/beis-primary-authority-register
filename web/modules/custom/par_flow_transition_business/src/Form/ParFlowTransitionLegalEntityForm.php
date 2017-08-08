@@ -79,12 +79,11 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
     ];
 
     // Legal Type.
-    $options = $par_data_legal_entity->getLegalEntityTypes();
     $form['Legal_entity_type'] = [
       '#type' => 'select',
       '#title' => $this->t('Type of Legal Entity'),
       '#default_value' => isset($id) ? $this->getDefaultValues("legal_entity_{$id}_legal_entity_type") : '',
-      '#options' => array_combine($options, $options),
+      '#options' => $par_data_legal_entity->getAllowedValues('legal_entity_types'),
       '#required' => TRUE,
     ];
 

@@ -11,7 +11,7 @@ interface ParDataTypeInterface {
   /**
    * Get the configuration for this entity type.
    *
-   * @return mixed
+   * @return array
    */
   public function getConfiguration();
 
@@ -21,7 +21,7 @@ interface ParDataTypeInterface {
    * @param string $element
    *   The element to retrieve additional configuration for, either a field, property or 'entity'.
    *
-   * @return mixed
+   * @return array
    */
   public function getConfigurationElement($element);
 
@@ -31,7 +31,7 @@ interface ParDataTypeInterface {
    * @param string $type
    *   The type of additional configuration to get.
    *
-   * @return mixed
+   * @return array
    */
   public function getConfigurationByType($type);
 

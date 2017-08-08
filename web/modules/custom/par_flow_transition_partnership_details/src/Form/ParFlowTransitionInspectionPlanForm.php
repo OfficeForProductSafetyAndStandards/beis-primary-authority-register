@@ -40,8 +40,9 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
 
       foreach ($par_data_partnership->getInspectionPlan() as $inspection_plan) {
         // Partnership Confirmation.
-        $allowed_values = $inspection_plan->type->entity->getConfigurationByType('inspection_status', 'allowed_values');
+        $allowed_values = $inspection_plan->getAllowedValues('inspection_status');
         // Set the on and off values so we don't have to do that again.
+        // @TODO This is not the right value to be saving here.
         $this->loadDataValue("inspection_plan_confirmation_value", $allowed_values['confirmed_authority']);
         $inspection_plan_status = $inspection_plan->getParStatus();
         if ($inspection_plan_status === $allowed_values['confirmed_authority']) {

@@ -57,6 +57,17 @@ interface ParDataEntityInterface {
   public function getBooleanFieldLabel($field_name, bool $value);
 
   /**
+   * Get the allowed values for a field.
+   *
+   * @param string $field_name
+   *   The name of the field to load the label for.
+   *
+   * @return array
+   *   An array of key values or empty if none.
+   */
+  public function getAllowedValues($field_name);
+
+  /**
    * Gets the label for a field given a list of allowed values.
    *
    * @param string $field_name
