@@ -1,6 +1,3 @@
-// An example of running Pa11y programmatically
-'use strict';
-
 module.exports = {
     beforeScript: function (page, options, next) {
         var waitUntil = function (condition, retries, waitOver) {
@@ -16,7 +13,7 @@ module.exports = {
             });
         };
         page.evaluate(function () {
-            document.open('http://localhost:8111/user/login');
+            window.url('http://localhost:8111/user/login');
             document.getElementById("edit-name").value = "par_helpdesk@example.com";
             document.getElementById("edit-pass").value = "TestPassword";
             document.getElementById("edit-submit").click();
