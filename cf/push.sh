@@ -7,6 +7,8 @@ cf set-env par-beta-$1 PAR_HASH_SALT $PAR_HASH_SALT
 cf set-env par-beta-$1 S3_BUCKET_PUBLIC $S3_BUCKET_PUBLIC
 cf set-env par-beta-$1 S3_BUCKET_PRIVATE $S3_BUCKET_PRIVATE
 cd set-env par-beta-$1 APP_ENV $1
+cd set-env par-beta-$1 PAR_GOVUK_NOTIFY_KEY $PAR_GOVUK_NOTIFY_KEY
+cd set-env par-beta-$1 PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE
 cf restage par-beta-$1
 
 if [$1 == "production"]; then
