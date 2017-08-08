@@ -108,7 +108,7 @@ class ParFlowTransitionDetailsForm extends ParFlowTransitionDetailsBusinessForm 
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Save the value for the about_partnership field.
     $partnership = $this->getRouteParam('par_data_partnership');
-    $partnership->set('coordinator_suitable', $this->getTempDataValue('suitable_nomination'));
+    $this->setValue($partnership, 'coordinator_suitable', 'suitable_nomination');
     parent::submitForm($form, $form_state);
   }
 

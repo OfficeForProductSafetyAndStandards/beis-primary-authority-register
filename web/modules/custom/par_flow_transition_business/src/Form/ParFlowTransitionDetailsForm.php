@@ -17,6 +17,8 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
    */
   protected $flow = 'transition_business';
 
+  protected $valuesToSet = [];
+
   /**
    * {@inheritdoc}
    */
@@ -324,6 +326,12 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     // Save the value for the about_partnership field.
     $partnership = $this->getRouteParam('par_data_partnership');
     // @TODO Still need to save/acknowledge the acceptance of the terms.
+
+    foreach ($this->valuesToSet as $key => $item) {
+      $setting = $this->valuesToSet[$key];
+      $setting['object']->set($setting['field'], $this->getTempDataValue($setting['value_field']));
+    }
+
     if ($partnership->save()) {
       $this->deleteStore();
     }
@@ -338,6 +346,21 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
 
     // Go back to the overview.
     $form_state->setRedirect($this->getFlow()->getPrevRoute(), $this->getRouteParams());
+  }
+
+  /**
+   * Record the class and field names to be set when the form is saved.
+   *
+   * @param $class
+   * @param $field
+   * @param $value_field
+   */
+  public function setValue($class, $field, $value_field) {
+    $this->valuesToSet[] = [
+      'object' => $class,
+      'field' => $field,
+      'value_field' => $value_field,
+    ];
   }
 
 }
