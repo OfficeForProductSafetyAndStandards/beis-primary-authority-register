@@ -53,13 +53,13 @@ class ParFlowTransitionTradingForm extends ParBaseForm {
 
     if (empty($trading_name_delta)) {
       $form['intro'] = [
-        '#markup' => $this->t('Add a legal entity for your business'),
+        '#markup' => $this->t('Add another trading name for your business'),
       ];
 
     }
     else {
       $form['intro'] = [
-        '#markup' => $this->t('Change the legal entity of your business'),
+        '#markup' => $this->t('Change the trading name of your business'),
       ];
 
     }
