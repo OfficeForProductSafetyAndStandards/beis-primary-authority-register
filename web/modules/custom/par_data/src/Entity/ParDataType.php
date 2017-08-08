@@ -22,15 +22,35 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
   /**
    * {@inheritdoc}
    */
-  public function getConfiguration($element) {
-    return isset($this->configuration[$element]) ? $this->configuration[$element] : NULL;
+  public function getConfiguration() {
+    return !empty($this->configuration) ? $this->configuration : [];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getConfigurationByType($element, $type) {
-    $element_configuration = $this->getConfiguration($element);
+  public function getConfigurationElement($element) {
+    $config = $this->getConfiguration();
+    return isset($config[$element]) ? $config[$element] : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getConfigurationByType($type) {
+    $elements = [];
+    foreach ($this->getConfiguration() as $element => $config) {
+      $elements[$element] = $this->getConfigurationElementByType($element, $type);
+    }
+
+    return $elements;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getConfigurationElementByType($element, $type) {
+    $element_configuration = $this->getConfigurationElement($element);
     return isset($element_configuration[$type]) ? $element_configuration[$type] : NULL;
   }
 

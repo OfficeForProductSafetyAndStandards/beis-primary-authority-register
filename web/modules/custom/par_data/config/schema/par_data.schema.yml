@@ -345,7 +345,7 @@ par_data.par_data_enforcement_action_type.*:
           type: par_data.configuration_type.[%key]
           label: 'Configuration rules'
 
-# Allowed configuration values are listed below.
+# Allowed configuration values for entities are listed below.
 par_data.configuration_type.status_field:
   type: string
   label: 'Status Field'
@@ -361,6 +361,8 @@ par_data.configuration_type.required_fields:
   sequence:
     type: string
     label: 'Required Field'
+
+# Allowed configuration values for fields are listed below.
 par_data.configuration_type.allowed_values:
   type: sequence
   label: 'Allowed Values'

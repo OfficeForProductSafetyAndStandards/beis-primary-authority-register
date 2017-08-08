@@ -9,6 +9,13 @@ namespace Drupal\par_data\Entity;
 interface ParDataTypeInterface {
 
   /**
+   * Get the configuration for this entity type.
+   *
+   * @return mixed
+   */
+  public function getConfiguration();
+
+  /**
    * Get the configuration for a given element.
    *
    * @param string $element
@@ -16,7 +23,17 @@ interface ParDataTypeInterface {
    *
    * @return mixed
    */
-  public function getConfiguration($element);
+  public function getConfigurationElement($element);
+
+  /**
+   * Get the configuration for this entity type by configuration type.
+   *
+   * @param string $type
+   *   The type of additional configuration to get.
+   *
+   * @return mixed
+   */
+  public function getConfigurationByType($type);
 
   /**
    * Get the configuration for a given element by type.
@@ -28,6 +45,6 @@ interface ParDataTypeInterface {
    *
    * @return mixed
    */
-  public function getConfigurationByType($element, $type);
+  public function getConfigurationElementByType($element, $type);
 
 }

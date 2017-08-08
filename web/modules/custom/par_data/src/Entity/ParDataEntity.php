@@ -3,6 +3,7 @@
 namespace Drupal\par_data\Entity;
 
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\trance\Trance;
 
 /**
@@ -11,6 +12,26 @@ use Drupal\trance\Trance;
  * @ingroup par_data
  */
 class ParDataEntity extends Trance implements ParDataEntityInterface {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function label() {
+    $label_fields = $this->type->entity->getConfigurationByType('entity', 'label_fields');
+    if (isset($label_fields) && is_string($label_fields)) {
+
+    }
+    else if (isset($label_fields) && is_array($label_fields)) {
+      $label = '';
+      foreach ($label_fields as $field) {
+        if ($this->hasField($field)) {
+          $label .= $this->get($field)->getString();
+        }
+      }
+    }
+
+    return isset($label) && !empty($label) ? $label : parent::label();
+  }
 
   /**
    * {@inheritdoc}
@@ -80,6 +101,49 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
+   * Get boolean fields for this entity.
+   *
+   * @return array
+   *   An array of field names.
+   */
+  public function getBooleanFields() {
+
+  }
+
+  /**
+   * Gets the 'off' or 'on' label for a boolean field.
+   *
+   * @param string $field_name
+   *   The name of the field to load the label for.
+   * @param bool $value
+   *   Whether to get the 'off' or 'on' label.
+   *
+   * @return string|bool
+   *   The label string if found.
+   */
+  public function getBooleanFieldLabel($field_name, bool $value = FALSE) {
+    $boolean_values = $this->type->entity->getConfigurationByType($field_name, 'boolean_values');
+    $key = $value ? 1 : 0;
+    return $this->hasField($field_name) && isset($boolean_values[$key]) ? $boolean_values[$key] : FALSE;
+  }
+
+  /**
+   * Gets the label for a field given a list of allowed values.
+   *
+   * @param string $field_name
+   *   The name of the field to load the label for.
+   * @param $value
+   *   The key to look up the label for.
+   *
+   * @return string
+   *   The label string if found, otherwise the original value.
+   */
+  public function getAllowedFieldlabel($field_name, $value = FALSE) {
+    $allowed_values = $this->type->entity->getConfigurationByType($field_name, 'allowed_values');
+    return $this->hasField($field_name) && isset($boolean_values[$key]) ? $boolean_values[$key] : FALSE;
+  }
+
+  /**
    * System fields excluded from user input.
    */
   protected function excludedFields() {
@@ -92,26 +156,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       'changed',
       'name'
     ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function label() {
-    $label_fields = $this->type->entity->getConfigurationByType('entity', 'label_fields');
-    if (isset($label_fields) && is_string($label_fields)) {
-
-    }
-    else if (isset($label_fields) && is_array($label_fields)) {
-      $label = '';
-      foreach ($label_fields as $field) {
-        if ($this->hasField($field)) {
-          $label .= $this->get($field)->getString();
-        }
-      }
-    }
-
-    return isset($label) && !empty($label) ? $label : parent::label();
   }
 
   /**
