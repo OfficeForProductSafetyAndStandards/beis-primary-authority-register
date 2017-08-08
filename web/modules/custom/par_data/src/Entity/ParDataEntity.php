@@ -101,25 +101,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Get boolean fields for this entity.
-   *
-   * @return array
-   *   An array of field names.
-   */
-  public function getBooleanFields() {
-
-  }
-
-  /**
-   * Gets the 'off' or 'on' label for a boolean field.
-   *
-   * @param string $field_name
-   *   The name of the field to load the label for.
-   * @param bool $value
-   *   Whether to get the 'off' or 'on' label.
-   *
-   * @return string|bool
-   *   The label string if found.
+   * {@inheritdoc}
    */
   public function getBooleanFieldLabel($field_name, bool $value = FALSE) {
     $boolean_values = $this->type->entity->getConfigurationByType($field_name, 'boolean_values');
@@ -128,19 +110,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Gets the label for a field given a list of allowed values.
-   *
-   * @param string $field_name
-   *   The name of the field to load the label for.
-   * @param $value
-   *   The key to look up the label for.
-   *
-   * @return string
-   *   The label string if found, otherwise the original value.
+   * {@inheritdoc}
    */
   public function getAllowedFieldlabel($field_name, $value = FALSE) {
     $allowed_values = $this->type->entity->getConfigurationByType($field_name, 'allowed_values');
-    return $this->hasField($field_name) && isset($boolean_values[$key]) ? $boolean_values[$key] : FALSE;
+    return $this->hasField($field_name) && isset($allowed_values[$value]) ? $allowed_values[$value] : $value;
   }
 
   /**
