@@ -3,12 +3,6 @@ Cucumberjs/Webdriverio
 
 * Install the dependencies (`npm install` or `yarn install`)
 
-# Features and testing
-
-* PAO-transition-journey-1 : https://gist.github.com/jaffamonkey/b19ac650ca32ca9946d5e531401585eb
-* DV-transition-journey-2  : https://gist.github.com/jaffamonkey/9f60de6cc569888f85d5cef47f900e83
-* DV-transition-journey-3  : https://gist.github.com/jaffamonkey/4fdc697979e723ef3ba546205f74f4da
-
 # How to run a test
 
 To run your tests just call the [WDIO runner](http://webdriver.io/guide/testrunner/gettingstarted.html):
