@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: x0PLFgYiHSWxulFVwU4VPLPxkl7d8iDha1hgTXSFv6s
+  default_config_hash: 8ZNuZoYpLpUAzueG2hJOd7ivUnu370mJg49b1h9X4Dw
 id: enforcement_action
 label: 'Enforcement Action'
 description: ''
@@ -12,11 +12,13 @@ configuration:
   entity:
     status_field: enforcement_action_status
   enforcement_action_status:
-    unknown: Unknown
-    deferred: Deferred
-    served: Served
-    no_action: 'No Further Action'
-    ready_serve: 'Ready To Serve'
+    allowed_values:
+      unknown: Unknown
+      deferred: Deferred
+      served: Served
+      no_action: 'No Further Action'
+      ready_serve: 'Ready To Serve'
   primary_authority_status:
-    allowed: Allowed
-    blocked: Blocked
+    allowed_values:
+      allowed: Allowed
+      blocked: Blocked
