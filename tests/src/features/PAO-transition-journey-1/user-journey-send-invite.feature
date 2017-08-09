@@ -50,5 +50,5 @@ Feature: PAR User - Send Invite
     # Then the element "#edit-email-subject" contains the text "Test change subject line"
     # Then the element "#edit-email-body" contains the text "Test change meassage body [invite:invite-accept-link]"
     # When I click on the link "Go back to your partnerships"
-    # Then the element "h1" contains the text "List of Partnerships for a Primary Authority"
+    # Then the element "h1" contains the text "List of Partnerships"
     # And I click on the link "Log out"

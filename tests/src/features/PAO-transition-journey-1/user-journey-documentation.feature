@@ -45,5 +45,5 @@ Feature: PAR User - Documentation
         When I click on the button "#edit-next"
     # Then the element ".placeholder" not contains the text "Error"
     # When I click on the link "Go back to your partnerships"
-    # Then the element "h1" contains the text "List of Partnerships for a Primary Authority"
+    # Then the element "h1" contains the text "List of Partnerships"
     # And I click on the link "Log out"
