@@ -107,7 +107,7 @@ function par_data_test_create_entities() {
     ],
     'approved_rd_executive' => TRUE,
     'consulted_national_regulator' => TRUE,
-    'inspection_status' => 'Cookies found',
+    'inspection_status' => 'in_progress',
     'document' => [
       $uploaded_files[rand(0, count($uploaded_files)-1)],
     ]
@@ -453,7 +453,7 @@ function par_data_test_create_entities() {
     'name' => 'Partnership Lower East Side and Charlie\'s',
     'uid' => 1,
     'partnership_type' => 'Direct Partnership',
-    'partnership_status' => 'Approved',
+    'partnership_status' => 'awaiting_review',
     'about_partnership' => 'This is a partnership between Lower East Side and Charlie\'s Cafe on Sesame Street.',
     'communication_email' => TRUE,
     'communication_phone' => TRUE,

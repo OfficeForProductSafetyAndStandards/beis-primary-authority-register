@@ -17,12 +17,28 @@ interface ParDataEntityInterface {
   public function getViewBuilder();
 
   /**
-   * Return the value of the status field.
+   * Return the stored value of the status field.
+   *
+   * @return NULL|mixed
+   *   The value of the status field.
+   */
+  public function getRawStatus();
+
+  /**
+   * Return the label of the status field.
    *
    * @return NULL|mixed
    *   The value of the status field.
    */
   public function getParStatus();
+
+  /**
+   * Set the status field value.
+   *
+   * @parap mixed
+   *   The value of the status to set.
+   */
+  public function setParStatus($value);
 
   /**
    * Get the fields required to complete this entity.

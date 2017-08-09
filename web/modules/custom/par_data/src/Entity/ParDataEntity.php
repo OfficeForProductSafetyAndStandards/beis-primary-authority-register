@@ -50,7 +50,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
-  public function getParStatus() {
+  public function getRawStatus() {
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
 
     if (isset($field_name) && $this->hasField($field_name)) {
@@ -62,6 +62,26 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
   /**
    * {@inheritdoc}
+   */
+  public function getParStatus() {
+    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+    $raw_status = $this->getRawStatus();
+    return $this->getAllowedFieldlabel($field_name, $raw_status);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setParStatus($value) {
+    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+    $allowed_values = $this->getAllowedValues($field_name);
+    if (isset($allowed_values[$value])) {
+      $this->set($field_name, $value);
+    }
+  }
+
+  /**
+   * {@inheritdoc}g
    */
   public function getCompletionPercentage($include_deltas = FALSE) {
     $total = 0;
