@@ -3,18 +3,25 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.par_data_enforcement_action.full
+    - field.field.par_data_enforcement_action.enforcement_action.field_action_referral
+    - field.field.par_data_enforcement_action.enforcement_action.field_blocked_advice
+    - field.field.par_data_enforcement_action.enforcement_action.field_regulatory_function
     - par_data.par_data_enforcement_action_type.enforcement_action
+  module:
+    - text
 id: par_data_enforcement_action.enforcement_action.full
 targetEntityType: par_data_enforcement_action
 bundle: enforcement_action
 mode: full
 content:
   details:
-    type: basic_string
-    weight: 1
+    type: text_trimmed
+    weight: 5
     region: content
     label: hidden
-    settings: {  }
+    settings:
+      trim_length: 600
     third_party_settings: {  }
   enforcement_action_notes:
     label: hidden
@@ -22,6 +29,7 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 2
   enforcement_action_status:
     label: hidden
     region: content
@@ -29,24 +37,29 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    weight: 1
   primary_authority_notes:
     label: hidden
     type: text_default
     region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 4
   primary_authority_status:
     label: hidden
-    type: text_default
+    type: string
     region: content
-    settings: {  }
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
+    weight: 3
   title:
-    type: basic_string
+    type: string
     weight: 0
     region: content
     label: hidden
-    settings: {  }
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
 hidden:
   action_referral: true
