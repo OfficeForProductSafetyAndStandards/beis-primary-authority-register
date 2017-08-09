@@ -90,6 +90,10 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
+
+    if (empty($form_state->getValue('terms_conditions'))) {
+      $form_state->setErrorByName('terms_conditions', $this->t('You must agree to the new terms and conditions.'));
+    }
   }
 
   /**

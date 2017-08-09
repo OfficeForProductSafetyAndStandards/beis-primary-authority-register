@@ -39,10 +39,8 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
       $this->setState("edit:{$par_data_partnership->id()}");
 
       // We need to get the value of the terms and conditions checkbox.
-      if ($par_data_partnership) {
-        // Terms agreed?
-        $this->loadDataValue("terms_organisation_agreed", $par_data_partnership->get('terms_organisation_agreed')->getString());
-      }
+      $terms_value = !empty($par_data_partnership->get('terms_organisation_agreed')->getString()) ? TRUE : FALSE;
+      $this->loadDataValue('terms_conditions', $terms_value);
     }
   }
 
@@ -92,6 +90,10 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
+
+    if (empty($form_state->getValue('terms_conditions'))) {
+      $form_state->setErrorByName('terms_conditions', $this->t('You must agree to the new terms and conditions.'));
+    }
   }
 
   /**
@@ -101,9 +103,14 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Save the value for the about_partnership field.
-    $partnership = $this->getRouteParam('par_data_partnership');
-    $partnership->set('terms_organisation_agreed', $this->getTempDataValue('terms_organisation_agreed'));
-    if ($partnership->save()) {
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+
+    // Save the value for the terms field.
+    if ($terms_conditions_value = $this->decideBooleanValue($this->getTempDataValue('terms_conditions'))) {
+      $par_data_partnership->set('terms_organisation_agreed', $terms_conditions_value);
+    }
+
+    if ($par_data_partnership->save()) {
       $this->deleteStore();
     }
     else {
