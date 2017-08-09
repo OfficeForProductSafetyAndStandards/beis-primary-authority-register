@@ -1,13 +1,11 @@
 .view-dv-journey-1-step-1 {
 
+  @extend .grid-row;
+
   // reset ul.
   ul {
     margin: 0;
     padding: 0;
-  }
-
-  .views-element-container {
-    @extend .grid-row;
   }
 
   .views-exposed-form {
