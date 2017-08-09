@@ -373,9 +373,9 @@ par_data.configuration_type.boolean_values:
   type: mapping
   label: 'Boolean Values'
   mapping:
-    1:
+    'on':
       type: string
       label: 'On Value'
-    0:
+    'off':
       type: label
       label: 'Off value'
