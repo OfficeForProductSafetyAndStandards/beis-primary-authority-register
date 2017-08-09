@@ -19,13 +19,10 @@ Feature: Helpdesk - Send Invite
         When I click on the button "#edit-submit"
 
         # WELCOME SCREEN
+        Then the element "#block-par-theme-account-menu" contains the text "Log out"
 
 #        Then I expect that element ".error-message" is not visible
-#        And the element "#block-par-theme-content" contains the text "Review and confirm your data by"
 #        When I click on the button ".button-start"
-#
-#        # PARTNERSHIPS DASHBOARD
-#
 #        And I scroll to element ".table-scroll-wrapper"
 #        And I click on the link "ABCD Mart"
 #

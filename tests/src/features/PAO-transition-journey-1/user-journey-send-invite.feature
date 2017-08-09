@@ -43,12 +43,13 @@ Feature: PAR User - Send Invite
 
         And I add "Test change meassage body [invite:invite-accept-link]" to the inputfield "#edit-email-body"
         And I add "Test change meassage subject" to the inputfield "#edit-email-body"
-        And I press "Send Invitation"
-    # Then the element ".placeholder" not contains the text "Error"
-    # # PARTERSHIP TASKS SCREEN
-    # Then the element "h1" contains the text "Updating the Primary Authority Register"
-    # Then the element "#edit-email-subject" contains the text "Test change subject line"
-    # Then the element "#edit-email-body" contains the text "Test change meassage body [invite:invite-accept-link]"
-    # When I click on the link "Go back to your partnerships"
-    # Then the element "h1" contains the text "List of Partnerships"
-    # And I click on the link "Log out"
+        When I press "Send Invitation"
+#        Then the element "h1" contains the text "Updating the Primary Authority Register"
+#        And the element "#edit-email-subject" contains the text "Test change subject line"
+#        And the element "#edit-email-body" contains the text "Test change meassage body [invite:invite-accept-link]"
+#
+#        # PARTERSHIP TASKS SCREEN
+#
+#        When I click on the link "Go back to your partnerships"
+#        Then the element "h1" contains the text "List of Partnerships"
+#        And I click on the link "Log out"
