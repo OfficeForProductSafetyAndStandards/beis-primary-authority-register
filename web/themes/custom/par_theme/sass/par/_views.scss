@@ -12,6 +12,10 @@
     @extend .column-one-third;
   }
 
+  .table-scroll-wrapper {
+    @extend .column-two-thirds;
+  }
+
   .views-exposed-form-inner {
     background: $grey-4;
     padding: 20px;
