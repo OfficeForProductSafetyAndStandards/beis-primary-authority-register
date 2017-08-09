@@ -175,7 +175,7 @@ class ParDataTypeTest extends UnitTestCase {
    * @covers ::getAllowedFieldlabel
    */
   public function testGetAllowedFieldlabel() {
-    $this->assertEquals('Ms', $this->parDataType->getBooleanFieldLabel('field_salutation', 'ms'), "The correct display label was returned for the given field value.");
-    $this->assertFalse($this->parDataType->getBooleanFieldLabel('field_salutation', 'Elephant'), "The original value was not found nothing returned.");
+    $this->assertEquals('Ms', $this->parDataType->getAllowedFieldlabel('field_salutation', 'ms'), "The correct display label was returned for the given field value.");
+    $this->assertFalse($this->parDataType->getAllowedFieldlabel('field_salutation', 'Elephant'), "The original value was not found nothing returned.");
   }
 }
