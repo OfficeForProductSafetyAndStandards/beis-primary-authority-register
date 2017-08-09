@@ -31,4 +31,4 @@ configuration:
     allowed_values:
       franchise: 'Franchise Group'
       trade_association: 'Trade Association'
-      other: 'Other'
+      other: Other

@@ -12,7 +12,7 @@ configuration:
       - last_name
   communication_email:
     boolean_values:
-      'on': 'Email'
+      'on': Email
       'off': 'Do not communicate by email'
   communication_phone:
     boolean_values:
