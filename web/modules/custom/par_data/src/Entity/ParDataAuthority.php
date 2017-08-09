@@ -26,7 +26,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     "storage_schema" = "Drupal\trance\TranceStorageSchema",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "list_builder" = "Drupal\trance\TranceListBuilder",
- *     "views_data" = "Drupal\par_data\Views\TranceViewsData",
+ *     "views_data" = "Drupal\par_data\Views\ParDataViewsData",
  *     "form" = {
  *       "default" = "Drupal\trance\Form\ParEntityForm",
  *       "add" = "Drupal\trance\Form\ParEntityForm",
