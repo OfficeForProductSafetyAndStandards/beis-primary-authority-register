@@ -80,7 +80,7 @@ Feature: User Journey 1 (happy path)
         And the element "#edit-organisation-alternative-contacts" contains the text "97777777779"
         And I click on the checkbox "#edit-confirmation"
         And I click on the button "#edit-next"
-        Then the element "#block-par-theme-content" contains the text "confirmed_authority"
+        Then the element "#block-par-theme-content" contains the text "Confirmed by the Authority"
         When I click on the link "Go back to your partnerships"
         Then the element "h1" contains the text "List of Partnerships"
         And I click on the link "Log out"

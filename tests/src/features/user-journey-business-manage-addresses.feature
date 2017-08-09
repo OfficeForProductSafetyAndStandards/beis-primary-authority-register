@@ -35,7 +35,7 @@ Feature: As the (coordinated) Business User,
         And I add "New Change" to the inputfield "#edit-address-line2"
         And I add "New Change State" to the inputfield "#edit-town-city"
         And I add "US-CH" to the inputfield "#edit-county"
-        And I add "ChangeCountry" to the inputfield "#edit-country"
+        And I select the option with the text "Wales" for element "#edit-country"
         And I click on the button "#edit-next"
         Then the element "span.address-line1" contains the text "1 Change St"
         Then the element "span.address-line2" contains the text "New Change"
@@ -76,7 +76,7 @@ Feature: As the (coordinated) Business User,
         # EDIT LEGAL ENTITIES
         When I click on the button "form#par-flow-transition-business-details #edit-legal-entity a.flow-link"
         And I add "ABCD Mart Change" to the inputfield "#edit-registered-name"
-        And I select the option with the text "Dr" for element "#edit-legal-entity-type"
+        And I select the option with the text "Limited Liability Partnership" for element "#edit-legal-entity-type"
         And I add "987654321" to the inputfield "#edit-company-house-no"
         And I click on the button "#edit-next"
         Then the element "#edit-legal-entity div" contains the text "ABCD Mart Change"
