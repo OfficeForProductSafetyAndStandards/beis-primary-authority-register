@@ -116,15 +116,15 @@ script:
 
 deploy:
 #-----------------------------------------------------------------------------
-# Master branch deploys to "dev test" environment
+# Master branch deploys to "continuous" environment
 #-----------------------------------------------------------------------------
-  
+      
   - provider: cloudfoundry
     api: https://api.cloud.service.gov.uk
-    username: nao.yoshino@transformuk.com
+    username: chris.moreton@transformuk.com
     manifest: manifest.continuous.yml
     password:
-      secure: fh6ePSKsJUnXEeZVwUU4gwGxIwLAfaug6O+4Zs0Wmus5dYXuRgVXQ3RLP1rSyp4Hc6/Nt4CPt3A8ygFW5WGNRKNXXR3F47wXLGnixOKCDmLCz6VytUXesEXlqDkzXSBT7WZGqOTKdTLKJOhaV4Z9Oum/CL5QckKbHlBHinhL3IpH4zi+4tBERc1C6R6oRC9ZPiEsFr9FYOE0hqvFA8Vw0SkB5C3uyQaFh0WotNLkhdd4fUUotxzjA5Cr2KAUTaUcRw0Ceq90UPlWnwBJDxjaNokuEcO6S13HDXTTi/RXNZi4oRhePokbs6z01GssOSiVencbRHX+RT7a4jHwF0hZI9OMgXelnmYb4Jdq5FeVPBD9OenIXGCAo2nyxJ/EU+7InUlQAN6HDh5QO7B10aSJpaWfNt2X65+FeOP89rbLPyfisqxFtbGZW1/ur9VlXOt0c8h9f6vdled8pocT6sMO6duKhMM5xFhRyDBVv01ZCZxTXOGTgOPRUN9EsVsrxX2X8mtRMmr0hJ+vml4eb1I/3AEJX10SDi4e/S8i8mJ4oAaVK4kAR7oLnKT+feBbKqHha/xkU87kp49jm3k65FzkwJzGUNe5GStjEvXXWvK8EaSX2t42iFU4SgbsMi/BIsAyy2NMyB8ua9SziYG7JGwv5z+brl7QJrvniYzkom3JSso=
+      secure: lKhefinPSDBqgBjlEkZrx9z7qurg0UYDAbc1F/qv46/USrkUPE3Yvv5NUSrm0pYZnM9Uv5olZEVJ2wG6ETZ8ZUEILrPebBpXkNrN87s5GbzJTvAgchAxNmuPjuwkgidNw7ebUrTKlcFJCCF4VSnGxbqwTS1iR+txPnc+J5bojlEnS705XhGqceFREaLhzo7vGrTm1seOoef/IPKkkpNuPrlBYixwq2IY5GeyKyRteBd0Xv1S1xuPtB4Z18sxwKU+jzc7BJJuvRPHXqW8FoOOG7zK+kBMw+TygbMV/UdxAwQp7lHsTLMr8A0+HH35/6/2C/jlQ/hk6jUaCt6MrlJoiSCEbjFbnBIHzTDh8Tz9YhQHY4oM8bxvm4W6MGd5OrlL2GxhKRQMhrcQEbVvmJKkBiVF92pUGG5Jz7fNidhtRdsTDSp9PPCSE0yDGHmxXndVMkVHstf9UmUL0yuQ+voQe138pF68FmQHbwc7qaQoY7NRXM41BhS6p2r3VPcCV3Br/Mer7je+POWGksqke5diY4j+uj4GdLk3WLSR4dxU5/2dPgVa/+Rn3XWsZb2NUD8dpMmQWZ3x17fC3JzCoFT9gS1mct8T7By1SJKQ+Jtl5oOuEyWxkb+03FJc87Liiozk3gDMh5Fkc2w8pdO6hHd9nVtOM4j8ShDMdDKu465GaYw=
     organization: beis-nmo-trial
     space: sandbox
     on:
