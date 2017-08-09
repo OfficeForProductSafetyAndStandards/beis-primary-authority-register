@@ -504,7 +504,7 @@ display:
           entity_field: partnership_status
           plugin_id: string
       sorts: {  }
-      title: 'List of Partnerships for a Primary Authority'
+      title: 'List of Partnerships'
       header: {  }
       footer: {  }
       empty: {  }

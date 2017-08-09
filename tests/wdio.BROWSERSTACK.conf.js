@@ -7,14 +7,61 @@ config.capabilities = [{
         os: 'Windows',
         os_version: '7',
         resolution: '1024x768',
-        debug: true
-}];
+        'browserstack.local': true,
+        'browserstack.debug': true
+        // debug: true
+    },
+    {
+        browser: 'ie',
+        browser_version: '9',
+        device: null,
+        os: 'Windows',
+        os_version: '7',
+        resolution: '1024x768',
+        'browserstack.local': true,
+        'browserstack.debug': true
+        // debug: true
+    },
+    {
+        browser: 'Edge',
+        browser_version: '15',
+        device: null,
+        os: 'Windows',
+        os_version: '10',
+        resolution: '1024x768',
+        'browserstack.local': true,
+        'browserstack.debug': true
+        // debug: true
+    },
+    {
+        browser: 'Firefox',
+        browser_version: '54',
+        device: null,
+        os: 'Windows',
+        os_version: '10',
+        resolution: '1024x768',
+        'browserstack.local': true,
+        'browserstack.debug': true
+        // debug: true
+    },
+    {
+        browser: 'Chrome',
+        browser_version: '60',
+        device: null,
+        os: 'Windows',
+        os_version: '8',
+        resolution: '1024x768',
+        'browserstack.local': true,
+        'browserstack.debug': true
+        // debug: true
+    }
+];
 
 config.services = ['browserstack'];
-config.user = '';
-config.key = '';
+config.user = PROCESS.env.BSUSER;
+config.key = PROCESS.env.BSKEY;
 config.browserstackLocal = true;
-config.host = 'hub-cloud.browserstack.com';
-config.baseUrl = '';
+// config.host = 'hub-cloud.browserstack.com';
+config.baseUrl = 'http://localhost:8111';
 config.tags = '@ci, ~@Pending, ~@ie8bug';
 exports.config = config;
