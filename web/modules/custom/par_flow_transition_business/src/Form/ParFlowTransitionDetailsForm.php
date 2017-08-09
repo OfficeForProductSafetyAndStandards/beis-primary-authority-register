@@ -293,6 +293,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
       '#title' => t('I confirm that the information above is correct.'),
       '#default_value' => $this->getDefaultValues('partnership_info_agreed_business'),
       '#disabled' => $this->getDefaultValues('partnership_info_agreed_business'),
+      '#return_value' => 'on',
     ];
 
     $form['next'] = [

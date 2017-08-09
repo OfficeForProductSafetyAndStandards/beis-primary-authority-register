@@ -203,6 +203,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#disabled' => $this->getDefaultValues('partnership_agreement', FALSE),
       '#checked' => $this->getDefaultValues('partnership_agreement', FALSE),
       '#default_value' => $this->getDefaultValues('partnership_agreement', FALSE),
+      '#return_value' => 'on',
     ];
 
     // Partnership Confirmation.
@@ -212,6 +213,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#disabled' => $this->getDefaultValues('confirmation', FALSE),
       '#checked' => $this->getDefaultValues('confirmation', FALSE),
       '#default_value' => $this->getDefaultValues('confirmation', FALSE),
+      '#return_value' => 'on',
     ];
 
     $form['next'] = [
