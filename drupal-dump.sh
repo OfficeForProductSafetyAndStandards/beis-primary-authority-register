@@ -24,25 +24,7 @@ fi
 TAR_PATH=/home/vcap
 
 cd ${PROJECT_ROOT}/web
-COMMAND="../vendor/drush/drush/drush sql-dump @$DRUPAL_ENV --result-file=$TAR_PATH/$SQL_FILENAME"
-echo '========================================================================================'
-pwd
-echo '----------------------------------------------------------------------------------------'
-echo $COMMAND
-$COMMAND
-echo '----------------------------------------------------------------------------------------'
+../vendor/drush/drush/drush sql-dump @$DRUPAL_ENV --result-file=$TAR_PATH/$SQL_FILENAME
 ls -la /home/vcap
-echo '----------------------------------------------------------------------------------------'
-COMMAND="tar -zcvf $SQL_FILENAME.tar.gz -C $TAR_PATH $SQL_FILENAME"
-echo '----------------------------------------------------------------------------------------'
-echo $COMMAND
-echo '----------------------------------------------------------------------------------------'
-$COMMAND
-echo '----------------------------------------------------------------------------------------'
-COMMAND="../vendor/drush/drush/drush fsp s3backups $SQL_FILENAME.tar.gz $SQL_FILENAME.tar.gz"
-echo '========================================================================================'
-pwd
-echo '----------------------------------------------------------------------------------------'
-echo $COMMAND
-$COMMAND
-echo '========================================================================================'
+tar -zcvf $SQL_FILENAME.tar.gz -C $TAR_PATH $SQL_FILENAME
+../vendor/drush/drush/drush fsp s3backups $SQL_FILENAME.tar.gz $SQL_FILENAME.tar.gz
