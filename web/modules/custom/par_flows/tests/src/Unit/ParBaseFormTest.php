@@ -124,6 +124,8 @@ class ParBaseFormTest extends UnitTestCase {
     $this->assertFalse($this->baseForm->decideBooleanValue($off, $on, $off), "The boolean value is identified as being 'off'.");
 
     $this->assertFalse($this->baseForm->decideBooleanValue(1), "The boolean value is correctly identified as being 'off'.");
+    $this->assertFalse($this->baseForm->decideBooleanValue('1'), "The boolean value is correctly identified as being 'off'.");
     $this->assertTrue($this->baseForm->decideBooleanValue('on'), "The boolean value is correctly identified as being 'on'.");
+    $this->assertTrue($this->baseForm->decideBooleanValue(TRUE), "The boolean value is correctly identified as being 'on'.");
   }
 }

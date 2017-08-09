@@ -39,7 +39,8 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
       $this->setState("edit:{$par_data_partnership->id()}");
 
       // We need to get the value of the terms and conditions checkbox.
-      $this->loadDataValue('terms_conditions', $par_data_partnership->get('terms_authority_agreed')->getString());
+      $terms_value = empty($par_data_partnership->get('terms_authority_agreed')->getString()) ? TRUE : FALSE;
+      $this->loadDataValue('terms_conditions', $terms_value);
     }
   }
 
@@ -100,8 +101,8 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
 
     // Save the value for the terms field.
-    if ($this->decideBooleanValue($this->getTempDataValue('terms_conditions'))) {
-      $par_data_partnership->set('terms_authority_agreed', $this->getTempDataValue('terms_conditions'));
+    if ($terms_conditions_value = $this->decideBooleanValue($this->getTempDataValue('terms_conditions'))) {
+      $par_data_partnership->set('terms_authority_agreed', $terms_conditions_value);
     }
 
     if ($par_data_partnership->save()) {

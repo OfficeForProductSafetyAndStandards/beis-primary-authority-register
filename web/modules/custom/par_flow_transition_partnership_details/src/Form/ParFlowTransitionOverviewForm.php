@@ -39,9 +39,11 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       $this->setState("edit:{$par_data_partnership->id()}");
 
       // Partnership Information Confirmation.
-      $this->loadDataValue('confirmation', $par_data_partnership->get('partnership_info_agreed_authority')->getString());
+      $confirmation_value = !empty($par_data_partnership->get('partnership_info_agreed_authority')->getString()) ? TRUE : FALSE;
+      $this->loadDataValue('confirmation', $confirmation_value);
       // Written Summary Confirmation.
-      $this->loadDataValue('partnership_agreement', $par_data_partnership->get('written_summary_agreed')->getString());
+      $partnership_agreement_value = !empty($par_data_partnership->get('written_summary_agreed')->getString()) ? TRUE : FALSE;
+      $this->loadDataValue('partnership_agreement', $partnership_agreement_value);
     }
   }
 
@@ -200,9 +202,9 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $form['partnership_agreement'] = [
       '#type' => 'checkbox',
       '#title' => t('A written summary of partnership agreement, such as Memorandum of Understanding, has been agreed with the Business.'),
-      '#disabled' => $this->getDefaultValues('partnership_agreement', FALSE),
-      '#checked' => $this->getDefaultValues('partnership_agreement', FALSE),
-      '#default_value' => $this->getDefaultValues('partnership_agreement', FALSE),
+      '#disabled' => $this->getDefaultValues('partnership_agreement'),
+      '#checked' => $this->getDefaultValues('partnership_agreement'),
+      '#default_value' => $this->getDefaultValues('partnership_agreement'),
       '#return_value' => 'on',
     ];
 
@@ -210,9 +212,9 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $form['confirmation'] = [
       '#type' => 'checkbox',
       '#title' => t('I confirm that the partnership information above is correct.'),
-      '#disabled' => $this->getDefaultValues('confirmation', FALSE),
-      '#checked' => $this->getDefaultValues('confirmation', FALSE),
-      '#default_value' => $this->getDefaultValues('confirmation', FALSE),
+      '#disabled' => $this->getDefaultValues('confirmation'),
+      '#checked' => $this->getDefaultValues('confirmation'),
+      '#default_value' => $this->getDefaultValues('confirmation'),
       '#return_value' => 'on',
     ];
 
@@ -244,15 +246,15 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership);
 
     // Save the value for the partnership status if it's being confirmed.
-    if ($this->decideBooleanValue($this->getTempDataValue('confirmation'))) {
-      $par_data_partnership->set('partnership_info_agreed_authority', $this->getTempDataValue('confirmation'));
+    if ($confirmation_value = $this->decideBooleanValue($this->getTempDataValue('confirmation'))) {
+      $par_data_partnership->set('partnership_info_agreed_authority', $confirmation_value);
       // Also change the status.
       $par_data_partnership->setParStatus('confirmed_authority');
     }
 
     // Save the value for the written agreement if it's being confirmed.
-    if ($this->decideBooleanValue($this->getTempDataValue('partnership_agreement'))) {
-      $par_data_partnership->set('written_summary_agreed', $this->getTempDataValue('partnership_agreement'));
+    if ($partnership_agreement_value = $this->decideBooleanValue($this->getTempDataValue('partnership_agreement'))) {
+      $par_data_partnership->set('written_summary_agreed', $partnership_agreement_value);
     }
 
     if ($par_data_partnership->save()) {

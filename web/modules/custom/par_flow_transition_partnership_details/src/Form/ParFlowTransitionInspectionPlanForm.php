@@ -40,7 +40,7 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
 
       foreach ($par_data_partnership->getInspectionPlan() as $inspection_plan) {
         $element_key = ['document_list', $inspection_plan->id(), 'confirm'];
-        $element_value = $this->decideBooleanValue($inspection_plan->getRawStatus(), 'current') ? '1' : '0';
+        $element_value = $this->decideBooleanValue($inspection_plan->getRawStatus(), 'current');
         $this->loadDataValue($element_key, $element_value);
       }
     }
@@ -72,10 +72,9 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
         'confirm' => [
           '#type' => 'checkbox',
           '#title' => t(''),
-          '#disabled' => $this->getDefaultValues(['document_list', $inspection_plan->id(), 'confirm'], FALSE),
-          '#checked' => $this->getDefaultValues(['document_list', $inspection_plan->id(), 'confirm'], FALSE),
-          '#default_value' => $this->getDefaultValues(['document_list', $inspection_plan->id(), 'confirm'], FALSE),
-          '#return_value' => 'on',
+          '#disabled' => $this->getDefaultValues(['document_list', $inspection_plan->id(), 'confirm']),
+          '#checked' => $this->getDefaultValues(['document_list', $inspection_plan->id(), 'confirm']),
+          '#default_value' => $this->getDefaultValues(['document_list', $inspection_plan->id(), 'confirm']),
         ],
         'inspection_plan' => $this->renderMarkupField($inspection_plan_summary),
       ];

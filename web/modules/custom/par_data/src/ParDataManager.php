@@ -77,6 +77,16 @@ class ParDataManager implements ParDataManagerInterface {
     }
   }
 
+  public function getRegulatoryFunctionsAsOptions() {
+    $options = [];
+    $storage = $this->getParEntityType('par_data_regulatory_function');
+    foreach ($this->getEntityTypeStorage($storage)->loadMultiple() as $function) {
+      $options[$function->id()] = $function->get('function_name')->getString();
+    }
+
+    return $options;
+  }
+
   /**
    * Calculate the average percentage completion for an entity.
    *
