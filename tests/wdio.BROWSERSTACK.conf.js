@@ -58,8 +58,8 @@ config.capabilities = [{
 ];
 
 config.services = ['browserstack'];
-config.user = 'euniceaidoo1';
-config.key = 'z8aabpqRzKvWZDHKTKff';
+config.user = PROCESS.env.BSUSER;
+config.key = PROCESS.env.BSKEY;
 config.browserstackLocal = true;
 // config.host = 'hub-cloud.browserstack.com';
 config.baseUrl = 'http://localhost:8111';
