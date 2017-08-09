@@ -121,10 +121,10 @@ deploy:
       
   - provider: cloudfoundry
     api: https://api.cloud.service.gov.uk
-    username: chris.moreton@transformuk.com
     manifest: manifest.continuous.yml
+    username: chris.moreton@transformuk.com
     password:
-      secure: lKhefinPSDBqgBjlEkZrx9z7qurg0UYDAbc1F/qv46/USrkUPE3Yvv5NUSrm0pYZnM9Uv5olZEVJ2wG6ETZ8ZUEILrPebBpXkNrN87s5GbzJTvAgchAxNmuPjuwkgidNw7ebUrTKlcFJCCF4VSnGxbqwTS1iR+txPnc+J5bojlEnS705XhGqceFREaLhzo7vGrTm1seOoef/IPKkkpNuPrlBYixwq2IY5GeyKyRteBd0Xv1S1xuPtB4Z18sxwKU+jzc7BJJuvRPHXqW8FoOOG7zK+kBMw+TygbMV/UdxAwQp7lHsTLMr8A0+HH35/6/2C/jlQ/hk6jUaCt6MrlJoiSCEbjFbnBIHzTDh8Tz9YhQHY4oM8bxvm4W6MGd5OrlL2GxhKRQMhrcQEbVvmJKkBiVF92pUGG5Jz7fNidhtRdsTDSp9PPCSE0yDGHmxXndVMkVHstf9UmUL0yuQ+voQe138pF68FmQHbwc7qaQoY7NRXM41BhS6p2r3VPcCV3Br/Mer7je+POWGksqke5diY4j+uj4GdLk3WLSR4dxU5/2dPgVa/+Rn3XWsZb2NUD8dpMmQWZ3x17fC3JzCoFT9gS1mct8T7By1SJKQ+Jtl5oOuEyWxkb+03FJc87Liiozk3gDMh5Fkc2w8pdO6hHd9nVtOM4j8ShDMdDKu465GaYw=
+      secure: kruVy6I8K6qBzSWKHIubu8xqvqnJuhfClrR8eczALEfnci0ZhTisYB+HQTRGvv8r2amsSGL1R+VP110fXAsc5/BFWpXklP9yfTIL+IXjvzmK/A6xOc0DRwb7LSp1e1wow6swkFbBpgky2qpqcG4PHW20ulJQOYJB8aohHKMF4VRQ72SZaS++gg50fd7dk57+LgweU193hManPlLUJt1hX/Sj2KXYKhTJjOlq1j0pEqCmzTGBVvXay6n3JTJp+WPmRvee00M4LML5FmADN7wm6N83LCuym93LCFq5FODlalbS6mJx7XsX8VWznvUAkBug77MK7c1iXstHtRmMYeZtgeOonKjs8vQv8dx8cgSMgYTq/UmiN/ibzF7H1soa1a+RYQI0/3zv7TEm9dyYTMd3UdNTWJyjMjLaJpc+l+IC4+UG1/ReUrBDQ9uzZSEUBdaAev6pom/iRm+1KBgXD8v2YS8Y/7EqGCovxDv+GBEm1l3VMQYWMC3Xia12NkSzSdppwf0wCQmzOONcsRM5Fm3kAAiDC3NLDhiuIkX15AZlRKXbBwYg2ZT6V4h2qpGbHWVk42JiY9MpdBbEqFGuqeza+OCXnGSV+IWAgOFvhqAHHwY/Sc0vBu/ODkECzexDmibSj0blZjKP5Qxh/xQJ6AsTVSTtxO56y5kE8xG+qofq22g=
     organization: beis-nmo-trial
     space: sandbox
     on:
