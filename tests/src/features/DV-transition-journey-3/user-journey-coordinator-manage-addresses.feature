@@ -43,13 +43,13 @@ Feature: Coordinator User - Manage Addresses
         And I add "A Change" to the inputfield "#edit-address-line2"
         And I add "Change Town" to the inputfield "#edit-town-city"
         And I add "Change County" to the inputfield "#edit-county"
-        And I add "Change Country" to the inputfield "#edit-country"
-        And I click on the button "#edit-next"
+        And I select the option with the text "Wales" for element "#edit-country"
+        When I click on the button "#edit-next"
         Then the element "span.address-line1" contains the text "1 Change Road"
-        Then the element "span.address-line2" contains the text "A Change"
-        Then the element "span.locality" contains the text "Change Town"
-        Then the element "span.postal-code" contains the text "Change Postcode"
-#        Then the element "span.country" contains the text "Change Country"
+        And the element "span.address-line2" contains the text "A Change"
+        And the element "span.locality" contains the text "Change Town"
+        And the element "span.postal-code" contains the text "Change Postcode"
+        And the element "span.country" contains the text "Wales"
 
         # EDIT MAIN BUSINESS CONTACT
 

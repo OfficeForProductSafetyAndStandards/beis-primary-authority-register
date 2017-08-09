@@ -56,12 +56,12 @@ Feature: Business User - Manage Addresses
         And I add "New Change State" to the inputfield "#edit-town-city"
         And I add "US-CH" to the inputfield "#edit-county"
         And I select the option with the text "Wales" for element "#edit-country"
-        And I click on the button "#edit-next"
+        When I click on the button "#edit-next"
         Then the element "span.address-line1" contains the text "1 Change St"
-        Then the element "span.address-line2" contains the text "New Change"
-        Then the element "span.locality" contains the text "New Change State"
-        Then the element "span.postal-code" contains the text "change"
-#        Then the element "span.country" contains the text "Change Country"
+        And the element "span.address-line2" contains the text "New Change"
+        And the element "span.locality" contains the text "New Change State"
+        And the element "span.postal-code" contains the text "change"
+        And the element "span.country" contains the text "Wales"
 
         # EDIT MAIN BUSINESS CONTACT
 
