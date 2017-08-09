@@ -17,25 +17,25 @@ configuration:
       confirmed_business: Confirmed by the Organisation
   terms_organisation_agreed:
     boolean_values:
-      0: 'Not yet agreed'
-      1: 'Terms agreed by the organisation'
+      '0': 'Not yet agreed'
+      '1': 'Terms agreed by the organisation'
   terms_authority_agreed:
     boolean_values:
-      0: 'Not yet agreed'
-      1: 'Terms agreed by the authority'
+      '0': 'Not yet agreed'
+      '1': 'Terms agreed by the authority'
   coordinator_suitable:
     boolean_values:
-      0: 'Not suitable'
-      1: 'Suitable for co-ordinators'
+      '0': 'Not suitable'
+      '1': 'Suitable for co-ordinators'
   partnership_info_agreed_authority:
     boolean_values:
-      0: 'Not yet agreed'
-      1: 'Partnership information agreed by the authority'
+      '0': 'Not yet agreed'
+      '1': 'Partnership information agreed by the authority'
   partnership_info_agreed_business:
     boolean_values:
-      0: 'Not yet agreed'
-      1: 'Partnership information agreed by the business'
+      '0': 'Not yet agreed'
+      '1': 'Partnership information agreed by the business'
   written_summary_agreed:
     boolean_values:
-      0: 'Not yet agreed'
-      1: 'Written summary agreed with the business'
+      '0': 'Not yet agreed'
+      '1': 'Written summary agreed with the business'

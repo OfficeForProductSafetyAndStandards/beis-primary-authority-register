@@ -8,8 +8,8 @@ help: ''
 configuration:
   premises_mapped:
     boolean_values:
-      0: 'Not mapped'
-      1: Mapped
+      '0': 'Not mapped'
+      '1': Mapped
   nation:
     allowed_values:
       GB-ENG: 'England'
@@ -18,10 +18,10 @@ configuration:
       GB-NIR: 'Northern Ireland'
   employees_band:
     allowed_values:
-      50: '10-49'
-      250: '50-249'
-      1000: '250+'
-      10: '0-9'
+      '50': '10-49'
+      '250': '50-249'
+      '1000': '250+'
+      '10': '0-9'
   size:
     allowed_values:
       small: 'Small'
