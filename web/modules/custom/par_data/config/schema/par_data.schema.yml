@@ -370,7 +370,7 @@ par_data.configuration_type.allowed_values:
     type: string
     label: 'Allowed Value'
 par_data.configuration_type.boolean_values:
-  type: sequence
+  type: mapping
   label: 'Boolean Values'
   mapping:
     1:
