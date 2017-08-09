@@ -12,9 +12,9 @@ configuration:
       - about_partnership
   partnership_status:
     allowed_values:
-      awaiting_review: Awaiting Review
-      confirmed_authority: Confirmed by the Authority
-      confirmed_business: Confirmed by the Organisation
+      awaiting_review: 'Awaiting Review'
+      confirmed_authority: 'Confirmed by the Authority'
+      confirmed_business: 'Confirmed by the Organisation'
   terms_organisation_agreed:
     boolean_values:
       'on': 'Terms agreed by the organisation'

@@ -12,7 +12,7 @@ configuration:
     allowed_values:
       current: Current
       expired: Expired
-      in_progress: In Progress
+      in_progress: 'In Progress'
       revoked: Revoked
   approved_rd_executive:
     boolean_values:

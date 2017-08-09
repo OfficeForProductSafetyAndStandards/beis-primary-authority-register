@@ -12,18 +12,18 @@ configuration:
       'off': 'Not mapped'
   nation:
     allowed_values:
-      GB-ENG: 'England'
-      GB-SCT: 'Scotland'
-      GB-WLS: 'Wales'
+      GB-ENG: England
+      GB-SCT: Scotland
+      GB-WLS: Wales
       GB-NIR: 'Northern Ireland'
   employees_band:
     allowed_values:
-      '50': '10-49'
-      '250': '50-249'
-      '1000': '250+'
-      '10': '0-9'
+      50: 10-49
+      250: 50-249
+      1000: 250+
+      10: 0-9
   size:
     allowed_values:
-      small: 'Small'
-      medium: 'Medium'
-      large: 'Large'
+      small: Small
+      medium: Medium
+      large: Large
