@@ -178,9 +178,8 @@ after_deploy:
 # Update Drupal, sync config, etc...
 #-----------------------------------------------------------------------------
     
-  - if [[ $TRAVIS_TAG == '' ]]; then cf ssh $PAAS_APP_INSTANCE -c "cd app/tools && python extract_postgres_env_vars.py"; fi
-  - if [[ $TRAVIS_TAG == '' ]]; then cf ssh $PAAS_APP_INSTANCE -c "cd app && source drupal-update-paas-envs.sh && sh drupal-update-paas.sh"; fi
-
+  - if [[ $TRAVIS_TAG == '' ]]; then cf ssh $PAAS_APP_INSTANCE -c "cd app/tools && python post_deploy.py"; fi
+  
 ##############################################################################
 ### STORE ARTIFACTS                                                        ###
 ##############################################################################

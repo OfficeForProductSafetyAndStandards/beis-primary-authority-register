@@ -1,15 +1,11 @@
 #############################################
-# Baseline a database in the PaaS environment
+# Post deployment updates
 #############################################
 
 import json, os
 import sys
 
 from subprocess import call
-
-if os.environ["APP_ENV"] == "production":
-  print "Please don't run this on production!"
-  sys.exit()
 
 j = json.loads(os.environ.get('VCAP_SERVICES'))
 
@@ -20,13 +16,21 @@ port = credentials["port"]
 username = credentials["username"]
 password = credentials["password"]
 
+f = open("/home/vcap/.pgpass", "w")
+f.write(host + ":5432:" + name + ":" + username + ":" + password)
+f.close()
+
+os.system("chmod 600 /home/vcap/.pgpass")
+
 os.environ["PHPRC"] = os.environ["HOME"] + "/app/php/etc"
 os.environ["PATH"]= os.environ["PATH"] + ":" + os.environ["HOME"] + "/app/php/bin:" + os.environ["HOME"] + "/app/php/sbin"
 os.environ["HTTPD_SERVER_ADMIN"] = "admin@localhost"
 os.environ["LD_LIBRARY_PATH"] = os.environ["HOME"] + "/app/php/lib"
 os.environ["PATH"] = os.environ["PATH"] + ":/home/vcap/app/bin/pgsql/bin"
 
-os.system("cd /home/vcap/app/web && ../vendor/drush/drush/drush --root=/home/vcap/app/web sql-drop -y")
-os.system("/home/vcap/app/bin/pgsql/bin/psql -h " + host + " " + name + " " + username + " < /home/vcap/app/docker/fresh_drupal_postgres.sql")
 os.system("cd /home/vcap/app && sh drupal-update.sh /home/vcap/app")
+
+if os.environ["APP_ENV"] == "continuous":
+    os.system("cd /home/vcap/app && sh drupal-dump.sh /home/vcap/app paas-sanitized drush-dump-post-drush-updates-sanitized-latest.sql")
+    
 
