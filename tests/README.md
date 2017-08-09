@@ -23,13 +23,12 @@ Sometimes its useful to only execute a single feature file, to do so use the fol
 $ ./node_modules/.bin/wdio --spec ./test/features/select.feature wdio.<CONFIG>.conf.js
 ```
 
-# Using tags
+## Maintaining tests (Gherkin)
 
-To run only the tests with specific tag(s) use the `--tags=` parameter like so:
+Most maintenance of tests involves updating things such as the way elements are referenced.  
 
-```sh
-$ ./node_modules/.bin/wdio --tags=@Tag,@AnotherTag wdio.<CONFIG>.conf.js
-```
+This is within the Gherkin, so easy to update. 
+
 
 # List of predefined steps
 
@@ -111,3 +110,9 @@ Check out all predefined snippets. You can see how they get used in [`sampleSnip
 ## Pa11y Accessibility Checker
 
 ./node_modules/.bin/pa11y-ci -j > ./reports/wcag2aa_report.json
+
+## Drush commands
+
+docker exec -it par_beta_web /var/www/html/vendor/bin/drush --root=/var/www/html/web cr
+docker exec -it par_beta_web /var/www/html/vendor/bin/drush --root=/var/www/html/web cim
+docker exec -it par_beta_web bash -c 'php composer.phar install' && docker exec -it par_beta_web /var/www/html/vendor/bin/drush --root=/var/www/html/web config-import && docker exec -it par_beta_web /var/www/html/vendor/bin/drush --root=/var/www/html/web cr
