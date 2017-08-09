@@ -114,23 +114,12 @@ script:
 ### DEPLOY                                                                 ###
 ##############################################################################
 
-deploy:
+after_success:
+  - cd cf
+  - ./push.sh continuous
+  
 #-----------------------------------------------------------------------------
-# Master branch deploys to "continuous" environment
-#-----------------------------------------------------------------------------
-      
-  - provider: cloudfoundry
-    api: https://api.cloud.service.gov.uk
-    manifest: manifest.continuous.yml
-    username: chris.moreton@transformuk.com
-    password: $CF_PASSWORD
-    organization: beis-nmo-trial
-    space: sandbox
-    on:
-      repo: TransformCore/beis-par-beta
-      
-#-----------------------------------------------------------------------------
-# Tagged master branch deploys to "demo" environment
+# Tagged master branch pushes packaged application to S3
 #-----------------------------------------------------------------------------
       
   - provider: s3
@@ -144,41 +133,6 @@ deploy:
       repo: TransformCore/beis-par-beta
       tags: true      
 
-##############################################################################
-### POST DEPLOY                                                            ###
-##############################################################################
-
-after_deploy:
-  - cf login -a api.cloud.service.gov.uk -u chris.moreton@transformuk.com -p $CF_PASSWORD
-  - PAAS_APP_INSTANCE="par-beta-continuous";
-  
-#-----------------------------------------------------------------------------
-# Set environment variables on PaaS instance
-#-----------------------------------------------------------------------------
-   
-  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE S3_ACCESS_KEY $S3_ACCESS_KEY; fi
-  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE S3_SECRET_KEY $S3_SECRET_KEY; fi
-  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE S3_BUCKET_PUBLIC $S3_BUCKET_PUBLIC; fi
-  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE S3_BUCKET_PRIVATE $S3_BUCKET_PRIVATE; fi
-  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE S3_BUCKET_ARTIFACTS $S3_BUCKET_ARTIFACTS; fi
-  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE PAR_HASH_SALT $PAR_HASH_SALT; fi
-  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE PAR_GOVUK_NOTIFY_KEY $PAR_GOVUK_NOTIFY_KEY; fi
-  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE; fi
-  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE APP_ENV $APP_ENV; fi
-  - if [[ $TRAVIS_TAG == '' ]]; then cf restage $PAAS_APP_INSTANCE; fi
-  
-#-----------------------------------------------------------------------------
-# Publish test reports
-#-----------------------------------------------------------------------------
-    
-  - cd tests/reports/html && cf push -f ../../reports-manifest.yml
-  
-#-----------------------------------------------------------------------------
-# Update Drupal, sync config, etc...
-#-----------------------------------------------------------------------------
-    
-  - if [[ $TRAVIS_TAG == '' ]]; then cf ssh $PAAS_APP_INSTANCE -c "cd app/tools && python post_deploy.py"; fi
-  
 ##############################################################################
 ### STORE ARTIFACTS                                                        ###
 ##############################################################################
