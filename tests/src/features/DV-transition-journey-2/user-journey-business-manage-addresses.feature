@@ -17,8 +17,8 @@ Feature: Business User - Manage Addresses
         And I add "par_business@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
-        Then I expect that element ".error-message" is not visible
-        When I click on the button ".button-start"
+        And I expect that element ".error-message" is not visible
+        And I click on the button ".button-start"
 
         # PARTNERSHIPS DASHBOARD
 #        And I add "DCBA" to the inputfield "#edit-name"
@@ -41,7 +41,7 @@ Feature: Business User - Manage Addresses
         And I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
         And I scroll to element ".table-scroll-wrapper"
-        When I click on the link "Review and confirm your business details"
+        And I click on the link "Review and confirm your business details"
         Then the element "#edit-about-business" contains the text "About the business"
         And the element "#edit-legal-entity" contains the text "Legal Entities"
         And the element "#edit-primary-contact" contains the text "Main business contact"
@@ -56,11 +56,11 @@ Feature: Business User - Manage Addresses
         And I add "New Change State" to the inputfield "#edit-town-city"
         And I add "US-CH" to the inputfield "#edit-county"
         And I add "ChangeCountry" to the inputfield "#edit-country"
-        And I click on the button "#edit-next"
+        When I click on the button "#edit-next"
         Then the element "span.address-line1" contains the text "1 Change St"
-        Then the element "span.address-line2" contains the text "New Change"
-        Then the element "span.locality" contains the text "New Change State"
-        Then the element "span.postal-code" contains the text "change"
+        And the element "span.address-line2" contains the text "New Change"
+        And the element "span.locality" contains the text "New Change State"
+        And the element "span.postal-code" contains the text "change"
 #        Then the element "span.country" contains the text "Change Country"
 
         # EDIT MAIN BUSINESS CONTACT
