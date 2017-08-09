@@ -27,3 +27,8 @@ configuration:
       small: Small
       medium: Medium
       large: Large
+  field_coordinator_type:
+    allowed_values:
+      franchise: 'Franchise Group'
+      trade_association: 'Trade Association'
+      other: 'Other'

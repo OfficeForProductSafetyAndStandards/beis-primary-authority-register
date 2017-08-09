@@ -10,6 +10,8 @@ dependencies:
     - par_data.par_data_enforcement_action_type.enforcement_action
   module:
     - text
+_core:
+  default_config_hash: DI6v7FHrHCFcqjSglug__8RnBfCrdA-f4R90QbhOEHk
 id: par_data_enforcement_action.enforcement_action.summary
 targetEntityType: par_data_enforcement_action
 bundle: enforcement_action
