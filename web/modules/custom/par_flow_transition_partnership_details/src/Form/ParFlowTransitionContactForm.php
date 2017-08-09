@@ -65,19 +65,13 @@ class ParFlowTransitionContactForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
+    $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
 
     // The Person's title.
-    $title_options = [
-      'Ms',
-      'Mrs',
-      'Mr',
-      'Dr',
-    ];
     $form['salutation'] = [
-      '#type' => 'select',
+      '#type' => 'textfield',
       '#title' => $this->t('Title'),
       '#default_value' => $this->getDefaultValues("salutation"),
-      '#options' => array_combine($title_options, $title_options),
       '#required' => TRUE,
     ];
 
@@ -122,9 +116,9 @@ class ParFlowTransitionContactForm extends ParBaseForm {
 
     // Preferred contact methods.
     $contact_options = [
-      'communication_email' => $par_data_person->getBooleanFieldLabel('communication_email', 'on'),
-      'communication_phone' => $par_data_person->getBooleanFieldLabel('communication_phone', 'on'),
-      'communication_mobile' => $par_data_person->getBooleanFieldLabel('communication_mobile', 'on'),
+      'communication_email' => $person_bundle->getBooleanFieldLabel('communication_email', 'on'),
+      'communication_phone' => $person_bundle->getBooleanFieldLabel('communication_phone', 'on'),
+      'communication_mobile' => $person_bundle->getBooleanFieldLabel('communication_mobile', 'on'),
     ];
     $form['preferred_contact'] = [
       '#type' => 'checkboxes',
@@ -148,6 +142,7 @@ class ParFlowTransitionContactForm extends ParBaseForm {
 
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($par_data_person);
+    $this->addCacheableDependency($person_bundle);
 
     return parent::buildForm($form, $form_state);
   }

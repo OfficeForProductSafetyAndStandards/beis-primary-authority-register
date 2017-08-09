@@ -63,6 +63,7 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPremises $par_data_premises = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_premises);
+    $premises_bundle = $this->getParDataManager()->getParBundleEntity('par_data_premises');
 
     $form['info'] = [
       '#markup' => t('Change the address of your business.'),
@@ -118,7 +119,7 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
     $form['country'] = [
       '#type' => 'select',
       '#title' => $this->t('Country'),
-      '#options' => $par_data_premises->getAllowedValues('nation'),
+      '#options' => $premises_bundle->getAllowedValues('nation'),
       '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_country_code"),
       '#required' => TRUE,
     ];
@@ -145,6 +146,7 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
 
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($par_data_premises);
+    $this->addCacheableDependency($premises_bundle);
 
     return parent::buildForm($form, $form_state);
   }

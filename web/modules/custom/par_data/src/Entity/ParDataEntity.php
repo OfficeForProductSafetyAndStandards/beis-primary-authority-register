@@ -66,7 +66,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function getParStatus() {
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
     $raw_status = $this->getRawStatus();
-    return $this->getAllowedFieldlabel($field_name, $raw_status);
+    return $this->getTypeEntity()->getAllowedFieldlabel($field_name, $raw_status);
   }
 
   /**
@@ -74,7 +74,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    */
   public function setParStatus($value) {
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
-    $allowed_values = $this->getAllowedValues($field_name);
+    $allowed_values = $this->getTypeEntity()->getAllowedValues($field_name);
     if (isset($allowed_values[$value])) {
       $this->set($field_name, $value);
     }
@@ -87,7 +87,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     $total = 0;
     $completed = 0;
 
-    $fields = $this->getCompletionFields();
+    $fields = $this->getTypeEntity()->getCompletionFields();
     foreach ($fields as $field_name) {
       if ($include_deltas) {
         // @TODO Count multiple field values individually rather than as one field.
@@ -103,68 +103,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     }
 
     return $total > 0 ? ($completed / $total) * 100 : 0;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getCompletionFields($include_required = FALSE) {
-    $fields = [];
-
-    // Get the names of any extra fields required for completion.
-    $required_fields = $this->getTypeEntity()->getConfigurationElementByType('entity', 'required_fields');
-
-    // Get all the required fields on an entity.
-    foreach ($this->getFieldDefinitions() as $field_name => $field_definition) {
-      if ($include_required && $field_definition->isRequired() && !in_array($field_name, $this->excludedFields())) {
-        $fields[] = $field_name;
-      }
-      elseif (isset($required_fields) && in_array($field_name, $required_fields)) {
-        $fields[] = $field_name;
-      }
-    }
-
-    return $fields;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getBooleanFieldLabel($field_name, bool $value = FALSE) {
-    $boolean_values = $this->getTypeEntity()->getConfigurationElementByType($field_name, 'boolean_values');
-    $key = !empty($value) ? 'on' : 'off';
-    return $this->hasField($field_name) && isset($boolean_values[$key]) ? $boolean_values[$key] : FALSE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getAllowedValues($field_name) {
-    $allowed_values = $this->getTypeEntity()->getConfigurationElementByType($field_name, 'allowed_values');
-    return $allowed_values ?: [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getAllowedFieldlabel($field_name, $value = FALSE) {
-    $allowed_values = $this->getTypeEntity()->getConfigurationElementByType($field_name, 'allowed_values');
-    return $this->hasField($field_name) && isset($allowed_values[$value]) ? $allowed_values[$value] : $value;
-  }
-
-  /**
-   * System fields excluded from user input.
-   */
-  protected function excludedFields() {
-    return [
-      'id',
-      'type',
-      'uuid',
-      'user_id',
-      'created',
-      'changed',
-      'name'
-    ];
   }
 
   /**

@@ -52,6 +52,11 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
+    // Configuration for each entity is contained within the bundle.
+    $partnership_bundle = $this->getParDataManager()->getParBundleEntity('par_data_partnership');
+    $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
+    $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
+    $premises_bundle = $this->getParDataManager()->getParBundleEntity('par_data_premises');
 
     // About the Partnership.
     $form['first_section'] = [
@@ -232,6 +237,10 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
+    $this->addCacheableDependency($partnership_bundle);
+    $this->addCacheableDependency($person_bundle);
+    $this->addCacheableDependency($legal_entity_bundle);
+    $this->addCacheableDependency($premises_bundle);
 
     return parent::buildForm($form, $form_state);
   }

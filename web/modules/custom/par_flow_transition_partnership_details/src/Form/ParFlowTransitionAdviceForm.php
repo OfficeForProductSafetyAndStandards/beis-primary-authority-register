@@ -42,7 +42,7 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
       $this->setState("edit:{$par_data_partnership->id()},{$par_data_advice->id()}");
 
       // Partnership Confirmation.
-      $allowed_types = $par_data_advice->getAllowedValues('advice_type');
+      $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
       $advice_type = $par_data_advice->get('advice_type')->getString();
       if (isset($allowed_types[$advice_type])) {
         $this->loadDataValue('document_type', $advice_type);
@@ -63,26 +63,26 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_advice);
+    $advice_bundle = $this->getParDataManager()->getParBundleEntity('par_data_advice');
 
     // Render the document in view mode to allow users to
     // see which one they're confirming details for.
-    // @TODO We don't have a reference to the document yet.
     $document_view_builder = $par_data_advice ? $par_data_advice->getViewBuilder() : NULL;
     $document = $document_view_builder->view($par_data_advice, 'summary');
     $form['document'] = $this->renderMarkupField($document) + [
       '#title' => $this->t('Document'),
     ];
 
-    // The Person's work phone number.
+    // The document type.
     $form['document_type'] = [
       '#type' => 'radios',
       '#title' => $this->t('Type of Document'),
-      '#options' => $par_data_advice->getAllowedValues('advice_type'),
+      '#options' => $advice_bundle->getAllowedValues('advice_type'),
       '#default_value' => $this->getDefaultValues("document_type"),
       '#required' => TRUE,
     ];
 
-    // The Person's work phone number.
+    // The regulatory functions for this document.
     $form['regulatory_functions'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Regulatory functions this document covers'),
@@ -97,6 +97,7 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
 
     // Make sure to add the document cacheability data to this form.
     $this->addCacheableDependency($par_data_advice);
+    $this->addCacheableDependency($advice_bundle);
 
     return parent::buildForm($form, $form_state);
   }
@@ -109,7 +110,7 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
 
     // Save the value for the about_partnership field.
     $par_data_advice = $this->getRouteParam('par_data_advice');
-    $allowed_types = $par_data_advice->getAllowedValues('advice_type');
+    $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
     $advice_type = $this->getTempDataValue('document_type');
     if (isset($allowed_types[$advice_type])) {
       $par_data_advice->set('advice_type', $advice_type);

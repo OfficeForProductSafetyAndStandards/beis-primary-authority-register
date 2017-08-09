@@ -57,6 +57,7 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataLegalEntity $par_data_legal_entity = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_legal_entity);
+    $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
 
     if (!empty($par_data_legal_entity)) {
       $id = $par_data_legal_entity->id();
@@ -83,7 +84,7 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
       '#type' => 'select',
       '#title' => $this->t('Type of Legal Entity'),
       '#default_value' => isset($id) ? $this->getDefaultValues("legal_entity_{$id}_legal_entity_type") : '',
-      '#options' => $par_data_legal_entity->getAllowedValues('legal_entity_types'),
+      '#options' => $legal_entity_bundle->getAllowedValues('legal_entity_type'),
       '#required' => TRUE,
     ];
 

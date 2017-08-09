@@ -54,8 +54,8 @@ class ParDataTypeTest extends UnitTestCase {
         ],
         'field_terms' => [
           'boolean_values' => [
-            0 => 'Agreed',
-            1 => 'Awaiting confirmation',
+            'on' => 'Agreed',
+            'off' => 'Awaiting confirmation',
           ]
         ],
         'field_salutation' => [
@@ -132,8 +132,8 @@ class ParDataTypeTest extends UnitTestCase {
    */
   public function testElementTypeConfiguration() {
     $expected = [
-      0 => 'Agreed',
-      1 => 'Awaiting confirmation',
+      'on' => 'Agreed',
+      'off' => 'Awaiting confirmation',
     ];
     $actual = $this->parDataType->getConfigurationElementByType('field_terms', 'boolean_values');
 
@@ -142,8 +142,6 @@ class ParDataTypeTest extends UnitTestCase {
     $label_field = $this->parDataType->getConfigurationElementByType('entity', 'label_field');
     $this->assertEquals('field_name', $label_field, "The label field is correctly configured.");
   }
-
-
 
   /**
    * @covers ::getConfigurationElementByType
@@ -154,5 +152,30 @@ class ParDataTypeTest extends UnitTestCase {
 
     $actual = $this->parDataType->getConfigurationElementByType('field_terms', 'unknown_configuration');
     $this->assertNull($actual, "Unknown value not returned for field_terms field.");
+  }
+
+  /**
+   * @covers ::getBooleanFieldLabel
+   */
+  public function testGetBooleanValues() {
+    $this->assertEquals('Awaiting confirmation', $this->parDataType->getBooleanFieldLabel('field_terms'), "The boolean off display label is correctly configured.");
+    $this->assertEquals('Awaiting confirmation', $this->parDataType->getBooleanFieldLabel('field_terms', FALSE), "The boolean off display label is correctly configured.");
+    $this->assertEquals('Agreed', $this->parDataType->getBooleanFieldLabel('field_terms', TRUE), "The boolean on display label is correctly configured.");
+    $this->assertEquals('Agreed', $this->parDataType->getBooleanFieldLabel('field_terms', 'on'), "The boolean on display label is correctly configured.");
+  }
+
+  /**
+   * @covers ::getAllowedValues
+   */
+  public function testGetAllowedValues() {
+    $this->assertArrayEquals([], $this->parDataType->getAllowedValues('field_unknown'), "Empty array returned for unspecified allowed values.");
+  }
+
+  /**
+   * @covers ::getAllowedFieldlabel
+   */
+  public function testGetAllowedFieldlabel() {
+    $this->assertEquals('Ms', $this->parDataType->getBooleanFieldLabel('field_salutation', 'ms'), "The correct display label was returned for the given field value.");
+    $this->assertFalse($this->parDataType->getBooleanFieldLabel('field_salutation', 'Elephant'), "The original value was not found nothing returned.");
   }
 }
