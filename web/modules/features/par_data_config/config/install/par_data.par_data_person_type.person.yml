@@ -12,13 +12,13 @@ configuration:
       - last_name
   communication_email:
     boolean_values:
-      'on': 'Please communicate by email'
+      'on': 'Email'
       'off': 'Do not communicate by email'
   communication_phone:
     boolean_values:
-      'on': 'Please communicate by email'
-      'off': 'Do not communicate by email'
+      'on': 'Work phone'
+      'off': 'Do not communicate by work phone'
   communication_mobile:
     boolean_values:
-      'on': 'Please communicate by email'
-      'off': 'Do not communicate by email'
+      'on': 'Mobile phone'
+      'off': 'Do not communicate by mobile phone'

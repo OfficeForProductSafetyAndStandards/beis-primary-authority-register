@@ -132,7 +132,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    */
   public function getBooleanFieldLabel($field_name, bool $value = FALSE) {
     $boolean_values = $this->getTypeEntity()->getConfigurationElementByType($field_name, 'boolean_values');
-    $key = $value ? 1 : 0;
+    $key = !empty($value) ? 'on' : 'off';
     return $this->hasField($field_name) && isset($boolean_values[$key]) ? $boolean_values[$key] : FALSE;
   }
 
