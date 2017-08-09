@@ -16,9 +16,9 @@ configuration:
       revoked: Revoked
   approved_rd_executive:
     boolean_values:
-      '0': 'Awaiting approval'
       '1': 'Approved by RD executive'
+      '0': 'Awaiting approval'
   consulted_national_regulator:
     boolean_values:
-      '0': 'Awaiting national regulator consultation'
       '1': 'National regulator consulted'
+      '0': 'Awaiting national regulator consultation'

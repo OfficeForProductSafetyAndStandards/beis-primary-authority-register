@@ -8,8 +8,8 @@ help: ''
 configuration:
   premises_mapped:
     boolean_values:
-      '0': 'Not mapped'
       '1': Mapped
+      '0': 'Not mapped'
   nation:
     allowed_values:
       GB-ENG: 'England'
