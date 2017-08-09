@@ -43,7 +43,7 @@ Feature: Coordinator User - Manage Addresses
         And I add "A Change" to the inputfield "#edit-address-line2"
         And I add "Change Town" to the inputfield "#edit-town-city"
         And I add "Change County" to the inputfield "#edit-county"
-        And I add "Change Country" to the inputfield "#edit-country"
+        And I select the option with the text "Wales" for element "#edit-country"
         And I click on the button "#edit-next"
         Then the element "span.address-line1" contains the text "1 Change Road"
         Then the element "span.address-line2" contains the text "A Change"

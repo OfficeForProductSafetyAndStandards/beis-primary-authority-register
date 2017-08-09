@@ -80,6 +80,7 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
     ];
 
     // The Person's work phone number.
+    
     $form['regulatory_functions'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Regulatory functions this document covers'),

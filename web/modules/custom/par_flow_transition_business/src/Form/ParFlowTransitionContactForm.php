@@ -51,7 +51,6 @@ class ParFlowTransitionContactForm extends ParBaseForm {
       $this->loadDataValue("person_phone", $par_data_person->get('work_phone')->getString());
       $this->loadDataValue("person_mobile_phone", $par_data_person->get('mobile_phone')->getString());
       $this->loadDataValue("person_email", $par_data_person->get('email')->getString());
-      $this->loadDataValue("person_contact_method", $par_data_person->getPreferredCommunicationMethodId());
       $this->loadDataValue('person_id', $par_data_person->id());
     }
   }
@@ -105,14 +104,6 @@ class ParFlowTransitionContactForm extends ParBaseForm {
       '#title' => $this->t('Email'),
       '#default_value' => $this->getDefaultValues("person_email"),
       '#required' => TRUE,
-    ];
-
-    // Method of contact.
-    $form['contact_method'] = [
-      '#type' => 'radios',
-      '#title' => $this->t('Preferred method of contact (optional)'),
-      '#default_value' => $this->getDefaultValues("person_contact_method"),
-      '#options' => $par_data_person->getAllowedValues('partnership_preferred_communications'),
     ];
 
     $form['notes'] = [
