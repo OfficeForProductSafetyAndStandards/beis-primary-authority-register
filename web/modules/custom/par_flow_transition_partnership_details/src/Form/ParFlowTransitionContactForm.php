@@ -59,10 +59,17 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
 
     // The Person's title.
+    $title_options = [
+      'Ms',
+      'Mrs',
+      'Mr',
+      'Dr',
+    ];
     $form['salutation'] = [
-      '#type' => 'textfield',
+      '#type' => 'select',
       '#title' => $this->t('Title'),
       '#default_value' => $this->getDefaultValues("person_{$this->getDefaultValues('person_id')}_salutation"),
+      '#options' => array_combine($title_options, $title_options),
       '#required' => TRUE,
     ];
 
