@@ -39,7 +39,7 @@ Feature: PAR User - Documentation
         When I click on the link "Review and confirm your documentation for ABCD Mart"
         And I click on the link "edit"
         And I click on the radio "#edit-document-type-authority-advice"
-        And I click on the checkbox "#I DO NOT KNOW WHAT ELEMENT TO TARGET, THE ID CHANGES EVERY TIME"
+        #And I click on the checkbox "#I DO NOT KNOW WHAT ELEMENT TO TARGET, THE ID CHANGES EVERY TIME"
         When I click on the button "#edit-next"
     # Then the element ".placeholder" not contains the text "Error"
     # When I click on the link "Go back to your partnerships"
