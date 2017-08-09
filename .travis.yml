@@ -123,8 +123,7 @@ deploy:
     api: https://api.cloud.service.gov.uk
     manifest: manifest.continuous.yml
     username: chris.moreton@transformuk.com
-    password:
-      secure: kruVy6I8K6qBzSWKHIubu8xqvqnJuhfClrR8eczALEfnci0ZhTisYB+HQTRGvv8r2amsSGL1R+VP110fXAsc5/BFWpXklP9yfTIL+IXjvzmK/A6xOc0DRwb7LSp1e1wow6swkFbBpgky2qpqcG4PHW20ulJQOYJB8aohHKMF4VRQ72SZaS++gg50fd7dk57+LgweU193hManPlLUJt1hX/Sj2KXYKhTJjOlq1j0pEqCmzTGBVvXay6n3JTJp+WPmRvee00M4LML5FmADN7wm6N83LCuym93LCFq5FODlalbS6mJx7XsX8VWznvUAkBug77MK7c1iXstHtRmMYeZtgeOonKjs8vQv8dx8cgSMgYTq/UmiN/ibzF7H1soa1a+RYQI0/3zv7TEm9dyYTMd3UdNTWJyjMjLaJpc+l+IC4+UG1/ReUrBDQ9uzZSEUBdaAev6pom/iRm+1KBgXD8v2YS8Y/7EqGCovxDv+GBEm1l3VMQYWMC3Xia12NkSzSdppwf0wCQmzOONcsRM5Fm3kAAiDC3NLDhiuIkX15AZlRKXbBwYg2ZT6V4h2qpGbHWVk42JiY9MpdBbEqFGuqeza+OCXnGSV+IWAgOFvhqAHHwY/Sc0vBu/ODkECzexDmibSj0blZjKP5Qxh/xQJ6AsTVSTtxO56y5kE8xG+qofq22g=
+    password: $CF_PASSWORD
     organization: beis-nmo-trial
     space: sandbox
     on:
@@ -150,7 +149,7 @@ deploy:
 ##############################################################################
 
 after_deploy:
-  - cf login -a api.cloud.service.gov.uk -u nao.yoshino@transformuk.com -p $CF_PASSWORD
+  - cf login -a api.cloud.service.gov.uk -u chris.moreton@transformuk.com -p $CF_PASSWORD
   - PAAS_APP_INSTANCE="par-beta-continuous";
   
 #-----------------------------------------------------------------------------
