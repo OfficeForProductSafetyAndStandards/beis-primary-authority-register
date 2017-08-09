@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: mVoytu_kRyzqTXrul_CDdC_pzNhytmSW6BVpp0dza9U
+  default_config_hash: H_WKsKIPIjIoGAljDSWFR8uLP-l9Fe-ka_QNGdLElI0
 id: business
 label: Business
 description: 'A Business is an Organisation - usually a commercial one, but not always - that is covered (or intends to be covered) by a Primary Authority Partnership.'
@@ -11,8 +11,8 @@ help: ''
 configuration:
   premises_mapped:
     boolean_values:
-      - 'Not mapped'
-      - Mapped
+      'on': Mapped
+      'off': 'Not mapped'
   nation:
     allowed_values:
       GB-ENG: England

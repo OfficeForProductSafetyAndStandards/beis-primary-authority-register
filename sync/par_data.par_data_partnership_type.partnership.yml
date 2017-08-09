@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: 2FP1hXUQYU_M0jCLTlCpCf1CGfuKm4YAJwArlG4ZKQw
+  default_config_hash: ePgoPnuLMUrWmvI24G-GCMXp9bS5_l9fJjxmoNGVZgc
 id: partnership
 label: Partnership
 description: 'A Partnership is a relationship between a Primary Authority and either a Business ("direct partnership") or a Co-ordinator ("co-ordinated partnership").  Note that in the latter case, the Business records may or may not be held in the PAR3 database.'
@@ -20,25 +20,25 @@ configuration:
       confirmed_business: 'Confirmed by the Organisation'
   terms_organisation_agreed:
     boolean_values:
-      - 'Not yet agreed'
-      - 'Terms agreed by the organisation'
+      'on': 'Terms agreed by the organisation'
+      'off': 'Not yet agreed'
   terms_authority_agreed:
     boolean_values:
-      - 'Not yet agreed'
-      - 'Terms agreed by the authority'
+      'on': 'Terms agreed by the authority'
+      'off': 'Not yet agreed'
   coordinator_suitable:
     boolean_values:
-      - 'Not suitable'
-      - 'Suitable for co-ordinators'
+      'on': 'Suitable for co-ordinators'
+      'off': 'Not suitable'
   partnership_info_agreed_authority:
     boolean_values:
-      - 'Not yet agreed'
-      - 'Partnership information agreed by the authority'
+      'on': 'Partnership information agreed by the authority'
+      'off': 'Not yet agreed'
   partnership_info_agreed_business:
     boolean_values:
-      - 'Not yet agreed'
-      - 'Partnership information agreed by the business'
+      'on': 'Partnership information agreed by the business'
+      'off': 'Not yet agreed'
   written_summary_agreed:
     boolean_values:
-      - 'Not yet agreed'
-      - 'Written summary agreed with the business'
+      'on': 'Written summary agreed with the business'
+      'off': 'Not yet agreed'

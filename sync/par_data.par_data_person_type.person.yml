@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: KdYZQUC4m9bhG9gNXaBJ9J7BXDgKmEvl3Q_hFtiJSjw
+  default_config_hash: xNKms2QzTY6E7c6WZbx14yfct1kT4KYnXGyCvX2eLxk
 id: person
 label: Person
 description: 'A Person is a named individual who can feature in a number of different ways within PAR.  A Person may, or may not, be a user of the PAR application.'
@@ -15,13 +15,13 @@ configuration:
       - last_name
   communication_email:
     boolean_values:
-      - 'Do not communicate by email'
-      - 'Please communicate by email'
+      'on': 'Please communicate by email'
+      'off': 'Do not communicate by email'
   communication_phone:
     boolean_values:
-      - 'Do not communicate by email'
-      - 'Please communicate by email'
+      'on': 'Please communicate by email'
+      'off': 'Do not communicate by email'
   communication_mobile:
     boolean_values:
-      - 'Do not communicate by email'
-      - 'Please communicate by email'
+      'on': 'Please communicate by email'
+      'off': 'Do not communicate by email'
