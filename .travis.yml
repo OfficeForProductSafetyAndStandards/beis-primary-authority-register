@@ -111,7 +111,7 @@ script:
   
   - rm .env
   - if [[ $TRAVIS_TAG != '' ]]; then mkdir $TRAVIS_TAG; fi
-  - if [[ $TRAVIS_TAG != '' ]]; then tar zcf $TRAVIS_TAG/$TRAVIS_TAG.tar.gz .; fi
+  - if [[ $TRAVIS_TAG != '' ]]; then tar --exclude="./$TRAVIS_TAG" -zcf $TRAVIS_TAG/$TRAVIS_TAG.tar.gz .; fi
 
 ##############################################################################
 ### DEPLOY                                                                 ###
