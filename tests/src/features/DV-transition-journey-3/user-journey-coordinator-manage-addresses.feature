@@ -30,6 +30,10 @@ Feature: Coordinator User - Manage Addresses
         And I click on the button "#edit-next"
         And I scroll to element ".table-scroll-wrapper"
         When I click on the link "Review and confirm your association details"
+
+        # REVIEW ASSOCIATION DETAILS
+        
+        Then the element "#edit-business-name" contains the text "Co Mart"
         Then the element "#edit-about-business" contains the text "About the association"
         And the element "#edit-legal-entity" contains the text "Legal Entities"
         And the element "#edit-primary-contact" contains the text "Main association contact"
