@@ -9,7 +9,7 @@ configuration:
   entity:
     required_fields:
       - advice_type
-      - regulatory_function
+      - field_regulatory_function
   advice_type:
     allowed_values:
       business_advice: 'Primary Authority advice for the business'

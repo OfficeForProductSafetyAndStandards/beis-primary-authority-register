@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: 2eSwU5IOXM2w0X9MiajPVFBng3DhOPELDPCAzy8xzHo
+  default_config_hash: 8lyXv6MWl3Hm89hktgdGIAxFZdTF5UqYrp9Dn6QmCA4
 id: advice
 label: Advice
 description: 'Advice is given by a Primary Authority in the context of a Partnership.'
@@ -12,7 +12,7 @@ configuration:
   entity:
     required_fields:
       - advice_type
-      - regulatory_function
+      - field_regulatory_function
   advice_type:
     allowed_values:
       business_advice: 'Primary Authority advice for the business'
