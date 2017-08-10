@@ -26,3 +26,23 @@
   }
 
 }
+
+.par-rd-helpdesk-dashboard {
+
+  .views-exposed-form-inner {
+    margin: 20px 0;
+  }
+
+  // CSV Export text.
+  .views-data-export-csv-feed {
+    background-image: none;
+    display: block;
+    padding: 20px 0;
+  }
+
+  .views-exposed-form-inner {
+    border: 1px solid $grey-3;
+    padding: 20px;
+  }
+
+}
