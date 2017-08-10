@@ -40,7 +40,7 @@ tar -zxvf $VER.tar.gz
 rm $VER.tar.gz
 
 cf push -f manifest.$ENV.yml
-cd cf
+cd ..
 source .env.$ENV
 cf set-env par-beta-$ENV S3_ACCESS_KEY $S3_ACCESS_KEY
 cf set-env par-beta-$ENV S3_SECRET_KEY $S3_SECRET_KEY
