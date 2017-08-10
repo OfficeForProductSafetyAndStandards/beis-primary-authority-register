@@ -1,5 +1,21 @@
 #!/bin/bash
 
+###########################################################
+# To use this script, set up a Python virtual environment
+# and set your AWS access keys
+###########################################################
+# mkvirtualenv beis-par-beta
+# workon beis-par-beta
+# pip install --upgrade awscli
+# aws --version
+###########################################################
+# You can also set these in ~/.bash_profile or by running
+# aws configure (Set region name to be "eu-west-1")
+###########################################################
+# export AWS_ACCESS_KEY_ID=
+# export AWS_SECRET_ACCESS_KEY=
+###########################################################
+
 ENV=$1
 VER=$2
 
