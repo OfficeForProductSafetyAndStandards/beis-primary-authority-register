@@ -3,6 +3,7 @@
 namespace Drupal\par_data\Entity;
 
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\trance\Trance;
 
 /**
@@ -15,6 +16,33 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  public function label() {
+    $label_fields = $this->getTypeEntity()->getConfigurationElementByType('entity', 'label_fields');
+    if (isset($label_fields) && is_string($label_fields)) {
+
+    }
+    else if (isset($label_fields) && is_array($label_fields)) {
+      $label = '';
+      foreach ($label_fields as $field) {
+        if ($this->hasField($field)) {
+          $label .= " " . $this->get($field)->getString();
+        }
+      }
+    }
+
+    return isset($label) && !empty($label) ? $label : parent::label();
+  }
+
+  /**
+   * Get the type entity.
+   */
+  public function getTypeEntity() {
+    return $this->type->entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getViewBuilder() {
     return \Drupal::entityTypeManager()->getViewBuilder($this->getEntityTypeId());
   }
@@ -22,8 +50,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
-  public function getParStatus() {
-    $field_name = $this->type->entity->getConfigurationByType('entity', 'status_field');
+  public function getRawStatus() {
+    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
 
     if (isset($field_name) && $this->hasField($field_name)) {
       $status = $this->get($field_name)->getString();
@@ -35,11 +63,31 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  public function getParStatus() {
+    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+    $raw_status = $this->getRawStatus();
+    return $this->getTypeEntity()->getAllowedFieldlabel($field_name, $raw_status);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setParStatus($value) {
+    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+    $allowed_values = $this->getTypeEntity()->getAllowedValues($field_name);
+    if (isset($allowed_values[$value])) {
+      $this->set($field_name, $value);
+    }
+  }
+
+  /**
+   * {@inheritdoc}g
+   */
   public function getCompletionPercentage($include_deltas = FALSE) {
     $total = 0;
     $completed = 0;
 
-    $fields = $this->getCompletionFields();
+    $fields = $this->getTypeEntity()->getCompletionFields();
     foreach ($fields as $field_name) {
       if ($include_deltas) {
         // @TODO Count multiple field values individually rather than as one field.
@@ -47,7 +95,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       else {
         if ($this->hasField($field_name)) {
           ++$total;
-          if (!$this->get($field_name)->isEmpty()) {
+          if (!$this->get($field_name)->isEmpty() && !empty($this->get($field_name)->getString())) {
             ++$completed;
           }
         }
@@ -55,43 +103,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     }
 
     return $total > 0 ? ($completed / $total) * 100 : 0;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getCompletionFields($include_required = FALSE) {
-    $fields = [];
-
-    // Get the names of any extra fields required for completion.
-    $required_fields = $this->type->entity->getConfigurationByType('entity', 'required_fields');
-
-    // Get all the required fields on an entity.
-    foreach ($this->getFieldDefinitions() as $field_name => $field_definition) {
-      if ($include_required && $field_definition->isRequired() && !in_array($field_name, $this->excludedFields())) {
-        $fields[] = $field_name;
-      }
-      elseif (isset($required_fields) && in_array($field_name, $required_fields)) {
-        $fields[] = $field_name;
-      }
-    }
-
-    return $fields;
-  }
-
-  /**
-   * System fields excluded from user input.
-   */
-  protected function excludedFields() {
-    return [
-      'id',
-      'type',
-      'uuid',
-      'user_id',
-      'created',
-      'changed',
-      'name'
-    ];
   }
 
   /**

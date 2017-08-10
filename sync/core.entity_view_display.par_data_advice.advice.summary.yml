@@ -15,17 +15,9 @@ targetEntityType: par_data_advice
 bundle: advice
 mode: summary
 content:
-  advice_type:
-    type: string
-    weight: 0
-    region: content
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
   document:
     type: file_download_link
-    weight: 1
+    weight: 0
     region: content
     label: hidden
     settings:
@@ -33,6 +25,7 @@ content:
       text: 'Download [file:name]'
     third_party_settings: {  }
 hidden:
+  advice_type: true
   field_regulatory_function: true
   name: true
   notes: true

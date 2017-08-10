@@ -120,8 +120,12 @@ class ParBaseFormTest extends UnitTestCase {
     $on = "on_" . $this->getRandomGenerator()->name(20);
     $off = "off_" . $this->getRandomGenerator()->name(20);
 
-    $this->assertEquals($on, $this->baseForm->decideBooleanValue($on, $on, $off), "The boolean value is identified as being 'on'.");
-    $this->assertEquals($off, $this->baseForm->decideBooleanValue($off, $on, $off), "The boolean value is identified as being 'off'.");
-    $this->assertEquals($off, $this->baseForm->decideBooleanValue($this->getRandomGenerator()->name(20), $on, $off), "The boolean value could not be detected and has been deemed as being 'off'.");
+    $this->assertTrue($this->baseForm->decideBooleanValue($on, $on, $off), "The boolean value is identified as being 'on'.");
+    $this->assertFalse($this->baseForm->decideBooleanValue($off, $on, $off), "The boolean value is identified as being 'off'.");
+
+    $this->assertFalse($this->baseForm->decideBooleanValue(1), "The boolean value is correctly identified as being 'off'.");
+    $this->assertFalse($this->baseForm->decideBooleanValue('1'), "The boolean value is correctly identified as being 'off'.");
+    $this->assertTrue($this->baseForm->decideBooleanValue('on'), "The boolean value is correctly identified as being 'on'.");
+    $this->assertTrue($this->baseForm->decideBooleanValue(TRUE), "The boolean value is correctly identified as being 'on'.");
   }
 }
