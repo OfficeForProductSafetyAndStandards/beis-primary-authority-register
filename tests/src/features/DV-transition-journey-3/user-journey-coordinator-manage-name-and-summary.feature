@@ -36,7 +36,7 @@ Feature: Coordinator User - Manage Addresses
         And the element "#par-flow-transition-coordinator-details" contains the text "Legal Entities"
         And the element "#par-flow-transition-coordinator-details" contains the text "Trading Names"
         When I click on the link "edit"
-        And I add "Change to the about business details section" to the inputfield "#edit-about-business"
+        And I add "Change to the about association details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-next"
         Then the element "#edit-about-business" contains the text "Change to the about association details section"
         When I click on the button "form#par-flow-transition-business-details #edit-0.js-form-item a.flow-link"
