@@ -17,9 +17,23 @@ Feature: Helpdesk - Dashboard
         And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
+        Then the element "#block-par-theme-account-menu" contains the text "Log out"
 
         # WELCOME SCREEN
-        Then the element "#block-par-theme-account-menu" contains the text "Log out"
+
+#       When I click on the button "Dashboard"
+        When I open the url "/dv/rd-dashboard"
+
+        # PARTNERSHIP TASKS SCREEN/DASHBOARD
+
+        Then the element "h1" contains the text "RD Helpdesk Dashboard"
+        When I click on the link "List of tasks"
+        Then the element ".table-scroll-wrapper" contains the text "Review and confirm your partnership details"
+        When I open the url "/dv/rd-dashboard"
+#        When I click on the link "td.views-field-nothing-1 a"
+#        Then the element ".table-scroll-wrapper" contains the text "Review and confirm your business details"
+#        When I open the url "/dv/rd-dashboard"
+        And I click on the link "Download as CSV"
 
 #        Then I expect that element ".error-message" is not visible
 #        When I click on the button ".button-start"
@@ -31,7 +45,7 @@ Feature: Helpdesk - Dashboard
 #        And I click on the checkbox "#edit-terms-conditions"
 #        And I click on the button "#edit-next"
 #
-#        # PARTERSHIP TASKS SCREEN
+#        # PARTNERSHIP TASKS SCREEN
 #
 #        And I scroll to element ".table-scroll-wrapper"
 #        When I click on the link "Invite the business to confirm their details"
