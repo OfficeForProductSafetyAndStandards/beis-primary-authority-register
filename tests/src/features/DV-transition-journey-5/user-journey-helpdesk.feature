@@ -1,5 +1,5 @@
 @ci @journey5
-Feature: Helpdesk - Send Invite
+Feature: Helpdesk - Dashboard
 
     Background:
         # TEST DATA RESET
@@ -17,35 +17,20 @@ Feature: Helpdesk - Send Invite
         And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
-
-        # WELCOME SCREEN
         Then the element "#block-par-theme-account-menu" contains the text "Log out"
 
-#        Then I expect that element ".error-message" is not visible
-#        When I click on the button ".button-start"
-#        And I scroll to element ".table-scroll-wrapper"
-#        And I click on the link "ABCD Mart"
-#
-#        # TERMS AND CONDITIONS SCREEN
-#
-#        And I click on the checkbox "#edit-terms-conditions"
-#        And I click on the button "#edit-next"
-#
-#        # PARTERSHIP TASKS SCREEN
-#
-#        And I scroll to element ".table-scroll-wrapper"
-#        When I click on the link "Invite the business to confirm their details"
-#
-#        # BUSINESS EMAIL INVITATION
-#
-#        And I add "Test change meassage body [invite:invite-accept-link]" to the inputfield "#edit-email-body"
-#        And I add "Test change meassage subject" to the inputfield "#edit-email-body"
-#        And I press "Send Invitation"
-#    # Then the element ".placeholder" not contains the text "Error"
-#    # # PARTERSHIP TASKS SCREEN
-#    # Then the element "h1" contains the text "Updating the Primary Authority Register"
-#    # Then the element "#edit-email-subject" contains the text "Test change subject line"
-#    # Then the element "#edit-email-body" contains the text "Test change meassage body [invite:invite-accept-link]"
-#    # When I click on the link "Go back to your partnerships"
-#    # Then the element "h1" contains the text "List of Partnerships for a Primary Authority"
-#    # And I click on the link "Log out"
+        # WELCOME SCREEN
+
+#       When I click on the button "Dashboard"
+        When I open the url "/dv/rd-dashboard"
+
+        # PARTNERSHIP TASKS SCREEN/DASHBOARD
+
+        Then the element "h1" contains the text "RD Helpdesk Dashboard"
+        When I click on the link "List of tasks"
+        Then the element ".table-scroll-wrapper" contains the text "Review and confirm your partnership details"
+        When I open the url "/dv/rd-dashboard"
+        And I click on the button "td.views-field.views-field-nothing-1 a"
+        Then the element ".table-scroll-wrapper" contains the text "Review and confirm your business details"
+        When I open the url "/dv/rd-dashboard"
+        And I click on the link "Download as CSV"
