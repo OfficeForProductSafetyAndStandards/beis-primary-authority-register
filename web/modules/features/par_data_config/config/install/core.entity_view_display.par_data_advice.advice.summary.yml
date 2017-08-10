@@ -7,22 +7,14 @@ dependencies:
     - par_data.par_data_advice_type.advice
   module:
     - file_entity
-    - par_data
 id: par_data_advice.advice.summary
 targetEntityType: par_data_advice
 bundle: advice
 mode: summary
 content:
-  advice_type:
-    type: par_list_formatter
-    weight: 0
-    region: content
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
   document:
     type: file_download_link
-    weight: 1
+    weight: 0
     region: content
     label: hidden
     settings:
@@ -30,6 +22,7 @@ content:
       text: 'Download [file:name]'
     third_party_settings: {  }
 hidden:
+  advice_type: true
   field_regulatory_function: true
   name: true
   notes: true
