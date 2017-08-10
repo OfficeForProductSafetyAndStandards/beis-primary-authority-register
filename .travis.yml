@@ -122,6 +122,7 @@ after_success:
   - cf login -a api.cloud.service.gov.uk -u chris.moreton@transformuk.com -p $CF_PASSWORD
   - cd cf
   - ./push.sh continuous
+  - cd ..
   
 #-----------------------------------------------------------------------------
 # For tagged builds, send the packaged build to S3
