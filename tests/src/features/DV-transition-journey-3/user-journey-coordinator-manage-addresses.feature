@@ -49,7 +49,7 @@ Feature: Coordinator User - Manage Addresses
         And the element "span.address-line2" contains the text "A Change"
         And the element "span.locality" contains the text "Change Town"
         And the element "span.postal-code" contains the text "Change Postcode"
-        And the element "span.country" contains the text "Wales"
+        And the element "#edit-registered-address" contains the text "Wales"
 
         # EDIT MAIN BUSINESS CONTACT
 
