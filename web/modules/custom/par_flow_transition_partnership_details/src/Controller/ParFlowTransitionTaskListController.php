@@ -128,7 +128,6 @@ class ParFlowTransitionTaskListController extends ParBaseController {
 
     $build['cancel'] = [
       '#type' => 'markup',
-      '#prefix' => '<br>',
       '#markup' => t('@link', [
         '@link' => $this->getFlow()->getLinkByStep(1, $this->getRouteParams(), ['attributes' => ['class' => 'button']])
           ->setText('Go back to your partnerships')
