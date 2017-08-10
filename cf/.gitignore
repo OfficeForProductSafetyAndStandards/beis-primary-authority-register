@@ -2,4 +2,5 @@
 .htpasswd
 build/
 beis-par-beta/
+*.tar.gz
 

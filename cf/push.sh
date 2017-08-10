@@ -4,10 +4,15 @@ ENV=$1
 VER=$2
 
 rm -rf build
+mkdir build
+cd build
+aws s3 cp s3://transform-par-beta-artifacts/builds/$VER.tar.gz .
+tar -zxvf $VER.tar.gz
+rm $VER.tar.gz
 
-cd ..
 cf push -f manifest.$ENV.yml
-source cf/.env.$ENV
+cd ..
+source .env.$ENV
 cf set-env par-beta-$ENV S3_ACCESS_KEY $S3_ACCESS_KEY
 cf set-env par-beta-$ENV S3_SECRET_KEY $S3_SECRET_KEY
 cf set-env par-beta-$ENV PAR_HASH_SALT $PAR_HASH_SALT
@@ -20,6 +25,4 @@ cf set-env par-beta-$ENV PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE
 cf restage par-beta-$ENV
 
 cf ssh par-beta-$ENV -c "cd app/tools && python post_deploy.py"
-
-cd cf
 sh update-domain-$ENV.sh
