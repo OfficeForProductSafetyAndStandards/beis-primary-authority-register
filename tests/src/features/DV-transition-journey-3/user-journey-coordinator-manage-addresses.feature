@@ -37,7 +37,7 @@ Feature: Coordinator User - Manage Addresses
 
         # EDIT REGISTERED ADDRESS
 
-        And I click on the button "form#par-flow-transition-business-details #edit-registered-address a.flow-link"
+        And I click on the button "form#par-flow-transition-coordinator-details #edit-registered-address a.flow-link"
         And I add "Change Postcode" to the inputfield "#edit-postcode"
         And I add "1 Change Road" to the inputfield "#edit-address-line1"
         And I add "A Change" to the inputfield "#edit-address-line2"
@@ -53,7 +53,7 @@ Feature: Coordinator User - Manage Addresses
 
         # EDIT MAIN BUSINESS CONTACT
 
-        When I click on the button "form#par-flow-transition-business-details #edit-primary-contact a.flow-link"
+        When I click on the button "form#par-flow-transition-coordinator-details #edit-primary-contact a.flow-link"
         And I add "Jim" to the inputfield "#edit-first-name"
         And I add "Henson" to the inputfield "#edit-last-name"
         And I add "999999999" to the inputfield "#edit-work-phone"
@@ -72,7 +72,7 @@ Feature: Coordinator User - Manage Addresses
 
         # EDIT ALTERNATE CONTACT
 
-        When I click on the button "form#par-flow-transition-business-details #edit-primary-contact #edit-alternative-people a.flow-link"
+        When I click on the button "form#par-flow-transition-coordinator-details #edit-primary-contact #edit-alternative-people a.flow-link"
         And I add "Frank" to the inputfield "#edit-first-name"
         And I add "Oz" to the inputfield "#edit-last-name"
         And I add "01723999999" to the inputfield "#edit-work-phone"
@@ -88,7 +88,7 @@ Feature: Coordinator User - Manage Addresses
 
         # EDIT LEGAL ENTITIES
 
-        When I click on the button "form#par-flow-transition-business-details #edit-legal-entity a.flow-link"
+        When I click on the button "form#par-flow-transition-coordinator-details #edit-legal-entity a.flow-link"
         And I add "ABCD Mart Change" to the inputfield "#edit-registered-name"
         And I select the option with the text "Public Limited Company" for element "#edit-legal-entity-type"
         And I add "987654321" to the inputfield "#edit-company-house-no"
