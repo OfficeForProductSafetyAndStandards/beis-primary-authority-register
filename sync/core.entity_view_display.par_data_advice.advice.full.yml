@@ -4,9 +4,12 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_advice.full
+    - field.field.par_data_advice.advice.field_regulatory_function
     - par_data.par_data_advice_type.advice
   module:
     - file_entity
+    - par_data
+    - text
 _core:
   default_config_hash: yRyProYto-90hFLBqPfC1UiFAfZnl-NgMjjWLgDSC4M
 id: par_data_advice.advice.full
@@ -15,12 +18,11 @@ bundle: advice
 mode: full
 content:
   advice_type:
-    type: string
+    type: par_list_formatter
     weight: 0
     region: content
     label: hidden
-    settings:
-      link_to_entity: false
+    settings: {  }
     third_party_settings: {  }
   document:
     type: file_download_link
@@ -32,11 +34,12 @@ content:
       text: 'Download [file:name]'
     third_party_settings: {  }
   notes:
-    type: basic_string
+    type: text_trimmed
     weight: 3
     region: content
     label: hidden
-    settings: {  }
+    settings:
+      trim_length: 600
     third_party_settings: {  }
   regulatory_function:
     type: entity_reference_entity_view

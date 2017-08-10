@@ -60,22 +60,10 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
    * {@inheritdoc}
    */
   public function getCompletionFields($include_required = FALSE) {
-    $fields = [];
-
-    // Get the names of any extra fields required for completion.
+    // Get the names of any fields required for completion.
     $required_fields = $this->getConfigurationElementByType('entity', 'required_fields');
-
-    // Get all the required fields on an entity.
-    foreach ($this->getFieldDefinitions() as $field_name => $field_definition) {
-      if ($include_required && $field_definition->isRequired() && !in_array($field_name, $this->excludedFields())) {
-        $fields[] = $field_name;
-      }
-      elseif (isset($required_fields) && in_array($field_name, $required_fields)) {
-        $fields[] = $field_name;
-      }
-    }
-
-    return $fields;
+    $fields = array_diff($required_fields, $this->excludedFields());
+    return $fields ? $fields : [];
   }
 
   /**
@@ -92,7 +80,7 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
    */
   public function getAllowedValues($field_name) {
     $allowed_values = $this->getConfigurationElementByType($field_name, 'allowed_values');
-    return $allowed_values ?: [];
+    return $allowed_values ? $allowed_values : [];
   }
 
   /**

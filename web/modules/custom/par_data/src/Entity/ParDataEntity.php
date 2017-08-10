@@ -95,7 +95,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       else {
         if ($this->hasField($field_name)) {
           ++$total;
-          if (!$this->get($field_name)->isEmpty()) {
+          if (!$this->get($field_name)->isEmpty() && !empty($this->get($field_name)->getString())) {
             ++$completed;
           }
         }

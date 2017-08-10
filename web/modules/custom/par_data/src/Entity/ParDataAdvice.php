@@ -68,7 +68,7 @@ class ParDataAdvice extends ParDataEntity {
    * Get the regulatory functions for this Advice.
    */
   public function getRegulatoryFunction() {
-    $this->get('field_regulatory_function')->referencedEntities();
+    return $this->get('field_regulatory_function')->referencedEntities();
   }
 
   /**
