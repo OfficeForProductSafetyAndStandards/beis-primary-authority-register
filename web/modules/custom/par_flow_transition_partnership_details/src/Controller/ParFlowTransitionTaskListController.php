@@ -71,7 +71,10 @@ class ParFlowTransitionTaskListController extends ParBaseController {
       ->setText('Review and confirm your inspection plan')
       ->toString();
     $par_data_inspection_plan = current($par_data_partnership->getInspectionPlan());
-    $inspection_plan_completion = $par_data_inspection_plan->getParStatus();
+    $inspection_plan_status = $par_data_inspection_plan->getParStatus();
+
+    // Make sure to add the inspection plan cacheability data to this form.
+    $this->addCacheableDependency($par_data_inspection_plan);
 
     // Generate the link for confirming all advice documents.
     $documents_list_link = $this->getFlow()->getLinkByStep(9)
@@ -81,6 +84,9 @@ class ParFlowTransitionTaskListController extends ParBaseController {
     $document_completion = [];
     foreach ($par_data_partnership->getAdvice() as $document) {
       $document_completion[] = $document->getCompletionPercentage();
+
+      // Make sure to add the document cacheability data to this form.
+      $this->addCacheableDependency($document);
     }
     $documentation_completion = !empty($document_completion) ? $this->parDataManager->calculateAverage($document_completion) : 0;
 
@@ -89,21 +95,25 @@ class ParFlowTransitionTaskListController extends ParBaseController {
       0 => [
         $overview_link,
         $par_data_partnership->getParStatus(),
-      ],
-      2 => [
+      ]
+    ];
+
+    // Only add the remaining tasks once the Partnership information has been confirmed.
+    if ($par_data_partnership->getRawStatus() !== 'awaiting_review') {
+      $rows[2] = [
         $inspection_plan_link,
-        $inspection_plan_completion . '%',
-      ],
-      3 => [
+        $inspection_plan_status,
+      ];
+      $rows[3] = [
         $documents_list_link,
         $documentation_completion . '%',
-      ],
-    ];
-    if (isset($invite_link)) {
-      $rows[1] = [
-        $invite_link,
-        '',
       ];
+      if (isset($invite_link)) {
+        $rows[1] = [
+          $invite_link,
+          '',
+        ];
+      }
     }
     // Sort the array by descired keys.
     ksort($rows);
@@ -126,7 +136,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
       ]),
     ];
 
-    // Make sure to add the person cacheability data to this form.
+    // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
 
     return parent::build($build);

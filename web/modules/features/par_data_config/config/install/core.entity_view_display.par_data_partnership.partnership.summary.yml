@@ -3,12 +3,37 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_partnership.summary
+    - field.field.par_data_partnership.partnership.field_advice
+    - field.field.par_data_partnership.partnership.field_authority
+    - field.field.par_data_partnership.partnership.field_authority_person
+    - field.field.par_data_partnership.partnership.field_inspection_plan
+    - field.field.par_data_partnership.partnership.field_organisation
+    - field.field.par_data_partnership.partnership.field_organisation_person
+    - field.field.par_data_partnership.partnership.field_regulatory_function
     - par_data.par_data_partnership_type.partnership
 id: par_data_partnership.partnership.summary
 targetEntityType: par_data_partnership
 bundle: partnership
 mode: summary
 content:
+  field_authority:
+    type: entity_reference_entity_view
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+  field_organisation:
+    type: entity_reference_entity_view
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
   organisation:
     type: entity_reference_label
     weight: 0
@@ -31,10 +56,8 @@ hidden:
   cost_recovery: true
   expertise_details: true
   field_advice: true
-  field_authority: true
   field_authority_person: true
   field_inspection_plan: true
-  field_organisation: true
   field_organisation_person: true
   field_regulatory_function: true
   inspection_plan: true

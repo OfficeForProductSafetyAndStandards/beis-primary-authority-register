@@ -77,7 +77,12 @@ class ParDataPremises extends ParDataEntity {
       ->setRevisionable(TRUE)
       ->setCardinality(1)
       ->setSettings([
-        'available_countries' => ['GB' => 'GB'],
+        'available_countries' => [
+          'england' => 'England',
+          'scotland' => 'Scotland',
+          'wales' => 'Wales',
+          'northern_ireland' => 'Northern Ireland',
+        ],
         'fields' => [
           "organization" => "0",
           "dependentLocality" => "0",

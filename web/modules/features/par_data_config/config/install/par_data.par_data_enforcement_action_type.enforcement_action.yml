@@ -5,4 +5,17 @@ id: enforcement_action
 label: 'Enforcement Action'
 description: ''
 help: ''
-configuration: null
+configuration:
+  entity:
+    status_field: enforcement_action_status
+  enforcement_action_status:
+    allowed_values:
+      unknown: Unknown
+      deferred: Deferred
+      served: Served
+      no_action: 'No Further Action'
+      ready_serve: 'Ready To Serve'
+  primary_authority_status:
+    allowed_values:
+      allowed: Allowed
+      blocked: Blocked

@@ -17,7 +17,15 @@ interface ParDataEntityInterface {
   public function getViewBuilder();
 
   /**
-   * Return the value of the status field.
+   * Return the stored value of the status field.
+   *
+   * @return NULL|mixed
+   *   The value of the status field.
+   */
+  public function getRawStatus();
+
+  /**
+   * Return the label of the status field.
    *
    * @return NULL|mixed
    *   The value of the status field.
@@ -25,15 +33,12 @@ interface ParDataEntityInterface {
   public function getParStatus();
 
   /**
-   * Get the fields required to complete this entity.
+   * Set the status field value.
    *
-   * @param boolean $include_required
-   *   Whether to automatically include required fields.
-   *
-   * @return NULL|mixed[]
-   *   An array of field names.
+   * @parap mixed
+   *   The value of the status to set.
    */
-  public function getCompletionFields($include_required);
+  public function setParStatus($value);
 
   /**
    * Get the level of completion of this entity.

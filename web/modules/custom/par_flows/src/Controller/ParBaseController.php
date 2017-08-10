@@ -102,7 +102,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   /**
    * Returns the PAR data manager.
    *
-   * @return string
+   * @return \Drupal\par_data\ParDataManagerInterface
    *   Get the logger channel to use.
    */
   public function getParDataManager() {

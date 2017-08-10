@@ -33,17 +33,22 @@ Feature: PAR User - Documentation
         And I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
 
+        # PARTNERSHIP DETAILS SCREEN
+
+        When I scroll to element ".table-scroll-wrapper"
+        And I click on the link "Review and confirm your partnership details"
+        And I click on the checkbox "#edit-confirmation"
+        And I click on the button "#edit-next"
+
         # DOCUMENTATION
 
         And I scroll to element ".table-scroll-wrapper"
         When I click on the link "Review and confirm your documentation for ABCD Mart"
         And I click on the link "edit"
         And I click on the radio "#edit-document-type-authority-advice"
-        And I click on the checkbox "#edit-regulatory-functions-business-advice"
-        And I click on the checkbox "#edit-regulatory-functions-authority-advice"
-        And I click on the checkbox "#edit-regulatory-functions-background-information"
+        #And I click on the checkbox "#I DO NOT KNOW WHAT ELEMENT TO TARGET, THE ID CHANGES EVERY TIME"
         When I click on the button "#edit-next"
-    # Then the element ".placeholder" not contains the text "Error"
-    # When I click on the link "Go back to your partnerships"
-    # Then the element "h1" contains the text "List of Partnerships"
-    # And I click on the link "Log out"
+        # Then the element ".placeholder" not contains the text "Error"
+        # When I click on the link "Go back to your partnerships"
+        # Then the element "h1" contains the text "List of Partnerships"
+        # And I click on the link "Log out"

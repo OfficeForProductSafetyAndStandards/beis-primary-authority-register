@@ -5,4 +5,8 @@ id: enforcement_notice
 label: 'Enforcement Notice'
 description: 'An Enforcement Notice is a legal document that contains one or more Enforcement Actions.'
 help: ''
-configuration: null
+configuration:
+  notice_type:
+    allowed_values:
+      proposed: Proposed
+      retrospective: Retrospective
