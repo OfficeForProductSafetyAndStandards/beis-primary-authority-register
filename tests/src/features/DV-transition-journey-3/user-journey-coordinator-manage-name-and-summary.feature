@@ -23,7 +23,7 @@ Feature: Coordinator User - Manage Addresses
         # PARTNERSHIPS DASHBOARD
 
         And I scroll to element ".table-scroll-wrapper"
-        And I click on the link "ABCD Mart"
+        And I click on the link "Co Mart"
 
         # TERMS AND CONDITIONS SCREEN
 
