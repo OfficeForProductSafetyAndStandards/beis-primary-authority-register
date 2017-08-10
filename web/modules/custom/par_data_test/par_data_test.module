@@ -400,7 +400,7 @@ function par_data_test_create_entities() {
 
   // Create two organisations.
   $organisation_3 = \Drupal\par_data\Entity\ParDataOrganisation::create([
-    'type' => 'coordinated',
+    'type' => 'coordinator',
     'name' => 'Co Mart',
     'uid' => 1,
     'organisation_name' => 'Co Mart',
@@ -429,6 +429,7 @@ function par_data_test_create_entities() {
   ]);
 
   $organisation_3->save();
+
   // Create Regulatory Area.
   $regulatory_function_1 = \Drupal\par_data\Entity\ParDataRegulatoryFunction::create([
     'type' => 'regulatory_function',
@@ -581,4 +582,5 @@ function par_data_test_create_entities() {
     ]
   ]);
   $partnership_2->save();
+
 }
