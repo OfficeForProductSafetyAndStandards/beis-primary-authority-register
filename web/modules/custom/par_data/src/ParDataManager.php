@@ -2,6 +2,8 @@
 
 namespace Drupal\par_data;
 
+use Drupal\clamav\Config;
+use Drupal\Core\Config\Entity\ConfigEntityType;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -46,6 +48,9 @@ class ParDataManager implements ParDataManagerInterface {
     return $par_entity_types ?: [];
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getParEntityType(string $type) {
     $types = $this->getParEntityTypes();
     return isset($types[$type]) ? $types[$type] : NULL;
@@ -61,20 +66,61 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * {@inheritdoc}
    */
+  public function getParBundleEntity(string $type, $bundle = NULL) {
+    $entity_type = $this->getParEntityType($type);
+    $definition = $entity_type ? $this->getEntityBundleDefinition($entity_type) : NULL;
+    $bundles = $definition ? $this->getEntityTypeStorage($definition)->loadMultiple() : [];
+    return $bundles && isset($bundles[$bundle]) ? $bundles[$bundle] : current($bundles);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getEntityTypeStorage(EntityTypeInterface $definition) {
     return $this->entityManager->getStorage($definition->id()) ?: NULL;
   }
 
+  /**
+   * Get the PAR People that share the same email with the user account.
+   *
+   * @param UserInterface $account
+   *   A user account.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface[]
+   *   PAR People related to the user account.
+   */
   public function getUserPeople(UserInterface $account) {
     return \Drupal::entityTypeManager()
       ->getStorage('par_data_person')
       ->loadByProperties(['email' => $account->get('mail')->getString()]);
   }
 
+  /**
+   * Relate all PAR people that share the same email to this user account.
+   *
+   * @param UserInterface $account
+   *   The user account to link to.
+   */
   public function linkPeople(UserInterface $account) {
     foreach ($this->getUserPeople($account) as $par_person) {
       $par_person->linkAccounts();
     }
+  }
+
+  /**
+   * Get the available options for regulatory functions.
+   *
+   * @return array
+   *   An array of options keyed by ID.
+   */
+  public function getRegulatoryFunctionsAsOptions() {
+    $options = [];
+    $storage = $this->getParEntityType('par_data_regulatory_function');
+    foreach ($this->getEntityTypeStorage($storage)->loadMultiple() as $function) {
+      $options[$function->id()] = $function->get('function_name')->getString();
+    }
+
+    return $options;
   }
 
   /**

@@ -38,14 +38,12 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()}");
 
-      // Partnership Confirmation.
-      $allowed_values = $par_data_partnership->type->entity->getConfigurationByType('partnership_status', 'allowed_values');
-      // Set the on and off values so we don't have to do that again.
-      $this->loadDataValue('confirmation_value', $allowed_values['confirmed_authority']);
-      $partnership_status = $par_data_partnership->getParStatus();
-      if ($partnership_status === $allowed_values['confirmed_authority']) {
-        $this->loadDataValue('confirmation', TRUE);
-      }
+      // Partnership Information Confirmation.
+      $confirmation_value = !empty($par_data_partnership->get('partnership_info_agreed_authority')->getString()) ? TRUE : FALSE;
+      $this->loadDataValue('confirmation', $confirmation_value);
+      // Written Summary Confirmation.
+      $partnership_agreement_value = !empty($par_data_partnership->get('written_summary_agreed')->getString()) ? TRUE : FALSE;
+      $this->loadDataValue('partnership_agreement', $partnership_agreement_value);
     }
   }
 
@@ -54,6 +52,11 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
+    // Configuration for each entity is contained within the bundle.
+    $partnership_bundle = $this->getParDataManager()->getParBundleEntity('par_data_partnership');
+    $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
+    $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
+    $premises_bundle = $this->getParDataManager()->getParBundleEntity('par_data_premises');
 
     // About the Partnership.
     $form['first_section'] = [
@@ -203,16 +206,21 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     // Partnership Confirmation.
     $form['partnership_agreement'] = [
       '#type' => 'checkbox',
-      '#title' => t('(NOT YET SAVED) A written summary of partnership agreement, such as Memorandum of Understanding, has been agreed with the Business.'),
+      '#title' => t('A written summary of partnership agreement, such as Memorandum of Understanding, has been agreed with the Business.'),
+      '#disabled' => $this->getDefaultValues('partnership_agreement'),
+      '#checked' => $this->getDefaultValues('partnership_agreement'),
+      '#default_value' => $this->getDefaultValues('partnership_agreement'),
+      '#return_value' => 'on',
     ];
 
     // Partnership Confirmation.
     $form['confirmation'] = [
       '#type' => 'checkbox',
       '#title' => t('I confirm that the partnership information above is correct.'),
-      '#disabled' => $this->getDefaultValues('confirmation', FALSE),
-      '#default_value' => $this->getDefaultValues('confirmation', FALSE),
-      '#return_value' => $this->getDefaultValues('confirmation_value', 0),
+      '#disabled' => $this->getDefaultValues('confirmation'),
+      '#checked' => $this->getDefaultValues('confirmation'),
+      '#default_value' => $this->getDefaultValues('confirmation'),
+      '#return_value' => 'on',
     ];
 
     $form['next'] = [
@@ -229,6 +237,10 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
+    $this->addCacheableDependency($partnership_bundle);
+    $this->addCacheableDependency($person_bundle);
+    $this->addCacheableDependency($legal_entity_bundle);
+    $this->addCacheableDependency($premises_bundle);
 
     return parent::buildForm($form, $form_state);
   }
@@ -242,28 +254,29 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
     $this->retrieveEditableValues($par_data_partnership);
 
-    // Save the value for the about_partnership field.
-    $partnership_status = $this->decideBooleanValue(
-      $this->getTempDataValue('confirmation'),
-      $this->getDefaultValues('confirmation_value', NULL)
-    );
-
-    // Save only if the value is different from the one currently set.
-    if ($partnership_status && $partnership_status !== $par_data_partnership->getParStatus()) {
-      $par_data_partnership->set('partnership_status', $partnership_status);
-      if (!$par_data_partnership->save()) {
-        $message = $this->t('The %field field could not be saved for %form_id');
-        $replacements = [
-          '%field' => 'confirmation',
-          '%form_id' => $this->getFormId(),
-        ];
-        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-      }
+    // Save the value for the partnership status if it's being confirmed.
+    if ($confirmation_value = $this->decideBooleanValue($this->getTempDataValue('confirmation'))) {
+      $par_data_partnership->set('partnership_info_agreed_authority', $confirmation_value);
+      // Also change the status.
+      $par_data_partnership->setParStatus('confirmed_authority');
     }
 
-    // Actually we always want to delete the store here.
-    // Confirmation checkboxes should never be checked by default.
-    $this->deleteStore();
+    // Save the value for the written agreement if it's being confirmed.
+    if ($partnership_agreement_value = $this->decideBooleanValue($this->getTempDataValue('partnership_agreement'))) {
+      $par_data_partnership->set('written_summary_agreed', $partnership_agreement_value);
+    }
+
+    if ($par_data_partnership->save()) {
+      $this->deleteStore();
+    }
+    else {
+      $message = $this->t('The %field field could not be saved for %form_id');
+      $replacements = [
+        '%field' => 'confirmation',
+        '%form_id' => $this->getFormId(),
+      ];
+      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+    }
 
     // We're not in kansas any more, after submitting the overview let's go home.
     $form_state->setRedirect($this->getFlow()->getPrevRoute(), $this->getRouteParams());

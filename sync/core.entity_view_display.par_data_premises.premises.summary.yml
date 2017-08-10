@@ -21,6 +21,14 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
+  uprn:
+    label: hidden
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    weight: 1
 hidden:
   name: true
   nation: true

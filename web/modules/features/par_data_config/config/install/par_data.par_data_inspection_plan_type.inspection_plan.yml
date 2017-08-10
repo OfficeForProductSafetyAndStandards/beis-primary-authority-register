@@ -10,6 +10,15 @@ configuration:
     status_field: inspection_status
   inspection_status:
     allowed_values:
-      awaiting_review: awaiting_review
-      confirmed_authority: confirmed_authority
-      confirmed_business: confirmed_business
+      current: Current
+      expired: Expired
+      in_progress: 'In Progress'
+      revoked: Revoked
+  approved_rd_executive:
+    boolean_values:
+      'on': 'Approved by RD executive'
+      'off': 'Awaiting approval'
+  consulted_national_regulator:
+    boolean_values:
+      'on': 'National regulator consulted'
+      'off': 'Awaiting national regulator consultation'
