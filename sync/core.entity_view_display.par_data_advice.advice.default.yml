@@ -7,6 +7,7 @@ dependencies:
     - par_data.par_data_advice_type.advice
   module:
     - file_entity
+    - par_data
     - text
 _core:
   default_config_hash: xWNw6vh1C_nGYBSNMRuUcLR5b53lfAY3WBiTIbMyViQ
@@ -16,12 +17,11 @@ bundle: advice
 mode: default
 content:
   advice_type:
-    type: string
+    type: par_list_formatter
     weight: 0
     region: content
     label: hidden
-    settings:
-      link_to_entity: false
+    settings: {  }
     third_party_settings: {  }
   document:
     type: file_download_link

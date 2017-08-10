@@ -19,9 +19,6 @@ if [ ! -f ../web/sites/settings.local.php ]; then
 fi
 
 # Load the test data:
-
-    DATAFILE=drush-dump-post-drush-updates-sanitized-201707292256.sql
-    
     # Time for the server to boot
     sleep 5
 

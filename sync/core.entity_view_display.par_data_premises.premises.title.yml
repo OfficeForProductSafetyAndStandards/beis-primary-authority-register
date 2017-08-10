@@ -7,7 +7,6 @@ dependencies:
     - par_data.par_data_premises_type.premises
   module:
     - address
-    - user
 _core:
   default_config_hash: WrGR0W5Fq6ImgCrre16VUmvEhT7gJ7DzL1qPGQbfSeY
 id: par_data_premises.premises.title
@@ -22,6 +21,14 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
+  uprn:
+    label: hidden
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    weight: 1
 hidden:
   name: true
   nation: true
