@@ -9,6 +9,7 @@ is_admin: null
 permissions:
   - 'access content overview'
   - 'access par journey transition business'
+  - 'access par journey transition coordinator'
   - 'access par journey transition partnership details'
   - 'access par_data_advice entities'
   - 'access par_data_authority entities'

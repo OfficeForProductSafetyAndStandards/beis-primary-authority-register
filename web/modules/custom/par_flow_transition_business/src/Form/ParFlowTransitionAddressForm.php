@@ -93,12 +93,6 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
       '#required' => TRUE,
     ];
 
-    $form['address_line3'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('(NOT SAVED) Address Line 3'),
-      '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_address_line3"),
-    ];
-
     // Town/City.
     $form['town_city'] = [
       '#type' => 'textfield',

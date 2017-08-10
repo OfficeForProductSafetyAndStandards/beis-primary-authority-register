@@ -49,6 +49,8 @@ class ParPartnershipDashboardController extends ControllerBase {
    */
   public function content(ParDataPartnership $par_data_partnership = NULL) {
 
+    $current_user_people = NULL;
+
     // We need to find out what kind of membership
     // the current user has to this partnership.
     if ($this->currentUser()->isAuthenticated()) {
@@ -65,7 +67,16 @@ class ParPartnershipDashboardController extends ControllerBase {
           $route = $this->flowStorage->load('transition_partnership_details')->getRouteByStep(2);
         }
         elseif ($par_data_partnership->isOrganisationMember($person) && !isset($route)) {
-          $route = $this->flowStorage->load('transition_business')->getRouteByStep(2);
+          $par_data_organisation = current($par_data_partnership->getOrganisation());
+          switch ($par_data_organisation->getType()) {
+            case 'coordinator':
+              $route = $this->flowStorage->load('transition_coordinator')->getRouteByStep(2);
+              break;
+            case 'business':
+              $route = $this->flowStorage->load('transition_business')->getRouteByStep(2);
+              break;
+          }
+
         }
       }
     }

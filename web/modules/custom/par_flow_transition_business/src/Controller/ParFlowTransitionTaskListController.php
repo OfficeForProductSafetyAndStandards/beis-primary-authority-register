@@ -18,8 +18,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
   /**
    * {@inheritdoc}
    */
-  public function content(ParDataPartnership $par_data_partnership = NULL, $termporary_no_crashy_variable = NULL) {
-
+  public function content(ParDataPartnership $par_data_partnership = NULL, $key_text = 'business') {
     $par_data_authority = current($par_data_partnership->getAuthority());
 
     $par_data_primary_person = current($par_data_authority->getPerson());
@@ -45,7 +44,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
 
     // Table data/cells.
     $overview_link = $this->getFlow()->getLinkByStep(4)
-      ->setText('Review and confirm your business details')
+      ->setText("Review and confirm your {$key_text} details")
       ->toString();
     $rows = [
       [
