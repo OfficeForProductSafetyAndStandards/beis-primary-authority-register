@@ -61,7 +61,7 @@ Feature: Business User - Manage Addresses
         And the element "span.address-line2" contains the text "New Change"
         And the element "span.locality" contains the text "New Change State"
         And the element "span.postal-code" contains the text "change"
-        And the element "span.country" contains the text "Wales"
+        And the element "span.country" contains the text "United Kingdom"
 
         # EDIT MAIN BUSINESS CONTACT
 
