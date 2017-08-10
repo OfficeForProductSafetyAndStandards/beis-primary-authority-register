@@ -128,7 +128,7 @@ class ParDataRoutes implements ContainerInjectionInterface {
           '_admin_route' => TRUE,
         ]
       );
-      $route_collection->add("entity.{$id}.add_form", $route);
+      $route_collection->add("par_data.{$id}.add_form", $route);
 
       // The main edit page for the entity.
       $route = new Route(
@@ -144,7 +144,7 @@ class ParDataRoutes implements ContainerInjectionInterface {
           '_admin_route' => TRUE,
         ]
       );
-      $route_collection->add("par_data.{$id}.edit_form", $route);
+      $route_collection->add("entity.{$id}.edit_form", $route);
 
       // The main delete page for the entity.
       $route = new Route(
@@ -160,7 +160,7 @@ class ParDataRoutes implements ContainerInjectionInterface {
           '_admin_route' => TRUE,
         ]
       );
-      $route_collection->add("par_data.{$id}.delete_form", $route);
+      $route_collection->add("entity.{$id}.delete_form", $route);
 
 
       // The routes for the PAR Entity types.

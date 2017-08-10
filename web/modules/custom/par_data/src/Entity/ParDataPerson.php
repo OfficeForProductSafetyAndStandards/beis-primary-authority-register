@@ -224,25 +224,51 @@ class ParDataPerson extends ParDataEntity {
   }
 
   /**
-   * Get any Authorities this user is a member of.
-   *
-   * @return mixed|null
-   *   Returns any business records found.
+   * @param string $method_id
    */
-  public function setPreferredCommunication($method) {
-    $methods = ['phone', 'mobile', 'email'];
+  public function setPreferredCommunication($method_id) {
+    $methods = $this->getPreferredCommunicationMethods();
 
-//    communication_mobile
-dump('setPreferredComminspectionunication');
+    foreach ($methods as $id => $method) {
+      if ($method_id === $id) {
+        $this->set('communication_' . $id, TRUE);
+      }
+      else {
+        $this->set('communication_' . $id, FALSE);
+      }
+    } 
   }
 
-  public function getPreferredCommunicationMethods() {
-    return [
-      'Work phone',
-      'Mobile Phone',
-      'Email',
-    ];
+  /**
+   * Get the preferred communication method.
+   *
+   * @return string|null
+   */
+  public function getPreferredCommunicationMethodId() {
+    $methods = $this->getPreferredCommunicationMethods();
+
+    foreach ($methods as $method_id => $method) {
+      if ($this->get('communication_' . $method_id)->getString()) {
+        return $method_id;
+      }
+    }
+
+    return NULL;
   }
+
+  /**
+   * Get the preferred communication method label.
+   *
+   * @param string $method_id
+   *   The id of the method we want the label for.
+   *
+   * @return int|null
+   */
+  public function getPreferredCommunicationMethodLabel($method_id) {
+    $methods = $this->getPreferredCommunicationMethods();
+    return isset($methods[$method_id]) ? $methods[$method_id] : '';
+  }
+
   /**
    * {@inheritdoc}
    */

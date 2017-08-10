@@ -42,18 +42,19 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
       $this->setState("edit:{$par_data_partnership->id()},{$par_data_advice->id()}");
 
       // Partnership Confirmation.
-      $allowed_types = $par_data_advice->type->entity->getConfigurationByType('advice_type', 'allowed_values');
-      // Set the on and off values so we don't have to do that again.
-      $this->loadDataValue('allowed_types', $allowed_types);
+      $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
       $advice_type = $par_data_advice->get('advice_type')->getString();
-      if (is_array($allowed_types) && in_array($advice_type, $allowed_types)) {
+      if (isset($allowed_types[$advice_type])) {
         $this->loadDataValue('document_type', $advice_type);
       }
 
-      // @TODO We need to work out how to get a list of regulatory functions.
-      if ($we_know_the_regulatory_functions = FALSE) {
-        $this->loadDataValue('regulatory_functions', []);
+      // Get Regulatory Functions.
+      $regulatory_functions = $par_data_advice->get('field_regulatory_function')->referencedEntities();
+      $regulatory_options = [];
+      foreach ($regulatory_functions as $function) {
+        $regulatory_options[$function->id()] = $function->id();
       }
+      $this->loadDataValue('regulatory_functions', $regulatory_options);
     }
   }
 
@@ -62,30 +63,30 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_advice);
+    $advice_bundle = $this->getParDataManager()->getParBundleEntity('par_data_advice');
 
     // Render the document in view mode to allow users to
     // see which one they're confirming details for.
-    // @TODO We don't have a reference to the document yet.
     $document_view_builder = $par_data_advice ? $par_data_advice->getViewBuilder() : NULL;
     $document = $document_view_builder->view($par_data_advice, 'summary');
     $form['document'] = $this->renderMarkupField($document) + [
       '#title' => $this->t('Document'),
     ];
 
-    // The Person's work phone number.
+    // The document type.
     $form['document_type'] = [
       '#type' => 'radios',
       '#title' => $this->t('Type of Document'),
-      '#options' => $this->getDefaultValues("allowed_types", []),
+      '#options' => $advice_bundle->getAllowedValues('advice_type'),
       '#default_value' => $this->getDefaultValues("document_type"),
       '#required' => TRUE,
     ];
 
-    // The Person's work phone number.
+    // The regulatory functions for this document.
     $form['regulatory_functions'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Regulatory functions this document covers'),
-      '#options' => $this->getDefaultValues("allowed_types", []),
+      '#options' => $this->getParDataManager()->getRegulatoryFunctionsAsOptions(),
       '#default_value' => $this->getDefaultValues("regulatory_functions", []),
     ];
 
@@ -96,6 +97,7 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
 
     // Make sure to add the document cacheability data to this form.
     $this->addCacheableDependency($par_data_advice);
+    $this->addCacheableDependency($advice_bundle);
 
     return parent::buildForm($form, $form_state);
   }
@@ -107,26 +109,30 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Save the value for the about_partnership field.
-    $person = $this->getRouteParam('par_data_person');
-    $person->set('salutation', $this->getTempDataValue('salutation'));
-    $person->set('person_name', $this->getTempDataValue('person_name'));
-    $person->set('work_phone', $this->getTempDataValue('work_phone'));
-    $person->set('mobile_phone', $this->getTempDataValue('mobile_phone'));
-    $person->set('email', $this->getTempDataValue('email'));
-    if ($person->save()) {
+    $par_data_advice = $this->getRouteParam('par_data_advice');
+    $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
+    $advice_type = $this->getTempDataValue('document_type');
+    if (isset($allowed_types[$advice_type])) {
+      $par_data_advice->set('advice_type', $advice_type);
+    }
+
+    $regulatory_functions_selected = array_keys(array_filter($this->getTempDataValue('regulatory_functions')));
+    $par_data_advice->set('field_regulatory_function', $regulatory_functions_selected);
+
+    if ($par_data_advice->save()) {
       $this->deleteStore();
     }
     else {
-      $message = $this->t('This %person could not be saved for %form_id');
+      $message = $this->t('This %advice could not be saved for %form_id');
       $replacements = [
-        '%field' => $this->getTempDataValue('person_name'),
+        '%advice' => $par_data_advice->label(),
         '%form_id' => $this->getFormId(),
       ];
       $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
     }
 
     // Go back to the overview.
-    $form_state->setRedirect($this->getFlow()->getRouteByStep(4), $this->getRouteParams());
+    $form_state->setRedirect($this->getFlow()->getRouteByStep(9), $this->getRouteParams());
   }
 
 }

@@ -16,6 +16,10 @@ cache:
     - tests/node_modules
     - $HOME/.composer/cache/files
     
+before_install:
+  - openssl aes-256-cbc -K $encrypted_6db5a3a5521e_key -iv $encrypted_6db5a3a5521e_iv
+    -in .env.continuous.enc -out cf/.env.continuous -d    
+    
 install:
 
 #-----------------------------------------------------------------------------
@@ -114,24 +118,13 @@ script:
 ### DEPLOY                                                                 ###
 ##############################################################################
 
-deploy:
-#-----------------------------------------------------------------------------
-# Master branch deploys to "dev test" environment
-#-----------------------------------------------------------------------------
+after_success:
+  - cf login -a api.cloud.service.gov.uk -u chris.moreton@transformuk.com -p $CF_PASSWORD
+  - cd cf
+  - ./push.sh continuous
   
-  - provider: cloudfoundry
-    api: https://api.cloud.service.gov.uk
-    username: nao.yoshino@transformuk.com
-    manifest: manifest.continuous.yml
-    password:
-      secure: fh6ePSKsJUnXEeZVwUU4gwGxIwLAfaug6O+4Zs0Wmus5dYXuRgVXQ3RLP1rSyp4Hc6/Nt4CPt3A8ygFW5WGNRKNXXR3F47wXLGnixOKCDmLCz6VytUXesEXlqDkzXSBT7WZGqOTKdTLKJOhaV4Z9Oum/CL5QckKbHlBHinhL3IpH4zi+4tBERc1C6R6oRC9ZPiEsFr9FYOE0hqvFA8Vw0SkB5C3uyQaFh0WotNLkhdd4fUUotxzjA5Cr2KAUTaUcRw0Ceq90UPlWnwBJDxjaNokuEcO6S13HDXTTi/RXNZi4oRhePokbs6z01GssOSiVencbRHX+RT7a4jHwF0hZI9OMgXelnmYb4Jdq5FeVPBD9OenIXGCAo2nyxJ/EU+7InUlQAN6HDh5QO7B10aSJpaWfNt2X65+FeOP89rbLPyfisqxFtbGZW1/ur9VlXOt0c8h9f6vdled8pocT6sMO6duKhMM5xFhRyDBVv01ZCZxTXOGTgOPRUN9EsVsrxX2X8mtRMmr0hJ+vml4eb1I/3AEJX10SDi4e/S8i8mJ4oAaVK4kAR7oLnKT+feBbKqHha/xkU87kp49jm3k65FzkwJzGUNe5GStjEvXXWvK8EaSX2t42iFU4SgbsMi/BIsAyy2NMyB8ua9SziYG7JGwv5z+brl7QJrvniYzkom3JSso=
-    organization: beis-nmo-trial
-    space: sandbox
-    on:
-      repo: TransformCore/beis-par-beta
-      
 #-----------------------------------------------------------------------------
-# Tagged master branch deploys to "demo" environment
+# For tagged builds, send the packaged build to S3
 #-----------------------------------------------------------------------------
       
   - provider: s3
@@ -144,42 +137,6 @@ deploy:
     on:
       repo: TransformCore/beis-par-beta
       tags: true      
-
-##############################################################################
-### POST DEPLOY                                                            ###
-##############################################################################
-
-after_deploy:
-  - cf login -a api.cloud.service.gov.uk -u nao.yoshino@transformuk.com -p $CF_PASSWORD
-  - PAAS_APP_INSTANCE="par-beta-continuous";
-  
-#-----------------------------------------------------------------------------
-# Set environment variables on PaaS instance
-#-----------------------------------------------------------------------------
-   
-  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE S3_ACCESS_KEY $S3_ACCESS_KEY; fi
-  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE S3_SECRET_KEY $S3_SECRET_KEY; fi
-  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE S3_BUCKET_PUBLIC $S3_BUCKET_PUBLIC; fi
-  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE S3_BUCKET_PRIVATE $S3_BUCKET_PRIVATE; fi
-  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE S3_BUCKET_ARTIFACTS $S3_BUCKET_ARTIFACTS; fi
-  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE PAR_HASH_SALT $PAR_HASH_SALT; fi
-  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE PAR_GOVUK_NOTIFY_KEY $PAR_GOVUK_NOTIFY_KEY; fi
-  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE; fi
-  - if [[ $TRAVIS_TAG == '' ]]; then cf set-env $PAAS_APP_INSTANCE APP_ENV $APP_ENV; fi
-  - if [[ $TRAVIS_TAG == '' ]]; then cf restage $PAAS_APP_INSTANCE; fi
-  
-#-----------------------------------------------------------------------------
-# Publish test reports
-#-----------------------------------------------------------------------------
-    
-  - cd tests/reports/html && cf push -f ../../reports-manifest.yml
-  
-#-----------------------------------------------------------------------------
-# Update Drupal, sync config, etc...
-#-----------------------------------------------------------------------------
-    
-  - if [[ $TRAVIS_TAG == '' ]]; then cf ssh $PAAS_APP_INSTANCE -c "cd app/tools && python extract_postgres_env_vars.py"; fi
-  - if [[ $TRAVIS_TAG == '' ]]; then cf ssh $PAAS_APP_INSTANCE -c "cd app && source drupal-update-paas-envs.sh && sh drupal-update-paas.sh"; fi
 
 ##############################################################################
 ### STORE ARTIFACTS                                                        ###
@@ -197,3 +154,4 @@ addons:
 notifications:
   slack:
     secure: oRuAo84heWUp6MVcM22dx/FZUV5HUVvsegEDaiVggQmNo2zYzNQhgAY7P9GpnaPWo53inCoFfwrwn9V+sj2uwUwrtWQg71qCTU3FIZicqYBB44rp+7/YdpuNqCYtbbY50UJpsZtqRIffWB4iS0YZ2bd+SkvsJskzRzbHC9qRjrSq0Hmb1DuxQCiE+M9TM7n4phY1dPTxTm1g1WwShr1zKXTfhDDK2k9r9kQGpJFP5rrE5cch0kBPJP29rgijeJq5uFS99+QyiVRJcqStXYl2JvKXTMS3sVk+OgSHeeRaaY0dbQSPcn4mTgcQKMVpfAUXVD6mUlkj4WYDXjdQSZdbgVvsX5tQg/6kG52wXgB+vDsmwKoBcTZLndNUQc9nCA02A+WVLyru318JmxwtaLo7CqRJArG3vItryMl7SxUA5QM1XB77iOe25m1aXEvJkUa54p6P7T62Gr0qfaEnCAeNRu33nS/16g+Znbp34jIwmmt+f3q2Uo3XV9cQgYj46ixzSjw5OPTHQSEpCHE8jtkXP80/N8jlXYLm7kTJapSWKEdbQf6J5a7Oj8Hv7Jq0QoPZmRpfa9L5PwJHd38p1JmxnVFbZMS4dQGyTwgyehf62cIDVi+5Pl3XPdQJ9FcMSTGOCXSrPGmJRHBt+o8bOuIzWMBHYqgnmHNNQ+oK/SEFhyw=
+ 
