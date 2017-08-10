@@ -18,7 +18,7 @@ Feature: Business User - Manage Addresses
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         Then I expect that element ".error-message" is not visible
-        When I click on the button ".butthon-start"
+        When I click on the button ".button-start"
 
         # PARTNERSHIPS DASHBOARD
         And I add "DCBA" to the inputfield "#edit-keywords"
@@ -50,7 +50,7 @@ Feature: Business User - Manage Addresses
 
         # EDIT REGISTERED ADDRESS
 
-        And I click on the button "form#par-flow-transition-business-details #edit-registered-address a.flow-link"
+        When  I click on the button "form#par-flow-transition-business-details #edit-registered-address a.flow-link"
         And I add "change" to the inputfield "#edit-postcode"
         And I add "1 Change St" to the inputfield "#edit-address-line1"
         And I add "New Change" to the inputfield "#edit-address-line2"

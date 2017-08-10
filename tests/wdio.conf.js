@@ -137,11 +137,9 @@ exports.config = {
             'js:babel-register',
         ], // <string[]> ("extension:module") require files with the given
            // EXTENSION after requiring MODULE (repeatable)
-        dryRun: false, // <boolean> invoke formatters without executing step_definitions
+        dryRun: false, // <boolean> invoke formatters without executing
         failFast: true, // <boolean> abort the run on first failure
-        format: ['pretty', 'progress'], // <string[]> (type[:path]) specify the output
-                            // format, optionally supply PATH to redirect
-                            // formatter output (repeatable)
+        format: ['pretty', 'progress'],
         colors: true, // <boolean> disable colors in formatter output
         snippets: true, // <boolean> hide step definition snippets for pending
                         // step_definitions
