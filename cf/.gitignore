@@ -1,3 +1,5 @@
 .env.*
 .htpasswd
+build/
+beis-par-beta/
 
