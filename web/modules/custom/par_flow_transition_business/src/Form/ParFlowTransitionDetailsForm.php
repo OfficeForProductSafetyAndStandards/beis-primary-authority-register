@@ -17,6 +17,8 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
    */
   protected $flow = 'transition_business';
 
+  protected $valuesToSet = [];
+
   /**
    * {@inheritdoc}
    */
@@ -353,6 +355,21 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
 
     // Go back to the overview.
     $form_state->setRedirect($this->getFlow()->getPrevRoute(), $this->getRouteParams());
+  }
+
+  /**
+   * Record the class and field names to be set when the form is saved.
+   *
+   * @param $class
+   * @param $field
+   * @param $value_field
+   */
+  public function setValue($class, $field, $value_field) {
+    $this->valuesToSet[] = [
+      'object' => $class,
+      'field' => $field,
+      'value_field' => $value_field,
+    ];
   }
 
 }
