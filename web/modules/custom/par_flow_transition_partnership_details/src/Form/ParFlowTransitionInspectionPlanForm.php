@@ -41,6 +41,7 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
       foreach ($par_data_partnership->getInspectionPlan() as $inspection_plan) {
         $element_key = ['document_list', $inspection_plan->id(), 'confirm'];
         $element_value = $this->decideBooleanValue($inspection_plan->getRawStatus(), 'current');
+        var_dump($element_value);
         $this->loadDataValue($element_key, $element_value);
       }
     }
@@ -113,10 +114,10 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
     // Get all the inspection plans for this partnership.
     foreach ($par_data_partnership->getInspectionPlan() as $inspection_plan) {
       // Save the value for the inspection plan confirmation.
-      if ($this->decideBooleanValue($this->getTempDataValue(['document_list', $inspection_plan->id(), 'confirm']))) {
+      if (!empty($this->getTempDataValue(['document_list', $inspection_plan->id(), 'confirm']))) {
         $inspection_plan->setParStatus('current');
       }
-
+      
       if ($inspection_plan->save()) {
         $this->deleteStore();
       }

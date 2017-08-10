@@ -95,21 +95,25 @@ class ParFlowTransitionTaskListController extends ParBaseController {
       0 => [
         $overview_link,
         $par_data_partnership->getParStatus(),
-      ],
-      2 => [
+      ]
+    ];
+
+    // Only add the remaining tasks once the Partnership information has been confirmed.
+    if ($par_data_partnership->getRawStatus() !== 'awaiting_review') {
+      $rows[2] = [
         $inspection_plan_link,
         $inspection_plan_status,
-      ],
-      3 => [
+      ];
+      $rows[3] = [
         $documents_list_link,
         $documentation_completion . '%',
-      ],
-    ];
-    if (isset($invite_link)) {
-      $rows[1] = [
-        $invite_link,
-        '',
       ];
+      if (isset($invite_link)) {
+        $rows[1] = [
+          $invite_link,
+          '',
+        ];
+      }
     }
     // Sort the array by descired keys.
     ksort($rows);
