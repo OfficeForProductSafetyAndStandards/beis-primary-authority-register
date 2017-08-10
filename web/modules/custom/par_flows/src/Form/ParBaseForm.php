@@ -162,7 +162,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   /**
    * Returns the PAR data manager.
    *
-   * @return string
+   * @return \Drupal\par_data\ParDataManagerInterface
    *   Get the logger channel to use.
    */
   public function getParDataManager() {
@@ -375,7 +375,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $replacements = [
       '%user' => $this->currentUser->getUsername(),
       '%key' => $this->getFormKey(),
-      '%item' => $key,
+      '%item' => is_array($key) ? implode('|', $key) : $key,
     ];
     $this->getLogger($this->getLoggerChannel())->debug($message, $replacements);
 
@@ -429,7 +429,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * @return array
    *   The values stored in the temp store.
    */
-  protected function getFormTempData($form_id = NULL) {
+  protected function  getFormTempData($form_id = NULL) {
     $form_id = !empty($form_id) ? $form_id : $this->getFormId();
 
     // Start an anonymous session if required.
@@ -585,8 +585,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * @return mixed
    *   The new value for the entity.
    */
-  public function decideBooleanValue($input, $on, $off = NULL) {
-    return $input === $on ? $on : $off;
+  public function decideBooleanValue($input, $on = 'on', $off = 'off') {
+    return ($on === $input || $input === TRUE) ? TRUE : FALSE;
   }
 
   /**

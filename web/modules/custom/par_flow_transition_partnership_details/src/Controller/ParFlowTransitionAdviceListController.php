@@ -20,11 +20,10 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
    * {@inheritdoc}
    */
   public function content(ParDataPartnership $par_data_partnership = NULL) {
-
-    // Organisation.
     $par_data_organisation = current($par_data_partnership->get('field_organisation')->referencedEntities());
-
     $organisation_name = $par_data_organisation->get('name')->getString();
+
+    $advice_bundle = $this->getParDataManager()->getParBundleEntity('par_data_advice');
 
     $build['intro']['help_text_1'] = [
       '#type' => 'markup',
@@ -63,11 +62,17 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
       $advice_summary = $advice_view_builder->view($advice, 'summary');
 
       // The second column contains a summary of the confirmed details.
-      $advice_details = 'Awaiting confirmation';
-      if ($advice_type = $advice->get('advice_type')->getString()) {
+      $advice_details = '';
+      $advice_type_value = $advice->get('advice_type')->getString();
+      if ($advice_type = $advice->getTypeEntity()->getAllowedFieldlabel('advice_type', $advice_type_value)){
         $advice_details = "{$advice_type}";
-        if ($we_create_reference_between_documents_and_regulatory_function = FALSE) {
-          $advice_details .= "covering:" . PHP_EOL . PHP_EOL;
+        if ($regulatory_functions = $advice->getRegulatoryFunction()) {
+          $advice_details .= " covering: " . PHP_EOL;
+          $names = [];
+          foreach ($regulatory_functions as $regulatory_function) {
+            $names[] = $regulatory_function->get('function_name')->getString();
+          }
+          $advice_details .= implode(', ', $names);
         }
       }
 
@@ -86,7 +91,7 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
       // Fourth column contains the completion status of the document.
       $completion = $advice->getCompletionPercentage();
 
-      if ($advice_summary && $advice_details && $advice_actions && $completion) {
+      if ($advice_summary) {
         $build['documentation_list']['#rows'][] = [
           'data' => [
             'document' => $this->getRenderer()->render($advice_summary),
@@ -99,6 +104,7 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
 
       // Make sure to add the document cacheability data to this form.
       $this->addCacheableDependency($advice);
+      $this->addCacheableDependency(current($advice->get('document')->referencedEntities()));
     }
 
     $build['cancel'] = [
@@ -113,6 +119,7 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
+    $this->addCacheableDependency($advice_bundle);
 
     return parent::build($build);
 

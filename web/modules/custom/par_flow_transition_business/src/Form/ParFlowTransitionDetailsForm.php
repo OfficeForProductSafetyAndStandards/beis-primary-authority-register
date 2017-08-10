@@ -38,7 +38,9 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()}");
 
-      // We need to get the value of the terms and conditions checkbox.
+      // Partnership Information Confirmation.
+      $confirmation_value = !empty($par_data_partnership->get('partnership_info_agreed_business')->getString()) ? TRUE : FALSE;
+      $this->loadDataValue('confirmation', $confirmation_value);
     }
   }
 
@@ -47,11 +49,13 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
+    // Configuration for each entity is contained within the bundle.
+    $partnership_bundle = $this->getParDataManager()->getParBundleEntity('par_data_partnership');
+    $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
+    $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
+    $premises_bundle = $this->getParDataManager()->getParBundleEntity('par_data_premises');
 
     $par_data_authority = current($par_data_partnership->getAuthority());
-    $par_data_authority_builder = $par_data_authority->getViewBuilder();
-
-    $authority_name = $par_data_authority_builder->view($par_data_authority, 'title');
 
     // Organisation summary.
     $par_data_organisation = current($par_data_partnership->getOrganisation());
@@ -101,7 +105,6 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
-
       $registered_address = $premises_view_builder->view($registered_premises, 'full');
       $form['registered_address']['address'] = $this->renderMarkupField($registered_address);
 
@@ -198,9 +201,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     $par_data_legal_entities = $par_data_organisation->getLegalEntity();
     $par_data_legal_entity = array_shift($par_data_legal_entities);
     $legal_view_builder = $par_data_legal_entity->getViewBuilder();
-
     if ($par_data_legal_entity) {
-
       $form['legal_entity'] = [
         '#type' => 'fieldset',
         '#title' => t('Legal Entities:'),
@@ -258,7 +259,6 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     // Trading names.
     $par_data_trading_names = $par_data_organisation->get('trading_name')->getValue();
     if ($par_data_trading_names) {
-
       foreach ($par_data_trading_names as $key => $trading_name) {
         $form['trading_names'][$key] = [
           '#type' => 'fieldset',
@@ -294,6 +294,10 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     $form['confirmation'] = [
       '#type' => 'checkbox',
       '#title' => t('I confirm that the information above is correct.'),
+      '#checked' => $this->getDefaultValues('confirmation'),
+      '#disabled' => $this->getDefaultValues('confirmation'),
+      '#default_value' => $this->getDefaultValues('confirmation'),
+      '#return_value' => 'on',
     ];
 
     $form['next'] = [
@@ -303,6 +307,10 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
+    $this->addCacheableDependency($partnership_bundle);
+    $this->addCacheableDependency($person_bundle);
+    $this->addCacheableDependency($legal_entity_bundle);
+    $this->addCacheableDependency($premises_bundle);
 
     return parent::buildForm($form, $form_state);
   }
@@ -322,9 +330,16 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Save the value for the about_partnership field.
-    $partnership = $this->getRouteParam('par_data_partnership');
-    // @TODO Still need to save/acknowledge the acceptance of the terms.
-    if ($partnership->save()) {
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+
+    // Save the value for the partnership status if it's being confirmed.
+    if ($confirmation_value = $this->decideBooleanValue($this->getTempDataValue('confirmation'))) {
+      $par_data_partnership->set('partnership_info_agreed_business', $confirmation_value);
+      // Also change the status.
+      $par_data_partnership->setParStatus('confirmed_business');
+    }
+
+    if ($par_data_partnership->save()) {
       $this->deleteStore();
     }
     else {

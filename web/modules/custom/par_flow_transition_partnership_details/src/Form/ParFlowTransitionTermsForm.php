@@ -39,6 +39,8 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
       $this->setState("edit:{$par_data_partnership->id()}");
 
       // We need to get the value of the terms and conditions checkbox.
+      $terms_value = !empty($par_data_partnership->get('terms_authority_agreed')->getString()) ? TRUE : FALSE;
+      $this->loadDataValue('terms_conditions', $terms_value);
     }
   }
 
@@ -66,7 +68,9 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
     // Partnership details.
     $form['terms_conditions'] = [
       '#type' => 'checkbox',
-      '#title' => t('(NOT YET SAVED) I confirm that my authority agrees to the new Terms and Conditions.'),
+      '#title' => t('I confirm that my authority agrees to the new Terms and Conditions.'),
+      '#default_value' => $this->getDefaultValues('terms_conditions', FALSE),
+      '#return_value' => 'on',
     ];
 
     $form['next'] = [
@@ -86,6 +90,10 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
+
+    if (empty($form_state->getValue('terms_conditions'))) {
+      $form_state->setErrorByName('terms_conditions', $this->t('You must agree to the new terms and conditions.'));
+    }
   }
 
   /**
@@ -94,10 +102,14 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Save the value for the about_partnership field.
-    $partnership = $this->getRouteParam('par_data_partnership');
-    // @TODO Still need to save/acknowledge the acceptance of the terms.
-    if ($partnership->save()) {
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+
+    // Save the value for the terms field.
+    if ($terms_conditions_value = $this->decideBooleanValue($this->getTempDataValue('terms_conditions'))) {
+      $par_data_partnership->set('terms_authority_agreed', $terms_conditions_value);
+    }
+
+    if ($par_data_partnership->save()) {
       $this->deleteStore();
     }
     else {

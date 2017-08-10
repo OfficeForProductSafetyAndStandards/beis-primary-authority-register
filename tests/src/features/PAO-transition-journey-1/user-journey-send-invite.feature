@@ -34,6 +34,13 @@ Feature: PAR User - Send Invite
         And I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
 
+        # PARTNERSHIP DETAILS SCREEN
+
+        When I scroll to element ".table-scroll-wrapper"
+        And I click on the link "Review and confirm your partnership details"
+        And I click on the checkbox "#edit-confirmation"
+        And I click on the button "#edit-next"
+
         # PARTERSHIP TASKS SCREEN
 
         And I scroll to element ".table-scroll-wrapper"

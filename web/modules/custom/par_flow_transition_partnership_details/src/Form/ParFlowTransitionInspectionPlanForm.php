@@ -39,14 +39,10 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
       $this->setState("edit:{$par_data_partnership->id()}");
 
       foreach ($par_data_partnership->getInspectionPlan() as $inspection_plan) {
-        // Partnership Confirmation.
-        $allowed_values = $inspection_plan->type->entity->getConfigurationByType('inspection_status', 'allowed_values');
-        // Set the on and off values so we don't have to do that again.
-        $this->loadDataValue("inspection_plan_confirmation_value", $allowed_values['confirmed_authority']);
-        $inspection_plan_status = $inspection_plan->getParStatus();
-        if ($inspection_plan_status === $allowed_values['confirmed_authority']) {
-          $this->loadDataValue("inspection_plan_confirmation", TRUE);
-        }
+        $element_key = ['document_list', $inspection_plan->id(), 'confirm'];
+        $element_value = $this->decideBooleanValue($inspection_plan->getRawStatus(), 'current');
+        var_dump($element_value);
+        $this->loadDataValue($element_key, $element_value);
       }
     }
   }
@@ -77,9 +73,9 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
         'confirm' => [
           '#type' => 'checkbox',
           '#title' => t(''),
-          '#disabled' => $this->getDefaultValues("inspection_plan_confirmation", FALSE),
-          '#default_value' => $this->getDefaultValues("inspection_plan_confirmation", FALSE),
-          '#return_value' => $this->getDefaultValues("inspection_plan_confirmation_value", 0),
+          '#disabled' => $this->getDefaultValues(['document_list', $inspection_plan->id(), 'confirm']),
+          '#checked' => $this->getDefaultValues(['document_list', $inspection_plan->id(), 'confirm']),
+          '#default_value' => $this->getDefaultValues(['document_list', $inspection_plan->id(), 'confirm']),
         ],
         'inspection_plan' => $this->renderMarkupField($inspection_plan_summary),
       ];
@@ -117,30 +113,24 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
 
     // Get all the inspection plans for this partnership.
     foreach ($par_data_partnership->getInspectionPlan() as $inspection_plan) {
-      // Save the value for the about_partnership field.
-      $inspection_plan_status = $this->decideBooleanValue(
-        $this->getTempDataValue(['document_list', $inspection_plan->id(), 'confirm']),
-        $this->getDefaultValues("inspection_plan_confirmation_value", NULL)
-      );
-
-      // Save only if the value is different from the one currently set.
-      if ($inspection_plan_status && $inspection_plan_status !== $inspection_plan->getParStatus()) {
-        $inspection_plan->set('inspection_status', $inspection_plan_status);
-        if (!$inspection_plan->save()) {
-          $message = $this->t('The %field field could not be saved for inspection plan %inspection_plan on form %form_id');
-          $replacements = [
-            '%field' => 'confirmation',
-            '%inspection_plan' => $inspection_plan->id(),
-            '%form_id' => $this->getFormId(),
-          ];
-          $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-        }
+      // Save the value for the inspection plan confirmation.
+      if (!empty($this->getTempDataValue(['document_list', $inspection_plan->id(), 'confirm']))) {
+        $inspection_plan->setParStatus('current');
+      }
+      
+      if ($inspection_plan->save()) {
+        $this->deleteStore();
+      }
+      else {
+        $message = $this->t('The %field field could not be saved for inspection plan %inspection_plan on form %form_id');
+        $replacements = [
+          '%field' => 'confirmation',
+          '%inspection_plan' => $inspection_plan->id(),
+          '%form_id' => $this->getFormId(),
+        ];
+        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
       }
     }
-
-    // Actually we always want to delete the store here.
-    // Confirmation checkboxes should never be checked by default.
-    $this->deleteStore();
 
     // Go back to the overview.
     $form_state->setRedirect($this->getFlow()->getRouteByStep(3), $this->getRouteParams());

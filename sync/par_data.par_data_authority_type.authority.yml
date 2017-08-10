@@ -3,9 +3,28 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: LCTrjePYCJjWSME7_rhEX40MawJugbzeBprEHJJcSJg
+  default_config_hash: '-J3Dw5cqbQmmxost-kyoi3h18v4Mh4lPe85czykpOQA'
 id: authority
 label: Authority
 description: 'An Authority is a government body, usually a local authority but occasionally a fire authority or port authority.'
 help: ''
-configuration: null
+configuration:
+  authority_type:
+    allowed_values:
+      council: 'Council Area'
+      county: County
+      district: District
+      district_council: 'District Council Area'
+      fire_auhority: 'Fire Authority'
+      joint_services: 'Joint Services'
+      london_borough: 'London Borough'
+      metropolitan_district: 'Metropolitan District'
+      port: Port
+      unitary: Unitary
+      other: Other
+  nation:
+    allowed_values:
+      GB-ENG: England
+      GB-SCT: Scotland
+      GB-WLS: Wales
+      GB-NIR: 'Northern Ireland'
