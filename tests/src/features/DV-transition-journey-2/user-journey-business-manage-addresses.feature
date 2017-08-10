@@ -21,19 +21,20 @@ Feature: Business User - Manage Addresses
         When I click on the button ".button-start"
 
         # PARTNERSHIPS DASHBOARD
-#        And I add "DCBA" to the inputfield "#edit-name"
-#        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+        And I add "DCBA" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+        Then I expect that element "td.views-field.views-field-field-premises" is not visible
 #        Then the element "td.views-field.views-field-field-premises" not contains the text "ABCD Mart"
-#        When I add "ABCD" to the inputfield "#edit-name"
-#        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
-#        Then the element "td.views-field.views-field-field-premises" contains the text "ABCD Mart"
-#        When I select the option with the text "Awaiting Review" for element "edit-partnership-status"
-#        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
-#        Then the element "td.views-field.views-field-field-premises" not contains the text "ABCD Mart"
-#        When I select the option with the text "Approved" for element "edit-partnership-status"
-#        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
-#        Then the element "td.views-field.views-field-field-premises" contains the text "ABCD Mart"
-        And I scroll to element ".table-scroll-wrapper"
+        When I add "ABCD" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+        Then the element "td.views-field.views-field-field-premises" contains the text "ABCD Mart"
+        When I select the option with the text "Confirmed by Business" for element "#edit-partnership-status"
+        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+        Then I expect that element "td.views-field.views-field-field-premises" is not visible
+        When I select the option with the text "Awaiting Review" for element "#edit-partnership-status"
+        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+        Then the element "td.views-field.views-field-field-premises" contains the text "ABCD Mart"
+#        And I scroll to element ".table-scroll-wrapper"
         And I click on the link "ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN
