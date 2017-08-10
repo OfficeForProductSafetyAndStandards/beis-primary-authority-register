@@ -1,17 +1,19 @@
 .view-dv-journey-1-step-1 {
 
+  @extend .grid-row;
+
   // reset ul.
   ul {
     margin: 0;
     padding: 0;
   }
 
-  .views-element-container {
-    @extend .grid-row;
-  }
-
   .views-exposed-form {
     @extend .column-one-third;
+  }
+
+  .table-scroll-wrapper {
+    @extend .column-two-thirds;
   }
 
   .views-exposed-form-inner {
@@ -21,6 +23,26 @@
     input[type='text'] {
       width: 100%;
     }
+  }
+
+}
+
+.par-rd-helpdesk-dashboard {
+
+  .views-exposed-form-inner {
+    margin: 20px 0;
+  }
+
+  // CSV Export text.
+  .views-data-export-csv-feed {
+    background-image: none;
+    display: block;
+    padding: 20px 0;
+  }
+
+  .views-exposed-form-inner {
+    border: 1px solid $grey-3;
+    padding: 20px;
   }
 
 }

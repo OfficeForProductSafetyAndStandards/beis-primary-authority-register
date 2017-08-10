@@ -16,6 +16,8 @@ import setCookie from '../support/action/setCookie';
 import setInputField from '../support/action/setInputField';
 import setPromptText from '../support/action/setPromptText';
 import submitForm from '../support/action/submitForm';
+import fillInForm from '../support/action/fillInForm';
+
 
 module.exports = function when() {
     this.When(
@@ -31,6 +33,11 @@ module.exports = function when() {
     this.When(
         /^I (add|set) "([^"]*)?" to the inputfield "([^"]*)?"$/,
         setInputField
+    );
+
+    this.When(
+        /^I fill in form with the following data:$/,
+        fillInForm
     );
 
     this.When(

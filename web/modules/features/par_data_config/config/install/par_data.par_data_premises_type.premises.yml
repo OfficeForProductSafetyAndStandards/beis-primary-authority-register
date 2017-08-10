@@ -5,4 +5,10 @@ id: premises
 label: Premises
 description: 'Premises are a location used by either an Authority or an Organisation.'
 help: ''
-configuration: null
+configuration:
+  nation:
+    allowed_values:
+      GB-ENG: England
+      GB-SCT: Scotland
+      GB-WLS: Wales
+      GB-NIR: 'Northern Ireland'

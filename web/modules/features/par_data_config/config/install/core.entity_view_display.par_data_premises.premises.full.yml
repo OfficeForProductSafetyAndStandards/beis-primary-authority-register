@@ -6,6 +6,7 @@ dependencies:
     - par_data.par_data_premises_type.premises
   module:
     - address
+    - par_data
 id: par_data_premises.premises.full
 targetEntityType: par_data_premises
 bundle: premises
@@ -19,12 +20,11 @@ content:
     settings: {  }
     third_party_settings: {  }
   nation:
-    type: string
+    type: par_list_formatter
     weight: 1
     region: content
     label: hidden
-    settings:
-      link_to_entity: false
+    settings: {  }
     third_party_settings: {  }
   uprn:
     type: string

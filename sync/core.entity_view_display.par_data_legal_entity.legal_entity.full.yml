@@ -6,7 +6,7 @@ dependencies:
     - core.entity_view_mode.par_data_legal_entity.full
     - par_data.par_data_legal_entity_type.legal_entity
   module:
-    - user
+    - par_data
 _core:
   default_config_hash: mwpuWF5BBUI8JjiUu0uNPnieSUE0U_HuMHJVbJ_LbEw
 id: par_data_legal_entity.legal_entity.full
@@ -15,12 +15,11 @@ bundle: legal_entity
 mode: full
 content:
   legal_entity_type:
-    type: string
+    type: par_list_formatter
     weight: 2
     region: content
     label: hidden
-    settings:
-      link_to_entity: false
+    settings: {  }
     third_party_settings: {  }
   registered_name:
     type: string

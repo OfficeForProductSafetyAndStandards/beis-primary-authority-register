@@ -3,9 +3,19 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: 4dSn0WsGjz7ow79nCwarTMesmYxhQaVFR2zNAFjRbIQ
+  default_config_hash: S4gmowqmjE0PHus5fpUOA8jSOB-TTUCeO3bcuTZ66i0
 id: legal_entity
 label: 'Legal Entity'
 description: 'A Legal Entity is a representation of an Organisation via some formal method of registration or else a less formal declaration.'
 help: ''
-configuration: null
+configuration:
+  legal_entity_type:
+    allowed_values:
+      partnership: Partnership
+      registered_charity: 'Registered Charities'
+      sole_trader: 'Sole Trader'
+      limited_company: 'Limited Company'
+      public_limited_company: 'Public Limited Company'
+      limited_partnership: 'Limited Partnership'
+      limited_liability_partnership: 'Limited Liability Partnership'
+      other: Other

@@ -9,7 +9,7 @@ dependencies:
   module:
     - file_entity
 _core:
-  default_config_hash: 2UR8deNkdfxUSB9sY7A1vktZ5fkD8P404y6FauKBEGM
+  default_config_hash: 68-JWI-Bndp_6nbgLhEpu5pFLnxKRLV--k2QW0_YSJI
 id: par_data_advice.advice.summary
 targetEntityType: par_data_advice
 bundle: advice

@@ -1,6 +1,6 @@
 uuid: bb1b81b4-3645-4ac9-b781-b0cb3e3f8364
 langcode: en
-status: false
+status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_partnership.about
@@ -13,10 +13,9 @@ dependencies:
     - field.field.par_data_partnership.partnership.field_regulatory_function
     - par_data.par_data_partnership_type.partnership
   module:
-    - datetime
     - text
 _core:
-  default_config_hash: fIgfWxIDk6EYPpcnjk-ycKYDaa1mFzogbwJp1lS3EmU
+  default_config_hash: zvk8lP9M2A8L_zysQRqL3tWN94gdJKF2pfzSTkCVvPQ
 id: par_data_partnership.partnership.about
 targetEntityType: par_data_partnership
 bundle: partnership
@@ -24,7 +23,7 @@ mode: about
 content:
   about_partnership:
     type: text_trimmed
-    weight: 7
+    weight: 0
     region: content
     label: hidden
     settings:
@@ -38,15 +37,6 @@ content:
     settings:
       view_mode: summary
       link: false
-    third_party_settings: {  }
-  approved_date:
-    type: datetime_default
-    weight: 8
-    region: content
-    label: hidden
-    settings:
-      format_type: medium
-      timezone_override: ''
     third_party_settings: {  }
   authority:
     type: entity_reference_entity_view
@@ -66,70 +56,6 @@ content:
       view_mode: summary
       link: false
     third_party_settings: {  }
-  expertise_details:
-    type: text_trimmed
-    weight: 9
-    region: content
-    label: hidden
-    settings:
-      trim_length: 600
-    third_party_settings: {  }
-  field_advice:
-    weight: 16
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_authority:
-    weight: 17
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_authority_person:
-    weight: 13
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_inspection_plan:
-    weight: 15
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_organisation:
-    weight: 18
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_organisation_person:
-    weight: 12
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_regulatory_function:
-    weight: 14
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
   organisation:
     type: entity_reference_entity_view
     weight: 4
@@ -148,22 +74,6 @@ content:
       view_mode: summary
       link: false
     third_party_settings: {  }
-  partnership_status:
-    type: string
-    weight: 11
-    region: content
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  partnership_type:
-    type: string
-    weight: 0
-    region: content
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
   regulatory_function:
     type: entity_reference_entity_view
     weight: 6
@@ -173,29 +83,32 @@ content:
       view_mode: summary
       link: false
     third_party_settings: {  }
-  revocation_date:
-    type: datetime_default
-    weight: 10
-    region: content
-    label: hidden
-    settings:
-      format_type: medium
-      timezone_override: ''
-    third_party_settings: {  }
 hidden:
+  approved_date: true
   authority_change_comment: true
   communication_email: true
   communication_notes: true
   communication_phone: true
   coordinator_suitable: true
   cost_recovery: true
+  expertise_details: true
+  field_advice: true
+  field_authority: true
+  field_authority_person: true
+  field_inspection_plan: true
+  field_organisation: true
+  field_organisation_person: true
+  field_regulatory_function: true
   inspection_plan: true
   name: true
   organisation_change_comment: true
   partnership_info_agreed_authority: true
   partnership_info_agreed_business: true
+  partnership_status: true
+  partnership_type: true
   person: true
   reject_comment: true
+  revocation_date: true
   revocation_reason: true
   revocation_source: true
   tc_authority_agreed: true

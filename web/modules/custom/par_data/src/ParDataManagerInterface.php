@@ -16,14 +16,16 @@ interface ParDataManagerInterface {
   */
   public function getParEntityTypes();
 
+
+
   /**
-   * Gets a list of all entity types for PAR Data.
+   * Get a given PAR Data Entity Type
    *
    * @param string $type
-   *   The type to return.
    *
-   * @return \Drupal\Core\Entity\EntityTypeInterface
-  */
+   * @return \Drupal\Core\Entity\EntityTypeInterface|null
+   *   A PAR Data Entity Type
+   */
   public function getParEntityType(string $type);
 
   /**
@@ -31,9 +33,22 @@ interface ParDataManagerInterface {
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface
    *
-   * @return \Drupal\Core\Entity\EntityTypeInterface
+   * @return \Drupal\Core\Entity\EntityTypeInterface|null
    */
   public function getEntityBundleDefinition(EntityTypeInterface $definition);
+
+  /**
+   * Get the config entity that provides bundles for a given entity.
+   *
+   * @param string $type
+   *   The type of entity to get the bundle entity for.
+   * @param mixed $bundle
+   *   The bundle to load if there are multiple for a given
+   *
+   * @return \Drupal\par_data\Entity\ParDataTypeInterface
+   *   A PAR Data Bundle Entity
+   */
+  public function getParBundleEntity(string $type, $bundle = NULL);
 
   /**
    * @return NULL|\Drupal\Core\Entity\EntityStorageInterface

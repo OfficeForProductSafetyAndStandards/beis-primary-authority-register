@@ -744,7 +744,6 @@ $appEnv = getenv('APP_ENV');
 
 $settings['trusted_host_patterns'] = [
   '^par-beta-' . $appEnv . '\.cloudapps\.digital',
-  '.par-beta\.co\.uk$',
 ];
 
 /**
@@ -819,7 +818,11 @@ $settings['flysystem'] = [
     'serve_js' => FALSE,
     'serve_css' => FALSE,
   ],
-  's3backups' => [
+];
+
+// Only use S3 public store when required.
+if (getenv('S3_BUCKET_ARTIFACTS')) {
+  $settings['flysystem']['s3backups'] = [
     'name' => 'S3 Database Backups',
     'description' => 'The S3 store for database backups.',
     'driver' => 's3',
@@ -833,8 +836,8 @@ $settings['flysystem'] = [
     'cache' => TRUE,
     'serve_js' => FALSE,
     'serve_css' => FALSE,
-  ],
-];
+  ];
+}
 
 // Only use S3 public store when required.
 if (getenv('S3_BUCKET_PUBLIC')) {

@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - par_data.par_data_legal_entity_type.legal_entity
+  module:
+    - par_data
 _core:
   default_config_hash: pX7gmwRikGttoMVFYyN0sV-BUsc8RWBNin2OcMf7z3M
 id: par_data_legal_entity.legal_entity.default
@@ -12,12 +14,11 @@ bundle: legal_entity
 mode: default
 content:
   legal_entity_type:
-    type: string
+    type: par_list_formatter
     weight: 2
     region: content
     label: hidden
-    settings:
-      link_to_entity: false
+    settings: {  }
     third_party_settings: {  }
   registered_name:
     type: string

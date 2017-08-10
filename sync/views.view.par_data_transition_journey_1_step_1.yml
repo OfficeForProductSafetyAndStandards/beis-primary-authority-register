@@ -6,6 +6,7 @@ dependencies:
     - field.storage.par_data_organisation.field_premises
     - par_data.par_data_partnership_type.partnership
   module:
+    - better_exposed_filters
     - pagerer
     - par_data
     - user
@@ -41,7 +42,7 @@ display:
           query_comment: ''
           query_tags: {  }
       exposed_form:
-        type: basic
+        type: bef
         options:
           submit_button: Apply
           reset_button: false
@@ -50,6 +51,35 @@ display:
           expose_sort_order: true
           sort_asc_label: Asc
           sort_desc_label: Desc
+          input_required: false
+          text_input_required: 'Select any filter and click on Apply to see results'
+          bef:
+            general:
+              allow_secondary: false
+              secondary_label: 'Advanced options'
+              autosubmit: false
+              autosubmit_hide: false
+            sort:
+              bef_format: default
+              advanced:
+                collapsible: false
+                collapsible_label: 'Sort options'
+                combine: true
+                combine_rewrite: ''
+                reset: false
+                reset_label: ''
+                is_secondary: false
+            name:
+              bef_format: default
+              more_options:
+                is_secondary: false
+                placeholder_text: ''
+            partnership_status:
+              bef_format: default
+              more_options:
+                is_secondary: false
+                placeholder_text: ''
+          text_input_required_format: basic_html
       pager:
         type: pagerer
         options:
@@ -68,6 +98,49 @@ display:
             offset_label: Offset
       style:
         type: table
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          override: true
+          sticky: false
+          caption: ''
+          summary: ''
+          description: ''
+          columns:
+            id: id
+            organisation_name: organisation_name
+            field_premises: field_premises
+            partnership_status: partnership_status
+          info:
+            id:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            organisation_name:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_premises:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            partnership_status:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          default: '-1'
+          empty_table: false
       row:
         type: fields
       fields:
@@ -202,6 +275,71 @@ display:
           entity_type: par_data_organisation
           entity_field: organisation_name
           plugin_id: field
+        authority_name:
+          id: authority_name
+          table: par_authorities_field_data
+          field: authority_name
+          relationship: field_authority
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: par_data_authority
+          entity_field: authority_name
+          plugin_id: field
         field_premises:
           id: field_premises
           table: par_data_organisation__field_premises
@@ -209,7 +347,7 @@ display:
           relationship: field_organisation
           group_type: group
           admin_label: ''
-          label: ''
+          label: 'Your Partnerships'
           exclude: false
           alter:
             alter_text: true
@@ -340,24 +478,25 @@ display:
           entity_type: par_data_partnership
           entity_field: type
           plugin_id: bundle
-        name:
-          id: name
-          table: par_partnerships_field_data
-          field: name
+          group: 1
+        combine:
+          id: combine
+          table: views
+          field: combine
           relationship: none
           group_type: group
-          admin_label: ''
-          operator: word
+          admin_label: 'Primary Authority / Business Name Search'
+          operator: contains
           value: ''
           group: 1
           exposed: true
           expose:
-            operator_id: name_op
-            label: Search
-            description: ''
+            operator_id: combine_op
+            label: 'PA / Business Name'
+            description: 'Enter keyword(s)'
             use_operator: false
-            operator: name_op
-            identifier: name
+            operator: combine_op
+            identifier: keywords
             required: false
             remember: false
             multiple: false
@@ -365,6 +504,10 @@ display:
               authenticated: authenticated
               anonymous: '0'
               administrator: '0'
+              par_authority: '0'
+              par_business: '0'
+              par_coordinator: '0'
+              par_helpdesk: '0'
           is_grouped: false
           group_info:
             label: ''
@@ -377,11 +520,62 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          fields:
+            organisation_name: organisation_name
+            authority_name: authority_name
+          plugin_id: combine
+        partnership_status:
+          id: partnership_status
+          table: par_partnerships_field_data
+          field: partnership_status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: partnership_status_op
+            label: 'Partnership Status'
+            description: null
+            use_operator: false
+            operator: partnership_status_op
+            identifier: partnership_status
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: true
+          group_info:
+            label: Status
+            description: 'Filter by partnership status'
+            identifier: partnership_status
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items:
+              1:
+                title: 'Awaiting Review'
+                operator: '='
+                value: awaiting_review
+              2:
+                title: 'Confirmed by Authority'
+                operator: '='
+                value: confirmed_authority
+              3:
+                title: 'Confirmed by Business'
+                operator: '='
+                value: confirmed_business
           entity_type: par_data_partnership
-          entity_field: name
+          entity_field: partnership_status
           plugin_id: string
       sorts: {  }
-      title: 'List of Partnerships for a Primary Authority'
+      title: 'List of Partnerships'
       header: {  }
       footer: {  }
       empty: {  }
@@ -407,6 +601,10 @@ display:
       arguments: {  }
       display_extenders: {  }
       css_class: view_dv_journey_1_step_1
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
     cache_metadata:
       max-age: 0
       contexts:
