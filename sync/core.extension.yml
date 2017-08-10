@@ -16,6 +16,7 @@ module:
   contact: 0
   content_translation: 0
   contextual: 0
+  csv_serialization: 0
   ctools: 0
   datetime: 0
   datetime_range: 0
@@ -50,6 +51,7 @@ module:
   pagerer: 0
   par_ckeditor: 0
   par_components: 0
+  par_dashboards: 0
   par_data: 0
   par_data_config: 0
   par_flow_transition_business: 0
@@ -68,8 +70,10 @@ module:
   password_policy_username: 0
   path: 0
   rdf: 0
+  rest: 0
   robotstxt: 0
   search: 0
+  serialization: 0
   shortcut: 0
   syslog: 0
   system: 0
@@ -80,6 +84,7 @@ module:
   toolbar: 0
   trance: 0
   user: 0
+  views_data_export: 0
   views_ui: 0
   menu_link_content: 1
   xmlsitemap: 1
