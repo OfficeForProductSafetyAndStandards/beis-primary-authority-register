@@ -28,7 +28,12 @@ class ParFlowTransitionAboutForm extends ParFlowTransitionAboutBusinessForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
-    return parent::buildForm($form, $form_state, $par_data_partnership);
+    $form = parent::buildForm($form, $form_state, $par_data_partnership);
+
+    // Change labels for coordinator journey.
+    $form['about_business']['#title'] = t('Edit the information about the association');
+    $form['primary_contact']['#title'] = t('Main association contact:');
+    return $form;
   }
 
   /**

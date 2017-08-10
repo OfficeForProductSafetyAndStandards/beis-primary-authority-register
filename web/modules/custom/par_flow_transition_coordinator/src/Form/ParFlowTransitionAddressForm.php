@@ -30,7 +30,14 @@ class ParFlowTransitionAddressForm extends ParFlowTransitionAddressBusinessForm 
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPremises $par_data_premises = NULL) {
-    return parent::buildForm($form, $form_state, $par_data_partnership, $par_data_premises);
+    $form = parent::buildForm($form, $form_state, $par_data_partnership, $par_data_premises);
+
+    // Change labels for coordinator journey.
+    $form['info'] = [
+      '#markup' => t('Change the address of your association.'),
+    ];
+    $form['postcode']['#description'] = t('Enter the postcode of the association');
+    return $form;
   }
 
   /**

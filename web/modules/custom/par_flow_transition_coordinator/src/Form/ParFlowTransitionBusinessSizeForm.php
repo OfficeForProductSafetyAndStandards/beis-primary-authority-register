@@ -53,13 +53,13 @@ class ParFlowTransitionBusinessSizeForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership);
 
     $form['info'] = [
-      '#markup' => t('Change the number of individual businesses you represent.'),
+      '#markup' => t('Change the number of individual associations you represent.'),
     ];
 
     // Business details.
     $form['business_size'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Number of businesses'),
+      '#title' => $this->t('Number of associations'),
       '#default_value' => $this->getDefaultValues('business_size'),
       '#required' => TRUE,
     ];

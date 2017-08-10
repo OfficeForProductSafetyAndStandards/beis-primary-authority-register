@@ -29,7 +29,22 @@ class ParFlowTransitionTradingForm extends ParFlowTransitionTradingBusinessForm 
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $trading_name_delta = NULL) {
-    return parent::buildForm($form, $form_state, $par_data_partnership, $trading_name_delta);
+    $form = parent::buildForm($form, $form_state, $par_data_partnership, $trading_name_delta);
+
+    // Change labels for coordinator journey.
+    if (empty($trading_name_delta)) {
+      $form['intro'] = [
+        '#markup' => $this->t('Add another trading name for your association'),
+      ];
+
+    }
+    else {
+      $form['intro'] = [
+        '#markup' => $this->t('Change the trading name of your association'),
+      ];
+    }
+    $form['trading_name']['#description'] = $this->t('Sometimes companies trade under a different name to their registered, legal name. This is known as a \'trading name\'. State any trading names used by the association.');
+    return $form;
   }
 
   /**

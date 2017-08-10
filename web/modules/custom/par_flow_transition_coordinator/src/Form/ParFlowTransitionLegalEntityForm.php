@@ -30,7 +30,21 @@ class ParFlowTransitionLegalEntityForm extends ParFlowTransitionLegalEntityBusin
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataLegalEntity $par_data_legal_entity = NULL) {
-    return parent::buildForm($form, $form_state, $par_data_partnership, $par_data_legal_entity);
+    $form =  parent::buildForm($form, $form_state, $par_data_partnership, $par_data_legal_entity);
+
+    // Change labels for coordinator journey.
+    if (!empty($par_data_legal_entity)) {
+      $id = $par_data_legal_entity->id();
+      $form['intro'] = [
+        '#markup' => $this->t('Change the legal entity of your association'),
+      ];
+    }
+    else {
+      $form['intro'] = [
+        '#markup' => $this->t('Add a legal entity for your association'),
+      ];
+    }
+    return $form;
   }
 
   /**

@@ -18,8 +18,10 @@ class ParFlowTransitionTaskListController extends ParFlowTransitionTaskListBusin
   /**
    * {@inheritdoc}
    */
-  public function content(ParDataPartnership $par_data_partnership = NULL, $termporary_no_crashy_variable = NULL) {
-    return parent::content($par_data_partnership);
+  public function content(ParDataPartnership $par_data_partnership = NULL, $key_text = NULL) {
+    $build = parent::content($par_data_partnership, 'association');
+
+    return $build;
   }
 
 }

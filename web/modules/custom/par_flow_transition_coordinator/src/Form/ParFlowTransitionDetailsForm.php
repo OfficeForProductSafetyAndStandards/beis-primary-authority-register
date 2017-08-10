@@ -61,11 +61,17 @@ class ParFlowTransitionDetailsForm extends ParFlowTransitionDetailsBusinessForm 
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
     $form = parent::buildForm($form, $form_state, $par_data_partnership);
+
+    // Change labels for coordinator journey.
+    $form['business_name']['#title'] = t('Association Name:');
+    $form['about_business']['#title'] = t('About the association:');
+    $form['primary_contact']['#title'] = t('Main association contact:');
+
     $par_data_organisation = current($par_data_partnership->getOrganisation());
     $size = $par_data_organisation->get('size')->getString();
     $form_business['business_size'] = [
       '#type' => 'fieldset',
-      '#title' => t('Number of Businesses:'),
+      '#title' => t('Number of associations:'),
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
