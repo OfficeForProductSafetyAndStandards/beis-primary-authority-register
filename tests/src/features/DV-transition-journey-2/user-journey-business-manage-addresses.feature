@@ -18,7 +18,7 @@ Feature: Business User - Manage Addresses
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         Then I expect that element ".error-message" is not visible
-        When I click on the button ".button-start"
+        When I click on the button ".butthon-start"
 
         # PARTNERSHIPS DASHBOARD
         And I add "DCBA" to the inputfield "#edit-keywords"
