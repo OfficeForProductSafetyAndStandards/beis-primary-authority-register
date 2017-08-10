@@ -1,5 +1,5 @@
 @ci @journey5
-Feature: Helpdesk - Send Invite
+Feature: Helpdesk - Dashboard
 
     Background:
         # TEST DATA RESET

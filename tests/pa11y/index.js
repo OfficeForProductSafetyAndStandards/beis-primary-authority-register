@@ -63,10 +63,8 @@ var test = pa11y({
 
 // Test http://example.com/
 test.run('localhost:8111/user/login', function (error, result) {
-
     if (error) {
         return console.error(error.message);
     }
-
     console.log(result);
 });
