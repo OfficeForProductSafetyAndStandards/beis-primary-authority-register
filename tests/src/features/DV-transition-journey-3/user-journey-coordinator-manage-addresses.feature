@@ -99,7 +99,7 @@ Feature: Coordinator User - Manage Addresses
         And I click on the button "#edit-next"
         Then the element "#edit-legal-entity div" contains the text "ABCD Mart Change"
         And the element "#edit-legal-entity" contains the text "987654321"
-        Abd the element "#edit-legal-entity" contains the text "Public Limited Company"
+        And the element "#edit-legal-entity" contains the text "Public Limited Company"
 
         # ADD LEGAL ENTITIES
 
