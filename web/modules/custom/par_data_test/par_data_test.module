@@ -204,6 +204,21 @@ function par_data_test_create_entities() {
   ]);
   $premises_4->save();
 
+  $premises_5 = \Drupal\par_data\Entity\ParDataPremises::create([
+    'type' => 'premises',
+    'name' => '5 sesame St',
+    'uid' => 1,
+    'address' => [
+      'country_code' => 'GB',
+      'address_line1' => '5 sesame St',
+      'address_line2' => 'New York',
+      'locality' => 'New York State',
+      'administrative_area' => 'US-NY',
+      'postal_code' => '12345',
+    ],
+  ]);
+  $premises_5->save();
+
   // Create people entities.
   $authority_person_1 = \Drupal\par_data\Entity\ParDataPerson::create([
     'type' => 'person',
@@ -387,6 +402,38 @@ function par_data_test_create_entities() {
   ]);
   $organisation_2->save();
 
+  // Create two organisations.
+  $organisation_3 = \Drupal\par_data\Entity\ParDataOrganisation::create([
+    'type' => 'coordinator',
+    'name' => 'Co Mart',
+    'uid' => 1,
+    'organisation_name' => 'Co Mart',
+    'size' => 'Large',
+    'employees_band' => '10-50',
+    'nation' => 'USA',
+    'comments' => 'Co Mart is a department store featured in the Sesame Street direct-to-video special Big Bird Gets Lost.',
+    'premises_mapped' => TRUE,
+    'trading_name' => [
+      'Co Distribution',
+      'Distribution Mart',
+    ],
+    'field_person' => [
+      $coordinator_person_5->id(),
+      $coordinator_person_6->id(),
+    ],
+    'field_premises' => [
+      $premises_5->id(),
+    ],
+    'field_legal_entity' => [
+      $legal_entity_1->id()
+    ],
+    'field_sic_code' => [
+      $sic_code_1->save(),
+    ]
+  ]);
+
+  $organisation_3->save();
+
   // Create Regulatory Area.
   $regulatory_function_1 = \Drupal\par_data\Entity\ParDataRegulatoryFunction::create([
     'type' => 'regulatory_function',
@@ -494,4 +541,50 @@ function par_data_test_create_entities() {
     ]
   ]);
   $partnership->save();
+
+  $partnership_2 = \Drupal\par_data\Entity\ParDataPartnership::create([
+    'type' => 'partnership',
+    'name' => 'Partnership Lower East Side and Charlie\'s',
+    'uid' => 1,
+    'partnership_type' => 'Direct Partnership',
+    'partnership_status' => 'Approved',
+    'about_partnership' => 'This is a partnership between Lower East Side and CMike.',
+    'communication_email' => TRUE,
+    'communication_phone' => TRUE,
+    'communication_notes' => '',
+    'approved_date' => '2017-06-15',
+    'expertise_details' => '',
+    'cost_recovery' => 'Cost recovered by Jo Smith',
+    'reject_comment' => '',
+    'revocation_source' => 'An RD Executive called Sue',
+    'revocation_date' => '2017-07-01',
+    'revocation_reason' => 'I saw a rat in Charlie\'s Cafe.',
+    'authority_change_comment' => '',
+    'organisation_change_comment' => '',
+    'field_authority' => [
+      $authority_1->id(),
+    ],
+    'field_organisation' => [
+      $organisation_3->id(),
+    ],
+    'field_authority_person' => [
+      $authority_person_1->id(),
+      $authority_person_2->id(),
+    ],
+    'field_organisation_person' => [
+      $coordinator_person_5->id(),
+      $coordinator_person_6->id(),
+    ],
+    'field_regulatory_function' => [
+      $regulatory_function_1->id(),
+    ],
+    'field_advice' => [
+      $advice_1->id(),
+    ],
+    'field_inspection_plan' => [
+      $inspection_plan_1->id(),
+    ]
+  ]);
+  $partnership_2->save();
+
 }
