@@ -24,7 +24,6 @@ Feature: Business User - Manage Addresses
         And I add "DCBA" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
         Then I expect that element "td.views-field.views-field-field-premises" is not visible
-#        Then the element "td.views-field.views-field-field-premises" not contains the text "ABCD Mart"
         When I add "ABCD" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
         Then the element "td.views-field.views-field-field-premises" contains the text "ABCD Mart"
@@ -34,7 +33,6 @@ Feature: Business User - Manage Addresses
         When I select the option with the text "Awaiting Review" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
         Then the element "td.views-field.views-field-field-premises" contains the text "ABCD Mart"
-#        And I scroll to element ".table-scroll-wrapper"
         And I click on the link "ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN
@@ -78,7 +76,7 @@ Feature: Business User - Manage Addresses
         And I add "Some additional notes" to the inputfield "#edit-notes"
         And I click on the button "#edit-next"
         Then the element "#edit-primary-contact" contains the text "Fozzie"
-        Then the element "#edit-primary-contact" contains the text "Bear"
+        And the element "#edit-primary-contact" contains the text "Bear"
         And the element "#edit-primary-contact" contains the text "par_business_change@example.com"
         And the element "#edit-primary-contact" contains the text "2079999999"
         And the element "#edit-primary-contact" contains the text "78659999999"
@@ -94,10 +92,10 @@ Feature: Business User - Manage Addresses
         And I click on the radio "#edit-preferred-contact-communication-mobile"
         And I click on the button "#edit-next"
         Then the element "#edit-alternative-people" contains the text "Miss"
-        Then the element "#edit-alternative-people" contains the text "Piggy"
-        Then the element "#edit-alternative-people" contains the text "par_business_change@example.com"
-        Then the element "#edit-alternative-people" contains the text "01723999999"
-        Then the element "#edit-alternative-people" contains the text "08654999999"
+        And the element "#edit-alternative-people" contains the text "Piggy"
+        And the element "#edit-alternative-people" contains the text "par_business_change@example.com"
+        And the element "#edit-alternative-people" contains the text "01723999999"
+        And the element "#edit-alternative-people" contains the text "08654999999"
 
         # EDIT LEGAL ENTITIES
 
@@ -107,8 +105,8 @@ Feature: Business User - Manage Addresses
         And I add "987654321" to the inputfield "#edit-company-house-no"
         And I click on the button "#edit-next"
         Then the element "#edit-legal-entity div" contains the text "ABCD Mart Change"
-        Then the element "#edit-legal-entity" contains the text "987654321"
-        Then the element "#edit-legal-entity" contains the text "Limited Liability Partnership"
+        And the element "#edit-legal-entity" contains the text "987654321"
+        And the element "#edit-legal-entity" contains the text "Limited Liability Partnership"
 
         # ADD LEGAL ENTITIES
 
@@ -118,5 +116,5 @@ Feature: Business User - Manage Addresses
         And I add "1234567890" to the inputfield "#edit-company-house-no"
         And I click on the button "#edit-next"
         Then the element "#edit-alternative" contains the text "Another Legal Entity"
-        Then the element "#edit-alternative" contains the text "1234567890"
-        Then the element "#edit-alternative" contains the text "Sole Trader"
+        And the element "#edit-alternative" contains the text "1234567890"
+        And the element "#edit-alternative" contains the text "Sole Trader"
