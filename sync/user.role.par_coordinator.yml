@@ -7,7 +7,7 @@ label: 'PAR Coordinator'
 weight: 5
 is_admin: null
 permissions:
-  - 'access par journey transition business'
+  - 'access par journey transition coordinator'
   - 'access par_data_advice entities'
   - 'access par_data_authority entities'
   - 'access par_data_enforcement_notice entities'
