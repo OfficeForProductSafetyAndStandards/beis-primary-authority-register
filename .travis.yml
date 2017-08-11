@@ -67,6 +67,8 @@ install:
   - echo "PAR_HASH_SALT=$PAR_HASH_SALT" >> .env
   - echo "DATAFILE=$DATAFILE" >> .env
   - echo "APP_ENV=travis" >> .env
+  - echo "BSK_USER=euniceaidoo1" >> .env
+  - echo "BSK_KEY=z8aabpqRzKvWZDHKTKff" >> .env
   - cat .env
   
 #-----------------------------------------------------------------------------
