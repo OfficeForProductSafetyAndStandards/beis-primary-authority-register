@@ -1,0 +1,24 @@
+diff --git a/core/modules/migrate/src/Plugin/migrate/id_map/Sql.php b/core/modules/migrate/src/Plugin/migrate/id_map/Sql.php
+index 27b756904a..d6aa6ba3b9 100644
+--- a/core/modules/migrate/src/Plugin/migrate/id_map/Sql.php
++++ b/core/modules/migrate/src/Plugin/migrate/id_map/Sql.php
+@@ -553,7 +553,7 @@ public function lookupDestinationIds(array $source_id_values) {
+     }
+ 
+     // Canonicalize the keys into a hash of DB-field => value.
+-    $is_associative = !isset($source_id_values[0]);
++    $is_associative = !array_key_exists(0, $source_id_values);
+     $conditions = [];
+     foreach ($this->sourceIdFields() as $field_name => $db_field) {
+       if ($is_associative) {
+@@ -569,7 +569,9 @@ public function lookupDestinationIds(array $source_id_values) {
+         if (empty($source_id_values)) {
+           break;
+         }
+-        $conditions[$db_field] = array_shift($source_id_values);
++        if ($value = array_shift($source_id_values)) {
++          $conditions[$db_field] = $value;
++        }
+       }
+     }
+ 

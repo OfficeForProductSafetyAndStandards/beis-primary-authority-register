@@ -1,0 +1,42 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - par_migration
+      - par_migration_scripts
+id: par_migration_legal_entity
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - MS-SQL
+migration_group: PAR2
+label: 'PAR Migration of SIC Codes'
+source:
+  plugin: par_migration_legal_entity
+process:
+  id: legal_entity_id
+  type:
+    plugin: default_value
+    default_value: legal_entity
+  uid:
+    plugin: default_value
+    default_value: 1
+  registered_name: name
+  registered_number: registered_no
+  legal_entity_type:
+    plugin: static_map
+    source: legal_entity_type_id
+    map:
+      13: partnership
+      1302: registered_charity
+      25: sole_trader
+      5: limited_company
+      1256: public_limited_company
+      12: limited_partnership
+      34: other
+      1426: limited_liability_partnership
+destination:
+  plugin: 'entity:par_data_sic_code'
+migration_dependencies: {  }
