@@ -32,12 +32,16 @@
 ENV=$1
 VER=$2
 
-rm -rf build
-mkdir build
-cd build
-aws s3 cp s3://transform-par-beta-artifacts/builds/$VER.tar.gz .
-tar -zxvf $VER.tar.gz
-rm $VER.tar.gz
+if [ -n $VER ]; then
+    rm -rf build
+    mkdir build
+    cd build
+    aws s3 cp s3://transform-par-beta-artifacts/builds/$VER.tar.gz .
+    tar -zxvf $VER.tar.gz
+    rm $VER.tar.gz
+else
+    cd ..
+fi
 
 cf push -f manifest.$ENV.yml
 cd ..
