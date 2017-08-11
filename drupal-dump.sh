@@ -23,6 +23,9 @@ fi
 
 TAR_PATH=/home/vcap
 
+rm $SQL_FILENAME.tar.gz
+rm $TAR_PATH/$SQL_FILENAME
+
 cd ${PROJECT_ROOT}/web
 ../vendor/drush/drush/drush sql-dump @$DRUPAL_ENV --result-file=$TAR_PATH/$SQL_FILENAME
 ls -la /home/vcap
