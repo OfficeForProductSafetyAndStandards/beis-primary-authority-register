@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.storage.par_data_advice.field_regulatory_function
   module:
+    - file_entity
     - pagerer
     - par_data
     - text
@@ -383,9 +384,10 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: entity_reference_entity_view
+          type: file_download_link
           settings:
-            view_mode: summary
+            access_message: 'You don''t have access to download this file.'
+            text: 'Download [file:name]'
           group_column: ''
           group_columns: {  }
           group_rows: true
