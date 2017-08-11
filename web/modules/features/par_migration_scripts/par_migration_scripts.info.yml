@@ -1,0 +1,10 @@
+name: 'Par Migration Scripts'
+type: module
+description: 'The scripts to run for a migration.'
+core: 8.x
+package: PAR
+dependencies:
+  - migrate_plus
+  - migrate_source_csv
+  - migrate_tools
+  - par_migration
