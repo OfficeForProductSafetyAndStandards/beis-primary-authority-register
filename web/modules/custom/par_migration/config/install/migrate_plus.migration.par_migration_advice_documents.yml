@@ -16,7 +16,7 @@ label: 'PAR Migration of advice documents'
 source:
   plugin: par_migration_advice_documents
   constants:
-    destination_base_path: 'private://documents/advice'
+    destination_base_path: 's3private://documents/advice'
 process:
   filename:
     -

@@ -6,7 +6,7 @@
     "repositories": [
         {
             "type": "git",
-            "url": "git@gitlab.com:david-garcia-garcia/mssql.git"
+            "url": "https://gitlab.com/david-garcia-garcia/mssql.git"
         },
         {
             "type": "composer",

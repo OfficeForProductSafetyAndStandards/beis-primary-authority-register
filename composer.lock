@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "14742c019ed5fe34fa3019b2439a9be9",
+    "content-hash": "475774e6cfd408082ab08fe8d5261e7d",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -112,16 +112,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.32.5",
+            "version": "3.32.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "6d9a29bd750c50e491a4f458bf5e24f2adb35a5f"
+                "reference": "db5bd8d617012d4afb3e5e1f3e8f4b9899242b62"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6d9a29bd750c50e491a4f458bf5e24f2adb35a5f",
-                "reference": "6d9a29bd750c50e491a4f458bf5e24f2adb35a5f",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/db5bd8d617012d4afb3e5e1f3e8f4b9899242b62",
+                "reference": "db5bd8d617012d4afb3e5e1f3e8f4b9899242b62",
                 "shasum": ""
             },
             "require": {
@@ -188,7 +188,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-08-09T18:19:19+00:00"
+            "time": "2017-08-10T20:29:21+00:00"
         },
         {
             "name": "commerceguys/addressing",
@@ -664,7 +664,7 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@gitlab.com:david-garcia-garcia/mssql.git",
+                "url": "https://gitlab.com/david-garcia-garcia/mssql.git",
                 "reference": "60acd210d8dee7666af11ee4ff024617521ba606"
             },
             "type": "library",
@@ -1708,6 +1708,11 @@
                 "symfony/css-selector": "~2.8"
             },
             "type": "drupal-core",
+            "extra": {
+                "patches_applied": {
+                    "Allow migration lookups against sub-sets of migration map ids": "./patches/migration_id_map_sql_lookup_check.patch"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Drupal\\Core\\": "lib/Drupal/Core",
@@ -7917,7 +7922,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/examples",
-                "reference": "9396a03ff711c9d485f9044896031a006c09aeee"
+                "reference": "a23eb1e6ea248cb31584857d6a56ec46c039bec4"
             },
             "require": {
                 "drupal/core": "*"
@@ -7933,7 +7938,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1502309944",
+                    "datestamp": "1502381043",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
