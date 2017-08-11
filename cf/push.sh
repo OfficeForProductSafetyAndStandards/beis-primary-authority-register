@@ -32,20 +32,30 @@
 ENV=$1
 VER=$2
 
-if [ -n $VER ]; then
+# We are in the /cf directory
+
+if [ "$VER" != "" ]; then
+
+    source .env.$ENV
+    
+    echo "Pulling version $VER"
     rm -rf build
     mkdir build
+    
     cd build
+    
     aws s3 cp s3://transform-par-beta-artifacts/builds/$VER.tar.gz .
     tar -zxvf $VER.tar.gz
     rm $VER.tar.gz
+    
+    # Stay in the build directory to push the unpacked code
 else
+    # We need to push from the root directory
     cd ..
 fi
 
 cf push -f manifest.$ENV.yml
-cd ..
-source .env.$ENV
+
 cf set-env par-beta-$ENV S3_ACCESS_KEY $S3_ACCESS_KEY
 cf set-env par-beta-$ENV S3_SECRET_KEY $S3_SECRET_KEY
 cf set-env par-beta-$ENV PAR_HASH_SALT $PAR_HASH_SALT
@@ -55,7 +65,14 @@ cf set-env par-beta-$ENV S3_BUCKET_ARTIFACTS $S3_BUCKET_ARTIFACTS
 cf set-env par-beta-$ENV APP_ENV $ENV
 cf set-env par-beta-$ENV PAR_GOVUK_NOTIFY_KEY $PAR_GOVUK_NOTIFY_KEY
 cf set-env par-beta-$ENV PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE
+
 cf restage par-beta-$ENV
 
 cf ssh par-beta-$ENV -c "cd app/tools && python post_deploy.py"
-sh update-domain-$ENV.sh
+
+if [ "$VER" != "" ]; then
+    # For packaged code, go back to the /cf directory to set the domain, if any
+    cd ..
+    sh update-domain-$ENV.sh
+fi
+
