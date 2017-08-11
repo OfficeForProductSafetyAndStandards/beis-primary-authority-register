@@ -28,3 +28,7 @@ cd ${PROJECT_ROOT}/web
 ls -la /home/vcap
 tar -zcvf $SQL_FILENAME.tar.gz -C $TAR_PATH $SQL_FILENAME
 ../vendor/drush/drush/drush fsp s3backups $SQL_FILENAME.tar.gz $SQL_FILENAME.tar.gz
+
+rm $SQL_FILENAME.tar.gz
+rm $TAR_PATH/$SQL_FILENAME
+
