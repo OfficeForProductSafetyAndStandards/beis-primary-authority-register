@@ -7,7 +7,7 @@ index 27b756904a..d6aa6ba3b9 100644
  
      // Canonicalize the keys into a hash of DB-field => value.
 -    $is_associative = !isset($source_id_values[0]);
-+    $is_associative = array_key_exists(0, $source_id_values);
++    $is_associative = !array_key_exists(0, $source_id_values);
      $conditions = [];
      foreach ($this->sourceIdFields() as $field_name => $db_field) {
        if ($is_associative) {
