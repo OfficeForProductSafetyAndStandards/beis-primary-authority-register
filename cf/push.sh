@@ -32,26 +32,28 @@
 ENV=$1
 VER=$2
 
+# We are in the /cf directory
+
 if [ "$VER" != "" ]; then
 
-    # We are in the /cf directory
     source .env.$ENV
     
     echo "Pulling version $VER"
     rm -rf build
     mkdir build
+    
     cd build
+    
     aws s3 cp s3://transform-par-beta-artifacts/builds/$VER.tar.gz .
     tar -zxvf $VER.tar.gz
     rm $VER.tar.gz
     
-    # We are in the /cf/build directory
-    cf push -f manifest.$ENV.yml
-
-else
-    # We are in the / directory
-    cf push -f manifest.$ENV.yml
+    cd ..
+    
+    # We are back in the /cf directory
 fi
+
+cf push -f manifest.$ENV.yml
 
 cf set-env par-beta-$ENV S3_ACCESS_KEY $S3_ACCESS_KEY
 cf set-env par-beta-$ENV S3_SECRET_KEY $S3_SECRET_KEY
