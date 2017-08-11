@@ -26,10 +26,11 @@ Feature: PAR User - Documentation
         # PARTNERSHIPS DASHBOARD
 
         And I scroll to element ".table-scroll-wrapper"
-        And I click on the link "ABCD Mart"
+        When I click on the link "ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN
 
+        Then the element ".par-flow-transition-partnership-details-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
         And I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
 
@@ -46,10 +47,18 @@ Feature: PAR User - Documentation
         When I click on the link "Review and confirm your documentation for ABCD Mart"
         And I click on the link "edit"
         And I click on the radio "#edit-document-type-authority-advice"
+        When I click on the button "#edit-next"
+        Then the element ".table-scroll-wrapper" not contains the text "✔"
+        When I click on the link "Save"
+        Then the element ".table-scroll-wrapper" contains the text "50%"
+        When I click on the link "Review and confirm your documentation for ABCD Mart"
+        And I click on the link "edit"
+        And I click on the radio "#edit-document-type-authority-advice"
         And I click on the checkbox ".form-label*=Cookie control"
         And I click on the checkbox ".form-label*=Alphabet learning"
         When I click on the button "#edit-next"
         Then the element ".table-scroll-wrapper" contains the text "✔"
+        And the element ".table-scroll-wrapper" contains the text "Cookie control, Alphabet learning"
         When I click on the link "Save"
         Then the element ".table-scroll-wrapper" contains the text "100%"
         And I click on the link "Log out"

@@ -28,14 +28,15 @@ Feature: PAR User - Change Partnership Details
         # PARTNERSHIPS DASHBOARD
 
         And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
-        And I click on the link "ABCD Mart"
+        When I click on the link "ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN
 
-        And I click on the checkbox "#edit-terms-conditions"
+        Then the element ".par-flow-transition-partnership-details-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
+        When I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
         And I scroll to element ".table-scroll-wrapper"
-        When I click on the link "Review and confirm your partnership details"
+        And I click on the link "Review and confirm your partnership details"
 
         # REVIEW PARTNERSHIPS DETAILS
 
