@@ -48,9 +48,10 @@ if [ "$VER" != "" ]; then
     tar -zxvf $VER.tar.gz
     rm $VER.tar.gz
     
+    # Stay in the build directory to push the unpacked code
+else
+    # We need to push from the root directory
     cd ..
-    
-    # We are back in the /cf directory
 fi
 
 cf push -f manifest.$ENV.yml
@@ -70,6 +71,8 @@ cf restage par-beta-$ENV
 cf ssh par-beta-$ENV -c "cd app/tools && python post_deploy.py"
 
 if [ "$VER" != "" ]; then
+    # For packaged code, go back to the /cf directory to set the domain, if any
+    cd ..
     sh update-domain-$ENV.sh
 fi
 
