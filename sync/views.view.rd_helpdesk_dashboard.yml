@@ -482,7 +482,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: 'List of Tasks'
+            text: 'List of tasks'
             make_link: true
             path: '/dv/business-partnerships/{{ id }}'
             absolute: false

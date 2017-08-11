@@ -5,4 +5,5 @@ dashboard/
 web/sites/default/settings.local.php
 .env
 cf/
+*.tar.gz
 

@@ -73,3 +73,31 @@ If you want to rebuild without re-cloning the repository:
     vagrant ssh
     cd /vagrant/docker
     sudo sh refresh-dependencies.sh
+    
+### Deployment
+
+Every successfull build of the master branch gets deployed to
+
+    https://par-beta-continuous.cloudapps.digital
+    
+The currently deployed build can be found using
+
+    https://par-beta-continuous.cloudapps.digital/build_version.txt
+    
+### Deploying to other environments
+
+Tagging the master branch will cause the build to be packaged and stored in S3
+
+    git tag v0.0.31
+    git push --tags
+    
+Once a build has been packaged, it can be deployed to another environment as follows:
+
+    cd cf
+    ./push.sh ENV_NAME VERSION
+    
+e.g.
+
+    ./push.sh staging v0.0.31    
+    
+Full instructions on setting AWS keys and environment variables for the target environment can be found in the push.sh script itself.

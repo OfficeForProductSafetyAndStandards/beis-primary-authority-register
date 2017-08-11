@@ -110,9 +110,8 @@ script:
 #-----------------------------------------------------------------------------
   
   - rm .env
-  - if [[ $TRAVIS_TAG != '' ]]; then tar zcf $TRAVIS_TAG.tar.gz *; fi
   - if [[ $TRAVIS_TAG != '' ]]; then mkdir $TRAVIS_TAG; fi
-  - if [[ $TRAVIS_TAG != '' ]]; then mv $TRAVIS_TAG.tar.gz $TRAVIS_TAG; fi
+  - if [[ $TRAVIS_TAG != '' ]]; then tar --exclude="./$TRAVIS_TAG" -zcf $TRAVIS_TAG/$TRAVIS_TAG.tar.gz .; fi
 
 ##############################################################################
 ### DEPLOY                                                                 ###
@@ -122,11 +121,13 @@ after_success:
   - cf login -a api.cloud.service.gov.uk -u chris.moreton@transformuk.com -p $CF_PASSWORD
   - cd cf
   - ./push.sh continuous
+  - cd ..
   
 #-----------------------------------------------------------------------------
 # For tagged builds, send the packaged build to S3
 #-----------------------------------------------------------------------------
-      
+
+deploy:
   - provider: s3
     access_key_id: $S3_ACCESS_KEY
     secret_access_key: $S3_SECRET_KEY

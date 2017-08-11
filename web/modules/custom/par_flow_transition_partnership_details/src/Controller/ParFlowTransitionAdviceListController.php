@@ -109,7 +109,6 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
 
     $build['cancel'] = [
       '#type' => 'markup',
-      '#prefix' => '<br>',
       '#markup' => t('@link', [
         '@link' => $this->getFlow()->getLinkByStep(3, $this->getRouteParams(), ['attributes' => ['class' => 'button']])
           ->setText('Save')
