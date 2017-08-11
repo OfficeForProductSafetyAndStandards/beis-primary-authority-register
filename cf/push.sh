@@ -32,7 +32,8 @@
 ENV=$1
 VER=$2
 
-if [ -n $VER ]; then
+if [ "$VER" != "" ]; then
+    echo "Pulling version $VER"
     rm -rf build
     mkdir build
     cd build
