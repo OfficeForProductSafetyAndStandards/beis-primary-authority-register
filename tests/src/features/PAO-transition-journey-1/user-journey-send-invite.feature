@@ -27,11 +27,12 @@ Feature: PAR User - Send Invite
         # PARTNERSHIPS DASHBOARD
 
         And I scroll to element ".table-scroll-wrapper"
-        And I click on the link "ABCD Mart"
+        When I click on the link "ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN
 
-        And I click on the checkbox "#edit-terms-conditions"
+        Then the element ".par-flow-transition-partnership-details-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
+        When I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
 
         # PARTNERSHIP DETAILS SCREEN
