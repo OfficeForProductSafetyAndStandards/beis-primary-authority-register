@@ -66,6 +66,12 @@ class ParAdviceDocuments extends SqlBase {
       'document_id' => array(
         'type' => 'integer',
       ),
+      'owning_object_type' => array(
+        'type' => 'string',
+      ),
+      'owning_object_id' => array(
+        'type' => 'integer',
+      ),
     );
   }
 

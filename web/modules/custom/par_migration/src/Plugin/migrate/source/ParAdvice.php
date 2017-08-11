@@ -65,9 +65,12 @@ class ParAdvice extends SqlBase {
    */
   public function getIds() {
     return array(
-      'advice_id' => array(
+      'advice_id' => [
         'type' => 'integer',
-      ),
+      ],
+      'partnership_id' => [
+        'type' => 'integer',
+      ],
     );
   }
 

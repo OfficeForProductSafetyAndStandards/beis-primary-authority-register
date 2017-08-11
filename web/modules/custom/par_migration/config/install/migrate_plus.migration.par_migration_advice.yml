@@ -31,7 +31,11 @@ process:
   document:
     plugin: migration_lookup
     migration: par_migration_advice_documents
-    source: document_id
+    no_stub: true
+    source:
+      document_id: null
+      owning_object_type: '@document_type'
+      owning_object_id: document_id
 destination:
   plugin: 'entity:par_data_advice'
 migration_dependencies:
