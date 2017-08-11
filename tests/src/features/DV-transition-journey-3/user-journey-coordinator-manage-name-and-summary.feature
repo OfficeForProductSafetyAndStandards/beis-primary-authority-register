@@ -23,11 +23,12 @@ Feature: Coordinator User - Manage Addresses
         # PARTNERSHIPS DASHBOARD
 
         And I scroll to element ".table-scroll-wrapper"
-        And I click on the link "Co Mart"
+        When I click on the link "Co Mart"
 
         # TERMS AND CONDITIONS SCREEN
 
-        And I click on the checkbox "#edit-terms-conditions"
+        Then the element ".par-flow-transition-coordinator-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
+        When I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
         Then the element "h3" contains the text "Main contact at the Authority"
         When I click on the link "Review and confirm your association details"

@@ -23,11 +23,12 @@ Feature: Business User - Manage name and summary detail
         # PARTNERSHIPS DASHBOARD
 
         And I scroll to element ".table-scroll-wrapper"
-        And I click on the link "ABCD Mart"
+        When I click on the link "ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN
 
-        And I click on the checkbox "#edit-terms-conditions"
+        Then the element ".par-flow-transition-business-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
+        When I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
         Then the element "h3" contains the text "Main contact at the Authority"
         When I click on the link "Review and confirm your business details"
@@ -47,3 +48,9 @@ Feature: Business User - Manage name and summary detail
         And I add "Trading Name Add" to the inputfield "#edit-trading-name"
         And I click on the button "#edit-next"
         Then the element "#par-flow-transition-business-details" contains the text "Trading Name Add"
+        And I click on the checkbox "#edit-confirmation"
+        And I click on the button "#edit-next"
+        Then the element "#block-par-theme-content" contains the text "Confirmed by the Organisation"
+        And the element ".table-scroll-wrapper" not contains the text "Invite the business to confirm their details"
+        And the element ".table-scroll-wrapper" not contains the text "Review and confirm your inspection plan"
+        And the element ".table-scroll-wrapper" not contains the text "Review and confirm your documentation"

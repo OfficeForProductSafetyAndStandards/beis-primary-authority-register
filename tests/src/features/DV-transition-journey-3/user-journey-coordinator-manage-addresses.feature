@@ -22,19 +22,20 @@ Feature: Coordinator User - Manage Addresses
 
         # PARTNERSHIPS DASHBOARD
         And I scroll to element ".table-scroll-wrapper"
-        And I click on the link "Co Mart"
+        When I click on the link "Co Mart"
 
         # TERMS AND CONDITIONS SCREEN
 
-        And I click on the checkbox "#edit-terms-conditions"
+        Then the element ".par-flow-transition-coordinator-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
+        When I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
         And I scroll to element ".table-scroll-wrapper"
-        When I click on the link "Review and confirm your association details"
+        And I click on the link "Review and confirm your association details"
 
         # REVIEW ASSOCIATION DETAILS
 
         Then the element "#edit-business-name" contains the text "Co Mart"
-        Then the element "#edit-about-business" contains the text "About the association"
+        And the element "#edit-about-business" contains the text "About the association"
         And the element "#edit-legal-entity" contains the text "Legal Entities"
         And the element "#edit-primary-contact" contains the text "Main association contact"
         And the element "#edit-0" contains the text "Trading Names"
@@ -111,3 +112,14 @@ Feature: Coordinator User - Manage Addresses
         Then the element "#edit-alternative" contains the text "Another Legal Entity"
         And the element "#edit-alternative" contains the text "1234567890"
         And the element "#edit-alternative" contains the text "Sole Trader"
+        And I click on the checkbox "#edit-confirmation"
+
+        # PARTNERSHIP DASHBOARD
+
+        And I click on the button "#edit-next"
+        Then the element "#block-par-theme-content" contains the text "Confirmed by the Organisation"
+        And the element ".table-scroll-wrapper" not contains the text "Invite the business to confirm their details"
+        And the element ".table-scroll-wrapper" not contains the text "Review and confirm your inspection plan"
+        And the element ".table-scroll-wrapper" not contains the text "Review and confirm your documentation"
+
+
