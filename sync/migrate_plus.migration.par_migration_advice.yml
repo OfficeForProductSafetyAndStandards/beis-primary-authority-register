@@ -5,6 +5,9 @@ dependencies:
   enforced:
     module:
       - par_migration
+      - par_migration_scripts
+_core:
+  default_config_hash: P3vEogPu_7kfyzTo7Jsap2C9wEbyxZS2oiEMljTogLw
 id: par_migration_advice
 class: null
 field_plugin_method: null
@@ -32,13 +35,17 @@ process:
   visible_coordinator: coordinator_visible
   visible_business: business_visible
   document:
-    plugin: migration_lookup
-    migration: par_migration_advice_documents
-    no_stub: true
-    source:
-      document_id: null
-      owning_object_type: '@document_type'
-      owning_object_id: document_id
+    -
+      plugin: migration_lookup
+      migration: par_migration_advice_documents
+      no_stub: true
+      source:
+        document_id: null
+        owning_object_type: '@document_type'
+        owning_object_id: document_id
+    -
+      plugin: skip_on_empty
+      method: row
 destination:
   plugin: 'entity:par_data_advice'
 migration_dependencies:

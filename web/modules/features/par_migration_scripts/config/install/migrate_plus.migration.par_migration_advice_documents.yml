@@ -1,10 +1,10 @@
-uuid: f310046d-2029-48ae-aed5-d223b8f77a3e
 langcode: en
 status: true
 dependencies:
   enforced:
     module:
       - par_migration
+      - par_migration_scripts
 id: par_migration_advice_documents
 class: null
 field_plugin_method: null

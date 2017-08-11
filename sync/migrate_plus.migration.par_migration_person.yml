@@ -5,6 +5,9 @@ dependencies:
   enforced:
     module:
       - par_migration
+      - par_migration_scripts
+_core:
+  default_config_hash: BjJDkHZ66jaMISNK7ZKuWaZ05OKx6hj1W08U5YyZpw0
 id: par_migration_person
 class: null
 field_plugin_method: null

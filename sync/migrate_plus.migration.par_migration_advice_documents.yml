@@ -5,6 +5,9 @@ dependencies:
   enforced:
     module:
       - par_migration
+      - par_migration_scripts
+_core:
+  default_config_hash: nNHncJ5ph2t5Z7LcuK_enEgUNGXXH3V-EhNP0ph9OSU
 id: par_migration_advice_documents
 class: null
 field_plugin_method: null
@@ -16,7 +19,7 @@ label: 'PAR Migration of advice documents'
 source:
   plugin: par_migration_advice_documents
   constants:
-    destination_base_path: 'private://documents/advice'
+    destination_base_path: 's3private://documents/advice'
 process:
   filename:
     -
