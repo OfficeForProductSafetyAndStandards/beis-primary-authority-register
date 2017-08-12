@@ -112,6 +112,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     if ($authority_people) {
       $form['authority_contacts']['authority_alternative_contacts'] = [
         '#type' => 'fieldset',
+        '#attributes' => ['id' => 'edit-alternative-people'],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
@@ -123,7 +124,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
         $form['authority_contacts']['authority_alternative_contacts'][$person->id()] = [
           '#type' => 'fieldset',
-          '#attributes' => ['class' => 'form-group'],
+          '#attributes' => ['class' => ['form-group', 'alternative-person']],
         ];
 
         $form['authority_contacts']['authority_alternative_contacts'][$person->id()]['name'] = $this->renderMarkupField($alternative_person);
