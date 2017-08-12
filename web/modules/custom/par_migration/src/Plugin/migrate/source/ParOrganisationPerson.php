@@ -7,13 +7,13 @@ use Drupal\migrate\Row;
 use Drupal\migrate\MigrateException;
 
 /**
- * Migration of PAR2 Person.
+ * Migration of PAR2 Organisation Person.
  *
  * @MigrateSource(
- *   id = "par_migration_person"
+ *   id = "par_migration_organisation_person"
  * )
  */
-class ParPerson extends SqlBase {
+class ParOrganisationPerson extends SqlBase {
 
   /**
    * @var string $table The name of the database table.
@@ -24,11 +24,10 @@ class ParPerson extends SqlBase {
    * {@inheritdoc}
    */
   public function query() {
-    return $this->select($this->table, 'b')
-      ->fields('b', [
+    return $this->select($this->table, 'a')
+      ->fields('a', [
         'person_id',
         'organisation_id',
-        'authority_id',
         'title',
         'first_name',
         'last_name',
@@ -39,7 +38,9 @@ class ParPerson extends SqlBase {
         'work_phone_preferred',
         'mobile_phone_preferred',
         'email_preferred',
-      ]);
+        'communication_notes',
+      ])
+      ->isNotNull('organisation_id');
   }
 
   /**
@@ -49,7 +50,6 @@ class ParPerson extends SqlBase {
     $fields = [
       'person_id' => $this->t('Person ID'),
       'organisation_id' => $this->t('Organisation ID'),
-      'authority_id' => $this->t('Authority ID'),
       'title' => $this->t('Salutation'),
       'first_name' => $this->t('First name'),
       'last_name' => $this->t('Last name'),
@@ -60,6 +60,7 @@ class ParPerson extends SqlBase {
       'work_phone_preferred' => $this->t('Work phone preferred'),
       'mobile_phone_preferred' => $this->t('Mobile phone preferred'),
       'email_preferred' => $this->t('E-mail preferred'),
+      'communication_notes' => $this->t('Communication notes'),
     ];
     return $fields;
   }
@@ -70,6 +71,9 @@ class ParPerson extends SqlBase {
   public function getIds() {
     return array(
       'person_id' => array(
+        'type' => 'integer',
+      ),
+      'organisation_id' => array(
         'type' => 'integer',
       ),
     );
