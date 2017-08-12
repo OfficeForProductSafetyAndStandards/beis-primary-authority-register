@@ -77,7 +77,7 @@ Feature: Coordinator User - Manage Addresses
 
         # EDIT ALTERNATE CONTACT
 
-        When I click on the button "form#par-flow-transition-coordinator-details #edit-primary-contact #edit-alternative-people a.flow-link"
+        When I click on the button "form#par-flow-transition-coordinator-details #edit-alternative-people a.flow-link"
         And I add "Frank" to the inputfield "#edit-first-name"
         And I add "Oz" to the inputfield "#edit-last-name"
         And I add "01723999999" to the inputfield "#edit-work-phone"
