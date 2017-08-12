@@ -7,7 +7,7 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: dwhC5HRnFT4q7s49qXoi6Q0qPXTxkhOggPDMbXE2AXM
+  default_config_hash: pj9cZopqGsnUX8W-KD3YrpjNxkYdxOOMVwJ-V1gXGsY
 id: par_migration_organisation_person
 class: null
 field_plugin_method: null
@@ -28,29 +28,53 @@ process:
     default_value: 1
   salutation: title
   first_name: first_name
-  last_name: last_name
-  job_title: job_title
-  work_phone: work_phone
-  mobile_phone: mobile_phone
+  last_name:
+    plugin: skip_on_empty
+    method: process
+    source: last_name
+  job_title:
+    plugin: skip_on_empty
+    method: process
+    source: job_title
+  work_phone:
+    plugin: skip_on_empty
+    method: process
+    source: work_phone
+  mobile_phone:
+    plugin: skip_on_empty
+    method: process
+    source: mobile_phone
   email: email
   communication_phone:
-    plugin: static_map
-    source: work_phone_preferred
-    map:
-      'Y': 1
-      'N': 0
+    -
+      plugin: skip_on_empty
+      method: process
+      source: work_phone_preferred
+    -
+      plugin: static_map
+      map:
+        'Y': true
+        'N': false
   communication_mobile:
-    plugin: static_map
-    source: mobile_phone_preferred
-    map:
-      'Y': 1
-      'N': 0
+    -
+      plugin: skip_on_empty
+      method: process
+      source: mobile_phone_preferred
+    -
+      plugin: static_map
+      map:
+        'Y': true
+        'N': false
   communication_email:
-    plugin: static_map
-    source: email_phone_preferred
-    map:
-      'Y': 1
-      'N': 0
+    -
+      plugin: skip_on_empty
+      method: process
+      source: email_preferred
+    -
+      plugin: static_map
+      map:
+        'Y': true
+        'N': false
   communication_notes: communication_notes
 destination:
   plugin: 'entity:par_data_person'
