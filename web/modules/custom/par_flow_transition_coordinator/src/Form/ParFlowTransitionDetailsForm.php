@@ -82,7 +82,6 @@ class ParFlowTransitionDetailsForm extends ParFlowTransitionDetailsBusinessForm 
 
     $form_business['business_size']['edit'] = [
       '#type' => 'markup',
-      '#prefix' => '<br>',
       '#markup' => t('@link', [
         '@link' => $this->getFlow()->getLinkByStep(12)->setText('edit')->toString(),
       ]),

@@ -81,7 +81,7 @@ class ParDemoOverviewForm extends ParBaseForm {
     // We can get a link to a given form step like so.
     $form['first_section']['edit'] = [
       '#type' => 'markup',
-      '#markup' => t('<br>Edit: %link', ['%link' => $this->getFlow()->getLinkByStep(2)->setText('Name')->toString()]),
+      '#markup' => t('Edit: %link', ['%link' => $this->getFlow()->getLinkByStep(2)->setText('Name')->toString()]),
     ];
 
     // Section 2.
@@ -98,7 +98,7 @@ class ParDemoOverviewForm extends ParBaseForm {
     // We can get a link to a given form step like so.
     $form['second_section']['edit'] = [
       '#type' => 'markup',
-      '#markup' => t('<br>Edit: %link', ['%link' => $this->getFlow()->getLinkByStep(3)->setText('Files')->toString()]),
+      '#markup' => t('Edit: %link', ['%link' => $this->getFlow()->getLinkByStep(3)->setText('Files')->toString()]),
     ];
 
     // Section 3.
@@ -110,12 +110,12 @@ class ParDemoOverviewForm extends ParBaseForm {
     ];
     $form['third_section']['hobby'] = [
       '#type' => 'markup',
-      '#markup' => t('Hobbies: <br>%hobbies', ['%hobbies' => $this->getDefaultValues('hobby', '', $this->getFlow()->getFormIdByStep(4))]),
+      '#markup' => t('Hobbies: %hobbies', ['%hobbies' => $this->getDefaultValues('hobby', '', $this->getFlow()->getFormIdByStep(4))]),
     ];
     // We can get a link to a given form step like so.
     $form['third_section']['edit'] = [
       '#type' => 'markup',
-      '#markup' => t('<br>Edit: %link', ['%link' => $this->getFlow()->getLinkByStep(4)->setText('Hobbies')->toString()]),
+      '#markup' => t('Edit: %link', ['%link' => $this->getFlow()->getLinkByStep(4)->setText('Hobbies')->toString()]),
     ];
 
     $form['next'] = [
@@ -125,7 +125,7 @@ class ParDemoOverviewForm extends ParBaseForm {
     // We can get a link to a custom route like so.
     $form['cancel'] = [
       '#type' => 'markup',
-      '#markup' => t('<br>%link', ['%link' => $this->getLinkByRoute('<front>')->setText('Cancel')->toString()]),
+      '#markup' => t('%link', ['%link' => $this->getLinkByRoute('<front>')->setText('Cancel')->toString()]),
     ];
 
     return $form;
