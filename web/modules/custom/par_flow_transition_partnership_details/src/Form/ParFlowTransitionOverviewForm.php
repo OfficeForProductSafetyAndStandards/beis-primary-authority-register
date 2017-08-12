@@ -112,7 +112,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     if ($authority_people) {
       $form['authority_contacts']['authority_alternative_contacts'] = [
         '#type' => 'fieldset',
-        '#attributes' => ['id' => 'edit-authority-alternative-contacts'],
+        '#attributes' => ['id' => 'edit-authority-contacts'],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
@@ -149,6 +149,14 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
     // List the Primary Organisation contact.
     if ($organisation_primary_person) {
+
+      $form['organisation_contacts'] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['id' => 'edit-organisation-contacts'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+
       $par_data_organisation = current($par_data_partnership->getOrganisation());
       $form['organisation_contacts'][$organisation_primary_person->id()] = [
         '#type' => 'fieldset',
@@ -180,17 +188,24 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
         $person_field = $person_view_builder->view($person, 'summary');
 
-        $form['organisation_contacts'][$person->id()] = [
+        $form['organisation_alternative_contacts'] = [
+          '#type' => 'fieldset',
+          '#attributes' => ['id' => 'edit-organisation-alternative-contacts'],
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
+        ];
+
+        $form['organisation_alternative_contacts'][$person->id()] = [
           '#type' => 'fieldset',
           '#attributes' => ['class' => 'form-group'],
           '#collapsible' => FALSE,
           '#collapsed' => FALSE,
         ];
 
-        $form['organisation_contacts'][$person->id()]['person'] = $this->renderMarkupField($person_field);
+        $form['organisation_alternative_contacts'][$person->id()]['person'] = $this->renderMarkupField($person_field);
 
         // We can get a link to a given form step like so.
-        $form['organisation_contacts'][$person->id()]['edit'] = [
+        $form['organisation_alternative_contacts'][$person->id()]['edit'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
             '@link' => $this->getFlow()->getLinkByStep(6, [
