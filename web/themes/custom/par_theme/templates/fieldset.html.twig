@@ -57,12 +57,14 @@
 
   <fieldset{{ attributes.addClass(classes).removeClass('form-group-error') }}>
 
+    {% if legend.title or description.content %}
     <legend{{ legend.attributes }}>
-      <h3{{ legend_span.attributes.addClass(legend_header_classes) }}>{{ legend.title }}</h3>
+      {% if legend.title %}<h3{{ legend_span.attributes.addClass(legend_header_classes) }}>{{ legend.title }}</h3>{% endif %}
       {% if description.content %}
         <span{{ description.attributes.addClass('form-hint') }}>{{ description.content }}</span>
       {% endif %}
     </legend>
+    {% endif %}
 
     {% if errors %}
       <span class="error-message">
