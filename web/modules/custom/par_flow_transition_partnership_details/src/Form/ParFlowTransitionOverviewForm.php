@@ -112,7 +112,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     if ($authority_people) {
       $form['authority_contacts']['authority_alternative_contacts'] = [
         '#type' => 'fieldset',
-        '#attributes' => ['id' => 'edit-alternative-people'],
+        '#attributes' => ['id' => 'edit-authority-contacts'],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
