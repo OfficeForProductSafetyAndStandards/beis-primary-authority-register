@@ -124,7 +124,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
         $form['authority_contacts']['authority_alternative_contacts'][$person->id()] = [
           '#type' => 'fieldset',
-          '#attributes' => ['class' => ['form-group', 'alternative-person']],
+          '#attributes' => ['class' => ['form-group', 'authority-alternative-contact']],
         ];
 
         $form['authority_contacts']['authority_alternative_contacts'][$person->id()]['name'] = $this->renderMarkupField($alternative_person);
@@ -197,7 +197,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
         $form['organisation_alternative_contacts'][$person->id()] = [
           '#type' => 'fieldset',
-          '#attributes' => ['class' => 'form-group'],
+          '#attributes' => ['class' => ['form-group', 'organisation-alternative-contact']],
           '#collapsible' => FALSE,
           '#collapsed' => FALSE,
         ];
