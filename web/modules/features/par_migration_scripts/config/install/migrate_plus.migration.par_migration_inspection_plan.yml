@@ -26,23 +26,23 @@ process:
   uid:
     plugin: default_value
     default_value: 1
-  advice_type: advice_type
-  notes: notes
-  visible_authority:
+  status:
     plugin: static_map
-    source: authority_visible
+    source: status
+    map:
+      Current: current
+      Expired: expired
+      'In Progress': in_progress
+      Revoked: revoked
+  approved_rd_executive:
+    plugin: static_map
+    source: rd_exec_approved
     map:
       Y: true
       N: false
-  visible_coordinator:
+  consulted_national_regulator:
     plugin: static_map
-    source: coordinator_visible
-    map:
-      Y: true
-      N: false
-  visible_business:
-    plugin: static_map
-    source: business_visible
+    source: national_regulator_consulted
     map:
       Y: true
       N: false
@@ -59,7 +59,7 @@ process:
       plugin: skip_on_empty
       method: row
 destination:
-  plugin: 'entity:par_data_advice'
+  plugin: 'entity:par_data_inspection_plan'
 migration_dependencies:
   required:
-    - par_migration_advice_documents
+    - par_migration_inspection_plan_documents

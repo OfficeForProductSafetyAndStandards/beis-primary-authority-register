@@ -13,7 +13,7 @@ use Drupal\migrate\MigrateException;
  *   id = "par_migration_inspection_plan"
  * )
  */
-class ParAdvice extends SqlBase {
+class ParInspectionPlan extends SqlBase {
 
   /**
    * @var string $table The name of the database table.
@@ -26,14 +26,13 @@ class ParAdvice extends SqlBase {
   public function query() {
     $query = $this->select($this->table, 'a');
     $query->fields('a', [
-        'advice_id',
+        'inspection_plan_id',
         'partnership_id',
-        'advice_type',
-        'authority_visible',
-        'coordinator_visible',
-        'business_visible',
-        'obsolete',
-        'notes',
+        'rd_exec_approved',
+        'national_regulator_consulted',
+        'status',
+        'valid_from_date',
+        'valid_to_date',
       ]);
 
     return $query;
@@ -44,14 +43,13 @@ class ParAdvice extends SqlBase {
    */
   public function fields() {
     $fields = [
-      'advice_id' => $this->t('Advice ID'),
+      'inspection_plan_id' => $this->t('Inspection plan ID'),
       'partnership_id' => $this->t('Partnership ID'),
-      'advice_type' => $this->t('Advice type'),
-      'authority_visible' => $this->t('Authority visibility'),
-      'coordinator_visible' => $this->t('Coordinatory visibility'),
-      'business_visible' => $this->t('Business visibility'),
-      'obsolete' => $this->t('Is obsolete'),
-      'notes' => $this->t('Adice notes'),
+      'rd_exec_approved' => $this->t('Approved by an RD executive'),
+      'national_regulatory_consulted' => $this->t('The national regulator has been consulted'),
+      'status' => $this->t('Inspection plan status'),
+      'valid_from_date' => $this->t('Valid from'),
+      'valid_to_date' => $this->t('Valid to'),
     ];
     return $fields;
   }
@@ -61,7 +59,7 @@ class ParAdvice extends SqlBase {
    */
   public function getIds() {
     return array(
-      'advice_id' => [
+      'inspection_plan_id' => [
         'type' => 'integer',
       ],
       'partnership_id' => [
