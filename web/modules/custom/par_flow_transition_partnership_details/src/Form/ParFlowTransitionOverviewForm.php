@@ -124,7 +124,13 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
         $form['authority_contacts']['authority_alternative_contacts'][$person->id()] = [
           '#type' => 'fieldset',
-          '#attributes' => ['class' => ['form-group', 'authority-alternative-contact']],
+          '#attributes' => [
+            'class' => [
+              'form-group',
+              'authority-alternative-contact',
+              'authority-alternative-contact-' . array_search($person, $authority_people)
+            ],
+          ],
         ];
 
         $form['authority_contacts']['authority_alternative_contacts'][$person->id()]['name'] = $this->renderMarkupField($alternative_person);
@@ -160,7 +166,10 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       $par_data_organisation = current($par_data_partnership->getOrganisation());
       $form['organisation_contacts'][$organisation_primary_person->id()] = [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => [
+          'class' => 'form-group',
+          'id' => 'organisation_alternative_contacts'
+        ],
         '#title' => t('Main @organisation_type contacts', ['@organisation_type' => $par_data_organisation->type->entity->label()]),
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
@@ -190,14 +199,22 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
         $form['organisation_alternative_contacts'] = [
           '#type' => 'fieldset',
-          '#attributes' => ['id' => 'edit-organisation-alternative-contacts'],
+          '#attributes' => [
+            'class' => 'organisation_alternative_contacts-' . array_search($person, $organisation_people)
+          ],
           '#collapsible' => FALSE,
           '#collapsed' => FALSE,
         ];
 
         $form['organisation_alternative_contacts'][$person->id()] = [
           '#type' => 'fieldset',
-          '#attributes' => ['class' => ['form-group', 'organisation-alternative-contact']],
+          '#attributes' => [
+            'class' => [
+              'form-group',
+              'organisation-alternative-contact',
+              'organisation-alternative-contact-' . array_search($person->id(), $organisation_people)
+            ]
+          ],
           '#collapsible' => FALSE,
           '#collapsed' => FALSE,
         ];
