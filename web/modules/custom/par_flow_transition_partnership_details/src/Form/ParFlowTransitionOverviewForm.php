@@ -61,6 +61,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     // About the Partnership.
     $form['first_section'] = [
       '#type' => 'fieldset',
+      '#attributes' => ['class' => 'form-group'],
       '#title' => t('About the Partnership'),
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
@@ -85,18 +86,19 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
     // List the Primary Authority contact.
     if ($authority_primary_person) {
-      $form['authority_contacts'] = [
+      $form['authority_contacts'][$authority_primary_person->id()] = [
         '#type' => 'fieldset',
+        '#attributes' => ['class' => 'form-group'],
         '#title' => t('Main Primary Authority contacts'),
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
 
       $primary_person = $person_view_builder->view($authority_primary_person, 'summary');
-      $form['authority_contacts']['primary_person'] = $this->renderMarkupField($primary_person);
+      $form['authority_contacts'][$authority_primary_person->id()]['primary_person'] = [$this->renderMarkupField($primary_person)];
 
       // We can get a link to a given form step like so.
-      $form['authority_contacts']['edit'] = [
+      $form['authority_contacts'][$authority_primary_person->id()]['edit'] = [
         '#type' => 'markup',
         '#markup' => t('@link', [
           '@link' => $this->getFlow()->getLinkByStep(6, [
@@ -110,6 +112,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     if ($authority_people) {
       $form['authority_contacts']['authority_alternative_contacts'] = [
         '#type' => 'fieldset',
+        '#attributes' => ['id' => 'edit-authority-contacts'],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
@@ -118,10 +121,22 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
         $person_view_builder = $person->getViewBuilder();
 
         $alternative_person = $person_view_builder->view($person, 'summary');
-        $form['authority_contacts']['authority_alternative_contacts'][$person->id()] = $this->renderMarkupField($alternative_person);
+
+        $form['authority_contacts']['authority_alternative_contacts'][$person->id()] = [
+          '#type' => 'fieldset',
+          '#attributes' => [
+            'class' => [
+              'form-group',
+              'authority-alternative-contact',
+              'authority-alternative-contact-' . array_search($person, $authority_people)
+            ],
+          ],
+        ];
+
+        $form['authority_contacts']['authority_alternative_contacts'][$person->id()]['name'] = $this->renderMarkupField($alternative_person);
 
         // We can get a link to a given form step like so.
-        $form['authority_contacts']['authority_alternative_contacts'][$person->id() . '_edit'] = [
+        $form['authority_contacts']['authority_alternative_contacts'][$person->id()]['edit_link'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
             '@link' => $this->getFlow()->getLinkByStep(6, [
@@ -140,19 +155,31 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
 
     // List the Primary Organisation contact.
     if ($organisation_primary_person) {
-      $par_data_organisation = current($par_data_partnership->getOrganisation());
+
       $form['organisation_contacts'] = [
         '#type' => 'fieldset',
-        '#title' => t('Main @organisation_type contact', ['@organisation_type' => $par_data_organisation->type->entity->label()]),
+        '#attributes' => ['id' => 'edit-organisation-contacts'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+
+      $par_data_organisation = current($par_data_partnership->getOrganisation());
+      $form['organisation_contacts'][$organisation_primary_person->id()] = [
+        '#type' => 'fieldset',
+        '#attributes' => [
+          'class' => 'form-group',
+          'id' => 'organisation_alternative_contacts'
+        ],
+        '#title' => t('Main @organisation_type contacts', ['@organisation_type' => $par_data_organisation->type->entity->label()]),
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
 
       $organisation_person = $person_view_builder->view($organisation_primary_person, 'summary');
-      $form['organisation_contacts']['primary_person'] = $this->renderMarkupField($organisation_person);
+      $form['organisation_contacts'][$organisation_primary_person->id()]['person'] = $this->renderMarkupField($organisation_person);
 
       // We can get a link to a given form step like so.
-      $form['organisation_contacts']['edit'] = [
+      $form['organisation_contacts'][$organisation_primary_person->id()]['edit'] = [
         '#type' => 'markup',
         '#markup' => t('@link', [
           '@link' => $this->getFlow()->getLinkByStep(6, [
@@ -162,23 +189,37 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       ];
     }
 
-    // List the secondary Primary Organisation contacts.
+    // List the secondary Organisation contacts.
     if ($organisation_people) {
-      $form['organisation_contacts']['organisation_alternative_contacts'] = [
-        '#type' => 'fieldset',
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
 
       foreach ($organisation_people as $person) {
         $person_view_builder = $person->getViewBuilder();
 
         $person_field = $person_view_builder->view($person, 'summary');
 
-        $form['organisation_contacts']['organisation_alternative_contacts'][$person->id()] = $this->renderMarkupField($person_field);
+        $form['organisation_alternative_contacts'] = [
+          '#type' => 'fieldset',
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
+        ];
+
+        $form['organisation_alternative_contacts'][$person->id()] = [
+          '#type' => 'fieldset',
+          '#attributes' => [
+            'class' => [
+              'form-group',
+              'organisation-alternative-contact',
+              'organisation-alternative-contacts-' . array_search($person, $organisation_people)
+            ]
+          ],
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
+        ];
+
+        $form['organisation_alternative_contacts'][$person->id()]['person'] = $this->renderMarkupField($person_field);
 
         // We can get a link to a given form step like so.
-        $form['organisation_contacts']['organisation_alternative_contacts'][$person->id() . '_edit'] = [
+        $form['organisation_alternative_contacts'][$person->id()]['edit'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
             '@link' => $this->getFlow()->getLinkByStep(6, [
@@ -198,10 +239,16 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     ];
     $regulatory_functions = $par_data_partnership->getRegulatoryFunction();
     $regulatory_function_view_builder = current($regulatory_functions)->getViewBuilder();
+
     foreach ($par_data_partnership->getRegulatoryFunction() as $regulatory_function) {
       $regulatory_function_field = $regulatory_function_view_builder->view($regulatory_function, 'title');
-      $form['fourth_section'][] = $this->renderMarkupField($regulatory_function_field);
+      $regulatory_function_list_items[] = $this->renderMarkupField($regulatory_function_field);
     }
+
+    $form['fourth_section']['list'] = [
+      '#theme' => 'item_list',
+      '#items' => $regulatory_function_list_items
+    ];
 
     // Partnership Confirmation.
     $form['partnership_agreement'] = [
@@ -231,7 +278,6 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $previous_link = $this->getFlow()->getLinkByStep($this->getFlow()->getPrevStep())->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
-      '#prefix' => '<br>',
       '#markup' => t('@link', ['@link' => $previous_link]),
     ];
 

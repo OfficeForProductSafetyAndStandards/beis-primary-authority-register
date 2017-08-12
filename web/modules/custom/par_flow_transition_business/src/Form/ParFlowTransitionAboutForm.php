@@ -69,7 +69,6 @@ class ParFlowTransitionAboutForm extends ParBaseForm {
     $previous_link = $this->getFlow()->getLinkByStep($this->getFlow()->getPrevStep())->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
-      '#prefix' => '<br>',
       '#markup' => t('@link', ['@link' => $previous_link]),
     ];
 
