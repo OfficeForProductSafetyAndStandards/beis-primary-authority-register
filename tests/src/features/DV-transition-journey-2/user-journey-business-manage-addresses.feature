@@ -33,10 +33,11 @@ Feature: Business User - Manage Addresses
         When I select the option with the text "Awaiting Review" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
         Then the element "td.views-field.views-field-field-premises" contains the text "ABCD Mart"
-        And I click on the link "ABCD Mart"
+        When I click on the link "ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN
 
+        Then the element ".par-flow-transition-business-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
         And I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
         And I scroll to element ".table-scroll-wrapper"
