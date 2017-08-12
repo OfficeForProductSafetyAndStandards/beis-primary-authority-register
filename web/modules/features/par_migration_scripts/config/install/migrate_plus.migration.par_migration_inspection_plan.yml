@@ -26,7 +26,7 @@ process:
   uid:
     plugin: default_value
     default_value: 1
-  status:
+  inspection_status:
     plugin: static_map
     source: status
     map:
@@ -47,15 +47,31 @@ process:
       Y: true
       N: false
   valid_date/value:
-    plugin: format_date
-    from_format: 'Y-m-d H:i:s'
-    to_format: 'Y-m-d'
-    source: valid_from_date
+    -
+      plugin: explode
+      source: valid_from_date
+      delimiter: ' '
+    -
+      plugin: extract
+      index:
+        - '0'
+    -
+      plugin: format_date
+      from_format: 'Y-m-d'
+      to_format: 'Y-m-d'
   valid_date/end_value:
-    plugin: format_date
-    from_format: 'Y-m-d H:i:s'
-    to_format: 'Y-m-d'
-    source: valid_to_date
+    -
+      plugin: explode
+      source: valid_to_date
+      delimiter: ' '
+    -
+      plugin: extract
+      index:
+        - '0'
+    -
+      plugin: format_date
+      from_format: 'Y-m-d'
+      to_format: 'Y-m-d'
   document:
     -
       plugin: migration_lookup

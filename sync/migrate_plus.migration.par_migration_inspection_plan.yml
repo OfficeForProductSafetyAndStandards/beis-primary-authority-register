@@ -7,7 +7,7 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: KljMxIlo8Fle0o8eXMSf3LznTtH-TYPFAMrkAqUZoRI
+  default_config_hash: xHMgfC8adfRJlSG2tu8Rgca7bY8Og_SkIzCxCQjMkXQ
 id: par_migration_inspection_plan
 class: null
 field_plugin_method: null
@@ -29,7 +29,7 @@ process:
   uid:
     plugin: default_value
     default_value: 1
-  status:
+  inspection_status:
     plugin: static_map
     source: status
     map:
@@ -50,15 +50,31 @@ process:
       'Y': true
       'N': false
   valid_date/value:
-    plugin: format_date
-    from_format: 'Y-m-d H:i:s'
-    to_format: Y-m-d
-    source: valid_from_date
+    -
+      plugin: explode
+      source: valid_from_date
+      delimiter: ' '
+    -
+      plugin: extract
+      index:
+        - '0'
+    -
+      plugin: format_date
+      from_format: Y-m-d
+      to_format: Y-m-d
   valid_date/end_value:
-    plugin: format_date
-    from_format: 'Y-m-d H:i:s'
-    to_format: Y-m-d
-    source: valid_to_date
+    -
+      plugin: explode
+      source: valid_to_date
+      delimiter: ' '
+    -
+      plugin: extract
+      index:
+        - '0'
+    -
+      plugin: format_date
+      from_format: Y-m-d
+      to_format: Y-m-d
   document:
     -
       plugin: migration_lookup
