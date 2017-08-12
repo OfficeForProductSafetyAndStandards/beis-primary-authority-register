@@ -9,6 +9,7 @@ dependencies:
     - pagerer
     - par_data
     - text
+    - user
 id: par_data_advice
 label: 'Par Data Advice'
 module: views
@@ -25,8 +26,9 @@ display:
     position: 0
     display_options:
       access:
-        type: none
-        options: {  }
+        type: perm
+        options:
+          perm: 'administer par_data_advice entities'
       cache:
         type: tag
         options: {  }
@@ -530,6 +532,7 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - user.permissions
       tags:
         - 'config:field.storage.par_data_advice.field_regulatory_function'
   page_1:
@@ -546,5 +549,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - user.permissions
       tags:
         - 'config:field.storage.par_data_advice.field_regulatory_function'
