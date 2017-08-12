@@ -7,10 +7,10 @@ use Drupal\migrate\Row;
 use Drupal\migrate\MigrateException;
 
 /**
- * Migration of PAR2 Advice.
+ * Migration of PAR2 Inspection Plan.
  *
  * @MigrateSource(
- *   id = "par_migration_advice"
+ *   id = "par_migration_inspection_plan"
  * )
  */
 class ParAdvice extends SqlBase {
@@ -18,7 +18,7 @@ class ParAdvice extends SqlBase {
   /**
    * @var string $table The name of the database table.
    */
-  protected $table = 'par_advice';
+  protected $table = 'par_inspection_plans';
 
   /**
    * {@inheritdoc}
