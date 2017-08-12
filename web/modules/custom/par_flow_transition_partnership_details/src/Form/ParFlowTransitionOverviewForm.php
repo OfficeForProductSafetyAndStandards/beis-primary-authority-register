@@ -212,7 +212,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
             'class' => [
               'form-group',
               'organisation-alternative-contact',
-              'organisation-alternative-contact-' . array_search($person->id(), $organisation_people)
+              'organisation-alternative-contacts-' . array_search($person->id(), $organisation_people)
             ]
           ],
           '#collapsible' => FALSE,
