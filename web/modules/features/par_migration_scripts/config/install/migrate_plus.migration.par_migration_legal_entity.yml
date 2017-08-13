@@ -12,7 +12,7 @@ cck_plugin_method: null
 migration_tags:
   - MS-SQL
 migration_group: PAR2
-label: 'PAR Migration of SIC Codes'
+label: 'PAR Migration of legal entities'
 source:
   plugin: par_migration_legal_entity
 process:

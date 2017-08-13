@@ -88,7 +88,7 @@ process:
         organisation_id: organisation_id
     -
       plugin: skip_on_empty
-      method: row
+      method: process
   field_person:
     -
       plugin: migration_lookup
@@ -99,7 +99,7 @@ process:
         organisation_id: organisation_id
     -
       plugin: skip_on_empty
-      method: row
+      method: process
   field_premises:
     -
       plugin: migration_lookup
@@ -110,22 +110,21 @@ process:
         organisation_id: organisation_id
     -
       plugin: skip_on_empty
-      method: row
+      method: process
   field_sic_code:
     -
-      plugin: iterator
+      plugin: skip_on_empty
+      method: process
       source: sic_codes
-      key: "@sic_code_id"
+    -
+      plugin: iterator
       process:
-        sic_code_id:
+        -
           plugin: migration_lookup
           migration: par_migration_sic_code
           no_stub: true
-    -
-      plugin: skip_on_empty
-      method: row
 destination:
-  plugin: 'entity:par_data_person'
+  plugin: 'entity:par_data_organisation'
 migration_dependencies:
   required:
     - par_migration_organisation_person

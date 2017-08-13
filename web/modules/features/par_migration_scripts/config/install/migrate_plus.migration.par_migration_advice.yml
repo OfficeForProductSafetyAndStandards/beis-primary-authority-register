@@ -60,7 +60,7 @@ process:
         owning_object_id: advice_id
     -
       plugin: skip_on_empty
-      method: row
+      method: process
 destination:
   plugin: 'entity:par_data_advice'
 migration_dependencies:

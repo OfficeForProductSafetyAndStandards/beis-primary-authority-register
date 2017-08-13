@@ -7,7 +7,7 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: f6SQikTQhT0mBwmfn6ydHe3ab7UBRbxt4Pzi4-xLPrc
+  default_config_hash: jFTScQZLER1lFrEypQEk7ZG5LYe7N3bWHYTco_Knnn4
 id: par_migration_advice
 class: null
 field_plugin_method: null
@@ -63,7 +63,7 @@ process:
         owning_object_id: advice_id
     -
       plugin: skip_on_empty
-      method: row
+      method: process
 destination:
   plugin: 'entity:par_data_advice'
 migration_dependencies:

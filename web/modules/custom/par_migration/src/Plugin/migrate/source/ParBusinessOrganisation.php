@@ -80,7 +80,7 @@ class ParBusinessOrganisation extends SqlBase {
         'coordinator_type',
       ])
       ->condition('par_role', 'Business')
-      ->range(0,200);
+      ->range(0,1000);
   }
 
   protected function collectTradingNames() {
@@ -111,7 +111,9 @@ class ParBusinessOrganisation extends SqlBase {
       ->execute();
 
     while ($row = $result->fetchAssoc()) {
-      $this->sicCodes[$row['organisation_id']][] = $row['sic_code_id'];
+      $this->sicCodes[$row['organisation_id']][] = [
+        'target_id' => (int) $row['sic_code_id'],
+      ];
     }
   }
 
@@ -133,6 +135,7 @@ class ParBusinessOrganisation extends SqlBase {
       'premises_on_map_ok' => $this->t('Premises on map'),
       'comments' => $this->t('Comments'),
       'trading_names' => $this->t('Trading names'),
+      'sic_codes' => $this->t('SIC Codes'),
       'coordinator_number_eligible' => $this->t('Coordinator number eligible'),
       'coordinator_type' => $this->t('Coordinator type'),
     ];
@@ -147,14 +150,11 @@ class ParBusinessOrganisation extends SqlBase {
       'organisation_id' => [
         'type' => 'integer',
       ],
-      'par_role' => [
-        'type' => 'string',
-      ],
     ];
   }
 
   /**
-   * Attaches "nid" property to a row if row "bid" points to a
+   * Attaches trading_names and sic_codes.
    *
    * @param \Drupal\migrate\Row $row
    *
@@ -162,8 +162,6 @@ class ParBusinessOrganisation extends SqlBase {
    * @throws \Exception
    */
   function prepareRow(Row $row) {
-    return parent::prepareRow($row);
-
     $organisation = $row->getSourceProperty('organisation_id');
 
     $trading_names = array_key_exists($organisation, $this->tradingNames) ? $this->tradingNames[$organisation] : [];
@@ -171,6 +169,8 @@ class ParBusinessOrganisation extends SqlBase {
 
     $sic_codes = array_key_exists($organisation, $this->sicCodes) ? $this->sicCodes[$organisation] : [];
     $row->setSourceProperty('sic_codes', $sic_codes);
+
+    return parent::prepareRow($row);
   }
 
 }
