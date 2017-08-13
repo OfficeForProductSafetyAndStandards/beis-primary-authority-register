@@ -38,5 +38,5 @@ process:
       34: other
       1426: limited_liability_partnership
 destination:
-  plugin: 'entity:par_data_sic_code'
+  plugin: 'entity:par_data_legal_entity'
 migration_dependencies: {  }
