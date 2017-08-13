@@ -16,7 +16,7 @@ label: 'PAR Migration of business organisation'
 source:
   plugin: par_migration_business_organisation
 process:
-  id: person_id
+  id: organisation_id
   type:
     plugin: default_value
     default_value: business
@@ -78,6 +78,57 @@ process:
     plugin: skip_on_empty
     method: process
     source: trading_names
+  field_legal_entity:
+    -
+      plugin: migration_lookup
+      migration: par_migration_legal_entity
+      no_stub: true
+      source:
+        legal_entity_id: null
+        organisation_id: organisation_id
+    -
+      plugin: skip_on_empty
+      method: row
+  field_person:
+    -
+      plugin: migration_lookup
+      migration: par_migration_organisation_person
+      no_stub: true
+      source:
+        person_id: null
+        organisation_id: organisation_id
+    -
+      plugin: skip_on_empty
+      method: row
+  field_premises:
+    -
+      plugin: migration_lookup
+      migration: par_migration_organisation_premises
+      no_stub: true
+      source:
+        premises_id: null
+        organisation_id: organisation_id
+    -
+      plugin: skip_on_empty
+      method: row
+  field_sic_code:
+    -
+      plugin: iterator
+      source: sic_codes
+      key: "@sic_code_id"
+      process:
+        sic_code_id:
+          plugin: migration_lookup
+          migration: par_migration_sic_code
+          no_stub: true
+    -
+      plugin: skip_on_empty
+      method: row
 destination:
   plugin: 'entity:par_data_person'
-migration_dependencies: {  }
+migration_dependencies:
+  required:
+    - par_migration_organisation_person
+    - par_migration_organisation_premises
+    - par_migration_sic_code
+    - par_migration_legal_entity

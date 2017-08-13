@@ -30,12 +30,19 @@ class ParBusinessOrganisation extends SqlBase {
   protected $tradingNames = [];
 
   /**
+   * @var array
+   *   A cached array of sic codes keyed by organisation ID.
+   */
+  protected $sicCodes = [];
+
+  /**
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $state);
 
     $this->collectTradingNames();
+    $this->collectSicCodes();
   }
 
   /**
@@ -55,8 +62,8 @@ class ParBusinessOrganisation extends SqlBase {
    * {@inheritdoc}
    */
   public function query() {
-    return $this->select($this->table, 'a')
-      ->fields('a', [
+    return $this->select($this->table, 'b')
+      ->fields('b', [
         'organisation_id',
         'name',
         'par_role',
@@ -72,7 +79,8 @@ class ParBusinessOrganisation extends SqlBase {
         'coordinator_number_eligible',
         'coordinator_type',
       ])
-      ->condition('par_role', 'Business');
+      ->condition('par_role', 'Business')
+      ->range(0,200);
   }
 
   protected function collectTradingNames() {
@@ -88,6 +96,22 @@ class ParBusinessOrganisation extends SqlBase {
 
     while ($row = $result->fetchAssoc()) {
       $this->tradingNames[$row['organisation_id']][] = $row['name'];
+    }
+  }
+
+  protected function collectSicCodes() {
+    $result = $this->select('par_organisation_sic_codes', 's')
+      ->fields('s', [
+        'organisation_sic_code_id',
+        'organisation_id',
+        'sic_code_id',
+      ])
+      ->isNotNull('s.organisation_id')
+      ->orderBy('s.organisation_id')
+      ->execute();
+
+    while ($row = $result->fetchAssoc()) {
+      $this->sicCodes[$row['organisation_id']][] = $row['sic_code_id'];
     }
   }
 
@@ -120,11 +144,11 @@ class ParBusinessOrganisation extends SqlBase {
    */
   public function getIds() {
     return [
-      'person_id' => [
-        'type' => 'integer',
-      ],
       'organisation_id' => [
         'type' => 'integer',
+      ],
+      'par_role' => [
+        'type' => 'string',
       ],
     ];
   }
@@ -141,8 +165,12 @@ class ParBusinessOrganisation extends SqlBase {
     return parent::prepareRow($row);
 
     $organisation = $row->getSourceProperty('organisation_id');
+
     $trading_names = array_key_exists($organisation, $this->tradingNames) ? $this->tradingNames[$organisation] : [];
     $row->setSourceProperty('trading_names', $trading_names);
+
+    $sic_codes = array_key_exists($organisation, $this->sicCodes) ? $this->sicCodes[$organisation] : [];
+    $row->setSourceProperty('sic_codes', $sic_codes);
   }
 
 }

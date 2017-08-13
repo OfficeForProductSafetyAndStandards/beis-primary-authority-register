@@ -814,11 +814,8 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: boolean
-          settings:
-            format: enabled-disabled
-            format_custom_true: ''
-            format_custom_false: ''
+          type: par_boolean_formatter
+          settings: {  }
           group_column: value
           group_columns: {  }
           group_rows: true
