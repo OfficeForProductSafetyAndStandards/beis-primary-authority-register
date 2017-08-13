@@ -7,7 +7,7 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: HXBUWvX3wEd44DB1x2hcWJ99XgSEqXEZnMZRJt34bKo
+  default_config_hash: 0WM2JjTIA4V2GIhFT5IR-WAttWcORvihqLhno15UWi4
 id: par_migration_business_organisation
 class: null
 field_plugin_method: null
@@ -77,6 +77,10 @@ process:
       map:
         'Y': true
         'N': false
+  trading_name:
+    plugin: skip_on_empty
+    method: process
+    source: trading_names
 destination:
   plugin: 'entity:par_data_person'
 migration_dependencies: {  }

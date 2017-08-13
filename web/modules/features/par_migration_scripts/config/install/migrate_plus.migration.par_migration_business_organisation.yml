@@ -74,6 +74,10 @@ process:
       map:
         'Y': true
         'N': false
+  trading_name:
+    plugin: skip_on_empty
+    method: process
+    source: trading_names
 destination:
   plugin: 'entity:par_data_person'
 migration_dependencies: {  }

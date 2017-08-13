@@ -2,9 +2,12 @@
 
 namespace Drupal\par_migration\Plugin\migrate\source;
 
+use Drupal\Core\State\StateInterface;
 use Drupal\migrate\Plugin\migrate\source\SqlBase;
+use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
 use Drupal\migrate\MigrateException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Migration of PAR2 Business Organisation.
@@ -19,6 +22,34 @@ class ParBusinessOrganisation extends SqlBase {
    * @var string $table The name of the database table.
    */
   protected $table = 'par_organisations';
+
+  /**
+   * @var array
+   *   A cached array of trading names keyed by organisation ID.
+   */
+  protected $tradingNames = [];
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);
+
+    $this->collectTradingNames();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $migration,
+      $container->get('state')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -44,6 +75,22 @@ class ParBusinessOrganisation extends SqlBase {
       ->condition('par_role', 'Business');
   }
 
+  protected function collectTradingNames() {
+    $result = $this->select('par_trading_names', 't')
+      ->fields('t', [
+        'trading_name_id',
+        'organisation_id',
+        'name',
+      ])
+      ->isNotNull('t.organisation_id')
+      ->orderBy('t.organisation_id')
+      ->execute();
+
+    while ($row = $result->fetchAssoc()) {
+      $this->tradingNames[$row['organisation_id']][] = $row['name'];
+    }
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -61,6 +108,7 @@ class ParBusinessOrganisation extends SqlBase {
       'last_name' => $this->t('Last name'),
       'premises_on_map_ok' => $this->t('Premises on map'),
       'comments' => $this->t('Comments'),
+      'trading_names' => $this->t('Trading names'),
       'coordinator_number_eligible' => $this->t('Coordinator number eligible'),
       'coordinator_type' => $this->t('Coordinator type'),
     ];
@@ -91,6 +139,10 @@ class ParBusinessOrganisation extends SqlBase {
    */
   function prepareRow(Row $row) {
     return parent::prepareRow($row);
+
+    $organisation = $row->getSourceProperty('organisation_id');
+    $trading_names = array_key_exists($organisation, $this->tradingNames) ? $this->tradingNames[$organisation] : [];
+    $row->setSourceProperty('trading_names', $trading_names);
   }
 
 }

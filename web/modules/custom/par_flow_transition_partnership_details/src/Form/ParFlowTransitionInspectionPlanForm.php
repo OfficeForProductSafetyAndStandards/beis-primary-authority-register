@@ -41,7 +41,6 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
       foreach ($par_data_partnership->getInspectionPlan() as $inspection_plan) {
         $element_key = ['document_list', $inspection_plan->id(), 'confirm'];
         $element_value = $this->decideBooleanValue($inspection_plan->getRawStatus(), 'current');
-        var_dump($element_value);
         $this->loadDataValue($element_key, $element_value);
       }
     }
