@@ -6,6 +6,7 @@ dependencies:
     - datetime_range
     - file_entity
     - par_data
+    - user
 id: par_data_inspection_plans
 label: 'Par Data Inspection Plans'
 module: views
@@ -22,8 +23,9 @@ display:
     position: 0
     display_options:
       access:
-        type: none
-        options: {  }
+        type: perm
+        options:
+          perm: 'bypass par_data_inspection_plan access'
       cache:
         type: tag
         options: {  }
@@ -331,6 +333,7 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - user.permissions
       tags: {  }
   page_1:
     display_plugin: page
@@ -339,11 +342,12 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: /admin/content/par-data/par-data-inspection-plans
+      path: admin/content/par-data/par-data-inspection-plans
     cache_metadata:
       max-age: 0
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - user.permissions
       tags: {  }

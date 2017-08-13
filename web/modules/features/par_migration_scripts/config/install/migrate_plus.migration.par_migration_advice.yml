@@ -34,18 +34,21 @@ process:
     map:
       Y: true
       N: false
+      'null': false
   visible_coordinator:
     plugin: static_map
     source: coordinator_visible
     map:
       Y: true
       N: false
+      'null': false
   visible_business:
     plugin: static_map
     source: business_visible
     map:
       Y: true
       N: false
+      'null': false
   document:
     -
       plugin: migration_lookup

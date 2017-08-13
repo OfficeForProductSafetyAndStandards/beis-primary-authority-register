@@ -7,7 +7,7 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: _5t_PYPeSyBYfg359pXFEROLjeb_TV1DlYnHTKpwjn4
+  default_config_hash: f6SQikTQhT0mBwmfn6ydHe3ab7UBRbxt4Pzi4-xLPrc
 id: par_migration_advice
 class: null
 field_plugin_method: null
@@ -37,18 +37,21 @@ process:
     map:
       'Y': true
       'N': false
+      'null': false
   visible_coordinator:
     plugin: static_map
     source: coordinator_visible
     map:
       'Y': true
       'N': false
+      'null': false
   visible_business:
     plugin: static_map
     source: business_visible
     map:
       'Y': true
       'N': false
+      'null': false
   document:
     -
       plugin: migration_lookup

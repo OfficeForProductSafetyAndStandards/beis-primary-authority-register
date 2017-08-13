@@ -40,12 +40,14 @@ process:
     map:
       Y: true
       N: false
+      'null': false
   consulted_national_regulator:
     plugin: static_map
     source: national_regulator_consulted
     map:
       Y: true
       N: false
+      'null': false
   valid_date/value:
     -
       plugin: explode

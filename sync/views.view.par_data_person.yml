@@ -971,7 +971,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: /admin/content/par_data/par-data-person
+      path: admin/content/par-data/par-data-person
     cache_metadata:
       max-age: 0
       contexts:
