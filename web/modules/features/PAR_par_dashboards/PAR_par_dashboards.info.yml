@@ -1,0 +1,5 @@
+name: 'PAR Dashboards'
+description: 'Provides utilities and customisations to PAR dashboards.'
+type: module
+core: 8.x
+package: PAR
