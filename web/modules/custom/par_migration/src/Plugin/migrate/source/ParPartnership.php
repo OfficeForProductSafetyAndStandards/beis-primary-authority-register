@@ -81,11 +81,11 @@ class ParPartnership extends SqlBase {
    * {@inheritdoc}
    */
   public function getIds() {
-    return array(
-      'partnership_id' => array(
+    return [
+      'partnership_id' => [
         'type' => 'integer',
-      ),
-    );
+      ],
+    ];
   }
 
   /**

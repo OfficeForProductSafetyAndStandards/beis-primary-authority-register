@@ -62,17 +62,17 @@ class ParAdviceDocuments extends SqlBase {
    * {@inheritdoc}
    */
   public function getIds() {
-    return array(
-      'document_id' => array(
+    return [
+      'document_id' => [
         'type' => 'integer',
-      ),
-      'owning_object_type' => array(
+      ],
+      'owning_object_type' => [
         'type' => 'string',
-      ),
-      'owning_object_id' => array(
+      ],
+      'owning_object_id' => [
         'type' => 'integer',
-      ),
-    );
+      ],
+    ];
   }
 
   /**

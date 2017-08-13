@@ -60,14 +60,14 @@ class ParAdvice extends SqlBase {
    * {@inheritdoc}
    */
   public function getIds() {
-    return array(
+    return [
       'advice_id' => [
         'type' => 'integer',
       ],
       'partnership_id' => [
         'type' => 'integer',
       ],
-    );
+    ];
   }
 
   /**

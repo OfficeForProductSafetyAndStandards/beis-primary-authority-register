@@ -69,14 +69,14 @@ class ParOrganisationPerson extends SqlBase {
    * {@inheritdoc}
    */
   public function getIds() {
-    return array(
-      'person_id' => array(
+    return [
+      'person_id' => [
         'type' => 'integer',
-      ),
-      'organisation_id' => array(
+      ],
+      'organisation_id' => [
         'type' => 'integer',
-      ),
-    );
+      ],
+    ];
   }
 
   /**

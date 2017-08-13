@@ -58,14 +58,14 @@ class ParInspectionPlan extends SqlBase {
    * {@inheritdoc}
    */
   public function getIds() {
-    return array(
+    return [
       'inspection_plan_id' => [
         'type' => 'integer',
       ],
       'partnership_id' => [
         'type' => 'integer',
       ],
-    );
+    ];
   }
 
   /**
