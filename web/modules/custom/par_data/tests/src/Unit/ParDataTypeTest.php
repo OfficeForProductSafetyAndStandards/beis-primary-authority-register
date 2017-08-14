@@ -39,7 +39,7 @@ class ParDataTypeTest extends UnitTestCase {
         'entity' => [
           'status_field' => 'field_status',
           'label_field' => 'field_name',
-          'required_fields' => [
+          'completed_fields' => [
             'field_1',
             'field_2',
             'field_3',

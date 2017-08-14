@@ -11,7 +11,7 @@ help: ''
 configuration:
   entity:
     status_field: partnership_status
-    required_fields:
+    completed_fields:
       - about_partnership
   partnership_status:
     allowed_values:

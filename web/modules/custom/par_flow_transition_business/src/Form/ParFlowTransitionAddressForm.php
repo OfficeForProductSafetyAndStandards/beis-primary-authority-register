@@ -141,6 +141,38 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    // No validation yet.
+    parent::validateForm($form, $form_state);
+    $premises = $this->getRouteParam('par_data_premises');
+    $form_items = [
+      'address_line1' => 'address_line1',
+      'address_line2' => 'address_line2',
+      'locality' => 'town_city',
+      'administrative_area' => 'county',
+      'nation' => 'country',
+      'uprn' => 'uprn',
+      'postal_code' => 'postcode',
+    ];
+    foreach($form_items as $element_item => $form_item)
+    $fields[$element_item] = [
+      'value' => $form_state->getValue($form_item),
+      'key' => $form_item,
+      'tokens' => [
+        '%field' => $form[$form_item]['#title']->render(),
+      ],
+    ];
+
+    $errors = $premises->validateFields($fields);
+    // Display error messages.
+    foreach($errors as $field => $message) {
+      $form_state->setErrorByName($field, $message);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

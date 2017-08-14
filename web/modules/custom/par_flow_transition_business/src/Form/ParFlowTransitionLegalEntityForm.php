@@ -79,7 +79,7 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
     ];
 
     // Legal Type.
-    $form['Legal_entity_type'] = [
+    $form['legal_entity_type'] = [
       '#type' => 'select',
       '#title' => $this->t('Type of Legal Entity'),
       '#default_value' => isset($id) ? $this->getDefaultValues("legal_entity_{$id}_legal_entity_type") : '',
@@ -113,6 +113,35 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    // No validation yet.
+    parent::validateForm($form, $form_state);
+    $legal_entity = $this->getRouteParam('par_data_legal_entity');
+    $form_items = [
+      'registered_name' => 'registered_name',
+      'legal_entity_type' => 'legal_entity_type',
+      'registered_number' => 'company_house_no',
+    ];
+
+    foreach($form_items as $element_item => $form_item)
+      $fields[$element_item] = [
+        'value' => $form_state->getValue($form_item),
+        'key' => $form_item,
+        'tokens' => [
+          '%field' => !empty($form[$form_item]['#title']) ? $form[$form_item]['#title']->render() : '',
+        ],
+      ];
+
+    $errors = $legal_entity->validateFields($fields);
+    // Display error messages.
+    foreach($errors as $field => $message) {
+      $form_state->setErrorByName($field, $message);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -120,7 +149,7 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
     $legal_entity = $this->getRouteParam('par_data_legal_entity');
     if (!empty($legal_entity)) {
       $legal_entity->set('registered_name', $this->getTempDataValue('registered_name'));
-      $legal_entity->set('legal_entity_type', $this->getTempDataValue('Legal_entity_type'));
+      $legal_entity->set('legal_entity_type', $this->getTempDataValue('legal_entity_type'));
       $legal_entity->set('registered_number', $this->getTempDataValue('company_house_no'));
 
       if ($legal_entity->save()) {
@@ -143,7 +172,7 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
         'uid' => 1,
         'registered_name' => $this->getTempDataValue('registered_name'),
         'registered_number' => $this->getTempDataValue('company_house_no'),
-        'legal_entity_type' => $this->getTempDataValue('Legal_entity_type'),
+        'legal_entity_type' => $this->getTempDataValue('legal_entity_type'),
       ]);
       $legal_entity->save();
 

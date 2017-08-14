@@ -14,6 +14,37 @@ use Drupal\trance\Trance;
 class ParDataEntity extends Trance implements ParDataEntityInterface {
 
   /**
+   * Validate the fields.
+   *
+   * @param array $fields
+   * 'comments' => [
+   *   'value' => $form_state->getValue('about_business'),
+   *   'key' => 'about_business',
+   *   'tokens' => [
+   *      '%field' => $form['about_business']['#title']->render(),
+   *    ]
+   *  ],
+   *
+   * @return array
+   *   Array of errors with field names or empty if there are no errors.
+   */
+  public function validateFields(array $fields) {
+    $error = [];
+    $required_fields = $this->getRequiredFields();
+
+    foreach($fields as $field_name => $field_info) {
+      if (!empty($required_fields[$field_name])) {
+        // Field has been located so need to validate it.
+        if (empty($field_info['value'])) {
+          $error[$field_info['key']] = t($required_fields[$field_name], $field_info['tokens']);
+        }
+      }
+    }
+
+    return $error;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function label() {
@@ -81,7 +112,13 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * {@inheritdoc}g
+   * {@inheritdoc}
+   */
+  public function getRequiredFields() {
+    return $this->getTypeEntity()->getRequiredFields();
+  }
+  /**
+   * {@inheritdoc}
    */
   public function getCompletionPercentage($include_deltas = FALSE) {
     $total = 0;

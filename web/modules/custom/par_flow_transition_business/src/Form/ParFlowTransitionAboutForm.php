@@ -83,6 +83,23 @@ class ParFlowTransitionAboutForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
+    $partnership = $this->getRouteParam('par_data_partnership');
+    $par_data_organisation = current($partnership->getOrganisation());
+    $fields = [
+      'comments' => [
+        'value' => $form_state->getValue('about_business'),
+        'key' => 'about_business',
+        'tokens' => [
+          '%field' => $form['about_business']['#title']->render(),
+        ]
+      ],
+    ];
+
+    $errors = $par_data_organisation->validateFields($fields);
+    // Display error messages.
+    foreach($errors as $field => $message) {
+      $form_state->setErrorByName($field, $message);
+    }
   }
 
   /**
