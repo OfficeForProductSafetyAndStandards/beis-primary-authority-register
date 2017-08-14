@@ -48,8 +48,11 @@ process:
     source: about_partnership
   approved_date/value:
     -
-      plugin: explode
+      plugin: skip_on_empty
+      method: process
       source: approved_date
+    -
+      plugin: explode
       delimiter: ' '
     -
       plugin: extract
@@ -77,8 +80,11 @@ process:
     source: revocation_reason
   revocation_date/value:
     -
-      plugin: explode
+      plugin: skip_on_empty
+      method: process
       source: revocation_date
+    -
+      plugin: explode
       delimiter: ' '
     -
       plugin: extract
@@ -149,15 +155,9 @@ process:
   field_organisation:
     -
       plugin: migration_lookup
-      migration:
-        - par_migration_business_organisation
-        - par_migration_coordinator_organisation
+      migration: par_migration_business_organisation
       no_stub: true
-      source_ids:
-        par_migration_business_organisation:
-          - organisation_id
-        par_migration_coordinator_organisation:
-          - organisation_id
+      source: organisation_id
   field_advice:
     -
       plugin: migration_lookup
@@ -193,7 +193,7 @@ process:
           migration: par_migration_regulatory_functions
           no_stub: true
 destination:
-  plugin: 'entity:par_data_authority'
+  plugin: 'entity:par_data_partnership'
 migration_dependencies:
   required:
     - par_migration_authority

@@ -147,9 +147,9 @@ class ParPartnership extends SqlBase {
    * @throws \Exception
    */
   function prepareRow(Row $row) {
-    $authority = $row->getSourceProperty('authority_id');
+    $partnership = $row->getSourceProperty('partnership_id');
 
-    $regulatory_functions = array_key_exists($authority, $this->regulatoryFunctions) ? $this->regulatoryFunctions[$authority] : [];
+    $regulatory_functions = array_key_exists($partnership, $this->regulatoryFunctions) ? $this->regulatoryFunctions[$partnership] : [];
     $row->setSourceProperty('regulatory_functions', $regulatory_functions);
 
     return parent::prepareRow($row);
