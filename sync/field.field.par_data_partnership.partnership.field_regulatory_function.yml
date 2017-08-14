@@ -6,13 +6,15 @@ dependencies:
     - field.storage.par_data_partnership.field_regulatory_function
     - par_data.par_data_partnership_type.partnership
     - par_data.par_data_regulatory_function_t.regulatory_function
+_core:
+  default_config_hash: 9B-kyOhDTDUyTObqcumz9fQKgnTZfVocckOgy8bGW5U
 id: par_data_partnership.partnership.field_regulatory_function
 field_name: field_regulatory_function
 entity_type: par_data_partnership
 bundle: partnership
 label: 'Regulatory Functions'
 description: 'The regulatory functions for this partnership.'
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''

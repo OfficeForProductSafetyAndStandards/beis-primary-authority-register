@@ -11,7 +11,7 @@ entity_type: par_data_partnership
 bundle: partnership
 label: Authorities
 description: 'The authorities for this partnership.'
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
