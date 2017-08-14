@@ -12,7 +12,7 @@ entity_type: par_data_enforcement_notice
 bundle: enforcement_notice
 label: 'Enforcing Authority'
 description: 'The enforcing authority that is charged with following up on this enforcement notice.'
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''

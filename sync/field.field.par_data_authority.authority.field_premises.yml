@@ -12,7 +12,7 @@ entity_type: par_data_authority
 bundle: authority
 label: Premises
 description: 'The premises of this organisation. The first premises will be the primary premises'
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
