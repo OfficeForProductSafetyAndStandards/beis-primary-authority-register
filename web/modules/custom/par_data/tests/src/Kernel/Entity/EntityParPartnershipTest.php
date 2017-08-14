@@ -44,21 +44,6 @@ class EntityParPartnershipTest extends ParDataTestBase {
     $values = [
       'partnership_type' => '',
       'partnership_status' => '',
-      'field_organisation' => [
-        '',
-      ],
-      'field_authority' => [
-        '',
-      ],
-      'field_regulatory_function' => [
-        '',
-      ],
-      'field_authority_person' => [
-        '',
-      ],
-      'field_organisation_person' => [
-        '',
-      ],
     ];
 
     $entity = ParDataPartnership::create($values + $this->getPartnershipValues());
