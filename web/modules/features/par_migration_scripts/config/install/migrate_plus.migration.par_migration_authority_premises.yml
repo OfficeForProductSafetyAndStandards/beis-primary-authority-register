@@ -38,13 +38,22 @@ process:
       characters: ', '
   field_date_address/postalCode: postcode
   nation:
-    plugin: static_map
-    source: country
-    map:
-      England: GB-ENG
-      Wales: GB-WLS
-      Scotland: GB-SCT
-      'Northern Ireland': GB-NIR
+    -
+      plugin: skip_on_empty
+      method: process
+      source: country
+    -
+      plugin: static_map
+      source: country
+      map:
+        England: GB-ENG
+        Wales: GB-WLS
+        Scotland: GB-SCT
+        'Northern Ireland': GB-NIR
+  uprn:
+    plugin: skip_on_empty
+    method: process
+    source: uprn
 destination:
   plugin: 'entity:par_data_premises'
 migration_dependencies: {  }

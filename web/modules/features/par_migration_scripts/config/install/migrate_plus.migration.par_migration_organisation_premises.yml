@@ -49,6 +49,10 @@ process:
         Wales: GB-WLS
         Scotland: GB-SCT
         'Northern Ireland': GB-NIR
+  uprn:
+    plugin: skip_on_empty
+    method: process
+    source: uprn
 destination:
   plugin: 'entity:par_data_premises'
 migration_dependencies: {  }

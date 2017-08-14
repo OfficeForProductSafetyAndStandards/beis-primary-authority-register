@@ -7,7 +7,7 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: IV2fjJml5sIordFTDgHROm0Zlf73kAN41O7kBn4_ds0
+  default_config_hash: VPZ4Sz9ZOxk9AnMzpAXAshF9Y4g9Nv-WLBqIvAertbo
 id: par_migration_organisation_premises
 class: null
 field_plugin_method: null
@@ -52,6 +52,10 @@ process:
         Wales: GB-WLS
         Scotland: GB-SCT
         'Northern Ireland': GB-NIR
+  uprn:
+    plugin: skip_on_empty
+    method: process
+    source: uprn
 destination:
   plugin: 'entity:par_data_premises'
 migration_dependencies: {  }

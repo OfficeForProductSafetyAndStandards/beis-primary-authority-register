@@ -35,6 +35,7 @@ class ParAuthorityPremises extends SqlBase {
         'county',
         'postcode',
         'country',
+        'uprn',
       ])
       ->isNotNull('authority_id');
   }
@@ -53,6 +54,7 @@ class ParAuthorityPremises extends SqlBase {
       'county' => $this->t('County'),
       'postcode' => $this->t('Postcode'),
       'country' => $this->t('Country'),
+      'uprn' => $this->t('UPRN'),
     ];
     return $fields;
   }

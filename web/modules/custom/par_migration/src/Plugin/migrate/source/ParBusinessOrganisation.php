@@ -79,8 +79,7 @@ class ParBusinessOrganisation extends SqlBase {
         'coordinator_number_eligible',
         'coordinator_type',
       ])
-      ->condition('par_role', 'Business')
-      ->range(0,1000);
+      ->condition('par_role', 'Business');
   }
 
   protected function collectTradingNames() {
