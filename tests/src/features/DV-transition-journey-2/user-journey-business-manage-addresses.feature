@@ -84,7 +84,7 @@ Feature: Business User - Manage Addresses
 
         # EDIT ALTERNATE CONTACT
 
-        When I click on the button "form#par-flow-transition-business-details #edit-primary-contact #edit-alternative-people a.flow-link"
+        When I click on the button "form#par-flow-transition-business-details #edit-alternative-people a.flow-link"
         And I add "Miss" to the inputfield "#edit-first-name"
         And I add "Piggy" to the inputfield "#edit-last-name"
         And I add "01723999999" to the inputfield "#edit-work-phone"
