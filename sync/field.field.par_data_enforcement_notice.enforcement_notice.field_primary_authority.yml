@@ -12,7 +12,7 @@ entity_type: par_data_enforcement_notice
 bundle: enforcement_notice
 label: 'Primary Authority'
 description: 'The primary authority that issued this enforcement notice.'
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''

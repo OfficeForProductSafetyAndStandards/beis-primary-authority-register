@@ -1,0 +1,136 @@
+uuid: 3cea0c72-3e24-4269-9a24-2c26d5a308a4
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - par_migration
+      - par_migration_scripts
+_core:
+  default_config_hash: omdnYQAqCE4r71Z4dR2_HRSQd6W3oth61PIFxkELWzk
+id: par_migration_business_organisation
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - MS-SQL
+migration_group: PAR2
+label: 'PAR Migration of business organisation'
+source:
+  plugin: par_migration_business_organisation
+process:
+  id: organisation_id
+  type:
+    plugin: default_value
+    default_value: business
+  uid:
+    plugin: default_value
+    default_value: 1
+  organisation_name: name
+  size:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: size_category
+    -
+      plugin: static_map
+      map:
+        Small: Small
+        Medium: medium
+        Large: large
+  employees_band:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: employees_band
+    -
+      plugin: static_map
+      map:
+        10-49: '50'
+        50-249: 50-249
+        250+: 250+
+        10: 0-9
+  nation:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: country
+    -
+      plugin: static_map
+      map:
+        England: GB-ENG
+        Wales: GB-WLS
+        Scotland: GB-SCT
+        'Northern Ireland': GB-NIR
+  comments:
+    plugin: skip_on_empty
+    method: process
+    source: comments
+  premises_mapped:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: premises_on_map_ok
+    -
+      plugin: static_map
+      default_value: false
+      map:
+        'Y': true
+        'N': false
+  trading_name:
+    plugin: skip_on_empty
+    method: process
+    source: trading_names
+  field_legal_entity:
+    -
+      plugin: migration_lookup
+      migration: par_migration_legal_entity
+      no_stub: true
+      source:
+        legal_entity_id: null
+        organisation_id: organisation_id
+    -
+      plugin: skip_on_empty
+      method: process
+  field_person:
+    -
+      plugin: migration_lookup
+      migration: par_migration_organisation_person
+      no_stub: true
+      source:
+        person_id: null
+        organisation_id: organisation_id
+    -
+      plugin: skip_on_empty
+      method: process
+  field_premises:
+    -
+      plugin: migration_lookup
+      migration: par_migration_organisation_premises
+      no_stub: true
+      source:
+        premises_id: null
+        organisation_id: organisation_id
+    -
+      plugin: skip_on_empty
+      method: process
+  field_sic_code:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: sic_codes
+    -
+      plugin: iterator
+      process:
+        -
+          plugin: migration_lookup
+          migration: par_migration_sic_code
+          no_stub: true
+destination:
+  plugin: 'entity:par_data_organisation'
+migration_dependencies:
+  required:
+    - par_migration_organisation_person
+    - par_migration_organisation_premises
+    - par_migration_sic_code
+    - par_migration_legal_entity

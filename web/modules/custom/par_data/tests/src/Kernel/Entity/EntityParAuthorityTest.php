@@ -45,18 +45,6 @@ class EntityParAuthorityTest extends ParDataTestBase {
       'authority_type' => '',
       'nation' => '',
       'ons_code' => '',
-      'field_person' => [
-        '',
-      ],
-      'field_regulatory_function' => [
-        '',
-      ],
-      'field_allowed_regulatory_fn' => [
-        '',
-      ],
-      'field_premises' => [
-        '',
-      ],
     ];
 
     $entity = ParDataAuthority::create($values + $this->getAuthorityValues());

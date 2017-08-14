@@ -2,9 +2,12 @@
 
 namespace Drupal\par_migration\Plugin\migrate\source;
 
+use Drupal\Core\State\StateInterface;
 use Drupal\migrate\Plugin\migrate\source\SqlBase;
+use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
 use Drupal\migrate\MigrateException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Migration of PAR2 Partnerships.
@@ -21,6 +24,34 @@ class ParPartnership extends SqlBase {
   protected $table = 'par_partnerships';
 
   /**
+   * @var array
+   *   A cached array of regulatory functions keyed by authority ID.
+   */
+  protected $regulatoryFunctions = [];
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $state);
+
+    $this->collectRegulatoryFunctions();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $migration,
+      $container->get('state')
+    );
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function query() {
@@ -34,7 +65,8 @@ class ParPartnership extends SqlBase {
         'tc_organisation_agreed',
         'tc_authority_agreed',
         'coordinator_suitable',
-        'partnership_info_confirmed',
+        'authority_info_confirmed',
+        'organisation_info_confirmed',
         'written_summary_agreed',
         'about_partnership',
         'approved_date',
@@ -45,8 +77,7 @@ class ParPartnership extends SqlBase {
         'revocation_reason',
         'authority_change_comment',
         'organisation_change_comment',
-      ])
-      ->condition('obsolete', 'N');
+      ]);
   }
 
   /**
@@ -62,7 +93,8 @@ class ParPartnership extends SqlBase {
       'tc_organisation_agreed' => $this->t('Authority agreed terms & conditions'),
       'tc_authority_agreed' => $this->t('Business agreed terms & conditions'),
       'coordinator_suitable' => $this->t('Coordinator suitable'),
-      'partnership_info_confirmed' => $this->t('Partnership information confirmed'),
+      'authority_info_confirmed' => $this->t('Authority information confirmed'),
+      'organisation_info_confirmed' => $this->t('Organisation information confirmed'),
       'written_summary_agreed' => $this->t('Written summary agreed'),
       'about_partnership' => $this->t('About partnership'),
       'approved_date' => $this->t('Approved date'),
@@ -77,19 +109,37 @@ class ParPartnership extends SqlBase {
     return $fields;
   }
 
+  protected function collectRegulatoryFunctions() {
+    $result = $this->select('par_partnership_regulatory_functions', 'r')
+      ->fields('r', [
+        'partnership_regulatory_function_id',
+        'partnership_id',
+        'regulatory_function_id',
+      ])
+      ->isNotNull('r.partnership_id')
+      ->orderBy('r.partnership_id')
+      ->execute();
+
+    while ($row = $result->fetchAssoc()) {
+      $this->regulatoryFunctions[$row['partnership_id']][] = [
+        'target_id' => (int) $row['regulatory_function_id'],
+      ];
+    }
+  }
+
   /**
    * {@inheritdoc}
    */
   public function getIds() {
-    return array(
-      'partnership_id' => array(
+    return [
+      'partnership_id' => [
         'type' => 'integer',
-      ),
-    );
+      ],
+    ];
   }
 
   /**
-   * Attaches "nid" property to a row if row "bid" points to a
+   * Attaches regulatory functions.
    *
    * @param \Drupal\migrate\Row $row
    *
@@ -97,6 +147,11 @@ class ParPartnership extends SqlBase {
    * @throws \Exception
    */
   function prepareRow(Row $row) {
+    $partnership = $row->getSourceProperty('partnership_id');
+
+    $regulatory_functions = array_key_exists($partnership, $this->regulatoryFunctions) ? $this->regulatoryFunctions[$partnership] : [];
+    $row->setSourceProperty('regulatory_functions', $regulatory_functions);
+
     return parent::prepareRow($row);
   }
 

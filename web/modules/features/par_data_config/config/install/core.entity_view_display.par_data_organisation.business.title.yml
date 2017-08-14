@@ -3,6 +3,10 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_organisation.title
+    - field.field.par_data_organisation.business.field_legal_entity
+    - field.field.par_data_organisation.business.field_person
+    - field.field.par_data_organisation.business.field_premises
+    - field.field.par_data_organisation.business.field_sic_code
     - par_data.par_data_organisation_type.business
 id: par_data_organisation.business.title
 targetEntityType: par_data_organisation
