@@ -75,21 +75,18 @@ class ParFlowTransitionContactForm extends ParBaseForm {
       '#type' => 'textfield',
       '#title' => $this->t('Title'),
       '#default_value' => $this->getDefaultValues("salutation"),
-      '#required' => TRUE,
     ];
 
     $form['first_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('First Name'),
       '#default_value' => $this->getDefaultValues("first_name"),
-      '#required' => TRUE,
     ];
 
     $form['last_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Last Name'),
       '#default_value' => $this->getDefaultValues("last_name"),
-      '#required' => TRUE,
     ];
 
     // The Person's work phone number.
@@ -97,7 +94,6 @@ class ParFlowTransitionContactForm extends ParBaseForm {
       '#type' => 'textfield',
       '#title' => $this->t('Work Phone'),
       '#default_value' => $this->getDefaultValues("phone"),
-      '#required' => TRUE,
     ];
 
     // The Person's work phone number.
@@ -112,7 +108,6 @@ class ParFlowTransitionContactForm extends ParBaseForm {
       '#type' => 'textfield',
       '#title' => $this->t('Email'),
       '#default_value' => $this->getDefaultValues("email"),
-      '#required' => TRUE,
     ];
 
     // Preferred contact methods.

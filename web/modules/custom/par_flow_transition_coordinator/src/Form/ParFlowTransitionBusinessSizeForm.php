@@ -61,7 +61,6 @@ class ParFlowTransitionBusinessSizeForm extends ParBaseForm {
       '#type' => 'textfield',
       '#title' => $this->t('Number of associations'),
       '#default_value' => $this->getDefaultValues('business_size'),
-      '#required' => TRUE,
     ];
 
     $form['next'] = [

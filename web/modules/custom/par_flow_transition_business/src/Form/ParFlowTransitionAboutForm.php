@@ -58,7 +58,6 @@ class ParFlowTransitionAboutForm extends ParBaseForm {
       '#title' => $this->t('Edit the information about the business'),
       '#default_value' => $this->getDefaultValues('about_business'),
       '#description' => 'Use this section to give a brief overview of the partnership.<br>Include any information you feel may be useful to enforcing authorities.',
-      '#required' => TRUE,
     ];
 
     $form['next'] = [

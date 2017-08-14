@@ -76,7 +76,6 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
       '#title' => $this->t('Name of legal entity'),
       '#default_value' => isset($id) ? $this->getDefaultValues("legal_entity_{$id}_registered_name") : '',
       '#description' => $this->t('A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisation such as trusts and charities.'),
-      '#required' => TRUE,
     ];
 
     // Legal Type.
@@ -85,7 +84,6 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
       '#title' => $this->t('Type of Legal Entity'),
       '#default_value' => isset($id) ? $this->getDefaultValues("legal_entity_{$id}_legal_entity_type") : '',
       '#options' => $legal_entity_bundle->getAllowedValues('legal_entity_type'),
-      '#required' => TRUE,
     ];
 
     // The Person's name.
@@ -93,7 +91,6 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
       '#type' => 'textfield',
       '#title' => $this->t('Companies House Number'),
       '#default_value' => isset($id) ? $this->getDefaultValues("legal_entity_{$id}_registered_number") : '',
-      '#required' => TRUE,
     ];
 
     $form['next'] = [

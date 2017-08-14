@@ -75,7 +75,6 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
       '#title' => $this->t('Postcode'),
       '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_postal_code"),
       '#description' => t('Enter the postcode of the business'),
-      '#required' => TRUE,
     ];
 
     // The Address lines.
@@ -83,14 +82,12 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
       '#type' => 'textfield',
       '#title' => $this->t('Address Line 1'),
       '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_address_line1"),
-      '#required' => TRUE,
     ];
 
     $form['address_line2'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Address Line 2'),
       '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_address_line2"),
-      '#required' => TRUE,
     ];
 
     // Town/City.
@@ -98,7 +95,6 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
       '#type' => 'textfield',
       '#title' => $this->t('Town / City'),
       '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_locality"),
-      '#required' => TRUE,
     ];
 
     // County.
@@ -106,7 +102,6 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
       '#type' => 'textfield',
       '#title' => $this->t('County'),
       '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_administrative_area"),
-      '#required' => TRUE,
     ];
 
     // Country.
@@ -115,7 +110,6 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
       '#title' => $this->t('Country'),
       '#options' => $premises_bundle->getAllowedValues('nation'),
       '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_country_code"),
-      '#required' => TRUE,
     ];
 
     // UPRN.

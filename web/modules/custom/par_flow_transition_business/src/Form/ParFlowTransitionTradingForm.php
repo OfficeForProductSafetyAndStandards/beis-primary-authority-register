@@ -68,7 +68,6 @@ class ParFlowTransitionTradingForm extends ParBaseForm {
       '#title' => $this->t('Name of trading name'),
       '#default_value' => isset($par_data_organisation->get('trading_name')->getValue()[$trading_name_delta]) ? $par_data_organisation->get('trading_name')->getValue()[$trading_name_delta] : '',
       '#description' => $this->t('Sometimes companies trade under a different name to their registered, legal name. This is known as a \'trading name\'. State any trading names used by the business.'),
-      '#required' => TRUE,
     ];
 
     $form['next'] = [
