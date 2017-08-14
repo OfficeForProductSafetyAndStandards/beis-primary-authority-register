@@ -53,10 +53,11 @@ Feature: PAR User - Inspection Plans
 
         And I scroll to element ".table-scroll-wrapper"
         When I click on the link "Review and confirm your inspection plan"
-        Then I expect that element "([^"]*)?" is not enabled
+        Then I expect that element ".form-checkbox" is not enabled
+        When I click on the button "#edit-next"
 
         # PARTNERSHIPS DASHBOARD
 
-        When I click on the link "Go back to your partnerships"
+        And I click on the link "Go back to your partnerships"
         Then the element "h1" contains the text "List of Partnerships"
         And I click on the link "Log out"
