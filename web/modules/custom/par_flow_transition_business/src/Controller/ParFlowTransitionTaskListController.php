@@ -26,8 +26,8 @@ class ParFlowTransitionTaskListController extends ParBaseController {
     $primary_person = $primary_person_view_builder->view($par_data_primary_person, 'summary');
 
     $build['intro'] = [
-      '#markup' => t('Review and confirm the details of your partnership with %primary_authority by 14 September 2017',
-        ['%primary_authority' => $par_data_authority->get('authority_name')->getString()]),
+      '#markup' => t('Review and confirm the details of your partnership with @primary_authority by 14 September 2017',
+        ['@primary_authority' => $par_data_authority->get('authority_name')->getString()]),
     ];
 
     $build['contact'] = [
