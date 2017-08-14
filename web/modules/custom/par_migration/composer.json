@@ -1,0 +1,14 @@
+{
+  "name": "TransformCore/par-demo-migration",
+  "type": "drupal-module",
+  "description": "The demo migration performs a demo migration.",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0+",
+  "minimum-stability": "dev",
+  "require": {
+    "cweagans/composer-patches": "~1.0",
+    "drupal/migrate_source_csv": "^2.0.0-rc2",
+    "drupal/migrate_plus": "^3.0.0-beta1",
+    "drupal/migrate_tools": "^3.0.0-beta1"
+  }
+}

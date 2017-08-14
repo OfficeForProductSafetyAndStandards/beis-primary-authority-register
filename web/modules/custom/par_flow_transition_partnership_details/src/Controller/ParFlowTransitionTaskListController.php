@@ -43,6 +43,11 @@ class ParFlowTransitionTaskListController extends ParBaseController {
     $par_data_primary_person = current($par_data_partnership->getAuthorityPeople());
     $primary_person_view_builder = $par_data_primary_person->getViewBuilder();
 
+    $build['primary_contact'] = [
+      '#type' => 'fieldset',
+      '#attributes' => ['class' => 'form-group'],
+    ];
+
     $build['primary_contact']['label'] = [
       '#type' => 'markup',
       '#prefix' => '<h4>',
@@ -121,6 +126,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
     // Show the task links in table format.
     $build['task_list'] = [
       '#theme' => 'table',
+      '#attributes' => ['class' => 'form-group'],
       '#header' => [],
       '#rows' => $rows,
       '#empty' => $this->t("No tasks could be found."),
