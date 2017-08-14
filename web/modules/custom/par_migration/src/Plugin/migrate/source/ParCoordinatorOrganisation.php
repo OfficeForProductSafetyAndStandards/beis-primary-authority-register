@@ -2,9 +2,12 @@
 
 namespace Drupal\par_migration\Plugin\migrate\source;
 
+use Drupal\Core\State\StateInterface;
 use Drupal\migrate\Plugin\migrate\source\SqlBase;
+use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
 use Drupal\migrate\MigrateException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Migration of PAR2 Coordinator Organisation.
@@ -21,11 +24,46 @@ class ParCoordinatorOrganisation extends SqlBase {
   protected $table = 'par_organisations';
 
   /**
+   * @var array
+   *   A cached array of trading names keyed by organisation ID.
+   */
+  protected $tradingNames = [];
+
+  /**
+   * @var array
+   *   A cached array of sic codes keyed by organisation ID.
+   */
+  protected $sicCodes = [];
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $state);
+
+    $this->collectTradingNames();
+    $this->collectSicCodes();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $migration,
+      $container->get('state')
+    );
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function query() {
-    return $this->select($this->table, 'a')
-      ->fields('a', [
+    return $this->select($this->table, 'b')
+      ->fields('b', [
         'organisation_id',
         'name',
         'par_role',
@@ -42,6 +80,40 @@ class ParCoordinatorOrganisation extends SqlBase {
         'coordinator_type',
       ])
       ->condition('par_role', 'Co-ordinator');
+  }
+
+  protected function collectTradingNames() {
+    $result = $this->select('par_trading_names', 't')
+      ->fields('t', [
+        'trading_name_id',
+        'organisation_id',
+        'name',
+      ])
+      ->isNotNull('t.organisation_id')
+      ->orderBy('t.organisation_id')
+      ->execute();
+
+    while ($row = $result->fetchAssoc()) {
+      $this->tradingNames[$row['organisation_id']][] = $row['name'];
+    }
+  }
+
+  protected function collectSicCodes() {
+    $result = $this->select('par_organisation_sic_codes', 's')
+      ->fields('s', [
+        'organisation_sic_code_id',
+        'organisation_id',
+        'sic_code_id',
+      ])
+      ->isNotNull('s.organisation_id')
+      ->orderBy('s.organisation_id')
+      ->execute();
+
+    while ($row = $result->fetchAssoc()) {
+      $this->sicCodes[$row['organisation_id']][] = [
+        'target_id' => (int) $row['sic_code_id'],
+      ];
+    }
   }
 
   /**
@@ -61,6 +133,8 @@ class ParCoordinatorOrganisation extends SqlBase {
       'last_name' => $this->t('Last name'),
       'premises_on_map_ok' => $this->t('Premises on map'),
       'comments' => $this->t('Comments'),
+      'trading_names' => $this->t('Trading names'),
+      'sic_codes' => $this->t('SIC Codes'),
       'coordinator_number_eligible' => $this->t('Coordinator number eligible'),
       'coordinator_type' => $this->t('Coordinator type'),
     ];
@@ -72,9 +146,6 @@ class ParCoordinatorOrganisation extends SqlBase {
    */
   public function getIds() {
     return [
-      'person_id' => [
-        'type' => 'integer',
-      ],
       'organisation_id' => [
         'type' => 'integer',
       ],
@@ -82,7 +153,7 @@ class ParCoordinatorOrganisation extends SqlBase {
   }
 
   /**
-   * Attaches "nid" property to a row if row "bid" points to a
+   * Attaches trading_names and sic_codes.
    *
    * @param \Drupal\migrate\Row $row
    *
@@ -90,6 +161,14 @@ class ParCoordinatorOrganisation extends SqlBase {
    * @throws \Exception
    */
   function prepareRow(Row $row) {
+    $organisation = $row->getSourceProperty('organisation_id');
+
+    $trading_names = array_key_exists($organisation, $this->tradingNames) ? $this->tradingNames[$organisation] : [];
+    $row->setSourceProperty('trading_names', $trading_names);
+
+    $sic_codes = array_key_exists($organisation, $this->sicCodes) ? $this->sicCodes[$organisation] : [];
+    $row->setSourceProperty('sic_codes', $sic_codes);
+
     return parent::prepareRow($row);
   }
 

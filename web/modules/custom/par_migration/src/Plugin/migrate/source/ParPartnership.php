@@ -2,9 +2,12 @@
 
 namespace Drupal\par_migration\Plugin\migrate\source;
 
+use Drupal\Core\State\StateInterface;
 use Drupal\migrate\Plugin\migrate\source\SqlBase;
+use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
 use Drupal\migrate\MigrateException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Migration of PAR2 Partnerships.

@@ -143,25 +143,59 @@ process:
   field_organisation:
     -
       plugin: migration_lookup
-      migration: par_migration_organisation_business
+      migration:
+        - par_migration_business_organisation
+        - par_migration_coordinator_organisation
       no_stub: true
-      source: organisation_id
+      source_ids:
+        par_migration_business_organisation:
+          - organisation_id
+        par_migration_coordinator_organisation:
+          - organisation_id
   field_advice:
     -
       plugin: migration_lookup
       migration: par_migration_advice
       no_stub: true
-      source: 
+      source:
+        advice_id: null
+        partnership_id: partnership_id
+    -
+      plugin: skip_on_empty
+      method: process
   field_inspection_plan:
     -
       plugin: migration_lookup
       migration: par_migration_inspection_plan
       no_stub: true
       source:
+        inspection_plan_id: null
+        partnership_id: partnership_id
+    -
+      plugin: skip_on_empty
+      method: process
+  field_regulatory_function:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: regulatory_functions
+    -
+      plugin: iterator
+      process:
+        -
+          plugin: migration_lookup
+          migration: par_migration_regulatory_functions
+          no_stub: true
 destination:
   plugin: 'entity:par_data_authority'
 migration_dependencies:
   required:
+    - par_migration_authority
+    - par_migration_business_organisation
+    - par_migration_coordinator_organisation
     - par_migration_authority_person
     - par_migration_authority_premises
     - par_migration_regulatory_functions
+    - par_migration_legal_entity
+    - par_migration_advice
+    - migrate_plus.migration.par_migration_inspection_plan.yml

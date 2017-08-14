@@ -135,8 +135,6 @@ class ParBusinessOrganisation extends SqlBase {
       'comments' => $this->t('Comments'),
       'trading_names' => $this->t('Trading names'),
       'sic_codes' => $this->t('SIC Codes'),
-      'coordinator_number_eligible' => $this->t('Coordinator number eligible'),
-      'coordinator_type' => $this->t('Coordinator type'),
     ];
     return $fields;
   }
