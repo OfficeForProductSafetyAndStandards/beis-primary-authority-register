@@ -1,0 +1,167 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - par_migration
+      - par_migration_scripts
+id: par_migration_partnership
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - MS-SQL
+migration_group: PAR2
+label: 'PAR Migration of partnership'
+source:
+  plugin: par_migration_partnership
+process:
+  id: partnership_id
+  type:
+    plugin: default_value
+    default_value: partnership
+  uid:
+    plugin: default_value
+    default_value: 1
+  partnership_type:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: partnership_type
+    -
+      plugin: static_map
+      map:
+        'Co-ordinated': coordinated:
+        Direct: direct
+  partnership_status:
+    plugin: default_value
+    default_value: awaiting_review
+  about_partnership:
+    plugin: skip_on_empty
+    method: process
+    source: about_partnership
+  approved_date/value:
+    -
+      plugin: explode
+      source: approved_date
+      delimiter: ' '
+    -
+      plugin: extract
+      index:
+        - '0'
+    -
+      plugin: format_date
+      from_format: 'Y-m-d'
+      to_format: 'Y-m-d'
+  cost_recovery:
+    plugin: skip_on_empty
+    method: process
+    source: cost_recovery
+  reject_comment:
+    plugin: skip_on_empty
+    method: process
+    source: reject_comment
+  revocation_source:
+    plugin: skip_on_empty
+    method: process
+    source: revocation_source
+  revocation_reason:
+    plugin: skip_on_empty
+    method: process
+    source: revocation_reason
+  revocation_date/value:
+    -
+      plugin: explode
+      source: revocation_date
+      delimiter: ' '
+    -
+      plugin: extract
+      index:
+        - '0'
+    -
+      plugin: format_date
+      from_format: 'Y-m-d'
+      to_format: 'Y-m-d'
+  authority_change_comment:
+    plugin: skip_on_empty
+    method: process
+    source: authority_change_comment
+  organisation_change_comment:
+    plugin: skip_on_empty
+    method: process
+    source: organisation_change_comment
+  coordinator_suitable:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: coordinator_suitable
+    -
+      plugin: static_map
+      default_value: false
+      map:
+        'Y': true
+        'N': false
+  partnership_info_agreed_authority:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: organisation_info_confirmed
+    -
+      plugin: static_map
+      default_value: false
+      map:
+        'Y': true
+        'N': false
+  partnership_info_agreed_business:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: authority_info__confirmed
+    -
+      plugin: static_map
+      default_value: false
+      map:
+        'Y': true
+        'N': false
+  written_summary_agreed:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: written_summary_agreed
+    -
+      plugin: static_map
+      default_value: false
+      map:
+        'Y': true
+        'N': false
+  field_authority:
+    -
+      plugin: migration_lookup
+      migration: par_migration_authority
+      no_stub: true
+      source: authority_id
+  field_organisation:
+    -
+      plugin: migration_lookup
+      migration: par_migration_organisation_business
+      no_stub: true
+      source: organisation_id
+  field_advice:
+    -
+      plugin: migration_lookup
+      migration: par_migration_advice
+      no_stub: true
+      source: 
+  field_inspection_plan:
+    -
+      plugin: migration_lookup
+      migration: par_migration_inspection_plan
+      no_stub: true
+      source:
+destination:
+  plugin: 'entity:par_data_authority'
+migration_dependencies:
+  required:
+    - par_migration_authority_person
+    - par_migration_authority_premises
+    - par_migration_regulatory_functions

@@ -21,6 +21,34 @@ class ParPartnership extends SqlBase {
   protected $table = 'par_partnerships';
 
   /**
+   * @var array
+   *   A cached array of regulatory functions keyed by authority ID.
+   */
+  protected $regulatoryFunctions = [];
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $state);
+
+    $this->collectRegulatoryFunctions();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration = NULL) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $migration,
+      $container->get('state')
+    );
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function query() {
@@ -31,6 +59,7 @@ class ParPartnership extends SqlBase {
         'authority_id',
         'partnership_type',
         'status',
+        'obsolete',
         'tc_organisation_agreed',
         'tc_authority_agreed',
         'coordinator_suitable',
@@ -45,8 +74,7 @@ class ParPartnership extends SqlBase {
         'revocation_reason',
         'authority_change_comment',
         'organisation_change_comment',
-      ])
-      ->condition('obsolete', 'N');
+      ]);
   }
 
   /**
@@ -59,6 +87,7 @@ class ParPartnership extends SqlBase {
       'authority_id' => $this->t('Authority ID'),
       'partnership_type' => $this->t('Partnership type'),
       'status' => $this->t('Partnership status'),
+      'obsolete' => $this->t('Is obsolete'),
       'tc_organisation_agreed' => $this->t('Authority agreed terms & conditions'),
       'tc_authority_agreed' => $this->t('Business agreed terms & conditions'),
       'coordinator_suitable' => $this->t('Coordinator suitable'),
@@ -77,6 +106,24 @@ class ParPartnership extends SqlBase {
     return $fields;
   }
 
+  protected function collectRegulatoryFunctions() {
+    $result = $this->select('par_partnership_regulatory_functions', 'r')
+      ->fields('r', [
+        'partnership_regulatory_function_id',
+        'partnership_id',
+        'regulatory_function_id',
+      ])
+      ->isNotNull('r.partnership_id')
+      ->orderBy('r.partnership_id')
+      ->execute();
+
+    while ($row = $result->fetchAssoc()) {
+      $this->regulatoryFunctions[$row['partnership_id']][] = [
+        'target_id' => (int) $row['regulatory_function_id'],
+      ];
+    }
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -89,7 +136,7 @@ class ParPartnership extends SqlBase {
   }
 
   /**
-   * Attaches "nid" property to a row if row "bid" points to a
+   * Attaches regulatory functions.
    *
    * @param \Drupal\migrate\Row $row
    *
@@ -97,6 +144,11 @@ class ParPartnership extends SqlBase {
    * @throws \Exception
    */
   function prepareRow(Row $row) {
+    $authority = $row->getSourceProperty('authority_id');
+
+    $regulatory_functions = array_key_exists($authority, $this->regulatoryFunctions) ? $this->regulatoryFunctions[$authority] : [];
+    $row->setSourceProperty('regulatory_functions', $regulatory_functions);
+
     return parent::prepareRow($row);
   }
 

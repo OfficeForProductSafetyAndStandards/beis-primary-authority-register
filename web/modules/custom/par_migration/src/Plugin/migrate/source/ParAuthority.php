@@ -122,7 +122,7 @@ class ParAuthority extends SqlBase {
   }
 
   /**
-   * Attaches trading_names and sic_codes.
+   * Attaches regulatory functions.
    *
    * @param \Drupal\migrate\Row $row
    *
