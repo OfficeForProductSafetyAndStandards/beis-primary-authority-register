@@ -1,5 +1,5 @@
 @ci @journey3
-Feature: Coordinator User - Manage Addresses
+Feature: Coordinator User - Manage Name and Summary
 
     Background:
         # TEST DATA RESET
