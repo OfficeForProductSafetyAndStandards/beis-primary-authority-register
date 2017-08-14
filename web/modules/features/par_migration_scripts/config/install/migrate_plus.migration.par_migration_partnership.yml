@@ -36,6 +36,12 @@ process:
   partnership_status:
     plugin: default_value
     default_value: awaiting_review
+  terms_authority_agreed:
+    plugin: default_value
+    default_value: false
+  terms_organisation_agreed:
+    plugin: default_value
+    default_value: false
   about_partnership:
     plugin: skip_on_empty
     method: process

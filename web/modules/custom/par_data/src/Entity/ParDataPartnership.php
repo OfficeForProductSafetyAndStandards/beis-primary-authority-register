@@ -238,27 +238,6 @@ class ParDataPartnership extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Expertise Details.
-    $fields['expertise_details'] = BaseFieldDefinition::create('text_long')
-      ->setLabel(t('Expertise Detail'))
-      ->setDescription(t('Details about the expertise for this partnership.'))
-      ->setRevisionable(TRUE)
-      ->setSettings([
-        'text_processing' => 0,
-      ])
-      ->setDisplayOptions('form', [
-        'type' => 'text_textarea',
-        'weight' => 8,
-        'settings' => [
-          'rows' => 25,
-        ],
-      ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
     // Partnership Status.
     $fields['cost_recovery'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Cost Recovery'))
@@ -325,7 +304,6 @@ class ParDataPartnership extends ParDataEntity {
       ->setLabel(t('Recovation Date'))
       ->setDescription(t('The date this partnership was revoked.'))
       ->setRevisionable(TRUE)
-      ->setTranslatable(FALSE)
       ->setSettings([
         'datetime_type' => 'date',
       ])
@@ -434,7 +412,6 @@ class ParDataPartnership extends ParDataEntity {
       ->setLabel(t('Coordinator Suitable'))
       ->setDescription(t('Is coordinator suitable.'))
       ->setRevisionable(TRUE)
-      ->setTranslatable(FALSE)
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => 24,
