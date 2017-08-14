@@ -40,13 +40,14 @@ var test = pa11y({
         };
 
         page.evaluate(function () {
+            window.open("http://localhost:8111/user/login");
             document.getElementById("edit-name").value = "par_helpdesk@example.com";
             document.getElementById("edit-pass").value = "TestPassword";
             document.getElementById("edit-submit").click();
         }, function () {
             waitUntil(function () {
                 // Wait until the login has been success and the /news.html has loaded
-                return window.location.href === 'http://localhost:8111/user/65';
+                return window.location.href === 'http://localhost:8111/user/319';
             }, 20, function () {
                 // Redirect to the page test page
                 page.evaluate(function () {
@@ -62,7 +63,7 @@ var test = pa11y({
 });
 
 // Test http://example.com/
-test.run('localhost:8111/user/login', function (error, result) {
+test.run('localhost:8111/dv/partnership-dashboard', function (error, result) {
     if (error) {
         return console.error(error.message);
     }

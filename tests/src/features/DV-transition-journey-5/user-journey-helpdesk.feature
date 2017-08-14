@@ -37,12 +37,10 @@ Feature: Helpdesk - Dashboard
 
         # CSV CHECK
         When I click on the link "Dashboard"
-#        When I open the url "/dv/rd-dashboard"
         And I click on the button "td.views-field.views-field-nothing-1 a"
         Then the element ".table-scroll-wrapper" contains the text "Review and confirm your business details"
         When I open the url "/dv/rd-dashboard"
         And I click on the link "Download as CSV"
-
 
 
 
