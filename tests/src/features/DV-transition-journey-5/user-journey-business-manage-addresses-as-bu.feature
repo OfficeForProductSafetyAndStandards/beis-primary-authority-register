@@ -1,5 +1,5 @@
-@Pending
-Feature: Business User - Manage Addresses
+@ci
+Feature: Helpdesk As Business User - Manage Addresses
 
     Background:
         # TEST DATA RESET
@@ -17,7 +17,7 @@ Feature: Business User - Manage Addresses
         And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
-        Then the element "#block-par-theme-account-menu" contains the text "Log out"
+        Then I expect that element "#block-par-theme-account-menu" contains the text "Log out"
 
         # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
@@ -26,23 +26,13 @@ Feature: Business User - Manage Addresses
 
         # PARTNERSHIP DETAILS
 
-        Then the element "h1" contains the text "RD Helpdesk Dashboard"
-        When I click on the link "List of tasks"
-        When I click on the link "ABCD Mart"
-
-        # TERMS AND CONDITIONS SCREEN
-
-        Then the element ".par-flow-transition-business-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
-        And I click on the button "#edit-next"
-        Then the element ".error-summary" contains the text "You must agree to the new terms and conditions"
-        And I click on the checkbox "#edit-terms-conditions"
-        And I click on the button "#edit-next"
-        And I scroll to element ".table-scroll-wrapper"
+        Then I expect that element "h1" contains the text "RD Helpdesk Dashboard"
+        When I click on the button "//table/tbody/tr[1]/td[5]/a"
         When I click on the link "Review and confirm your business details"
-        Then the element "#edit-about-business" contains the text "About the business"
-        And the element "#edit-legal-entity" contains the text "Legal Entities"
-        And the element "#edit-primary-contact" contains the text "Main business contact"
-        And the element "#edit-0" contains the text "Trading Names"
+        Then I expect that element "#edit-about-business" contains the text "About the business"
+        And I expect that element "#edit-legal-entity" contains the text "Legal Entities"
+        And I expect that element "#edit-primary-contact" contains the text "Main business contact"
+        And I expect that element "#edit-0" contains the text "Trading Names"
 
         # EDIT REGISTERED ADDRESS
 
@@ -69,11 +59,11 @@ Feature: Business User - Manage Addresses
         And I add "US-CH" to the inputfield "#edit-county"
         And I select the option with the text "Wales" for element "#edit-country"
         When I click on the button "#edit-next"
-        Then the element "span.address-line1" contains the text "1 Change St"
-        And the element "span.address-line2" contains the text "New Change"
-        And the element "span.locality" contains the text "New Change State"
-        And the element "span.postal-code" contains the text "change"
-        And the element "#edit-registered-address" contains the text "Wales"
+        Then I expect that element "span.address-line1" contains the text "1 Change St"
+        And I expect that element "span.address-line2" contains the text "New Change"
+        And I expect that element "span.locality" contains the text "New Change State"
+        And I expect that element "span.postal-code" contains the text "change"
+        And I expect that element "#edit-registered-address" contains the text "Wales"
 
         # EDIT MAIN BUSINESS CONTACT
 
@@ -88,27 +78,27 @@ Feature: Business User - Manage Addresses
         And I click on the radio "#edit-preferred-contact-communication-mobile"
         And I add "Some additional notes" to the inputfield "#edit-notes"
         And I click on the button "#edit-next"
-        Then the element "#edit-primary-contact" contains the text "Fozzie"
-        And the element "#edit-primary-contact" contains the text "Bear"
-        And the element "#edit-primary-contact" contains the text "par_business_change@example.com"
-        And the element "#edit-primary-contact" contains the text "2079999999"
-        And the element "#edit-primary-contact" contains the text "78659999999"
+        Then I expect that element "#edit-primary-contact" contains the text "Fozzie"
+        And I expect that element "#edit-primary-contact" contains the text "Bear"
+        And I expect that element "#edit-primary-contact" contains the text "par_business_change@example.com"
+        And I expect that element "#edit-primary-contact" contains the text "2079999999"
+        And I expect that element "#edit-primary-contact" contains the text "78659999999"
 
         # EDIT ALTERNATE CONTACT
 
         When I click on the button "form#par-flow-transition-business-details #edit-alternative-people a.flow-link"
-        And I add "Miss" to the inputfield "#edit-first-name"
-        And I add "Piggy" to the inputfield "#edit-last-name"
+        And I add "Professor" to the inputfield "#edit-first-name"
+        And I add "Hastings" to the inputfield "#edit-last-name"
         And I add "01723999999" to the inputfield "#edit-work-phone"
         And I add "08654999999" to the inputfield "#edit-mobile-phone"
         And I add "par_business_change@example.com" to the inputfield "#edit-email"
         And I click on the radio "#edit-preferred-contact-communication-mobile"
         And I click on the button "#edit-next"
-        Then the element "#edit-alternative-people" contains the text "Miss"
-        And the element "#edit-alternative-people" contains the text "Piggy"
-        And the element "#edit-alternative-people" contains the text "par_business_change@example.com"
-        And the element "#edit-alternative-people" contains the text "01723999999"
-        And the element "#edit-alternative-people" contains the text "08654999999"
+        Then I expect that element "#edit-alternative-people" contains the text "Professor"
+        And I expect that element "#edit-alternative-people" contains the text "Hastings"
+        And I expect that element "#edit-alternative-people" contains the text "par_business_change@example.com"
+        And I expect that element "#edit-alternative-people" contains the text "01723999999"
+        And I expect that element "#edit-alternative-people" contains the text "08654999999"
 
         # EDIT LEGAL ENTITIES
 
@@ -117,9 +107,9 @@ Feature: Business User - Manage Addresses
         And I select the option with the text "Limited Liability Partnership" for element "#edit-legal-entity-type"
         And I add "987654321" to the inputfield "#edit-company-house-no"
         And I click on the button "#edit-next"
-        Then the element "#edit-legal-entity div" contains the text "ABCD Mart Change"
-        And the element "#edit-legal-entity" contains the text "987654321"
-        And the element "#edit-legal-entity" contains the text "Limited Liability Partnership"
+        Then I expect that element "#edit-legal-entity div" contains the text "ABCD Mart Change"
+        And I expect that element "#edit-legal-entity" contains the text "987654321"
+        And I expect that element "#edit-legal-entity" contains the text "Limited Liability Partnership"
 
         # ADD LEGAL ENTITIES
 
@@ -134,6 +124,6 @@ Feature: Business User - Manage Addresses
         Then I expect that element "input:focus" is visible
         And I add "1234567890" to the inputfield "#edit-company-house-no"
         And I click on the button "#edit-next"
-        Then the element "#edit-alternative" contains the text "Another Legal Entity"
-        And the element "#edit-alternative" contains the text "1234567890"
-        And the element "#edit-alternative" contains the text "Sole Trader"
+        Then I expect that element "#edit-alternative" contains the text "Another Legal Entity"
+        And I expect that element "#edit-alternative" contains the text "1234567890"
+        And I expect that element "#edit-alternative" contains the text "Sole Trader"

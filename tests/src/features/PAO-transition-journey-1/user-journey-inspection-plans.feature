@@ -21,7 +21,7 @@ Feature: PAR User - Inspection Plans
         # WELCOME SCREEN
 
         Then I expect that element ".error-message" is not visible
-        And the element "#block-sitewidehelpdeskmessage" contains the text "0121 345 1201"
+        And I expect that element "#block-sitewidehelpdeskmessage" contains the text "0121 345 1201"
         When I click on the button ".button-start"
 
         # PARTNERSHIPS DASHBOARD
@@ -30,7 +30,7 @@ Feature: PAR User - Inspection Plans
         When I click on the link "ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN
-        Then the element ".par-flow-transition-partnership-details-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
+        Then I expect that element ".par-flow-transition-partnership-details-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
         When I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
 
@@ -45,7 +45,7 @@ Feature: PAR User - Inspection Plans
 
         And I scroll to element ".table-scroll-wrapper"
         When I click on the link "Review and confirm your inspection plan"
-        Then the element "#edit-document-list" contains the text "Inspection Plan"
+        Then I expect that element "#edit-document-list" contains the text "Inspection Plan"
         And I click on the checkbox ".form-checkbox"
         And I click on the button "#edit-next"
 
@@ -59,5 +59,5 @@ Feature: PAR User - Inspection Plans
         # PARTNERSHIPS DASHBOARD
 
         And I click on the link "Go back to your partnerships"
-        Then the element "h1" contains the text "List of Partnerships"
+        Then I expect that element "h1" contains the text "List of Partnerships"
         And I click on the link "Log out"
