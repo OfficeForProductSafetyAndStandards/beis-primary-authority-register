@@ -109,7 +109,8 @@
                 "Allowing system mails to be sent through Notify": "https://www.drupal.org/files/issues/allowing_system_mails-2897707-4.patch"
             },
             "drupal/core": {
-                "Allow migration lookups against sub-sets of migration map ids": "./patches/migration_id_map_sql_lookup_check.patch"
+                "Allow migration lookups against sub-sets of migration map ids": "./patches/migration_id_map_sql_lookup_check.patch",
+                "Entity loadByProperty should skip access checks": "https://www.drupal.org/files/issues/2878483-18.patch"
             }
         }
     },
