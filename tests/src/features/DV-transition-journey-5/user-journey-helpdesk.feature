@@ -27,10 +27,10 @@ Feature: Helpdesk - Dashboard
         # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
         Then the element "h1" contains the text "RD Helpdesk Dashboard"
-        When I click on the link "List of tasks"
+        When I click on the element ".views-field-authority-name a"
         Then the element ".table-scroll-wrapper" contains the text "Review and confirm your partnership details"
         When I open the url "/dv/rd-dashboard"
-        And I click on the button "td.views-field.views-field-nothing-1 a"
+        And I click on the element ".views-field-organisation-name a"
         Then the element ".table-scroll-wrapper" contains the text "Review and confirm your business details"
         When I open the url "/dv/rd-dashboard"
         And I click on the link "Download as CSV"

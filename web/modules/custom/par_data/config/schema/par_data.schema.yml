@@ -357,7 +357,7 @@ par_data.configuration_type.label_fields:
     label: 'Label Field'
 par_data.configuration_type.required_fields:
   type: sequence
-  label: 'Requried Fields'
+  label: 'Required Fields'
   sequence:
     type: string
     label: 'Required Field'
