@@ -36,7 +36,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       if (!empty($required_fields[$field_name])) {
         // Field has been located so need to validate it.
         if (empty($field_info['value'])) {
-          $error[$field_info['key']] = t($required_fields[$field_name], $field_info['tokens']);
+          $error[$field_info['key']] = t('<a href="#edit-' . str_replace('_', '-', $field_info['key'])  . '">' . $required_fields[$field_name] . '</a>', $field_info['tokens']);
         }
       }
     }
