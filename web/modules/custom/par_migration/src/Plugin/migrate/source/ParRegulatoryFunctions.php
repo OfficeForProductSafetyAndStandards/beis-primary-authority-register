@@ -46,11 +46,11 @@ class ParRegulatoryFunctions extends SqlBase {
    * {@inheritdoc}
    */
   public function getIds() {
-    return array(
-      'regulatory_function_id' => array(
+    return [
+      'regulatory_function_id' => [
         'type' => 'integer',
-      ),
-    );
+      ],
+    ];
   }
 
   /**

@@ -4,6 +4,10 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_organisation.title
+    - field.field.par_data_organisation.business.field_legal_entity
+    - field.field.par_data_organisation.business.field_person
+    - field.field.par_data_organisation.business.field_premises
+    - field.field.par_data_organisation.business.field_sic_code
     - par_data.par_data_organisation_type.business
 _core:
   default_config_hash: T09U4f0eeFyhMcFFOcTkIj5lnzbPbKqk8rsLfMTzfuA

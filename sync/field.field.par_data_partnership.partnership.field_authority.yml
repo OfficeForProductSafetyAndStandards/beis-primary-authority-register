@@ -6,13 +6,15 @@ dependencies:
     - field.storage.par_data_partnership.field_authority
     - par_data.par_data_authority_type.authority
     - par_data.par_data_partnership_type.partnership
+_core:
+  default_config_hash: xB8o4b_BvUVSvpC5KzfiFk4APaDH8raPB6a9x-jB8fA
 id: par_data_partnership.partnership.field_authority
 field_name: field_authority
 entity_type: par_data_partnership
 bundle: partnership
 label: Authorities
 description: 'The authorities for this partnership.'
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''

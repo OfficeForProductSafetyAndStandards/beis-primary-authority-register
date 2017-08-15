@@ -25,7 +25,6 @@ class ParAdvice extends SqlBase {
    */
   public function query() {
     $query = $this->select($this->table, 'a');
-    $query->leftJoin('par_documents', 'd', "a.advice_id=d.owning_object_id AND d.owning_object_type='Advice'");
     $query->fields('a', [
         'advice_id',
         'partnership_id',
@@ -35,9 +34,6 @@ class ParAdvice extends SqlBase {
         'business_visible',
         'obsolete',
         'notes',
-      ])
-    ->fields('d', [
-        'document_id'
       ]);
 
     return $query;
@@ -64,14 +60,14 @@ class ParAdvice extends SqlBase {
    * {@inheritdoc}
    */
   public function getIds() {
-    return array(
+    return [
       'advice_id' => [
         'type' => 'integer',
       ],
       'partnership_id' => [
         'type' => 'integer',
       ],
-    );
+    ];
   }
 
   /**

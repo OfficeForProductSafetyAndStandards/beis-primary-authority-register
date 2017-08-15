@@ -7,13 +7,15 @@ dependencies:
     - par_data.par_data_organisation_type.business
     - par_data.par_data_organisation_type.coordinator
     - par_data.par_data_partnership_type.partnership
+_core:
+  default_config_hash: Wz0HPmZTNjYUXBxZ3EYpyRnw_0K1xRYhJFKTbDDbjcM
 id: par_data_partnership.partnership.field_organisation
 field_name: field_organisation
 entity_type: par_data_partnership
 bundle: partnership
 label: Organisation
 description: 'The organisations for this partnership.'
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''

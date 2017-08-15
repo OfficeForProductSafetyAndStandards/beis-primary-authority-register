@@ -619,7 +619,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: admin/content/par_data/par_data_partnership
+      path: admin/content/par-data/par-data-partnership
     cache_metadata:
       max-age: 0
       contexts:

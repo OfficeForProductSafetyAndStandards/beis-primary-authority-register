@@ -7,13 +7,13 @@ use Drupal\migrate\Row;
 use Drupal\migrate\MigrateException;
 
 /**
- * Migration of PAR2 Premises.
+ * Migration of PAR2 Authority Premises.
  *
  * @MigrateSource(
- *   id = "par_migration_premises"
+ *   id = "par_migration_authority_premises"
  * )
  */
-class ParPremises extends SqlBase {
+class ParAuthorityPremises extends SqlBase {
 
   /**
    * @var string $table The name of the database table.
@@ -27,7 +27,6 @@ class ParPremises extends SqlBase {
     return $this->select($this->table, 'b')
       ->fields('b', [
         'premises_id',
-        'organisation_id',
         'authority_id',
         'line_1',
         'line_2',
@@ -36,7 +35,9 @@ class ParPremises extends SqlBase {
         'county',
         'postcode',
         'country',
-      ]);
+        'uprn',
+      ])
+      ->isNotNull('authority_id');
   }
 
   /**
@@ -45,7 +46,6 @@ class ParPremises extends SqlBase {
   public function fields() {
     $fields = [
       'premises_id' => $this->t('Premises ID'),
-      'organisation_id' => $this->t('Organisation ID'),
       'authority_id' => $this->t('Authority ID'),
       'line_1' => $this->t('Line 1'),
       'line_2' => $this->t('Line 2'),
@@ -54,6 +54,7 @@ class ParPremises extends SqlBase {
       'county' => $this->t('County'),
       'postcode' => $this->t('Postcode'),
       'country' => $this->t('Country'),
+      'uprn' => $this->t('UPRN'),
     ];
     return $fields;
   }
@@ -62,11 +63,14 @@ class ParPremises extends SqlBase {
    * {@inheritdoc}
    */
   public function getIds() {
-    return array(
-      'premises_id' => array(
+    return [
+      'premises_id' => [
         'type' => 'integer',
-      ),
-    );
+      ],
+      'authority_id' => [
+        'type' => 'integer',
+      ],
+    ];
   }
 
   /**
