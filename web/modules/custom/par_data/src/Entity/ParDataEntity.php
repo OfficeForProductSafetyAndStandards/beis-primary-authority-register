@@ -48,17 +48,35 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Get fields by a given type.
+   * Get all reference fields for a given entity
    */
-  public function getReferenceFieldsByTarget($entity_type) {
+  public function getReferenceFields() {
     $reference_fields = [];
-    foreach ($this->getFieldDefinitions() as $name => $definition) {
-      if ($definition->getType() === 'entity_reference' && $definition->getSetting('target_type') === $entity_type) {
+    foreach ($this->getFieldDefinitions() as $definition) {
+      if ($definition->getType() === 'entity_reference'
+        && isset($this->get($definition->getName())->referencedEntities()[0])
+        && $this->get($definition->getName())->referencedEntities()[0] instanceof ParDataEntityInterface) {
         $reference_fields[$definition->getName()] = $this->get($definition->getName());
       }
     }
 
     return $reference_fields;
+  }
+
+  /**
+   * Get all reference fields for a given entity
+   */
+  public function getReferenceEntitiesByType($type) {
+    $entities = [];
+    foreach ($this->getFieldDefinitions() as $definition) {
+      if ($definition->getsetting('target_type') === $type) {
+        foreach ($this->get($definition->getName())->referencedEntities() as $entity) {
+          $entities[$entity->id()] = $entity;
+        }
+      }
+    }
+
+    return $entities;
   }
 
   /**
