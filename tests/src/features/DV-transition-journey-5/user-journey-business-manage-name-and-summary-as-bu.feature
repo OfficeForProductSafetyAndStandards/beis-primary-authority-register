@@ -1,5 +1,5 @@
-@ci @journey2
-Feature: Business User - Manage name and summary detail
+@ci
+Feature: Helpdesk As Business User - Manage name and summary detail
 
     Background:
         # TEST DATA RESET
@@ -10,26 +10,24 @@ Feature: Business User - Manage name and summary detail
         And I open the url "/admin/par-data-test-reset"
         And I open the url "/user/logout"
 
-    Scenario: Manage business name and summary
+    Scenario: Helpdesk As Business User - Manage name and summary detail
         # LOGIN SCREEN
 
         Given I open the url "/user/login"
-        And I add "par_business@example.com" to the inputfield "#edit-name"
+        And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
-        Then I expect that element ".error-message" is not visible
-        When I click on the button ".button-start"
+        Then I expect that element "#block-par-theme-account-menu" contains the text "Log out"
 
-        # PARTNERSHIPS DASHBOARD
+        # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
-        And I scroll to element ".table-scroll-wrapper"
-        When I click on the link "ABCD Mart"
+        When I click on the link "Dashboard"
+#        When I open the url "/dv/rd-dashboard"
 
-        # TERMS AND CONDITIONS SCREEN
+        # PARTNERSHIP DETAILS
 
-        Then I expect that element ".par-flow-transition-business-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
-        When I click on the checkbox "#edit-terms-conditions"
-        And I click on the button "#edit-next"
+        Then I expect that element "h1" contains the text "RD Helpdesk Dashboard"
+        When I click on the button "td.views-field.views-field-organisation-name a"
         Then I expect that element "h3" contains the text "Main contact at the Authority"
         When I click on the link "Review and confirm your business details"
         Then I expect that element "#par-flow-transition-business-details" contains the text "About the business"
