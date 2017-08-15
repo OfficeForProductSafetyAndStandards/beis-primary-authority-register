@@ -231,7 +231,6 @@ class ParDataOrganisation extends ParDataEntity {
     $fields['trading_name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Trading Name'))
       ->setDescription(t('The trading names for this organisation.'))
-      ->setRequired(TRUE)
       ->setRevisionable(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSettings([

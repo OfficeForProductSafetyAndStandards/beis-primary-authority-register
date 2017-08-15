@@ -48,11 +48,11 @@ class ParSicCode extends SqlBase {
    * {@inheritdoc}
    */
   public function getIds() {
-    return array(
-      'sic_code_id' => array(
+    return [
+      'sic_code_id' => [
         'type' => 'integer',
-      ),
-    );
+      ],
+    ];
   }
 
   /**

@@ -1,0 +1,84 @@
+uuid: 695e3d57-a949-40ca-aec5-9f696dd85de6
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - par_migration
+      - par_migration_scripts
+_core:
+  default_config_hash: zewjSRFAGSFG5HPDkRNrEsMDDfPyRG77OYUYP9gFnXA
+id: par_migration_organisation_person
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - MS-SQL
+migration_group: PAR2
+label: 'PAR Migration of organisation people'
+source:
+  plugin: par_migration_organisation_person
+process:
+  id: person_id
+  type:
+    plugin: default_value
+    default_value: person
+  uid:
+    plugin: default_value
+    default_value: 1
+  salutation: title
+  first_name: first_name
+  last_name:
+    plugin: skip_on_empty
+    method: process
+    source: last_name
+  job_title:
+    plugin: skip_on_empty
+    method: process
+    source: job_title
+  work_phone:
+    plugin: skip_on_empty
+    method: process
+    source: work_phone
+  mobile_phone:
+    plugin: skip_on_empty
+    method: process
+    source: mobile_phone
+  email: email
+  communication_phone:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: work_phone_preferred
+    -
+      plugin: static_map
+      map:
+        'Y': true
+        'N': false
+        'null': false
+  communication_mobile:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: mobile_phone_preferred
+    -
+      plugin: static_map
+      map:
+        'Y': true
+        'N': false
+        'null': false
+  communication_email:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: email_preferred
+    -
+      plugin: static_map
+      map:
+        'Y': true
+        'N': false
+        'null': false
+  communication_notes: communication_notes
+destination:
+  plugin: 'entity:par_data_person'
+migration_dependencies: {  }

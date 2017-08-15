@@ -1,0 +1,96 @@
+uuid: bd44519f-ca3b-48bb-ba95-2677c2beec41
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - par_migration
+      - par_migration_scripts
+_core:
+  default_config_hash: rQHfLfrJ2ZByVzEuu-Wchc-0CW31eaOzR35smI5P7-M
+id: par_migration_inspection_plan
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - MS-SQL
+migration_group: PAR2
+label: 'PAR Migration of inspection_plan'
+source:
+  plugin: par_migration_inspection_plan
+process:
+  document_type:
+    plugin: default_value
+    default_value: 'Inspection Plan'
+  id: inspection_plan_id
+  type:
+    plugin: default_value
+    default_value: inspection_plan
+  uid:
+    plugin: default_value
+    default_value: 1
+  inspection_status:
+    plugin: static_map
+    source: status
+    map:
+      Current: current
+      Expired: expired
+      'In Progress': in_progress
+      Revoked: revoked
+  approved_rd_executive:
+    plugin: static_map
+    source: rd_exec_approved
+    map:
+      'Y': true
+      'N': false
+      'null': false
+  consulted_national_regulator:
+    plugin: static_map
+    source: national_regulator_consulted
+    map:
+      'Y': true
+      'N': false
+      'null': false
+  valid_date/value:
+    -
+      plugin: explode
+      source: valid_from_date
+      delimiter: ' '
+    -
+      plugin: extract
+      index:
+        - '0'
+    -
+      plugin: format_date
+      from_format: Y-m-d
+      to_format: Y-m-d
+  valid_date/end_value:
+    -
+      plugin: explode
+      source: valid_to_date
+      delimiter: ' '
+    -
+      plugin: extract
+      index:
+        - '0'
+    -
+      plugin: format_date
+      from_format: Y-m-d
+      to_format: Y-m-d
+  document:
+    -
+      plugin: migration_lookup
+      migration: par_migration_inspection_plan_documents
+      no_stub: true
+      source:
+        document_id: null
+        owning_object_type: '@document_type'
+        owning_object_id: inspection_plan_id
+    -
+      plugin: skip_on_empty
+      method: row
+destination:
+  plugin: 'entity:par_data_inspection_plan'
+migration_dependencies:
+  required:
+    - par_migration_inspection_plan_documents

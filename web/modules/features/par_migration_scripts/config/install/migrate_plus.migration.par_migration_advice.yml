@@ -28,9 +28,27 @@ process:
     default_value: 1
   advice_type: advice_type
   notes: notes
-  visible_authority: authority_visible
-  visible_coordinator: coordinator_visible
-  visible_business: business_visible
+  visible_authority:
+    plugin: static_map
+    source: authority_visible
+    map:
+      Y: true
+      N: false
+      'null': false
+  visible_coordinator:
+    plugin: static_map
+    source: coordinator_visible
+    map:
+      Y: true
+      N: false
+      'null': false
+  visible_business:
+    plugin: static_map
+    source: business_visible
+    map:
+      Y: true
+      N: false
+      'null': false
   document:
     -
       plugin: migration_lookup
@@ -39,10 +57,10 @@ process:
       source:
         document_id: null
         owning_object_type: '@document_type'
-        owning_object_id: document_id
+        owning_object_id: advice_id
     -
       plugin: skip_on_empty
-      method: row
+      method: process
 destination:
   plugin: 'entity:par_data_advice'
 migration_dependencies:

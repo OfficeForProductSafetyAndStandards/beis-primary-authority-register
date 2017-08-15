@@ -207,9 +207,8 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
+          type: par_list_formatter
+          settings: {  }
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -554,7 +553,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: admin/content/par_data/par_data_authority
+      path: admin/content/par-data/par-data-authority
     cache_metadata:
       max-age: 0
       contexts:
