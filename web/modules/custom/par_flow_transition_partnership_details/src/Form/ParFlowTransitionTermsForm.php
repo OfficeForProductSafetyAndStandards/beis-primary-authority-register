@@ -92,7 +92,7 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
     parent::validateForm($form, $form_state);
 
     if (empty($form_state->getValue('terms_conditions'))) {
-      $form_state->setErrorByName('terms_conditions', $this->t('You must agree to the new terms and conditions.'));
+      $form_state->setErrorByName('terms_conditions', $this->t('<a href="#edit-terms-conditions">You must agree to the new terms and conditions.</a>'));
     }
   }
 

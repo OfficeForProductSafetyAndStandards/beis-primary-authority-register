@@ -154,14 +154,15 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
       'uprn' => 'uprn',
       'postal_code' => 'postcode',
     ];
-    foreach($form_items as $element_item => $form_item)
-    $fields[$element_item] = [
-      'value' => $form_state->getValue($form_item),
-      'key' => $form_item,
-      'tokens' => [
-        '%field' => $form[$form_item]['#title']->render(),
-      ],
-    ];
+    foreach($form_items as $element_item => $form_item) {
+      $fields[$element_item] = [
+        'value' => $form_state->getValue($form_item),
+        'key' => $form_item,
+        'tokens' => [
+          '%field' => $form[$form_item]['#title']->render(),
+        ],
+      ];
+    }
 
     $errors = $premises->validateFields($fields);
     // Display error messages.

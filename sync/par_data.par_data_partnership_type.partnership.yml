@@ -13,6 +13,8 @@ configuration:
     status_field: partnership_status
     completed_fields:
       - about_partnership
+    required_fields:
+      about_partnership: 'The %field is required.'
   partnership_status:
     allowed_values:
       awaiting_review: 'Awaiting Review'

@@ -12,6 +12,7 @@ configuration:
   entity:
     required_fields:
       comments: 'The %field is required.'
+      size: 'The %field is required.'
       trading_name: 'The %field is required.'
   premises_mapped:
     boolean_values:

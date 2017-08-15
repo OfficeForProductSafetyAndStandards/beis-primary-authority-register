@@ -147,6 +147,7 @@ class ParFlowTransitionContactForm extends ParBaseForm {
 
     return parent::buildForm($form, $form_state);
   }
+
   /**
    * {@inheritdoc}
    */
@@ -161,7 +162,7 @@ class ParFlowTransitionContactForm extends ParBaseForm {
       'work_phone' => 'work_phone',
       'email' => 'email',
     ];
-    foreach($form_items as $element_item => $form_item)
+    foreach($form_items as $element_item => $form_item) {
       $fields[$element_item] = [
         'value' => $form_state->getValue($form_item),
         'key' => $form_item,
@@ -169,6 +170,7 @@ class ParFlowTransitionContactForm extends ParBaseForm {
           '%field' => $form[$form_item]['#title']->render(),
         ],
       ];
+    }
 
     $errors = $par_data_person->validateFields($fields);
     // Display error messages.
@@ -176,6 +178,7 @@ class ParFlowTransitionContactForm extends ParBaseForm {
       $form_state->setErrorByName($field, $message);
     }
   }
+
   /**
    * {@inheritdoc}
    */

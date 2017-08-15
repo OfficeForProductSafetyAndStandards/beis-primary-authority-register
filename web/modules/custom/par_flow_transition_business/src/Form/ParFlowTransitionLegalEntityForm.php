@@ -123,7 +123,7 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
       'registered_number' => 'company_house_no',
     ];
 
-    foreach($form_items as $element_item => $form_item)
+    foreach($form_items as $element_item => $form_item) {
       $fields[$element_item] = [
         'value' => $form_state->getValue($form_item),
         'key' => $form_item,
@@ -131,6 +131,7 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
           '%field' => !empty($form[$form_item]['#title']) ? $form[$form_item]['#title']->render() : '',
         ],
       ];
+    }
 
     $errors = $legal_entity->validateFields($fields);
     // Display error messages.
