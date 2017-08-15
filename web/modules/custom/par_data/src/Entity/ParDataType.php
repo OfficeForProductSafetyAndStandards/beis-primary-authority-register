@@ -72,6 +72,10 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
   public function getRequiredFields() {
     // Get the names of any fields required.
     $required_fields = $this->getConfigurationElementByType('entity', 'required_fields');
+    if (empty($required_fields)) {
+      return [];
+    }
+
     $fields = array_diff($required_fields, $this->excludedFields());
     return $fields ? $fields : [];
   }
