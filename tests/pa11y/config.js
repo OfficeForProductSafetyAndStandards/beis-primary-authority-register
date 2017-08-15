@@ -21,7 +21,7 @@ module.exports = {
         }, function () {
             waitUntil(function () {
                 // Wait until the login has been success and the /news.html has loaded
-                return window.location.href === 'http://localhost:8111/user/319';
+                return window.location.href === 'http://localhost:8111/dv/rd-dashboard';
             }, 20, next);
         });
     }
