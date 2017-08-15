@@ -95,7 +95,7 @@ Feature: Coordinator User - Manage Addresses
 
         When I click on the button "form#par-flow-transition-coordinator-details #edit-legal-entity a.flow-link"
         And I add "ABCD Mart Change" to the inputfield "#edit-registered-name"
-        And I select the option with the text "Public Limited Company" for element "#edit-legal-entity-type"
+        And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
         And I add "987654321" to the inputfield "#edit-company-house-no"
         And I click on the button "#edit-next"
         Then the element "#edit-legal-entity div" contains the text "ABCD Mart Change"
@@ -107,10 +107,8 @@ Feature: Coordinator User - Manage Addresses
         When I click on the link "add another legal entity"
         And I add "Another Legal Entity" to the inputfield "#edit-registered-name"
         And I select the option with the text "Sole Trader" for element "#edit-legal-entity-type"
-        And I add "1234567890" to the inputfield "#edit-company-house-no"
         And I click on the button "#edit-next"
         Then the element "#edit-alternative" contains the text "Another Legal Entity"
-        And the element "#edit-alternative" contains the text "1234567890"
         And the element "#edit-alternative" contains the text "Sole Trader"
         And I click on the checkbox "#edit-confirmation"
 
