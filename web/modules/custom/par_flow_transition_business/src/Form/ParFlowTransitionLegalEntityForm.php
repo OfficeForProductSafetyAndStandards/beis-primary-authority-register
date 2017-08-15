@@ -121,7 +121,6 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
-    $legal_entity = $this->getRouteParam('par_data_legal_entity');
     $form_items = [
       'registered_name' => 'registered_name',
       'legal_entity_type' => 'legal_entity_type',
@@ -140,7 +139,14 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
         ],
       ];
     }
-
+    $legal_entity = $this->getRouteParam('par_data_legal_entity');
+    if (empty($legal_entity)) {
+      // We are adding a new entity so need to create one for the validation.
+      $legal_entity = \Drupal\par_data\Entity\ParDataLegalEntity::create([
+        'type' => 'legal_entity',
+        'uid' => 1,
+      ]);
+    }
     $errors = $legal_entity->validateFields($fields);
     // Display error messages.
     foreach($errors as $field => $message) {
