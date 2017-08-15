@@ -14,14 +14,14 @@ module.exports = {
         };
 
         page.evaluate(function () {
-            window.location('localhost:8111/user/login');
+            window.open('localhost:8111/user/login');
             document.getElementById("edit-name").value = "par_helpdesk@example.com";
             document.getElementById("edit-pass").value = "TestPassword";
             document.getElementById("edit-submit").click();
         }, function () {
             waitUntil(function () {
                 // Wait until the login has been success and the /news.html has loaded
-                return window.location.href === 'http://localhost:8111/user/65';
+                return window.location.href === 'http://localhost:8111/dv/rd-dashboard';
             }, 20, next);
         });
     }
