@@ -91,6 +91,11 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
       '#type' => 'textfield',
       '#title' => $this->t('Companies House Number'),
       '#default_value' => isset($id) ? $this->getDefaultValues("legal_entity_{$id}_registered_number") : '',
+      '#states' => array(
+        'visible' => array(
+          'select[name="legal_entity_type"]' => array('value' => 'limited_company'),
+        ),
+      ),
     ];
 
     $form['next'] = [
@@ -120,8 +125,11 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
     $form_items = [
       'registered_name' => 'registered_name',
       'legal_entity_type' => 'legal_entity_type',
-      'registered_number' => 'company_house_no',
     ];
+
+    if ($form_state->getValue('legal_entity_type') === 'limited_company') {
+      $form_items['registered_number'] = 'company_house_no';
+    }
 
     foreach($form_items as $element_item => $form_item) {
       $fields[$element_item] = [
