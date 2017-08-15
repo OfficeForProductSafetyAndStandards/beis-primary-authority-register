@@ -46,7 +46,7 @@ var test = pa11y({
         }, function () {
             waitUntil(function () {
                 // Wait until the login has been success and the /news.html has loaded
-                return window.location.href === 'http://localhost:8111/user/65';
+                return window.location.href === 'http://localhost:8111/dv/rd-dashboard';
             }, 20, function () {
                 // Redirect to the page test page
                 page.evaluate(function () {

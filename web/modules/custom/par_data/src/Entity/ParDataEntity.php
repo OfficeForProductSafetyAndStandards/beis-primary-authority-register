@@ -113,7 +113,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * {@inheritdoc}g
+   * {@inheritdoc}
    */
   public function getCompletionPercentage($include_deltas = FALSE) {
     $total = 0;

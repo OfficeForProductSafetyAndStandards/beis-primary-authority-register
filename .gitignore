@@ -76,3 +76,6 @@ package.box
 # Exclude local environment settings
 .env
 
+# Exclude private repo credentials
+auth.json
+

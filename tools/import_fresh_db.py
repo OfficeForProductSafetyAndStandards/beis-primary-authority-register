@@ -4,6 +4,11 @@
 
 import json, os
 import sys
+import argparse
+
+parser = argparse.ArgumentParser(description='Import new database')
+parser.add_argument("-f", dest="sqlfile", help="The full path to the SQL file to import", default="/home/vcap/app/web/docker/fresh_drupal_postgres.sql")
+results = parser.parse_args()
 
 from subprocess import call
 
@@ -27,6 +32,5 @@ os.environ["LD_LIBRARY_PATH"] = os.environ["HOME"] + "/app/php/lib"
 os.environ["PATH"] = os.environ["PATH"] + ":/home/vcap/app/bin/pgsql/bin"
 
 os.system("cd /home/vcap/app/web && ../vendor/drush/drush/drush --root=/home/vcap/app/web sql-drop -y")
-os.system("/home/vcap/app/bin/pgsql/bin/psql -h " + host + " " + name + " " + username + " < /home/vcap/app/docker/fresh_drupal_postgres.sql")
+os.system("/home/vcap/app/bin/pgsql/bin/psql -h " + host + " " + name + " " + username + " < " + results.sqlfile)
 os.system("cd /home/vcap/app && sh drupal-update.sh /home/vcap/app")
-

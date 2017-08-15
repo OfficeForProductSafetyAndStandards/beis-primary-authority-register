@@ -61,13 +61,31 @@ class ParBooleanFormatter extends FormatterBase {
     $field_name = $items->getFieldDefinition()->getName();
     $bundle_entity = $this->parDataManager->getParBundleEntity($items->getEntity()->getEntityTypeId());
 
+    // Handle booleans with empty data.
+    if (count($items) == 0) {
+
+      // Force boolean with no data to show "off" text.
+      $value = $bundle_entity->getBooleanFieldLabel($field_name, FALSE);
+
+      $element[0] = [
+        '#type' => 'markup',
+        '#markup' => $value ? $value : 'Sorry dude, this field aint configured for that.',
+      ];
+
+      return $element;
+
+    }
+
     foreach ($items as $delta => $item) {
+
       $value = $bundle_entity->getBooleanFieldLabel($field_name, !empty($item->value));
+
       // Render each element as markup.
       $element[$delta] = [
         '#type' => 'markup',
         '#markup' => $value ? $value : 'Sorry dude, this field aint configured for that.',
       ];
+
     }
 
     return $element;

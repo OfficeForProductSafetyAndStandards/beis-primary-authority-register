@@ -27,11 +27,6 @@ module.exports = function given() {
     );
 
     this.Given(
-        /^I am logged in as PAR user "([^"]*)?" with password "([^"]*)?"$/,
-        loginAsUser
-    );
-
-    this.Given(
         /^I check the homepage response code is 200$/,
         checkResponseCode
     );
@@ -75,7 +70,7 @@ module.exports = function given() {
         /^the (element|inputfield) "([^"]*)?"( not)* matches the text "([^"]*)?"$/,
         checkEqualsText
     );
-    
+
     this.Given(
         /^I am logged in as PAR user"([^"]*)?" with password "([^"]*)?"$/,
         loginAsUser
