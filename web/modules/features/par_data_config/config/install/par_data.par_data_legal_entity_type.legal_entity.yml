@@ -1,9 +1,6 @@
-uuid: 0081c796-9622-4c14-84e3-c9c55d37750d
 langcode: en
 status: true
 dependencies: {  }
-_core:
-  default_config_hash: S4gmowqmjE0PHus5fpUOA8jSOB-TTUCeO3bcuTZ66i0
 id: legal_entity
 label: 'Legal Entity'
 description: 'A Legal Entity is a representation of an Organisation via some formal method of registration or else a less formal declaration.'

@@ -1,9 +1,6 @@
-uuid: 6ce13f79-c807-4a17-926e-7c1d2a01dd20
 langcode: en
 status: true
 dependencies: {  }
-_core:
-  default_config_hash: H_WKsKIPIjIoGAljDSWFR8uLP-l9Fe-ka_QNGdLElI0
 id: business
 label: Business
 description: 'A Business is an Organisation - usually a commercial one, but not always - that is covered (or intends to be covered) by a Primary Authority Partnership.'

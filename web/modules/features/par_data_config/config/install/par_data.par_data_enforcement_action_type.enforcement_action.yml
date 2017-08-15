@@ -1,9 +1,6 @@
-uuid: afd74fb7-e398-4839-beb6-9e25dc05b3f2
 langcode: en
 status: true
 dependencies: {  }
-_core:
-  default_config_hash: 8ZNuZoYpLpUAzueG2hJOd7ivUnu370mJg49b1h9X4Dw
 id: enforcement_action
 label: 'Enforcement Action'
 description: ''
