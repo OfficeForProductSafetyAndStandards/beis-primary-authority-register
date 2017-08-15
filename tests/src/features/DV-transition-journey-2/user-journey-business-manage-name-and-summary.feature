@@ -46,7 +46,7 @@ Feature: Business User - Manage name and summary detail
         Then I expect that element "#par-flow-transition-business-details" contains the text "Trading Name Change"
         When I click on the link "add another trading name"
         And I click on the button "#edit-next"
-        Then I expect that element "input:focus" is visible
+#        Then I expect that element "input:focus" is visible
         And I add "Trading Name Add" to the inputfield "#edit-trading-name"
         And I click on the button "#edit-next"
         Then I expect that element "#par-flow-transition-business-details" contains the text "Trading Name Add"

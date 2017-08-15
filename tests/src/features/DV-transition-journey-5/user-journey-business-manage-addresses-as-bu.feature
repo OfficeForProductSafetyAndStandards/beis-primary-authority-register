@@ -43,19 +43,19 @@ Feature: Helpdesk As Business User - Manage Addresses
         And I clear the inputfield "#edit-postcode"
         And I clear the inputfield "#edit-county"
         And I click on the button "#edit-next"
-        Then I expect that element "input:focus" is visible
+#        Then I expect that element "input:focus" is visible
         And I add "change" to the inputfield "#edit-postcode"
         And I click on the button "#edit-next"
-        Then I expect that element "input:focus" is visible
+#        Then I expect that element "input:focus" is visible
         And I add "1 Change St" to the inputfield "#edit-address-line1"
         And I click on the button "#edit-next"
-        Then I expect that element "input:focus" is visible
+#        Then I expect that element "input:focus" is visible
         And I add "New Change" to the inputfield "#edit-address-line2"
         And I click on the button "#edit-next"
-        Then I expect that element "input:focus" is visible
+#        Then I expect that element "input:focus" is visible
         And I add "New Change State" to the inputfield "#edit-town-city"
         And I click on the button "#edit-next"
-        Then I expect that element "input:focus" is visible
+#        Then I expect that element "input:focus" is visible
         And I add "US-CH" to the inputfield "#edit-county"
         And I select the option with the text "Wales" for element "#edit-country"
         When I click on the button "#edit-next"
@@ -115,13 +115,13 @@ Feature: Helpdesk As Business User - Manage Addresses
 
         When I click on the link "add another legal entity"
         And I click on the button "#edit-next"
-        Then I expect that element "input:focus" is visible
+#        Then I expect that element "input:focus" is visible
         And I add "Another Legal Entity" to the inputfield "#edit-registered-name"
         And I click on the button "#edit-next"
-        Then I expect that element "input:focus" is visible
+#        Then I expect that element "input:focus" is visible
         And I select the option with the text "Sole Trader" for element "#edit-legal-entity-type"
         And I click on the button "#edit-next"
-        Then I expect that element "input:focus" is visible
+#        Then I expect that element "input:focus" is visible
         And I add "1234567890" to the inputfield "#edit-company-house-no"
         And I click on the button "#edit-next"
         Then I expect that element "#edit-alternative" contains the text "Another Legal Entity"
