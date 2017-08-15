@@ -250,11 +250,17 @@ a.no-pointer-events {
   }
 }
 
-
 /* Drupal overrides */
 
 .views-row {
   padding-bottom: 3em;
   border-bottom: 1px solid #bfc1c3;
   margin-bottom: 3em;
+}
+
+/* Iconography */
+
+.file {
+  background: url(/themes/custom/par_theme/assets/images/document-icon.png) 0px 2px/15px 20px no-repeat;
+  padding-left: 20px;
 }
