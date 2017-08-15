@@ -75,7 +75,7 @@ display:
         type: pagerer
         options:
           preset: gds_list_pagination
-          items_per_page: 5
+          items_per_page: 25
           offset: 0
           id: '0'
           total_pages: ''
