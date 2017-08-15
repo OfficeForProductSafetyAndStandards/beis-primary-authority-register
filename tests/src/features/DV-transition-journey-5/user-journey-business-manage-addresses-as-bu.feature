@@ -1,4 +1,4 @@
-@ci @journey2
+@Pending
 Feature: Business User - Manage Addresses
 
     Background:
@@ -10,29 +10,24 @@ Feature: Business User - Manage Addresses
         And I open the url "/admin/par-data-test-reset"
         And I open the url "/user/logout"
 
-    Scenario: Manage business name and summary
+    Scenario: User Journey 1 - Send invitiation to business
         # LOGIN SCREEN
 
         Given I open the url "/user/login"
-        And I add "par_business@example.com" to the inputfield "#edit-name"
+        And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
-        Then I expect that element ".error-message" is not visible
-        When I click on the button ".button-start"
+        Then the element "#block-par-theme-account-menu" contains the text "Log out"
 
-        # PARTNERSHIPS DASHBOARD
-        And I add "DCBA" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
-        Then I expect that element "td.views-field.views-field-field-premises" is not visible
-        When I add "ABCD" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
-        Then the element "td.views-field.views-field-field-premises" contains the text "ABCD Mart"
-        When I select the option with the text "Confirmed by Business" for element "#edit-partnership-status"
-        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
-        Then I expect that element "td.views-field.views-field-field-premises" is not visible
-        When I select the option with the text "Awaiting Review" for element "#edit-partnership-status"
-        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
-        Then the element "td.views-field.views-field-field-premises" contains the text "ABCD Mart"
+        # PARTNERSHIP TASKS SCREEN/DASHBOARD
+
+        When I click on the link "Dashboard"
+#        When I open the url "/dv/rd-dashboard"
+
+        # PARTNERSHIP DETAILS
+
+        Then the element "h1" contains the text "RD Helpdesk Dashboard"
+        When I click on the link "List of tasks"
         When I click on the link "ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN
@@ -57,6 +52,9 @@ Feature: Business User - Manage Addresses
         And I clear the inputfield "#edit-town-city"
         And I clear the inputfield "#edit-postcode"
         And I clear the inputfield "#edit-county"
+        And I click on the button "#edit-next"
+        Then I expect that element "input:focus" is visible
+        And I add "change" to the inputfield "#edit-postcode"
         And I click on the button "#edit-next"
         Then I expect that element "input:focus" is visible
         And I add "1 Change St" to the inputfield "#edit-address-line1"
