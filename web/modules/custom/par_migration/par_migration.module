@@ -25,3 +25,4 @@ function par2_db_query() {
 
   return $records;
 }
+

@@ -11,7 +11,7 @@ entity_type: par_data_authority
 bundle: authority
 label: 'Regulatory Functions'
 description: 'The regulatory functions this authority is responsible for.'
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''

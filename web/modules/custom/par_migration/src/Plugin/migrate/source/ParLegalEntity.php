@@ -54,11 +54,14 @@ class ParLegalEntity extends SqlBase {
    * {@inheritdoc}
    */
   public function getIds() {
-    return array(
-      'legal_entity_id' => array(
+    return [
+      'legal_entity_id' => [
         'type' => 'integer',
-      ),
-    );
+      ],
+      'organisation_id' => [
+        'type' => 'integer',
+      ],
+    ];
   }
 
   /**

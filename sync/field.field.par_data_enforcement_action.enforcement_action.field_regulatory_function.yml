@@ -12,7 +12,7 @@ entity_type: par_data_enforcement_action
 bundle: enforcement_action
 label: 'Regulatory Function'
 description: 'The Regulatory Function this notice is relevant to.'
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''

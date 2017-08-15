@@ -457,7 +457,6 @@ class ParDataTestBase extends EntityKernelTestBase {
         'partnership_status' => 'Current',
         'about_partnership' => $this->randomString(1000),
         'approved_date' => '2017-06-01',
-        'expertise_details' => $this->randomString(1000),
         'cost_recovery' => 'Cost recovery from partnership',
         'reject_comment' => $this->randomString(1000),
         'revocation_source' => 'RD Executive',

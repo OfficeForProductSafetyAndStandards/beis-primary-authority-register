@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @file
+ * @file par_dashboards.module
  */
 
 use Drupal\Core\Form\FormStateInterface;
@@ -9,8 +9,13 @@ use Drupal\views\ViewExecutable;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 
+
 /**
  * Implements hook_form_alter().
+ *
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
  */
 function par_dashboards_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
