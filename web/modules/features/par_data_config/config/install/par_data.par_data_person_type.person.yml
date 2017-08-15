@@ -1,6 +1,9 @@
+uuid: 60993333-0aed-40ee-9b2a-7c8aa6e41e92
 langcode: en
 status: true
 dependencies: {  }
+_core:
+  default_config_hash: Yhu8ezFi0NXRfaCA0ezknKXnCyB4WhgZOkfguiubswY
 id: person
 label: Person
 description: 'A Person is a named individual who can feature in a number of different ways within PAR.  A Person may, or may not, be a user of the PAR application.'
@@ -10,6 +13,12 @@ configuration:
     label_fields:
       - first_name
       - last_name
+    required_fields:
+      salutation: 'The %field is required.'
+      first_name: 'The %field is required.'
+      last_name: 'The %field is required.'
+      work_phone: 'The %field is required.'
+      email: 'The %field is required.'
   communication_email:
     boolean_values:
       'on': Email
