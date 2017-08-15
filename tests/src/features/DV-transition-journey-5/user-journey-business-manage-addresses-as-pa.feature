@@ -10,7 +10,7 @@ Feature: Helpdesk As Primary Authority - Manage Addresses
         And I open the url "/admin/par-data-test-reset"
         And I open the url "/user/logout"
 
-    Scenario: User Journey 1 - Send invitiation to business
+    Scenario: Helpdesk As Primary Authority - Manage Addresses
         # LOGIN SCREEN
 
         Given I open the url "/user/login"
@@ -27,7 +27,7 @@ Feature: Helpdesk As Primary Authority - Manage Addresses
         # PARTNERSHIP DETAILS
 
         Then I expect that element "h1" contains the text "RD Helpdesk Dashboard"
-        When I click on the link "List of tasks"
+        When I click on the button "td.views-field.views-field-authority-name a"
         Then I expect that element ".table-scroll-wrapper" contains the text "Review and confirm your partnership details"
         And I click on the link "Review and confirm your partnership details"
         And I click on the link "edit"
@@ -112,8 +112,5 @@ Feature: Helpdesk As Primary Authority - Manage Addresses
 
         # CSV CHECK
         When I click on the link "Dashboard"
-        And I click on the button "td.views-field.views-field-nothing-1 a"
-        Then I expect that element ".table-scroll-wrapper" contains the text "Review and confirm your business details"
-        When I open the url "/dv/rd-dashboard"
         And I click on the link "Download as CSV"
         And I click on the link "Log out"

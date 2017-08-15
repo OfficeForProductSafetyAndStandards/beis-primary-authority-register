@@ -10,7 +10,7 @@ Feature: Helpdesk As Business User - Manage Addresses
         And I open the url "/admin/par-data-test-reset"
         And I open the url "/user/logout"
 
-    Scenario: User Journey 1 - Send invitiation to business
+    Scenario: Helpdesk As Business User - Manage Addresses
         # LOGIN SCREEN
 
         Given I open the url "/user/login"
@@ -27,7 +27,7 @@ Feature: Helpdesk As Business User - Manage Addresses
         # PARTNERSHIP DETAILS
 
         Then I expect that element "h1" contains the text "RD Helpdesk Dashboard"
-        When I click on the button "//table/tbody/tr[1]/td[5]/a"
+        When I click on the button "td.views-field.views-field-organisation-name a"
         When I click on the link "Review and confirm your business details"
         Then I expect that element "#edit-about-business" contains the text "About the business"
         And I expect that element "#edit-legal-entity" contains the text "Legal Entities"

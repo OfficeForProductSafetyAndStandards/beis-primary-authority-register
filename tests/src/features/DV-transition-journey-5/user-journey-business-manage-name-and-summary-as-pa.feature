@@ -10,7 +10,7 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
         And I open the url "/admin/par-data-test-reset"
         And I open the url "/user/logout"
 
-    Scenario: User Journey 1 - Send invitiation to business
+    Scenario: Helpdesk As Primary Authority - Manage name and summary detail
         # LOGIN SCREEN
 
         Given I open the url "/user/login"
@@ -27,7 +27,7 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
         # PARTNERSHIP DETAILS
 
         Then I expect that element "h1" contains the text "RD Helpdesk Dashboard"
-        When I click on the link "List of tasks"
+        When I click on the button "td.views-field.views-field-authority-name a"
         When I click on the link "Review and confirm your partnership details"
         And I click on the link "edit"
         And I add "test partnership info change" to the inputfield "#edit-about-partnership"
