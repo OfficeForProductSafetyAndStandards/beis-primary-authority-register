@@ -3,18 +3,12 @@ Feature: Coordinator User - Manage Name and Summary
 
     Background:
         # TEST DATA RESET
-        Given I open the url "/user/login"
-        And I add "dadmin" to the inputfield "#edit-name"
-        And I add "password" to the inputfield "#edit-pass"
-        And I click on the button "#edit-submit"
-        And I open the url "/admin/par-data-test-reset"
-        And I open the url "/user/logout"
+        Given I reset the test data
 
     Scenario: Coordinator User - Manage Name and Summary
         # LOGIN SCREEN
 
-        Given I open the url "/user/login"
-        And I am logged in as "par_coordinator@example.com"
+        Given I am logged in as "par_coordinator@example.com"
         When I click on the button ".button-start"
 
         # PARTNERSHIPS DASHBOARD

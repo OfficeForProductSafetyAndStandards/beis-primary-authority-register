@@ -3,18 +3,12 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
 
     Background:
         # TEST DATA RESET
-        Given I open the url "/user/login"
-        And I add "dadmin" to the inputfield "#edit-name"
-        And I add "password" to the inputfield "#edit-pass"
-        And I click on the button "#edit-submit"
-        And I open the url "/admin/par-data-test-reset"
-        And I open the url "/user/logout"
+        Given I reset the test data
 
     Scenario: Helpdesk As Primary Authority - Manage name and summary detail
         # LOGIN SCREEN
 
-        Given I open the url "/user/login"
-        And I am logged in as "par_helpdesk@example.com"
+        Given I am logged in as "par_helpdesk@example.com"
 
         # PARTNERSHIP TASKS SCREEN/DASHBOARD
 

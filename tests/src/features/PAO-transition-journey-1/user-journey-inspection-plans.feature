@@ -3,18 +3,12 @@ Feature: Primary Authority - Inspection Plans
 
     Background:
         # TEST DATA RESET
-        Given I open the url "/user/login"
-        And I add "dadmin" to the inputfield "#edit-name"
-        And I add "password" to the inputfield "#edit-pass"
-        And I click on the button "#edit-submit"
-        And I open the url "/admin/par-data-test-reset"
-        And I open the url "/user/logout"
+        Given I reset the test data
 
     Scenario: Primary Authority - Inspection Plans
         # LOGIN SCREEN
 
-        Given I open the url "/user/login"
-        When I am logged in as "par_authority@example.com"
+        Given I am logged in as "par_authority@example.com"
         Then I expect that element "#block-sitewidehelpdeskmessage" contains the text "0121 345 1201"
         When I click on the button ".button-start"
 
