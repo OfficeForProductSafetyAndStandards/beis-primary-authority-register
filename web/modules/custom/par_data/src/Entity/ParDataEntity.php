@@ -23,6 +23,66 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     return \Drupal::service('par_data.manager');
   }
 
+  /*
+   * Validate the fields.
+   *
+   * @TODO REPLACE THIS WITH ENTITY VALIDATION API IN BETA.
+   *
+   * @param array $fields
+   * 'comments' => [
+   *   'value' => $form_state->getValue('about_business'),
+   *   'type' => 'boolean',
+   *   'min_selected' => 1,
+   *   'key' => 'about_business',
+   *   'tokens' => [
+   *      '%field' => $form['about_business']['#title']->render(),
+   *    ]
+   *  ],
+   *
+   * min_selected - IF not specified then all needs to be checked.
+   * @return array
+   *   Array of errors with field names or empty if there are no errors.
+   */
+  public function validateFields(array $fields) {
+    $error = [];
+    $required_fields = $this->getRequiredFields();
+
+    foreach($fields as $field_name => $field_info) {
+      if (!empty($required_fields[$field_name])) {
+
+        // Field has been located so need to validate it.
+        if (empty($field_info['value'])) {
+          $error[$field_info['key']] = t('<a href="#edit-' . str_replace('_', '-', $field_info['key'])  . '">' . $required_fields[$field_name] . '</a>', $field_info['tokens']);
+        }
+        elseif (is_array($field_info['value'])) {
+          // Check the type of hte field if specified.
+          if ($field_info['type'] === 'boolean') {
+
+            $count = count($field_info['value']);
+
+            if (isset($field_info['min_selected'])) {
+              $count = $field_info['min_selected'];
+            }
+            foreach ($field_info['value'] as $item => $value) {
+              if ($value) {
+                $count--;
+              }
+              if ($count <= 0) {
+                break;
+              }
+            }
+
+            if ($count > 0) {
+              $error[$field_info['key']] = t('<a href="#edit-' . str_replace('_', '-', $field_info['key'])  . '">' . $required_fields[$field_name] . '</a>', $field_info['tokens']);
+            }
+          }
+        }
+      }
+    }
+
+    return $error;
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -131,6 +191,13 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     if (isset($allowed_values[$value])) {
       $this->set($field_name, $value);
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRequiredFields() {
+    return $this->getTypeEntity()->getRequiredFields();
   }
 
   /**

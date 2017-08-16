@@ -56,7 +56,6 @@ class ParFlowTransitionAboutForm extends ParBaseForm {
       '#title' => $this->t('Information about the partnership'),
       '#default_value' => $this->getDefaultValues('about_partnership'),
       '#description' => 'Use this section to give a brief overview of the project.<br>Include any information you feel may be useful to enforcing authorities.',
-      '#required' => TRUE,
     ];
 
     $form['next'] = [
@@ -76,6 +75,22 @@ class ParFlowTransitionAboutForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
+    $partnership = $this->getRouteParam('par_data_partnership');
+    $fields = [
+      'about_partnership' => [
+        'value' => $form_state->getValue('about_partnership'),
+        'key' => 'about_partnership',
+        'tokens' => [
+          '%field' => $form['about_partnership']['#title']->render(),
+        ]
+      ],
+    ];
+
+    $errors = $partnership->validateFields($fields);
+    // Display error messages.
+    foreach($errors as $field => $message) {
+      $form_state->setErrorByName($field, $message);
+    }
   }
 
   /**

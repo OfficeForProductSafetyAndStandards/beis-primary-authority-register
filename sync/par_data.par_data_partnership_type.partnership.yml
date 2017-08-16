@@ -11,8 +11,10 @@ help: ''
 configuration:
   entity:
     status_field: partnership_status
-    required_fields:
+    completed_fields:
       - about_partnership
+    required_fields:
+      about_partnership: 'The %field is required.'
   partnership_status:
     allowed_values:
       awaiting_review: 'Awaiting Review'
