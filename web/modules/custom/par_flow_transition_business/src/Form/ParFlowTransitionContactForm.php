@@ -75,21 +75,18 @@ class ParFlowTransitionContactForm extends ParBaseForm {
       '#type' => 'textfield',
       '#title' => $this->t('Title'),
       '#default_value' => $this->getDefaultValues("salutation"),
-      '#required' => TRUE,
     ];
 
     $form['first_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('First Name'),
       '#default_value' => $this->getDefaultValues("first_name"),
-      '#required' => TRUE,
     ];
 
     $form['last_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Last Name'),
       '#default_value' => $this->getDefaultValues("last_name"),
-      '#required' => TRUE,
     ];
 
     // The Person's work phone number.
@@ -97,7 +94,6 @@ class ParFlowTransitionContactForm extends ParBaseForm {
       '#type' => 'textfield',
       '#title' => $this->t('Work Phone'),
       '#default_value' => $this->getDefaultValues("phone"),
-      '#required' => TRUE,
     ];
 
     // The Person's work phone number.
@@ -112,7 +108,6 @@ class ParFlowTransitionContactForm extends ParBaseForm {
       '#type' => 'textfield',
       '#title' => $this->t('Email'),
       '#default_value' => $this->getDefaultValues("email"),
-      '#required' => TRUE,
     ];
 
     // Preferred contact methods.
@@ -151,6 +146,37 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     $this->addCacheableDependency($person_bundle);
 
     return parent::buildForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    // No validation yet.
+    parent::validateForm($form, $form_state);
+    $par_data_person = $this->getRouteParam('par_data_person');
+    $form_items = [
+      'salutation' => 'salutation',
+      'first_name' => 'first_name',
+      'last_name' => 'last_name',
+      'work_phone' => 'work_phone',
+      'email' => 'email',
+    ];
+    foreach($form_items as $element_item => $form_item) {
+      $fields[$element_item] = [
+        'value' => $form_state->getValue($form_item),
+        'key' => $form_item,
+        'tokens' => [
+          '%field' => $form[$form_item]['#title']->render(),
+        ],
+      ];
+    }
+
+    $errors = $par_data_person->validateFields($fields);
+    // Display error messages.
+    foreach($errors as $field => $message) {
+      $form_state->setErrorByName($field, $message);
+    }
   }
 
   /**
