@@ -14,15 +14,11 @@ Feature: Helpdesk As Business User - Manage name and summary detail
         # LOGIN SCREEN
 
         Given I open the url "/user/login"
-        And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
-        And I add "TestPassword" to the inputfield "#edit-pass"
-        When I click on the button "#edit-submit"
-        Then I expect that element "#block-par-theme-account-menu" contains the text "Log out"
+        And I am logged in as "par_helpdesk@example.com"
 
         # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
         When I click on the link "Dashboard"
-#        When I open the url "/dv/rd-dashboard"
 
         # PARTNERSHIP DETAILS
 
@@ -44,7 +40,6 @@ Feature: Helpdesk As Business User - Manage name and summary detail
         Then I expect that element "#par-flow-transition-business-details" contains the text "Trading Name Change"
         When I click on the link "add another trading name"
         And I click on the button "#edit-next"
-#        Then I expect that element "input:focus" is visible
         And I add "Trading Name Add" to the inputfield "#edit-trading-name"
         And I click on the button "#edit-next"
         Then I expect that element "#par-flow-transition-business-details" contains the text "Trading Name Add"

@@ -10,14 +10,11 @@ Feature: Coordinator User - Manage Addresses
         And I open the url "/admin/par-data-test-reset"
         And I open the url "/user/logout"
 
-    Scenario: Manage business name and summary
+    Scenario: Coordinator User - Manage Addresses
         # LOGIN SCREEN
 
         Given I open the url "/user/login"
-        And I add "par_coordinator@example.com" to the inputfield "#edit-name"
-        And I add "TestPassword" to the inputfield "#edit-pass"
-        When I click on the button "#edit-submit"
-        Then I expect that element ".error-message" is not visible
+        And I am logged in as "par_coordinator@example.com"
         When I click on the button ".button-start"
 
         # PARTNERSHIPS DASHBOARD

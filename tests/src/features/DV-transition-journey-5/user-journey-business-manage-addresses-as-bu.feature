@@ -14,15 +14,11 @@ Feature: Helpdesk As Business User - Manage Addresses
         # LOGIN SCREEN
 
         Given I open the url "/user/login"
-        And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
-        And I add "TestPassword" to the inputfield "#edit-pass"
-        When I click on the button "#edit-submit"
-        Then I expect that element "#block-par-theme-account-menu" contains the text "Log out"
+        And I am logged in as "par_helpdesk@example.com"
 
         # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
         When I click on the link "Dashboard"
-#        When I open the url "/dv/rd-dashboard"
 
         # PARTNERSHIP DETAILS
 
@@ -43,19 +39,14 @@ Feature: Helpdesk As Business User - Manage Addresses
         And I clear the inputfield "#edit-postcode"
         And I clear the inputfield "#edit-county"
         And I click on the button "#edit-next"
-#        Then I expect that element "input:focus" is visible
         And I add "change" to the inputfield "#edit-postcode"
         And I click on the button "#edit-next"
-#        Then I expect that element "input:focus" is visible
         And I add "1 Change St" to the inputfield "#edit-address-line1"
         And I click on the button "#edit-next"
-#        Then I expect that element "input:focus" is visible
         And I add "New Change" to the inputfield "#edit-address-line2"
         And I click on the button "#edit-next"
-#        Then I expect that element "input:focus" is visible
         And I add "New Change State" to the inputfield "#edit-town-city"
         And I click on the button "#edit-next"
-#        Then I expect that element "input:focus" is visible
         And I add "US-CH" to the inputfield "#edit-county"
         And I select the option with the text "Wales" for element "#edit-country"
         When I click on the button "#edit-next"
@@ -115,11 +106,8 @@ Feature: Helpdesk As Business User - Manage Addresses
 
         When I click on the link "add another legal entity"
         And I click on the button "#edit-next"
-#        Then I expect that element "input:focus" is visible
         And I add "Another Legal Entity" to the inputfield "#edit-registered-name"
-#        Then I expect that element "input:focus" is visible
         And I select the option with the text "Sole Trader" for element "#edit-legal-entity-type"
-#        Then I expect that element "input:focus" is visible
         And I click on the button "#edit-next"
         Then I expect that element "#edit-alternative" contains the text "Another Legal Entity"
         And I expect that element "#edit-alternative" contains the text "Sole Trader"
