@@ -67,7 +67,7 @@ class ParListFormatter extends FormatterBase {
       // Render each element as markup.
       $element[$delta] = [
         '#type' => 'markup',
-        '#markup' => $value ? $value : 'Sorry dude, this field aint configured for that.',
+        '#markup' => $value ? $value : 'Unknown value',
       ];
     }
 
