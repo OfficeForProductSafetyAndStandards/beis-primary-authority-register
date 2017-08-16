@@ -32,7 +32,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
     // Organisation Name & Address.
     $build['organisation']['label'] = [
       '#type' => 'markup',
-      '#prefix' => '<h2>',
+      '#prefix' => '<h2 class="heading-medium">',
       '#suffix' => '</h2>',
       '#markup' => $organisation_name
     ];
