@@ -41,6 +41,7 @@ Feature: Primary Authority - Documentation
 
         And I scroll to element ".table-scroll-wrapper"
         When I click on the link "Review and confirm your documentation for ABCD Mart"
+        And I scroll to element ".table-scroll-wrapper"
         And I click on the link "edit"
         And I click on the radio "#edit-document-type-authority-advice"
         And I click on the checkbox ".form-label*=Cookie control"
