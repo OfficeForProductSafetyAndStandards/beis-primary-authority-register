@@ -52,6 +52,6 @@ Feature: Primary Authority - Inspection Plans
 
         # PARTNERSHIPS DASHBOARD
 
-        And I click on the link "Go back to your partnerships"
+        And I click on the link "Save and continue"
         Then I expect that element "h1" contains the text "List of Partnerships"
         And I click on the link "Log out"
