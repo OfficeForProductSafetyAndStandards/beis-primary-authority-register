@@ -161,9 +161,18 @@ class ParDataManager implements ParDataManagerInterface {
    * @param array $people
    * @return array
    */
-  public function getRelatedPeople($entity, $people = []) {
+  public function getRelatedPeople($entity, $people = [], $iteration = 0) {
     if (!$entity instanceof ParDataEntityInterface) {
       return $people;
+    }
+
+    // Make sure the entity isn't too distantly related
+    // to limit recursive relationships.
+    if ($iteration > 5) {
+      return $people;
+    }
+    else {
+      $iteration++;
     }
 
     // If this entity is a person we want to do nothing.
@@ -179,7 +188,7 @@ class ParDataManager implements ParDataManagerInterface {
       $relationships = $entity->getRelationships();
       foreach($entity->getRelationships() as $referenced_entity) {
         if ($entity->getEntityType()->id() !== 'par_data_person') {
-          $people = $this->getRelatedPeople($referenced_entity, $people);
+          $people = $this->getRelatedPeople($referenced_entity, $people, $iteration);
         }
       }
     }
@@ -205,6 +214,7 @@ class ParDataManager implements ParDataManagerInterface {
     if (!$entity instanceof ParDataEntityInterface) {
       return $entities;
     }
+
     // Make sure the entity isn't too distantly related
     // to limit recursive relationships.
     if ($iteration > 5) {
