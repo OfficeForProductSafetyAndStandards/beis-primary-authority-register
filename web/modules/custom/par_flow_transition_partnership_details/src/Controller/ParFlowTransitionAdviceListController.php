@@ -108,7 +108,7 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
       $this->addCacheableDependency(current($advice->get('document')->referencedEntities()));
     }
 
-    $build['cancel'] = [
+    $build['save'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
         '@link' => $this->getFlow()->getLinkByStep(3, $this->getRouteParams(), ['attributes' => ['class' => 'button']])

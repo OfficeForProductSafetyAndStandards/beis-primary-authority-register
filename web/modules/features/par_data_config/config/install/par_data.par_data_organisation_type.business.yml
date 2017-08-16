@@ -6,6 +6,10 @@ label: Business
 description: 'A Business is an Organisation - usually a commercial one, but not always - that is covered (or intends to be covered) by a Primary Authority Partnership.'
 help: ''
 configuration:
+  entity:
+    required_fields:
+      comments: 'The %field is required.'
+      trading_name: 'The %field is required.'
   premises_mapped:
     boolean_values:
       'on': Mapped
