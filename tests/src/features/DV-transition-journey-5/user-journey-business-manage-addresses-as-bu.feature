@@ -117,7 +117,6 @@ Feature: Helpdesk As Business User - Manage Addresses
         And I click on the button "#edit-next"
 #        Then I expect that element "input:focus" is visible
         And I add "Another Legal Entity" to the inputfield "#edit-registered-name"
-        And I click on the button "#edit-next"
 #        Then I expect that element "input:focus" is visible
         And I select the option with the text "Sole Trader" for element "#edit-legal-entity-type"
 #        Then I expect that element "input:focus" is visible
