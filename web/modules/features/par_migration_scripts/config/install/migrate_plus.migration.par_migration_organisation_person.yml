@@ -16,7 +16,6 @@ label: 'PAR Migration of organisation people'
 source:
   plugin: par_migration_organisation_person
 process:
-  id: person_id
   type:
     plugin: default_value
     default_value: person

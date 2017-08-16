@@ -23,9 +23,18 @@ process:
   uid:
     plugin: default_value
     default_value: 1
-  field_date_address/administrativeArea: town
-  field_date_address/locality: country
-  field_date_address/addressLine1: line_1
+  field_date_address/administrativeArea:
+    plugin: skip_on_empty
+    method: process
+    source: town
+  field_date_address/locality:
+    plugin: skip_on_empty
+    method: process
+    source: county
+  field_date_address/addressLine1:
+    plugin: skip_on_empty
+    method: process
+    source: line_1
   field_date_address/addressLine2:
     -
       plugin: concat
@@ -34,9 +43,15 @@ process:
         - line_2
         - line_3
     -
+      plugin: skip_on_empty
+      method: process
+    -
       plugin: trim_characters
       characters: ', '
-  field_date_address/postalCode: postcode
+  field_date_address/postalCode:
+    plugin: skip_on_empty
+    method: process
+    source: postcode
   nation:
     -
       plugin: skip_on_empty

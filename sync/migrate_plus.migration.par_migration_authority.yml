@@ -7,7 +7,7 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: UbeJgHMDfAFxEdxtUgMhP0jqQpz5bNomRspObQOHIWM
+  default_config_hash: LSKQ7Hw4IoR1YWVZOu7DL7u9Q3eUUZvRcY6DShIxeOY
 id: par_migration_authority
 class: null
 field_plugin_method: null
@@ -26,7 +26,10 @@ process:
   uid:
     plugin: default_value
     default_value: 1
-  authority_name: name
+  authority_name:
+    plugin: skip_on_empty
+    method: process
+    source: name
   authority_type:
     -
       plugin: skip_on_empty

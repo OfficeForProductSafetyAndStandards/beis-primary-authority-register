@@ -7,7 +7,7 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: nmtV17pS1RpKh3RUC_VObifqzL0GtOj5BqR5OTLUygA
+  default_config_hash: ip61eaDK0CwuHdiRSQlyOYGDh07pn9Fe6zW-FARGmnk
 id: par_migration_authority_person
 class: null
 field_plugin_method: null
@@ -19,15 +19,20 @@ label: 'PAR Migration of authority people'
 source:
   plugin: par_migration_authority_person
 process:
-  id: person_id
   type:
     plugin: default_value
     default_value: person
   uid:
     plugin: default_value
     default_value: 1
-  salutation: title
-  first_name: first_name
+  salutation:
+    plugin: skip_on_empty
+    method: process
+    source: title
+  first_name:
+    plugin: skip_on_empty
+    method: process
+    source: first_name
   last_name:
     plugin: skip_on_empty
     method: process
@@ -78,7 +83,10 @@ process:
         'Y': true
         'N': false
         'null': false
-  communication_notes: communication_notes
+  communication_notes:
+    plugin: skip_on_empty
+    method: process
+    source: communication_notes
 destination:
   plugin: 'entity:par_data_person'
 migration_dependencies: {  }

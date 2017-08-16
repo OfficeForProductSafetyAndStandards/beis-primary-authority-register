@@ -23,7 +23,10 @@ process:
   uid:
     plugin: default_value
     default_value: 1
-  organisation_name: name
+  organisation_name:
+    plugin: skip_on_empty
+    method: process
+    source: name
   size:
     -
       plugin: skip_on_empty
