@@ -13,11 +13,11 @@ use Drupal\Core\Link;
 function par_welcome_page_install() {
   // Create the initial welcome page.
   $message = <<<HEREDOC
-Review and confirm your data by 14 September 2017.
+<p>Review and confirm your data by <strong>14 September 2017</strong>.</p>
 
-You don't have to do it all in one go.
+<p>You don't have to do it all in one go.</p>
 
-You can continue to make changes to your information until this deadline.
+<p>You can continue to make changes to your information until this deadline.</p>
 
 <a class="button button-start" href="/dv/partnership-dashboard" role="button">Continue to your Partnerships</a>
 HEREDOC;
@@ -85,6 +85,14 @@ function par_welcome_page_requirements($phase) {
  * Changes have been made to the welcome page link, re-adding to update the page.
  */
 function par_welcome_page_update_8001() {
+  par_welcome_page_uninstall();
+  par_welcome_page_install();
+}
+
+/**
+ * Changes have been made to the welcome page markup, including making the September deadline bold, re-adding to update the page.
+ */
+function par_welcome_page_update_8002() {
   par_welcome_page_uninstall();
   par_welcome_page_install();
 }
