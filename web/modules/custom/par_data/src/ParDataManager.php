@@ -5,6 +5,8 @@ namespace Drupal\par_data;
 use Drupal\clamav\Config;
 use Drupal\Core\Config\Entity\ConfigEntityType;
 use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
@@ -23,6 +25,20 @@ class ParDataManager implements ParDataManagerInterface {
   protected $entityManager;
 
   /**
+   * The entity field manager.
+   *
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
+   */
+  protected $entityFieldManager;
+
+  /**
+   * The entity field manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface
+   */
+  protected $entityTypeBundleInfo;
+
+  /**
    * The core entity types through which all membership is calculated.
    */
   protected $coreEntities = ['par_data_authority', 'par_data_organisation'];
@@ -32,15 +48,22 @@ class ParDataManager implements ParDataManagerInterface {
    *
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *   The entity manager.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_manager
+   *   The entity field manager.
+   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_type_bundle_info
+   *   The entity bundle info service.
    */
-  public function __construct(EntityManagerInterface $entity_manager) {
+  public function __construct(EntityManagerInterface $entity_manager, EntityFieldManagerInterface $entity_field_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info) {
     $this->entityManager = $entity_manager;
+    $this->entityFieldManager = $entity_field_manager;
+    $this->entityTypeBundleInfo = $entity_type_bundle_info;
   }
 
   /**
   * @inheritdoc}
   */
   public function getParEntityTypes() {
+    // We're obviously assuming that all par entities begin with this prefix.
     $par_entity_prefix = 'par_data_';
     $par_entity_types = [];
     $entity_type_definitions = $this->entityManager->getDefinitions();
@@ -87,7 +110,52 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
-   * Get the par person records related to a given entity.
+   * Get all references for a given entity.
+   *
+   * @return \Drupal\Core\Field\FieldDefinitionInterface[]
+   *   An array of field definitions keyed by the entity type they are attached to.
+   */
+  public function getReferences($type, $bundle) {
+    $reference_fields = [];
+
+    // First get all the entities referenced by this entity type.
+    foreach ($this->entityFieldManager->getFieldDefinitions($type, $bundle) as $field_name => $definition) {
+      if ($definition->getType() === 'entity_reference' && $this->getParEntityType($definition->getsetting('target_type'))) {
+        $reference_fields[$type][$field_name] = $definition;
+      }
+    }
+
+    // Second get all the entities that reference this entity type.
+    $entity_references = $this->entityFieldManager->getFieldMapByFieldType('entity_reference');
+    foreach ($entity_references as $referring_entity_type => $fields){
+      // Ignore all fields on the current entity type and all non PAR entities.
+      if ($type === $referring_entity_type || !$this->getParEntityType($referring_entity_type)) {
+        continue;
+      }
+
+      $field_definitions = [];
+      foreach ($this->entityTypeBundleInfo->getBundleInfo($referring_entity_type) as $bundle => $bundle_definition) {
+        $field_definitions += $this->entityFieldManager->getFieldDefinitions($referring_entity_type, $bundle);
+      }
+
+      foreach ($fields as $field_name => $field) {
+        // Get field definition if available.
+        if (!isset($field_definitions[$field_name])) {
+          continue;
+        }
+
+        $field_definition = $field_definitions[$field_name];
+        if ($field_definition->getsetting('target_type') === $type) {
+          $reference_fields[$referring_entity_type][$field_name] = $field_definition;
+        }
+      }
+    }
+
+    return $reference_fields;
+  }
+
+  /**
+   * Get the people related to a given entity.
    *
    * @param $entity
    * @param array $people
@@ -98,20 +166,91 @@ class ParDataManager implements ParDataManagerInterface {
       return $people;
     }
 
-    if (in_array($entity->getEntityType()->id(), $this->coreEntities)) {
-      $people += $entity->getReferenceEntitiesByType('par_data_person');
+    // If this entity is a person we want to do nothing.
+    if ($entity->getEntityTypeId() === 'par_data_person') {
+      return $people;
+    }
+    // If this entity is a core entity we can return the related
+    // person and stop looking.
+    else if (in_array($entity->getEntityTypeId(), $this->coreEntities)) {
+      $people += $entity->getRelationships('par_data_person');
     }
     else {
-      foreach($entity->getReferenceFields() as $field_name => $fields) {
-        foreach ($fields->referencedEntities() as $referenced_entity) {
-          if ($entity->getEntityType()->id() !== 'par_data_person') {
-            $people = $this->getRelatedPeople($referenced_entity, $people);
-          }
+      $relationships = $entity->getRelationships();
+      foreach($entity->getRelationships() as $referenced_entity) {
+        if ($entity->getEntityType()->id() !== 'par_data_person') {
+          $people = $this->getRelatedPeople($referenced_entity, $people);
         }
       }
     }
 
-    return $people;
+    return array_filter($people);
+  }
+
+  /**
+   * Get the entities related to each other.
+   *
+   * Follows some rules to make sure it doesn't go round in loops.
+   *
+   * @param $entity
+   * @param array $entities
+   * @param int $iteration
+   * @param bool $force_lookup
+   *   Force the lookup of relationships that would otherwise be ignored.
+   *
+   * @return EntityInterface[]
+   *   An array of entities keyed by entity type.
+   */
+  public function getRelatedEntities($entity, $entities = [], $iteration = 0, $force_lookup = FALSE) {
+    if (!$entity instanceof ParDataEntityInterface) {
+      return $entities;
+    }
+    // Make sure the entity isn't too distantly related
+    // to limit recursive relationships.
+    if ($iteration > 5) {
+      return $entities;
+    }
+    else {
+      $iteration++;
+    }
+
+    // Make sure not to count the same entity again.
+    if (isset($entities[$entity->getEntityTypeId()]) && isset($entities[$entity->getEntityTypeId()][$entity->id()])) {
+      return $entities;
+    }
+
+    // Add this entity to the related entities.
+    if ($entity->getEntityTypeId() !== 'par_data_person') {
+      if (!isset($entities[$entity->getEntityTypeId()])) {
+        $entities[$entity->getEntityTypeId()] = [];
+      }
+      $entities[$entity->getEntityTypeId()][$entity->id()] = $entity;
+    };
+
+    foreach ($entity->getRelationships() as $entity_type => $referenced_entities) {
+      foreach ($referenced_entities as $entity_id => $referenced_entity) {
+        // If the current entity is a person only lookup core entity relationships.
+        if ($entity->getEntityTypeId() === 'par_data_person') {
+          if (in_array($referenced_entity->getEntityTypeId(), $this->coreEntities)) {
+            $entities = $this->getRelatedEntities($referenced_entity, $entities, $iteration, TRUE);
+          }
+        }
+        // If the current entity is a core entity only lookup entity relationships
+        // if forced to do so, by the person lookup.
+        else if (in_array($entity->getEntityTypeId(), $this->coreEntities)) {
+          if (!in_array($entity_type, $this->coreEntities) || $force_lookup) {
+            $entities = $this->getRelatedEntities($referenced_entity, $entities, $iteration);
+          };
+        }
+        // For all other entities follow your hearts content and find all
+        // entity relationships..
+        else {
+          $entities = $this->getRelatedEntities($referenced_entity, $entities, $iteration);
+        }
+      }
+    }
+
+    return $entities;
   }
 
   /**
@@ -136,6 +275,36 @@ class ParDataManager implements ParDataManagerInterface {
     }
 
     return !empty(array_intersect_key($entity_people, $account_people));
+  }
+
+  public function hasMemberships(UserInterface $account, $type = NULL) {
+    $account_people = $this->getUserPeople($account);
+
+    $memberships = [];
+    foreach ($account_people as $person) {
+      $memberships = array_merge_recursive($memberships, $this->getRelatedEntities($person));
+    }
+
+    return isset($type) && isset($memberships[$type]) ? $memberships[$type] : $memberships;
+  }
+
+  /**
+   * A helper function to load entity properties.
+   *
+   * @param string $type
+   *   The entity type to load the field for.
+   * @param string $field
+   *   The field name.
+   * @param string $value
+   *   The value to load based on.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface[]
+   *   An array of entities found with this value.
+   */
+  public function getEntitiesByProperty($type, $field, $value) {
+    return \Drupal::entityTypeManager()
+      ->getStorage($type)
+      ->loadByProperties([$field => $value]);
   }
 
   /**
