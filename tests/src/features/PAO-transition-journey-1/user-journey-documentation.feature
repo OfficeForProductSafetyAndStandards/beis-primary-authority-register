@@ -54,7 +54,7 @@ Feature: PAR User - Documentation
         Then I expect that element ".table-scroll-wrapper" contains the text "✔"
         And the element ".table-scroll-wrapper" contains the text "Cookie control"
         When I click on the link "Save"
-        Then I expect that element ".table-scroll-wrapper" contains the text "50%"
+        Then I expect that element ".table-scroll-wrapper" contains the text "✔"
         When I click on the link "Review and confirm your documentation for ABCD Mart"
         And I click on the link "edit"
         And I click on the radio "#edit-document-type-authority-advice"

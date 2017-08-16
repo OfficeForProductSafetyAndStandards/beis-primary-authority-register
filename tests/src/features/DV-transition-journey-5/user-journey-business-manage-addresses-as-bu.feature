@@ -120,10 +120,7 @@ Feature: Helpdesk As Business User - Manage Addresses
         And I click on the button "#edit-next"
 #        Then I expect that element "input:focus" is visible
         And I select the option with the text "Sole Trader" for element "#edit-legal-entity-type"
-        And I click on the button "#edit-next"
 #        Then I expect that element "input:focus" is visible
-        And I add "1234567890" to the inputfield "#edit-company-house-no"
         And I click on the button "#edit-next"
         Then I expect that element "#edit-alternative" contains the text "Another Legal Entity"
-        And I expect that element "#edit-alternative" contains the text "1234567890"
         And I expect that element "#edit-alternative" contains the text "Sole Trader"
