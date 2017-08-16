@@ -75,7 +75,6 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
       '#title' => $this->t('Postcode'),
       '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_postal_code"),
       '#description' => t('Enter the postcode of the business'),
-      '#required' => TRUE,
     ];
 
     // The Address lines.
@@ -83,14 +82,12 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
       '#type' => 'textfield',
       '#title' => $this->t('Address Line 1'),
       '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_address_line1"),
-      '#required' => TRUE,
     ];
 
     $form['address_line2'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Address Line 2'),
       '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_address_line2"),
-      '#required' => TRUE,
     ];
 
     // Town/City.
@@ -98,7 +95,6 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
       '#type' => 'textfield',
       '#title' => $this->t('Town / City'),
       '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_locality"),
-      '#required' => TRUE,
     ];
 
     // County.
@@ -106,7 +102,6 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
       '#type' => 'textfield',
       '#title' => $this->t('County'),
       '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_administrative_area"),
-      '#required' => TRUE,
     ];
 
     // Country.
@@ -115,7 +110,6 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
       '#title' => $this->t('Country'),
       '#options' => $premises_bundle->getAllowedValues('nation'),
       '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_country_code"),
-      '#required' => TRUE,
     ];
 
     // UPRN.
@@ -142,6 +136,39 @@ class ParFlowTransitionAddressForm extends ParBaseForm {
     $this->addCacheableDependency($premises_bundle);
 
     return parent::buildForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    // No validation yet.
+    parent::validateForm($form, $form_state);
+    $premises = $this->getRouteParam('par_data_premises');
+    $form_items = [
+      'address_line1' => 'address_line1',
+      'address_line2' => 'address_line2',
+      'locality' => 'town_city',
+      'administrative_area' => 'county',
+      'nation' => 'country',
+      'uprn' => 'uprn',
+      'postal_code' => 'postcode',
+    ];
+    foreach($form_items as $element_item => $form_item) {
+      $fields[$element_item] = [
+        'value' => $form_state->getValue($form_item),
+        'key' => $form_item,
+        'tokens' => [
+          '%field' => $form[$form_item]['#title']->render(),
+        ],
+      ];
+    }
+
+    $errors = $premises->validateFields($fields);
+    // Display error messages.
+    foreach($errors as $field => $message) {
+      $form_state->setErrorByName($field, $message);
+    }
   }
 
   /**

@@ -40,18 +40,11 @@ class ParDataAccessControlHandler extends EntityAccessControlHandler {
     // Access to each par entity depends on whether it is an authority or organisation
     // related to that par person, or whether it is related to one of these authorities
     // or organisations.
-    $entity_people = $this->getRelatedPeople($entity);
-
     // All access checks are done using the relationship between a user account
     // and a par person entity, so we need all the user's par people.
-    if ($entity_people) {
-      $par_data_manager = \Drupal::service('par_data.manager');
-      $user_account = \Drupal\user\Entity\User::load($account->id());
-      $account_people = $par_data_manager->getUserPeople($user_account);
-    }
-    else {
-      $account_people = [];
-    }
+    $par_data_manager = \Drupal::service('par_data.manager');
+    $user_account = \Drupal\user\Entity\User::load($account->id());
+    $is_member = $par_data_manager->isMember($entity, $user_account);
 
     switch ($operation) {
       case 'view':
@@ -62,17 +55,16 @@ class ParDataAccessControlHandler extends EntityAccessControlHandler {
           $permission = 'access ' . $this->entityTypeId . ' entities';
         }
 
-        // Now we can find out if any of the people relate to any of the entities.
-        if (!empty(array_intersect_key($entity_people, $account_people))) {
-          return AccessResult::allowedIfHasPermission($account, $permission);
-        }
+        // All users are allowed to view regardless of their membership.
+        return AccessResult::allowedIfHasPermission($account, $permission);
+
         break;
 
       case 'update':
         $permission = 'edit ' . $this->entityTypeId . ' entities';
 
-        // Now we can find out if any of the people relate to any of the entities.
-        if (!empty(array_intersect_key($entity_people, $account_people))) {
+        // Only members can edit or update a par entity.
+        if ($is_member === TRUE) {
           return AccessResult::allowedIfHasPermission($account, $permission);
         }
         break;
@@ -80,8 +72,8 @@ class ParDataAccessControlHandler extends EntityAccessControlHandler {
       case 'delete':
         $permission = 'delete ' . $this->entityTypeId . ' entities';
 
-        // Now we can find out if any of the people relate to any of the entities.
-        if (!empty(array_intersect_key($entity_people, $account_people))) {
+        // Only members can edit or update a par entity.
+        if ($is_member === TRUE) {
           return AccessResult::allowedIfHasPermission($account, $permission);
         }
         break;
@@ -115,34 +107,6 @@ class ParDataAccessControlHandler extends EntityAccessControlHandler {
 
     $result = parent::createAccess($entity_bundle, $account, $context, TRUE)->cachePerPermissions();
     return $return_as_object ? $result : $result->isAllowed();
-  }
-
-  /**
-   * Get the par person records related to a given entity.
-   *
-   * @param $entity
-   * @param array $people
-   * @return array
-   */
-  public function getRelatedPeople($entity, $people = []) {
-    if (!$entity instanceof ParDataEntityInterface) {
-      return $people;
-    }
-
-    if (in_array($entity->getEntityType()->id(), ['par_data_authority', 'par_data_organisation'])) {
-      $people += $entity->getReferenceEntitiesByType('par_data_person');
-    }
-    else {
-      foreach($entity->getReferenceFields() as $field_name => $fields) {
-        foreach ($fields->referencedEntities() as $referenced_entity) {
-          if ($entity->getEntityType()->id() !== 'par_data_person') {
-            $people = $this->getRelatedPeople($referenced_entity, $people);
-          }
-        }
-      }
-    }
-
-    return $people;
   }
 
 }

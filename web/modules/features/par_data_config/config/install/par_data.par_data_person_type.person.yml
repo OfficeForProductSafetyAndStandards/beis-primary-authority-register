@@ -10,6 +10,12 @@ configuration:
     label_fields:
       - first_name
       - last_name
+    required_fields:
+      salutation: 'The %field is required.'
+      first_name: 'The %field is required.'
+      last_name: 'The %field is required.'
+      work_phone: 'The %field is required.'
+      email: 'The %field is required.'
   communication_email:
     boolean_values:
       'on': Email

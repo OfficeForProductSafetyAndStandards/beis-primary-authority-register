@@ -96,6 +96,12 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
       '#value' => t('Save'),
     ];
 
+    $previous_link = $this->getFlow()->getLinkByStep(3)->setText('Cancel')->toString();
+    $form['cancel'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', ['@link' => $previous_link]),
+    ];
+
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
 
