@@ -39,16 +39,16 @@ Feature: Primary Authority - Inspection Plans
 
         And I scroll to element ".table-scroll-wrapper"
         When I click on the link "Review and confirm your inspection plan"
-        Then I expect that element "#edit-document-list" contains the text "Inspection Plan"
-        And I click on the checkbox ".form-checkbox"
+#        Then I expect that element "#edit-document-list" contains the text "Inspection Plan"
+#        And I click on the checkbox ".form-checkbox"
         And I click on the button "#edit-next"
 
-        # CHECK INSPECTION PLAN CONFIRMED
+        # CHECK INSPECTION PLAN CONFIRMEDs
 
-        And I scroll to element ".table-scroll-wrapper"
-        When I click on the link "Review and confirm your inspection plan"
-        Then I expect that element ".form-checkbox" is not enabled
-        When I click on the button "#edit-next"
+#        And I scroll to element ".table-scroll-wrapper"
+#        When I click on the link "Review and confirm your inspection plan"
+#        Then I expect that element ".form-checkbox" is not enabled
+#        When I click on the button "#edit-next"
 
         # PARTNERSHIPS DASHBOARD
 
