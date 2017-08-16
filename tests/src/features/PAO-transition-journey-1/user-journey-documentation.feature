@@ -1,5 +1,5 @@
 @ci @journey1
-Feature: PAR User - Documentation
+Feature: Primary Authority - Documentation
 
     Background:
         # TEST DATA RESET
@@ -10,17 +10,11 @@ Feature: PAR User - Documentation
         And I open the url "/admin/par-data-test-reset"
         And I open the url "/user/logout"
 
-    Scenario: User Journey 1 - Documentation
+    Scenario: Primary Authority - Documentation
         # LOGIN SCREEN
 
         Given I open the url "/user/login"
-        And I add "par_authority@example.com" to the inputfield "#edit-name"
-        And I add "TestPassword" to the inputfield "#edit-pass"
-        When I click on the button "#edit-submit"
-
-        # WELCOME SCREEN
-
-        Then I expect that element ".error-message" is not visible
+        And I am logged in as "par_authority@example.com"
         When I click on the button ".button-start"
 
         # PARTNERSHIPS DASHBOARD

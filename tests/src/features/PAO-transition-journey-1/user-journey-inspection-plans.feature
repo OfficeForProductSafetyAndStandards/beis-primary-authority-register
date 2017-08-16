@@ -1,5 +1,5 @@
 @ci @journey1
-Feature: PAR User - Inspection Plans
+Feature: Primary Authority - Inspection Plans
 
     Background:
         # TEST DATA RESET
@@ -10,18 +10,12 @@ Feature: PAR User - Inspection Plans
         And I open the url "/admin/par-data-test-reset"
         And I open the url "/user/logout"
 
-    Scenario: User Journey 1 - Inspection Plans
+    Scenario: Primary Authority - Inspection Plans
         # LOGIN SCREEN
 
         Given I open the url "/user/login"
-        And I add "par_authority@example.com" to the inputfield "#edit-name"
-        And I add "TestPassword" to the inputfield "#edit-pass"
-        When I click on the button "#edit-submit"
-
-        # WELCOME SCREEN
-
-        Then I expect that element ".error-message" is not visible
-        And I expect that element "#block-sitewidehelpdeskmessage" contains the text "0121 345 1201"
+        When I am logged in as "par_authority@example.com"
+        Then I expect that element "#block-sitewidehelpdeskmessage" contains the text "0121 345 1201"
         When I click on the button ".button-start"
 
         # PARTNERSHIPS DASHBOARD
