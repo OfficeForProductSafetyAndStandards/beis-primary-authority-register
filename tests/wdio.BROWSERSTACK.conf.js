@@ -1,16 +1,15 @@
 const config = require('./wdio.conf.js').config;
 
 config.capabilities = [{
-        browser: 'ie',
-        browser_version: '8.0',
-        device: null,
-        os: 'Windows',
-        os_version: '7',
-        resolution: '1024x768',
-        'browserstack.local': true,
-        'browserstack.debug': true
-        // debug: true
-    },
+    browser: 'ie',
+    browser_version: '8.0',
+    device: null,
+    os: 'Windows',
+    os_version: '7',
+    resolution: '1024x768',
+    'browserstack.local': true,
+    'browserstack.debug': true
+},
     {
         browser: 'ie',
         browser_version: '9',
@@ -20,7 +19,17 @@ config.capabilities = [{
         resolution: '1024x768',
         'browserstack.local': true,
         'browserstack.debug': true
-        // debug: true
+    },
+    {
+
+        browser: 'safari',
+        browser_version: '9.1',
+        device: null,
+        os: 'OS X',
+        os_version: 'El Capitan',
+        resolution: '1024x768',
+        'browserstack.local': true,
+        'browserstack.debug': true
     },
     {
         browser: 'Edge',
@@ -31,7 +40,6 @@ config.capabilities = [{
         resolution: '1024x768',
         'browserstack.local': true,
         'browserstack.debug': true
-        // debug: true
     },
     {
         browser: 'Firefox',
@@ -42,7 +50,6 @@ config.capabilities = [{
         resolution: '1024x768',
         'browserstack.local': true,
         'browserstack.debug': true
-        // debug: true
     },
     {
         browser: 'Chrome',
@@ -53,16 +60,14 @@ config.capabilities = [{
         resolution: '1024x768',
         'browserstack.local': true,
         'browserstack.debug': true
-        // debug: true
     }
 ];
 
 config.services = ['browserstack'];
-config.user = process.env.BSK_USER;
-config.key = process.env.BSK_KEY;
+config.user = process.env.BS_USER;
+config.key = process.env.BS_KEY;
 config.browserstackLocal = true;
 // config.host = 'hub-cloud.browserstack.com';
 config.baseUrl = 'http://localhost:8111';
 config.tags = '@ci, ~@Pending, ~@ie8bug';
 exports.config = config;
-
