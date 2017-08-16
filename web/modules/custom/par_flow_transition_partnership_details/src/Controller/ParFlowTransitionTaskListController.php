@@ -126,7 +126,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
     // Show the task links in table format.
     $build['task_list'] = [
       '#theme' => 'table',
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => ['form-group']],
       '#header' => [],
       '#rows' => $rows,
       '#empty' => $this->t("No tasks could be found."),

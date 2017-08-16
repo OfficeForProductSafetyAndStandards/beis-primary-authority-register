@@ -55,7 +55,7 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
     // Show the task links in table format.
     $form['document_list'] = [
       '#theme' => 'table',
-      '#attributes' => ['class' => array('form-group')],
+      '#attributes' => ['class' => ['form-group']],
       '#title' => 'Inspection plans',
       '#header' => ['Confirm', 'Inspection Plan'],
       '#empty' => $this->t("There is no inspection plan for this partnership."),
