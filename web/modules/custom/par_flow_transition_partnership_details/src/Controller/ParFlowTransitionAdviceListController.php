@@ -49,7 +49,7 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
     // Show the documents in table format.
     $build['documentation_list'] = [
       '#theme' => 'table',
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => ['form-group']],
       '#title' => 'Advice documentation',
       '#header' => ['Document', 'Type of document and regulatory functions', 'Actions', 'Confirmed'],
       '#empty' => $this->t("There is no documentation for this partnership."),
@@ -108,7 +108,7 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
       $this->addCacheableDependency(current($advice->get('document')->referencedEntities()));
     }
 
-    $build['cancel'] = [
+    $build['save'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
         '@link' => $this->getFlow()->getLinkByStep(3, $this->getRouteParams(), ['attributes' => ['class' => 'button']])

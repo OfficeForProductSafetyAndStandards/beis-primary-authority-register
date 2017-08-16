@@ -76,16 +76,14 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
       '#title' => $this->t('Name of legal entity'),
       '#default_value' => isset($id) ? $this->getDefaultValues("legal_entity_{$id}_registered_name") : '',
       '#description' => $this->t('A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisation such as trusts and charities.'),
-      '#required' => TRUE,
     ];
 
     // Legal Type.
-    $form['Legal_entity_type'] = [
+    $form['legal_entity_type'] = [
       '#type' => 'select',
       '#title' => $this->t('Type of Legal Entity'),
       '#default_value' => isset($id) ? $this->getDefaultValues("legal_entity_{$id}_legal_entity_type") : '',
       '#options' => $legal_entity_bundle->getAllowedValues('legal_entity_type'),
-      '#required' => TRUE,
     ];
 
     // The Person's name.
@@ -93,7 +91,11 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
       '#type' => 'textfield',
       '#title' => $this->t('Companies House Number'),
       '#default_value' => isset($id) ? $this->getDefaultValues("legal_entity_{$id}_registered_number") : '',
-      '#required' => TRUE,
+      '#states' => array(
+        'visible' => array(
+          'select[name="legal_entity_type"]' => array('value' => 'limited_company'),
+        ),
+      ),
     ];
 
     $form['next'] = [
@@ -116,6 +118,45 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    // No validation yet.
+    parent::validateForm($form, $form_state);
+    $form_items = [
+      'registered_name' => 'registered_name',
+      'legal_entity_type' => 'legal_entity_type',
+    ];
+
+    if ($form_state->getValue('legal_entity_type') === 'limited_company') {
+      $form_items['registered_number'] = 'company_house_no';
+    }
+
+    foreach($form_items as $element_item => $form_item) {
+      $fields[$element_item] = [
+        'value' => $form_state->getValue($form_item),
+        'key' => $form_item,
+        'tokens' => [
+          '%field' => !empty($form[$form_item]['#title']) ? $form[$form_item]['#title']->render() : '',
+        ],
+      ];
+    }
+    $legal_entity = $this->getRouteParam('par_data_legal_entity');
+    if (empty($legal_entity)) {
+      // We are adding a new entity so need to create one for the validation.
+      $legal_entity = \Drupal\par_data\Entity\ParDataLegalEntity::create([
+        'type' => 'legal_entity',
+        'uid' => 1,
+      ]);
+    }
+    $errors = $legal_entity->validateFields($fields);
+    // Display error messages.
+    foreach($errors as $field => $message) {
+      $form_state->setErrorByName($field, $message);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -123,7 +164,7 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
     $legal_entity = $this->getRouteParam('par_data_legal_entity');
     if (!empty($legal_entity)) {
       $legal_entity->set('registered_name', $this->getTempDataValue('registered_name'));
-      $legal_entity->set('legal_entity_type', $this->getTempDataValue('Legal_entity_type'));
+      $legal_entity->set('legal_entity_type', $this->getTempDataValue('legal_entity_type'));
       $legal_entity->set('registered_number', $this->getTempDataValue('company_house_no'));
 
       if ($legal_entity->save()) {
@@ -146,7 +187,7 @@ class ParFlowTransitionLegalEntityForm extends ParBaseForm {
         'uid' => 1,
         'registered_name' => $this->getTempDataValue('registered_name'),
         'registered_number' => $this->getTempDataValue('company_house_no'),
-        'legal_entity_type' => $this->getTempDataValue('Legal_entity_type'),
+        'legal_entity_type' => $this->getTempDataValue('legal_entity_type'),
       ]);
       $legal_entity->save();
 

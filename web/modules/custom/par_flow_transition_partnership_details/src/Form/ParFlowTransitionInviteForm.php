@@ -108,7 +108,6 @@ HEREDOC;
     // Allow the message subject to be changed.
     $form['email_subject'] = [
       '#type' => 'textfield',
-      '#required' => TRUE,
       '#title' => t('Message subject'),
       '#default_value' => $this->getDefaultValues('email_subject'),
     ];
@@ -116,7 +115,6 @@ HEREDOC;
     // Allow the message body to be changed.
     $form['email_body'] = [
       '#type' => 'textarea',
-      '#required' => TRUE,
       '#rows' => 18,
       '#title' => t('Message'),
       '#default_value' => $this->getDefaultValues('email_body'),
@@ -125,6 +123,12 @@ HEREDOC;
     $form['send'] = [
       '#type' => 'submit',
       '#value' => t('Send Invitation'),
+    ];
+
+    $previous_link = $this->getFlow()->getLinkByStep(3)->setText('Cancel')->toString();
+    $form['cancel'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', ['@link' => $previous_link]),
     ];
 
     // Make sure to add the partnership cacheability data to this form.
@@ -138,6 +142,14 @@ HEREDOC;
    * Validate the form to make sure the correct values have been entered.
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+
+    if (empty($form_state->getValue('email_subject'))) {
+      $form_state->setErrorByName('email_subject', $this->t('<a href="#edit-email-subject">The Message subject is required.</a>'));
+    }
+
+    if (empty($form_state->getValue('email_body'))) {
+      $form_state->setErrorByName('email_body', $this->t('<a href="#edit-email-body">The Message is required.</a>'));
+    }
     // Check that the email body contains an invite accept link.
     if (!strpos($form_state->getValue('email_body'), '[invite:invite-accept-link]')) {
       $form_state->setErrorByName('email_body', "Please make sure you have the invite token '[invite:invite-accept-link]' somewhere in your message.");

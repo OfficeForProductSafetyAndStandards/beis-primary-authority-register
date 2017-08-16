@@ -1,5 +1,5 @@
-@ci @journey2
-Feature: Business User - Manage name and summary detail
+@ci
+Feature: Helpdesk As Business User - Manage name and summary detail
 
     Background:
         # TEST DATA RESET
@@ -10,31 +10,22 @@ Feature: Business User - Manage name and summary detail
         And I open the url "/admin/par-data-test-reset"
         And I open the url "/user/logout"
 
-    Scenario: Business User - Manage name and summary detail
+    Scenario: Helpdesk As Business User - Manage name and summary detail
         # LOGIN SCREEN
 
         Given I open the url "/user/login"
-        And I am logged in as "par_business@example.com"
-        When I click on the button ".button-start"
+        And I am logged in as "par_helpdesk@example.com"
 
-        # PARTNERSHIPS DASHBOARD
+        # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
-        And I scroll to element ".table-scroll-wrapper"
-        When I click on the link "ABCD Mart"
+        When I click on the link "Dashboard"
 
-        # TERMS AND CONDITIONS SCREEN
+        # PARTNERSHIP DETAILS
 
-        Then I expect that element ".par-flow-transition-business-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
-        When I click on the checkbox "#edit-terms-conditions"
-        And I click on the button "#edit-next"
-
-        # PARTNERSHIP TASKS
-
+        Then I expect that element "h1" contains the text "RD Helpdesk Dashboard"
+        When I click on the button "td.views-field.views-field-organisation-name a"
         Then I expect that element "h3" contains the text "Main contact at the Authority"
         When I click on the link "Review and confirm your business details"
-
-        # REVIEW BUSINESS DETAILS
-
         Then I expect that element "#par-flow-transition-business-details" contains the text "About the business"
         And I expect that element "#par-flow-transition-business-details" contains the text "Registered address"
         And I expect that element "#par-flow-transition-business-details" contains the text "Legal Entities"
@@ -54,13 +45,7 @@ Feature: Business User - Manage name and summary detail
         Then I expect that element "#par-flow-transition-business-details" contains the text "Trading Name Add"
         And I click on the checkbox "#edit-confirmation"
         And I click on the button "#edit-next"
-
-        # PARTNERSHIP TASKS
-
         Then I expect that element "#block-par-theme-content" contains the text "Confirmed by the Organisation"
         And I expect that element ".table-scroll-wrapper" not contains the text "Invite the business to confirm their details"
         And I expect that element ".table-scroll-wrapper" not contains the text "Review and confirm your inspection plan"
         And I expect that element ".table-scroll-wrapper" not contains the text "Review and confirm your documentation"
-
-
-

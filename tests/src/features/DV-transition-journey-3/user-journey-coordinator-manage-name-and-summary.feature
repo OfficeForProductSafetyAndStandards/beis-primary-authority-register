@@ -1,5 +1,5 @@
 @ci @journey3
-Feature: Coordinator User - Manage Addresses
+Feature: Coordinator User - Manage Name and Summary
 
     Background:
         # TEST DATA RESET
@@ -10,14 +10,11 @@ Feature: Coordinator User - Manage Addresses
         And I open the url "/admin/par-data-test-reset"
         And I open the url "/user/logout"
 
-    Scenario: Manage business name and summary
+    Scenario: Coordinator User - Manage Name and Summary
         # LOGIN SCREEN
 
         Given I open the url "/user/login"
-        And I add "par_coordinator@example.com" to the inputfield "#edit-name"
-        And I add "TestPassword" to the inputfield "#edit-pass"
-        When I click on the button "#edit-submit"
-        Then I expect that element ".error-message" is not visible
+        And I am logged in as "par_coordinator@example.com"
         When I click on the button ".button-start"
 
         # PARTNERSHIPS DASHBOARD
@@ -27,24 +24,24 @@ Feature: Coordinator User - Manage Addresses
 
         # TERMS AND CONDITIONS SCREEN
 
-        Then the element ".par-flow-transition-coordinator-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
+        Then I expect that element ".par-flow-transition-coordinator-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
         When I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
-        Then the element "h3" contains the text "Main contact at the Authority"
+        Then I expect that element "h3" contains the text "Main contact at the Authority"
         When I click on the link "Review and confirm your association details"
-        Then the element "#par-flow-transition-coordinator-details" contains the text "About the association"
-        And the element "#par-flow-transition-coordinator-details" contains the text "Registered address"
-        And the element "#par-flow-transition-coordinator-details" contains the text "Legal Entities"
-        And the element "#par-flow-transition-coordinator-details" contains the text "Trading Names"
+        Then I expect that element "#par-flow-transition-coordinator-details" contains the text "About the association"
+        And I expect that element "#par-flow-transition-coordinator-details" contains the text "Registered address"
+        And I expect that element "#par-flow-transition-coordinator-details" contains the text "Legal Entities"
+        And I expect that element "#par-flow-transition-coordinator-details" contains the text "Trading Names"
         When I click on the link "edit"
         And I add "Change to the about association details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-next"
-        Then the element "#edit-about-business" contains the text "Change to the about association details section"
+        Then I expect that element "#edit-about-business" contains the text "Change to the about association details section"
         When I click on the button "form#par-flow-transition-coordinator-details #edit-0.js-form-item a.flow-link"
         And I add "Trading Name Change" to the inputfield "#edit-trading-name"
         And I click on the button "#edit-next"
-        Then the element "#par-flow-transition-coordinator-details" contains the text "Trading Name Change"
+        Then I expect that element "#par-flow-transition-coordinator-details" contains the text "Trading Name Change"
         When I click on the link "add another trading name"
         And I add "Trading Name Add" to the inputfield "#edit-trading-name"
         And I click on the button "#edit-next"
-        Then the element "#par-flow-transition-coordinator-details" contains the text "Trading Name Add"
+        Then I expect that element "#par-flow-transition-coordinator-details" contains the text "Trading Name Add"

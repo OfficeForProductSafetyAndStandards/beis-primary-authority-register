@@ -1,5 +1,5 @@
-@ci @journey1
-Feature: Primary Authority - Change Partnership Details
+@ci
+Feature: Helpdesk As Primary Authority - Manage name and summary detail
 
     Background:
         # TEST DATA RESET
@@ -10,28 +10,21 @@ Feature: Primary Authority - Change Partnership Details
         And I open the url "/admin/par-data-test-reset"
         And I open the url "/user/logout"
 
-    Scenario: Primary Authority - Change Partnership Details
-        # LOGIN
+    Scenario: Helpdesk As Primary Authority - Manage name and summary detail
+        # LOGIN SCREEN
 
         Given I open the url "/user/login"
-        And I am logged in as "par_authority@example.com"
-        When I click on the button ".button-start"
+        And I am logged in as "par_helpdesk@example.com"
 
-        # PARTNERSHIPS DASHBOARD
+        # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
-        And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
-        When I click on the link "ABCD Mart"
+        When I click on the link "Dashboard"
 
-        # TERMS AND CONDITIONS SCREEN
+        # PARTNERSHIP DETAILS
 
-        Then I expect that element ".par-flow-transition-partnership-details-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
-        When I click on the checkbox "#edit-terms-conditions"
-        And I click on the button "#edit-next"
-        And I scroll to element ".table-scroll-wrapper"
-        And I click on the link "Review and confirm your partnership details"
-
-        # REVIEW PARTNERSHIPS DETAILS
-
+        Then I expect that element "h1" contains the text "RD Helpdesk Dashboard"
+        When I click on the button "td.views-field.views-field-authority-name a"
+        When I click on the link "Review and confirm your partnership details"
         And I click on the link "edit"
         And I add "test partnership info change" to the inputfield "#edit-about-partnership"
         And I click on the button "#edit-next"
@@ -46,19 +39,14 @@ Feature: Primary Authority - Change Partnership Details
         And I click on the button "#edit-next"
         When I add "Mr" to the inputfield "#edit-salutation"
         And I click on the button "#edit-next"
-        Then I expect that element ".error-message" does exist
         When I add "Animal" to the inputfield "#edit-first-name"
         And I click on the button "#edit-next"
-        Then I expect that element ".error-message" does exist
         When I add "the Muppet" to the inputfield "#edit-last-name"
         And I click on the button "#edit-next"
-        Then I expect that element ".error-message" does exist
         When I add "91723456789" to the inputfield "#edit-work-phone"
         And I click on the button "#edit-next"
-        Then I expect that element ".error-message" does exist
         When I add "9777777777" to the inputfield "#edit-mobile-phone"
         And I click on the button "#edit-next"
-        Then I expect that element ".error-message" does exist
         When I add "par_authority_animal@example.com" to the inputfield "#edit-email"
         When I click on the button "#edit-next"
         Then I expect that element "#edit-authority-contacts" contains the text "Animal"
@@ -105,6 +93,6 @@ Feature: Primary Authority - Change Partnership Details
         And I click on the checkbox "#edit-confirmation"
         And I click on the button "#edit-next"
         Then I expect that element "#block-par-theme-content" contains the text "Confirmed by the Authority"
-        When I click on the link "Go back to your partnerships"
-        Then I expect that element "h1" contains the text "List of Partnerships"
-        And I click on the link "Log out"
+        And I expect that element ".table-scroll-wrapper" contains the text "Invite the business to confirm their details"
+        And I expect that element ".table-scroll-wrapper" contains the text "Review and confirm your inspection plan"
+        And I expect that element ".table-scroll-wrapper" contains the text "Review and confirm your documentation"
