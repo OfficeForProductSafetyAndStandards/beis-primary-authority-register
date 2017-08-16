@@ -27,6 +27,7 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
       ]);
     }
 
+    // Document Completion as a %.
     $data['par_partnerships_revision']['document_completion'] = array(
       'title' => t('Documents Completion Percentage'),
       'field' => [
@@ -36,6 +37,7 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
       ],
     );
 
+    // Combined Status Field.
     $data['par_partnerships_revision']['par_combined_status_field'] = array(
       'title' => t('Combined Status Field'),
       'field' => [
@@ -44,6 +46,16 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
         'id' => 'par_partnerships_combined_status_field',
       ],
     );
+
+    // Custom filter for Par Membership checks.
+    $data['par_partnerships_revision']['id_filter'] = [
+      'title' => t('Partnership: Can user update?'),
+      'filter' => [
+        'title' => t('Partnership: Can user update?'),
+        'help' => t('Filter by partnerships this user can update.'),
+        'id' => 'par_member',
+      ],
+    ];
 
     return $data;
   }
