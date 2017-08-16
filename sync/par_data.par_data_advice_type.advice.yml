@@ -10,9 +10,12 @@ description: 'Advice is given by a Primary Authority in the context of a Partner
 help: ''
 configuration:
   entity:
-    required_fields:
+    completed_fields:
       - advice_type
       - field_regulatory_function
+    required_fields:
+      advice_type: 'The %field is required.'
+      regulatory_function: 'The %field is required.'
   advice_type:
     allowed_values:
       business_advice: 'Primary Authority advice for the business'

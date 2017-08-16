@@ -7,6 +7,7 @@ use Drupal\Core\Config\Entity\ConfigEntityType;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\user\UserInterface;
 
 /**
@@ -20,6 +21,11 @@ class ParDataManager implements ParDataManagerInterface {
    * @var \Drupal\Core\Entity\EntityManagerInterface
    */
   protected $entityManager;
+
+  /**
+   * The core entity types through which all membership is calculated.
+   */
+  protected $coreEntities = ['par_data_authority', 'par_data_organisation'];
 
   /**
    * Constructs a ParDataPermissions instance.
@@ -78,6 +84,58 @@ class ParDataManager implements ParDataManagerInterface {
    */
   public function getEntityTypeStorage(EntityTypeInterface $definition) {
     return $this->entityManager->getStorage($definition->id()) ?: NULL;
+  }
+
+  /**
+   * Get the par person records related to a given entity.
+   *
+   * @param $entity
+   * @param array $people
+   * @return array
+   */
+  public function getRelatedPeople($entity, $people = []) {
+    if (!$entity instanceof ParDataEntityInterface) {
+      return $people;
+    }
+
+    if (in_array($entity->getEntityType()->id(), $this->coreEntities)) {
+      $people += $entity->getReferenceEntitiesByType('par_data_person');
+    }
+    else {
+      foreach($entity->getReferenceFields() as $field_name => $fields) {
+        foreach ($fields->referencedEntities() as $referenced_entity) {
+          if ($entity->getEntityType()->id() !== 'par_data_person') {
+            $people = $this->getRelatedPeople($referenced_entity, $people);
+          }
+        }
+      }
+    }
+
+    return $people;
+  }
+
+  /**
+   * Determine whether a user account is a member of any given entity.
+   *
+   * @param EntityInterface $entity
+   *   An entity to check membership on.
+   * @param UserInterface $account
+   *   A user account to check for.
+   * @return bool
+   */
+  public function isMember($entity, UserInterface $account) {
+    $entity_people = $this->getRelatedPeople($entity);
+
+    // All access checks are done using the relationship between a user account
+    // and a par person entity, so we need all the user's par people.
+    if ($entity_people) {
+      $account_people = $this->getUserPeople($account);
+    }
+    else {
+      $account_people = [];
+    }
+
+    return !empty(array_intersect_key($entity_people, $account_people));
   }
 
   /**
