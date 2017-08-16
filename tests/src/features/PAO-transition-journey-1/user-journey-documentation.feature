@@ -51,7 +51,7 @@ Feature: PAR User - Documentation
         And I click on the radio "#edit-document-type-authority-advice"
         And I click on the checkbox ".form-label*=Cookie control"
         When I click on the button "#edit-next"
-        Then I expect that element ".table-scroll-wrapper" not contains the text "✔"
+        Then I expect that element ".table-scroll-wrapper" contains the text "✔"
         And the element ".table-scroll-wrapper" contains the text "Cookie control"
         When I click on the link "Save"
         Then I expect that element ".table-scroll-wrapper" contains the text "50%"
