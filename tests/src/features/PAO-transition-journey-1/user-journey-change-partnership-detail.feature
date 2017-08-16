@@ -106,5 +106,5 @@ Feature: Primary Authority - Change Partnership Details
         And I click on the button "#edit-next"
         Then I expect that element "#block-par-theme-content" contains the text "Confirmed by the Authority"
         When I click on the link "Go back to your partnerships"
-        Then I expect that element "h1" contains the text "List of Partnerships"
+        Then I expect that element "h1" contains the text "Updating the Primary Authority Register"
         And I click on the link "Log out"
