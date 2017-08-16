@@ -53,5 +53,5 @@ Feature: Primary Authority - Inspection Plans
         # PARTNERSHIPS DASHBOARD
 
         And I click on the link "Go back to your partnerships"
-        Then I expect that element "h1" contains the text "List of Partnerships"
+        Then I expect that element "h1" contains the text "Updating the Primary Authority Register"
         And I click on the link "Log out"
