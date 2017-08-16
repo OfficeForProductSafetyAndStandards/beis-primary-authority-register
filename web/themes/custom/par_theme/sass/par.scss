@@ -264,3 +264,8 @@ a.no-pointer-events {
   background: url(/themes/custom/par_theme/assets/images/document-icon.png) 0px 2px/15px 20px no-repeat;
   padding-left: 20px;
 }
+
+/* Removes bottom border underline from header logo. We are not using a logo in Transition */
+#global-header #logo {
+  border-bottom: none;
+}
