@@ -1,5 +1,5 @@
-@ci @journey1
-Feature: PAR User - Change Partnership Details
+@ci @journey5
+Feature: Helpdesk As Primary Authority - Manage Addresses
 
     Background:
         # TEST DATA RESET
@@ -10,40 +10,33 @@ Feature: PAR User - Change Partnership Details
         And I open the url "/admin/par-data-test-reset"
         And I open the url "/user/logout"
 
-    Scenario: User Journey 1 - Change partnership details
-        # HOMEPAGE
-        Given I open the url "/user/login"
-
+    Scenario: Helpdesk As Primary Authority - Manage Addresses
         # LOGIN SCREEN
 
-        And I add "par_authority@example.com" to the inputfield "#edit-name"
+        Given I open the url "/user/login"
+        And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
+        Then I expect that element "#block-par-theme-account-menu" contains the text "Log out"
 
-        # WELCOME SCREEN
+        # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
-        Then I expect that element ".error-message" is not visible
-        When I click on the button ".button-start"
+        When I click on the link "Dashboard"
+#        When I open the url "/dv/rd-dashboard"
 
-        # PARTNERSHIPS DASHBOARD
+        # PARTNERSHIP DETAILS
 
-        And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
-        When I click on the link "ABCD Mart"
-
-        # TERMS AND CONDITIONS SCREEN
-
-        Then I expect that element ".par-flow-transition-partnership-details-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
-        When I click on the checkbox "#edit-terms-conditions"
-        And I click on the button "#edit-next"
-        And I scroll to element ".table-scroll-wrapper"
+        Then I expect that element "h1" contains the text "RD Helpdesk Dashboard"
+        When I click on the button "td.views-field.views-field-authority-name a"
+        Then I expect that element ".table-scroll-wrapper" contains the text "Review and confirm your partnership details"
         And I click on the link "Review and confirm your partnership details"
-
-        # REVIEW PARTNERSHIPS DETAILS
-
         And I click on the link "edit"
         And I add "test partnership info change" to the inputfield "#edit-about-partnership"
         And I click on the button "#edit-next"
         Then I expect that element "#edit-first-section" contains the text "test partnership info change"
+
+        # CHANGE ADDRESSES
+
         When I click on the button "form#par-flow-transition-partnership-details-overview .authority-alternative-contact a.flow-link"
         And I clear the inputfield "#edit-salutation"
         And I clear the inputfield "#edit-first-name"
@@ -116,4 +109,8 @@ Feature: PAR User - Change Partnership Details
         Then I expect that element "#block-par-theme-content" contains the text "Confirmed by the Authority"
         When I click on the link "Go back to your partnerships"
         Then I expect that element "h1" contains the text "List of Partnerships"
+
+        # CSV CHECK
+        When I click on the link "Dashboard"
+        And I click on the link "Download as CSV"
         And I click on the link "Log out"

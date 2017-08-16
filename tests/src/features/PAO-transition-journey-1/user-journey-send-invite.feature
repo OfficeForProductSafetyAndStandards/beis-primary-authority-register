@@ -21,7 +21,7 @@ Feature: PAR User - Send Invite
         # WELCOME SCREEN
 
         Then I expect that element ".error-message" is not visible
-        And the element "#block-par-theme-content" contains the text "Review and confirm your data by"
+        And I expect that element "#block-par-theme-content" contains the text "Review and confirm your data by"
         When I click on the button ".button-start"
 
         # PARTNERSHIPS DASHBOARD
@@ -31,7 +31,7 @@ Feature: PAR User - Send Invite
 
         # TERMS AND CONDITIONS SCREEN
 
-        Then the element ".par-flow-transition-partnership-details-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
+        Then I expect that element ".par-flow-transition-partnership-details-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
         When I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
 
@@ -52,12 +52,12 @@ Feature: PAR User - Send Invite
         And I add "Test change meassage body [invite:invite-accept-link]" to the inputfield "#edit-email-body"
         And I add "Test change meassage subject" to the inputfield "#edit-email-body"
         When I press "Send Invitation"
-#        Then the element "h1" contains the text "Updating the Primary Authority Register"
-#        And the element "#edit-email-subject" contains the text "Test change subject line"
-#        And the element "#edit-email-body" contains the text "Test change meassage body [invite:invite-accept-link]"
+#        Then I expect that element "h1" contains the text "Updating the Primary Authority Register"
+#        And I expect that element "#edit-email-subject" contains the text "Test change subject line"
+#        And I expect that element "#edit-email-body" contains the text "Test change meassage body [invite:invite-accept-link]"
 #
 #        # PARTERSHIP TASKS SCREEN
 #
 #        When I click on the link "Go back to your partnerships"
-#        Then the element "h1" contains the text "List of Partnerships"
+#        Then I expect that element "h1" contains the text "List of Partnerships"
 #        And I click on the link "Log out"
