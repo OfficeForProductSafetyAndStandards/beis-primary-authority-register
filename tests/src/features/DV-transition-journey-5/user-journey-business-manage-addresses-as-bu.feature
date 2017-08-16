@@ -95,23 +95,19 @@ Feature: Helpdesk As Business User - Manage Addresses
 
         When I click on the button "form#par-flow-transition-business-details #edit-legal-entity a.flow-link"
         And I add "ABCD Mart Change" to the inputfield "#edit-registered-name"
-        And I select the option with the text "Limited Liability Partnership" for element "#edit-legal-entity-type"
+        And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
         And I add "987654321" to the inputfield "#edit-company-house-no"
         And I click on the button "#edit-next"
         Then I expect that element "#edit-legal-entity div" contains the text "ABCD Mart Change"
         And I expect that element "#edit-legal-entity" contains the text "987654321"
-        And I expect that element "#edit-legal-entity" contains the text "Limited Liability Partnership"
+        And I expect that element "#edit-legal-entity" contains the text "Limited Company"
 
         # ADD LEGAL ENTITIES
 
         When I click on the link "add another legal entity"
         And I click on the button "#edit-next"
         And I add "Another Legal Entity" to the inputfield "#edit-registered-name"
-        And I click on the button "#edit-next"
         And I select the option with the text "Sole Trader" for element "#edit-legal-entity-type"
         And I click on the button "#edit-next"
-        And I add "1234567890" to the inputfield "#edit-company-house-no"
-        And I click on the button "#edit-next"
         Then I expect that element "#edit-alternative" contains the text "Another Legal Entity"
-        And I expect that element "#edit-alternative" contains the text "1234567890"
         And I expect that element "#edit-alternative" contains the text "Sole Trader"
