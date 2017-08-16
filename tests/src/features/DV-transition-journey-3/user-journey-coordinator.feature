@@ -103,11 +103,30 @@ Feature: Coordinator User - Manage Addresses
         And I click on the button "#edit-next"
         Then I expect that element "#edit-alternative" contains the text "Another Legal Entity"
         And I expect that element "#edit-alternative" contains the text "Sole Trader"
+
+        # CHANGE NAME AND SUMMARY
+
+        Then I expect that element "#par-flow-transition-coordinator-details" contains the text "About the association"
+        And I expect that element "#par-flow-transition-coordinator-details" contains the text "Registered address"
+        And I expect that element "#par-flow-transition-coordinator-details" contains the text "Legal Entities"
+        And I expect that element "#par-flow-transition-coordinator-details" contains the text "Trading Names"
+        When I click on the link "edit"
+        And I add "Change to the about association details section" to the inputfield "#edit-about-business"
+        And I click on the button "#edit-next"
+        Then I expect that element "#edit-about-business" contains the text "Change to the about association details section"
+        When I click on the button "form#par-flow-transition-coordinator-details #edit-0.js-form-item a.flow-link"
+        And I add "Trading Name Change" to the inputfield "#edit-trading-name"
+        And I click on the button "#edit-next"
+        Then I expect that element "#par-flow-transition-coordinator-details" contains the text "Trading Name Change"
+        When I click on the link "add another trading name"
+        And I add "Trading Name Add" to the inputfield "#edit-trading-name"
+        And I click on the button "#edit-next"
+        Then I expect that element "#par-flow-transition-coordinator-details" contains the text "Trading Name Add"
         And I click on the checkbox "#edit-confirmation"
+        And I click on the button "#edit-next"
 
         # PARTNERSHIP DASHBOARD
 
-        And I click on the button "#edit-next"
         Then I expect that element "#block-par-theme-content" contains the text "Confirmed by the Organisation"
         And I expect that element ".table-scroll-wrapper" not contains the text "Invite the business to confirm their details"
         And I expect that element ".table-scroll-wrapper" not contains the text "Review and confirm your inspection plan"
