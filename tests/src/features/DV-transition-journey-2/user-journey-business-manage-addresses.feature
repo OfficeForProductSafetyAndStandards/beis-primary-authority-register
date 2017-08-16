@@ -59,14 +59,19 @@ Feature: Business User - Manage Addresses
         And I clear the inputfield "#edit-postcode"
         And I clear the inputfield "#edit-county"
         And I click on the button "#edit-next"
+        Then I expect that element ".error-message" does exist
         When I add "SE16 4NX" to the inputfield "#edit-postcode"
         And I click on the button "#edit-next"
+        Then I expect that element ".error-message" does exist
         And I add "1 Change St" to the inputfield "#edit-address-line1"
         And I click on the button "#edit-next"
+        Then I expect that element ".error-message" does exist
         And I add "New Change" to the inputfield "#edit-address-line2"
         And I click on the button "#edit-next"
+        Then I expect that element ".error-message" does exist
         When I add "London" to the inputfield "#edit-town-city"
         And I click on the button "#edit-next"
+        Then I expect that element ".error-message" does exist
         When I add "London" to the inputfield "#edit-county"
         And I select the option with the text "England" for element "#edit-country"
         When I click on the button "#edit-next"

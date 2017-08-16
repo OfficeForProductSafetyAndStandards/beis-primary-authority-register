@@ -43,14 +43,19 @@ Feature: Helpdesk As Primary Authority - Manage Addresses
         And I click on the button "#edit-next"
         When I add "Mr" to the inputfield "#edit-salutation"
         And I click on the button "#edit-next"
+        Then I expect that element ".error-message" does exist
         When I add "Animal" to the inputfield "#edit-first-name"
         And I click on the button "#edit-next"
+        Then I expect that element ".error-message" does exist
         When I add "the Muppet" to the inputfield "#edit-last-name"
         And I click on the button "#edit-next"
+        Then I expect that element ".error-message" does exist
         When I add "91723456789" to the inputfield "#edit-work-phone"
         And I click on the button "#edit-next"
+        Then I expect that element ".error-message" does exist
         When I add "9777777777" to the inputfield "#edit-mobile-phone"
         And I click on the button "#edit-next"
+        Then I expect that element ".error-message" does exist
         When I add "par_authority_animal@example.com" to the inputfield "#edit-email"
         When I click on the button "#edit-next"
         Then I expect that element "#edit-authority-contacts" contains the text "Animal"

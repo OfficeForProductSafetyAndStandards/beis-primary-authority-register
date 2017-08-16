@@ -44,6 +44,8 @@ Feature: Primary Authority - Documentation
         And I scroll to element ".table-scroll-wrapper"
         And I click on the link "edit"
         And I click on the radio "#edit-document-type-authority-advice"
+        When I click on the button "#edit-next"
+        Then I expect that element ".error-message" does exist
         And I click on the checkbox ".form-label*=Cookie control"
         When I click on the button "#edit-next"
         Then I expect that element ".table-scroll-wrapper" contains the text "✔"
