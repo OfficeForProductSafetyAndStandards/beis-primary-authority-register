@@ -9,7 +9,7 @@ Feature: Coordinator User - Manage Addresses
         # LOGIN SCREEN
 
         Given I am logged in as "par_coordinator@example.com"
-        When I click on the button ".button-start"
+        When I click on the link "Continue to your Partnerships"
 
         # PARTNERSHIPS DASHBOARD
         And I scroll to element ".table-scroll-wrapper"

@@ -9,7 +9,7 @@ Feature: Business User - Manage Addresses
         # LOGIN SCREEN
 
         Given I am logged in as "par_business@example.com"
-        When I click on the button ".button-start"
+        When I click on the link "Continue to your Partnerships"
 
         # PARTNERSHIPS DASHBOARD FILTERS
 
