@@ -3,19 +3,13 @@ Feature: Coordinator User - Manage Addresses
 
     Background:
         # TEST DATA RESET
-        Given I open the url "/user/login"
-        And I add "dadmin" to the inputfield "#edit-name"
-        And I add "password" to the inputfield "#edit-pass"
-        And I click on the button "#edit-submit"
-        And I open the url "/admin/par-data-test-reset"
-        And I open the url "/user/logout"
+        Given I reset the test data
 
     Scenario: Coordinator User - Manage Addresses
         # LOGIN SCREEN
 
-        Given I open the url "/user/login"
-        And I am logged in as "par_coordinator@example.com"
-        When I click on the button ".button-start"
+        Given I am logged in as "par_coordinator@example.com"
+        When I click on the link "Continue to your Partnerships"
 
         # PARTNERSHIPS DASHBOARD
         And I scroll to element ".table-scroll-wrapper"
@@ -93,11 +87,11 @@ Feature: Coordinator User - Manage Addresses
         # EDIT LEGAL ENTITIES
 
         When I click on the button "form#par-flow-transition-coordinator-details #edit-legal-entity a.flow-link"
-        And I add "ABCD Mart Change" to the inputfield "#edit-registered-name"
+        And I add "Co Mart Change" to the inputfield "#edit-registered-name"
         And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
         And I add "987654321" to the inputfield "#edit-company-house-no"
         And I click on the button "#edit-next"
-        Then I expect that element "#edit-legal-entity div" contains the text "ABCD Mart Change"
+        Then I expect that element "#edit-legal-entity" contains the text "Co Mart Change"
         And I expect that element "#edit-legal-entity" contains the text "987654321"
         And I expect that element "#edit-legal-entity" contains the text "Limited Company"
 
@@ -109,11 +103,30 @@ Feature: Coordinator User - Manage Addresses
         And I click on the button "#edit-next"
         Then I expect that element "#edit-alternative" contains the text "Another Legal Entity"
         And I expect that element "#edit-alternative" contains the text "Sole Trader"
+
+        # CHANGE NAME AND SUMMARY
+
+        Then I expect that element "#par-flow-transition-coordinator-details" contains the text "About the association"
+        And I expect that element "#par-flow-transition-coordinator-details" contains the text "Registered address"
+        And I expect that element "#par-flow-transition-coordinator-details" contains the text "Legal Entities"
+        And I expect that element "#par-flow-transition-coordinator-details" contains the text "Trading Names"
+        When I click on the link "edit"
+        And I add "Change to the about association details section" to the inputfield "#edit-about-business"
+        And I click on the button "#edit-next"
+        Then I expect that element "#edit-about-business" contains the text "Change to the about association details section"
+        When I click on the button "form#par-flow-transition-coordinator-details #edit-0.js-form-item a.flow-link"
+        And I add "Trading Name Change" to the inputfield "#edit-trading-name"
+        And I click on the button "#edit-next"
+        Then I expect that element "#par-flow-transition-coordinator-details" contains the text "Trading Name Change"
+        When I click on the link "add another trading name"
+        And I add "Trading Name Add" to the inputfield "#edit-trading-name"
+        And I click on the button "#edit-next"
+        Then I expect that element "#par-flow-transition-coordinator-details" contains the text "Trading Name Add"
         And I click on the checkbox "#edit-confirmation"
+        And I click on the button "#edit-next"
 
         # PARTNERSHIP DASHBOARD
 
-        And I click on the button "#edit-next"
         Then I expect that element "#block-par-theme-content" contains the text "Confirmed by the Organisation"
         And I expect that element ".table-scroll-wrapper" not contains the text "Invite the business to confirm their details"
         And I expect that element ".table-scroll-wrapper" not contains the text "Review and confirm your inspection plan"
