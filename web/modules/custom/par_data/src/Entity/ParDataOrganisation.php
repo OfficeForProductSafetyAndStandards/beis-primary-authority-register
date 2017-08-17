@@ -234,7 +234,7 @@ class ParDataOrganisation extends ParDataEntity {
       ->setRevisionable(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSettings([
-        'max_length' => 255,
+        'max_length' => 500,
         'text_processing' => 0,
       ])
       ->setDefaultValue('')
