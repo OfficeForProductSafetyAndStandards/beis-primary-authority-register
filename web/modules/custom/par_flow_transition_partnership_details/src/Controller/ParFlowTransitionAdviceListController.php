@@ -20,8 +20,8 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
    * {@inheritdoc}
    */
   public function content(ParDataPartnership $par_data_partnership = NULL) {
-    $par_data_organisation = current($par_data_partnership->get('field_organisation')->referencedEntities());
-    $organisation_name = $par_data_organisation->get('name')->getString();
+    $par_data_organisation = current($par_data_partnership->retrieveEntityValue('field_organisation'));
+    $organisation_name = $par_data_organisation->retrieveStringValue('name');
 
     $advice_bundle = $this->getParDataManager()->getParBundleEntity('par_data_advice');
 
@@ -64,14 +64,14 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
 
       // The second column contains a summary of the confirmed details.
       $advice_details = '';
-      $advice_type_value = $advice->get('advice_type')->getString();
+      $advice_type_value = $advice->retrieveStringValue('advice_type');
       if ($advice_type = $advice->getTypeEntity()->getAllowedFieldlabel('advice_type', $advice_type_value)){
         $advice_details = "{$advice_type}";
         if ($regulatory_functions = $advice->getRegulatoryFunction()) {
           $advice_details .= " covering: " . PHP_EOL;
           $names = [];
           foreach ($regulatory_functions as $regulatory_function) {
-            $names[] = $regulatory_function->get('function_name')->getString();
+            $names[] = $regulatory_function->retrieveStringValue('function_name');
           }
           $advice_details .= implode(', ', $names);
         }
@@ -105,7 +105,7 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
 
       // Make sure to add the document cacheability data to this form.
       $this->addCacheableDependency($advice);
-      $this->addCacheableDependency(current($advice->get('document')->referencedEntities()));
+      $this->addCacheableDependency(current($advice->retrieveEntityValue('document')));
     }
 
     $build['save'] = [

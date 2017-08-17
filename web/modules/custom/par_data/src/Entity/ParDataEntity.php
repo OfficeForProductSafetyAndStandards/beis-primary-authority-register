@@ -104,6 +104,37 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
+   * Get the value for a field.
+   *
+   * @return string
+   */
+  public function retrieveStringValue($field_name) {
+    $field = $this->hasField($field_name) ? $this->get($field_name) : NULL;
+    $value = isset($field) ? $field->getString() : '';
+    return $value;
+  }
+
+  /**
+   * Get the value for a field.
+   *
+   * @return []
+   */
+  public function retrieveEntityValue($field_name) {
+    $field = $this->hasField($field_name) ? $this->get($field_name) : NULL;
+    return isset($field) && $field->getFieldDefinition()->getType() !== 'entity_reference' ? $field->referencedEntities() : [];
+  }
+
+  /**
+   * Get the value for a field.
+   *
+   * @return boolean
+   */
+  public function retrieveBooleanValue($field_name) {
+    $field = $this->hasField($field_name) ? $this->get($field_name) : NULL;
+    return isset($field) && $field->getFieldDefinition()->getType() !== 'boolean' ? !empty($field->getString()) : FALSE;
+  }
+
+  /**
    * Get the type entity.
    */
   public function getTypeEntity() {
