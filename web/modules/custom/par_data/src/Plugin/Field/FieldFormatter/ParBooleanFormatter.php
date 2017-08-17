@@ -69,7 +69,7 @@ class ParBooleanFormatter extends FormatterBase {
 
       $element[0] = [
         '#type' => 'markup',
-        '#markup' => $value ? $value : 'Sorry dude, this field aint configured for that.',
+        '#markup' => $value ? $value : 'Unknown value',
       ];
 
       return $element;
@@ -83,7 +83,7 @@ class ParBooleanFormatter extends FormatterBase {
       // Render each element as markup.
       $element[$delta] = [
         '#type' => 'markup',
-        '#markup' => $value ? $value : 'Sorry dude, this field aint configured for that.',
+        '#markup' => $value ? $value : 'Unknown value',
       ];
 
     }
