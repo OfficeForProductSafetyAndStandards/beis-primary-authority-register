@@ -3,20 +3,14 @@ Feature: Primary Authority - Change Partnership Details
 
     Background:
         # TEST DATA RESET
-        Given I open the url "/user/login"
-        And I add "dadmin" to the inputfield "#edit-name"
-        And I add "password" to the inputfield "#edit-pass"
-        And I click on the button "#edit-submit"
-        And I open the url "/admin/par-data-test-reset"
-        And I open the url "/user/logout"
+        Given I reset the test data
 
     Scenario: Primary Authority - Change Partnership Details
         # LOGIN
 
-        Given I open the url "/user/login"
-        And I am logged in as "par_authority@example.com"
-        When I click on the button ".button-start"
-
+        Given I am logged in as "par_authority@example.com"
+        When I click on the link "Continue to your Partnerships"
+        
         # PARTNERSHIPS DASHBOARD
 
         And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
@@ -105,6 +99,54 @@ Feature: Primary Authority - Change Partnership Details
         And I click on the checkbox "#edit-confirmation"
         And I click on the button "#edit-next"
         Then I expect that element "#block-par-theme-content" contains the text "Confirmed by the Authority"
-        When I click on the link "Save and continue"
-        Then I expect that element "h1" contains the text "Updating the Primary Authority Register"
-        And I click on the link "Log out"
+
+        # DOCUMENTATION
+
+        And I scroll to element ".table-scroll-wrapper"
+        When I click on the link "Review and confirm your documentation for ABCD Mart"
+        And I scroll to element ".table-scroll-wrapper"
+        And I click on the link "edit"
+        And I click on the radio "#edit-document-type-authority-advice"
+        When I click on the button "#edit-next"
+        Then I expect that element ".error-message" does exist
+        And I click on the checkbox ".form-label*=Cookie control"
+        When I click on the button "#edit-next"
+        Then I expect that element ".table-scroll-wrapper" contains the text "✔"
+        And the element ".table-scroll-wrapper" contains the text "Cookie control"
+        When I click on the link "Save"
+        Then I expect that element ".table-scroll-wrapper" contains the text "100%"
+        When I click on the link "Review and confirm your documentation for ABCD Mart"
+        And I click on the link "edit"
+        And I click on the radio "#edit-document-type-authority-advice"
+        And I click on the checkbox ".form-label*=Alphabet learning"
+        When I click on the button "#edit-next"
+        Then I expect that element ".table-scroll-wrapper" contains the text "✔"
+        And I expect that element ".table-scroll-wrapper" contains the text "Cookie control, Alphabet learning"
+        When I click on the link "Save"
+        Then I expect that element ".table-scroll-wrapper" contains the text "100%"
+
+         # INSPECTION PLANS
+
+        And I scroll to element ".table-scroll-wrapper"
+        When I click on the link "Review and confirm your inspection plan"
+#        Then I expect that element "#edit-document-list" contains the text "Inspection Plan"
+#        And I click on the checkbox ".form-checkbox"
+        And I click on the button "#edit-next"
+
+        # CHECK INSPECTION PLAN CONFIRMEDs
+
+#        And I scroll to element ".table-scroll-wrapper"
+#        When I click on the link "Review and confirm your inspection plan"
+#        Then I expect that element ".form-checkbox" is not enabled
+#        When I click on the button "#edit-next"
+
+                # PARTERSHIP TASKS SCREEN
+
+        And I scroll to element ".table-scroll-wrapper"
+        When I click on the link "Invite the business to confirm their details"
+
+        # BUSINESS EMAIL INVITATION
+
+        And I add "Test change meassage body [invite:invite-accept-link]" to the inputfield "#edit-email-body"
+        And I add "Test change meassage subject" to the inputfield "#edit-email-body"
+        And I press "Send Invitation"

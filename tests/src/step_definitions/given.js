@@ -19,6 +19,7 @@ import openWebsite from '../support/action/openWebsite';
 import checkResponseCode from '../support/action/checkResponseCode';
 import resizeScreenSize from '../support/action/resizeScreenSize';
 import loginAsPARUser from '../support/action/loginAsPARUser';
+import resetTheTestData from '../support/action/resetTheTestData';
 
 
 module.exports = function given() {
@@ -75,6 +76,11 @@ module.exports = function given() {
     this.Given(
         /^I am logged in as "([^"]*)?"$/,
         loginAsPARUser
+    );
+
+    this.Given(
+        /^I reset the test data$/,
+        resetTheTestData
     );
 
     this.Given(
