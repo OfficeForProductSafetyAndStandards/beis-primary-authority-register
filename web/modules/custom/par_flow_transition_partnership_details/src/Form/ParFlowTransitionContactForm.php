@@ -67,6 +67,12 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
     $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
 
+    //Leading paragraph
+    $form['leading_paragraph'] = [
+      '#type' => 'markup',
+      '#markup' => t('<p>State who is the main contact for this business in your own primary authority team. Their contact information will be visible to anyone logging into the Primary Authority Register, including enforcement officers.</p>'),
+    ];
+
     // The Person's title.
     $form['salutation'] = [
       '#type' => 'textfield',
