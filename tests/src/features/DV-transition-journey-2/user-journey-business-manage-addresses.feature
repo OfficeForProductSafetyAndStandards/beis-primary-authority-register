@@ -10,17 +10,15 @@ Feature: Business User - Manage Addresses
         And I open the url "/admin/par-data-test-reset"
         And I open the url "/user/logout"
 
-    Scenario: Manage business name and summary
+    Scenario: Business User - Manage Addresses
         # LOGIN SCREEN
 
         Given I open the url "/user/login"
-        And I add "par_business@example.com" to the inputfield "#edit-name"
-        And I add "TestPassword" to the inputfield "#edit-pass"
-        When I click on the button "#edit-submit"
-        Then I expect that element ".error-message" is not visible
+        And I am logged in as "par_business@example.com"
         When I click on the button ".button-start"
 
         # PARTNERSHIPS DASHBOARD
+
         And I add "DCBA" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
         Then I expect that element "td.views-field.views-field-field-premises" is not visible
@@ -43,6 +41,9 @@ Feature: Business User - Manage Addresses
         And I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
         And I scroll to element ".table-scroll-wrapper"
+
+        # PARTNERSHIP TASKS
+
         When I click on the link "Review and confirm your business details"
         Then I expect that element "#edit-about-business" contains the text "About the business"
         And I expect that element "#edit-legal-entity" contains the text "Legal Entities"
@@ -58,19 +59,19 @@ Feature: Business User - Manage Addresses
         And I clear the inputfield "#edit-postcode"
         And I clear the inputfield "#edit-county"
         And I click on the button "#edit-next"
-#        Then I expect that element "input:focus" is visible
+        Then I expect that element ".error-message" does exist
         When I add "SE16 4NX" to the inputfield "#edit-postcode"
         And I click on the button "#edit-next"
-#        Then I expect that element "input:focus" is visible
+        Then I expect that element ".error-message" does exist
         And I add "1 Change St" to the inputfield "#edit-address-line1"
         And I click on the button "#edit-next"
-#        Then I expect that element "input:focus" is visible
+        Then I expect that element ".error-message" does exist
         And I add "New Change" to the inputfield "#edit-address-line2"
         And I click on the button "#edit-next"
-#        Then I expect that element "input:focus" is visible
+        Then I expect that element ".error-message" does exist
         When I add "London" to the inputfield "#edit-town-city"
         And I click on the button "#edit-next"
-#        Then I expect that element "input:focus" is visible
+        Then I expect that element ".error-message" does exist
         When I add "London" to the inputfield "#edit-county"
         And I select the option with the text "England" for element "#edit-country"
         When I click on the button "#edit-next"
@@ -119,20 +120,22 @@ Feature: Business User - Manage Addresses
 
         When I click on the button "form#par-flow-transition-business-details #edit-legal-entity a.flow-link"
         And I add "ABCD Mart Change" to the inputfield "#edit-registered-name"
-        And I select the option with the text "Limited Liability Partnership" for element "#edit-legal-entity-type"
+        And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
+        And I add "987654321" to the inputfield "#edit-company-house-no"
         And I click on the button "#edit-next"
         Then I expect that element "#edit-legal-entity div" contains the text "ABCD Mart Change"
-        And I expect that element "#edit-legal-entity" contains the text "Limited Liability Partnership"
+        And I expect that element "#edit-legal-entity" contains the text "987654321"
+        And I expect that element "#edit-legal-entity" contains the text "Limited Company"
 
         # ADD LEGAL ENTITIES
 
         When I click on the link "add another legal entity"
         And I click on the button "#edit-next"
-#        Then I expect that element "input:focus" is visible
         And I add "Another Legal Entity" to the inputfield "#edit-registered-name"
-#        Then I expect that element "input:focus" is visible
         And I select the option with the text "Sole Trader" for element "#edit-legal-entity-type"
-#        Then I expect that element "input:focus" is visible
         And I click on the button "#edit-next"
+
+        # PARTNERSHIP TASKS
+
         Then I expect that element "#edit-alternative" contains the text "Another Legal Entity"
         And I expect that element "#edit-alternative" contains the text "Sole Trader"

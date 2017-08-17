@@ -80,7 +80,7 @@ class EntityParOrganisationTest extends ParDataTestBase {
       'nation' => $this->randomString(256),
       'premises_mapped' => $this->randomString(10),
       'trading_name' => [
-        $this->randomString(256),
+        $this->randomString(501),
       ],
     ];
 
@@ -104,7 +104,7 @@ class EntityParOrganisationTest extends ParDataTestBase {
       'field_coordinator_number' => $this->randomString(256),
       'field_coordinator_type' => $this->randomString(256),
       'trading_name' => [
-        $this->randomString(256),
+        $this->randomString(501),
       ]
     ];
 

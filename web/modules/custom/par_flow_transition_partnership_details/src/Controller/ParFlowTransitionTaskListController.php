@@ -32,7 +32,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
     // Organisation Name & Address.
     $build['organisation']['label'] = [
       '#type' => 'markup',
-      '#prefix' => '<h2>',
+      '#prefix' => '<h2 class="heading-medium">',
       '#suffix' => '</h2>',
       '#markup' => $organisation_name
     ];
@@ -126,7 +126,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
     // Show the task links in table format.
     $build['task_list'] = [
       '#theme' => 'table',
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => ['form-group']],
       '#header' => [],
       '#rows' => $rows,
       '#empty' => $this->t("No tasks could be found."),
@@ -136,7 +136,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
       '#type' => 'markup',
       '#markup' => t('@link', [
         '@link' => $this->getFlow()->getLinkByStep(1, $this->getRouteParams(), ['attributes' => ['class' => 'button']])
-          ->setText('Go back to your partnerships')
+          ->setText('Save and continue')
           ->toString(),
       ]),
     ];

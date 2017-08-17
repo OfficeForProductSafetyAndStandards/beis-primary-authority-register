@@ -552,7 +552,7 @@ display:
           click_sort_column: value
           type: boolean
           settings:
-            format: enabled-disabled
+            format: unicode-yes-no
             format_custom_true: ''
             format_custom_false: ''
           group_column: value
@@ -684,7 +684,7 @@ display:
           click_sort_column: value
           type: boolean
           settings:
-            format: enabled-disabled
+            format: unicode-yes-no
             format_custom_true: ''
             format_custom_false: ''
           group_column: value
@@ -814,8 +814,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: par_boolean_formatter
-          settings: {  }
+          type: boolean
+          settings:
+            format: unicode-yes-no
+            format_custom_true: ''
+            format_custom_false: ''
           group_column: value
           group_columns: {  }
           group_rows: true

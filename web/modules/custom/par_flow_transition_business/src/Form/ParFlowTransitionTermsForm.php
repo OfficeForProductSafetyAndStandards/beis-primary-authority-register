@@ -57,12 +57,7 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
     }
 
     $form['terms_intro'] = [
-      '#markup' => "Please Review the new Primary Authority terms and conditions and confirm that you agree with them.<br>The New terms will come into effect from <em>01 October 2017</em>.<br>What's changed?",
-    ];
-
-    // @stemont will need your input on componentizing this summary box.
-    $form['terms_summary'] = [
-      '#markup' => "<ul><li>The scheme is expanding to include more types of businesses.</li><li>The process of revoking a partnership will be more formalised.</li><li>The process for updating an inspection plan has been updated.</li></ul>",
+      '#markup' => "<p>Please Review the new Primary Authority terms and conditions and confirm that you agree with them.</p><p>The New terms will come into effect from <em>01 October 2017</em>.</p>",
     ];
 
     // Partnership agree terms.

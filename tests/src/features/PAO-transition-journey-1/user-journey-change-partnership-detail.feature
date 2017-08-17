@@ -1,5 +1,5 @@
 @ci @journey1
-Feature: PAR User - Change Partnership Details
+Feature: Primary Authority - Change Partnership Details
 
     Background:
         # TEST DATA RESET
@@ -10,19 +10,11 @@ Feature: PAR User - Change Partnership Details
         And I open the url "/admin/par-data-test-reset"
         And I open the url "/user/logout"
 
-    Scenario: User Journey 1 - Change partnership details
-        # HOMEPAGE
+    Scenario: Primary Authority - Change Partnership Details
+        # LOGIN
+
         Given I open the url "/user/login"
-
-        # LOGIN SCREEN
-
-        And I add "par_authority@example.com" to the inputfield "#edit-name"
-        And I add "TestPassword" to the inputfield "#edit-pass"
-        When I click on the button "#edit-submit"
-
-        # WELCOME SCREEN
-
-        Then I expect that element ".error-message" is not visible
+        And I am logged in as "par_authority@example.com"
         When I click on the button ".button-start"
 
         # PARTNERSHIPS DASHBOARD
@@ -52,22 +44,21 @@ Feature: PAR User - Change Partnership Details
         And I clear the inputfield "#edit-mobile-phone"
         And I clear the inputfield "#edit-email"
         And I click on the button "#edit-next"
-#        Then I expect that element "input:focus" is visible
         When I add "Mr" to the inputfield "#edit-salutation"
         And I click on the button "#edit-next"
-#        Then I expect that element "input:focus" is visible
+        Then I expect that element ".error-message" does exist
         When I add "Animal" to the inputfield "#edit-first-name"
         And I click on the button "#edit-next"
-#        Then I expect that element "input:focus" is visible
+        Then I expect that element ".error-message" does exist
         When I add "the Muppet" to the inputfield "#edit-last-name"
         And I click on the button "#edit-next"
-#        Then I expect that element "input:focus" is visible
+        Then I expect that element ".error-message" does exist
         When I add "91723456789" to the inputfield "#edit-work-phone"
         And I click on the button "#edit-next"
-#        Then I expect that element "input:focus" is visible
+        Then I expect that element ".error-message" does exist
         When I add "9777777777" to the inputfield "#edit-mobile-phone"
         And I click on the button "#edit-next"
-#        Then I expect that element "input:focus" is visible
+        Then I expect that element ".error-message" does exist
         When I add "par_authority_animal@example.com" to the inputfield "#edit-email"
         When I click on the button "#edit-next"
         Then I expect that element "#edit-authority-contacts" contains the text "Animal"
@@ -114,6 +105,6 @@ Feature: PAR User - Change Partnership Details
         And I click on the checkbox "#edit-confirmation"
         And I click on the button "#edit-next"
         Then I expect that element "#block-par-theme-content" contains the text "Confirmed by the Authority"
-        When I click on the link "Go back to your partnerships"
-        Then I expect that element "h1" contains the text "List of Partnerships"
+        When I click on the link "Save and continue"
+        Then I expect that element "h1" contains the text "Updating the Primary Authority Register"
         And I click on the link "Log out"

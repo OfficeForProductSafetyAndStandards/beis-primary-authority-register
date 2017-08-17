@@ -1,5 +1,5 @@
 @ci @journey1
-Feature: PAR User - Send Invite
+Feature: Primary Authority - Send invitiation to business
 
     Background:
         # TEST DATA RESET
@@ -10,18 +10,11 @@ Feature: PAR User - Send Invite
         And I open the url "/admin/par-data-test-reset"
         And I open the url "/user/logout"
 
-    Scenario: User Journey 1 - Send invitiation to business
+    Scenario: Primary Authority - Send invitiation to business
         # LOGIN SCREEN
 
         Given I open the url "/user/login"
-        And I add "par_authority@example.com" to the inputfield "#edit-name"
-        And I add "TestPassword" to the inputfield "#edit-pass"
-        When I click on the button "#edit-submit"
-
-        # WELCOME SCREEN
-
-        Then I expect that element ".error-message" is not visible
-        And I expect that element "#block-par-theme-content" contains the text "Review and confirm your data by"
+        And I am logged in as "par_authority@example.com"
         When I click on the button ".button-start"
 
         # PARTNERSHIPS DASHBOARD
@@ -58,6 +51,6 @@ Feature: PAR User - Send Invite
 #
 #        # PARTERSHIP TASKS SCREEN
 #
-#        When I click on the link "Go back to your partnerships"
-#        Then I expect that element "h1" contains the text "List of Partnerships"
+#        When I click on the link "Save and continue"
+#        Then I expect that element "h1" contains the text "Updating the Primary Authority Register"
 #        And I click on the link "Log out"

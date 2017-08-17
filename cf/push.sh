@@ -1,43 +1,105 @@
 #!/bin/bash
 
 ####################################################################################
-# To use this script, set up a Python virtual environment
-# and set your AWS access keys
-####################################################################################
-# mkvirtualenv beis-par-beta
-# workon beis-par-beta
-# pip install --upgrade awscli
-# aws --version
-####################################################################################
-# You can also set these in ~/.bash_profile or by running
-# aws configure (Set region name to be "eu-west-1")
-####################################################################################
-# export AWS_ACCESS_KEY_ID=
-# export AWS_SECRET_ACCESS_KEY=
-####################################################################################
-# You'll need to create a .env.XXXX file for each
-# environment you need to be able to push to, containing
-# the following keys
+# Run this script from the /cf directory of the repository
+# Usage:
+#    ./push.sh <env> <version>
 #
-# S3_ACCESS_KEY=
-# S3_SECRET_KEY=
-# S3_BUCKET_PUBLIC=transform-par-beta-production-public
-# S3_BUCKET_PRIVATE=transform-par-beta-production-private
-# S3_BUCKET_ARTIFACTS=transform-par-beta-artifacts
-# PAR_HASH_SALT=
-# PAR_GOVUK_NOTIFY_KEY=
-# PAR_GOVUK_NOTIFY_TEMPLATE=
+# e.g.
+#    ./push.sh demo v0.0.33
+####################################################################################
+# You'll need the following installed
+#
+#    AWS CLI - http://docs.aws.amazon.com/cli/latest/userguide/installing.html
+#    Cloud Foundry CLI - https://docs.cloudfoundry.org/cf-cli/install-go-cli.html
+#    Vault CLI - https://www.vaultproject.io/docs/install/index.html
+####################################################################################
+# Log into Gov.uk Paas
+#
+#     cf login -a api.cloud.service.gov.uk -u <USERNAME>
+#           
+# Add the following to your hosts file
+#
+#     35.176.189.183 vault.primary-authority.beis.gov.uk
+#
+# Access is restricted to members of the TransformCore GitHub organisation. 
+# Generate a GitHub Personal Access Token, which will be requested
+# during "vault auth"
+#
+# Log into Vault and unseal it
+#
+#     export VAULT_ADDR=https://vault.primary-authority.beis.gov.uk:8200
+#     vault auth
+#     vault unseal
 ####################################################################################
 
 ENV=$1
 VER=$2
 
+command -v vault >/dev/null 2>&1 || { 
+    echo "####################################################################################"
+    echo >&2 "Please install Hashicorp Vault command line interface"
+    echo "####################################################################################"
+    exit 1 
+}
+
+AWS_ACCESS_KEY_ID=`vault read -field=AWS_ACCESS_KEY_ID secret/par/deploy/aws`
+
+if [ $? == 1 ]; then
+  echo "####################################################################################"
+  echo >&2 "Please log into vault"
+  echo "####################################################################################"
+  exit
+fi
+
+command -v aws >/dev/null 2>&1 || { 
+    echo "####################################################################################"
+    echo >&2 "Please install AWS command line interface"
+    echo "####################################################################################"
+    vault seal
+    exit 1 
+}
+
+command -v cf >/dev/null 2>&1 || { 
+    echo "####################################################################################"
+    echo >&2 "Please install Cloud Foundry command line interface"
+    echo "####################################################################################"
+    vault seal
+    exit 1 
+}
+
+####################################################################################
+# Get AWS access keys to download the versioned package from S3
+####################################################################################
+
+# This command was run earlier in the script to test for vault login
+# AWS_ACCESS_KEY_ID=`vault read -field=AWS_ACCESS_KEY_ID secret/par/deploy/aws`
+
+AWS_SECRET_ACCESS_KEY=`vault read -field=AWS_SECRET_ACCESS_KEY secret/par/deploy/aws`
+
+####################################################################################
+# Get environment variables that will be set on the target environment
+####################################################################################
+
+S3_ACCESS_KEY=`vault read -field=S3_ACCESS_KEY secret/par/env/$ENV`
+S3_SECRET_KEY=`vault read -field=S3_SECRET_KEY secret/par/env/$ENV`
+PAR_HASH_SALT=`vault read -field=PAR_HASH_SALT secret/par/env/$ENV`
+S3_BUCKET_PUBLIC=`vault read -field=S3_BUCKET_PUBLIC secret/par/env/$ENV`
+S3_BUCKET_PRIVATE=`vault read -field=S3_BUCKET_PRIVATE secret/par/env/$ENV`
+S3_BUCKET_ARTIFACTS=`vault read -field=S3_BUCKET_ARTIFACTS secret/par/env/$ENV`
+PAR_GOVUK_NOTIFY_KEY=`vault read -field=PAR_GOVUK_NOTIFY_KEY secret/par/env/$ENV`
+PAR_GOVUK_NOTIFY_TEMPLATE=`vault read -field=PAR_GOVUK_NOTIFY_TEMPLATE secret/par/env/$ENV`
+
+####################################################################################
+# Reseal the vault
+####################################################################################
+
+vault seal
+
 # We are in the /cf directory
 
 if [ "$VER" != "" ]; then
 
-    source .env.$ENV
-    
     echo "Pulling version $VER"
     rm -rf build
     mkdir build
@@ -45,6 +107,11 @@ if [ "$VER" != "" ]; then
     cd build
     
     aws s3 cp s3://transform-par-beta-artifacts/builds/$VER.tar.gz .
+    
+    if [ ! -f $VER.tar.gz ]; then
+       exit
+    fi
+    
     tar -zxvf $VER.tar.gz
     rm $VER.tar.gz
     
@@ -54,7 +121,10 @@ else
     cd ..
 fi
 
+pwd
 cf push -f manifest.$ENV.yml
+
+# Set environment variables
 
 cf set-env par-beta-$ENV S3_ACCESS_KEY $S3_ACCESS_KEY
 cf set-env par-beta-$ENV S3_SECRET_KEY $S3_SECRET_KEY

@@ -881,6 +881,9 @@ if (getenv('S3_BUCKET_PRIVATE')) {
 $config['govuk_notify.settings']['api_key'] = getenv('PAR_GOVUK_NOTIFY_KEY');
 $config['govuk_notify.settings']['default_template_id'] = getenv('PAR_GOVUK_NOTIFY_TEMPLATE');
 
+// Ensure all environments use production config unless overwritten.
+$config['config_split.config_split.dev_config']['status'] = FALSE;
+
 /**
  * Environment settings override.
  *

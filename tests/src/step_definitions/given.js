@@ -18,7 +18,8 @@ import isVisible from '../support/check/isVisible';
 import openWebsite from '../support/action/openWebsite';
 import checkResponseCode from '../support/action/checkResponseCode';
 import resizeScreenSize from '../support/action/resizeScreenSize';
-import loginAsUser from '../support/action/loginAsUser';
+import loginAsPARUser from '../support/action/loginAsPARUser';
+
 
 module.exports = function given() {
     this.Given(
@@ -72,8 +73,8 @@ module.exports = function given() {
     );
 
     this.Given(
-        /^I am logged in as PAR user"([^"]*)?" with password "([^"]*)?"$/,
-        loginAsUser
+        /^I am logged in as "([^"]*)?"$/,
+        loginAsPARUser
     );
 
     this.Given(
