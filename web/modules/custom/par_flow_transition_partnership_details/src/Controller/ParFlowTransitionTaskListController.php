@@ -66,40 +66,6 @@ class ParFlowTransitionTaskListController extends ParBaseController {
       ->setText('Review and confirm your partnership details')
       ->toString();
 
-    // Generate the link for inviting users.
-    $organisation_people = $par_data_partnership->getOrganisationPeople();
-    if ($organisation_primary_person = array_shift($organisation_people)) {
-      $invite_link = $this->getFlow()->getLinkByStep(7, [
-        'par_data_person' => $organisation_primary_person->id(),
-      ])
-        ->setText('Invite the business to confirm their details')
-        ->toString();
-    }
-
-    // Generate the link for confirming inspection plans.
-    $inspection_plan_link = $this->getFlow()->getLinkByStep(8)
-      ->setText('Review and confirm your inspection plan')
-      ->toString();
-    $par_data_inspection_plan = current($par_data_partnership->getInspectionPlan());
-    $inspection_plan_status = $par_data_inspection_plan ? $par_data_inspection_plan->getParStatus() : '';
-
-    // Make sure to add the inspection plan cacheability data to this form.
-    $this->addCacheableDependency($par_data_inspection_plan);
-
-    // Generate the link for confirming all advice documents.
-    $documents_list_link = $this->getFlow()->getLinkByStep(9)
-      ->setText($this->t('Review and confirm your documentation'))
-      ->toString();
-    // Calculate the average completion of all documentation.
-    $document_completion = [];
-    foreach ($par_data_partnership->getAdvice() as $document) {
-      $document_completion[] = $document->getCompletionPercentage();
-
-      // Make sure to add the document cacheability data to this form.
-      $this->addCacheableDependency($document);
-    }
-    $documentation_completion = !empty($document_completion) ? $this->parDataManager->calculateAverage($document_completion) : 0;
-
     // Build the task list able rows.
     $rows = [
       0 => [
@@ -108,8 +74,43 @@ class ParFlowTransitionTaskListController extends ParBaseController {
       ]
     ];
 
-    // Only add the remaining tasks once the Partnership information has been confirmed.
+    // Only add the remaining tasks once the Partnership information
+    // has been confirmed and once an organisation has been added.
     if ($par_data_partnership->getRawStatus() !== 'awaiting_review') {
+      // Generate the link for inviting users.
+      $organisation_people = $par_data_partnership->getOrganisationPeople();
+      if ($organisation_primary_person = array_shift($organisation_people)) {
+        $invite_link = $this->getFlow()->getLinkByStep(7, [
+          'par_data_person' => $organisation_primary_person->id(),
+        ])
+          ->setText('Invite the business to confirm their details')
+          ->toString();
+      }
+
+      // Generate the link for confirming inspection plans.
+      $inspection_plan_link = $this->getFlow()->getLinkByStep(8)
+        ->setText('Review and confirm your inspection plan')
+        ->toString();
+      $par_data_inspection_plan = current($par_data_partnership->getInspectionPlan());
+      $inspection_plan_status = $par_data_inspection_plan ? $par_data_inspection_plan->getParStatus() : '';
+
+      // Make sure to add the inspection plan cacheability data to this form.
+      $this->addCacheableDependency($par_data_inspection_plan);
+
+      // Generate the link for confirming all advice documents.
+      $documents_list_link = $this->getFlow()->getLinkByStep(9)
+        ->setText($this->t('Review and confirm your documentation for @business', ['@business' => $par_data_organisation->retrieveStringValue('organisation_name')]))
+        ->toString();
+      // Calculate the average completion of all documentation.
+      $document_completion = [];
+      foreach ($par_data_partnership->getAdvice() as $document) {
+        $document_completion[] = $document->getCompletionPercentage();
+
+        // Make sure to add the document cacheability data to this form.
+        $this->addCacheableDependency($document);
+      }
+      $documentation_completion = !empty($document_completion) ? $this->parDataManager->calculateAverage($document_completion) : 0;
+
       $rows[2] = [
         $inspection_plan_link,
         $inspection_plan_status,
