@@ -57,12 +57,7 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
     }
 
     $form['terms_intro'] = [
-      '#markup' => "<p>Please Review the new Primary Authority terms and conditions and confirm that you agree with them.</p><p>The New terms will come into effect from <em>01 October 2017</em>.</p><p>What's changed?</p>",
-    ];
-
-    // @todo stemont will need your input on componentizing this summary box.
-    $form['terms_summary'] = [
-      '#markup' => "<ul class='list list-bullet'><li>The scheme is expanding to include more types of businesses.</li><li>The process of revoking a partnership will be more formalised.</li><li>The process for updating an inspection plan has been updated.</li></ul>",
+      '#markup' => "<p>Please Review the new Primary Authority terms and conditions and confirm that you agree with them.</p><p>The New terms will come into effect from <em>01 October 2017</em>.</p>",
     ];
 
     // Partnership details.
@@ -92,7 +87,7 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
     parent::validateForm($form, $form_state);
 
     if (empty($form_state->getValue('terms_conditions'))) {
-      $form_state->setErrorByName('terms_conditions', $this->t('You must agree to the new terms and conditions.'));
+      $form_state->setErrorByName('terms_conditions', $this->t('<a href="#edit-terms-conditions">You must agree to the new terms and conditions.</a>'));
     }
   }
 

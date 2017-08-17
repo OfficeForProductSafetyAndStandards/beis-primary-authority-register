@@ -54,7 +54,8 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
 
     // Show the task links in table format.
     $form['document_list'] = [
-      '#type' => 'table',
+      '#theme' => 'table',
+      '#attributes' => ['class' => ['form-group']],
       '#title' => 'Inspection plans',
       '#header' => ['Confirm', 'Inspection Plan'],
       '#empty' => $this->t("There is no inspection plan for this partnership."),
@@ -93,6 +94,12 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
     $form['next'] = [
       '#type' => 'submit',
       '#value' => t('Save'),
+    ];
+
+    $previous_link = $this->getFlow()->getLinkByStep(3)->setText('Cancel')->toString();
+    $form['cancel'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', ['@link' => $previous_link]),
     ];
 
     // Make sure to add the partnership cacheability data to this form.

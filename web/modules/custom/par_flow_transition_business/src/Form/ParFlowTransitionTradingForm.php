@@ -68,7 +68,6 @@ class ParFlowTransitionTradingForm extends ParBaseForm {
       '#title' => $this->t('Name of trading name'),
       '#default_value' => isset($par_data_organisation->get('trading_name')->getValue()[$trading_name_delta]) ? $par_data_organisation->get('trading_name')->getValue()[$trading_name_delta] : '',
       '#description' => $this->t('Sometimes companies trade under a different name to their registered, legal name. This is known as a \'trading name\'. State any trading names used by the business.'),
-      '#required' => TRUE,
     ];
 
     $form['next'] = [
@@ -86,6 +85,31 @@ class ParFlowTransitionTradingForm extends ParBaseForm {
     $this->addCacheableDependency($par_data_partnership);
 
     return parent::buildForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    // No validation yet.
+    parent::validateForm($form, $form_state);
+    $partnership = $this->getRouteParam('par_data_partnership');
+    $par_data_organisation = current($partnership->getOrganisation());
+    $fields = [
+      'trading_name' => [
+        'value' => $form_state->getValue('trading_name'),
+        'key' => 'trading_name',
+        'tokens' => [
+          '%field' => $form['trading_name']['#title']->render(),
+        ]
+      ],
+    ];
+
+    $errors = $par_data_organisation->validateFields($fields);
+    // Display error messages.
+    foreach($errors as $field => $message) {
+      $form_state->setErrorByName($field, $message);
+    }
   }
 
   /**

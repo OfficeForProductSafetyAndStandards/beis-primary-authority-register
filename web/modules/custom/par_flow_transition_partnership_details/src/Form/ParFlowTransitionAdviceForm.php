@@ -105,6 +105,40 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    // No validation yet.
+    parent::validateForm($form, $form_state);
+    $par_data_advice = $this->getRouteParam('par_data_advice');
+
+    $fields['advice_type'] = [
+      'value' => $form_state->getValue('document_type'),
+      'key' => 'document_type',
+      'tokens' => [
+        '%field' => $form['document_type']['#title']->render(),
+      ],
+    ];
+
+    $fields['regulatory_function'] = [
+      'value' => $form_state->getValue('regulatory_functions'),
+      'type' => 'boolean',
+      'min_selected' => 1,
+      'key' => 'regulatory_functions',
+      'tokens' => [
+        '%field' => $form['regulatory_functions']['#title']->render(),
+      ],
+    ];
+
+    $errors = $par_data_advice->validateFields($fields);
+    // Display error messages.
+    foreach($errors as $field => $message) {
+      $form_state->setErrorByName($field, $message);
+    }
+
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

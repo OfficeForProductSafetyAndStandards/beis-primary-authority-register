@@ -62,9 +62,9 @@
   <div class="header-wrapper">
     <div class="header-global">
       <div class="header-logo">
-        <a href="/" title="Go to the Primary Authority Register homepage" id="logo" class="content">
-          <img src="/{{ directory }}/assets/images/PAR/pa-logo-large.jpg" width="80" height="80" alt="Primary Authority Register logo">
-        </a>
+        <h1 id="logo" class="content">
+          Primary Authority
+        </h1>      
       </div>
     </div>
     <div class="header-proposition">
@@ -74,13 +74,9 @@
           <a href="/" id="proposition-name">
             {% if gdsHeadingTitle %}
               {{ gdsHeadingTitle }}
-            {% else %}
-              PAR
-            {% endif %} Pages
+            {% endif %}
             </a>
-          <ul id="proposition-links">
-            <li><a href="/">Home Page</a></li>
-          </ul>
+          <ul id="proposition-links"></ul>
         </nav>
 
         {{page.header}}
@@ -95,7 +91,7 @@
   <div class="phase-banner">
   <p>
     <strong class="phase-tag">BETA</strong>
-    <span>This is a new service – your <a href="#">feedback</a> will help us to improve it.</span>
+    <span>This is a new service – your <a href="mailto:pa@beis.gov.uk?subject=PAR Transition Feedback">feedback</a> will help us to improve it.</span>
   </p>
   </div>
   {{ page.content }}

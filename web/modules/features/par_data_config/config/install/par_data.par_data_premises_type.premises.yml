@@ -6,6 +6,14 @@ label: Premises
 description: 'Premises are a location used by either an Authority or an Organisation.'
 help: ''
 configuration:
+  entity:
+    required_fields:
+      address_line1: 'The %field is required.'
+      address_line2: 'The %field is required.'
+      locality: 'The %field is required.'
+      nation: 'The %field is required.'
+      postal_code: 'The %field is required.'
+      administrative_area: 'The %field is required.'
   nation:
     allowed_values:
       GB-ENG: England
