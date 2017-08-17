@@ -1,0 +1,14 @@
+# PAR Data Transition Journey 1 - Partnership Details
+par_invite.welcome:
+  path: '/dv/invite/{invite}'
+  defaults:
+    _form: '\Drupal\par_invite\Form\ParInviteRegistrationForm'
+    _title: 'Updating the Primary Authority Register'
+  requirements:
+    _permission: 'access content'
+    reg_code: ^[a-zA-Z0-9]+
+  options:
+    parameters:
+      invite:
+        type: reg_code
+

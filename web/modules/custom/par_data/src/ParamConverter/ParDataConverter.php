@@ -66,7 +66,7 @@ class ParDataConverter implements ParamConverterInterface {
    */
   public function convert($value, $definition, $name, array $defaults) {
     // Get stubs and generate a dummy entity.
-    if ($this->settings->get('stubbed')) {
+    if (in_array($name, $this->settings->get('par_data_classes')) && $this->settings->get('stubbed')) {
       // Set the entity Type to use.
       $entity_type_id = substr($definition['type'], strlen('entity:'));
 
@@ -93,7 +93,7 @@ class ParDataConverter implements ParamConverterInterface {
    * {@inheritdoc}
    */
   public function applies($definition, $name, Route $route) {
-    if ($this->settings->get('stubbed')) {
+    if (in_array($name, $this->settings->get('par_data_classes')) && $this->settings->get('stubbed')) {
       return TRUE;
     }
     else {

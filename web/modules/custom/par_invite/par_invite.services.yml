@@ -1,0 +1,5 @@
+services:
+  par_invite.invite_subscriber:
+    class: Drupal\par_invite\EventSubscriber\InviteSubscriber
+    tags:
+      - { name: event_subscriber }
