@@ -40,7 +40,7 @@ class ParFlowTransitionAboutForm extends ParBaseForm {
 
       // If we want to use values already saved we have to tell
       // the form about them.
-      $this->loadDataValue('about_partnership', $par_data_partnership->get('about_partnership')->getString());
+      $this->loadDataValue('about_partnership', $par_data_partnership->retrieveStringValue('about_partnership'));
     }
   }
 

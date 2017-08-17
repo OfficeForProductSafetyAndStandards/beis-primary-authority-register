@@ -23,7 +23,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
 
     // Organisation summary.
     $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $organisation_name = $par_data_organisation->get('name')->getString();
+    $organisation_name = $par_data_organisation->retrieveStringValue('name');
 
     // Premises.
     $par_data_premises = current($par_data_organisation->getPremises());
@@ -83,7 +83,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
 
     // Generate the link for confirming all advice documents.
     $documents_list_link = $this->getFlow()->getLinkByStep(9)
-      ->setText($this->t('Review and confirm your documentation for @business', ['@business' => $par_data_organisation->get('organisation_name')->getString()]))
+      ->setText($this->t('Review and confirm your documentation for @business', ['@business' => $par_data_organisation->retrieveStringValue('organisation_name')]))
       ->toString();
     // Calculate the average completion of all documentation.
     $document_completion = [];

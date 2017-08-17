@@ -42,19 +42,19 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     }
     if ($par_data_person) {
       // Contact.
-      $this->loadDataValue("salutation", $par_data_person->get('salutation')->getString());
-      $this->loadDataValue("first_name", $par_data_person->get('first_name')->getString());
-      $this->loadDataValue("last_name", $par_data_person->get('last_name')->getString());
-      $this->loadDataValue("phone", $par_data_person->get('work_phone')->getString());
-      $this->loadDataValue("mobile_phone", $par_data_person->get('mobile_phone')->getString());
-      $this->loadDataValue("email", $par_data_person->get('email')->getString());
-      $this->loadDataValue("notes", $par_data_person->get('communication_notes')->getString());
+      $this->loadDataValue("salutation", $par_data_person->retrieveStringValue('salutation'));
+      $this->loadDataValue("first_name", $par_data_person->retrieveStringValue('first_name'));
+      $this->loadDataValue("last_name", $par_data_person->retrieveStringValue('last_name'));
+      $this->loadDataValue("phone", $par_data_person->retrieveStringValue('work_phone'));
+      $this->loadDataValue("mobile_phone", $par_data_person->retrieveStringValue('mobile_phone'));
+      $this->loadDataValue("email", $par_data_person->retrieveStringValue('email'));
+      $this->loadDataValue("notes", $par_data_person->retrieveStringValue('communication_notes'));
 
       // Get preferred contact methods.
       $contact_options = [
-        'communication_email' => !empty($par_data_person->get('communication_email')->getString()) ? 'communication_email' : FALSE,
-        'communication_phone' => !empty($par_data_person->get('communication_phone')->getString()) ? 'communication_phone' : FALSE,
-        'communication_mobile' => !empty($par_data_person->get('communication_mobile')->getString()) ? 'communication_mobile' : FALSE,
+        'communication_email' => !empty($par_data_person->retrieveStringValue('communication_email')) ? 'communication_email' : FALSE,
+        'communication_phone' => !empty($par_data_person->retrieveStringValue('communication_phone')) ? 'communication_phone' : FALSE,
+        'communication_mobile' => !empty($par_data_person->retrieveStringValue('communication_mobile')) ? 'communication_mobile' : FALSE,
       ];
       $this->loadDataValue('preferred_contact', $contact_options);
     }
