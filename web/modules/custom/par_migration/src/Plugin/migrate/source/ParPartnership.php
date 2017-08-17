@@ -30,12 +30,26 @@ class ParPartnership extends SqlBase {
   protected $regulatoryFunctions = [];
 
   /**
+   * @var array
+   *   A cached array of authority people on a partnership.
+   */
+  protected $partnershipAuthorityPeople = [];
+
+  /**
+   * @var array
+   *   A cached array of organisation people on a partnership.
+   */
+  protected $partnershipOrganisationPeople = [];
+
+  /**
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $state);
 
     $this->collectRegulatoryFunctions();
+    $this->collectAuthorityPeople();
+    $this->collectOrganisationPeople();
   }
 
   /**
@@ -127,6 +141,44 @@ class ParPartnership extends SqlBase {
     }
   }
 
+  protected function collectAuthorityPeople() {
+    $query = $this->select('par_partnership_people', 'p')
+      ->fields('p', [
+        'partnership_person_id',
+        'partnership_id',
+        'person_id',
+      ]);
+    $query->leftJoin('par_partnerships', 'pt', 'p.partnership_id = pt.partnership_id');
+    $query->leftJoin('par_authorities', 'pa', 'pt.organisation_id = pa.authority_id');
+    $result = $query->isNotNull('pa.authority_id')
+      ->execute();
+
+    while ($row = $result->fetchAssoc()) {
+      $this->partnershipAuthorityPeople[$row['partnership_id']][$row['person_id']] = [
+        'target_id' => (int) $row['person_id'],
+      ];
+    }
+  }
+
+  protected function collectOrganisationPeople() {
+    $query = $this->select('par_partnership_people', 'p')
+      ->fields('p', [
+        'partnership_person_id',
+        'partnership_id',
+        'person_id',
+      ]);
+    $query->leftJoin('par_partnerships', 'pt', 'p.partnership_id = pt.partnership_id');
+    $query->leftJoin('par_organisations', 'po', 'pt.organisation_id = po.organisation_id');
+    $result = $query->isNotNull('po.organisation_id')
+      ->execute();
+
+    while ($row = $result->fetchAssoc()) {
+      $this->partnershipOrganisationPeople[$row['partnership_id']][$row['person_id']] = [
+        'target_id' => (int) $row['person_id'],
+      ];
+    }
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -151,6 +203,12 @@ class ParPartnership extends SqlBase {
 
     $regulatory_functions = array_key_exists($partnership, $this->regulatoryFunctions) ? $this->regulatoryFunctions[$partnership] : [];
     $row->setSourceProperty('regulatory_functions', $regulatory_functions);
+
+    $partnership_authority_people = array_key_exists($partnership, $this->partnershipAuthorityPeople) ? $this->partnershipAuthorityPeople[$partnership] : [];
+    $row->setSourceProperty('authority_people', $partnership_authority_people);
+
+    $partnership_organisation_people = array_key_exists($partnership, $this->partnershipOrganisationPeople) ? $this->partnershipOrganisationPeople[$partnership] : [];
+    $row->setSourceProperty('organisation_people', $partnership_organisation_people);
 
     return parent::prepareRow($row);
   }

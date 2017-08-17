@@ -7,7 +7,7 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: nbusvLuwKfRuYC6bJ_xS98n7QCXilxWaw0x4Fhif6eU
+  default_config_hash: MAMyncM51KJbRhJgGqWC_SAFPHcuCvVQxzBa8RsZbXs
 id: par_migration_partnership
 class: null
 field_plugin_method: null
@@ -163,6 +163,32 @@ process:
         - par_migration_coordinator_organisation
       no_stub: true
       source: organisation_id
+  field_authority_person:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: authority_people
+    -
+      plugin: iterator
+      process:
+        target_id:
+          plugin: migration_lookup
+          migration: par_migration_authority_person
+          source: target_id
+          no_stub: true
+  field_organisation_person:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: organisation_people
+    -
+      plugin: iterator
+      process:
+        target_id:
+          plugin: migration_lookup
+          migration: par_migration_organisation_person
+          source: target_id
+          no_stub: true
   field_advice:
     -
       plugin: migration_lookup

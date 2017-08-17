@@ -160,6 +160,32 @@ process:
         - par_migration_coordinator_organisation
       no_stub: true
       source: organisation_id
+  field_authority_person:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: authority_people
+    -
+      plugin: iterator
+      process:
+        target_id:
+          plugin: migration_lookup
+          migration: par_migration_authority_person
+          source: target_id
+          no_stub: true
+  field_organisation_person:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: organisation_people
+    -
+      plugin: iterator
+      process:
+        target_id:
+          plugin: migration_lookup
+          migration: par_migration_organisation_person
+          source: target_id
+          no_stub: true
   field_advice:
     -
       plugin: migration_lookup
