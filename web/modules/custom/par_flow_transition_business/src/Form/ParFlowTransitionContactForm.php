@@ -70,6 +70,12 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
     $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
 
+    //Leading paragraph
+    $form['leading_paragraph'] = [
+      '#type' => 'markup',
+      '#markup' => t('<p><strong>Change the main contact for your business</strong></p>'),
+    ];
+
     // The Person's title.
     $form['salutation'] = [
       '#type' => 'textfield',
