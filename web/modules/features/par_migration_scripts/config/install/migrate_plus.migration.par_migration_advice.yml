@@ -49,6 +49,19 @@ process:
       Y: true
       N: false
       'null': false
+  field_regulatory_function:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: regulatory_functions
+    -
+      plugin: iterator
+      process:
+        target_id:
+          plugin: migration_lookup
+          migration: par_migration_regulatory_functions
+          source: target_id
+          no_stub: true
   document:
     -
       plugin: migration_lookup
