@@ -127,7 +127,7 @@ HEREDOC;
 
     $form['send'] = [
       '#type' => 'submit',
-      '#value' => t('Send Invitation'),
+      '#value' => t('Send invite'),
     ];
 
     $previous_link = $this->getFlow()->getLinkByStep(3)->setText('Cancel')->toString();
