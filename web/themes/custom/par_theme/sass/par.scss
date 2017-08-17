@@ -269,3 +269,17 @@ a.no-pointer-events {
 #global-header #logo {
   border-bottom: none;
 }
+
+/* Pagerer overrides */
+
+div.pagerer-container {
+  display: inline-block;
+  margin-top: 2em;
+}
+
+/* Flow links */
+
+a.flow-link {
+    display: block;
+}
+
