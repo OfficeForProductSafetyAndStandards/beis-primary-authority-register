@@ -120,7 +120,7 @@ class ParAdvice extends SqlBase {
   }
 
   /**
-   * Adds the lookuped regulatory functions.
+   * Prepares the row for processing.
    *
    * @param \Drupal\migrate\Row $row
    *
