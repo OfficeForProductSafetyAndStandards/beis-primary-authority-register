@@ -7,7 +7,7 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: jFTScQZLER1lFrEypQEk7ZG5LYe7N3bWHYTco_Knnn4
+  default_config_hash: U9a31LWn15wcOUbz9du12U7XIL2kwocP1vJWIy9GdQY
 id: par_migration_advice
 class: null
 field_plugin_method: null
@@ -52,6 +52,19 @@ process:
       'Y': true
       'N': false
       'null': false
+  field_regulatory_function:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: regulatory_functions
+    -
+      plugin: iterator
+      process:
+        target_id:
+          plugin: migration_lookup
+          migration: par_migration_regulatory_functions
+          source: target_id
+          no_stub: true
   document:
     -
       plugin: migration_lookup

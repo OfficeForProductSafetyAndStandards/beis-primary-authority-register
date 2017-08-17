@@ -23,7 +23,10 @@ process:
   uid:
     plugin: default_value
     default_value: 1
-  organisation_name: name
+  organisation_name:
+    plugin: skip_on_empty
+    method: process
+    source: name
   size:
     -
       plugin: skip_on_empty
@@ -31,6 +34,7 @@ process:
       source: size_category
     -
       plugin: static_map
+      default_value: medium
       map:
         Small: Small
         Medium: medium
@@ -42,6 +46,7 @@ process:
       source: employees_band
     -
       plugin: static_map
+      default_value: '0'
       map:
         '10-49': '50'
         '50-249': '50-249'
@@ -54,6 +59,7 @@ process:
       source: country
     -
       plugin: static_map
+      default: ''
       map:
         England: GB-ENG
         Wales: GB-WLS
@@ -119,9 +125,10 @@ process:
     -
       plugin: iterator
       process:
-        -
+        target_id:
           plugin: migration_lookup
           migration: par_migration_sic_code
+          source: target_id
           no_stub: true
 destination:
   plugin: 'entity:par_data_organisation'
