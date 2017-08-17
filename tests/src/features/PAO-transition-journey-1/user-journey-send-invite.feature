@@ -51,6 +51,6 @@ Feature: Primary Authority - Send invitiation to business
 #
 #        # PARTERSHIP TASKS SCREEN
 #
-#        When I click on the link "Go back to your partnerships"
-#        Then I expect that element "h1" contains the text "List of Partnerships"
+#        When I click on the link "Save and continue"
+#        Then I expect that element "h1" contains the text "Updating the Primary Authority Register"
 #        And I click on the link "Log out"

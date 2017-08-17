@@ -7,7 +7,7 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: zewjSRFAGSFG5HPDkRNrEsMDDfPyRG77OYUYP9gFnXA
+  default_config_hash: ZGjGFPv5XIjJxiInr9BHa97OT_KzTWOJ9PFTwztFLVE
 id: par_migration_organisation_person
 class: null
 field_plugin_method: null
@@ -19,7 +19,6 @@ label: 'PAR Migration of organisation people'
 source:
   plugin: par_migration_organisation_person
 process:
-  id: person_id
   type:
     plugin: default_value
     default_value: person
@@ -52,6 +51,7 @@ process:
       source: work_phone_preferred
     -
       plugin: static_map
+      default_value: false
       map:
         'Y': true
         'N': false
@@ -63,6 +63,7 @@ process:
       source: mobile_phone_preferred
     -
       plugin: static_map
+      default_value: false
       map:
         'Y': true
         'N': false
@@ -74,6 +75,7 @@ process:
       source: email_preferred
     -
       plugin: static_map
+      default_value: false
       map:
         'Y': true
         'N': false
