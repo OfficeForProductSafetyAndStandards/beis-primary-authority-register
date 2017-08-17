@@ -7,7 +7,7 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: ht1QEO76wtqlhU-wfNLPyFmfyXoWua5JhAUAFMmnRNQ
+  default_config_hash: iYNmaVLO94u07eX0mqkjFihq8Ay7qu2nFw4k0O0VEyA
 id: par_migration_authority_premises
 class: null
 field_plugin_method: null
@@ -25,11 +25,38 @@ process:
     default_value: premises
   uid:
     plugin: default_value
-    default_value: 1
-  field_date_address/administrativeArea: town
-  field_date_address/locality: country
-  field_date_address/addressLine1: line_1
-  field_date_address/addressLine2:
+    default_value: 1country_code
+  address/country_code:
+    plugin: default_value
+    default_value: GB
+  address/administrative_area:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: town
+    -
+      plugin: substr
+      start: 0
+      length: 254
+  address/locality:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: county
+    -
+      plugin: substr
+      start: 0
+      length: 254
+  address/address_line1:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: line_1
+    -
+      plugin: substr
+      start: 0
+      length: 254
+  address/address_line2:
     -
       plugin: concat
       delimiter: ', '
@@ -37,9 +64,21 @@ process:
         - line_2
         - line_3
     -
+      plugin: substr
+      start: 0
+      length: 254
+    -
       plugin: trim_characters
-      characters: ', '
-  field_date_address/postalCode: postcode
+      characters: ','
+  address/postal_code:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: postcode
+    -
+      plugin: substr
+      start: 0
+      length: 254
   nation:
     -
       plugin: skip_on_empty
@@ -47,7 +86,7 @@ process:
       source: country
     -
       plugin: static_map
-      source: country
+      default: ''
       map:
         England: GB-ENG
         Wales: GB-WLS

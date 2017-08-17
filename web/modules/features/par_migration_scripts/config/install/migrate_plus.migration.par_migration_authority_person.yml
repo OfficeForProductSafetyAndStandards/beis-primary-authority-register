@@ -16,15 +16,20 @@ label: 'PAR Migration of authority people'
 source:
   plugin: par_migration_authority_person
 process:
-  id: person_id
   type:
     plugin: default_value
     default_value: person
   uid:
     plugin: default_value
     default_value: 1
-  salutation: title
-  first_name: first_name
+  salutation:
+    plugin: skip_on_empty
+    method: process
+    source: title
+  first_name:
+    plugin: skip_on_empty
+    method: process
+    source: first_name
   last_name:
     plugin: skip_on_empty
     method: process
@@ -49,6 +54,7 @@ process:
       source: work_phone_preferred
     -
       plugin: static_map
+      default_value: false
       map:
         'Y': true
         'N': false
@@ -60,6 +66,7 @@ process:
       source: mobile_phone_preferred
     -
       plugin: static_map
+      default_value: false
       map:
         'Y': true
         'N': false
@@ -71,11 +78,15 @@ process:
       source: email_preferred
     -
       plugin: static_map
+      default_value: false
       map:
         'Y': true
         'N': false
         'null': false
-  communication_notes: communication_notes
+  communication_notes:
+    plugin: skip_on_empty
+    method: process
+    source: communication_notes
 destination:
   plugin: 'entity:par_data_person'
 migration_dependencies: {  }
