@@ -149,7 +149,7 @@ class ParPartnership extends SqlBase {
         'person_id',
       ]);
     $query->leftJoin('par_partnerships', 'pt', 'p.partnership_id = pt.partnership_id');
-    $query->leftJoin('par_authorities', 'pa', 'pt.organisation_id = pa.authority_id');
+    $query->leftJoin('par_authorities', 'pa', 'pt.authority_id = pa.authority_id');
     $result = $query->isNotNull('pa.authority_id')
       ->execute();
 
