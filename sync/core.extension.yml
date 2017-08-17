@@ -63,6 +63,7 @@ module:
   par_flow_transition_partnership_details: 0
   par_flows: 0
   par_header: 0
+  par_invite: 0
   par_migration: 0
   par_migration_scripts: 0
   par_roles: 0
