@@ -40,7 +40,7 @@ Feature: Primary Authority - Documentation
         # DOCUMENTATION
 
         And I scroll to element ".table-scroll-wrapper"
-        When I click on the link "Review and confirm your documentation for ABCD Mart"
+        When I click on the link "Review and confirm your documentation"
         And I scroll to element ".table-scroll-wrapper"
         And I click on the link "edit"
         And I click on the radio "#edit-document-type-authority-advice"
@@ -52,7 +52,7 @@ Feature: Primary Authority - Documentation
         And the element ".table-scroll-wrapper" contains the text "Cookie control"
         When I click on the link "Save"
         Then I expect that element ".table-scroll-wrapper" contains the text "100%"
-        When I click on the link "Review and confirm your documentation for ABCD Mart"
+        When I click on the link "Review and confirm your documentation"
         And I click on the link "edit"
         And I click on the radio "#edit-document-type-authority-advice"
         And I click on the checkbox ".form-label*=Alphabet learning"

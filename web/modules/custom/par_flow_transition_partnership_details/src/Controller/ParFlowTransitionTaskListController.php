@@ -22,12 +22,8 @@ class ParFlowTransitionTaskListController extends ParBaseController {
   public function content(ParDataPartnership $par_data_partnership = NULL) {
 
     // Organisation summary.
-    $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $organisation_name = $par_data_organisation->retrieveStringValue('name');
-
-    // Premises.
-    $par_data_premises = current($par_data_organisation->getPremises());
-    $premises_view_builder = $par_data_premises->getViewBuilder();
+    $par_data_organisation = current($par_data_partnership->retrieveEntityValue('field_organisation'));
+    $organisation_name = $par_data_organisation ? $par_data_organisation->retrieveStringValue('name') : '';
 
     // Organisation Name & Address.
     $build['organisation']['label'] = [
@@ -37,11 +33,18 @@ class ParFlowTransitionTaskListController extends ParBaseController {
       '#markup' => $organisation_name
     ];
 
-    $build['organisation']['premises_address'] = $premises_view_builder->view($par_data_premises, 'summary');
+    if ($par_data_organisation) {
+      // Premises.
+      $par_data_premises = current($par_data_organisation->retrieveEntityValue('field_premises'));
+      $premises_view_builder = $this->getParDataManager()->getViewBuilder('par_data_premises');
+      if ($par_data_premises) {
+        $build['organisation']['premises_address'] = $premises_view_builder->view($par_data_premises, 'summary');
+      }
+    }
 
     // Primary contact summary.
     $par_data_primary_person = current($par_data_partnership->getAuthorityPeople());
-    $primary_person_view_builder = $par_data_primary_person->getViewBuilder();
+    $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
 
     $build['primary_contact'] = [
       '#type' => 'fieldset',
@@ -54,7 +57,9 @@ class ParFlowTransitionTaskListController extends ParBaseController {
       '#suffix' => '</h4>',
       '#markup' => 'Main contact:'
     ];
-    $build['primary_contact']['person'] = $primary_person_view_builder->view($par_data_primary_person, 'summary');
+    if ($par_data_primary_person) {
+      $build['primary_contact']['person'] = $person_view_builder->view($par_data_primary_person, 'summary');
+    }
 
     // Generate the link for confirming partnership details.
     $overview_link = $this->getFlow()->getLinkByStep(4)
@@ -76,14 +81,14 @@ class ParFlowTransitionTaskListController extends ParBaseController {
       ->setText('Review and confirm your inspection plan')
       ->toString();
     $par_data_inspection_plan = current($par_data_partnership->getInspectionPlan());
-    $inspection_plan_status = $par_data_inspection_plan->getParStatus();
+    $inspection_plan_status = $par_data_inspection_plan ? $par_data_inspection_plan->getParStatus() : '';
 
     // Make sure to add the inspection plan cacheability data to this form.
     $this->addCacheableDependency($par_data_inspection_plan);
 
     // Generate the link for confirming all advice documents.
     $documents_list_link = $this->getFlow()->getLinkByStep(9)
-      ->setText($this->t('Review and confirm your documentation for @business', ['@business' => $par_data_organisation->retrieveStringValue('organisation_name')]))
+      ->setText($this->t('Review and confirm your documentation'))
       ->toString();
     // Calculate the average completion of all documentation.
     $document_completion = [];
