@@ -4,6 +4,7 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\par_data\ParDataManagerInterface;
 use Drupal\trance\Trance;
 
 /**
@@ -14,7 +15,18 @@ use Drupal\trance\Trance;
 class ParDataEntity extends Trance implements ParDataEntityInterface {
 
   /**
+   * Simple getter to inject the PAR Data Manager service.
+   *
+   * @return ParDataManagerInterface
+   */
+  public function getParDataManager() {
+    return \Drupal::service('par_data.manager');
+  }
+
+  /*
    * Validate the fields.
+   *
+   * @TODO REPLACE THIS WITH ENTITY VALIDATION API IN BETA.
    *
    * @param array $fields
    * 'comments' => [
@@ -137,35 +149,46 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Get all reference fields for a given entity
+   * Get all the relationships for this entity.
+   *
+   * @param string $target
+   *   The target type to return entities for.
+   *
+   * @return EntityInterface[]
+   *   An array of entities keyed by type.
    */
-  public function getReferenceFields() {
-    $reference_fields = [];
-    foreach ($this->getFieldDefinitions() as $definition) {
-      if ($definition->getType() === 'entity_reference'
-        && isset($this->get($definition->getName())->referencedEntities()[0])
-        && $this->get($definition->getName())->referencedEntities()[0] instanceof ParDataEntityInterface) {
-        $reference_fields[$definition->getName()] = $this->get($definition->getName());
-      }
-    }
-
-    return $reference_fields;
-  }
-
-  /**
-   * Get all reference fields for a given entity
-   */
-  public function getReferenceEntitiesByType($type) {
+  public function getRelationships($target = NULL) {
     $entities = [];
-    foreach ($this->getFieldDefinitions() as $definition) {
-      if ($definition->getsetting('target_type') === $type) {
-        foreach ($this->get($definition->getName())->referencedEntities() as $entity) {
-          $entities[$entity->id()] = $entity;
+
+    // Get all referenced entities.
+    $references = $this->getParDataManager()->getReferences($this->getEntityTypeId(), $this->bundle());
+    foreach ($references as $entity_type => $fields) {
+      // If the reference is on the current entity type
+      // we can get the value from the current $entity.
+      if ($this->getEntityTypeId() === $entity_type) {
+        foreach ($fields as $field_name => $field) {
+          foreach ($this->get($field_name)->referencedEntities() as $referenced_entity) {
+            $entities[$referenced_entity->getEntityTypeId()][$referenced_entity->id()] = $referenced_entity;
+          }
+        }
+      }
+      // If the reference is on another entity type
+      // we must use an entity lookup to find all entities
+      // that reference the current entity.
+      else {
+        foreach ($fields as $field_name => $field) {
+          $referencing_entities = $this->getParDataManager()->getEntitiesByProperty($entity_type, $field_name, $this->id());
+          if ($referencing_entities) {
+            if (!isset($entities[$entity_type])) {
+              $entities[$entity_type] = [];
+            }
+            $entities[$entity_type] += $referencing_entities;
+          }
         }
       }
     }
 
-    return $entities;
+    return $target && isset($entities[$target]) ? array_filter($entities[$target]) : $entities;
   }
 
   /**
