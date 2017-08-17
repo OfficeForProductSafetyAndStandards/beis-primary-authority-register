@@ -66,7 +66,7 @@ par_flow_transition_partnership_details.invite:
   path: '/dv/primary-authority-partnerships/{par_data_partnership}/details/invite/{par_data_person}'
   defaults:
     _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionInviteForm'
-    _title: 'Invite business to the Primary Authority Register'
+    _title: 'Updating the Primary Authority Register'
   requirements:
     _permission: 'access par journey transition partnership details'
     par_data_partnership: \d+
