@@ -38,7 +38,7 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
     );
 
     // Combined Status Field.
-    $data['par_partnerships_revision']['par_combined_status_field'] = array(
+    $data['par_partnerships_field_data']['par_combined_status_field'] = array(
       'title' => t('Combined Status Field'),
       'field' => [
         'title' => t('Combined Status Field'),
@@ -48,7 +48,7 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
     );
 
     // Custom filter for Par Membership checks.
-    $data['par_partnerships_revision']['id_filter'] = [
+    $data['par_partnerships_field_data']['id_filter'] = [
       'title' => t('Partnership: Can user update?'),
       'filter' => [
         'title' => t('Partnership: Can user update?'),
