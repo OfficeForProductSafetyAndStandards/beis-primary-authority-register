@@ -12,12 +12,15 @@
 # You'll need to be logged into:
 #
 #    Gov.uk PaaS
-#       e.g. 
-#         cf login -a api.cloud.service.gov.uk -u chris.moreton@transformuk.com
+#       CLI: https://docs.cloudfoundry.org/cf-cli/install-go-cli.html
+
+#       cf login -a api.cloud.service.gov.uk -u <USERNAME>
 #           
 #    Par Beta Vault
+        CLI: https://www.vaultproject.io/docs/install/index.html
+        
 #       vault auth
-#       valut unseal
+#       vault unseal
 ####################################################################################
 
 ENV=$1
@@ -65,15 +68,15 @@ fi
 
 cf push -f manifest.$ENV.yml
 
-cf set-env par-beta-branch S3_ACCESS_KEY $S3_ACCESS_KEY
-cf set-env par-beta-branch S3_SECRET_KEY $S3_SECRET_KEY
-cf set-env par-beta-branch PAR_HASH_SALT $PAR_HASH_SALT
-cf set-env par-beta-branch S3_BUCKET_PUBLIC $S3_BUCKET_PUBLIC
-cf set-env par-beta-branch S3_BUCKET_PRIVATE $S3_BUCKET_PRIVATE
-cf set-env par-beta-branch S3_BUCKET_ARTIFACTS $S3_BUCKET_ARTIFACTS
-cf set-env par-beta-branch APP_ENV $ENV
-cf set-env par-beta-branch PAR_GOVUK_NOTIFY_KEY $PAR_GOVUK_NOTIFY_KEY
-cf set-env par-beta-branch PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE
+cf set-env par-beta-$ENV S3_ACCESS_KEY $S3_ACCESS_KEY
+cf set-env par-beta-$ENV S3_SECRET_KEY $S3_SECRET_KEY
+cf set-env par-beta-$ENV PAR_HASH_SALT $PAR_HASH_SALT
+cf set-env par-beta-$ENV S3_BUCKET_PUBLIC $S3_BUCKET_PUBLIC
+cf set-env par-beta-$ENV S3_BUCKET_PRIVATE $S3_BUCKET_PRIVATE
+cf set-env par-beta-$ENV S3_BUCKET_ARTIFACTS $S3_BUCKET_ARTIFACTS
+cf set-env par-beta-$ENV APP_ENV $ENV
+cf set-env par-beta-$ENV PAR_GOVUK_NOTIFY_KEY $PAR_GOVUK_NOTIFY_KEY
+cf set-env par-beta-$ENV PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE
 
 cf restage par-beta-$ENV
 
