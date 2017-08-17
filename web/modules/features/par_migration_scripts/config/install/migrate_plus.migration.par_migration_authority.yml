@@ -73,9 +73,10 @@ process:
     -
       plugin: iterator
       process:
-        -
+        target_id:
           plugin: migration_lookup
           migration: par_migration_regulatory_functions
+          source: target_id
           no_stub: true
   field_person:
     -

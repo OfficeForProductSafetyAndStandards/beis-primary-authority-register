@@ -7,7 +7,7 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: ip61eaDK0CwuHdiRSQlyOYGDh07pn9Fe6zW-FARGmnk
+  default_config_hash: JXstku1EoLl3Wy1IPNu_RkoFSqqoYig0B6bxodK_4BE
 id: par_migration_authority_person
 class: null
 field_plugin_method: null
@@ -57,6 +57,7 @@ process:
       source: work_phone_preferred
     -
       plugin: static_map
+      default_value: false
       map:
         'Y': true
         'N': false
@@ -68,6 +69,7 @@ process:
       source: mobile_phone_preferred
     -
       plugin: static_map
+      default_value: false
       map:
         'Y': true
         'N': false
@@ -79,6 +81,7 @@ process:
       source: email_preferred
     -
       plugin: static_map
+      default_value: false
       map:
         'Y': true
         'N': false

@@ -82,7 +82,7 @@ class ParAdvice extends SqlBase {
       ->execute();
 
     while ($row = $result->fetchAssoc()) {
-      $this->regulatoryFunctions[$row['advice_id']][] = [
+      $this->regulatoryFunctions[$row['advice_id']][$row['regulatory_function_id']] = [
         'target_id' => (int) $row['regulatory_function_id'],
       ];
     }

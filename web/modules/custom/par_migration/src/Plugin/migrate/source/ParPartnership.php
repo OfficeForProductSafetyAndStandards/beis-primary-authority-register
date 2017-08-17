@@ -121,7 +121,7 @@ class ParPartnership extends SqlBase {
       ->execute();
 
     while ($row = $result->fetchAssoc()) {
-      $this->regulatoryFunctions[$row['partnership_id']][] = [
+      $this->regulatoryFunctions[$row['partnership_id']][$row['regulatory_function_id']] = [
         'target_id' => (int) $row['regulatory_function_id'],
       ];
     }
