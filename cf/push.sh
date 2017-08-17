@@ -47,7 +47,7 @@ AWS_ACCESS_KEY_ID=`vault read -field=AWS_ACCESS_KEY_ID secret/par/deploy/aws`
 
 if [ $? == 1 ]; then
   echo "####################################################################################"
-  echo >&2 "Please log into vault"
+  echo >&2 "Please log into and unseal the vault"
   echo "####################################################################################"
   exit
 fi
@@ -122,6 +122,7 @@ else
 fi
 
 pwd
+echo manifest.$ENV.yml
 cf push -f manifest.$ENV.yml
 
 # Set environment variables
