@@ -33,26 +33,15 @@
 #     vault unseal
 ####################################################################################
 
-command -v aws >/dev/null 2>&1 || { 
-    echo "####################################################################################"
-    echo >&2 "Please install AWS command line interface"
-    echo "####################################################################################"
-    exit 1 
-}
-
-command -v cf >/dev/null 2>&1 || { 
-    echo "####################################################################################"
-    echo >&2 "Please install Cloud Foundry command line interface"
-    echo "####################################################################################"
-    exit 1 
-}
-
 ENV=$1
 VER=$2
 
-####################################################################################
-# Get AWS access keys to download the versioned package from S3
-####################################################################################
+command -v vault >/dev/null 2>&1 || { 
+    echo "####################################################################################"
+    echo >&2 "Please install Hashicorp Vault command line interface"
+    echo "####################################################################################"
+    exit 1 
+}
 
 AWS_ACCESS_KEY_ID=`vault read -field=AWS_ACCESS_KEY_ID secret/par/deploy/aws`
 
@@ -62,6 +51,29 @@ if [ $? == 1 ]; then
   echo "####################################################################################"
   exit
 fi
+
+command -v aws >/dev/null 2>&1 || { 
+    echo "####################################################################################"
+    echo >&2 "Please install AWS command line interface"
+    echo "####################################################################################"
+    vault seal
+    exit 1 
+}
+
+command -v cf >/dev/null 2>&1 || { 
+    echo "####################################################################################"
+    echo >&2 "Please install Cloud Foundry command line interface"
+    echo "####################################################################################"
+    vault seal
+    exit 1 
+}
+
+####################################################################################
+# Get AWS access keys to download the versioned package from S3
+####################################################################################
+
+# This command was run earlier in the script to test for vault login
+# AWS_ACCESS_KEY_ID=`vault read -field=AWS_ACCESS_KEY_ID secret/par/deploy/aws`
 
 AWS_SECRET_ACCESS_KEY=`vault read -field=AWS_SECRET_ACCESS_KEY secret/par/deploy/aws`
 
@@ -81,6 +93,8 @@ PAR_GOVUK_NOTIFY_TEMPLATE=`vault read -field=PAR_GOVUK_NOTIFY_TEMPLATE secret/pa
 ####################################################################################
 # Reseal the vault
 ####################################################################################
+
+vault seal
 
 # We are in the /cf directory
 
@@ -107,6 +121,7 @@ else
     cd ..
 fi
 
+pwd
 cf push -f manifest.$ENV.yml
 
 # Set environment variables
