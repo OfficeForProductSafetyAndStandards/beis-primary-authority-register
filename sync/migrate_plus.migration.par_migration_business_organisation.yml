@@ -7,7 +7,7 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: hvvVSd1oK246E1hiIW3z80lPVoZLJZAex8cmMvY5K3A
+  default_config_hash: 3HP8yzXgbiNNCDU49VagwU92BBYhV6NxSPCXqYnzTPc
 id: par_migration_business_organisation
 class: null
 field_plugin_method: null
@@ -37,6 +37,7 @@ process:
       source: size_category
     -
       plugin: static_map
+      default_value: medium
       map:
         Small: Small
         Medium: medium
@@ -48,6 +49,7 @@ process:
       source: employees_band
     -
       plugin: static_map
+      default_value: '0'
       map:
         10-49: '50'
         50-249: 50-249
@@ -60,6 +62,7 @@ process:
       source: country
     -
       plugin: static_map
+      default: ''
       map:
         England: GB-ENG
         Wales: GB-WLS
@@ -125,9 +128,10 @@ process:
     -
       plugin: iterator
       process:
-        -
+        target_id:
           plugin: migration_lookup
           migration: par_migration_sic_code
+          source: target_id
           no_stub: true
 destination:
   plugin: 'entity:par_data_organisation'

@@ -28,23 +28,21 @@ process:
     method: process
     source: name
   authority_type:
-    -
-      plugin: skip_on_empty
-      method: process
-      source: authority_type
-    -
-      plugin: static_map
-      map:
-        County: county
-        District: district
-        'District Council Area': district_council
-        'Fire Authority': fire_auhority
-        'Joint Services': joint_services
-        'London Borough': london_borough
-        'Metropolitan District': metropolitan_district
-        Port: port
-        Unitary: unitary
-        Other: other
+    plugin: static_map
+    source: authority_type
+    default_value: other
+    map:
+      County: county
+      District: district
+      'District Council Area': district_council
+      'Fire Authority': fire_auhority
+      'Joint Services': joint_services
+      'London Borough': london_borough
+      'Metropolitan District': metropolitan_district
+      Port: port
+      Unitary: unitary
+      Other: other
+      Unknown: other
   nation:
     -
       plugin: skip_on_empty
@@ -52,6 +50,7 @@ process:
       source: country
     -
       plugin: static_map
+      default: ''
       map:
         England: GB-ENG
         Wales: GB-WLS
