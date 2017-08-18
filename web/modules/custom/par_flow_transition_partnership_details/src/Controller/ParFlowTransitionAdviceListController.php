@@ -20,7 +20,11 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
    * {@inheritdoc}
    */
   public function content(ParDataPartnership $par_data_partnership = NULL) {
+
     $par_data_organisation = current($par_data_partnership->retrieveEntityValue('field_organisation'));
+
+    // @todo remove this.
+    $organisation_name = 'N/A';
 
     if ($par_data_organisation) {
       $organisation_name = $par_data_organisation ? $par_data_organisation->retrieveStringValue('name') : '';
