@@ -52,9 +52,9 @@ class ParFlowTransitionContactForm extends ParBaseForm {
 
       // Get preferred contact methods.
       $contact_options = [
-        'communication_email' => !empty($par_data_person->retrieveStringValue('communication_email')) ? 'communication_email' : FALSE,
-        'communication_phone' => !empty($par_data_person->retrieveStringValue('communication_phone')) ? 'communication_phone' : FALSE,
-        'communication_mobile' => !empty($par_data_person->retrieveStringValue('communication_mobile')) ? 'communication_mobile' : FALSE,
+        'communication_email' => !empty($par_data_person->retrieveBooleanValue('communication_email')) ? 'communication_email' : FALSE,
+        'communication_phone' => !empty($par_data_person->retrieveBooleanValue('communication_phone')) ? 'communication_phone' : FALSE,
+        'communication_mobile' => !empty($par_data_person->retrieveBooleanValue('communication_mobile')) ? 'communication_mobile' : FALSE,
       ];
       $this->loadDataValue('preferred_contact', $contact_options);
     }
