@@ -32,24 +32,28 @@ class ParMember extends FilterPluginBase {
    * {@inheritdoc)
    */
   public function query() {
+    // This filter does not apply if not on a PAR entity.
+    if (!$this->par_data_manager->getParEntityType($this->getEntityType())) {
+      return;
+    }
 
     // Get current user ID.
     $account = User::load(\Drupal::currentUser()->id());
 
     // Find memberships.
-    $partnerships_filter = $this->par_data_manager->hasMemberships($account);
+    $membership_filter = array_keys($this->par_data_manager->hasMemberships($account, $this->getEntityType()));
 
     // Add 0 to prevent an invalid IN query.
-    $partnerships_filter[] = 0;
+    array_push($membership_filter, 0);
 
-    // @todo refactor to allow other entity types.
-    $par_data_partnership_type = $this->par_data_manager->getParEntityType('par_data_partnership');
+    $par_entity_type = $this->par_data_manager->getParEntityType($this->getEntityType());
 
-    // Get partnerships field e.g. "par_partnerships_field_data.id".
-    $revision_table = $par_data_partnership_type->getDataTable() . '.id';
+    // Get memberships field e.g. "par_partnerships_field_data.id".
+    $id = $par_entity_type->getKeys()['id'];
+    $revision_table = "{$par_entity_type->getDataTable()}.{$id}";
 
     // Where filter on partnership id to those the user is allowed to update.
-    $this->query->addWhere(0, $revision_table, $partnerships_filter, 'in');
+    $this->query->addWhere(0, $revision_table, $membership_filter, 'in');
 
   }
 
