@@ -10,7 +10,7 @@ Feature: Primary Authority - Change Partnership Details
 
         Given I am logged in as "par_authority@example.com"
         When I click on the link "Continue to your Partnerships"
-        
+
         # PARTNERSHIPS DASHBOARD
 
         And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
