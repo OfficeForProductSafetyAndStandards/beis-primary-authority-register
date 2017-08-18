@@ -23,41 +23,45 @@ class ParFlowTransitionTaskListController extends ParBaseController {
 
     // Organisation summary.
     $par_data_organisation = current($par_data_partnership->retrieveEntityValue('field_organisation'));
-    $organisation_name = $par_data_organisation ? $par_data_organisation->retrieveStringValue('name') : '';
-
-    // Organisation Name & Address.
-    $build['organisation']['label'] = [
-      '#type' => 'markup',
-      '#prefix' => '<h2 class="heading-medium">',
-      '#suffix' => '</h2>',
-      '#markup' => $organisation_name
-    ];
 
     if ($par_data_organisation) {
+
+      $organisation_name = $par_data_organisation ? $par_data_organisation->retrieveStringValue('name') : '';
+
+      // Organisation Name & Address.
+      $build['organisation']['label'] = [
+        '#type' => 'markup',
+        '#prefix' => '<h2 class="heading-medium">',
+        '#suffix' => '</h2>',
+        '#markup' => $organisation_name
+      ];
+
       // Premises.
       $par_data_premises = current($par_data_organisation->retrieveEntityValue('field_premises'));
       $premises_view_builder = $this->getParDataManager()->getViewBuilder('par_data_premises');
       if ($par_data_premises) {
         $build['organisation']['premises_address'] = $premises_view_builder->view($par_data_premises, 'summary');
       }
+
     }
 
     // Primary contact summary.
     $par_data_primary_person = current($par_data_partnership->getAuthorityPeople());
     $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
 
-    $build['primary_contact'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-    ];
-
-    $build['primary_contact']['label'] = [
-      '#type' => 'markup',
-      '#prefix' => '<h4>',
-      '#suffix' => '</h4>',
-      '#markup' => 'Main contact:'
-    ];
     if ($par_data_primary_person) {
+      $build['primary_contact'] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => 'form-group'],
+      ];
+
+      $build['primary_contact']['label'] = [
+        '#type' => 'markup',
+        '#prefix' => '<h4>',
+        '#suffix' => '</h4>',
+        '#markup' => 'Main contact:'
+      ];
+
       $build['primary_contact']['person'] = $person_view_builder->view($par_data_primary_person, 'summary');
     }
 
@@ -79,12 +83,15 @@ class ParFlowTransitionTaskListController extends ParBaseController {
     if ($par_data_partnership->getRawStatus() !== 'awaiting_review') {
       // Generate the link for inviting users.
       $organisation_people = $par_data_partnership->getOrganisationPeople();
-      if ($organisation_primary_person = array_shift($organisation_people)) {
-        $invite_link = $this->getFlow()->getLinkByStep(7, [
-          'par_data_person' => $organisation_primary_person->id(),
-        ])
-          ->setText('Invite the business to confirm their details')
-          ->toString();
+
+      if ($organisation_people) {
+        if ($organisation_primary_person = array_shift($organisation_people)) {
+          $invite_link = $this->getFlow()->getLinkByStep(7, [
+            'par_data_person' => $organisation_primary_person->id(),
+          ])
+            ->setText('Invite the business to confirm their details')
+            ->toString();
+        }
       }
 
       // Generate the link for confirming inspection plans.
@@ -99,8 +106,9 @@ class ParFlowTransitionTaskListController extends ParBaseController {
 
       // Generate the link for confirming all advice documents.
       $documents_list_link = $this->getFlow()->getLinkByStep(9)
-        ->setText($this->t('Review and confirm your documentation for @business', ['@business' => $par_data_organisation->retrieveStringValue('organisation_name')]))
+        ->setText($this->t('Review and confirm your documentation'))
         ->toString();
+
       // Calculate the average completion of all documentation.
       $document_completion = [];
       foreach ($par_data_partnership->getAdvice() as $document) {
@@ -126,7 +134,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
         ];
       }
     }
-    // Sort the array by descired keys.
+    // Sort the array by desired keys.
     ksort($rows);
 
     // Show the task links in table format.

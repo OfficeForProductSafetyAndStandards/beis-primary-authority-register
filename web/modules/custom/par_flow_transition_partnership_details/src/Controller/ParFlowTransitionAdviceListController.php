@@ -21,7 +21,10 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
    */
   public function content(ParDataPartnership $par_data_partnership = NULL) {
     $par_data_organisation = current($par_data_partnership->retrieveEntityValue('field_organisation'));
-    $organisation_name = $par_data_organisation->retrieveStringValue('name');
+
+    if ($par_data_organisation) {
+      $organisation_name = $par_data_organisation ? $par_data_organisation->retrieveStringValue('name') : '';
+    }
 
     $advice_bundle = $this->getParDataManager()->getParBundleEntity('par_data_advice');
 
