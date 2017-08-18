@@ -13,7 +13,6 @@ module:
   config_readonly: 0
   config_split: 0
   config_update: 0
-  contact: 0
   content_translation: 0
   contextual: 0
   csv_serialization: 0

@@ -2,7 +2,7 @@
 'use strict';
 
 var pa11y = require('pa11y');
-var url = 'http://localhost:8111/dv/partnership-dashboard';
+var url = 'http://localhost:8111/dv/business-partnerships/129/details/address/324';
 
 // Create a test instance with some default options
 var test = pa11y({

@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\par_data\ParDataManagerInterface;
 use Drupal\trance\TranceType;
 
 /**
@@ -18,6 +19,15 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
    * @var array
    */
   public $configuration;
+
+  /**
+   * Simple getter to inject the PAR Data Manager service.
+   *
+   * @return ParDataManagerInterface
+   */
+  public function getParDataManager() {
+    return \Drupal::service('par_data.manager');
+  }
 
   /**
    * {@inheritdoc}
