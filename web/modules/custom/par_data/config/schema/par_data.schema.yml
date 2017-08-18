@@ -6,6 +6,9 @@ par_data.settings:
     stubbed:
       type: boolean
       label: 'Whether to stub the entities when testing.'
+    par_data_classes:
+      type: sequence
+      label: 'list of par data classes'
 
 # The config for all PAR Data entity types.
 par_data.par_data_advice_type.*:
