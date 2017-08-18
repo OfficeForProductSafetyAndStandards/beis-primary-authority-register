@@ -14,8 +14,8 @@ Feature: Primary Authority - Change Partnership Details
         # PARTNERSHIPS DASHBOARD
 
         And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
-#        When I select next partnership awaiting review
-        When I click on the link "ABCD Mart"
+        When I select next partnership awaiting review
+#        When I click on the link "ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN
 
@@ -73,7 +73,6 @@ Feature: Primary Authority - Change Partnership Details
         Then I expect that element ".authority-alternative-contact-0" contains the text "par_authority_piggy@example.com"
         Then I expect that element ".authority-alternative-contact-0" contains the text "917234567899"
         Then I expect that element ".authority-alternative-contact-0" contains the text "97777777779"
-        When I click on the button "form#par-flow-transition-partnership-details-overview #edit-organisation-contacts a.flow-link"
         And I click on the checkbox "#edit-confirmation"
         And I click on the button "#edit-next"
         Then I expect that element "#block-par-theme-content" contains the text "Confirmed by the Authority"

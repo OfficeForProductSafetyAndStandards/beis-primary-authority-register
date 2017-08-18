@@ -12,7 +12,7 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
 
         # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
-        When I click on the link "Dashboard"
+#        When I click on the link "Dashboard"
         Then I expect that element "h1" contains the text "RD Helpdesk Dashboard"
         When I click on the button "td.views-field.views-field-authority-name a"
 
@@ -65,7 +65,6 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
         Then I expect that element ".authority-alternative-contact-0" contains the text "par_authority_piggy@example.com"
         Then I expect that element ".authority-alternative-contact-0" contains the text "917234567899"
         Then I expect that element ".authority-alternative-contact-0" contains the text "97777777779"
-        When I click on the button "form#par-flow-transition-partnership-details-overview #edit-organisation-contacts a.flow-link"
         And I click on the checkbox "#edit-confirmation"
         And I click on the button "#edit-next"
 

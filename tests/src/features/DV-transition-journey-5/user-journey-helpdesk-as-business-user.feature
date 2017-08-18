@@ -10,14 +10,13 @@ Feature: Helpdesk As Business User - Manage Addresses
 
         Given I am logged in as "par_helpdesk@example.com"
 
-        # PARTNERSHIP TASKS SCREEN/DASHBOARD
-
-        When I click on the link "Dashboard"
-
-        # PARTNERSHIP DETAILS
+        # HD DASHBOARD
 
         Then I expect that element "h1" contains the text "RD Helpdesk Dashboard"
         When I click on the button "td.views-field.views-field-organisation-name a"
+
+        # PARTNERSHIP TASKS
+
         When I click on the link "Review and confirm your business details"
         Then I expect that element "#edit-about-business" contains the text "About the business"
         And I expect that element "#edit-legal-entity" contains the text "Legal Entities"
