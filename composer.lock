@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8e4b5903fc8b1eadb959366883813b2a",
+    "content-hash": "f2b2e6f638d0c4e92e72f7e9a3071241",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -112,16 +112,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.33.0",
+            "version": "3.33.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "980351b9468d85fd077e74e696ccf14d3f5b631e"
+                "reference": "027bf2f1489bc6af98cb81494f0612d1f405ff27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/980351b9468d85fd077e74e696ccf14d3f5b631e",
-                "reference": "980351b9468d85fd077e74e696ccf14d3f5b631e",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/027bf2f1489bc6af98cb81494f0612d1f405ff27",
+                "reference": "027bf2f1489bc6af98cb81494f0612d1f405ff27",
                 "shasum": ""
             },
             "require": {
@@ -188,7 +188,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-08-14T19:22:37+00:00"
+            "time": "2017-08-16T17:24:08+00:00"
         },
         {
             "name": "commerceguys/addressing",
@@ -568,16 +568,16 @@
         },
         {
             "name": "consolidation/output-formatters",
-            "version": "3.1.10",
+            "version": "3.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/output-formatters.git",
-                "reference": "3872f19517bfc9da0e14c9e5b6fe0f8c7439ea3a"
+                "reference": "3a1160440819269e6d8d9c11db67129384b8fb35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/output-formatters/zipball/3872f19517bfc9da0e14c9e5b6fe0f8c7439ea3a",
-                "reference": "3872f19517bfc9da0e14c9e5b6fe0f8c7439ea3a",
+                "url": "https://api.github.com/repos/consolidation/output-formatters/zipball/3a1160440819269e6d8d9c11db67129384b8fb35",
+                "reference": "3a1160440819269e6d8d9c11db67129384b8fb35",
                 "shasum": ""
             },
             "require": {
@@ -613,7 +613,7 @@
                 }
             ],
             "description": "Format text by applying transformations provided by plug-in formatters.",
-            "time": "2017-06-06T19:08:54+00:00"
+            "time": "2017-08-17T22:11:07+00:00"
         },
         {
             "name": "cweagans/composer-patches",
@@ -1548,16 +1548,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.3.6",
+            "version": "8.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "a6d76c4428ee40cb3f60974ccc19b41feaf58dc0"
+                "reference": "32f66ed9cc593f8e9ab0eaaaeff4cadbd859d5ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/a6d76c4428ee40cb3f60974ccc19b41feaf58dc0",
-                "reference": "a6d76c4428ee40cb3f60974ccc19b41feaf58dc0",
+                "url": "https://api.github.com/repos/drupal/core/zipball/32f66ed9cc593f8e9ab0eaaaeff4cadbd859d5ff",
+                "reference": "32f66ed9cc593f8e9ab0eaaaeff4cadbd859d5ff",
                 "shasum": ""
             },
             "require": {
@@ -1735,7 +1735,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2017-08-02T15:27:39+00:00"
+            "time": "2017-08-16T17:10:35+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -2655,7 +2655,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/migrate_plus",
-                "reference": "aa7fd262cbb57b0898db8f4c0e2301c7639121a0"
+                "reference": "6eaa3eb4120bb9402f5d1a075162d4243a77e2f2"
             },
             "require": {
                 "drupal/core": "^8.3"
@@ -2673,8 +2673,8 @@
                     "dev-4.x": "4.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-4.x-dev",
-                    "datestamp": "1494423785",
+                    "version": "8.x-4.0-beta1+2-dev",
+                    "datestamp": "1502831643",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -2703,7 +2703,7 @@
                 "issues": "https://www.drupal.org/project/issues/migrate_plus",
                 "irc": "irc://irc.freenode.org/drupal-migrate"
             },
-            "time": "2017-05-10 13:40:38"
+            "time": "2017-08-15 21:25:32"
         },
         {
             "name": "drupal/migrate_source_csv",
@@ -3456,7 +3456,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/xmlsitemap-8.x-1.0-alpha2.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha2",
                 "shasum": "72576d8e40b747a71bd45577f9ab503a4a9d035e"
             },
             "require": {
@@ -3469,7 +3469,14 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha2",
-                    "datestamp": "1464192275"
+                    "datestamp": "1464192275",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
+                    }
+                },
+                "patches_applied": {
+                    "xmlsitemap_file_transfer coincides with hook name provided by file_entity": "https://www.drupal.org/files/issues/xmlsitemap_hook_file_transfer-2831733-6.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3504,6 +3511,10 @@
                 {
                     "name": "tadityar",
                     "homepage": "https://www.drupal.org/user/3094465"
+                },
+                {
+                    "name": "th_tushar",
+                    "homepage": "https://www.drupal.org/user/1835276"
                 }
             ],
             "description": "Creates an XML sitemap conforming to the <a href=\"http://sitemaps.org/\">sitemaps.org protocol</a>.",
@@ -5712,16 +5723,16 @@
         },
         {
             "name": "symfony/polyfill-apcu",
-            "version": "v1.4.0",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-apcu.git",
-                "reference": "2e7965b8cdfbba50d0092d3f6dca97dddec409e2"
+                "reference": "cec32398a973a9bfe9d2f94f4b5d5e186b40b698"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-apcu/zipball/2e7965b8cdfbba50d0092d3f6dca97dddec409e2",
-                "reference": "2e7965b8cdfbba50d0092d3f6dca97dddec409e2",
+                "url": "https://api.github.com/repos/symfony/polyfill-apcu/zipball/cec32398a973a9bfe9d2f94f4b5d5e186b40b698",
+                "reference": "cec32398a973a9bfe9d2f94f4b5d5e186b40b698",
                 "shasum": ""
             },
             "require": {
@@ -5730,7 +5741,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4-dev"
+                    "dev-master": "1.5-dev"
                 }
             },
             "autoload": {
@@ -5761,20 +5772,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-06-09T08:25:21+00:00"
+            "time": "2017-07-05T15:09:33+00:00"
         },
         {
             "name": "symfony/polyfill-iconv",
-            "version": "v1.4.0",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-iconv.git",
-                "reference": "ae1347fa81423b67dbc232c8c111facb367ff8b9"
+                "reference": "1ea0e08453819ecc7130e1fb0ee10862c2f33ed0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-iconv/zipball/ae1347fa81423b67dbc232c8c111facb367ff8b9",
-                "reference": "ae1347fa81423b67dbc232c8c111facb367ff8b9",
+                "url": "https://api.github.com/repos/symfony/polyfill-iconv/zipball/1ea0e08453819ecc7130e1fb0ee10862c2f33ed0",
+                "reference": "1ea0e08453819ecc7130e1fb0ee10862c2f33ed0",
                 "shasum": ""
             },
             "require": {
@@ -5786,7 +5797,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4-dev"
+                    "dev-master": "1.5-dev"
                 }
             },
             "autoload": {
@@ -5820,20 +5831,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-06-09T08:25:21+00:00"
+            "time": "2017-06-14T15:44:48+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.4.0",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "f29dca382a6485c3cbe6379f0c61230167681937"
+                "reference": "7c8fae0ac1d216eb54349e6a8baa57d515fe8803"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/f29dca382a6485c3cbe6379f0c61230167681937",
-                "reference": "f29dca382a6485c3cbe6379f0c61230167681937",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/7c8fae0ac1d216eb54349e6a8baa57d515fe8803",
+                "reference": "7c8fae0ac1d216eb54349e6a8baa57d515fe8803",
                 "shasum": ""
             },
             "require": {
@@ -5845,7 +5856,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4-dev"
+                    "dev-master": "1.5-dev"
                 }
             },
             "autoload": {
@@ -5879,20 +5890,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-06-09T14:24:12+00:00"
+            "time": "2017-06-14T15:44:48+00:00"
         },
         {
             "name": "symfony/polyfill-php54",
-            "version": "v1.4.0",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php54.git",
-                "reference": "7dd1a8b9f0442273fdfeb1c4f5eaff6890a82789"
+                "reference": "b7763422a5334c914ef0298ed21b253d25913a6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php54/zipball/7dd1a8b9f0442273fdfeb1c4f5eaff6890a82789",
-                "reference": "7dd1a8b9f0442273fdfeb1c4f5eaff6890a82789",
+                "url": "https://api.github.com/repos/symfony/polyfill-php54/zipball/b7763422a5334c914ef0298ed21b253d25913a6e",
+                "reference": "b7763422a5334c914ef0298ed21b253d25913a6e",
                 "shasum": ""
             },
             "require": {
@@ -5901,7 +5912,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4-dev"
+                    "dev-master": "1.5-dev"
                 }
             },
             "autoload": {
@@ -5937,20 +5948,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-06-09T08:25:21+00:00"
+            "time": "2017-06-14T15:44:48+00:00"
         },
         {
             "name": "symfony/polyfill-php55",
-            "version": "v1.4.0",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php55.git",
-                "reference": "94566239a7720cde0820f15f0cc348ddb51ba51d"
+                "reference": "29b1381d66f16e0581aab0b9f678ccf073288f68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php55/zipball/94566239a7720cde0820f15f0cc348ddb51ba51d",
-                "reference": "94566239a7720cde0820f15f0cc348ddb51ba51d",
+                "url": "https://api.github.com/repos/symfony/polyfill-php55/zipball/29b1381d66f16e0581aab0b9f678ccf073288f68",
+                "reference": "29b1381d66f16e0581aab0b9f678ccf073288f68",
                 "shasum": ""
             },
             "require": {
@@ -5960,7 +5971,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4-dev"
+                    "dev-master": "1.5-dev"
                 }
             },
             "autoload": {
@@ -5993,7 +6004,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-06-09T08:25:21+00:00"
+            "time": "2017-06-14T15:44:48+00:00"
         },
         {
             "name": "symfony/process",
@@ -6793,16 +6804,16 @@
         },
         {
             "name": "zendframework/zend-diactoros",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "b03f285a333f51e58c95cce54109a4a9ed691436"
+                "reference": "424a840dc3bedcdeea510b42e056c77c2d6c4bef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/b03f285a333f51e58c95cce54109a4a9ed691436",
-                "reference": "b03f285a333f51e58c95cce54109a4a9ed691436",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/424a840dc3bedcdeea510b42e056c77c2d6c4bef",
+                "reference": "424a840dc3bedcdeea510b42e056c77c2d6c4bef",
                 "shasum": ""
             },
             "require": {
@@ -6841,7 +6852,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2017-04-06T16:18:34+00:00"
+            "time": "2017-08-17T21:21:00+00:00"
         },
         {
             "name": "zendframework/zend-escaper",
@@ -8026,7 +8037,8 @@
                 "source": "http://cgit.drupalcode.org/examples",
                 "issues": "https://www.drupal.org/project/issues/examples",
                 "documentation": "https://api.drupal.org/api/examples"
-            }
+            },
+            "time": "2017-08-11 18:10:27"
         },
         {
             "name": "fabpot/goutte",
