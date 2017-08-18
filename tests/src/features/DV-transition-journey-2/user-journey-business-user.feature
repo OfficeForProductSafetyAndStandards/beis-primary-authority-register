@@ -13,23 +13,23 @@ Feature: Business User - Manage Addresses
 
         # PARTNERSHIPS DASHBOARD FILTERS
 
-#        And I add "DCBA" to the inputfield "#edit-keywords"
-#        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
-#        Then I expect that element "td.views-field.views-field-field-premises" is not visible
-#        When I add "ABCD" to the inputfield "#edit-keywords"
-#        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
-##        Then I expect that element "td.views-field.views-field-nothing" contains the text "ABCD Mart"
-#        When I select the option with the text "Confirmed by Business" for element "#edit-partnership-status"
-#        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
-#        Then I expect that element "td.views-field.views-field-nothing" is not visible
-#        When I select the option with the text "Awaiting Review" for element "#edit-partnership-status"
-#        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+        And I add "DCBA" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+        Then I expect that element "td.views-field.views-field-field-premises" is not visible
+        When I add "ABCD" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
 #        Then I expect that element "td.views-field.views-field-nothing" contains the text "ABCD Mart"
-#        When I click on the link "ABCD Mart"
+        When I select the option with the text "Confirmed by Business" for element "#edit-partnership-status"
+        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+        Then I expect that element "td.views-field.views-field-nothing" is not visible
+        When I select the option with the text "Awaiting Review" for element "#edit-partnership-status"
+        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+        Then I expect that element "td.views-field.views-field-nothing" contains the text "ABCD Mart"
+        When I click on the link "ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN
 
-        Then I expect that element ".par-flow-transition-business-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
+        Then I expect that element "#par-flow-transition-business-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
         And I click on the button "#edit-next"
         Then I expect that element ".error-summary" contains the text "You must agree to the new terms and conditions"
         And I click on the checkbox "#edit-terms-conditions"
