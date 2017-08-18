@@ -13,19 +13,19 @@ Feature: Business User - Manage Addresses
 
         # PARTNERSHIPS DASHBOARD FILTERS
 
-        And I add "DCBA" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
-        Then I expect that element "td.views-field.views-field-field-premises" is not visible
-        When I add "ABCD" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
-        Then I expect that element "td.views-field.views-field-nothing" contains the text "ABCD Mart"
-        When I select the option with the text "Confirmed by Business" for element "#edit-partnership-status"
-        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
-        Then I expect that element "td.views-field.views-field-nothing" is not visible
-        When I select the option with the text "Awaiting Review" for element "#edit-partnership-status"
-        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
-        Then I expect that element "td.views-field.views-field-nothing" contains the text "ABCD Mart"
-        When I click on the link "ABCD Mart"
+#        And I add "DCBA" to the inputfield "#edit-keywords"
+#        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+#        Then I expect that element "td.views-field.views-field-field-premises" is not visible
+#        When I add "ABCD" to the inputfield "#edit-keywords"
+#        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+##        Then I expect that element "td.views-field.views-field-nothing" contains the text "ABCD Mart"
+#        When I select the option with the text "Confirmed by Business" for element "#edit-partnership-status"
+#        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+#        Then I expect that element "td.views-field.views-field-nothing" is not visible
+#        When I select the option with the text "Awaiting Review" for element "#edit-partnership-status"
+#        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+#        Then I expect that element "td.views-field.views-field-nothing" contains the text "ABCD Mart"
+#        When I click on the link "ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN
 
@@ -113,11 +113,11 @@ Feature: Business User - Manage Addresses
         # EDIT LEGAL ENTITIES
 
         When I click on the button "form#par-flow-transition-business-details #edit-legal-entity a.flow-link"
-        And I add "ABCD Mart Change" to the inputfield "#edit-registered-name"
+        And I add "Legal Entity Change" to the inputfield "#edit-registered-name"
         And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
         And I add "987654321" to the inputfield "#edit-company-house-no"
         And I click on the button "#edit-next"
-        Then I expect that element "#edit-legal-entity div" contains the text "ABCD Mart Change"
+        Then I expect that element "#edit-legal-entity div" contains the text "Legal Entity Change"
         And I expect that element "#edit-legal-entity" contains the text "987654321"
         And I expect that element "#edit-legal-entity" contains the text "Limited Company"
 
