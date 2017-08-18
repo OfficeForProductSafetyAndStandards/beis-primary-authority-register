@@ -23,9 +23,6 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
 
     $par_data_organisation = current($par_data_partnership->retrieveEntityValue('field_organisation'));
 
-    // @todo remove this.
-    $organisation_name = 'N/A';
-
     if ($par_data_organisation) {
       $organisation_name = $par_data_organisation ? $par_data_organisation->retrieveStringValue('name') : '';
     }
@@ -36,7 +33,9 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
       '#type' => 'markup',
       '#prefix' => '<p>',
       '#suffix' => '</p>',
-      '#markup' => t('Review and confirm your documents for @organisation are still relevant', ['@organisation' => $organisation_name])
+      // @todo revisit solution.
+      // '#markup' => t('Review and confirm your documents are still relevant', ['@organisation' => $organisation_name])
+      '#markup' => t('Review and confirm your documents are still relevant')
     ];
 
     $build['intro']['help_text_2'] = [
