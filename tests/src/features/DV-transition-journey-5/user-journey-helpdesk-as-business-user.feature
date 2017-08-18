@@ -12,11 +12,10 @@ Feature: Helpdesk As Business User - Manage Addresses
 
         # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
-        When I click on the link "Dashboard"
+        Then I expect that element "h1" contains the text "RD Helpdesk Dashboard"
 
         # PARTNERSHIP DETAILS
 
-        Then I expect that element "h1" contains the text "RD Helpdesk Dashboard"
         When I click on the button "td.views-field.views-field-organisation-name a"
         When I click on the link "Review and confirm your business details"
         Then I expect that element "#edit-about-business" contains the text "About the business"
