@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * @file
+ * Contains validation routines for user forms.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function par_login_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Add our custom validation.
+  array_unshift($form['#validate'], 'par_login_validate');
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function par_login_form_user_pass_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Add our custom validation.
+  array_unshift($form['#validate'], 'par_login_validate_pass');
+}
+
+
+/**
+ * Validates the user login form.
+ */
+function par_login_validate(&$form, FormStateInterface $form_state) {
+
+  if (empty($form_state->getValue('name'))) {
+    $title = 'Name';
+    if (!empty($form['name']['#title'])) {
+      $title = $form['name']['#title'];
+    }
+    $form_state->setErrorByName('name', t('<a href="#edit-name">The %field is required.</a>', ['%field' => $title]));
+  }
+
+  if (empty($form_state->getValue('pass'))) {
+    $title = 'Password';
+    if (!empty($form['pass']['#title'])) {
+      $title = $form['pass']['#title'];
+    }
+    $form_state->setErrorByName('pass', t('<a href="#edit-pass">The %field is required.</a>', ['%field' => $title]));
+  }
+}
+
+/**
+ * Validates the user password reminder form.
+ */
+function par_login_validate_pass(&$form, FormStateInterface $form_state) {
+
+  if (empty($form_state->getValue('name'))) {
+    $title = 'Name';
+    if (!empty($form['name']['#title'])) {
+      $title = $form['name']['#title'];
+    }
+    $form_state->setErrorByName('name', t('<a href="#edit-name">The %field is required.</a>', ['%field' => $title]));
+  }
+}

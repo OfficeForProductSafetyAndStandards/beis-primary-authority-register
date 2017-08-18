@@ -140,5 +140,5 @@ process:
     method: process
     source: coordinator_number_eligible
 destination:
-  plugin: 'entity:par_data_person'
+  plugin: 'entity:par_data_organisation'
 migration_dependencies: {  }
