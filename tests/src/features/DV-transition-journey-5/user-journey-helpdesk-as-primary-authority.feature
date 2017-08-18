@@ -96,7 +96,7 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
         And I click on the checkbox ".form-label*=Alphabet learning"
         When I click on the button "#edit-next"
         Then I expect that element ".table-scroll-wrapper" contains the text "✔"
-        And I expect that element ".table-scroll-wrapper" contains the text "Cookie control, Alphabet learning"
+        And I expect that element ".table-scroll-wrapper" contains the text "Alphabet learning"
         When I click on the link "Save"
         Then I expect that element ".table-scroll-wrapper" contains the text "100%"
 
