@@ -10,9 +10,12 @@ Feature: Helpdesk As Business User - Manage Addresses
 
         Given I am logged in as "par_helpdesk@example.com"
 
-        # HD DASHBOARD
+        # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
         Then I expect that element "h1" contains the text "RD Helpdesk Dashboard"
+
+        # PARTNERSHIP DETAILS
+
         When I click on the button "td.views-field.views-field-organisation-name a"
 
         # PARTNERSHIP TASKS

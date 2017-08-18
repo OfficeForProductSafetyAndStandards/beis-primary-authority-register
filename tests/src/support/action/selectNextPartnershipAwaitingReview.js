@@ -3,7 +3,7 @@
  * @param  {Function} done          Function to execute when finished
  */
 
-module.exports = (done) => {
+module.exports = (username, done) => {
     /**
      * The command to perform on the browser object (addValue or setValue)
      * @type {String}
@@ -12,10 +12,9 @@ module.exports = (done) => {
         width: 1024,
         height: 768,
     });
-    browser.selectByValue('#edit-partnership-status', '1');
-    browser.click('#edit-submit-par-data-transition-journey-1-step-1');
-    browser.click('td.views-field.views-field-nothing a');
-
-
+    browser.url('/user/login');
+    browser.setValue('#edit-name', username);
+    browser.setValue('#edit-pass', 'TestPassword');
+    browser.click('#edit-submit');
     done();
 };
