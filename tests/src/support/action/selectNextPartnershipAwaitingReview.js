@@ -14,6 +14,8 @@ module.exports = (done) => {
     });
     browser.selectByValue('#edit-partnership-status', '1');
     browser.click('#edit-submit-par-data-transition-journey-1-step-1');
-    browser.click('td.views-field.views-field-nothing a:first');
+    browser.click('td.views-field.views-field-nothing a');
+
+
     done();
 };
