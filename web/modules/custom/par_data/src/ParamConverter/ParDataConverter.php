@@ -65,8 +65,10 @@ class ParDataConverter implements ParamConverterInterface {
    * {@inheritdoc}
    */
   public function convert($value, $definition, $name, array $defaults) {
+    $par_data_manager = \Drupal::service('par_data.manager');
+
     // Get stubs and generate a dummy entity.
-    if (in_array($name, $this->settings->get('par_data_classes')) && $this->settings->get('stubbed')) {
+    if (array_key_exists($name, $par_data_manager->getParEntityTypes()) && $this->settings->get('stubbed')) {
       // Set the entity Type to use.
       $entity_type_id = substr($definition['type'], strlen('entity:'));
 
@@ -93,7 +95,8 @@ class ParDataConverter implements ParamConverterInterface {
    * {@inheritdoc}
    */
   public function applies($definition, $name, Route $route) {
-    if (in_array($name, $this->settings->get('par_data_classes')) && $this->settings->get('stubbed')) {
+    $par_data_manager = \Drupal::service('par_data.manager');
+    if (array_key_exists($name, $par_data_manager->getParEntityTypes()) && $this->settings->get('stubbed')) {
       return TRUE;
     }
     else {
