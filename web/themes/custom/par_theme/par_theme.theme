@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\Core\Form\FormStateInterface;
+
 /**
  * Implements hook_preprocess_fieldset().
  *
@@ -49,4 +51,27 @@ function par_theme_preprocess_form_element(array &$variables) {
     $variables['errors'] = $element['#errors'];
   }
 
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function par_theme_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (isset($form['name']) && isset($form['name']['#required']) && $form['name']['#required'] === TRUE) {
+    $form['name']['#required'] = FALSE;
+  }
+
+  if (isset($form['pass']) && isset($form['pass']['#required']) && $form['pass']['#required'] === TRUE) {
+    $form['pass']['#required'] = FALSE;
+  }
+
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function par_theme_form_user_pass_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (isset($form['name']) && isset($form['name']['#required']) && $form['name']['#required'] === TRUE) {
+    $form['name']['#required'] = FALSE;
+  }
 }
