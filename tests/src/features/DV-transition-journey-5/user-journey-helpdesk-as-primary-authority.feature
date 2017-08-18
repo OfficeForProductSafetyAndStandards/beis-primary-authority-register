@@ -12,6 +12,7 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
 
         # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
+#        When I click on the link "Dashboard"
         Then I expect that element "h1" contains the text "RD Helpdesk Dashboard"
         When I click on the button "td.views-field.views-field-authority-name a"
 
