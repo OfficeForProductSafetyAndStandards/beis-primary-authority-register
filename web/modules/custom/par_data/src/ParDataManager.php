@@ -160,48 +160,6 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
-   * Get the people related to a given entity.
-   *
-   * @param $entity
-   * @param array $people
-   * @return array
-   */
-  public function getRelatedPeople($entity, $people = [], $iteration = 0) {
-    if (!$entity instanceof ParDataEntityInterface) {
-      return $people;
-    }
-
-    // Make sure the entity isn't too distantly related
-    // to limit recursive relationships.
-    if ($iteration > 5) {
-      return $people;
-    }
-    else {
-      $iteration++;
-    }
-
-    // If this entity is a person we want to do nothing.
-    if ($entity->getEntityTypeId() === 'par_data_person') {
-      return $people;
-    }
-    // If this entity is a core entity we can return the related
-    // person and stop looking.
-    else if (in_array($entity->getEntityTypeId(), $this->coreEntities)) {
-      $people += $entity->getRelationships('par_data_person');
-    }
-    else {
-      $relationships = $entity->getRelationships();
-      foreach($entity->getRelationships() as $referenced_entity) {
-        if ($entity->getEntityType()->id() !== 'par_data_person') {
-          $people = $this->getRelatedPeople($referenced_entity, $people, $iteration);
-        }
-      }
-    }
-
-    return array_filter($people);
-  }
-
-  /**
    * Get the entities related to each other.
    *
    * Follows some rules to make sure it doesn't go round in loops.
@@ -283,18 +241,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @return bool
    */
   public function isMember($entity, UserInterface $account) {
-    $entity_people = $this->getRelatedPeople($entity);
-
-    // All access checks are done using the relationship between a user account
-    // and a par person entity, so we need all the user's par people.
-    if ($entity_people) {
-      $account_people = $this->getUserPeople($account);
-    }
-    else {
-      $account_people = [];
-    }
-
-    return !empty(array_intersect_key($entity_people, $account_people));
+    return isset($this->hasMemberships($account, $entity->getEntityTypeId())[$entity->id()]);
   }
 
   public function hasMemberships(UserInterface $account, $type = NULL) {
