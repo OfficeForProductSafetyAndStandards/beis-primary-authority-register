@@ -76,8 +76,6 @@ class ParBusinessOrganisation extends SqlBase {
         'last_name',
         'premises_on_map_ok',
         'comments',
-        'coordinator_number_eligible',
-        'coordinator_type',
       ])
       ->condition('par_role', 'Business');
   }

@@ -25,3 +25,10 @@ function par_data_update_8001() {
 function par_data_update_8002() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
+
+/**
+ * Final update before migration.
+ */
+function par_data_update_8003() {
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}

@@ -13,7 +13,6 @@ module:
   config_readonly: 0
   config_split: 0
   config_update: 0
-  contact: 0
   content_translation: 0
   contextual: 0
   csv_serialization: 0
@@ -67,7 +66,6 @@ module:
   par_migration_scripts: 0
   par_roles: 0
   par_styleguide: 0
-  par_welcome_page: 0
   password_policy: 0
   password_policy_character_types: 0
   password_policy_characters: 0

@@ -1,30 +1,31 @@
-@ci
-Feature: Helpdesk As Primary Authority - Manage name and summary detail
+@ci @journey1
+Feature: Primary Authority - Change Partnership Details
 
     Background:
         # TEST DATA RESET
-        Given I open the url "/user/login"
-        And I add "dadmin" to the inputfield "#edit-name"
-        And I add "password" to the inputfield "#edit-pass"
-        And I click on the button "#edit-submit"
-        And I open the url "/admin/par-data-test-reset"
-        And I open the url "/user/logout"
+        Given I reset the test data
 
-    Scenario: Helpdesk As Primary Authority - Manage name and summary detail
-        # LOGIN SCREEN
+    Scenario: Primary Authority - Change Partnership Details
+        # LOGIN
 
-        Given I open the url "/user/login"
-        And I am logged in as "par_helpdesk@example.com"
+        Given I am logged in as "par_authority@example.com"
+        When I click on the link "Continue to your Partnerships"
+        
+        # PARTNERSHIPS DASHBOARD
 
-        # PARTNERSHIP TASKS SCREEN/DASHBOARD
+        And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
+        When I click on the link "ABCD Mart"
 
-        When I click on the link "Dashboard"
+        # TERMS AND CONDITIONS SCREEN
 
-        # PARTNERSHIP DETAILS
+        Then I expect that element ".par-flow-transition-partnership-details-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
+        When I click on the checkbox "#edit-terms-conditions"
+        And I click on the button "#edit-next"
+        And I scroll to element ".table-scroll-wrapper"
+        And I click on the link "Review and confirm your partnership details"
 
-        Then I expect that element "h1" contains the text "RD Helpdesk Dashboard"
-        When I click on the button "td.views-field.views-field-authority-name a"
-        When I click on the link "Review and confirm your partnership details"
+        # REVIEW PARTNERSHIPS DETAILS
+
         And I click on the link "edit"
         And I add "test partnership info change" to the inputfield "#edit-about-partnership"
         And I click on the button "#edit-next"
@@ -39,14 +40,19 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
         And I click on the button "#edit-next"
         When I add "Mr" to the inputfield "#edit-salutation"
         And I click on the button "#edit-next"
+        Then I expect that element ".error-message" does exist
         When I add "Animal" to the inputfield "#edit-first-name"
         And I click on the button "#edit-next"
+        Then I expect that element ".error-message" does exist
         When I add "the Muppet" to the inputfield "#edit-last-name"
         And I click on the button "#edit-next"
+        Then I expect that element ".error-message" does exist
         When I add "91723456789" to the inputfield "#edit-work-phone"
         And I click on the button "#edit-next"
+        Then I expect that element ".error-message" does exist
         When I add "9777777777" to the inputfield "#edit-mobile-phone"
         And I click on the button "#edit-next"
+        Then I expect that element ".error-message" does exist
         When I add "par_authority_animal@example.com" to the inputfield "#edit-email"
         When I click on the button "#edit-next"
         Then I expect that element "#edit-authority-contacts" contains the text "Animal"
@@ -93,6 +99,54 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
         And I click on the checkbox "#edit-confirmation"
         And I click on the button "#edit-next"
         Then I expect that element "#block-par-theme-content" contains the text "Confirmed by the Authority"
-        And I expect that element ".table-scroll-wrapper" contains the text "Invite the business to confirm their details"
-        And I expect that element ".table-scroll-wrapper" contains the text "Review and confirm your inspection plan"
-        And I expect that element ".table-scroll-wrapper" contains the text "Review and confirm your documentation"
+
+        # DOCUMENTATION
+
+        And I scroll to element ".table-scroll-wrapper"
+        When I click on the link "Review and confirm your documentation for ABCD Mart"
+        And I scroll to element ".table-scroll-wrapper"
+        And I click on the link "edit"
+        And I click on the radio "#edit-document-type-authority-advice"
+        When I click on the button "#edit-next"
+        Then I expect that element ".error-message" does exist
+        And I click on the checkbox ".form-label*=Cookie control"
+        When I click on the button "#edit-next"
+        Then I expect that element ".table-scroll-wrapper" contains the text "✔"
+        And the element ".table-scroll-wrapper" contains the text "Cookie control"
+        When I click on the link "Save"
+        Then I expect that element ".table-scroll-wrapper" contains the text "100%"
+        When I click on the link "Review and confirm your documentation for ABCD Mart"
+        And I click on the link "edit"
+        And I click on the radio "#edit-document-type-authority-advice"
+        And I click on the checkbox ".form-label*=Alphabet learning"
+        When I click on the button "#edit-next"
+        Then I expect that element ".table-scroll-wrapper" contains the text "✔"
+        And I expect that element ".table-scroll-wrapper" contains the text "Cookie control, Alphabet learning"
+        When I click on the link "Save"
+        Then I expect that element ".table-scroll-wrapper" contains the text "100%"
+
+         # INSPECTION PLANS
+
+        And I scroll to element ".table-scroll-wrapper"
+        When I click on the link "Review and confirm your inspection plan"
+#        Then I expect that element "#edit-document-list" contains the text "Inspection Plan"
+#        And I click on the checkbox ".form-checkbox"
+        And I click on the button "#edit-next"
+
+        # CHECK INSPECTION PLAN CONFIRMEDs
+
+#        And I scroll to element ".table-scroll-wrapper"
+#        When I click on the link "Review and confirm your inspection plan"
+#        Then I expect that element ".form-checkbox" is not enabled
+#        When I click on the button "#edit-next"
+
+                # PARTERSHIP TASKS SCREEN
+
+        And I scroll to element ".table-scroll-wrapper"
+        When I click on the link "Invite the business to confirm their details"
+
+        # BUSINESS EMAIL INVITATION
+
+        And I add "Test change meassage body [invite:invite-accept-link]" to the inputfield "#edit-email-body"
+        And I add "Test change meassage subject" to the inputfield "#edit-email-body"
+        And I press "Send Invitation"

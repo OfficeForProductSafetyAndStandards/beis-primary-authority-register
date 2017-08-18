@@ -70,6 +70,12 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
     $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
 
+    //Leading paragraph
+    $form['leading_paragraph'] = [
+      '#type' => 'markup',
+      '#markup' => t('<p><strong>Change the main contact for your business</strong></p>'),
+    ];
+
     // The Person's title.
     $form['salutation'] = [
       '#type' => 'textfield',
@@ -79,27 +85,27 @@ class ParFlowTransitionContactForm extends ParBaseForm {
 
     $form['first_name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('First Name'),
+      '#title' => $this->t('First name'),
       '#default_value' => $this->getDefaultValues("first_name"),
     ];
 
     $form['last_name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Last Name'),
+      '#title' => $this->t('Last name'),
       '#default_value' => $this->getDefaultValues("last_name"),
     ];
 
     // The Person's work phone number.
     $form['work_phone'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Work Phone'),
+      '#title' => $this->t('Work phone'),
       '#default_value' => $this->getDefaultValues("phone"),
     ];
 
     // The Person's work phone number.
     $form['mobile_phone'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Mobile Phone (optional)'),
+      '#title' => $this->t('Mobile phone (optional)'),
       '#default_value' => $this->getDefaultValues("mobile_phone"),
     ];
 
@@ -118,7 +124,7 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     ];
     $form['preferred_contact'] = [
       '#type' => 'checkboxes',
-      '#title' => $this->t('Preferred contact methods'),
+      '#title' => $this->t('Preferred method of contact'),
       '#options' => $contact_options,
       '#default_value' => $this->getDefaultValues("preferred_contact", []),
       '#return_value' => 'on',
