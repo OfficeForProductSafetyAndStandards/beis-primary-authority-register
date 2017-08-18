@@ -1,6 +1,6 @@
 # PAR Data Transition Journey 1 - Partnership Details
 par_invite.welcome:
-  path: '/dv/invite/{invite}'
+  path: '/par-invite/accept/{invite}'
   defaults:
     _form: '\Drupal\par_invite\Form\ParInviteRegistrationForm'
     _title: 'Updating the Primary Authority Register'

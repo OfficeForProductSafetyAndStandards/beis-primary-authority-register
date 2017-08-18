@@ -9,6 +9,7 @@ namespace Drupal\par_invite\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Route;
+use Drupal\Core\Url;
 
 class InviteSubscriber implements EventSubscriberInterface {
 
@@ -21,7 +22,8 @@ class InviteSubscriber implements EventSubscriberInterface {
     $event_details = $event->getInviteAcceptEvent();
 
     if ($event_details['type'] == 'status') {
-      $route = new Route('/dv/invite/' . $event_details['invite']->get('reg_code')->getString());
+      $path = Url::fromRoute('par_invite.welcome', ['invite' => $event_details['invite']->get('reg_code')->getString()]);
+      $route = new Route($path->toString());
       $event_details['redirect'] = $route;
       $event->setInviteAcceptEvent($event_details);
     };

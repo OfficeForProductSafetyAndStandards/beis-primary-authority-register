@@ -5,6 +5,7 @@ namespace Drupal\par_invite\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\user\Entity\User;
 use Drupal\Core\Form\FormBase;
+use Drupal\login_destination\Entity\LoginDestination;
 use Drupal\Core\Url;
 
 /**
@@ -120,7 +121,9 @@ class ParInviteRegistrationForm extends FormBase {
     if ($result) {
       // Log the user into the site.
       user_login_finalize($user);
-      $url = Url::fromUri('internal:/welcome-reminder');
+      $login_destination_manager = \Drupal::service('login_destination.manager');
+      $path = $login_destination_manager->findDestination(LoginDestination::TRIGGER_REGISTRATION, $user);
+      $url = Url::fromUri($path->destination_path);
       $form_state->setRedirectUrl( $url );
     }
     // What do we do if the user cannot be created?
