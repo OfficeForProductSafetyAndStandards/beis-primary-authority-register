@@ -41,7 +41,12 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * The core entity types through which all membership is calculated.
    */
-  protected $coreEntities = ['par_data_authority', 'par_data_organisation'];
+  protected $coreMembershipEntities = ['par_data_authority', 'par_data_organisation'];
+
+  /**
+   * The non membership entities from which references should not be followed.
+   */
+  protected $nonMembershipEntities = ['par_data_sic_codes', 'par_data_regulatory_function', 'par_data_advice', 'par_data_inspection_plan'];
 
   /**
    * Constructs a ParDataPermissions instance.
@@ -230,31 +235,36 @@ class ParDataManager implements ParDataManagerInterface {
     }
 
     // Add this entity to the related entities.
-    if ($entity->getEntityTypeId() !== 'par_data_person') {
-      if (!isset($entities[$entity->getEntityTypeId()])) {
-        $entities[$entity->getEntityTypeId()] = [];
-      }
-      $entities[$entity->getEntityTypeId()][$entity->id()] = $entity;
-    };
+    if (!isset($entities[$entity->getEntityTypeId()])) {
+      $entities[$entity->getEntityTypeId()] = [];
+    }
+    $entities[$entity->getEntityTypeId()][$entity->id()] = $entity;
 
+    // Loop through all relationships
     foreach ($entity->getRelationships() as $entity_type => $referenced_entities) {
       foreach ($referenced_entities as $entity_id => $referenced_entity) {
+        // Skip lookup of relationships for people.
+        if ($referenced_entity->getEntityTypeId() === 'par_data_person') {
+          continue;
+        }
+        
+        //If the related entity is a person we don't want to get
         // If the current entity is a person only lookup core entity relationships.
         if ($entity->getEntityTypeId() === 'par_data_person') {
-          if (in_array($referenced_entity->getEntityTypeId(), $this->coreEntities)) {
+          if (in_array($referenced_entity->getEntityTypeId(), $this->coreMembershipEntities)) {
             $entities = $this->getRelatedEntities($referenced_entity, $entities, $iteration, TRUE);
           }
         }
         // If the current entity is a core entity only lookup entity relationships
         // if forced to do so, by the person lookup.
-        else if (in_array($entity->getEntityTypeId(), $this->coreEntities)) {
-          if (!in_array($entity_type, $this->coreEntities) || $force_lookup) {
+        else if (in_array($entity->getEntityTypeId(), $this->coreMembershipEntities)) {
+          if ($force_lookup) {
             $entities = $this->getRelatedEntities($referenced_entity, $entities, $iteration);
           };
         }
         // For all other entities follow your hearts content and find all
         // entity relationships..
-        else {
+        else if (!in_array($entity->getEntityTypeId(), $this->nonMembershipEntities)) {
           $entities = $this->getRelatedEntities($referenced_entity, $entities, $iteration);
         }
       }
