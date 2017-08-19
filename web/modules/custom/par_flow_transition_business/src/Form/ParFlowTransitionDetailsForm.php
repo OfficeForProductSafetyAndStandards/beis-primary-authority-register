@@ -211,7 +211,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     $par_data_legal_entities = $par_data_organisation->getLegalEntity();
     $par_data_legal_entity = array_shift($par_data_legal_entities);
 
-    $legal_view_builder = $this->getParDataManager()->getViewBuilder('par_data_legal_entity');
+    $legal_entity_view_builder = $this->getParDataManager()->getViewBuilder('par_data_legal_entity');
 
     if ($par_data_legal_entity) {
       $form['legal_entity'] = [
@@ -221,7 +221,8 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
         '#collapsed' => FALSE,
       ];
 
-      $legal_entity = $legal_view_builder->view($par_data_legal_entity, 'full');
+      $legal_entity = $legal_entity_view_builder->view($par_data_legal_entity, 'full');
+
       $form['legal_entity']['entity'] = $this->renderMarkupField($legal_entity);
 
       $form['legal_entity']['edit'] = [
@@ -242,9 +243,8 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
       ];
 
       foreach ($par_data_legal_entities as $legal_entity_item) {
-        $legal_view_builder = $this->getParDataManager()->getViewBuilder('par_data_legal_entity');
 
-        $alternative_legal = $legal_view_builder->view($legal_entity_item, 'full');
+        $alternative_legal = $legal_entity_view_builder->view($legal_entity_item, 'full');
         $form['legal_entity']['alternative'][$legal_entity_item->id()] = $this->renderMarkupField($alternative_legal);
 
         // We can get a link to a given form step like so.
