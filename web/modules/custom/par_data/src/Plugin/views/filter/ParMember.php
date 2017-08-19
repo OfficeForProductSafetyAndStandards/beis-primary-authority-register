@@ -46,17 +46,17 @@ class ParMember extends FilterPluginBase {
     // Find memberships.
     $membership_filter = array_keys($this->par_data_manager->hasMembershipsByType($account, $this->getEntityType()));
 
-    if ($membership_filter) {
-      $par_entity_type = $this->par_data_manager->getParEntityType($this->getEntityType());
+    // Add 0 to prevent an invalid IN query.
+    array_push($membership_filter, 0);
 
-      // Get memberships field e.g. "par_partnerships_field_data.id".
-      $id = $par_entity_type->getKeys()['id'];
-      $revision_table = "{$par_entity_type->getDataTable()}.{$id}";
+    $par_entity_type = $this->par_data_manager->getParEntityType($this->getEntityType());
 
-      // Where filter on partnership id to those the user is allowed to update.
-      $this->query->addWhere(0, $revision_table, $membership_filter, 'in');
-    }
+    // Get memberships field e.g. "par_partnerships_field_data.id".
+    $id = $par_entity_type->getKeys()['id'];
+    $revision_table = "{$par_entity_type->getDataTable()}.{$id}";
 
+    // Where filter on partnership id to those the user is allowed to update.
+    $this->query->addWhere(0, $revision_table, $membership_filter, 'in');
   }
 
 }

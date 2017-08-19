@@ -253,8 +253,8 @@ class ParDataManager implements ParDataManagerInterface {
    * @param UserInterface $account
    *   A user account to check for.
    *
-   * @return bool
-   *   Returns an array of entities keyed by entity type and then by entity id or false if none found.
+   * @return array
+   *   Returns an array of entities keyed by entity type and then by entity id.
    */
   public function hasMemberships(UserInterface $account) {
     $account_people = $this->getUserPeople($account);
@@ -264,7 +264,7 @@ class ParDataManager implements ParDataManagerInterface {
       $memberships = array_merge_recursive($memberships, $this->getRelatedEntities($person));
     }
 
-    return !empty($memberships) ? $memberships : FALSE;
+    return !empty($memberships) ? $memberships : [];
   }
 
   /**
@@ -275,13 +275,13 @@ class ParDataManager implements ParDataManagerInterface {
    * @param EntityInterface $type
    *   An entity type to filter on the return on.
    *
-   * @return bool
-   *   Returns the entities for the given type or false it none found.
+   * @return array
+   *   Returns the entities for the given type.
    */
   public function hasMembershipsByType(UserInterface $account, $type) {
     $memberships = $this->hasMemberships($account);
 
-    return $memberships && isset($memberships[$type]) ? $memberships[$type] : FALSE;
+    return $memberships && isset($memberships[$type]) ? $memberships[$type] : [];
   }
 
   /**
