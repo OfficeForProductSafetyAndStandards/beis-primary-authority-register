@@ -131,7 +131,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    */
   public function retrieveBooleanValue($field_name) {
     $field = $this->hasField($field_name) ? $this->get($field_name) : NULL;
-    return isset($field) && $field->getFieldDefinition()->getType() !== 'boolean' ? !empty($field->getString()) : FALSE;
+
+    return isset($field) && !empty($field->getString()) ? $field->getString() : FALSE;
   }
 
   /**

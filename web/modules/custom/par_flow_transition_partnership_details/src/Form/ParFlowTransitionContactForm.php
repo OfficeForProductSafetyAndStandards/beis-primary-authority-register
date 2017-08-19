@@ -52,11 +52,13 @@ class ParFlowTransitionContactForm extends ParBaseForm {
 
       // Get preferred contact methods.
       $contact_options = [
-        'communication_email' => !empty($par_data_person->retrieveBooleanValue('communication_email')) ? 'communication_email' : FALSE,
-        'communication_phone' => !empty($par_data_person->retrieveBooleanValue('communication_phone')) ? 'communication_phone' : FALSE,
-        'communication_mobile' => !empty($par_data_person->retrieveBooleanValue('communication_mobile')) ? 'communication_mobile' : FALSE,
+        'communication_email' => $par_data_person->retrieveBooleanValue('communication_email'),
+        'communication_phone' => $par_data_person->retrieveBooleanValue('communication_phone'),
+        'communication_mobile' => $par_data_person->retrieveBooleanValue('communication_mobile'),
       ];
-      $this->loadDataValue('preferred_contact', $contact_options);
+
+      // Checkboxes works nicely with keys, filtering booleans for "1" value.
+      $this->loadDataValue('preferred_contact', array_keys($contact_options, 1));
     }
   }
 
