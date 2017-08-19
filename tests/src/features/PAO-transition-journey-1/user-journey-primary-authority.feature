@@ -15,7 +15,6 @@ Feature: Primary Authority - Change Partnership Details
 
         And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
         When I select next partnership awaiting review
-#        When I click on the link "ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN
 
@@ -80,7 +79,7 @@ Feature: Primary Authority - Change Partnership Details
         # DOCUMENTATION
 
         And I scroll to element ".table-scroll-wrapper"
-        When I click on the link "Review and confirm your documentation for ABCD Mart"
+        When I click on the button "a*=Review and confirm your documentation"
         And I scroll to element ".table-scroll-wrapper"
         And I click on the link "edit"
         And I click on the radio "#edit-document-type-authority-advice"
@@ -92,7 +91,7 @@ Feature: Primary Authority - Change Partnership Details
         And the element ".table-scroll-wrapper" contains the text "Cookie control"
         When I click on the link "Save"
         Then I expect that element ".table-scroll-wrapper" contains the text "100%"
-        When I click on the link "Review and confirm your documentation for ABCD Mart"
+        When I click on the button "a*=Review and confirm your documentation"
         And I click on the link "edit"
         And I click on the radio "#edit-document-type-authority-advice"
         And I click on the checkbox ".form-label*=Alphabet learning"
@@ -102,20 +101,20 @@ Feature: Primary Authority - Change Partnership Details
         When I click on the link "Save"
         Then I expect that element ".table-scroll-wrapper" contains the text "100%"
 
-         # INSPECTION PLANS
+        # INSPECTION PLANS
 
         And I scroll to element ".table-scroll-wrapper"
         When I click on the link "Review and confirm your inspection plan"
 #        Then I expect that element "#edit-document-list" contains the text "Inspection Plan"
-#        And I click on the checkbox ".form-checkbox"
+        And I click on the checkbox ".form-checkbox"
         And I click on the button "#edit-next"
 
-        # CHECK INSPECTION PLAN CONFIRMEDs
+        # CHECK INSPECTION PLAN CONFIRMED
 
-#        And I scroll to element ".table-scroll-wrapper"
-#        When I click on the link "Review and confirm your inspection plan"
-#        Then I expect that element ".form-checkbox" is not enabled
-#        When I click on the button "#edit-next"
+        And I scroll to element ".table-scroll-wrapper"
+        When I click on the link "Review and confirm your inspection plan"
+        Then I expect that element ".form-checkbox" is not enabled
+        When I click on the button "#edit-next"
 
                 # PARTERSHIP TASKS SCREEN
 
