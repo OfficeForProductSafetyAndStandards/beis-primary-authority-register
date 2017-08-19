@@ -39,10 +39,10 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       $this->setState("edit:{$par_data_partnership->id()}");
 
       // Partnership Information Confirmation.
-      $confirmation_value = !empty($par_data_partnership->retrieveBooleanValue('partnership_info_agreed_authority')) ? TRUE : FALSE;
+      $confirmation_value = $par_data_partnership->retrieveBooleanValue('partnership_info_agreed_authority');
       $this->loadDataValue('confirmation', $confirmation_value);
       // Written Summary Confirmation.
-      $partnership_agreement_value = !empty($par_data_partnership->retrieveBooleanValue('written_summary_agreed')) ? TRUE : FALSE;
+      $partnership_agreement_value = $par_data_partnership->retrieveBooleanValue('written_summary_agreed');
       $this->loadDataValue('partnership_agreement', $partnership_agreement_value);
     }
   }
