@@ -14,6 +14,7 @@ Feature: Primary Authority - Change Partnership Details
         # PARTNERSHIPS DASHBOARD
 
         And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
+        And relevant partnerships search results returned
         When I select next partnership awaiting review
 
         # TERMS AND CONDITIONS SCREEN

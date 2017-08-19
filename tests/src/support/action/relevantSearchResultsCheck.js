@@ -12,11 +12,8 @@ module.exports = (done) => {
     //     width: 1024,
     //     height: 768,
     // });
-    let doneCallback = done;
     browser.url('/dv/partnership-dashboard?partnership_status=1');
-    browser.getText('.table-scroll-wrapper', function(err, text) {
-        doneCallback = 'Awaiting Reviuew';
-        expect(text).to.contain('Awaiting Reviuew');
-        doneCallback();
-    });
+    const text = browser.getText('.table-scroll-wrapper');
+    expect(text).to.contain('Awaiting Review');
+    done();
 };
