@@ -125,3 +125,5 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
         And I add "Test change meassage body [invite:invite-accept-link]" to the inputfield "#edit-email-body"
         And I add "Test change meassage subject" to the inputfield "#edit-email-body"
         When I press "Send Invitation"
+
+
