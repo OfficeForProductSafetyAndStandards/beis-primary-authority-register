@@ -5,3 +5,7 @@ bypass par_data access:
   title: 'Bypass PAR Data access'
   description: 'A permission to bypass access checks for all PAR Data.'
   restrict access: TRUE
+bypass par_data membership:
+  title: 'Bypass PAR Data membership'
+  description: 'A permission to bypass membership checks for all PAR Data.'
+  restrict access: TRUE
