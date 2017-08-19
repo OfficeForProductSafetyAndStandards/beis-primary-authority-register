@@ -63,7 +63,7 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
 
     // Get each Advice document and add as a table row.
     foreach ($par_data_partnership->getAdvice() as $advice) {
-      $advice_view_builder = $advice->getViewBuilder();
+      $advice_view_builder = $this->getParDataManager()->getViewBuilder('par_data_advice');
 
       // The first column contains a rendered summary of the document.
       $advice_summary = $advice_view_builder->view($advice, 'summary');

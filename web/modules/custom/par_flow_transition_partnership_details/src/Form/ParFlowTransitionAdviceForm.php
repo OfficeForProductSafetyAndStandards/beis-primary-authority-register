@@ -67,7 +67,8 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
 
     // Render the document in view mode to allow users to
     // see which one they're confirming details for.
-    $document_view_builder = $par_data_advice ? $par_data_advice->getViewBuilder() : NULL;
+    $document_view_builder = $this->getParDataManager()->getViewBuilder('par_data_advice');
+
     $document = $document_view_builder->view($par_data_advice, 'summary');
     $form['document'] = $this->renderMarkupField($document) + [
       '#title' => $this->t('Document'),
