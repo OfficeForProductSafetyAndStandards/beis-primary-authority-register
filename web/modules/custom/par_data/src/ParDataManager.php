@@ -252,13 +252,11 @@ class ParDataManager implements ParDataManagerInterface {
    *
    * @param UserInterface $account
    *   A user account to check for.
-   * @param EntityInterface $type
-   *   A type to filter on the return array. If no type is specified all entity types will be returned.
    *
    * @return bool
    *   Returns an array of entities keyed by entity type and then by entity id or false if none found.
    */
-  public function hasMemberships(UserInterface $account, $type = NULL) {
+  public function hasMemberships(UserInterface $account) {
     $account_people = $this->getUserPeople($account);
 
     $memberships = [];
