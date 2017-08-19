@@ -156,7 +156,7 @@ class ParDataPerson extends ParDataEntity {
    */
   public function getBusinesses($entity = NULL) {
     $properties = [
-      'type' => ['authority'],
+      'type' => ['business'],
       'field_person' => $this->id(),
     ];
     if ($entity) {
@@ -181,7 +181,7 @@ class ParDataPerson extends ParDataEntity {
    */
   public function getCoordinators($entity = NULL) {
     $properties = [
-      'type' => ['authority'],
+      'type' => ['coordinator'],
       'field_person' => $this->id(),
     ];
     if ($entity) {
