@@ -1,8 +1,8 @@
 applications:
-- name: par-beta-production
+- name: par-beta-staging
 memory: 4G
 disk_quota: 4096M
-host: par-beta-production
+host: par-beta-staging
 buildpack: php_buildpack
 services:
-- par-pg-production
+- par-pg-staging
