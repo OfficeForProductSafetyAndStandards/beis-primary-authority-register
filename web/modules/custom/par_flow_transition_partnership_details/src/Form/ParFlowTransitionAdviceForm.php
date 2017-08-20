@@ -43,13 +43,13 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
 
       // Partnership Confirmation.
       $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
-      $advice_type = $par_data_advice->get('advice_type')->getString();
+      $advice_type = $par_data_advice->retrieveStringValue('advice_type');
       if (isset($allowed_types[$advice_type])) {
         $this->loadDataValue('document_type', $advice_type);
       }
 
       // Get Regulatory Functions.
-      $regulatory_functions = $par_data_advice->get('field_regulatory_function')->referencedEntities();
+      $regulatory_functions = $par_data_advice->retrieveEntityValue('field_regulatory_function');
       $regulatory_options = [];
       foreach ($regulatory_functions as $function) {
         $regulatory_options[$function->id()] = $function->id();
@@ -67,7 +67,8 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
 
     // Render the document in view mode to allow users to
     // see which one they're confirming details for.
-    $document_view_builder = $par_data_advice ? $par_data_advice->getViewBuilder() : NULL;
+    $document_view_builder = $this->getParDataManager()->getViewBuilder('par_data_advice');
+
     $document = $document_view_builder->view($par_data_advice, 'summary');
     $form['document'] = $this->renderMarkupField($document) + [
       '#title' => $this->t('Document'),

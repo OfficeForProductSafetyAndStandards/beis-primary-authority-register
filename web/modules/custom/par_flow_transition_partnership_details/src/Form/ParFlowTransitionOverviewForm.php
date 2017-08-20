@@ -39,10 +39,10 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       $this->setState("edit:{$par_data_partnership->id()}");
 
       // Partnership Information Confirmation.
-      $confirmation_value = !empty($par_data_partnership->get('partnership_info_agreed_authority')->getString()) ? TRUE : FALSE;
+      $confirmation_value = $par_data_partnership->retrieveBooleanValue('partnership_info_agreed_authority');
       $this->loadDataValue('confirmation', $confirmation_value);
       // Written Summary Confirmation.
-      $partnership_agreement_value = !empty($par_data_partnership->get('written_summary_agreed')->getString()) ? TRUE : FALSE;
+      $partnership_agreement_value = $par_data_partnership->retrieveBooleanValue('written_summary_agreed');
       $this->loadDataValue('partnership_agreement', $partnership_agreement_value);
     }
   }
@@ -67,7 +67,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#collapsed' => FALSE,
     ];
 
-    $partnership_view_builder = $par_data_partnership->getViewBuilder();
+    $partnership_view_builder = $this->getParDataManager()->getViewBuilder('par_data_partnership');
 
     $form['first_section']['about_partnership'] = $par_data_partnership ? $partnership_view_builder->view($par_data_partnership, 'about') : '';
 
@@ -82,7 +82,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     // List Authority contacts.
     $authority_people = $par_data_partnership->getAuthorityPeople();
     $authority_primary_person = array_shift($authority_people);
-    $person_view_builder = $authority_primary_person ? $authority_primary_person->getViewBuilder() : NULL;
+    $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
 
     // List the Primary Authority contact.
     if ($authority_primary_person) {
@@ -118,8 +118,6 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       ];
 
       foreach ($authority_people as $person) {
-        $person_view_builder = $person->getViewBuilder();
-
         $alternative_person = $person_view_builder->view($person, 'summary');
 
         $form['authority_contacts']['authority_alternative_contacts'][$person->id()] = [
@@ -151,11 +149,10 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $organisation_people = $par_data_partnership->getOrganisationPeople();
 
     $organisation_primary_person = array_shift($organisation_people);
-    $person_view_builder = $organisation_primary_person ? $organisation_primary_person->getViewBuilder() : NULL;
 
     // List the Primary Organisation contact.
-    if ($organisation_primary_person) {
-
+    $par_data_organisation = current($par_data_partnership->retrieveEntityValue('par_data_organisation'));
+    if ($par_data_organisation && $organisation_primary_person) {
       $form['organisation_contacts'] = [
         '#type' => 'fieldset',
         '#attributes' => ['id' => 'edit-organisation-contacts'],
@@ -163,7 +160,6 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
         '#collapsed' => FALSE,
       ];
 
-      $par_data_organisation = current($par_data_partnership->getOrganisation());
       $form['organisation_contacts'][$organisation_primary_person->id()] = [
         '#type' => 'fieldset',
         '#attributes' => [
@@ -190,11 +186,8 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     }
 
     // List the secondary Organisation contacts.
-    if ($organisation_people) {
-
+    if ($par_data_organisation && $organisation_people) {
       foreach ($organisation_people as $person) {
-        $person_view_builder = $person->getViewBuilder();
-
         $person_field = $person_view_builder->view($person, 'summary');
 
         $form['organisation_alternative_contacts'] = [
@@ -237,10 +230,10 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-    $regulatory_functions = $par_data_partnership->getRegulatoryFunction();
-    $regulatory_function_view_builder = current($regulatory_functions)->getViewBuilder();
+    $regulatory_function_view_builder = $this->getParDataManager()->getViewBuilder('par_data_regulatory_function');
 
-    foreach ($par_data_partnership->getRegulatoryFunction() as $regulatory_function) {
+    $regulatory_function_list_items = [];
+    foreach ($par_data_partnership->retrieveEntityValue('par_data_regulatory_function') as $regulatory_function) {
       $regulatory_function_field = $regulatory_function_view_builder->view($regulatory_function, 'title');
       $regulatory_function_list_items[] = $this->renderMarkupField($regulatory_function_field);
     }

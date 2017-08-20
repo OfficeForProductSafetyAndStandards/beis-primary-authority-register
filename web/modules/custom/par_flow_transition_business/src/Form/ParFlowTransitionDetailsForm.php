@@ -61,7 +61,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
 
     // Organisation summary.
     $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $organisation_builder = $par_data_organisation->getViewBuilder();
+    $organisation_builder = $this->getParDataManager()->getViewBuilder('par_data_organisation');
 
     $form['details_intro'] = [
       '#markup' => "Review and confirm the details of your partnership with " . $par_data_authority->authority_name->getString(),
@@ -96,7 +96,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     // Registered address.
     $par_data_premises = $par_data_organisation->getPremises();
     $registered_premises = array_shift($par_data_premises);
-    $premises_view_builder = $registered_premises->getViewBuilder();
+    $premises_view_builder = $this->getParDataManager()->getViewBuilder('par_data_premises');
 
     if ($registered_premises) {
 
@@ -127,7 +127,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
       ];
 
       foreach ($par_data_premises as $premises) {
-        $person_view_builder = $premises->getViewBuilder();
+        $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
 
         $alternative_person = $person_view_builder->view($premises, 'full');
         $form['registered_address']['alternative_premises'][$premises->id()] = $this->renderMarkupField($alternative_person);
@@ -148,7 +148,8 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     // Primary contact summary.
     $par_data_contacts = $par_data_partnership->getOrganisationPeople();
     $par_data_primary_person = array_shift($par_data_contacts);
-    $primary_person_view_builder = $par_data_primary_person->getViewBuilder();
+
+    $primary_person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
 
     if ($par_data_primary_person) {
       $form['primary_contact'] = [
@@ -181,7 +182,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
       ];
 
       foreach ($par_data_contacts as $person) {
-        $person_view_builder = $person->getViewBuilder();
+        $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
 
         $alternative_person = $person_view_builder->view($person, 'summary');
 
@@ -209,7 +210,9 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     // Legal Entities.
     $par_data_legal_entities = $par_data_organisation->getLegalEntity();
     $par_data_legal_entity = array_shift($par_data_legal_entities);
-    $legal_view_builder = $par_data_legal_entity->getViewBuilder();
+
+    $legal_entity_view_builder = $this->getParDataManager()->getViewBuilder('par_data_legal_entity');
+
     if ($par_data_legal_entity) {
       $form['legal_entity'] = [
         '#type' => 'fieldset',
@@ -218,7 +221,8 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
         '#collapsed' => FALSE,
       ];
 
-      $legal_entity = $legal_view_builder->view($par_data_legal_entity, 'full');
+      $legal_entity = $legal_entity_view_builder->view($par_data_legal_entity, 'full');
+
       $form['legal_entity']['entity'] = $this->renderMarkupField($legal_entity);
 
       $form['legal_entity']['edit'] = [
@@ -239,9 +243,8 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
       ];
 
       foreach ($par_data_legal_entities as $legal_entity_item) {
-        $legal_view_builder = $legal_entity_item->getViewBuilder();
 
-        $alternative_legal = $legal_view_builder->view($legal_entity_item, 'full');
+        $alternative_legal = $legal_entity_view_builder->view($legal_entity_item, 'full');
         $form['legal_entity']['alternative'][$legal_entity_item->id()] = $this->renderMarkupField($alternative_legal);
 
         // We can get a link to a given form step like so.

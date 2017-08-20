@@ -63,7 +63,7 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
 
     // Get all the inspection plans for this partnership.
     foreach ($par_data_partnership->getInspectionPlan() as $inspection_plan) {
-      $inspection_plan_view_builder = $inspection_plan->getViewBuilder();
+      $inspection_plan_view_builder = $this->getParDataManager()->getViewBuilder('par_data_inspection_plan');
 
       // The first column contains a rendered summary of the document.
       $inspection_plan_summary = $inspection_plan_view_builder->view($inspection_plan, 'summary');
@@ -123,7 +123,7 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
       if (!empty($this->getTempDataValue(['document_list', $inspection_plan->id(), 'confirm']))) {
         $inspection_plan->setParStatus('current');
       }
-      
+
       if ($inspection_plan->save()) {
         $this->deleteStore();
       }

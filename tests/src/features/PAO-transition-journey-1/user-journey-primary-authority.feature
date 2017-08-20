@@ -95,6 +95,7 @@ Feature: Primary Authority - Change Partnership Details
         When I click on the button "a*=Review and confirm your documentation"
         And I click on the link "edit"
         And I click on the radio "#edit-document-type-authority-advice"
+        And I click on the checkbox ".form-label*=Cookie control"
         And I click on the checkbox ".form-label*=Alphabet learning"
         When I click on the button "#edit-next"
         Then I expect that element ".table-scroll-wrapper" contains the text "✔"

@@ -7,6 +7,7 @@ use Drupal\Core\Config\Entity\ConfigEntityType;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -24,6 +25,13 @@ class ParDataManager implements ParDataManagerInterface {
    * @var \Drupal\Core\Entity\EntityManagerInterface
    */
   protected $entityManager;
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
 
   /**
    * The entity field manager.
@@ -54,13 +62,16 @@ class ParDataManager implements ParDataManagerInterface {
    *
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *   The entity manager.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_manager
    *   The entity field manager.
    * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_type_bundle_info
    *   The entity bundle info service.
    */
-  public function __construct(EntityManagerInterface $entity_manager, EntityFieldManagerInterface $entity_field_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info) {
+  public function __construct(EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info) {
     $this->entityManager = $entity_manager;
+    $this->entityTypeManager = $entity_type_manager;
     $this->entityFieldManager = $entity_field_manager;
     $this->entityTypeBundleInfo = $entity_type_bundle_info;
   }
@@ -113,6 +124,13 @@ class ParDataManager implements ParDataManagerInterface {
    */
   public function getEntityTypeStorage(EntityTypeInterface $definition) {
     return $this->entityManager->getStorage($definition->id()) ?: NULL;
+  }
+
+  /**
+   * {@inhertidoc}
+   */
+  public function getViewBuilder($entity_type) {
+    return $this->entityTypeManager->getViewBuilder($entity_type);
   }
 
   /**
@@ -298,7 +316,7 @@ class ParDataManager implements ParDataManagerInterface {
    *   An array of entities found with this value.
    */
   public function getEntitiesByProperty($type, $field, $value) {
-    return \Drupal::entityTypeManager()
+    return $this->entityTypeManager
       ->getStorage($type)
       ->loadByProperties([$field => $value]);
   }
@@ -313,7 +331,7 @@ class ParDataManager implements ParDataManagerInterface {
    *   PAR People related to the user account.
    */
   public function getUserPeople(UserInterface $account) {
-    return \Drupal::entityTypeManager()
+    return $this->entityTypeManager
       ->getStorage('par_data_person')
       ->loadByProperties(['email' => $account->get('mail')->getString()]);
   }
