@@ -1,7 +1,7 @@
 applications:
 - name: par-beta-production
-memory: 2G
-disk_quota: 2048M
+memory: 4G
+disk_quota: 4096M
 host: par-beta-production
 buildpack: php_buildpack
 services:
