@@ -4,6 +4,7 @@ namespace Drupal\par_data;
 
 use Drupal\clamav\Config;
 use Drupal\Core\Config\Entity\ConfigEntityType;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -256,13 +257,24 @@ class ParDataManager implements ParDataManagerInterface {
    *   An entity to check membership on.
    * @param UserInterface $account
    *   A user account to check for.
+   *
    * @return bool
+   *   Returns whether the account is a part of a given entity.
    */
   public function isMember($entity, UserInterface $account) {
     return isset($this->hasMemberships($account, $entity->getEntityTypeId())[$entity->id()]);
   }
 
-  public function hasMemberships(UserInterface $account, $type = NULL) {
+  /**
+   * Determine which entities a user is a part of.
+   *
+   * @param UserInterface $account
+   *   A user account to check for.
+   *
+   * @return array
+   *   Returns an array of entities keyed by entity type and then by entity id.
+   */
+  public function hasMemberships(UserInterface $account) {
     $account_people = $this->getUserPeople($account);
 
     $memberships = [];
@@ -270,7 +282,24 @@ class ParDataManager implements ParDataManagerInterface {
       $memberships = array_merge_recursive($memberships, $this->getRelatedEntities($person));
     }
 
-    return isset($type) && isset($memberships[$type]) ? $memberships[$type] : $memberships;
+    return !empty($memberships) ? $memberships : [];
+  }
+
+  /**
+   * Determine which entities of a given type the user is part of.
+   *
+   * @param UserInterface $account
+   *   A user account to check for.
+   * @param EntityInterface $type
+   *   An entity type to filter on the return on.
+   *
+   * @return array
+   *   Returns the entities for the given type.
+   */
+  public function hasMembershipsByType(UserInterface $account, $type) {
+    $memberships = $this->hasMemberships($account);
+
+    return $memberships && isset($memberships[$type]) ? $memberships[$type] : [];
   }
 
   /**
