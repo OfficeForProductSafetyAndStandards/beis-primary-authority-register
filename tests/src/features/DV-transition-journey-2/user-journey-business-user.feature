@@ -18,7 +18,7 @@ Feature: Business User - Manage Addresses
         Then I expect that element "td.views-field.views-field-field-premises" is not visible
         When I add "ABCD" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
-        Then I expect that element "td.views-field.views-field-nothing" contains the text "ABCD Mart"
+#        Then I expect that element "td.views-field.views-field-nothing" contains the text "ABCD Mart"
         When I select the option with the text "Confirmed by Business" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
         Then I expect that element "td.views-field.views-field-nothing" is not visible
@@ -29,7 +29,7 @@ Feature: Business User - Manage Addresses
 
         # TERMS AND CONDITIONS SCREEN
 
-        Then I expect that element ".par-flow-transition-business-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
+        Then I expect that element "#par-flow-transition-business-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
         And I click on the button "#edit-next"
         Then I expect that element ".error-summary" contains the text "You must agree to the new terms and conditions"
         And I click on the checkbox "#edit-terms-conditions"
@@ -113,11 +113,11 @@ Feature: Business User - Manage Addresses
         # EDIT LEGAL ENTITIES
 
         When I click on the button "form#par-flow-transition-business-details #edit-legal-entity a.flow-link"
-        And I add "ABCD Mart Change" to the inputfield "#edit-registered-name"
+        And I add "Legal Entity Change" to the inputfield "#edit-registered-name"
         And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
         And I add "987654321" to the inputfield "#edit-company-house-no"
         And I click on the button "#edit-next"
-        Then I expect that element "#edit-legal-entity div" contains the text "ABCD Mart Change"
+        Then I expect that element "#edit-legal-entity div" contains the text "Legal Entity Change"
         And I expect that element "#edit-legal-entity" contains the text "987654321"
         And I expect that element "#edit-legal-entity" contains the text "Limited Company"
 
