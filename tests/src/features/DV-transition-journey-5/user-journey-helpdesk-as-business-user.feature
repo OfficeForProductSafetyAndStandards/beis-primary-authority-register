@@ -10,14 +10,13 @@ Feature: Helpdesk As Business User - Manage Addresses
 
         Given I am logged in as "par_helpdesk@example.com"
 
-        # PARTNERSHIP TASKS SCREEN/DASHBOARD
-
-        When I click on the link "Dashboard"
-
-        # PARTNERSHIP DETAILS
+        # HD DASHBOARD
 
         Then I expect that element "h1" contains the text "RD Helpdesk Dashboard"
         When I click on the button "td.views-field.views-field-organisation-name a"
+
+        # PARTNERSHIP TASKS
+
         When I click on the link "Review and confirm your business details"
         Then I expect that element "#edit-about-business" contains the text "About the business"
         And I expect that element "#edit-legal-entity" contains the text "Legal Entities"
@@ -109,11 +108,11 @@ Feature: Helpdesk As Business User - Manage Addresses
         # EDIT LEGAL ENTITIES
 
         When I click on the button "form#par-flow-transition-business-details #edit-legal-entity a.flow-link"
-        And I add "ABCD Mart Change" to the inputfield "#edit-registered-name"
+        And I add "Legal Entity Change" to the inputfield "#edit-registered-name"
         And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
         And I add "987654321" to the inputfield "#edit-company-house-no"
         And I click on the button "#edit-next"
-        Then I expect that element "#edit-legal-entity div" contains the text "ABCD Mart Change"
+        Then I expect that element "#edit-legal-entity div" contains the text "Legal Entity Change"
         And I expect that element "#edit-legal-entity" contains the text "987654321"
         And I expect that element "#edit-legal-entity" contains the text "Limited Company"
 

@@ -20,6 +20,9 @@ import checkResponseCode from '../support/action/checkResponseCode';
 import resizeScreenSize from '../support/action/resizeScreenSize';
 import loginAsPARUser from '../support/action/loginAsPARUser';
 import resetTheTestData from '../support/action/resetTheTestData';
+import selectNextPartnershipAwaitingReview from '../support/action/selectNextPartnershipAwaitingReview';
+import selectMyNextCoordinatedPartnership from '../support/action/selectMyNextCoordinatedPartnership';
+import relevantSearchResultsCheck from '../support/action/relevantSearchResultsCheck';
 
 
 module.exports = function given() {
@@ -76,6 +79,21 @@ module.exports = function given() {
     this.Given(
         /^I am logged in as "([^"]*)?"$/,
         loginAsPARUser
+    );
+
+    this.Given(
+        /^I select next partnership awaiting review$/,
+        selectNextPartnershipAwaitingReview
+    );
+
+    this.Given(
+        /^relevant partnerships search results returned$/,
+        relevantSearchResultsCheck
+    );
+
+    this.Given(
+        /^I select my next coordinated partnership awaiting review$/,
+        selectMyNextCoordinatedPartnership
     );
 
     this.Given(

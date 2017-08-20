@@ -10,11 +10,12 @@ Feature: Primary Authority - Change Partnership Details
 
         Given I am logged in as "par_authority@example.com"
         When I click on the link "Continue to your Partnerships"
-        
+
         # PARTNERSHIPS DASHBOARD
 
         And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
-        When I click on the link "ABCD Mart"
+        And relevant partnerships search results returned
+        When I select next partnership awaiting review
 
         # TERMS AND CONDITIONS SCREEN
 
@@ -72,30 +73,6 @@ Feature: Primary Authority - Change Partnership Details
         Then I expect that element ".authority-alternative-contact-0" contains the text "par_authority_piggy@example.com"
         Then I expect that element ".authority-alternative-contact-0" contains the text "917234567899"
         Then I expect that element ".authority-alternative-contact-0" contains the text "97777777779"
-        When I click on the button "form#par-flow-transition-partnership-details-overview #edit-organisation-contacts a.flow-link"
-        And I add "Fozzie" to the inputfield "#edit-first-name"
-        And I add "Bear" to the inputfield "#edit-last-name"
-        And I add "91723456789" to the inputfield "#edit-work-phone"
-        And I add "9777777777" to the inputfield "#edit-mobile-phone"
-        And I add "par_business_fozzie@example.com" to the inputfield "#edit-email"
-        And I click on the button "#edit-next"
-        Then I expect that element "#edit-organisation-contacts" contains the text "Fozzie"
-        Then I expect that element "#edit-organisation-contacts" contains the text "Bear"
-        And I expect that element "#edit-organisation-contacts" contains the text "par_business_fozzie@example.com"
-        And I expect that element "#edit-organisation-contacts" contains the text "91723456789"
-        And I expect that element "#edit-organisation-contacts" contains the text "9777777777"
-        When I click on the button "form#par-flow-transition-partnership-details-overview .organisation-alternative-contacts-1 a.flow-link"
-        And I add "917234567899" to the inputfield "#edit-work-phone"
-        And I add "97777777779" to the inputfield "#edit-mobile-phone"
-        And I add "Pepe" to the inputfield "#edit-first-name"
-        And I add "the King Prawn" to the inputfield "#edit-last-name"
-        And I add "par_business_pepe@example.com" to the inputfield "#edit-email"
-        When I click on the button "#edit-next"
-        Then I expect that element ".organisation-alternative-contacts-1" contains the text "par_business_pepe@example.com"
-        And I expect that element ".organisation-alternative-contacts-1" contains the text "Pepe"
-        And I expect that element ".organisation-alternative-contacts-1" contains the text "the King Prawn"
-        And I expect that element ".organisation-alternative-contacts-1" contains the text "917234567899"
-        And I expect that element ".organisation-alternative-contacts-1" contains the text "97777777779"
         And I click on the checkbox "#edit-confirmation"
         And I click on the button "#edit-next"
         Then I expect that element "#block-par-theme-content" contains the text "Confirmed by the Authority"
@@ -103,7 +80,7 @@ Feature: Primary Authority - Change Partnership Details
         # DOCUMENTATION
 
         And I scroll to element ".table-scroll-wrapper"
-        When I click on the link "Review and confirm your documentation for ABCD Mart"
+        When I click on the button "a*=Review and confirm your documentation"
         And I scroll to element ".table-scroll-wrapper"
         And I click on the link "edit"
         And I click on the radio "#edit-document-type-authority-advice"
@@ -115,7 +92,7 @@ Feature: Primary Authority - Change Partnership Details
         And the element ".table-scroll-wrapper" contains the text "Cookie control"
         When I click on the link "Save"
         Then I expect that element ".table-scroll-wrapper" contains the text "100%"
-        When I click on the link "Review and confirm your documentation for ABCD Mart"
+        When I click on the button "a*=Review and confirm your documentation"
         And I click on the link "edit"
         And I click on the radio "#edit-document-type-authority-advice"
         And I click on the checkbox ".form-label*=Alphabet learning"
@@ -125,7 +102,7 @@ Feature: Primary Authority - Change Partnership Details
         When I click on the link "Save"
         Then I expect that element ".table-scroll-wrapper" contains the text "100%"
 
-         # INSPECTION PLANS
+        # INSPECTION PLANS
 
         And I scroll to element ".table-scroll-wrapper"
         When I click on the link "Review and confirm your inspection plan"
@@ -133,7 +110,7 @@ Feature: Primary Authority - Change Partnership Details
 #        And I click on the checkbox ".form-checkbox"
         And I click on the button "#edit-next"
 
-        # CHECK INSPECTION PLAN CONFIRMEDs
+        # CHECK INSPECTION PLAN CONFIRMED
 
 #        And I scroll to element ".table-scroll-wrapper"
 #        When I click on the link "Review and confirm your inspection plan"

@@ -13,7 +13,7 @@ Feature: Coordinator User - Manage Addresses
 
         # PARTNERSHIPS DASHBOARD
         And I scroll to element ".table-scroll-wrapper"
-        When I click on the link "Co Mart"
+        When I select my next coordinated partnership awaiting review
 
         # TERMS AND CONDITIONS SCREEN
 
