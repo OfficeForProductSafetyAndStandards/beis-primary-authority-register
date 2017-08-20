@@ -52,9 +52,8 @@ function par_data_test_uninstall() {
     '7b9f5a2c-d364-4475-a31e-a87db11acad4', // partnership_2
   ];
   foreach ($par_data_manager->getParEntityTypes() as $entity_type => $entity_definition) {
-    var_dump($entity_type);
     $entity_storage = $par_data_manager->getEntityTypeStorage($entity_definition);
-    foreach ($entity_storage->loadMultiple() as $entity) {
+    foreach ($entity_storage->loadByProperties(['uuid' => $uuids_to_delete]) as $entity) {
       $entity->delete();
     }
   }
