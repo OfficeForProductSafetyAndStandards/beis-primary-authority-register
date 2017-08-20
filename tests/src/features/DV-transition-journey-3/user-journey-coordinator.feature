@@ -17,7 +17,7 @@ Feature: Coordinator User - Manage Addresses
 
         # TERMS AND CONDITIONS SCREEN
 
-        And I expect that element ".par-flow-transition-coordinator-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
+        And I expect that element ".par-flow-transition-coordinator-terms" contains the text "Please review the new Primary Authority terms and conditions and confirm that you agree with them"
         And I click on the button "#edit-next"
         Then I expect that element ".error-summary" contains the text "You must agree to the new terms and conditions"
         When I click on the checkbox "#edit-terms-conditions"

@@ -19,7 +19,7 @@ Feature: Primary Authority - Change Partnership Details
 
         # TERMS AND CONDITIONS SCREEN
 
-        Then I expect that element ".par-flow-transition-partnership-details-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
+        Then I expect that element ".par-flow-transition-partnership-details-terms" contains the text "Please review the new Primary Authority terms and conditions and confirm that you agree with them"
         When I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
         And I scroll to element ".table-scroll-wrapper"
