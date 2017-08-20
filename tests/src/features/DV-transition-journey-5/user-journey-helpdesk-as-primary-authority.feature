@@ -90,16 +90,6 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
         And the element ".table-scroll-wrapper" contains the text "Cookie control"
         When I click on the link "Save"
         Then I expect that element ".table-scroll-wrapper" contains the text "100%"
-        When I click on the button "a*=Review and confirm your documentation"
-        And I click on the link "edit"
-        And I click on the radio "#edit-document-type-authority-advice"
-        And I click on the checkbox ".form-label*=Alphabet learning"
-        And I click on the checkbox ".form-label*=Cookie control"
-        When I click on the button "#edit-next"
-        Then I expect that element ".table-scroll-wrapper" contains the text "✔"
-        And I expect that element ".table-scroll-wrapper" contains the text "Cookie control, Alphabet learning"
-        When I click on the link "Save"
-        Then I expect that element ".table-scroll-wrapper" contains the text "100%"
 
         # INSPECTION PLANS
 

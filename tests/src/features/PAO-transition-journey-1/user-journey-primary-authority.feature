@@ -19,7 +19,7 @@ Feature: Primary Authority - Change Partnership Details
 
         # TERMS AND CONDITIONS SCREEN
 
-        Then I expect that element ".par-flow-transition-partnership-details-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
+        Then I expect that element ".par-flow-transition-partnership-details-terms" contains the text "Please review the new Primary Authority terms and conditions and confirm that you agree with them"
         When I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
         And I scroll to element ".table-scroll-wrapper"
@@ -90,16 +90,6 @@ Feature: Primary Authority - Change Partnership Details
         When I click on the button "#edit-next"
         Then I expect that element ".table-scroll-wrapper" contains the text "✔"
         And the element ".table-scroll-wrapper" contains the text "Cookie control"
-        When I click on the link "Save"
-        Then I expect that element ".table-scroll-wrapper" contains the text "100%"
-        When I click on the button "a*=Review and confirm your documentation"
-        And I click on the link "edit"
-        And I click on the radio "#edit-document-type-authority-advice"
-        And I click on the checkbox ".form-label*=Cookie control"
-        And I click on the checkbox ".form-label*=Alphabet learning"
-        When I click on the button "#edit-next"
-        Then I expect that element ".table-scroll-wrapper" contains the text "✔"
-        And I expect that element ".table-scroll-wrapper" contains the text "Cookie control, Alphabet learning"
         When I click on the link "Save"
         Then I expect that element ".table-scroll-wrapper" contains the text "100%"
 
