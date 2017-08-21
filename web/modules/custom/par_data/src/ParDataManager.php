@@ -395,20 +395,6 @@ class ParDataManager implements ParDataManagerInterface {
     foreach ($this->getUserPeople($account) as $par_person) {
       $par_person->linkAccounts($account);
     }
-
-    // Add the correct roles to this user account also.
-    if ($this->isMemberOfAuthority($account) && !$account->hasRole('par_authority')) {
-      $account->addRole('par_authority');
-      $account->save();
-    }
-    if ($this->isMemberOfCoordinator($account) && !$account->hasRole('par_coordinator')) {
-      $account->addRole('par_coordinator');
-      $account->save();
-    }
-    if ($this->isMemberOfBusiness($account) && !$account->hasRole('par_business')) {
-      $account->addRole('par_business');
-      $account->save();
-    }
   }
 
   /**
