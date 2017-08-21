@@ -243,17 +243,17 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#items' => $regulatory_function_list_items
     ];
 
-    // Partnership Confirmation.
+    // "Partnership Arrangements have been agreed" confirmation.
     $form['partnership_agreement'] = [
       '#type' => 'checkbox',
-      '#title' => t('A written summary of partnership agreement, such as Memorandum of Understanding, has been agreed with the Business.'),
+      '#title' => t('A written summary of the partnership arrangements has been agreed with the business.'),
       '#disabled' => $this->getDefaultValues('partnership_agreement'),
       '#checked' => $this->getDefaultValues('partnership_agreement'),
       '#default_value' => $this->getDefaultValues('partnership_agreement'),
       '#return_value' => 'on',
     ];
 
-    // Partnership Confirmation.
+    // "Partnership Information is correct" confirmation.
     $form['confirmation'] = [
       '#type' => 'checkbox',
       '#title' => t('I confirm that the partnership information above is correct.'),

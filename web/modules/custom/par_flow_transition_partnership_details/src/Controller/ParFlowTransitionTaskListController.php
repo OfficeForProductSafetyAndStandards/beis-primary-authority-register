@@ -26,7 +26,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
 
     if ($par_data_organisation) {
 
-      $organisation_name = $par_data_organisation ? $par_data_organisation->retrieveStringValue('name') : '';
+      $organisation_name = $par_data_organisation ? $par_data_organisation->retrieveStringValue('organisation_name') : '';
 
       // Organisation Name & Address.
       $build['organisation']['label'] = [
