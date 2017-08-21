@@ -7,7 +7,7 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: QGgJGZoKut05WsIg0nq7riqZyH_z1J7cfWimoDw8m9k
+  default_config_hash: JxcPcnVIWt9XAB9ONjORaEcVChvRng7zfNOHTUBytbA
 id: par_migration_coordinator_organisation
 class: null
 field_plugin_method: null
@@ -22,7 +22,7 @@ process:
   id: organisation_id
   type:
     plugin: default_value
-    default_value: business
+    default_value: coordinator
   uid:
     plugin: default_value
     default_value: 1
