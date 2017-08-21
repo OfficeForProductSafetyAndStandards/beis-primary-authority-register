@@ -137,10 +137,12 @@ class ParDataPerson extends ParDataEntity {
       $account = $this->lookupUserAccount();
     }
     $current_user_account = $this->getUserAccount();
-    if ($account && (!$current_user_account || !$account->id() !== $current_user_account->id())) {
+    if ($account && (!$current_user_account || $account->id() !== $current_user_account->id())) {
+      // Add the user account to this person.
       $this->setUserAccount($account);
       $saved = $this->save();
     }
+
     return $saved ? $account : NULL;
   }
 
