@@ -848,7 +848,6 @@ if (getenv('S3_BUCKET_PUBLIC')) {
       'secret' => getenv('S3_SECRET_KEY'),
       'region' => 'eu-west-1',
       'bucket' => getenv('S3_BUCKET_PUBLIC'),
-      'prefix' => 'public',
     ],
   ] + $settings['flysystem']['s3public'];
 }
@@ -862,7 +861,6 @@ if (getenv('S3_BUCKET_PRIVATE')) {
       'secret' => getenv('S3_SECRET_KEY'),
       'region' => 'eu-west-1',
       'bucket' => getenv('S3_BUCKET_PRIVATE'),
-      'prefix' => 'public',
     ],
   ] + $settings['flysystem']['s3private'];
 }
