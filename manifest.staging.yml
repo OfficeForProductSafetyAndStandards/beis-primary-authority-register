@@ -1,7 +1,7 @@
 applications:
 - name: par-beta-staging
-memory: 2G
-disk_quota: 2048M
+memory: 4G
+disk_quota: 4096M
 host: par-beta-staging
 buildpack: php_buildpack
 services:
