@@ -23,40 +23,26 @@ function par_roles_help($route_name, RouteMatchInterface $route_match) {
   }
 }
 
+function par_roles_user_presave($account) {
+  $par_data_manager = \Drupal::service('par_data.manager');
+  // Add the correct roles to this user account also.
+  if ($par_data_manager->isMemberOfAuthority($account) && !$account->hasRole('par_authority')) {
+    $account->addRole('par_authority');
+  }
+  if ($par_data_manager->isMemberOfCoordinator($account) && !$account->hasRole('par_coordinator')) {
+    $account->addRole('par_coordinator');
+  }
+  if ($par_data_manager->isMemberOfBusiness($account) && !$account->hasRole('par_business')) {
+    $account->addRole('par_business');
+  }
+}
+
 function par_roles_user_insert($account) {
   $par_data_manager = \Drupal::service('par_data.manager');
   $par_data_manager->linkPeople($account);
-
-  if ($account) {
-    foreach ($par_data_manager->getUserPeople($account) as $person) {
-      if ($person->isAuthorityMember()) {
-        $account->addRole('par_authority');
-      }
-      if ($person->isCoordinatorMember()) {
-        $account->addRole('par_coordinator');
-      }
-      if ($person->isBusinessMember()) {
-        $account->addRole('par_business');
-      }
-    }
-  }
 }
 
 function par_roles_user_update($account) {
   $par_data_manager = \Drupal::service('par_data.manager');
   $par_data_manager->linkPeople($account);
-
-  if ($account) {
-    foreach ($par_data_manager->getUserPeople($account) as $person) {
-      if ($person->isAuthorityMember()) {
-        $account->addRole('par_authority');
-      }
-      if ($person->isCoordinatorMember()) {
-        $account->addRole('par_coordinator');
-      }
-      if ($person->isBusinessMember()) {
-        $account->addRole('par_business');
-      }
-    }
-  }
 }
