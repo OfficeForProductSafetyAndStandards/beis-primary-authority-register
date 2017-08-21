@@ -66,7 +66,7 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
     // Partnership agree terms.
     $form['terms_conditions'] = [
       '#type' => 'checkbox',
-      '#title' => t('I confirm that my organisation agrees to the new terms and conditions.'),
+      '#title' => t('I confirm that my organisation agrees to the new <a href="\terms-and-conditions">terms and conditions.</a>'),
       '#disabled' => $this->getDefaultValues("terms_organisation_agreed"),
       '#return_value' => 'on',
     ];

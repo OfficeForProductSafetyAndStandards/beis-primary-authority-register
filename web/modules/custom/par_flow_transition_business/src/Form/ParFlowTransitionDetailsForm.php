@@ -148,8 +148,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     // Primary contact summary.
     $par_data_contacts = $par_data_partnership->getOrganisationPeople();
     $par_data_primary_person = array_shift($par_data_contacts);
-
-    $primary_person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
+    $primary_person_view_builder = $par_data_primary_person->getViewBuilder();
 
     if ($par_data_primary_person) {
       $form['primary_contact'] = [
@@ -160,6 +159,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
         '#collapsed' => FALSE,
       ];
 
+      $primary_person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
       $primary_person = $primary_person_view_builder->view($par_data_primary_person, 'summary');
       $form['primary_contact']['details'] = $this->renderMarkupField($primary_person);
 
@@ -210,19 +210,17 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     // Legal Entities.
     $par_data_legal_entities = $par_data_organisation->getLegalEntity();
     $par_data_legal_entity = array_shift($par_data_legal_entities);
-
-    $legal_entity_view_builder = $this->getParDataManager()->getViewBuilder('par_data_legal_entity');
+    $form['legal_entity'] = [
+      '#type' => 'fieldset',
+      '#title' => t('Legal Entities:'),
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
 
     if ($par_data_legal_entity) {
-      $form['legal_entity'] = [
-        '#type' => 'fieldset',
-        '#title' => t('Legal Entities:'),
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
 
+      $legal_entity_view_builder = $this->getParDataManager()->getViewBuilder('par_data_legal_entity');
       $legal_entity = $legal_entity_view_builder->view($par_data_legal_entity, 'full');
-
       $form['legal_entity']['entity'] = $this->renderMarkupField($legal_entity);
 
       $form['legal_entity']['edit'] = [
