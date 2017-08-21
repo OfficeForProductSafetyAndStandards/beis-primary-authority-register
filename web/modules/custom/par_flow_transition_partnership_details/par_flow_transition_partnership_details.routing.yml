@@ -27,7 +27,7 @@ par_flow_transition_partnership_details.overview:
   path: '/dv/primary-authority-partnerships/{par_data_partnership}/details'
   defaults:
     _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionOverviewForm'
-    _title: 'Viewing/confirming partnership details'
+    _title: 'Updating the Primary Authority Register'
   requirements:
     _permission: 'access par journey transition partnership details'
     par_data_partnership: \d+
@@ -39,7 +39,7 @@ par_flow_transition_partnership_details.about:
   path: '/dv/primary-authority-partnerships/{par_data_partnership}/details/about'
   defaults:
     _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionAboutForm'
-    _title: 'Edit the information about the Partnership'
+    _title: 'Updating the Primary Authority Register'
   requirements:
     _permission: 'access par journey transition partnership details'
     par_data_partnership: \d+
