@@ -38,8 +38,12 @@ display:
             administrator: administrator
             par_helpdesk: par_helpdesk
       cache:
-        type: tag
-        options: {  }
+        type: time
+        options:
+          results_lifespan: 3600
+          results_lifespan_custom: 0
+          output_lifespan: 0
+          output_lifespan_custom: 0
       query:
         type: views_query
         options:
@@ -721,7 +725,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Authority Contacts'
+          label: 'Invite Authority Contacts'
           exclude: false
           alter:
             alter_text: false
