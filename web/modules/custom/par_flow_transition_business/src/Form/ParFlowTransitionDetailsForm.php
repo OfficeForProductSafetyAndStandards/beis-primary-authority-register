@@ -273,12 +273,15 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
         $form['trading_names'][$key] = [
           '#type' => 'fieldset',
           '#title' => $key === 0 ? t('Trading Names:') : '',
+          '#attributes' => ['class' => 'form-group'],
           '#collapsible' => FALSE,
           '#collapsed' => FALSE,
         ];
 
         $form['trading_names'][$key]['entity'] = [
           '#markup' => $trading_name['value'],
+          '#prefix' => '<div>',
+          '#suffix' => '</div>',
         ];
 
         $form['trading_names'][$key]['edit'] = [
