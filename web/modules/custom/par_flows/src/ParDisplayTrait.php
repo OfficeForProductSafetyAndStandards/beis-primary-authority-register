@@ -22,12 +22,10 @@ trait ParDisplayTrait {
    * @return mixed
    */
   public function renderMarkupField($field) {
-
     return [
       '#type' => 'markup',
-      '#markup' => $this->getRenderer()->render($field)
+      '#markup' => $field ? $this->getRenderer()->render($field) : '',
     ];
-
   }
 
   /**
