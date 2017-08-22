@@ -34,9 +34,9 @@ class ParFlowTransitionAddressForm extends ParFlowTransitionAddressBusinessForm 
 
     // Change labels for coordinator journey.
     $form['info'] = [
-      '#markup' => t('Change the address of your association.'),
+      '#markup' => t('Change the address of your organisation.'),
     ];
-    $form['postcode']['#description'] = t('Enter the postcode of the association');
+    $form['postcode']['#description'] = t('Enter the postcode of the organisation');
     return $form;
   }
 

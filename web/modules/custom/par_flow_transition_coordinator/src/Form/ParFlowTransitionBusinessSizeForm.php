@@ -65,7 +65,7 @@ class ParFlowTransitionBusinessSizeForm extends ParBaseForm {
 
     $form['next'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Next'),
+      '#value' => $this->t('Save'),
     ];
 
     $previous_link = $this->getFlow()->getLinkByStep(4)->setText('Cancel')->toString();
