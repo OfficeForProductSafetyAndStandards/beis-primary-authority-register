@@ -8,17 +8,22 @@ use Dotenv\Dotenv;
 $dotenv = new Dotenv(__DIR__);
 $dotenv->load();
 
+function readVaultValue($key, $path) {
+    exec('vault read -field=' . $key . ' ' . $path, $output);
+    return $output[0];
+}
+
 $parEnvs = [
     'staging' => [
-        'key' => getenv('STAGING_KEY'),
-        'secret' => getenv('STAGING_SECRET'),
+        'key' => readVaultValue('S3_ACCESS_KEY', 'secret/par/env/staging'),
+        'secret' => readVaultValue('S3_SECRET_KEY', 'secret/par/env/staging'),
         'bucket' => 'transform-par-beta-development-private',
         'path' => '/staging/documents/advice',
         'document' => '10.Assured Advice.docx',
     ],
     'production' => [
-        'key' => getenv('PRODUCTION_KEY'),
-        'secret' => getenv('PRODUCTION_SECRET'),
+        'key' => readVaultValue('S3_ACCESS_KEY', 'secret/par/env/production'),
+        'secret' => readVaultValue('S3_SECRET_KEY', 'secret/par/env/production'),
         'bucket' => 'transform-par-beta-production-private',
         'path' => '/documents/advice',
         'document' => '10.Assured Advice.docx',
