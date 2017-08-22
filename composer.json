@@ -105,6 +105,9 @@
             "drupal/flysystem": {
                 "Add Drush commands for sending and receiving files": "./patches/flysystem-drush-command.patch"
             },
+            "drupal/flysystem_s3": {
+                "Allow downloading of private files from remote S3 wrappers": "./patches/private_file_download.patch"
+            },
             "drupal/govuk_notify": {
                 "Allowing system mails to be sent through Notify": "https://www.drupal.org/files/issues/allowing_system_mails-2897707-4.patch"
             },
@@ -113,7 +116,8 @@
             },
             "drupal/core": {
                 "Allow migration lookups against sub-sets of migration map ids": "./patches/migration_id_map_sql_lookup_check.patch",
-                "Entity loadByProperty should skip access checks": "https://www.drupal.org/files/issues/2878483-18.patch"
+                "Entity loadByProperty should skip access checks": "https://www.drupal.org/files/issues/2878483-18.patch",
+                "Migration Lookup plugin does not return multiple values when matched and uses deprecated method": "https://www.drupal.org/files/issues/2890844-14.patch"
             }
         }
     },

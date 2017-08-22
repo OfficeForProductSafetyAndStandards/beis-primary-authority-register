@@ -94,8 +94,7 @@ function par_data_drush_sql_sync_sanitize($site) {
 
   if (!empty($replacements) && $major_version >= 8) {
     $table = $wrap_table_name ? "{{par_people_field_data}}" : 'par_people_field_data';
-    $truncate_revisions = $wrap_table_name ? ['{{par_people_field_revision}}', '{{par_people_revision}}']
-        : ['par_people_field_revision', 'par_people_revision'];
+    $revisions_table = $wrap_table_name ? '{{par_people_field_revision}}' : 'par_people_field_revision';
 
     // Generate the SQL query to replace.
     $sets = implode(', ', $replacements);
@@ -104,13 +103,11 @@ UPDATE {$table} AS p
 SET {$sets}
 WHERE id > 0;
 SQL;
-
-    // Clear the revision tables.
-    $revision_queries = [];
-    foreach ($truncate_revisions as $revision) {
-      $revision_queries = ["TRUNCATE TABLE $revision;"];
-    }
-    $par_data_person_revision_query = implode(' ', $revision_queries);
+    $par_data_person_revision_query = <<<SQL
+UPDATE {$revisions_table} AS p
+SET {$sets}
+WHERE revision_id > 0;
+SQL;
 
     drush_sql_register_post_sync_op('sanitise_par_people', dt('Sanitise PAR Data Person records'), $par_data_person_query);
     drush_sql_register_post_sync_op('sanitise_par_people_revisions', dt('Sanitise PAR Data Person revision records'), $par_data_person_revision_query);

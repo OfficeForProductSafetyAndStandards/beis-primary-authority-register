@@ -58,6 +58,11 @@ class ParDataManager implements ParDataManagerInterface {
   protected $nonMembershipEntities = ['par_data_sic_codes', 'par_data_regulatory_function', 'par_data_advice', 'par_data_inspection_plan'];
 
   /**
+   * Iteration limit for recursive membership lookups.
+   */
+  protected $membershipIterations = 5;
+
+  /**
    * Constructs a ParDataPermissions instance.
    *
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
@@ -74,6 +79,15 @@ class ParDataManager implements ParDataManagerInterface {
     $this->entityTypeManager = $entity_type_manager;
     $this->entityFieldManager = $entity_field_manager;
     $this->entityTypeBundleInfo = $entity_type_bundle_info;
+  }
+
+  /**
+   * Getter the Par Data Manager with a reduced iterator.
+   */
+  public function getReducedIterator($iterations = 0) {
+    $new_par_data_manager = clone $this;
+    $new_par_data_manager->membershipIterations = $iterations;
+    return $new_par_data_manager;
   }
 
   /**
@@ -199,7 +213,7 @@ class ParDataManager implements ParDataManagerInterface {
 
     // Make sure the entity isn't too distantly related
     // to limit recursive relationships.
-    if ($iteration > 5) {
+    if ($iteration > $this->membershipIterations) {
       return $entities;
     }
     else {
@@ -262,7 +276,7 @@ class ParDataManager implements ParDataManagerInterface {
    *   Returns whether the account is a part of a given entity.
    */
   public function isMember($entity, UserInterface $account) {
-    return isset($this->hasMemberships($account, $entity->getEntityTypeId())[$entity->id()]);
+    return isset($this->hasMembershipsByType($account, $entity->getEntityTypeId())[$entity->id()]);
   }
 
   /**
@@ -270,16 +284,20 @@ class ParDataManager implements ParDataManagerInterface {
    *
    * @param UserInterface $account
    *   A user account to check for.
+   * @param bool $direct
+   *   Whether to check only direct relationships.
    *
    * @return array
    *   Returns an array of entities keyed by entity type and then by entity id.
    */
-  public function hasMemberships(UserInterface $account) {
+  public function hasMemberships(UserInterface $account, $direct = FALSE) {
     $account_people = $this->getUserPeople($account);
+
+    $object = $direct ? $this->getReducedIterator(1) : $this;
 
     $memberships = [];
     foreach ($account_people as $person) {
-      $memberships = array_merge_recursive($memberships, $this->getRelatedEntities($person));
+      $memberships = array_merge_recursive($memberships, $object->getRelatedEntities($person));
     }
 
     return !empty($memberships) ? $memberships : [];
@@ -292,14 +310,45 @@ class ParDataManager implements ParDataManagerInterface {
    *   A user account to check for.
    * @param EntityInterface $type
    *   An entity type to filter on the return on.
+   * @param bool $direct
+   *   Whether to check only direct relationships.
    *
    * @return array
    *   Returns the entities for the given type.
    */
-  public function hasMembershipsByType(UserInterface $account, $type) {
-    $memberships = $this->hasMemberships($account);
+  public function hasMembershipsByType(UserInterface $account, $type, $direct = FALSE) {
+    $memberships = $this->hasMemberships($account, $direct);
 
     return $memberships && isset($memberships[$type]) ? $memberships[$type] : [];
+  }
+
+  /**
+   * Checks if the person is a member of an authority member.
+   */
+  public function isMemberOfAuthority($account) {
+    return $this->hasMembershipsByType($account, 'par_data_authority', TRUE);
+  }
+
+  /**
+   * Checks if the person is a member of a coordinator member.
+   */
+  public function isMemberOfCoordinator($account) {
+    foreach ($this->hasMembershipsByType($account, 'par_data_organisation',  TRUE) as $membership) {
+      if ($membership->bundle() === 'coordinator') {
+        return TRUE;
+      }
+    }
+  }
+
+  /**
+   * Checks if the person is a member of an business member.
+   */
+  public function isMemberOfBusiness($account) {
+    foreach ($this->hasMembershipsByType($account, 'par_data_organisation',  TRUE) as $membership) {
+      if ($membership->bundle() === 'business') {
+        return TRUE;
+      }
+    }
   }
 
   /**
@@ -344,7 +393,7 @@ class ParDataManager implements ParDataManagerInterface {
    */
   public function linkPeople(UserInterface $account) {
     foreach ($this->getUserPeople($account) as $par_person) {
-      $par_person->linkAccounts();
+      $par_person->linkAccounts($account);
     }
   }
 
