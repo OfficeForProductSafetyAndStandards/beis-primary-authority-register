@@ -30,7 +30,7 @@ Feature: Coordinator User - Manage Addresses
         Then I expect that element "#edit-business-name" contains the text "Co Mart"
         And I expect that element "#edit-about-business" contains the text "About the business"
         And I expect that element "#edit-legal-entity" contains the text "Legal Entities"
-        And I expect that element "#edit-primary-contact" contains the text "Main association contact"
+        And I expect that element "#edit-primary-contact" contains the text "Main business contact"
         And I expect that element "#edit-0" contains the text "Trading Names"
 
         # EDIT REGISTERED ADDRESS
