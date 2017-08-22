@@ -31,8 +31,9 @@ class ParFlowTransitionAboutForm extends ParFlowTransitionAboutBusinessForm {
     $form = parent::buildForm($form, $form_state, $par_data_partnership);
 
     // Change labels for coordinator journey.
-    $form['about_business']['#title'] = t('Edit the information about the association');
+    $form['about_business']['#title'] = t('Edit the information about the organisation');
     $form['primary_contact']['#title'] = t('Main association contact:');
+
     return $form;
   }
 

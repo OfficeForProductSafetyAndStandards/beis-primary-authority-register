@@ -52,6 +52,12 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
+    // Provides instructions.
+    $form['instructions'] = [
+      '#type' => 'markup',
+      '#markup' => t('<p>Review and confirm your inspection plan is still current and correct</p>'),
+    ];
+
     // Show the task links in table format.
     $form['document_list'] = [
       '#theme' => 'table',
@@ -88,7 +94,7 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
       '#type' => 'markup',
       '#prefix' => '<p>',
       '#suffix' => '</p>',
-      '#markup' => t("To upload a new inspection plan, please email it to the <a href='mailto:pa@bis.gsi.gov.uk'>Help Desk</a>."),
+      '#markup' => t("To upload a new inspection plan, please email it to the <a href='mailto:pa@beis.gov.uk?subject=Inspection plan'>Help Desk</a>"),
     ];
 
     $form['next'] = [

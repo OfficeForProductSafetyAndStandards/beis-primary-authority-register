@@ -82,7 +82,7 @@ Feature: Primary Authority - Change Partnership Details
         And I scroll to element ".table-scroll-wrapper"
         When I click on the button "a*=Review and confirm your documentation"
         And I scroll to element ".table-scroll-wrapper"
-        And I click on the link "edit"
+        And I click on the link "classify"
         And I click on the radio "#edit-document-type-authority-advice"
         When I click on the button "#edit-next"
         Then I expect that element ".error-message" does exist

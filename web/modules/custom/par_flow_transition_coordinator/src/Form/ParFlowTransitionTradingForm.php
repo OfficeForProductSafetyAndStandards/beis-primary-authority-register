@@ -34,13 +34,13 @@ class ParFlowTransitionTradingForm extends ParFlowTransitionTradingBusinessForm 
     // Change labels for coordinator journey.
     if (empty($trading_name_delta)) {
       $form['intro'] = [
-        '#markup' => $this->t('Add another trading name for your association'),
+        '#markup' => $this->t('Add another trading name for your organisation'),
       ];
 
     }
     else {
       $form['intro'] = [
-        '#markup' => $this->t('Change the trading name of your association'),
+        '#markup' => $this->t('Change the trading name of your organisation'),
       ];
     }
     $form['trading_name']['#description'] = $this->t('Sometimes companies trade under a different name to their registered, legal name. This is known as a \'trading name\'. State any trading names used by the association.');

@@ -59,7 +59,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
         '#type' => 'markup',
         '#prefix' => '<h4>',
         '#suffix' => '</h4>',
-        '#markup' => 'Main contact:'
+        '#markup' => 'Main contact at the authority:'
       ];
 
       $build['primary_contact']['person'] = $person_view_builder->view($par_data_primary_person, 'summary');
