@@ -13,28 +13,72 @@ function readVaultValue($key, $path) {
     return $output[0];
 }
 
+function textOut($colourCode, $message) {
+    printf("\x1b[" . $colourCode . "m");
+    echo $message;
+    printf("\x1b[0m");
+    echo PHP_EOL;
+}
+
+function errorOut($message) {
+    textOut(31, $message);
+}
+
+function warningOut($message) {
+    textOut(33, $message);
+}
+
+function passOut($message) {
+    textOut(32, $message);
+}
+
+function out($user, $bucketOwner, $isDenied) {
+    if ($user == $bucketOwner) {
+        if ($isDenied) {
+            errorOut($user . ' wrongly denied access to own bucket');
+        } else {
+            passOut($user . ' correctly granted access to own bucket');
+        }
+        return;
+    }
+    
+    if ($user == 'production' || $bucketOwner == 'production') {
+        if ($isDenied) {
+            passOut($user . ' correctly denied access to ' . $bucketOwner . ' bucket');
+        } else {
+            errorOut($user . ' wrongly granted access to ' . $bucketOwner . ' bucket');
+        }
+        return;
+    }
+    
+    if ($isDenied) {
+        warningOut($user . ' denied access to ' . $bucketOwner . ' bucket');
+    } else {
+        warningOut($user . ' granted access to ' . $bucketOwner . ' bucket');
+    }
+}
+
 $parEnvs = [
-    'staging' => [
-        'key' => readVaultValue('S3_ACCESS_KEY', 'secret/par/env/staging'),
-        'secret' => readVaultValue('S3_SECRET_KEY', 'secret/par/env/staging'),
-        'bucket' => 'transform-par-beta-development-private',
-        'path' => '/staging/documents/advice',
-        'document' => '10.Assured Advice.docx',
-    ],
     'production' => [
-        'key' => readVaultValue('S3_ACCESS_KEY', 'secret/par/env/production'),
-        'secret' => readVaultValue('S3_SECRET_KEY', 'secret/par/env/production'),
         'bucket' => 'transform-par-beta-production-private',
         'path' => '/documents/advice',
         'document' => '10.Assured Advice.docx',
     ],    
 ];
 
+foreach (['staging', 'demo', 'branch', 'continuous'] as $parEnvName) {
+    $parEnvs[$parEnvName] = [
+        'bucket' => 'transform-par-beta-development-private',
+        'path' => '/' . $parEnvName . '/documents/advice',
+        'document' => '10.Assured Advice.docx',
+    ];
+}
+
 foreach ($parEnvs as $parEnvName => $parEnv) {
     $client = S3Client::factory([
         'credentials' => [
-            'key'    => $parEnv['key'],
-            'secret' => $parEnv['secret'],
+            'key'    => readVaultValue('S3_ACCESS_KEY', 'secret/par/env/' . $parEnvName),
+            'secret' => readVaultValue('S3_SECRET_KEY', 'secret/par/env/' . $parEnvName),
         ],
         'region' => 'eu-west-1',
         'version' => '2006-03-01',
@@ -42,18 +86,14 @@ foreach ($parEnvs as $parEnvName => $parEnv) {
     
     $adapter = new AwsS3Adapter($client, $parEnv['bucket'], $parEnv['path']);
     
-    $e = false;
+    $isDenied = false;
     try {
         $adapter->copy($parEnv['document'], sys_get_temp_dir());
     } catch (Exception $e) {
-        $e = true;
+        $isDenied = true;
     }
     
-    if ($e) {
-        echo 'FAIL: ' . $parEnvName . ' denied access to own bucket' . PHP_EOL;
-    } else {
-        echo 'PASS: ' . $parEnvName . ' allowed access to own bucket' . PHP_EOL;
-    }
+    out($parEnvName, $parEnvName, $isDenied);
     
     foreach ($parEnvs as $denyEnvName => $denyEnv) {
         if ($parEnvName == $denyEnvName) {
@@ -61,18 +101,14 @@ foreach ($parEnvs as $parEnvName => $parEnv) {
         }
         $adapter = new AwsS3Adapter($client, $denyEnv['bucket'], $denyEnv['path']);
         
-        $e = false;
+        $isDenied = false;
         try {
             $adapter->copy($denyEnv['document'], sys_get_temp_dir());
         } catch (Exception $e) {
-            $e = true;
+            $isDenied = true;
         }
         
-        if ($e) {
-            echo 'PASS: ' . $parEnvName . ' denied access to ' . $denyEnvName . ' bucket' . PHP_EOL;
-        } else {
-            echo 'FAIL: ' . $parEnvName . ' allowed access to ' . $denyEnvName . ' bucket' . PHP_EOL;
-        }
+        out($parEnvName, $denyEnvName, $isDenied);
     }
 }
 
