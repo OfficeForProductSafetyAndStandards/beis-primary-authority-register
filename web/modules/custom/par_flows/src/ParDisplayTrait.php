@@ -24,7 +24,7 @@ trait ParDisplayTrait {
   public function renderMarkupField($field) {
     return [
       '#type' => 'markup',
-      '#markup' => $field ? $this->getRenderer()->render($field) : '',
+      '#markup' => $field ? $this->getRenderer()->render($field) : 'None',
     ];
   }
 
