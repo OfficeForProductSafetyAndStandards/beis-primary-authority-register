@@ -212,6 +212,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     $form['legal_entity'] = [
       '#type' => 'fieldset',
       '#title' => t('Legal Entities:'),
+      '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
@@ -235,17 +236,17 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     if ($par_data_legal_entities) {
 
       foreach ($par_data_legal_entities as $legal_entity_item) {
-        $form['legal_entity'][$legal_entity_item->id()] = [
+        $form['legal_entity_' . $legal_entity_item->id()] = [
           '#type' => 'fieldset',
-          '#title' => '',
+          '#attributes' => ['class' => 'form-group'],
           '#collapsible' => FALSE,
           '#collapsed' => FALSE,
         ];
         $alternative_legal = $legal_entity_view_builder->view($legal_entity_item, 'full');
-        $form['legal_entity'][$legal_entity_item->id()]['value'] = $this->renderMarkupField($alternative_legal);
+        $form['legal_entity_' . $legal_entity_item->id()]['item'] = $this->renderMarkupField($alternative_legal);
 
         // We can get a link to a given form step like so.
-        $form['legal_entity'][$legal_entity_item->id()][$legal_entity_item->id() . '_edit'] = [
+        $form['legal_entity_' . $legal_entity_item->id()][$legal_entity_item->id() . '_edit'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
             '@link' => $this->getFlow()->getLinkByStep(8, [
@@ -256,13 +257,14 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
       }
     }
 
-    $form['legal_entity']['add_fieldset'] = [
+    $form['legal_entity_add'] = [
       '#type' => 'fieldset',
+      '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
 
-    $form['legal_entity']['add_fieldset']['add'] = [
+    $form['legal_entity_add']['add'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
         '@link' => $this->getFlow()->getLinkByStep(10)->setText('add another legal entity')->toString(),
