@@ -278,12 +278,16 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
         $form['trading_names'][$key] = [
           '#type' => 'fieldset',
           '#title' => $key === 0 ? t('Trading Names:') : '',
+          '#attributes' => ['class' => 'form-group'],
           '#collapsible' => FALSE,
           '#collapsed' => FALSE,
         ];
 
         $form['trading_names'][$key]['entity'] = [
+          '#type' => 'markup',
           '#markup' => $trading_name['value'],
+          '#prefix' => '<div>',
+          '#suffix' => '</div>',
         ];
 
         $form['trading_names'][$key]['edit'] = [
@@ -303,6 +307,12 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
         ]),
       ];
     }
+
+    // Need this here so we can add extra checkboxes at the end of the page.
+    // We can't guarantee the previous steps will be there.
+    $form['confirmation_section'] = [
+      '#type' => 'container',
+    ];
 
     $form['confirmation'] = [
       '#type' => 'checkbox',
