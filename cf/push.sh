@@ -1,5 +1,8 @@
 #!/bin/bash
 
+ENV=$1
+VER=$2
+
 ####################################################################################
 # Run this script from the /cf directory of the repository
 # Usage:
@@ -35,9 +38,6 @@
 #     vault auth
 ####################################################################################
 
-ENV=$1
-VER=$2
-
 CURRENT_DIR=${PWD##*/}
 
 if [ $CURRENT_DIR != "cf" ]; then
@@ -55,18 +55,18 @@ command -v vault >/dev/null 2>&1 || {
 }
 
 command -v aws >/dev/null 2>&1 || { 
+    vault seal
     echo "####################################################################################"
     echo >&2 "Please install AWS command line interface"
     echo "####################################################################################"
-    vault seal
     exit 1 
 }
 
 command -v cf >/dev/null 2>&1 || { 
+    vault seal
     echo "####################################################################################"
     echo >&2 "Please install Cloud Foundry command line interface"
     echo "####################################################################################"
-    vault seal
     exit 1 
 }
 
@@ -74,6 +74,7 @@ command -v cf >/dev/null 2>&1 || {
 # Unseal the vault - will prompt for GitHub personal access token
 ####################################################################################
 
+echo "Unsealing the vault.."
 vault unseal
 
 ####################################################################################
@@ -100,6 +101,7 @@ PAR_GOVUK_NOTIFY_TEMPLATE=`vault read -field=PAR_GOVUK_NOTIFY_TEMPLATE secret/pa
 # Reseal the vault
 ####################################################################################
 
+echo "Resealing the vault.."
 vault seal
 
 ####################################################################################
@@ -113,10 +115,11 @@ echo "Pulling version $VER"
 # Pull the package to the build directory
 ####################################################################################
 
-rm -rf build
-mkdir build
+BUILD_DIR=build-$ENV
+rm -rf $BUILD_DIR
+mkdir $BUILD_DIR
 
-cd build
+cd $BUILD_DIR
 
 aws s3 cp s3://transform-par-beta-artifacts/builds/$VER.tar.gz .
 
