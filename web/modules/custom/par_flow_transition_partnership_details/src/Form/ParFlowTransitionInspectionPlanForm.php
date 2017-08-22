@@ -51,7 +51,7 @@ class ParFlowTransitionInspectionPlanForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
-    
+
     // Provides instructions.
     $form['instructions'] = [
       '#type' => 'markup',
