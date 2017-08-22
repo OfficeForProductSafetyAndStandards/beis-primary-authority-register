@@ -239,7 +239,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $regulatory_function_view_builder = $this->getParDataManager()->getViewBuilder('par_data_regulatory_function');
 
     $regulatory_function_list_items = [];
-    foreach ($par_data_partnership->retrieveEntityValue('par_data_regulatory_function') as $regulatory_function) {
+    foreach ($par_data_partnership->retrieveEntityValue('field_regulatory_function') as $regulatory_function) {
       $regulatory_function_field = $regulatory_function_view_builder->view($regulatory_function, 'title');
       $regulatory_function_list_items[] = $this->renderMarkupField($regulatory_function_field);
     }
