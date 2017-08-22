@@ -1,0 +1,15 @@
+par_flow_helpdesk.invite:
+  path: '/dv/rd-dashboard/invite/{par_data_person}'
+  defaults:
+    _form: '\Drupal\par_flow_helpdesk\Form\ParFlowTransitionInviteForm'
+    _title: 'Invite a primary authority person to PAR'
+  requirements:
+    _permission: 'invite authority members'
+    par_data_partnership: \d+
+    par_data_person: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_person:
+        type: entity:par_data_person
