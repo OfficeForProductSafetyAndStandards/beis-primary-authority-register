@@ -114,6 +114,12 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
       $this->addCacheableDependency(current($advice->retrieveEntityValue('document')));
     }
 
+    $build['new_documents_msg'] = [
+      '#markup' => t('You will be able to upload new documents into this system very soon. Please check back in a few days.'),
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
+    ];
+
     $build['save'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
