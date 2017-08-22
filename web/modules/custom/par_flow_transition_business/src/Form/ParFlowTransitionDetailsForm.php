@@ -367,6 +367,10 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
       // Also change the status.
       $par_data_partnership->setParStatus('confirmed_business');
     }
+    foreach ($this->valuesToSet as $key => $item) {
+      $setting = $this->valuesToSet[$key];
+      $setting['object']->set($setting['field'], $this->getTempDataValue($setting['value_field']));
+    }
 
     if ($par_data_partnership->save()) {
       $this->deleteStore();
