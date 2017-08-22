@@ -279,6 +279,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
         ];
 
         $form['trading_names'][$key]['entity'] = [
+          '#type' => 'markup',
           '#markup' => $trading_name['value'],
           '#prefix' => '<div>',
           '#suffix' => '</div>',
