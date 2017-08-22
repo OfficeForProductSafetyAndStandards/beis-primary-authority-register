@@ -59,6 +59,7 @@ class ParFlowTransitionDetailsForm extends ParFlowTransitionDetailsBusinessForm 
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+    parent::retrieveEditableValues($par_data_partnership);
     $this->retrieveEditableValues($par_data_partnership);
     $form = parent::buildForm($form, $form_state, $par_data_partnership);
 
