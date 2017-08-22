@@ -106,7 +106,7 @@ Feature: Coordinator User - Manage Addresses
 
         # CHANGE NAME AND SUMMARY
 
-        Then I expect that element "#par-flow-transition-coordinator-details" contains the text "About the association"
+        Then I expect that element "#par-flow-transition-coordinator-details" contains the text "About the business"
         And I expect that element "#par-flow-transition-coordinator-details" contains the text "Registered address"
         And I expect that element "#par-flow-transition-coordinator-details" contains the text "Legal Entities"
         And I expect that element "#par-flow-transition-coordinator-details" contains the text "Trading Names"
