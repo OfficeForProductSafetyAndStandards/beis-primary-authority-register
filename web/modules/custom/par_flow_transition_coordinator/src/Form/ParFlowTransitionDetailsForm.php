@@ -94,7 +94,7 @@ class ParFlowTransitionDetailsForm extends ParFlowTransitionDetailsBusinessForm 
       '#title' => t('I confirm the co-ordinator is suitable for nomination as a co-ordinating partner.'),
       '#default_value' => $this->getDefaultValues('coordinator_suitable'),
     ];
-    $form = $this->array_insert_after($form, 'trading_names', $form_confirm_suitable);
+    $form = $this->array_insert_after($form, 'confirmation_section', $form_confirm_suitable);
 
     return $form;
   }

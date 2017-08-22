@@ -123,8 +123,8 @@ Feature: Helpdesk As Business User - Manage Addresses
         And I add "Another Legal Entity" to the inputfield "#edit-registered-name"
         And I select the option with the text "Sole Trader" for element "#edit-legal-entity-type"
         And I click on the button "#edit-next"
-        Then I expect that element "#edit-alternative" contains the text "Another Legal Entity"
-        And I expect that element "#edit-alternative" contains the text "Sole Trader"
+        Then I expect that element "#par-flow-transition-business-details" contains the text "Another Legal Entity"
+        And I expect that element "#par-flow-transition-business-details" contains the text "Sole Trader"
 
         # GO BACK TO PARTNERSHIPS DASHBOARD
 
