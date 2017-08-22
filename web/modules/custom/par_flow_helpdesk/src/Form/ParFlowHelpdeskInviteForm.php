@@ -83,6 +83,18 @@ HEREDOC;
     $invite_type = $this->config('invite.invite_type.invite_organisation_member');
     $data = unserialize($invite_type->get('data'));
 
+    if ($invitee = $this->getDefaultValues('authority_member')) {
+      $invitations = \Drupal::entityTypeManager()
+        ->getStorage('user')
+        ->loadByProperties(['mail' => $invitee]);
+      if (!empty($invitations)) {
+        $form['leading_paragraph'] = [
+          '#type' => 'markup',
+          '#markup' => t('<p class="heading-medium">This authority member already has an account.</p>'),
+        ];
+      }
+    }
+
     // Get Sender.
     $form['authority_member'] = [
       '#type' => 'textfield',
