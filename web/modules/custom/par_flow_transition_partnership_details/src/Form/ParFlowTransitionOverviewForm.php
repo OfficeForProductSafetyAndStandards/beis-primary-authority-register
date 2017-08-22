@@ -58,11 +58,17 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
     $premises_bundle = $this->getParDataManager()->getParBundleEntity('par_data_premises');
 
+    // September deadline reminder
+    $form['deadline_reminder'] = [
+      '#type' => 'markup',
+      '#markup' => t('<p>Review and confirm your data by 14 September 2017</p>'),
+    ];
+
     // About the Partnership.
     $form['first_section'] = [
       '#type' => 'fieldset',
       '#attributes' => ['class' => 'form-group'],
-      '#title' => t('About the Partnership'),
+      '#title' => t('About the partnership'),
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
@@ -89,7 +95,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       $form['authority_contacts'][$authority_primary_person->id()] = [
         '#type' => 'fieldset',
         '#attributes' => ['class' => 'form-group'],
-        '#title' => t('Main Primary Authority contacts'),
+        '#title' => t('Main primary authority contact'),
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
@@ -166,7 +172,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
           'class' => 'form-group',
           'id' => 'organisation_alternative_contacts'
         ],
-        '#title' => t('Main @organisation_type contacts', ['@organisation_type' => $par_data_organisation->type->entity->label()]),
+        '#title' => t('Primary @organisation_type contact', ['@organisation_type' => $par_data_organisation->type->entity->label()]),
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
@@ -226,7 +232,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     // Areas of Regulatory Advice.
     $form['fourth_section'] = [
       '#type' => 'fieldset',
-      '#title' => t('Areas of Regulatory Advice'),
+      '#title' => t('Regulatory functions'),
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];

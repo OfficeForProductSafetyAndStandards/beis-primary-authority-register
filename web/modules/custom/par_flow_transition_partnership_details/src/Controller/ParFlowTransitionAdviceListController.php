@@ -89,7 +89,7 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
           '#type' => 'markup',
           '#markup' => $this->getFlow()
             ->getLinkByStep(10, ['par_data_advice' => $advice->id()])
-            ->setText('edit')
+            ->setText('classify')
             ->toString(),
         ],
       ];
