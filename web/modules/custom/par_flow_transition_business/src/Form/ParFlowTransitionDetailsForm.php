@@ -96,9 +96,9 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     // Registered address.
     $par_data_premises = $par_data_organisation->getPremises();
     $registered_premises = array_shift($par_data_premises);
-    $premises_view_builder = $this->getParDataManager()->getViewBuilder('par_data_premises');
 
     if ($registered_premises) {
+      $premises_view_builder = $this->getParDataManager()->getViewBuilder('par_data_premises');
 
       $form['registered_address'] = [
         '#type' => 'fieldset',
@@ -149,8 +149,6 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     $par_data_contacts = $par_data_partnership->getOrganisationPeople();
     $par_data_primary_person = array_shift($par_data_contacts);
 
-    $primary_person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
-
     if ($par_data_primary_person) {
       $form['primary_contact'] = [
         '#type' => 'fieldset',
@@ -160,6 +158,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
         '#collapsed' => FALSE,
       ];
 
+      $primary_person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
       $primary_person = $primary_person_view_builder->view($par_data_primary_person, 'summary');
       $form['primary_contact']['details'] = $this->renderMarkupField($primary_person);
 
@@ -210,19 +209,18 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     // Legal Entities.
     $par_data_legal_entities = $par_data_organisation->getLegalEntity();
     $par_data_legal_entity = array_shift($par_data_legal_entities);
-
-    $legal_entity_view_builder = $this->getParDataManager()->getViewBuilder('par_data_legal_entity');
+    $form['legal_entity'] = [
+      '#type' => 'fieldset',
+      '#title' => t('Legal Entities:'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
 
     if ($par_data_legal_entity) {
-      $form['legal_entity'] = [
-        '#type' => 'fieldset',
-        '#title' => t('Legal Entities:'),
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
 
+      $legal_entity_view_builder = $this->getParDataManager()->getViewBuilder('par_data_legal_entity');
       $legal_entity = $legal_entity_view_builder->view($par_data_legal_entity, 'full');
-
       $form['legal_entity']['entity'] = $this->renderMarkupField($legal_entity);
 
       $form['legal_entity']['edit'] = [
@@ -236,19 +234,19 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     }
 
     if ($par_data_legal_entities) {
-      $form['legal_entity']['alternative'] = [
-        '#type' => 'fieldset',
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
 
       foreach ($par_data_legal_entities as $legal_entity_item) {
-
+        $form['legal_entity_' . $legal_entity_item->id()] = [
+          '#type' => 'fieldset',
+          '#attributes' => ['class' => 'form-group'],
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
+        ];
         $alternative_legal = $legal_entity_view_builder->view($legal_entity_item, 'full');
-        $form['legal_entity']['alternative'][$legal_entity_item->id()] = $this->renderMarkupField($alternative_legal);
+        $form['legal_entity_' . $legal_entity_item->id()]['item'] = $this->renderMarkupField($alternative_legal);
 
         // We can get a link to a given form step like so.
-        $form['legal_entity']['alternative'][$legal_entity_item->id() . '_edit'] = [
+        $form['legal_entity_' . $legal_entity_item->id()][$legal_entity_item->id() . '_edit'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
             '@link' => $this->getFlow()->getLinkByStep(8, [
@@ -259,7 +257,14 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
       }
     }
 
-    $form['legal_entity']['alternative']['add'] = [
+    $form['legal_entity_add'] = [
+      '#type' => 'fieldset',
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    $form['legal_entity_add']['add'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
         '@link' => $this->getFlow()->getLinkByStep(10)->setText('add another legal entity')->toString(),

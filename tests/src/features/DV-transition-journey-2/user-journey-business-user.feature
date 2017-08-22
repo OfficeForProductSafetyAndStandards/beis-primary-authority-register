@@ -131,8 +131,8 @@ Feature: Business User - Manage Addresses
 
         # PARTNERSHIP TASKS
 
-        Then I expect that element "#edit-alternative" contains the text "Another Legal Entity"
-        And I expect that element "#edit-alternative" contains the text "Sole Trader"
+        Then I expect that element "#par-flow-transition-business-details" contains the text "Another Legal Entity"
+        And I expect that element "#par-flow-transition-business-details" contains the text "Sole Trader"
 
         # REVIEW BUSINESS NAME AND SUMMARY
 
