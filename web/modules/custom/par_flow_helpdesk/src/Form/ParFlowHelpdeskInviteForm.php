@@ -189,7 +189,7 @@ HEREDOC;
     }
 
     // Go back to the overview.
-    $form_state->setRedirect('<front>');
+    $form_state->setRedirect($this->getFlow()->getRouteByStep(1), $this->getRouteParams());
   }
 
 }
