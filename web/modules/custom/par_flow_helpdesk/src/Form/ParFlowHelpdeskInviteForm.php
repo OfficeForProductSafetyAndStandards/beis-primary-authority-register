@@ -172,11 +172,11 @@ HEREDOC;
     parent::submitForm($form, $form_state);
 
     $invite = Invite::create([
-      'type' => 'invite_organisation_member',
+      'type' => 'invite_authority_member',
       'user_id' => $this->getTempDataValue('inviter'),
       'invitee' => $this->getTempDataValue('authority_member'),
     ]);
-    $invite->set('field_invite_email_address', $this->getTempDataValue('business_member'));
+    $invite->set('field_invite_email_address', $this->getTempDataValue('authority_member'));
     $invite->set('field_invite_email_subject', $this->getTempDataValue('email_subject'));
     $invite->set('field_invite_email_body', $this->getTempDataValue('email_body'));
     $invite->setPlugin('invite_by_email');
