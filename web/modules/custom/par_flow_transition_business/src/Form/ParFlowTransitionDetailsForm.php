@@ -102,10 +102,11 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
 
       $form['registered_address'] = [
         '#type' => 'fieldset',
-        '#title' => t('Registered address'),
+        '#title' => t('Registered address:'),
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
+
       $registered_address = $premises_view_builder->view($registered_premises, 'full');
       $form['registered_address']['address'] = $this->renderMarkupField($registered_address);
 
@@ -325,7 +326,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
 
     $form['next'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Continue'),
+      '#value' => $this->t('Save'),
     ];
 
     // Make sure to add the partnership cacheability data to this form.
