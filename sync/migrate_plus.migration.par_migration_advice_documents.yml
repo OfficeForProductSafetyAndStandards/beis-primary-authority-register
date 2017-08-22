@@ -7,7 +7,7 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: yhPe_Nec7VLkcbdEK-MckqznRkl6JVXbL_iRIPO68p0
+  default_config_hash: aTBHi_n5Fg4Gof2QhPzjP8jnXDYsEQe5nWvXPxjZARw
 id: par_migration_advice_documents
 class: null
 field_plugin_method: null
@@ -21,6 +21,9 @@ source:
   constants:
     destination_base_path: 's3private://documents/advice'
 process:
+  uid:
+    plugin: default_value
+    default_value: 1
   filename:
     -
       plugin: concat
