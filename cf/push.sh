@@ -101,8 +101,8 @@ PAR_GOVUK_NOTIFY_TEMPLATE=`vault read -field=PAR_GOVUK_NOTIFY_TEMPLATE secret/pa
 # Reseal the vault
 ####################################################################################
 
-echo "Resealing the vault.."
-vault seal
+#echo "Resealing the vault.."
+#vault seal
 
 ####################################################################################
 # Pull the packaged version from S3
