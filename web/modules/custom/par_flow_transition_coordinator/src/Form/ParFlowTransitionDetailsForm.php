@@ -89,7 +89,7 @@ class ParFlowTransitionDetailsForm extends ParFlowTransitionDetailsBusinessForm 
 
     $form = $this->array_insert_after($form, 'about_business', $form_business);
 
-    $form_confirm_suitable  ['suitable_nomination'] = [
+    $form_confirm_suitable['suitable_nomination'] = [
       '#type' => 'checkbox',
       '#title' => t('I confirm the co-ordinator is suitable for nomination as a co-ordinating partner.'),
       '#default_value' => $this->getDefaultValues('coordinator_suitable'),
