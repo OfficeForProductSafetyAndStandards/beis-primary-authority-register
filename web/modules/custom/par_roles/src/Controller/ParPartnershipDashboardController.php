@@ -75,7 +75,6 @@ class ParPartnershipDashboardController extends ControllerBase {
       $account = User::Load($this->currentUser()->id());
 
       $par_data_manager = $this->getParDataManager();
-      // Add the correct roles to this user account also.
       if ($par_data_manager->isMemberOfAuthority($account) && $account->hasRole('par_authority')) {
         // Get the start of an authority journey.
         $route = $this->flowStorage->load('transition_partnership_details')->getRouteByStep(2);
