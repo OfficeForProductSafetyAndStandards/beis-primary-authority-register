@@ -20,11 +20,9 @@ class ParFlowTransitionTaskListController extends ParBaseController {
    */
   public function content(ParDataPartnership $par_data_partnership = NULL, $key_text = 'business') {
     $par_data_authority = current($par_data_partnership->getAuthority());
-
-    $par_data_primary_person = current($par_data_authority->getPerson());
-
+    $par_data_primary_person = current($par_data_partnership->getAuthorityPeople());
     $primary_person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
-    $primary_person = $primary_person_view_builder->view($par_data_primary_person, 'summary');
+    $primary_person = $par_data_primary_person ? $primary_person_view_builder->view($par_data_primary_person, 'summary') : '';
 
     $build['intro'] = [
       '#markup' => t('Review and confirm the details of your partnership with @primary_authority by 14 September 2017',
@@ -66,6 +64,7 @@ class ParFlowTransitionTaskListController extends ParBaseController {
 
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
+    $this->addCacheableDependency($par_data_authority);
 
     return parent::build($build);
 

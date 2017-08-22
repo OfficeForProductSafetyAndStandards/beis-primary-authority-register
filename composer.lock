@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "381e03b0184ea55415113a6771c4b104",
+    "content-hash": "e7bae446e9836b2a2504ebf8a62875b2",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -112,16 +112,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.33.3",
+            "version": "3.33.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "2820644f411fa261f126727c1c00de15227b9520"
+                "reference": "586a9c0e52664cfc4d2d91f9dcdf3ea48d143162"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2820644f411fa261f126727c1c00de15227b9520",
-                "reference": "2820644f411fa261f126727c1c00de15227b9520",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/586a9c0e52664cfc4d2d91f9dcdf3ea48d143162",
+                "reference": "586a9c0e52664cfc4d2d91f9dcdf3ea48d143162",
                 "shasum": ""
             },
             "require": {
@@ -188,7 +188,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-08-18T18:04:40+00:00"
+            "time": "2017-08-21T20:34:30+00:00"
         },
         {
             "name": "commerceguys/addressing",
@@ -2157,7 +2157,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://ftp.drupal.org/files/projects/flysystem_s3-8.x-1.0-alpha2.zip",
-                "reference": null,
+                "reference": "8.x-1.0-alpha2",
                 "shasum": "8793c4324e561c0dfe99acf164fc0883b880f348"
             },
             "require": {
@@ -2173,7 +2173,14 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha2",
-                    "datestamp": "1469068442"
+                    "datestamp": "1469068442",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
+                    }
+                },
+                "patches_applied": {
+                    "Allow downloading of private files from remote S3 wrappers": "./patches/private_file_download.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

@@ -19,7 +19,7 @@ process:
   id: organisation_id
   type:
     plugin: default_value
-    default_value: business
+    default_value: coordinator
   uid:
     plugin: default_value
     default_value: 1
