@@ -4,7 +4,6 @@ namespace Drupal\par_flow_helpdesk\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\invite\Entity\Invite;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\user\Entity\User;
@@ -12,7 +11,7 @@ use Drupal\user\Entity\User;
 /**
  * Class InviteByEmailBlockForm.
  *
- * @package Drupal\invite\Form
+ * @package Drupal\par_flow_helpdesk\Form
  */
 class ParFlowHelpdeskInviteForm extends ParBaseForm {
 
@@ -57,11 +56,9 @@ This is the first iteration of the new system, and we’re keen to get your feed
 Some of the rules that govern your Primary Authority partnerships will also change. You’ll need to confirm that you agree to the new scheme rules, and also update your existing data in the Primary Authority Register so that it is correct when the new site goes live. 
 Update your data now:
 
-[user:one-time-login-url]
+[invite:invite-accept-link]
 
 This link can only be used once to log in and will lead you to a page where you can set your password.
-
-After setting your password, you will be able to log in at [site:login-url]
 
 What we need you to do:
 --Review and accept the updated terms and conditions
@@ -80,8 +77,8 @@ HEREDOC;
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
-    $this->retrieveEditableValues($par_data_partnership, $par_data_person);
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataPerson $par_data_person = NULL) {
+    $this->retrieveEditableValues($par_data_person);
 
     $invite_type = $this->config('invite.invite_type.invite_organisation_member');
     $data = unserialize($invite_type->get('data'));
@@ -109,11 +106,11 @@ HEREDOC;
     // Get Recipient.
     $form['authority_member'] = [
       '#type' => 'textfield',
-      '#title' => t('Business contact email'),
+      '#title' => t('Authority contact email'),
       '#required' => TRUE,
       '#disabled' => TRUE,
       '#default_value' => $this->getDefaultValues('authority_member'),
-      '#description' => 'This is the businesses primary contact and cannot be changed here. If you need to send this invite to another person please contact the helpdesk.',
+      '#description' => 'This is the authority contact and cannot be changed here. If you need to send this invite go back to the <a href="/dv/rd-dashboard">helpdesk dashboard</a>.',
     ];
 
     // Allow the message subject to be changed.
@@ -136,14 +133,13 @@ HEREDOC;
       '#value' => t('Send invite'),
     ];
 
-    $previous_link = $this->getFlow()->getLinkByStep(3)->setText('Cancel')->toString();
+    $previous_link = $this->getFlow()->getLinkByStep(1)->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
       '#markup' => t('@link', ['@link' => $previous_link]),
     ];
 
     // Make sure to add the partnership cacheability data to this form.
-    $this->addCacheableDependency($par_data_partnership);
     $this->addCacheableDependency($par_data_person);
 
     return $form;
@@ -198,7 +194,7 @@ HEREDOC;
     }
 
     // Go back to the overview.
-    $form_state->setRedirect($this->getFlow()->getRouteByStep(3), $this->getRouteParams());
+    $form_state->setRedirect($this->getFlow()->getRouteByStep(1), $this->getRouteParams());
   }
 
 }
