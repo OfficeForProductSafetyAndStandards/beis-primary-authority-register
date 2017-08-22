@@ -299,6 +299,12 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
       ];
     }
 
+    // Need this here so we can add extra checkboxes at the end of the page.
+    // We can't guarantee the previous steps will be there.
+    $form['confirmation_section'] = [
+      '#type' => 'contiainer',
+    ];
+
     $form['confirmation'] = [
       '#type' => 'checkbox',
       '#title' => t('I confirm that the information above is correct.'),
