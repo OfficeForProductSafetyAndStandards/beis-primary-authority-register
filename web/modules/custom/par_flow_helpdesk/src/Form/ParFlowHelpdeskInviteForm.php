@@ -83,18 +83,13 @@ HEREDOC;
     $invite_type = $this->config('invite.invite_type.invite_organisation_member');
     $data = unserialize($invite_type->get('data'));
 
-    $form['leading_paragraph'] = [
-      '#type' => 'markup',
-      '#markup' => t('<p>Review and confirm your data by 14 September 2017</p>'),
-    ];
-
     // Get Sender.
     $form['authority_member'] = [
       '#type' => 'textfield',
       '#title' => t('Your email'),
       '#required' => TRUE,
       '#disabled' => TRUE,
-      '#default_value' => $this->currentUser->getEmail(),
+      '#default_value' => \Drupal::config('system.site')->get('mail'),
       '#description' => 'You cannot change your email here. If you want to send this invite from a different email address please contact the helpdesk.',
     ];
     $form['inviter'] = [
@@ -194,7 +189,7 @@ HEREDOC;
     }
 
     // Go back to the overview.
-    $form_state->setRedirect($this->getFlow()->getRouteByStep(1), $this->getRouteParams());
+    $form_state->setRedirect('<front>');
   }
 
 }
