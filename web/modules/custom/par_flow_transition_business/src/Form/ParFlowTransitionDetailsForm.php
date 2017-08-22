@@ -326,7 +326,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
 
     $form['next'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Continue'),
+      '#value' => $this->t('Save'),
     ];
 
     // Make sure to add the partnership cacheability data to this form.
