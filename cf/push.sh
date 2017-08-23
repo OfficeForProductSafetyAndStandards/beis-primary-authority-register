@@ -178,13 +178,3 @@ cf set-env par-beta-$ENV PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE
 cf restage par-beta-$ENV
 
 cf ssh par-beta-$ENV -c "cd app/tools && python post_deploy.py"
-
-####################################################################################
-# Go back to the /cf directory to set the domain, if any
-####################################################################################
-
-cd ..
-
-if [ -f update-domain-$ENV.sh ]; then
-    sh update-domain-$ENV.sh
-fi
