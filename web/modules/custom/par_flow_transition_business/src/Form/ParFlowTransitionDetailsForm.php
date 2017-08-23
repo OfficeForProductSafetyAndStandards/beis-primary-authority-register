@@ -100,17 +100,18 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     if ($registered_premises) {
       $premises_view_builder = $this->getParDataManager()->getViewBuilder('par_data_premises');
 
-      $form['registered_address'] = [
+      $form['registered_address']['primary_address'] = [
         '#type' => 'fieldset',
         '#title' => t('Registered address:'),
+        '#attributes' => ['class' => 'form-group'],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
 
       $registered_address = $premises_view_builder->view($registered_premises, 'full');
-      $form['registered_address']['address'] = $this->renderMarkupField($registered_address);
+      $form['registered_address']['primary_address']['address'] = $this->renderMarkupField($registered_address);
 
-      $form['registered_address']['edit'] = [
+      $form['registered_address']['primary_address']['edit'] = [
         '#type' => 'markup',
         '#markup' => t('@link', [
           '@link' => $this->getFlow()->getLinkByStep(6, [
@@ -121,20 +122,22 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     }
 
     if ($par_data_premises) {
-      $form['registered_address']['alternative_premises'] = [
-        '#type' => 'fieldset',
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
 
       foreach ($par_data_premises as $premises) {
         $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
 
+        $form['registered_address'][$premises->id()] = [
+          '#type' => 'fieldset',
+          '#attributes' => ['class' => 'form-group'],
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
+        ];
+
         $alternative_person = $person_view_builder->view($premises, 'full');
-        $form['registered_address']['alternative_premises'][$premises->id()] = $this->renderMarkupField($alternative_person);
+        $form['registered_address'][$premises->id()]['premises'] = $this->renderMarkupField($alternative_person);
 
         // We can get a link to a given form step like so.
-        $form['registered_address']['alternative_premises'][$premises->id() . '_edit'] = [
+        $form['registered_address'][$premises->id()]['edit'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
             '@link' => $this->getFlow()->getLinkByStep(6, [
