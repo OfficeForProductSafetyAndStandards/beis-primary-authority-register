@@ -299,7 +299,12 @@ class ParDataManager implements ParDataManagerInterface {
     $memberships = [];
     foreach ($account_people as $person) {
       $relationships = $object->getRelatedEntities($person);
-      $memberships += $relationships;
+      foreach ($relationships as $entity_type => $entities) {
+        if (!isset($memberships[$entity_type])) {
+          $memberships[$entity_type] = [];
+        }
+        $memberships[$entity_type] += $entities;
+      }
     }
 
     return !empty($memberships) ? array_filter($memberships) : [];
