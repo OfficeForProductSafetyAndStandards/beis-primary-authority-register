@@ -743,7 +743,8 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
 $appEnv = getenv('APP_ENV');
 
 $settings['trusted_host_patterns'] = [
-  '^par-beta-' . $appEnv . '\.cloudapps\.digital',
+ '^par-beta-' . $appEnv . '\.cloudapps\.digital',
+ $appEnv . '.par-beta.co.uk'
 ];
 
 /**
