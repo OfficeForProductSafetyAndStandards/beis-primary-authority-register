@@ -55,12 +55,12 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * The non membership entities from which references should not be followed.
    */
-  protected $nonMembershipEntities = ['par_data_sic_codes', 'par_data_regulatory_function', 'par_data_advice', 'par_data_inspection_plan'];
+  protected $nonMembershipEntities = ['par_data_sic_codes', 'par_data_regulatory_function', 'par_data_advice', 'par_data_inspection_plan', 'par_data_premises'];
 
   /**
    * Iteration limit for recursive membership lookups.
    */
-  protected $membershipIterations = 5;
+  protected $membershipIterations = 3;
 
   /**
    * Constructs a ParDataPermissions instance.
@@ -213,7 +213,7 @@ class ParDataManager implements ParDataManagerInterface {
 
     // Make sure the entity isn't too distantly related
     // to limit recursive relationships.
-    if ($iteration > $this->membershipIterations) {
+    if ($iteration >= $this->membershipIterations) {
       return $entities;
     }
     else {
@@ -238,8 +238,8 @@ class ParDataManager implements ParDataManagerInterface {
         if ($referenced_entity->getEntityTypeId() === 'par_data_person') {
           continue;
         }
-        
-        //If the related entity is a person we don't want to get
+
+        // If the related entity is a person we don't want to get
         // If the current entity is a person only lookup core entity relationships.
         if ($entity->getEntityTypeId() === 'par_data_person') {
           if (in_array($referenced_entity->getEntityTypeId(), $this->coreMembershipEntities)) {
@@ -292,7 +292,6 @@ class ParDataManager implements ParDataManagerInterface {
    */
   public function hasMemberships(UserInterface $account, $direct = FALSE) {
     $account_people = $this->getUserPeople($account);
-
     $object = $direct ? $this->getReducedIterator(1) : $this;
 
     $memberships = [];
