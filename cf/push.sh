@@ -1,15 +1,11 @@
 #!/bin/bash
 
-ENV=$1
-VER=$2
-
 ####################################################################################
 # Run this script from the /cf directory of the repository
-# Usage:
-#    ./push.sh <env> <version>
-#
-# e.g.
-#    ./push.sh demo v0.0.33
+# Users will be prompted for:
+#       Target environent
+#       Build version
+#       Vault unseal key
 ####################################################################################
 # You'll need the following installed
 #
@@ -70,12 +66,25 @@ command -v cf >/dev/null 2>&1 || {
     exit 1 
 }
 
+echo -n "Enter the environment name (e.g. staging): "
+read ENV
+echo -n "Enter the build version (e.g. v1.0.0): "
+read VER
+
 ####################################################################################
 # Unseal the vault - will prompt for GitHub personal access token
+# Vault is first sealed to ensure that deployment can't happen unless user has
+# the unseal token. Mostly this is to avoid copy/paste unintended deployments. 
 ####################################################################################
 
-echo "Unsealing the vault.."
+vault seal
+echo -n "Enter the vault unseal token: "
 vault unseal
+
+if [ $? == 1 ]; then
+    echo "Unable to unseal vault"
+    exit 1;
+fi
 
 ####################################################################################
 # Get AWS access keys to download the versioned package from S3
@@ -101,8 +110,8 @@ PAR_GOVUK_NOTIFY_TEMPLATE=`vault read -field=PAR_GOVUK_NOTIFY_TEMPLATE secret/pa
 # Reseal the vault
 ####################################################################################
 
-#echo "Resealing the vault.."
-#vault seal
+echo "Resealing the vault.."
+vault seal
 
 ####################################################################################
 # Pull the packaged version from S3
@@ -169,13 +178,3 @@ cf set-env par-beta-$ENV PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE
 cf restage par-beta-$ENV
 
 cf ssh par-beta-$ENV -c "cd app/tools && python post_deploy.py"
-
-####################################################################################
-# Go back to the /cf directory to set the domain, if any
-####################################################################################
-
-cd ..
-
-if [ -f update-domain-$ENV.sh ]; then
-    sh update-domain-$ENV.sh
-fi
