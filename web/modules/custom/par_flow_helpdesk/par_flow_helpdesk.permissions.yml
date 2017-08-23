@@ -1,4 +1,4 @@
-access par journey transition coordinator:
-  title: 'Access PAR Transition Journey coordinator'
-  description: 'A permission to allow access to all the steps of the third journey for the transition site.'
+access helpdesk dashboard:
+  title: 'Access Helpdesk Dashboard'
+  description: 'A permission to allow access to the helpdesk and all functions contained therein.'
   restrict access: TRUE
