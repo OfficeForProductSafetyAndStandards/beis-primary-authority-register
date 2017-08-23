@@ -57,6 +57,7 @@ module:
   par_dashboards: 0
   par_data: 0
   par_data_config: 0
+  par_flow_helpdesk: 0
   par_flow_transition_business: 0
   par_flow_transition_coordinator: 0
   par_flow_transition_partnership_details: 0
