@@ -11,10 +11,6 @@ class DashboardHttpErrors < Faraday::Middleware
   end
 end
 
-def time_diff(start, finish)
-  (finish - start) * 1000.0
-end
-
 response_time = 0
 endpoint = ENV['PROD_ENDPOINT']
 
