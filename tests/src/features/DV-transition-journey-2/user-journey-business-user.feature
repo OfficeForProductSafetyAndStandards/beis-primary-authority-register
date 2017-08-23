@@ -73,7 +73,7 @@ Feature: Business User - Manage Addresses
         And I expect that element "span.address-line2" contains the text "New Change"
         And I expect that element "span.locality" contains the text "London"
         And I expect that element "span.postal-code" contains the text "SE16 4NX"
-        And I expect that element "#edit-registered-address" contains the text "England"
+        And I expect that element "#edit-primary-address" contains the text "England"
 
         # EDIT MAIN BUSINESS CONTACT
 

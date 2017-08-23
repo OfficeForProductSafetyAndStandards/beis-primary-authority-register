@@ -68,7 +68,7 @@ Feature: Helpdesk As Business User - Manage Addresses
         And I expect that element "span.address-line2" contains the text "New Change"
         And I expect that element "span.locality" contains the text "New Change State"
         And I expect that element "span.postal-code" contains the text "change"
-        And I expect that element "#edit-registered-address" contains the text "Wales"
+        And I expect that element "#edit-primary-address" contains the text "Wales"
 
         # EDIT MAIN BUSINESS CONTACT
 
