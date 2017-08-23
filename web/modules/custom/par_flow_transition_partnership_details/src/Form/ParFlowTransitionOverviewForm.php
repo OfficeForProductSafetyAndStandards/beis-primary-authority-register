@@ -157,7 +157,7 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $organisation_primary_person = array_shift($organisation_people);
 
     // List the Primary Organisation contact.
-    $par_data_organisation = current($par_data_partnership->retrieveEntityValue('par_data_organisation'));
+    $par_data_organisation = current($par_data_partnership->retrieveEntityValue('field_organisation'));
     if ($par_data_organisation && $organisation_primary_person) {
       $form['organisation_contacts'] = [
         '#type' => 'fieldset',
