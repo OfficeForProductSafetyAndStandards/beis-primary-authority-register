@@ -93,6 +93,8 @@ class ParFlowTransitionDetailsForm extends ParFlowTransitionDetailsBusinessForm 
     $form_confirm_suitable['suitable_nomination'] = [
       '#type' => 'checkbox',
       '#title' => t('I confirm the co-ordinator is suitable for nomination as a co-ordinating partner.'),
+      '#checked' => $this->getDefaultValues('coordinator_suitable'),
+      '#disabled' => $this->getDefaultValues('coordinator_suitable'),
       '#default_value' => $this->getDefaultValues('coordinator_suitable'),
     ];
 
