@@ -100,7 +100,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     if ($registered_premises) {
       $premises_view_builder = $this->getParDataManager()->getViewBuilder('par_data_premises');
 
-      $form['registered_address']['primary'] = [
+      $form['registered_address']['primary_address'] = [
         '#type' => 'fieldset',
         '#title' => t('Registered address:'),
         '#attributes' => ['class' => 'form-group'],
@@ -109,9 +109,9 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
       ];
 
       $registered_address = $premises_view_builder->view($registered_premises, 'full');
-      $form['registered_address']['primary']['address'] = $this->renderMarkupField($registered_address);
+      $form['registered_address']['primary_address']['address'] = $this->renderMarkupField($registered_address);
 
-      $form['registered_address']['primary']['edit'] = [
+      $form['registered_address']['primary_address']['edit'] = [
         '#type' => 'markup',
         '#markup' => t('@link', [
           '@link' => $this->getFlow()->getLinkByStep(6, [

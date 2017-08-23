@@ -41,7 +41,7 @@ Feature: Helpdesk As Business User - Manage Addresses
 
         # EDIT REGISTERED ADDRESS
 
-        When  I click on the button "form#par-flow-transition-business-details #edit-registered-address a.flow-link"
+        When  I click on the button "form#par-flow-transition-business-details #edit-primary-address a.flow-link"
         And I clear the inputfield "#edit-address-line1"
         And I clear the inputfield "#edit-address-line2"
         And I clear the inputfield "#edit-town-city"
