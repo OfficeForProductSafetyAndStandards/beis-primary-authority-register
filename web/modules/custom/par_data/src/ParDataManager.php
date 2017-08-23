@@ -60,7 +60,7 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * Iteration limit for recursive membership lookups.
    */
-  protected $membershipIterations = 3;
+  protected $membershipIterations = 5;
 
   /**
    * Constructs a ParDataPermissions instance.
@@ -203,7 +203,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @param bool $force_lookup
    *   Force the lookup of relationships that would otherwise be ignored.
    *
-   * @return EntityInterface[]
+   * @return EntityInterface[][]
    *   An array of entities keyed by entity type.
    */
   public function getRelatedEntities($entity, $entities = [], $iteration = 0, $force_lookup = FALSE) {
@@ -234,12 +234,11 @@ class ParDataManager implements ParDataManagerInterface {
     // Loop through all relationships
     foreach ($entity->getRelationships() as $entity_type => $referenced_entities) {
       foreach ($referenced_entities as $entity_id => $referenced_entity) {
-        // Skip lookup of relationships for people.
+        // Always skip lookup of relationships for people.
         if ($referenced_entity->getEntityTypeId() === 'par_data_person') {
           continue;
         }
 
-        // If the related entity is a person we don't want to get
         // If the current entity is a person only lookup core entity relationships.
         if ($entity->getEntityTypeId() === 'par_data_person') {
           if (in_array($referenced_entity->getEntityTypeId(), $this->coreMembershipEntities)) {
@@ -292,14 +291,18 @@ class ParDataManager implements ParDataManagerInterface {
    */
   public function hasMemberships(UserInterface $account, $direct = FALSE) {
     $account_people = $this->getUserPeople($account);
-    $object = $direct ? $this->getReducedIterator(1) : $this;
+    // When we say direct we really mean by a maximum factor of two.
+    // Because we must first jump through one of the core membership
+    //  entities, i.e. authorities or organisations.
+    $object = $direct ? $this->getReducedIterator(2) : $this;
 
     $memberships = [];
     foreach ($account_people as $person) {
-      $memberships = array_merge_recursive($memberships, $object->getRelatedEntities($person));
+      $relationships = $object->getRelatedEntities($person);
+      $memberships += $relationships;
     }
 
-    return !empty($memberships) ? $memberships : [];
+    return !empty($memberships) ? array_filter($memberships) : [];
   }
 
   /**
@@ -307,7 +310,7 @@ class ParDataManager implements ParDataManagerInterface {
    *
    * @param UserInterface $account
    *   A user account to check for.
-   * @param EntityInterface $type
+   * @param string $type
    *   An entity type to filter on the return on.
    * @param bool $direct
    *   Whether to check only direct relationships.
