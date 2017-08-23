@@ -35,7 +35,7 @@ Feature: Coordinator User - Manage Addresses
 
         # EDIT REGISTERED ADDRESS
 
-        And I click on the button "form#par-flow-transition-coordinator-details #edit-registered-address a.flow-link"
+        And I click on the button "form#par-flow-transition-coordinator-details #edit-primary-address a.flow-link"
         And I add "Change Postcode" to the inputfield "#edit-postcode"
         And I add "1 Change Road" to the inputfield "#edit-address-line1"
         And I add "A Change" to the inputfield "#edit-address-line2"
@@ -47,7 +47,7 @@ Feature: Coordinator User - Manage Addresses
         And I expect that element "span.address-line2" contains the text "A Change"
         And I expect that element "span.locality" contains the text "Change Town"
         And I expect that element "span.postal-code" contains the text "Change Postcode"
-        And I expect that element "#edit-registered-address" contains the text "Wales"
+        And I expect that element "#edit-primary-address" contains the text "Wales"
 
         # EDIT MAIN BUSINESS CONTACT
 
