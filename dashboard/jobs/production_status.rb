@@ -11,7 +11,6 @@ class DashboardHttpErrors < Faraday::Middleware
   end
 end
 
-concurrent_users = 0
 response_time = 0
 endpoint = ENV['PROD_ENDPOINT']
 
@@ -38,13 +37,9 @@ SCHEDULER.every('30s', first_in: '1s') {
     version = response.body
   end
 
-  new_concurrent_users = rand(100)
-
   send_event('production_build_version', { text: version })
   send_event('production_health', { status: health })
-  send_event('production_load',   { current: new_concurrent_users, last: concurrent_users })
   send_event('production_response_time',   { current: new_response_time, last: response_time })
 
-  concurrent_users = new_concurrent_users
   response_time = new_response_time
 }
