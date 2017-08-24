@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\par_data\Kernel\Entity;
+namespace Drupal\Tests\par_data\Kernel;
 
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataAdvice;
@@ -42,6 +42,9 @@ class ParDataTestBase extends EntityKernelTestBase {
    */
   protected function setUp() {
     // Must change the bytea_output to the format "escape" before running tests.
+    // @see https://www.drupal.org/node/2810049
+    //db_query("ALTER DATABASE 'par' SET bytea_output = 'escape';")->execute();
+
     parent::setUp();
 
     $this->account = $this->createUser();
