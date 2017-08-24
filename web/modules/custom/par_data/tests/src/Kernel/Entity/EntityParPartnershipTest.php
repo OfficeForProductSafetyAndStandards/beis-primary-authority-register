@@ -5,6 +5,7 @@ namespace Drupal\Tests\par_data\Kernel\Entity;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPartnershipType;
+use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
  * Tests PAR Partnership entity.

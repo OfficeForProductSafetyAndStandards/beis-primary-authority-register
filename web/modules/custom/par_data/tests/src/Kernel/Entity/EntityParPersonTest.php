@@ -5,6 +5,7 @@ namespace Drupal\Tests\par_data\Kernel\Entity;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPersonType;
+use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
  * Tests PAR Person entity.
