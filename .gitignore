@@ -76,6 +76,7 @@ package.box
 # Exclude local environment settings
 .env
 .env.*
+!.env.continuous.enc
 
 # Exclude private repo credentials
 auth.json
