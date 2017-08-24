@@ -307,7 +307,7 @@ class ParDataManager implements ParDataManagerInterface {
       }
     }
 
-    return !empty($memberships) ? array_filter($memberships) : [];
+    return !empty($memberships) ? $memberships : [];
   }
 
   /**
