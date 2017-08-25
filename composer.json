@@ -112,7 +112,7 @@
                 "Provides support for s3 response objects": "./patches/file_entity_s3_file_support.patch"
             },
             "drupal/file_entity": {
-            "Extend the file entity controller to support S3": "./patches/private_s3_download_support_downloaded_.patch"
+                "Extend the file entity controller to support S3": "./patches/private_s3_download_support_downloaded_.patch"
             },
             "drupal/govuk_notify": {
                 "Allowing system mails to be sent through Notify": "https://www.drupal.org/files/issues/allowing_system_mails-2897707-4.patch"
