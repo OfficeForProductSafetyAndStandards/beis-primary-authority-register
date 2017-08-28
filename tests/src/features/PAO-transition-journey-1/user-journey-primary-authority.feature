@@ -23,6 +23,7 @@ Feature: Primary Authority - Change Partnership Details
         When I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-next"
         And I scroll to element ".table-scroll-wrapper"
+        And I expect that element ".heading-medium" is not empty
         And I click on the link "Review and confirm your partnership details"
 
         # REVIEW PARTNERSHIPS DETAILS
