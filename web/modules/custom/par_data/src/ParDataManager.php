@@ -4,8 +4,10 @@ namespace Drupal\par_data;
 
 use Drupal\clamav\Config;
 use Drupal\Core\Config\Entity\ConfigEntityType;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -23,6 +25,13 @@ class ParDataManager implements ParDataManagerInterface {
    * @var \Drupal\Core\Entity\EntityManagerInterface
    */
   protected $entityManager;
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
 
   /**
    * The entity field manager.
@@ -46,22 +55,39 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * The non membership entities from which references should not be followed.
    */
-  protected $nonMembershipEntities = ['par_data_sic_codes', 'par_data_regulatory_function', 'par_data_advice', 'par_data_inspection_plan'];
+  protected $nonMembershipEntities = ['par_data_sic_codes', 'par_data_regulatory_function', 'par_data_advice', 'par_data_inspection_plan', 'par_data_premises'];
+
+  /**
+   * Iteration limit for recursive membership lookups.
+   */
+  protected $membershipIterations = 5;
 
   /**
    * Constructs a ParDataPermissions instance.
    *
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *   The entity manager.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_manager
    *   The entity field manager.
    * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_type_bundle_info
    *   The entity bundle info service.
    */
-  public function __construct(EntityManagerInterface $entity_manager, EntityFieldManagerInterface $entity_field_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info) {
+  public function __construct(EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info) {
     $this->entityManager = $entity_manager;
+    $this->entityTypeManager = $entity_type_manager;
     $this->entityFieldManager = $entity_field_manager;
     $this->entityTypeBundleInfo = $entity_type_bundle_info;
+  }
+
+  /**
+   * Getter the Par Data Manager with a reduced iterator.
+   */
+  public function getReducedIterator($iterations = 0) {
+    $new_par_data_manager = clone $this;
+    $new_par_data_manager->membershipIterations = $iterations;
+    return $new_par_data_manager;
   }
 
   /**
@@ -112,6 +138,13 @@ class ParDataManager implements ParDataManagerInterface {
    */
   public function getEntityTypeStorage(EntityTypeInterface $definition) {
     return $this->entityManager->getStorage($definition->id()) ?: NULL;
+  }
+
+  /**
+   * {@inhertidoc}
+   */
+  public function getViewBuilder($entity_type) {
+    return $this->entityTypeManager->getViewBuilder($entity_type);
   }
 
   /**
@@ -170,7 +203,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @param bool $force_lookup
    *   Force the lookup of relationships that would otherwise be ignored.
    *
-   * @return EntityInterface[]
+   * @return EntityInterface[][]
    *   An array of entities keyed by entity type.
    */
   public function getRelatedEntities($entity, $entities = [], $iteration = 0, $force_lookup = FALSE) {
@@ -180,7 +213,7 @@ class ParDataManager implements ParDataManagerInterface {
 
     // Make sure the entity isn't too distantly related
     // to limit recursive relationships.
-    if ($iteration > 5) {
+    if ($iteration >= $this->membershipIterations) {
       return $entities;
     }
     else {
@@ -201,12 +234,11 @@ class ParDataManager implements ParDataManagerInterface {
     // Loop through all relationships
     foreach ($entity->getRelationships() as $entity_type => $referenced_entities) {
       foreach ($referenced_entities as $entity_id => $referenced_entity) {
-        // Skip lookup of relationships for people.
+        // Always skip lookup of relationships for people.
         if ($referenced_entity->getEntityTypeId() === 'par_data_person') {
           continue;
         }
-        
-        //If the related entity is a person we don't want to get
+
         // If the current entity is a person only lookup core entity relationships.
         if ($entity->getEntityTypeId() === 'par_data_person') {
           if (in_array($referenced_entity->getEntityTypeId(), $this->coreMembershipEntities)) {
@@ -238,21 +270,92 @@ class ParDataManager implements ParDataManagerInterface {
    *   An entity to check membership on.
    * @param UserInterface $account
    *   A user account to check for.
+   *
    * @return bool
+   *   Returns whether the account is a part of a given entity.
    */
   public function isMember($entity, UserInterface $account) {
-    return isset($this->hasMemberships($account, $entity->getEntityTypeId())[$entity->id()]);
+    return isset($this->hasMembershipsByType($account, $entity->getEntityTypeId())[$entity->id()]);
   }
 
-  public function hasMemberships(UserInterface $account, $type = NULL) {
+  /**
+   * Determine which entities a user is a part of.
+   *
+   * @param UserInterface $account
+   *   A user account to check for.
+   * @param bool $direct
+   *   Whether to check only direct relationships.
+   *
+   * @return array
+   *   Returns an array of entities keyed by entity type and then by entity id.
+   */
+  public function hasMemberships(UserInterface $account, $direct = FALSE) {
     $account_people = $this->getUserPeople($account);
+    // When we say direct we really mean by a maximum factor of two.
+    // Because we must first jump through one of the core membership
+    //  entities, i.e. authorities or organisations.
+    $object = $direct ? $this->getReducedIterator(2) : $this;
 
     $memberships = [];
     foreach ($account_people as $person) {
-      $memberships = array_merge_recursive($memberships, $this->getRelatedEntities($person));
+      $relationships = $object->getRelatedEntities($person);
+      foreach ($relationships as $entity_type => $entities) {
+        if (!isset($memberships[$entity_type])) {
+          $memberships[$entity_type] = [];
+        }
+        $memberships[$entity_type] += $entities;
+      }
     }
 
-    return isset($type) && isset($memberships[$type]) ? $memberships[$type] : $memberships;
+    return !empty($memberships) ? $memberships : [];
+  }
+
+  /**
+   * Determine which entities of a given type the user is part of.
+   *
+   * @param UserInterface $account
+   *   A user account to check for.
+   * @param string $type
+   *   An entity type to filter on the return on.
+   * @param bool $direct
+   *   Whether to check only direct relationships.
+   *
+   * @return array
+   *   Returns the entities for the given type.
+   */
+  public function hasMembershipsByType(UserInterface $account, $type, $direct = FALSE) {
+    $memberships = $this->hasMemberships($account, $direct);
+
+    return $memberships && isset($memberships[$type]) ? $memberships[$type] : [];
+  }
+
+  /**
+   * Checks if the person is a member of an authority member.
+   */
+  public function isMemberOfAuthority($account) {
+    return $this->hasMembershipsByType($account, 'par_data_authority', TRUE);
+  }
+
+  /**
+   * Checks if the person is a member of a coordinator member.
+   */
+  public function isMemberOfCoordinator($account) {
+    foreach ($this->hasMembershipsByType($account, 'par_data_organisation',  TRUE) as $membership) {
+      if ($membership->bundle() === 'coordinator') {
+        return TRUE;
+      }
+    }
+  }
+
+  /**
+   * Checks if the person is a member of an business member.
+   */
+  public function isMemberOfBusiness($account) {
+    foreach ($this->hasMembershipsByType($account, 'par_data_organisation',  TRUE) as $membership) {
+      if ($membership->bundle() === 'business') {
+        return TRUE;
+      }
+    }
   }
 
   /**
@@ -269,7 +372,7 @@ class ParDataManager implements ParDataManagerInterface {
    *   An array of entities found with this value.
    */
   public function getEntitiesByProperty($type, $field, $value) {
-    return \Drupal::entityTypeManager()
+    return $this->entityTypeManager
       ->getStorage($type)
       ->loadByProperties([$field => $value]);
   }
@@ -284,7 +387,7 @@ class ParDataManager implements ParDataManagerInterface {
    *   PAR People related to the user account.
    */
   public function getUserPeople(UserInterface $account) {
-    return \Drupal::entityTypeManager()
+    return $this->entityTypeManager
       ->getStorage('par_data_person')
       ->loadByProperties(['email' => $account->get('mail')->getString()]);
   }
@@ -297,7 +400,7 @@ class ParDataManager implements ParDataManagerInterface {
    */
   public function linkPeople(UserInterface $account) {
     foreach ($this->getUserPeople($account) as $par_person) {
-      $par_person->linkAccounts();
+      $par_person->linkAccounts($account);
     }
   }
 

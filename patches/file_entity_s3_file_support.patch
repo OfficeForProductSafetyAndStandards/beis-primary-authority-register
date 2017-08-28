@@ -1,0 +1,44 @@
+diff --git a/src/Controller/FileController.php b/src/Controller/FileController.php
+index 1ab3dba..db92b7f 100644
+--- a/src/Controller/FileController.php
++++ b/src/Controller/FileController.php
+@@ -12,6 +12,7 @@ use Drupal\file\FileInterface;
+ use Symfony\Component\HttpFoundation\BinaryFileResponse;
+ use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
+ use Symfony\Component\HttpFoundation\Response;
++use Drupal\flysystem_s3\S3BinaryFileResponseObj;
+ 
+ /**
+  * Class FileController
+@@ -74,11 +75,27 @@ class FileController extends ControllerBase {
+     // Let other modules know the file is being downloaded.
+     \Drupal::moduleHandler()->invokeAll('file_transfer', array($file->getFileUri(), $headers));
+ 
+-    try {
+-      return new BinaryFileResponse($file->getFileUri(), 200, $headers);
++    // Allow other modules to notify the FileController an s3 file is being transferred so a response object
++    // that supports s3 files maybe used instead of BinaryFileResponse.
++    $S3BasedFileObject = \Drupal::moduleHandler()->invokeAll('file_transfer_s3_storage', array($file->getFileUri()));
++
++    if ($S3BasedFileObject !== FALSE ) {
++      try {
++        // Use a BinaryFileResponse that supports S3.
++        return new S3BinaryFileResponseObj($file->getFileUri(), 200, $headers);
++      }
++      catch (FileNotFoundException $e) {
++        return new Response(t('File @uri not found', array('@uri' =>$file->getFileUri())), 404);
++      }
+     }
+-    catch (FileNotFoundException $e) {
+-      return new Response(t('File @uri not found', array('@uri' =>$file->getFileUri())), 404);
++    else {
++      try {
++        // Default to local storage file behaviour.
++        return new BinaryFileResponse($file->getFileUri(), 200, $headers);
++      }
++      catch (FileNotFoundException $e) {
++        return new Response(t('File @uri not found', array('@uri' =>$file->getFileUri())), 404);
++      }
+     }
+   }
+ 

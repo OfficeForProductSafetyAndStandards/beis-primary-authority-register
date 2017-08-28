@@ -39,10 +39,10 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       $this->setState("edit:{$par_data_partnership->id()}");
 
       // Partnership Information Confirmation.
-      $confirmation_value = !empty($par_data_partnership->get('partnership_info_agreed_authority')->getString()) ? TRUE : FALSE;
+      $confirmation_value = $par_data_partnership->retrieveBooleanValue('partnership_info_agreed_authority');
       $this->loadDataValue('confirmation', $confirmation_value);
       // Written Summary Confirmation.
-      $partnership_agreement_value = !empty($par_data_partnership->get('written_summary_agreed')->getString()) ? TRUE : FALSE;
+      $partnership_agreement_value = $par_data_partnership->retrieveBooleanValue('written_summary_agreed');
       $this->loadDataValue('partnership_agreement', $partnership_agreement_value);
     }
   }
@@ -58,16 +58,22 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
     $premises_bundle = $this->getParDataManager()->getParBundleEntity('par_data_premises');
 
+    // September deadline reminder
+    $form['deadline_reminder'] = [
+      '#type' => 'markup',
+      '#markup' => t('<p>Review and confirm your data by 14 September 2017</p>'),
+    ];
+
     // About the Partnership.
     $form['first_section'] = [
       '#type' => 'fieldset',
       '#attributes' => ['class' => 'form-group'],
-      '#title' => t('About the Partnership'),
+      '#title' => t('About the partnership'),
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
 
-    $partnership_view_builder = $par_data_partnership->getViewBuilder();
+    $partnership_view_builder = $this->getParDataManager()->getViewBuilder('par_data_partnership');
 
     $form['first_section']['about_partnership'] = $par_data_partnership ? $partnership_view_builder->view($par_data_partnership, 'about') : '';
 
@@ -82,14 +88,14 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     // List Authority contacts.
     $authority_people = $par_data_partnership->getAuthorityPeople();
     $authority_primary_person = array_shift($authority_people);
-    $person_view_builder = $authority_primary_person ? $authority_primary_person->getViewBuilder() : NULL;
+    $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
 
     // List the Primary Authority contact.
     if ($authority_primary_person) {
       $form['authority_contacts'][$authority_primary_person->id()] = [
         '#type' => 'fieldset',
         '#attributes' => ['class' => 'form-group'],
-        '#title' => t('Main Primary Authority contacts'),
+        '#title' => t('Main primary authority contact'),
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
@@ -118,8 +124,6 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       ];
 
       foreach ($authority_people as $person) {
-        $person_view_builder = $person->getViewBuilder();
-
         $alternative_person = $person_view_builder->view($person, 'summary');
 
         $form['authority_contacts']['authority_alternative_contacts'][$person->id()] = [
@@ -151,11 +155,10 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     $organisation_people = $par_data_partnership->getOrganisationPeople();
 
     $organisation_primary_person = array_shift($organisation_people);
-    $person_view_builder = $organisation_primary_person ? $organisation_primary_person->getViewBuilder() : NULL;
 
     // List the Primary Organisation contact.
-    if ($organisation_primary_person) {
-
+    $par_data_organisation = current($par_data_partnership->retrieveEntityValue('field_organisation'));
+    if ($par_data_organisation && $organisation_primary_person) {
       $form['organisation_contacts'] = [
         '#type' => 'fieldset',
         '#attributes' => ['id' => 'edit-organisation-contacts'],
@@ -163,14 +166,13 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
         '#collapsed' => FALSE,
       ];
 
-      $par_data_organisation = current($par_data_partnership->getOrganisation());
       $form['organisation_contacts'][$organisation_primary_person->id()] = [
         '#type' => 'fieldset',
         '#attributes' => [
           'class' => 'form-group',
           'id' => 'organisation_alternative_contacts'
         ],
-        '#title' => t('Main @organisation_type contacts', ['@organisation_type' => $par_data_organisation->type->entity->label()]),
+        '#title' => t('Primary @organisation_type contact', ['@organisation_type' => $par_data_organisation->type->entity->label()]),
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
@@ -190,11 +192,8 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     }
 
     // List the secondary Organisation contacts.
-    if ($organisation_people) {
-
+    if ($par_data_organisation && $organisation_people) {
       foreach ($organisation_people as $person) {
-        $person_view_builder = $person->getViewBuilder();
-
         $person_field = $person_view_builder->view($person, 'summary');
 
         $form['organisation_alternative_contacts'] = [
@@ -233,14 +232,14 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
     // Areas of Regulatory Advice.
     $form['fourth_section'] = [
       '#type' => 'fieldset',
-      '#title' => t('Areas of Regulatory Advice'),
+      '#title' => t('Regulatory functions'),
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-    $regulatory_functions = $par_data_partnership->getRegulatoryFunction();
-    $regulatory_function_view_builder = current($regulatory_functions)->getViewBuilder();
+    $regulatory_function_view_builder = $this->getParDataManager()->getViewBuilder('par_data_regulatory_function');
 
-    foreach ($par_data_partnership->getRegulatoryFunction() as $regulatory_function) {
+    $regulatory_function_list_items = [];
+    foreach ($par_data_partnership->retrieveEntityValue('field_regulatory_function') as $regulatory_function) {
       $regulatory_function_field = $regulatory_function_view_builder->view($regulatory_function, 'title');
       $regulatory_function_list_items[] = $this->renderMarkupField($regulatory_function_field);
     }
@@ -250,17 +249,17 @@ class ParFlowTransitionOverviewForm extends ParBaseForm {
       '#items' => $regulatory_function_list_items
     ];
 
-    // Partnership Confirmation.
+    // "Partnership Arrangements have been agreed" confirmation.
     $form['partnership_agreement'] = [
       '#type' => 'checkbox',
-      '#title' => t('A written summary of partnership agreement, such as Memorandum of Understanding, has been agreed with the Business.'),
+      '#title' => t('A written summary of the partnership arrangements has been agreed with the business.'),
       '#disabled' => $this->getDefaultValues('partnership_agreement'),
       '#checked' => $this->getDefaultValues('partnership_agreement'),
       '#default_value' => $this->getDefaultValues('partnership_agreement'),
       '#return_value' => 'on',
     ];
 
-    // Partnership Confirmation.
+    // "Partnership Information is correct" confirmation.
     $form['confirmation'] = [
       '#type' => 'checkbox',
       '#title' => t('I confirm that the partnership information above is correct.'),

@@ -39,7 +39,7 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
       $this->setState("edit:{$par_data_partnership->id()}");
 
       // We need to get the value of the terms and conditions checkbox.
-      $terms_value = !empty($par_data_partnership->get('terms_authority_agreed')->getString()) ? TRUE : FALSE;
+      $terms_value = $par_data_partnership->retrieveBooleanValue('terms_authority_agreed');
       $this->loadDataValue('terms_conditions', $terms_value);
     }
   }
@@ -56,21 +56,24 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
       return $this->redirect($this->getFlow()->getNextRoute(), $this->getRouteParams());
     }
 
+    // @TODO ALLOW THIS PAGE TO BE CONFIGURED NOT THROUGH CODE.
+    $terms_page = \Drupal::service('path.alias_manager')->getAliasByPath('/node/49');
+
     $form['terms_intro'] = [
-      '#markup' => "<p>Please Review the new Primary Authority terms and conditions and confirm that you agree with them.</p><p>The New terms will come into effect from <em>01 October 2017</em>.</p>",
+      '#markup' => "<p>Please review the new <a href='{$terms_page}' target='_blank'>Primary Authority terms and conditions</a> and confirm that you agree with them.</p><p>The new terms will come into effect from <em>01 October 2017</em>.</p>",
     ];
 
     // Partnership details.
     $form['terms_conditions'] = [
       '#type' => 'checkbox',
-      '#title' => t('I confirm that my authority agrees to the new Terms and Conditions.'),
+      '#title' => t('I confirm that my authority agrees to the new terms and conditions.'),
       '#default_value' => $this->getDefaultValues('terms_conditions', FALSE),
       '#return_value' => 'on',
     ];
 
     $form['next'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Continue'),
+      '#value' => $this->t('Save'),
     ];
 
     // Make sure to add the partnership cacheability data to this form.

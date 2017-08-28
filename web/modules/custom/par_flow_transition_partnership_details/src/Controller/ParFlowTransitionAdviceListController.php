@@ -20,8 +20,12 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
    * {@inheritdoc}
    */
   public function content(ParDataPartnership $par_data_partnership = NULL) {
-    $par_data_organisation = current($par_data_partnership->get('field_organisation')->referencedEntities());
-    $organisation_name = $par_data_organisation->get('name')->getString();
+
+    $par_data_organisation = current($par_data_partnership->retrieveEntityValue('field_organisation'));
+
+    if ($par_data_organisation) {
+      $organisation_name = $par_data_organisation->retrieveStringValue('organisation_name');
+    }
 
     $advice_bundle = $this->getParDataManager()->getParBundleEntity('par_data_advice');
 
@@ -29,7 +33,9 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
       '#type' => 'markup',
       '#prefix' => '<p>',
       '#suffix' => '</p>',
-      '#markup' => t('Review and confirm your documents for @organisation are still relevant', ['@organisation' => $organisation_name])
+      // @todo revisit solution.
+      // '#markup' => t('Review and confirm your documents are still relevant', ['@organisation' => $organisation_name])
+      '#markup' => t('Review and confirm your documents are still relevant')
     ];
 
     $build['intro']['help_text_2'] = [
@@ -57,21 +63,21 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
 
     // Get each Advice document and add as a table row.
     foreach ($par_data_partnership->getAdvice() as $advice) {
-      $advice_view_builder = $advice->getViewBuilder();
+      $advice_view_builder = $this->getParDataManager()->getViewBuilder('par_data_advice');
 
       // The first column contains a rendered summary of the document.
       $advice_summary = $advice_view_builder->view($advice, 'summary');
 
       // The second column contains a summary of the confirmed details.
       $advice_details = '';
-      $advice_type_value = $advice->get('advice_type')->getString();
+      $advice_type_value = $advice->retrieveStringValue('advice_type');
       if ($advice_type = $advice->getTypeEntity()->getAllowedFieldlabel('advice_type', $advice_type_value)){
         $advice_details = "{$advice_type}";
         if ($regulatory_functions = $advice->getRegulatoryFunction()) {
           $advice_details .= " covering: " . PHP_EOL;
           $names = [];
           foreach ($regulatory_functions as $regulatory_function) {
-            $names[] = $regulatory_function->get('function_name')->getString();
+            $names[] = $regulatory_function->retrieveStringValue('function_name');
           }
           $advice_details .= implode(', ', $names);
         }
@@ -83,7 +89,7 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
           '#type' => 'markup',
           '#markup' => $this->getFlow()
             ->getLinkByStep(10, ['par_data_advice' => $advice->id()])
-            ->setText('edit')
+            ->setText('classify')
             ->toString(),
         ],
       ];
@@ -105,8 +111,14 @@ class ParFlowTransitionAdviceListController extends ParBaseController {
 
       // Make sure to add the document cacheability data to this form.
       $this->addCacheableDependency($advice);
-      $this->addCacheableDependency(current($advice->get('document')->referencedEntities()));
+      $this->addCacheableDependency(current($advice->retrieveEntityValue('document')));
     }
+
+    $build['new_documents_msg'] = [
+      '#markup' => t('You will be able to upload new documents into this system very soon. Please check back in a few days.'),
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
+    ];
 
     $build['save'] = [
       '#type' => 'markup',

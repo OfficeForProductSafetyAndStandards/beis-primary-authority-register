@@ -1,6 +1,6 @@
 .env.*
 .htpasswd
-build/
+build-*/
 beis-par-beta/
 *.tar.gz
 

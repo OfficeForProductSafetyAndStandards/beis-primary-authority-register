@@ -18,6 +18,9 @@ source:
   constants:
     destination_base_path: 's3private://documents/inspection_plan'
 process:
+  uid:
+    plugin: default_value
+    default_value: 1
   filename:
     -
       plugin: concat
@@ -35,8 +38,6 @@ process:
       source:
         - constants/destination_base_path
         - '@filename'
-    -
-      plugin: urlencode
   uri:
     plugin: file_blob
     source:

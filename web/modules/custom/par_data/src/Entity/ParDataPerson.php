@@ -29,10 +29,10 @@ use Drupal\user\UserInterface;
  *     "list_builder" = "Drupal\trance\TranceListBuilder",
  *     "views_data" = "Drupal\par_data\Views\ParDataViewsData",
  *     "form" = {
- *       "default" = "Drupal\trance\Form\ParEntityForm",
- *       "add" = "Drupal\trance\Form\ParEntityForm",
- *       "edit" = "Drupal\trance\Form\ParEntityForm",
- *       "delete" = "Drupal\trance\Form\TranceDeleteForm",
+ *       "default" = "Drupal\par_data\Form\ParDataForm",
+ *       "add" = "Drupal\par_data\Form\ParDataForm",
+ *       "edit" = "Drupal\par_data\Form\ParDataForm",
+ *       "delete" = "Drupal\par_data\Form\ParDataDeleteForm",
  *     },
  *     "access" = "Drupal\par_data\Access\ParDataAccessControlHandler",
  *   },
@@ -137,90 +137,17 @@ class ParDataPerson extends ParDataEntity {
       $account = $this->lookupUserAccount();
     }
     $current_user_account = $this->getUserAccount();
-    if ($account && (!$current_user_account || !$account->id() !== $current_user_account->id())) {
+    if ($account && (!$current_user_account || $account->id() !== $current_user_account->id())) {
+      // Add the user account to this person.
       $this->setUserAccount($account);
       $saved = $this->save();
     }
+
     return $saved ? $account : NULL;
   }
 
   public function getFullName() {
     return $this->get('first_name')->getString() . ' ' . $this->get('last_name')->getString();
-  }
-
-  /**
-   * Get any Authorities this user is a member of.
-   *
-   * @return mixed|null
-   *   Returns any business records found.
-   */
-  public function getBusinesses($entity = NULL) {
-    $properties = [
-      'type' => ['business'],
-      'field_person' => $this->id(),
-    ];
-    if ($entity) {
-      $properties['id'] = $entity->id();
-    }
-    $entities = \Drupal::entityTypeManager()
-      ->getStorage('par_data_organisation')
-      ->loadByProperties($properties);
-
-    return $entities ? current($entities) : NULL;
-  }
-
-  public function isBusinessMember() {
-    return (bool) $this->getBusinesses();
-  }
-
-  /**
-   * Get any Authorities this user is a member of.
-   *
-   * @return mixed|null
-   *   Returns any business records found.
-   */
-  public function getCoordinators($entity = NULL) {
-    $properties = [
-      'type' => ['coordinator'],
-      'field_person' => $this->id(),
-    ];
-    if ($entity) {
-      $properties['id'] = $entity->id();
-    }
-    $entities = \Drupal::entityTypeManager()
-      ->getStorage('par_data_organisation')
-      ->loadByProperties($properties);
-
-    return $entities ? current($entities) : NULL;
-  }
-
-  public function isCoordinatorMember() {
-    return (bool) $this->getCoordinators();
-  }
-
-  /**
-   * Get any Authorities this user is a member of.
-   *
-   * @return mixed|null
-   *   Returns any business records found.
-   */
-  public function getAuthorities($entity = NULL) {
-    $properties = [
-      'type' => ['authority'],
-      'field_person' => $this->id(),
-    ];
-    if ($entity) {
-      $properties['id'] = $entity->id();
-    }
-    $entities = \Drupal::entityTypeManager()
-      ->getStorage('par_data_authority')
-      ->loadByProperties($properties);
-
-    return $entities ? current($entities) : NULL;
-  }
-
-  public function isAuthorityMember() {
-    return (bool) $this->getAuthorities();
   }
 
   /**

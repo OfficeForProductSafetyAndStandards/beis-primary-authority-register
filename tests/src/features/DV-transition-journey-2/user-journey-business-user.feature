@@ -29,7 +29,7 @@ Feature: Business User - Manage Addresses
 
         # TERMS AND CONDITIONS SCREEN
 
-        Then I expect that element "#par-flow-transition-business-terms" contains the text "Please Review the new Primary Authority terms and conditions and confirm that you agree with them"
+        Then I expect that element "#par-flow-transition-business-terms" contains the text "Please review the new Primary Authority terms and conditions and confirm that you agree with them"
         And I click on the button "#edit-next"
         Then I expect that element ".error-summary" contains the text "You must agree to the new terms and conditions"
         And I click on the checkbox "#edit-terms-conditions"
@@ -46,7 +46,7 @@ Feature: Business User - Manage Addresses
 
         # EDIT REGISTERED ADDRESS
 
-        When  I click on the button "form#par-flow-transition-business-details #edit-registered-address a.flow-link"
+        When  I click on the button "form#par-flow-transition-business-details #edit-primary-address a.flow-link"
         And I clear the inputfield "#edit-address-line1"
         And I clear the inputfield "#edit-address-line2"
         And I clear the inputfield "#edit-town-city"
@@ -73,7 +73,7 @@ Feature: Business User - Manage Addresses
         And I expect that element "span.address-line2" contains the text "New Change"
         And I expect that element "span.locality" contains the text "London"
         And I expect that element "span.postal-code" contains the text "SE16 4NX"
-        And I expect that element "#edit-registered-address" contains the text "England"
+        And I expect that element "#edit-primary-address" contains the text "England"
 
         # EDIT MAIN BUSINESS CONTACT
 
@@ -131,8 +131,8 @@ Feature: Business User - Manage Addresses
 
         # PARTNERSHIP TASKS
 
-        Then I expect that element "#edit-alternative" contains the text "Another Legal Entity"
-        And I expect that element "#edit-alternative" contains the text "Sole Trader"
+        Then I expect that element "#par-flow-transition-business-details" contains the text "Another Legal Entity"
+        And I expect that element "#par-flow-transition-business-details" contains the text "Sole Trader"
 
         # REVIEW BUSINESS NAME AND SUMMARY
 

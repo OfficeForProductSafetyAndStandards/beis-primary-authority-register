@@ -41,7 +41,7 @@ Feature: Helpdesk As Business User - Manage Addresses
 
         # EDIT REGISTERED ADDRESS
 
-        When  I click on the button "form#par-flow-transition-business-details #edit-registered-address a.flow-link"
+        When  I click on the button "form#par-flow-transition-business-details #edit-primary-address a.flow-link"
         And I clear the inputfield "#edit-address-line1"
         And I clear the inputfield "#edit-address-line2"
         And I clear the inputfield "#edit-town-city"
@@ -68,7 +68,7 @@ Feature: Helpdesk As Business User - Manage Addresses
         And I expect that element "span.address-line2" contains the text "New Change"
         And I expect that element "span.locality" contains the text "New Change State"
         And I expect that element "span.postal-code" contains the text "change"
-        And I expect that element "#edit-registered-address" contains the text "Wales"
+        And I expect that element "#edit-primary-address" contains the text "Wales"
 
         # EDIT MAIN BUSINESS CONTACT
 
@@ -123,8 +123,8 @@ Feature: Helpdesk As Business User - Manage Addresses
         And I add "Another Legal Entity" to the inputfield "#edit-registered-name"
         And I select the option with the text "Sole Trader" for element "#edit-legal-entity-type"
         And I click on the button "#edit-next"
-        Then I expect that element "#edit-alternative" contains the text "Another Legal Entity"
-        And I expect that element "#edit-alternative" contains the text "Sole Trader"
+        Then I expect that element "#par-flow-transition-business-details" contains the text "Another Legal Entity"
+        And I expect that element "#par-flow-transition-business-details" contains the text "Sole Trader"
 
         # GO BACK TO PARTNERSHIPS DASHBOARD
 

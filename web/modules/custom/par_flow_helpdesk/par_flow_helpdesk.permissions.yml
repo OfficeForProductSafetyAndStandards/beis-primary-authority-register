@@ -1,0 +1,4 @@
+access helpdesk dashboard:
+  title: 'Access Helpdesk Dashboard'
+  description: 'A permission to allow access to the helpdesk and all functions contained therein.'
+  restrict access: TRUE

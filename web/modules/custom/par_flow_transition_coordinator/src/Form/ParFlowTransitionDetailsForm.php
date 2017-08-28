@@ -59,19 +59,20 @@ class ParFlowTransitionDetailsForm extends ParFlowTransitionDetailsBusinessForm 
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+    parent::retrieveEditableValues($par_data_partnership);
     $this->retrieveEditableValues($par_data_partnership);
     $form = parent::buildForm($form, $form_state, $par_data_partnership);
 
     // Change labels for coordinator journey.
-    $form['business_name']['#title'] = t('Association Name:');
-    $form['about_business']['#title'] = t('About the association:');
-    $form['primary_contact']['#title'] = t('Main association contact:');
+    $form['business_name']['#title'] = t('Business name:');
+    $form['about_business']['#title'] = t('About the business:');
+    $form['primary_contact']['#title'] = t('Main business contact:');
 
     $par_data_organisation = current($par_data_partnership->getOrganisation());
     $size = $par_data_organisation->get('size')->getString();
     $form_business['business_size'] = [
       '#type' => 'fieldset',
-      '#title' => t('Number of associations:'),
+      '#title' => t('Number of businesses you represent:'),
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
@@ -92,9 +93,12 @@ class ParFlowTransitionDetailsForm extends ParFlowTransitionDetailsBusinessForm 
     $form_confirm_suitable['suitable_nomination'] = [
       '#type' => 'checkbox',
       '#title' => t('I confirm the co-ordinator is suitable for nomination as a co-ordinating partner.'),
+      '#checked' => $this->getDefaultValues('coordinator_suitable'),
+      '#disabled' => $this->getDefaultValues('coordinator_suitable'),
       '#default_value' => $this->getDefaultValues('coordinator_suitable'),
     ];
-    $form = $this->array_insert_after($form, 'trading_names', $form_confirm_suitable);
+
+    $form = $this->array_insert_after($form, 'confirmation_section', $form_confirm_suitable);
 
     return $form;
   }

@@ -46,11 +46,13 @@ class ParFlowTransitionInviteForm extends ParBaseForm {
     if ($par_data_person) {
       // Set the default subject for the invite email, this can be changed by the user.
       $this->loadDataValue("email_subject", 'Important updates to the Primary Authority Register');
+      $this->loadDataValue("business_member", $par_data_person->retrieveStringValue('email'));
 
       $account = User::load($this->currentUser()->id());
       $authority_person_name = '';
       foreach ($this->parDataManager->getUserPeople($account) as $authority_person) {
         if ($par_data_partnership->isAuthorityMember($authority_person)) {
+          $this->loadDataValue("authority_member", $par_data_person->retrieveStringValue('email'));
           $authority_person_name = $authority_person->getFullName();
           break 1;
         }
@@ -106,7 +108,7 @@ HEREDOC;
       '#title' => t('Business contact email'),
       '#required' => TRUE,
       '#disabled' => TRUE,
-      '#default_value' => 'par_business@example.com',
+      '#default_value' => $this->getDefaultValues('business_member'),
       '#description' => 'This is the businesses primary contact and cannot be changed here. If you need to send this invite to another person please contact the helpdesk.',
     ];
 

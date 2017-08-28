@@ -37,11 +37,14 @@ class ParMember extends FilterPluginBase {
       return;
     }
 
-    // Get current user ID.
+    // Get current user and check permissions.
     $account = User::load(\Drupal::currentUser()->id());
+    if ($account->hasPermission('bypass par_data membership')) {
+      return;
+    }
 
     // Find memberships.
-    $membership_filter = array_keys($this->par_data_manager->hasMemberships($account, $this->getEntityType()));
+    $membership_filter = array_keys($this->par_data_manager->hasMembershipsByType($account, $this->getEntityType()));
 
     // Add 0 to prevent an invalid IN query.
     array_push($membership_filter, 0);
@@ -54,7 +57,6 @@ class ParMember extends FilterPluginBase {
 
     // Where filter on partnership id to those the user is allowed to update.
     $this->query->addWhere(0, $revision_table, $membership_filter, 'in');
-
   }
 
 }

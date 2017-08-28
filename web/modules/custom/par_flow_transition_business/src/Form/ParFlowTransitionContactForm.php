@@ -55,11 +55,13 @@ class ParFlowTransitionContactForm extends ParBaseForm {
 
       // Get preferred contact methods.
       $contact_options = [
-        'communication_email' => !empty($par_data_person->get('communication_email')->getString()) ? 'communication_email' : FALSE,
-        'communication_phone' => !empty($par_data_person->get('communication_phone')->getString()) ? 'communication_phone' : FALSE,
-        'communication_mobile' => !empty($par_data_person->get('communication_mobile')->getString()) ? 'communication_mobile' : FALSE,
+        'communication_email' => $par_data_person->retrieveBooleanValue('communication_email'),
+        'communication_phone' => $par_data_person->retrieveBooleanValue('communication_phone'),
+        'communication_mobile' => $par_data_person->retrieveBooleanValue('communication_mobile'),
       ];
-      $this->loadDataValue('preferred_contact', $contact_options);
+
+      // Checkboxes works nicely with keys, filtering booleans for "1" value.
+      $this->loadDataValue('preferred_contact', array_keys($contact_options, 1));
     }
   }
 
@@ -70,10 +72,10 @@ class ParFlowTransitionContactForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
     $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
 
-    //Leading paragraph
+    // Leading paragraph.
     $form['leading_paragraph'] = [
       '#type' => 'markup',
-      '#markup' => t('<p><strong>Change the main contact for your business</strong></p>'),
+      '#markup' => t('<p><strong>Change the main contact for your organisation</strong></p>'),
     ];
 
     // The Person's title.
@@ -122,6 +124,7 @@ class ParFlowTransitionContactForm extends ParBaseForm {
       'communication_phone' => $person_bundle->getBooleanFieldLabel('communication_phone', 'on'),
       'communication_mobile' => $person_bundle->getBooleanFieldLabel('communication_mobile', 'on'),
     ];
+
     $form['preferred_contact'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Preferred method of contact'),
@@ -139,7 +142,7 @@ class ParFlowTransitionContactForm extends ParBaseForm {
 
     $form['next'] = [
       '#type' => 'submit',
-      '#value' => t('Next'),
+      '#value' => t('Save'),
     ];
 
     $previous_link = $this->getFlow()->getLinkByStep(4)->setText('Cancel')->toString();

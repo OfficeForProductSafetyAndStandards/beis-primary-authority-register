@@ -75,12 +75,12 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
         And I expect that element ".table-scroll-wrapper" contains the text "Review and confirm your inspection plan"
         And I expect that element ".table-scroll-wrapper" contains the text "Review and confirm your documentation"
 
-                # DOCUMENTATION
+        # DOCUMENTATION
 
         And I scroll to element ".table-scroll-wrapper"
         When I click on the button "a*=Review and confirm your documentation"
         And I scroll to element ".table-scroll-wrapper"
-        And I click on the link "edit"
+        And I click on the link "classify"
         And I click on the radio "#edit-document-type-authority-advice"
         When I click on the button "#edit-next"
         Then I expect that element ".error-message" does exist
@@ -88,15 +88,6 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
         When I click on the button "#edit-next"
         Then I expect that element ".table-scroll-wrapper" contains the text "✔"
         And the element ".table-scroll-wrapper" contains the text "Cookie control"
-        When I click on the link "Save"
-        Then I expect that element ".table-scroll-wrapper" contains the text "100%"
-        When I click on the button "a*=Review and confirm your documentation"
-        And I click on the link "edit"
-        And I click on the radio "#edit-document-type-authority-advice"
-        And I click on the checkbox ".form-label*=Alphabet learning"
-        When I click on the button "#edit-next"
-        Then I expect that element ".table-scroll-wrapper" contains the text "✔"
-        And I expect that element ".table-scroll-wrapper" contains the text "Cookie control, Alphabet learning"
         When I click on the link "Save"
         Then I expect that element ".table-scroll-wrapper" contains the text "100%"
 
@@ -108,7 +99,7 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
 #        And I click on the checkbox ".form-checkbox"
         And I click on the button "#edit-next"
 
-                # CHECK INSPECTION PLAN CONFIRMED
+        # CHECK INSPECTION PLAN CONFIRMED
 
 #        And I scroll to element ".table-scroll-wrapper"
 #        When I click on the link "Review and confirm your inspection plan"
@@ -125,5 +116,3 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
         And I add "Test change meassage body [invite:invite-accept-link]" to the inputfield "#edit-email-body"
         And I add "Test change meassage subject" to the inputfield "#edit-email-body"
         When I press "Send Invitation"
-
-

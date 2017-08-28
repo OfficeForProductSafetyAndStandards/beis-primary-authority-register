@@ -744,6 +744,7 @@ $appEnv = getenv('APP_ENV');
 
 $settings['trusted_host_patterns'] = [
   '^par-beta-' . $appEnv . '\.cloudapps\.digital',
+  $appEnv . '-cdn.par-beta.co.uk',
 ];
 
 /**
@@ -848,7 +849,7 @@ if (getenv('S3_BUCKET_PUBLIC')) {
       'secret' => getenv('S3_SECRET_KEY'),
       'region' => 'eu-west-1',
       'bucket' => getenv('S3_BUCKET_PUBLIC'),
-      'prefix' => 'public',
+      'prefix' => getenv('APP_ENV'),
     ],
   ] + $settings['flysystem']['s3public'];
 }
@@ -862,7 +863,7 @@ if (getenv('S3_BUCKET_PRIVATE')) {
       'secret' => getenv('S3_SECRET_KEY'),
       'region' => 'eu-west-1',
       'bucket' => getenv('S3_BUCKET_PRIVATE'),
-      'prefix' => 'public',
+      'prefix' => getenv('APP_ENV'),
     ],
   ] + $settings['flysystem']['s3private'];
 }

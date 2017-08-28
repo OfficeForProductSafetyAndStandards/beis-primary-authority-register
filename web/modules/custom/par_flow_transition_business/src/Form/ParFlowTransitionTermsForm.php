@@ -56,14 +56,17 @@ class ParFlowTransitionTermsForm extends ParBaseForm {
       return $this->redirect($this->getFlow()->getNextRoute(), $this->getRouteParams());
     }
 
+    // @TODO ALLOW THIS PAGE TO BE CONFIGURED NOT THROUGH CODE.
+    $terms_page = \Drupal::service('path.alias_manager')->getAliasByPath('/node/49');
+
     $form['terms_intro'] = [
-      '#markup' => "<p>Please Review the new Primary Authority terms and conditions and confirm that you agree with them.</p><p>The New terms will come into effect from <em>01 October 2017</em>.</p>",
+      '#markup' => "<p>Please review the new <a href='{$terms_page}' target='_blank'>Primary Authority terms and conditions</a> and confirm that you agree with them.</p><p>The new terms will come into effect from <em>01 October 2017</em>.</p>",
     ];
 
     // Partnership agree terms.
     $form['terms_conditions'] = [
       '#type' => 'checkbox',
-      '#title' => t('I confirm that my authority agrees to the new Terms and Conditions.'),
+      '#title' => t('I confirm that my organisation agrees to the new terms and conditions.'),
       '#disabled' => $this->getDefaultValues("terms_organisation_agreed"),
       '#return_value' => 'on',
     ];
