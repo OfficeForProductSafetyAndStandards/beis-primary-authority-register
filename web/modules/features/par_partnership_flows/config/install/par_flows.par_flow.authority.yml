@@ -1,0 +1,30 @@
+uuid: d64e258c-720d-4a2b-bb78-8a098016ad49
+langcode: en
+status: true
+dependencies: {  }
+id: transition_business
+label: 'Transition Business'
+description: 'The Partnership Details section of the Data Validation/Transition Journey 2.'
+steps:
+  1:
+    route: view.par_data_transition_journey_1_step_1.dv_journey_1_step_1
+  2:
+    route: par_partnership_flows.terms
+  3:
+    route: par_partnership_flows.task_list
+  4:
+    route: par_partnership_flows.overview
+  5:
+    route: par_partnership_flows.about
+  6:
+    route: par_partnership_flows.address
+  7:
+    route: par_partnership_flows.contact
+  8:
+    route: par_partnership_flows.legal
+  9:
+    route: par_partnership_flows.trading_name
+  10:
+    route: par_partnership_flows.legal_add
+  11:
+    route: par_partnership_flows.trading_name_add
