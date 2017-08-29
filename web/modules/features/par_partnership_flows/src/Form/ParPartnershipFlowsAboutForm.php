@@ -15,13 +15,13 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  protected $flow = 'transition_business';
+  protected $flow = 'par_partnership_flows_organisation';
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'par_partnership_flows_about';
+    return 'par_partnership_about_business';
   }
 
   /**

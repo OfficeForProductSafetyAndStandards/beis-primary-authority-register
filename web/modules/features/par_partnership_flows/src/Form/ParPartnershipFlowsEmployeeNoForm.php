@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_flow_transition_coordinator\Form;
+namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
@@ -15,7 +15,7 @@ class ParPartnershipFlowsEmployeeNoForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  protected $flow = 'transition_coordinator';
+  protected $flow = 'par_partnership_flows_organisation';
 
   /**
    * {@inheritdoc}

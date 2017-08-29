@@ -1,10 +1,10 @@
-uuid: d64e258c-720d-4a2b-bb78-8a098016ad49
+uuid: d64e258c-720d-4a2b-bb78-da098016ad49
 langcode: en
 status: true
 dependencies: {  }
-id: transition_business
-label: 'Transition Business'
-description: 'The Partnership Details section of the Data Validation/Transition Journey 2.'
+id: partnership_authority
+label: 'Authority Partnership Flow'
+description: ''
 steps:
   1:
     route: view.par_data_transition_journey_1_step_1.dv_journey_1_step_1

@@ -10,7 +10,7 @@ use Drupal\par_flows\Form\ParBaseForm;
  * The about partnership form for the partnership details steps of the
  * 1st Data Validation/Transition User Journey.
  */
-class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
+class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
 
   /**
    * {@inheritdoc}
@@ -23,7 +23,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'par_partnership_organisation_details';
+    return 'par_flow_transition_business_details';
   }
 
   /**

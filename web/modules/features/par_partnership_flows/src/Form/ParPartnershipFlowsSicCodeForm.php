@@ -16,7 +16,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
    * @var string
    *   A machine safe value representing the current form journey.
    */
-  protected $flow = 'transition_business';
+  protected $flow = 'partnership_organisation';
 
   /**
    * {@inheritdoc}
@@ -34,7 +34,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
    * @param int $trading_name_delta
    *   The trading name delta.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, $trading_name_delta = NULL) {
+  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
     if ($par_data_partnership) {
       // If we're editing an entity we should set the state
       // to something other than default to avoid conflicts
@@ -47,34 +47,27 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $trading_name_delta = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
     $par_data_organisation = current($par_data_partnership->getOrganisation());
 
-    if (empty($trading_name_delta)) {
-      $form['intro'] = [
-        '#markup' => $this->t('Add another trading name for your business'),
-      ];
+    $form['intro'] = [
+      '#markup' => $this->t('Change the SIC Code of your business'),
+    ];
 
-    }
-    else {
-      $form['intro'] = [
-        '#markup' => $this->t('Change the trading name of your business'),
-      ];
-    }
 
-    $form['trading_name'] = [
+    $form['sic_code'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Name of trading name'),
-      '#default_value' => isset($par_data_organisation->get('trading_name')->getValue()[$trading_name_delta]) ? $par_data_organisation->get('trading_name')->getValue()[$trading_name_delta] : '',
-      '#description' => $this->t('Sometimes companies trade under a different name to their registered, legal name. This is known as a \'trading name\'. State any trading names used by the business.'),
+      '#title' => $this->t('SIC Code'),
+//      '#default_value' => isset($par_data_organisation->get('trading_name')->getValue()[$trading_name_delta]) ? $par_data_organisation->get('trading_name')->getValue()[$trading_name_delta] : '',
+//      '#description' => $this->t('Sometimes companies trade under a different name to their registered, legal name. This is known as a \'trading name\'. State any trading names used by the business.'),
     ];
 
     $form['next'] = [
       '#type' => 'submit',
       '#value' => t('Save'),
     ];
-
+dump($this->getFlow());
     $previous_link = $this->getFlow()->getLinkByStep(4)->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',

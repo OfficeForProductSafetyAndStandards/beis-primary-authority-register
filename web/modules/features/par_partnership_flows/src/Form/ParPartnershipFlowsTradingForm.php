@@ -16,7 +16,7 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
    * @var string
    *   A machine safe value representing the current form journey.
    */
-  protected $flow = 'transition_business';
+  protected $flow = 'par_partnership_flows_organisation';
 
   /**
    * {@inheritdoc}
