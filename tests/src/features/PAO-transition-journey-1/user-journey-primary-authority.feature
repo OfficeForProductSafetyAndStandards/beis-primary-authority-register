@@ -104,12 +104,12 @@ Feature: Primary Authority - Change Partnership Details
 
         # CHECK INSPECTION PLAN CONFIRMED
 
-#        And I scroll to element ".table-scroll-wrapper"
-#        When I click on the link "Review and confirm your inspection plan"
-#        Then I expect that element ".form-checkbox" is not enabled
-#        When I click on the button "#edit-next"
+        And I scroll to element ".table-scroll-wrapper"
+        When I click on the link "Review and confirm your inspection plan"
+        Then I expect that element ".form-checkbox" is not enabled
+        When I click on the button "#edit-next"
 
-                # PARTERSHIP TASKS SCREEN
+        # PARTERSHIP TASKS SCREEN
 
         And I scroll to element ".table-scroll-wrapper"
         When I click on the link "Invite the business to confirm their details"
