@@ -106,42 +106,73 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
-  public function getNextStep() {
-    if ($current_step = $this->getCurrentStep()) {
+  public function getNextStep($operation = NULL) {
+    $current_step = $this->getCurrentStep();
+
+    $redirect = $this->getStepByOperation($current_step, $operation);
+
+    if ($redirect) {
+      return $redirect;
+    }
+    else {
       $next_index = ++$current_step;
+      $next_step = isset($next_index) ? $this->getStep($next_index) : $this->getStep(1);
+
+      // If there is no next step we'll go back to the beginning.
+      return isset($next_step['route']) ? $next_index : 1;
     }
-
-    $next_step = isset($next_index) ? $this->getStep($next_index) : $this->getStep(1);
-
-    // If there is no next step we'll go back to the beginning.
-    return isset($next_step['route']) ? $next_index : 1;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getPrevStep() {
-    if ($current_step = $this->getCurrentStep()) {
+  public function getPrevStep($operation = NULL) {
+    $current_step = $this->getCurrentStep();
+
+    $redirect = $this->getStepByOperation($current_step, $operation);
+
+    if ($redirect) {
+      return $redirect;
+    }
+    else {
       $prev_index = --$current_step;
-    }
-    $prev_step = isset($prev_index) ? $this->getStep($prev_index) : $this->getStep(1);
+      $prev_step = isset($prev_index) ? $this->getStep($prev_index) : $this->getStep(1);
 
-    // If there is no next step we'll go back to the beginning.
-    return isset($prev_step['route']) ? $prev_index : 1;
+      // If there is no next step we'll go back to the beginning.
+      return isset($prev_step['route']) ? $prev_index : 1;
+    }
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getNextRoute() {
+  public function getNextRoute($operation = NULL) {
     return $this->getRouteByStep($this->getNextStep());
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getPrevRoute() {
+  public function getPrevRoute($operation = NULL) {
     return $this->getRouteByStep($this->getPrevStep());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getNextRouteByOperation($operation) {
+    $current_step = $this->getCurrentStep();
+    $route = $this->getStepByOperation($current_step, $operation);
+    return isset($route) ? $this->getRouteByStep($route) : $this->getNextRoute();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPrevRouteByOperation($operation) {
+    $current_step = $this->getCurrentStep();
+    $route = $this->getStepByOperation($current_step, $operation);
+    return isset($route) ? $this->getRouteByStep($route) : $this->getPrevRoute();
   }
 
   /**
@@ -156,7 +187,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
       }
     }
 
-    // If there is no next step we'll go back to the beginning.
+    // If there is no step we'll go back to the beginning.
     return isset($match['step']) ? $match['step'] : 1;
   }
 
@@ -172,8 +203,19 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
       }
     }
 
-    // If there is no next step we'll go back to the beginning.
+    // If there is no step we'll go back to the beginning.
     return isset($match['step']) ? $match['step'] : 1;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStepByOperation($index, $operation) {
+    $step = $this->getStep($index);
+    $redirects = isset($step['redirect']) ? $step['redirect'] : [];
+
+    // If there is no matching step then we'll just return the original step.
+    return isset($redirects[$operation]) ? $redirects[$operation] : NULL;
   }
 
   /**
@@ -195,6 +237,30 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  public function getLinkByStep($index, array $route_params = [], array $link_options = []) {
+    $step = $this->getStep($index);
+    $route = $step['route'];
+    return $this->getLinkByRoute($route, $route_params, $link_options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getLinkByStepOperation($index, $operation, array $route_params = [], array $link_options = []) {
+    $step = $this->getStepByOperation($index, $operation);
+    return $step ? $this->getLinkByStep($step, $route_params, $link_options) : $this->getLinkByStep($this->getCurrentStep());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getLinkByCurrentStepOperation($operation, array $route_params = [], array $link_options = []) {
+    return $this->getLinkByStepOperation($this->getCurrentStep(), $operation, $route_params, $link_options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getFlowForms() {
     $forms = [];
 
@@ -205,15 +271,6 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     }
 
     return $forms;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getLinkByStep($index, array $route_params = [], array $link_options = []) {
-    $step = $this->getStep($index);
-    $route = $step['route'];
-    return $this->getLinkByRoute($route, $route_params, $link_options);
   }
 
 }

@@ -1,0 +1,62 @@
+# PAR Data Raise Enforcement Notice Journey
+par_enforcement_flows.raise:
+  path: '/enforcement-notice/raise'
+  defaults:
+    _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementRaiseNoticeForm'
+    _title: 'Raise Enforcement Notice'
+  requirements:
+    _permission: 'raise enforcement notice'
+par_enforcement_flows.add_action:
+  path: '/enforcement-notice/raise/action/add'
+  defaults:
+    _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementAddActionForm'
+    _title: 'Add Action to Enforcement Notice'
+  requirements:
+    _permission: 'raise enforcement notice'
+par_enforcement_flows.submit:
+  path: '/enforcement-notice/raise/confirm'
+  defaults:
+    _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementSubmitNoticeForm'
+    _title: 'Confirm Enforcement Notice'
+  requirements:
+    _permission: 'raise enforcement notice'
+
+# PAR Data Approve Enforcement Notice Journey
+par_enforcement_flows.approve:
+  path: '/enforcement-notice/{par_data_enforcement_notice}/approve'
+  defaults:
+    _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementApproveNoticeForm'
+    _title: 'Approve Enforcement Notice'
+  requirements:
+    _permission: 'approve enforcement notice'
+    par_data_enforcement_notice: \d+
+  options:
+    parameters:
+      par_data_enforcement_notice:
+        type: entity:par_data_enforcement_notice
+par_enforcement_flows.approve:
+  path: '/enforcement-notice/{par_data_enforcement_notice}/approve/confirm'
+  defaults:
+    _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementConfirmNoticeForm'
+    _title: 'Confirm Enforcement Notice'
+  requirements:
+    _permission: 'approve enforcement notice'
+    par_data_enforcement_notice: \d+
+  options:
+    parameters:
+      par_data_enforcement_notice:
+        type: entity:par_data_enforcement_notice
+
+# PAR Data Send Enforcement Notice To Organisation
+par_enforcement_flows.approve:
+  path: '/enforcement-notice/{par_data_enforcement_notice}/send'
+  defaults:
+    _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementSendNoticeForm'
+    _title: 'Send Enforcement Notice to Organisaiton'
+  requirements:
+    _permission: 'send enforcement notice'
+    par_data_enforcement_notice: \d+
+  options:
+    parameters:
+      par_data_enforcement_notice:
+        type: entity:par_data_enforcement_notice

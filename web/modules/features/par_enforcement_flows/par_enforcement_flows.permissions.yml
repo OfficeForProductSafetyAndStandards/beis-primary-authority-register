@@ -1,0 +1,16 @@
+bypass enforcement notice permissions:
+  title: 'Bypass all Enforcement Notice Permissions'
+  description: 'Bypass all permissions related to enforcement journeys.'
+  restrict access: TRUE
+raise enforcement notice:
+  title: 'Raise Own Enforcement Notice'
+  description: 'Allow a user to raise an enforcement notice against any Organisation.'
+  restrict access: TRUE
+approve enforcement notice:
+  title: 'Approve Own Enforcement Notice'
+  description: 'Allow approval of enforcement notices relevant to the Authority the user belongs to.'
+  restrict access: TRUE
+send enforcement notice:
+  title: 'Send Enforcement Notice'
+  description: 'Allow a user to send the enforcement notice they raised against an Organisation.'
+  restrict access: TRUE

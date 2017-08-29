@@ -1,0 +1,11 @@
+status: true
+dependencies: {  }
+id: send_enforcement
+label: 'Send Enforcement'
+description: 'The send operations for an enforcement notice.'
+steps:
+  1:
+    route: par_enforcement_flows.send
+    form: par_enforcement_flows.send
+  2:
+    route: <front>
