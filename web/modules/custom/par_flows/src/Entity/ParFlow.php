@@ -239,30 +239,6 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
-  public function getLinkByStep($index, array $route_params = [], array $link_options = []) {
-    $step = $this->getStep($index);
-    $route = $step['route'];
-    return $this->getLinkByRoute($route, $route_params, $link_options);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getLinkByStepOperation($index, $operation, array $route_params = [], array $link_options = []) {
-    $step = $this->getStepByOperation($index, $operation);
-    return $step ? $this->getLinkByStep($step, $route_params, $link_options) : $this->getLinkByStep($this->getCurrentStep());
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getLinkByCurrentStepOperation($operation, array $route_params = [], array $link_options = []) {
-    return $this->getLinkByStepOperation($this->getCurrentStep(), $operation, $route_params, $link_options);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getFlowForms() {
     $forms = [];
 
@@ -273,6 +249,29 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     }
 
     return $forms;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getLinkByStep($index, array $route_params = [], array $link_options = []) {
+    $step = $this->getStep($index);
+    $route = $step['route'];
+    return $route ? $this->getLinkByRoute($route, $route_params, $link_options) : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getLinkByOperation($index, $operation, array $route_params = [], array $link_options = []) {
+    return $this->getLinkByStep($this->getStepByOperation($index, $operation), $route_params, $link_options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getLinkByCurrentStepOperation($operation, array $route_params = [], array $link_options = []) {
+    return $this->getLinkByOperation($this->getCurrentStep(), $operation, $route_params, $link_options);
   }
 
 }

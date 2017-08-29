@@ -1,5 +1,9 @@
+uuid: 38a6f416-edfe-4394-ac6a-b333d64f7b94
+langcode: en
 status: true
 dependencies: {  }
+_core:
+  default_config_hash: jJT5-l7_E_8viQ2izlFIRJx399OheyzDMJ4Z9aawsw4
 id: approve_enforcement
 label: 'Approve Enforcement'
 description: 'The approval flow for an enforcement notice.'

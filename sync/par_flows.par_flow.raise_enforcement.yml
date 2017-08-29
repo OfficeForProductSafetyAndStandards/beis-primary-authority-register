@@ -1,5 +1,9 @@
+uuid: c4a529ee-4495-4ee2-bfc8-0910aa27130c
+langcode: en
 status: true
 dependencies: {  }
+_core:
+  default_config_hash: '-CyADRo5mxTI2y1imEgAc-We90ddZVZQxIrYllLLSmM'
 id: raise_enforcement
 label: 'Raise Enforcement'
 description: 'The creation flow of an enforcement notice.'
