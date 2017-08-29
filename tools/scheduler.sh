@@ -1,11 +1,11 @@
 #!/bin/sh
 
-#############################################################
+################################################################
 # This script will run the Drupal scheduler every 60 seconds
 # It should be initiated as a task using
 #
-# cf run-task par-beta-$ENV "tools/scheduler.sh"
-#############################################################
+# cf run-task par-beta-$ENV "/home/vcap/app/tools/scheduler.sh"
+################################################################
 
 while true
 do
