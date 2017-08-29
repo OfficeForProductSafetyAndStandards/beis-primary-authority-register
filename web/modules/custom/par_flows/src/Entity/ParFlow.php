@@ -111,36 +111,53 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
 
     $redirect = $this->getStepByOperation($current_step, $operation);
 
+    // First check if the operation produced a valid step.
     if ($redirect) {
-      return $redirect;
+      $next_step = isset($redirect) && $this->getStep($redirect) ? $this->getStep($redirect) : NULL;
+      $next_index = $redirect;
     }
-    else {
-      $next_index = ++$current_step;
-      $next_step = isset($next_index) ? $this->getStep($next_index) : $this->getStep(1);
 
-      // If there is no next step we'll go back to the beginning.
-      return isset($next_step['route']) ? $next_index : 1;
+    // Then fallback to the next step, or the first if already on the last.
+    if (!isset($next_step) && $current_step === count($this->getSteps())) {
+      $next_step = $this->getStep(1);
+      $next_index = 1;
     }
+    else if (!isset($next_step) && $current_step){
+      $next_index = ++$current_step;
+      $next_step = isset($next_index) ? $this->getStep($next_index) : NULL;
+    }
+
+    // If there is no next step we'll go back to the beginning.
+    return isset($next_index) && isset($next_step['route']) ? $next_index : NULL;
   }
 
   /**
    * {@inheritdoc}
+   *
+   * {@deprecated}
+   *   No need to use prev step now that we can have operation override redirects. @see tests.
    */
   public function getPrevStep($operation = NULL) {
     $current_step = $this->getCurrentStep();
 
     $redirect = $this->getStepByOperation($current_step, $operation);
 
+    // First check if the operation produced a valid step.
     if ($redirect) {
-      return $redirect;
+      $prev_step = isset($redirect) && $this->getStep($redirect) ? $redirect : NULL;
     }
-    else {
+
+    // Then fallback to the next step, or the first if already on the last.
+    if (!isset($prev_step) && $current_step === count($this->getSteps())) {
+      $prev_step = $this->getStep(1);
+    }
+    else if (!isset($prev_step)){
       $prev_index = --$current_step;
       $prev_step = isset($prev_index) ? $this->getStep($prev_index) : $this->getStep(1);
-
-      // If there is no next step we'll go back to the beginning.
-      return isset($prev_step['route']) ? $prev_index : 1;
     }
+
+    // If there is no next step we'll go back to the beginning.
+    return isset($prev_step) && isset($prev_step['route']) ? $prev_index : NULL;
   }
 
   /**
@@ -152,27 +169,12 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * {@deprecated}
+   *   No need to use prev step now that we can have operation override redirects. @see tests.
    */
   public function getPrevRoute($operation = NULL) {
     return $this->getRouteByStep($this->getPrevStep());
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getNextRouteByOperation($operation) {
-    $current_step = $this->getCurrentStep();
-    $route = $this->getStepByOperation($current_step, $operation);
-    return isset($route) ? $this->getRouteByStep($route) : $this->getNextRoute();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getPrevRouteByOperation($operation) {
-    $current_step = $this->getCurrentStep();
-    $route = $this->getStepByOperation($current_step, $operation);
-    return isset($route) ? $this->getRouteByStep($route) : $this->getPrevRoute();
   }
 
   /**
@@ -188,7 +190,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     }
 
     // If there is no step we'll go back to the beginning.
-    return isset($match['step']) ? $match['step'] : 1;
+    return isset($match['step']) ? $match['step'] : NULL;
   }
 
   /**
@@ -204,7 +206,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     }
 
     // If there is no step we'll go back to the beginning.
-    return isset($match['step']) ? $match['step'] : 1;
+    return isset($match['step']) ? $match['step'] : NULL;
   }
 
   /**
