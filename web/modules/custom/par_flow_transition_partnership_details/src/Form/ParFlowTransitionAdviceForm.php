@@ -42,7 +42,7 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
       // If we're editing an entity we should set the state
       // to something other than default to avoid conflicts
       // with existing versions of the same form.
-      $this->setState("edit:{$par_data_partnership->id()},{$par_data_advice->id()}");
+      $this->setState("edit:{$par_data_advice->id()}");
 
       // Partnership Confirmation.
       $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
@@ -58,8 +58,6 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
         $regulatory_options[$function->id()] = $function->id();
       }
       $this->loadDataValue('regulatory_functions', $regulatory_options);
-    } else {
-      $this->setState("add:{$par_data_partnership->id()}");
     }
 
   }
