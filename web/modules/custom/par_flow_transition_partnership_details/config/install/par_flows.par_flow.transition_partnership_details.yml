@@ -33,3 +33,6 @@ steps:
   10:
     route: par_flow_transition_partnership_details.advice_document
     form_id: par_flow_transition_partnership_advice_document
+  11:
+    route: par_flow_transition_partnership_details.advice_document_add
+    form_id: par_flow_transition_partnership_advice_document
