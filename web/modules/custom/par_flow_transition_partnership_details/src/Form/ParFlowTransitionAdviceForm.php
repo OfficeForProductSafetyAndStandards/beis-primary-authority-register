@@ -38,7 +38,8 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
 
-    if (isset($par_data_advice)) {
+    if ($par_data_advice) {
+
       // If we're editing an entity we should set the state
       // to something other than default to avoid conflicts
       // with existing versions of the same form.
