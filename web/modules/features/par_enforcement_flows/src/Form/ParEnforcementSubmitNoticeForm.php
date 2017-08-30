@@ -41,7 +41,7 @@ class ParEnforcementSubmitNoticeForm extends ParBaseForm {
       '#value' => $this->t('Submit & Next'),
     ];
 
-    $cancel_link = $this->getFlow()->getNextLinkByOperation('cancel')->setText('Cancel')->toString();
+    $cancel_link = $this->getFlow()->getNextLink('cancel')->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
       '#markup' => t('@link', ['@link' => $cancel_link]),

@@ -36,6 +36,12 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $this->retrieveEditableValues();
 
+    $cancel_link = $this->getFlow()->getNextLink()->setText('Add an enforcement action')->toString();
+    $form['add'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', ['@link' => $cancel_link]),
+    ];
+
     $form['next'] = [
       '#type' => 'submit',
       '#name' => 'next',

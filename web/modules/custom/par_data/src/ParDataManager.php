@@ -330,28 +330,17 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
-   * Checks if the person is a member of an authority member.
+   * Checks if the person is a member of any authority.
    */
   public function isMemberOfAuthority($account) {
-    return $this->hasMembershipsByType($account, 'par_data_authority', TRUE);
+    return $account ? $this->hasMembershipsByType($account, 'par_data_authority', TRUE) : NULL;
   }
 
   /**
-   * Checks if the person is a member of a coordinator member.
+   * Checks if the person is a member of any organisation.
    */
   public function isMemberOfOrganisation($account) {
-    return $this->hasMembershipsByType($account, 'par_data_organisation',  TRUE);
-  }
-
-  /**
-   * Checks if the person is a member of a coordinator member.
-   */
-  public function isMemberOfOrganisationDirectPartnership($account) {
-    foreach ($this->hasMembershipsByType($account, 'par_data_organisation',  TRUE) as $membership) {
-      if ($membership->bundle() === 'coordinator') {
-        return TRUE;
-      }
-    }
+    return $account ? $this->hasMembershipsByType($account, 'par_data_organisation',  TRUE) : NULL;
   }
 
   /**
@@ -365,6 +354,8 @@ class ParDataManager implements ParDataManagerInterface {
         return TRUE;
       }
     }
+
+    return FALSE;
   }
 
   /**
@@ -378,6 +369,8 @@ class ParDataManager implements ParDataManagerInterface {
         return TRUE;
       }
     }
+
+    return FALSE;
   }
 
   /**

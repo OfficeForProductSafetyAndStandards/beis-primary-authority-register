@@ -289,7 +289,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
-  public function getNextLinkByOperation($operation, array $route_params = [], array $link_options = []) {
+  public function getNextLink($operation, array $route_params = [], array $link_options = []) {
     $step = $this->getNextStep($operation);
     return $this->getLinkByStep($step, $route_params, $link_options);
   }
@@ -297,7 +297,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
-  public function getPrevLinkByOperation($operation, array $route_params = [], array $link_options = []) {
+  public function getPrevLink($operation, array $route_params = [], array $link_options = []) {
     $step = $this->getPrevStep($operation);
     return $this->getLinkByStep($step, $route_params, $link_options);
   }
