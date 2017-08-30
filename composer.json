@@ -106,7 +106,10 @@
                 "Add Drush commands for sending and receiving files": "./patches/flysystem-drush-command.patch"
             },
             "drupal/flysystem_s3": {
-                "Allow downloading of private files from remote S3 wrappers": "./patches/private_file_download.patch"
+                "Allow downloading of private files from remote S3 wrappers": "./patches/private_s3_file_download.patch"
+            },
+            "drupal/file_entity": {
+                "Provides support for s3 response objects": "./patches/file_entity_s3_file_support.patch"
             },
             "drupal/govuk_notify": {
                 "Allowing system mails to be sent through Notify": "https://www.drupal.org/files/issues/allowing_system_mails-2897707-4.patch"
