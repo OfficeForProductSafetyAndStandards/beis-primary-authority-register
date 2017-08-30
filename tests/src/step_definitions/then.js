@@ -1,5 +1,6 @@
 import checkClass from '../support/check/checkClass';
 import checkContainsAnyText from '../support/check/checkContainsAnyText';
+import checkContainsNoText from '../support/check/checkContainsNoText';
 import checkContainsText from '../support/check/checkContainsText';
 import checkCookieContent from '../support/check/checkCookieContent';
 import checkCookieExists from '../support/check/checkCookieExists';
@@ -80,7 +81,7 @@ module.exports = function then() {
 
     this.Then(
         /^I expect that (element|inputfield) "([^"]*)?" is( not)* empty$/,
-        checkContainsAnyText
+        checkContainsNoText
     );
 
     this.Then(
