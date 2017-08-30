@@ -53,7 +53,8 @@ class ParFlowTransitionAdviceUploadForm extends ParBaseForm {
     // Multiple file field.
     $form['files'] = [
       '#type' => 'managed_file',
-      '#title' => t('Files:'),
+      '#title' => t('Upload file(s)'),
+      '#description' => t('Use Ctrl or cmd to select multiple files'),
       '#upload_location' => 's3private://documents/advice/',
       '#multiple' => TRUE,
       '#required' => TRUE,
@@ -63,6 +64,13 @@ class ParFlowTransitionAdviceUploadForm extends ParBaseForm {
     $form['next'] = [
       '#type' => 'submit',
       '#value' => t('Upload'),
+    ];
+
+    // Go back to Advice Documents list.
+    $previous_link = $this->getFlow()->getLinkByStep(9)->setText('Cancel')->toString();
+    $form['cancel'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', ['@link' => $previous_link]),
     ];
 
     return parent::buildForm($form, $form_state);
