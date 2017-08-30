@@ -74,24 +74,6 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
-   * Check if a user is a member of the organisation.
-   *
-   * @param ParDataPerson $person
-   *   A PAR Person to check for.
-   *
-   * @return boolean
-   *   Whether the user is an organisation member or not.
-   */
-  public function isOrganisationMember(ParDataPerson $person) {
-    foreach ($this->getOrganisationPeople() as $organisation_person) {
-      if ($organisation_person->id() === $person->id()) {
-        return TRUE;
-      }
-    }
-    return FALSE;
-  }
-
-  /**
    * Get the authority contacts for this Partnership.
    */
   public function getAuthorityPeople() {
@@ -99,21 +81,77 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
-   * Check if a user is a member of the Authority.
+   * Check if a par person is a member of the organisation.
+   *
+   * {@deprecated}
    *
    * @param ParDataPerson $person
    *   A PAR Person to check for.
    *
    * @return boolean
+   *   Whether the person is an organisation member or not.
+   */
+  public function personIisOrganisationMember(ParDataPerson $person) {
+    $authority_people_ids = $this->retrieveEntityIds('field_authority_person');
+    return in_array($person->id(), $authority_people_ids);
+  }
+
+  /**
+   * Check if a par person is a member of the Authority.
+   *
+   * {@deprecated}
+   *
+   * @param ParDataPerson $person
+   *   A PAR Person to check for.
+   *
+   * @return boolean
+   *   Whether the person is an authority member or not.
+   */
+  public function personIsAuthorityMember(ParDataPerson $person) {
+    $authority_people_ids = $this->retrieveEntityIds('field_organisation_person');
+    return in_array($person->id(), $authority_people_ids);
+  }
+
+  /**
+   * Check if a user is a member of the Authority.
+   *
+   * @param AccountInterface $account
+   *   A Drupal user account to check for.
+   *
+   * @return boolean
    *   Whether the user is an authority member or not.
    */
-  public function isAuthorityMember(ParDataPerson $person) {
-    foreach ($this->getAuthorityPeople() as $authority_person) {
-      if ($authority_person->id() === $person->id()) {
-        return TRUE;
-      }
+  public function isOrganisationMember(AccountInterface $account) {
+    $organisation_people_ids = $this->retrieveEntityIds('field_organisation_person');
+    $current_user_people = $this->getParDataManager()->getUserPeople($account);
+
+    if (!empty($organisation_people_ids) && !empty($current_user_people)) {
+      return array_intersect_key(array_flip($organisation_people_ids), $current_user_people);
     }
-    return FALSE;
+    else {
+      return FALSE;
+    }
+  }
+
+  /**
+   * Check if a user is a member of the Authority.
+   *
+   * @param AccountInterface $account
+   *   A Drupal user account to check for.
+   *
+   * @return boolean
+   *   Whether the user is an authority member or not.
+   */
+  public function isAuthorityMember(AccountInterface $account) {
+    $authority_people_ids = $this->retrieveEntityIds('field_authority_person');
+    $current_user_people = $this->getParDataManager()->getUserPeople($account);
+
+    if (!empty($authority_people_ids) && !empty($current_user_people)) {
+      return array_intersect_key(array_flip($authority_people_ids), $current_user_people);
+    }
+    else {
+      return FALSE;
+    }
   }
 
   /**
@@ -149,6 +187,14 @@ class ParDataPartnership extends ParDataEntity {
    */
   public function getRegulatoryFunction() {
     return $this->get('field_regulatory_function')->referencedEntities();
+  }
+
+  public function isDirect() {
+    return $this->retrieveStringValue('partnership_type') === 'direct';
+  }
+
+  public function isCoordianted() {
+    return $this->retrieveStringValue('partnership_type') === 'coordianted';
   }
 
   /**

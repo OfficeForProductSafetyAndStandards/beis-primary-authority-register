@@ -126,6 +126,22 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     if (!$this->getFlow()) {
       $this->getLogger($this->getLoggerChannel())->critical('There is no flow %flow for this form.', ['%flow' => $this->getFlowName()]);
     }
+
+    // Check for Partnership type
+    if ($this->getParDataManager()->isMemberOfAuthority($account)) {
+      if ($this->currentUser()->hasPermission('asdfasdfas')) {
+        return 'helpdesk';
+      }
+      else {
+        return 'authority';
+      }
+    }
+    else if ($this->getParDataManager()->isMemberOfCoordinator($account)) {
+      return 'coordinated';
+    }
+    else if ($this->getParDataManager()->isMemberOfBusiness($account)) {
+      return 'direct';
+    }
   }
 
   /**
