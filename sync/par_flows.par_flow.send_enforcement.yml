@@ -3,13 +3,13 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: rfZozvLM6JvvBonv3E4SttI_zCEAYv2r8qYZE8qPlQE
+  default_config_hash: B2oG15FTi5MIBCgz70orOWqenjmiIvgYa4z6sjNb2jY
 id: send_enforcement
 label: 'Send Enforcement'
 description: 'The send operations for an enforcement notice.'
 steps:
   1:
     route: par_enforcement_flows.send
-    form: par_enforcement_flows.send
+    form_id: par_enforcement_notice_send
   2:
     route: view.rd_helpdesk_dashboard.par_rd_helpdesk_dashboard_page
