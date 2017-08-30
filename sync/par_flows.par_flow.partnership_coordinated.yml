@@ -1,7 +1,11 @@
+uuid: 6c42f5fa-fcd5-4550-83d4-ff8370382c80
+langcode: en
 status: true
 dependencies: {  }
-id: organisation_flow
-label: 'Organisation Flow'
+_core:
+  default_config_hash: S5Fe2TnRBed0Scx_It6oTttw3RL2NP4f_xiGBJE3How
+id: partnership_coordinated
+label: 'Coordinated Partnership Flow'
 description: ''
 steps:
   1:
@@ -28,4 +32,3 @@ steps:
   8:
     route: par_partnership_flows.employee_number
     form_id: par_partnership_employee_number
-

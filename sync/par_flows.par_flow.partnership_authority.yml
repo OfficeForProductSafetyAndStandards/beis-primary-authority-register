@@ -1,0 +1,32 @@
+uuid: df376cef-c3fa-4e41-85df-6e9f6dd754db
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 5bR95v2Yi_pDWOQJH98-gBX_xJyCUrDr6M-67WY_cJA
+id: partnership_authority
+label: 'Authority Partnership Flow'
+description: ''
+steps:
+  1:
+    route: view.par_data_transition_journey_1_step_1.dv_journey_1_step_1
+  2:
+    route: par_partnership_flows.terms
+  3:
+    route: par_partnership_flows.task_list
+  4:
+    route: par_partnership_flows.overview
+  5:
+    route: par_partnership_flows.about
+  6:
+    route: par_partnership_flows.address
+  7:
+    route: par_partnership_flows.contact
+  8:
+    route: par_partnership_flows.legal
+  9:
+    route: par_partnership_flows.trading_name
+  10:
+    route: par_partnership_flows.legal_add
+  11:
+    route: par_partnership_flows.trading_name_add
