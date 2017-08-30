@@ -13,7 +13,7 @@ par_enforcement_flows.add_action:
     _title: 'Add Action to Enforcement Notice'
   requirements:
     _permission: 'raise enforcement notice'
-par_enforcement_flows.submit:
+par_enforcement_flows.raise_confirm:
   path: '/enforcement-notice/raise/confirm'
   defaults:
     _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementSubmitNoticeForm'
@@ -34,7 +34,7 @@ par_enforcement_flows.approve:
     parameters:
       par_data_enforcement_notice:
         type: entity:par_data_enforcement_notice
-par_enforcement_flows.approve:
+par_enforcement_flows.approve_confirm:
   path: '/enforcement-notice/{par_data_enforcement_notice}/approve/confirm'
   defaults:
     _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementConfirmNoticeForm'
@@ -48,7 +48,7 @@ par_enforcement_flows.approve:
         type: entity:par_data_enforcement_notice
 
 # PAR Data Send Enforcement Notice To Organisation
-par_enforcement_flows.approve:
+par_enforcement_flows.send:
   path: '/enforcement-notice/{par_data_enforcement_notice}/send'
   defaults:
     _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementSendNoticeForm'

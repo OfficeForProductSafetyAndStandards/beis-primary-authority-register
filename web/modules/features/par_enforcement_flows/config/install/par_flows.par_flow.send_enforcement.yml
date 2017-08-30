@@ -6,6 +6,6 @@ description: 'The send operations for an enforcement notice.'
 steps:
   1:
     route: par_enforcement_flows.send
-    form: par_enforcement_flows.send
+    form_id: par_enforcement_notice_send
   2:
     route: view.rd_helpdesk_dashboard.par_rd_helpdesk_dashboard_page

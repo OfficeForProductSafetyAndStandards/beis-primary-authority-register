@@ -4,6 +4,7 @@ namespace Drupal\par_enforcement_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_flows\ParFlowException;
 
 /**
  * The raise form for creating a new enforcement notice.

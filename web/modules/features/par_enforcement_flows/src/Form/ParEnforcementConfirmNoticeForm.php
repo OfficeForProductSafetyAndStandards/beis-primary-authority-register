@@ -20,7 +20,7 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'par_enforcement_notice_confirm';
+    return 'par_enforcement_notice_approve_confirm';
   }
 
   /**
