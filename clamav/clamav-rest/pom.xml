@@ -13,7 +13,7 @@
 
   <groupId>xyz.capybara.clamav</groupId>
   <artifactId>clamav-rest</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.3</version>
   <packaging>jar</packaging>
   <name>ClamAV REST/HTTP proxy.</name>
   <description>Simple REST proxy to put between a client and clamd server.</description>

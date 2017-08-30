@@ -17,7 +17,7 @@ services:
       dockerfile: Dockerfile
     container_name: clamav_rest
     ports:
-      - "3320:3320"
+      - "3320:8080"
     volumes:
       - ./clamav-rest/target:/root
     links:
