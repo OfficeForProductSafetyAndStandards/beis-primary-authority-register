@@ -95,7 +95,6 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
 
         $file = File::load($file);
 
-        // @todo work out if possible to render as a file.
         $form['file'][] = [
           '#type' => 'markup',
           '#prefix' => '<p class="file">',
@@ -107,26 +106,33 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
 
     }
 
-    // The document type.
-    $form['document_type'] = [
+    // The advice type.
+    $form['advice_type'] = [
       '#type' => 'radios',
-      '#title' => $this->t('Type of Document'),
+      '#title' => $this->t('Type of advice'),
       '#options' => $advice_bundle->getAllowedValues('advice_type'),
-      '#default_value' => $this->getDefaultValues("document_type"),
+      '#default_value' => $this->getDefaultValues('advice_type'),
       '#required' => TRUE,
     ];
 
-    // The regulatory functions for this document.
+    // The regulatory functions of the advice entity.
     $form['regulatory_functions'] = [
       '#type' => 'checkboxes',
-      '#title' => $this->t('Regulatory functions this document covers'),
+      '#title' => $this->t('Regulatory functions this advice covers'),
       '#options' => $this->getParDataManager()->getRegulatoryFunctionsAsOptions(),
-      '#default_value' => $this->getDefaultValues("regulatory_functions", []),
+      '#default_value' => $this->getDefaultValues('regulatory_functions', []),
     ];
 
     $form['next'] = [
       '#type' => 'submit',
       '#value' => t('Save'),
+    ];
+
+    // Go back to Advice Documents list.
+    $previous_link = $this->getFlow()->getLinkByStep(9)->setText('Cancel')->toString();
+    $form['cancel'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', ['@link' => $previous_link]),
     ];
 
     // Make sure to add the document cacheability data to this form.
@@ -188,7 +194,7 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
     if ($par_data_advice) {
 
       $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
-      $advice_type = $this->getTempDataValue('document_type');
+      $advice_type = $this->getTempDataValue('advice_type');
 
       if (isset($allowed_types[$advice_type])) {
         $par_data_advice->set('advice_type', $advice_type);
@@ -213,7 +219,7 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
     } else {
 
       // Get files from "par_flow_transition_partnership_advice_document_upload" step.
-      $files = $this->getDefaultValues("files", '', 'par_flow_transition_partnership_advice_document_upload');
+      $files = $this->getDefaultValues('files', '', 'par_flow_transition_partnership_advice_document_upload');
 
       $files_to_add = [];
 
@@ -242,7 +248,7 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
       // Set advice type.
       $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
 
-      $advice_type = $this->getTempDataValue('document_type');
+      $advice_type = $this->getTempDataValue('advice_type');
 
       if (isset($allowed_types[$advice_type])) {
         $par_data_advice->set('advice_type', $advice_type);
