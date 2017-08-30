@@ -50,8 +50,7 @@ class ParFlowTransitionAdviceUploadForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
 
-//    $this->retrieveEditableValues($par_data_partnership);
-
+    // Multiple file field.
     $form['files'] = [
       '#type' => 'managed_file',
       '#title' => t('Files:'),
@@ -61,20 +60,10 @@ class ParFlowTransitionAdviceUploadForm extends ParBaseForm {
       '#default_value' => $this->getDefaultValues("files")
     ];
 
-    $form['good'] = [
-      '#type' => 'textarea',
-      '#title' => t('Good:'),
-      '#default_value' => $this->getDefaultValues("good")
-    ];
-
     $form['next'] = [
       '#type' => 'submit',
-      '#value' => t('Save'),
+      '#value' => t('Upload'),
     ];
-
-    // Make sure to add the document cacheability data to this form.
-//    $this->addCacheableDependency($par_data_advice);
-//    $this->addCacheableDependency($advice_bundle);
 
     return parent::buildForm($form, $form_state);
   }
@@ -85,13 +74,6 @@ class ParFlowTransitionAdviceUploadForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
-
-//    $errors = $par_data_advice->validateFields($fields);
-    // Display error messages.
-//    foreach($errors as $field => $message) {
-//      $form_state->setErrorByName($field, $message);
-//    }
-
   }
 
   /**
@@ -100,30 +82,7 @@ class ParFlowTransitionAdviceUploadForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-//    // Get files from temp store.
-//    $files = $this->getTempDataValue('files');
-//
-//    // Loop through files, save as permanent storage.
-//    foreach($files as $file) {
-//
-//      $file = File::load($file);
-//      $file->setPermanent();
-//      $file->save();
-//
-//      $files_to_add[]['target_id'] = $file->id();
-//
-//    }
-//
-//    // Prepare Advice entity.
-//    $advice = \Drupal\par_data\Entity\ParDataAdvice::create([
-//      'type' => 'advice',
-//      'uid' => 1,
-//      'document' => $files_to_add,
-//    ]);
-//
-//    $advice->save();
-
-    // Go to the "document add" screen.
+    // Go to the "document add" flow step.
     $form_state->setRedirect($this->getFlow()->getRouteByStep(11), $this->getRouteParams());
   }
 
