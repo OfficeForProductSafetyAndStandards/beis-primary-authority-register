@@ -84,7 +84,7 @@ Feature: Primary Authority - Change Partnership Details
         When I click on the button "a*=Review and confirm your documentation"
         And I scroll to element ".table-scroll-wrapper"
         And I click on the link "classify"
-        And I click on the radio "#edit-document-type-authority-advice"
+        And I click on the radio "#edit-advice-type-authority-advice"
         When I click on the button "#edit-next"
         Then I expect that element ".error-message" does exist
         And I click on the checkbox ".form-label*=Cookie control"
