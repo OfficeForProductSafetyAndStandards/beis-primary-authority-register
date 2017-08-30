@@ -36,12 +36,13 @@ class ParEnforcementSubmitNoticeForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $this->retrieveEditableValues();
 
-    $form['next'] = [
+    $form['save'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Submit & Next'),
+      '#name' => 'save',
+      '#value' => $this->t('Save'),
     ];
 
-    $cancel_link = $this->getFlow()->getNextLink('cancel')->setText('Cancel')->toString();
+    $cancel_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
       '#markup' => t('@link', ['@link' => $cancel_link]),
