@@ -48,7 +48,7 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
       $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
       $advice_type = $par_data_advice->retrieveStringValue('advice_type');
       if (isset($allowed_types[$advice_type])) {
-        $this->loadDataValue('document_type', $advice_type);
+        $this->loadDataValue('advice_type', $advice_type);
       }
 
       // Get Regulatory Functions.
@@ -155,10 +155,10 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
     if ($par_data_advice) {
 
       $fields['advice_type'] = [
-        'value' => $form_state->getValue('document_type'),
-        'key' => 'document_type',
+        'value' => $form_state->getValue('advice_type'),
+        'key' => 'advice_type',
         'tokens' => [
-          '%field' => $form['document_type']['#title']->render(),
+          '%field' => $form['advice_type']['#title']->render(),
         ],
       ];
 
