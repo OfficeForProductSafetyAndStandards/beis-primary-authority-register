@@ -42,7 +42,7 @@ abstract class ParPartnershipBaseForm extends ParBaseForm implements ParBaseInte
 //      }
 //    }
 //  }
-
+    $this->flow = 'partnership_coordinated';
     return isset($this->flow) ? $this->flow : '';
   }
 }
