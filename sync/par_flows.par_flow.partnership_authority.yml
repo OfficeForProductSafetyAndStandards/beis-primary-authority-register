@@ -3,30 +3,61 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: 5bR95v2Yi_pDWOQJH98-gBX_xJyCUrDr6M-67WY_cJA
+  default_config_hash: lPO92mETgaTZ2DQQZ_LkbLgWGWzikIlIt8ug0Tf_-Cw
 id: partnership_authority
 label: 'Authority Partnership Flow'
 description: ''
 steps:
   1:
-    route: view.par_data_transition_journey_1_step_1.dv_journey_1_step_1
+    route: par_partnership_flows.authority_details
+    form_id: par_partnership_authority_details
   2:
-    route: par_partnership_flows.terms
+    route: par_partnership_flows.about_partnership
+    form_id: par_partnership_about
+    redirect:
+      save: 1
+      cancel: 1
   3:
-    route: par_partnership_flows.task_list
+    route: par_partnership_flows.organisation_contact_add
+    form_id: par_partnership_contact
+    redirect:
+      save: 1
+      next: 1
   4:
-    route: par_partnership_flows.overview
+    route: par_partnership_flows.organisation_contact_edit
+    form_id: par_partnership_contact
+    redirect:
+      save: 1
+      next: 1
   5:
-    route: par_partnership_flows.about
+    route: par_partnership_flows.advice_list
+    redirect:
+      next: 1
+      cancel: 1
   6:
-    route: par_partnership_flows.address
+    route: par_partnership_flows.advice_upload_documents
+    form_id: par_partnership_upload
+    redirect:
+      cancel: 5
   7:
-    route: par_partnership_flows.contact
+    route: par_partnership_flows.advice_add
+    form_id: par_partnership_advice
+    redirect:
+      save: 5
+      cancel: 5
   8:
-    route: par_partnership_flows.legal
+    route: par_partnership_flows.advice_edit_documents
+    form_id: par_partnership_upload
+    redirect:
+      cancel: 5
   9:
-    route: par_partnership_flows.trading_name
+    route: par_partnership_flows.advice_edit
+    form_id: par_partnership_advice
+    redirect:
+      save: 5
+      cancel: 5
   10:
-    route: par_partnership_flows.legal_add
-  11:
-    route: par_partnership_flows.trading_name_add
+    route: par_partnership_flows.inspection_plan_list
+    redirect:
+      next: 1
+      cancel: 1

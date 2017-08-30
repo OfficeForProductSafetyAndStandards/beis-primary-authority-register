@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: GwqkAtbze34CwV4eRYXLoZ6cBEG0D7XmQ_xRp3_m-oA
+  default_config_hash: zsX9D2pmVhmFUHfCLEBIhkWQe50B9XK47KttMh3zUH8
 id: partnership_direct
 label: 'Direct Partnership Flow'
 description: ''
@@ -12,23 +12,74 @@ steps:
     route: par_partnership_flows.organisation_details
     form_id: par_partnership_organisation_details
   2:
-    route: par_partnership_flows.about
+    route: par_partnership_flows.about_business
     form_id: par_partnership_about_business
+    redirect:
+      save: 1
+      next: 1
   3:
-    route: par_partnership_flows.address
+    route: par_partnership_flows.address_add
     form_id: par_partnership_address
+    redirect:
+      save: 1
+      next: 1
   4:
-    route: par_partnership_flows.contact
-    form_id: par_partnership_contact
+    route: par_partnership_flows.address_edit
+    form_id: par_partnership_address
+    redirect:
+      save: 1
+      next: 1
   5:
-    route: par_partnership_flows.legal
-    form_id: par_partnership_legal
+    route: par_partnership_flows.organisation_contact_add
+    form_id: par_partnership_contact
+    redirect:
+      save: 1
+      next: 1
   6:
-    route: par_partnership_flows.trading_name
-    form_id: par_partnership_trading_name
+    route: par_partnership_flows.organisation_contact_edit
+    form_id: par_partnership_contact
+    redirect:
+      save: 1
+      next: 1
   7:
-    route: par_partnership_flows.sic_code
-    form_id: par_partnership_sic_code
+    route: par_partnership_flows.legal_entity_add
+    form_id: par_partnership_legal
+    redirect:
+      save: 1
+      next: 1
   8:
+    route: par_partnership_flows.legal_entity_edit
+    form_id: par_partnership_legal
+    redirect:
+      save: 1
+      next: 1
+  9:
+    route: par_partnership_flows.trading_name_add
+    form_id: par_partnership_trading_name
+    redirect:
+      save: 1
+      next: 1
+  10:
+    route: par_partnership_flows.trading_name_edit
+    form_id: par_partnership_trading_name
+    redirect:
+      save: 1
+      next: 1
+  11:
+    route: par_partnership_flows.sic_code_add
+    form_id: par_partnership_sic_code
+    redirect:
+      save: 1
+      next: 1
+  12:
+    route: par_partnership_flows.sic_code_edit
+    form_id: par_partnership_sic_code
+    redirect:
+      save: 1
+      next: 1
+  13:
     route: par_partnership_flows.employee_number
     form_id: par_partnership_employee_number
+    redirect:
+      save: 1
+      next: 1

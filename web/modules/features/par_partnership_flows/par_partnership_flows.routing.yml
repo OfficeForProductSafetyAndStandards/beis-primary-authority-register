@@ -23,6 +23,33 @@ par_partnership_flows.about_partnership:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+par_partnership_flows.authority_contact_edit:
+  path: '/partnership/{par_data_partnership}/authority/contact/{par_data_person}'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
+    _title: 'Updating contact'
+  requirements:
+    _permission: 'bypass partnership journey'
+    par_data_partnership: \d+
+    par_data_person: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_person:
+        type: entity:par_data_person
+par_partnership_flows.authority_contact_add:
+  path: '/partnership/{par_data_partnership}/authority/contact/add'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
+    _title: 'Add a contact'
+  requirements:
+    _permission: 'bypass partnership journey'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
 par_partnership_flows.advice_list:
   path: '/partnership/{par_data_partnership}/advice/list'
   defaults:
@@ -89,8 +116,18 @@ par_partnership_flows.advice_edit:
         type: entity:par_data_partnership
       par_data_advice:
         type: entity:par_data_advice
-
-
+par_partnership_flows.advice_list:
+  path: '/partnership/{par_data_partnership}/advice/list'
+  defaults:
+    _controller: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceListController::content'
+    _title: 'List of Advice for the Partnership'
+  requirements:
+    _permission: 'bypass partnership journey'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:inspection_plan_list
 
 # PAR Data Organisation Partnership Journey
 par_partnership_flows.organisation_details:
@@ -144,8 +181,8 @@ par_partnership_flows.address_add:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-par_partnership_flows.contact_edit:
-  path: '/partnership/{par_data_partnership}/contact/{par_data_person}'
+par_partnership_flows.organisation_contact_edit:
+  path: '/partnership/{par_data_partnership}/organisation/contact/{par_data_person}'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
     _title: 'Updating contact'
@@ -159,8 +196,8 @@ par_partnership_flows.contact_edit:
         type: entity:par_data_partnership
       par_data_person:
         type: entity:par_data_person
-par_partnership_flows.contact_add:
-  path: '/partnership/{par_data_partnership}/contact/add'
+par_partnership_flows.organisation_contact_add:
+  path: '/partnership/{par_data_partnership}/organisation/contact/add'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
     _title: 'Add a contact'
