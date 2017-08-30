@@ -85,7 +85,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
     $form['about_business']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getLinkByRoute('par_partnership_flows.about')->setText('edit')->toString(),
+        '@link' => $this->getNextLink('about')->setText('edit')->toString(),
       ]),
     ];
 
@@ -110,7 +110,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       $form['registered_address']['primary_address']['edit'] = [
         '#type' => 'markup',
         '#markup' => t('@link', [
-          '@link' => $this->getLinkByRoute('par_partnership_flows.address', [
+          '@link' => $this->getNextLink('edit_address', [
             'par_data_premises' => $registered_premises->id(),
           ])->setText('edit')->toString(),
         ]),
@@ -136,7 +136,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
         $form['registered_address'][$premises->id()]['edit'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
-            '@link' => $this->getFlow()->getLinkByStep(6, [
+            '@link' => $this->getFlow()->getNextLink('edit_address', [
               'par_data_premises' => $premises->id(),
             ])->setText('edit')->toString(),
           ]),
@@ -165,7 +165,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       $form['primary_contact']['edit'] = [
         '#type' => 'markup',
         '#markup' => t('@link', [
-          '@link' => $this->getLinkByRoute('par_partnership_flows.contact', [
+          '@link' => $this->getNextLink('edit_contact', [
             'par_data_person' => $par_data_primary_person->id(),
           ])->setText('edit')->toString(),
         ]),
@@ -198,7 +198,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
         $form['alternative_people'][$person->id()]['edit'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
-            '@link' => $this->getLinkByRoute('par_partnership_flows.contact', [
+            '@link' => $this->getNextLink('edit_contact', [
               'par_data_person' => $person->id(),
             ])->setText('edit')->toString(),
           ]),
@@ -226,7 +226,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       $form['legal_entity']['edit'] = [
         '#type' => 'markup',
         '#markup' => t('@link', [
-          '@link' => $this->getLinkByRoute('par_partnership_flows.legal', [
+          '@link' => $this->getNextLink('edit_legal', [
             'par_data_legal_entity' => $par_data_legal_entity->id(),
           ])->setText('edit')->toString(),
         ]),
@@ -249,7 +249,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
         $form['legal_entity_' . $legal_entity_item->id()][$legal_entity_item->id() . '_edit'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
-            '@link' => $this->getLinkByRoute('par_partnership_flows.legal', [
+            '@link' => $this->getNextLink('edit_legal', [
               'par_data_legal_entity' => $legal_entity_item->id(),
             ])->setText('edit')->toString(),
           ]),
@@ -267,7 +267,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
     $form['legal_entity_add']['add'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getLinkByRoute('par_partnership_flows.legal_add')->setText('add another legal entity')->toString(),
+        '@link' => $this->getNextLink('add_legal')->setText('add another legal entity')->toString(),
       ]),
     ];
 
@@ -298,7 +298,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
         $form['trading_names'][$key]['edit'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
-            '@link' => $this->getLinkByRoute('par_partnership_flows.trading_name', [
+            '@link' => $this->getNextLink('edit_trading', [
               'trading_name_delta' => $key,
             ])->setText('edit')->toString(),
           ]),
@@ -308,7 +308,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       $form['trading_names']['add'] = [
         '#type' => 'markup',
         '#markup' => t('@link', [
-          '@link' => $this->getLinkByRoute('par_partnership_flows.trading_name_add')->setText('add another trading name')->toString(),
+          '@link' => $this->getNextLink('add_trading')->setText('add another trading name')->toString(),
         ]),
       ];
     }
@@ -330,6 +330,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
 
     $form['next'] = [
       '#type' => 'submit',
+      '#name' => 'next',
       '#value' => $this->t('Save'),
     ];
 

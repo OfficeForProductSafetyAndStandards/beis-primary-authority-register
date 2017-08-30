@@ -43,13 +43,13 @@ class ParPartnershipFlowsUploadForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
-    $form['save'] = [
+    $form['next'] = [
       '#type' => 'submit',
-      '#name' => 'save',
-      '#value' => $this->t('Save'),
+      '#name' => 'next',
+      '#value' => $this->t('Next'),
     ];
 
-    $cancel_link = $this->getFlow()->getLinkByCurrentStepOperation('cancel')->setText('Cancel')->toString();
+    $cancel_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
       '#markup' => t('@link', ['@link' => $cancel_link]),

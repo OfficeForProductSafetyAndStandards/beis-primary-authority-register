@@ -53,7 +53,7 @@ par_partnership_flows.authority_contact_add:
 par_partnership_flows.advice_list:
   path: '/partnership/{par_data_partnership}/advice/list'
   defaults:
-    _controller: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceListController::content'
+    _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::content'
     _title: 'List of Advice for the Partnership'
   requirements:
     _permission: 'bypass partnership journey'
@@ -119,7 +119,7 @@ par_partnership_flows.advice_edit:
 par_partnership_flows.advice_list:
   path: '/partnership/{par_data_partnership}/advice/list'
   defaults:
-    _controller: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceListController::content'
+    _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::content'
     _title: 'List of Advice for the Partnership'
   requirements:
     _permission: 'bypass partnership journey'

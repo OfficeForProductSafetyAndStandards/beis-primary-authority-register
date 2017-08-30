@@ -62,7 +62,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
         [
           '#type' => 'markup',
           '#markup' => $this->getFlow()
-            ->getLinkByStep(10, ['par_data_advice' => $advice->id()])
+            ->getNextLink('edit', ['par_data_advice' => $advice->id()])
             ->setText('classify')
             ->toString(),
         ],
@@ -91,7 +91,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
     $build['save'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getLinkByStep(3, $this->getRouteParams(), ['attributes' => ['class' => 'button']])
+        '@link' => $this->getFlow()->getNextLink('next', $this->getRouteParams(), ['attributes' => ['class' => 'button']])
           ->setText('Save')
           ->toString(),
       ]),

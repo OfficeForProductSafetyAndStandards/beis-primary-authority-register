@@ -2,6 +2,8 @@
 
 namespace Drupal\par_partnership_flows;
 
+use Drupal\user\Entity\User;
+
 /**
  * The base form controller for all PAR forms.
  */
