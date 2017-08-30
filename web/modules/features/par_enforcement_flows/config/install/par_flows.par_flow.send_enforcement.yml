@@ -8,4 +8,4 @@ steps:
     route: par_enforcement_flows.send
     form: par_enforcement_flows.send
   2:
-    route: par_enforcement_flows.raise
+    route: view.rd_helpdesk_dashboard.par_rd_helpdesk_dashboard_page

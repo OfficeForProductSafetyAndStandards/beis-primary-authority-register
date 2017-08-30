@@ -7,8 +7,10 @@ steps:
   1:
     route: par_enforcement_flows.approve
     form: par_enforcement_flows.approve
+    redirect:
+      cancel: 3
   2:
     route: par_enforcement_flows.confirm
     form: par_enforcement_flows.confirm
   3:
-    route: par_enforcement_flows.raise
+    route: view.rd_helpdesk_dashboard.par_rd_helpdesk_dashboard_page

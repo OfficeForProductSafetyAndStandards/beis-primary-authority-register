@@ -183,4 +183,19 @@ interface ParFlowInterface {
    */
   public function getLinkByCurrentStepOperation($operation, array $route_params, array $link_options);
 
+  /**
+   * Get link based on the next available step.
+   *
+   * @param string $operation
+   *   The operation to get the redirection link for.
+   * @param array $route_params
+   *   Additional route parameters to add to the route.
+   * @param array $link_options
+   *   An array of options to set on the link.
+   *
+   * @return Link
+   *   A Drupal link object.
+   */
+  public function getNextLinkByOperation($operation, array $route_params, array $link_options);
+
 }

@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: jJT5-l7_E_8viQ2izlFIRJx399OheyzDMJ4Z9aawsw4
+  default_config_hash: 3J-YkbWFPu80YsIMajl-KzamZ02hTJNvOHasn5yaMUM
 id: approve_enforcement
 label: 'Approve Enforcement'
 description: 'The approval flow for an enforcement notice.'
@@ -11,8 +11,10 @@ steps:
   1:
     route: par_enforcement_flows.approve
     form: par_enforcement_flows.approve
+    redirect:
+      cancel: 3
   2:
     route: par_enforcement_flows.confirm
     form: par_enforcement_flows.confirm
   3:
-    route: par_enforcement_flows.raise
+    route: view.rd_helpdesk_dashboard.par_rd_helpdesk_dashboard_page

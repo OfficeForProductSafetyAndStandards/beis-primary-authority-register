@@ -20,4 +20,4 @@ steps:
     route: par_enforcement_flows.submit
     form: par_enforcement_notice_raise_confirm
   4:
-    route: par_enforcement_flows.raise
+    route: view.rd_helpdesk_dashboard.par_rd_helpdesk_dashboard_page

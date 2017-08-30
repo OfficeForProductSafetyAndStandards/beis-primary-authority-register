@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: '-CyADRo5mxTI2y1imEgAc-We90ddZVZQxIrYllLLSmM'
+  default_config_hash: kAiqcUHajVKSd1dfC7tCt2f3B0Rx1p2DOxUcIkR-1JU
 id: raise_enforcement
 label: 'Raise Enforcement'
 description: 'The creation flow of an enforcement notice.'
@@ -24,4 +24,4 @@ steps:
     route: par_enforcement_flows.submit
     form: par_enforcement_notice_raise_confirm
   4:
-    route: par_enforcement_flows.raise
+    route: view.rd_helpdesk_dashboard.par_rd_helpdesk_dashboard_page

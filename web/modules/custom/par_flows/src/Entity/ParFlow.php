@@ -4,6 +4,7 @@ namespace Drupal\par_flows\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\Core\Link;
+use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
 
 /**
@@ -128,7 +129,13 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     }
 
     // If there is no next step we'll go back to the beginning.
-    return isset($next_index) && isset($next_step['route']) ? $next_index : NULL;
+    $step = isset($next_index) && isset($next_step['route']) ? $next_index : NULL;
+
+    if (empty($step)) {
+      throw new ParFlowException('The specified route does not exist.');
+    }
+
+    return $step;
   }
 
   /**
@@ -257,6 +264,9 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   public function getLinkByStep($index, array $route_params = [], array $link_options = []) {
     $step = $this->getStep($index);
     $route = $step['route'];
+    if (empty($step)) {
+      throw new ParFlowException('The specified route does not exist.');
+    }
     return $route ? $this->getLinkByRoute($route, $route_params, $link_options) : NULL;
   }
 
@@ -264,7 +274,8 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    * {@inheritdoc}
    */
   protected function getLinkByOperation($index, $operation, array $route_params = [], array $link_options = []) {
-    return $this->getLinkByStep($this->getStepByOperation($index, $operation), $route_params, $link_options);
+    $step = $this->getStepByOperation($index, $operation);
+    return $this->getLinkByStep($step, $route_params, $link_options);
   }
 
   /**
@@ -272,6 +283,14 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getLinkByCurrentStepOperation($operation, array $route_params = [], array $link_options = []) {
     return $this->getLinkByOperation($this->getCurrentStep(), $operation, $route_params, $link_options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getNextLinkByOperation($operation, array $route_params = [], array $link_options = []) {
+    $step = $this->getNextStep($operation);
+    return $this->getLinkByStep($step, $route_params, $link_options);
   }
 
 }
