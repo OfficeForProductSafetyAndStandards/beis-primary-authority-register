@@ -5,7 +5,7 @@ par_partnership_flows.organisation_details:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsOrganisationDetailsForm'
     _title: 'Terms & Conditions'
   requirements:
-    _permission: 'access content'
+    _permission: 'bypass partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -17,7 +17,7 @@ par_partnership_flows.authority_details:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAuthorityDetailsForm'
     _title: 'Updating the Primary Authority Register'
   requirements:
-    _permission: 'access content'
+    _permission: 'bypass partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -29,7 +29,7 @@ par_partnership_flows.about:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutForm'
     _title: 'Updating the Primary Authority Register'
   requirements:
-    _permission: 'access par journey transition business'
+    _permission: 'bypass partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -41,7 +41,7 @@ par_partnership_flows.address:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAddressForm'
     _title: 'Updating the Primary Authority Register'
   requirements:
-    _permission: 'access par journey transition business'
+    _permission: 'bypass partnership journey'
     par_data_partnership: \d+
     par_data_premises: \d+
   options:
@@ -56,7 +56,7 @@ par_partnership_flows.contact:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
     _title: 'Updating the Primary Authority Register'
   requirements:
-    _permission: 'access par journey transition business'
+    _permission: 'bypass partnership journey'
     par_data_partnership: \d+
     par_data_person: \d+
   options:
@@ -71,7 +71,7 @@ par_partnership_flows.legal:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm'
     _title: 'Updating the Primary Authority Register'
   requirements:
-    _permission: 'access par journey transition business'
+    _permission: 'bypass partnership journey'
     par_data_partnership: \d+
     par_data_legal_entity: \d+
   options:
@@ -86,7 +86,7 @@ par_partnership_flows.legal_add:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm'
     _title: 'Updating the Primary Authority Register'
   requirements:
-    _permission: 'access par journey transition business'
+    _permission: 'bypass partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -98,7 +98,7 @@ par_partnership_flows.trading_name:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsTradingForm'
     _title: 'Updating the Primary Authority Register'
   requirements:
-    _permission: 'access par journey transition business'
+    _permission: 'bypass partnership journey'
     par_data_partnership: \d+
     trading_name_delta: \d+
   options:
@@ -111,7 +111,7 @@ par_partnership_flows.trading_name_add:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsTradingForm'
     _title: 'Updating the Primary Authority Register'
   requirements:
-    _permission: 'access par journey transition business'
+    _permission: 'bypass partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -123,7 +123,7 @@ par_partnership_flows.sic_code:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSicCodeForm'
     _title: 'Updating the Primary Authority Register'
   requirements:
-    _permission: 'access par journey transition business'
+    _permission: 'bypass partnership journey'
     par_data_partnership: \d+
     par_data_sic_code: \d+
   options:
@@ -138,7 +138,7 @@ par_partnership_flows.sic_code_add:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSicCodeForm'
     _title: 'Updating the Primary Authority Register'
   requirements:
-    _permission: 'access par journey transition business'
+    _permission: 'bypass partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -150,7 +150,7 @@ par_partnership_flows.employee_number:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsEmployeeNoForm'
     _title: 'Updating the Primary Authority Register'
   requirements:
-    _permission: 'access par journey transition business'
+    _permission: 'bypass partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -162,7 +162,7 @@ par_partnership_flows.employee_number:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsEmployeeNoForm'
     _title: 'Updating the Primary Authority Register'
   requirements:
-    _permission: 'access par journey transition business'
+    _permission: 'bypass partnership journey'
     par_data_partnership: \d+
     trading_name_delta: \d+
   options:
@@ -172,10 +172,10 @@ par_partnership_flows.employee_number:
 par_partnership_flows.business_size:
   path: '/partnership/{par_data_partnership}/details/business-size'
   defaults:
-    _form: '\Drupal\par_flow_transition_coordinator\Form\ParFlowTransitionBusinessSizeForm'
+    _form: '\Drupal\par_partnership_flows\Form\ParFlowTransitionBusinessSizeForm'
     _title: 'Updating the Primary Authority Register'
   requirements:
-    _permission: 'access par journey transition coordinator'
+    _permission: 'bypass partnership journey'
     par_data_partnership: \d+
   options:
     parameters:

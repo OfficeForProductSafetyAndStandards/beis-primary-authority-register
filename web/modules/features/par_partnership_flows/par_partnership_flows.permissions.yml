@@ -1,4 +1,4 @@
-access par journey transition business:
-  title: 'Access PAR Transition Journey Business'
-  description: 'A permission to allow access to all the steps of the first journey for the transition site.'
+bypass partnership journey:
+  title: 'ByPass Partnership Journeys '
+  description: 'A permission to allow access to all journeys in hte partnership flows.'
   restrict access: TRUE

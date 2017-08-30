@@ -5,13 +5,12 @@ namespace Drupal\par_partnership_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_flows\Form\ParBaseForm;
 
 /**
  * The primary contact form for the partnership details steps of the
  * 1st Data Validation/Transition User Journey.
  */
-class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
+class ParPartnershipFlowsLegalEntityForm extends ParPartnershipBaseForm {
 
   /**
    * @var string
