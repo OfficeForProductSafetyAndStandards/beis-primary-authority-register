@@ -1,9 +1,9 @@
-uuid: 6c42f5fa-fcd5-4550-83d4-ff8370382c80
+uuid: 92b133e0-c9b2-4ca7-b3a8-632fe383d687
 langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: S5Fe2TnRBed0Scx_It6oTttw3RL2NP4f_xiGBJE3How
+  default_config_hash: ymKl4i7H8KtLSQTPfjly8oXjXwYCFIEozxVrMVHOyMo
 id: partnership_coordinated
 label: 'Coordinated Partnership Flow'
 description: ''
@@ -14,21 +14,42 @@ steps:
   2:
     route: par_partnership_flows.about
     form_id: par_partnership_about_business
+    redirect:
+      save: 1
+      cancel: 1
   3:
     route: par_partnership_flows.address
     form_id: par_partnership_address
+    redirect:
+      save: 1
+      cancel: 1
   4:
     route: par_partnership_flows.contact
     form_id: par_partnership_contact
+    redirect:
+      save: 1
+      cancel: 1
   5:
     route: par_partnership_flows.legal
     form_id: par_partnership_legal
+    redirect:
+      save: 1
+      cancel: 1
   6:
     route: par_partnership_flows.trading_name
     form_id: par_partnership_trading_name
+    redirect:
+      save: 1
+      cancel: 1
   7:
     route: par_partnership_flows.sic_code
     form_id: par_partnership_sic_code
+    redirect:
+      save: 1
+      cancel: 1
   8:
     route: par_partnership_flows.employee_number
     form_id: par_partnership_employee_number
+    redirect:
+      save: 1
+      cancel: 1
