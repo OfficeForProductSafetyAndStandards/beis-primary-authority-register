@@ -68,6 +68,7 @@ module:
   par_login: 0
   par_migration: 0
   par_migration_scripts: 0
+  par_partnership_flows: 0
   par_roles: 0
   par_styleguide: 0
   password_policy: 0

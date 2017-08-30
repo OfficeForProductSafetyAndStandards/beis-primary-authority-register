@@ -1,7 +1,7 @@
 status: true
 dependencies: {  }
-id: organisation_flow
-label: 'Organisation Flow'
+id: coordinated_flow
+label: 'Coordinated Flow'
 description: ''
 steps:
   1:

@@ -22,7 +22,7 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'par_partnership_flows_trading';
+    return 'par_partnership_trading_name';
   }
 
   /**
@@ -75,7 +75,7 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
       '#value' => t('Save'),
     ];
 
-    $previous_link = $this->getFlow()->getLinkByStep(4)->setText('Cancel')->toString();
+    $previous_link = $this->getFlow()->getLinkByStep(1)->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
       '#markup' => t('@link', ['@link' => $previous_link]),

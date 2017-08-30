@@ -15,7 +15,7 @@ class ParPartnershipFlowsSectorForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  protected $flow = 'par_partnership_flows_organisation';
+  protected $flow = 'partnership_authority';
 
   /**
    * {@inheritdoc}
@@ -68,7 +68,7 @@ class ParPartnershipFlowsSectorForm extends ParBaseForm {
       '#value' => $this->t('Save'),
     ];
 
-    $previous_link = $this->getFlow()->getLinkByStep(4)->setText('Cancel')->toString();
+    $previous_link = $this->getFlow()->getLinkByStep(1)->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
       '#markup' => t('@link', ['@link' => $previous_link]),

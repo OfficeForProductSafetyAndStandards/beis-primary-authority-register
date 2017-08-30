@@ -5,19 +5,13 @@ namespace Drupal\par_partnership_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPremises;
-use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_flows\Form\ParPartnershipBaseForm;
 
 /**
  * The primary contact form for the partnership details steps of the
  * 2nd Data Validation/Transition User Journey.
  */
-class ParPartnershipFlowsAddressForm extends ParBaseForm {
-
-  /**
-   * @var string
-   *   A machine safe value representing the current form journey.
-   */
-  protected $flow = 'par_partnership_flows_organisation';
+class ParPartnershipFlowsAddressForm extends ParPartnershipBaseForm {
 
   /**
    * {@inheritdoc}
@@ -124,8 +118,8 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       '#type' => 'submit',
       '#value' => t('Next'),
     ];
-
-    $previous_link = $this->getFlow()->getLinkByStep(4)->setText('Cancel')->toString();
+dump($this->getFlow());
+    $previous_link = $this->getFlow()->getLinkByStep(1)->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
       '#markup' => t('@link', ['@link' => $previous_link]),

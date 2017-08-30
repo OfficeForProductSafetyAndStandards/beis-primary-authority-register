@@ -68,7 +68,7 @@ class ParPartnershipFlowsBusinessSizeForm extends ParBaseForm {
       '#value' => $this->t('Save'),
     ];
 
-    $previous_link = $this->getFlow()->getLinkByStep(4)->setText('Cancel')->toString();
+    $previous_link = $this->getFlow()->getLinkByStep(1)->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
       '#markup' => t('@link', ['@link' => $previous_link]),
