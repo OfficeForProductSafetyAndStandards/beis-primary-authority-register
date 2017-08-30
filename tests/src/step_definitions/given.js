@@ -87,7 +87,7 @@ module.exports = function given() {
     );
 
     this.Given(
-        /^relevant partnerships search results returned$/,
+        /^relevant partnerships search results returned for search term "([^"]*)?"$/,
         relevantSearchResultsCheck
     );
 
