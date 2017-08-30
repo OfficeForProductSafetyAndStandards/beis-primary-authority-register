@@ -84,11 +84,7 @@ class ParFlowTransitionAdviceForm extends ParBaseForm {
 
     }
 
-    $files = $this->getDefaultValues("files", '', '');
-    var_dump($files);
-
-    $files = $this->getDefaultValues("files");
-    var_dump($files);
+    $files = $this->getDefaultValues("files", '', 'par_flow_transition_partnership_advice_document_upload');
 
     if ($files) {
 
