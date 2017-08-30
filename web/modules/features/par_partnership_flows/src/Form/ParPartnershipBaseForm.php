@@ -1,9 +1,10 @@
 <?php
 
-namespace Drupal\par_flows\Form;
+namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\user\Entity\User;
 use Drupal\par_flows\ParBaseInterface;
+use Drupal\par_flows\Form\ParBaseForm;
 
 /**
  * The base form controller for all PAR forms.
@@ -11,36 +12,11 @@ use Drupal\par_flows\ParBaseInterface;
 abstract class ParPartnershipBaseForm extends ParBaseForm implements ParBaseInterface {
 
   /**
-   * Get the current flow entity.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface
-   *   The flow entity.
-   */
-//  public function getFlow() {
-//    $account = User::Load($this->currentUser()->id());
-//    if ($account->hasRole('par_authority')) {
-//      return 'authority_flow';
-//    }
-//
-//    if ($par_data_partnership = $this->getRouteParam('par_data_partnership')) {
-//      $partnership_type = $par_data_partnership->get('partnership_type')->getString();
-//      if ($partnership_type === 'coordinated') {
-//        return $this->getFlowStorage()->load('coordinated_flow');
-//      }
-//      if ($partnership_type === 'business') {
-//        return 'organisation_flow';
-//      }
-//
-//    }
-//    return $this->getFlowStorage()->load($this->getFlowName());
-//  }
-
-
-  /**
    * Get the current flow name.
    *
    * @return string
-   *   The string representing the name of the current flow.   */
+   *   The string representing the name of the current flow.
+   */
   public function getFlowName() {
     $account = User::Load($this->currentUser()->id());
 
@@ -58,7 +34,6 @@ abstract class ParPartnershipBaseForm extends ParBaseForm implements ParBaseInte
 //      }
 //      else if ($par_data_manager->isMemberOfCoordinator($account))
 //      {
-        $this->flow = 'partnership_coordinated';
 //      }
 //      else if ($par_data_manager->isMemberOfBusiness($account))
 //      {
@@ -66,8 +41,8 @@ abstract class ParPartnershipBaseForm extends ParBaseForm implements ParBaseInte
 //        $this->flow = 'partnership_direct';
 //      }
 //    }
-    return $this->flow;
-  }
+//  }
 
-//  return isset($this->flow) ? $this->flow : '';
+    return isset($this->flow) ? $this->flow : '';
+  }
 }
