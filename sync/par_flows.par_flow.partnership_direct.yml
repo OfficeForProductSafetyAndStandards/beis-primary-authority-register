@@ -5,7 +5,7 @@ dependencies: {  }
 _core:
   default_config_hash: GwqkAtbze34CwV4eRYXLoZ6cBEG0D7XmQ_xRp3_m-oA
 id: partnership_direct
-label: 'Direcr Partnership Flow'
+label: 'Direct Partnership Flow'
 description: ''
 steps:
   1:

@@ -1,7 +1,7 @@
 status: true
 dependencies: {  }
 id: partnership_direct
-label: 'Direcr Partnership Flow'
+label: 'Direct Partnership Flow'
 description: ''
 steps:
   1:

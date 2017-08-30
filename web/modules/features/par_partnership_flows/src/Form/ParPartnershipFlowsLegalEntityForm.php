@@ -97,15 +97,16 @@ class ParPartnershipFlowsLegalEntityForm extends ParPartnershipBaseForm {
       ),
     ];
 
-    $form['next'] = [
+    $form['save'] = [
       '#type' => 'submit',
+      '#save' => 'save',
       '#value' => t('Save'),
     ];
 
-    $previous_link = $this->getFlow()->getLinkByStep(1)->setText('Cancel')->toString();
+    $cancel_link = $this->getFlow()->getLinkByCurrentStepOperation('cancel')->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $previous_link]),
+      '#markup' => t('@link', ['@link' => $cancel_link]),
     ];
 
     // Make sure to add the person cacheability data to this form.
@@ -120,37 +121,37 @@ class ParPartnershipFlowsLegalEntityForm extends ParPartnershipBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
-    $form_items = [
-      'registered_name' => 'registered_name',
-      'legal_entity_type' => 'legal_entity_type',
-    ];
-
-    if ($form_state->getValue('legal_entity_type') === 'limited_company') {
-      $form_items['registered_number'] = 'company_house_no';
-    }
-
-    foreach($form_items as $element_item => $form_item) {
-      $fields[$element_item] = [
-        'value' => $form_state->getValue($form_item),
-        'key' => $form_item,
-        'tokens' => [
-          '%field' => !empty($form[$form_item]['#title']) ? $form[$form_item]['#title']->render() : '',
-        ],
-      ];
-    }
-    $legal_entity = $this->getRouteParam('par_data_legal_entity');
-    if (empty($legal_entity)) {
-      // We are adding a new entity so need to create one for the validation.
-      $legal_entity = \Drupal\par_data\Entity\ParDataLegalEntity::create([
-        'type' => 'legal_entity',
-        'uid' => 1,
-      ]);
-    }
-    $errors = $legal_entity->validateFields($fields);
-    // Display error messages.
-    foreach($errors as $field => $message) {
-      $form_state->setErrorByName($field, $message);
-    }
+//    $form_items = [
+//      'registered_name' => 'registered_name',
+//      'legal_entity_type' => 'legal_entity_type',
+//    ];
+//
+//    if ($form_state->getValue('legal_entity_type') === 'limited_company') {
+//      $form_items['registered_number'] = 'company_house_no';
+//    }
+//
+//    foreach($form_items as $element_item => $form_item) {
+//      $fields[$element_item] = [
+//        'value' => $form_state->getValue($form_item),
+//        'key' => $form_item,
+//        'tokens' => [
+//          '%field' => !empty($form[$form_item]['#title']) ? $form[$form_item]['#title']->render() : '',
+//        ],
+//      ];
+//    }
+//    $legal_entity = $this->getRouteParam('par_data_legal_entity');
+//    if (empty($legal_entity)) {
+//      // We are adding a new entity so need to create one for the validation.
+//      $legal_entity = \Drupal\par_data\Entity\ParDataLegalEntity::create([
+//        'type' => 'legal_entity',
+//        'uid' => 1,
+//      ]);
+//    }
+//    $errors = $legal_entity->validateFields($fields);
+//    // Display error messages.
+//    foreach($errors as $field => $message) {
+//      $form_state->setErrorByName($field, $message);
+//    }
   }
 
   /**
@@ -159,57 +160,57 @@ class ParPartnershipFlowsLegalEntityForm extends ParPartnershipBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Save the value for the about_partnership field.
-    $legal_entity = $this->getRouteParam('par_data_legal_entity');
-    if (!empty($legal_entity)) {
-      $legal_entity->set('registered_name', $this->getTempDataValue('registered_name'));
-      $legal_entity->set('legal_entity_type', $this->getTempDataValue('legal_entity_type'));
-      $legal_entity->set('registered_number', $this->getTempDataValue('company_house_no'));
-
-      if ($legal_entity->save()) {
-        $this->deleteStore();
-      }
-      else {
-        $message = $this->t('This %field could not be saved for %form_id');
-        $replacements = [
-          '%field' => $this->getTempDataValue('registered_name'),
-          '%form_id' => $this->getFormId(),
-        ];
-        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-      }
-    }
-    else {
-      // Adding a new legal entity.
-      $legal_entity = ParDataLegalEntity::create([
-        'type' => 'legal_entity',
-        'name' => $this->getTempDataValue('registered_name'),
-        'uid' => 1,
-        'registered_name' => $this->getTempDataValue('registered_name'),
-        'registered_number' => $this->getTempDataValue('company_house_no'),
-        'legal_entity_type' => $this->getTempDataValue('legal_entity_type'),
-      ]);
-      $legal_entity->save();
-
-      // Now add the legal entity to the organisation.
-      $par_data_partnership = $this->getRouteParam('par_data_partnership');
-      $par_data_organisation = current($par_data_partnership->getOrganisation());
-      $par_data_organisation->addLegalEntity($legal_entity);
-
-      if ($par_data_organisation->save()) {
-        $this->deleteStore();
-      }
-      else {
-        $message = $this->t('This %field could not be saved for %form_id');
-        $replacements = [
-          '%field' => $this->getTempDataValue('registered_name'),
-          '%form_id' => $this->getFormId(),
-        ];
-        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-      }
-    }
-
-    // Go back to the overview.
-    $form_state->setRedirect($this->getFlow()->getRouteByStep(4), $this->getRouteParams());
+//    // Save the value for the about_partnership field.
+//    $legal_entity = $this->getRouteParam('par_data_legal_entity');
+//    if (!empty($legal_entity)) {
+//      $legal_entity->set('registered_name', $this->getTempDataValue('registered_name'));
+//      $legal_entity->set('legal_entity_type', $this->getTempDataValue('legal_entity_type'));
+//      $legal_entity->set('registered_number', $this->getTempDataValue('company_house_no'));
+//
+//      if ($legal_entity->save()) {
+//        $this->deleteStore();
+//      }
+//      else {
+//        $message = $this->t('This %field could not be saved for %form_id');
+//        $replacements = [
+//          '%field' => $this->getTempDataValue('registered_name'),
+//          '%form_id' => $this->getFormId(),
+//        ];
+//        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+//      }
+//    }
+//    else {
+//      // Adding a new legal entity.
+//      $legal_entity = ParDataLegalEntity::create([
+//        'type' => 'legal_entity',
+//        'name' => $this->getTempDataValue('registered_name'),
+//        'uid' => 1,
+//        'registered_name' => $this->getTempDataValue('registered_name'),
+//        'registered_number' => $this->getTempDataValue('company_house_no'),
+//        'legal_entity_type' => $this->getTempDataValue('legal_entity_type'),
+//      ]);
+//      $legal_entity->save();
+//
+//      // Now add the legal entity to the organisation.
+//      $par_data_partnership = $this->getRouteParam('par_data_partnership');
+//      $par_data_organisation = current($par_data_partnership->getOrganisation());
+//      $par_data_organisation->addLegalEntity($legal_entity);
+//
+//      if ($par_data_organisation->save()) {
+//        $this->deleteStore();
+//      }
+//      else {
+//        $message = $this->t('This %field could not be saved for %form_id');
+//        $replacements = [
+//          '%field' => $this->getTempDataValue('registered_name'),
+//          '%form_id' => $this->getFormId(),
+//        ];
+//        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+//      }
+//    }
+//
+//    // Go back to the overview.
+//    $form_state->setRedirect($this->getFlow()->getRouteByStep(4), $this->getRouteParams());
   }
 
 }

@@ -331,8 +331,9 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParPartnershipBaseForm {
       '#return_value' => 'on',
     ];
 
-    $form['next'] = [
+    $form['save'] = [
       '#type' => 'submit',
+      '#name' => 'save',
       '#value' => $this->t('Save'),
     ];
 
@@ -360,49 +361,30 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParPartnershipBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Save the value for the about_partnership field.
-    $par_data_partnership = $this->getRouteParam('par_data_partnership');
-
-    // Save the value for the partnership status if it's being confirmed.
-    if ($confirmation_value = $this->decideBooleanValue($this->getTempDataValue('confirmation'))) {
-      $par_data_partnership->set('partnership_info_agreed_business', $confirmation_value);
-      // Also change the status.
-      $par_data_partnership->setParStatus('confirmed_business');
-    }
-    foreach ($this->valuesToSet as $key => $item) {
-      $setting = $this->valuesToSet[$key];
-      $setting['object']->set($setting['field'], $this->getTempDataValue($setting['value_field']));
-    }
-
-    if ($par_data_partnership->save()) {
-      $this->deleteStore();
-    }
-    else {
-      $message = $this->t('The %field field could not be saved for %form_id');
-      $replacements = [
-        '%field' => 'about_partnership',
-        '%form_id' => $this->getFormId(),
-      ];
-      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-    }
-
-    // Go back to the overview.
-    $form_state->setRedirect($this->getFlow()->getPrevRoute(), $this->getRouteParams());
-  }
-
-  /**
-   * Record the class and field names to be set when the form is saved.
-   *
-   * @param $class
-   * @param $field
-   * @param $value_field
-   */
-  public function setValue($class, $field, $value_field) {
-    $this->valuesToSet[] = [
-      'object' => $class,
-      'field' => $field,
-      'value_field' => $value_field,
-    ];
+//    // Save the value for the about_partnership field.
+//    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+//
+//    // Save the value for the partnership status if it's being confirmed.
+//    if ($confirmation_value = $this->decideBooleanValue($this->getTempDataValue('confirmation'))) {
+//      $par_data_partnership->set('partnership_info_agreed_business', $confirmation_value);
+//      // Also change the status.
+//      $par_data_partnership->setParStatus('confirmed_business');
+//    }
+//
+//    if ($par_data_partnership->save()) {
+//      $this->deleteStore();
+//    }
+//    else {
+//      $message = $this->t('The %field field could not be saved for %form_id');
+//      $replacements = [
+//        '%field' => 'about_partnership',
+//        '%form_id' => $this->getFormId(),
+//      ];
+//      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+//    }
+//
+//    // Go back to the overview.
+//    $form_state->setRedirect($this->getFlow()->getPrevRoute(), $this->getRouteParams());
   }
 
 }

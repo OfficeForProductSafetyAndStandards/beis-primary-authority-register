@@ -62,15 +62,16 @@ class ParPartnershipFlowsEmployeeNoForm extends ParPartnershipBaseForm {
       '#default_value' => $this->getDefaultValues('business_size'),
     ];
 
-    $form['next'] = [
+    $form['save'] = [
       '#type' => 'submit',
+      '#name' => 'save',
       '#value' => $this->t('Save'),
     ];
 
-    $previous_link = $this->getFlow()->getLinkByStep(1)->setText('Cancel')->toString();
+    $cancel_link = $this->getFlow()->getLinkByCurrentStepOperation('cancel')->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $previous_link]),
+      '#markup' => t('@link', ['@link' => $cancel_link]),
     ];
 
     // Make sure to add the partnership cacheability data to this form.

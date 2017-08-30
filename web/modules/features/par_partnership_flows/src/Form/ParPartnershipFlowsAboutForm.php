@@ -59,15 +59,16 @@ class ParPartnershipFlowsAboutForm extends ParPartnershipBaseForm {
       '#description' => 'Use this section to give a brief overview of the partnership.<br>Include any information you feel may be useful to enforcing authorities.',
     ];
 
-    $form['next'] = [
+    $form['save'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Next'),
+      '#name' => 'save',
+      '#value' => $this->t('Save'),
     ];
 
-    $previous_link = $this->getFlow()->getLinkByStep($this->getFlow()->getPrevStep())->setText('Cancel')->toString();
+    $cancel_link = $this->getFlow()->getLinkByCurrentStepOperation('cancel')->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $previous_link]),
+      '#markup' => t('@link', ['@link' => $cancel_link]),
     ];
 
     // Make sure to add the partnership cacheability data to this form.
@@ -82,23 +83,23 @@ class ParPartnershipFlowsAboutForm extends ParPartnershipBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
-    $partnership = $this->getRouteParam('par_data_partnership');
-    $par_data_organisation = current($partnership->getOrganisation());
-    $fields = [
-      'comments' => [
-        'value' => $form_state->getValue('about_business'),
-        'key' => 'about_business',
-        'tokens' => [
-          '%field' => $form['about_business']['#title']->render(),
-        ]
-      ],
-    ];
-
-    $errors = $par_data_organisation->validateFields($fields);
-    // Display error messages.
-    foreach($errors as $field => $message) {
-      $form_state->setErrorByName($field, $message);
-    }
+//    $partnership = $this->getRouteParam('par_data_partnership');
+//    $par_data_organisation = current($partnership->getOrganisation());
+//    $fields = [
+//      'comments' => [
+//        'value' => $form_state->getValue('about_business'),
+//        'key' => 'about_business',
+//        'tokens' => [
+//          '%field' => $form['about_business']['#title']->render(),
+//        ]
+//      ],
+//    ];
+//
+//    $errors = $par_data_organisation->validateFields($fields);
+//    // Display error messages.
+//    foreach($errors as $field => $message) {
+//      $form_state->setErrorByName($field, $message);
+//    }
   }
 
   /**
@@ -106,25 +107,25 @@ class ParPartnershipFlowsAboutForm extends ParPartnershipBaseForm {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-
-    // Save the value for the about_partnership field.
-    $partnership = $this->getRouteParam('par_data_partnership');
-    $par_data_organisation = current($partnership->getOrganisation());
-    $par_data_organisation->set('comments', $this->getTempDataValue('about_business'));
-    if ($par_data_organisation->save()) {
-      $this->deleteStore();
-    }
-    else {
-      $message = $this->t('The %field field could not be saved for %form_id');
-      $replacements = [
-        '%field' => 'comments',
-        '%form_id' => $this->getFormId(),
-      ];
-      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-    }
-
-    // Go back to the overview.
-    $form_state->setRedirect($this->getFlow()->getRouteByStep(4), $this->getRouteParams());
+//
+//    // Save the value for the about_partnership field.
+//    $partnership = $this->getRouteParam('par_data_partnership');
+//    $par_data_organisation = current($partnership->getOrganisation());
+//    $par_data_organisation->set('comments', $this->getTempDataValue('about_business'));
+//    if ($par_data_organisation->save()) {
+//      $this->deleteStore();
+//    }
+//    else {
+//      $message = $this->t('The %field field could not be saved for %form_id');
+//      $replacements = [
+//        '%field' => 'comments',
+//        '%form_id' => $this->getFormId(),
+//      ];
+//      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+//    }
+//
+//    // Go back to the overview.
+//    $form_state->setRedirect($this->getFlow()->getRouteByStep(4), $this->getRouteParams());
   }
 
 }

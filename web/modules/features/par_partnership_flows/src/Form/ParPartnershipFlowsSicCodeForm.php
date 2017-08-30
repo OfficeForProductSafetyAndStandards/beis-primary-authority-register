@@ -62,15 +62,16 @@ class ParPartnershipFlowsSicCodeForm extends ParPartnershipBaseForm {
 //      '#description' => $this->t('Sometimes companies trade under a different name to their registered, legal name. This is known as a \'trading name\'. State any trading names used by the business.'),
     ];
 
-    $form['next'] = [
+    $form['save'] = [
       '#type' => 'submit',
+      '#name' => 'save',
       '#value' => t('Save'),
     ];
 
-    $previous_link = $this->getFlow()->getLinkByStep(1)->setText('Cancel')->toString();
+    $cancel_link = $this->getFlow()->getLinkByCurrentStepOperation('cancel')->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $previous_link]),
+      '#markup' => t('@link', ['@link' => $cancel_link]),
     ];
 
     // Make sure to add the person cacheability data to this form.
