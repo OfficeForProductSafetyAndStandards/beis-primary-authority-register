@@ -15,6 +15,7 @@ use Drupal\par_flows\ParRedirectTrait;
  *   label = @Translation("PAR Form Flow"),
  *   config_prefix = "par_flow",
  *   handlers = {
+ *     "storage" = "Drupal\par_flows\ParFlowStorage",
  *     "list_builder" = "Drupal\Core\Entity\EntityListBuilder",
  *     "form" = {
  *       "add" = "Drupal\Core\Entity\EntityForm",
@@ -142,7 +143,6 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getPrevStep($operation = NULL) {
     $current_step = $this->getCurrentStep();
-
     $redirect = $this->getStepByOperation($current_step, $operation);
 
     // First check if the operation produced a valid step.

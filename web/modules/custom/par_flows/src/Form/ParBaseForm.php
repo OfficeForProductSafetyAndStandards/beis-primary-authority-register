@@ -13,6 +13,7 @@ use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParBaseInterface;
+use Drupal\par_flows\ParFlowException;
 use Drupal\user\PrivateTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Utility\NestedArray;
@@ -176,7 +177,10 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    *   The string representing the name of the current flow.
    */
   public function getFlowName() {
-    return isset($this->flow) ? $this->flow : '';
+    if (empty($this->flow)) {
+      throw new ParFlowException('The flow must have a name.');
+    }
+    return $this->flow;
   }
 
   /**
