@@ -1,15 +1,12 @@
 <?php
 
-namespace Drupal\par_partnership_flows\Form;
-
-use Drupal\user\Entity\User;
-use Drupal\par_flows\ParBaseInterface;
-use Drupal\par_flows\Form\ParBaseForm;
+namespace Drupal\par_partnership_flows;
 
 /**
  * The base form controller for all PAR forms.
  */
-abstract class ParPartnershipBaseForm extends ParBaseForm implements ParBaseInterface {
+
+trait ParPartnershipFlowsTrait {
 
   /**
    * Get the current flow name.

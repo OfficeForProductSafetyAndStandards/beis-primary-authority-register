@@ -5,12 +5,16 @@ namespace Drupal\par_partnership_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPremises;
+use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
  * The primary contact form for the partnership details steps of the
  * 2nd Data Validation/Transition User Journey.
  */
-class ParPartnershipFlowsAddressForm extends ParPartnershipBaseForm {
+class ParPartnershipFlowsAddressForm extends ParBaseForm {
+
+  use ParPartnershipFlowsTrait;
 
   /**
    * {@inheritdoc}

@@ -20,41 +20,28 @@ steps:
       cancel: 1
   4:
     route: par_partnership_flows.advice_upload_documents
-    form_id:
+    form_id: par_partnership_upload
     redirect:
       cancel: 3
   5:
     route: par_partnership_flows.advice_add
-    form_id:
+    form_id: par_partnership_advice
     redirect:
-      next: 3
+      save: 3
       cancel: 3
   6:
     route: par_partnership_flows.advice_edit_documents
-    form_id:
+    form_id: par_partnership_upload
     redirect:
       cancel: 3
   7:
-    route: par_partnership_flows.advice_classify
-    form_id:
+    route: par_partnership_flows.advice_edit
+    form_id: par_partnership_advice
     redirect:
       save: 3
       cancel: 3
   8:
     route: par_partnership_flows.inspection_list
-    form_id:
     redirect:
       next: 1
       cancel: 1
-  9:
-    route: par_partnership_flows.inspection_plan_add
-    form_id:
-    redirect:
-      save: 8
-      cancel: 8
-  10:
-    route: par_partnership_flows.inspection_plan_edit
-    form_id:
-    redirect:
-      save: 8
-      cancel: 8

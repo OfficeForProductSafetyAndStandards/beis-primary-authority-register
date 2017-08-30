@@ -1,16 +1,4 @@
-# PAR Data Partnership Journey
-par_partnership_flows.organisation_details:
-  path: '/partnership/{par_data_partnership}/organisation-details'
-  defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsOrganisationDetailsForm'
-    _title: 'Partnership Details for Organisation'
-  requirements:
-    _permission: 'bypass partnership journey'
-    par_data_partnership: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
+# PAR Data Authority Partnership Journey
 par_partnership_flows.authority_details:
   path: '/partnership/{par_data_partnership}/authority-details'
   defaults:
@@ -28,6 +16,88 @@ par_partnership_flows.about_partnership:
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutForm'
     _title: 'About the Partnership'
+  requirements:
+    _permission: 'bypass partnership journey'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.advice_list:
+  path: '/partnership/{par_data_partnership}/advice/list'
+  defaults:
+    _controller: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceListController::content'
+    _title: 'List of Advice for the Partnership'
+  requirements:
+    _permission: 'bypass partnership journey'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.advice_upload_documents:
+  path: '/partnership/{par_data_partnership}/advice/upload'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsUploadForm'
+    _title: 'Upload Advice'
+  requirements:
+    _permission: 'bypass partnership journey'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.advice_add:
+  path: '/partnership/{par_data_partnership}/advice/add'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm'
+    _title: 'Add Advice'
+  requirements:
+    _permission: 'bypass partnership journey'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.advice_edit_documents:
+  path: '/partnership/{par_data_partnership}/advice/{par_data_advice}/upload'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsUploadForm'
+    _title: 'Upload Advice'
+  requirements:
+    _permission: 'bypass partnership journey'
+    par_data_partnership: \d+
+    par_data_advice: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_advice:
+        type: entity:par_data_advice
+par_partnership_flows.advice_edit:
+  path: '/partnership/{par_data_partnership}/advice/{par_data_advice}/edit'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm'
+    _title: 'Add Advice'
+  requirements:
+    _permission: 'bypass partnership journey'
+    par_data_partnership: \d+
+    par_data_advice: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_advice:
+        type: entity:par_data_advice
+
+
+
+# PAR Data Organisation Partnership Journey
+par_partnership_flows.organisation_details:
+  path: '/partnership/{par_data_partnership}/organisation-details'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsOrganisationDetailsForm'
+    _title: 'Partnership Details for Organisation'
   requirements:
     _permission: 'bypass partnership journey'
     par_data_partnership: \d+
