@@ -14,15 +14,8 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParPartnershipBaseForm {
   /**
    * {@inheritdoc}
    */
-  protected $flow = 'par_partnership_flows_organisation';
-
-  protected $valuesToSet = [];
-
-  /**
-   * {@inheritdoc}
-   */
   public function getFormId() {
-    return 'par_flow_transition_business_details';
+    return 'par_partnership_authority_details';
   }
 
   /**

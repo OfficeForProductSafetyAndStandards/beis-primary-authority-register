@@ -12,12 +12,6 @@ use Drupal\par_data\Entity\ParDataPartnership;
 class ParPartnershipFlowsSicCodeForm extends ParPartnershipBaseForm {
 
   /**
-   * @var string
-   *   A machine safe value representing the current form journey.
-   */
-  protected $flow = 'partnership_organisation';
-
-  /**
    * {@inheritdoc}
    */
   public function getFormId() {

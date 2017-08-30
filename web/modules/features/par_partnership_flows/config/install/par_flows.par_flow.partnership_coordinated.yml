@@ -8,45 +8,68 @@ steps:
     route: par_partnership_flows.organisation_details
     form_id: par_partnership_organisation_details
   2:
-    route: par_partnership_flows.about
+    route: par_partnership_flows.about_business
     form_id: par_partnership_about_business
     redirect:
       save: 1
-      cancel: 1
+      next: 1
   3:
-    route: par_partnership_flows.address
+    route: par_partnership_flows.address_add
     form_id: par_partnership_address
     redirect:
       save: 1
-      cancel: 1
+      next: 1
   4:
-    route: par_partnership_flows.contact
+    route: par_partnership_flows.address_edit
+    form_id: par_partnership_address
+    redirect:
+      save: 1
+      next: 1
+  5:
+    route: par_partnership_flows.contact_add
     form_id: par_partnership_contact
     redirect:
       save: 1
-      cancel: 1
-  5:
-    route: par_partnership_flows.legal
+      next: 1
+  6:
+    route: par_partnership_flows.contact_edit
+    form_id: par_partnership_contact
+    redirect:
+      save: 1
+      next: 1
+  7:
+    route: par_partnership_flows.legal_entity_add
     form_id: par_partnership_legal
     redirect:
       save: 1
-      cancel: 1
-  6:
-    route: par_partnership_flows.trading_name
+      next: 1
+  8:
+    route: par_partnership_flows.legal_entity_edit
+    form_id: par_partnership_legal
+    redirect:
+      save: 1
+      next: 1
+  9:
+    route: par_partnership_flows.trading_name_add
     form_id: par_partnership_trading_name
     redirect:
       save: 1
-      cancel: 1
-  7:
-    route: par_partnership_flows.sic_code
-    form_id: par_partnership_sic_code
+      next: 1
+  10:
+    route: par_partnership_flows.trading_name_edit
+    form_id: par_partnership_trading_name
+    redirect:
+      save: 1
+      next: 1
+  11:
+    route: par_partnership_flows.sector
+    form_id: par_partnership_sector
     redirect:
       save: 1
       cancel: 1
-  8:
-    route: par_partnership_flows.employee_number
-    form_id: par_partnership_employee_number
+  12:
+    route: par_partnership_flows.business_size
+    form_id: par_partnership_business_size
     redirect:
       save: 1
       cancel: 1
-

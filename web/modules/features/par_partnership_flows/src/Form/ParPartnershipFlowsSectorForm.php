@@ -14,13 +14,8 @@ class ParPartnershipFlowsSectorForm extends ParPartnershipBaseForm {
   /**
    * {@inheritdoc}
    */
-  protected $flow = 'partnership_authority';
-
-  /**
-   * {@inheritdoc}
-   */
   public function getFormId() {
-    return 'par_flow_transition_coordinator_business_size';
+    return 'par_partnership_sector';
   }
 
   /**

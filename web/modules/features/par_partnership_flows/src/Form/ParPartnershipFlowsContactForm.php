@@ -13,12 +13,6 @@ use Drupal\par_data\Entity\ParDataPerson;
 class ParPartnershipFlowsContactForm extends ParPartnershipBaseForm {
 
   /**
-   * @var string
-   *   A machine safe value representing the current form journey.
-   */
-  protected $flow = 'par_partnership_flows_organisation';
-
-  /**
    * {@inheritdoc}
    */
   public function getFormId() {

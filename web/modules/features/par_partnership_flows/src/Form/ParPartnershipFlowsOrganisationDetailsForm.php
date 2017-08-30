@@ -14,13 +14,6 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParPartnershipBaseForm 
   /**
    * {@inheritdoc}
    */
-  protected $flow = 'organisation_flow';
-
-  protected $valuesToSet = [];
-
-  /**
-   * {@inheritdoc}
-   */
   public function getFormId() {
     return 'par_partnership_organisation_details';
   }

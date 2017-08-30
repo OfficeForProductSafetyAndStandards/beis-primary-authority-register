@@ -9,13 +9,13 @@ use Drupal\par_data\Entity\ParDataPartnership;
  * The about partnership form for the partnership details steps of the
  * 1st Data Validation/Transition User Journey.
  */
-class ParPartnershipFlowsEmployeeNoForm extends ParPartnershipBaseForm {
+class ParPartnershipFlowsAboutForm extends ParPartnershipBaseForm {
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'par_partnership_employee_number';
+    return 'par_partnership_about_business';
   }
 
   /**
@@ -36,7 +36,7 @@ class ParPartnershipFlowsEmployeeNoForm extends ParPartnershipBaseForm {
       // the form about them.
       $par_data_organisation = current($par_data_partnership->getOrganisation());
 
-      $this->loadDataValue('business_size', $par_data_organisation->get('size')->getString());
+      $this->loadDataValue('about_business', $par_data_organisation->get('comments')->getString());
     }
   }
 
@@ -46,15 +46,12 @@ class ParPartnershipFlowsEmployeeNoForm extends ParPartnershipBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
-    $form['info'] = [
-      '#markup' => t('Employee No.'),
-    ];
-
     // Business details.
-    $form['business_size'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Number of associations'),
-      '#default_value' => $this->getDefaultValues('business_size'),
+    $form['about_business'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Edit the information about the business'),
+      '#default_value' => $this->getDefaultValues('about_business'),
+      '#description' => 'Use this section to give a brief overview of the partnership.<br>Include any information you feel may be useful to enforcing authorities.',
     ];
 
     $form['save'] = [
@@ -81,6 +78,23 @@ class ParPartnershipFlowsEmployeeNoForm extends ParPartnershipBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
+//    $partnership = $this->getRouteParam('par_data_partnership');
+//    $par_data_organisation = current($partnership->getOrganisation());
+//    $fields = [
+//      'comments' => [
+//        'value' => $form_state->getValue('about_business'),
+//        'key' => 'about_business',
+//        'tokens' => [
+//          '%field' => $form['about_business']['#title']->render(),
+//        ]
+//      ],
+//    ];
+//
+//    $errors = $par_data_organisation->validateFields($fields);
+//    // Display error messages.
+//    foreach($errors as $field => $message) {
+//      $form_state->setErrorByName($field, $message);
+//    }
   }
 
   /**
@@ -88,6 +102,25 @@ class ParPartnershipFlowsEmployeeNoForm extends ParPartnershipBaseForm {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
+//
+//    // Save the value for the about_partnership field.
+//    $partnership = $this->getRouteParam('par_data_partnership');
+//    $par_data_organisation = current($partnership->getOrganisation());
+//    $par_data_organisation->set('comments', $this->getTempDataValue('about_business'));
+//    if ($par_data_organisation->save()) {
+//      $this->deleteStore();
+//    }
+//    else {
+//      $message = $this->t('The %field field could not be saved for %form_id');
+//      $replacements = [
+//        '%field' => 'comments',
+//        '%form_id' => $this->getFormId(),
+//      ];
+//      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+//    }
+//
+//    // Go back to the overview.
+//    $form_state->setRedirect($this->getFlow()->getRouteByStep(4), $this->getRouteParams());
   }
 
 }

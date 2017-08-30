@@ -14,13 +14,8 @@ class ParPartnershipFlowsAboutForm extends ParPartnershipBaseForm {
   /**
    * {@inheritdoc}
    */
-  protected $flow = 'par_partnership_flows_organisation';
-
-  /**
-   * {@inheritdoc}
-   */
   public function getFormId() {
-    return 'par_partnership_about_business';
+    return 'par_partnership_about';
   }
 
   /**
@@ -37,11 +32,7 @@ class ParPartnershipFlowsAboutForm extends ParPartnershipBaseForm {
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()}");
 
-      // If we want to use values already saved we have to tell
-      // the form about them.
-      $par_data_organisation = current($par_data_partnership->getOrganisation());
-
-      $this->loadDataValue('about_business', $par_data_organisation->get('comments')->getString());
+      $this->loadDataValue('about', $par_data_partnership->retrieveStringValue('about_partnership'));
     }
   }
 
@@ -52,10 +43,10 @@ class ParPartnershipFlowsAboutForm extends ParPartnershipBaseForm {
     $this->retrieveEditableValues($par_data_partnership);
 
     // Business details.
-    $form['about_business'] = [
+    $form['about'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('Edit the information about the business'),
-      '#default_value' => $this->getDefaultValues('about_business'),
+      '#title' => $this->t('Edit the information about the partnership'),
+      '#default_value' => $this->getDefaultValues('about'),
       '#description' => 'Use this section to give a brief overview of the partnership.<br>Include any information you feel may be useful to enforcing authorities.',
     ];
 
