@@ -114,15 +114,16 @@ class ParPartnershipFlowsAddressForm extends ParPartnershipBaseForm {
       '#description' => t('The Unique Property Reference Number (UPRN) is a unique identification number for every address in Great Britain. If you know the UPRN , enter it here.'),
     ];
 
-    $form['next'] = [
+    $form['save'] = [
       '#type' => 'submit',
-      '#value' => t('Next'),
+      '#name' => 'save',
+      '#value' => t('Save'),
     ];
-dump($this->getFlow());
-    $previous_link = $this->getFlow()->getLinkByStep(1)->setText('Cancel')->toString();
+
+    $cancel_link = $this->getFlow()->getLinkByCurrentStepOperation('cancel')->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $previous_link]),
+      '#markup' => t('@link', ['@link' => $cancel_link]),
     ];
 
     // Make sure to add the person cacheability data to this form.
@@ -138,31 +139,31 @@ dump($this->getFlow());
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
-    $premises = $this->getRouteParam('par_data_premises');
-    $form_items = [
-      'address_line1' => 'address_line1',
-      'address_line2' => 'address_line2',
-      'locality' => 'town_city',
-      'administrative_area' => 'county',
-      'nation' => 'country',
-      'uprn' => 'uprn',
-      'postal_code' => 'postcode',
-    ];
-    foreach($form_items as $element_item => $form_item) {
-      $fields[$element_item] = [
-        'value' => $form_state->getValue($form_item),
-        'key' => $form_item,
-        'tokens' => [
-          '%field' => $form[$form_item]['#title']->render(),
-        ],
-      ];
-    }
-
-    $errors = $premises->validateFields($fields);
-    // Display error messages.
-    foreach($errors as $field => $message) {
-      $form_state->setErrorByName($field, $message);
-    }
+//    $premises = $this->getRouteParam('par_data_premises');
+//    $form_items = [
+//      'address_line1' => 'address_line1',
+//      'address_line2' => 'address_line2',
+//      'locality' => 'town_city',
+//      'administrative_area' => 'county',
+//      'nation' => 'country',
+//      'uprn' => 'uprn',
+//      'postal_code' => 'postcode',
+//    ];
+//    foreach($form_items as $element_item => $form_item) {
+//      $fields[$element_item] = [
+//        'value' => $form_state->getValue($form_item),
+//        'key' => $form_item,
+//        'tokens' => [
+//          '%field' => $form[$form_item]['#title']->render(),
+//        ],
+//      ];
+//    }
+//
+//    $errors = $premises->validateFields($fields);
+//    // Display error messages.
+//    foreach($errors as $field => $message) {
+//      $form_state->setErrorByName($field, $message);
+//    }
   }
 
   /**
@@ -172,34 +173,34 @@ dump($this->getFlow());
     parent::submitForm($form, $form_state);
 
     // Save the value for the about_partnership field.
-    $premises = $this->getRouteParam('par_data_premises');
-    $address = [
-      'country_code' => 'GB',
-      'address_line1' => $this->getTempDataValue('address_line1'),
-      'address_line2' => $this->getTempDataValue('address_line2'),
-      'locality' => $this->getTempDataValue('town_city'),
-      'administrative_area' => $this->getTempDataValue('county'),
-      'postal_code' => $this->getTempDataValue('postcode'),
-    ];
-
-    $premises->set('address', $address);
-    $premises->set('nation', $this->getTempDataValue('country'));
-    $premises->set('uprn', $this->getTempDataValue('uprn'));
-
-    if ($premises->save()) {
-      $this->deleteStore();
-    }
-    else {
-      $message = $this->t('This %premises could not be saved for %form_id');
-      $replacements = [
-        '%premises' => $premises->get('address')->toString(),
-        '%form_id' => $this->getFormId(),
-      ];
-      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-    }
+//    $premises = $this->getRouteParam('par_data_premises');
+//    $address = [
+//      'country_code' => 'GB',
+//      'address_line1' => $this->getTempDataValue('address_line1'),
+//      'address_line2' => $this->getTempDataValue('address_line2'),
+//      'locality' => $this->getTempDataValue('town_city'),
+//      'administrative_area' => $this->getTempDataValue('county'),
+//      'postal_code' => $this->getTempDataValue('postcode'),
+//    ];
+//
+//    $premises->set('address', $address);
+//    $premises->set('nation', $this->getTempDataValue('country'));
+//    $premises->set('uprn', $this->getTempDataValue('uprn'));
+//
+//    if ($premises->save()) {
+//      $this->deleteStore();
+//    }
+//    else {
+//      $message = $this->t('This %premises could not be saved for %form_id');
+//      $replacements = [
+//        '%premises' => $premises->get('address')->toString(),
+//        '%form_id' => $this->getFormId(),
+//      ];
+//      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+//    }
 
     // Go back to the overview.
-    $form_state->setRedirect($this->getFlow()->getRouteByStep(4), $this->getRouteParams());
+//    $form_state->setRedirect($this->getFlow()->getRouteByStep(4), $this->getRouteParams());
   }
 
 }
