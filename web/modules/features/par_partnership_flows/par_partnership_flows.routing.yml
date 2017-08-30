@@ -1,4 +1,4 @@
-# PAR Data Transition Journey 1 - Partnership Details
+# PAR Data Partnership Journey
 par_partnership_flows.organisation_details:
   path: '/partnership/{par_data_partnership}/organisation-details'
   defaults:
