@@ -109,7 +109,6 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getNextStep($operation = NULL) {
     $current_step = $this->getCurrentStep();
-
     $redirect = $this->getStepByOperation($current_step, $operation);
 
     // First check if the operation produced a valid step.
@@ -176,7 +175,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    * {@inheritdoc}
    */
   public function getNextRoute($operation = NULL) {
-    return $this->getRouteByStep($this->getNextStep());
+    return $this->getRouteByStep($this->getNextStep($operation));
   }
 
   /**
