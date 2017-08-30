@@ -58,13 +58,13 @@ interface ParFlowInterface {
   /**
    * Go to previous step.
    *
-   * {@deprecated}
-   *   No need to use prev step now that we can have operation override redirects. @see self::getNextStep().
+   * @param string $operation
+   *   An optional form operation that can be used to override the redirection.
    *
    * @return mixed
    *   An key for the previous step.
    */
-  public function getPrevStep();
+  public function getPrevStep($operation);
 
   /**
    * Get the next route.
@@ -80,13 +80,13 @@ interface ParFlowInterface {
   /**
    * Get the previous route.
    *
-   * {@deprecated}
-   *   No need to use prev step now that we can have operation override redirects. @see self::getNextRoute().
+   * @param string $operation
+   *   An optional form operation that can be used to override the redirection.
    *
    * @return mixed
    *   A route id for the previous step.
    */
-  public function getPrevRoute();
+  public function getPrevRoute($operation);
 
   /**
    * Get a step by the form id.
@@ -197,5 +197,20 @@ interface ParFlowInterface {
    *   A Drupal link object.
    */
   public function getNextLinkByOperation($operation, array $route_params, array $link_options);
+
+  /**
+   * Get link based on the previous available step.
+   *
+   * @param string $operation
+   *   The operation to get the redirection link for.
+   * @param array $route_params
+   *   Additional route parameters to add to the route.
+   * @param array $link_options
+   *   An array of options to set on the link.
+   *
+   * @return Link
+   *   A Drupal link object.
+   */
+  public function getPrevLinkByOperation($operation, array $route_params, array $link_options);
 
 }

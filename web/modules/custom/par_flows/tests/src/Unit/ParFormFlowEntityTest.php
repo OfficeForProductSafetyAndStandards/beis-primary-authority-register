@@ -7,6 +7,7 @@
 
 namespace Drupal\Tests\par_flows\Unit;
 
+use Drupal\par_flows\ParFlowException;
 use Drupal\Tests\UnitTestCase;
 use Drupal\par_flows\Entity\ParFlow;
 
@@ -153,12 +154,6 @@ class ParFlowEntityTest extends UnitTestCase {
     $next_step_last_fallback = $this->testFlow->getNextStep('non_existant_operation');
 
     $this->assertEquals(1, $next_step_last_fallback, "The flow goes back to the beginning if an incorrect operation is provided.");
-
-    // Check the next step for an incorrect operation on the last step.
-    $this->currentRoute = 'non_existant.route';
-    $non_existant_step = $this->testFlow->getNextStep();
-
-    $this->assertNull($non_existant_step, "No next step could be found for a route not in the flow.");
   }
 
   /**
@@ -169,6 +164,36 @@ class ParFlowEntityTest extends UnitTestCase {
 
     // Check the next step is correct.
     $this->assertEquals(1, $next_step, "The previous step has been correctly identified.");
+
+    // Check that the next step for a given operation is correct.
+    $prev_step_save = $this->testFlow->getPrevStep('save');
+    $prev_step_cancel = $this->testFlow->getPrevStep('cancel');
+
+    $this->assertEquals(4, $prev_step_save, "The save step has been correctly identified.");
+    $this->assertEquals(5, $prev_step_cancel, "The cancel step has been correctly identified.");
+
+    // Check the next step for an incorrect operation on the first step.
+    $this->currentRoute = 'par_test_forms.first';
+    $next_step_last_fallback = $this->testFlow->getPrevStep();
+
+    $this->assertEquals(1, $next_step_last_fallback, "The flow stays at the first step.");
+  }
+
+  /**
+   * @covers ::getNextStep
+   * @covers ::getPrevStep
+   *
+   * @expectedException        \Drupal\par_flows\ParFlowException
+   * @expectedExceptionMessage The specified route does not exist.
+   */
+  public function testInvalidSteps() {
+    // Check the next step for an incorrect operation on the last step.
+    $this->currentRoute = 'non_existant.route';
+    $this->testFlow->getNextStep();
+
+    // Check the next step for an incorrect operation on the last step.
+    $this->currentRoute = 'non_existant.route';
+    $this->testFlow->getPrevStep();
   }
 
   /**
@@ -179,6 +204,16 @@ class ParFlowEntityTest extends UnitTestCase {
 
     // Check the next step is correct.
     $this->assertEquals('par_test_forms.third', $next_route, "The next route has been correctly identified.");
+  }
+
+  /**
+   * @covers ::getPrevRoute
+   */
+  public function testGetPrevRoute() {
+    $next_route = $this->testFlow->getPrevRoute();
+
+    // Check the next step is correct.
+    $this->assertEquals('par_test_forms.first', $next_route, "The previous route has been correctly identified.");
   }
 
   /**

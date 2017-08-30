@@ -140,9 +140,6 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
 
   /**
    * {@inheritdoc}
-   *
-   * {@deprecated}
-   *   No need to use prev step now that we can have operation override redirects. @see tests.
    */
   public function getPrevStep($operation = NULL) {
     $current_step = $this->getCurrentStep();
@@ -151,12 +148,14 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
 
     // First check if the operation produced a valid step.
     if ($redirect) {
-      $prev_step = isset($redirect) && $this->getStep($redirect) ? $redirect : NULL;
+      $prev_step = isset($redirect) && $this->getStep($redirect) ? $this->getStep($redirect) : NULL;
+      $prev_index = $redirect;
     }
 
     // Then fallback to the next step, or the first if already on the last.
-    if (!isset($prev_step) && $current_step === count($this->getSteps())) {
+    if (!isset($prev_step) && $current_step === 1) {
       $prev_step = $this->getStep(1);
+      $prev_index = 1;
     }
     else if (!isset($prev_step)){
       $prev_index = --$current_step;
@@ -164,7 +163,13 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     }
 
     // If there is no next step we'll go back to the beginning.
-    return isset($prev_step) && isset($prev_step['route']) ? $prev_index : NULL;
+    $step = isset($prev_step) && isset($prev_step['route']) ? $prev_index : NULL;
+
+    if (empty($step)) {
+      throw new ParFlowException('The specified route does not exist.');
+    }
+
+    return $step;
   }
 
   /**
@@ -176,9 +181,6 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
 
   /**
    * {@inheritdoc}
-   *
-   * {@deprecated}
-   *   No need to use prev step now that we can have operation override redirects. @see tests.
    */
   public function getPrevRoute($operation = NULL) {
     return $this->getRouteByStep($this->getPrevStep());
@@ -290,6 +292,14 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getNextLinkByOperation($operation, array $route_params = [], array $link_options = []) {
     $step = $this->getNextStep($operation);
+    return $this->getLinkByStep($step, $route_params, $link_options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPrevLinkByOperation($operation, array $route_params = [], array $link_options = []) {
+    $step = $this->getPrevStep($operation);
     return $this->getLinkByStep($step, $route_params, $link_options);
   }
 
