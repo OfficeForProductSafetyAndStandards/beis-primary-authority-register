@@ -122,7 +122,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
       $next_step = $this->getStep(1);
       $next_index = 1;
     }
-    else if (!isset($next_step) && $current_step){
+    else if (!isset($next_step) && $current_step) {
       $next_index = ++$current_step;
       $next_step = isset($next_index) ? $this->getStep($next_index) : NULL;
     }
