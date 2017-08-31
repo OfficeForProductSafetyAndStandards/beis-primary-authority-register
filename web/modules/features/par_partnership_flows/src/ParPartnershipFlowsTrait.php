@@ -15,6 +15,7 @@ trait ParPartnershipFlowsTrait {
    *   The string representing the name of the current flow.
    */
   public function getFlowName() {
+    // Use static here.
     $account = User::Load($this->currentUser()->id());
 
 //    // Get the partnership from the route.
@@ -38,7 +39,7 @@ trait ParPartnershipFlowsTrait {
 //        $this->flow = 'partnership_direct';
 //      }
 //    }
-//  }
+    $this->flow = 'partnership_direct';
     $this->flow = 'partnership_coordinated';
     return isset($this->flow) ? $this->flow : '';
   }
