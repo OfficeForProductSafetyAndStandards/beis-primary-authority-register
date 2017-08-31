@@ -44,12 +44,12 @@ trait ParPartnershipFlowsTrait {
     }
 
     // IF Route is in direct flow && User is an organisation member && Partnership is in URL && Partnership is direct...
-    if (isset($flows['partnership_direct']) && $par_data_partnership && $par_data_partnership->isOrganisationMember($account) && $par_data_partnership->isDirect()) {
+    if (isset($flows['partnership_direct']) && $par_data_partnership && $par_data_partnership->isDirect()) {
       return 'partnership_direct';
     }
 
     // IF Route is in coordinated flow && User is an organisation member && Partnership is in URL && Partnership is coordinated...
-    if (isset($flows['hepartnership_coordinatedlpdesk']) && $par_data_partnership && $par_data_partnership->isOrganisationMember($account) && $par_data_partnership->isCoordinated()) {
+    if (isset($flows['partnership_coordinated']) && $par_data_partnership && $par_data_partnership->isCoordinated()) {
       return 'partnership_coordinated';
     }
 
