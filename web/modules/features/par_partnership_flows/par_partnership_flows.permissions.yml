@@ -1,0 +1,4 @@
+bypass partnership journey:
+  title: 'ByPass Partnership Journeys '
+  description: 'A permission to allow access to all journeys in hte partnership flows.'
+  restrict access: TRUE

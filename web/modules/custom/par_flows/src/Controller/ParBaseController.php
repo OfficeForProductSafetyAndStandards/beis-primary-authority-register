@@ -8,6 +8,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParBaseInterface;
+use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\par_flows\ParDisplayTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -116,7 +117,10 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
    *   The string representing the name of the current flow.
    */
   public function getFlowName() {
-    return isset($this->flow) ? $this->flow : '';
+    if (empty($this->flow)) {
+      throw new ParFlowException('The flow must have a name.');
+    }
+    return $this->flow;
   }
 
   /**
