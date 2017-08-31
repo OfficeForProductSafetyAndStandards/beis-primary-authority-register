@@ -102,6 +102,9 @@
             "drush/drush": {
                 "Drush sql-dump compatibility with PostgresSQL 9.5+": "./patches/drush-sqldump-postgres95.patch"
             },
+            "drupal/clamav": {
+                "Add support for ClamAV via a REST daemon": "./patches/clamav_add_rest_client.patch"
+            },
             "drupal/flysystem": {
                 "Add Drush commands for sending and receiving files": "./patches/flysystem-drush-command.patch"
             },
