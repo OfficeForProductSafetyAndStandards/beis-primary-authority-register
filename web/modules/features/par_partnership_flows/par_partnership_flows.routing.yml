@@ -145,7 +145,7 @@ par_partnership_flows.organisation_details:
 par_partnership_flows.about_business:
   path: '/partnership/{par_data_partnership}/about-business'
   defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutBuisinessForm'
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutBusinessForm'
     _title: 'About the Business'
   requirements:
     _permission: 'bypass partnership journey'

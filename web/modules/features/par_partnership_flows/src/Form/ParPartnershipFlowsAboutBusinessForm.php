@@ -11,7 +11,7 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
  * The about partnership form for the partnership details steps of the
  * 1st Data Validation/Transition User Journey.
  */
-class ParPartnershipFlowsAboutBuisinessForm extends ParBaseForm {
+class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
