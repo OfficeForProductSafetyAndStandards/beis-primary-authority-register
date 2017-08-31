@@ -109,10 +109,33 @@ par_flow_transition_partnership_details.advice_document:
   requirements:
     _permission: 'access par journey transition partnership details'
     par_data_partnership: \d+
-    par_data_advice: \d+
   options:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
       par_data_advice:
         type: entity:par_data_advice
+par_flow_transition_partnership_details.advice_document_add:
+  path: '/dv/primary-authority-partnerships/{par_data_partnership}/document/add'
+  defaults:
+    _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionAdviceForm'
+    _title: 'Updating the Primary Authority Register'
+  requirements:
+    _permission: 'access par journey transition partnership details'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_flow_transition_partnership_details.advice_document_upload:
+  path: '/dv/primary-authority-partnerships/{par_data_partnership}/document/upload'
+  defaults:
+    _form: '\Drupal\par_flow_transition_partnership_details\Form\ParFlowTransitionAdviceUploadForm'
+    _title: 'Updating the Primary Authority Register'
+  requirements:
+    _permission: 'access par journey transition partnership details'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership

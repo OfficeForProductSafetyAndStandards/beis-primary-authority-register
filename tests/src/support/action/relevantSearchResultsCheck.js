@@ -1,19 +1,24 @@
 /**
  * Check if the given elements text is the same as the given text
  * @param  {Function} done          Function to execute when finished
+ * @param  {String}   keyword       The search keyword
  */
 
-module.exports = (done) => {
+module.exports = (keyword, done) => {
     /**
      * The command to perform on the browser object (addValue or setValue)
      * @type {String}
      */
-    // browser.setViewportSize({
-    //     width: 1024,
-    //     height: 768,
-    // });
-    browser.url('/dv/partnership-dashboard?partnership_status=1');
-    const text = browser.getText('.table-scroll-wrapper');
-    expect(text).to.contain('Awaiting Review');
+        // browser.setViewportSize({
+        //     width: 1024,
+        //     height: 768,
+        // });
+    browser.setValue('#edit-keywords', keyword);
+    browser.click('#edit-submit-par-data-transition-journey-1-step-1');
+    const links = $$('td.views-field-nothing');
+    links.forEach(function (link) {
+        let elem = link.getText();
+        expect(elem).to.contain(keyword);
+    });
     done();
 };
