@@ -159,7 +159,7 @@ if [ ! -f manifest.$ENV.yml ]; then
 fi
 
 echo manifest.$ENV.yml
-cf push -f manifest.$ENV.yml
+cf push -f manifest.$ENV.yml --hostname par-beta-$ENV-green par-beta-$ENV-green 
 
 ####################################################################################
 # Set environment variables
@@ -175,6 +175,6 @@ cf set-env par-beta-$ENV APP_ENV $ENV
 cf set-env par-beta-$ENV PAR_GOVUK_NOTIFY_KEY $PAR_GOVUK_NOTIFY_KEY
 cf set-env par-beta-$ENV PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE
 
-cf restage par-beta-$ENV
+cf restage par-beta-$ENV-green
 
-cf ssh par-beta-$ENV -c "cd app/tools && python post_deploy.py"
+cf ssh par-beta-$ENV-green -c "cd app/tools && python post_deploy.py"
