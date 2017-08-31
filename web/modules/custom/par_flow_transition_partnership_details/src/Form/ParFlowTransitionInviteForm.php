@@ -51,7 +51,7 @@ class ParFlowTransitionInviteForm extends ParBaseForm {
       $account = User::load($this->currentUser()->id());
       $authority_person_name = '';
       foreach ($this->parDataManager->getUserPeople($account) as $authority_person) {
-        if ($par_data_partnership->isAuthorityMember($authority_person)) {
+        if ($par_data_partnership->personIsAuthorityMember($authority_person)) {
           $this->loadDataValue("authority_member", $par_data_person->retrieveStringValue('email'));
           $authority_person_name = $authority_person->getFullName();
           break 1;
