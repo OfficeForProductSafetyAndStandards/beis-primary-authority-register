@@ -106,6 +106,10 @@ install:
 script:
   - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
   - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
+#-----------------------------------------------------------------------------
+# Generate HTML reports with screenshots. HTML report location: tests/reports/allure-reports/index.html
+#-----------------------------------------------------------------------------
+  - travis_retry docker exec -ti par_beta_web bash -c "cd tests/reports && allure generate --clean ./allure-results/"
   - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/pa11y-ci -T 1 -j -s 'http://localhost/sitemap.xml' -f 'https://par-beta-test.cloudapps.digital' -r 'http://localhost:80' > ./reports/wcag2aa_report.json"
 
 #-----------------------------------------------------------------------------
