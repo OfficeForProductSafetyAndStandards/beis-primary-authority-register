@@ -30,11 +30,6 @@ class ParBaseFormTest extends UnitTestCase {
   protected function setUp() {
     parent::setUp();
 
-    // PrivateTempStoreFactory
-    // SessionManagerInterface
-    // AccountInterface
-    // EntityStorageInterface
-
     // Mock private temp store.
     $private_temp_store_factory = $this->getMockBuilder('Drupal\user\PrivateTempStoreFactory')
       ->disableOriginalConstructor()

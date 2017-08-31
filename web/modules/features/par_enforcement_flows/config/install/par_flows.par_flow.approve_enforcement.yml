@@ -1,0 +1,16 @@
+status: true
+dependencies: {  }
+id: approve_enforcement
+label: 'Approve Enforcement'
+description: 'The approval flow for an enforcement notice.'
+steps:
+  1:
+    route: par_enforcement_flows.approve
+    form_id: par_enforcement_notice_approve
+    redirect:
+      cancel: 3
+  2:
+    route: par_enforcement_flows.approve_confirm
+    form_id: par_enforcement_notice_approve_confirm
+  3:
+    route: view.rd_helpdesk_dashboard.par_rd_helpdesk_dashboard_page

@@ -47,34 +47,46 @@ interface ParFlowInterface {
   /**
    * Go to next step.
    *
+   * @param string $operation
+   *   An optional form operation that can be used to override the redirection.
+   *
    * @return mixed
    *   An key for the next step.
    */
-  public function getNextStep();
+  public function getNextStep($operation);
 
   /**
    * Go to previous step.
    *
+   * @param string $operation
+   *   An optional form operation that can be used to override the redirection.
+   *
    * @return mixed
    *   An key for the previous step.
    */
-  public function getPrevStep();
+  public function getPrevStep($operation);
 
   /**
    * Get the next route.
    *
+   * @param string $operation
+   *   An optional form operation that can be used to override the redirection.
+   *
    * @return mixed
    *   A route id for the next step.
    */
-  public function getNextRoute();
+  public function getNextRoute($operation);
 
   /**
    * Get the previous route.
    *
+   * @param string $operation
+   *   An optional form operation that can be used to override the redirection.
+   *
    * @return mixed
    *   A route id for the previous step.
    */
-  public function getPrevRoute();
+  public function getPrevRoute($operation);
 
   /**
    * Get a step by the form id.
@@ -97,6 +109,19 @@ interface ParFlowInterface {
    *   An key for a given step.
    */
   public function getStepByRoute($route);
+
+  /**
+   * Get a step for redirection given an operation on another step.
+   *
+   * @param string $index
+   *   The step to lookup the operation on.
+   * @param string $operation
+   *   The operation to use to lookup the redirect step.
+   *
+   * @return mixed
+   *   An key for a given step.
+   */
+  public function getStepByOperation($index, $operation);
 
   /**
    * Get route for any given step.
@@ -142,5 +167,50 @@ interface ParFlowInterface {
    *   A Drupal link object.
    */
   public function getLinkByStep($index, array $route_params, array $link_options);
+
+  /**
+   * Get link based on an operation on the current step.
+   *
+   * @param string $operation
+   *   The operation to get the redirection link for.
+   * @param array $route_params
+   *   Additional route parameters to add to the route.
+   * @param array $link_options
+   *   An array of options to set on the link.
+   *
+   * @return Link
+   *   A Drupal link object.
+   */
+  public function getLinkByCurrentOperation($operation, array $route_params, array $link_options);
+
+  /**
+   * Get link based on the next available step.
+   *
+   * @param string $operation
+   *   The operation to get the redirection link for.
+   * @param array $route_params
+   *   Additional route parameters to add to the route.
+   * @param array $link_options
+   *   An array of options to set on the link.
+   *
+   * @return Link
+   *   A Drupal link object.
+   */
+  public function getNextLink($operation, array $route_params, array $link_options);
+
+  /**
+   * Get link based on the previous available step.
+   *
+   * @param string $operation
+   *   The operation to get the redirection link for.
+   * @param array $route_params
+   *   Additional route parameters to add to the route.
+   * @param array $link_options
+   *   An array of options to set on the link.
+   *
+   * @return Link
+   *   A Drupal link object.
+   */
+  public function getPrevLink($operation, array $route_params, array $link_options);
 
 }
