@@ -181,7 +181,7 @@ interface ParFlowInterface {
    * @return Link
    *   A Drupal link object.
    */
-  public function getLinkByCurrentStepOperation($operation, array $route_params, array $link_options);
+  public function getLinkByCurrentOperation($operation, array $route_params, array $link_options);
 
   /**
    * Get link based on the next available step.

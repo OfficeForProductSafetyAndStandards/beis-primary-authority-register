@@ -329,7 +329,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       $form['sic_code']['edit'] = [
         '#type' => 'markup',
         '#markup' => t('@link', [
-          '@link' => $this->getFlow()->getLinkByRoute('par_partnership_flows.sic_code', ['par_data_sic_code' => 0])->setText('edit')->toString(),
+          '@link' => $this->getFlow()->getNextLink('edit_sic', ['par_data_sic_code' => 0])->setText('edit')->toString(),
         ]),
       ];
     }
@@ -350,7 +350,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       $form['business_size']['edit'] = [
         '#type' => 'markup',
         '#markup' => t('@link', [
-          '@link' => $this->getFlow()->getLinkByRoute('par_partnership_flows.business_size')->setText('edit')->toString(),
+          '@link' => $this->getFlow()->getNextLink('size')->setText('edit')->toString(),
         ]),
       ];
     }
@@ -402,46 +402,6 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
     // Save the value for the about_partnership field.
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
 
-    // Save the value for the partnership status if it's being confirmed.
-    if ($confirmation_value = $this->decideBooleanValue($this->getTempDataValue('confirmation'))) {
-      $par_data_partnership->set('partnership_info_agreed_business', $confirmation_value);
-      // Also change the status.
-      $par_data_partnership->setParStatus('confirmed_business');
-    }
-    foreach ($this->valuesToSet as $key => $item) {
-      $setting = $this->valuesToSet[$key];
-      $setting['object']->set($setting['field'], $this->getTempDataValue($setting['value_field']));
-    }
-
-    if ($par_data_partnership->save()) {
-      $this->deleteStore();
-    }
-    else {
-      $message = $this->t('The %field field could not be saved for %form_id');
-      $replacements = [
-        '%field' => 'about_partnership',
-        '%form_id' => $this->getFormId(),
-      ];
-      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-    }
-
-    // Go back to the overview.
-    $form_state->setRedirect($this->getFlow()->getPrevRoute(), $this->getRouteParams());
-  }
-
-  /**
-   * Record the class and field names to be set when the form is saved.
-   *
-   * @param $class
-   * @param $field
-   * @param $value_field
-   */
-  public function setValue($class, $field, $value_field) {
-    $this->valuesToSet[] = [
-      'object' => $class,
-      'field' => $field,
-      'value_field' => $value_field,
-    ];
   }
 
 }
