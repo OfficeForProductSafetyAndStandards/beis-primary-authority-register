@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\Component\Utility\Random;
+use Drupal\Core\Site\Settings;
 
 /**
  * Implements hook_drush_sql_sync_sanitize.
@@ -67,30 +68,24 @@ function par_data_drush_sql_sync_sanitize($site) {
     "mobile_phone='00449876543210'",
   ];
 
+  $salt = Settings::getHashSalt();
+  //crypt('$mail', '$salt')
+
   // Sanitize email addresses.
-  $newemail = drush_get_option(array('sanitize-email', 'destination-sanitize-email'), 'user+%id@localhost.localdomain');
-  if ($newemail != 'no' && $newemail !== 0) {
-    if (strpos($newemail, '%') !== FALSE) {
-      // We need a different sanitization query for Postgres and Mysql.
-      $db_driver = $databases['default']['default']['driver'];
-      if ($db_driver == 'pgsql') {
-        $email_map = array('%id' => "' || id || '", '%uid' => "' || user_account || '");
-        $newmail =  "'" . str_replace(array_keys($email_map), array_values($email_map), $newemail) . "'";
-      }
-      elseif ($db_driver == 'mssql') {
-        $email_map = array('%uid' => "' + user_account + '", '%mail' => "' + replace(mail, '@', '_') + '", '%name' => "' + replace(first_name, ' ', '_') + '");
-        $newmail =  "'" . str_replace(array_keys($email_map), array_values($email_map), $newemail) . "'";
-      }
-      else {
-        $email_map = array('%uid' => "', user_account, '", '%mail' => "', replace(mail, '@', '_'), '", '%name' => "', replace(first_name, ' ', '_'), '");
-        $newmail =  "concat('" . str_replace(array_keys($email_map), array_values($email_map), $newemail) . "')";
-      }
-      $replacements[] = "email=$newmail";
-    }
-    else {
-      $replacements[] = "email='$newemail'";
-    }
+  $newemail = drush_get_option(['sanitize-email', 'destination-sanitize-email'], '%mailhash@localhost.localdomain');
+  // Within PAR we have to use an email format that encrypts the
+  // email itself so that encrypting in multiple locations maintains
+  // the same encrypted value. This cannot be changed.
+  $email_format = '%mailhash@localhost.localdomain';
+
+  // We need a different sanitization query for Postgres and Mysql.
+  $db_driver = $databases['default']['default']['driver'];
+  if ($db_driver == 'pgsql') {
+    $email_map = ['%mailhash' => "crypt(' || email || ', '{$salt}') "];
+    $email_format =  str_replace(array_keys($email_map), array_values($email_map), $email_format);
+    $inner = "SELECT a::text || ', ' || b::text AS ab FROM foo;";
   }
+  $replacements[] = "email=$email_format";
 
   if (!empty($replacements) && $major_version >= 8) {
     $table = $wrap_table_name ? "{{par_people_field_data}}" : 'par_people_field_data';
@@ -108,6 +103,8 @@ UPDATE {$revisions_table} AS p
 SET {$sets}
 WHERE revision_id > 0;
 SQL;
+
+    var_dump($par_data_person_query);
 
     drush_sql_register_post_sync_op('sanitise_par_people', dt('Sanitise PAR Data Person records'), $par_data_person_query);
     drush_sql_register_post_sync_op('sanitise_par_people_revisions', dt('Sanitise PAR Data Person revision records'), $par_data_person_revision_query);
