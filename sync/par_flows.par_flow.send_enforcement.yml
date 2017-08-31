@@ -1,0 +1,15 @@
+uuid: 84d1d8f5-cb25-46ad-a3bf-16e7403d6057
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: B2oG15FTi5MIBCgz70orOWqenjmiIvgYa4z6sjNb2jY
+id: send_enforcement
+label: 'Send Enforcement'
+description: 'The send operations for an enforcement notice.'
+steps:
+  1:
+    route: par_enforcement_flows.send
+    form_id: par_enforcement_notice_send
+  2:
+    route: view.rd_helpdesk_dashboard.par_rd_helpdesk_dashboard_page
