@@ -291,11 +291,12 @@ class ParDataManager implements ParDataManagerInterface {
    */
   public function hasMemberships(UserInterface $account, $direct = FALSE) {
     // This method will run about a thousand times if not given the bird.
-    $memberships = &drupal_static(__FUNCTION__);
+    $function_id = __FUNCTION__ . $account->id() . ($direct) ? 'true' : 'false';
+    $memberships = &drupal_static($function_id);
     if (!empty($memberships)) {
       return $memberships;
     }
-    
+
     $account_people = $this->getUserPeople($account);
     // When we say direct we really mean by a maximum factor of two.
     // Because we must first jump through one of the core membership
