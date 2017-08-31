@@ -7,6 +7,18 @@ steps:
   1:
     route: par_partnership_flows.organisation_details
     form_id: par_partnership_organisation_details
+    redirect:
+      about: 2
+      add_address: 3
+      edit_address: 4
+      add_contact: 5
+      edit_contact: 6
+      add_legal: 7
+      edit_legal: 8
+      add_trading: 9
+      edit_trading: 10
+      sector: 11
+      size: 12
   2:
     route: par_partnership_flows.about_business
     form_id: par_partnership_about_business

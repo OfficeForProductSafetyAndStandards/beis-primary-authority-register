@@ -11,7 +11,7 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
  * The about partnership form for the partnership details steps of the
  * 1st Data Validation/Transition User Journey.
  */
-class ParPartnershipFlowsAboutForm extends ParBaseForm {
+class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
@@ -64,7 +64,7 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
       '#value' => $this->t('Save'),
     ];
 
-    $cancel_link = $this->getFlow()->getLinkByCurrentStepOperation('cancel')->setText('Cancel')->toString();
+    $cancel_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
       '#markup' => t('@link', ['@link' => $cancel_link]),
