@@ -109,7 +109,7 @@ script:
 #-----------------------------------------------------------------------------
 # Generate HTML reports with screenshots. HTML report location: tests/reports/allure-reports/index.html
 #-----------------------------------------------------------------------------
-  - travis_retry docker exec -ti par_beta_web bash -c "cd tests/reports && ../node_modules/.bin/allure generate --clean ./allure-results/ && zip -r allure-report.zip allure-results/"
+  - travis_retry docker exec -ti par_beta_web bash -c "cd tests/reports && ../node_modules/.bin/allure generate --clean ./allure-results/ && tar -cvf allure-report.tar.gz allure-report/"
   - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/pa11y-ci -T 1 -j -s 'http://localhost/sitemap.xml' -f 'https://par-beta-test.cloudapps.digital' -r 'http://localhost:80' > ./reports/wcag2aa_report.json"
 
 #-----------------------------------------------------------------------------
@@ -154,7 +154,7 @@ addons:
     debug: false
     paths:
       - ./tests/reports/report.json
-      - ./tests/reports/allure-report.zip
+      - ./tests/reports/allure-report.tar.gz
     target_paths: tests/$TRAVIS_BUILD_NUMBER
     bucket: transform-par-beta-artifacts
     s3_region: eu-west-1
