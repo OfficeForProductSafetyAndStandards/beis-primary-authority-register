@@ -123,9 +123,16 @@ exports.config = {
     //     //     outputDir: './reports/allure/',
     //     // },
     // },
-    reporters: ['spec', 'allure'],
+    reporters: ['json', 'spec', 'allure'],
     reporterOptions: {
-        outputDir: './reports/allure-results',
+        json: {
+            outputDir: './reports/',
+            filename: 'report',
+            combined: true,
+        },
+        allure: {
+            outputDir: './reports/allure-results',
+        },
     },
     //
     // If you are using Cucumber you need to specify the location of your step
