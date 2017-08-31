@@ -135,10 +135,10 @@ index 4dd1b7e..ce0788f 100644
  
 diff --git a/src/Scanner/DaemonRestClient.php b/src/Scanner/DaemonRestClient.php
 new file mode 100644
-index 0000000..72a776e
+index 0000000..2ef0d91
 --- /dev/null
 +++ b/src/Scanner/DaemonRestClient.php
-@@ -0,0 +1,102 @@
+@@ -0,0 +1,101 @@
 +<?php
 +
 +namespace Drupal\clamav\Scanner;
@@ -185,7 +185,6 @@ index 0000000..72a776e
 +        ]
 +      ]);
 +
-+      // @todo is there a nicer way?
 +      $response = json_decode($file_post->getBody()->getContents());
 +
 +    } catch (\Exception $e) {
@@ -197,7 +196,7 @@ index 0000000..72a776e
 +    }
 +
 +    // Check for any viruses detected.
-+    if (isset($response->file->status)) {
++    if (isset($response) && isset($response->file->status)) {
 +      $result = $response->file->status == 'OK' ? Scanner::FILE_IS_CLEAN : Scanner::FILE_IS_INFECTED;
 +
 +      if (isset($response->file->foundViruses)) {
