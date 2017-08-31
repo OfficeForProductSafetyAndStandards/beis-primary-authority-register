@@ -313,6 +313,47 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       ];
     }
 
+    if ($this->getFlowName() === 'partnership_direct') {
+      $code = 'test';
+      $form['sic_code'] = [
+        '#type' => 'fieldset',
+        '#title' => t('SIC Code:'),
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+
+      $form['sic_code']['code'] = [
+        '#plain_text' => $code,
+      ];
+
+      $form['sic_code']['edit'] = [
+        '#type' => 'markup',
+        '#markup' => t('@link', [
+          '@link' => $this->getFlow()->getLinkByRoute('par_partnership_flows.sic_code', ['par_data_sic_code' => 0])->setText('edit')->toString(),
+        ]),
+      ];
+    }
+
+    if ($this->getFlowName() === 'partnership_coordinated') {
+      $size = 'test';
+      $form['sic_code'] = [
+        '#type' => 'fieldset',
+        '#title' => t('Number of businesses you represent:'),
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+
+      $form['business_size']['number'] = [
+        '#plain_text' => $size,
+      ];
+
+      $form['business_size']['edit'] = [
+        '#type' => 'markup',
+        '#markup' => t('@link', [
+          '@link' => $this->getFlow()->getLinkByRoute('par_partnership_flows.business_size')->setText('edit')->toString(),
+        ]),
+      ];
+    }
     // Need this here so we can add extra checkboxes at the end of the page.
     // We can't guarantee the previous steps will be there.
     $form['confirmation_section'] = [
