@@ -2,6 +2,7 @@
 
 namespace Drupal\par_partnership_flows;
 
+use Drupal\par_flows\ParFlowException;
 use Drupal\user\Entity\User;
 
 /**
@@ -50,6 +51,11 @@ trait ParPartnershipFlowsTrait {
     // IF Route is in coordinated flow && User is an organisation member && Partnership is in URL && Partnership is coordinated...
     if (isset($flows['hepartnership_coordinatedlpdesk']) && $par_data_partnership && $par_data_partnership->isOrganisationMember($account) && $par_data_partnership->isCoordinated()) {
       return 'partnership_coordinated';
+    }
+
+    // Throw an error if the flow is still ambiguous.
+    if (empty($this->flow) && count($flows) >= 1) {
+      throw new ParFlowException('The flow name is ambiguous.');
     }
 
     return parent::getFlowName();
