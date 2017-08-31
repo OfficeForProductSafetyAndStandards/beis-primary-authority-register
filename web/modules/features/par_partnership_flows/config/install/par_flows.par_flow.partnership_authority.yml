@@ -24,13 +24,13 @@ steps:
     form_id: par_partnership_contact
     redirect:
       save: 1
-      next: 1
+      cancel: 1
   4:
     route: par_partnership_flows.organisation_contact_edit
     form_id: par_partnership_contact
     redirect:
       save: 1
-      next: 1
+      cancel: 1
   5:
     route: par_partnership_flows.advice_list
     redirect:

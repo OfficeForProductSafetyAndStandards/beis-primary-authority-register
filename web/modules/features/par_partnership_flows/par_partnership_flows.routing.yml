@@ -116,18 +116,18 @@ par_partnership_flows.advice_edit:
         type: entity:par_data_partnership
       par_data_advice:
         type: entity:par_data_advice
-par_partnership_flows.advice_list:
-  path: '/partnership/{par_data_partnership}/advice/list'
+par_partnership_flows.inspection_plan_list:
+  path: '/partnership/{par_data_partnership}/inspection/list'
   defaults:
-    _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::content'
-    _title: 'List of Advice for the Partnership'
+    _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::content'
+    _title: 'List of Inspcetion Plans for the Partnership'
   requirements:
     _permission: 'bypass partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
       par_data_partnership:
-        type: entity:inspection_plan_list
+        type: entity:par_data_partnership
 
 # PAR Data Organisation Partnership Journey
 par_partnership_flows.organisation_details:

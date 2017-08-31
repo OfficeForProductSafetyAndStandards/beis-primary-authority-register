@@ -144,19 +144,27 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       }
     }
 
+    $form['primary_contact_add']['add'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlow()->getNextLink('add_address')->setText('add additional address')->toString(),
+      ]),
+    ];
+
     // Contacts.
     // Primary contact summary.
     $par_data_contacts = $par_data_partnership->getOrganisationPeople();
     $par_data_primary_person = array_shift($par_data_contacts);
 
+    $form['primary_contact'] = [
+      '#type' => 'fieldset',
+      '#attributes' => ['class' => 'form-group'],
+      '#title' => t('Main business contact:'),
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
     if ($par_data_primary_person) {
-      $form['primary_contact'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
-        '#title' => t('Main business contact:'),
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
 
       $primary_person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
       $primary_person = $primary_person_view_builder->view($par_data_primary_person, 'summary');
@@ -205,6 +213,13 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
         ];
       }
     }
+
+    $form['primary_contact_add']['add'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlow()->getNextLink('add_contact')->setText('add alternative contact')->toString(),
+      ]),
+    ];
 
     // Legal Entities.
     $par_data_legal_entities = $par_data_organisation->getLegalEntity();
@@ -336,7 +351,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
 
     if ($this->getFlowName() === 'partnership_coordinated') {
       $size = 'test';
-      $form['sic_code'] = [
+      $form['business_size'] = [
         '#type' => 'fieldset',
         '#title' => t('Number of businesses you represent:'),
         '#collapsible' => FALSE,
@@ -354,6 +369,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
         ]),
       ];
     }
+
     // Need this here so we can add extra checkboxes at the end of the page.
     // We can't guarantee the previous steps will be there.
     $form['confirmation_section'] = [

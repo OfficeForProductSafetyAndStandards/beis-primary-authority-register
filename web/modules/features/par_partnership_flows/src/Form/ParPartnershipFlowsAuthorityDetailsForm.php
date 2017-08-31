@@ -72,9 +72,9 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
 
     $form['business_name']['name'] = $organisation_builder->view($par_data_organisation, 'title');
 
-    $form['about_business'] = [
+    $form['about'] = [
       '#type' => 'fieldset',
-      '#title' => t('About the business:'),
+      '#title' => t('About the partnership:'),
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
@@ -107,14 +107,6 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
       $registered_address = $premises_view_builder->view($registered_premises, 'full');
       $form['registered_address']['primary_address']['address'] = $this->renderMarkupField($registered_address);
 
-      $form['registered_address']['primary_address']['edit'] = [
-        '#type' => 'markup',
-        '#markup' => t('@link', [
-          '@link' => $this->getFlow()->getNextLink('edit_address', [
-            'par_data_premises' => $registered_premises->id(),
-          ])->setText('edit')->toString(),
-        ]),
-      ];
     }
 
     if ($par_data_premises) {
@@ -132,15 +124,6 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
         $alternative_person = $person_view_builder->view($premises, 'full');
         $form['registered_address'][$premises->id()]['premises'] = $this->renderMarkupField($alternative_person);
 
-        // We can get a link to a given form step like so.
-        $form['registered_address'][$premises->id()]['edit'] = [
-          '#type' => 'markup',
-          '#markup' => t('@link', [
-            '@link' => $this->getFlow()->getNextLink('edit_address', [
-              'par_data_premises' => $premises->id(),
-            ])->setText('edit')->toString(),
-          ]),
-        ];
       }
     }
 
@@ -223,14 +206,6 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
       $legal_entity = $legal_entity_view_builder->view($par_data_legal_entity, 'full');
       $form['legal_entity']['entity'] = $this->renderMarkupField($legal_entity);
 
-      $form['legal_entity']['edit'] = [
-        '#type' => 'markup',
-        '#markup' => t('@link', [
-          '@link' => $this->getFlow()->getNextLink('edit_legal', [
-            'par_data_legal_entity' => $par_data_legal_entity->id(),
-          ])->setText('edit')->toString(),
-        ]),
-      ];
     }
 
     if ($par_data_legal_entities) {
@@ -245,31 +220,8 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
         $alternative_legal = $legal_entity_view_builder->view($legal_entity_item, 'full');
         $form['legal_entity_' . $legal_entity_item->id()]['item'] = $this->renderMarkupField($alternative_legal);
 
-        // We can get a link to a given form step like so.
-        $form['legal_entity_' . $legal_entity_item->id()][$legal_entity_item->id() . '_edit'] = [
-          '#type' => 'markup',
-          '#markup' => t('@link', [
-            '@link' => $this->getFlow()->getNextLink('edit_legal', [
-              'par_data_legal_entity' => $legal_entity_item->id(),
-            ])->setText('edit')->toString(),
-          ]),
-        ];
       }
     }
-
-    $form['legal_entity_add'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    $form['legal_entity_add']['add'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('add_legal')->setText('add another legal entity')->toString(),
-      ]),
-    ];
 
     // Trading names.
     $par_data_trading_names = $par_data_organisation->get('trading_name')->getValue();
@@ -295,23 +247,23 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
           '#suffix' => '</div>',
         ];
 
-        $form['trading_names'][$key]['edit'] = [
-          '#type' => 'markup',
-          '#markup' => t('@link', [
-            '@link' => $this->getFlow()->getNextLink('edit_trading', [
-              'trading_name_delta' => $key,
-            ])->setText('edit')->toString(),
-          ]),
-        ];
       }
 
-      $form['trading_names']['add'] = [
-        '#type' => 'markup',
-        '#markup' => t('@link', [
-          '@link' => $this->getFlow()->getNextLink('add_trading')->setText('add another trading name')->toString(),
-        ]),
-      ];
     }
+
+    $form['advice']['edit'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlow()->getNextLink('advice')->setText('Advice List')->toString(),
+      ]),
+    ];
+
+    $form['inspection_plans']['edit'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlow()->getNextLink('inspection_plans')->setText('Inspection Plans')->toString(),
+      ]),
+    ];
 
     // Need this here so we can add extra checkboxes at the end of the page.
     // We can't guarantee the previous steps will be there.
