@@ -1,8 +1,8 @@
 config:
-  target: '[enter url]'
+  target: 'https://par-beta-staging.cloudapps.digital'
   phases:
-    - duration: 1
-      arrivalRate: 1
+    - duration: 10
+      arrivalRate: 10
   defaults:
     headers:
       Accept: '*/*'

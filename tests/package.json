@@ -25,6 +25,7 @@
   "author": "Christian Bromann <christian@saucelabs.com>",
   "license": "MIT",
   "dependencies": {
+    "artillery": "latest",
     "allure-commandline": "latest",
     "babel-polyfill": "6.23.0",
     "babel-preset-es2015": "6.24.1",
@@ -48,9 +49,7 @@
     "wdio-selenium-standalone-service": "0.0.9",
     "wdio-spec-reporter": "0.1.0",
     "webdrivercss": "^1.1.10",
-    "webdriverio": "4.7.1",
-    "allure-commandline": "latest",
-    "wdio-allure-reporter": "latest"
+    "webdriverio": "4.7.1"
   },
   "devDependencies": {
     "pa11y": "^4.11.0"
