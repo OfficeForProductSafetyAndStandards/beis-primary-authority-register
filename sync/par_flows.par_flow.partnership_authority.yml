@@ -1,0 +1,70 @@
+uuid: d04110f0-899c-4cb5-a430-c61407c99940
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: aYULtKVP51d_WMuJ-APMdJzXGfkJrG3TEi0x3n3lyek
+id: partnership_authority
+label: 'Authority Partnership Flow'
+description: ''
+steps:
+  1:
+    route: par_partnership_flows.authority_details
+    form_id: par_partnership_authority_details
+    redirect:
+      about: 2
+      add_contact: 3
+      edit_contact: 4
+      advice: 5
+      inspection_plans: 10
+  2:
+    route: par_partnership_flows.about_partnership
+    form_id: par_partnership_about
+    redirect:
+      save: 1
+      cancel: 1
+  3:
+    route: par_partnership_flows.authority_contact_add
+    form_id: par_partnership_contact
+    redirect:
+      save: 1
+      cancel: 1
+  4:
+    route: par_partnership_flows.authority_contact_edit
+    form_id: par_partnership_contact
+    redirect:
+      save: 1
+      cancel: 1
+  5:
+    route: par_partnership_flows.advice_list
+    redirect:
+      edit: 9
+      next: 1
+      cancel: 1
+  6:
+    route: par_partnership_flows.advice_upload_documents
+    form_id: par_partnership_upload
+    redirect:
+      cancel: 5
+  7:
+    route: par_partnership_flows.advice_add
+    form_id: par_partnership_advice
+    redirect:
+      save: 5
+      cancel: 5
+  8:
+    route: par_partnership_flows.advice_edit_documents
+    form_id: par_partnership_upload
+    redirect:
+      cancel: 5
+  9:
+    route: par_partnership_flows.advice_edit
+    form_id: par_partnership_advice
+    redirect:
+      save: 5
+      cancel: 5
+  10:
+    route: par_partnership_flows.inspection_plan_list
+    redirect:
+      next: 1
+      cancel: 1

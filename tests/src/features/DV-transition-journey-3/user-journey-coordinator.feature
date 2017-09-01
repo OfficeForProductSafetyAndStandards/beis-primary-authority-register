@@ -28,14 +28,14 @@ Feature: Coordinator User - Manage Addresses
         # REVIEW ASSOCIATION DETAILS
 
         Then I expect that element "#edit-business-name" contains the text "Co Mart"
-        And I expect that element "#edit-about-business" contains the text "About the association"
+        And I expect that element "#edit-about-business" contains the text "About the business"
         And I expect that element "#edit-legal-entity" contains the text "Legal Entities"
-        And I expect that element "#edit-primary-contact" contains the text "Main association contact"
+        And I expect that element "#edit-primary-contact" contains the text "Main business contact"
         And I expect that element "#edit-0" contains the text "Trading Names"
 
         # EDIT REGISTERED ADDRESS
 
-        And I click on the button "form#par-flow-transition-coordinator-details #edit-registered-address a.flow-link"
+        And I click on the button "form#par-flow-transition-coordinator-details #edit-primary-address a.flow-link"
         And I add "Change Postcode" to the inputfield "#edit-postcode"
         And I add "1 Change Road" to the inputfield "#edit-address-line1"
         And I add "A Change" to the inputfield "#edit-address-line2"
@@ -47,7 +47,7 @@ Feature: Coordinator User - Manage Addresses
         And I expect that element "span.address-line2" contains the text "A Change"
         And I expect that element "span.locality" contains the text "Change Town"
         And I expect that element "span.postal-code" contains the text "Change Postcode"
-        And I expect that element "#edit-registered-address" contains the text "Wales"
+        And I expect that element "#edit-primary-address" contains the text "Wales"
 
         # EDIT MAIN BUSINESS CONTACT
 
@@ -106,7 +106,7 @@ Feature: Coordinator User - Manage Addresses
 
         # CHANGE NAME AND SUMMARY
 
-        Then I expect that element "#par-flow-transition-coordinator-details" contains the text "About the association"
+        Then I expect that element "#par-flow-transition-coordinator-details" contains the text "About the business"
         And I expect that element "#par-flow-transition-coordinator-details" contains the text "Registered address"
         And I expect that element "#par-flow-transition-coordinator-details" contains the text "Legal Entities"
         And I expect that element "#par-flow-transition-coordinator-details" contains the text "Trading Names"

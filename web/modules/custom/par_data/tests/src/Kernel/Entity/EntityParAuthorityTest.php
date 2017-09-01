@@ -7,6 +7,7 @@ use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataAuthorityType;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
  * Tests PAR Authority entity.

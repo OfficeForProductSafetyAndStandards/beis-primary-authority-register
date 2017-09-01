@@ -100,16 +100,18 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     if ($registered_premises) {
       $premises_view_builder = $this->getParDataManager()->getViewBuilder('par_data_premises');
 
-      $form['registered_address'] = [
+      $form['registered_address']['primary_address'] = [
         '#type' => 'fieldset',
-        '#title' => t('Registered address'),
+        '#title' => t('Registered address:'),
+        '#attributes' => ['class' => 'form-group'],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
-      $registered_address = $premises_view_builder->view($registered_premises, 'full');
-      $form['registered_address']['address'] = $this->renderMarkupField($registered_address);
 
-      $form['registered_address']['edit'] = [
+      $registered_address = $premises_view_builder->view($registered_premises, 'full');
+      $form['registered_address']['primary_address']['address'] = $this->renderMarkupField($registered_address);
+
+      $form['registered_address']['primary_address']['edit'] = [
         '#type' => 'markup',
         '#markup' => t('@link', [
           '@link' => $this->getFlow()->getLinkByStep(6, [
@@ -120,20 +122,22 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     }
 
     if ($par_data_premises) {
-      $form['registered_address']['alternative_premises'] = [
-        '#type' => 'fieldset',
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
 
       foreach ($par_data_premises as $premises) {
         $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
 
+        $form['registered_address'][$premises->id()] = [
+          '#type' => 'fieldset',
+          '#attributes' => ['class' => 'form-group'],
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
+        ];
+
         $alternative_person = $person_view_builder->view($premises, 'full');
-        $form['registered_address']['alternative_premises'][$premises->id()] = $this->renderMarkupField($alternative_person);
+        $form['registered_address'][$premises->id()]['premises'] = $this->renderMarkupField($alternative_person);
 
         // We can get a link to a given form step like so.
-        $form['registered_address']['alternative_premises'][$premises->id() . '_edit'] = [
+        $form['registered_address'][$premises->id()]['edit'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
             '@link' => $this->getFlow()->getLinkByStep(6, [
@@ -274,6 +278,11 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
     // Trading names.
     $par_data_trading_names = $par_data_organisation->get('trading_name')->getValue();
     if ($par_data_trading_names) {
+      $form['trading_names'] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => 'form-group'],
+      ];
+
       foreach ($par_data_trading_names as $key => $trading_name) {
         $form['trading_names'][$key] = [
           '#type' => 'fieldset',
@@ -325,7 +334,7 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
 
     $form['next'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Continue'),
+      '#value' => $this->t('Save'),
     ];
 
     // Make sure to add the partnership cacheability data to this form.
@@ -360,6 +369,10 @@ class ParFlowTransitionDetailsForm extends ParBaseForm {
       $par_data_partnership->set('partnership_info_agreed_business', $confirmation_value);
       // Also change the status.
       $par_data_partnership->setParStatus('confirmed_business');
+    }
+    foreach ($this->valuesToSet as $key => $item) {
+      $setting = $this->valuesToSet[$key];
+      $setting['object']->set($setting['field'], $this->getTempDataValue($setting['value_field']));
     }
 
     if ($par_data_partnership->save()) {

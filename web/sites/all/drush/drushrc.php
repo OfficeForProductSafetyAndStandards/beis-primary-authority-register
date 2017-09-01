@@ -299,3 +299,6 @@ $options['skip-tables']['common'] = array('migration_*');
 
 // Use Drupal version specific CLI history instead of per site.
 # $command_specific['core-cli'] = array('version-history' => TRUE);
+
+// Ensure ann sanitization commands don't run the email sanitization.
+$command_specific['sql-sanitize'] = ['sanitize-email' => 'no'];

@@ -1,0 +1,13 @@
+uuid: b94bab87-f6fb-4fde-8b6c-e24a054dcb3e
+langcode: en
+status: true
+dependencies: {  }
+id: helpdesk
+label: 'Helpdesk'
+description: 'The user journey for helpdesk users.'
+steps:
+  1:
+    route: view.rd_helpdesk_dashboard.par_rd_helpdesk_dashboard_page
+  2:
+    route: par_flow_helpdesk.invite
+    form_id: par_flow_helpdesk.invite

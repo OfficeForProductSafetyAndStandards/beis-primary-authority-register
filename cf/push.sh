@@ -2,11 +2,10 @@
 
 ####################################################################################
 # Run this script from the /cf directory of the repository
-# Usage:
-#    ./push.sh <env> <version>
-#
-# e.g.
-#    ./push.sh demo v0.0.33
+# Users will be prompted for:
+#       Target environent
+#       Build version
+#       Vault unseal key
 ####################################################################################
 # You'll need the following installed
 #
@@ -35,9 +34,6 @@
 #     vault auth
 ####################################################################################
 
-ENV=$1
-VER=$2
-
 CURRENT_DIR=${PWD##*/}
 
 if [ $CURRENT_DIR != "cf" ]; then
@@ -55,26 +51,48 @@ command -v vault >/dev/null 2>&1 || {
 }
 
 command -v aws >/dev/null 2>&1 || { 
+    vault seal
     echo "####################################################################################"
     echo >&2 "Please install AWS command line interface"
     echo "####################################################################################"
-    vault seal
     exit 1 
 }
 
 command -v cf >/dev/null 2>&1 || { 
+    vault seal
     echo "####################################################################################"
     echo >&2 "Please install Cloud Foundry command line interface"
     echo "####################################################################################"
-    vault seal
     exit 1 
 }
 
+echo -n "Enter the environment name (e.g. staging): "
+read ENV
+echo -n "Enter the build version (e.g. v1.0.0): "
+read VER
+
+if [ $ENV == "production" ]; then
+   echo -n "You have chosen to deploy to production. Are you sure? [sure|no] : "
+   read SURE
+   if [ $SURE != "sure" ]; then
+       exit 0
+   fi
+fi
+
 ####################################################################################
 # Unseal the vault - will prompt for GitHub personal access token
+# Vault is first sealed to ensure that deployment can't happen unless user has
+# the unseal token. Mostly this is to avoid copy/paste unintended deployments. 
 ####################################################################################
 
+vault seal
+echo -n "Enter the vault unseal token: "
 vault unseal
+
+if [ $? == 1 ]; then
+    echo "Unable to unseal vault"
+    exit 1;
+fi
 
 ####################################################################################
 # Get AWS access keys to download the versioned package from S3
@@ -100,6 +118,7 @@ PAR_GOVUK_NOTIFY_TEMPLATE=`vault read -field=PAR_GOVUK_NOTIFY_TEMPLATE secret/pa
 # Reseal the vault
 ####################################################################################
 
+echo "Resealing the vault.."
 vault seal
 
 ####################################################################################
@@ -113,10 +132,11 @@ echo "Pulling version $VER"
 # Pull the package to the build directory
 ####################################################################################
 
-rm -rf build
-mkdir build
+BUILD_DIR=build-$ENV
+rm -rf $BUILD_DIR
+mkdir $BUILD_DIR
 
-cd build
+cd $BUILD_DIR
 
 aws s3 cp s3://transform-par-beta-artifacts/builds/$VER.tar.gz .
 
@@ -139,40 +159,39 @@ rm $VER.tar.gz
 # Stay in the build directory to push the unpacked code
 ####################################################################################
 
-pwd
-
 if [ ! -f manifest.$ENV.yml ]; then
     echo "Manifest file manifest.$ENV.yml not found"
     exit 1
 fi
 
-echo manifest.$ENV.yml
-cf push -f manifest.$ENV.yml
+cf push -f manifest.$ENV.yml --hostname par-beta-$ENV-green par-beta-$ENV-green 
 
 ####################################################################################
 # Set environment variables
 ####################################################################################
 
-cf set-env par-beta-$ENV S3_ACCESS_KEY $S3_ACCESS_KEY
-cf set-env par-beta-$ENV S3_SECRET_KEY $S3_SECRET_KEY
-cf set-env par-beta-$ENV PAR_HASH_SALT $PAR_HASH_SALT
-cf set-env par-beta-$ENV S3_BUCKET_PUBLIC $S3_BUCKET_PUBLIC
-cf set-env par-beta-$ENV S3_BUCKET_PRIVATE $S3_BUCKET_PRIVATE
-cf set-env par-beta-$ENV S3_BUCKET_ARTIFACTS $S3_BUCKET_ARTIFACTS
-cf set-env par-beta-$ENV APP_ENV $ENV
-cf set-env par-beta-$ENV PAR_GOVUK_NOTIFY_KEY $PAR_GOVUK_NOTIFY_KEY
-cf set-env par-beta-$ENV PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE
+cf set-env par-beta-$ENV-green S3_ACCESS_KEY $S3_ACCESS_KEY
+cf set-env par-beta-$ENV-green S3_SECRET_KEY $S3_SECRET_KEY
+cf set-env par-beta-$ENV-green PAR_HASH_SALT $PAR_HASH_SALT
+cf set-env par-beta-$ENV-green S3_BUCKET_PUBLIC $S3_BUCKET_PUBLIC
+cf set-env par-beta-$ENV-green S3_BUCKET_PRIVATE $S3_BUCKET_PRIVATE
+cf set-env par-beta-$ENV-green S3_BUCKET_ARTIFACTS $S3_BUCKET_ARTIFACTS
+cf set-env par-beta-$ENV-green APP_ENV $ENV
+cf set-env par-beta-$ENV-green PAR_GOVUK_NOTIFY_KEY $PAR_GOVUK_NOTIFY_KEY
+cf set-env par-beta-$ENV-green PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE
 
-cf restage par-beta-$ENV
+cf restage par-beta-$ENV-green
 
-cf ssh par-beta-$ENV -c "cd app/tools && python post_deploy.py"
+cf ssh par-beta-$ENV-green -c "cd app/tools && python post_deploy.py"
 
 ####################################################################################
-# Go back to the /cf directory to set the domain, if any
+# Blue/Green magic - switch domain routes to newly-deployed app
 ####################################################################################
 
-cd ..
+cf map-route par-beta-$ENV-green cloudapps.digital -n par-beta-$ENV
+cf unmap-route par-beta-$ENV cloudapps.digital -n par-beta-$ENV
+cf map-route par-beta-$ENV-green $ENV-cdn.par-beta.co.uk
+cf unmap-route par-beta-$ENV $ENV-cdn.par-beta.co.uk
+cf delete par-beta-$ENV -f
+cf rename par-beta-$ENV-green par-beta-$ENV
 
-if [ -f update-domain-$ENV.sh ]; then
-    sh update-domain-$ENV.sh
-fi
