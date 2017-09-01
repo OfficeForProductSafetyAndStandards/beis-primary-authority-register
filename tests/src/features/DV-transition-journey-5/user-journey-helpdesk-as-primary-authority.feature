@@ -80,6 +80,9 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
         And I scroll to element ".table-scroll-wrapper"
         When I click on the button "a*=Review and confirm your documentation"
         And I scroll to element ".table-scroll-wrapper"
+        When I click on the link "Upload a document"
+        And I add "test.png" to the inputfield "#edit-files-upload"
+
         And I click on the link "classify"
         And I click on the radio "#edit-advice-type-authority-advice"
         When I click on the button "#edit-next"
