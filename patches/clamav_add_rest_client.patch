@@ -17,7 +17,7 @@ index 1729e0d..6efefbb 100644
        $requirements['clamav'] = array(
          'title' => t('ClamAV version'),
 diff --git a/config/install/clamav.settings.yml b/config/install/clamav.settings.yml
-index 657f5ef..c9985ac 100644
+index 657f5ef..f7f4ed1 100644
 --- a/config/install/clamav.settings.yml
 +++ b/config/install/clamav.settings.yml
 @@ -18,3 +18,6 @@ mode_daemon_tcpip:
@@ -26,7 +26,7 @@ index 657f5ef..c9985ac 100644
    unixsocket: '/var/clamav/clamd'
 +
 +mode_daemon_rest_client:
-+  endpoint: 'http://192.168.82.68:8080/scan'
++  endpoint: ''
 diff --git a/src/Config.php b/src/Config.php
 index f977c8f..0111ca2 100644
 --- a/src/Config.php
@@ -45,7 +45,7 @@ index f977c8f..0111ca2 100644
    const OUTAGE_BLOCK_UNCHECKED = 0;
    const OUTAGE_ALLOW_UNCHECKED = 1;
 diff --git a/src/Form/ClamAVConfigForm.php b/src/Form/ClamAVConfigForm.php
-index d0e3eaa..2fbb36c 100644
+index d0e3eaa..4868bc2 100644
 --- a/src/Form/ClamAVConfigForm.php
 +++ b/src/Form/ClamAVConfigForm.php
 @@ -52,7 +52,8 @@ class ClamAVConfigForm extends ConfigFormBase {
@@ -73,12 +73,12 @@ index d0e3eaa..2fbb36c 100644
 +        ),
 +      ),
 +    );
-+    $form['scan_mechanism_wrapper']['mode_daemon_rest_client']['rest_endpoint'] = array(
++    $form['scan_mechanism_wrapper']['mode_daemon_rest_client']['endpoint'] = array(
 +      '#type' => 'textfield',
 +      '#title' => $this->t('REST endpoint'),
 +      '#default_value' => $config->get('mode_daemon_rest_client.endpoint'),
 +      '#maxlength' => 255,
-+      '#description' => t('The hostname for the ClamAV REST client.'),
++      '#description' => t('The endpoint for the ClamAV REST scanner.'),
 +    );
 +
      // Allow scanning according to scheme-wrapper.
@@ -135,10 +135,10 @@ index 4dd1b7e..ce0788f 100644
  
 diff --git a/src/Scanner/DaemonRestClient.php b/src/Scanner/DaemonRestClient.php
 new file mode 100644
-index 0000000..2ef0d91
+index 0000000..d8f6968
 --- /dev/null
 +++ b/src/Scanner/DaemonRestClient.php
-@@ -0,0 +1,101 @@
+@@ -0,0 +1,109 @@
 +<?php
 +
 +namespace Drupal\clamav\Scanner;
@@ -149,19 +149,23 @@ index 0000000..2ef0d91
 +use Drupal\clamav\Config;
 +
 +class DaemonRestClient implements ScannerInterface {
-+  protected $_file;
-+  protected $_endpoint;
-+  protected $_port;
-+  protected $_virus_name = '';
-+  protected $_httpclient;
++  protected $file;
++  protected $endpoint;
++  protected $httpUser;
++  protected $httpPass;
++  protected $port;
++  protected $virusName = '';
++  protected $httpClient;
 +
 +  /**
 +   * {@inheritdoc}
 +   */
 +  public function __construct(Config $config) {
-+    $this->_endpoint = $config->get('mode_daemon_rest_client.endpoint');
++    $this->endpoint = $config->get('mode_daemon_rest_client.endpoint');
++    $this->httpUser = getenv('CLAMAV_HTTP_USER');
++    $this->httpPass = getenv('CLAMAV_HTTP_PASS');
 +
-+    $this->_httpclient = \Drupal::httpClient();
++    $this->httpClient = \Drupal::httpClient();
 +  }
 +
 +  /**
@@ -172,7 +176,9 @@ index 0000000..2ef0d91
 +    $result = Scanner::FILE_IS_UNCHECKED;
 +
 +    try {
-+      $file_post = $this->_httpclient->post($this->_endpoint, [
++
++      $file_post = $this->httpClient->post($this->endpoint, [
++        'auth' => [$this->httpUser, $this->httpPass, 'Basic'],
 +        'multipart' => [
 +          [
 +            'name' => 'file',
@@ -200,7 +206,7 @@ index 0000000..2ef0d91
 +      $result = $response->file->status == 'OK' ? Scanner::FILE_IS_CLEAN : Scanner::FILE_IS_INFECTED;
 +
 +      if (isset($response->file->foundViruses)) {
-+        $this->_virus_name = current($response->file->foundViruses->stream);
++        $this->virus_name = current($response->file->foundViruses->stream);
 +      }
 +    }
 +    else {
@@ -215,7 +221,7 @@ index 0000000..2ef0d91
 +   * {@inheritdoc}
 +   */
 +  public function virus_name() {
-+    return $this->_virus_name;
++    return $this->virusName;
 +  }
 +
 +  /**
@@ -225,16 +231,18 @@ index 0000000..2ef0d91
 +
 +    try {
 +
-+      $request = $this->_httpclient->get($this->_endpoint);
++      $request = $this->httpClient->get($this->endpoint,
++        ['auth' => [$this->httpUser, $this->httpPass, 'Basic']]
++      );
 +
 +      if ($json = json_decode($request->getBody())) {
-+        return isset($json->version) ?: 'unknown';
++        return isset($json->version) ? $json->version : 'unknown';
 +      }
 +
 +    }
 +    catch (\Exception $e) {
-+      \Drupal::logger('Clam AV')->warning('Unable to connect to ClamAV REST Endpoint @endpoint. @error', ['@endpoint' => $this->_endpoint, '@error' => $e->getMessage()]);
-+      return 'N/A';
++      \Drupal::logger('Clam AV')->warning('Unable to connect to ClamAV REST Endpoint @endpoint. @error', ['@endpoint' => $this->endpoint, '@error' => $e->getMessage()]);
++      return 'No connection';
 +    }
 +
 +  }
