@@ -10,6 +10,8 @@ module:
   dblog: 0
   devel: 0
   par_data_test: 0
+  par_enforcement_flows: 0
+  par_partnership_flows: 0
 theme: {  }
 blacklist:
   - par_data.settings

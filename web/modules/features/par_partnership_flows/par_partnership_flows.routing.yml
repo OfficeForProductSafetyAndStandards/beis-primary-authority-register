@@ -105,7 +105,7 @@ par_partnership_flows.advice_edit:
   path: '/partnership/{par_data_partnership}/advice/{par_data_advice}/edit'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm'
-    _title: 'Add Advice'
+    _title: 'Update Advice'
   requirements:
     _permission: 'bypass partnership journey'
     par_data_partnership: \d+
@@ -120,7 +120,7 @@ par_partnership_flows.inspection_plan_list:
   path: '/partnership/{par_data_partnership}/inspection/list'
   defaults:
     _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::content'
-    _title: 'List of Inspcetion Plans for the Partnership'
+    _title: 'List of Inspection Plans for the Partnership'
   requirements:
     _permission: 'bypass partnership journey'
     par_data_partnership: \d+
