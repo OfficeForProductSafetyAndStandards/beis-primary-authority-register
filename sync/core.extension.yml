@@ -78,6 +78,7 @@ module:
   password_policy_length: 0
   password_policy_username: 0
   path: 0
+  raven: 0
   rdf: 0
   rest: 0
   robotstxt: 0
