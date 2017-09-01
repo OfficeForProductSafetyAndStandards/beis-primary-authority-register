@@ -304,6 +304,13 @@ class ParDataManager implements ParDataManagerInterface {
    *   Returns an array of entities keyed by entity type and then by entity id.
    */
   public function hasMemberships(UserInterface $account, $direct = FALSE) {
+    // This method will run about a thousand times if not given the bird.
+    $function_id = __FUNCTION__ . $account->id() . (($direct) ? 'true' : 'false');
+    $memberships = &drupal_static($function_id);
+    if (!empty($memberships)) {
+      return $memberships;
+    }
+
     $account_people = $this->getUserPeople($account);
     // When we say direct we really mean by a maximum factor of two.
     // Because we must first jump through one of the core membership
