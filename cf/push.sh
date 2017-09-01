@@ -113,6 +113,10 @@ S3_BUCKET_PRIVATE=`vault read -field=S3_BUCKET_PRIVATE secret/par/env/$ENV`
 S3_BUCKET_ARTIFACTS=`vault read -field=S3_BUCKET_ARTIFACTS secret/par/env/$ENV`
 PAR_GOVUK_NOTIFY_KEY=`vault read -field=PAR_GOVUK_NOTIFY_KEY secret/par/env/$ENV`
 PAR_GOVUK_NOTIFY_TEMPLATE=`vault read -field=PAR_GOVUK_NOTIFY_TEMPLATE secret/par/env/$ENV`
+CLAMAV_HTTP_PASS=`vault read -field=CLAMAV_HTTP_PASS secret/par/env/$ENV`
+CLAMAV_HTTP_USER=`vault read -field=CLAMAV_HTTP_USER secret/par/env/$ENV`
+SENTRY_DSN=`vault read -field=SENTRY_DSN secret/par/env/$ENV`
+SENTRY_DSN_PUBLIC=`vault read -field=SENTRY_DSN_PUBLIC secret/par/env/$ENV`
 
 ####################################################################################
 # Reseal the vault
@@ -179,6 +183,10 @@ cf set-env par-beta-$ENV-green S3_BUCKET_ARTIFACTS $S3_BUCKET_ARTIFACTS
 cf set-env par-beta-$ENV-green APP_ENV $ENV
 cf set-env par-beta-$ENV-green PAR_GOVUK_NOTIFY_KEY $PAR_GOVUK_NOTIFY_KEY
 cf set-env par-beta-$ENV-green PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE
+cf set-env par-beta-$ENV-green CLAMAV_HTTP_PASS $CLAMAV_HTTP_PASS
+cf set-env par-beta-$ENV-green CLAMAV_HTTP_USER $CLAMAV_HTTP_USER
+cf set-env par-beta-$ENV-green SENTRY_DSN $SENTRY_DSN
+cf set-env par-beta-$ENV-green SENTRY_DSN_PUBLIC $SENTRY_DSN_PUBLIC
 
 cf restage par-beta-$ENV-green
 

@@ -26,14 +26,15 @@ trait ParPartnershipFlowsTrait {
     $account = User::Load($this->currentUser()->id());
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
 
-    // IF the route is in only one flow then *perhaps* we can just return that flow...
+    // If the route is in only one flow then *perhaps* we can just return that
+    // flow...
     // @TODO Is this a wanted feature?? Let's discuss.
     $flows = \Drupal::entityTypeManager()->getStorage('par_flow')->loadByRoute($this->getCurrentRoute());
     if (count($flows) === 1) {
       return key($flows);
     }
 
-    // IF User has helpdesk permissions && the Route is in the helpdesk flow...
+    // If User has helpdesk permissions && the Route is in the helpdesk flow...
     if (isset($flows['helpdesk']) && $this->currentUser()->hasPermission('bypass par_data access')) {
       return 'helpdesk';
     }
@@ -43,12 +44,14 @@ trait ParPartnershipFlowsTrait {
       return 'partnership_authority';
     }
 
-    // IF Route is in direct flow && User is an organisation member && Partnership is in URL && Partnership is direct...
+    // If Route is in direct flow && User is an organisation member
+    // && Partnership is in URL && Partnership is direct...
     if (isset($flows['partnership_direct']) && $par_data_partnership && $par_data_partnership->isDirect()) {
       return 'partnership_direct';
     }
 
-    // IF Route is in coordinated flow && User is an organisation member && Partnership is in URL && Partnership is coordinated...
+    // If Route is in coordinated flow && User is an organisation member
+    // && Partnership is in URL && Partnership is coordinated...
     if (isset($flows['partnership_coordinated']) && $par_data_partnership && $par_data_partnership->isCoordinated()) {
       return 'partnership_coordinated';
     }
@@ -60,4 +63,5 @@ trait ParPartnershipFlowsTrait {
 
     return parent::getFlowName();
   }
+
 }

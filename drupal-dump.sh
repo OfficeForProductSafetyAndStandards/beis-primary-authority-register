@@ -34,4 +34,3 @@ tar -zcvf $SQL_FILENAME.tar.gz -C $TAR_PATH $SQL_FILENAME
 
 rm $SQL_FILENAME.tar.gz
 rm $TAR_PATH/$SQL_FILENAME
-
