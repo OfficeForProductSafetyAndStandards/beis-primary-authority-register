@@ -206,7 +206,14 @@ class ParDataManager implements ParDataManagerInterface {
    * @return EntityInterface[][]
    *   An array of entities keyed by entity type.
    */
-  public function getRelatedEntities($entity, $entities = [], $iteration = 0, $force_lookup = FALSE) {
+  
+  public function out($str) {
+      file_put_contents('/tmp/out.txt', $str . PHP_EOL, FILE_APPEND);
+  }
+  
+  public function getRelatedEntities($entity, $entities = [], $processedEntities = [], $iteration = 0, $force_lookup = FALSE) {
+  
+      $this->out('Iteration: ' . $iteration);
     if (!$entity instanceof ParDataEntityInterface) {
       return $entities;
     }
@@ -221,16 +228,23 @@ class ParDataManager implements ParDataManagerInterface {
     }
 
     // Make sure not to count the same entity again.
-    if (isset($entities[$entity->getEntityTypeId()]) && isset($entities[$entity->getEntityTypeId()][$entity->id()])) {
+    $entityHashKey = $entity->getEntityTypeId() . ':' . $entity->id();
+    if (isset($processedEntities[$entityHashKey])) {
+        $this->out('Ignoring ' . $entityHashKey);
       return $entities;
     }
+    
+    // Add hash key to show this node has been processed, whether or not it is used or ignored
+    $processedEntities[$entityHashKey] = true;
 
     // Add this entity to the related entities.
     if (!isset($entities[$entity->getEntityTypeId()])) {
       $entities[$entity->getEntityTypeId()] = [];
     }
     $entities[$entity->getEntityTypeId()][$entity->id()] = $entity;
-
+    
+    $this->out(str_pad('', $iteration * 2, ' ') . $entityHashKey);
+    
     // Loop through all relationships
     foreach ($entity->getRelationships() as $entity_type => $referenced_entities) {
       foreach ($referenced_entities as $entity_id => $referenced_entity) {
@@ -242,20 +256,20 @@ class ParDataManager implements ParDataManagerInterface {
         // If the current entity is a person only lookup core entity relationships.
         if ($entity->getEntityTypeId() === 'par_data_person') {
           if (in_array($referenced_entity->getEntityTypeId(), $this->coreMembershipEntities)) {
-            $entities = $this->getRelatedEntities($referenced_entity, $entities, $iteration, TRUE);
+            $entities = $this->getRelatedEntities($referenced_entity, $entities, $processedEntities, $iteration, TRUE);
           }
         }
         // If the current entity is a core entity only lookup entity relationships
         // if forced to do so, by the person lookup.
         else if (in_array($entity->getEntityTypeId(), $this->coreMembershipEntities)) {
           if ($force_lookup) {
-            $entities = $this->getRelatedEntities($referenced_entity, $entities, $iteration);
+            $entities = $this->getRelatedEntities($referenced_entity, $entities, $processedEntities, $iteration);
           };
         }
         // For all other entities follow your hearts content and find all
         // entity relationships..
         else if (!in_array($entity->getEntityTypeId(), $this->nonMembershipEntities)) {
-          $entities = $this->getRelatedEntities($referenced_entity, $entities, $iteration);
+          $entities = $this->getRelatedEntities($referenced_entity, $entities, $processedEntities, $iteration);
         }
       }
     }
