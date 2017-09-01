@@ -337,28 +337,19 @@ $aliases['dev'] = [
   ],
   'root' => '/var/www/html/web',
 ];
-$aliases['paas-sanitized'] = [
+$aliases['paas'] = [
   'user' => 1,
     'command-specific' => [
         'sql-dump' => [
             'ordered-dump' => TRUE,
             'structure-tables-key' => 'common',
             'skip-tables-key' => 'common',
+            'extra' => '--no-owner',
         ],
         'sql-sanitize' => [
             'sanitize-password' => 'TestPassword'
         ],
     ],
   'root' => '/home/vcap/app/web'
-];
-$aliases['paas-unsanitized'] = [
-  'user' => 1,
-  'root' => '/home/vcap/app/web',
-  'command-specific' => [
-    'sql-sanitize' => [
-      'sanitize-password' => 'no',
-      'sanitize-email' => 'no',
-    ],
-  ],
 ];
 
