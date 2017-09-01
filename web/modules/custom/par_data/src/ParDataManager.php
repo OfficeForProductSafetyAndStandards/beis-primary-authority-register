@@ -207,13 +207,8 @@ class ParDataManager implements ParDataManagerInterface {
    *   An array of entities keyed by entity type.
    */
   
-  public function out($str) {
-      file_put_contents('/tmp/out.txt', $str . PHP_EOL, FILE_APPEND);
-  }
-  
   public function getRelatedEntities($entity, $entities = [], $processedEntities = [], $iteration = 0, $force_lookup = FALSE) {
   
-      $this->out('Iteration: ' . $iteration);
     if (!$entity instanceof ParDataEntityInterface) {
       return $entities;
     }
@@ -230,7 +225,6 @@ class ParDataManager implements ParDataManagerInterface {
     // Make sure not to count the same entity again.
     $entityHashKey = $entity->getEntityTypeId() . ':' . $entity->id();
     if (isset($processedEntities[$entityHashKey])) {
-        $this->out('Ignoring ' . $entityHashKey);
       return $entities;
     }
     
@@ -242,8 +236,6 @@ class ParDataManager implements ParDataManagerInterface {
       $entities[$entity->getEntityTypeId()] = [];
     }
     $entities[$entity->getEntityTypeId()][$entity->id()] = $entity;
-    
-    $this->out(str_pad('', $iteration * 2, ' ') . $entityHashKey);
     
     // Loop through all relationships
     foreach ($entity->getRelationships() as $entity_type => $referenced_entities) {
