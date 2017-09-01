@@ -1,0 +1,48 @@
+<?php
+
+/**
+ * @file
+ * Alter views for the the beta journeys.
+ */
+
+use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_views_pre_view().
+ */
+function par_partnership_flows_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
+  // @todo This routine probably needs to be put into a module or theme.
+  // Check to make sure we have the correct view.
+  if ($view->id() !== 'par_data_beta_partnerships') {
+    return;
+  }
+
+  $user_roles = \Drupal::currentUser()->getRoles();
+
+  // In the view we have two global text fields. One to display both the
+  // authority and organisation journey (for help desk and admin) and the
+  // other will display one of the two links (depending on which flow we
+  // disable).
+  // Admin and help desk can see everything....
+  if (!!array_intersect(['administrator', 'par_helpdesk'], $user_roles)) {
+    // We just need to remove the global text field that displays only one of
+    // the flows.
+    $view->removeHandler($display_id, 'field', 'nothing');
+    return;
+  }
+  // Disable the global text field showing both with a line break.
+  $view->removeHandler($display_id, 'field', 'nothing_1');
+
+  // Authority person can only access the authority flow.
+  if (in_array('par_authority', $user_roles)) {
+    // Disable the organisation flow.
+    $view->removeHandler($display_id, 'field', 'organisation_name_1');
+    return;
+  }
+  if (!!array_intersect(['par_business', 'par_coordinator'], $user_roles)) {
+    // Disable the authority flow.
+    $view->removeHandler($display_id, 'field', 'organisation_name');
+    return;
+  }
+
+}
