@@ -1,5 +1,5 @@
 #############################################
-# Post deployment updates
+# Database backup to S3
 #############################################
 
 import json, os
@@ -28,6 +28,4 @@ os.environ["HTTPD_SERVER_ADMIN"] = "admin@localhost"
 os.environ["LD_LIBRARY_PATH"] = os.environ["HOME"] + "/app/php/lib"
 os.environ["PATH"] = os.environ["PATH"] + ":/home/vcap/app/bin/pgsql/bin"
 
-os.system("cd /home/vcap/app && sh drupal-update.sh /home/vcap/app")
-
-
+os.system("cd /home/vcap/app && sh drupal-dump.sh /home/vcap/app paas drush-dump-" + os.environ["APP_ENV"] + "-unsanitized-latest.sql")
