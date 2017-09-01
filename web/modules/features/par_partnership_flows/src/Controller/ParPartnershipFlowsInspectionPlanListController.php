@@ -33,7 +33,6 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
 
     // Get each Advice document and add as a table row.
     foreach ($par_data_partnership->getInspectionPlan() as $inspection_plan) {
-      dump($inspection_plan);
       $inspection_plan_view_builder = $this->getParDataManager()->getViewBuilder('par_data_inspection_plan');
 
       // The first column contains a rendered summary of the document.
