@@ -135,7 +135,7 @@ index 4dd1b7e..ce0788f 100644
  
 diff --git a/src/Scanner/DaemonRestClient.php b/src/Scanner/DaemonRestClient.php
 new file mode 100644
-index 0000000..d8f6968
+index 0000000..56a45be
 --- /dev/null
 +++ b/src/Scanner/DaemonRestClient.php
 @@ -0,0 +1,109 @@
@@ -206,7 +206,7 @@ index 0000000..d8f6968
 +      $result = $response->file->status == 'OK' ? Scanner::FILE_IS_CLEAN : Scanner::FILE_IS_INFECTED;
 +
 +      if (isset($response->file->foundViruses)) {
-+        $this->virus_name = current($response->file->foundViruses->stream);
++        $this->virusName = current($response->file->foundViruses->stream);
 +      }
 +    }
 +    else {
