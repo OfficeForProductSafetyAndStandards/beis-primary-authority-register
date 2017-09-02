@@ -299,5 +299,8 @@ $options['skip-tables']['common'] = array('migration_*', 'test*');
 // Use Drupal version specific CLI history instead of per site.
 # $command_specific['core-cli'] = array('version-history' => TRUE);
 
-// Ensure ann sanitization commands don't run the email sanitization.
+// Ensure sanitization commands don't run the email sanitization.
 $command_specific['sql-sanitize'] = ['sanitize-email' => 'no'];
+
+// Ensure drush always has enough memory.
+ini_set('memory_limit', '512M');
