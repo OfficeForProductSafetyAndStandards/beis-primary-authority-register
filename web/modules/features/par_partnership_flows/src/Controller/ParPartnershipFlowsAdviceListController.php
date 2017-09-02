@@ -17,13 +17,6 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
    * {@inheritdoc}
    */
   public function content(ParDataPartnership $par_data_partnership = NULL) {
-
-    $par_data_organisation = current($par_data_partnership->retrieveEntityValue('field_organisation'));
-
-    if ($par_data_organisation) {
-      $organisation_name = $par_data_organisation->retrieveStringValue('organisation_name');
-    }
-
     $advice_bundle = $this->getParDataManager()->getParBundleEntity('par_data_advice');
 
     // Show the documents in table format.
@@ -31,7 +24,11 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
       '#theme' => 'table',
       '#attributes' => ['class' => ['form-group']],
       '#title' => 'Advice documentation',
-      '#header' => ['Document', 'Type of document and regulatory functions', 'Actions', 'Confirmed'],
+      '#header' => [
+        'Document',
+        'Type of document and regulatory functions',
+        'Actions',
+      ],
       '#empty' => $this->t("There is no documentation for this partnership."),
     ];
 
@@ -57,28 +54,24 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
         }
       }
 
-      // The third column contains a list of actions that can be performed on this document.
+      // The third column contains a list of actions that can be performed on
+      // this document.
       $links = [
         [
           '#type' => 'markup',
           '#markup' => $this->getFlow()
             ->getNextLink('edit', ['par_data_advice' => $advice->id()])
-            ->setText('classify')
+            ->setText('edit')
             ->toString(),
         ],
       ];
-      $advice_actions = $this->getRenderer()->render($links);
-
-      // Fourth column contains the completion status of the document.
-      $completion = $advice->getCompletionPercentage();
 
       if ($advice_summary) {
         $build['documentation_list']['#rows'][] = [
           'data' => [
             'document' => $this->getRenderer()->render($advice_summary),
             'type' => $advice_details,
-            'actions' => $advice_actions,
-            'confirmed' => $this->renderPercentageTick($completion),
+            'actions' => $this->getRenderer()->render($links),
           ],
         ];
       }
