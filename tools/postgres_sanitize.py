@@ -31,4 +31,4 @@ os.environ["PATH"] = os.environ["PATH"] + ":/home/vcap/app/bin/pgsql/bin"
 
 if e !== 'production':
   os.system("cd /home/vcap/app/web && ../vendor/drush/drush/drush sql-sanitize paas)
-  os.system("cd /home/vcap/app && sh drupal-dump.sh /home/vcap/app paas drush-dump-" + os.environ["APP_ENV"] + "-unsanitized-latest.sql")
+  os.system("cd /home/vcap/app && sh drupal-dump.sh /home/vcap/app paas drush-dump-" + os.environ["APP_ENV"] + "-sanitized-latest.sql")
