@@ -27,7 +27,7 @@ rm $SQL_FILENAME.tar.gz
 rm $TAR_PATH/$SQL_FILENAME
 
 cd ${PROJECT_ROOT}/web
-../vendor/drush/drush/drush sql-dump @$DRUPAL_ENV --result-file=$TAR_PATH/$SQL_FILENAME
+../vendor/drush/drush/drush sql-dump @$DRUPAL_ENV --result-file=$TAR_PATH/$SQL_FILENAME --extra="-O -x"
 ls -la /home/vcap
 tar -zcvf $SQL_FILENAME.tar.gz -C $TAR_PATH $SQL_FILENAME
 ../vendor/drush/drush/drush fsp s3backups $SQL_FILENAME.tar.gz $SQL_FILENAME.tar.gz
