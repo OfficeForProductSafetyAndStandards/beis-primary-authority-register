@@ -91,7 +91,7 @@ install:
 #-----------------------------------------------------------------------------
 
   - docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cex -n 1> /dev/null"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cex -n"
 
 #-----------------------------------------------------------------------------
 # Stamp the code with the build number
@@ -105,8 +105,8 @@ install:
 
 script:
   - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
-  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
-  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/pa11y-ci -T 1 -j -s 'http://localhost/sitemap.xml' -f 'https://par-beta-test.cloudapps.digital' -r 'http://localhost:80' > ./reports/wcag2aa_report.json"
+#  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
+#  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/pa11y-ci -T 1 -j -s 'http://localhost/sitemap.xml' -f 'https://par-beta-test.cloudapps.digital' -r 'http://localhost:80' > ./reports/wcag2aa_report.json"
 
 #-----------------------------------------------------------------------------
 # Remove .env file created in previous steps.

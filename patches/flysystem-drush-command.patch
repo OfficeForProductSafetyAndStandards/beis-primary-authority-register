@@ -63,7 +63,7 @@ index 0000000..b9578de
 +    
 +    $flysystem = get_fs_scheme($scheme);
 +    $resource = fopen($localPath, 'r');
-+    $flysystem->writeStream($remotePath, $resource);
++    $flysystem->putStream($remotePath, $resource);
 +    fclose($resource);
 +    
 +    return $localPath . ' written to ' . $scheme . ':' . $remotePath;
