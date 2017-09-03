@@ -350,5 +350,6 @@ $aliases['paas'] = [
             'sanitize-password' => 'TestPassword'
         ],
     ],
+  'root' => '/home/vcap/app/web'
 ];
 
