@@ -46,6 +46,7 @@ install:
 #-----------------------------------------------------------------------------
 
   - phpenv config-rm xdebug.ini
+  - phpenv config-add x_travis.php.ini
   - composer install -v
   - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
   - docker exec -it par_beta_web bash -c "npm run gulp"
@@ -105,8 +106,8 @@ install:
 
 script:
   - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
-#  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
-#  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/pa11y-ci -T 1 -j -s 'http://localhost/sitemap.xml' -f 'https://par-beta-test.cloudapps.digital' -r 'http://localhost:80' > ./reports/wcag2aa_report.json"
+  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
+  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/pa11y-ci -T 1 -j -s 'http://localhost/sitemap.xml' -f 'https://par-beta-test.cloudapps.digital' -r 'http://localhost:80' > ./reports/wcag2aa_report.json"
 
 #-----------------------------------------------------------------------------
 # Remove .env file created in previous steps.
@@ -150,10 +151,14 @@ addons:
     debug: false
     paths:
       - ./tests/reports
+      - ./tests/errorShots
     target_paths: tests/$TRAVIS_BUILD_NUMBER
     bucket: transform-par-beta-artifacts
     s3_region: eu-west-1
 
 notifications:
+  email: false
   slack:
     secure: oRuAo84heWUp6MVcM22dx/FZUV5HUVvsegEDaiVggQmNo2zYzNQhgAY7P9GpnaPWo53inCoFfwrwn9V+sj2uwUwrtWQg71qCTU3FIZicqYBB44rp+7/YdpuNqCYtbbY50UJpsZtqRIffWB4iS0YZ2bd+SkvsJskzRzbHC9qRjrSq0Hmb1DuxQCiE+M9TM7n4phY1dPTxTm1g1WwShr1zKXTfhDDK2k9r9kQGpJFP5rrE5cch0kBPJP29rgijeJq5uFS99+QyiVRJcqStXYl2JvKXTMS3sVk+OgSHeeRaaY0dbQSPcn4mTgcQKMVpfAUXVD6mUlkj4WYDXjdQSZdbgVvsX5tQg/6kG52wXgB+vDsmwKoBcTZLndNUQc9nCA02A+WVLyru318JmxwtaLo7CqRJArG3vItryMl7SxUA5QM1XB77iOe25m1aXEvJkUa54p6P7T62Gr0qfaEnCAeNRu33nS/16g+Znbp34jIwmmt+f3q2Uo3XV9cQgYj46ixzSjw5OPTHQSEpCHE8jtkXP80/N8jlXYLm7kTJapSWKEdbQf6J5a7Oj8Hv7Jq0QoPZmRpfa9L5PwJHd38p1JmxnVFbZMS4dQGyTwgyehf62cIDVi+5Pl3XPdQJ9FcMSTGOCXSrPGmJRHBt+o8bOuIzWMBHYqgnmHNNQ+oK/SEFhyw=
+    on_success: change
+    on_failure: change
