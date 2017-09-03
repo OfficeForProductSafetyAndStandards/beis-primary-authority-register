@@ -13,8 +13,10 @@ Feature: Helpdesk As Business User - Manage Addresses
         # HD DASHBOARD
 
         Then I expect that element "h1" contains the text "RD Helpdesk Dashboard"
+        And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
         When I add "ABCD" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+        And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
         When I click on the button "td.views-field.views-field-organisation-name a"
 
         # PARTNERSHIP TASKS
