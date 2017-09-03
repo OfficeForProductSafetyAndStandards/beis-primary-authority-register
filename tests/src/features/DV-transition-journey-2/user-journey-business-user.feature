@@ -17,11 +17,11 @@ Feature: Business User - Manage Addresses
         And I add "DCBA" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
         And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
-        Then I expect that element "td.views-field.views-field-field-premises" is not visible
+        Then I expect that element "td.views-field.views-field-nothing" is not visible
         When I add "ABCD" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
         And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
-        Then I expect that element "td.views-field-organisation-name" contains the text "ABCD Mart"
+        Then I expect that element "td.views-field.views-field-nothing" contains the text "ABCD Mart"
         When I select the option with the text "Confirmed by Business" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
         And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
