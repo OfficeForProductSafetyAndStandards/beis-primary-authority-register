@@ -46,7 +46,7 @@ install:
 #-----------------------------------------------------------------------------
 
   - phpenv config-rm xdebug.ini
-  - phpenv config-add travis.php.ini
+  - phpenv config-add x_travis.php.ini
   - composer install -v
   - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
   - docker exec -it par_beta_web bash -c "npm run gulp"
