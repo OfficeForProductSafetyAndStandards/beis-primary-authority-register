@@ -13,6 +13,7 @@ Feature: Business User - Manage Addresses
 
         # PARTNERSHIPS DASHBOARD FILTERS
 
+        And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
         And I add "DCBA" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
         Then I expect that element "td.views-field.views-field-field-premises" is not visible
