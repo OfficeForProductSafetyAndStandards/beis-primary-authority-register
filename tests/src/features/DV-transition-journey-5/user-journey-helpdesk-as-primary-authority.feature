@@ -13,10 +13,10 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
         # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
         Then I expect that element "h1" contains the text "RD Helpdesk Dashboard"
-        And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
+        And I scroll to element "#views-exposed-form-rd-helpdesk-dashboard-par-rd-helpdesk-dashboard-page"
         When I add "ABCD" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
-        And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
+        And I click on the button "#edit-submit-rd-helpdesk-dashboard"
+        And I scroll to element "#views-exposed-form-rd-helpdesk-dashboard-par-rd-helpdesk-dashboard-page"
         When I click on the button "td.views-field.views-field-authority-name a"
 
         # REVIEW PARTNERSHIPS DETAILS
