@@ -154,6 +154,8 @@ addons:
   artifacts:
     debug: false
     paths:
+      - ./tests/reports
+      - ./tests/errorShots
       # report.json is useful.
       - ./tests/reports/report.json
       # allure report export as a handy .tar.gz
