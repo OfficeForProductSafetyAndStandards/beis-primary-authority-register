@@ -3,6 +3,7 @@
 namespace Drupal\par_data;
 
 use Drupal\clamav\Config;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\Entity\ConfigEntityType;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
@@ -240,9 +241,29 @@ class ParDataManager implements ParDataManagerInterface {
       $entities[$entity->getEntityTypeId()] = [];
     }
     $entities[$entity->getEntityTypeId()][$entity->id()] = $entity;
-    
+
+    // Everything after this point is costly and we can cache.
+    $cache = \Drupal::cache('data')->get("par_data_relationships:{$entityHashKey}");
+    if ($cache) {
+      $relationships = $cache->data;
+    }
+    else {
+      // Now we've decided if it's worth processing this entity let's cache it.
+      $relationships = $entity->getRelationships();
+
+      // Set cache tags for all these relationships.
+      $tags = [];
+      foreach ($entity->getRelationships() as $entity_type => $referenced_entities) {
+        foreach ($referenced_entities as $referenced_entity_id => $referenced_entity) {
+          $tags[] = $entity_type . ':' . $referenced_entity->id();
+        }
+      }
+      \Drupal::cache('data')->set("par_data_relationships:{$entityHashKey}", $relationships, Cache::PERMANENT, $tags);
+    }
+
     // Loop through all relationships
-    foreach ($entity->getRelationships() as $entity_type => $referenced_entities) {
+    $related_entities = [];
+    foreach ($relationships as $entity_type => $referenced_entities) {
       foreach ($referenced_entities as $entity_id => $referenced_entity) {
         // Always skip lookup of relationships for people.
         if ($referenced_entity->getEntityTypeId() === 'par_data_person') {
@@ -315,6 +336,7 @@ class ParDataManager implements ParDataManagerInterface {
 
     $memberships = [];
     $hash_tree = [];
+    $start_time = microtime(true);
     foreach ($account_people as $person) {
       $relationships = $object->getRelatedEntities($person, $memberships, $hash_tree);
       foreach ($relationships as $entity_type => $entities) {
@@ -324,6 +346,10 @@ class ParDataManager implements ParDataManagerInterface {
         $memberships[$entity_type] += $entities;
       }
     }
+
+    $end_time = microtime(true);
+
+    var_dump('Has memberships', $end_time - $start_time);
 
     return !empty($memberships) ? $memberships : [];
   }
