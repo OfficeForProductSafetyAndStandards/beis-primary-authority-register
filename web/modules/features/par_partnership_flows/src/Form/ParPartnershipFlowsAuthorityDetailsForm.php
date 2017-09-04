@@ -92,7 +92,8 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     }
 
     // About the business.
-    $about_organisation = $par_data_organisation ? $organisation_builder->view($par_data_organisation, 'about') : '';
+    $about_organisation = $organisation_builder->view($par_data_organisation, 'about');
+
     $form['about_business'] = [
       '#type' => 'fieldset',
       '#title' => t('About the business'),
@@ -100,15 +101,8 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-    if ($par_data_organisation->get('comments')->getString() === '') {
-      $form['about_business']['info'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('(none)'),
-      ];
-    }
-    else {
-      $form['about_business']['info'] = $this->renderMarkupField($about_organisation);
-    }
+
+    $form['about_business']['info'] = $this->renderMarkupField($about_organisation);
 
     // Sic Codes.
     $par_data_sic_code = $par_data_organisation->getSicCode();
