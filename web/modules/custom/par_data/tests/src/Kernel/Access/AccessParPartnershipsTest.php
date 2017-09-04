@@ -152,7 +152,6 @@ class AccessParPartnershipsTest extends ParDataTestBase {
     $entityHashKey = $this->premises[17]->getEntityTypeId() . ':' . $this->premises[17]->id();
     $premises_id = $this->premises[17]->id();
     $this->premises[17]->delete();
-    \Drupal::service('cache_tags.invalidator')->invalidateTags([$entityHashKey]);
     $cache = \Drupal::cache('data')->get("par_data_relationships:{$entityHashKey}");
     $this->assertEmpty($cache, t("Relationships for premises entity $premises_id has been correctly cache busted."));
 
