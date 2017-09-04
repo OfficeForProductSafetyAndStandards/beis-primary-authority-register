@@ -12,7 +12,6 @@ Feature: Coordinator User - Manage Addresses
         When I click on the link "Continue to your Partnerships"
 
         # PARTNERSHIPS DASHBOARD
-        And I scroll to element ".table-scroll-wrapper"
         When I select my next coordinated partnership awaiting review
 
         # TERMS AND CONDITIONS SCREEN
