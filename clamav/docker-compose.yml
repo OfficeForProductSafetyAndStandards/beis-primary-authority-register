@@ -1,0 +1,34 @@
+version: "2"
+
+services:
+  clamav_daemon:
+    build:
+      context: ./docker-clamav
+      dockerfile: Dockerfile
+    container_name: clamav_daemon
+    ports:
+      - "3310:3310"
+    networks:
+      static-network:
+        ipv4_address: '192.168.50.72'
+  clamav_rest:
+    build:
+      context: ./clamav-rest
+      dockerfile: Dockerfile
+    container_name: clamav_rest
+    ports:
+      - "3320:8080"
+    volumes:
+      - ./clamav-rest/target:/root
+    links:
+      - clamav_daemon
+    networks:
+      static-network:
+        ipv4_address: '192.168.50.73'
+
+networks:
+  static-network:
+    ipam:
+      config:
+        - subnet: 192.168.0.0/16
+          ip_range: 192.168.50.0/2
