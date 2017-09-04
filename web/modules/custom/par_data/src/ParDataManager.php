@@ -252,12 +252,13 @@ class ParDataManager implements ParDataManagerInterface {
       $relationships = $entity->getRelationships();
 
       // Set cache tags for all these relationships.
-      $tags = [];
-      foreach ($entity->getRelationships() as $entity_type => $referenced_entities) {
+      $tags[] = $entityHashKey;
+      foreach ($relationships as $entity_type => $referenced_entities) {
         foreach ($referenced_entities as $referenced_entity_id => $referenced_entity) {
           $tags[] = $entity_type . ':' . $referenced_entity->id();
         }
       }
+      
       \Drupal::cache('data')->set("par_data_relationships:{$entityHashKey}", $relationships, Cache::PERMANENT, $tags);
     }
 
@@ -336,7 +337,6 @@ class ParDataManager implements ParDataManagerInterface {
 
     $memberships = [];
     $hash_tree = [];
-    $start_time = microtime(true);
     foreach ($account_people as $person) {
       $relationships = $object->getRelatedEntities($person, $memberships, $hash_tree);
       foreach ($relationships as $entity_type => $entities) {
@@ -346,10 +346,6 @@ class ParDataManager implements ParDataManagerInterface {
         $memberships[$entity_type] += $entities;
       }
     }
-
-    $end_time = microtime(true);
-
-    var_dump('Has memberships', $end_time - $start_time);
 
     return !empty($memberships) ? $memberships : [];
   }
