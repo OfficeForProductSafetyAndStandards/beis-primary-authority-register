@@ -94,7 +94,7 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
 #        Then I expect that element ".table-scroll-wrapper" contains the text "✔"
 #        And the element ".table-scroll-wrapper" contains the text "Cookie control"
         When I click on the link "Save"
-        Then I expect that element ".table-scroll-wrapper" contains the text "100%"
+        Then I expect that element ".table-scroll-wrapper" contains the text "50%"
 
         # INSPECTION PLANS
 
