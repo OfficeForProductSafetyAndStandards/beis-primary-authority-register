@@ -324,7 +324,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     $form['advice']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('advice')->setText('See all Advicet')->toString(),
+        '@link' => $this->getFlow()->getNextLink('advice')->setText('See all Advice')->toString(),
       ]),
     ];
 
