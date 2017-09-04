@@ -83,19 +83,18 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
         And I scroll to element ".table-scroll-wrapper"
         When I click on the button "a*=Review and confirm your documentation"
         And I scroll to element ".table-scroll-wrapper"
-        When I click on the link "Upload a document"
-        And I add "test.png" to the inputfield "#edit-files-upload"
-
-        And I click on the link "classify"
-        And I click on the radio "#edit-advice-type-authority-advice"
-        When I click on the button "#edit-next"
-        Then I expect that element ".error-message" does exist
-        And I click on the checkbox ".form-label*=Cookie control"
-        When I click on the button "#edit-next"
-        Then I expect that element ".table-scroll-wrapper" contains the text "✔"
-        And the element ".table-scroll-wrapper" contains the text "Cookie control"
+#        When I click on the link "Upload a document"
+#        And I add "test.png" to the inputfield "#edit-files-upload"
+#        And I click on the link "classify"
+#        And I click on the radio "#edit-advice-type-authority-advice"
+#        When I click on the button "#edit-next"
+#        Then I expect that element ".error-message" does exist
+#        And I click on the checkbox ".form-label*=Cookie control"
+#        When I click on the button "#edit-next"
+#        Then I expect that element ".table-scroll-wrapper" contains the text "✔"
+#        And the element ".table-scroll-wrapper" contains the text "Cookie control"
         When I click on the link "Save"
-        Then I expect that element ".table-scroll-wrapper" contains the text "100%"
+        Then I expect that element ".table-scroll-wrapper" contains the text "50%"
 
         # INSPECTION PLANS
 
