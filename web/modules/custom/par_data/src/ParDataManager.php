@@ -198,8 +198,13 @@ class ParDataManager implements ParDataManagerInterface {
    * Follows some rules to make sure it doesn't go round in loops.
    *
    * @param $entity
+   *   The entity being looked up.
    * @param array $entities
+   *   The entities relationship tree.
+   * @param array $processedEntities
+   *   The hash table of entities that have already been processed, includes those ignored in the entity relationship tree.
    * @param int $iteration
+   *   The depth of relationships to go before stopping.
    * @param bool $force_lookup
    *   Force the lookup of relationships that would otherwise be ignored.
    *
@@ -207,8 +212,7 @@ class ParDataManager implements ParDataManagerInterface {
    *   An array of entities keyed by entity type.
    */
   
-  public function getRelatedEntities($entity, $entities = [], $processedEntities = [], $iteration = 0, $force_lookup = FALSE) {
-  
+  public function getRelatedEntities($entity, $entities = [], &$processedEntities = [], $iteration = 0, $force_lookup = FALSE) {
     if (!$entity instanceof ParDataEntityInterface) {
       return $entities;
     }
@@ -310,8 +314,9 @@ class ParDataManager implements ParDataManagerInterface {
     $object = $direct ? $this->getReducedIterator(2) : $this;
 
     $memberships = [];
+    $hash_tree = [];
     foreach ($account_people as $person) {
-      $relationships = $object->getRelatedEntities($person);
+      $relationships = $object->getRelatedEntities($person, $memberships, $hash_tree);
       foreach ($relationships as $entity_type => $entities) {
         if (!isset($memberships[$entity_type])) {
           $memberships[$entity_type] = [];
