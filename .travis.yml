@@ -154,7 +154,6 @@ addons:
     debug: false
     paths:
       - ./tests/reports
-      - ./tests/reports/allure-report.tar.gz
     target_paths: tests/$TRAVIS_BUILD_NUMBER
     bucket: transform-par-beta-artifacts
     s3_region: eu-west-1
