@@ -4,7 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.par_data_enforcement_notice.enforcement_notice.field_enforcement_action
-    - field.field.par_data_enforcement_notice.enforcement_notice.field_enforcingauthority
+    - field.field.par_data_enforcement_notice.enforcement_notice.field_enforcing_authority
     - field.field.par_data_enforcement_notice.enforcement_notice.field_legal_entity
     - field.field.par_data_enforcement_notice.enforcement_notice.field_partnership
     - field.field.par_data_enforcement_notice.enforcement_notice.field_person
@@ -27,8 +27,8 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
-  field_enforcingauthority:
-    weight: 28
+  field_enforcing_authority:
+    weight: 32
     settings:
       match_operator: CONTAINS
       size: 60
