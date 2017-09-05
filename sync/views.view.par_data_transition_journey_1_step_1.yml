@@ -222,7 +222,7 @@ display:
           alter:
             alter_text: false
             text: ''
-            make_link: true
+            make_link: false
             path: '/dv/partnerships/{{id}}'
             absolute: false
             external: false
@@ -285,10 +285,10 @@ display:
           label: ''
           exclude: true
           alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
+            alter_text: true
+            text: '{{authority_name }} and {{ organisation_name }}'
+            make_link: true
+            path: '/dv/partnerships/{{id}}'
             absolute: false
             external: false
             replace_spaces: false
@@ -414,9 +414,9 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "Partnership details and documentation for:\n<br>\n{{ organisation_name }}\n\n{{ field_premises }}"
+            text: "Partnership details and documentation for:\n<br>\n{{ authority_name }}\n\n{{ field_premises }}"
             make_link: false
-            path: ''
+            path: '/dv/partnerships/{{id}}'
             absolute: false
             external: false
             replace_spaces: false
