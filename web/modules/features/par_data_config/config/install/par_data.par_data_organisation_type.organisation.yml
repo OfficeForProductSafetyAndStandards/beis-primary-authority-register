@@ -5,4 +5,4 @@ id: organisation
 label: Organisation
 description: 'An organisation - usually a commercial one, but not always as it can include charities and other non-commercial ventures - that is covered (or intends to be covered) by a Primary Authority Partnership.'
 help: ''
-configuration:
+configuration: null
