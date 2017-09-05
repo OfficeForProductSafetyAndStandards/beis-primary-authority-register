@@ -8,10 +8,9 @@ module.exports = (done) => {
      * The command to perform on the browser object (addValue or setValue)
      * @type {String}
      */
+    const selector = '#edit-files-upload';
     const toUpload = '/Users/jaffamonkey/projects/beis-par-beta/tests/src/files/eicar.pdf';
-    // browser.chooseFile('#edit-files-upload', toUpload);
-    browser.setValue('#edit-files-upload', toUpload);
-    browser.submitForm('#par-flow-transition-partnership-advice-document-upload');
-    // browser.uploadFile('#edit-files-upload', toUpload);
-    // expect(/edit-files-upload.pdf$/.test(val)).to.be.equal(true);
+    browser.chooseFile(selector, toUpload);
+    done();
 };
+
