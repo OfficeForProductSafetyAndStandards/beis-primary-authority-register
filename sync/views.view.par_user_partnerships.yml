@@ -1,19 +1,18 @@
-uuid: b5c5c6ab-d5f6-49c3-97f6-b5080c79683c
+uuid: d83eff94-4a2c-4ccf-b29a-ff68b6a7859e
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.par_data_organisation.field_premises
     - par_data.par_data_partnership_type.partnership
   module:
     - better_exposed_filters
     - pagerer
     - par_data
     - user
-id: par_data_beta_partnerships
-label: 'Par Data Beta Partnerships'
+id: par_user_partnerships
+label: 'Par User Partnerships'
 module: views
-description: 'List of Business for a Primary Authority'
+description: 'List of Partnerships for a given user'
 tag: ''
 base_table: par_partnerships_field_data
 base_field: id
@@ -210,15 +209,15 @@ display:
           entity_type: par_data_partnership
           entity_field: id
           plugin_id: field
-        organisation_name:
-          id: organisation_name
-          table: par_organisations_field_data
-          field: organisation_name
-          relationship: field_organisation
+        authority_name:
+          id: authority_name
+          table: par_authorities_field_data
+          field: authority_name
+          relationship: field_authority
           group_type: group
-          admin_label: 'Organisation name - for Authority flow'
-          label: ''
-          exclude: true
+          admin_label: ''
+          label: 'Authority Name'
+          exclude: false
           alter:
             alter_text: false
             text: ''
@@ -250,7 +249,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: false
+          element_label_colon: true
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -272,18 +271,18 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_organisation
-          entity_field: organisation_name
+          entity_type: par_data_authority
+          entity_field: authority_name
           plugin_id: field
-        organisation_name_1:
-          id: organisation_name_1
+        organisation_name:
+          id: organisation_name
           table: par_organisations_field_data
           field: organisation_name
           relationship: field_organisation
           group_type: group
-          admin_label: 'Organisation name - for Organisation flow'
-          label: ''
-          exclude: true
+          admin_label: ''
+          label: 'Organisation Name'
+          exclude: false
           alter:
             alter_text: false
             text: ''
@@ -315,7 +314,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: false
+          element_label_colon: true
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -340,232 +339,6 @@ display:
           entity_type: par_data_organisation
           entity_field: organisation_name
           plugin_id: field
-        authority_name:
-          id: authority_name
-          table: par_authorities_field_data
-          field: authority_name
-          relationship: field_authority
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          entity_type: par_data_authority
-          entity_field: authority_name
-          plugin_id: field
-        field_premises:
-          id: field_premises
-          table: par_data_organisation__field_premises
-          field: field_premises
-          relationship: field_organisation
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_entity_view
-          settings:
-            view_mode: summary
-          group_column: target_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 1
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
-        nothing:
-          id: nothing
-          table: views
-          field: nothing
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 'Your partnerships'
-          exclude: false
-          alter:
-            alter_text: true
-            text: "Partnership details and documentation for:\n<br>\n{{ organisation_name }}\n{{ organisation_name_1 }}\n\n{{ field_premises }}"
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: false
-          plugin_id: custom
-        nothing_1:
-          id: nothing_1
-          table: views
-          field: nothing
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 'Help Desk'
-          exclude: false
-          alter:
-            alter_text: true
-            text: "Partnership details and documentation for:\n<br>\n{{ organisation_name }} - Authority<br>\n{{ organisation_name_1 }} - Organisation\n\n{{ field_premises }}"
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: false
-          plugin_id: custom
         partnership_status:
           id: partnership_status
           table: par_partnerships_field_data
@@ -926,8 +699,7 @@ display:
         - url
         - url.query_args
         - user.permissions
-      tags:
-        - 'config:field.storage.par_data_organisation.field_premises'
+      tags: {  }
   partnerships_page:
     display_plugin: page
     id: partnerships_page
@@ -944,5 +716,4 @@ display:
         - url
         - url.query_args
         - user.permissions
-      tags:
-        - 'config:field.storage.par_data_organisation.field_premises'
+      tags: {  }
