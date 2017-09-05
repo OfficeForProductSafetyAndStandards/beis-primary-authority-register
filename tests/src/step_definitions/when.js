@@ -17,6 +17,7 @@ import setInputField from '../support/action/setInputField';
 import setPromptText from '../support/action/setPromptText';
 import submitForm from '../support/action/submitForm';
 import fillInForm from '../support/action/fillInForm';
+import uploadAValidFile from '../support/action/uploadFile';
 
 
 module.exports = function when() {
@@ -28,6 +29,11 @@ module.exports = function when() {
     this.When(
         /^I click on the link "([^"]*)?" in the page area "([^"]*)?"$/,
         clickChildElement
+    );
+
+    this.When(
+        /^I upload a valid file$/,
+        uploadAValidFile
     );
 
     this.When(

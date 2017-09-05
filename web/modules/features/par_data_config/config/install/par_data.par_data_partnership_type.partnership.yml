@@ -19,8 +19,8 @@ configuration:
       confirmed_business: 'Confirmed by the Organisation'
   partnership_type:
     allowed_values:
-      direct: 'Direct'
-      coordinated: 'Co-ordinator'
+      direct: Direct
+      coordinated: Co-ordinator
   terms_organisation_agreed:
     boolean_values:
       'on': 'Terms agreed by the organisation'
