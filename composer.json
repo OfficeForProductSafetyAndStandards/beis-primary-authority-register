@@ -31,7 +31,7 @@
         "drupal/file_entity": "~2.0.0",
         "drupal/flysystem": "~1.0.0",
         "drupal/flysystem_s3": "~1.0.0",
-        "drupal/google_analytics": "^2.1.0",
+        "drupal/google_analytics": "~2.1.0",
         "drupal/govuk_notify": "1.x-dev#7acf4e43582dcf2d65ed4972fdb57e5734f5c94d",
         "drupal/health_check": "1.0.0",
         "drupal/http_response_headers": "~2.0.0",
