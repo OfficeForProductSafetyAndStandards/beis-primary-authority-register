@@ -3,6 +3,7 @@
 namespace Drupal\par_data;
 
 use Drupal\clamav\Config;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\Entity\ConfigEntityType;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
@@ -198,15 +199,21 @@ class ParDataManager implements ParDataManagerInterface {
    * Follows some rules to make sure it doesn't go round in loops.
    *
    * @param $entity
+   *   The entity being looked up.
    * @param array $entities
+   *   The entities relationship tree.
+   * @param array $processedEntities
+   *   The hash table of entities that have already been processed, includes those ignored in the entity relationship tree.
    * @param int $iteration
+   *   The depth of relationships to go before stopping.
    * @param bool $force_lookup
    *   Force the lookup of relationships that would otherwise be ignored.
    *
    * @return EntityInterface[][]
    *   An array of entities keyed by entity type.
    */
-  public function getRelatedEntities($entity, $entities = [], $iteration = 0, $force_lookup = FALSE) {
+  
+  public function getRelatedEntities($entity, $entities = [], &$processedEntities = [], $iteration = 0, $force_lookup = FALSE) {
     if (!$entity instanceof ParDataEntityInterface) {
       return $entities;
     }
@@ -221,9 +228,13 @@ class ParDataManager implements ParDataManagerInterface {
     }
 
     // Make sure not to count the same entity again.
-    if (isset($entities[$entity->getEntityTypeId()]) && isset($entities[$entity->getEntityTypeId()][$entity->id()])) {
+    $entityHashKey = $entity->getEntityTypeId() . ':' . $entity->id();
+    if (isset($processedEntities[$entityHashKey])) {
       return $entities;
     }
+    
+    // Add hash key to show this node has been processed, whether or not it is used or ignored
+    $processedEntities[$entityHashKey] = true;
 
     // Add this entity to the related entities.
     if (!isset($entities[$entity->getEntityTypeId()])) {
@@ -231,8 +242,29 @@ class ParDataManager implements ParDataManagerInterface {
     }
     $entities[$entity->getEntityTypeId()][$entity->id()] = $entity;
 
+    // Everything after this point is costly and we can cache.
+    $cache = \Drupal::cache('data')->get("par_data_relationships:{$entityHashKey}");
+    if ($cache) {
+      $relationships = $cache->data;
+    }
+    else {
+      // Now we've decided if it's worth processing this entity let's cache it.
+      $relationships = $entity->getRelationships();
+
+      // Set cache tags for all these relationships.
+      $tags[] = $entityHashKey;
+      foreach ($relationships as $entity_type => $referenced_entities) {
+        foreach ($referenced_entities as $referenced_entity_id => $referenced_entity) {
+          $tags[] = $entity_type . ':' . $referenced_entity->id();
+        }
+      }
+      
+      \Drupal::cache('data')->set("par_data_relationships:{$entityHashKey}", $relationships, Cache::PERMANENT, $tags);
+    }
+
     // Loop through all relationships
-    foreach ($entity->getRelationships() as $entity_type => $referenced_entities) {
+    $related_entities = [];
+    foreach ($relationships as $entity_type => $referenced_entities) {
       foreach ($referenced_entities as $entity_id => $referenced_entity) {
         // Always skip lookup of relationships for people.
         if ($referenced_entity->getEntityTypeId() === 'par_data_person') {
@@ -242,20 +274,20 @@ class ParDataManager implements ParDataManagerInterface {
         // If the current entity is a person only lookup core entity relationships.
         if ($entity->getEntityTypeId() === 'par_data_person') {
           if (in_array($referenced_entity->getEntityTypeId(), $this->coreMembershipEntities)) {
-            $entities = $this->getRelatedEntities($referenced_entity, $entities, $iteration, TRUE);
+            $entities = $this->getRelatedEntities($referenced_entity, $entities, $processedEntities, $iteration, TRUE);
           }
         }
         // If the current entity is a core entity only lookup entity relationships
         // if forced to do so, by the person lookup.
         else if (in_array($entity->getEntityTypeId(), $this->coreMembershipEntities)) {
           if ($force_lookup) {
-            $entities = $this->getRelatedEntities($referenced_entity, $entities, $iteration);
+            $entities = $this->getRelatedEntities($referenced_entity, $entities, $processedEntities, $iteration);
           };
         }
         // For all other entities follow your hearts content and find all
         // entity relationships..
         else if (!in_array($entity->getEntityTypeId(), $this->nonMembershipEntities)) {
-          $entities = $this->getRelatedEntities($referenced_entity, $entities, $iteration);
+          $entities = $this->getRelatedEntities($referenced_entity, $entities, $processedEntities, $iteration);
         }
       }
     }
@@ -290,6 +322,13 @@ class ParDataManager implements ParDataManagerInterface {
    *   Returns an array of entities keyed by entity type and then by entity id.
    */
   public function hasMemberships(UserInterface $account, $direct = FALSE) {
+    // This method will run about a thousand times if not given the bird.
+    $function_id = __FUNCTION__ . $account->id() . (($direct) ? 'true' : 'false');
+    $memberships = &drupal_static($function_id);
+    if (!empty($memberships)) {
+      return $memberships;
+    }
+
     $account_people = $this->getUserPeople($account);
     // When we say direct we really mean by a maximum factor of two.
     // Because we must first jump through one of the core membership
@@ -297,8 +336,9 @@ class ParDataManager implements ParDataManagerInterface {
     $object = $direct ? $this->getReducedIterator(2) : $this;
 
     $memberships = [];
+    $hash_tree = [];
     foreach ($account_people as $person) {
-      $relationships = $object->getRelatedEntities($person);
+      $relationships = $object->getRelatedEntities($person, $memberships, $hash_tree);
       foreach ($relationships as $entity_type => $entities) {
         if (!isset($memberships[$entity_type])) {
           $memberships[$entity_type] = [];

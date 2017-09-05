@@ -240,8 +240,7 @@
  * commands when the "--structure-tables-key=common" option is provided.
  * You may add specific tables to the existing array or add a new element.
  */
-$options['structure-tables']['common'] = array('cache', 'cache_*', 'history', 'search_*', 'sessions', 'watchdog');
-// 'cache,cache_*,history,search_*,sessions,watchdog'
+$options['structure-tables']['common'] = array('cache', 'cache_*', 'history', 'search_*', 'sessions', 'watchdog', 'flood');
 
 /**
  * List of tables to be omitted entirely from SQL dumps made by the 'sql-dump'
@@ -250,7 +249,7 @@ $options['structure-tables']['common'] = array('cache', 'cache_*', 'history', 's
  * non-Drupal tables used by some other application or during a migration for
  * example.  You may add new tables to the existing array or add a new element.
  */
-$options['skip-tables']['common'] = array('migration_*');
+$options['skip-tables']['common'] = array('migration_*', 'test*');
 
 /**
  * Override specific entries in Drupal's variable system or settings.php (D6/D7 only).
@@ -299,3 +298,9 @@ $options['skip-tables']['common'] = array('migration_*');
 
 // Use Drupal version specific CLI history instead of per site.
 # $command_specific['core-cli'] = array('version-history' => TRUE);
+
+// Ensure sanitization commands don't run the email sanitization.
+$command_specific['sql-sanitize'] = ['sanitize-email' => 'no'];
+
+// Ensure drush always has enough memory.
+ini_set('memory_limit', '512M');

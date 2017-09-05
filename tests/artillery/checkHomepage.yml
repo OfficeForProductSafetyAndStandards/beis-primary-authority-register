@@ -1,13 +1,26 @@
 config:
-  target: '[enter url]'
+  target: 'https://par-beta-staging.cloudapps.digital'
   phases:
-    - duration: 1
-      arrivalRate: 1
-  defaults:
-    headers:
-      Accept: '*/*'
-
+    - duration: 30
+      arrivalRate: 5
+    - duration: 60
+      arrivalRate: 5
+      rampTo: 25
+    - duration: 120
+      arrivalRate: 10
+  payload:
+    path: "keywords.csv"
+    fields:
+      - "keywords"
 scenarios:
-  - flow:
-    - get:
-        url: "/"
+  - name: "Search and filter"
+    flow:
+      - post:
+          url: "/dv/rd-dashboard"
+          body: "keywords={{ keywords }}"
+          capture:
+            json: "$.results[0].id"
+            as: "id"
+      - think: 3
+      - get:
+          url: "/dv/primary-authority-partnerships/33084"

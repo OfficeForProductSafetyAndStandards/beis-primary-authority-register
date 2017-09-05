@@ -882,6 +882,16 @@ if (getenv('S3_BUCKET_PRIVATE')) {
 $config['govuk_notify.settings']['api_key'] = getenv('PAR_GOVUK_NOTIFY_KEY');
 $config['govuk_notify.settings']['default_template_id'] = getenv('PAR_GOVUK_NOTIFY_TEMPLATE');
 
+/**
+ * Set the Raven Sentry keys.
+ *
+ * These are confidential and should be set with ENV variables.
+ *
+ * All error and exception logs are sent to Sentry for reporting.
+ */
+$config['raven.settings']['client_key'] = getenv('SENTRY_DSN');
+$config['raven.settings']['public_dsn'] = getenv('SENTRY_DSN_PUBLIC');
+
 // Ensure all environments use production config unless overwritten.
 $config['config_split.config_split.dev_config']['status'] = FALSE;
 

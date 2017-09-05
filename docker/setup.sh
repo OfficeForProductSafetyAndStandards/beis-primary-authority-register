@@ -19,7 +19,7 @@ if [ ! -f ../web/sites/settings.local.php ]; then
 fi
 
 # Load the test data:
-    DATAFILE=latest.sanitised.sql
+    DATAFILE=drush-dump-production-sanitized-latest.sql
 
     # Time for the server to boot
     sleep 5
