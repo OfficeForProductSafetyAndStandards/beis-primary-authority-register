@@ -54,9 +54,36 @@ Use the push script to deploy the application to PaaS.
 
 We skip the post deploy scripts, as we need to seed the database before those scripts can run.
 
-    cd cf
-    ./push.sh skip-post-deploy
+From the root of the beis-par-beta repository:
+   
+    cf push -f cf/manifests/manifest.ENV_SLUG.yml
     
-#### Setup the CDN
+This will create the app with the code as it stands on your local machine. This is just a placeholder until we perform a correct deployment which will specify a version
+of the packaged code to push.
+    
+#### Setup the CDN and CNAME record
 
+Run the cf/route.sh script
+
+    cd cf
+    ./route.sh
+    
+The script will prompt for the environment slug.
+
+Once complete, type
+
+    cf service par-cdn-ENV_SLUG
+    
+This will give you the information you need to set up the CNAME for the par-beta.co.uk domain
+
+#### Set the environment variables
+
+    cd cf
+    ./push.sh environment-only
+    
+#### Import the seed data
+
+    cf ssh par-beta-ENV_SLUG
+    cd app/tools
+    python import_fresh_db.py -f /path/to/sql/file.sql
     
