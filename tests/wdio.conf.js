@@ -131,7 +131,7 @@ exports.config = {
             combined: true,
         },
         allure: {
-            outputDir: './reports/allure-results',
+            outputDir: './allure-results',
         },
     },
     //
