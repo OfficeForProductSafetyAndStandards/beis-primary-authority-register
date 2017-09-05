@@ -37,7 +37,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
       $this->setState("edit:{$par_data_partnership->id()}");
 
       // Partnership Information Confirmation.
-      $confirmation_value = !empty($par_data_partnership->get('partnership_info_agreed_business')->getString()) ? TRUE : FALSE;
+      $confirmation_value = $par_data_partnership->getBoolean('partnership_info_agreed_business');
       $this->loadDataValue('confirmation', $confirmation_value);
     }
   }
@@ -96,7 +96,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
 
     $form['about_business'] = [
       '#type' => 'fieldset',
-      '#title' => t('About the business'),
+      '#title' => t('About the business:'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
@@ -108,7 +108,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     $par_data_sic_code = $par_data_organisation->getSicCode();
     $form['sic_codes'] = [
       '#type' => 'fieldset',
-      '#title' => t('SIC Code'),
+      '#title' => t('SIC Code:'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
@@ -133,7 +133,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     // Number of employees.
     $form['employee_no'] = [
       '#type' => 'fieldset',
-      '#title' => t('Number of Employees'),
+      '#title' => t('Number of Employees:'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
@@ -224,7 +224,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
 
     $form['partnership_since'] = [
       '#type' => 'fieldset',
-      '#title' => t('In partnership since'),
+      '#title' => t('In partnership since:'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
@@ -237,7 +237,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
 
     $form['partnered'] = [
       '#type' => 'fieldset',
-      '#title' => t('Partnered for'),
+      '#title' => t('Partnered for:'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
@@ -258,7 +258,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     if ($par_data_premises) {
       $form['alternate_address'] = [
         '#type' => 'fieldset',
-        '#title' => t('Additional Premises'),
+        '#title' => t('Additional Premises:'),
         '#attributes' => ['class' => 'form-group'],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
@@ -277,7 +277,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     $form['about_partnership'] = [
       '#type' => 'fieldset',
       '#attributes' => ['class' => 'form-group'],
-      '#title' => t('About the partnership'),
+      '#title' => t('About the partnership:'),
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
@@ -296,7 +296,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
 
     $form['inspection_plans'] = [
       '#type' => 'fieldset',
-      '#title' => t('Inspection plans'),
+      '#title' => t('Inspection plans:'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
@@ -310,7 +310,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
 
     $form['advice'] = [
       '#type' => 'fieldset',
-      '#title' => t('Advice and Documents'),
+      '#title' => t('Advice and Documents:'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
@@ -328,7 +328,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     $form['authority_contact'] = [
       '#type' => 'fieldset',
       '#attributes' => ['class' => 'form-group'],
-      '#title' => t('Contacts - Primary Authority'),
+      '#title' => t('Contacts - Primary Authority:'),
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
@@ -374,7 +374,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     $form['organisation_contact'] = [
       '#type' => 'fieldset',
       '#attributes' => ['class' => 'form-group'],
-      '#title' => t('Contacts - Organisation'),
+      '#title' => t('Contacts - Organisation:s'),
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];

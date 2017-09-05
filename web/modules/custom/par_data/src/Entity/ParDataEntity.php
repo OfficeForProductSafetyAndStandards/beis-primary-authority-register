@@ -104,7 +104,35 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
+   * Get the boolean value for a field.
+   *
+   * @return boolean
+   */
+  public function getBoolean($field_name) {
+    $field = $this->hasField($field_name) ? $this->get($field_name) : NULL;
+    return isset($field) && !empty($field->getString()) ? TRUE : FALSE;
+  }
+
+  /**
+   * Get the IDs of referenced fields.
+   *
+   * @return array
+   */
+  public function retrieveEntityIds($field_name) {
+    $referencedEntities = $this->get($field_name)->referencedEntities();
+
+    $ids = [];
+    foreach ($referencedEntities as $id => $entity) {
+      $ids[] = $entity->id();
+    }
+
+    return $ids;
+  }
+
+  /**
    * Get the value for a field.
+   *
+   * {@deprecated}
    *
    * @return string
    */
@@ -115,23 +143,9 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Get the IDs of referenced fields.
-   *
-   * @return array
-   */
-  public function retrieveEntityIds($field_name) {
-    $referencedEntities = $this->retrieveEntityValue($field_name);
-    
-    $ids = [];
-    foreach ($referencedEntities as $id => $entity) {
-      $ids[] = $entity->id();
-    }
-    
-    return $ids;
-  }
-
-  /**
    * Get the value for a field.
+   *
+   * {@deprecated}
    *
    * @return array
    */
@@ -142,6 +156,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
   /**
    * Get the value for a field.
+   *
+   * {@deprecated}
    *
    * @return boolean
    */
