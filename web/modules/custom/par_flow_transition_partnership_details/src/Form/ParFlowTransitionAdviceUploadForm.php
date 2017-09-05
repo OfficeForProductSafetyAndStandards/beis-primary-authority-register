@@ -50,6 +50,10 @@ class ParFlowTransitionAdviceUploadForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
 
+    $par_data_advice_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('par_data_advice', 'document');
+    $field_definition = $par_data_advice_fields['document'];
+    $file_extensions = $field_definition->getSetting('file_extensions');
+
     // Multiple file field.
     $form['files'] = [
       '#type' => 'managed_file',
@@ -58,7 +62,12 @@ class ParFlowTransitionAdviceUploadForm extends ParBaseForm {
       '#upload_location' => 's3private://documents/advice/',
       '#multiple' => TRUE,
       '#required' => TRUE,
-      '#default_value' => $this->getDefaultValues("files")
+      '#default_value' => $this->getDefaultValues("files"),
+      '#upload_validators' => [
+        'file_validate_extensions' => [
+          0 => $file_extensions
+        ]
+      ]
     ];
 
     $form['next'] = [
