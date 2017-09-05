@@ -14,6 +14,12 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
+  protected $formItems = [
+    'par_data_partnership' => [
+      'about_partnership' => 'about_partnership',
+    ],
+  ];
+
   /**
    * {@inheritdoc}
    */
@@ -75,30 +81,8 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
-    $par_data_partnership = $this->getRouteParam('par_data_partnership');
-    $fields = [
-      'comments' => [
-        'value' => $form_state->getValue('about_partnership'),
-        'key' => 'about_partnership',
-        'tokens' => [
-          '%field' => !empty($form['about_partnership']['#title']) ? $form['about_partnership']['#title']->render() : '',
-        ]
-      ],
-    ];
-
-    $errors = $par_data_partnership->validateFields($fields);
-    // Display error messages.
-    foreach ($errors as $field => $message) {
-      $form_state->setErrorByName($field, $message);
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+
     parent::submitForm($form, $form_state);
 
     // Save the value for the about_partnership field.

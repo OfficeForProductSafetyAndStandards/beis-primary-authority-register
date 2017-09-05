@@ -227,6 +227,7 @@ class ParDataPerson extends ParDataEntity {
       ->setLabel(t('First Name'))
       ->setDescription(t('The first name of the person.'))
       ->setRevisionable(TRUE)
+      ->setRequired(TRUE)
       ->setSettings([
         'max_length' => 500,
         'text_processing' => 0,
@@ -247,6 +248,7 @@ class ParDataPerson extends ParDataEntity {
       ->setLabel(t('Last Name'))
       ->setDescription(t('The last name of the person.'))
       ->setRevisionable(TRUE)
+      ->setRequired(TRUE)
       ->setSettings([
         'max_length' => 500,
         'text_processing' => 0,
