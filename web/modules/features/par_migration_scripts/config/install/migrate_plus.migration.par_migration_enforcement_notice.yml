@@ -1,0 +1,123 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - par_migration
+      - par_migration_scripts
+id: par_migration_enforcement_notice
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - MS-SQL
+migration_group: PAR2
+label: 'PAR Migration of enforcement notice'
+source:
+  plugin: par_migration_enforcement_notice
+process:
+  id: enforcement_notice_id
+  type:
+    plugin: default_value
+    default_value: enforcement_notice
+  uid:
+    plugin: default_value
+    default_value: 1
+  notice_type:
+    plugin: static_map
+    source: notice_type
+    default_value: proposed
+    map:
+      Proposed: proposed
+      Retrospective: retrospective
+  notice_date/value:
+    -
+      plugin: explode
+      source: notice_date
+      delimiter: ' '
+    -
+      plugin: extract
+      index:
+        - '0'
+    -
+      plugin: format_date
+      from_format: 'Y-m-d'
+      to_format: 'Y-m-d'
+  summary:
+    plugin: skip_on_empty
+    method: process
+    source: summary
+  field_enforcement_action:
+    -
+      plugin: migration_lookup
+      migration: par_migration_enforcement_action
+      no_stub: true
+      source:
+        enforcement_action_id: null
+        enforcement_notice_id: enforcement_notice_id
+    -
+      plugin: skip_on_empty
+      method: process
+  field_enforcing_authority:
+    -
+      plugin: migration_lookup
+      migration: par_migration_authority
+      no_stub: true
+      source:
+        authority_id: primary_authority_id
+    -
+      plugin: skip_on_empty
+      method: process
+  field_legal_entity:
+    -
+      plugin: migration_lookup
+      migration: par_migration_legal_entity
+      no_stub: true
+      source:
+        legal_entity_id: legal_entity_id
+    -
+      plugin: skip_on_empty
+      method: process
+  field_partnership:
+    -
+      plugin: migration_lookup
+      migration: par_migration_partnership
+      no_stub: true
+      source:
+        partnership_id: partnership_id
+    -
+      plugin: skip_on_empty
+      method: process
+  field_person:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: people
+    -
+      plugin: iterator
+      process:
+        target_id:
+          plugin: migration_lookup
+          migration: par_migration_people
+          source: target_id
+          no_stub: true
+  field_primary_authority:
+    -
+      plugin: migration_lookup
+      migration: par_migration_authority
+      no_stub: true
+      source:
+        premises_id: null
+        authority_id: primary_authority_id
+    -
+      plugin: skip_on_empty
+      method: process
+destination:
+  plugin: 'entity:par_data_enforcement_notice'
+migration_dependencies:
+  required:
+    - par_migration_enforcement_action
+    - par_migration_partnership
+    - par_migration_people
+    - par_migration_legal_entity
+    - par_migration_authority
