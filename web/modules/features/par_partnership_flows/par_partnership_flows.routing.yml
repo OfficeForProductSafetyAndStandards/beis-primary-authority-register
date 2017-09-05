@@ -3,9 +3,9 @@ par_partnership_flows.authority_details:
   path: '/partnership/{par_data_partnership}/authority-details'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAuthorityDetailsForm'
-    _title: 'Partnership Details for Primary Authority'
+    _title: ''
   requirements:
-    _permission: 'bypass partnership journey'
+    _permission: 'bypass partnership journey, authority partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -17,7 +17,7 @@ par_partnership_flows.about_partnership:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutForm'
     _title: 'About the Partnership'
   requirements:
-    _permission: 'bypass partnership journey'
+    _permission: 'bypass partnership journey, authority partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -29,7 +29,7 @@ par_partnership_flows.authority_contact_edit:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
     _title: 'Updating contact'
   requirements:
-    _permission: 'bypass partnership journey'
+    _permission: 'bypass partnership journey, authority partnership journey'
     par_data_partnership: \d+
     par_data_person: \d+
   options:
@@ -44,7 +44,7 @@ par_partnership_flows.authority_contact_add:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
     _title: 'Add a contact'
   requirements:
-    _permission: 'bypass partnership journey'
+    _permission: 'bypass partnership journey, authority partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -56,7 +56,7 @@ par_partnership_flows.advice_list:
     _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::content'
     _title: 'List of Advice for the Partnership'
   requirements:
-    _permission: 'bypass partnership journey'
+    _permission: 'bypass partnership journey, authority partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -68,7 +68,7 @@ par_partnership_flows.advice_upload_documents:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsUploadForm'
     _title: 'Upload Advice'
   requirements:
-    _permission: 'bypass partnership journey'
+    _permission: 'bypass partnership journey, authority partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -80,7 +80,7 @@ par_partnership_flows.advice_add:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm'
     _title: 'Add Advice'
   requirements:
-    _permission: 'bypass partnership journey'
+    _permission: 'bypass partnership journey, authority partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -92,7 +92,7 @@ par_partnership_flows.advice_edit_documents:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsUploadForm'
     _title: 'Upload Advice'
   requirements:
-    _permission: 'bypass partnership journey'
+    _permission: 'bypass partnership journey, authority partnership journey'
     par_data_partnership: \d+
     par_data_advice: \d+
   options:
@@ -107,7 +107,7 @@ par_partnership_flows.advice_edit:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm'
     _title: 'Update Advice'
   requirements:
-    _permission: 'bypass partnership journey'
+    _permission: 'bypass partnership journey, authority partnership journey'
     par_data_partnership: \d+
     par_data_advice: \d+
   options:
@@ -122,7 +122,7 @@ par_partnership_flows.inspection_plan_list:
     _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::content'
     _title: 'List of Inspection Plans for the Partnership'
   requirements:
-    _permission: 'bypass partnership journey'
+    _permission: 'bypass partnership journey, authority partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -136,7 +136,7 @@ par_partnership_flows.organisation_details:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsOrganisationDetailsForm'
     _title: 'Partnership Details for Organisation'
   requirements:
-    _permission: 'bypass partnership journey'
+    _permission: 'bypass partnership journey, business partnership journey, coordinated partnership journey'
     par_data_partnership: \d+
   options:
     parameters:

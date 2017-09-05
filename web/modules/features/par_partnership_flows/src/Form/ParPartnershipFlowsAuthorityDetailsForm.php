@@ -8,8 +8,7 @@ use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
- * The about partnership form for the partnership details steps of the
- * 1st Data Validation/Transition User Journey.
+ * The partnership form for the partnership details.
  */
 class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
 
@@ -23,8 +22,9 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
   }
 
   /**
-   * Helper to get all the editable values when editing or
-   * revisiting a previously edited page.
+   * Helper to get all the editable values.
+   *
+   * Used for when editing or revisiting a previously edited page.
    *
    * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The Authority being retrieved.
@@ -63,31 +63,15 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
       '#markup' => "Review and confirm the details of your partnership with " . $par_data_authority->authority_name->getString(),
     ];
 
-    $form['business_name'] = [
-      '#type' => 'fieldset',
-      '#title' => t('Business Name:'),
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    $form['business_name']['name'] = $organisation_builder->view($par_data_organisation, 'title');
-
-    $form['about'] = [
-      '#type' => 'fieldset',
-      '#title' => t('About the partnership:'),
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    $about_organisation = $par_data_organisation ? $organisation_builder->view($par_data_organisation, 'about') : '';
-    $form['about_business']['info'] = $this->renderMarkupField($about_organisation);
-
-    $form['about_business']['edit'] = [
+    $form['details_intro'] = [
       '#type' => 'markup',
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('about')->setText('edit')->toString(),
-      ]),
+      '#markup' => t('Primary authority information for:'),
     ];
+
+    $business_name = $organisation_builder->view($par_data_organisation, 'title');
+    $business_name['#prefix'] = '<h1>';
+    $business_name['#suffix'] = '</h1>';
+    $form['business_name'] = $this->renderMarkupField($business_name);
 
     // Registered address.
     $par_data_premises = $par_data_organisation->getPremises();
@@ -96,97 +80,76 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     if ($registered_premises) {
       $premises_view_builder = $this->getParDataManager()->getViewBuilder('par_data_premises');
 
-      $form['registered_address']['primary_address'] = [
+      $form['registered_address'] = [
         '#type' => 'fieldset',
-        '#title' => t('Registered address:'),
         '#attributes' => ['class' => 'form-group'],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
 
-      $registered_address = $premises_view_builder->view($registered_premises, 'full');
-      $form['registered_address']['primary_address']['address'] = $this->renderMarkupField($registered_address);
-
+      $registered_address = $premises_view_builder->view($registered_premises, 'summary');
+      $form['registered_address']['address'] = $this->renderMarkupField($registered_address);
     }
 
-    if ($par_data_premises) {
+    // About the business.
+    $about_organisation = $organisation_builder->view($par_data_organisation, 'about');
 
-      foreach ($par_data_premises as $premises) {
-        $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
+    $form['about_business'] = [
+      '#type' => 'fieldset',
+      '#title' => t('About the business'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
 
-        $form['registered_address'][$premises->id()] = [
-          '#type' => 'fieldset',
-          '#attributes' => ['class' => 'form-group'],
-          '#collapsible' => FALSE,
-          '#collapsed' => FALSE,
-        ];
+    $form['about_business']['info'] = $this->renderMarkupField($about_organisation);
 
-        $alternative_person = $person_view_builder->view($premises, 'full');
-        $form['registered_address'][$premises->id()]['premises'] = $this->renderMarkupField($alternative_person);
+    // Sic Codes.
+    $par_data_sic_code = $par_data_organisation->getSicCode();
+    $form['sic_codes'] = [
+      '#type' => 'fieldset',
+      '#title' => t('SIC Code'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
 
+    // Check to see if there are any sic codes to be shown.
+    if ($par_data_sic_code) {
+      foreach ($par_data_sic_code as $sic_code) {
+        $sic_code_view_builder = $this->getParDataManager()->getViewBuilder('par_data_sic_code');
+        // @todo need to put these on one line.
+        $sic_code_item = $sic_code_view_builder->view($sic_code, 'full');
+        $form['sic_codes'][$sic_code->id()] = $this->renderMarkupField($sic_code_item);
       }
     }
-
-    // Contacts.
-    // Primary contact summary.
-    $par_data_contacts = $par_data_partnership->getOrganisationPeople();
-    $par_data_primary_person = array_shift($par_data_contacts);
-
-    if ($par_data_primary_person) {
-      $form['primary_contact'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
-        '#title' => t('Main business contact:'),
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
-
-      $primary_person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
-      $primary_person = $primary_person_view_builder->view($par_data_primary_person, 'summary');
-      $form['primary_contact']['details'] = $this->renderMarkupField($primary_person);
-
-      $form['primary_contact']['edit'] = [
+    else {
+      $form['sic_codes']['none'] = [
         '#type' => 'markup',
-        '#markup' => t('@link', [
-          '@link' => $this->getFlow()->getNextLink('edit_contact', [
-            'par_data_person' => $par_data_primary_person->id(),
-          ])->setText('edit')->toString(),
-        ]),
+        '#markup' => $this->t('(none)'),
       ];
     }
 
-    if ($par_data_contacts) {
-      $form['alternative_people'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
+    // Number of employees.
+    $form['employee_no'] = [
+      '#type' => 'fieldset',
+      '#title' => t('Number of Employees'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    if ($par_data_organisation->get('employees_band')->getString() !== '0') {
+      $form['employee_no']['item'] = [
+        '#type' => 'markup',
+        '#markup' => $par_data_organisation->get('employees_band')->getString(),
       ];
-
-      foreach ($par_data_contacts as $person) {
-        $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
-
-        $alternative_person = $person_view_builder->view($person, 'summary');
-
-        $form['alternative_people'][$person->id()] = [
-          '#type' => 'fieldset',
-          '#attributes' => ['class' => 'form-group'],
-          '#collapsible' => FALSE,
-          '#collapsed' => FALSE,
-        ];
-
-        $form['alternative_people'][$person->id()]['person'] = $this->renderMarkupField($alternative_person);
-
-        // We can get a link to a given form step like so.
-        $form['alternative_people'][$person->id()]['edit'] = [
-          '#type' => 'markup',
-          '#markup' => t('@link', [
-            '@link' => $this->getFlow()->getNextLink('edit_contact', [
-              'par_data_person' => $person->id(),
-            ])->setText('edit')->toString(),
-          ]),
-        ];
-      }
+    }
+    else {
+      $form['employee_no']['item'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('(none)'),
+      ];
     }
 
     // Legal Entities.
@@ -251,34 +214,195 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
 
     }
 
-    $form['advice']['edit'] = [
+    $par_data_authority = current($par_data_partnership->getAuthority());
+    $form['authority'] = [
+      '#type' => 'markup',
+      '#markup' => $par_data_authority->get('authority_name')->getString(),
+      '#prefix' => '<h1>',
+      '#suffix' => '</h1>',
+    ];
+
+    $form['partnership_since'] = [
+      '#type' => 'fieldset',
+      '#title' => t('In partnership since'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    $form['partnership_since']['approved_date'] = [
+      '#type' => 'markup',
+      '#markup' => $par_data_partnership->get('approved_date')->getString(),
+    ];
+
+    $form['partnered'] = [
+      '#type' => 'fieldset',
+      '#title' => t('Partnered for'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    $regulatory_functions = $par_data_partnership->getRegulatoryFunction();
+    foreach ($regulatory_functions as $regulatory_function) {
+      $functions[] = $regulatory_function->get('function_name')->getString();
+    }
+    $all_functions = implode(', ', $functions);
+
+    $form['partnered']['functions'] = [
+      '#type' => 'markup',
+      '#markup' => $all_functions,
+    ];
+
+    // Check to see if there are additional addresses to be shown.
+    if ($par_data_premises) {
+      $form['alternate_address'] = [
+        '#type' => 'fieldset',
+        '#title' => t('Additional Premises'),
+        '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+
+      foreach ($par_data_premises as $premises) {
+        $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_premises');
+
+        $alternative_person = $person_view_builder->view($premises, 'summary');
+        $form['alternate_address'][$premises->id()]['premises'] = $this->renderMarkupField($alternative_person);
+
+      }
+    }
+
+    // About the Partnership.
+    $form['about_partnership'] = [
+      '#type' => 'fieldset',
+      '#attributes' => ['class' => 'form-group'],
+      '#title' => t('About the partnership'),
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    $partnership_view_builder = $this->getParDataManager()->getViewBuilder('par_data_partnership');
+
+    $form['about_partnership']['details'] = $par_data_partnership ? $partnership_view_builder->view($par_data_partnership, 'about') : '';
+
+    // Go to the second step.
+    $form['about_partnership']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('advice')->setText('Advice List')->toString(),
+        '@link' => $this->getFlow()->getNextLink('about')->setText('edit')->toString(),
       ]),
     ];
 
+    $form['inspection_plans'] = [
+      '#type' => 'fieldset',
+      '#title' => t('Inspection plans'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
     $form['inspection_plans']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('inspection_plans')->setText('Inspection Plans')->toString(),
+        '@link' => $this->getFlow()->getNextLink('inspection_plans')->setText('See all Inspection Plans')->toString(),
       ]),
     ];
 
-    // Need this here so we can add extra checkboxes at the end of the page.
-    // We can't guarantee the previous steps will be there.
-    $form['confirmation_section'] = [
-      '#type' => 'container',
+    $form['advice'] = [
+      '#type' => 'fieldset',
+      '#title' => t('Advice and Documents'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+    $form['advice']['edit'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlow()->getNextLink('advice')->setText('See all Advice')->toString(),
+      ]),
     ];
 
-    $form['confirmation'] = [
-      '#type' => 'checkbox',
-      '#title' => t('I confirm that the information above is correct.'),
-      '#checked' => $this->getDefaultValues('confirmation'),
-      '#disabled' => $this->getDefaultValues('confirmation'),
-      '#default_value' => $this->getDefaultValues('confirmation'),
-      '#return_value' => 'on',
+    // Contacts.
+    // Local Authority.
+    $par_data_contacts = $par_data_partnership->getAuthorityPeople();
+    $form['authority_contact'] = [
+      '#type' => 'fieldset',
+      '#attributes' => ['class' => 'form-group'],
+      '#title' => t('Contacts - Primary Authority'),
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
     ];
+
+    if ($par_data_contacts) {
+
+      foreach ($par_data_contacts as $person) {
+        $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
+
+        $alternative_person = $person_view_builder->view($person, 'summary');
+
+        $form['authority_contact'][$person->id()] = [
+          '#type' => 'fieldset',
+          '#attributes' => ['class' => 'form-group'],
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
+        ];
+
+        $form['authority_contact'][$person->id()]['person'] = $this->renderMarkupField($alternative_person);
+
+        // We can get a link to a given form step like so.
+        $form['authority_contact'][$person->id()]['edit'] = [
+          '#type' => 'markup',
+          '#markup' => t('@link', [
+            '@link' => $this->getFlow()->getNextLink('edit_contact', [
+              'par_data_person' => $person->id(),
+            ])->setText('edit')->toString(),
+          ]),
+        ];
+      }
+    }
+    else {
+      $form['authority_contact']['details'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('(none)'),
+      ];
+
+    }
+
+    // Primary contact summary.
+    $par_data_contacts = $par_data_partnership->getOrganisationPeople();
+
+    $form['organisation_contact'] = [
+      '#type' => 'fieldset',
+      '#attributes' => ['class' => 'form-group'],
+      '#title' => t('Contacts - Organisation'),
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    if ($par_data_contacts) {
+
+      foreach ($par_data_contacts as $person) {
+        $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
+
+        $alternative_person = $person_view_builder->view($person, 'summary');
+
+        $form['organisation_contact'][$person->id()] = [
+          '#type' => 'fieldset',
+          '#attributes' => ['class' => 'form-group'],
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
+        ];
+
+        $form['organisation_contact'][$person->id()]['person'] = $this->renderMarkupField($alternative_person);
+      }
+    }
+    else {
+      $form['organisation_contact']['details'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('(none)'),
+      ];
+
+    }
 
     $form['save'] = [
       '#type' => 'submit',
@@ -299,41 +423,8 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    // No validation yet.
-    parent::validateForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-
-//    // Save the value for the about_partnership field.
-//    $par_data_partnership = $this->getRouteParam('par_data_partnership');
-//
-//    // Save the value for the partnership status if it's being confirmed.
-//    if ($confirmation_value = $this->decideBooleanValue($this->getTempDataValue('confirmation'))) {
-//      $par_data_partnership->set('partnership_info_agreed_business', $confirmation_value);
-//      // Also change the status.
-//      $par_data_partnership->setParStatus('confirmed_business');
-//    }
-//
-//    if ($par_data_partnership->save()) {
-//      $this->deleteStore();
-//    }
-//    else {
-//      $message = $this->t('The %field field could not be saved for %form_id');
-//      $replacements = [
-//        '%field' => 'about_partnership',
-//        '%form_id' => $this->getFormId(),
-//      ];
-//      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-//    }
-//
-//    // Go back to the overview.
-//    $form_state->setRedirect($this->getFlow()->getPrevRoute(), $this->getRouteParams());
   }
 
 }
