@@ -165,6 +165,24 @@ class ParDataAdvice extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
+    // Issue Date.
+    $fields['issue_date'] = BaseFieldDefinition::create('datetime')
+      ->setLabel(t('Issue Date'))
+      ->setDescription(t('The date this enforcement notice was issued.'))
+      ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'datetime_type' => 'date',
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'datetime_default',
+        'weight' => 2,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
 
     // Documents.
     $fields['document'] = BaseFieldDefinition::create('file')

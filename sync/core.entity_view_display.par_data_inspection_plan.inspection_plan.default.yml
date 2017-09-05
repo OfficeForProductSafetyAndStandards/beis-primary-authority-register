@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.par_data_inspection_plan.inspection_plan.field_regulatory_function
     - par_data.par_data_inspection_plan_type.inspection_plan
   module:
     - datetime_range
@@ -23,6 +24,14 @@ content:
       access_message: 'You don''t have access to download this file.'
       text: 'Download [file:name]'
     third_party_settings: {  }
+  field_regulatory_function:
+    weight: 3
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
   inspection_status:
     type: string
     weight: 2
