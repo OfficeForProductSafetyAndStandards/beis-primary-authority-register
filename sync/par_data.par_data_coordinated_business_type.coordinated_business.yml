@@ -1,0 +1,11 @@
+uuid: d559ef8a-afb7-447b-98ce-eea9a090ecc5
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: Lgh-0SC5Z0wXc7yzZsUCFo907rS9PDqlj850MDung98
+id: coordinated_business
+label: 'Coordinated Business'
+description: 'A coordinated business is a business that is a member of a coordinated partnership.'
+help: ''
+configuration: null

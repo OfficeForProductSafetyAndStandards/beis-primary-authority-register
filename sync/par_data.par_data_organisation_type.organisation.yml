@@ -1,0 +1,11 @@
+uuid: 231a708c-388d-401a-b666-c91fdeddb238
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: GAmWdMyLp4sUNqO1ZflwUB8sebiThaELQ-gvte0SraI
+id: organisation
+label: Organisation
+description: 'An organisation - usually a commercial one, but not always as it can include charities and other non-commercial ventures - that is covered (or intends to be covered) by a Primary Authority Partnership.'
+help: ''
+configuration: null
