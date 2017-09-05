@@ -115,7 +115,8 @@ Feature: Helpdesk As Business User - Manage Addresses
         And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
         And I add "987654321" to the inputfield "#edit-company-house-no"
         And I click on the button "#edit-next"
-        Then I expect that element "#edit-legal-entity div" contains the text "Legal Entity Change"
+        And I scroll to element "#edit-legal-entity"
+        Then I expect that element "#edit-legal-entity" contains the text "Legal Entity Change"
         And I expect that element "#edit-legal-entity" contains the text "987654321"
         And I expect that element "#edit-legal-entity" contains the text "Limited Company"
 

@@ -30,7 +30,7 @@ Feature: Business User - Manage Addresses
         And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
         And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
         Then I expect that element "td.views-field.views-field-nothing" contains the text "ABCD Mart"
-        When I click on the link "ABCD Mart"
+        When I click on the button "a*=ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN
 
@@ -122,7 +122,8 @@ Feature: Business User - Manage Addresses
         And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
         And I add "987654321" to the inputfield "#edit-company-house-no"
         And I click on the button "#edit-next"
-        Then I expect that element "#edit-legal-entity div" contains the text "Legal Entity Change"
+        And I scroll to element "#edit-legal-entity"
+        Then I expect that element "#edit-legal-entity" contains the text "Legal Entity Change"
         And I expect that element "#edit-legal-entity" contains the text "987654321"
         And I expect that element "#edit-legal-entity" contains the text "Limited Company"
 
