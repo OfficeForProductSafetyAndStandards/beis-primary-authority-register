@@ -202,4 +202,6 @@ cf map-route par-beta-$ENV-green $ENV-cdn.par-beta.co.uk
 cf unmap-route par-beta-$ENV $ENV-cdn.par-beta.co.uk
 cf delete par-beta-$ENV -f
 cf rename par-beta-$ENV-green par-beta-$ENV
-
+if [ $ENV == "production" ] || [ $ENV == "staging" ] ; then
+    cf scale par-beta-$ENV -i 3
+fi

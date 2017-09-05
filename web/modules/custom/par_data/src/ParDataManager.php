@@ -3,6 +3,7 @@
 namespace Drupal\par_data;
 
 use Drupal\clamav\Config;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\Entity\ConfigEntityType;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
@@ -198,8 +199,13 @@ class ParDataManager implements ParDataManagerInterface {
    * Follows some rules to make sure it doesn't go round in loops.
    *
    * @param $entity
+   *   The entity being looked up.
    * @param array $entities
+   *   The entities relationship tree.
+   * @param array $processedEntities
+   *   The hash table of entities that have already been processed, includes those ignored in the entity relationship tree.
    * @param int $iteration
+   *   The depth of relationships to go before stopping.
    * @param bool $force_lookup
    *   Force the lookup of relationships that would otherwise be ignored.
    *
@@ -207,8 +213,7 @@ class ParDataManager implements ParDataManagerInterface {
    *   An array of entities keyed by entity type.
    */
   
-  public function getRelatedEntities($entity, $entities = [], $processedEntities = [], $iteration = 0, $force_lookup = FALSE) {
-  
+  public function getRelatedEntities($entity, $entities = [], &$processedEntities = [], $iteration = 0, $force_lookup = FALSE) {
     if (!$entity instanceof ParDataEntityInterface) {
       return $entities;
     }
@@ -236,9 +241,30 @@ class ParDataManager implements ParDataManagerInterface {
       $entities[$entity->getEntityTypeId()] = [];
     }
     $entities[$entity->getEntityTypeId()][$entity->id()] = $entity;
-    
+
+    // Everything after this point is costly and we can cache.
+    $cache = \Drupal::cache('data')->get("par_data_relationships:{$entityHashKey}");
+    if ($cache) {
+      $relationships = $cache->data;
+    }
+    else {
+      // Now we've decided if it's worth processing this entity let's cache it.
+      $relationships = $entity->getRelationships();
+
+      // Set cache tags for all these relationships.
+      $tags[] = $entityHashKey;
+      foreach ($relationships as $entity_type => $referenced_entities) {
+        foreach ($referenced_entities as $referenced_entity_id => $referenced_entity) {
+          $tags[] = $entity_type . ':' . $referenced_entity->id();
+        }
+      }
+      
+      \Drupal::cache('data')->set("par_data_relationships:{$entityHashKey}", $relationships, Cache::PERMANENT, $tags);
+    }
+
     // Loop through all relationships
-    foreach ($entity->getRelationships() as $entity_type => $referenced_entities) {
+    $related_entities = [];
+    foreach ($relationships as $entity_type => $referenced_entities) {
       foreach ($referenced_entities as $entity_id => $referenced_entity) {
         // Always skip lookup of relationships for people.
         if ($referenced_entity->getEntityTypeId() === 'par_data_person') {
@@ -310,8 +336,9 @@ class ParDataManager implements ParDataManagerInterface {
     $object = $direct ? $this->getReducedIterator(2) : $this;
 
     $memberships = [];
+    $hash_tree = [];
     foreach ($account_people as $person) {
-      $relationships = $object->getRelatedEntities($person);
+      $relationships = $object->getRelatedEntities($person, $memberships, $hash_tree);
       foreach ($relationships as $entity_type => $entities) {
         if (!isset($memberships[$entity_type])) {
           $memberships[$entity_type] = [];

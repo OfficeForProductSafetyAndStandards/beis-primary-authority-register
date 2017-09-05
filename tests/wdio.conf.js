@@ -114,14 +114,25 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: http://webdriver.io/guide/testrunner/reporters.html
-    reporters: ['json', 'spec'],
+    // reporters: ['json', 'spec'],
+    // reporterOptions: {
+    //     outputDir: './reports/',
+    //     filename: 'report',
+    //     combined: true,
+    //     // allure: {
+    //     //     outputDir: './reports/allure/',
+    //     // },
+    // },
+    reporters: ['json', 'spec', 'allure'],
     reporterOptions: {
-        outputDir: './reports/',
-        filename: 'report',
-        combined: true,
-        // allure: {
-        //     outputDir: './reports/allure/',
-        // },
+        json: {
+            outputDir: './reports/',
+            filename: 'report',
+            combined: true,
+        },
+        allure: {
+            outputDir: './allure-results',
+        },
     },
     //
     // If you are using Cucumber you need to specify the location of your step
