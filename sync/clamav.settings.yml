@@ -1,9 +1,9 @@
 enabled: 1
-outage_action: '1'
+outage_action: 1
 overridden_schemes:
   - s3public
   - s3private
-scan_mode: '3'
+scan_mode: 3
 verbosity: 0
 mode_executable:
   executable_path: /usr/bin/clamscan

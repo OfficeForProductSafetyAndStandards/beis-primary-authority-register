@@ -894,6 +894,7 @@ $config['raven.settings']['public_dsn'] = getenv('SENTRY_DSN_PUBLIC');
 
 // Ensure all environments use production config unless overwritten.
 $config['config_split.config_split.dev_config']['status'] = FALSE;
+$config['config_split.config_split.beta_config']['status'] = FALSE;
 
 /**
  * Environment settings override.

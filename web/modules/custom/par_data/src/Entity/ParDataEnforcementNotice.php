@@ -138,6 +138,27 @@ class ParDataEnforcementNotice extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
+    // Notice Type.
+    $fields['legal_entity_name'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Legal Entity Name'))
+      ->setDescription(t('An optional free text field for entering a legal entity name.'))
+      ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 500,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
     // Summary.
     $fields['summary'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Summary'))
