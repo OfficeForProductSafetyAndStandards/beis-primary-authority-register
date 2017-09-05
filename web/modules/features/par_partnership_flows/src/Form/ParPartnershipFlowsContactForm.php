@@ -69,14 +69,6 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
     $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
 
-    // Leading paragraph.
-    $form['leading_paragraph'] = [
-      '#type' => 'markup',
-      '#markup' => t('Change the main contact for your organisation'),
-      '#prefix' => '<p><strong>',
-      '#suffix' => '</strong></p>'
-    ];
-
     // The Person's title.
     $form['salutation'] = [
       '#type' => 'textfield',
@@ -150,6 +142,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       '#type' => 'markup',
       '#markup' => t('@link', ['@link' => $cancel_link]),
     ];
+
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($par_data_person);
     $this->addCacheableDependency($person_bundle);
@@ -194,44 +187,43 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-//    // Save the value for the about_partnership field.
-//    $par_data_person = $this->getRouteParam('par_data_person');
-//
-//    $par_data_person->set('salutation', $this->getTempDataValue('salutation'));
-//    $par_data_person->set('first_name', $this->getTempDataValue('first_name'));
-//    $par_data_person->set('last_name', $this->getTempDataValue('last_name'));
-//    $par_data_person->set('work_phone', $this->getTempDataValue('work_phone'));
-//    $par_data_person->set('mobile_phone', $this->getTempDataValue('mobile_phone'));
-//    $par_data_person->set('email', $this->getTempDataValue('email'));
-//    $par_data_person->set('communication_notes', $this->getTempDataValue('notes'));
-//
-//    // Save the email preference.
-//    $email_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_email'])
-//      && !empty($this->getTempDataValue('preferred_contact')['communication_email']);
-//    $par_data_person->set('communication_email', $email_preference_value);
-//    // Save the work phone preference.
-//    $work_phone_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_phone'])
-//      && !empty($this->getTempDataValue('preferred_contact')['communication_phone']);
-//    $par_data_person->set('communication_phone', $work_phone_preference_value);
-//    // Save the mobile phone preference.
-//    $mobile_phone_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_mobile'])
-//      && !empty($this->getTempDataValue('preferred_contact')['communication_mobile']);
-//    $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
-//
-//    if ($par_data_person->save()) {
-//      $this->deleteStore();
-//    }
-//    else {
-//      $message = $this->t('This %person could not be saved for %form_id');
-//      $replacements = [
-//        '%person' => $this->getTempDataValue('name'),
-//        '%form_id' => $this->getFormId(),
-//      ];
-//      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-//    }
-//
-//    // Go back to the overview.
-//    $form_state->setRedirect($this->getFlow()->getRouteByStep(4), $this->getRouteParams());
+    // @todo - Need to replace the following with a standard subit routine.
+    // Save the value for the about_partnership field.
+    $par_data_person = $this->getRouteParam('par_data_person');
+
+    $par_data_person->set('salutation', $this->getTempDataValue('salutation'));
+    $par_data_person->set('first_name', $this->getTempDataValue('first_name'));
+    $par_data_person->set('last_name', $this->getTempDataValue('last_name'));
+    $par_data_person->set('work_phone', $this->getTempDataValue('work_phone'));
+    $par_data_person->set('mobile_phone', $this->getTempDataValue('mobile_phone'));
+    $par_data_person->set('email', $this->getTempDataValue('email'));
+    $par_data_person->set('communication_notes', $this->getTempDataValue('notes'));
+
+    // Save the email preference.
+    $email_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_email'])
+      && !empty($this->getTempDataValue('preferred_contact')['communication_email']);
+    $par_data_person->set('communication_email', $email_preference_value);
+    // Save the work phone preference.
+    $work_phone_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_phone'])
+      && !empty($this->getTempDataValue('preferred_contact')['communication_phone']);
+    $par_data_person->set('communication_phone', $work_phone_preference_value);
+    // Save the mobile phone preference.
+    $mobile_phone_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_mobile'])
+      && !empty($this->getTempDataValue('preferred_contact')['communication_mobile']);
+    $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
+
+    if ($par_data_person->save()) {
+      $this->deleteStore();
+    }
+    else {
+      $message = $this->t('This %person could not be saved for %form_id');
+      $replacements = [
+        '%person' => $this->getTempDataValue('name'),
+        '%form_id' => $this->getFormId(),
+      ];
+      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+    }
+
   }
 
 }
