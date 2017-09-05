@@ -1,0 +1,10 @@
+uuid: 2bba4db9-92ab-4c3b-8fee-1596d3c469bf
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_person.detailed
+label: Detailed
+targetEntityType: par_data_person
+cache: true
