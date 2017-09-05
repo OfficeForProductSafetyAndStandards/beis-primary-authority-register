@@ -18,11 +18,6 @@
 #----------------------
 #     cf login -a api.cloud.service.gov.uk -u <USERNAME>
 #
-#--------------------------------------           
-# Add the following to your hosts file |
-#--------------------------------------
-#     35.176.189.183 vault.primary-authority.beis.gov.uk
-#
 # Access is restricted to members of the TransformCore GitHub organisation. 
 # Generate a GitHub Personal Access Token, which will be requested
 # during "vault auth"
