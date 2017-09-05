@@ -30,7 +30,7 @@ Feature: Business User - Manage Addresses
         And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
         And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
         Then I expect that element "td.views-field.views-field-nothing" contains the text "ABCD Mart"
-        When I click on the link "ABCD Mart"
+        When I click on the link "a*=ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN
 
