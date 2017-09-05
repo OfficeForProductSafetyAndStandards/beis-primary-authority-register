@@ -8,9 +8,11 @@ use Drupal\par_data\Entity\ParDataAuthorityType;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 use Drupal\user\Entity\User;
+use Drupal\Core\Cache\Cache;
 
 /**
  * Tests PAR Authority entity.
@@ -30,6 +32,7 @@ class AccessParPartnershipsTest extends ParDataTestBase {
   protected $authorities = [];
   protected $organisations = [];
   protected $people = [];
+  protected $premises = [];
 
   /**
    * {@inheritdoc}
@@ -62,8 +65,20 @@ class AccessParPartnershipsTest extends ParDataTestBase {
         $this->people[$i]->save();
       }
 
+      // Let's store the premises IDs for the last 5 partnerships.
+      if ($i >= 15) {
+        $this->premises[$i] = ParDataPremises::create(['name' => "Premises $i"] + $this->getPremisesValues());
+        $this->premises[$i]->save();
+      }
+
+      // Let's store the authority ids for even numbered partnerships.
+      // and the organisation ids for odd numbered partnerships.
       if ($i % 2 == 0) {
-        $this->authorities[$i] = ParDataAuthority::create(['name' => "Authority $i", 'field_person' => [$this->people[$i]->id()]] + $this->getAuthorityValues());
+        $authority_values = [
+          'name' => "Authority $i",
+          'field_person' => [$this->people[$i]->id()],
+        ];
+        $this->authorities[$i] = ParDataAuthority::create($authority_values + $this->getAuthorityValues());
         $this->authorities[$i]->save();
         $partnership_values = [
           'field_authority' => [$this->authorities[$i]->id()],
@@ -71,7 +86,15 @@ class AccessParPartnershipsTest extends ParDataTestBase {
         ];
       }
       else {
-        $this->organisations[$i] = ParDataOrganisation::create(['name' => "Organisation $i", 'field_person' => [$this->people[$i]->id()]] + $this->getOrganisationBusinessValues());
+        // Let's add the known premises to the last few organisations.
+        $organisation_values = [
+          'name' => "Organisation $i",
+          'field_person' => [$this->people[$i]->id()],
+        ];
+        if ($i >= 15) {
+          $organisation_values['field_premises'] = [$this->premises[$i]->id()];
+        }
+        $this->organisations[$i] = ParDataOrganisation::create($organisation_values + $this->getOrganisationBusinessValues());
         $this->organisations[$i]->save();
         $partnership_values = [
           'field_organisation' => [$this->organisations[$i]->id()],
@@ -99,5 +122,42 @@ class AccessParPartnershipsTest extends ParDataTestBase {
 
     $direct_organisation_memberships = $this->parDataManager->hasMembershipsByType($this->membershipUser, 'par_data_organisation', TRUE);
     $this->assertCount(5, $direct_organisation_memberships, t('Direct Organisation memberships are all correct.'));
+
+    // Check that the correct caches have been created.
+    foreach ($this->authorities as $i => $authority) {
+      $entityHashKey = $authority->getEntityTypeId() . ':' . $authority->id();
+      $cache = \Drupal::cache('data')->get("par_data_relationships:{$entityHashKey}");
+      // Only a select number of authorities have member people.
+      if ($i >= 10 && $i % 2 == 0) {
+        $this->assertNotFalse($cache, t("Relationships for authority entity {$authority->id()} have been correctly cached."));
+      }
+    }
+    foreach ($this->organisations as $i => $organisation) {
+      $entityHashKey = $organisation->getEntityTypeId() . ':' . $organisation->id();
+      $cache = \Drupal::cache('data')->get("par_data_relationships:{$entityHashKey}");
+      // Only a select number of authorities have member people.
+      if ($i >= 10 && $i % 2 != 0) {
+        $this->assertNotFalse($cache, t("Relationships for organisation entity {$organisation->id()} have been correctly cached."));
+      }
+    }
+    foreach ($this->premises as $i => $premises) {
+      $entityHashKey = $premises->getEntityTypeId() . ':' . $premises->id();
+      $cache = \Drupal::cache('data')->get("par_data_relationships:{$entityHashKey}");
+      if ($i >= 15 && $i % 2 != 0) {
+        $this->assertNotFalse($cache, t("Relationships for premises entity {$premises->id()} have been correctly cached."));
+      }
+    }
+
+    // If we delete a premises it should clear the cache.
+    $entityHashKey = $this->premises[17]->getEntityTypeId() . ':' . $this->premises[17]->id();
+    $premises_id = $this->premises[17]->id();
+    $this->premises[17]->delete();
+    $cache = \Drupal::cache('data')->get("par_data_relationships:{$entityHashKey}");
+    $this->assertEmpty($cache, t("Relationships for premises entity $premises_id has been correctly cache busted."));
+
+    // It should also clear the correct cache for the authority.
+    $entityHashKey = $this->organisations[17]->getEntityTypeId() . ':' . $this->organisations[17]->id();
+    $cache = \Drupal::cache('data')->get("par_data_relationships:{$entityHashKey}");
+    $this->assertEmpty($cache, t("Relationships for organisation entity {$this->organisations[17]->id()} has been correctly cache busted."));
   }
 }

@@ -69,8 +69,7 @@ class ParAuthority extends SqlBase {
         'nation',
         'ons_code',
         'comments',
-      ])
-      ->range(0,1000);
+      ]);
   }
 
   protected function collectRegulatoryFunctions() {
