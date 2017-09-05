@@ -70,6 +70,8 @@ echo -n "Enter the environment name (e.g. staging): "
 read ENV
 echo -n "Enter the build version (e.g. v1.0.0): "
 read VER
+echo -n "Number of instances: "
+read INSTANCES
 
 if [ $ENV == "production" ]; then
    echo -n "You have chosen to deploy to production. Are you sure? [sure|no] : "
@@ -163,12 +165,12 @@ rm $VER.tar.gz
 # Stay in the build directory to push the unpacked code
 ####################################################################################
 
-if [ ! -f manifest.$ENV.yml ]; then
-    echo "Manifest file manifest.$ENV.yml not found"
+if [ ! -f cf/manifests/manifest.$ENV.yml ]; then
+    echo "Manifest file cf/manifests/manifest.$ENV.yml not found"
     exit 1
 fi
 
-cf push -f manifest.$ENV.yml --hostname par-beta-$ENV-green par-beta-$ENV-green 
+cf push -f cf/manifests/manifest.$ENV.yml --hostname par-beta-$ENV-green par-beta-$ENV-green 
 
 ####################################################################################
 # Set environment variables
@@ -190,18 +192,19 @@ cf set-env par-beta-$ENV-green SENTRY_DSN_PUBLIC $SENTRY_DSN_PUBLIC
 
 cf restage par-beta-$ENV-green
 
-cf ssh par-beta-$ENV-green -c "cd app/tools && python post_deploy.py"
-
-####################################################################################
-# Blue/Green magic - switch domain routes to newly-deployed app
-####################################################################################
-
-cf map-route par-beta-$ENV-green cloudapps.digital -n par-beta-$ENV
-cf unmap-route par-beta-$ENV cloudapps.digital -n par-beta-$ENV
-cf map-route par-beta-$ENV-green $ENV-cdn.par-beta.co.uk
-cf unmap-route par-beta-$ENV $ENV-cdn.par-beta.co.uk
-cf delete par-beta-$ENV -f
-cf rename par-beta-$ENV-green par-beta-$ENV
-if [ $ENV == "production" ] || [ $ENV == "staging" ] ; then
-    cf scale par-beta-$ENV -i 3
+if [[ $1 != "skip-post-deploy" ]]; then
+    cf ssh par-beta-$ENV-green -c "cd app/tools && python post_deploy.py"
+    
+    ####################################################################################
+    # Blue/Green magic - switch domain routes to newly-deployed app
+    ####################################################################################
+    
+    cf map-route par-beta-$ENV-green cloudapps.digital -n par-beta-$ENV
+    cf unmap-route par-beta-$ENV cloudapps.digital -n par-beta-$ENV
+    cf map-route par-beta-$ENV-green $ENV-cdn.par-beta.co.uk
+    cf unmap-route par-beta-$ENV $ENV-cdn.par-beta.co.uk
+    cf delete par-beta-$ENV -f
+    cf rename par-beta-$ENV-green par-beta-$ENV
 fi
+
+cf scale par-beta-$ENV -i $INSTANCES
