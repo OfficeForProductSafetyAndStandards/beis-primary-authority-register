@@ -374,7 +374,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     $form['organisation_contact'] = [
       '#type' => 'fieldset',
       '#attributes' => ['class' => 'form-group'],
-      '#title' => t('Contacts - Organisation:s'),
+      '#title' => t('Contacts - Organisation:'),
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
