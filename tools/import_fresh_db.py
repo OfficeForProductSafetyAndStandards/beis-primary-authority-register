@@ -25,6 +25,12 @@ port = credentials["port"]
 username = credentials["username"]
 password = credentials["password"]
 
+f = open("/home/vcap/.pgpass", "w")
+f.write(host + ":5432:" + name + ":" + username + ":" + password)
+f.close()
+
+os.system("chmod 600 /home/vcap/.pgpass")
+
 os.environ["PHPRC"] = os.environ["HOME"] + "/app/php/etc"
 os.environ["PATH"]= os.environ["PATH"] + ":" + os.environ["HOME"] + "/app/php/bin:" + os.environ["HOME"] + "/app/php/sbin"
 os.environ["HTTPD_SERVER_ADMIN"] = "admin@localhost"

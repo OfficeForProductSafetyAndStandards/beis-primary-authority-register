@@ -1,0 +1,8 @@
+applications:
+- name: par-beta-assessment
+memory: 4G
+disk_quota: 2048M
+host: par-beta-assessment
+buildpack: php_buildpack
+services:
+- par-pg-assessment
