@@ -7,7 +7,9 @@
     "test": "npm run test:build",
     "test:build": "./node_modules/.bin/wdio wdio.BUILD.conf.js",
     "test:dev": "./node_modules/.bin/wdio wdio.DEV.conf.js",
-    "test:validate": "eslint 'src/**/*.js'"
+    "test:validate": "eslint 'src/**/*.js'",
+    "allure": "npm run allure:generate",
+    "allure:generate": "./node_modules/.bin/allure generate --clean ./allure-results/"
   },
   "repository": {
     "type": "git",
