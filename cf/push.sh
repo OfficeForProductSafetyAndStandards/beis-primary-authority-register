@@ -170,12 +170,13 @@ if [[ $1 != "environment-only" ]]; then
     # Stay in the build directory to push the unpacked code
     ####################################################################################
     
-    if [ ! -f cf/manifests/manifest.$ENV.yml ]; then
-        echo "Manifest file cf/manifests/manifest.$ENV.yml not found"
+    MANIFEST=../manifests/manifest.$ENV.yml
+    if [ ! -f $MANIFEST ]; then
+        echo "Manifest file $MANIFEST not found"
         exit 1
     fi
     
-    cf push -f cf/manifests/manifest.$ENV.yml --hostname par-beta-$ENV-green par-beta-$ENV-green 
+    cf push -f $MANIFEST --hostname par-beta-$ENV-green par-beta-$ENV-green 
 fi
 
 ####################################################################################
