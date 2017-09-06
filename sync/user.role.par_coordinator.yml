@@ -20,6 +20,7 @@ permissions:
   - 'access par_data_regulatory_function entities'
   - 'access par_data_sic_code entities'
   - 'access partnerships dashboard'
+  - 'coordinator partnership journey'
   - 'create files'
   - 'delete own document files'
   - 'delete own image files'

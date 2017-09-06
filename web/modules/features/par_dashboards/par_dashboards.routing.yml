@@ -1,11 +1,11 @@
 # PAR Login Dashboard
-par_login.dashboard:
+par_dashboards.dashboard:
   path: '/dashboard'
   defaults:
     _controller: '\Drupal\par_dashboards\Controller\ParDashboardsDashboardController::content'
     _title: 'Dashboard'
   requirements:
-    _permission: 'access content' # What permissions do you suggest?
+    _permission: 'bypass partnership journey, authority partnership journey, busines partnership journey, coordinator partnership journey'
     par_data_enforcement_notice: \d+
   options:
     parameters:
