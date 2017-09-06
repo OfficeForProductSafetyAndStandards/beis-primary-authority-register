@@ -101,6 +101,7 @@ class ParDataAdvice extends ParDataEntity {
     $fields['notes'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Notes'))
       ->setDescription(t('Notes about this advice.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
@@ -169,7 +170,7 @@ class ParDataAdvice extends ParDataEntity {
     $fields['issue_date'] = BaseFieldDefinition::create('datetime')
       ->setLabel(t('Issue Date'))
       ->setDescription(t('The date this enforcement notice was issued.'))
-      ->setRequired(TRUE)
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'datetime_type' => 'date',
@@ -188,6 +189,7 @@ class ParDataAdvice extends ParDataEntity {
     $fields['document'] = BaseFieldDefinition::create('file')
       ->setLabel(t('Document'))
       ->setDescription(t('Documents relating to the advice.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSettings([

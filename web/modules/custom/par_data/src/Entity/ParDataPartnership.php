@@ -225,10 +225,11 @@ class ParDataPartnership extends ParDataEntity {
       ->setDisplayConfigurable('view', TRUE);
 
     // Partnership Status.
+    // {@depreciated} We will use the concept of workflow states going forward.
     $fields['partnership_status'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Partnership Status'))
+      ->setLabel(t('(Depreciated) Partnership Status'))
       ->setDescription(t('The current status of the partnership plan itself. For example, current, expired, replaced.'))
-      ->setRequired(TRUE)
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,

@@ -74,7 +74,7 @@ class ParDataInspectionPlan extends ParDataEntity {
     $fields['valid_date'] = BaseFieldDefinition::create('daterange')
       ->setLabel(t('Valid Date'))
       ->setDescription(t('The date range this inspection plan is valid for.'))
-      ->setRequired(TRUE)
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'datetime_type' => 'date',
@@ -93,7 +93,7 @@ class ParDataInspectionPlan extends ParDataEntity {
     $fields['approved_rd_executive'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Approved by RD Executive'))
       ->setDescription(t('Whether this inspection plan has been approved by an RD executive.'))
-      ->setRequired(TRUE)
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
@@ -109,7 +109,7 @@ class ParDataInspectionPlan extends ParDataEntity {
     $fields['consulted_national_regulator'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('National Regulator Consulted'))
       ->setDescription(t('Whether the national regulator has been consulted about this inspection plan.'))
-      ->setRequired(TRUE)
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
@@ -145,10 +145,11 @@ class ParDataInspectionPlan extends ParDataEntity {
       ->setDisplayConfigurable('view', TRUE);
 
     // Inspection Status.
+    // {@depreciated} We will use the concept of workflow states going forward.
     $fields['inspection_status'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Inspection Status'))
+      ->setLabel(t('(Depreciated) Inspection Status'))
       ->setDescription(t('The current status of the inspection plan itself. For example, current, expired, replaced.'))
-      ->setRequired(TRUE)
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,

@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains par_validation.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function par_validation_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the par_validation module.
+    case 'help.page.par_validation':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Adds validation and the rules surrounding validation to forms, flows and entities.') . '</p>';
+      return $output;
+
+    default:
+  }
+}

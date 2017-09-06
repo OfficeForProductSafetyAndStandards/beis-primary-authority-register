@@ -115,7 +115,7 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
     $fields['membership_date'] = BaseFieldDefinition::create('daterange')
       ->setLabel(t('Membership Date'))
       ->setDescription(t('The date range this coordinated business is a member of this partnership for.'))
-      ->setRequired(TRUE)
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'datetime_type' => 'date',
