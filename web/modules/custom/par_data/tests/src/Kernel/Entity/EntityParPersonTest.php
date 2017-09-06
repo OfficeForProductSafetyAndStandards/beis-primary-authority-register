@@ -44,7 +44,6 @@ class EntityParPersonTest extends ParDataTestBase {
     $values = [
       'first_name' => '',
       'last_name' => '',
-      'job_title' => '',
       'work_phone' => '',
       'email' => '',
     ];
