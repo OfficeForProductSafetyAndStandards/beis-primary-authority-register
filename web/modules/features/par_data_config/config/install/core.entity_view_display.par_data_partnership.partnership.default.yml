@@ -187,6 +187,15 @@ content:
       format_type: medium
       timezone_override: ''
     third_party_settings: {  }
+  revoked:
+    label: hidden
+    region: content
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
 hidden:
   authority_change_comment: true
   communication_email: true

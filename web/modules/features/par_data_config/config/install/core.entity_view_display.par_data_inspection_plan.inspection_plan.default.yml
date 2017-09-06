@@ -37,6 +37,15 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  revoked:
+    label: hidden
+    region: content
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
   valid_date:
     type: daterange_default
     weight: 1
