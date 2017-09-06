@@ -45,16 +45,14 @@ command -v cf >/dev/null 2>&1 || {
     exit 1 
 }
 
-command -v "cf apps" >/dev/null 2>&1 || {
-    echo -n "Enter your Cloud Foundry username: "
-    read CF_USER
-    echo -n "Enter your Cloud Foundry password (will be hidden): "
-    read -s CF_PASS
-    cf login -a api.cloud.service.gov.uk -u $CF_USER -p $CF_PASS
-    if [ $? != 0 ]; then
-        exit
-    fi
-}
+echo -n "Enter your Cloud Foundry username: "
+read CF_USER
+echo -n "Enter your Cloud Foundry password (will be hidden): "
+read -s CF_PASS
+cf login -a api.cloud.service.gov.uk -u $CF_USER -p $CF_PASS
+if [ $? != 0 ]; then
+    exit
+fi
 
 echo -n "Enter the environment name (e.g. staging): "
 read ENV
