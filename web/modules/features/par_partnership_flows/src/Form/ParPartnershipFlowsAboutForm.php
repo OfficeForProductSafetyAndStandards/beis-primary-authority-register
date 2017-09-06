@@ -15,7 +15,7 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
   use ParPartnershipFlowsTrait;
 
   protected $formItems = [
-    'par_data_partnership' => [
+    'par_data_partnership:partnership' => [
       'about_partnership' => 'about_partnership',
     ],
   ];

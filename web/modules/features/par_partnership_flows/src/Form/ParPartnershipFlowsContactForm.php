@@ -17,7 +17,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
   use ParPartnershipFlowsTrait;
 
   protected $formItems = [
-    'par_data_person' => [
+    'par_data_person:person' => [
       'first_name' => 'first_name',
       'last_name' => 'last_name',
       'work_phone' => 'work_phone',

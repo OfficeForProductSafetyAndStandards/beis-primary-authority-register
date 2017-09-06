@@ -108,7 +108,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * of entity field name and form field name.
    *
    * Example: [
-   *   'par_data_person' => [
+   *   'par_data_person:person' => [
    *     'first_name' => 'first_name',
    *     'last_name' => 'last_name',
    *     'work_phone' => 'phone',
@@ -284,7 +284,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
         'contexts' => $this->getCacheContexts(),
         'tags' => $this->getCacheTags(),
         'max-age' => $this->getCacheMaxAge(),
-      )
+      ),
     );
 
     return $form + $cache;
@@ -296,14 +296,21 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   public function validateForm(array &$form, FormStateInterface $form_state) {
 
     foreach ($this->getformItems() as $entity_name => $form_items) {
-      $entity_type_def = $this->getParDataManager()->getParEntityType($entity_name);
+      list($type, $bundle) = explode(':', $entity_name);
+
+      // If no bundle specified the we ignore this test. Do we need to log it?
+      if (empty($type) || empty($bundle)) {
+        continue;
+      }
+
+      $entity_type_def = $this->getParDataManager()->getParEntityType($type);
       $entity = $entity_type_def->getClass()::create([
-        'type' => $this->getParDataManager()->getParBundleEntity($entity_name)->id(),
+        'type' => $this->getParDataManager()->getParBundleEntity($type, $bundle)->id(),
       ]);
 
       foreach ($form_items as $field_name => $form_item) {
-         $entity->set($field_name, $form_state->getValue($form_item));
-         $violations = $entity->validate()->filterByFieldAccess()
+        $entity->set($field_name, $form_state->getValue($form_item));
+        $violations = $entity->validate()->filterByFieldAccess()
           ->getByFields([
             $field_name,
           ]);
