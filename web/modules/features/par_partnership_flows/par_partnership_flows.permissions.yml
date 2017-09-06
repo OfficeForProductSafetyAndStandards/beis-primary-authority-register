@@ -10,7 +10,7 @@ coordinator partnership journey:
   title: 'Coordinator Partnership Journeys '
   description: 'A permission to allow access to all coordinator partnership journeys.'
   restrict access: TRUE
-busines partnership journey:
+business partnership journey:
   title: 'Business Partnership Journeys '
   description: 'A permission to allow access to all business partnership journeys.'
   restrict access: TRUE

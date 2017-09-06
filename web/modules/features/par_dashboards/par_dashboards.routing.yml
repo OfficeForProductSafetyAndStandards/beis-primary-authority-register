@@ -5,9 +5,4 @@ par_dashboards.dashboard:
     _controller: '\Drupal\par_dashboards\Controller\ParDashboardsDashboardController::content'
     _title: 'Dashboard'
   requirements:
-    _permission: 'bypass partnership journey, authority partnership journey, busines partnership journey, coordinator partnership journey'
-    par_data_enforcement_notice: \d+
-  options:
-    parameters:
-      par_data_enforcement_notice:
-        type: entity:par_data_enforcement_notice
+    _permission: 'bypass partnership journey, authority partnership journey, business partnership journey, coordinator partnership journey'
