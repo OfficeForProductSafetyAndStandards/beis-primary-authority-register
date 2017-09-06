@@ -16,6 +16,21 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
+  protected $formItems = [
+    'par_data_person:person' => [
+      'first_name' => 'first_name',
+      'last_name' => 'last_name',
+      'work_phone' => 'work_phone',
+      'mobile_phone' => 'mobile_phone',
+      'email' => 'email',
+      // @todo will need to look into this further on the next piece of work.
+      //  'communication_email'
+      //  'communication_phone'
+      //  'communication_mobile'
+      'communication_notes' => 'notes'
+    ],
+  ];
+
   /**
    * {@inheritdoc}
    */
@@ -74,7 +89,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       '#type' => 'markup',
       '#markup' => t('Change the main contact for your organisation'),
       '#prefix' => '<p><strong>',
-      '#suffix' => '</strong></p>'
+      '#suffix' => '</strong></p>',
     ];
 
     // The Person's title.
@@ -155,37 +170,6 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     $this->addCacheableDependency($person_bundle);
 
     return parent::buildForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    // No validation yet.
-    parent::validateForm($form, $form_state);
-//    $par_data_person = $this->getRouteParam('par_data_person');
-//    $form_items = [
-//      'salutation' => 'salutation',
-//      'first_name' => 'first_name',
-//      'last_name' => 'last_name',
-//      'work_phone' => 'work_phone',
-//      'email' => 'email',
-//    ];
-//    foreach($form_items as $element_item => $form_item) {
-//      $fields[$element_item] = [
-//        'value' => $form_state->getValue($form_item),
-//        'key' => $form_item,
-//        'tokens' => [
-//          '%field' => $form[$form_item]['#title']->render(),
-//        ],
-//      ];
-//    }
-//
-//    $errors = $par_data_person->validateFields($fields);
-//    // Display error messages.
-//    foreach($errors as $field => $message) {
-//      $form_state->setErrorByName($field, $message);
-//    }
   }
 
   /**
