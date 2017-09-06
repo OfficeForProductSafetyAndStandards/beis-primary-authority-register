@@ -55,7 +55,7 @@ install:
   - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
   - docker exec -it par_beta_web bash -c "npm run gulp"
   - docker exec -it par_beta_web bash -c "wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - "
-  - docker exec -it par_beta_web bash -c "sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'"
+  - docker exec -it par_beta_web bash -c "echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list"
   - docker exec -it par_beta_web bash -c "apt-get update"
   - docker exec -it par_beta_web bash -c "apt-get install google-chrome-stable"
   - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
