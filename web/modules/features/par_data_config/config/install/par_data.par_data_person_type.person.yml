@@ -18,13 +18,13 @@ configuration:
       email: 'The %field is required.'
   communication_email:
     boolean_values:
-      'on': Email
+      'on': 'Preferred communication by email'
       'off': 'Do not communicate by email'
   communication_phone:
     boolean_values:
-      'on': 'Work phone'
+      'on': 'Preferred communication by work phone'
       'off': 'Do not communicate by work phone'
   communication_mobile:
     boolean_values:
-      'on': 'Mobile phone'
+      'on': 'Preferred communication by mobile phone'
       'off': 'Do not communicate by mobile phone'
