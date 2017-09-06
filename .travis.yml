@@ -28,7 +28,7 @@ install:
 # Install Chrome for headless browser testing 
 #-----------------------------------------------------------------------------
 
-- sudo apt update && sudo apt install google-chrome-stable
+  - sudo apt update && sudo apt install google-chrome-stable
 
 #-----------------------------------------------------------------------------
 # Install Cloud Foundry CLI, for deployment, if on master branch
