@@ -80,10 +80,7 @@ class EntityParOrganisationTest extends ParDataTestBase {
   public function testEntityCreate() {
     $this->createUser();
 
-    $entity = ParDataOrganisation::create($this->getOrganisationBusinessValues());
-    $this->assertTrue($entity->save(), 'PAR Organisation entity of type Business saved correctly.');
-
-    $entity = ParDataOrganisation::create($this->getOrganisationCoordinatorValues());
-    $this->assertTrue($entity->save(), 'PAR Organisation entity of type Coordinator saved correctly.');
+    $entity = ParDataOrganisation::create($this->getOrganisationValues());
+    $this->assertTrue($entity->save(), 'PAR Organisation entity saved correctly.');
   }
 }

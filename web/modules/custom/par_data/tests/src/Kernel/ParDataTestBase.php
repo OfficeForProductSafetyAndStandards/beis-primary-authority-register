@@ -39,6 +39,33 @@ class ParDataTestBase extends EntityKernelTestBase {
 
   protected $account = 1;
 
+  protected $accountPermissions = [
+    'access par_data_advice entities',
+    'access par_data_authority entities',
+    'access par_data_enforcement_notice entities',
+    'access par_data_inspection_plan entities',
+    'access par_data_legal_entity entities',
+    'access par_data_organisation entities',
+    'access par_data_coordinated_business entities',
+    'access par_data_partnership entities',
+    'access par_data_person entities',
+    'access par_data_premises entities',
+    'access par_data_regulatory_function entities',
+    'access par_data_sic_code entities',
+    'edit par_data_advice entities',
+    'edit par_data_authority entities',
+    'edit par_data_enforcement_notice entities',
+    'edit par_data_inspection_plan entities',
+    'edit par_data_legal_entity entities',
+    'edit par_data_organisation entities',
+    'edit par_data_coordinated_business entities',
+    'edit par_data_partnership entities',
+    'edit par_data_person entities',
+    'edit par_data_premises entities',
+    'edit par_data_regulatory_function entities',
+    'edit par_data_sic_code entities',
+  ];
+
   /**
    * {@inheritdoc}
    */
@@ -49,7 +76,7 @@ class ParDataTestBase extends EntityKernelTestBase {
 
     parent::setUp();
 
-    $this->account = $this->createUser();
+    $this->account = $this->createUser($this->accountPermissions);
 
     // Mimic some of the functionality in \Drupal\Tests\file\Kernel\FileManagedUnitTestBase
     $this->setUpFilesystem();
@@ -358,7 +385,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     ] + $this->getBaseValues();
   }
 
-  public function getOrganisationCoordinatorValues() {
+  public function getOrganisationValues() {
     // We need to create an SIC Code first.
     $sic_code = ParDataSicCode::create($this->getSicCodeValues());
     $sic_code->save();
@@ -376,7 +403,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     $legal_entity->save();
 
     // We need to create an Organisation first.
-    $organisation = ParDataOrganisation::create($this->getOrganisationBusinessValues());
+    $organisation = ParDataOrganisation::create($this->getOrganisationValues());
     $organisation->save();
 
     return [
@@ -412,54 +439,9 @@ class ParDataTestBase extends EntityKernelTestBase {
     ] + $this->getBaseValues();
   }
 
-  public function getOrganisationBusinessValues() {
-    // We need to create an SIC Code first.
-    $sic_code = ParDataSicCode::create($this->getSicCodeValues());
-    $sic_code->save();
-
-    // We need to create a Person first.
-    $person = ParDataPerson::create($this->getPersonValues());
-    $person->save();
-
-    // We need to create a Premises first.
-    $premises = ParDataPremises::create($this->getPremisesValues());
-    $premises->save();
-
-    // We need to create a Legal Entity first.
-    $legal_entity = ParDataLegalEntity::create($this->getLegalEntityValues());
-    $legal_entity->save();
-
-    return [
-        'type' => 'business',
-        'organisation_name' => 'Test Business',
-        'size' => 'Enormous',
-        'employees_band' => '10-50',
-        'nation' => 'Wales',
-        'comments' => $long_string = $this->randomString(1000),
-        'premises_mapped' => TRUE,
-        'trading_name' => [
-          $this->randomString(255),
-          $this->randomString(255),
-          $this->randomString(255),
-        ],
-        'field_sic_code' => [
-          $sic_code->id(),
-        ],
-        'field_person' => [
-          $person->id(),
-        ],
-        'field_premises' => [
-          $premises->id(),
-        ],
-        'field_legal_entity' => [
-          $legal_entity->id(),
-        ]
-      ] + $this->getBaseValues();
-  }
-
   public function getCoordinatedBusinessValues() {
     // We need to create an Organisation Member first.
-    $organisation_1 = ParDataOrganisation::create(['organisation_name' => 'Member ' . rand(0,1)] + $this->getOrganisationBusinessValues());
+    $organisation_1 = ParDataOrganisation::create(['organisation_name' => 'Member ' . rand(0,1)] + $this->getOrganisationValues());
     $organisation_1->save();
 
     return [
@@ -476,7 +458,7 @@ class ParDataTestBase extends EntityKernelTestBase {
 
   public function getDirectPartnershipValues() {
     // We need to create an Organisation first.
-    $organisation = ParDataOrganisation::create($this->getOrganisationBusinessValues());
+    $organisation = ParDataOrganisation::create($this->getOrganisationValues());
     $organisation->save();
 
     // We need to create a Authority first.
@@ -548,7 +530,7 @@ class ParDataTestBase extends EntityKernelTestBase {
 
   public function getCoordinatedPartnershipValues() {
     // We need to create an Organisation first.
-    $organisation = ParDataOrganisation::create($this->getOrganisationBusinessValues());
+    $organisation = ParDataOrganisation::create($this->getOrganisationValues());
     $organisation->save();
 
     // We need to create a few memberships first.
