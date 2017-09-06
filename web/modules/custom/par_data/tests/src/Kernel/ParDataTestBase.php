@@ -39,7 +39,7 @@ class ParDataTestBase extends EntityKernelTestBase {
 
   protected $account = 1;
 
-  protected $accountPermissions = [
+  protected $permissions = [
     'access par_data_advice entities',
     'access par_data_authority entities',
     'access par_data_enforcement_notice entities',
@@ -76,7 +76,7 @@ class ParDataTestBase extends EntityKernelTestBase {
 
     parent::setUp();
 
-    $this->account = $this->createUser($this->accountPermissions);
+    $this->account = $this->createUser([], $this->permissions);
 
     // Mimic some of the functionality in \Drupal\Tests\file\Kernel\FileManagedUnitTestBase
     $this->setUpFilesystem();
@@ -145,22 +145,6 @@ class ParDataTestBase extends EntityKernelTestBase {
     $type = ParDataLegalEntityType::create([
       'id' => 'legal_entity',
       'label' => 'Legal Entity',
-    ]);
-    $type->save();
-
-    // Create the entity bundles required for testing.
-    // {@depreciated}
-    $type = ParDataOrganisationType::create([
-      'id' => 'coordinator',
-      'label' => 'Coordinator Organisation',
-    ]);
-    $type->save();
-
-    // Create the entity bundles required for testing.
-    // {@depreciated}
-    $type = ParDataOrganisationType::create([
-      'id' => 'business',
-      'label' => 'Business Organisation',
     ]);
     $type->save();
 
@@ -402,13 +386,9 @@ class ParDataTestBase extends EntityKernelTestBase {
     $legal_entity = ParDataLegalEntity::create($this->getLegalEntityValues());
     $legal_entity->save();
 
-    // We need to create an Organisation first.
-    $organisation = ParDataOrganisation::create($this->getOrganisationValues());
-    $organisation->save();
-
     return [
       'type' => 'coordinator',
-      'organisation_name' => 'Test Coordinator',
+      'organisation_name' => 'Test Organisation',
       'size' => 'Enormous',
       'employees_band' => '10-50',
       'nation' => 'Wales',
@@ -433,9 +413,6 @@ class ParDataTestBase extends EntityKernelTestBase {
       ],
       'field_coordinator_number' => '12345',
       'field_coordinator_type' => 'Franchise',
-      'field_coordinated_businesses' => [
-        $organisation->id()
-      ],
     ] + $this->getBaseValues();
   }
 
@@ -587,7 +564,7 @@ class ParDataTestBase extends EntityKernelTestBase {
         'field_organisation' => [
           $organisation->id(),
         ],
-        'field_membeships' => [
+        'field_coordinated_business' => [
           $coordinated_business_1->id(),
           $coordinated_business_2->id(),
           $coordinated_business_3->id(),

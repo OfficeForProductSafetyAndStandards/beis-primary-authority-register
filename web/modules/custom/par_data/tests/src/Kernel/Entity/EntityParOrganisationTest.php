@@ -43,6 +43,12 @@ class EntityParOrganisationTest extends ParDataTestBase {
 
     $values = [
       'organisation_name' => '',
+      'size' => '',
+      'employees_band' => '',
+      'nation' => '',
+      'comments' => '',
+      'premises_mapped' => '',
+      'trading_name' => '',
     ];
 
     $entity = ParDataOrganisation::create($values + $this->getOrganisationValues());

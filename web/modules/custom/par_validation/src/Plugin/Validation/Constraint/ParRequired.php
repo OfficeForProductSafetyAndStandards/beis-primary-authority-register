@@ -17,7 +17,7 @@ class ParRequired extends Constraint {
   /**
    * The message for users that have not entered a value.
    */
-  public $requiredMessage = 'You must fill in the value for %value.';
+  public $message = 'You must fill in the value %value.';
 
   /**
    * @return string

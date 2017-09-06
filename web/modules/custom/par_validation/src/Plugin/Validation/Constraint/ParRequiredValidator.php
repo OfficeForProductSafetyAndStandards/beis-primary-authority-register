@@ -16,12 +16,12 @@ class ParRequiredValidator extends ConstraintValidator {
   public function validate($items, Constraint $constraint) {
     foreach ($items as $item) {
       // Ignore validating any users that have the bypass permission.
-      if ($this->validationIsAllowed()) {
-        continue;
+      if ($this->skipValidate()) {
+        break;
       }
 
       if (!isset($item->value) || false === $item->value || (empty($item->value) && '0' != $item->value)) {
-        $this->context->addViolation($constraint->notInteger, ['%value' => $item->value]);
+        $this->context->addViolation($constraint->message, ['%value' => $item->value]);
       }
     }
   }
@@ -29,9 +29,9 @@ class ParRequiredValidator extends ConstraintValidator {
   /**
    * Determine the contexts under which this validation is appropriate.
    */
-  public function validationIsAllowed() {
+  public function skipValidate() {
     $current_user = \Drupal::currentUser();
-    return $current_user->hasPermission('par bypass validation') ? FALSE : TRUE;
+    return $current_user->hasPermission('par bypass validation');
   }
 
 }

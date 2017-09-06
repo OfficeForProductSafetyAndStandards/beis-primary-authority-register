@@ -250,6 +250,7 @@ class ParDataPartnership extends ParDataEntity {
     $fields['about_partnership'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('About Partnership'))
       ->setDescription(t('Details about this partnership.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
