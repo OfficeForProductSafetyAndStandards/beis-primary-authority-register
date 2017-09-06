@@ -82,8 +82,8 @@ Feature: Primary Authority - Change Partnership Details
 
         And I scroll to element ".table-scroll-wrapper"
         When I click on the button "a*=Review and confirm your documentation"
-        # And I click on the link "Upload a document"
-        # And I upload a valid file
+        #  And I click on the link "Upload a document"
+        #  And I upload a valid file
         And I scroll to element ".table-scroll-wrapper"
         And I click on the link "classify"
         And I click on the radio "#edit-advice-type-authority-advice"

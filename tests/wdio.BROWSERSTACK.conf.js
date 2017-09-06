@@ -64,10 +64,10 @@ config.capabilities = [{
 ];
 
 config.services = ['browserstack'];
-config.user = process.env.BSK_USER;
-config.key = process.env.BSK_KEY;
+config.user = 'finance9';
+config.key = 'hpz8xxcwr3QVhFWwLWvR';
 config.browserstackLocal = true;
-// config.host = 'hub-cloud.browserstack.com';
+config.host = 'hub-cloud.browserstack.com';
 config.baseUrl = 'http://localhost:8111';
 config.tags = '@ci, ~@Pending, ~@ie8bug';
 exports.config = config;

@@ -1,11 +1,11 @@
 @Pending
-Feature: Enforcement Officer/PA - Manage name and summary detail
+Feature: Enforcement Officer/Coordinator - Manage name and summary detail
 
     Background:
         # TEST DATA RESET
         Given I reset the test data
 
-    Scenario: Enforcement Officer/PA - Issue enforcement notice
+    Scenario: Enforcement Officer/Coordinator - Issue enforcement notice
         # LOGIN SCREEN
 
         Given I am logged in as "par_enforcementofficer@example.com"
@@ -13,7 +13,7 @@ Feature: Enforcement Officer/PA - Manage name and summary detail
         # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
         And I scroll to element "#views-exposed-form-rd-helpdesk-dashboard-par-rd-helpdesk-dashboard-page"
-        When I add "ABCD" to the inputfield "#edit-keywords"
+        When I add "Co Mart" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-rd-helpdesk-dashboard"
         And I scroll to element "#views-exposed-form-rd-helpdesk-dashboard-par-rd-helpdesk-dashboard-page"
         When I click on the button "td.views-field.views-field-authority-name a"
@@ -36,9 +36,9 @@ Feature: Enforcement Officer/PA - Manage name and summary detail
         And I expect that element "#enforcement-ref" is not empty
         When I click on the link "Log out"
 
-        # LOGIN AS PA USER TO CHECK MESSAGING
+        # LOGIN AS COORDINATOR USER TO CHECK MESSAGING
 
-        And I am logged in as "par_authority@example.com"
+        And I am logged in as "par_coordinator@example.com"
         Then I expect that element "#secure-messages" contains the text "You have 1 new message"
         When I click on the link "#secure-message"
         Then I expect that element "h1" contains the text "Enforcement notification from"
@@ -52,8 +52,6 @@ Feature: Enforcement Officer/PA - Manage name and summary detail
         When I click on the link "#secure-message"
         Then I expect that element "h1" contains the text "Response to enforcement notification received by"
         And I expect that element "#proposed-enforcement-ref" is not empty
-
-
         And I scroll to element "#views-exposed-form-rd-helpdesk-dashboard-par-rd-helpdesk-dashboard-page"
         When I add "ABCD" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-rd-helpdesk-dashboard"
@@ -78,9 +76,9 @@ Feature: Enforcement Officer/PA - Manage name and summary detail
         And I expect that element "#enforcement-ref" is not empty
         When I click on the link "Log out"
 
-         # LOGIN AS PA USER TO CHECK MESSAGING
+         # LOGIN AS COORDINATOR USER TO CHECK MESSAGING
 
-        And I am logged in as "par_authority@example.com"
+        And I am logged in as "par_coordinator@example.com"
         Then I expect that element "#secure-messages" contains the text "You have 1 new message"
         When I click on the link "#secure-message"
         And I expect that element "h1" contains the text "Enforcement notification from"

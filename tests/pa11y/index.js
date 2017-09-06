@@ -2,7 +2,10 @@
 'use strict';
 
 var pa11y = require('pa11y');
-var url = 'http://localhost:8111/dv/business-partnerships/129/details/address/324';
+
+console.log();
+
+var url = 'http://localhost:8111/dv/primary-authority-partnerships/33361/document/2797';
 
 // Create a test instance with some default options
 var test = pa11y({
@@ -40,7 +43,7 @@ var test = pa11y({
         };
 
         page.evaluate(function () {
-            document.getElementById("edit-name").value = "par_helpdesk@example.com";
+            document.getElementById("edit-name").value = "par_authority@example.com";
             document.getElementById("edit-pass").value = "TestPassword";
             document.getElementById("edit-submit").click();
         }, function () {
