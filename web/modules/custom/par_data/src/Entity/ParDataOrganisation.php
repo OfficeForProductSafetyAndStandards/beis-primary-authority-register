@@ -274,7 +274,7 @@ class ParDataOrganisation extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Coordinator type.
+    // Coordinator number.
     $fields['coordinator_number'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Coordinator Number'))
       ->setDescription(t('Number of eligible coordinators.'))
