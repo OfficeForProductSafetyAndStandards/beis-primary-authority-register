@@ -1,4 +1,4 @@
-# PAR Login Dashboard
+# PAR Dashboard
 par_dashboards.dashboard:
   path: '/dashboard'
   defaults:

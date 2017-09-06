@@ -15,7 +15,8 @@ module:
 theme: {  }
 blacklist:
   - par_data.settings
-graylist: {  }
-graylist_dependents: true
+graylist:
+  - login_destination.destination.welcome_reminder
+graylist_dependents: false
 graylist_skip_equal: true
 weight: 0
