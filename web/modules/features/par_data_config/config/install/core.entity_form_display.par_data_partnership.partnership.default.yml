@@ -5,6 +5,7 @@ dependencies:
     - field.field.par_data_partnership.partnership.field_advice
     - field.field.par_data_partnership.partnership.field_authority
     - field.field.par_data_partnership.partnership.field_authority_person
+    - field.field.par_data_partnership.partnership.field_coordinated_business
     - field.field.par_data_partnership.partnership.field_inspection_plan
     - field.field.par_data_partnership.partnership.field_organisation
     - field.field.par_data_partnership.partnership.field_organisation_person
@@ -38,6 +39,15 @@ content:
     region: content
   field_authority_person:
     weight: 29
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_coordinated_business:
+    weight: 35
     settings:
       match_operator: CONTAINS
       size: 60

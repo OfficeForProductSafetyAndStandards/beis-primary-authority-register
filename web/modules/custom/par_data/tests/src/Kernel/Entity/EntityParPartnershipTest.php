@@ -19,7 +19,7 @@ class EntityParPartnershipTest extends ParDataTestBase {
    */
   public function testEntityValidate() {
     $this->createUser();
-    $entity = ParDataPartnership::create($this->getPartnershipValues());
+    $entity = ParDataPartnership::create($this->getCoordinatedPartnershipValues());
     $violations = $entity->validate();
     $this->assertEqual(count($violations->getFieldNames()), 0, 'No violations when validating a default PAR Partnership entity.');
   }
@@ -28,7 +28,7 @@ class EntityParPartnershipTest extends ParDataTestBase {
    * Test all partnership fields exist.
    */
   public function testParFieldsExist() {
-    $values = $this->getPartnershipValues();
+    $values = $this->getCoordinatedPartnershipValues();
     $entity = ParDataPartnership::create($values);
 
     foreach (array_diff_key($values, $this->getBaseValues()) as $field => $value) {
@@ -45,17 +45,18 @@ class EntityParPartnershipTest extends ParDataTestBase {
     $values = [
       'partnership_type' => '',
       'partnership_status' => '',
+      'about_partnership' => '',
     ];
 
-    $entity = ParDataPartnership::create($values + $this->getPartnershipValues());
+    $entity = ParDataPartnership::create($values + $this->getCoordinatedPartnershipValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
     $this->assertEqual(count($violations->getFieldNames()), count($values), t('Field values are required for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
   }
 
   /**
-   * Test to validate a business entity.
+   * Test to validate a partnership entity.
    */
-  public function testBusinessRequiredLengthFields() {
+  public function testPartnershipRequiredLengthFields() {
     $this->createUser();
 
     $values = [
@@ -65,7 +66,7 @@ class EntityParPartnershipTest extends ParDataTestBase {
       'revocation_source' => $this->randomString(256),
     ];
 
-    $entity = ParDataPartnership::create($values + $this->getPartnershipValues());
+    $entity = ParDataPartnership::create($values + $this->getCoordinatedPartnershipValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
     $this->assertEqual(count($violations->getFieldNames()), count($values), t('Field values cannot be longer than their allowed lengths for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
   }
@@ -75,7 +76,7 @@ class EntityParPartnershipTest extends ParDataTestBase {
    */
   public function testEntityCreate() {
     $this->createUser();
-    $entity = ParDataPartnership::create($this->getPartnershipValues());
+    $entity = ParDataPartnership::create($this->getCoordinatedPartnershipValues());
     $this->assertTrue($entity->save(), 'PAR Partnership entity saved correctly.');
   }
 }

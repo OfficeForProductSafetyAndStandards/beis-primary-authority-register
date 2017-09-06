@@ -123,7 +123,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
     $fields['notice_date'] = BaseFieldDefinition::create('datetime')
       ->setLabel(t('Notice Date'))
       ->setDescription(t('The date this enforcement notice was issued.'))
-      ->setRequired(TRUE)
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'datetime_type' => 'date',
@@ -142,7 +142,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
     $fields['legal_entity_name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Legal Entity Name'))
       ->setDescription(t('An optional free text field for entering a legal entity name.'))
-      ->setRequired(TRUE)
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 500,

@@ -101,6 +101,7 @@ class ParDataAdvice extends ParDataEntity {
     $fields['notes'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Notes'))
       ->setDescription(t('Notes about this advice.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
@@ -165,11 +166,30 @@ class ParDataAdvice extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
+    // Issue Date.
+    $fields['issue_date'] = BaseFieldDefinition::create('datetime')
+      ->setLabel(t('Issue Date'))
+      ->setDescription(t('The date this enforcement notice was issued.'))
+      ->addConstraint('par_required')
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'datetime_type' => 'date',
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'datetime_default',
+        'weight' => 2,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
 
     // Documents.
     $fields['document'] = BaseFieldDefinition::create('file')
       ->setLabel(t('Document'))
       ->setDescription(t('Documents relating to the advice.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSettings([
@@ -183,6 +203,21 @@ class ParDataAdvice extends ParDataEntity {
         'weight' => 6,
         'default_widget' => "file_generic",
         'default_formatter' => "file_default",
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Revoked.
+    $fields['revoked'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Revoked'))
+      ->setDescription(t('Whether the inspection plan has been revoked.'))
+      ->setRevisionable(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 3,
       ])
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [

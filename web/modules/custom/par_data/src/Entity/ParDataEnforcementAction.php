@@ -116,6 +116,7 @@ class ParDataEnforcementAction extends ParDataEntity {
     $fields['details'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Summary'))
       ->setDescription(t('Details about this enforcement action.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
@@ -135,8 +136,9 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setDisplayConfigurable('view', TRUE);
 
     // Enforcement status.
+    // {@depreciated} We will use the concept of workflow states going forward.
     $fields['enforcement_action_status'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Enforcement Action Status'))
+      ->setLabel(t('(Depreciated) Enforcement Action Status'))
       ->setDescription(t('The status of the current enforcement action.'))
       ->setRevisionable(TRUE)
       ->setSettings([
@@ -158,6 +160,7 @@ class ParDataEnforcementAction extends ParDataEntity {
     $fields['enforcement_action_notes'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Enforcement Action Notes'))
       ->setDescription(t('Notes about this enforcement action.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
@@ -177,8 +180,9 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setDisplayConfigurable('view', TRUE);
 
     // Primary Authority status.
+    // {@depreciated} We will use the concept of workflow states going forward.
     $fields['primary_authority_status'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Primary Authority Status'))
+      ->setLabel(t('(Depreciated) Primary Authority Status'))
       ->setDescription(t('The status of the primary authority on this action.'))
       ->setRevisionable(TRUE)
       ->setSettings([
@@ -200,6 +204,7 @@ class ParDataEnforcementAction extends ParDataEntity {
     $fields['primary_authority_notes'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Primary Authority Notes'))
       ->setDescription(t('Notes about this enforcement action from the primary authority.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
@@ -221,6 +226,7 @@ class ParDataEnforcementAction extends ParDataEntity {
     $fields['referral_notes'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Referral Notes'))
       ->setDescription(t('Referral notes.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
