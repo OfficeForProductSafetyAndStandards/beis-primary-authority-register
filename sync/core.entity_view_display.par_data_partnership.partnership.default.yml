@@ -16,7 +16,7 @@ dependencies:
     - datetime
     - text
 _core:
-  default_config_hash: fIgfWxIDk6EYPpcnjk-ycKYDaa1mFzogbwJp1lS3EmU
+  default_config_hash: fkIg10TLGf9MTZgoISKbq-AyemLukASSUx5rzPtAc18
 id: par_data_partnership.partnership.default
 targetEntityType: par_data_partnership
 bundle: partnership
@@ -190,6 +190,15 @@ content:
       format_type: medium
       timezone_override: ''
     third_party_settings: {  }
+  revoked:
+    label: hidden
+    region: content
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
 hidden:
   authority_change_comment: true
   communication_email: true
