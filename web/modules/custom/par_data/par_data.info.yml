@@ -5,3 +5,4 @@ core: 8.x
 package: PAR Data Model
 dependencies:
   - trance
+  - par_validation

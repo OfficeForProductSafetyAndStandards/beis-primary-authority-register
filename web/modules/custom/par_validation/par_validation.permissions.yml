@@ -1,0 +1,3 @@
+par bypass validation:
+  title: 'Bypass validation of PAR entities'
+  description: 'A permission to allow users to bypass validation of PAR entities.'

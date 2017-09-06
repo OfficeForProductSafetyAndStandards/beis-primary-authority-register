@@ -136,6 +136,7 @@ class ParDataOrganisation extends ParDataEntity {
     $fields['size'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Size'))
       ->setDescription(t('The size of the organisation.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -156,6 +157,7 @@ class ParDataOrganisation extends ParDataEntity {
     $fields['employees_band'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Number of Employees'))
       ->setDescription(t('The band that best represents the number of employees.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -176,6 +178,7 @@ class ParDataOrganisation extends ParDataEntity {
     $fields['nation'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Nation'))
       ->setDescription(t('The nation the organisation belongs to.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -196,6 +199,7 @@ class ParDataOrganisation extends ParDataEntity {
     $fields['comments'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Comments'))
       ->setDescription(t('Comments about this organisation.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
@@ -231,6 +235,7 @@ class ParDataOrganisation extends ParDataEntity {
     $fields['trading_name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Trading Name'))
       ->setDescription(t('The trading names for this organisation.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSettings([
@@ -241,6 +246,49 @@ class ParDataOrganisation extends ParDataEntity {
       ->setDisplayOptions('form', [
         'type' => 'string_textfield',
         'weight' => 7,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Coordinator type.
+    $fields['coordinator_type'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Coordinator Type'))
+      ->setDescription(t('The type of coordinator.'))
+      ->addConstraint('par_required')
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Coordinator number.
+    $fields['coordinator_number'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Coordinator Number'))
+      ->setDescription(t('Number of eligible coordinators.'))
+      ->addConstraint('par_required')
+      ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
       ])
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
