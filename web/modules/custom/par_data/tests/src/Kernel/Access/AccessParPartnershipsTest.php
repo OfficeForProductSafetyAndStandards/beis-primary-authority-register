@@ -102,7 +102,7 @@ class AccessParPartnershipsTest extends ParDataTestBase {
         ];
       }
 
-      $this->partnerships[$i] = ParDataPartnership::create($partnership_values + $this->getPartnershipValues());
+      $this->partnerships[$i] = ParDataPartnership::create($partnership_values + $this->getDirectPartnershipValues());
       $this->partnerships[$i]->save();
     }
 

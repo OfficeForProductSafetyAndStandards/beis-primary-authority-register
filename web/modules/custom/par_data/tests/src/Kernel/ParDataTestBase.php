@@ -7,6 +7,8 @@ use Drupal\par_data\Entity\ParDataAdvice;
 use Drupal\par_data\Entity\ParDataAdviceType;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataAuthorityType;
+use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
+use Drupal\par_data\Entity\ParDataCoordinatedBusinessType;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_data\Entity\ParDataEnforcementActionType;
 use Drupal\par_data\Entity\ParDataEnforcementNoticeType;
@@ -33,7 +35,7 @@ use Drupal\par_data\Entity\ParDataSicCodeType;
  */
 class ParDataTestBase extends EntityKernelTestBase {
 
-  static $modules = ['trance', 'par_data', 'par_data_config', 'address', 'datetime', 'datetime_range', 'file', 'file_entity'];
+  static $modules = ['trance', 'par_validation', 'par_data', 'par_data_config', 'address', 'datetime', 'datetime_range', 'file', 'file_entity'];
 
   protected $account = 1;
 
@@ -61,6 +63,7 @@ class ParDataTestBase extends EntityKernelTestBase {
       'par_data_inspection_plan',
       'par_data_legal_entity',
       'par_data_organisation',
+      'par_data_coordinated_business',
       'par_data_partnership',
       'par_data_person',
       'par_data_premises',
@@ -119,6 +122,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     $type->save();
 
     // Create the entity bundles required for testing.
+    // {@depreciated}
     $type = ParDataOrganisationType::create([
       'id' => 'coordinator',
       'label' => 'Coordinator Organisation',
@@ -126,9 +130,24 @@ class ParDataTestBase extends EntityKernelTestBase {
     $type->save();
 
     // Create the entity bundles required for testing.
+    // {@depreciated}
     $type = ParDataOrganisationType::create([
       'id' => 'business',
       'label' => 'Business Organisation',
+    ]);
+    $type->save();
+
+    // Create the entity bundles required for testing.
+    $type = ParDataOrganisationType::create([
+      'id' => 'organisation',
+      'label' => 'Organisation',
+    ]);
+    $type->save();
+
+    // Create the entity bundles required for testing.
+    $type = ParDataCoordinatedBusinessType::create([
+      'id' => 'coordinated_business',
+      'label' => 'Coordianted Business',
     ]);
     $type->save();
 
@@ -280,6 +299,10 @@ class ParDataTestBase extends EntityKernelTestBase {
     $enforcement_action = ParDataEnforcementAction::create($this->getEnforcementActionValues());
     $enforcement_action->save();
 
+    // We need to create a Person first.
+    $person = ParDataPerson::create($this->getPersonValues());
+    $person->save();
+
     return [
       'type' => 'enforcement_notice',
       'notice_type' => 'Closure',
@@ -297,11 +320,17 @@ class ParDataTestBase extends EntityKernelTestBase {
       'field_enforcement_action' => [
         $enforcement_action->id(),
       ],
+      'field_person' => [
+        $person->id(),
+      ],
     ] + $this->getBaseValues();
 
   }
 
   public function getInspectionPlanValues() {
+    $regulatory_function = ParDataRegulatoryFunction::create($this->getRegulatoryFunctionValues());
+    $regulatory_function->save();
+
     return [
       'type' => 'inspection_plan',
       'valid_date' => [
@@ -313,6 +342,9 @@ class ParDataTestBase extends EntityKernelTestBase {
       'inspection_status' => 'Active',
       'document' => [
         ''
+      ],
+      'field_regulatory_function' => [
+        $regulatory_function->id(),
       ],
     ] + $this->getBaseValues();
   }
@@ -425,7 +457,24 @@ class ParDataTestBase extends EntityKernelTestBase {
       ] + $this->getBaseValues();
   }
 
-  public function getPartnershipValues() {
+  public function getCoordinatedBusinessValues() {
+    // We need to create an Organisation Member first.
+    $organisation_1 = ParDataOrganisation::create(['organisation_name' => 'Member ' . rand(0,1)] + $this->getOrganisationBusinessValues());
+    $organisation_1->save();
+
+    return [
+        'type' => 'coordinated_business',
+        'valid_date' => [
+          'value' => '2016-01-01',
+          'end_value' => '2018-01-01',
+        ],
+        'field_organisation' => [
+          $organisation_1->id(),
+        ],
+      ] + $this->getBaseValues();
+  }
+
+  public function getDirectPartnershipValues() {
     // We need to create an Organisation first.
     $organisation = ParDataOrganisation::create($this->getOrganisationBusinessValues());
     $organisation->save();
@@ -456,7 +505,7 @@ class ParDataTestBase extends EntityKernelTestBase {
 
     return [
         'type' => 'partnership',
-        'partnership_type' => 'Direct Business',
+        'partnership_type' => 'direct',
         'partnership_status' => 'Current',
         'about_partnership' => $this->randomString(1000),
         'approved_date' => '2017-06-01',
@@ -475,6 +524,91 @@ class ParDataTestBase extends EntityKernelTestBase {
         'written_summary_agreed' => TRUE,
         'field_organisation' => [
           $organisation->id(),
+        ],
+        'field_authority' => [
+          $authority->id(),
+        ],
+        'field_advice' => [
+          $advice->id(),
+        ],
+        'field_inspection_plan' => [
+          $inspection_plan->id(),
+        ],
+        'field_regulatory_function' => [
+          $regulatory_function->id(),
+        ],
+        'field_authority_person' => [
+          $person_1->id(),
+        ],
+        'field_organisation_person' => [
+          $person_2->id(),
+        ]
+      ] + $this->getBaseValues();
+  }
+
+  public function getCoordinatedPartnershipValues() {
+    // We need to create an Organisation first.
+    $organisation = ParDataOrganisation::create($this->getOrganisationBusinessValues());
+    $organisation->save();
+
+    // We need to create a few memberships first.
+    $coordinated_business_1 = ParDataCoordinatedBusiness::create($this->getCoordinatedBusinessValues());
+    $coordinated_business_2 = ParDataCoordinatedBusiness::create($this->getCoordinatedBusinessValues());
+    $coordinated_business_3 = ParDataCoordinatedBusiness::create($this->getCoordinatedBusinessValues());
+    $coordinated_business_1->save();
+    $coordinated_business_2->save();
+    $coordinated_business_3->save();
+
+    // We need to create a Authority first.
+    $authority = ParDataAuthority::create($this->getAuthorityValues());
+    $authority->save();
+
+    // We need to create an Advice first.
+    $advice = ParDataAdvice::create($this->getAdviceValues());
+    $advice->save();
+
+    // We need to create an Inspection Plan first.
+    $inspection_plan = ParDataInspectionPlan::create($this->getInspectionPlanValues());
+    $inspection_plan->save();
+
+    // We need to create a Regulatory Function first.
+    $regulatory_function = ParDataRegulatoryFunction::create($this->getRegulatoryFunctionValues());
+    $regulatory_function->save();
+
+    // We need to create a Person first.
+    $person_1 = ParDataPerson::create($this->getPersonValues());
+    $person_1->save();
+
+    // We need to create a Person first.
+    $person_2 = ParDataPerson::create($this->getPersonValues());
+    $person_2->save();
+
+    return [
+        'type' => 'partnership',
+        'partnership_type' => 'coordinated',
+        'partnership_status' => 'Current',
+        'about_partnership' => $this->randomString(1000),
+        'approved_date' => '2017-06-01',
+        'cost_recovery' => 'Cost recovery from partnership',
+        'reject_comment' => $this->randomString(1000),
+        'revocation_source' => 'RD Executive',
+        'revocation_date' => '2017-07-01',
+        'revocation_reason' => $this->randomString(1000),
+        'authority_change_comment' => $this->randomString(1000),
+        'organisation_change_comment' => $this->randomString(1000),
+        'terms_organisation_agreed' => TRUE,
+        'terms_authority_agreed' => TRUE,
+        'coordinator_suitable' => TRUE,
+        'partnership_info_agreed_authority' => TRUE,
+        'partnership_info_agreed_business' => TRUE,
+        'written_summary_agreed' => TRUE,
+        'field_organisation' => [
+          $organisation->id(),
+        ],
+        'field_membeships' => [
+          $coordinated_business_1->id(),
+          $coordinated_business_2->id(),
+          $coordinated_business_3->id(),
         ],
         'field_authority' => [
           $authority->id(),
