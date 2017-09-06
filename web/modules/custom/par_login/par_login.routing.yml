@@ -1,0 +1,13 @@
+# PAR Login Dashboard
+par_login.dashboard:
+  path: '/dashboard'
+  defaults:
+    _controller: '\Drupal\par_login\Controller\ParLoginDashboardController::content'
+    _title: 'Dashboard'
+  requirements:
+    _permission: 'access content' # What permissions do you suggest?
+    par_data_enforcement_notice: \d+
+  options:
+    parameters:
+      par_data_enforcement_notice:
+        type: entity:par_data_enforcement_notice
