@@ -73,7 +73,6 @@ class ParBooleanFormatter extends FormatterBase {
       ];
 
       return $element;
-
     }
 
     foreach ($items as $delta => $item) {
