@@ -250,7 +250,6 @@ class ParDataPartnership extends ParDataEntity {
       ->setLabel(t('About Partnership'))
       ->setDescription(t('Details about this partnership.'))
       ->setRevisionable(TRUE)
-      ->setRequired(TRUE)
       ->setSettings([
         'text_processing' => 0,
       ])
