@@ -102,6 +102,24 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   protected $ignoreValues = ['save', 'next', 'cancel'];
 
   /**
+   * List the mapping between the entity field and the form field.
+   *
+   * Array of entities to be used to validation. Each entity will have an array
+   * of entity field name and form field name.
+   *
+   * Example: [
+   *   'par_data_person:person' => [
+   *     'first_name' => 'first_name',
+   *     'last_name' => 'last_name',
+   *     'work_phone' => 'phone',
+   *   ],
+   * ]
+   *
+   * @var array
+   */
+  protected $formItems = [];
+
+  /*
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.
    *
    * @param \Drupal\user\PrivateTempStoreFactory $temp_store_factory
@@ -236,6 +254,16 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   }
 
   /**
+   * Get list of mapped fields.
+   *
+   * @return array
+   *   Array of entities and their mapped fields.
+   */
+  public function getFormItems() {
+    return $this->formItems;
+  }
+
+  /**
    * Set ignored form values.
    *
    * @param array $values
@@ -256,7 +284,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
         'contexts' => $this->getCacheContexts(),
         'tags' => $this->getCacheTags(),
         'max-age' => $this->getCacheMaxAge(),
-      )
+      ),
     );
 
     return $form + $cache;
@@ -267,6 +295,28 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
 
+    foreach ($this->getformItems() as $entity_name => $form_items) {
+      list($type, $bundle) = explode(':', $entity_name);
+
+      // If no bundle specified the we ignore this test. Do we need to log it?
+      if (empty($type) || empty($bundle)) {
+        continue;
+      }
+
+      $entity_type_def = $this->getParDataManager()->getParEntityType($type);
+      $entity = $entity_type_def->getClass()::create([
+        'type' => $this->getParDataManager()->getParBundleEntity($type, $bundle)->id(),
+      ]);
+
+      foreach ($form_items as $field_name => $form_item) {
+        $entity->set($field_name, $form_state->getValue($form_item));
+        $violations = $entity->validate()->filterByFieldAccess()
+          ->getByFields([
+            $field_name,
+          ]);
+        $this->setFieldViolations($field_name, $form_state, $violations);
+      }
+    }
   }
 
   /**
@@ -378,7 +428,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     $message = 'Data item %item has been retrieved for user %user from the temporary storage %key';
     $replacements = [
-      '%user' => $this->currentUser->getUsername(),
+      '%user' => $this->currentUser->getAccountName(),
       '%key' => $this->getFormKey(),
       '%item' => is_array($key) ? implode('|', $key) : $key,
     ];
@@ -443,7 +493,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     $message = $this->t('Data has been retrieved for user %user from the temporary storage %key');
     $replacements = [
-      '%user' => $this->currentUser->getUsername(),
+      '%user' => $this->currentUser->getAccountName(),
       '%key' => $this->getFormKey(),
     ];
     $this->getLogger($this->getLoggerChannel())->debug($message, $replacements);

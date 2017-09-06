@@ -338,7 +338,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
       foreach ($par_data_contacts as $person) {
         $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
 
-        $alternative_person = $person_view_builder->view($person, 'summary');
+        $alternative_person = $person_view_builder->view($person, 'detailed');
 
         $form['authority_contact'][$person->id()] = [
           '#type' => 'fieldset',
@@ -384,7 +384,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
       foreach ($par_data_contacts as $person) {
         $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
 
-        $alternative_person = $person_view_builder->view($person, 'summary');
+        $alternative_person = $person_view_builder->view($person, 'detailed');
 
         $form['organisation_contact'][$person->id()] = [
           '#type' => 'fieldset',
