@@ -1,13 +1,13 @@
 <?php
 
-namespace Drupal\par_login\Controller;
+namespace Drupal\par_dashboards\Controller;
 
 use Drupal\par_flows\Controller\ParBaseController;
 
 /**
  * A controller for all PAR Flow Transition pages.
  */
-class ParLoginDashboardController extends ParBaseController {
+class ParDashboardsDashboardController extends ParBaseController {
 
   /**
    * {@inheritdoc}

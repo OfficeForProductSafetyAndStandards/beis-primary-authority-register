@@ -2,7 +2,7 @@
 par_login.dashboard:
   path: '/dashboard'
   defaults:
-    _controller: '\Drupal\par_login\Controller\ParLoginDashboardController::content'
+    _controller: '\Drupal\par_dashboards\Controller\ParDashboardsDashboardController::content'
     _title: 'Dashboard'
   requirements:
     _permission: 'access content' # What permissions do you suggest?
