@@ -411,8 +411,8 @@ class ParDataTestBase extends EntityKernelTestBase {
       'field_legal_entity' => [
         $legal_entity->id(),
       ],
-      'field_coordinator_number' => '12345',
-      'field_coordinator_type' => 'Franchise',
+      'coordinator_number' => '12345',
+      'coordinator_type' => 'Franchise',
     ] + $this->getBaseValues();
   }
 

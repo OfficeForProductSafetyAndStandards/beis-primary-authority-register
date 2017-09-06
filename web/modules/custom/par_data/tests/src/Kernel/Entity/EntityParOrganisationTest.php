@@ -49,6 +49,8 @@ class EntityParOrganisationTest extends ParDataTestBase {
       'comments' => '',
       'premises_mapped' => '',
       'trading_name' => '',
+      'coordinator_type' => '',
+      'coordinator_number' => '',
     ];
 
     $entity = ParDataOrganisation::create($values + $this->getOrganisationValues());
@@ -68,8 +70,8 @@ class EntityParOrganisationTest extends ParDataTestBase {
       'employees_band' => $this->randomString(256),
       'nation' => $this->randomString(256),
       'premises_mapped' => $this->randomString(10),
-      'field_coordinator_number' => $this->randomString(256),
-      'field_coordinator_type' => $this->randomString(256),
+      'coordinator_number' => $this->randomString(256),
+      'coordinator_type' => $this->randomString(256),
       'trading_name' => [
         $this->randomString(501),
       ]

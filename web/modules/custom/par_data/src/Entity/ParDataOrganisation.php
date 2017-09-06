@@ -253,6 +253,49 @@ class ParDataOrganisation extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
+    // Coordinator type.
+    $fields['coordinator_type'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Coordinator Type'))
+      ->setDescription(t('The type of coordinator.'))
+      ->addConstraint('par_required')
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Coordinator type.
+    $fields['coordinator_number'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Coordinator Number'))
+      ->setDescription(t('Number of eligible coordinators.'))
+      ->addConstraint('par_required')
+      ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
     return $fields;
   }
 
