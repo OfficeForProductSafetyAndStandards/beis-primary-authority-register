@@ -2,8 +2,6 @@
 
 namespace Drupal\par_dashboards\Controller;
 
-use Drupal\Core\Link;
-use Drupal\Core\Url;
 use Drupal\par_flows\Controller\ParBaseController;
 use Drupal\user\Entity\User;
 
