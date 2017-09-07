@@ -112,6 +112,10 @@ install:
 ### TEST                                                                   ###
 ##############################################################################
 
+before_script:
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+
 script:
   - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
   - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
