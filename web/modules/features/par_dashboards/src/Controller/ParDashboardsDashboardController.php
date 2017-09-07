@@ -3,7 +3,6 @@
 namespace Drupal\par_dashboards\Controller;
 
 use Drupal\par_flows\Controller\ParBaseController;
-use Drupal\user\Entity\User;
 
 /**
  * A controller for all PAR Flow Transition pages.
@@ -14,15 +13,15 @@ class ParDashboardsDashboardController extends ParBaseController {
    * {@inheritdoc}
    */
   public function content() {
-    $roles = \Drupal::currentUser()->getRoles();
+    $current_user = \Drupal::currentUser();
+    $roles = $current_user->getRoles();
     if (in_array('par_authority', $roles)) {
       // Need to get the authoirty the user belongs to.
       $build['intro'] = [
         '#type' => 'markup',
-        '#markup' => $this->t('Intro to new dashboard'),
+        '#markup' => $this->t('Authority name goes here.'),
       ];
     }
-
 
     // Need to see what permissions the user has so we can display the correct
     // links.
@@ -32,7 +31,6 @@ class ParDashboardsDashboardController extends ParBaseController {
     // coordinator partnership journey
     // Also need to see if there are any other links based on partnerships to
     // be displayed.
-    $current_user = \Drupal::currentUser();
 
     $build['partnerships'] = [
       '#type' => 'fieldset',
