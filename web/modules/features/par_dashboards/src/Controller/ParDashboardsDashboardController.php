@@ -14,8 +14,7 @@ class ParDashboardsDashboardController extends ParBaseController {
    */
   public function content() {
     $current_user = \Drupal::currentUser();
-    $roles = $current_user->getRoles();
-    if (in_array('par_authority', $roles)) {
+    if ($current_user->hasPermission('manage my authorities')) {
       // Need to get the authoirty the user belongs to.
       $build['intro'] = [
         '#type' => 'markup',
