@@ -32,19 +32,48 @@ class ParDashboardsDashboardController extends ParBaseController {
     // be displayed.
     $account = User::load(\Drupal::currentUser()->id());
 
+    $build['partnerships'] = [
+      '#type' => 'fieldset',
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
     if ($account->hasPermission('bypass partnership journey')) {
       $build['partnerships'] = [
         '#type' => 'fieldset',
+        '#title' => $this->t('Your partnerships'),
         '#attributes' => ['class' => 'form-group'],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
 
-      $build['partnerships']['link'] = [
+      $build['partnerships']['see'] = [
         '#type' => 'markup',
-        '#markup' => t('<a href="/partnerships">Partnership list</a>'),
+        '#markup' => t('<a href="/partnerships">See all partnerships</a><br>'),
+      ];
+
+      $build['partnerships']['add'] = [
+        '#type' => 'markup',
+        '#markup' => t('<a href="/partnerships">Create a new partnership (need link)</a>'),
       ];
     }
+
+    $build['partnerships_find'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Find a partnership'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    $build['enforcement'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Enforcement notices'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
 
     return parent::build($build);
 
