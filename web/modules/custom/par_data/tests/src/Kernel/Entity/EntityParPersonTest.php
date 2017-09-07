@@ -36,6 +36,24 @@ class EntityParPersonTest extends ParDataTestBase {
   }
 
   /**
+   * Test to validate a people entity.
+   */
+  public function testPeopleRequiredFields() {
+    $this->createUser();
+
+    $values = [
+      'first_name' => '',
+      'last_name' => '',
+      'work_phone' => '',
+      'email' => '',
+    ];
+
+    $entity = ParDataPerson::create($values + $this->getPersonValues());
+    $violations = $entity->validate()->getByFields(array_keys($values));
+    $this->assertEqual(count($violations->getFieldNames()), count($values), t('Field values are required for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
+  }
+
+  /**
    * Test to validate an authority entity.
    */
   public function testPersonRequiredLengthFields() {

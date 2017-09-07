@@ -3,12 +3,13 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.par_data_inspection_plan.inspection_plan.field_regulatory_function
     - par_data.par_data_inspection_plan_type.inspection_plan
   module:
     - datetime_range
     - file_entity
 _core:
-  default_config_hash: HP7UG9sjw79AyRJqCNkkApUh2sKKrhDDisC2TEVfDgY
+  default_config_hash: mjEr7aZ014UIn4NoU96BW6JoweINo5ZbpHZPWL9qYpY
 id: par_data_inspection_plan.inspection_plan.default
 targetEntityType: par_data_inspection_plan
 bundle: inspection_plan
@@ -23,6 +24,14 @@ content:
       access_message: 'You don''t have access to download this file.'
       text: 'Download [file:name]'
     third_party_settings: {  }
+  field_regulatory_function:
+    weight: 3
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
   inspection_status:
     type: string
     weight: 2
@@ -31,6 +40,15 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  revoked:
+    label: hidden
+    region: content
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
   valid_date:
     type: daterange_default
     weight: 1

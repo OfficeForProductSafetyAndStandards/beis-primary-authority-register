@@ -225,10 +225,11 @@ class ParDataPartnership extends ParDataEntity {
       ->setDisplayConfigurable('view', TRUE);
 
     // Partnership Status.
+    // {@depreciated} We will use the concept of workflow states going forward.
     $fields['partnership_status'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Partnership Status'))
+      ->setLabel(t('(Depreciated) Partnership Status'))
       ->setDescription(t('The current status of the partnership plan itself. For example, current, expired, replaced.'))
-      ->setRequired(TRUE)
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -249,6 +250,7 @@ class ParDataPartnership extends ParDataEntity {
     $fields['about_partnership'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('About Partnership'))
       ->setDescription(t('Details about this partnership.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
@@ -506,6 +508,21 @@ class ParDataPartnership extends ParDataEntity {
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => 27,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Revoked.
+    $fields['revoked'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Revoked'))
+      ->setDescription(t('Whether the inspection plan has been revoked.'))
+      ->setRevisionable(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 3,
       ])
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [

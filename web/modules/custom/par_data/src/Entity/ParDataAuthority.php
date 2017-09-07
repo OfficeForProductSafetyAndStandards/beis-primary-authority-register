@@ -123,7 +123,7 @@ class ParDataAuthority extends ParDataEntity {
     $fields['authority_type'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Authority Type'))
       ->setDescription(t('The type of authority.'))
-      ->setRequired(TRUE)
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -144,7 +144,7 @@ class ParDataAuthority extends ParDataEntity {
     $fields['nation'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Nation'))
       ->setDescription(t('The nation the authority belongs to.'))
-      ->setRequired(TRUE)
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -165,7 +165,7 @@ class ParDataAuthority extends ParDataEntity {
     $fields['ons_code'] = BaseFieldDefinition::create('string')
       ->setLabel(t('ONS Code'))
       ->setDescription(t('The ONS code for the authority.'))
-      ->setRequired(TRUE)
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -186,6 +186,7 @@ class ParDataAuthority extends ParDataEntity {
     $fields['comments'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Comments'))
       ->setDescription(t('Comments about this authority.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,

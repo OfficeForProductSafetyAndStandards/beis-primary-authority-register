@@ -41,7 +41,7 @@ class AccessParPartnershipsTest extends ParDataTestBase {
     parent::setup();
 
     $this->parDataManager = \Drupal::service('par_data.manager');
-    $this->membershipUser = $this->createUser(['mail' => $this->email]);
+    $this->membershipUser = $this->createUser(['mail' => $this->email], $this->permissions);
   }
 
   /**
@@ -94,7 +94,7 @@ class AccessParPartnershipsTest extends ParDataTestBase {
         if ($i >= 15) {
           $organisation_values['field_premises'] = [$this->premises[$i]->id()];
         }
-        $this->organisations[$i] = ParDataOrganisation::create($organisation_values + $this->getOrganisationBusinessValues());
+        $this->organisations[$i] = ParDataOrganisation::create($organisation_values + $this->getOrganisationValues());
         $this->organisations[$i]->save();
         $partnership_values = [
           'field_organisation' => [$this->organisations[$i]->id()],
@@ -102,7 +102,7 @@ class AccessParPartnershipsTest extends ParDataTestBase {
         ];
       }
 
-      $this->partnerships[$i] = ParDataPartnership::create($partnership_values + $this->getPartnershipValues());
+      $this->partnerships[$i] = ParDataPartnership::create($partnership_values + $this->getDirectPartnershipValues());
       $this->partnerships[$i]->save();
     }
 

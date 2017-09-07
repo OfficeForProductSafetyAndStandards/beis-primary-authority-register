@@ -20,6 +20,7 @@ permissions:
   - 'access par_data_regulatory_function entities'
   - 'access par_data_sic_code entities'
   - 'access partnerships dashboard'
+  - 'authority partnership journey'
   - 'create files'
   - 'delete own document files'
   - 'delete own image files'
@@ -41,6 +42,7 @@ permissions:
   - 'edit par_data_regulatory_function entities'
   - 'edit par_data_sic_code entities'
   - invite_type_invite_organisation_member
+  - 'manage my authorities'
   - 'use text format basic_html'
   - 'view own private files'
   - 'view unpublished par_data_advice entities'
