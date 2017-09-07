@@ -14,11 +14,15 @@ class ParDashboardsDashboardController extends ParBaseController {
    * {@inheritdoc}
    */
   public function content() {
+    $roles = \Drupal::currentUser()->getRoles();
+    if (in_array('par_authority', $roles)) {
+      // Need to get the authoirty the user belongs to.
+      $build['intro'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('Intro to new dashboard'),
+      ];
+    }
 
-    $build['intro'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Intro to new dashboard'),
-    ];
 
     // Need to see what permissions the user has so we can display the correct
     // links.
