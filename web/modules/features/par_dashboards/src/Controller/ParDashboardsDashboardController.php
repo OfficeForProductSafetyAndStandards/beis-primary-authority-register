@@ -30,7 +30,6 @@ class ParDashboardsDashboardController extends ParBaseController {
     // coordinator partnership journey
     // Also need to see if there are any other links based on partnerships to
     // be displayed.
-
     $build['partnerships'] = [
       '#type' => 'fieldset',
       '#attributes' => ['class' => 'form-group'],
@@ -38,7 +37,7 @@ class ParDashboardsDashboardController extends ParBaseController {
       '#collapsed' => FALSE,
     ];
 
-    if ($current_user->hasPermission('bypass partnership journey')) {
+//    if ($current_user->hasPermission('bypass partnership journey')) {
       $build['partnerships'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Your partnerships'),
@@ -56,7 +55,7 @@ class ParDashboardsDashboardController extends ParBaseController {
         '#type' => 'markup',
         '#markup' => t('<a href="/partnerships">Create a new partnership (need link)</a>'),
       ];
-    }
+//    }
 
     $build['partnerships_find'] = [
       '#type' => 'fieldset',
@@ -64,6 +63,11 @@ class ParDashboardsDashboardController extends ParBaseController {
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
+    ];
+
+    $build['partnerships_find']['link'] = [
+      '#type' => 'markup',
+      '#markup' => t('<a href="/partnerships/search">Search for a partnership</a>'),
     ];
 
     $build['enforcement'] = [
@@ -75,7 +79,6 @@ class ParDashboardsDashboardController extends ParBaseController {
     ];
 
     return parent::build($build);
-
   }
 
 }
