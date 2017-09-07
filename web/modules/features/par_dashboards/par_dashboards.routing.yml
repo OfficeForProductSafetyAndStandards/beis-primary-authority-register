@@ -1,0 +1,8 @@
+# PAR Dashboard
+par_dashboards.dashboard:
+  path: '/dashboard'
+  defaults:
+    _controller: '\Drupal\par_dashboards\Controller\ParDashboardsDashboardController::content'
+    _title: 'Primary Authority Register'
+  requirements:
+    _permission: 'access partnerships dashboard'
