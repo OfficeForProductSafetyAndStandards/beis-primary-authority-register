@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: par_coordinator
-label: 'PAR Coordinator'
+label: '(Depreciated) PAR Coordinator'
 weight: 5
 is_admin: null
 permissions:
