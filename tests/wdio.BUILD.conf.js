@@ -3,7 +3,7 @@ const config = require('./wdio.conf.js').config;
 config.capabilities = [{
     browserName: 'chrome',
     chromeOptions: {
-        // binary: '/usr/bin/google-chrome-stable',
+        binary: '/usr/bin/google-chrome',
         args: ['headless', 'no-sandbox', 'disable-gpu'],
     },
 }];
