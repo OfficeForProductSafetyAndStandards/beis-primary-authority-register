@@ -3,6 +3,6 @@ par_dashboards.dashboard:
   path: '/dashboard'
   defaults:
     _controller: '\Drupal\par_dashboards\Controller\ParDashboardsDashboardController::content'
-    _title: 'Dashboard'
+    _title: 'Primary Authority Register'
   requirements:
     _permission: 'bypass partnership journey, authority partnership journey, business partnership journey, coordinator partnership journey'
