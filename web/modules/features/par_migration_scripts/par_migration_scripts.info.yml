@@ -1,4 +1,4 @@
-name: '(Depreciated) Par Migration Scripts'
+name: '(deprecated) Par Migration Scripts'
 type: module
 description: 'The scripts to run for a migration.'
 core: 8.x

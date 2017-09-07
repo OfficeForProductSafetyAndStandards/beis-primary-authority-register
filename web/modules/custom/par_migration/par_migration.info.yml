@@ -1,4 +1,4 @@
-name: (Depreciated) Par Demo Migration
+name: (deprecated) Par Demo Migration
 type: module
 description: A demo migration for migrating pages.
 core: 8.x
