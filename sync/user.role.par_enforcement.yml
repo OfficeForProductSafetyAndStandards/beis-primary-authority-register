@@ -1,9 +1,9 @@
-uuid: c51910e8-fd07-410e-aea6-6151a9a80fb8
+uuid: 046b3c32-40ce-49ae-9e94-efe483de4411
 langcode: en
 status: true
 dependencies: {  }
-id: par_authority
-label: 'PAR Authority Member'
+id: par_enforcement
+label: 'PAR Enforcement Officer'
 weight: 3
 is_admin: null
 permissions:

@@ -13,53 +13,46 @@
 #    Cloud Foundry CLI - https://docs.cloudfoundry.org/cf-cli/install-go-cli.html
 #    Vault CLI - https://www.vaultproject.io/docs/install/index.html
 ####################################################################################
-#----------------------
-# Log into Gov.uk Paas |
-#----------------------
-#     cf login -a api.cloud.service.gov.uk -u <USERNAME>
-#
-# Access is restricted to members of the TransformCore GitHub organisation. 
-# Generate a GitHub Personal Access Token, which will be requested
-# during "vault auth"
-#
-#----------------
-# Log into Vault |
-#----------------
-#     export VAULT_ADDR=https://vault.primary-authority.beis.gov.uk:8200
-#     vault auth
-####################################################################################
 
 CURRENT_DIR=${PWD##*/}
 
 if [ $CURRENT_DIR != "cf" ]; then
-    echo "####################################################################################"
+    echo "################################################################################################"
     echo >&2 "Please run this script from the /cf directory of the repository"
-    echo "####################################################################################"
+    echo "################################################################################################"
     exit 1
 fi
 
 command -v vault >/dev/null 2>&1 || { 
-    echo "####################################################################################"
-    echo >&2 "Please install Hashicorp Vault command line interface"
-    echo "####################################################################################"
+    echo "################################################################################################"
+    echo >&2 "Please install Vault CLI - https://www.vaultproject.io/docs/install/index.html"
+    echo "################################################################################################"
     exit 1 
 }
 
 command -v aws >/dev/null 2>&1 || { 
-    vault seal
-    echo "####################################################################################"
-    echo >&2 "Please install AWS command line interface"
-    echo "####################################################################################"
+    echo "################################################################################################"
+    echo >&2 "Please install AWS CLI - http://docs.aws.amazon.com/cli/latest/userguide/installing.html"
+    echo "If you set it up in a Python virtual env, you may need to run workon"
+    echo "################################################################################################"
     exit 1 
 }
 
 command -v cf >/dev/null 2>&1 || { 
-    vault seal
-    echo "####################################################################################"
-    echo >&2 "Please install Cloud Foundry command line interface"
-    echo "####################################################################################"
+    echo "################################################################################################"
+    echo >&2 "Please install Cloud Foundry CLI - https://docs.cloudfoundry.org/cf-cli/install-go-cli.html"
+    echo "################################################################################################"
     exit 1 
 }
+
+echo -n "Enter your Cloud Foundry username: "
+read CF_USER
+echo -n "Enter your Cloud Foundry password (will be hidden): "
+read -s CF_PASS
+cf login -a api.cloud.service.gov.uk -u $CF_USER -p $CF_PASS
+if [ $? != 0 ]; then
+    exit
+fi
 
 echo -n "Enter the environment name (e.g. staging): "
 read ENV
@@ -70,7 +63,7 @@ if [[ $1 != "environment-only" ]]; then
     echo -n "Number of instances: "
     read INSTANCES
     
-    if [ $ENV == "production" ]; then
+    if [[ $ENV == "production" ]]; then
        echo -n "You have chosen to deploy to production. Are you sure? [sure|no] : "
        read SURE
        if [ $SURE != "sure" ]; then
@@ -85,12 +78,13 @@ fi
 # the unseal token. Mostly this is to avoid copy/paste unintended deployments. 
 ####################################################################################
 
+export VAULT_ADDR=https://vault.primary-authority.beis.gov.uk:8200
+
 vault seal
 echo -n "Enter the vault unseal token: "
 vault unseal
 
-if [ $? == 1 ]; then
-    echo "Unable to unseal vault"
+if [ $? != 0 ]; then
     exit 1;
 fi
 
@@ -98,8 +92,24 @@ fi
 # Get AWS access keys to download the versioned package from S3
 ####################################################################################
 
-AWS_ACCESS_KEY_ID=`vault read -field=AWS_ACCESS_KEY_ID secret/par/deploy/aws`
-AWS_SECRET_ACCESS_KEY=`vault read -field=AWS_SECRET_ACCESS_KEY secret/par/deploy/aws`
+echo -n "Enter your vault authentication token:"
+
+vault auth
+
+if [ $? != 0 ]; then
+    exit 1;
+fi
+
+export AWS_ACCESS_KEY_ID=`vault read -field=AWS_ACCESS_KEY_ID secret/par/deploy/aws`
+
+if [ $? != 0 ]; then
+	exit 1
+    echo "################################################################################################"
+    echo "Error reading from vault."
+    echo "################################################################################################"
+fi
+
+export AWS_SECRET_ACCESS_KEY=`vault read -field=AWS_SECRET_ACCESS_KEY secret/par/deploy/aws`
 
 ####################################################################################
 # Get environment variables that will be set on the target environment
