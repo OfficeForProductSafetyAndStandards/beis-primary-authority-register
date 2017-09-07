@@ -179,6 +179,34 @@ par_data.par_data_organisation_type.*:
         sequence:
           type: par_data.configuration_type.[%key]
           label: 'Configuration rules'
+par_data.par_data_coordinated_business_type.*:
+  type: config_entity
+  label: 'PAR Data Coordinated Business entity type config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: string
+      label: 'Description'
+    help:
+      type: string
+      label: 'Help'
+    uuid:
+      type: string
+    configuration:
+      type: sequence
+      nullable: true
+      sequence:
+        type: sequence
+        label: 'Element (entity or field name)'
+        nullable: true
+        sequence:
+          type: par_data.configuration_type.[%key]
+          label: 'Configuration rules'
 par_data.par_data_partnership_type.*:
   type: config_entity
   label: 'PAR Data Partnership entity type config'

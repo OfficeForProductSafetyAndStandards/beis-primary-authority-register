@@ -226,6 +226,7 @@ class ParDataPerson extends ParDataEntity {
     $fields['first_name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('First Name'))
       ->setDescription(t('The first name of the person.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 500,
@@ -246,6 +247,7 @@ class ParDataPerson extends ParDataEntity {
     $fields['last_name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Last Name'))
       ->setDescription(t('The last name of the person.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 500,
@@ -286,6 +288,7 @@ class ParDataPerson extends ParDataEntity {
     $fields['work_phone'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Work Phone'))
       ->setDescription(t('The work phone of this person.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
@@ -326,6 +329,7 @@ class ParDataPerson extends ParDataEntity {
     $fields['email'] = BaseFieldDefinition::create('string')
       ->setLabel(t('E-mail'))
       ->setDescription(t('The e-mail address of this person.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 500,

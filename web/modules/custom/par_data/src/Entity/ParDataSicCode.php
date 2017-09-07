@@ -95,7 +95,7 @@ class ParDataSicCode extends ParDataEntity {
     $fields['description'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Description'))
       ->setDescription(t('The human readable description for the SIC code.'))
-      ->setRequired(TRUE)
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 500,
