@@ -2,3 +2,15 @@ access partnerships dashboard:
   title: 'Access the PAR Dashboard'
   description: 'A permission to allow access to the PAR dashboard.'
   restrict access: TRUE
+manage my organisations:
+  title: 'Manage my organisations'
+  description: 'A permission to allow the management of orgnisations.'
+  restrict access: TRUE
+manage my authorities:
+  title: 'Managage my authorities'
+  description: 'A permission to allow the management of orgnisations.'
+  restrict access: TRUE
+enforce organisation:
+  title: 'Enforce organisation'
+  description: 'A permission to allow enforcement of an organisation.'
+  restrict access: TRUE

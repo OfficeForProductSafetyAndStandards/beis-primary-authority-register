@@ -5,4 +5,4 @@ par_dashboards.dashboard:
     _controller: '\Drupal\par_dashboards\Controller\ParDashboardsDashboardController::content'
     _title: 'Primary Authority Register'
   requirements:
-    _permission: 'bypass partnership journey, authority partnership journey, business partnership journey, coordinator partnership journey'
+    _permission: 'access partnerships dashboard'
