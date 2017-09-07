@@ -13,6 +13,8 @@ use Drupal\Core\Url;
 /**
  * Implements hook_form_alter().
  *
+ * {@deprecated}
+ *
  * @param $form
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  * @param $form_id
@@ -33,6 +35,8 @@ function par_dashboards_form_alter(&$form, FormStateInterface $form_state, $form
 
 /**
  * Implements hook_views_pre_render().
+ *
+ * {@deprecated}
  *
  * @param \Drupal\views\ViewExecutable $view
  */
