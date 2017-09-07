@@ -136,9 +136,9 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setDisplayConfigurable('view', TRUE);
 
     // Enforcement status.
-    // {@depreciated} We will use the concept of workflow states going forward.
+    // {@deprecated} We will use the concept of workflow states going forward.
     $fields['enforcement_action_status'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('(Depreciated) Enforcement Action Status'))
+      ->setLabel(t('(deprecated) Enforcement Action Status'))
       ->setDescription(t('The status of the current enforcement action.'))
       ->setRevisionable(TRUE)
       ->setSettings([
@@ -180,9 +180,9 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setDisplayConfigurable('view', TRUE);
 
     // Primary Authority status.
-    // {@depreciated} We will use the concept of workflow states going forward.
+    // {@deprecated} We will use the concept of workflow states going forward.
     $fields['primary_authority_status'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('(Depreciated) Primary Authority Status'))
+      ->setLabel(t('(deprecated) Primary Authority Status'))
       ->setDescription(t('The status of the primary authority on this action.'))
       ->setRevisionable(TRUE)
       ->setSettings([

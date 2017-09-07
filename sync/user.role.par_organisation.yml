@@ -1,13 +1,13 @@
-uuid: c51910e8-fd07-410e-aea6-6151a9a80fb8
+uuid: b6588f03-8317-4473-b1ca-f668571052d9
 langcode: en
 status: true
 dependencies: {  }
-id: par_authority
-label: 'PAR Authority Member'
-weight: 3
+id: par_organisation
+label: 'PAR Organisation Member'
+weight: 4
 is_admin: null
 permissions:
-  - 'access par journey transition partnership details'
+  - 'access par journey transition business'
   - 'access par_data_advice entities'
   - 'access par_data_authority entities'
   - 'access par_data_enforcement_notice entities'
@@ -20,7 +20,7 @@ permissions:
   - 'access par_data_regulatory_function entities'
   - 'access par_data_sic_code entities'
   - 'access partnerships dashboard'
-  - 'authority partnership journey'
+  - 'business partnership journey'
   - 'create files'
   - 'delete own document files'
   - 'delete own image files'
@@ -42,7 +42,7 @@ permissions:
   - 'edit par_data_regulatory_function entities'
   - 'edit par_data_sic_code entities'
   - invite_type_invite_organisation_member
-  - 'manage my authorities'
+  - 'manage my organisations'
   - 'use text format basic_html'
   - 'view own private files'
   - 'view unpublished par_data_advice entities'
