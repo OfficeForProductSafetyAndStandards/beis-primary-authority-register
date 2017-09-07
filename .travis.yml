@@ -113,8 +113,8 @@ install:
 ##############################################################################
 
 before_script:
-- export DISPLAY=:99.0
-- sh -e /etc/init.d/xvfb start
+  - docker exec -ti par_beta_web bash -c "export DISPLAY=:99.0"
+  - docker exec -ti par_beta_web bash -c "sh -e /etc/init.d/xvfb start"
 
 script:
   - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
