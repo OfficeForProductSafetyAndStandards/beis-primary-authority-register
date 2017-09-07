@@ -28,7 +28,7 @@ class ParDashboardsDashboardController extends ParBaseController {
     // coordinator partnership journey
     // Also need to see if there are any other links based on partnerships to
     // be displayed.
-    $account = User::load(\Drupal::currentUser()->id());
+    $current_user = \Drupal::currentUser();
 
     $build['partnerships'] = [
       '#type' => 'fieldset',
@@ -37,7 +37,7 @@ class ParDashboardsDashboardController extends ParBaseController {
       '#collapsed' => FALSE,
     ];
 
-    if ($account->hasPermission('bypass partnership journey')) {
+    if ($current_user->hasPermission('bypass partnership journey')) {
       $build['partnerships'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Your partnerships'),
