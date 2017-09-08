@@ -3,8 +3,6 @@
 
 var pa11y = require('pa11y');
 
-console.log();
-
 var url = 'http://localhost:8111/dv/primary-authority-partnerships/33361/document/2797';
 
 // Create a test instance with some default options
