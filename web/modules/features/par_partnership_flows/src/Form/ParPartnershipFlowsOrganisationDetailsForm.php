@@ -8,8 +8,7 @@ use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
- * The about partnership form for the partnership details steps of the
- * 1st Data Validation/Transition User Journey.
+ * The organisation details form for the corrdinator and direct journey.
  */
 class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
 
@@ -23,8 +22,9 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
   }
 
   /**
-   * Helper to get all the editable values when editing or
-   * revisiting a previously edited page.
+   * Helper to get all the editable values.
+   *
+   * Used for when editing or revisiting a previously edited page.
    *
    * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The Authority being retrieved.
@@ -35,10 +35,6 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       // to something other than default to avoid conflicts
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()}");
-
-      // Partnership Information Confirmation.
-      $confirmation_value = !empty($par_data_partnership->get('partnership_info_agreed_business')->getString()) ? TRUE : FALSE;
-      $this->loadDataValue('confirmation', $confirmation_value);
     }
   }
 
@@ -161,7 +157,10 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
 
     $form['sic_codes_add']['add'] = [
       '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('add_sic')->setText('add another')->toString(),
+        '@link' => $this->getFlow()
+          ->getNextLink('add_sic')
+          ->setText('add another')
+          ->toString(),
       ]),
     ];
 
@@ -189,8 +188,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
     $form['employee_no']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('employees', [
-        ])->setText('edit')->toString(),
+        '@link' => $this->getFlow()->getNextLink('employees')->setText('edit')->toString(),
       ]),
     ];
 
@@ -398,7 +396,10 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
     $form['advice']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('advice')->setText('See all Advice')->toString(),
+        '@link' => $this->getFlow()
+          ->getNextLink('advice')
+          ->setText('See all Advice')
+          ->toString(),
       ]),
     ];
 
@@ -496,7 +497,10 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
     $form['organisation_contact_add']['add'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('add_contact')->setText('add another contact (TBC)')->toString(),
+        '@link' => $this->getFlow()
+          ->getNextLink('add_contact')
+          ->setText('add another contact (TBC)')
+          ->toString(),
       ]),
     ];
 
@@ -514,13 +518,6 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
     $this->addCacheableDependency($premises_bundle);
 
     return parent::buildForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
   }
 
 }

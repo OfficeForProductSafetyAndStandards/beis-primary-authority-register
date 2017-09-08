@@ -35,10 +35,6 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
       // to something other than default to avoid conflicts
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()}");
-
-      // Partnership Information Confirmation.
-      $confirmation_value = $par_data_partnership->getBoolean('partnership_info_agreed_business');
-      $this->loadDataValue('confirmation', $confirmation_value);
     }
   }
 
@@ -418,13 +414,6 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     $this->addCacheableDependency($premises_bundle);
 
     return parent::buildForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
   }
 
 }
