@@ -39,3 +39,10 @@ function par_data_update_8003() {
 function par_data_update_8004() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
+
+/**
+ * Introduce view display option view weights.
+ */
+function par_data_update_8005() {
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
