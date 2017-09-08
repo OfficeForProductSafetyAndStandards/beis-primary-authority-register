@@ -180,7 +180,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
       ->setDisplayOptions('view', [
         'label' => 'hidden',
         'type' => 'text_default',
-        'weight' => 0
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
