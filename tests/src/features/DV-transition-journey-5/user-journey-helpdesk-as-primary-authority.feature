@@ -21,6 +21,7 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
 
         # REVIEW PARTNERSHIPS DETAILS
         When I click on the link "Review and confirm your partnership details"
+        And I scroll to element "#par-flow-transition-partnership-details-overview"
         And I click on the link "edit"
         And I add "test partnership info change" to the inputfield "#edit-about-partnership"
         And I click on the button "#edit-next"

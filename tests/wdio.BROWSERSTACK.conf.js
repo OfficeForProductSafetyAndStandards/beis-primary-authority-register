@@ -10,62 +10,66 @@ config.capabilities = [{
     'browserstack.local': true,
     'browserstack.debug': true
 },
-    {
-        browser: 'ie',
-        browser_version: '9',
-        device: null,
-        os: 'Windows',
-        os_version: '7',
-        resolution: '1024x768',
-        'browserstack.local': true,
-        'browserstack.debug': true
-    },
-    {
-
-        browser: 'safari',
-        browser_version: '9.1',
-        device: null,
-        os: 'OS X',
-        os_version: 'El Capitan',
-        resolution: '1024x768',
-        'browserstack.local': true,
-        'browserstack.debug': true
-    },
-    {
-        browser: 'Edge',
-        browser_version: '15',
-        device: null,
-        os: 'Windows',
-        os_version: '10',
-        resolution: '1024x768',
-        'browserstack.local': true,
-        'browserstack.debug': true
-    },
-    {
-        browser: 'Firefox',
-        browser_version: '54',
-        device: null,
-        os: 'Windows',
-        os_version: '10',
-        resolution: '1024x768',
-        'browserstack.local': true,
-        'browserstack.debug': true
-    },
-    {
-        browser: 'Chrome',
-        browser_version: '60',
-        device: null,
-        os: 'Windows',
-        os_version: '8',
-        resolution: '1024x768',
-        'browserstack.local': true,
-        'browserstack.debug': true
-    }
+{
+    browser: 'ie',
+    browser_version: '9',
+    device: null,
+    os: 'Windows',
+    os_version: '7',
+    resolution: '1024x768',
+    'browserstack.local': true,
+    'browserstack.debug': true
+},
+{
+    browser: 'Edge',
+    browser_version: '15',
+    device: null,
+    os: 'Windows',
+    os_version: '10',
+    resolution: '1024x768',
+    'browserstack.local': true,
+    'browserstack.debug': true
+},
+{
+    browser: 'Firefox',
+    browser_version: '54',
+    device: null,
+    os: 'Windows',
+    os_version: '10',
+    resolution: '1024x768',
+    'browserstack.local': true,
+    'browserstack.debug': true
+},
+{
+    browser: 'Chrome',
+    browser_version: '60',
+    device: null,
+    os: 'Windows',
+    os_version: '8',
+    resolution: '1024x768',
+    'browserstack.local': true,
+    'browserstack.debug': true
+},
+{
+    browserName: 'iPad',
+    platform: 'MAC',
+    device: 'iPad Pro',
+},
+{
+    device: 'Samsung Galaxy S8 Plus',
+    realMobile: 'true',
+    os_version: '7.0',
+},
+{
+    device: 'iPhone 7 Plus',
+    realMobile: 'true',
+    os_version: '10.0',
+},
 ];
 
 config.services = ['browserstack'];
-config.user = process.env.BSK_USER;
-config.key = process.env.BSK_KEY;
+// config.user = 'finance9';
+// config.key = 'hpz8xxcwr3QVhFWwLWvR';
 config.browserstackLocal = true;
 config.host = 'hub-cloud.browserstack.com';
 config.baseUrl = 'http://localhost:8111';
