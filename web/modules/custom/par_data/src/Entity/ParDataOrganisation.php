@@ -150,7 +150,7 @@ class ParDataOrganisation extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
-        'weight' => 0
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
@@ -172,7 +172,7 @@ class ParDataOrganisation extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
-        'weight' => 0
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
@@ -194,7 +194,7 @@ class ParDataOrganisation extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
-        'weight' => 0
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
@@ -216,7 +216,7 @@ class ParDataOrganisation extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
-        'weight' => 0
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
@@ -232,7 +232,7 @@ class ParDataOrganisation extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
-        'weight' => 0
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
@@ -255,7 +255,7 @@ class ParDataOrganisation extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
-        'weight' => 0
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
@@ -277,7 +277,7 @@ class ParDataOrganisation extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
-        'weight' => 0
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
@@ -300,7 +300,7 @@ class ParDataOrganisation extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
-        'weight' => 0
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
