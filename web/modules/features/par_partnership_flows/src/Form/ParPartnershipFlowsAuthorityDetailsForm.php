@@ -348,6 +348,10 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
             ])->setText('edit')->toString(),
           ]),
         ];
+        $form['authority_contact'][$person->id()]['delete'] = [
+          '#type' => 'markup',
+          '#markup' => t('<a href="#">remove (TBC)</a>'),
+        ];
       }
     }
     else {
@@ -357,6 +361,21 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
       ];
 
     }
+
+    $form['authority_contact_add'] = [
+      '#type' => 'fieldset',
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    $form['authority_contact_add']['add'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlow()->getNextLink(add_contact)->setText('add another contact (TBC)')->toString(),
+      ]),
+    ];
+
 
     // Primary contact summary.
     $par_data_contacts = $par_data_partnership->getOrganisationPeople();
