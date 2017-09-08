@@ -27,7 +27,8 @@ Feature: Helpdesk As Business User - Manage Addresses
 
         # CHANGE NAME AND SUMMARY
 
-        When I click on the link "edit"
+        When I scroll to element "#par-flow-transition-business-details"
+        And I click on the link "edit"
         And I add "Change to the about business details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-next"
         Then I expect that element "#edit-about-business" contains the text "Change to the about business details section"

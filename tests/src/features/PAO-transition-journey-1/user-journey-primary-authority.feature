@@ -25,6 +25,7 @@ Feature: Primary Authority - Change Partnership Details
         And I scroll to element ".table-scroll-wrapper"
         And I expect that element ".heading-medium" is not empty
         And I click on the link "Review and confirm your partnership details"
+        And I scroll to element "#par-flow-transition-partnership-details-overview"
 
         # REVIEW PARTNERSHIPS DETAILS
 
