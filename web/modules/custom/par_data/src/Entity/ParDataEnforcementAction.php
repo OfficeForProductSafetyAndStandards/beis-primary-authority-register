@@ -109,6 +109,7 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
@@ -132,6 +133,7 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setDisplayOptions('view', [
         'label' => 'hidden',
         'type' => 'text_default',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
@@ -153,6 +155,7 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
@@ -176,6 +179,7 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setDisplayOptions('view', [
         'label' => 'hidden',
         'type' => 'text_default',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
@@ -197,6 +201,7 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
@@ -219,6 +224,7 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setDisplayOptions('view', [
         'label' => 'hidden',
         'type' => 'text_default',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
@@ -230,7 +236,8 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
-      ])->setDisplayOptions('form', [
+      ])
+      ->setDisplayOptions('form', [
         'type' => 'text_textarea',
         'weight' => 7,
         'settings' => [
@@ -241,6 +248,7 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setDisplayOptions('view', [
         'label' => 'hidden',
         'type' => 'text_default',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 

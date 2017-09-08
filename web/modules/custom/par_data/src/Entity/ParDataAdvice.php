@@ -94,6 +94,7 @@ class ParDataAdvice extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
@@ -117,6 +118,7 @@ class ParDataAdvice extends ParDataEntity {
       ->setDisplayOptions('view', [
         'label' => 'hidden',
         'type' => 'text_default',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
@@ -132,6 +134,7 @@ class ParDataAdvice extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
@@ -148,6 +151,7 @@ class ParDataAdvice extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
@@ -163,6 +167,7 @@ class ParDataAdvice extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
@@ -182,6 +187,7 @@ class ParDataAdvice extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
@@ -207,6 +213,7 @@ class ParDataAdvice extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
@@ -222,6 +229,7 @@ class ParDataAdvice extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
