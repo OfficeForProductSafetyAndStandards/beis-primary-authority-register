@@ -372,7 +372,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     $form['authority_contact_add']['add'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink(add_contact)->setText('add another contact (TBC)')->toString(),
+        '@link' => $this->getFlow()->getNextLink('add_contact')->setText('add another contact (TBC)')->toString(),
       ]),
     ];
 
