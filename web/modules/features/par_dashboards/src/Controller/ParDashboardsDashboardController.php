@@ -4,6 +4,7 @@ namespace Drupal\par_dashboards\Controller;
 
 use Drupal\par_flows\Controller\ParBaseController;
 use Drupal\user\Entity\User;
+use Drupal\Core\Session\AccountProxyInterface;
 
 /**
  * A controller for all PAR Flow Transition pages.
@@ -15,70 +16,74 @@ class ParDashboardsDashboardController extends ParBaseController {
    */
   public function content() {
     $current_user = \Drupal::currentUser();
+    $build = [];
 
     if ($current_user->hasPermission('manage my authorities')) {
-      // Need to get the authority the user belongs to.
-      $par_data_manager = \Drupal::service('par_data.manager');
-      $account = User::load($current_user->id());
-      $memberships = $par_data_manager->hasMemberships($account, TRUE);
-
-      $build['details_intro'] = [
-        '#type' => 'markup',
-        '#markup' => t('Primary Authority Partner:'),
-      ];
-
-      if (!empty($memberships['par_data_authority'])) {
-        $par_data_authority = current($memberships['par_data_authority']);
-
-        $organisation_builder = $this->getParDataManager()
-          ->getViewBuilder('par_data_organisation');
-        $authority_name = $organisation_builder->view($par_data_authority, 'title');
-        $authority_name['#prefix'] = '<h1>';
-        $authority_name['#suffix'] = '</h1>';
-        $build['authority_name'] = $this->renderMarkupField($authority_name);
-      }
-      else {
-        $build['authority_name'] = [
-          '#type' => 'markup',
-          '#markup' => t('(none)'),
-        ];
-      }
+      $this->buildAuthority($build, $current_user);
     }
 
-    // Need to see what permissions the user has so we can display the correct
-    // links.
-    // bypass partnership journey,
-    // authority partnership journey,
-    // business partnership journey,
-    // coordinator partnership journey
-    // Also need to see if there are any other links based on partnerships to
-    // be displayed.
+    if ($current_user->hasPermission('manage my organisations')) {
+      $this->buildOrganisation($build, $current_user);
+    }
+
+    return parent::build($build);
+  }
+
+  /**
+   * Build the page for an authority.
+   *
+   * @param array $build
+   *   Referenced array with the current build structure.
+   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+   *   Details of the current user.
+   */
+  private function buildAuthority(array &$build, AccountProxyInterface $current_user) {
+    // Need to get the authority the user belongs to.
+    $par_data_manager = \Drupal::service('par_data.manager');
+    $account = User::load($current_user->id());
+    $memberships = $par_data_manager->hasMemberships($account, TRUE);
+
+    $build['details_intro'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('Primary Authority Partner:'),
+    ];
+
+    if (!empty($memberships['par_data_authority'])) {
+      $par_data_authority = current($memberships['par_data_authority']);
+
+      $authority_builder = $this->getParDataManager()
+        ->getViewBuilder('par_data_authority');
+
+      $authority_name = $authority_builder->view($par_data_authority, 'title');
+      $authority_name['#prefix'] = '<h1>';
+      $authority_name['#suffix'] = '</h1>';
+
+      $build['authority_name'] = $this->renderMarkupField($authority_name);
+    }
+    else {
+      $build['authority_name'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('(none)'),
+      ];
+    }
+
     $build['partnerships'] = [
       '#type' => 'fieldset',
+      '#title' => $this->t('Your partnerships'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
 
-//    if ($current_user->hasPermission('bypass partnership journey')) {
-      $build['partnerships'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t('Your partnerships'),
-        '#attributes' => ['class' => 'form-group'],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
+    $build['partnerships']['see'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('<a href="/partnerships">See all partnerships</a><br>'),
+    ];
 
-      $build['partnerships']['see'] = [
-        '#type' => 'markup',
-        '#markup' => t('<a href="/partnerships">See all partnerships</a><br>'),
-      ];
-
-      $build['partnerships']['add'] = [
-        '#type' => 'markup',
-        '#markup' => t('<a href="/partnerships">Create a new partnership (need link)</a>'),
-      ];
-//    }
+    $build['partnerships']['add'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('<a href="/partnerships">Create a new partnership (TBC:need link)</a>'),
+    ];
 
     $build['partnerships_find'] = [
       '#type' => 'fieldset',
@@ -90,7 +95,7 @@ class ParDashboardsDashboardController extends ParBaseController {
 
     $build['partnerships_find']['link'] = [
       '#type' => 'markup',
-      '#markup' => t('<a href="/partnerships/search">Search for a partnership</a>'),
+      '#markup' => $this->t('<a href="/partnerships/search">Search for a partnership</a>'),
     ];
 
     $build['enforcement'] = [
@@ -100,8 +105,65 @@ class ParDashboardsDashboardController extends ParBaseController {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
+  }
 
-    return parent::build($build);
+  /**
+   * Build the page for an organisation.
+   *
+   * @param array $build
+   *   Referenced array with the current build structure.
+   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+   *   Details of the current user.
+   */
+  private function buildOrganisation(array &$build, AccountProxyInterface $current_user) {
+    $par_data_manager = \Drupal::service('par_data.manager');
+    $account = User::load($current_user->id());
+    $memberships = $par_data_manager->hasMemberships($account, TRUE);
+
+    $build['details_intro'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('Primary Authority Organisation:'),
+    ];
+
+    if (!empty($memberships['par_data_organisation'])) {
+      $par_data_organisation = current($memberships['par_data_organisation']);
+
+      $organisation_builder = $this->getParDataManager()
+        ->getViewBuilder('par_data_organisation');
+
+      $organisation_name = $organisation_builder->view($par_data_organisation, 'name');
+      $organisation_name['#prefix'] = '<h1>';
+      $organisation_name['#suffix'] = '</h1>';
+
+      $build['business_name'] = $this->renderMarkupField($organisation_name);
+    }
+
+    $build['partnerships'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Your partnerships'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    $build['partnerships']['see'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('<a href="/partnerships">See all partnerships</a><br>'),
+    ];
+
+    $build['applications'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Applications'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    $build['applications']['see'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('<a href="/partnerships">See my pending partnerships (TBC:need link)</a><br>'),
+    ];
+
   }
 
 }
