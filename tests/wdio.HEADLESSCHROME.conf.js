@@ -2,8 +2,8 @@ const config = require('./wdio.conf.js').config;
 
 config.capabilities = [{
     browserName: 'chrome',
-    binary: '/Applications/Google Chrome Canary.app',
     chromeOptions: {
+        binary: '/usr/bin/google-chrome',
         args: ['headless', 'no-sandbox', 'disable-gpu'],
     },
 }];
