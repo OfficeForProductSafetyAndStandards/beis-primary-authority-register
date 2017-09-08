@@ -247,30 +247,20 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     foreach ($regulatory_functions as $regulatory_function) {
       $functions[] = $regulatory_function->get('function_name')->getString();
     }
-    $all_functions = implode(', ', $functions);
 
-    $form['partnered']['functions'] = [
-      '#type' => 'markup',
-      '#markup' => $all_functions,
-    ];
+    if (!empty($functions)) {
+      $all_functions = implode(', ', $functions);
 
-    // Check to see if there are additional addresses to be shown.
-    if ($par_data_premises) {
-      $form['alternate_address'] = [
-        '#type' => 'fieldset',
-        '#title' => t('Additional Premises:'),
-        '#attributes' => ['class' => 'form-group'],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
+      $form['partnered']['functions'] = [
+        '#type' => 'markup',
+        '#markup' => $all_functions,
       ];
-
-      foreach ($par_data_premises as $premises) {
-        $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_premises');
-
-        $alternative_person = $person_view_builder->view($premises, 'summary');
-        $form['alternate_address'][$premises->id()]['premises'] = $this->renderMarkupField($alternative_person);
-
-      }
+    }
+    else {
+      $form['partnered']['functions'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('(none)'),
+      ];
     }
 
     // About the Partnership.
@@ -407,7 +397,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     $form['save'] = [
       '#type' => 'submit',
       '#name' => 'save',
-      '#value' => $this->t('Save'),
+      '#value' => $this->t('Done'),
     ];
 
     // Make sure to add the partnership cacheability data to this form.
