@@ -63,6 +63,8 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPremises $par_data_premises = NULL) {
 
     $bundle = $par_data_partnership->bundle();
+    // Can't add administrative_area as part of the validation as it needs to
+    // be blank and we need it to have data in it.
     $this->formItems = [
       "par_data_premises:$bundle" => [
         'address' => [
@@ -70,7 +72,6 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
           'address_line1' => 'address_line1',
           'address_line2' => 'address_line2',
           'locality' => 'town_city',
-          'administrative_area' => 'county',
           'postal_code' => 'postcode',
         ],
         'nation' => 'country',
