@@ -309,14 +309,26 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       ]);
 
       foreach ($form_items as $field_name => $form_item) {
-        $entity->set($field_name, $form_state->getValue($form_item));
+        if (is_array($form_item)) {
+          // Dealing with a combined field, such as address.
+          foreach ($form_item as $combined_field_name => $combined_form_item) {
+            $field[$combined_field_name] = $form_state->getValue($combined_form_item);
+          }
+
+          $entity->set($field_name, $field);
+        }
+        else {
+          $entity->set($field_name, $form_state->getValue($form_item));
+        }
         $violations = $entity->validate()->filterByFieldAccess()
           ->getByFields([
             $field_name,
           ]);
+
         $this->setFieldViolations($field_name, $form_state, $violations);
       }
     }
+
   }
 
   /**

@@ -61,6 +61,21 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPremises $par_data_premises = NULL) {
+
+    $bundle = $par_data_partnership->bundle();
+    $this->formItems = [
+      "par_data_premises:$bundle" => [
+        'address' => [
+          'country_code' => 'country_code',
+          'address_line1' => 'address_line1',
+          'address_line2' => 'address_line2',
+          'locality' => 'town_city',
+          'administrative_area' => 'county',
+          'postal_code' => 'postcode',
+        ],
+      ],
+    ];
+
     $this->retrieveEditableValues($par_data_partnership, $par_data_premises);
     $premises_bundle = $this->getParDataManager()->getParBundleEntity('par_data_premises');
 
@@ -69,7 +84,6 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       '#prefix' => '<h2>',
       '#suffix' => '</h2>',
     ];
-
 
     // The Address lines.
     $form['address_line1'] = [
@@ -113,6 +127,13 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_postal_code"),
     ];
 
+    // The Postcode.
+    $form['country_code'] = [
+      '#type' => 'hidden',
+      '#title' => $this->t('Country'),
+      '#default_value' => 'GB',
+    ];
+
     $form['save'] = [
       '#type' => 'submit',
       '#name' => 'save',
@@ -141,7 +162,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
     // Save the value for the about_partnership field.
     $premises = $this->getRouteParam('par_data_premises');
     $address = [
-      'country_code' => 'GB',
+      'country_code' => $this->getTempDataValue('country_code'),
       'address_line1' => $this->getTempDataValue('address_line1'),
       'address_line2' => $this->getTempDataValue('address_line2'),
       'locality' => $this->getTempDataValue('town_city'),
