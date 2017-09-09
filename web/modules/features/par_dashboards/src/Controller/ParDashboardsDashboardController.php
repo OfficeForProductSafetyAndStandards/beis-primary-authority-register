@@ -159,6 +159,7 @@ class ParDashboardsDashboardController extends ParBaseController {
       '#collapsed' => FALSE,
     ];
 
+    // @todo update this to become a flow link.
     $build['applications']['see'] = [
       '#type' => 'markup',
       '#markup' => $this->t('<a href="/partnerships">See my pending partnerships (TBC:need link)</a><br>'),
