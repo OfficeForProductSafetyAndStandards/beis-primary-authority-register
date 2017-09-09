@@ -73,6 +73,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
           'administrative_area' => 'county',
           'postal_code' => 'postcode',
         ],
+        'nation' => 'country',
       ],
     ];
 
