@@ -48,7 +48,11 @@ install:
   - phpenv config-rm xdebug.ini
   - composer install -v
   - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
-  - docker exec -it par_beta_web bash -c "npm run gulp"
+  - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm run gulp"
+  - docker exec -it par_beta_web bash -c "wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - "
+  - docker exec -it par_beta_web bash -c "echo 'deb http://dl.google.com/linux/chrome/deb/ stable main' >> /etc/apt/sources.list.d/google.list"
+  - docker exec -it par_beta_web bash -c "apt-get update"
+  - docker exec -it par_beta_web bash -c "apt-get install -y google-chrome-stable"
   - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
 
 #-----------------------------------------------------------------------------
@@ -103,13 +107,18 @@ install:
 ### TEST                                                                   ###
 ##############################################################################
 
+before_script:
+  - docker exec -ti par_beta_web bash -c "export DISPLAY=:99.0"
+
 script:
   - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
-  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && npm run test"
+  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
+  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run test:build"
+
 #-----------------------------------------------------------------------------
 # Generate HTML reports with screenshots. HTML report location: tests/reports/allure-reports/index.html, TAR it up.
 #-----------------------------------------------------------------------------
-  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && npm run allure && tar -cf reports/allure-report.tar.gz ./allure-results"
+  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run allure && tar -cf reports/allure-report.tar.gz ./allure-results"
   - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/pa11y-ci -T 1 -j -s 'http://localhost/sitemap.xml' -f 'https://par-beta-test.cloudapps.digital' -r 'http://localhost:80' > ./reports/wcag2aa_report.json"
 
 #-----------------------------------------------------------------------------
