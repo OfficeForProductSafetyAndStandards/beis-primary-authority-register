@@ -12,25 +12,6 @@ use Drupal\Core\Session\AccountProxyInterface;
 class ParDashboardsDashboardController extends ParBaseController {
 
   /**
-   * Current user account accessing the dashboard
-   */
-  protected $account;
-
-  /**
-   * Set the current user account.
-   */
-  public function setCurrentUser() {
-    $this->account = User::load(\Drupal::currentUser()->id());
-  }
-
-  /**
-   * Get the current user account.
-   */
-  public function getUserAccount() {
-    return $this->account;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function content() {

@@ -63,6 +63,8 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   public function __construct(ConfigEntityStorageInterface $flow_storage, ParDataManagerInterface $par_data_manager) {
     $this->flowStorage = $flow_storage;
     $this->parDataManager = $par_data_manager;
+
+    $this->setCurrentUser();
   }
 
   /**
@@ -99,15 +101,16 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   }
 
   /**
+   * Set the current user account.
+   */
+  public function setCurrentUser() {
+    $this->userAccount = User::load(\Drupal::currentUser()->id());
+  }
+
+  /**
    * Get the current user account.
    */
   public function getUserAccount() {
-
-    if (isset($this->userAccount)) {
-      return $this->userAccount;
-    }
-
-    $this->userAccount = User::load(\Drupal::currentUser()->id());
     return $this->userAccount;
   }
 
