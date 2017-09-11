@@ -1281,7 +1281,7 @@ display:
           exposed: true
           expose:
             operator_id: combine_op
-            label: 'PA/ Organisation'
+            label: 'PA/ Organisation / Co-ordinator'
             description: 'Enter keyword(s)'
             use_operator: false
             operator: combine_op
