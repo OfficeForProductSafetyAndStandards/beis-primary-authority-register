@@ -61,13 +61,9 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPremises $par_data_premises = NULL) {
-
-    $bundle = $par_data_partnership->bundle();
-    // Can't add administrative_area as part of the validation as it needs to
-    // be blank and we need it to have data in it.
-    $this->formItems = [
-      "par_data_premises:$bundle" => [
+  public function getFormItems() {
+    return [
+      "par_data_premises:premises" => [
         'address' => [
           'country_code' => 'country_code',
           'address_line1' => 'address_line1',
@@ -78,7 +74,12 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
         'nation' => 'country',
       ],
     ];
+  }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPremises $par_data_premises = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_premises);
     $premises_bundle = $this->getParDataManager()->getParBundleEntity('par_data_premises');
 

@@ -296,7 +296,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // Assign all the form values to the relevant entity field values.
     foreach ($this->getformItems() as $entity_name => $form_items) {
-      list($type, $bundle) = explode(':', $entity_name);
+      list($type, $bundle) = explode(':', $entity_name . ':');
 
       $entity_class = $this->getParDataManager()->getParEntityType($type)->getClass();
       $entity = $entity_class::create([
