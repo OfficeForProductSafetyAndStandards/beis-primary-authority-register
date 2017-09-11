@@ -3,8 +3,8 @@ domain_mode: 0
 cross_domains: ''
 visibility:
   request_path_mode: 0
-  request_path_pages: '/admin/*'
-  user_role_mode: 0
+  request_path_pages: "/admin/*\r\n/dv/rd-helpdesk/*"
+  user_role_mode: 1
   user_role_roles:
     administrator: administrator
     par_helpdesk: par_helpdesk
