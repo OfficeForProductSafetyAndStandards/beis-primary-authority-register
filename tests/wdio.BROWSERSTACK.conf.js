@@ -68,8 +68,8 @@ config.capabilities = [{
 ];
 
 config.services = ['browserstack'];
-// config.user = 'finance9';
-// config.key = 'hpz8xxcwr3QVhFWwLWvR';
+config.user = process.env.BSK_USER;
+config.key = process.env.BSK_KEY;
 config.browserstackLocal = true;
 config.host = 'hub-cloud.browserstack.com';
 config.baseUrl = 'http://localhost:8111';
