@@ -64,7 +64,7 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
       '#type' => 'textarea',
       '#title' => $this->t('Edit the details about your business'),
       '#default_value' => $this->getDefaultValues('about_business'),
-      '#description' => 'Use this section to give a brief overview of the business.<br>Include any information you feel may be useful to enforcing authorities.',
+      '#description' => '<p>Use this section to give a brief overview of the business.</p><p>Include any information you feel may be useful to enforcing authorities.</p>',
     ];
 
     $form['save'] = [
