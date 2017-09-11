@@ -35,10 +35,6 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
       // to something other than default to avoid conflicts
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()}");
-
-      // Partnership Information Confirmation.
-      $confirmation_value = $par_data_partnership->getBoolean('partnership_info_agreed_business');
-      $this->loadDataValue('confirmation', $confirmation_value);
     }
   }
 
@@ -247,30 +243,20 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     foreach ($regulatory_functions as $regulatory_function) {
       $functions[] = $regulatory_function->get('function_name')->getString();
     }
-    $all_functions = implode(', ', $functions);
 
-    $form['partnered']['functions'] = [
-      '#type' => 'markup',
-      '#markup' => $all_functions,
-    ];
+    if (!empty($functions)) {
+      $all_functions = implode(', ', $functions);
 
-    // Check to see if there are additional addresses to be shown.
-    if ($par_data_premises) {
-      $form['alternate_address'] = [
-        '#type' => 'fieldset',
-        '#title' => t('Additional Premises:'),
-        '#attributes' => ['class' => 'form-group'],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
+      $form['partnered']['functions'] = [
+        '#type' => 'markup',
+        '#markup' => $all_functions,
       ];
-
-      foreach ($par_data_premises as $premises) {
-        $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_premises');
-
-        $alternative_person = $person_view_builder->view($premises, 'summary');
-        $form['alternate_address'][$premises->id()]['premises'] = $this->renderMarkupField($alternative_person);
-
-      }
+    }
+    else {
+      $form['partnered']['functions'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('(none)'),
+      ];
     }
 
     // About the Partnership.
@@ -358,6 +344,10 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
             ])->setText('edit')->toString(),
           ]),
         ];
+        $form['authority_contact'][$person->id()]['delete'] = [
+          '#type' => 'markup',
+          '#markup' => t('<a href="#">remove (TBC)</a>'),
+        ];
       }
     }
     else {
@@ -367,6 +357,21 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
       ];
 
     }
+
+    $form['authority_contact_add'] = [
+      '#type' => 'fieldset',
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    $form['authority_contact_add']['add'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlow()->getNextLink('add_contact')->setText('add another contact (TBC)')->toString(),
+      ]),
+    ];
+
 
     // Primary contact summary.
     $par_data_contacts = $par_data_partnership->getOrganisationPeople();
@@ -407,7 +412,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     $form['save'] = [
       '#type' => 'submit',
       '#name' => 'save',
-      '#value' => $this->t('Save'),
+      '#value' => $this->t('Done'),
     ];
 
     // Make sure to add the partnership cacheability data to this form.
@@ -418,13 +423,6 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     $this->addCacheableDependency($premises_bundle);
 
     return parent::buildForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
   }
 
 }

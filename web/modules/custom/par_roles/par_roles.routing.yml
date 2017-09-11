@@ -1,4 +1,4 @@
-# PAR Data Transition Journey 1 - Partnership Details
+# (Deprecated) PAR Data Transition Journey 1 - Partnership Details
 par_roles.dashboard:
   path: '/dv/partnerships/{par_data_partnership}'
   defaults:

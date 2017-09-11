@@ -1,12 +1,9 @@
-uuid: fc0c1dfa-7048-4ab1-8c15-b41ba81459f2
+uuid: ddef043f-0c9c-4907-a969-dab1238bf34e
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.par_data_organisation.field_legal_entity
-    - field.storage.par_data_organisation.field_premises
     - field.storage.par_data_partnership.field_authority_person
-    - system.menu.account
   module:
     - better_exposed_filters
     - csv_serialization
@@ -16,8 +13,8 @@ dependencies:
     - serialization
     - user
     - views_data_export
-id: partnership_search
-label: 'Search for a partnership'
+id: rd_super_helpdesk_dashboard
+label: '(deprecated) RD Super Helpdesk Dashboard'
 module: views
 description: ''
 tag: ''
@@ -34,10 +31,14 @@ display:
       access:
         type: perm
         options:
-          perm: 'search partnership'
+          perm: 'access helpdesk dashboard'
       cache:
-        type: tag
-        options: {  }
+        type: time
+        options:
+          results_lifespan: 3600
+          results_lifespan_custom: 0
+          output_lifespan: 0
+          output_lifespan_custom: 0
       query:
         type: views_query
         options:
@@ -355,6 +356,70 @@ display:
           field_api_classes: false
           entity_type: par_data_organisation
           entity_field: organisation_name
+          plugin_id: field
+        partnership_status:
+          id: partnership_status
+          table: par_partnerships_field_revision
+          field: partnership_status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Partnership Status'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: par_list_formatter
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: par_data_partnership
+          entity_field: partnership_status
           plugin_id: field
         terms_authority_agreed:
           id: terms_authority_agreed
@@ -711,71 +776,6 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        organisation_name_1:
-          id: organisation_name_1
-          table: par_organisations_field_data
-          field: organisation_name
-          relationship: field_organisation
-          group_type: group
-          admin_label: ''
-          label: 'Organisation Name'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          entity_type: par_data_organisation
-          entity_field: organisation_name
-          plugin_id: field
       filters:
         combine:
           id: combine
@@ -803,9 +803,7 @@ display:
               anonymous: '0'
               administrator: '0'
               par_authority: '0'
-              par_enforcement: '0'
               par_business: '0'
-              par_organisation: '0'
               par_coordinator: '0'
               par_helpdesk: '0'
           is_grouped: false
@@ -824,8 +822,64 @@ display:
             authority_name: authority_name
             organisation_name: organisation_name
           plugin_id: combine
+        partnership_status:
+          id: partnership_status
+          table: par_partnerships_field_revision
+          field: partnership_status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '!='
+          value: yo
+          group: 1
+          exposed: true
+          expose:
+            operator_id: partnership_status_op
+            label: 'Partnership Status'
+            description: ''
+            use_operator: false
+            operator: partnership_status_op
+            identifier: partnership_status
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              par_authority: '0'
+              par_business: '0'
+              par_coordinator: '0'
+              par_helpdesk: '0'
+          is_grouped: true
+          group_info:
+            label: Status
+            description: 'Filter by partnership status'
+            identifier: partnership_status
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items:
+              1:
+                title: 'Awaiting Review'
+                operator: '='
+                value: awaiting_review
+              2:
+                title: 'Confirmed by Authority'
+                operator: '='
+                value: confirmed_authority
+              3:
+                title: 'Confirmed by Business'
+                operator: '='
+                value: confirmed_business
+          entity_type: par_data_partnership
+          entity_field: partnership_status
+          plugin_id: string
       sorts: {  }
-      title: 'Primary Authority Register'
+      title: 'RD Helpdesk Dashboard'
       header: {  }
       footer: {  }
       empty: {  }
@@ -850,7 +904,7 @@ display:
           plugin_id: standard
       arguments: {  }
       display_extenders: {  }
-      css_class: par_partnership_search
+      css_class: par_rd_helpdesk_dashboard
       filter_groups:
         operator: AND
         groups:
@@ -865,502 +919,17 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.par_data_partnership.field_authority_person'
-  enforcment_flow_search_partnerships:
-    display_plugin: page
-    id: enforcment_flow_search_partnerships
-    display_title: 'Search Partnerships'
-    position: 3
-    display_options:
-      display_extenders: {  }
-      path: search/partnerships
-      display_description: ''
-      fields:
-        id:
-          id: id
-          table: par_partnerships_field_revision
-          field: id
-          relationship: none
-          group_type: group
-          admin_label: 'Primary Authority ID'
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: number_integer
-          settings:
-            thousand_separator: ''
-            prefix_suffix: true
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          entity_type: null
-          entity_field: id
-          plugin_id: field
-        organisation_name:
-          id: organisation_name
-          table: par_organisations_field_data
-          field: organisation_name
-          relationship: field_organisation
-          group_type: group
-          admin_label: 'Organisation Name'
-          label: Business
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: true
-            path: '/partnership/{{ id }}'
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          entity_type: par_data_organisation
-          entity_field: organisation_name
-          plugin_id: field
-        authority_name:
-          id: authority_name
-          table: par_authorities_field_data
-          field: authority_name
-          relationship: field_authority
-          group_type: group
-          admin_label: ''
-          label: 'Primary Authority'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: true
-            path: '/partnership/{{ id }}'
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          entity_type: par_data_authority
-          entity_field: authority_name
-          plugin_id: field
-        trading_name:
-          id: trading_name
-          table: par_data_organisation__trading_name
-          field: trading_name
-          relationship: field_organisation
-          group_type: group
-          admin_label: ''
-          label: 'Trading Name'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          entity_type: par_data_organisation
-          entity_field: trading_name
-          plugin_id: field
-        field_legal_entity:
-          id: field_legal_entity
-          table: par_data_organisation__field_legal_entity
-          field: field_legal_entity
-          relationship: field_organisation
-          group_type: group
-          admin_label: ''
-          label: 'Legal Entity'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_entity_view
-          settings:
-            view_mode: title
-          group_column: target_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
-        field_premises:
-          id: field_premises
-          table: par_data_organisation__field_premises
-          field: field_premises
-          relationship: field_organisation
-          group_type: group
-          admin_label: ''
-          label: Premises
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_entity_view
-          settings:
-            view_mode: default
-          group_column: target_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
-      defaults:
-        fields: false
-        filters: false
-        filter_groups: false
-        relationships: false
-      filters:
-        combine:
-          id: combine
-          table: views
-          field: combine
-          relationship: none
-          group_type: group
-          admin_label: 'PA/Business Name / Co-ordinator'
-          operator: contains
-          value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: combine_op
-            label: 'PA/ Organisation / Co-ordinator'
-            description: 'Enter keyword(s)'
-            use_operator: false
-            operator: combine_op
-            identifier: keywords
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              par_authority: '0'
-              par_enforcement: '0'
-              par_business: '0'
-              par_organisation: '0'
-              par_coordinator: '0'
-              par_helpdesk: '0'
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          fields:
-            organisation_name: organisation_name
-            authority_name: authority_name
-          plugin_id: combine
-      filter_groups:
-        operator: AND
-        groups:
-          1: AND
-      relationships:
-        field_authority:
-          id: field_authority
-          table: par_data_partnership__field_authority
-          field: field_authority
-          relationship: none
-          group_type: group
-          admin_label: 'Partnership''s Primary Authority'
-          required: false
-          plugin_id: standard
-        field_organisation:
-          id: field_organisation
-          table: par_data_partnership__field_organisation
-          field: field_organisation
-          relationship: none
-          group_type: group
-          admin_label: 'Partnership''s Organisation'
-          required: false
-          plugin_id: standard
-    cache_metadata:
-      max-age: 0
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - url
-        - url.query_args
-        - user.permissions
-      tags:
-        - 'config:field.storage.par_data_organisation.field_legal_entity'
-        - 'config:field.storage.par_data_organisation.field_premises'
-  par_partnership_search_csv:
+  rd_helpdesk_dashboard_csv_export:
     display_plugin: data_export
-    id: par_partnership_search_csv
+    id: rd_helpdesk_dashboard_csv_export
     display_title: 'CSV Export'
     position: 2
     display_options:
       display_extenders: {  }
-      path: partnership/search/csv
-      filename: partnership_search.csv
+      path: dv/rd-dashboard/csv-super
+      filename: rd-super-dashboard-export.csv
       auth: {  }
       displays:
-        par_rd_helpdesk_dashboard_page: par_rd_helpdesk_dashboard_page
         default: '0'
       pager:
         type: none
@@ -1553,6 +1122,140 @@ display:
           entity_type: par_data_authority
           entity_field: authority_name
           plugin_id: field
+        terms_authority_agreed:
+          id: terms_authority_agreed
+          table: par_partnerships_field_revision
+          field: terms_authority_agreed
+          relationship: none
+          group_type: group
+          admin_label: 'Primary Authority T&Cs Agreed'
+          label: 'PA T&Cs'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: '123'
+          hide_empty: false
+          empty_zero: true
+          hide_alter_empty: true
+          click_sort_column: value
+          type: boolean
+          settings:
+            format: default
+            format_custom_true: ''
+            format_custom_false: ''
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: par_data_partnership
+          entity_field: terms_authority_agreed
+          plugin_id: field
+        partnership_info_agreed_authority:
+          id: partnership_info_agreed_authority
+          table: par_partnerships_field_data
+          field: partnership_info_agreed_authority
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Authority Partnership Agreed'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: boolean
+          settings:
+            format: default
+            format_custom_true: ''
+            format_custom_false: ''
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: par_data_partnership
+          entity_field: partnership_info_agreed_authority
+          plugin_id: field
         organisation_name:
           id: organisation_name
           table: par_organisations_field_data
@@ -1618,177 +1321,6 @@ display:
           entity_type: par_data_organisation
           entity_field: organisation_name
           plugin_id: field
-        terms_authority_agreed:
-          id: terms_authority_agreed
-          table: par_partnerships_field_revision
-          field: terms_authority_agreed
-          relationship: none
-          group_type: group
-          admin_label: 'Primary Authority T&Cs Agreed'
-          label: 'PA T&Cs'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: '123'
-          hide_empty: false
-          empty_zero: true
-          hide_alter_empty: true
-          click_sort_column: value
-          type: par_boolean_formatter
-          settings: {  }
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          entity_type: par_data_partnership
-          entity_field: terms_authority_agreed
-          plugin_id: field
-        par_combined_status_field:
-          id: par_combined_status_field
-          table: par_partnerships_field_data
-          field: par_combined_status_field
-          relationship: none
-          group_type: group
-          admin_label: 'PA Details'
-          label: 'PA Details'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          status_fields:
-            partnership_info_agreed_authority: partnership_info_agreed_authority
-            terms_authority_agreed: terms_authority_agreed
-            partnership_info_agreed_business: 0
-            terms_organisation_agreed: 0
-          status_on_label: Confirmed
-          status_off_label: 'Awaiting Review'
-          entity_type: par_data_partnership
-          plugin_id: par_partnerships_combined_status_field
-        document_completion:
-          id: document_completion
-          table: par_partnerships_revision
-          field: document_completion
-          relationship: none
-          group_type: group
-          admin_label: 'Primary Authority Document Percentage'
-          label: 'PA Docs'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          entity_type: par_data_partnership
-          plugin_id: par_partnership_revision_documents_completion_percentage
         terms_organisation_agreed:
           id: terms_organisation_agreed
           table: par_partnerships_field_revision
@@ -1838,8 +1370,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: par_boolean_formatter
-          settings: {  }
+          type: boolean
+          settings:
+            format: default
+            format_custom_true: ''
+            format_custom_false: ''
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -1853,14 +1388,14 @@ display:
           entity_type: par_data_partnership
           entity_field: terms_organisation_agreed
           plugin_id: field
-        par_combined_status_field_1:
-          id: par_combined_status_field_1
+        partnership_info_agreed_business:
+          id: partnership_info_agreed_business
           table: par_partnerships_field_data
-          field: par_combined_status_field
+          field: partnership_info_agreed_business
           relationship: none
           group_type: group
-          admin_label: 'Business Details'
-          label: 'Business Details'
+          admin_label: ''
+          label: 'Business Partnership Agreed'
           exclude: false
           alter:
             alter_text: false
@@ -1901,15 +1436,25 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          status_fields:
-            partnership_info_agreed_business: partnership_info_agreed_business
-            terms_organisation_agreed: terms_organisation_agreed
-            partnership_info_agreed_authority: 0
-            terms_authority_agreed: 0
-          status_on_label: Confirmed
-          status_off_label: 'Awaiting Review'
+          click_sort_column: value
+          type: boolean
+          settings:
+            format: default
+            format_custom_true: ''
+            format_custom_false: ''
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
           entity_type: par_data_partnership
-          plugin_id: par_partnerships_combined_status_field
+          entity_field: partnership_info_agreed_business
+          plugin_id: field
     cache_metadata:
       max-age: -1
       contexts:
