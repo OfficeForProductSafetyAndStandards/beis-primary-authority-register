@@ -15,15 +15,15 @@ class ParDashboardsDashboardController extends ParBaseController {
    * {@inheritdoc}
    */
   public function content() {
-    $current_user = \Drupal::currentUser();
+    $account = User::load(\Drupal::currentUser()->id());
     $build = [];
 
-    if ($current_user->hasPermission('manage my authorities')) {
-      $this->buildAuthority($build, $current_user);
+    if ($account->hasPermission('manage my authorities')) {
+      $this->buildAuthority($build, $account);
     }
 
-    if ($current_user->hasPermission('manage my organisations')) {
-      $this->buildOrganisation($build, $current_user);
+    if ($account->hasPermission('manage my organisations')) {
+      $this->buildOrganisation($build, $account);
     }
 
     return parent::build($build);
@@ -34,13 +34,12 @@ class ParDashboardsDashboardController extends ParBaseController {
    *
    * @param array $build
    *   Referenced array with the current build structure.
-   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+   * @param \Drupal\user\Entity\User $account
    *   Details of the current user.
    */
-  private function buildAuthority(array &$build, AccountProxyInterface $current_user) {
+  private function buildAuthority(array &$build, User $account) {
     // Need to get the authority the user belongs to.
     $par_data_manager = \Drupal::service('par_data.manager');
-    $account = User::load($current_user->id());
     $memberships = $par_data_manager->hasMemberships($account, TRUE);
 
     $build['details_intro'] = [
@@ -112,12 +111,11 @@ class ParDashboardsDashboardController extends ParBaseController {
    *
    * @param array $build
    *   Referenced array with the current build structure.
-   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+   * @param \Drupal\user\Entity\User $account
    *   Details of the current user.
    */
-  private function buildOrganisation(array &$build, AccountProxyInterface $current_user) {
+  private function buildOrganisation(array &$build, User $account) {
     $par_data_manager = \Drupal::service('par_data.manager');
-    $account = User::load($current_user->id());
     $memberships = $par_data_manager->hasMemberships($account, TRUE);
 
     $build['details_intro'] = [
