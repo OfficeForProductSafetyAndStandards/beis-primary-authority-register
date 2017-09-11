@@ -15,7 +15,7 @@ class ParDashboardsDashboardController extends ParBaseController {
    * {@inheritdoc}
    */
   public function content() {
-    $account = User::load(\Drupal::currentUser()->id());
+    $account = $this->getUserAccount();
     $build = [];
 
     if ($account->hasPermission('manage my authorities')) {

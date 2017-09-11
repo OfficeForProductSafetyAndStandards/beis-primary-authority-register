@@ -11,6 +11,7 @@ use Drupal\par_flows\ParBaseInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\par_flows\ParDisplayTrait;
+use Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -43,6 +44,13 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
    * @var string
    */
   protected $flow;
+
+  /**
+   * The account for the current logged in user.
+   *
+   * @var \Drupal\user\Entity\User
+   */
+  protected $userAccount;
 
   /**
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.
@@ -88,6 +96,19 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
     );
 
     return $build + $cache;
+  }
+
+  /**
+   * Get the current user account.
+   */
+  public function getUserAccount() {
+
+    if (isset($this->userAccount)) {
+      return $this->userAccount;
+    }
+
+    $this->userAccount = User::load(\Drupal::currentUser()->id());
+    return $this->userAccount;
   }
 
   /**
