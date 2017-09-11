@@ -8,7 +8,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
     Scenario: Enforcement Officer/PA - Issue enforcement notice
         # LOGIN SCREEN
 
-        Given I am logged in as "par_enforcementofficer@example.com"
+        Given I am logged in as "par_authority@example.com"
 
         # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
@@ -38,7 +38,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
         # LOGIN AS PA USER TO CHECK MESSAGING
 
-        And I am logged in as "par_authority@example.com"
+        And I am logged in as "par_authority2@example.com"
         Then I expect that element "#secure-messages" contains the text "You have 1 new message"
         When I click on the link "#secure-message"
         Then I expect that element "h1" contains the text "Enforcement notification from"
