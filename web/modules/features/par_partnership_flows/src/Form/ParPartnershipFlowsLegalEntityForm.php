@@ -24,6 +24,17 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  protected $formItems = [
+    'par_data_legal_entity:legal_entity' => [
+      'registered_name' => 'registered_name',
+      'legal_entity_type' => 'legal_entity_type',
+      'registered_number' => 'company_house_no',
+    ]
+  ];
+
+  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
@@ -41,19 +52,10 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     }
 
     if ($par_data_legal_entity) {
-      // Contact.
       $this->loadDataValue("legal_entity_{$par_data_legal_entity->id()}_registered_name", $par_data_legal_entity->get('registered_name')->getString());
       $this->loadDataValue("legal_entity_{$par_data_legal_entity->id()}_registered_number", $par_data_legal_entity->get('registered_number')->getString());
       $this->loadDataValue("legal_entity_{$par_data_legal_entity->id()}_legal_entity_type", $par_data_legal_entity->get('legal_entity_type')->getString());
       $this->loadDataValue('legal_entity_id', $par_data_legal_entity->id());
-
-      $bundle = $par_data_legal_entity->bundle();
-      $this->formItems["par_data_legal_entity:{$bundle}"] = [
-        'registered_name' => 'registered_name',
-        'legal_entity_type' => 'legal_entity_type',
-        'registered_number' => 'company_house_no',
-      ];
-
     }
   }
 
@@ -83,7 +85,6 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       '#description' => $this->t('A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisation such as trusts and charities.'),
     ];
 
-    // Legal Type.
     $form['legal_entity_type'] = [
       '#type' => 'select',
       '#title' => $this->t('Type of Legal Entity'),
@@ -91,7 +92,6 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       '#options' => $legal_entity_bundle->getAllowedValues('legal_entity_type'),
     ];
 
-    // The Person's name.
     $form['company_house_no'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Companies House Number'),
