@@ -30,7 +30,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
    * Used for when editing or revisiting a previously edited page.
    *
    * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
-   *   The Authority being retrieved.
+   *   The Partnership being retrieved.
    * @param \Drupal\par_data\Entity\ParDataPremises $par_data_premises
    *   The Premises being retrieved.
    */
