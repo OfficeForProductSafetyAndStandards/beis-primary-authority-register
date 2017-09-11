@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3e98a2ca44d7c1db83bb10e73d858dff",
+    "content-hash": "2a9599090aac9bf242a1bce711b9ff41",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -3071,6 +3071,9 @@
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Change user notifications to explain reason for password rejection more clearly.": "./patches/password_strength_dictionary.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
