@@ -247,12 +247,20 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     foreach ($regulatory_functions as $regulatory_function) {
       $functions[] = $regulatory_function->get('function_name')->getString();
     }
-    $all_functions = implode(', ', $functions);
+    if (!empty($functions)) {
+      $all_functions = implode(', ', $functions);
 
-    $form['partnered']['functions'] = [
-      '#type' => 'markup',
-      '#markup' => $all_functions,
-    ];
+      $form['partnered']['functions'] = [
+        '#type' => 'markup',
+        '#markup' => $all_functions,
+      ];
+    }
+    else {
+      $form['partnered']['functions'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('(none)'),
+      ];
+    }
 
     // Check to see if there are additional addresses to be shown.
     if ($par_data_premises) {
