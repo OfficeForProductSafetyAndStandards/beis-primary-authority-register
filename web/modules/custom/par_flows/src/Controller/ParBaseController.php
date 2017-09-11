@@ -104,7 +104,9 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
    * Set the current user account.
    */
   public function setCurrentUser() {
-    $this->userAccount = User::load(\Drupal::currentUser()->id());
+    if (\Drupal::currentUser()->isAuthenticated()) {
+      $this->userAccount = User::load(\Drupal::currentUser()->id());
+    }
   }
 
   /**
