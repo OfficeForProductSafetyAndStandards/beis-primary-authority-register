@@ -954,7 +954,7 @@ display:
             alter_text: false
             text: ''
             make_link: true
-            path: '/business-partnerships/{{ id }}'
+            path: '/partnership/{{ id }}'
             absolute: false
             external: false
             replace_spaces: false
@@ -1019,7 +1019,7 @@ display:
             alter_text: false
             text: ''
             make_link: true
-            path: '/dv/primary-authority-partnerships/{{ id }}'
+            path: '/partnership/{{ id }}'
             absolute: false
             external: false
             replace_spaces: false
