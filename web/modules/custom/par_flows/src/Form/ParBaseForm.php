@@ -294,32 +294,28 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-
+    // Assign all the form values to the relevant entity field values.
     foreach ($this->getformItems() as $entity_name => $form_items) {
       list($type, $bundle) = explode(':', $entity_name);
 
-      // If no bundle specified the we ignore this test. Do we need to log it?
-      if (empty($type) || empty($bundle)) {
-        continue;
-      }
-
-      $entity_type_def = $this->getParDataManager()->getParEntityType($type);
-      $entity = $entity_type_def->getClass()::create([
+      $entity_class = $this->getParDataManager()->getParEntityType($type)->getClass();
+      $entity = $entity_class::create([
         'type' => $this->getParDataManager()->getParBundleEntity($type, $bundle)->id(),
       ]);
 
       foreach ($form_items as $field_name => $form_item) {
         if (is_array($form_item)) {
-          // Dealing with a combined field, such as address.
-          foreach ($form_item as $combined_field_name => $combined_form_item) {
-            $field[$combined_field_name] = $form_state->getValue($combined_form_item);
+          $field_value = [];
+          foreach ($form_item as $field_property => $form_property_item) {
+            $field_value[$field_property] = $form_state->getValue($form_property_item);
           }
-
-          $entity->set($field_name, $field);
         }
         else {
-          $entity->set($field_name, $form_state->getValue($form_item));
+          $field_value = $form_state->getValue($form_item);
         }
+
+        $entity->set($field_name, $field_value);
+
         $violations = $entity->validate()->filterByFieldAccess()
           ->getByFields([
             $field_name,

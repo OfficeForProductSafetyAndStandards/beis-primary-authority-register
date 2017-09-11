@@ -2,6 +2,7 @@
 
 namespace Drupal\par_partnership_flows\Form;
 
+use CommerceGuys\Addressing\AddressFormat\AddressField;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPremises;
@@ -42,17 +43,17 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       $this->setState("edit:{$par_data_partnership->id()}");
     }
 
-    $address = $par_data_premises->get('address')[0];
+    $address = $par_data_premises->get('address')->first();
 
     if ($par_data_premises) {
       // Address.
-      $this->loadDataValue("address_{$par_data_premises->id()}_postal_code", $address->get('postal_code')->getString());
-      $this->loadDataValue("address_{$par_data_premises->id()}_address_line1", $address->get('address_line1')->getString());
-      $this->loadDataValue("address_{$par_data_premises->id()}_address_line2", $address->get('address_line2')->getString());
-      $this->loadDataValue("address_{$par_data_premises->id()}_locality", $address->get('locality')->getString());
-      $this->loadDataValue("address_{$par_data_premises->id()}_administrative_area", $address->get('administrative_area')->getString());
-      $this->loadDataValue("address_{$par_data_premises->id()}_country_code", $par_data_premises->get('nation')->getString());
-      $this->loadDataValue("address_{$par_data_premises->id()}_uprn", $par_data_premises->get('uprn')->getString());
+      $this->loadDataValue("address_postal_code", $address->get('postal_code')->getString());
+      $this->loadDataValue("address_address_line1", $address->get('address_line1')->getString());
+      $this->loadDataValue("address_address_line2", $address->get('address_line2')->getString());
+      $this->loadDataValue("address_locality", $address->get('locality')->getString());
+      $this->loadDataValue("address_administrative_area", $address->get('administrative_area')->getString());
+      $this->loadDataValue("country", $par_data_premises->get('nation')->getString());
+      $this->loadDataValue("uprn", $par_data_premises->get('uprn')->getString());
       $this->loadDataValue('premises_id', $par_data_premises->id());
     }
   }
@@ -87,49 +88,43 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       '#suffix' => '</h2>',
     ];
 
-    // The Address lines.
     $form['address_line1'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Address Line 1'),
-      '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_address_line1"),
+      '#default_value' => $this->getDefaultValues("address_address_line1"),
     ];
 
     $form['address_line2'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Address Line 2'),
-      '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_address_line2"),
+      '#default_value' => $this->getDefaultValues("address_address_line2"),
     ];
 
-    // Town/City.
     $form['town_city'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Town / City'),
-      '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_locality"),
+      '#default_value' => $this->getDefaultValues("address_locality"),
     ];
 
-    // County.
     $form['county'] = [
       '#type' => 'textfield',
       '#title' => $this->t('County'),
-      '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_administrative_area"),
+      '#default_value' => $this->getDefaultValues("address_administrative_area"),
     ];
 
-    // Country.
     $form['country'] = [
       '#type' => 'select',
-      '#title' => $this->t('Country'),
+      '#title' => $this->t('Nation'),
       '#options' => $premises_bundle->getAllowedValues('nation'),
-      '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_country_code"),
+      '#default_value' => $this->getDefaultValues("country"),
     ];
 
-    // The Postcode.
     $form['postcode'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Postcode'),
-      '#default_value' => $this->getDefaultValues("address_{$this->getDefaultValues('premises_id')}_postal_code"),
+      '#default_value' => $this->getDefaultValues("address_postal_code"),
     ];
 
-    // The Postcode.
     $form['country_code'] = [
       '#type' => 'hidden',
       '#title' => $this->t('Country'),
