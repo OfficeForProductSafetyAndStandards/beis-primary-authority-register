@@ -123,6 +123,9 @@
             "drupal/xmlsitemap": {
                 "xmlsitemap_file_transfer coincides with hook name provided by file_entity": "https://www.drupal.org/files/issues/xmlsitemap_hook_file_transfer-2831733-6.patch"
             },
+            "drupal/password_strength": {
+                "Change user notifications to explain reason for password rejection more clearly.": "./patches/password_strength_dictionary.patch"
+            },
             "drupal/core": {
                 "Allow migration lookups against sub-sets of migration map ids": "./patches/migration_id_map_sql_lookup_check.patch",
                 "Entity loadByProperty should skip access checks": "https://www.drupal.org/files/issues/2878483-18.patch",
