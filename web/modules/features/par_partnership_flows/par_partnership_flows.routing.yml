@@ -136,7 +136,7 @@ par_partnership_flows.organisation_details:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsOrganisationDetailsForm'
     _title: 'Partnership Details for Organisation'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'bypass partnership journey+business partnership journey+coordinated partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -148,7 +148,7 @@ par_partnership_flows.about_business:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutBusinessForm'
     _title: 'About the Business'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'bypass partnership journey+business partnership journey+coordinated partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -160,7 +160,7 @@ par_partnership_flows.address_edit:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAddressForm'
     _title: 'Edit address'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'bypass partnership journey+business partnership journey+coordinated partnership journey'
     par_data_partnership: \d+
     par_data_premises: \d+
   options:
@@ -175,7 +175,7 @@ par_partnership_flows.address_add:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAddressForm'
     _title: 'Add an address'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'bypass partnership journey+business partnership journey+coordinated partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -187,7 +187,7 @@ par_partnership_flows.organisation_contact_edit:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
     _title: 'Updating contact'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'bypass partnership journey+business partnership journey+coordinated partnership journey'
     par_data_partnership: \d+
     par_data_person: \d+
   options:
@@ -202,7 +202,7 @@ par_partnership_flows.organisation_contact_add:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
     _title: 'Add a contact'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'bypass partnership journey+business partnership journey+coordinated partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -214,7 +214,7 @@ par_partnership_flows.legal_entity_edit:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm'
     _title: 'Update Legal Entity'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'bypass partnership journey+business partnership journey+coordinated partnership journey'
     par_data_partnership: \d+
     par_data_legal_entity: \d+
   options:
@@ -229,7 +229,7 @@ par_partnership_flows.legal_entity_add:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm'
     _title: 'Add a Legal Entity'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'bypass partnership journey+business partnership journey+coordinated partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -241,7 +241,7 @@ par_partnership_flows.trading_name_edit:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsTradingForm'
     _title: 'Edit Trading Name'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'bypass partnership journey+business partnership journey+coordinated partnership journey'
     par_data_partnership: \d+
     trading_name_delta: \d+
   options:
@@ -254,7 +254,7 @@ par_partnership_flows.trading_name_add:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsTradingForm'
     _title: 'Add a Trading Name'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'bypass partnership journey+business partnership journey+coordinated partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -266,7 +266,7 @@ par_partnership_flows.sic_code_edit:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSicCodeForm'
     _title: 'Edit SIC Code'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'bypass partnership journey+business partnership journey+coordinated partnership journey'
     par_data_partnership: \d+
     par_data_sic_code: \d+
   options:
@@ -281,7 +281,7 @@ par_partnership_flows.sic_code_add:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSicCodeForm'
     _title: 'Add a SIC Code'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'bypass partnership journey+business partnership journey+coordinated partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -293,7 +293,7 @@ par_partnership_flows.employee_number:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsEmployeeNoForm'
     _title: 'Number of Employees'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'bypass partnership journey+business partnership journey+coordinated partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -305,7 +305,7 @@ par_partnership_flows.sector:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSectorForm'
     _title: 'Sector'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'bypass partnership journey+business partnership journey+coordinated partnership journey'
     par_data_partnership: \d+
   options:
     parameters:
@@ -317,7 +317,7 @@ par_partnership_flows.business_size:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsBusinessSizeForm'
     _title: 'Number of Businesses'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'bypass partnership journey+business partnership journey+coordinated partnership journey'
     par_data_partnership: \d+
   options:
     parameters:

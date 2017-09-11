@@ -243,6 +243,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     foreach ($regulatory_functions as $regulatory_function) {
       $functions[] = $regulatory_function->get('function_name')->getString();
     }
+
     if (!empty($functions)) {
       $all_functions = implode(', ', $functions);
 
@@ -256,25 +257,6 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
         '#type' => 'markup',
         '#markup' => $this->t('(none)'),
       ];
-    }
-
-    // Check to see if there are additional addresses to be shown.
-    if ($par_data_premises) {
-      $form['alternate_address'] = [
-        '#type' => 'fieldset',
-        '#title' => t('Additional Premises:'),
-        '#attributes' => ['class' => 'form-group'],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
-
-      foreach ($par_data_premises as $premises) {
-        $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_premises');
-
-        $alternative_person = $person_view_builder->view($premises, 'summary');
-        $form['alternate_address'][$premises->id()]['premises'] = $this->renderMarkupField($alternative_person);
-
-      }
     }
 
     // About the Partnership.
@@ -362,6 +344,10 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
             ])->setText('edit')->toString(),
           ]),
         ];
+        $form['authority_contact'][$person->id()]['delete'] = [
+          '#type' => 'markup',
+          '#markup' => t('<a href="#">remove (TBC)</a>'),
+        ];
       }
     }
     else {
@@ -371,6 +357,21 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
       ];
 
     }
+
+    $form['authority_contact_add'] = [
+      '#type' => 'fieldset',
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    $form['authority_contact_add']['add'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlow()->getNextLink('add_contact')->setText('add another contact (TBC)')->toString(),
+      ]),
+    ];
+
 
     // Primary contact summary.
     $par_data_contacts = $par_data_partnership->getOrganisationPeople();
@@ -411,7 +412,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     $form['save'] = [
       '#type' => 'submit',
       '#name' => 'save',
-      '#value' => $this->t('Save'),
+      '#value' => $this->t('Done'),
     ];
 
     // Make sure to add the partnership cacheability data to this form.
