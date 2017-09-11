@@ -6,6 +6,6 @@
 # i.e. cf/push-continuous.sh
 ####################################################################################
 
-cf push -f manifest.continuous.yml
+cf push -f cf/manifests/manifest.continuous.yml
 
 cf ssh par-beta-continuous -c "cd app/tools && python post_deploy.py"
