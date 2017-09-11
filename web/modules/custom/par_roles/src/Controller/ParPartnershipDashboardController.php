@@ -12,6 +12,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A controller for the PAR Partnership Dashboard.
+ *
+ * {@deprecated}
  */
 class ParPartnershipDashboardController extends ControllerBase {
 
