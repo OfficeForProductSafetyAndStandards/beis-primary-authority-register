@@ -16,7 +16,21 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
-  protected $formItems = [];
+  /**
+   * {@inheritdoc}
+   */
+  protected $formItems = [
+    'par_data_premises:premises' => [
+      'address' => [
+        'country_code' => 'country_code',
+        'address_line1' => 'address_line1',
+        'address_line2' => 'address_line2',
+        'locality' => 'town_city',
+        'postal_code' => 'postcode',
+      ],
+      'nation' => 'country',
+    ],
+  ];
 
   /**
    * {@inheritdoc}
@@ -56,24 +70,6 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       $this->loadDataValue("uprn", $par_data_premises->get('uprn')->getString());
       $this->loadDataValue('premises_id', $par_data_premises->id());
     }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getFormItems() {
-    return [
-      "par_data_premises:premises" => [
-        'address' => [
-          'country_code' => 'country_code',
-          'address_line1' => 'address_line1',
-          'address_line2' => 'address_line2',
-          'locality' => 'town_city',
-          'postal_code' => 'postcode',
-        ],
-        'nation' => 'country',
-      ],
-    ];
   }
 
   /**
