@@ -268,7 +268,7 @@ par_partnership_flows.sic_code_edit:
   requirements:
     _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
     par_data_partnership: \d+
-    par_data_sic_code: \d+
+    sic_code_delta: \d+
   options:
     parameters:
       par_data_partnership:
