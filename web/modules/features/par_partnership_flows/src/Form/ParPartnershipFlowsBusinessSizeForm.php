@@ -52,6 +52,8 @@ class ParPartnershipFlowsBusinessSizeForm extends ParBaseForm {
 
     $form['info'] = [
       '#markup' => t('Change the number of individual associations you represent.'),
+      '#prefix' => '<h2>',
+      '#suffix' => '</h2>',
     ];
 
     // Business details.

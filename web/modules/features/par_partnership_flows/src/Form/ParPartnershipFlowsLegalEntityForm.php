@@ -68,16 +68,17 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
 
     if (!empty($par_data_legal_entity)) {
       $id = $par_data_legal_entity->id();
-      $form['intro'] = [
-        '#markup' => $this->t('Edit the legal entity'),
-      ];
+      $title = $this->t('Edit the legal entity');
     }
     else {
-      $form['intro'] = [
-        '#markup' => $this->t('Add a legal entity for your business'),
-      ];
+      $title = $this->t('Add a legal entity for your organisation');
     }
 
+    $form['intro'] = [
+      '#markup' => $title,
+      '#prefix' => '<h2>',
+      '#suffix' => '</h2>',
+    ];
     $form['registered_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Name of legal entity'),

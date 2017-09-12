@@ -59,20 +59,20 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
     $par_data_organisation = current($par_data_partnership->getOrganisation());
 
     if (empty($trading_name_delta)) {
-      $form['intro'] = [
-        '#markup' => $this->t('Add another trading name for your business'),
-      ];
-
+      $title = $this->t('Add another trading name for your organisation');
     }
     else {
-      $form['intro'] = [
-        '#markup' => $this->t('Edit the trading name of your organisation'),
-      ];
+      $title = $this->t('Edit the trading name of your organisation');
     }
+
+    $form['intro'] = [
+      '#markup' => $title,
+      '#prefix' => '<h2>',
+      '#suffix' => '</h2>',
+    ];
 
     $form['trading_name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Name of trading name'),
       '#default_value' => isset($par_data_organisation->get('trading_name')->getValue()[$trading_name_delta]) ? $par_data_organisation->get('trading_name')->getValue()[$trading_name_delta] : '',
       '#description' => $this->t("Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State any trading names used by the organisation."),
     ];
