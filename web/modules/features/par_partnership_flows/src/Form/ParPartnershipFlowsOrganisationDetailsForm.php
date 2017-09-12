@@ -173,7 +173,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       '#collapsed' => FALSE,
     ];
 
-    if ($par_data_organisation->get('employees_band')->getString() !== '') {
+    if ($par_data_organisation->get('employees_band')->isEmpty()) {
       $form['employee_no']['item'] = [
         '#type' => 'markup',
         '#markup' => $par_data_organisation->get('employees_band')->getString(),
@@ -188,7 +188,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
     $form['employee_no']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('employees')->setText('edit')->toString(),
+        '@link' => $this->getFlow()->getNextLink('size')->setText('edit')->toString(),
       ]),
     ];
 
