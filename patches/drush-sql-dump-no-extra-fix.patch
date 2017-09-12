@@ -1,0 +1,40 @@
+diff --git a/lib/Drush/Sql/SqlBase.php b/lib/Drush/Sql/SqlBase.php
+index 0d8871ce..04132062 100644
+--- a/lib/Drush/Sql/SqlBase.php
++++ b/lib/Drush/Sql/SqlBase.php
+@@ -142,7 +142,7 @@ class SqlBase {
+    * @return
+    *   TRUE on success, FALSE on failure
+    */
+-  public function query($query, $input_file = NULL, $result_file = '') {
++  public function query($query, $input_file = NULL, $result_file = '', $includeExtra = true) {
+     $input_file_original = $input_file;
+     if ($input_file && drush_file_is_tarball($input_file)) {
+       if (drush_shell_exec('gzip -d %s', $input_file)) {
+@@ -164,7 +164,7 @@ class SqlBase {
+       $this->command(),
+       $this->creds(),
+       $this->silent(), // This removes column header and various helpful things in mysql.
+-      drush_get_option('extra', $this->query_extra),
++      $includeExtra ? drush_get_option('extra', $this->query_extra) : '',
+       $this->query_file,
+       drush_escapeshellarg($input_file),
+     );
+diff --git a/lib/Drush/Sql/Sqlpgsql.php b/lib/Drush/Sql/Sqlpgsql.php
+index e8945c73..fd748b1c 100644
+--- a/lib/Drush/Sql/Sqlpgsql.php
++++ b/lib/Drush/Sql/Sqlpgsql.php
+@@ -96,9 +96,12 @@ class Sqlpgsql extends SqlBase {
+   }
+ 
+   public function listTables() {
+-    $return = $this->query(PSQL_SHOW_TABLES);
++    $return = $this->query(PSQL_SHOW_TABLES, NULL, '', false);
+     $tables = drush_shell_exec_output();
+     if (!empty($tables)) {
++      foreach ($tables as &$table) {
++        $table = trim($table);
++      }
+       return $tables;
+     }
+     return array();
