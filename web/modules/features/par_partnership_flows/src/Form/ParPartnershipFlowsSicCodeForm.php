@@ -37,19 +37,14 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
       // to something other than default to avoid conflicts
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()}");
+    }
 
-      if (!is_null($sic_code_delta)) {
-        $par_data_organisation = current($par_data_partnership->getOrganisation());
-        if ($par_data_organisation) {
-          $this->loadDataValue("organisation_edit", $par_data_organisation->id());
-        }
-        $this->loadDataValue("sic_code_edit", $sic_code_delta);
-
-        $sic_code = $par_data_organisation ? $par_data_organisation->get('field_sic_code')->referencedEntities()[$sic_code_delta] : NULL;
-
-        if ($id = $sic_code->id()) {
-          $this->loadDataValue("sic_code", $id);
-        }
+    if (!is_null($sic_code_delta)) {
+      // Store the current value of the sic_code if it's being edited.
+      $par_data_organisation = current($par_data_partnership->getOrganisation());
+      $sic_code = $par_data_organisation ? $par_data_organisation->get('field_sic_code')->referencedEntities()[$sic_code_delta] : NULL;
+      if ($id = $sic_code->id()) {
+        $this->loadDataValue("sic_code", $id);
       }
     }
 
@@ -63,15 +58,6 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
     $par_data_organisation = current($par_data_partnership->getOrganisation());
     $form['intro'] = [
       '#markup' => $this->t('Change the SIC Code of your business'),
-    ];
-
-    $form['organisation_edit'] = [
-      '#type' => 'hidden',
-      '#default_value' => $this->getDefaultValues("organisation_edit"),
-    ];
-    $form['sic_code_edit'] = [
-      '#type' => 'hidden',
-      '#default_value' => $this->getDefaultValues("sic_code_edit"),
     ];
 
     $options = [];
@@ -114,17 +100,15 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Save the edited value for the organisation's sic code field.
-    $organisation_id = $this->getTempDataValue('organisation_edit');
-    $sic_code_delta = $this->getTempDataValue('sic_code_edit');
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    $par_data_organisation = current($par_data_partnership->getOrganisation());
+    $sic_code_delta = $this->getRouteParam('sic_code_delta');
 
-    if ($organisation_id && $sic_code_delta) {
-      if ($par_data_organisation = $this->getParDataManager()->getEntityTypeStorage('par_data_organisation')->load($organisation_id)) {
-        $items = $par_data_organisation->get('field_sic_code')->getValue();
-        $items[$sic_code_delta] = $this->getTempDataValue('sic_code');
-        $par_data_organisation->set('field_sic_code', $items);
-      }
 
-      var_dump($items[$sic_code_delta]); die;
+    if ($par_data_organisation && null !== $par_data_organisation->get('field_sic_code')->get($sic_code_delta)) {
+      $items = $par_data_organisation->get('field_sic_code')->getValue();
+      $items[$sic_code_delta] = $this->getTempDataValue('sic_code');
+      $par_data_organisation->set('field_sic_code', $items);
 
       if ($par_data_organisation->save()) {
         $this->deleteStore();
