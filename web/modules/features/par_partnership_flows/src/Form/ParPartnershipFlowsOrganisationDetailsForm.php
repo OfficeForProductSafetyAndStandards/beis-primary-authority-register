@@ -386,7 +386,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       ]),
     ];
 
-    if ($this->getFlowName() === 'partnership_direct') {
+    if ($par_data_partnership->isDirect()) {
       $form['sic_code'] = [
         '#type' => 'fieldset',
         '#title' => t('SIC Code:'),
