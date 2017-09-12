@@ -28,13 +28,22 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
    *
    * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The Authority being retrieved.
+   * @param int $sic_code_delta
+   *   The field delta to update.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
+  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, $sic_code_delta = NULL) {
     if ($par_data_partnership) {
       // If we're editing an entity we should set the state
       // to something other than default to avoid conflicts
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()}");
+
+      if ($sic_code_delta) {
+        $par_data_organisation = current($par_data_partnership->getOrganisation());
+        $sic_code = $par_data_organisation ? $par_data_organisation->get('field_sic_code')->get($sic_code_delta) : NULL;
+var_dump($sic_code);
+        $this->loadDataValue("sic_code", $sic_code);
+      }
     }
 
   }
@@ -43,7 +52,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $sic_code_delta = NULL) {
-    $this->retrieveEditableValues($par_data_partnership);
+    $this->retrieveEditableValues($par_data_partnership, $sic_code_delta);
     $par_data_organisation = current($par_data_partnership->getOrganisation());
 
     $form['intro'] = [
@@ -63,7 +72,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
       '#type' => 'select',
       '#title' => $this->t('SIC Code'),
       '#options' => $options,
-      '#default_value' => isset($par_data_organisation->get('field_sic_code')->getValue()[$sic_code_delta]) ? $par_data_organisation->get('field_sic_code')->getValue()[$sic_code_delta] : '',
+      '#default_value' => $this->getDefaultValues("sic_code"),
     ];
 
     $form['save'] = [
