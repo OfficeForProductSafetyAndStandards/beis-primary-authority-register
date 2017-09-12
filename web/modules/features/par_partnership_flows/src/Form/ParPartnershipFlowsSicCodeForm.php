@@ -4,13 +4,11 @@ namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataSicCode;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
- * The primary contact form for the partnership details steps of the
- * 1st Data Validation/Transition User Journey.
+ * The partnership form for the sic code details.
  */
 class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
 
@@ -24,13 +22,12 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
   }
 
   /**
-   * Helper to get all the editable values when editing or
-   * revisiting a previously edited page.
+   * Helper to get all the editable values.
+   *
+   * Used for when editing or revisiting a previously edited page.
    *
    * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
-   *   The Partnership being retrieved.
-   * @param int $trading_name_delta
-   *   The trading name delta.
+   *   The Authority being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
     if ($par_data_partnership) {
@@ -46,7 +43,6 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $sic_code_delta = NULL) {
-    dump($sic_code_delta);
     $this->retrieveEditableValues($par_data_partnership);
     $par_data_organisation = current($par_data_partnership->getOrganisation());
 
@@ -54,13 +50,15 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
       '#markup' => $this->t('Change the SIC Code of your business'),
     ];
 
+    $options = [];
+
     // Get the list of valid sic codes.
     // Probably not the best method, but will do for now!
     $sic_codes = \Drupal::entityTypeManager()->getStorage('par_data_sic_code')->loadMultiple();
     foreach ($sic_codes as $sic_code) {
       $options[$sic_code->id()] = str_replace('.', '-', $sic_code->get('sic_code')->getString()) . ' ' . $sic_code->get('description')->getString();
     }
-dump($par_data_organisation->get('field_sic_code')->getValue()[$sic_code_delta]);
+
     $form['sic_code'] = [
       '#type' => 'select',
       '#title' => $this->t('SIC Code'),

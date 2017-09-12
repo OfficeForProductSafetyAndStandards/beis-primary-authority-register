@@ -116,6 +116,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
 
     // Sic Codes.
     $par_data_sic_code = $par_data_organisation->getSicCode();
+
     $form['sic_codes'] = [
       '#type' => 'fieldset',
       '#title' => t('SIC Code:'),
@@ -126,16 +127,15 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
 
     // Check to see if there are any sic codes to be shown.
     if ($par_data_sic_code) {
-      foreach ($par_data_sic_code as $sic_code) {
+      foreach ($par_data_sic_code as $key => $sic_code) {
         $sic_code_view_builder = $this->getParDataManager()->getViewBuilder('par_data_sic_code');
-        // @todo need to put these on one line.
         $sic_code_item = $sic_code_view_builder->view($sic_code, 'full');
         $form['sic_codes'][$sic_code->id()] = $this->renderMarkupField($sic_code_item);
         $form['sic_codes'][$sic_code->id()]['edit'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
             '@link' => $this->getFlow()->getNextLink('edit_sic', [
-              'par_data_sic_code' => $sic_code->id(),
+              'sic_code_delta' => $key,
             ])->setText('edit')->toString(),
           ]),
         ];
