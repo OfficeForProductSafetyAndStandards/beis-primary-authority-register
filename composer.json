@@ -105,6 +105,9 @@
             "drush/drush": {
                 "Drush sql-dump compatibility with PostgresSQL 9.5+": "./patches/drush-sqldump-postgres95.patch"
             },
+            "drush/drush": {
+                "Fix SQL dump problem where extra params are passed when trying only to list tables": "./patches/drush-sql-dump-no-extra-fix.patch"
+            },            
             "drupal/clamav": {
                 "Add support for ClamAV via a REST daemon": "./patches/clamav_add_rest_client.patch"
             },
