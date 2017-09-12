@@ -389,9 +389,11 @@ class ParDataManager implements ParDataManagerInterface {
    * {@deprecated}
    */
   public function isMemberOfCoordinator($account) {
-    foreach ($this->hasMembershipsByType($account, 'par_data_organisation',  TRUE) as $membership) {
-      if ($membership->bundle() === 'coordinator') {
-        return TRUE;
+    foreach ($this->hasMembershipsByType($account, 'par_data_organisation',  TRUE) as $id => $membership) {
+      foreach ($this->getEntitiesByProperty('par_data_partnership', 'field_organisation', $id) as $partnership) {
+        if ($partnership->isCoordinated()) {
+          return true;
+        }
       }
     }
 
@@ -404,9 +406,11 @@ class ParDataManager implements ParDataManagerInterface {
    * {@deprecated}
    */
   public function isMemberOfBusiness($account) {
-    foreach ($this->hasMembershipsByType($account, 'par_data_organisation',  TRUE) as $membership) {
-      if ($membership->bundle() === 'business') {
-        return TRUE;
+    foreach ($this->hasMembershipsByType($account, 'par_data_organisation',  TRUE) as $id => $membership) {
+      foreach ($this->getEntitiesByProperty('par_data_partnership', 'field_organisation', $id) as $partnership) {
+        if ($partnership->isDirect()) {
+          return true;
+        }
       }
     }
 
