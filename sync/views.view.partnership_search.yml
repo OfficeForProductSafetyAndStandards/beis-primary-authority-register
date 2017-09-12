@@ -1349,49 +1349,6 @@ display:
       tags:
         - 'config:field.storage.par_data_organisation.field_legal_entity'
         - 'config:field.storage.par_data_organisation.field_premises'
-  par_partnership_search:
-    display_plugin: page
-    id: par_partnership_search
-    display_title: Page
-    position: 1
-    display_options:
-      display_extenders: {  }
-      path: partnership/search
-      footer: {  }
-      defaults:
-        footer: false
-        empty: false
-      menu:
-        type: normal
-        title: Dashboard
-        description: ''
-        expanded: false
-        parent: ''
-        weight: 1
-        context: '0'
-        menu_name: account
-      empty:
-        area_text_custom:
-          id: area_text_custom
-          table: views
-          field: area_text_custom
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          tokenize: false
-          content: '<p>Sorry, there are no results for your search.</p>'
-          plugin_id: text_custom
-    cache_metadata:
-      max-age: 0
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - url
-        - url.query_args
-        - user.permissions
-      tags:
-        - 'config:field.storage.par_data_partnership.field_authority_person'
   par_partnership_search_csv:
     display_plugin: data_export
     id: par_partnership_search_csv
