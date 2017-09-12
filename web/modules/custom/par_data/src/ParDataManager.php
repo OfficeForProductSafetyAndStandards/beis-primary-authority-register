@@ -433,6 +433,21 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
+   * A helper function to load entity properties.
+   *
+   * @param string $type
+   *   The entity type to load the field for.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface[]
+   *   An array of entities found with this value.
+   */
+  public function getEntitiesByType($type) {
+    return $this->entityManager
+      ->getStorage($type)
+      ->loadMultiple();
+  }
+
+  /**
    * Get the PAR People that share the same email with the user account.
    *
    * @param UserInterface $account
