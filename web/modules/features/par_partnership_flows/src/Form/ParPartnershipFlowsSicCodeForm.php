@@ -62,8 +62,7 @@ var_dump($sic_code);
     $options = [];
 
     // Get the list of valid sic codes.
-    // Probably not the best method, but will do for now!
-    $sic_codes = \Drupal::entityTypeManager()->getStorage('par_data_sic_code')->loadMultiple();
+    $sic_codes = $this->parDataManager->getEntitiesByType('par_data_sic_code');
     foreach ($sic_codes as $sic_code) {
       $options[$sic_code->id()] = str_replace('.', '-', $sic_code->get('sic_code')->getString()) . ' ' . $sic_code->get('description')->getString();
     }

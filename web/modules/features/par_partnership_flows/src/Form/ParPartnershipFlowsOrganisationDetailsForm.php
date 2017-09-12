@@ -188,7 +188,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
     $form['employee_no']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('employees')->setText('edit')->toString(),
+        '@link' => $this->getFlow()->getNextLink('size')->setText('edit')->toString(),
       ]),
     ];
 
@@ -386,7 +386,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       ]),
     ];
 
-    if ($this->getFlowName() === 'partnership_direct') {
+    if ($par_data_partnership->isDirect()) {
       $form['sic_code'] = [
         '#type' => 'fieldset',
         '#title' => t('SIC Code:'),
