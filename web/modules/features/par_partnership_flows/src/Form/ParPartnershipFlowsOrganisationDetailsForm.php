@@ -262,16 +262,17 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
 
     // Trading names.
     $par_data_trading_names = $par_data_organisation->get('trading_name')->getValue();
+    $form['trading_names'] = [
+      '#type' => 'fieldset',
+      '#title' => t('Trading Names:'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
     if ($par_data_trading_names) {
-      $form['trading_names'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
-      ];
-
       foreach ($par_data_trading_names as $key => $trading_name) {
         $form['trading_names'][$key] = [
           '#type' => 'fieldset',
-          '#title' => $key === 0 ? t('Trading Names:') : '',
           '#attributes' => ['class' => 'form-group'],
           '#collapsible' => FALSE,
           '#collapsed' => FALSE,
@@ -294,7 +295,12 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
         ];
 
       }
-
+    }
+    else {
+      $form['trading_names']['item'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('(none)'),
+      ];
     }
 
     $form['trading_names_add'] = [
