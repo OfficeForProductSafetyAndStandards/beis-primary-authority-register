@@ -1,8 +1,9 @@
-uuid: d165d54e-65bc-4c97-b4c4-5cd52642f9e8
+uuid: 4ec6d3ae-b98a-4477-b706-30d6ea8bf049
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.par_data_organisation.full
     - field.field.par_data_organisation.organisation.field_coordinated_businesses
     - field.field.par_data_organisation.organisation.field_legal_entity
     - field.field.par_data_organisation.organisation.field_person
@@ -11,33 +12,44 @@ dependencies:
     - par_data.par_data_organisation_type.organisation
   module:
     - text
-id: par_data_organisation.organisation.default
+id: par_data_organisation.organisation.full
 targetEntityType: par_data_organisation
 bundle: organisation
-mode: default
+mode: full
 content:
   comments:
-    label: hidden
-    weight: 1
+    type: text_default
+    weight: 0
     region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: text_default
   field_legal_entity:
-    weight: 2
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_entity_view
+    weight: 0
     region: content
-  field_premises:
-    weight: 3
-    label: above
+    label: hidden
     settings:
-      link: true
+      view_mode: title
+      link: false
     third_party_settings: {  }
-    type: entity_reference_label
+  field_person:
+    type: entity_reference_entity_view
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      view_mode: title
+      link: false
+    third_party_settings: {  }
+  field_premises:
+    weight: 4
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
     region: content
   organisation_name:
     label: hidden
@@ -52,7 +64,6 @@ hidden:
   coordinator_type: true
   employees_band: true
   field_coordinated_businesses: true
-  field_person: true
   field_sic_code: true
   name: true
   nation: true
