@@ -4,6 +4,7 @@ namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\Entity\ParDataSicCode;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
@@ -44,7 +45,8 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $sic_code_delta = NULL) {
+    dump($sic_code_delta);
     $this->retrieveEditableValues($par_data_partnership);
     $par_data_organisation = current($par_data_partnership->getOrganisation());
 
@@ -52,12 +54,18 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
       '#markup' => $this->t('Change the SIC Code of your business'),
     ];
 
-
+    // Get the list of valid sic codes.
+    // Probably not the best method, but will do for now!
+    $sic_codes = \Drupal::entityTypeManager()->getStorage('par_data_sic_code')->loadMultiple();
+    foreach ($sic_codes as $sic_code) {
+      $options[$sic_code->id()] = str_replace('.', '-', $sic_code->get('sic_code')->getString()) . ' ' . $sic_code->get('description')->getString();
+    }
+dump($par_data_organisation->get('field_sic_code')->getValue()[$sic_code_delta]);
     $form['sic_code'] = [
-      '#type' => 'textfield',
+      '#type' => 'select',
       '#title' => $this->t('SIC Code'),
-//      '#default_value' => isset($par_data_organisation->get('trading_name')->getValue()[$trading_name_delta]) ? $par_data_organisation->get('trading_name')->getValue()[$trading_name_delta] : '',
-//      '#description' => $this->t('Sometimes companies trade under a different name to their registered, legal name. This is known as a \'trading name\'. State any trading names used by the business.'),
+      '#options' => $options,
+      '#default_value' => isset($par_data_organisation->get('field_sic_code')->getValue()[$sic_code_delta]) ? $par_data_organisation->get('field_sic_code')->getValue()[$sic_code_delta] : '',
     ];
 
     $form['save'] = [
@@ -81,64 +89,31 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    // No validation yet.
-    parent::validateForm($form, $form_state);
-//    $partnership = $this->getRouteParam('par_data_partnership');
-//    $par_data_organisation = current($partnership->getOrganisation());
-//    $fields = [
-//      'trading_name' => [
-//        'value' => $form_state->getValue('trading_name'),
-//        'key' => 'trading_name',
-//        'tokens' => [
-//          '%field' => $form['trading_name']['#title']->render(),
-//        ]
-//      ],
-//    ];
-//
-//    $errors = $par_data_organisation->validateFields($fields);
-//    // Display error messages.
-//    foreach($errors as $field => $message) {
-//      $form_state->setErrorByName($field, $message);
-//    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-//    // Save the value for the trading name field.
-//    $par_data_partnership = $this->getRouteParam('par_data_partnership');
-//    $par_data_organisation = current($par_data_partnership->getOrganisation());
-//    $trading_name_delta = $this->getRouteParam('trading_name_delta');
-//
-//    $items = $par_data_organisation->get('trading_name')->getValue();
-//
-//    if (!isset($trading_name_delta)) {
-//      $items[] =  $this->getTempDataValue('trading_name');
-//    }
-//    else {
-//      $items[$trading_name_delta] = $this->getTempDataValue('trading_name');
-//    }
-//
-//    $par_data_organisation->set('trading_name', $items);
-//
-//    if ($par_data_organisation->save()) {
-//      $this->deleteStore();
-//    }
-//    else {
-//      $message = $this->t('This %field could not be saved for %form_id');
-//      $replacements = [
-//        '%field' => $this->getTempDataValue('trading_name'),
-//        '%form_id' => $this->getFormId(),
-//      ];
-//      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-//    }
-//
-//    // Go back to the overview.
-//    $form_state->setRedirect($this->getFlow()->getRouteByStep(4), $this->getRouteParams());
+    // Save the value for the trading name field.
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    $par_data_organisation = current($par_data_partnership->getOrganisation());
+    $sic_code_delta = $this->getRouteParam('sic_code_delta');
+
+    $items = $par_data_organisation->get('field_sic_code')->getValue();
+
+    $items[$sic_code_delta] = ['target_id' => $this->getTempDataValue('sic_code')];
+    $par_data_organisation->set('field_sic_code', $items);
+
+    if ($par_data_organisation->save()) {
+      $this->deleteStore();
+    }
+    else {
+      $message = $this->t('This %field could not be saved for %form_id');
+      $replacements = [
+        '%field' => $this->getTempDataValue('trading_name'),
+        '%form_id' => $this->getFormId(),
+      ];
+      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+    }
+
   }
 
 }

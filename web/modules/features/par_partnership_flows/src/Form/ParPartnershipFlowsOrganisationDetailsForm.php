@@ -386,22 +386,31 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       ]),
     ];
 
-    $form['advice'] = [
-      '#type' => 'fieldset',
-      '#title' => t('Advice and Documents:'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-    $form['advice']['edit'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()
-          ->getNextLink('advice')
-          ->setText('See all Advice')
-          ->toString(),
-      ]),
-    ];
+    if ($this->getFlowName() === 'partnership_direct') {
+      $form['sic_code'] = [
+        '#type' => 'fieldset',
+        '#title' => t('SIC Code:'),
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+
+      $sic_codes = $par_data_organisation->getSicCode();
+
+      foreach ($sic_codes as $key => $sic_code) {
+        $id = $sic_code->id();
+
+        $sic_code_view_builder = $this->getParDataManager()->getViewBuilder('par_data_sic_code');
+        $sic_code_item = $sic_code_view_builder->view($sic_code, 'full');
+        $form['sic_code'][$id]['item'] = $this->renderMarkupField($sic_code_item);
+
+        $form['sic_code'][$id]['edit'] = [
+          '#type' => 'markup',
+          '#markup' => t('@link', [
+            '@link' => $this->getFlow()->getNextLink('edit_sic', ['sic_code_delta' => $key])->setText('edit')->toString(),
+          ]),
+        ];
+      }
+    }
 
     // Contacts.
     // Local Authority.
