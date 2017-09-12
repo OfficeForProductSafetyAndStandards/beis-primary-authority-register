@@ -397,18 +397,23 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       $sic_codes = $par_data_organisation->getSicCode();
 
       foreach ($sic_codes as $key => $sic_code) {
-        $id = $sic_code->id();
+        if ($id = $sic_code->id()) {
 
-        $sic_code_view_builder = $this->getParDataManager()->getViewBuilder('par_data_sic_code');
-        $sic_code_item = $sic_code_view_builder->view($sic_code, 'full');
-        $form['sic_code'][$id]['item'] = $this->renderMarkupField($sic_code_item);
+          $sic_code_view_builder = $this->getParDataManager()
+            ->getViewBuilder('par_data_sic_code');
+          $sic_code_item = $sic_code_view_builder->view($sic_code, 'full');
+          $form['sic_code'][$id]['item'] = $this->renderMarkupField($sic_code_item);
 
-        $form['sic_code'][$id]['edit'] = [
-          '#type' => 'markup',
-          '#markup' => t('@link', [
-            '@link' => $this->getFlow()->getNextLink('edit_sic', ['sic_code_delta' => $key])->setText('edit')->toString(),
-          ]),
-        ];
+          $form['sic_code'][$id]['edit'] = [
+            '#type' => 'markup',
+            '#markup' => t('@link', [
+              '@link' => $this->getFlow()
+                ->getNextLink('edit_sic', ['sic_code_delta' => $key])
+                ->setText('edit')
+                ->toString(),
+            ]),
+          ];
+        }
       }
     }
 
