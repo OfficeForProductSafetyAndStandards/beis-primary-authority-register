@@ -113,26 +113,29 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Save the value for the trading name field.
-    $par_data_partnership = $this->getRouteParam('par_data_partnership');
-    $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $sic_code_delta = $this->getRouteParam('sic_code_delta');
+    // Save the edited value for the organisation's sic code field.
+    $organisation_id = $this->getTempDataValue('organisation_edit');
+    $sic_code_delta = $this->getTempDataValue('sic_code_edit');
 
-    $items = $par_data_organisation->get('field_sic_code')->getValue();
+    if ($organisation_id && $sic_code_delta) {
+      if ($par_data_organisation = $this->getParDataManager()->getEntityTypeStorage('par_data_organisation')->load($organisation_id)) {
+        $items = $par_data_organisation->get('field_sic_code')->getValue();
+        $items[$sic_code_delta] = $this->getTempDataValue('sic_code');
+        $par_data_organisation->set('field_sic_code', $items);
+      }
 
-    $items[$sic_code_delta] = ['target_id' => $this->getTempDataValue('sic_code')];
-    $par_data_organisation->set('field_sic_code', $items);
+      var_dump($items[$sic_code_delta]); die;
 
-    if ($par_data_organisation->save()) {
-      $this->deleteStore();
-    }
-    else {
-      $message = $this->t('This %field could not be saved for %form_id');
-      $replacements = [
-        '%field' => $this->getTempDataValue('trading_name'),
-        '%form_id' => $this->getFormId(),
-      ];
-      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+      if ($par_data_organisation->save()) {
+        $this->deleteStore();
+      } else {
+        $message = $this->t('This %field could not be saved for %form_id');
+        $replacements = [
+          '%field' => $this->getTempDataValue('trading_name'),
+          '%form_id' => $this->getFormId(),
+        ];
+        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+      }
     }
 
   }

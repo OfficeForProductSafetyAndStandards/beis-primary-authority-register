@@ -130,15 +130,15 @@ class ParDataManager implements ParDataManagerInterface {
   public function getParBundleEntity(string $type, $bundle = NULL) {
     $entity_type = $this->getParEntityType($type);
     $definition = $entity_type ? $this->getEntityBundleDefinition($entity_type) : NULL;
-    $bundles = $definition ? $this->getEntityTypeStorage($definition)->loadMultiple() : [];
+    $bundles = $definition ? $this->getEntityTypeStorage($definition->id())->loadMultiple() : [];
     return $bundles && isset($bundles[$bundle]) ? $bundles[$bundle] : current($bundles);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getEntityTypeStorage(EntityTypeInterface $definition) {
-    return $this->entityManager->getStorage($definition->id()) ?: NULL;
+  public function getEntityTypeStorage($definition) {
+    return $this->entityManager->getStorage($definition) ?: NULL;
   }
 
   /**
@@ -487,7 +487,7 @@ class ParDataManager implements ParDataManagerInterface {
   public function getRegulatoryFunctionsAsOptions() {
     $options = [];
     $storage = $this->getParEntityType('par_data_regulatory_function');
-    foreach ($this->getEntityTypeStorage($storage)->loadMultiple() as $function) {
+    foreach ($this->getEntityTypeStorage($storage->id())->loadMultiple() as $function) {
       $options[$function->id()] = $function->get('function_name')->getString();
     }
 
