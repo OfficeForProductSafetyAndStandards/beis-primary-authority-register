@@ -188,7 +188,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
     $form['employee_no']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('employees')->setText('edit')->toString(),
+        '@link' => $this->getFlow()->getNextLink('size')->setText('edit')->toString(),
       ]),
     ];
 
