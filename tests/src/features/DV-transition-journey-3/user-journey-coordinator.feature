@@ -1,4 +1,4 @@
-@ci @journey3
+@ci @journey3 @deprecated
 Feature: Coordinator User - Manage Addresses
 
     Background:

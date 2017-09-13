@@ -16,7 +16,7 @@ function par_roles_help($route_name, RouteMatchInterface $route_match) {
     case 'help.page.par_roles':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('Defines roles for PAR Users and funnels users down the right journey&#039;s depending on their roles.') . '</p>';
+      $output .= '<p>' . t('Defines roles for PAR Users and allowing them to perform the necessary actions based on their roles.') . '</p>';
       return $output;
 
     default:
@@ -29,9 +29,14 @@ function par_roles_user_presave($account) {
   if ($par_data_manager->isMemberOfAuthority($account) && !$account->hasRole('par_authority')) {
     $account->addRole('par_authority');
   }
+  if ($par_data_manager->isMemberOfOrganisation($account) && !$account->hasRole('par_organisation')) {
+    $account->addRole('par_organisation');
+  }
+  // {@deprecated}
   if ($par_data_manager->isMemberOfCoordinator($account) && !$account->hasRole('par_coordinator')) {
     $account->addRole('par_coordinator');
   }
+  // {@deprecated}
   if ($par_data_manager->isMemberOfBusiness($account) && !$account->hasRole('par_business')) {
     $account->addRole('par_business');
   }

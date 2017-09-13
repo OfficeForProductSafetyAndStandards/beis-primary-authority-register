@@ -1,19 +1,18 @@
-uuid: d91b1591-8ef3-4d04-9a2b-981eb62b07b5
+uuid: 1c6726cf-fe88-4b28-a935-acac0bd5da42
 langcode: en
 status: true
 dependencies: {  }
-name: welcome_reminder
-label: 'Welcome reminder'
+name: dashboard
+label: Dashboard
 triggers:
   registration: registration
   login: login
   one-time-login: one-time-login
-destination_path: 'internal:/welcome-reminder'
+destination_path: 'internal:/dashboard'
 pages_type: 0
 pages: ''
 roles:
   par_authority: par_authority
-  par_business: par_business
-  par_coordinator: par_coordinator
+  par_business: par_organisation
 weight: 0
 enabled: true

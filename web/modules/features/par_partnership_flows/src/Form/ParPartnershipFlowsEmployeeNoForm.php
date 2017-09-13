@@ -40,7 +40,7 @@ class ParPartnershipFlowsEmployeeNoForm extends ParBaseForm {
       // the form about them.
       $par_data_organisation = current($par_data_partnership->getOrganisation());
 
-      $this->loadDataValue('business_size', $par_data_organisation->get('size')->getString());
+      $this->loadDataValue('employees_band', $par_data_organisation->get('employees_band')->getString());
     }
   }
 
@@ -49,16 +49,20 @@ class ParPartnershipFlowsEmployeeNoForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
+    $organisation_bundle = $this->getParDataManager()->getParBundleEntity('par_data_organisation');
 
     $form['info'] = [
-      '#markup' => t('Employee No.'),
+      '#markup' => t('Edit the number of employees that work across your organisation.'),
+      '#prefix' => '<h2>',
+      '#suffix' => '</h2>',
     ];
 
     // Business details.
-    $form['business_size'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Number of associations'),
-      '#default_value' => $this->getDefaultValues('business_size'),
+    $form['employees_band'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Number of employees'),
+      '#default_value' => $this->getDefaultValues('employees_band'),
+      '#options' => $organisation_bundle->getAllowedValues('employees_band'),
     ];
 
     $form['save'] = [
@@ -92,6 +96,22 @@ class ParPartnershipFlowsEmployeeNoForm extends ParBaseForm {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
+
+    // Save the value for the about_partnership field.
+    $partnership = $this->getRouteParam('par_data_partnership');
+    $par_data_organisation = current($partnership->getOrganisation());
+    $par_data_organisation->set('employees_band', $this->getTempDataValue('employees_band'));
+    if ($par_data_organisation->save()) {
+      $this->deleteStore();
+    }
+    else {
+      $message = $this->t('The %field field could not be saved for %form_id');
+      $replacements = [
+        '%field' => 'size',
+        '%form_id' => $this->getFormId(),
+      ];
+      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+    }
   }
 
 }

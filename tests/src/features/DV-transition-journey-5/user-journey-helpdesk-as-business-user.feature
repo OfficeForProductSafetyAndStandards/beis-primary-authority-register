@@ -1,4 +1,4 @@
-@ci @journey5
+@ci @journey5 @deprecated
 Feature: Helpdesk As Business User - Manage Addresses
 
     Background:
