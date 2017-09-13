@@ -151,7 +151,7 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
 
     $form['save'] = [
       '#type' => 'submit',
-      '#name' => 'save',
+      '#name' => 'done',
       '#value' => $this->t('Done'),
     ];
 

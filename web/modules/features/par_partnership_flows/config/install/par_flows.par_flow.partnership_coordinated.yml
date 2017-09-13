@@ -19,6 +19,7 @@ steps:
       edit_trading_name: 10
       edit_sector: 11
       edit_size: 12
+      done: 13
   2:
     route: par_partnership_flows.about_business
     form_id: par_partnership_about_business
@@ -85,3 +86,5 @@ steps:
     redirect:
       save: 1
       cancel: 1
+  13:
+    route: view.par_user_partnerships.partnerships_page

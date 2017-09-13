@@ -31,18 +31,16 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
    * @param int $sic_code_delta
    *   The field delta to update.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, $sic_code_delta = NULL) {
-    if ($par_data_partnership) {
+  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, $field_sic_code_delta = NULL) {
+    if (!is_null($field_sic_code_delta)) {
       // If we're editing an entity we should set the state
       // to something other than default to avoid conflicts
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()}");
-    }
 
-    if (!is_null($sic_code_delta)) {
       // Store the current value of the sic_code if it's being edited.
       $par_data_organisation = current($par_data_partnership->getOrganisation());
-      $sic_code = $par_data_organisation ? $par_data_organisation->get('field_sic_code')->referencedEntities()[$sic_code_delta] : NULL;
+      $sic_code = $par_data_organisation ? $par_data_organisation->get('field_sic_code')->referencedEntities()[$field_sic_code_delta] : NULL;
       if ($id = $sic_code->id()) {
         $this->loadDataValue("sic_code", $id);
       }
@@ -53,14 +51,14 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $sic_code_delta = NULL) {
-    $this->retrieveEditableValues($par_data_partnership, $sic_code_delta);
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $field_sic_code_delta = NULL) {
+    $this->retrieveEditableValues($par_data_partnership, $field_sic_code_delta);
     $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $form['intro'] = [
-      '#markup' => $this->t('Change the SIC Code of your organisation'),
-      '#prefix' => '<h2>',
-      '#suffix' => '</h2>',
-    ];
+
+    // Display the correct introductory text based on the action that is being performed.
+    $intro_text = $this->getDefaultValues("sic_code", NULL) ?
+      'Change the SIC Code of your organisation' :
+      'Add a new SIC Code to your organisation';
 
     $options = [];
     // Get the list of valid sic codes.
@@ -72,7 +70,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
 
     $form['sic_code'] = [
       '#type' => 'select',
-      '#title' => $this->t('SIC Code'),
+      '#title' => $this->t($intro_text),
       '#options' => $options,
       '#default_value' => $this->getDefaultValues("sic_code"),
     ];
@@ -104,7 +102,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
     // Save the edited value for the organisation's sic code field.
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
     $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $sic_code_delta = $this->getRouteParam('sic_code_delta');
+    $sic_code_delta = $this->getRouteParam('field_sic_code_delta');
 
     $items = $par_data_organisation->get('field_sic_code')->getValue();
     if ($par_data_organisation && isset($sic_code_delta)) {
