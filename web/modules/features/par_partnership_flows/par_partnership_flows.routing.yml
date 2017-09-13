@@ -356,5 +356,3 @@ par_partnership_flows.business_size:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-
-
