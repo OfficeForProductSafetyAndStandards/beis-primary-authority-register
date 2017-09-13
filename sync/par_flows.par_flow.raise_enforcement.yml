@@ -3,25 +3,30 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: aiz61NiUGDvhWMWDKA2D2iE6GooF_k0X-jgzrK_dgrE
+  default_config_hash: zkCSewKjd1U6tZohcjMa3eBpgWLWY0Sx8sRbGPlE2f4
 id: raise_enforcement
 label: 'Raise Enforcement'
 description: 'The creation flow of an enforcement notice.'
 steps:
   1:
+    route: par_enforcement_flows.partnership_page
+    redirect:
+      raise: 2
+      done: 5
+  2:
     route: par_enforcement_flows.raise
     form_id: par_enforcement_notice_raise
     redirect:
-      next: 3
+      next: 4
       cancel: 4
-  2:
+  3:
     route: par_enforcement_flows.add_action
     form_id: par_enforcement_notice_add_action
     redirect:
-      next: 1
-      cancel: 1
-  3:
+      next: 2
+      cancel: 2
+  4:
     route: par_enforcement_flows.raise_confirm
     form_id: par_enforcement_notice_raise_confirm
-  4:
-    route: par_enforcement_flows.partnership_page
+  5:
+    route: par_dashboards.dashboard
