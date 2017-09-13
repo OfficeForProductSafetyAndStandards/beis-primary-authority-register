@@ -13,8 +13,8 @@ steps:
       edit_address: 4
       add_contact: 5
       edit_contact: 6
-      add_legal: 7
-      edit_legal: 8
+      add_field_legal_entity: 7
+      edit_field_legal_entity: 8
       add_trading: 9
       edit_trading: 10
       add_field_sic_code: 11

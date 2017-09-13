@@ -112,67 +112,6 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       // Add the SIC Codes with the relevant operational links.
       $form['sic_codes'] = $this->renderSection('SIC Codes', $par_data_organisation, ['field_sic_code' => 'full'], ['edit-field', 'add']);
 
-
-//      $par_data_sic_code = $par_data_organisation->get('field_sic_code');
-//      $form['sic_codes'] = [
-//        '#type' => 'fieldset',
-//        '#title' => t('SIC Codes:'),
-//        '#attributes' => ['class' => 'form-group'],
-//        '#collapsible' => FALSE,
-//        '#collapsed' => FALSE,
-//      ];
-//
-//      // Check to see if there are any sic codes to be shown.
-//      if (!$par_data_sic_code->isEmpty()) {
-//        $form['sic_codes']['items'] = [
-//          '#type' => 'fieldset',
-//          '#attributes' => ['class' => 'form-group'],
-//          '#collapsible' => FALSE,
-//          '#collapsed' => FALSE,
-//        ];
-//
-//        foreach ($par_data_sic_code->referencedEntities() as $delta => $entity) {
-//          $entity_view_builder = $this->getParDataManager()->getViewBuilder($entity->getEntityTypeId());
-//          $rendered_entity = $entity_view_builder->view($entity, 'full');
-//          $form['sic_codes']['items'][$delta] = $this->renderMarkupField($rendered_entity);
-//
-//          try {
-//            $params = ['sic_code_delta' => $delta];
-//            $edit_link = $this->getFlow()->getLinkByCurrentOperation('edit_sic', $params)->setText('edit')->toString();
-//          }
-//          catch (ParFlowException $e) {
-//            $this->getLogger($this->getLoggerChannel())->error($e);
-//          }
-//          if (isset($edit_link)) {
-//            $form['sic_codes']['items'][$delta]['edit'] = [
-//              '#type' => 'markup',
-//              '#markup' => t('@link', ['@link' => $edit_link]),
-//            ];
-//          }
-//        }
-//      } else {
-//        $form['sic_codes']['none'] = [
-//          '#type' => 'markup',
-//          '#markup' => $this->t('(none)'),
-//        ];
-//      }
-//
-//      $form['sic_codes']['operations'] = [
-//        '#type' => 'fieldset',
-//        '#attributes' => ['class' => 'form-group'],
-//        '#collapsible' => FALSE,
-//        '#collapsed' => FALSE,
-//      ];
-//
-//      $form['sic_codes']['operations']['add'] = [
-//        '#markup' => t('@link', [
-//          '@link' => $this->getFlow()
-//            ->getNextLink('add_sic')
-//            ->setText('add another')
-//            ->toString(),
-//        ]),
-//      ];
-
       // Number of employees.
       $form['employee_no'] = [
         '#type' => 'fieldset',
@@ -207,49 +146,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
     }
 
     // Display all the legal entities along with the links for the allowed operations on these.
-    $form['legal_entity'] = [
-      '#type' => 'fieldset',
-      '#title' => t('Legal Entities:'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    $par_data_legal_entities = $par_data_organisation->get('field_legal_entity');
-    if (!$par_data_legal_entities->isEmpty()) {
-      $legal_entity_view_builder = $this->getParDataManager()->getViewBuilder('par_data_legal_entity');
-      $form['legal_entity']['existing'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
-
-      foreach ($par_data_legal_entities->referencedEntities() as $delta => $legal_entity) {
-        $rendered_legal_entity = $legal_entity_view_builder->view($legal_entity, 'summary');
-        $form['legal_entity']['existing'][$delta]['entity'] = $this->renderMarkupField($rendered_legal_entity);
-        $form['legal_entity']['existing'][$delta]['edit'] = [
-          '#type' => 'markup',
-          '#markup' => t('@link', [
-            '@link' => $this->getFlow()->getNextLink('edit_legal', [
-              'par_data_legal_entity' => $legal_entity->id(),
-            ])->setText('edit')->toString(),
-          ]),
-        ];
-      }
-    }
-
-    $form['legal_entity']['operations'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-    $form['legal_entity']['operations']['add'] = [
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('add_legal')->setText('add another')->toString(),
-      ]),
-    ];
+    $form['legal_entities'] = $this->renderSection('Legal Entities', $par_data_organisation, ['field_legal_entity' => 'summary'], ['edit-entity', 'add']);
 
     // Display all the trading names along with the links for the allowed operations on these.
     $par_data_trading_names = $par_data_organisation->get('trading_name')->getValue();
