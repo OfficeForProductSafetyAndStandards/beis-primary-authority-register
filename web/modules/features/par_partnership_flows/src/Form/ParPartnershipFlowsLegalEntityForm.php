@@ -66,17 +66,11 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $par_data_legal_entity);
     $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
 
-    if (!empty($par_data_legal_entity)) {
-      $id = $par_data_legal_entity->id();
-      $form['intro'] = [
-        '#markup' => $this->t('Edit the legal entity'),
-      ];
-    }
-    else {
-      $form['intro'] = [
-        '#markup' => $this->t('Add a legal entity for your business'),
-      ];
-    }
+    $form['intro'] = [
+      '#markup' => $this->t('Change the legal entity for your organisation'),
+      '#prefix' => '<h2>',
+      '#suffix' => '</h2>',
+    ];
 
     $form['registered_name'] = [
       '#type' => 'textfield',
@@ -106,6 +100,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     $form['save'] = [
       '#type' => 'submit',
       '#save' => 'save',
+      '#name' => 'save',
       '#value' => t('Save'),
     ];
 
