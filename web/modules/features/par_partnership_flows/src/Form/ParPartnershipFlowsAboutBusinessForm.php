@@ -59,10 +59,16 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
 
     $this->retrieveEditableValues($par_data_partnership);
 
+    $form['intro'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('Edit the details about your organisation'),
+      '#prefix' => '<h2>',
+      '#suffix' => '</h2>',
+    ];
+
     // Business details.
     $form['about_business'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('Edit the details about your business'),
       '#default_value' => $this->getDefaultValues('about_business'),
       '#description' => '<p>Use this section to give a brief overview of the business.</p><p>Include any information you feel may be useful to enforcing authorities.</p>',
     ];

@@ -57,7 +57,9 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $sic_code_delta);
     $par_data_organisation = current($par_data_partnership->getOrganisation());
     $form['intro'] = [
-      '#markup' => $this->t('Change the SIC Code of your business'),
+      '#markup' => $this->t('Change the SIC Code of your organisation'),
+      '#prefix' => '<h2>',
+      '#suffix' => '</h2>',
     ];
 
     $options = [];
