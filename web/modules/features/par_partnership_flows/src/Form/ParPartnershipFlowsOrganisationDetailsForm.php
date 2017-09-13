@@ -55,18 +55,13 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
     $par_data_organisation = current($par_data_partnership->getOrganisation());
     $organisation_builder = $this->getParDataManager()->getViewBuilder('par_data_organisation');
 
-    $form['details_intro'] = [
-      '#markup' => "Review and confirm the details of your partnership with " . $par_data_authority->authority_name->getString(),
-    ];
-
-    $form['details_intro'] = [
+    $string = $par_data_partnership->isDirect() ? 'direct' : 'coordinated';
+    $form['type'] = [
       '#type' => 'markup',
-      '#markup' => t('Primary authority information for:'),
+      '#markup' => $string,
     ];
 
     $business_name = $organisation_builder->view($par_data_organisation, 'title');
-    $business_name['#prefix'] = '<h1>';
-    $business_name['#suffix'] = '</h1>';
     $form['business_name'] = $this->renderMarkupField($business_name);
 
     // Registered address.
@@ -114,207 +109,198 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       ]),
     ];
 
-    // Sic Codes.
-    $par_data_sic_code = $par_data_organisation->getSicCode();
+    // Only show SIC Codes and Employee number if the partnership is a direct partnership.
+    if ($par_data_partnership->isDirect()) {
+      $par_data_sic_code = $par_data_organisation->getSicCode();
 
-    $form['sic_codes'] = [
-      '#type' => 'fieldset',
-      '#title' => t('SIC Code:'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
+//      $form['sic_codes'] = [
+//        '#type' => 'fieldset',
+//        '#title' => t('SIC Code:'),
+//        '#attributes' => ['class' => 'form-group'],
+//        '#collapsible' => FALSE,
+//        '#collapsed' => FALSE,
+//      ];
+//
+//      // Check to see if there are any sic codes to be shown.
+//      if ($par_data_sic_code) {
+//        foreach ($par_data_sic_code as $key => $sic_code) {
+//          $sic_code_view_builder = $this->getParDataManager()->getViewBuilder('par_data_sic_code');
+//          $sic_code_item = $sic_code_view_builder->view($sic_code, 'full');
+//          $form['sic_codes'][$sic_code->id()] = $this->renderMarkupField($sic_code_item);
+//          $form['sic_codes'][$sic_code->id()]['edit'] = [
+//            '#type' => 'markup',
+//            '#markup' => t('@link', [
+//              '@link' => $this->getFlow()->getNextLink('edit_sic', [
+//                'sic_code_delta' => $key,
+//              ])->setText('edit')->toString(),
+//            ]),
+//          ];
+//        }
+//      } else {
+//        $form['sic_codes']['none'] = [
+//          '#type' => 'markup',
+//          '#markup' => $this->t('(none)'),
+//        ];
+//      }
+//
+//      $form['sic_codes_add'] = [
+//        '#type' => 'fieldset',
+//        '#attributes' => ['class' => 'form-group'],
+//        '#collapsible' => FALSE,
+//        '#collapsed' => FALSE,
+//      ];
+//
+//      $form['sic_codes_add']['add'] = [
+//        '#markup' => t('@link', [
+//          '@link' => $this->getFlow()
+//            ->getNextLink('add_sic')
+//            ->setText('add another')
+//            ->toString(),
+//        ]),
+//      ];
 
-    // Check to see if there are any sic codes to be shown.
-    if ($par_data_sic_code) {
-      foreach ($par_data_sic_code as $key => $sic_code) {
-        $sic_code_view_builder = $this->getParDataManager()->getViewBuilder('par_data_sic_code');
-        $sic_code_item = $sic_code_view_builder->view($sic_code, 'full');
-        $form['sic_codes'][$sic_code->id()] = $this->renderMarkupField($sic_code_item);
-        $form['sic_codes'][$sic_code->id()]['edit'] = [
+      // Number of employees.
+      $form['employee_no'] = [
+        '#type' => 'fieldset',
+        '#title' => t('Number of Employees:'),
+        '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+
+      if (!$par_data_organisation->get('employees_band')->isEmpty()) {
+        $form['employee_no']['item'] = [
           '#type' => 'markup',
-          '#markup' => t('@link', [
-            '@link' => $this->getFlow()->getNextLink('edit_sic', [
-              'sic_code_delta' => $key,
-            ])->setText('edit')->toString(),
-          ]),
+          '#markup' => $par_data_organisation->get('employees_band')->getString(),
+        ];
+      } else {
+        $form['employee_no']['item'] = [
+          '#type' => 'markup',
+          '#markup' => $this->t('(none)'),
         ];
       }
-    }
-    else {
-      $form['sic_codes']['none'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('(none)'),
-      ];
-    }
-
-    $form['sic_codes_add'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    $form['sic_codes_add']['add'] = [
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()
-          ->getNextLink('add_sic')
-          ->setText('add another')
-          ->toString(),
-      ]),
-    ];
-
-    // Number of employees.
-    $form['employee_no'] = [
-      '#type' => 'fieldset',
-      '#title' => t('Number of Employees:'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    if (!$par_data_organisation->get('employees_band')->isEmpty()) {
-      $form['employee_no']['item'] = [
-        '#type' => 'markup',
-        '#markup' => $par_data_organisation->get('employees_band')->getString(),
-      ];
-    }
-    else {
-      $form['employee_no']['item'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('(none)'),
-      ];
-    }
-    $form['employee_no']['edit'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('size')->setText('edit')->toString(),
-      ]),
-    ];
-
-    // Legal Entities.
-    $par_data_legal_entities = $par_data_organisation->getLegalEntity();
-    $par_data_legal_entity = array_shift($par_data_legal_entities);
-    $form['legal_entity'] = [
-      '#type' => 'fieldset',
-      '#title' => t('Legal Entities:'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    if ($par_data_legal_entity) {
-
-      $legal_entity_view_builder = $this->getParDataManager()
-        ->getViewBuilder('par_data_legal_entity');
-      $legal_entity = $legal_entity_view_builder->view($par_data_legal_entity, 'full');
-      $form['legal_entity']['entity'] = $this->renderMarkupField($legal_entity);
-      $form['legal_entity']['edit'] = [
+      $form['employee_no']['edit'] = [
         '#type' => 'markup',
         '#markup' => t('@link', [
-          '@link' => $this->getFlow()->getNextLink('edit_legal', [
-            'par_data_legal_entity' => $par_data_legal_entity->id(),
-          ])->setText('edit')->toString(),
+          '@link' => $this->getFlow()->getNextLink('size')->setText('edit')->toString(),
         ]),
       ];
-
-      if ($par_data_legal_entities) {
-
-        foreach ($par_data_legal_entities as $legal_entity_item) {
-          $legal_entity_id = $legal_entity_item->id();
-
-          $form['legal_entity_' . $legal_entity_id] = [
-            '#type' => 'fieldset',
-            '#attributes' => ['class' => 'form-group'],
-            '#collapsible' => FALSE,
-            '#collapsed' => FALSE,
-          ];
-
-          $alternative_legal = $legal_entity_view_builder->view($legal_entity_item, 'full');
-
-          $form['legal_entity_' . $legal_entity_id]['item'] = $this->renderMarkupField($alternative_legal);
-
-          $form['legal_entity_' . $legal_entity_id]['edit'] = [
-            '#type' => 'markup',
-            '#markup' => t('@link', [
-              '@link' => $this->getFlow()->getNextLink('edit_legal', [
-                'par_data_legal_entity' => $legal_entity_id,
-              ])->setText('edit')->toString(),
-            ]),
-          ];
-
-        }
-      }
     }
 
-    $form['legal_entity_add'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    $form['legal_entity_add']['add'] = [
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('add_legal')->setText('add another')->toString(),
-      ]),
-    ];
-
-    // Trading names.
-    $par_data_trading_names = $par_data_organisation->get('trading_name')->getValue();
-    $form['trading_names'] = [
-      '#type' => 'fieldset',
-      '#title' => t('Trading Names:'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-    if ($par_data_trading_names) {
-      foreach ($par_data_trading_names as $key => $trading_name) {
-        $form['trading_names'][$key] = [
-          '#type' => 'fieldset',
-          '#attributes' => ['class' => 'form-group'],
-          '#collapsible' => FALSE,
-          '#collapsed' => FALSE,
-        ];
-
-        $form['trading_names'][$key]['entity'] = [
-          '#type' => 'markup',
-          '#markup' => $trading_name['value'],
-          '#prefix' => '<div>',
-          '#suffix' => '</div>',
-        ];
-
-        $form['trading_names'][$key]['edit'] = [
-          '#type' => 'markup',
-          '#markup' => t('@link', [
-            '@link' => $this->getFlow()->getNextLink('edit_trading', [
-              'trading_name_delta' => $key,
-            ])->setText('edit')->toString(),
-          ]),
-        ];
-
-      }
-    }
-    else {
-      $form['trading_names']['item'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('(none)'),
-      ];
+    // Only show Members list, Sectors and Number of businesses if the partnership is a coordinated partnership.
+    if ($par_data_partnership->isCoordinated()) {
+      // @TODO We have none of these fields yet and have no way to store them.
     }
 
-    $form['trading_names_add'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
+    // Display all the legal entities along with the links for the allowed operations on these.
+//
+//    $form['legal_entity'] = [
+//      '#type' => 'fieldset',
+//      '#title' => t('Legal Entities:'),
+//      '#attributes' => ['class' => 'form-group'],
+//      '#collapsible' => FALSE,
+//      '#collapsed' => FALSE,
+//    ];
+//
+//    $par_data_legal_entities = $par_data_organisation->get('field_legal_entity');
+//    if (!$par_data_legal_entities->isEmpty()) {
+//      $legal_entity_view_builder = $this->getParDataManager()->getViewBuilder('par_data_legal_entity');
+//      $form['legal_entity']['existing'] = [
+//        '#type' => 'fieldset',
+//        '#attributes' => ['class' => 'form-group'],
+//        '#collapsible' => FALSE,
+//        '#collapsed' => FALSE,
+//      ];
+//
+//      foreach ($par_data_legal_entities->referencedEntities() as $delta => $legal_entity) {
+//        $rendered_legal_entity = $legal_entity_view_builder->view($legal_entity, 'summary');
+//        $form['legal_entity']['existing'][$delta]['entity'] = $this->renderMarkupField($rendered_legal_entity);
+//        $form['legal_entity']['existing'][$delta]['edit'] = [
+//          '#type' => 'markup',
+//          '#markup' => t('@link', [
+//            '@link' => $this->getFlow()->getNextLink('edit_legal', [
+//              'par_data_legal_entity' => $legal_entity->id(),
+//            ])->setText('edit')->toString(),
+//          ]),
+//        ];
+//      }
+//    }
+//
+//    $form['legal_entity']['operations'] = [
+//      '#type' => 'fieldset',
+//      '#attributes' => ['class' => 'form-group'],
+//      '#collapsible' => FALSE,
+//      '#collapsed' => FALSE,
+//    ];
+//    $form['legal_entity']['operations']['add'] = [
+//      '#markup' => t('@link', [
+//        '@link' => $this->getFlow()->getNextLink('add_legal')->setText('add another')->toString(),
+//      ]),
+//    ];
 
-    $form['trading_names_add']['add'] = [
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('add_trading')->setText('add another')->toString(),
-      ]),
-    ];
+
+
+    // TEST
+    $form['sic_codes'] = $this->renderSection('SIC Codes', $par_data_organisation, ['field_sic_code' => 'full'], ['edit-field']);
+
+    $form['trading_names'] = $this->renderSection('Trading names', $par_data_organisation, ['trading_name' => 'title'], ['edit-field']);
+
+
+    // Display all the trading names along with the links for the allowed operations on these.
+//    $par_data_trading_names = $par_data_organisation->get('trading_name')->getValue();
+//    $form['trading_names'] = [
+//      '#type' => 'fieldset',
+//      '#title' => t('Trading Names:'),
+//      '#attributes' => ['class' => 'form-group'],
+//      '#collapsible' => FALSE,
+//      '#collapsed' => FALSE,
+//    ];
+//    if ($par_data_trading_names) {
+//      foreach ($par_data_trading_names as $key => $trading_name) {
+//        $form['trading_names'][$key] = [
+//          '#type' => 'fieldset',
+//          '#attributes' => ['class' => 'form-group'],
+//          '#collapsible' => FALSE,
+//          '#collapsed' => FALSE,
+//        ];
+//
+//        $form['trading_names'][$key]['entity'] = [
+//          '#type' => 'markup',
+//          '#markup' => $trading_name['value'],
+//          '#prefix' => '<div>',
+//          '#suffix' => '</div>',
+//        ];
+//
+//        $form['trading_names'][$key]['edit'] = [
+//          '#type' => 'markup',
+//          '#markup' => t('@link', [
+//            '@link' => $this->getFlow()->getNextLink('edit_trading', [
+//              'trading_name_delta' => $key,
+//            ])->setText('edit')->toString(),
+//          ]),
+//        ];
+//
+//      }
+//    }
+//    else {
+//      $form['trading_names']['item'] = [
+//        '#type' => 'markup',
+//        '#markup' => $this->t('(none)'),
+//      ];
+//    }
+//
+//    $form['trading_names_add'] = [
+//      '#type' => 'fieldset',
+//      '#attributes' => ['class' => 'form-group'],
+//      '#collapsible' => FALSE,
+//      '#collapsed' => FALSE,
+//    ];
+//
+//    $form['trading_names_add']['add'] = [
+//      '#markup' => t('@link', [
+//        '@link' => $this->getFlow()->getNextLink('add_trading')->setText('add another')->toString(),
+//      ]),
+//    ];
 
     $par_data_authority = current($par_data_partnership->getAuthority());
     $form['authority'] = [

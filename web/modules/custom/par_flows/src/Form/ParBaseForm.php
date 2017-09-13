@@ -162,6 +162,13 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   }
 
   /**
+   * Title callback default.
+   */
+  public function titleCallback() {
+    return $this->t('Primary Authority Register');
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getCacheContexts() {

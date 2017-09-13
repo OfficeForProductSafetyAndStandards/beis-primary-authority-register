@@ -134,7 +134,7 @@ par_partnership_flows.organisation_details:
   path: '/partnership/{par_data_partnership}/organisation-details'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsOrganisationDetailsForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsOrganisationDetailsForm::titleCallback'
   requirements:
     _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
     par_data_partnership: \d+
