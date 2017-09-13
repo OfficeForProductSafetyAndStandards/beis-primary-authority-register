@@ -26,9 +26,7 @@ trait ParPartnershipFlowsTrait {
     $account = User::Load($this->currentUser()->id());
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
 
-    // If the route is in only one flow then *perhaps* we can just return that
-    // flow...
-    // @TODO Is this a wanted feature?? Let's discuss.
+    // If the route is in only one flow then we're definately in that flow.
     $flows = \Drupal::entityTypeManager()->getStorage('par_flow')->loadByRoute($this->getCurrentRoute());
     if (count($flows) === 1) {
       return key($flows);
@@ -55,6 +53,8 @@ trait ParPartnershipFlowsTrait {
     if (isset($flows['partnership_coordinated']) && $par_data_partnership && $par_data_partnership->isCoordinated()) {
       return 'partnership_coordinated';
     }
+
+    var_dump($par_data_partnership->get('partnership_type')->getString());
 
     // Throw an error if the flow is still ambiguous.
     if (empty($this->flow) && count($flows) >= 1) {

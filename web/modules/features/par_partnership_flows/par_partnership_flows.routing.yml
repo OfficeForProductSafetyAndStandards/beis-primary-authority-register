@@ -261,20 +261,18 @@ par_partnership_flows.trading_name_add:
       par_data_partnership:
         type: entity:par_data_partnership
 par_partnership_flows.sic_code_edit:
-  path: '/partnership/{par_data_partnership}/sic-code/{par_data_sic_code}'
+  path: '/partnership/{par_data_partnership}/sic-code/{sic_code_delta}'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSicCodeForm'
     _title: 'Primary Authority Register'
   requirements:
     _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
     par_data_partnership: \d+
-    par_data_sic_code: \d+
+    sic_code_delta: \d+
   options:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-      par_data_sic_code:
-        type: entity:par_data_sic_code
 par_partnership_flows.sic_code_add:
   path: '/partnership/{par_data_partnership}/sic-code/add'
   defaults:

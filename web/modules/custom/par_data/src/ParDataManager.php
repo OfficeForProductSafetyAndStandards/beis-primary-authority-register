@@ -130,15 +130,15 @@ class ParDataManager implements ParDataManagerInterface {
   public function getParBundleEntity(string $type, $bundle = NULL) {
     $entity_type = $this->getParEntityType($type);
     $definition = $entity_type ? $this->getEntityBundleDefinition($entity_type) : NULL;
-    $bundles = $definition ? $this->getEntityTypeStorage($definition)->loadMultiple() : [];
+    $bundles = $definition ? $this->getEntityTypeStorage($definition->id())->loadMultiple() : [];
     return $bundles && isset($bundles[$bundle]) ? $bundles[$bundle] : current($bundles);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getEntityTypeStorage(EntityTypeInterface $definition) {
-    return $this->entityManager->getStorage($definition->id()) ?: NULL;
+  public function getEntityTypeStorage($definition) {
+    return $this->entityManager->getStorage($definition) ?: NULL;
   }
 
   /**
@@ -389,9 +389,11 @@ class ParDataManager implements ParDataManagerInterface {
    * {@deprecated}
    */
   public function isMemberOfCoordinator($account) {
-    foreach ($this->hasMembershipsByType($account, 'par_data_organisation',  TRUE) as $membership) {
-      if ($membership->bundle() === 'coordinator') {
-        return TRUE;
+    foreach ($this->hasMembershipsByType($account, 'par_data_organisation',  TRUE) as $id => $membership) {
+      foreach ($this->getEntitiesByProperty('par_data_partnership', 'field_organisation', $id) as $partnership) {
+        if ($partnership->isCoordinated()) {
+          return true;
+        }
       }
     }
 
@@ -404,9 +406,11 @@ class ParDataManager implements ParDataManagerInterface {
    * {@deprecated}
    */
   public function isMemberOfBusiness($account) {
-    foreach ($this->hasMembershipsByType($account, 'par_data_organisation',  TRUE) as $membership) {
-      if ($membership->bundle() === 'business') {
-        return TRUE;
+    foreach ($this->hasMembershipsByType($account, 'par_data_organisation',  TRUE) as $id => $membership) {
+      foreach ($this->getEntitiesByProperty('par_data_partnership', 'field_organisation', $id) as $partnership) {
+        if ($partnership->isDirect()) {
+          return true;
+        }
       }
     }
 
@@ -430,6 +434,21 @@ class ParDataManager implements ParDataManagerInterface {
     return $this->entityTypeManager
       ->getStorage($type)
       ->loadByProperties([$field => $value]);
+  }
+
+  /**
+   * A helper function to load entity properties.
+   *
+   * @param string $type
+   *   The entity type to load the field for.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface[]
+   *   An array of entities found with this value.
+   */
+  public function getEntitiesByType($type) {
+    return $this->entityManager
+      ->getStorage($type)
+      ->loadMultiple();
   }
 
   /**
@@ -468,7 +487,7 @@ class ParDataManager implements ParDataManagerInterface {
   public function getRegulatoryFunctionsAsOptions() {
     $options = [];
     $storage = $this->getParEntityType('par_data_regulatory_function');
-    foreach ($this->getEntityTypeStorage($storage)->loadMultiple() as $function) {
+    foreach ($this->getEntityTypeStorage($storage->id())->loadMultiple() as $function) {
       $options[$function->id()] = $function->get('function_name')->getString();
     }
 

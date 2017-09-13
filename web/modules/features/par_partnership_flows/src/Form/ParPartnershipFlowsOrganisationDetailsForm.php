@@ -116,6 +116,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
 
     // Sic Codes.
     $par_data_sic_code = $par_data_organisation->getSicCode();
+
     $form['sic_codes'] = [
       '#type' => 'fieldset',
       '#title' => t('SIC Code:'),
@@ -126,16 +127,15 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
 
     // Check to see if there are any sic codes to be shown.
     if ($par_data_sic_code) {
-      foreach ($par_data_sic_code as $sic_code) {
+      foreach ($par_data_sic_code as $key => $sic_code) {
         $sic_code_view_builder = $this->getParDataManager()->getViewBuilder('par_data_sic_code');
-        // @todo need to put these on one line.
         $sic_code_item = $sic_code_view_builder->view($sic_code, 'full');
         $form['sic_codes'][$sic_code->id()] = $this->renderMarkupField($sic_code_item);
         $form['sic_codes'][$sic_code->id()]['edit'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
             '@link' => $this->getFlow()->getNextLink('edit_sic', [
-              'par_data_sic_code' => $sic_code->id(),
+              'sic_code_delta' => $key,
             ])->setText('edit')->toString(),
           ]),
         ];
@@ -173,7 +173,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       '#collapsed' => FALSE,
     ];
 
-    if ($par_data_organisation->get('employees_band')->getString() !== '0') {
+    if (!$par_data_organisation->get('employees_band')->isEmpty()) {
       $form['employee_no']['item'] = [
         '#type' => 'markup',
         '#markup' => $par_data_organisation->get('employees_band')->getString(),
@@ -262,16 +262,17 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
 
     // Trading names.
     $par_data_trading_names = $par_data_organisation->get('trading_name')->getValue();
+    $form['trading_names'] = [
+      '#type' => 'fieldset',
+      '#title' => t('Trading Names:'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
     if ($par_data_trading_names) {
-      $form['trading_names'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
-      ];
-
       foreach ($par_data_trading_names as $key => $trading_name) {
         $form['trading_names'][$key] = [
           '#type' => 'fieldset',
-          '#title' => $key === 0 ? t('Trading Names:') : '',
           '#attributes' => ['class' => 'form-group'],
           '#collapsible' => FALSE,
           '#collapsed' => FALSE,
@@ -294,7 +295,12 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
         ];
 
       }
-
+    }
+    else {
+      $form['trading_names']['item'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('(none)'),
+      ];
     }
 
     $form['trading_names_add'] = [
@@ -386,22 +392,36 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       ]),
     ];
 
-    $form['advice'] = [
-      '#type' => 'fieldset',
-      '#title' => t('Advice and Documents:'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-    $form['advice']['edit'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()
-          ->getNextLink('advice')
-          ->setText('See all Advice')
-          ->toString(),
-      ]),
-    ];
+    if ($par_data_partnership->isDirect()) {
+      $form['sic_code'] = [
+        '#type' => 'fieldset',
+        '#title' => t('SIC Code:'),
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+
+      $sic_codes = $par_data_organisation->getSicCode();
+
+      foreach ($sic_codes as $key => $sic_code) {
+        if ($id = $sic_code->id()) {
+
+          $sic_code_view_builder = $this->getParDataManager()
+            ->getViewBuilder('par_data_sic_code');
+          $sic_code_item = $sic_code_view_builder->view($sic_code, 'full');
+          $form['sic_code'][$id]['item'] = $this->renderMarkupField($sic_code_item);
+
+          $form['sic_code'][$id]['edit'] = [
+            '#type' => 'markup',
+            '#markup' => t('@link', [
+              '@link' => $this->getFlow()
+                ->getNextLink('edit_sic', ['sic_code_delta' => $key])
+                ->setText('edit')
+                ->toString(),
+            ]),
+          ];
+        }
+      }
+    }
 
     // Contacts.
     // Local Authority.
