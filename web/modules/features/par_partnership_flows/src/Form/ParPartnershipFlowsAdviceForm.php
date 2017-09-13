@@ -25,6 +25,16 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  protected $formItems = [
+    'par_data_advice:advice' => [
+      'advice_type' => 'advice_type',
+      'field_regulatory_function' => 'regulatory_functions',
+    ],
+  ];
+
+  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
@@ -76,12 +86,11 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
         ];
     }
 
-    // Get files from "par_partnership_flows_advice_document_upload" step.
-    $files = $this->getDefaultValues("files", '', 'par_partnership_flows_advice_document_upload');
+    // Get files from "par_partnership_advice_upload" step.
+    $files = $this->getDefaultValues("files", '', 'par_partnership_advice_upload');
     if ($files) {
       // Show files.
       foreach ($files as $file) {
-
         $file = File::load($file);
 
         $form['file'][] = [
@@ -117,7 +126,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     ];
 
     // Go back to Advice Documents list.
-    $previous_link = $this->getFlow()->getLinkByStep(9)->setText('Cancel')->toString();
+    $previous_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
       '#markup' => t('@link', ['@link' => $previous_link]),
@@ -128,44 +137,6 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     $this->addCacheableDependency($advice_bundle);
 
     return parent::buildForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    // No validation yet.
-    parent::validateForm($form, $form_state);
-
-    $par_data_advice = $this->getRouteParam('par_data_advice');
-
-    // Check if are in the edit state.
-    if ($par_data_advice) {
-      $fields['advice_type'] = [
-        'value' => $form_state->getValue('advice_type'),
-        'key' => 'advice_type',
-        'tokens' => [
-          '%field' => $form['advice_type']['#title']->render(),
-        ],
-      ];
-
-      $fields['regulatory_function'] = [
-        'value' => $form_state->getValue('regulatory_functions'),
-        'type' => 'boolean',
-        'min_selected' => 1,
-        'key' => 'regulatory_functions',
-        'tokens' => [
-          '%field' => $form['regulatory_functions']['#title']->render(),
-        ],
-      ];
-
-      $errors = $par_data_advice->validateFields($fields);
-      // Display error messages.
-      foreach ($errors as $field => $message) {
-        $form_state->setErrorByName($field, $message);
-      }
-    }
-
   }
 
   /**
@@ -202,8 +173,8 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       }
     }
     else {
-      // Get files from "par_partnership_flows_advice_document_upload" step.
-      $files = $this->getDefaultValues('files', '', 'par_partnership_flows_advice_document_upload');
+      // Get files from "par_partnership_advice_upload" step.
+      $files = $this->getDefaultValues('files', '', 'par_partnership_advice_upload');
 
       $files_to_add = [];
 
@@ -267,11 +238,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
         ];
         $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
       }
-
     }
-
-    // Go back to the overview.
-    $form_state->setRedirect($this->getFlow()->getRouteByStep(9), $this->getRouteParams());
   }
 
 }

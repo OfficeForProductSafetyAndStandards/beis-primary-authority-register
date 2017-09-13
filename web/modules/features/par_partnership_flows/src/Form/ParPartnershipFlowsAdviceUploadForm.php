@@ -46,7 +46,6 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
-
     $par_data_advice_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('par_data_advice', 'document');
     $field_definition = $par_data_advice_fields['document'];
     $file_extensions = $field_definition->getSetting('file_extensions');
@@ -74,31 +73,13 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
     ];
 
     // Go back to Advice Documents list.
-    $previous_link = $this->getFlow()->getLinkByStep(9)->setText('Cancel')->toString();
+    $previous_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
       '#markup' => t('@link', ['@link' => $previous_link]),
     ];
 
     return parent::buildForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    // No validation yet.
-    parent::validateForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
-
-    // Go to the "document add" flow step.
-    $form_state->setRedirect($this->getFlow()->getRouteByStep(11), $this->getRouteParams());
   }
 
 }
