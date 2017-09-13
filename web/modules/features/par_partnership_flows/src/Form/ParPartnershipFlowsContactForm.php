@@ -48,15 +48,12 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
-    if ($par_data_partnership) {
-      // If we're editing an entity we should set the state
-      // to something other than default to avoid conflicts
-      // with existing versions of the same form.
-      $this->setState("edit:{$par_data_partnership->id()}");
-    }
 
     if ($par_data_person) {
-      // Contact.
+
+      $this->setState("edit:{$par_data_person->id()}");
+
+      // Load person data.
       $this->loadDataValue("salutation", $par_data_person->get('salutation')->getString());
       $this->loadDataValue("first_name", $par_data_person->get('first_name')->getString());
       $this->loadDataValue("last_name", $par_data_person->get('last_name')->getString());
@@ -74,7 +71,9 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
 
       // Checkboxes works nicely with keys, filtering booleans for "1" value.
       $this->loadDataValue('preferred_contact', array_keys($contact_options, 1));
+
     }
+
   }
 
   /**
