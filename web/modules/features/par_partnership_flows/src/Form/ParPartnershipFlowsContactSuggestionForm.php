@@ -7,6 +7,7 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
+use Drupal\user\Entity\User;
 
 /**
  * The de-duping form.
@@ -16,7 +17,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
   use ParPartnershipFlowsTrait;
 
   // @todo remove override.
-  protected $flow = 'partnership_authority';
+//  protected $flow = 'partnership_authority';
 
   //  protected $formItems = [
   //    'par_data_person:person' => [
@@ -84,41 +85,25 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
     //    $this->retrieveEditableValues($par_data_partnership);
     //    $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
 
-    $query = \Drupal::entityQuery('par_data_person');
+    $properties = [
+      'first_name' => $this->getDefaultValues('first_name', '', 'par_partnership_contact'),
+      'last_name' => $this->getDefaultValues('last_name', '', 'par_partnership_contact'),
+      'email' => $this->getDefaultValues('email', '', 'par_partnership_contact'),
+      'mobile_phone' => $this->getDefaultValues('mobile_phone', '', 'par_partnership_contact'),
+      'work_phone' => $this->getDefaultValues('work_phone', '', 'par_partnership_contact'),
+    ];
 
-    $conditions = $query->orConditionGroup()
-      //      ->condition(
-      //        'first_name',
-      //        $this->getDefaultValues('first_name', '', 'par_partnership_contact_add'),
-      //        'CONTAINS'
-      //      )
-      //      ->condition(
-      //        'last_name',
-      //        $this->getDefaultValues('last_name', '', 'par_partnership_contact_add'),
-      //        'CONTAINS'
-      //      )
-      ->condition(
-        'email',
-        $this->getDefaultValues('email', '', 'par_partnership_contact')
-      )
-      ->condition(
-        'mobile_phone',
-        $this->getDefaultValues('mobile_phone', '', 'par_partnership_contact')
-      )
-      ->condition(
-        'work_phone',
-        $this->getDefaultValues('work_phone', '', 'par_partnership_contact')
-      );
+    $people = [];
 
-    $ids = $query->condition($conditions)->range(0,10)->execute();
+    foreach ($properties as $property => $value) {
+      $people += \Drupal::entityManager()
+        ->getStorage('par_data_person')
+        ->loadByProperties([$property => $value]);
+    }
 
-    $person_storage = \Drupal::entityManager()->getStorage('par_data_person');
     $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
 
-    $people = $person_storage->loadMultiple($ids);
-
     foreach($people as $person) {
-
       $person_view = $person_view_builder->view($person, 'detailed');
 
       $people_options[$person->id()] = $this->renderMarkupField($person_view)['#markup'];
@@ -138,15 +123,14 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
       '#value' => t('Save'),
     ];
 
-//    $cancel_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
-//    $form['cancel'] = [
-//      '#type' => 'markup',
-//      '#markup' => t('@link', ['@link' => $cancel_link]),
-//    ];
+    $cancel_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
+    $form['cancel'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', ['@link' => $cancel_link]),
+    ];
 
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($person_view_builder);
-    $this->addCacheableDependency($person_storage);
     $this->addCacheableDependency($people);
 
     return parent::buildForm($form, $form_state);
@@ -158,29 +142,6 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
-    //    $par_data_person = $this->getRouteParam('par_data_person');
-    //    $form_items = [
-    //      'salutation' => 'salutation',
-    //      'first_name' => 'first_name',
-    //      'last_name' => 'last_name',
-    //      'work_phone' => 'work_phone',
-    //      'email' => 'email',
-    //    ];
-    //    foreach($form_items as $element_item => $form_item) {
-    //      $fields[$element_item] = [
-    //        'value' => $form_state->getValue($form_item),
-    //        'key' => $form_item,
-    //        'tokens' => [
-    //          '%field' => $form[$form_item]['#title']->render(),
-    //        ],
-    //      ];
-    //    }
-    //
-    //    $errors = $par_data_person->validateFields($fields);
-    //    // Display error messages.
-    //    foreach($errors as $field => $message) {
-    //      $form_state->setErrorByName($field, $message);
-    //    }
   }
 
   /**
@@ -253,7 +214,32 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
 
     }
     else {
-      // @todo store ID instead.
+
+      // @todo store user ID instead.
+
+      $person_id = $this->getTempDataValue('option');
+
+      if ($user = User::load($person_id)) {
+
+        // Add to field_authority_person.
+        $par_data_partnership->get('field_authority_person')
+          ->appendItem($user->id());
+
+        // Update field_person on authority.
+        $par_data_authority->get('field_person')
+          ->appendItem($user->id());
+
+      }
+      else {
+        $message = $this->t('This %person could not be added in %form_id');
+        $replacements = [
+          '%person' => $this->getTempDataValue('name'),
+          '%form_id' => $this->getFormId(),
+        ];
+        $this->getLogger($this->getLoggerChannel())
+          ->error($message, $replacements);
+      }
+
     }
 
     // Go back to the overview.

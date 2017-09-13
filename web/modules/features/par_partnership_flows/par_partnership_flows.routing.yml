@@ -301,7 +301,7 @@ par_partnership_flows.sic_code_edit:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSicCodeForm'
     _title: 'Primary Authority Register'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'manage my organisations'
     par_data_partnership: \d+
     field_sic_code_delta: \d+
   options:

@@ -205,13 +205,6 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
         $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
       }
     }
-    else {
-      // @TODO We will add the add de-duping in here.
-      // So instead of saving the new entity we will go
-      // to the add-confirm page for contacts (and save there).
-
-      $form_state->setRedirect('par_partnership_flows.authority_contact_add_confirm', $this->getRouteParams());
-    }
 
   }
 
