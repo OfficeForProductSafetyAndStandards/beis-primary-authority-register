@@ -33,13 +33,10 @@ trait ParDisplayTrait {
 
 
   public function renderTextField($entity, $field, $view_mode = 'summary', $operations = [], $single = FALSE) {
-    foreach ($field->getValue() as $delta => $value) {
-      var_dump($value);
-    }
-    $rendered_field = $entity->{$field->getName()}->view($view_mode);
+    $rendered_field = $entity->{$field->getName()}->view(['label' => 'hidden']);
     $elements = $this->renderMarkupField($rendered_field);
 
-    // We need to get the operations for this.
+    // @TODO We need to get the operations for this.
 
     return $elements;
   }
@@ -72,7 +69,7 @@ trait ParDisplayTrait {
         }
 
         try {
-          $edit_link = $this->getFlow()->getLinkByCurrentOperation('edit_' . $entity->getEntityTypeId(), $params)->setText('edit')->toString();
+          $edit_link = $this->getFlow()->getLinkByCurrentOperation('edit_' . $field->getName(), $params)->setText('edit')->toString();
         }
         catch (ParFlowException $e) {
           $this->getLogger($this->getLoggerChannel())->error($e);
@@ -109,9 +106,16 @@ trait ParDisplayTrait {
     }
 
     foreach ($fields as $field_name => $view_mode) {
+      $element[$field_name] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+
       $field = $entity->get($field_name);
       if (!$field->isEmpty()) {
-        $element['items'] = [
+        $element[$field_name]['items'] = [
           '#type' => 'fieldset',
           '#attributes' => ['class' => 'form-group'],
           '#collapsible' => FALSE,
@@ -120,32 +124,42 @@ trait ParDisplayTrait {
 
         // Reference fields need to be rendered slightly differently.
         if ($field instanceof EntityReferenceFieldItemListInterface) {
-          $element['items'] = $this->renderReferenceField($field, $view_mode, $operations, $single);
+          $element[$field_name]['items'] += $this->renderReferenceField($field, $view_mode, $operations, $single);
         }
         else {
-          $element['items'] = $this->renderTextField($entity, $field, $view_mode, $operations, $single);
+          $element[$field_name]['items'] += $this->renderTextField($entity, $field, $view_mode, $operations, $single);
         }
 
       }
       else {
-        $element['items'] = [
+        $element[$field_name]['items'] = [
           '#type' => 'markup',
           '#markup' => $this->t('(none)'),
         ];
       }
-    }
 
-    $element['operations'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-    $element['operations']['add'] = [
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('add_legal')->setText('add another')->toString(),
-      ]),
-    ];
+      $element[$field_name]['operations'] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+
+      // Only add the edit link if it is in the allowed operations.
+      if (isset($operations) && (in_array('add', $operations))) {
+        try {
+          $add_link = $this->getFlow()->getLinkByCurrentOperation('add_' . $field->getName())->setText('add another')->toString();
+        } catch (ParFlowException $e) {
+          $this->getLogger($this->getLoggerChannel())->error($e);
+        }
+        if (isset($add_link)) {
+          $element[$field_name]['operations']['add'] = [
+            '#type' => 'markup',
+            '#markup' => t('@link', ['@link' => $add_link]),
+          ];
+        }
+      }
+    }
 
     return $element;
   }

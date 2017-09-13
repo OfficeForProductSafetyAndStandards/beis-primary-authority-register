@@ -17,8 +17,8 @@ steps:
       edit_legal: 8
       add_trading: 9
       edit_trading: 10
-      add_sic: 11
-      edit_sic: 12
+      add_field_sic_code: 11
+      edit_field_sic_code: 12
       employees: 13
   2:
     route: par_partnership_flows.about_business
