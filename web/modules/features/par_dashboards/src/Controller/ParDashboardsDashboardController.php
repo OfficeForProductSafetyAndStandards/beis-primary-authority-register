@@ -45,7 +45,7 @@ class ParDashboardsDashboardController extends ParBaseController {
         $create_partnerships = $this->getLinkByRoute('view.par_user_partnerships.partnerships_page');
         $build['partnerships']['add'] = [
           '#type' => 'markup',
-          '#markup' => $create_partnerships->setText('Create a new partnership (TBC:need link)')->toString(),
+          '#markup' => $create_partnerships->setText('Create a new partnership')->toString(),
         ];
       }
     }
@@ -63,7 +63,7 @@ class ParDashboardsDashboardController extends ParBaseController {
       $manage_my_partnerships = $this->getLinkByRoute('view.par_user_partnerships.partnerships_page');
       $build['applications']['see'] = [
         '#type' => 'markup',
-        '#markup' => $manage_my_partnerships->setText('See my pending partnerships (TBC:need link)')->toString(),
+        '#markup' => $manage_my_partnerships->setText('See my pending partnerships')->toString(),
       ];
     }
 
@@ -95,7 +95,7 @@ class ParDashboardsDashboardController extends ParBaseController {
       ];
 
       // @TODO TO BE ADDED. WE NEED A SEPARATE VIEW PAGE FOR MANAGING ALL NOTICES.
-      $search_partnerships = $this->getLinkByRoute('view.par_user_enforcements.enforcment_notice_messages');
+      //$search_partnerships = $this->getLinkByRoute('view.par_user_enforcements.enforcment_notice_messages');
       $build['messages']['link'] = [
         '#type' => 'markup',
         '#markup' => $search_partnerships ? $search_partnerships->setText('See all outstanding enforcement notices')->toString() : '(none)',
