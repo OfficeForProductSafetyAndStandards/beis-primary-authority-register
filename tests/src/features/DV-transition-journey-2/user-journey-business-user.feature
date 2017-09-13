@@ -9,21 +9,22 @@ Feature: Business User - Manage Addresses
         # LOGIN SCREEN
 
         Given I am logged in as "par_business@example.com"
+        And I open the url "/dashboard"
         When I click on the link "See your partnerships"
 
         # PARTNERSHIPS DASHBOARD FILTERS
 
         And I add "DCBA" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+        And I click on the button "#edit-submit-par-user-partnerships"
         Then I expect that element "td.views-field.views-field-nothing" is not visible
         When I add "ABCD" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+        And I click on the button "#edit-submit-par-user-partnerships"
         Then I expect that element "td.views-field.views-field-nothing" contains the text "ABCD Mart"
         When I select the option with the text "Confirmed by Business" for element "#edit-partnership-status"
-        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+        And I click on the button "#edit-submit-par-user-partnerships"
         Then I expect that element "td.views-field.views-field-nothing" is not visible
         When I select the option with the text "Awaiting Review" for element "#edit-partnership-status"
-        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
+        And I click on the button "#edit-submit-par-user-partnerships"
         Then I expect that element "td.views-field.views-field-nothing" contains the text "ABCD Mart"
         When I click on the button "a*=ABCD Mart"
 
@@ -34,7 +35,6 @@ Feature: Business User - Manage Addresses
         Then I expect that element ".error-summary" contains the text "You must agree to the new terms and conditions"
         And I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-save"
-        And I scroll to element ".table-scroll-wrapper"
 
         # PARTNERSHIP TASKS
 
@@ -117,7 +117,6 @@ Feature: Business User - Manage Addresses
         And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
         And I add "987654321" to the inputfield "#edit-company-house-no"
         And I click on the button "#edit-save"
-        And I scroll to element "#edit-legal-entity"
         Then I expect that element "#edit-legal-entity" contains the text "Legal Entity Change"
         And I expect that element "#edit-legal-entity" contains the text "987654321"
         And I expect that element "#edit-legal-entity" contains the text "Limited Company"
@@ -137,7 +136,6 @@ Feature: Business User - Manage Addresses
 
         # REVIEW BUSINESS NAME AND SUMMARY
 
-        When I scroll to element "#par-flow-transition-business-details"
         And I click on the link "edit"
         And I add "Change to the about business details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-save"

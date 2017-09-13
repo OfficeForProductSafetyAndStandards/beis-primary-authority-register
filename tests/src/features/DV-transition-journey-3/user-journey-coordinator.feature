@@ -9,6 +9,7 @@ Feature: Coordinator User - Manage Addresses
         # LOGIN SCREEN
 
         Given I am logged in as "par_coordinator@example.com"
+        And I open the url "/dashboard"
         When I click on the link "See your partnerships"
 
         # PARTNERSHIPS DASHBOARD
@@ -21,7 +22,7 @@ Feature: Coordinator User - Manage Addresses
         Then I expect that element ".error-summary" contains the text "You must agree to the new terms and conditions"
         When I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-save"
-        And I scroll to element ".table-scroll-wrapper"
+        # And I scroll to element ".table-scroll-wrapper"
         And I click on the link "Review and confirm your association details"
 
         # REVIEW ASSOCIATION DETAILS
