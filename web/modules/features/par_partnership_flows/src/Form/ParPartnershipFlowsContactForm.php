@@ -158,8 +158,6 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       '#markup' => t('@link', ['@link' => $cancel_link]),
     ];
 
-    var_dump($this->getFlowName());
-
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($par_data_person);
     $this->addCacheableDependency($person_bundle);

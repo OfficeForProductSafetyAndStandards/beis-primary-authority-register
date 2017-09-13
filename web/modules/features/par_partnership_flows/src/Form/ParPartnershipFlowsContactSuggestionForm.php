@@ -138,9 +138,6 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
       '#value' => t('Save'),
     ];
 
-    // @todo remove.
-    var_dump($this->getFlowName());
-
 //    $cancel_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
 //    $form['cancel'] = [
 //      '#type' => 'markup',
