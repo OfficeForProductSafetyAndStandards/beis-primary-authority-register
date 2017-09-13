@@ -26,44 +26,6 @@ function par_data_test_help($route_name, RouteMatchInterface $route_match) {
 
 function par_data_test_create_entities() {
 
-  // First let's create a few test users.
-  $authority_user = User::create([
-    'uuid' => '1a6dc8cd-fea2-486b-bd0e-12572c6a26ab',
-    'name' => 'par_authority@example.com',
-    'pass' => 'TestPassword',
-    'mail' => 'par_authority@example.com',
-    'status' => 1,
-    'roles' => ['par_authority'],
-  ]);
-  $authority_user->save();
-  $coordinator_user = User::create([
-    'uuid' => '29eff252-81b3-4e73-afd1-8b902e19e66b',
-    'name' => 'par_coordinator@example.com',
-    'pass' => 'TestPassword',
-    'mail' => 'par_coordinator@example.com',
-    'status' => 1,
-    'roles' => ['par_coordinator'],
-  ]);
-  $coordinator_user->save();
-  $business_user = User::create([
-    'uuid' => '0001930d-a58d-4bc4-8d99-d14a3349d0ce',
-    'name' => 'par_business@example.com',
-    'pass' => 'TestPassword',
-    'mail' => 'par_business@example.com',
-    'status' => 1,
-    'roles' => ['par_business'],
-  ]);
-  $business_user->save();
-  $helpdesk_user = User::create([
-    'uuid' => '44f38230-a289-4dc9-b3fa-1f0475c8a31e',
-    'name' => 'par_helpdesk@example.com',
-    'pass' => 'TestPassword',
-    'mail' => 'par_helpdesk@example.com',
-    'status' => 1,
-    'roles' => ['par_helpdesk'],
-  ]);
-  $helpdesk_user->save();
-
   // Create documents and images for use by any test data.
   $path = DRUPAL_ROOT . '/' . Drupal::service('module_handler')
     ->getModule('par_data_test')->getPath() . '/assets/';
@@ -619,4 +581,38 @@ function par_data_test_create_entities() {
   ]);
   $partnership_2->save();
 
+  // Lastly let's create a few test users.
+  $authority_user = User::create([
+    'uuid' => '1a6dc8cd-fea2-486b-bd0e-12572c6a26ab',
+    'name' => 'par_authority@example.com',
+    'pass' => 'TestPassword',
+    'mail' => 'par_authority@example.com',
+    'status' => 1,
+  ]);
+  $authority_user->save();
+  $coordinator_user = User::create([
+    'uuid' => '29eff252-81b3-4e73-afd1-8b902e19e66b',
+    'name' => 'par_coordinator@example.com',
+    'pass' => 'TestPassword',
+    'mail' => 'par_coordinator@example.com',
+    'status' => 1,
+  ]);
+  $coordinator_user->save();
+  $business_user = User::create([
+    'uuid' => '0001930d-a58d-4bc4-8d99-d14a3349d0ce',
+    'name' => 'par_business@example.com',
+    'pass' => 'TestPassword',
+    'mail' => 'par_business@example.com',
+    'status' => 1,
+  ]);
+  $business_user->save();
+  $helpdesk_user = User::create([
+    'uuid' => '44f38230-a289-4dc9-b3fa-1f0475c8a31e',
+    'name' => 'par_helpdesk@example.com',
+    'pass' => 'TestPassword',
+    'mail' => 'par_helpdesk@example.com',
+    'status' => 1,
+    'roles' => ['par_helpdesk'],
+  ]);
+  $helpdesk_user->save();
 }
