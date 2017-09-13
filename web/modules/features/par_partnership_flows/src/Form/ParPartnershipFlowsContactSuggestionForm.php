@@ -82,8 +82,6 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
-    //    $this->retrieveEditableValues($par_data_partnership);
-    //    $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
 
     $properties = [
       'first_name' => $this->getDefaultValues('first_name', '', 'par_partnership_contact'),
@@ -156,97 +154,72 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
     // Now find the authority.
     $par_data_authority = current($par_data_partnership->getAuthority());
 
-    if ($this->getTempDataValue('option') == 'new') {
+    if ($this->getTempDataValue('option') === 'new') {
 
       // Create new person entity.
        $par_data_person = ParDataPerson::create([
-        'type' => 'advice',
+        'type' => 'person',
+        'salutation' => $this->getTempDataValue('salutation', 'par_partnership_contact'),
+        'first_name' => $this->getTempDataValue('first_name', 'par_partnership_contact'),
+        'last_name' => $this->getTempDataValue('last_name', 'par_partnership_contact'),
+        'work_phone' => $this->getTempDataValue('work_phone', 'par_partnership_contact'),
+        'mobile_phone' => $this->getTempDataValue('mobile_phone', 'par_partnership_contact'),
+        'email' => $this->getTempDataValue('email', 'par_partnership_contact'),
+        'communication_notes' => $this->getTempDataValue('notes', 'par_partnership_contact')
       ]);
-
-      $par_data_person->set('salutation', $this->getTempDataValue('salutation'));
-      $par_data_person->set('first_name', $this->getTempDataValue('first_name'));
-      $par_data_person->set('last_name', $this->getTempDataValue('last_name'));
-      $par_data_person->set('work_phone', $this->getTempDataValue('work_phone'));
-      $par_data_person->set('mobile_phone', $this->getTempDataValue('mobile_phone'));
-      $par_data_person->set('email', $this->getTempDataValue('email'));
-      $par_data_person->set('communication_notes', $this->getTempDataValue('notes'));
 
       // @todo refactor this to use $this->getTempDataBooleanValue() or similar.
       // Save the email preference.
       $email_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_email'])
-        && !empty($this->getTempDataValue('preferred_contact')['communication_email']);
+        && !empty($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_email']);
       $par_data_person->set('communication_email', $email_preference_value);
       // Save the work phone preference.
       $work_phone_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_phone'])
-        && !empty($this->getTempDataValue('preferred_contact')['communication_phone']);
+        && !empty($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_phone']);
       $par_data_person->set('communication_phone', $work_phone_preference_value);
       // Save the mobile phone preference.
       $mobile_phone_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_mobile'])
-        && !empty($this->getTempDataValue('preferred_contact')['communication_mobile']);
+        && !empty($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_mobile']);
       $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
-
-      if ($par_data_person->save()) {
-
-        // Add to field_authority_person.
-        $par_data_partnership->get('field_authority_person')
-          ->appendItem($par_data_person->id());
-
-        // Update field_person on authority.
-        $par_data_authority->get('field_person')
-          ->appendItem($par_data_person->id());
-
-      }
-
-      if ($par_data_person->id() &&
-        $par_data_partnership->save() &&
-        $par_data_authority->save()) {
-        $this->deleteStore();
-      }
-      else {
-        $message = $this->t('This %person could not be saved for %form_id');
-        $replacements = [
-          '%person' => $this->getTempDataValue('name'),
-          '%form_id' => $this->getFormId(),
-        ];
-        $this->getLogger($this->getLoggerChannel())
-          ->error($message, $replacements);
-      }
 
     }
     else {
 
-      // @todo store user ID instead.
-
       $person_id = $this->getTempDataValue('option');
 
-      if ($user = User::load($person_id)) {
-
-        // Add to field_authority_person.
-        $par_data_partnership->get('field_authority_person')
-          ->appendItem($user->id());
-
-        // Update field_person on authority.
-        $par_data_authority->get('field_person')
-          ->appendItem($user->id());
-
-        $par_data_partnership->save();
-        $par_data_authority->save();
-
-      }
-      else {
-        $message = $this->t('This %person could not be added in %form_id');
-        $replacements = [
-          '%person' => $this->getTempDataValue('name'),
-          '%form_id' => $this->getFormId(),
-        ];
-        $this->getLogger($this->getLoggerChannel())
-          ->error($message, $replacements);
+      if (isset($person_id) && is_numeric($person_id)) {
+        $par_data_person = ParDataPerson::load($person_id);
       }
 
     }
 
-    // Go back to the overview.
-//    $form_state->setRedirect($this->getFlow()->getRouteByStep(1), $this->getRouteParams());
+    if (isset($par_data_person) && $par_data_person->save()) {
+
+      // Add to field_authority_person.
+      $par_data_partnership->get('field_authority_person')
+        ->appendItem($par_data_person->id());
+
+      // Update field_person on authority.
+      $par_data_authority->get('field_person')
+        ->appendItem($par_data_person->id());
+
+    }
+
+    if ($par_data_person->id() &&
+      $par_data_partnership->save() &&
+      $par_data_authority->save()) {
+      $this->deleteStore();
+    }
+    else {
+      $message = $this->t('This %person could not be saved for %form_id');
+      $replacements = [
+        '%person' => $this->getTempDataValue('name'),
+        '%form_id' => $this->getFormId(),
+      ];
+      $this->getLogger($this->getLoggerChannel())
+        ->error($message, $replacements);
+    }
+
   }
 
 }
