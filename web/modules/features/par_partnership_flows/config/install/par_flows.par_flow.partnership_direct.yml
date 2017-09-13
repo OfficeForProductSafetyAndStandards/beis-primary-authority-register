@@ -15,11 +15,11 @@ steps:
       edit_field_organisation_person: 6
       add_field_legal_entity: 7
       edit_field_legal_entity: 8
-      add_trading: 9
-      edit_trading: 10
+      add_trading_name: 9
+      edit_trading_name: 10
       add_field_sic_code: 11
       edit_field_sic_code: 12
-      employees: 13
+      edit_employees_band: 13
   2:
     route: par_partnership_flows.about_business
     form_id: par_partnership_about_business
