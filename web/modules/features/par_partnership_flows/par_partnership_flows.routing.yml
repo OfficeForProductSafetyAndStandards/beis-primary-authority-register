@@ -86,7 +86,7 @@ par_partnership_flows.advice_list:
 par_partnership_flows.advice_upload_documents:
   path: '/partnership/{par_data_partnership}/advice/upload'
   defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsUploadForm'
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceUploadForm'
     _title: 'Primary Authority Register'
   requirements:
     _permission: 'bypass partnership journey+authority partnership journey'
@@ -154,7 +154,7 @@ par_partnership_flows.organisation_details:
   path: '/partnership/{par_data_partnership}/organisation-details'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsOrganisationDetailsForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsOrganisationDetailsForm::titleCallback'
   requirements:
     _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
     par_data_partnership: \d+
@@ -302,20 +302,18 @@ par_partnership_flows.trading_name_add:
       par_data_partnership:
         type: entity:par_data_partnership
 par_partnership_flows.sic_code_edit:
-  path: '/partnership/{par_data_partnership}/sic-code/{par_data_sic_code}'
+  path: '/partnership/{par_data_partnership}/sic-code/{field_sic_code_delta}'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSicCodeForm'
     _title: 'Primary Authority Register'
   requirements:
     _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
     par_data_partnership: \d+
-    par_data_sic_code: \d+
+    field_sic_code_delta: \d+
   options:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-      par_data_sic_code:
-        type: entity:par_data_sic_code
 par_partnership_flows.sic_code_add:
   path: '/partnership/{par_data_partnership}/sic-code/add'
   defaults:

@@ -52,9 +52,9 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     }
 
     if ($par_data_legal_entity) {
-      $this->loadDataValue("legal_entity_{$par_data_legal_entity->id()}_registered_name", $par_data_legal_entity->get('registered_name')->getString());
-      $this->loadDataValue("legal_entity_{$par_data_legal_entity->id()}_registered_number", $par_data_legal_entity->get('registered_number')->getString());
-      $this->loadDataValue("legal_entity_{$par_data_legal_entity->id()}_legal_entity_type", $par_data_legal_entity->get('legal_entity_type')->getString());
+      $this->loadDataValue("legal_entity_registered_name", $par_data_legal_entity->get('registered_name')->getString());
+      $this->loadDataValue("legal_entity_registered_number", $par_data_legal_entity->get('registered_number')->getString());
+      $this->loadDataValue("legal_entity_legal_entity_type", $par_data_legal_entity->get('legal_entity_type')->getString());
       $this->loadDataValue('legal_entity_id', $par_data_legal_entity->id());
     }
   }
@@ -66,36 +66,30 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $par_data_legal_entity);
     $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
 
-    if (!empty($par_data_legal_entity)) {
-      $id = $par_data_legal_entity->id();
-      $form['intro'] = [
-        '#markup' => $this->t('Edit the legal entity'),
-      ];
-    }
-    else {
-      $form['intro'] = [
-        '#markup' => $this->t('Add a legal entity for your business'),
-      ];
-    }
+    $form['intro'] = [
+      '#markup' => $this->t('Change the legal entity for your organisation'),
+      '#prefix' => '<h2>',
+      '#suffix' => '</h2>',
+    ];
 
     $form['registered_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Name of legal entity'),
-      '#default_value' => isset($id) ? $this->getDefaultValues("legal_entity_{$id}_registered_name") : '',
+      '#default_value' => $this->getDefaultValues("legal_entity_registered_name"),
       '#description' => $this->t('A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisation such as trusts and charities.'),
     ];
 
     $form['legal_entity_type'] = [
       '#type' => 'select',
       '#title' => $this->t('Type of Legal Entity'),
-      '#default_value' => isset($id) ? $this->getDefaultValues("legal_entity_{$id}_legal_entity_type") : '',
+      '#default_value' => $this->getDefaultValues("legal_entity_legal_entity_type"),
       '#options' => $legal_entity_bundle->getAllowedValues('legal_entity_type'),
     ];
 
     $form['company_house_no'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Companies House Number'),
-      '#default_value' => isset($id) ? $this->getDefaultValues("legal_entity_{$id}_registered_number") : '',
+      '#default_value' => $this->getDefaultValues("legal_entity_registered_number"),
       '#states' => array(
         'visible' => array(
           'select[name="legal_entity_type"]' => array('value' => 'limited_company'),
@@ -106,6 +100,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     $form['save'] = [
       '#type' => 'submit',
       '#save' => 'save',
+      '#name' => 'save',
       '#value' => t('Save'),
     ];
 

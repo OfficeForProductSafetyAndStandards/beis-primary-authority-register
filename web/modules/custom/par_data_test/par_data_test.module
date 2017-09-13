@@ -260,7 +260,7 @@ function par_data_test_create_entities() {
     'email' => 'par_authority@example.com'
   ]);
   $authority_person_2->save();
-  $business_person_3 = \Drupal\par_data\Entity\ParDataPerson::create([
+  $organisation_person_3 = \Drupal\par_data\Entity\ParDataPerson::create([
     'uuid' => '26db3fbe-d4a6-4a6a-ad69-108b54e1e4c5',
     'type' => 'person',
     'name' => 'Snuffleupagus',
@@ -272,8 +272,8 @@ function par_data_test_create_entities() {
     'mobile_phone' => '0777777777',
     'email' => 'par_business@example.com'
   ]);
-  $business_person_3->save();
-  $business_person_4 = \Drupal\par_data\Entity\ParDataPerson::create([
+  $organisation_person_3->save();
+  $organisation_person_4 = \Drupal\par_data\Entity\ParDataPerson::create([
     'uuid' => '3f21083a-98c9-440e-92b0-12947f799e0a',
     'type' => 'person',
     'name' => 'Elmo',
@@ -285,10 +285,10 @@ function par_data_test_create_entities() {
     'mobile_phone' => '0777777777',
     'email' => 'par_business@example.com'
   ]);
-  $business_person_4->save();
+  $organisation_person_4->save();
 
   // Create people entities.
-  $coordinator_person_5 = \Drupal\par_data\Entity\ParDataPerson::create([
+  $organisation_person_5 = \Drupal\par_data\Entity\ParDataPerson::create([
     'uuid' => 'b36d8ee5-b8ff-4dd7-9851-303c66a3497a',
     'type' => 'person',
     'name' => 'Ernie',
@@ -300,8 +300,8 @@ function par_data_test_create_entities() {
     'mobile_phone' => '0777777777',
     'email' => 'par_coordinator@example.com'
   ]);
-  $coordinator_person_5->save();
-  $coordinator_person_6 = \Drupal\par_data\Entity\ParDataPerson::create([
+  $organisation_person_5->save();
+  $organisation_person_6 = \Drupal\par_data\Entity\ParDataPerson::create([
     'uuid' => '8cbcde93-3a33-45ff-9503-02ce78d9a46f',
     'type' => 'person',
     'name' => 'Bert',
@@ -313,8 +313,8 @@ function par_data_test_create_entities() {
     'mobile_phone' => '0777777777',
     'email' => 'par_coordinator@example.com'
   ]);
-  $coordinator_person_6->save();
-  $business_person_7 = \Drupal\par_data\Entity\ParDataPerson::create([
+  $organisation_person_6->save();
+  $organisation_person_7 = \Drupal\par_data\Entity\ParDataPerson::create([
     'uuid' => 'd2f48b3a-799c-43ca-ae08-8df30ecbbfbc',
     'type' => 'person',
     'name' => 'Oscar the Grouch',
@@ -326,7 +326,7 @@ function par_data_test_create_entities() {
     'mobile_phone' => '0777777777',
     'email' => 'par_coordinator@example.com'
   ]);
-  $business_person_7->save();
+  $organisation_person_7->save();
   $authority_person_8 = \Drupal\par_data\Entity\ParDataPerson::create([
     'uuid' => '2705c28a-8ee6-4b4d-be80-93b11be48937',
     'type' => 'person',
@@ -366,7 +366,7 @@ function par_data_test_create_entities() {
   // Create two organisations.
   $organisation_1 = \Drupal\par_data\Entity\ParDataOrganisation::create([
     'uuid' => '12392d50-57dc-48c8-9480-85f44c9b2903',
-    'type' => 'business',
+    'type' => 'organisation',
     'name' => 'ABCD Mart',
     'uid' => 1,
     'organisation_name' => 'ABCD Mart',
@@ -380,8 +380,8 @@ function par_data_test_create_entities() {
       'ABCD Mart',
     ],
     'field_person' => [
-      $business_person_3->id(),
-      $business_person_4->id(),
+      $organisation_person_3->id(),
+      $organisation_person_4->id(),
     ],
     'field_premises' => [
       $premises_1->id(),
@@ -398,7 +398,7 @@ function par_data_test_create_entities() {
   // Create three organisations.
   $organisation_2 = \Drupal\par_data\Entity\ParDataOrganisation::create([
     'uuid' => 'b3f26aa8-a857-4829-8306-6c88e1fb03f7',
-    'type' => 'business',
+    'type' => 'organisation',
     'name' => 'Charlie\'s Cafe',
     'uid' => 1,
     'organisation_name' => 'Charlie\'s',
@@ -412,8 +412,8 @@ function par_data_test_create_entities() {
       'Charlie\'s Cafe',
     ],
     'field_person' => [
-      $business_person_7->id(),
-      $business_person_4->id(),
+      $organisation_person_7->id(),
+      $organisation_person_4->id(),
     ],
     'field_premises' => [
       $premises_2->id(),
@@ -430,7 +430,7 @@ function par_data_test_create_entities() {
   // Create two organisations.
   $organisation_3 = \Drupal\par_data\Entity\ParDataOrganisation::create([
     'uuid' => 'adc67edf-a95f-4adc-8332-551589dbb63e',
-    'type' => 'coordinator',
+    'type' => 'organisation',
     'name' => 'Co Mart',
     'uid' => 1,
     'organisation_name' => 'Co Mart',
@@ -444,8 +444,8 @@ function par_data_test_create_entities() {
       'Distribution Mart',
     ],
     'field_person' => [
-      $coordinator_person_5->id(),
-      $coordinator_person_6->id(),
+      $organisation_person_5->id(),
+      $organisation_person_6->id(),
     ],
     'field_premises' => [
       $premises_5->id(),
@@ -530,7 +530,7 @@ function par_data_test_create_entities() {
     'type' => 'partnership',
     'name' => 'Partnership Lower East Side and Charlie\'s',
     'uid' => 1,
-    'partnership_type' => 'Direct Partnership',
+    'partnership_type' => 'direct',
     'partnership_status' => 'awaiting_review',
     'about_partnership' => 'This is a partnership between Lower East Side and Charlie\'s Cafe on Sesame Street.',
     'communication_email' => TRUE,
@@ -557,9 +557,9 @@ function par_data_test_create_entities() {
       $authority_person_8->id(),
     ],
     'field_organisation_person' => [
-      $business_person_3->id(),
-      $business_person_4->id(),
-      $business_person_7->id(),
+      $organisation_person_3->id(),
+      $organisation_person_4->id(),
+      $organisation_person_7->id(),
     ],
     'field_regulatory_function' => [
       $regulatory_function_1->id(),
@@ -578,7 +578,7 @@ function par_data_test_create_entities() {
     'type' => 'partnership',
     'name' => 'Partnership Lower East Side and Charlie\'s',
     'uid' => 1,
-    'partnership_type' => 'Direct Partnership',
+    'partnership_type' => 'coordinated',
     'partnership_status' => 'Approved',
     'about_partnership' => 'This is a partnership between Lower East Side and CMike.',
     'communication_email' => TRUE,
@@ -604,8 +604,8 @@ function par_data_test_create_entities() {
       $authority_person_2->id(),
     ],
     'field_organisation_person' => [
-      $coordinator_person_5->id(),
-      $coordinator_person_6->id(),
+      $organisation_person_5->id(),
+      $organisation_person_6->id(),
     ],
     'field_regulatory_function' => [
       $regulatory_function_1->id(),

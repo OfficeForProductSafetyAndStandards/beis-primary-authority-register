@@ -51,9 +51,12 @@ interface ParDataManagerInterface {
   public function getParBundleEntity(string $type, $bundle = NULL);
 
   /**
+   * @param string $definition
+   *   The entity type to get the storage for
+   *
    * @return NULL|\Drupal\Core\Entity\EntityStorageInterface
    *   The entity storage for the given definition.
    */
-  public function getEntityTypeStorage(EntityTypeInterface $definition);
+  public function getEntityTypeStorage($definition);
 
 }

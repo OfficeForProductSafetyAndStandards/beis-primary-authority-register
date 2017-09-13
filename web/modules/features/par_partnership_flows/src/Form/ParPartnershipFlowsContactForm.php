@@ -3,10 +3,8 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
@@ -49,22 +47,12 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
    * @param \Drupal\par_data\Entity\ParDataPerson $par_data_person
    *   The Partnership being retrieved.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL,
-                                         ParDataPerson $par_data_person = NULL,
-                                         ParDataAuthority $par_data_authority = NULL,
-                                         ParDataOrganisation $par_data_organisation = NULL) {
+  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
     if ($par_data_partnership) {
       // If we're editing an entity we should set the state
       // to something other than default to avoid conflicts
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()}");
-    }
-
-    if ($par_data_authority || $par_data_organisation) {
-      // If we're editing an entity we should set the state
-      // to something other than default to avoid conflicts
-      // with existing versions of the same form.
-      $this->setState("add:{$par_data_partnership->id()}");
     }
 
     if ($par_data_person) {
@@ -92,14 +80,8 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form,
-                            FormStateInterface $form_state,
-                            ParDataPartnership $par_data_partnership = NULL,
-                            $par_data_person = NULL,
-                            $par_data_organisation = NULL,
-                            $par_data_authority = NULL) {
-
-    $this->retrieveEditableValues($par_data_partnership, $par_data_person, $par_data_authority, $par_data_organisation);
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
+    $this->retrieveEditableValues($par_data_partnership, $par_data_person);
     $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
 
     // The Person's title.
@@ -179,8 +161,6 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($par_data_person);
     $this->addCacheableDependency($person_bundle);
-    $this->addCacheableDependency($par_data_authority);
-    $this->addCacheableDependency($par_data_organisation);
 
     return parent::buildForm($form, $form_state);
   }
@@ -191,12 +171,9 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // @todo - Need to replace the following with a standard submit routine.
+    // Save the value for the about_partnership field.
     $par_data_person = $this->getRouteParam('par_data_person');
-
     if ($par_data_person) {
-      // Save the value for the about_partnership field
-
       $par_data_person->set('salutation', $this->getTempDataValue('salutation'));
       $par_data_person->set('first_name', $this->getTempDataValue('first_name'));
       $par_data_person->set('last_name', $this->getTempDataValue('last_name'));
@@ -220,22 +197,19 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
 
       if ($par_data_person->save()) {
         $this->deleteStore();
-      }
-      else {
+      } else {
         $message = $this->t('This %person could not be saved for %form_id');
         $replacements = [
           '%person' => $this->getTempDataValue('name'),
           '%form_id' => $this->getFormId(),
         ];
-        $this->getLogger($this->getLoggerChannel())
-          ->error($message, $replacements);
+        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
       }
-
-    } else {
-
-      // Redirect to add confirm.
-      $form_state->setRedirect($this->getFlow()->getRouteByStep(13), $this->getRouteParams());
-
+    }
+    else {
+      // @TODO We will add the add de-duping in here.
+      // So instead of saving the new entity we will go
+      // to the add-confirm page for contacts (and save there).
     }
 
   }

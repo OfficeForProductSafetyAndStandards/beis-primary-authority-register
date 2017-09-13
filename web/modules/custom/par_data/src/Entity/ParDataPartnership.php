@@ -190,11 +190,11 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   public function isDirect() {
-    return $this->retrieveStringValue('partnership_type') === 'direct';
+    return $this->get('partnership_type')->getString() === 'direct';
   }
 
   public function isCoordinated() {
-    return $this->retrieveStringValue('partnership_type') === 'coordinated';
+    return $this->get('partnership_type')->getString() === 'coordinated';
   }
 
   /**
