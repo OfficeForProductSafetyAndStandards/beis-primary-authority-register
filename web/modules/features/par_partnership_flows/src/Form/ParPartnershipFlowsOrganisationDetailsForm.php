@@ -204,6 +204,11 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       ]),
     ];
 
+    // Display all the legal entities along with the links for the allowed operations on these.
+    $form['organisation_contacts'] = $this->renderSection('Contacts - organisation', $par_data_partnership, ['field_organisation_person' => 'summary'], ['edit-entity', 'add']);
+
+
+    // Everything below this point should be uneditable and is just for information.
     $par_data_authority = current($par_data_partnership->getAuthority());
     $form['authority'] = [
       '#type' => 'markup',
@@ -280,37 +285,6 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       ]),
     ];
 
-    if ($par_data_partnership->isDirect()) {
-      $form['sic_code'] = [
-        '#type' => 'fieldset',
-        '#title' => t('SIC Code:'),
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
-
-      $sic_codes = $par_data_organisation->getSicCode();
-
-      foreach ($sic_codes as $key => $sic_code) {
-        if ($id = $sic_code->id()) {
-
-          $sic_code_view_builder = $this->getParDataManager()
-            ->getViewBuilder('par_data_sic_code');
-          $sic_code_item = $sic_code_view_builder->view($sic_code, 'full');
-          $form['sic_code'][$id]['item'] = $this->renderMarkupField($sic_code_item);
-
-          $form['sic_code'][$id]['edit'] = [
-            '#type' => 'markup',
-            '#markup' => t('@link', [
-              '@link' => $this->getFlow()
-                ->getNextLink('edit_sic', ['sic_code_delta' => $key])
-                ->setText('edit')
-                ->toString(),
-            ]),
-          ];
-        }
-      }
-    }
-
     // Contacts.
     // Local Authority.
     $par_data_contacts = $par_data_partnership->getAuthorityPeople();
@@ -346,71 +320,6 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       ];
 
     }
-
-    // Primary contact summary.
-    $par_data_contacts = $par_data_partnership->getOrganisationPeople();
-
-    $form['organisation_contact'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#title' => t('Contacts - Organisation:'),
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    if ($par_data_contacts) {
-
-      foreach ($par_data_contacts as $person) {
-        $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
-
-        $alternative_person = $person_view_builder->view($person, 'detailed');
-
-        $form['organisation_contact'][$person->id()] = [
-          '#type' => 'fieldset',
-          '#attributes' => ['class' => 'form-group'],
-          '#collapsible' => FALSE,
-          '#collapsed' => FALSE,
-        ];
-
-        $form['organisation_contact'][$person->id()]['person'] = $this->renderMarkupField($alternative_person);
-        $form['organisation_contact'][$person->id()]['edit'] = [
-          '#type' => 'markup',
-          '#markup' => t('@link', [
-            '@link' => $this->getFlow()->getNextLink('edit_contact', [
-              'par_data_person' => $person->id(),
-            ])->setText('edit')->toString(),
-          ]),
-        ];
-        $form['organisation_contact'][$person->id()]['delete'] = [
-          '#type' => 'markup',
-          '#markup' => t('<a href="#">remove (TBC)</a>'),
-        ];
-      }
-    }
-    else {
-      $form['organisation_contact']['details'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('(none)'),
-      ];
-
-    }
-
-    $form['organisation_contact_add'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    $form['organisation_contact_add']['add'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()
-          ->getNextLink('add_contact')
-          ->setText('add another contact (TBC)')
-          ->toString(),
-      ]),
-    ];
 
     $form['save'] = [
       '#type' => 'submit',

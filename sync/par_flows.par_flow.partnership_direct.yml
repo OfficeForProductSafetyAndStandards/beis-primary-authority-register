@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: 7jCJKtCCXuaRtxzfwHSO5hw0jZrGJsz1UgW3p22K-Mc
+  default_config_hash: mYkVUMnKOqShB581vmBD15uqb5GY_hubly8E6DdGONA
 id: partnership_direct
 label: 'Direct Partnership Flow'
 description: ''
@@ -15,10 +15,10 @@ steps:
       about: 2
       add_address: 3
       edit_address: 4
-      add_contact: 5
-      edit_contact: 6
-      add_legal: 7
-      edit_legal: 8
+      add_field_organisation_person: 5
+      edit_field_organisation_person: 6
+      add_field_legal_entity: 7
+      edit_field_legal_entity: 8
       add_trading: 9
       edit_trading: 10
       add_field_sic_code: 11
