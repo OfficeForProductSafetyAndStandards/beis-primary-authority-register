@@ -229,6 +229,9 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
         $par_data_authority->get('field_person')
           ->appendItem($user->id());
 
+        $par_data_partnership->save();
+        $par_data_authority->save();
+
       }
       else {
         $message = $this->t('This %person could not be added in %form_id');
