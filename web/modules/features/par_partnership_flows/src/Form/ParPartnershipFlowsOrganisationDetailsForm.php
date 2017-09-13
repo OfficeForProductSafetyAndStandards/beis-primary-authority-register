@@ -71,22 +71,8 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
     $form['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], ['edit-entity'], FALSE, TRUE);
 
     // View and perform operations on the information about the business.
-    $about_organisation = $organisation_builder->view($par_data_organisation, 'about');
-    $form['about_business'] = [
-      '#type' => 'fieldset',
-      '#title' => t('About the business:'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
+    $form['about_business'] = $this->renderSection('About the business', $par_data_organisation, ['comments' => 'about'], ['edit-field']);
 
-    $form['about_business']['info'] = $this->renderMarkupField($about_organisation);
-    $form['about_business']['edit'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('about')->setText('edit')->toString(),
-      ]),
-    ];
 
     // Only show SIC Codes and Employee number if the partnership is a direct partnership.
     if ($par_data_partnership->isDirect()) {

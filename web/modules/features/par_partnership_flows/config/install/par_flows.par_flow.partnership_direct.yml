@@ -8,9 +8,9 @@ steps:
     route: par_partnership_flows.organisation_details
     form_id: par_partnership_organisation_details
     redirect:
-      about: 2
-      add_address: 3
-      edit_address: 4
+      edit_comments: 2
+      add_field_premises: 3
+      edit_field_premises: 4
       add_field_organisation_person: 5
       edit_field_organisation_person: 6
       add_field_legal_entity: 7
