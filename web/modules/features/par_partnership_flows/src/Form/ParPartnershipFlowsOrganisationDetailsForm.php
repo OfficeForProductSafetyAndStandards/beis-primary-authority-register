@@ -73,7 +73,6 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
     // View and perform operations on the information about the business.
     $form['about_business'] = $this->renderSection('About the business', $par_data_organisation, ['comments' => 'about'], ['edit-field']);
 
-
     // Only show SIC Codes and Employee number if the partnership is a direct partnership.
     if ($par_data_partnership->isDirect()) {
       // Add the SIC Codes with the relevant operational links.
@@ -96,9 +95,6 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
     // Display all the trading names along with the links for the allowed operations on these.
     $form['trading_names'] = $this->renderSection('Trading Names', $par_data_organisation, ['trading_name' => 'full'], ['edit-field', 'add']);
 
-    // Display all the legal entities along with the links for the allowed operations on these.
-    $form['organisation_contacts'] = $this->renderSection('Contacts - organisation', $par_data_partnership, ['field_organisation_person' => 'summary'], ['edit-entity', 'add']);
-
     // Everything below this point should be uneditable and is just for information.
     $par_data_authority = current($par_data_partnership->getAuthority());
     $form['authority'] = [
@@ -120,6 +116,8 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
     // Display the authority contacts for information.
     $form['authority_contacts'] = $this->renderSection('Contacts - organisation', $par_data_partnership, ['field_authority_person' => 'summary']);
 
+    // Display all the legal entities along with the links for the allowed operations on these.
+    $form['organisation_contacts'] = $this->renderSection('Contacts - organisation', $par_data_partnership, ['field_organisation_person' => 'summary'], ['edit-entity', 'add']);
 
     $form['save'] = [
       '#type' => 'submit',
