@@ -10,10 +10,10 @@ steps:
     redirect:
       edit_about_partnership: 2
       add_field_authority_person: 3
-      edit_field_authority_person: 4
-      advice: 5
-      inspection_plans: 10
-      done: 11
+      edit_field_authority_person: 5
+      advice: 6
+      inspection_plans: 11
+      done: 12
   2:
     route: par_partnership_flows.about_partnership
     form_id: par_partnership_about
@@ -24,47 +24,53 @@ steps:
     route: par_partnership_flows.authority_contact_add
     form_id: par_partnership_contact
     redirect:
-      save: 1
       cancel: 1
   4:
+    route: par_partnership_flows.authority_contact_add_confirm
+    form_id: par_partnership_contact_suggestion
+    redirect:
+      save: 1
+      cancel: 1
+  5:
     route: par_partnership_flows.authority_contact_edit
     form_id: par_partnership_contact
     redirect:
       save: 1
       cancel: 1
-  5:
+  6:
     route: par_partnership_flows.advice_list
     redirect:
       advice_upload: 6
       edit: 9
       next: 1
       cancel: 1
-  6:
+  7:
     route: par_partnership_flows.advice_upload_documents
     form_id: par_partnership_upload
     redirect:
-      cancel: 5
-  7:
+      cancel: 6
+  8:
     route: par_partnership_flows.advice_add
     form_id: par_partnership_advice
     redirect:
-      save: 5
-      cancel: 5
-  8:
+      save: 6
+      cancel: 6
+  9:
     route: par_partnership_flows.advice_edit_documents
     form_id: par_partnership_advice_upload
     redirect:
-      cancel: 5
-  9:
+      cancel: 6
+  10:
     route: par_partnership_flows.advice_edit
     form_id: par_partnership_advice
     redirect:
-      save: 5
-      cancel: 5
-  10:
+      save: 6
+      cancel: 6
+  11:
     route: par_partnership_flows.inspection_plan_list
     redirect:
       next: 1
       cancel: 1
-  11:
+  12:
     route: view.par_user_partnerships.partnerships_page
+

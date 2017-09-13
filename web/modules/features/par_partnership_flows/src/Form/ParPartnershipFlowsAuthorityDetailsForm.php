@@ -144,10 +144,10 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     ];
 
     // Display the authority contacts for information.
-    $form['authority_contacts'] = $this->renderSection('Contacts - organisation', $par_data_partnership, ['field_authority_person' => 'summary'], ['edit-entity', 'add']);
+    $form['authority_contacts'] = $this->renderSection('Contacts - Primary Authority', $par_data_partnership, ['field_authority_person' => 'summary'], ['edit-entity', 'add']);
 
     // Display all the legal entities along with the links for the allowed operations on these.
-    $form['organisation_contacts'] = $this->renderSection('Contacts - organisation', $par_data_partnership, ['field_organisation_person' => 'summary']);
+    $form['organisation_contacts'] = $this->renderSection('Contacts - Organisation', $par_data_partnership, ['field_organisation_person' => 'summary']);
 
     $form['save'] = [
       '#type' => 'submit',
