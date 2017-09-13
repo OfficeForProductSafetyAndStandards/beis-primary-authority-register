@@ -51,7 +51,7 @@ class ParDashboardsDashboardController extends ParBaseController {
     }
 
     // Applications, partnerships that need completion.
-    // @TODO NEED A WAY TO GET INCOMPLETE APLICATIONS (WE DO NOT RECORD THIS YET)
+    // @TODO NEED A WAY TO GET INCOMPLETE APLICATIONS (WE DO NOT RECORD THIS YET). NOT MVP.
     if ($this->getUserAccount()->hasPermission('complete partnership organisation details')) {
       $build['applications'] = [
         '#type' => 'fieldset',
@@ -68,7 +68,7 @@ class ParDashboardsDashboardController extends ParBaseController {
     }
 
     // Partnerships search link.
-    if ($this->getUserAccount()->hasPermission('search partnership')) {
+    if ($this->getUserAccount()->hasPermission('enforce organisation')) {
       $build['partnerships_find'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Find a partnership'),
@@ -86,15 +86,20 @@ class ParDashboardsDashboardController extends ParBaseController {
 
     // Enforcement notices that need attention.
     if ($this->getUserAccount()->hasPermission('enforce organisation')) {
-      $build['enforcement'] = [
+      $build['messages'] = [
         '#type' => 'fieldset',
-        '#title' => $this->t('Enforcement notices'),
+        '#title' => $this->t('Messages'),
         '#attributes' => ['class' => 'form-group'],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
 
-      // @TODO TO BE ADDED. MUST DISCUSS, DO WE NEED A SEPARATE VIEW PAGE FOR MANAGING ALL NOTICES.
+      // @TODO TO BE ADDED. WE NEED A SEPARATE VIEW PAGE FOR MANAGING ALL NOTICES.
+      $search_partnerships = $this->getLinkByRoute('view.par_user_enforcements.enforcment_notice_messages');
+      $build['messages']['link'] = [
+        '#type' => 'markup',
+        '#markup' => $search_partnerships ? $search_partnerships->setText('See all outstanding enforcement notices')->toString() : '(none)',
+      ];
     }
 
     return parent::build($build);

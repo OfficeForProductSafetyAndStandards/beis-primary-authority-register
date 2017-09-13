@@ -1,5 +1,0 @@
-name: PAR Partnership Search
-type: module
-description: Creates the search and view pages for all partnership searches
-core: 8.x
-package: PAR
