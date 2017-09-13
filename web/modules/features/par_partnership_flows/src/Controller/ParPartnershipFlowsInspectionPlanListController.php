@@ -25,8 +25,6 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
       '#header' => [
         'Document',
         'Status',
-        'Consulted National Regulator',
-        'Approved RD Executive',
       ],
       '#empty' => $this->t("There is no documentation for this partnership."),
     ];
@@ -43,8 +41,6 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
           'data' => [
             'document' => $this->getRenderer()->render($inspection_plan_summary),
             'status' => $inspection_plan->retrieveStringValue('inspection_status'),
-            'consulted' => $inspection_plan->retrieveStringValue('consulted_national_regulator'),
-            'approved' => $inspection_plan->retrieveStringValue('approved_rd_executive'),
           ],
         ];
       }
