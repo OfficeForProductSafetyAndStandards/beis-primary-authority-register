@@ -16,9 +16,9 @@ config.capabilities = [
         'browserstack.local': true,
     },
     {
-        device: 'iPhone 7',
+        device: 'iPhone 7 Plus',
         realMobile: 'true',
-        os_version: '10.0',
+        os_version: '10.3',
         'browserstack.local': true,
         'browserstack.debug': true,
     },

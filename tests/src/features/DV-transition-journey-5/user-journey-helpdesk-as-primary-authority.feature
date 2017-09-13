@@ -24,7 +24,7 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
         And I scroll to element "#par-flow-transition-partnership-details-overview"
         And I click on the link "edit"
         And I add "test partnership info change" to the inputfield "#edit-about-partnership"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element "#edit-first-section" contains the text "test partnership info change"
         When I click on the button "form#par-flow-transition-partnership-details-overview .authority-alternative-contact a.flow-link"
         And I clear the inputfield "#edit-salutation"
@@ -33,25 +33,25 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
         And I clear the inputfield "#edit-work-phone"
         And I clear the inputfield "#edit-mobile-phone"
         And I clear the inputfield "#edit-email"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element ".error-message" does exist
         When I add "Mr" to the inputfield "#edit-salutation"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element ".error-message" does exist
         When I add "Animal" to the inputfield "#edit-first-name"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element ".error-message" does exist
         When I add "the Muppet" to the inputfield "#edit-last-name"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element ".error-message" does exist
         When I add "91723456789" to the inputfield "#edit-work-phone"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element ".error-message" does exist
         When I add "9777777777" to the inputfield "#edit-mobile-phone"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element ".error-message" does exist
         When I add "par_authority_animal@example.com" to the inputfield "#edit-email"
-        When I click on the button "#edit-next"
+        When I click on the button "#edit-save"
         Then I expect that element "#edit-authority-contacts" contains the text "Animal"
         And I expect that element "#edit-authority-contacts" contains the text "the Muppet"
         And I expect that element "#edit-authority-contacts" contains the text "par_authority_animal@example.com"
@@ -63,14 +63,14 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
         And I add "par_authority_piggy@example.com" to the inputfield "#edit-email"
         And I add "917234567899" to the inputfield "#edit-work-phone"
         And I add "97777777779" to the inputfield "#edit-mobile-phone"
-        When I click on the button "#edit-next"
+        When I click on the button "#edit-save"
         Then I expect that element ".authority-alternative-contact-0" contains the text "Miss"
         Then I expect that element ".authority-alternative-contact-0" contains the text "Piggy"
         Then I expect that element ".authority-alternative-contact-0" contains the text "par_authority_piggy@example.com"
         Then I expect that element ".authority-alternative-contact-0" contains the text "917234567899"
         Then I expect that element ".authority-alternative-contact-0" contains the text "97777777779"
         And I click on the checkbox "#edit-confirmation"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
 
         # PARTNERSHIP DASHBOARD
 
@@ -88,10 +88,10 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
 #        And I add "test.png" to the inputfield "#edit-files-upload"
 #        And I click on the link "classify"
 #        And I click on the radio "#edit-advice-type-authority-advice"
-#        When I click on the button "#edit-next"
+#        When I click on the button "#edit-save"
 #        Then I expect that element ".error-message" does exist
 #        And I click on the checkbox ".form-label*=Cookie control"
-#        When I click on the button "#edit-next"
+#        When I click on the button "#edit-save"
 #        Then I expect that element ".table-scroll-wrapper" contains the text "✔"
 #        And the element ".table-scroll-wrapper" contains the text "Cookie control"
         When I click on the link "Save"
@@ -103,14 +103,14 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
         When I click on the link "Review and confirm your inspection plan"
 #        Then I expect that element "#edit-document-list" contains the text "Inspection Plan"
 #        And I click on the checkbox ".form-checkbox"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
 
         # CHECK INSPECTION PLAN CONFIRMED
 
 #        And I scroll to element ".table-scroll-wrapper"
 #        When I click on the link "Review and confirm your inspection plan"
 #        Then I expect that element ".form-checkbox" is not enabled
-#        When I click on the button "#edit-next"
+#        When I click on the button "#edit-save"
 
         # PARTNERSHIP TASKS SCREEN
 
