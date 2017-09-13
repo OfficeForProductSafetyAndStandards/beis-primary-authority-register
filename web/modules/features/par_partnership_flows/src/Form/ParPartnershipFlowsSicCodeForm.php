@@ -104,22 +104,24 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
     $par_data_organisation = current($par_data_partnership->getOrganisation());
     $sic_code_delta = $this->getRouteParam('sic_code_delta');
 
-
-    if ($par_data_organisation && null !== $par_data_organisation->get('field_sic_code')->get($sic_code_delta)) {
-      $items = $par_data_organisation->get('field_sic_code')->getValue();
+    $items = $par_data_organisation->get('field_sic_code')->getValue();
+    if ($par_data_organisation && isset($sic_code_delta)) {
       $items[$sic_code_delta] = $this->getTempDataValue('sic_code');
-      $par_data_organisation->set('field_sic_code', $items);
+    }
+    else {
+      $items[] = $this->getTempDataValue('sic_code');
+    }
+    $par_data_organisation->set('field_sic_code', $items);
 
-      if ($par_data_organisation->save()) {
-        $this->deleteStore();
-      } else {
-        $message = $this->t('This %field could not be saved for %form_id');
-        $replacements = [
-          '%field' => $this->getTempDataValue('trading_name'),
-          '%form_id' => $this->getFormId(),
-        ];
-        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-      }
+    if ($par_data_organisation->save()) {
+      $this->deleteStore();
+    } else {
+      $message = $this->t('This %field could not be saved for %form_id');
+      $replacements = [
+        '%field' => $this->getTempDataValue('trading_name'),
+        '%form_id' => $this->getFormId(),
+      ];
+      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
     }
 
   }
