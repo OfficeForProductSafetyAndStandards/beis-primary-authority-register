@@ -80,17 +80,15 @@ class ParPartnershipDashboardController extends ControllerBase {
       if ($par_data_manager->isMemberOfAuthority($account) && $account->hasRole('par_authority')) {
         // Get the start of an authority journey.
         $route = $this->flowStorage->load('transition_partnership_details')->getRouteByStep(2);
-      }
-      else if ($par_data_manager->isMemberOfCoordinator($account) && $account->hasRole('par_coordinator')) {
+      } else if ($par_data_manager->isMemberOfCoordinator($account) && $account->hasRole('par_coordinator')) {
         // Get the start of an authority journey.
         $route = $this->flowStorage->load('transition_coordinator')->getRouteByStep(2);
-      }
-      else if ($par_data_manager->isMemberOfBusiness($account) && $account->hasRole('par_business')) {
+      } else if ($par_data_manager->isMemberOfBusiness($account) && $account->hasRole('par_business')) {
         // Get the start of an authority journey.
         $route = $this->flowStorage->load('transition_business')->getRouteByStep(2);
       }
     }
-
+    
     if (!isset($route)) {
       $route = 'view.par_data_transition_journey_1_step_1.dv_journey_1_step_1';
       drupal_set_message(t("You don't seem to be a part of this partnership, please contact the Help Desk if this is in error."), 'error');

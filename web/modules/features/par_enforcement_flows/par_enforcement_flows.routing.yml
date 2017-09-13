@@ -1,3 +1,16 @@
+# PAR Data Search Enforcement Journey
+par_enforcement_flows.partnership_page:
+  path: '/partnership/{par_data_partnership}'
+  defaults:
+    _controller: '\Drupal\par_enforcement_flows\Controller\ParEnforcementFlowsPartnershipPageController::content'
+  requirements:
+    _permission: 'enforce organisation'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+
 # PAR Data Raise Enforcement Notice Journey
 par_enforcement_flows.raise:
   path: '/enforcement-notice/raise'

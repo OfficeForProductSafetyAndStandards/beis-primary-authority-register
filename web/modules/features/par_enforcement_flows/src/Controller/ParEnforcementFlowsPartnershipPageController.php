@@ -1,17 +1,19 @@
 <?php
 
-namespace Drupal\par_partnership_flows\Controller;
+namespace Drupal\par_enforcement_flows\Controller;
 
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Controller\ParBaseController;
-use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
  * A controller for rendering a specific partner page.
  */
-class ParPartnershipFlowsPartnershipPageController extends ParBaseController {
+class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
 
-  use ParPartnershipFlowsTrait;
+  /**
+   * {@inheritdoc}
+   */
+  protected $flow = 'search_enforcement';
 
   /**
    * {@inheritdoc}

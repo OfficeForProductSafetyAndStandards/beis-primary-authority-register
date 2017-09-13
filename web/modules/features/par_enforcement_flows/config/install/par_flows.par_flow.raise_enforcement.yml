@@ -20,4 +20,4 @@ steps:
     route: par_enforcement_flows.raise_confirm
     form_id: par_enforcement_notice_raise_confirm
   4:
-    route: view.rd_helpdesk_dashboard.par_rd_helpdesk_dashboard_page
+    route: par_enforcement_flows.partnership_page
