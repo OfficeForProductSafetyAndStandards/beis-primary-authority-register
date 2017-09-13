@@ -23,6 +23,19 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function titleCallback() {
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    if ($par_data_partnership) {
+      $par_data_organisation = current($par_data_partnership->getOrganisation());
+      return $par_data_organisation->get('organisation_name')->getString();
+    }
+
+    return parent::titleCallback();
+  }
+
+  /**
    * Helper to get all the editable values.
    *
    * Used for when editing or revisiting a previously edited page.
@@ -54,159 +67,33 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
     $par_data_organisation = current($par_data_partnership->getOrganisation());
     $organisation_builder = $this->getParDataManager()->getViewBuilder('par_data_organisation');
 
-    $string = $par_data_partnership->isDirect() ? 'direct' : 'coordinated';
-    $form['type'] = [
-      '#type' => 'markup',
-      '#markup' => $string,
-    ];
-
-    $business_name = $organisation_builder->view($par_data_organisation, 'title');
-    $form['business_name'] = $this->renderMarkupField($business_name);
-
-    // Registered address.
-    $par_data_premises = $par_data_organisation->getPremises();
-    $registered_premises = array_shift($par_data_premises);
-
-    if ($registered_premises) {
-      $premises_view_builder = $this->getParDataManager()->getViewBuilder('par_data_premises');
-
-      $form['registered_address'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
-
-      $registered_address = $premises_view_builder->view($registered_premises, 'summary');
-      $form['registered_address']['address'] = $this->renderMarkupField($registered_address);
-      $form['registered_address']['edit'] = [
-        '#type' => 'markup',
-        '#markup' => t('@link', [
-          '@link' => $this->getFlow()->getNextLink('edit_address', [
-            'par_data_premises' => $registered_premises->id(),
-          ])->setText('edit')->toString(),
-        ]),
-      ];
-    }
+    // Display the primary address along with the link to edit it.
+    $form['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], ['edit-entity'], FALSE, TRUE);
 
     // View and perform operations on the information about the business.
-    $about_organisation = $organisation_builder->view($par_data_organisation, 'about');
-    $form['about_business'] = [
-      '#type' => 'fieldset',
-      '#title' => t('About the business:'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    $form['about_business']['info'] = $this->renderMarkupField($about_organisation);
-    $form['about_business']['edit'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('about')->setText('edit')->toString(),
-      ]),
-    ];
+    $form['about_business'] = $this->renderSection('About the business', $par_data_organisation, ['comments' => 'about'], ['edit-field']);
 
     // Only show SIC Codes and Employee number if the partnership is a direct partnership.
     if ($par_data_partnership->isDirect()) {
       // Add the SIC Codes with the relevant operational links.
       $form['sic_codes'] = $this->renderSection('SIC Codes', $par_data_organisation, ['field_sic_code' => 'full'], ['edit-field', 'add']);
 
-      // Number of employees.
-      $form['employee_no'] = [
-        '#type' => 'fieldset',
-        '#title' => t('Number of Employees:'),
-        '#attributes' => ['class' => 'form-group'],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
-
-      if (!$par_data_organisation->get('employees_band')->isEmpty()) {
-        $form['employee_no']['item'] = [
-          '#type' => 'markup',
-          '#markup' => $par_data_organisation->get('employees_band')->getString(),
-        ];
-      } else {
-        $form['employee_no']['item'] = [
-          '#type' => 'markup',
-          '#markup' => $this->t('(none)'),
-        ];
-      }
-      $form['employee_no']['edit'] = [
-        '#type' => 'markup',
-        '#markup' => t('@link', [
-          '@link' => $this->getFlow()->getNextLink('size')->setText('edit')->toString(),
-        ]),
-      ];
+      // Add the number of employees with a link to edit the field.
+      $form['employee_no'] = $this->renderSection('Number of Employees', $par_data_organisation, ['employees_band' => 'full'], ['edit-field']);
     }
 
     // Only show Members list, Sectors and Number of businesses if the partnership is a coordinated partnership.
     if ($par_data_partnership->isCoordinated()) {
-      // @TODO We have none of these fields yet and have no way to store them.
+      $form['associations'] = $this->renderSection('Number of Associations', $par_data_organisation, ['size' => 'full'], ['edit-field']);
+
+      // @TODO We need to add members list and Sectors. TBD Later.
     }
 
     // Display all the legal entities along with the links for the allowed operations on these.
     $form['legal_entities'] = $this->renderSection('Legal Entities', $par_data_organisation, ['field_legal_entity' => 'summary'], ['edit-entity', 'add']);
 
     // Display all the trading names along with the links for the allowed operations on these.
-    $par_data_trading_names = $par_data_organisation->get('trading_name')->getValue();
-    $form['trading_names'] = [
-      '#type' => 'fieldset',
-      '#title' => t('Trading Names:'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-    if ($par_data_trading_names) {
-      foreach ($par_data_trading_names as $key => $trading_name) {
-        $form['trading_names'][$key] = [
-          '#type' => 'fieldset',
-          '#attributes' => ['class' => 'form-group'],
-          '#collapsible' => FALSE,
-          '#collapsed' => FALSE,
-        ];
-
-        $form['trading_names'][$key]['entity'] = [
-          '#type' => 'markup',
-          '#markup' => $trading_name['value'],
-          '#prefix' => '<div>',
-          '#suffix' => '</div>',
-        ];
-
-        $form['trading_names'][$key]['edit'] = [
-          '#type' => 'markup',
-          '#markup' => t('@link', [
-            '@link' => $this->getFlow()->getNextLink('edit_trading', [
-              'trading_name_delta' => $key,
-            ])->setText('edit')->toString(),
-          ]),
-        ];
-
-      }
-    }
-    else {
-      $form['trading_names']['item'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('(none)'),
-      ];
-    }
-
-    $form['trading_names_add'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    $form['trading_names_add']['add'] = [
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('add_trading')->setText('add another')->toString(),
-      ]),
-    ];
-
-    // Display all the legal entities along with the links for the allowed operations on these.
-    $form['organisation_contacts'] = $this->renderSection('Contacts - organisation', $par_data_partnership, ['field_organisation_person' => 'summary'], ['edit-entity', 'add']);
-
+    $form['trading_names'] = $this->renderSection('Trading Names', $par_data_organisation, ['trading_name' => 'full'], ['edit-field', 'add']);
 
     // Everything below this point should be uneditable and is just for information.
     $par_data_authority = current($par_data_partnership->getAuthority());
@@ -217,109 +104,20 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
       '#suffix' => '</h1>',
     ];
 
-    $form['partnership_since'] = [
-      '#type' => 'fieldset',
-      '#title' => t('In partnership since:'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
+    // Display details about the partnership for information.
+    $form['partnership_since'] = $this->renderSection('In partnership since', $par_data_partnership, ['approved_date' => 'full']);
 
-    $form['partnership_since']['approved_date'] = [
-      '#type' => 'markup',
-      '#markup' => $par_data_partnership->get('approved_date')->getString(),
-    ];
+    // Display details about the partnership for information.
+    $form['regulatory_functions'] = $this->renderSection('Partnered for', $par_data_partnership, ['field_regulatory_function' => 'full']);
 
-    $form['partnered'] = [
-      '#type' => 'fieldset',
-      '#title' => t('Partnered for:'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
+    // Display details about the partnership for information.
+    $form['about_partnership'] = $this->renderSection('About the partnership', $par_data_partnership, ['about_partnership' => 'about']);
 
-    $regulatory_functions = $par_data_partnership->getRegulatoryFunction();
-    foreach ($regulatory_functions as $regulatory_function) {
-      $functions[] = $regulatory_function->get('function_name')->getString();
-    }
+    // Display the authority contacts for information.
+    $form['authority_contacts'] = $this->renderSection('Contacts - organisation', $par_data_partnership, ['field_authority_person' => 'summary']);
 
-    if (!empty($functions)) {
-      $all_functions = implode(', ', $functions);
-
-      $form['partnered']['functions'] = [
-        '#type' => 'markup',
-        '#markup' => $all_functions,
-      ];
-    }
-    else {
-      $form['partnered']['functions'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('(none)'),
-      ];
-    }
-
-    // About the Partnership.
-    $form['about_partnership'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#title' => t('About the partnership:'),
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    $partnership_view_builder = $this->getParDataManager()->getViewBuilder('par_data_partnership');
-
-    $form['about_partnership']['details'] = $par_data_partnership ? $partnership_view_builder->view($par_data_partnership, 'about') : '';
-
-    $form['inspection_plans'] = [
-      '#type' => 'fieldset',
-      '#title' => t('Inspection plans:'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-    $form['inspection_plans']['edit'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('inspection_plans')->setText('See all Inspection Plans')->toString(),
-      ]),
-    ];
-
-    // Contacts.
-    // Local Authority.
-    $par_data_contacts = $par_data_partnership->getAuthorityPeople();
-    $form['authority_contact'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#title' => t('Contacts - Primary Authority:'),
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    if ($par_data_contacts) {
-
-      foreach ($par_data_contacts as $person) {
-        $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
-
-        $alternative_person = $person_view_builder->view($person, 'detailed');
-
-        $form['authority_contact'][$person->id()] = [
-          '#type' => 'fieldset',
-          '#attributes' => ['class' => 'form-group'],
-          '#collapsible' => FALSE,
-          '#collapsed' => FALSE,
-        ];
-
-        $form['authority_contact'][$person->id()]['person'] = $this->renderMarkupField($alternative_person);
-      }
-    }
-    else {
-      $form['authority_contact']['details'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('(none)'),
-      ];
-
-    }
+    // Display all the legal entities along with the links for the allowed operations on these.
+    $form['organisation_contacts'] = $this->renderSection('Contacts - organisation', $par_data_partnership, ['field_organisation_person' => 'summary'], ['edit-entity', 'add']);
 
     $form['save'] = [
       '#type' => 'submit',

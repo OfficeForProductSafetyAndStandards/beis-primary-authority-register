@@ -52,7 +52,6 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     }
 
     if ($par_data_legal_entity) {
-      var_dump($par_data_legal_entity->get('registered_name')->getString());
       $this->loadDataValue("legal_entity_registered_name", $par_data_legal_entity->get('registered_name')->getString());
       $this->loadDataValue("legal_entity_registered_number", $par_data_legal_entity->get('registered_number')->getString());
       $this->loadDataValue("legal_entity_legal_entity_type", $par_data_legal_entity->get('legal_entity_type')->getString());
