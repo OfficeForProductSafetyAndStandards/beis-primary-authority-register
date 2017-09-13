@@ -158,6 +158,8 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       '#markup' => t('@link', ['@link' => $cancel_link]),
     ];
 
+    var_dump($this->getFlowName());
+
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($par_data_person);
     $this->addCacheableDependency($person_bundle);
@@ -210,6 +212,8 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       // @TODO We will add the add de-duping in here.
       // So instead of saving the new entity we will go
       // to the add-confirm page for contacts (and save there).
+
+      $form_state->setRedirect('par_partnership_flows.authority_contact_add_confirm', $this->getRouteParams());
     }
 
   }

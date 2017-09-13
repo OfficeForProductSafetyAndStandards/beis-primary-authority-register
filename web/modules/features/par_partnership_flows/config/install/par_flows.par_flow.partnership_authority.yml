@@ -65,3 +65,15 @@ steps:
     redirect:
       next: 1
       cancel: 1
+  11:
+    route: par_partnership_flows.authority_contact_add_confirm
+    form_id: par_partnership_contact_suggestion
+    redirect:
+      save: 1
+      cancel: 1
+  12:
+    route: par_partnership_flows.organisation_contact_add_confirm
+    form_id: par_partnership_contact_suggestion
+    redirect:
+      save: 1
+      cancel: 1

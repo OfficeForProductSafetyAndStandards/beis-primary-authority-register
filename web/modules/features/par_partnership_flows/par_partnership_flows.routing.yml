@@ -24,7 +24,7 @@ par_partnership_flows.about_partnership:
       par_data_partnership:
         type: entity:par_data_partnership
 par_partnership_flows.authority_contact_edit:
-  path: '/partnership/{par_data_partnership}/authority/{par_data_authority}/contact/{par_data_person}'
+  path: '/partnership/{par_data_partnership}/authority/contact/{par_data_person}'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
     _title: 'Primary Authority Register'
@@ -42,35 +42,29 @@ par_partnership_flows.authority_contact_edit:
       par_data_person:
         type: entity:par_data_person
 par_partnership_flows.authority_contact_add:
-  path: '/partnership/{par_data_partnership}/authority/{par_data_authority}/contact/add'
+  path: '/partnership/{par_data_partnership}/authority/contact/add'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
     _title: 'Primary Authority Register'
   requirements:
     _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
     par_data_partnership: \d+
-    par_data_authority: \d+
   options:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-      par_data_authority:
-        type: entity:par_data_authority
 par_partnership_flows.authority_contact_add_confirm:
-  path: '/partnership/{par_data_partnership}/authority/{par_data_authority}/contact/add/confirm'
+  path: '/partnership/{par_data_partnership}/authority/contact/add/confirm'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactSuggestionForm'
     _title: 'Primary Authority Register'
   requirements:
     _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
     par_data_partnership: \d+
-    par_data_authority: \d+
   options:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-      par_data_authority:
-        type: entity:par_data_authority
 par_partnership_flows.advice_list:
   path: '/partnership/{par_data_partnership}/advice/list'
   defaults:
@@ -362,4 +356,5 @@ par_partnership_flows.business_size:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+
 

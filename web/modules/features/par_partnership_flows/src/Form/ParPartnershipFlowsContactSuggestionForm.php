@@ -15,6 +15,9 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
+  // @todo remove override.
+  protected $flow = 'partnership_authority';
+
   //  protected $formItems = [
   //    'par_data_person:person' => [
   //      'first_name' => 'first_name',
@@ -45,12 +48,12 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
-    //    if ($par_data_partnership) {
-    //       If we're editing an entity we should set the state
-    //       to something other than default to avoid conflicts
-    //       with existing versions of the same form.
-    //      $this->setState("edit:{$par_data_partnership->id()}");
-    //    }
+    if ($par_data_partnership) {
+    // If we're editing an entity we should set the state
+    // to something other than default to avoid conflicts
+    // with existing versions of the same form.
+      $this->setState("edit:{$par_data_partnership->id()}");
+    }
 
     //    if ($par_data_person) {
     //      // Contact.
@@ -96,7 +99,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
       //      )
       ->condition(
         'email',
-        $this->getDefaultValues('email', '', 'par_partnership_contact_add')
+        $this->getDefaultValues('email', '', 'par_partnership_contact')
       )
       ->condition(
         'mobile_phone',
@@ -110,11 +113,11 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
     $ids = $query->condition($conditions)->range(0,10)->execute();
 
     $person_storage = \Drupal::entityManager()->getStorage('par_data_person');
+    $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
 
     $people = $person_storage->loadMultiple($ids);
 
     foreach($people as $person) {
-      $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
 
       $person_view = $person_view_builder->view($person, 'detailed');
 
@@ -123,20 +126,10 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
 
     $people_options['new'] = 'No, I want to create a new user.';
 
-    $form['options'] = [
-
+    $form['option'] = [
       '#type' => 'radios',
-
       '#title' => t('Did you mean any of these users?'),
-
-      //      '#default_value' => '1',
-
       '#options' => $people_options,
-
-      //      '#id' => 'al1',
-
-      //      '#title_display' =>'title',
-
     ];
 
     $form['save'] = [
@@ -145,15 +138,19 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
       '#value' => t('Save'),
     ];
 
-    $cancel_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
-    $form['cancel'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $cancel_link]),
-    ];
+    // @todo remove.
+    var_dump($this->getFlowName());
+
+//    $cancel_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
+//    $form['cancel'] = [
+//      '#type' => 'markup',
+//      '#markup' => t('@link', ['@link' => $cancel_link]),
+//    ];
 
     // Make sure to add the person cacheability data to this form.
-    //    $this->addCacheableDependency($par_data_person);
-    //    $this->addCacheableDependency($person_bundle);
+    $this->addCacheableDependency($person_view_builder);
+    $this->addCacheableDependency($person_storage);
+    $this->addCacheableDependency($people);
 
     return parent::buildForm($form, $form_state);
   }
@@ -199,61 +196,71 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
 
     // Now find the authority.
-//    $par_data_authority = current($par_data_partnership->getAuthority());
+    $par_data_authority = current($par_data_partnership->getAuthority());
 
-    //    // Create new person entity.
-    //    $par_data_person = ParDataPerson::create([
-    //      'type' => 'advice',
-    //    ]);
-    //
-    //    $par_data_person->set('salutation', $this->getTempDataValue('salutation'));
-    //    $par_data_person->set('first_name', $this->getTempDataValue('first_name'));
-    //    $par_data_person->set('last_name', $this->getTempDataValue('last_name'));
-    //    $par_data_person->set('work_phone', $this->getTempDataValue('work_phone'));
-    //    $par_data_person->set('mobile_phone', $this->getTempDataValue('mobile_phone'));
-    //    $par_data_person->set('email', $this->getTempDataValue('email'));
-    //    $par_data_person->set('communication_notes', $this->getTempDataValue('notes'));
-    //
-    //    // @todo refactor this to use $this->getTempDataBooleanValue() or similar.
-    //    // Save the email preference.
-    //    $email_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_email'])
-    //      && !empty($this->getTempDataValue('preferred_contact')['communication_email']);
-    //    $par_data_person->set('communication_email', $email_preference_value);
-    //    // Save the work phone preference.
-    //    $work_phone_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_phone'])
-    //      && !empty($this->getTempDataValue('preferred_contact')['communication_phone']);
-    //    $par_data_person->set('communication_phone', $work_phone_preference_value);
-    //    // Save the mobile phone preference.
-    //    $mobile_phone_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_mobile'])
-    //      && !empty($this->getTempDataValue('preferred_contact')['communication_mobile']);
-    //    $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
-    //
-    //    if ($par_data_person->save()) {
-    //
-    //      // Add to field_authority_person.
-    //      $par_data_partnership->get('field_authority_person')->appendItem($par_data_person->id());
-    //
-    //      // Update field_person on authority.
-    //      $par_data_authority->get('field_person')->appendItem($par_data_person->id());
-    //
-    //    }
-    //
-    //    if ($par_data_person->id() &&
-    //      $par_data_partnership->save() &&
-    //      $par_data_authority->save()) {
-    //      $this->deleteStore();
-    //    }
-    //    else {
-    //      $message = $this->t('This %person could not be saved for %form_id');
-    //      $replacements = [
-    //        '%person' => $this->getTempDataValue('name'),
-    //        '%form_id' => $this->getFormId(),
-    //      ];
-    //      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-    //    }
+    if ($this->getTempDataValue('option') == 'new') {
+
+      // Create new person entity.
+       $par_data_person = ParDataPerson::create([
+        'type' => 'advice',
+      ]);
+
+      $par_data_person->set('salutation', $this->getTempDataValue('salutation'));
+      $par_data_person->set('first_name', $this->getTempDataValue('first_name'));
+      $par_data_person->set('last_name', $this->getTempDataValue('last_name'));
+      $par_data_person->set('work_phone', $this->getTempDataValue('work_phone'));
+      $par_data_person->set('mobile_phone', $this->getTempDataValue('mobile_phone'));
+      $par_data_person->set('email', $this->getTempDataValue('email'));
+      $par_data_person->set('communication_notes', $this->getTempDataValue('notes'));
+
+      // @todo refactor this to use $this->getTempDataBooleanValue() or similar.
+      // Save the email preference.
+      $email_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_email'])
+        && !empty($this->getTempDataValue('preferred_contact')['communication_email']);
+      $par_data_person->set('communication_email', $email_preference_value);
+      // Save the work phone preference.
+      $work_phone_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_phone'])
+        && !empty($this->getTempDataValue('preferred_contact')['communication_phone']);
+      $par_data_person->set('communication_phone', $work_phone_preference_value);
+      // Save the mobile phone preference.
+      $mobile_phone_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_mobile'])
+        && !empty($this->getTempDataValue('preferred_contact')['communication_mobile']);
+      $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
+
+      if ($par_data_person->save()) {
+
+        // Add to field_authority_person.
+        $par_data_partnership->get('field_authority_person')
+          ->appendItem($par_data_person->id());
+
+        // Update field_person on authority.
+        $par_data_authority->get('field_person')
+          ->appendItem($par_data_person->id());
+
+      }
+
+      if ($par_data_person->id() &&
+        $par_data_partnership->save() &&
+        $par_data_authority->save()) {
+        $this->deleteStore();
+      }
+      else {
+        $message = $this->t('This %person could not be saved for %form_id');
+        $replacements = [
+          '%person' => $this->getTempDataValue('name'),
+          '%form_id' => $this->getFormId(),
+        ];
+        $this->getLogger($this->getLoggerChannel())
+          ->error($message, $replacements);
+      }
+
+    }
+    else {
+      // @todo store ID instead.
+    }
 
     // Go back to the overview.
-    $form_state->setRedirect($this->getFlow()->getRouteByStep(1), $this->getRouteParams());
+//    $form_state->setRedirect($this->getFlow()->getRouteByStep(1), $this->getRouteParams());
   }
 
 }
