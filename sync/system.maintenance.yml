@@ -1,4 +1,4 @@
-message: "The Primary Authority Register transition site is now closed.\r\n\r\nThe new Primary Authority Register will be available on the 01 October 2017."
+message: "<h2 class=\"heading-medium\">Primary Authority Register</h2>\r\n\r\n<p>The Primary Authority Register transition site is now closed.</p>\r\n\r\n<p>The new Primary Authority Register will be available on the 01 October 2017.</p>"
 langcode: en
 _core:
   default_config_hash: Z5MXifrF77GEAgx0GQ6iWT8wStjFuY8BD9OruofWTJ8
