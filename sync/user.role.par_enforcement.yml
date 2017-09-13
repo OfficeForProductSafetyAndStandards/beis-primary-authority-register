@@ -41,6 +41,7 @@ permissions:
   - 'edit par_data_premises entities'
   - 'edit par_data_regulatory_function entities'
   - 'edit par_data_sic_code entities'
+  - 'enforce organisation'
   - invite_type_invite_organisation_member
   - 'manage my authorities'
   - 'use text format basic_html'

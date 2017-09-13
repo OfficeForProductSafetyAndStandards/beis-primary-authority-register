@@ -18,3 +18,7 @@ enforce organisation:
   title: 'Enforce organisation'
   description: 'A permission to allow enforcement of an organisation.'
   restrict access: TRUE
+apply for partnership:
+  title: 'Apply for a partnership'
+  description: 'A permission to allow members of an authority to apply for new partnerships.'
+  restrict access: TRUE
