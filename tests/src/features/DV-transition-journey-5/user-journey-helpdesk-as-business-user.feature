@@ -12,7 +12,7 @@ Feature: Helpdesk As Business User - Manage Addresses
 
         # HD DASHBOARD
 
-        Then I expect that element "h1" contains the text "RD Helpdesk Dashboard"
+        # Then I expect that element "h1" contains the text "RD Helpdesk Dashboard"
         When I add "ABCD" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-rd-helpdesk-dashboard"
         And I scroll to element "#views-exposed-form-rd-helpdesk-dashboard-par-rd-helpdesk-dashboard-page"

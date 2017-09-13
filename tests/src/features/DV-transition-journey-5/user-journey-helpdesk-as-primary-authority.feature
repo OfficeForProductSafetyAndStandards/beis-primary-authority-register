@@ -9,7 +9,7 @@ Feature: Helpdesk As Primary Authority - Manage name and summary detail
         # LOGIN SCREEN
 
         Given I am logged in as "par_helpdesk@example.com"
-        When I click on the link "See your partnerships"
+        # When I click on the link "See your partnerships"
 
         # PARTNERSHIPS DASHBOARD
 
