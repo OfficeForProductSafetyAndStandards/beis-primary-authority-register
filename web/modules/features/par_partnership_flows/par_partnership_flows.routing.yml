@@ -129,7 +129,7 @@ par_partnership_flows.inspection_plan_list:
       par_data_partnership:
         type: entity:par_data_partnership
 
-# PAR Data Organisation Partnership Journey
+# PAR Data Organisation Partnership Journey  ********
 par_partnership_flows.organisation_details:
   path: '/partnership/{par_data_partnership}/organisation-details'
   defaults:
@@ -323,4 +323,14 @@ par_partnership_flows.business_size:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-
+par_partnership_flows.partnership_page:
+  path: '/partnership/{par_data_partnership}/partnership-page'
+  defaults:
+    _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsPartnershipPageController::content'
+  requirements:
+    _permission: 'bypass partnership journey+authority partnership journey'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
