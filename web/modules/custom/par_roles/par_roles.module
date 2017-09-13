@@ -25,6 +25,7 @@ function par_roles_help($route_name, RouteMatchInterface $route_match) {
 
 function par_roles_user_presave($account) {
   $par_data_manager = \Drupal::service('par_data.manager');
+
   // Add the correct roles to this user account also.
   if ($par_data_manager->isMemberOfAuthority($account) && !$account->hasRole('par_authority')) {
     $account->addRole('par_authority');
