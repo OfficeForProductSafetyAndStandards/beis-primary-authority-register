@@ -339,7 +339,8 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
         $form['authority_contact'][$person->id()]['edit'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
-            '@link' => $this->getFlow()->getNextLink('edit_contact', [
+            '@link' => $this->getFlow()->getNextLink('authority_contact_edit', [
+              'par_data_authority' => $par_data_authority->id(),
               'par_data_person' => $person->id(),
             ])->setText('edit')->toString(),
           ]),
@@ -368,10 +369,11 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     $form['authority_contact_add']['add'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('add_contact')->setText('add another contact (TBC)')->toString(),
+        '@link' => $this->getFlow()->getNextLink('authority_contact_add', [
+          'par_data_authority' => $par_data_authority->id()
+        ])->setText('add another contact')->toString(),
       ]),
     ];
-
 
     // Primary contact summary.
     $par_data_contacts = $par_data_partnership->getOrganisationPeople();
@@ -399,6 +401,16 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
         ];
 
         $form['organisation_contact'][$person->id()]['person'] = $this->renderMarkupField($alternative_person);
+
+        $form['organisation_contact'][$person->id()]['edit'] = [
+          '#type' => 'markup',
+          '#markup' => t('@link', [
+            '@link' => $this->getFlow()->getNextLink('organisation_edit_contact', [
+              'par_data_organisation' => $par_data_organisation->id(),
+              'par_data_person' => $person->id(),
+            ])->setText('edit')->toString(),
+          ]),
+        ];
       }
     }
     else {

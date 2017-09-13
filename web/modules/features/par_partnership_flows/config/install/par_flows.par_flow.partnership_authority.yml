@@ -9,10 +9,12 @@ steps:
     form_id: par_partnership_authority_details
     redirect:
       about: 2
-      add_contact: 3
-      edit_contact: 4
+      authority_add_contact: 3
+      authority_edit_contact: 4
       advice: 5
       inspection_plans: 10
+      organisation_add_contact: 11
+      organisation_edit_contact: 12
   2:
     route: par_partnership_flows.about_partnership
     form_id: par_partnership_about
@@ -61,6 +63,28 @@ steps:
       cancel: 5
   10:
     route: par_partnership_flows.inspection_plan_list
+    redirect:
+      next: 1
+      cancel: 1
+  11:
+    route: par_partnership_flows.organisation_contact_add
+    redirect:
+      next: 1
+      cancel: 1
+  12:
+    route: par_partnership_flows.organisation_contact_edit
+    redirect:
+      next: 1
+      cancel: 1
+  13:
+    route: par_partnership_flows.authority_contact_add_confirm
+    form_id: par_partnership_contact_suggestion
+    redirect:
+      next: 1
+      cancel: 1
+  14:
+    route: par_partnership_flows.organisation_contact_add_confirm
+    form_id: par_partnership_contact_suggestion
     redirect:
       next: 1
       cancel: 1
