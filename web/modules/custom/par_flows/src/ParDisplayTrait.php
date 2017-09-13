@@ -46,8 +46,8 @@ trait ParDisplayTrait {
         '#collapsed' => FALSE,
       ];
       $elements[$delta]['value'] = $this->renderMarkupField($rendered_field);
-      $elements[$delta]['value']['#prefix'] = '<p>';
-      $elements[$delta]['value']['#suffix'] = '</p>';
+      $elements[$delta]['value']['#prefix'] = '<div>';
+      $elements[$delta]['value']['#suffix'] = '</div>';
 
       // Get all of the available entity entity operation links.
       $elements[$delta] += $this->displayEntityOperationLinks($entity, $field, $delta, $operations);
@@ -122,7 +122,7 @@ trait ParDisplayTrait {
     }
 
     // @TODO We will eventually need to add delete/revoke/archive and various other operations.
-    return $operation_links;
+    return ['operations' => $operation_links];
   }
 
   /**
@@ -145,7 +145,6 @@ trait ParDisplayTrait {
     foreach ($fields as $field_name => $view_mode) {
       $element[$field_name] = [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
@@ -154,17 +153,16 @@ trait ParDisplayTrait {
       if (!$field->isEmpty()) {
         $element[$field_name]['items'] = [
           '#type' => 'fieldset',
-          '#attributes' => ['class' => 'form-group'],
           '#collapsible' => FALSE,
           '#collapsed' => FALSE,
         ];
 
         // Reference fields need to be rendered slightly differently.
         if ($field instanceof EntityReferenceFieldItemListInterface) {
-          $element[$field_name]['items'] += $this->renderReferenceField($field, $view_mode, $operations, $single);
+          $element[$field_name]['items'][] = $this->renderReferenceField($field, $view_mode, $operations, $single);
         }
         else {
-          $element[$field_name]['items'] += $this->renderTextField($entity, $field, $operations, $single);
+          $element[$field_name]['items'][] = $this->renderTextField($entity, $field, $operations, $single);
         }
 
       }
@@ -177,7 +175,6 @@ trait ParDisplayTrait {
 
       $element[$field_name]['operations'] = [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];

@@ -3,7 +3,7 @@ par_partnership_flows.authority_details:
   path: '/partnership/{par_data_partnership}/authority-details'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAuthorityDetailsForm'
-    _title: ''
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAuthorityDetailsForm::titleCallback'
   requirements:
     _permission: 'bypass partnership journey+authority partnership journey'
     par_data_partnership: \d+
