@@ -2,7 +2,10 @@
 
 namespace Drupal\par_flows;
 
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
+use Drupal\Core\Field\FieldItemListInterface;
 
 trait ParDisplayTrait {
 
@@ -32,11 +35,23 @@ trait ParDisplayTrait {
   }
 
 
-  public function renderTextField($entity, $field, $view_mode = 'summary', $operations = [], $single = FALSE) {
-    $rendered_field = $entity->{$field->getName()}->view(['label' => 'hidden']);
-    $elements = $this->renderMarkupField($rendered_field);
+  public function renderTextField($entity, $field, $operations = [], $single = FALSE) {
+    $elements = [];
+    foreach ($field as $delta => $value) {
+      $rendered_field = $value->view(['label' => 'hidden']);
+      $elements[$delta] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+      $elements[$delta]['value'] = $this->renderMarkupField($rendered_field);
+      $elements[$delta]['value']['#prefix'] = '<p>';
+      $elements[$delta]['value']['#suffix'] = '</p>';
 
-    // @TODO We need to get the operations for this.
+      // Get all of the available entity entity operation links.
+      $elements[$delta] += $this->displayEntityOperationLinks($entity, $field, $delta, $operations);
+    }
 
     return $elements;
   }
@@ -54,38 +69,60 @@ trait ParDisplayTrait {
     foreach ($field->referencedEntities() as $delta => $entity) {
       $entity_view_builder = $this->getParDataManager()->getViewBuilder($entity->getEntityTypeId());
       $rendered_entity = $entity_view_builder->view($entity, $view_mode);
+      $elements[$delta] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
       $elements[$delta]['entity'] = $this->renderMarkupField($rendered_entity);
 
-      // Only add the edit link if it is in the allowed operations.
-      if (isset($operations) && (in_array('edit-entity', $operations) || in_array('edit-field', $operations))) {
-        // Depending on whether we're editing the field, or the entity, or both
-        // we need to add the delta or entity id to the route params.
-        $params = [];
-        if (in_array('edit-field', $operations)) {
-          $params[$field->getName() . '_delta'] = $delta;
-        }
-        if (in_array('edit-entity', $operations)) {
-          $params[$entity->getEntityTypeId()] = $entity->id();
-        }
-
-        try {
-          $edit_link = $this->getFlow()->getLinkByCurrentOperation('edit_' . $field->getName(), $params)->setText('edit')->toString();
-        }
-        catch (ParFlowException $e) {
-          $this->getLogger($this->getLoggerChannel())->error($e);
-        }
-        if (isset($edit_link)) {
-          $elements[$delta]['edit'] = [
-            '#type' => 'markup',
-            '#markup' => t('@link', ['@link' => $edit_link]),
-          ];
-        }
-      }
-
-      // @TODO We will eventually need to add delete/revoke/archive and various other operations.
+      // Get all of the available entity entity operation links.
+      $elements[$delta] += $this->displayEntityOperationLinks($entity, $field, $delta, $operations);
     }
 
     return $elements;
+  }
+
+  /**
+   * @param EntityInterface $entity
+   *   The entity that we're performing the operations on.
+   * @param FieldItemListInterface $field
+   *   The field that the operation relates to.
+   * @param array $operations
+   *   An array of operations that we want to get.
+   */
+  public function displayEntityOperationLinks($entity, $field, $delta = NULL, $operations = []) {
+    $operation_links = [];
+
+    // Only add the edit link if it is in the allowed operations.
+    if (isset($operations) && (in_array('edit-entity', $operations) || in_array('edit-field', $operations))) {
+      // Depending on whether we're editing the field, or the entity, or both
+      // we need to add the delta or entity id to the route params.
+      $params = [];
+      if (in_array('edit-field', $operations)) {
+        $params[$field->getName() . '_delta'] = $delta;
+      }
+      if (in_array('edit-entity', $operations)) {
+        $params[$entity->getEntityTypeId()] = $entity->id();
+      }
+
+      try {
+        $edit_link = $this->getFlow()->getLinkByCurrentOperation('edit_' . $field->getName(), $params)->setText('edit')->toString();
+      }
+      catch (ParFlowException $e) {
+        $this->getLogger($this->getLoggerChannel())->error($e);
+      }
+      if (isset($edit_link)) {
+        $operation_links['edit'] = [
+          '#type' => 'markup',
+          '#markup' => t('@link', ['@link' => $edit_link]),
+        ];
+      }
+    }
+
+    // @TODO We will eventually need to add delete/revoke/archive and various other operations.
+    return $operation_links;
   }
 
   /**
@@ -94,7 +131,7 @@ trait ParDisplayTrait {
    * Display all of the fields on the given legal entity
    * with the relevant operational links.
    */
-  public function renderSection($section, $entity, $fields, $operations, $title = TRUE, $single = FALSE) {
+  public function renderSection($section, $entity, $fields, $operations = [], $title = TRUE, $single = FALSE) {
     $element = [
       '#type' => 'fieldset',
       '#attributes' => ['class' => 'form-group'],
@@ -127,7 +164,7 @@ trait ParDisplayTrait {
           $element[$field_name]['items'] += $this->renderReferenceField($field, $view_mode, $operations, $single);
         }
         else {
-          $element[$field_name]['items'] += $this->renderTextField($entity, $field, $view_mode, $operations, $single);
+          $element[$field_name]['items'] += $this->renderTextField($entity, $field, $operations, $single);
         }
 
       }
