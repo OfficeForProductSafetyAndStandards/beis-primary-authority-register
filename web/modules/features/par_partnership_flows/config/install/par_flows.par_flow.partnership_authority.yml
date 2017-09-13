@@ -34,6 +34,7 @@ steps:
   5:
     route: par_partnership_flows.advice_list
     redirect:
+      advice_upload: 6
       edit: 9
       next: 1
       cancel: 1
@@ -50,7 +51,7 @@ steps:
       cancel: 5
   8:
     route: par_partnership_flows.advice_edit_documents
-    form_id: par_partnership_upload
+    form_id: par_partnership_advice_upload
     redirect:
       cancel: 5
   9:
