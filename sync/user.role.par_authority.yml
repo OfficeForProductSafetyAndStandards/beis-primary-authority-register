@@ -21,6 +21,7 @@ permissions:
   - 'access par_data_sic_code entities'
   - 'access partnerships dashboard'
   - 'apply for partnership'
+  - 'approve enforcement notice'
   - 'authority partnership journey'
   - 'create files'
   - 'delete own document files'
@@ -45,6 +46,8 @@ permissions:
   - 'enforce organisation'
   - invite_type_invite_organisation_member
   - 'manage my authorities'
+  - 'raise enforcement notice'
+  - 'send enforcement notice'
   - 'use text format basic_html'
   - 'view own private files'
   - 'view unpublished par_data_advice entities'

@@ -40,6 +40,7 @@ permissions:
   - 'add par_data_sic_code entities'
   - 'administer users'
   - 'apply for partnership'
+  - 'approve enforcement notice'
   - 'bypass par_data membership'
   - 'bypass partnership journey'
   - 'create article content'

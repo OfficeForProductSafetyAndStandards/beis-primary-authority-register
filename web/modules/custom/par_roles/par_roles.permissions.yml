@@ -6,19 +6,33 @@ search partnership:
   title: 'Search partnerships'
   description: 'A permission to allow searching of all partnerships within PAR.'
   restrict access: TRUE
+# Permissions related to all actions applied to partnerships.
 manage my organisations:
   title: 'Manage my organisations'
   description: 'A permission to allow the management of orgnisations.'
   restrict access: TRUE
 manage my authorities:
-  title: 'Managage my authorities'
+  title: 'Manage my authorities'
   description: 'A permission to allow the management of orgnisations.'
-  restrict access: TRUE
-enforce organisation:
-  title: 'Enforce organisation'
-  description: 'A permission to allow enforcement of an organisation.'
   restrict access: TRUE
 apply for partnership:
   title: 'Apply for a partnership'
   description: 'A permission to allow members of an authority to apply for new partnerships.'
+  restrict access: TRUE
+# Permissions related to enforcement actions.
+enforce organisation:
+  title: 'Enforce organisation'
+  description: 'A permission to allow enforcement of an organisation.'
+  restrict access: TRUE
+raise enforcement notice:
+  title: 'Raise Enforcement Notice'
+  description: 'Allow a user to raise an enforcement notice against any Organisation.'
+  restrict access: TRUE
+approve enforcement notice:
+  title: 'Approve Enforcement Notice'
+  description: 'Allow approval of enforcement notices relevant to the Authority the user belongs to.'
+  restrict access: TRUE
+send enforcement notice:
+  title: 'Send Enforcement Notice'
+  description: 'Allow a user to send the enforcement notice they raised against an Organisation.'
   restrict access: TRUE
