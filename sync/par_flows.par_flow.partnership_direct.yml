@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: fdeSSVgtpqWJMC1q3H36kQ96tzFQJiY_65QnulRSnNU
+  default_config_hash: u9_xvDPrAtUeLIajmwE27LbIzn93nAZUVroY3CvSkPM
 id: partnership_direct
 label: 'Direct Partnership Flow'
 description: ''
@@ -24,6 +24,7 @@ steps:
       add_field_sic_code: 11
       edit_field_sic_code: 12
       edit_employees_band: 13
+      done: 14
   2:
     route: par_partnership_flows.about_business
     form_id: par_partnership_about_business
@@ -96,3 +97,5 @@ steps:
     redirect:
       save: 1
       cancel: 1
+  14:
+    route: view.par_user_partnerships.partnerships_page

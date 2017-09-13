@@ -104,7 +104,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
     // Save the edited value for the organisation's sic code field.
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
     $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $sic_code_delta = $this->getRouteParam('sic_code_delta');
+    $sic_code_delta = $this->getRouteParam('field_sic_code_delta');
 
     $items = $par_data_organisation->get('field_sic_code')->getValue();
     if ($par_data_organisation && isset($sic_code_delta)) {
