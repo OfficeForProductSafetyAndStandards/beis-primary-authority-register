@@ -57,7 +57,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       $this->loadDataValue("salutation", $par_data_person->get('salutation')->getString());
       $this->loadDataValue("first_name", $par_data_person->get('first_name')->getString());
       $this->loadDataValue("last_name", $par_data_person->get('last_name')->getString());
-      $this->loadDataValue("phone", $par_data_person->get('work_phone')->getString());
+      $this->loadDataValue("work_phone", $par_data_person->get('work_phone')->getString());
       $this->loadDataValue("mobile_phone", $par_data_person->get('mobile_phone')->getString());
       $this->loadDataValue("email", $par_data_person->get('email')->getString());
       $this->loadDataValue("notes", $par_data_person->get('communication_notes')->getString());
@@ -106,7 +106,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     $form['work_phone'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Work phone'),
-      '#default_value' => $this->getDefaultValues("phone"),
+      '#default_value' => $this->getDefaultValues("work_phone"),
     ];
 
     // The Person's work phone number.

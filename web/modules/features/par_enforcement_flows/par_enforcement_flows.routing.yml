@@ -10,29 +10,68 @@ par_enforcement_flows.partnership_page:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+par_enforcement_flows.advice_view:
+  path: '/partnership/{par_data_partnership}/advice/search'
+  defaults:
+    _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::content'
+    _title: 'Primary Authority Register'
+  requirements:
+    _permission: 'enforce organisation'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_enforcement_flows.inspection_plan_view:
+  path: '/partnership/{par_data_partnership}/inspection/search'
+  defaults:
+    _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::content'
+    _title: 'Primary Authority Register'
+  requirements:
+    _permission: 'enforce organisation'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
 
 # PAR Data Raise Enforcement Notice Journey
 par_enforcement_flows.raise:
-  path: '/enforcement-notice/raise'
+  path: '/enforcement-notice/{par_data_partnership}/raise'
   defaults:
     _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementRaiseNoticeForm'
     _title: 'Raise Enforcement Notice'
   requirements:
     _permission: 'raise enforcement notice'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
 par_enforcement_flows.add_action:
-  path: '/enforcement-notice/raise/action/add'
+  path: '/enforcement-notice/{par_data_partnership}/raise/action/add'
   defaults:
     _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementAddActionForm'
     _title: 'Add Action to Enforcement Notice'
   requirements:
     _permission: 'raise enforcement notice'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
 par_enforcement_flows.raise_confirm:
-  path: '/enforcement-notice/raise/confirm'
+  path: '/enforcement-notice/{par_data_partnership}/raise/confirm'
   defaults:
     _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementSubmitNoticeForm'
     _title: 'Confirm Enforcement Notice'
   requirements:
     _permission: 'raise enforcement notice'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
 
 # PAR Data Approve Enforcement Notice Journey
 par_enforcement_flows.approve:

@@ -143,6 +143,7 @@ par_partnership_flows.inspection_plan_list:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+
 # PAR Data Organisation Partnership Journey
 par_partnership_flows.organisation_details:
   path: '/partnership/{par_data_partnership}/organisation-details'
@@ -196,7 +197,7 @@ par_partnership_flows.address_add:
       par_data_partnership:
         type: entity:par_data_partnership
 par_partnership_flows.organisation_contact_edit:
-  path: '/partnership/{par_data_partnership}/organisation/{par_data_organisation}/contact/{par_data_person}'
+  path: '/partnership/{par_data_partnership}/organisation/contact/{par_data_person}'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
     _title: 'Primary Authority Register'
@@ -214,7 +215,7 @@ par_partnership_flows.organisation_contact_edit:
       par_data_person:
         type: entity:par_data_person
 par_partnership_flows.organisation_contact_add:
-  path: '/partnership/{par_data_partnership}/organisation/{par_data_organisation}/contact/add'
+  path: '/partnership/{par_data_partnership}/organisation/contact/add'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
     _title: 'Primary Authority Register'
@@ -229,7 +230,7 @@ par_partnership_flows.organisation_contact_add:
       par_data_organisation:
         type: entity:par_data_organisation
 par_partnership_flows.organisation_contact_add_confirm:
-  path: '/partnership/{par_data_partnership}/organisation/{par_data_organisation}/contact/add/confirm'
+  path: '/partnership/{par_data_partnership}/organisation/contact/add/confirm'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactSuggestionForm'
     _title: 'Primary Authority Register'
@@ -348,6 +349,30 @@ par_partnership_flows.business_size:
   path: '/partnership/{par_data_partnership}/business-size'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsBusinessSizeForm'
+    _title: 'Primary Authority Register'
+  requirements:
+    _permission: 'manage my organisations'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.advice_view:
+  path: '/partnership/{par_data_partnership}/advice/view'
+  defaults:
+    _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::content'
+    _title: 'Primary Authority Register'
+  requirements:
+    _permission: 'manage my organisations'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.inspection_plan_view:
+  path: '/partnership/{par_data_partnership}/inspection/view'
+  defaults:
+    _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::content'
     _title: 'Primary Authority Register'
   requirements:
     _permission: 'manage my organisations'
