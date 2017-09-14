@@ -344,7 +344,7 @@ $aliases['paas'] = [
             'ordered-dump' => TRUE,
             'structure-tables-key' => 'common',
             'skip-tables-key' => 'common',
-            'extra' => '--no-owner',
+            'extra' => '-O -x',
         ],
         'sql-sanitize' => [
             'sanitize-password' => 'TestPassword',
