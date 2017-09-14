@@ -13,7 +13,7 @@ Feature: Primary Authority - Change Partnership Details
         And I expect that element "#block-par-theme-content" contains the text "Your partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Find a partnership"
         And I expect that element "#block-par-theme-content" contains the text "Messages"
-        When I click on the link "Search for a partnership"
+        When I click on the link "See your partnerships"
 
         # PARTNERSHIPS DASHBOARD
 
@@ -79,24 +79,27 @@ Feature: Primary Authority - Change Partnership Details
         And I click on the button "a*=See all Advice"
         #  And I click on the link "Upload a document"
         #  And I upload a valid file
-        And I click on the link "edit"
-        And I click on the radio "#edit-advice-type-authority-advice"
+        When I click on the link "edit"
+        Then I expect that element "#par-partnership-advice-upload" contains the text "Upload file(s)"
+        When I click on the button "#edit-next"
+#        And I click on the radio "#edit-advice-type-authority-advice"
         # When I click on the button "#edit-next"
         # Then I expect that element ".error-message" does exist
         And I click on the checkbox ".form-label*=Cookie control"
         When I click on the button "#edit-next"
+        And I click on the link "Done"
         # Then I expect that element ".table-scroll-wrapper" contains the text "✔"
         # And the element ".table-scroll-wrapper" contains the text "Cookie control"
-        When I click on the link "Save"
+#        When I click on the button "#edit-next"
         # Then I expect that element ".table-scroll-wrapper" contains the text "100%"
 
         # INSPECTION PLANS
 
         # When I select next partnership awaiting review
-        When I click on the link "See all Inspection Plans"
+        And I click on the link "See all Inspection Plans"
 #        Then I expect that element "#edit-document-list" contains the text "Inspection Plan"
 #        And I click on the checkbox ".form-checkbox"
-        And I click on the link "Save"
+        And I click on the link "Done"
 
         # CHECK INSPECTION PLAN CONFIRMED
 
