@@ -104,7 +104,7 @@ par_partnership_flows.advice_add:
 par_partnership_flows.advice_edit_documents:
   path: '/partnership/{par_data_partnership}/advice/{par_data_advice}/upload'
   defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsUploadForm'
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceUploadForm'
     _title: 'Primary Authority Register'
   requirements:
     _permission: 'manage my authorities'
