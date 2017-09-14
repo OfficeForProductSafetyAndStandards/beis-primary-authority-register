@@ -78,14 +78,6 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     // see which one they're confirming details for.
     $document_view_builder = $this->getParDataManager()->getViewBuilder('par_data_advice');
 
-    // Check if we should render the document from an advice entity.
-    if ($par_data_advice) {
-      $document = $document_view_builder->view($par_data_advice, 'summary');
-      $form['document'] = $this->renderMarkupField($document) + [
-          '#title' => $this->t('Document'),
-        ];
-    }
-
     // Get files from "par_partnership_advice_upload" step.
     $files = $this->getDefaultValues("files", '', 'par_partnership_advice_upload');
     if ($files) {
@@ -157,8 +149,21 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       }
 
       $regulatory_functions_selected = array_keys(array_filter($this->getTempDataValue('regulatory_functions')));
-
       $par_data_advice->set('field_regulatory_function', $regulatory_functions_selected);
+
+      // Add all the uploaded files from the upload form to the advice and save.
+      $files = $this->getTempDataValue('files', 'par_partnership_advice_upload');
+      $files_to_add = [];
+      foreach ($files as $file) {
+        $file = File::load($file);
+        if ($file->isTemporary()) {
+          $file->setPermanent();
+          $file->save();
+        }
+        $files_to_add[] = $file->id();
+
+      }
+      $par_data_advice->set('document', $files_to_add);
 
       if ($par_data_advice->save()) {
         $this->deleteStore();

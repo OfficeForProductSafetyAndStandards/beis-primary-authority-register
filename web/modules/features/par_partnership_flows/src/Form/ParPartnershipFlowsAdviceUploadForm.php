@@ -39,6 +39,13 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
       // to something other than default to avoid conflicts
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_advice->id()}");
+
+      $files = $par_data_advice->get('document')->referencedEntities();
+      $ids = [];
+      foreach ($files as $file) {
+        $ids[] = $file->id();
+      }
+      $this->loadDataValue('files', $ids);
     }
   }
 
@@ -46,6 +53,8 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
+    $this->retrieveEditableValues($par_data_partnership, $par_data_advice);
+
     $par_data_advice_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('par_data_advice', 'document');
     $field_definition = $par_data_advice_fields['document'];
     $file_extensions = $field_definition->getSetting('file_extensions');

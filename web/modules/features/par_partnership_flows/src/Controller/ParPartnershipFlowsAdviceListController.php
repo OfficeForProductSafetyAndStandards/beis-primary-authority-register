@@ -64,8 +64,6 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
 
       // Check permissions before adding the links for all operations.
       if ($this->getFlowName() === 'partnership_authority') {
-        $build['documentation_list']['#header'][] = 'Actions';
-
         // We need to create an array of all action links.
         $links = [
           [
@@ -86,6 +84,8 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
 
     // Check permissions before adding the links for all operations.
     if ($this->getFlowName() === 'partnership_authority') {
+      $build['documentation_list']['#header'][] = 'Actions';
+
       $build['upload'] = [
         '#type' => 'markup',
         '#prefix' => '<p>',
