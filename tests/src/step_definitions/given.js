@@ -26,6 +26,7 @@ import selectNextHelpdeskPartnershipAwaitingReview from '../support/action/selec
 import selectNextHelpdeskBusinessAwaitingReview from '../support/action/selectNextHelpdeskBusinessAwaitingReview';
 import selectMyNextCoordinatedPartnership from '../support/action/selectMyNextCoordinatedPartnership';
 import relevantSearchResultsCheck from '../support/action/relevantSearchResultsCheck';
+import partnershipSearchResultsCheck from '../support/action/partnershipSearchResultsCheck';
 import relevantSearchResultsCheckHelpdesk from '../support/action/relevantSearchResultsCheckHelpdesk';
 
 module.exports = function given() {
@@ -108,6 +109,12 @@ module.exports = function given() {
         /^relevant partnerships search results returned for search term "([^"]*)?"$/,
         relevantSearchResultsCheck
     );
+
+    this.Given(
+        /^relevant search results returned for partnership search term "([^"]*)?"$/,
+        partnershipSearchResultsCheck
+    );
+
 
     this.Given(
         /^relevant helpdesk results returned for search term "([^"]*)?"$/,

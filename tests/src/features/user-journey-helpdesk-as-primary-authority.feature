@@ -1,4 +1,4 @@
-@ci @deprecated
+@Pending @deprecated
 Feature: Helpdesk As Primary Authority - Manage name and summary detail
 
     Background:

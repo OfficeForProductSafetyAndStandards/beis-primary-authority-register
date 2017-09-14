@@ -6,15 +6,21 @@ Feature: Primary Authority - Change Partnership Details
         Given I reset the test data
 
     Scenario: Primary Authority - Change Partnership Details
-        # LOGIN
+
+        # SEARCH PARTNERSHIPS
 
         Given I am logged in as "par_authority@example.com"
-        When I click on the link "See your partnerships"
+        And I expect that element "#block-par-theme-content" contains the text "Your partnerships"
+        And I expect that element "#edit-authority-contacts" contains the text "Find a partnership"
+        And I expect that element "#edit-authority-contacts" contains the text "Messages"
+        When I click on the link "Search for a partnership"
+        # When I add "the Muppet" to the inputfield "#edit-last-name"
+        # And I click on the button "#edit-submit-partnership-search"
 
         # PARTNERSHIPS DASHBOARD
 
-        And relevant partnerships search results returned for search term "Council"
-        When I select next partnership awaiting review
+        And relevant search results returned for partnership search term "Council"
+        And I click on the button "td.views-field.views-field-authority-name a"
 
         # TERMS AND CONDITIONS SCREEN
 
