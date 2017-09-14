@@ -381,5 +381,3 @@ par_partnership_flows.inspection_plan_view:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-
-
