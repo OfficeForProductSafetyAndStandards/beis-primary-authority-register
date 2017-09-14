@@ -1,4 +1,4 @@
-@ci @journey3 @deprecated
+@Pending @journey3 @deprecated
 Feature: Coordinator User - Manage Addresses
 
     Background:
@@ -9,7 +9,8 @@ Feature: Coordinator User - Manage Addresses
         # LOGIN SCREEN
 
         Given I am logged in as "par_coordinator@example.com"
-        When I click on the link "Continue to your Partnerships"
+        And I open the url "/dashboard"
+        When I click on the link "See your partnerships"
 
         # PARTNERSHIPS DASHBOARD
         When I select my next coordinated partnership awaiting review
@@ -17,11 +18,11 @@ Feature: Coordinator User - Manage Addresses
         # TERMS AND CONDITIONS SCREEN
 
         And I expect that element ".par-flow-transition-coordinator-terms" contains the text "Please review the new Primary Authority terms and conditions and confirm that you agree with them"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element ".error-summary" contains the text "You must agree to the new terms and conditions"
         When I click on the checkbox "#edit-terms-conditions"
-        And I click on the button "#edit-next"
-        And I scroll to element ".table-scroll-wrapper"
+        And I click on the button "#edit-save"
+        # And I scroll to element ".table-scroll-wrapper"
         And I click on the link "Review and confirm your association details"
 
         # REVIEW ASSOCIATION DETAILS
@@ -41,7 +42,7 @@ Feature: Coordinator User - Manage Addresses
         And I add "Change Town" to the inputfield "#edit-town-city"
         And I add "Change County" to the inputfield "#edit-county"
         And I select the option with the text "Wales" for element "#edit-country"
-        When I click on the button "#edit-next"
+        When I click on the button "#edit-save"
         Then I expect that element "span.address-line1" contains the text "1 Change Road"
         And I expect that element "span.address-line2" contains the text "A Change"
         And I expect that element "span.locality" contains the text "Change Town"
@@ -60,7 +61,7 @@ Feature: Coordinator User - Manage Addresses
         And I add "par_coordinator_change@example.com" to the inputfield "#edit-email"
         And I click on the radio "#edit-preferred-contact-communication-mobile"
         And I add "Some additional notes" to the inputfield "#edit-notes"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element "#edit-primary-contact" contains the text "Jim"
         And I expect that element "#edit-primary-contact" contains the text "Henson"
         And I expect that element "#edit-primary-contact" contains the text "par_coordinator_change@example.com"
@@ -76,7 +77,7 @@ Feature: Coordinator User - Manage Addresses
         And I add "08654999999" to the inputfield "#edit-mobile-phone"
         And I add "par_coordinator_change@example.com" to the inputfield "#edit-email"
         And I click on the radio "#edit-preferred-contact-communication-mobile"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element "#edit-alternative-people" contains the text "Frank"
         And I expect that element "#edit-alternative-people" contains the text "Oz"
         And I expect that element "#edit-alternative-people" contains the text "par_coordinator_change@example.com"
@@ -89,7 +90,7 @@ Feature: Coordinator User - Manage Addresses
         And I add "Co Mart Change" to the inputfield "#edit-registered-name"
         And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
         And I add "987654321" to the inputfield "#edit-company-house-no"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element "#edit-legal-entity" contains the text "Co Mart Change"
         And I expect that element "#edit-legal-entity" contains the text "987654321"
         And I expect that element "#edit-legal-entity" contains the text "Limited Company"
@@ -99,7 +100,7 @@ Feature: Coordinator User - Manage Addresses
         When I click on the link "add another legal entity"
         And I add "Another Legal Entity" to the inputfield "#edit-registered-name"
         And I select the option with the text "Sole Trader" for element "#edit-legal-entity-type"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element "#par-flow-transition-coordinator-details" contains the text "Another Legal Entity"
         And I expect that element "#par-flow-transition-coordinator-details" contains the text "Sole Trader"
 
@@ -111,18 +112,18 @@ Feature: Coordinator User - Manage Addresses
         And I expect that element "#par-flow-transition-coordinator-details" contains the text "Trading Names"
         When I click on the link "edit"
         And I add "Change to the about association details section" to the inputfield "#edit-about-business"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element "#edit-about-business" contains the text "Change to the about association details section"
         When I click on the button "form#par-flow-transition-coordinator-details #edit-0.js-form-item a.flow-link"
         And I add "Trading Name Change" to the inputfield "#edit-trading-name"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element "#par-flow-transition-coordinator-details" contains the text "Trading Name Change"
         When I click on the link "add another trading name"
         And I add "Trading Name Add" to the inputfield "#edit-trading-name"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element "#par-flow-transition-coordinator-details" contains the text "Trading Name Add"
         And I click on the checkbox "#edit-confirmation"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
 
         # PARTNERSHIP DASHBOARD
 

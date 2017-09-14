@@ -1,4 +1,4 @@
-@ci @journey2 @deprecated
+@Pending @journey2 @deprecated
 Feature: Business User - Manage Addresses
 
     Background:
@@ -9,37 +9,32 @@ Feature: Business User - Manage Addresses
         # LOGIN SCREEN
 
         Given I am logged in as "par_business@example.com"
-        When I click on the link "Continue to your Partnerships"
+        And I open the url "/dashboard"
+        When I click on the link "See your partnerships"
 
         # PARTNERSHIPS DASHBOARD FILTERS
 
-        And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
         And I add "DCBA" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
-        And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
+        And I click on the button "#edit-submit-par-user-partnerships"
         Then I expect that element "td.views-field.views-field-nothing" is not visible
         When I add "ABCD" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
-        And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
+        And I click on the button "#edit-submit-par-user-partnerships"
         Then I expect that element "td.views-field.views-field-nothing" contains the text "ABCD Mart"
         When I select the option with the text "Confirmed by Business" for element "#edit-partnership-status"
-        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
-        And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
+        And I click on the button "#edit-submit-par-user-partnerships"
         Then I expect that element "td.views-field.views-field-nothing" is not visible
         When I select the option with the text "Awaiting Review" for element "#edit-partnership-status"
-        And I click on the button "#edit-submit-par-data-transition-journey-1-step-1"
-        And I scroll to element "#views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1"
+        And I click on the button "#edit-submit-par-user-partnerships"
         Then I expect that element "td.views-field.views-field-nothing" contains the text "ABCD Mart"
         When I click on the button "a*=ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN
 
         Then I expect that element "#par-flow-transition-business-terms" contains the text "Please review the new Primary Authority terms and conditions and confirm that you agree with them"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element ".error-summary" contains the text "You must agree to the new terms and conditions"
         And I click on the checkbox "#edit-terms-conditions"
-        And I click on the button "#edit-next"
-        And I scroll to element ".table-scroll-wrapper"
+        And I click on the button "#edit-save"
 
         # PARTNERSHIP TASKS
 
@@ -57,23 +52,23 @@ Feature: Business User - Manage Addresses
         And I clear the inputfield "#edit-town-city"
         And I clear the inputfield "#edit-postcode"
         And I clear the inputfield "#edit-county"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element ".error-message" does exist
         When I add "SE16 4NX" to the inputfield "#edit-postcode"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element ".error-message" does exist
         And I add "1 Change St" to the inputfield "#edit-address-line1"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element ".error-message" does exist
         And I add "New Change" to the inputfield "#edit-address-line2"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element ".error-message" does exist
         When I add "London" to the inputfield "#edit-town-city"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element ".error-message" does exist
         When I add "London" to the inputfield "#edit-county"
         And I select the option with the text "England" for element "#edit-country"
-        When I click on the button "#edit-next"
+        When I click on the button "#edit-save"
         Then I expect that element "span.address-line1" contains the text "1 Change St"
         And I expect that element "span.address-line2" contains the text "New Change"
         And I expect that element "span.locality" contains the text "London"
@@ -92,7 +87,7 @@ Feature: Business User - Manage Addresses
         And I add "par_business_change@example.com" to the inputfield "#edit-email"
         And I click on the radio "#edit-preferred-contact-communication-mobile"
         And I add "Some additional notes" to the inputfield "#edit-notes"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element "#edit-primary-contact" contains the text "Harvey"
         And I expect that element "#edit-primary-contact" contains the text "Kneeslapper"
         And I expect that element "#edit-primary-contact" contains the text "par_business_change@example.com"
@@ -108,7 +103,7 @@ Feature: Business User - Manage Addresses
         And I add "08654999999" to the inputfield "#edit-mobile-phone"
         And I add "par_business_change@example.com" to the inputfield "#edit-email"
         And I click on the radio "#edit-preferred-contact-communication-mobile"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element "#edit-alternative-people" contains the text "Herbert"
         And I expect that element "#edit-alternative-people" contains the text "Birdsfoot"
         And I expect that element "#edit-alternative-people" contains the text "par_business_change@example.com"
@@ -121,8 +116,7 @@ Feature: Business User - Manage Addresses
         And I add "Legal Entity Change" to the inputfield "#edit-registered-name"
         And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
         And I add "987654321" to the inputfield "#edit-company-house-no"
-        And I click on the button "#edit-next"
-        And I scroll to element "#edit-legal-entity"
+        And I click on the button "#edit-save"
         Then I expect that element "#edit-legal-entity" contains the text "Legal Entity Change"
         And I expect that element "#edit-legal-entity" contains the text "987654321"
         And I expect that element "#edit-legal-entity" contains the text "Limited Company"
@@ -130,10 +124,10 @@ Feature: Business User - Manage Addresses
         # ADD LEGAL ENTITIES
 
         When I click on the link "add another legal entity"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         And I add "Another Legal Entity" to the inputfield "#edit-registered-name"
         And I select the option with the text "Sole Trader" for element "#edit-legal-entity-type"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
 
         # PARTNERSHIP TASKS
 
@@ -142,21 +136,21 @@ Feature: Business User - Manage Addresses
 
         # REVIEW BUSINESS NAME AND SUMMARY
 
-        When I click on the link "edit"
+        And I click on the link "edit"
         And I add "Change to the about business details section" to the inputfield "#edit-about-business"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element "#edit-about-business" contains the text "Change to the about business details section"
         When I click on the button "form#par-flow-transition-business-details #edit-0.js-form-item a.flow-link"
         And I add "Trading Name Change" to the inputfield "#edit-trading-name"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element "#par-flow-transition-business-details" contains the text "Trading Name Change"
         When I click on the link "add another trading name"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         And I add "Trading Name Add" to the inputfield "#edit-trading-name"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element "#par-flow-transition-business-details" contains the text "Trading Name Add"
         And I click on the checkbox "#edit-confirmation"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
 
         # PARTNERSHIP TASKS
 

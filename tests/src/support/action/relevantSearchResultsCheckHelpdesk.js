@@ -14,7 +14,7 @@ module.exports = (keyword, done) => {
         //     height: 768,
         // });
     browser.setValue('#edit-keywords', keyword);
-    browser.click('#edit-submit-par-user-partnerships');
+    browser.click('#edit-submit-rd-helpdesk-dashboard');
     const links = $$('td.views-field-nothing');
     links.forEach(function (link) {
         let elem = link.getText();

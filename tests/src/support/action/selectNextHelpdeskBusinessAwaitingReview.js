@@ -14,7 +14,7 @@ module.exports = (done) => {
     });
     browser.clearElement('#edit-keywords');
     browser.selectByValue('#edit-partnership-status', '1');
-    browser.click('#edit-submit-par-user-partnerships');
-    browser.click('td.views-field.views-field-authority-name a');
+    browser.click('#edit-submit-rd-helpdesk-dashboard');
+    browser.click('td.views-field.views-field-organisation-name a');
     done();
 };

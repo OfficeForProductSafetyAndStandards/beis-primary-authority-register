@@ -14,8 +14,8 @@ module.exports = (keyword, done) => {
         //     height: 768,
         // });
     browser.setValue('#edit-keywords', keyword);
-    browser.click('#edit-submit-par-user-partnerships');
-    const links = $$('td.views-field-nothing');
+    browser.click('#edit-submit-partnership-search');
+    const links = $$('td.views-field.views-field-authority-name');
     links.forEach(function (link) {
         let elem = link.getText();
         expect(elem).to.contain(keyword);

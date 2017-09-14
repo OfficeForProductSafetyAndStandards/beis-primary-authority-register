@@ -1,4 +1,4 @@
-@ci @journey5 @deprecated
+@Pending @journey5 @deprecated
 Feature: Helpdesk As Business User - Manage Addresses
 
     Background:
@@ -10,13 +10,10 @@ Feature: Helpdesk As Business User - Manage Addresses
 
         Given I am logged in as "par_helpdesk@example.com"
 
-        # HD DASHBOARD
+        # PARTNERSHIPS DASHBOARD
 
-        Then I expect that element "h1" contains the text "RD Helpdesk Dashboard"
-        When I add "ABCD" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-rd-helpdesk-dashboard"
-        And I scroll to element "#views-exposed-form-rd-helpdesk-dashboard-par-rd-helpdesk-dashboard-page"
-        When I click on the button "td.views-field.views-field-organisation-name a"
+        And relevant helpdesk results returned for search term "Council"
+        When I select next helpdesk business awaiting review
 
         # PARTNERSHIP TASKS
 
@@ -27,18 +24,18 @@ Feature: Helpdesk As Business User - Manage Addresses
 
         # CHANGE NAME AND SUMMARY
 
-        When I click on the link "edit"
+        And I click on the link "edit"
         And I add "Change to the about business details section" to the inputfield "#edit-about-business"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element "#edit-about-business" contains the text "Change to the about business details section"
 #        When I click on the button "form#par-flow-transition-business-details #edit-0.js-form-item a.flow-link"
 #        And I add "Trading Name Change" to the inputfield "#edit-trading-name"
-#        And I click on the button "#edit-next"
+#        And I click on the button "#edit-save"
 #        Then I expect that element "#par-flow-transition-business-details" contains the text "Trading Name Change"
 #        When I click on the link "add another trading name"
-#        And I click on the button "#edit-next"
+#        And I click on the button "#edit-save"
 #        And I add "Trading Name Add" to the inputfield "#edit-trading-name"
-#        And I click on the button "#edit-next"
+#        And I click on the button "#edit-save"
 #        Then I expect that element "#par-flow-transition-business-details" contains the text "Trading Name Add"
 
         # EDIT REGISTERED ADDRESS
@@ -49,23 +46,23 @@ Feature: Helpdesk As Business User - Manage Addresses
         And I clear the inputfield "#edit-town-city"
         And I clear the inputfield "#edit-postcode"
         And I clear the inputfield "#edit-county"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element ".error-message" does exist
         And I add "change" to the inputfield "#edit-postcode"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element ".error-message" does exist
         And I add "1 Change St" to the inputfield "#edit-address-line1"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element ".error-message" does exist
         And I add "New Change" to the inputfield "#edit-address-line2"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element ".error-message" does exist
         And I add "New Change State" to the inputfield "#edit-town-city"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element ".error-message" does exist
         And I add "US-CH" to the inputfield "#edit-county"
         And I select the option with the text "Wales" for element "#edit-country"
-        When I click on the button "#edit-next"
+        When I click on the button "#edit-save"
         Then I expect that element "span.address-line1" contains the text "1 Change St"
         And I expect that element "span.address-line2" contains the text "New Change"
         And I expect that element "span.locality" contains the text "New Change State"
@@ -85,7 +82,7 @@ Feature: Helpdesk As Business User - Manage Addresses
         And I add "par_business_change@example.com" to the inputfield "#edit-email"
         And I click on the radio "#edit-preferred-contact-communication-mobile"
         And I add "Some additional notes" to the inputfield "#edit-notes"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element "#edit-primary-contact" contains the text "Fozzie"
         And I expect that element "#edit-primary-contact" contains the text "Bear"
         And I expect that element "#edit-primary-contact" contains the text "par_business_change@example.com"
@@ -101,7 +98,7 @@ Feature: Helpdesk As Business User - Manage Addresses
 #        And I add "08654999999" to the inputfield "#edit-mobile-phone"
 #        And I add "par_business_change@example.com" to the inputfield "#edit-email"
 #        And I click on the radio "#edit-preferred-contact-communication-mobile"
-#        And I click on the button "#edit-next"
+#        And I click on the button "#edit-save"
 #        Then I expect that element "#edit-alternative-people" contains the text "Professor"
 #        And I expect that element "#edit-alternative-people" contains the text "Hastings"
 #        And I expect that element "#edit-alternative-people" contains the text "par_business_change@example.com"
@@ -114,8 +111,7 @@ Feature: Helpdesk As Business User - Manage Addresses
         And I add "Legal Entity Change" to the inputfield "#edit-registered-name"
         And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
         And I add "987654321" to the inputfield "#edit-company-house-no"
-        And I click on the button "#edit-next"
-        And I scroll to element "#edit-legal-entity"
+        And I click on the button "#edit-save"
         Then I expect that element "#edit-legal-entity" contains the text "Legal Entity Change"
         And I expect that element "#edit-legal-entity" contains the text "987654321"
         And I expect that element "#edit-legal-entity" contains the text "Limited Company"
@@ -123,17 +119,17 @@ Feature: Helpdesk As Business User - Manage Addresses
         # ADD LEGAL ENTITIES
 
         When I click on the link "add another legal entity"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         And I add "Another Legal Entity" to the inputfield "#edit-registered-name"
         And I select the option with the text "Sole Trader" for element "#edit-legal-entity-type"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element "#par-flow-transition-business-details" contains the text "Another Legal Entity"
         And I expect that element "#par-flow-transition-business-details" contains the text "Sole Trader"
 
         # GO BACK TO PARTNERSHIPS DASHBOARD
 
         And I click on the checkbox "#edit-confirmation"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element "#block-par-theme-content" contains the text "Confirmed by the Organisation"
         And I expect that element ".table-scroll-wrapper" not contains the text "Invite the business to confirm their details"
         And I expect that element ".table-scroll-wrapper" not contains the text "Review and confirm your inspection plan"
