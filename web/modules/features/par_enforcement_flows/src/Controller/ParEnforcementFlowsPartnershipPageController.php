@@ -19,7 +19,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
    * {@inheritdoc}
    */
   public function content(ParDataPartnership $par_data_partnership = NULL) {
-// Configuration for each entity is contained within the bundle.
+    // Configuration for each entity is contained within the bundle.
     $partnership_bundle = $this->getParDataManager()->getParBundleEntity('par_data_partnership');
     $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
     $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
@@ -86,7 +86,33 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     // Display details about the partnership for information.
     $build['about_partnership'] = $this->renderSection('About the partnership', $par_data_partnership, ['about_partnership' => 'about'], ['edit-field']);
 
-    // @TODO ADD INSPECTION PLAN AND ADVICE LINKS.
+    $build['inspection_plans'] = [
+      '#type' => 'fieldset',
+      '#title' => t('Inspection plans:'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+    $build['inspection_plans']['link'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlow()->getNextLink('inspection_plans')->setText('See all Inspection Plans')->toString(),
+      ]),
+    ];
+
+    $build['advice'] = [
+      '#type' => 'fieldset',
+      '#title' => t('Advice and Documents:'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+    $build['advice']['link'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlow()->getNextLink('advice')->setText('See all Advice')->toString(),
+      ]),
+    ];
 
     // Display the authority contacts for information.
     $build['authority_contacts'] = $this->renderSection('Contacts - Primary Authority', $par_data_partnership, ['field_authority_person' => 'summary'], ['edit-entity', 'add']);
