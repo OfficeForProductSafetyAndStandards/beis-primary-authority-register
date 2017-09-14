@@ -11,8 +11,8 @@ Feature: Primary Authority - Change Partnership Details
 
         Given I am logged in as "par_authority@example.com"
         And I expect that element "#block-par-theme-content" contains the text "Your partnerships"
-        And I expect that element "#edit-authority-contacts" contains the text "Find a partnership"
-        And I expect that element "#edit-authority-contacts" contains the text "Messages"
+        And I expect that element "#block-par-theme-content" contains the text "Find a partnership"
+        And I expect that element "#block-par-theme-content" contains the text "Messages"
         When I click on the link "Search for a partnership"
 
         # PARTNERSHIPS DASHBOARD
