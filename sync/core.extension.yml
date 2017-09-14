@@ -59,6 +59,7 @@ module:
   par_dashboards: 0
   par_data: 0
   par_data_config: 0
+  par_enforcement_flows: 0
   par_flow_helpdesk: 0
   par_flow_transition_business: 0
   par_flow_transition_coordinator: 0
@@ -69,6 +70,7 @@ module:
   par_login: 0
   par_migration: 0
   par_migration_scripts: 0
+  par_partnership_flows: 0
   par_roles: 0
   par_styleguide: 0
   par_validation: 0
