@@ -113,11 +113,39 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
     // Display details about the partnership for information.
     $form['about_partnership'] = $this->renderSection('About the partnership', $par_data_partnership, ['about_partnership' => 'about']);
 
+    $form['inspection_plans'] = [
+      '#type' => 'fieldset',
+      '#title' => t('Inspection plans:'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+    $form['inspection_plans']['link'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlow()->getNextLink('inspection_plans')->setText('See all Inspection Plans')->toString(),
+      ]),
+    ];
+
+    $form['advice'] = [
+      '#type' => 'fieldset',
+      '#title' => t('Advice and Documents:'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+    $form['advice']['link'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlow()->getNextLink('advice')->setText('See all Advice')->toString(),
+      ]),
+    ];
+
     // Display the authority contacts for information.
-    $form['authority_contacts'] = $this->renderSection('Contacts - Primary Authority', $par_data_partnership, ['field_authority_person' => 'summary']);
+    $form['authority_contacts'] = $this->renderSection('Contacts - Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed']);
 
     // Display all the legal entities along with the links for the allowed operations on these.
-    $form['organisation_contacts'] = $this->renderSection('Contacts - Organisation', $par_data_partnership, ['field_organisation_person' => 'summary'], ['edit-entity', 'add']);
+    $form['organisation_contacts'] = $this->renderSection('Contacts - Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed'], ['edit-entity', 'add']);
 
     $form['save'] = [
       '#type' => 'submit',

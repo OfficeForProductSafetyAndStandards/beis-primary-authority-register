@@ -27,13 +27,12 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
       '#header' => [
         'Document',
         'Type of document and regulatory functions',
-        'Actions',
       ],
       '#empty' => $this->t("There is no documentation for this partnership."),
     ];
 
     // Get each Advice document and add as a table row.
-    foreach ($par_data_partnership->getAdvice() as $advice) {
+    foreach ($par_data_partnership->getAdvice() as $key => $advice) {
       $advice_view_builder = $this->getParDataManager()->getViewBuilder('par_data_advice');
 
       // The first column contains a rendered summary of the document.
@@ -54,26 +53,28 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
         }
       }
 
-      // The third column contains a list of actions that can be performed on
-      // this document.
-      $links = [
-        [
-          '#type' => 'markup',
-          '#markup' => $this->getFlow()
-            ->getNextLink('edit', ['par_data_advice' => $advice->id()])
-            ->setText('edit')
-            ->toString(),
-        ],
-      ];
-
       if ($advice_summary) {
-        $build['documentation_list']['#rows'][] = [
+        $build['documentation_list']['#rows'][$key] = [
           'data' => [
             'document' => $this->getRenderer()->render($advice_summary),
             'type' => $advice_details,
-            'actions' => $this->getRenderer()->render($links),
           ],
         ];
+      }
+
+      // Check permissions before adding the links for all operations.
+      if ($this->getFlowName() === 'partnership_authority') {
+        // We need to create an array of all action links.
+        $links = [
+          [
+            '#type' => 'markup',
+            '#markup' => $this->getFlow()
+              ->getNextLink('edit', ['par_data_advice' => $advice->id()])
+              ->setText('edit')
+              ->toString(),
+          ],
+        ];
+        $build['documentation_list']['#rows'][$key]['data']['actions'] = $this->getRenderer()->render($links);
       }
 
       // Make sure to add the document cacheability data to this form.
@@ -81,22 +82,27 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
       $this->addCacheableDependency(current($advice->retrieveEntityValue('document')));
     }
 
-    $build['upload'] = [
-      '#type' => 'markup',
-      '#prefix' => '<p>',
-      '#suffix' => '</p>',
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('advice_upload', $this->getRouteParams())
-          ->setText('Upload a document')
-          ->toString(),
-      ]),
-    ];
+    // Check permissions before adding the links for all operations.
+    if ($this->getFlowName() === 'partnership_authority') {
+      $build['documentation_list']['#header'][] = 'Actions';
+
+      $build['upload'] = [
+        '#type' => 'markup',
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+        '#markup' => t('@link', [
+          '@link' => $this->getFlow()->getNextLink('advice_upload', $this->getRouteParams())
+            ->setText('Upload a document')
+            ->toString(),
+        ]),
+      ];
+    }
 
     $build['save'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
         '@link' => $this->getFlow()->getNextLink('next', $this->getRouteParams(), ['attributes' => ['class' => 'button']])
-          ->setText('Save')
+          ->setText('Done')
           ->toString(),
       ]),
     ];
