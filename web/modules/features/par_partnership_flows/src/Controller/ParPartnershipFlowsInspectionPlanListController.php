@@ -51,7 +51,7 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
       '#type' => 'markup',
       '#markup' => t('@link', [
         '@link' => $this->getFlow()->getNextLink('next', $this->getRouteParams(), ['attributes' => ['class' => 'button']])
-          ->setText('Save')
+          ->setText('Done')
           ->toString(),
       ]),
     ];
