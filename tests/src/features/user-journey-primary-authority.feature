@@ -14,23 +14,12 @@ Feature: Primary Authority - Change Partnership Details
         And I expect that element "#edit-authority-contacts" contains the text "Find a partnership"
         And I expect that element "#edit-authority-contacts" contains the text "Messages"
         When I click on the link "Search for a partnership"
-        # When I add "the Muppet" to the inputfield "#edit-last-name"
-        # And I click on the button "#edit-submit-partnership-search"
 
         # PARTNERSHIPS DASHBOARD
 
         And relevant search results returned for partnership search term "Council"
         And I click on the button "td.views-field.views-field-authority-name a"
-
-        # TERMS AND CONDITIONS SCREEN
-
-        # Then I expect that element ".par-flow-transition-partnership-details-terms" contains the text "Please review the new Primary Authority terms and conditions and confirm that you agree with them"
-        # When I click on the checkbox "#edit-terms-conditions"
-        # And I click on the button "#edit-save"
-        # And I scroll to element ".table-scroll-wrapper"
         And I expect that element "h1" is not empty
-        # And I click on the link "Review and confirm your partnership details"
-        # And I scroll to element "#edit-about-partnership"
 
         # REVIEW PARTNERSHIPS DETAILS
 
