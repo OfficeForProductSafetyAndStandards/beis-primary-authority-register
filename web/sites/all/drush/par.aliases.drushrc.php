@@ -347,9 +347,9 @@ $aliases['paas'] = [
             'extra' => '--no-owner',
         ],
         'sql-sanitize' => [
-            'sanitize-password' => 'TestPassword'
+            'sanitize-password' => 'TestPassword',
+            'sanitize-email' => 'no',
         ],
     ],
-  'root' => '/home/vcap/app/web'
 ];
 

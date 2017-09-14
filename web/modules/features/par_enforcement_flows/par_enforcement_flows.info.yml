@@ -6,3 +6,4 @@ package: PAR
 dependencies:
   - par_flows
   - par_data
+  - par_partnership_flows
