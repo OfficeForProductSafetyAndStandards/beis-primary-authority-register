@@ -115,7 +115,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
 
     $form['inspection_plans'] = [
       '#type' => 'fieldset',
-      '#title' => t('Inspection plans:'),
+      '#title' => t('Inspection plans'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
@@ -129,7 +129,7 @@ class ParPartnershipFlowsOrganisationDetailsForm extends ParBaseForm {
 
     $form['advice'] = [
       '#type' => 'fieldset',
-      '#title' => t('Advice and Documents:'),
+      '#title' => t('Advice and Documents'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
