@@ -11,6 +11,7 @@ dependencies:
     - field.field.par_data_organisation.organisation.field_sic_code
     - par_data.par_data_organisation_type.organisation
   module:
+    - par_data
     - text
 id: par_data_organisation.organisation.full
 targetEntityType: par_data_organisation
@@ -19,6 +20,13 @@ mode: full
 content:
   comments:
     type: text_default
+    weight: 0
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  employees_band:
+    type: par_list_formatter
     weight: 0
     region: content
     label: hidden
@@ -62,7 +70,6 @@ content:
 hidden:
   coordinator_number: true
   coordinator_type: true
-  employees_band: true
   field_coordinated_businesses: true
   field_sic_code: true
   name: true
