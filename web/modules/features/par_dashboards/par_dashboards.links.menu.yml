@@ -1,0 +1,5 @@
+par_dashboards.user_dashboard:
+  title: 'Dashboard'
+  menu_name: account
+  route_name: par_dashboards.dashboard
+  weight: -8
