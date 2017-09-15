@@ -80,13 +80,8 @@
 
   'use strict';
 
-  // add cookie message
-  if (window.GOVUK && GOVUK.addCookieMessage) {
-    GOVUK.addCookieMessage();
-  }
-
   // header navigation toggle
-  if (document.querySelectorAll && document.addEventListener){
+  if (document.querySelectorAll && document.addEventListener) {
     var els = document.querySelectorAll('.js-header-toggle');
     var i;
     var _i;
@@ -104,7 +99,7 @@
           target.setAttribute('class', targetClass.replace(/(^|\s)js-visible(\s|$)/, ''));
         }
         else {
-          target.setAttribute('class', targetClass + " js-visible");
+          target.setAttribute('class', targetClass + ' js-visible');
         }
         if (sourceClass.indexOf('js-hidden') !== -1) {
           this.setAttribute('class', sourceClass.replace(/(^|\s)js-hidden(\s|$)/, ''));
