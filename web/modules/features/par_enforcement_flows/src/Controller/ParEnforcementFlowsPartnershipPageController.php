@@ -121,9 +121,12 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     $build['organisation_contacts'] = $this->renderSection('Contacts - Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed']);
 
     $build['save'] = [
-      '#type' => 'submit',
-      '#name' => 'done',
-      '#value' => $this->t('Done'),
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlow()->getNextLink('partnerships', $this->getRouteParams(), ['attributes' => ['class' => 'button']])
+            ->setText('Done')
+            ->toString(),
+      ]),
     ];
 
     // Make sure to add the partnership cacheability data to this form.

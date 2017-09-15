@@ -11,6 +11,7 @@ steps:
       inspection_plans: 3
       raise: 4
       done: 7
+      partnerships: 8
   2:
     route: par_enforcement_flows.advice_view
     redirect:
@@ -39,3 +40,5 @@ steps:
     form_id: par_enforcement_notice_raise_confirm
   7:
     route: par_dashboards.dashboard
+  8:
+    route: view.partnership_search.enforcment_flow_search_partnerships
