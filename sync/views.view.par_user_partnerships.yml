@@ -43,7 +43,7 @@ display:
       exposed_form:
         type: bef
         options:
-          submit_button: Apply
+          submit_button: Search
           reset_button: false
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
@@ -156,7 +156,7 @@ display:
             alter_text: false
             text: 'Review & confirm'
             make_link: false
-            path: '/dv/primary-authority-partnerships/{{id}}/terms'
+            path: ''
             absolute: false
             external: false
             replace_spaces: false
@@ -427,7 +427,7 @@ display:
           exposed: true
           expose:
             operator_id: combine_op
-            label: 'PA / Business Name'
+            label: 'PA / Organisation Name'
             description: 'Enter keyword(s)'
             use_operator: false
             operator: combine_op
@@ -456,8 +456,8 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           fields:
-            organisation_name: organisation_name
             authority_name: authority_name
+            organisation_name: organisation_name
           plugin_id: combine
         partnership_status:
           id: partnership_status
@@ -639,7 +639,7 @@ display:
           entity_type: par_data_organisation
           entity_field: organisation_name
           plugin_id: standard
-      title: 'Updating the Primary Authority Register'
+      title: 'Primary Authority Register'
       header: {  }
       footer: {  }
       empty:
