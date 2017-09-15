@@ -149,6 +149,17 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
+   * Get the settings for a given entity, field and view mode.
+   */
+  public function getFieldDisplay($entity, $field, $view_mode = 'default') {
+    $view_display = \Drupal::entityTypeManager()
+      ->getStorage('entity_view_display')
+      ->load($entity->getEntityTypeId() . '.' . $entity->bundle() . '.' . $view_mode);
+
+    return isset($view_display) && $view_display->getComponent($field->getName()) ? $view_display->getComponent($field->getName()) : ['label' => 'hidden'];
+  }
+
+  /**
    * Get all references for a given entity.
    *
    * @return \Drupal\Core\Field\FieldDefinitionInterface[]
