@@ -121,6 +121,9 @@
             "drupal/govuk_notify": {
                 "Allowing system mails to be sent through Notify": "https://www.drupal.org/files/issues/allowing_system_mails-2897707-4.patch"
             },
+            "drupal/login_destination": {
+                "One time login link": "./patches/one_time_login_redirection.patch"
+            },
             "drupal/xmlsitemap": {
                 "xmlsitemap_file_transfer coincides with hook name provided by file_entity": "https://www.drupal.org/files/issues/xmlsitemap_hook_file_transfer-2831733-6.patch"
             },
