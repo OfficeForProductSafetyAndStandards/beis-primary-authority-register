@@ -632,18 +632,7 @@ display:
           entity_field: organisation_name
           plugin_id: standard
       title: 'Primary Authority Register'
-      header:
-        area_text_custom:
-          id: area_text_custom
-          table: views
-          field: area_text_custom
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          tokenize: false
-          content: '<p>Review and confirm your data by 14 September 2017</p>'
-          plugin_id: text_custom
+      header: {  }
       footer: {  }
       empty:
         area_text_custom:
