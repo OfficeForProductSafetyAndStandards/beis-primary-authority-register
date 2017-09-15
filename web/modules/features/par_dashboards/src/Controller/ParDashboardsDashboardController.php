@@ -41,23 +41,6 @@ class ParDashboardsDashboardController extends ParBaseController {
       }
     }
 
-    // Applications, partnerships that need completion.
-    // @TODO NEED A WAY TO GET INCOMPLETE APLICATIONS (WE DO NOT RECORD THIS YET). NOT MVP.
-    if ($this->getUserAccount()->hasPermission('complete partnership organisation details')) {
-      $build['applications'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t('Applications'),
-        '#attributes' => ['class' => 'form-group'],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
-      $manage_my_partnerships = $this->getLinkByRoute('view.par_user_partnerships.partnerships_page');
-      $build['applications']['see'] = [
-        '#type' => 'markup',
-        '#markup' => $manage_my_partnerships->setText('See my pending partnerships')->toString(),
-      ];
-    }
-
     // Partnerships search link.
     if ($this->getUserAccount()->hasPermission('enforce organisation')) {
       $build['partnerships_find'] = [
