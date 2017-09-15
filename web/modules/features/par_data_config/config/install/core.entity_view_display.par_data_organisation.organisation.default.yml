@@ -9,6 +9,7 @@ dependencies:
     - field.field.par_data_organisation.organisation.field_sic_code
     - par_data.par_data_organisation_type.organisation
   module:
+    - par_data
     - text
 id: par_data_organisation.organisation.default
 targetEntityType: par_data_organisation
@@ -22,9 +23,16 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
+  employees_band:
+    type: par_list_formatter
+    weight: 0
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
   field_legal_entity:
     weight: 2
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -32,7 +40,7 @@ content:
     region: content
   field_premises:
     weight: 3
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -49,7 +57,6 @@ content:
 hidden:
   coordinator_number: true
   coordinator_type: true
-  employees_band: true
   field_coordinated_businesses: true
   field_person: true
   field_sic_code: true
