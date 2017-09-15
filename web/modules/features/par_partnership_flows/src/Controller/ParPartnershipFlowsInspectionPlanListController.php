@@ -24,7 +24,6 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
       '#title' => 'Advice documentation',
       '#header' => [
         'Inspection plans',
-        'Status',
       ],
       '#empty' => $this->t("There is no documentation for this partnership."),
     ];
@@ -40,7 +39,6 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
         $build['documentation_list']['#rows'][] = [
           'data' => [
             'document' => $this->getRenderer()->render($inspection_plan_summary),
-            'status' => $inspection_plan->retrieveStringValue('inspection_status'),
           ],
         ];
       }
