@@ -21,38 +21,37 @@
  *   - class: HTML classes.
  */
 #}
-<div class="grid-row">
-  <div class="full-width">
-  {% for type, messages in message_list %}
-    <div role="contentinfo" aria-label="{{ status_headings[type] }}"{{ attributes|without('role', 'aria-label') }}>
-      {% if type == 'error' %}
-      <div role="group" class="error-summary" tabindex="-1">
+<div class="full-width">
+{% for type, messages in message_list %}
+  <div role="contentinfo" aria-label="{{ status_headings[type] }}"{{ attributes|without('role', 'aria-label') }}>
+    {% if type == 'error' %}
+    <div role="group" class="error-summary" tabindex="-1">
+    {% endif %}
+
+      {% if status_headings[type] %}
+        <h2 class="visually-hidden">{{ status_headings[type] }}</h2>
       {% endif %}
 
-        {% if status_headings[type] %}
-          <h2 class="visually-hidden">{{ status_headings[type] }}</h2>
-        {% endif %}
-
-        {% if type == 'error' %}
-        <h2 class="heading-medium error-summary-heading" id="error-summary-heading-example-1">
-          You need to complete this section
-        </h2>
-        {% endif %}
-
-        {% if messages|length > 1 %}
-        <ul class="error-summary-list">
-          {% for message in messages %}
-            <li>{{ message }}</li>
-          {% endfor %}
-        </ul>
-        {% else %}
-          {{ messages|first }}
-        {% endif %}
-
       {% if type == 'error' %}
-      </div>
+      <h2 class="heading-medium error-summary-heading" id="error-summary-heading-example-1">
+        You need to complete this section
+      </h2>
       {% endif %}
+
+      {% if messages|length > 1 %}
+      <ul class="error-summary-list">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% else %}
+        {{ messages|first }}
+      {% endif %}
+
+    {% if type == 'error' %}
     </div>
-  {% endfor %}
+    {% endif %}
   </div>
+{% endfor %}
 </div>
+

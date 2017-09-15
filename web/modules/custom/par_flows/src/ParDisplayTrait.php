@@ -139,7 +139,7 @@ trait ParDisplayTrait {
       '#collapsed' => FALSE,
     ];
     if ($title) {
-      $element['#title'] = t("$section:");
+      $element['#title'] = t("$section");
     }
 
     foreach ($fields as $field_name => $view_mode) {
