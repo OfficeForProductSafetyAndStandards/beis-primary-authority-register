@@ -156,7 +156,7 @@ display:
             alter_text: false
             text: 'Review & confirm'
             make_link: false
-            path: '/dv/primary-authority-partnerships/{{id}}/terms'
+            path: ''
             absolute: false
             external: false
             replace_spaces: false
