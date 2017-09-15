@@ -43,7 +43,7 @@ display:
       exposed_form:
         type: bef
         options:
-          submit_button: Apply
+          submit_button: Search
           reset_button: false
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
@@ -58,17 +58,7 @@ display:
               secondary_label: 'Advanced options'
               autosubmit: false
               autosubmit_hide: false
-            sort:
-              bef_format: default
-              advanced:
-                collapsible: false
-                collapsible_label: 'Sort options'
-                combine: true
-                combine_rewrite: ''
-                reset: false
-                reset_label: ''
-                is_secondary: false
-            name:
+            combine:
               bef_format: default
               more_options:
                 is_secondary: false
@@ -427,7 +417,7 @@ display:
           exposed: true
           expose:
             operator_id: combine_op
-            label: 'PA / Business Name'
+            label: 'PA / Organisation'
             description: 'Enter keyword(s)'
             use_operator: false
             operator: combine_op
@@ -440,7 +430,9 @@ display:
               anonymous: '0'
               administrator: '0'
               par_authority: '0'
+              par_enforcement: '0'
               par_business: '0'
+              par_organisation: '0'
               par_coordinator: '0'
               par_helpdesk: '0'
           is_grouped: false
@@ -456,8 +448,8 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           fields:
-            organisation_name: organisation_name
             authority_name: authority_name
+            organisation_name: organisation_name
           plugin_id: combine
         partnership_status:
           id: partnership_status
@@ -639,8 +631,19 @@ display:
           entity_type: par_data_organisation
           entity_field: organisation_name
           plugin_id: standard
-      title: 'Updating the Primary Authority Register'
-      header: {  }
+      title: 'Primary Authority Register'
+      header:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: '<p>Review and confirm your data by 14 September 2017</p>'
+          plugin_id: text_custom
       footer: {  }
       empty:
         area_text_custom:
