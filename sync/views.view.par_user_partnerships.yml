@@ -440,9 +440,7 @@ display:
               anonymous: '0'
               administrator: '0'
               par_authority: '0'
-              par_enforcement: '0'
               par_business: '0'
-              par_organisation: '0'
               par_coordinator: '0'
               par_helpdesk: '0'
           is_grouped: false
