@@ -39,15 +39,6 @@ class ParDashboardsDashboardController extends ParBaseController {
           '#markup' => $manage_my_partnerships->setText('See your partnerships')->toString(),
         ];
       }
-
-      // Create partnerships link.
-      if ($can_create_partnerships) {
-        $create_partnerships = $this->getLinkByRoute('view.par_user_partnerships.partnerships_page');
-        $build['partnerships']['add'] = [
-          '#type' => 'markup',
-          '#markup' => $create_partnerships->setText('Create a new partnership')->toString(),
-        ];
-      }
     }
 
     // Applications, partnerships that need completion.
@@ -81,24 +72,6 @@ class ParDashboardsDashboardController extends ParBaseController {
       $build['partnerships_find']['link'] = [
         '#type' => 'markup',
         '#markup' => $search_partnerships->setText('Search for a partnership')->toString(),
-      ];
-    }
-
-    // Enforcement notices that need attention.
-    if ($this->getUserAccount()->hasPermission('enforce organisation')) {
-      $build['messages'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t('Messages'),
-        '#attributes' => ['class' => 'form-group'],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
-
-      // @TODO TO BE ADDED. WE NEED A SEPARATE VIEW PAGE FOR MANAGING ALL NOTICES.
-      //$search_partnerships = $this->getLinkByRoute('view.par_user_enforcements.enforcment_notice_messages');
-      $build['messages']['link'] = [
-        '#type' => 'markup',
-        '#markup' => $search_partnerships ? $search_partnerships->setText('See all outstanding enforcement notices')->toString() : '(none)',
       ];
     }
 
