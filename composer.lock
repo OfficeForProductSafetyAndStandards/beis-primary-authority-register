@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "672687b34524a1f7b303a0395164e646",
+    "content-hash": "d91e0adc3af96efdccfbb925f8939a45",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -112,16 +112,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.36.7",
+            "version": "3.36.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "421088947540b1c7956cd693b032124e2c74eb76"
+                "reference": "0420dcbb004e45a1f29f2084db6396c573d20bf5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/421088947540b1c7956cd693b032124e2c74eb76",
-                "reference": "421088947540b1c7956cd693b032124e2c74eb76",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0420dcbb004e45a1f29f2084db6396c573d20bf5",
+                "reference": "0420dcbb004e45a1f29f2084db6396c573d20bf5",
                 "shasum": ""
             },
             "require": {
@@ -188,7 +188,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-09-13T18:56:17+00:00"
+            "time": "2017-09-14T21:13:25+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -2654,6 +2654,9 @@
                 "drupal": {
                     "version": "8.x-1.x-dev",
                     "datestamp": "1491979443"
+                },
+                "patches_applied": {
+                    "One time login link": "./patches/one_time_login_redirection.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

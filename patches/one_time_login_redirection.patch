@@ -1,0 +1,53 @@
+diff --git a/login_destination.module b/login_destination.module
+index 27ed7da..ce52187 100644
+--- a/login_destination.module
++++ b/login_destination.module
+@@ -10,6 +10,7 @@ use \Drupal\Core\Url;
+ use \Drupal\Core\Session\AccountInterface;
+ use \Drupal\Core\Entity\EntityInterface;
+ use \Drupal\user\UserInterface;
++use \Drupal\Core\Form\FormStateInterface;
+ 
+ /**
+  * Implements hook_help().
+@@ -44,12 +45,36 @@ function login_destination_user_login(AccountInterface $account) {
+     // User is just registered.
+     login_destination_perform_redirect('registration', $account);
+   }
+-  elseif (\Drupal::service('current_route_match')->getRouteName() === 'user.reset.login') {
++  elseif (\Drupal::service('current_route_match')->getRouteName() !== 'user.reset.login') {
++    login_destination_perform_redirect('login', $account);
++  }
++}
++
++function login_destination_form_alter(&$form, FormStateInterface $form_state, $form_id) {
++  if ($form_id === 'user_form') {
++    $form['actions']['submit']['#submit'][] = 'login_destination_user_form_submit';
++  }
++}
++
++function login_destination_user_form_submit(&$form, FormStateInterface $form_state) {
++  $account = $form_state->getFormObject()->getEntity();
++
++  // We need to work out the specific action being performed.
++  // Because the user form can be used in multiple circumstances.
++  if ($form_state->get('user_pass_reset')) {
+     // User is used a one-time login link.
+-    login_destination_perform_redirect('one-time-login', $account);
++    $trigger = 'one-time-login';
+   }
+-  else {
+-    login_destination_perform_redirect('login', $account);
++
++  /** @var Drupal\login_destination\LoginDestinationManager $service */
++  $service = \Drupal::service('login_destination.manager');
++  if (isset($trigger)) {
++    $destination = $service->findDestination($trigger, $account);
++  }
++  if (isset($destination) && $destination !== FALSE) {
++    $path = $destination->getDestination();
++    $url = Url::fromUri($path);
++    $form_state->setRedirectUrl($url);
+   }
+ }
+ 
