@@ -10,7 +10,7 @@ steps:
       advice: 2
       inspection_plans: 3
       raise: 4
-      done: 7
+      done: 8
   2:
     route: par_enforcement_flows.advice_view
     redirect:
@@ -22,20 +22,26 @@ steps:
       next: 1
       cancel: 1
   4:
+    route: par_enforcement_flows.authority_select
+    form_id: par_authority_selection
+    redirect:
+      next: 5
+      cancel: 1
+  5:
     route: par_enforcement_flows.raise
     form_id: par_enforcement_notice_raise
     redirect:
-      add_enforcement_action: 4
-      next: 6
+      add_enforcement_action: 6
+      next: 7
       cancel: 1
-  5:
+  6:
     route: par_enforcement_flows.add_action
     form_id: par_enforcement_notice_add_action
     redirect:
-      next: 4
-      cancel: 4
-  6:
+      next: 5
+      cancel: 5
+  7:
     route: par_enforcement_flows.raise_confirm
     form_id: par_enforcement_notice_raise_confirm
-  7:
+  8:
     route: par_dashboards.dashboard

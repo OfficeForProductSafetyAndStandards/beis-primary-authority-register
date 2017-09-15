@@ -36,6 +36,18 @@ par_enforcement_flows.inspection_plan_view:
         type: entity:par_data_partnership
 
 # PAR Data Raise Enforcement Notice Journey
+par_enforcement_flows.authority_select:
+  path: '/enforcement-notice/{par_data_partnership}/select-authority'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAuthoritySuggestionForm'
+    _title: 'Choose your authority'
+  requirements:
+    _permission: 'raise enforcement notice'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
 par_enforcement_flows.raise:
   path: '/enforcement-notice/{par_data_partnership}/raise'
   defaults:

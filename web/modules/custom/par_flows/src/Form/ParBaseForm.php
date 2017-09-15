@@ -351,7 +351,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           'fragment' => $this->getFormElementPageAnchor($name, $form_state)
         ];
 
-        $message = t('%message', ['%message' => $violation->getMessage()->render()]);
+        $message = $this->t($violation->getMessage()->getUntranslatedString(), ['@field' => $name]);
+
         $link = $this->getFlow()->getLinkByStep($this->getFlow()->getCurrentStep(), [], $options)->setText($message)->toString();
 
         $form_state->setErrorByName($name, $link);
