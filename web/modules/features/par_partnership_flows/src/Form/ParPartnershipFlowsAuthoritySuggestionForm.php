@@ -43,6 +43,11 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+    // If a value already exists we can skip to the next step.
+    if ($this->getDefaultValues("par_data_authority_id", NULL)) {
+      return $this->redirect($this->getFlow()->getNextRoute('next'), $this->getRouteParams());
+    }
+
     // Get the authorities the current user is a member of.
     $authorities= [];
     if ($this->currentUser()->isAuthenticated()) {
@@ -51,18 +56,13 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
     }
 
     $authority_view_builder = $this->getParDataManager()->getViewBuilder('par_data_authority');
-
     $authority_options = [];
-    foreach($authorities as $authority) {
+    foreach ($authorities as $authority) {
       $authority_view = $authority_view_builder->view($authority, 'summary');
 
       $authority_options[$authority->id()] = $this->renderMarkupField($authority_view)['#markup'];
     }
 
-    // If a value already exists we can skip to the next step.
-    if ($this->getDefaultValues("par_data_authority_id", NULL)) {
-      return $this->redirect($this->getFlow()->getNextRoute('next'), $this->getRouteParams());
-    }
     // If no suggestions were found we want to automatically submit the form.
     if (count($authority_options) <= 0) {
       $message = $this->t('No authority count be found for user %user');
