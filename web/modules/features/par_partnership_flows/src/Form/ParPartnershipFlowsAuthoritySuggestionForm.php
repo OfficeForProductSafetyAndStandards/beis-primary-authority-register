@@ -31,18 +31,15 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
-    if ($par_data_partnership) {
-    // If we're editing an entity we should set the state
-    // to something other than default to avoid conflicts
-    // with existing versions of the same form.
-      $this->setState("edit:{$par_data_partnership->id()}");
-    }
+
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+    $this->retrieveEditableValues();
+
     // If a value already exists we can skip to the next step.
     if ($this->getDefaultValues("par_data_authority_id", NULL)) {
       return $this->redirect($this->getFlow()->getNextRoute('next'), $this->getRouteParams());
