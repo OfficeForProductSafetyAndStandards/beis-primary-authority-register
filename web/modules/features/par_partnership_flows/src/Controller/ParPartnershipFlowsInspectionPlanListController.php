@@ -23,7 +23,7 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
       '#attributes' => ['class' => ['form-group']],
       '#title' => 'Advice documentation',
       '#header' => [
-        'Document',
+        'Inspection plans',
         'Status',
       ],
       '#empty' => $this->t("There is no documentation for this partnership."),
