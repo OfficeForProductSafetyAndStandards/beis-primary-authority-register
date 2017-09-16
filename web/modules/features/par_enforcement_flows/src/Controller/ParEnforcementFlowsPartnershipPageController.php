@@ -130,9 +130,6 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     // Display the authority contacts for information.
     $build['authority_contacts'] = $this->renderSection('Contacts - Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed'], ['edit-entity', 'add']);
 
-    // Display all the legal entities along with the links for the allowed operations on these.
-    $build['organisation_contacts'] = $this->renderSection('Contacts - Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed']);
-
     $build['save'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
