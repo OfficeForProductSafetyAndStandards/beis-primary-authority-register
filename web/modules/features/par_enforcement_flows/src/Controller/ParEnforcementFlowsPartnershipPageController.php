@@ -18,6 +18,19 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
   /**
    * {@inheritdoc}
    */
+  public function titleCallback() {
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    if ($par_data_partnership) {
+      $par_data_organisation = current($par_data_partnership->getOrganisation());
+      return $par_data_organisation->get('organisation_name')->getString();
+    }
+
+    return parent::titleCallback();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function content(ParDataPartnership $par_data_partnership = NULL) {
     // Configuration for each entity is contained within the bundle.
     $partnership_bundle = $this->getParDataManager()->getParBundleEntity('par_data_partnership');
@@ -116,9 +129,6 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
 
     // Display the authority contacts for information.
     $build['authority_contacts'] = $this->renderSection('Contacts - Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed'], ['edit-entity', 'add']);
-
-    // Display all the legal entities along with the links for the allowed operations on these.
-    $build['organisation_contacts'] = $this->renderSection('Contacts - Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed']);
 
     $build['save'] = [
       '#type' => 'markup',
