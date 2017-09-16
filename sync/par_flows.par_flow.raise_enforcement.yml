@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: JkkXYHBTmXHpdWPpYF71cAZOrOaJFn-hacH4dXqIPm4
+  default_config_hash: zYszxmBlibzl-_cd0EiDqqcflqBaPCuMYA8oEW6Ct70
 id: raise_enforcement
 label: 'Raise Enforcement'
 description: 'The creation flow of an enforcement notice.'
@@ -13,7 +13,7 @@ steps:
     redirect:
       advice: 2
       inspection_plans: 3
-      raise: 4
+      raise: 5
       done: 8
       partnerships: 9
   2:

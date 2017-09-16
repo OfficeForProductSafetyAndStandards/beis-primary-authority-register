@@ -9,7 +9,7 @@ steps:
     redirect:
       advice: 2
       inspection_plans: 3
-      raise: 4
+      raise: 5
       done: 8
       partnerships: 9
   2:
