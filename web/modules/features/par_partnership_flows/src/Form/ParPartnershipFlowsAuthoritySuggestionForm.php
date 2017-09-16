@@ -24,6 +24,13 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function titleCallback() {
+    return 'Choose your authority';
+  }
+
+  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
