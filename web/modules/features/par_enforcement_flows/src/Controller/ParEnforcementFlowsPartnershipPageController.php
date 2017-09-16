@@ -18,6 +18,19 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
   /**
    * {@inheritdoc}
    */
+  public function titleCallback() {
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    if ($par_data_partnership) {
+      $par_data_organisation = current($par_data_partnership->getOrganisation());
+      return $par_data_organisation->get('organisation_name')->getString();
+    }
+
+    return parent::titleCallback();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function content(ParDataPartnership $par_data_partnership = NULL) {
     // Configuration for each entity is contained within the bundle.
     $partnership_bundle = $this->getParDataManager()->getParBundleEntity('par_data_partnership');
