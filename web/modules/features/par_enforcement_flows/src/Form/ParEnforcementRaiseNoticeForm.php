@@ -153,6 +153,8 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
     $form['add'] = [
       '#type' => 'markup',
       '#markup' => t('@link', ['@link' => $add_action_link]),
+      '#prefix' => '<div>',
+      '#suffix' => '</div></br>',
     ];
 
     $form['next'] = [
