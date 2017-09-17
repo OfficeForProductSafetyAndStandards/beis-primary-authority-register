@@ -91,13 +91,10 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
     // Display the primary address.
     $form['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
 
-
-
-
     $form['enforcement_title'] = [
       '#type' => 'markup',
       '#markup' => $this->t('Include the following information'),
-  ];
+    ];
 
     $form['enforcement_text'] =[
       '#type' => 'fieldset',
@@ -125,15 +122,14 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
       '#markup' => $this->t('Copy in another enforcing officer(optional)'),
     ];
 
-
     $form['email'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Email'),
       '#default_value' => $this->getDefaultValues("email"),
     ];
 
-
     $legal_entity_link = $this->getFlow()->getPrevLink('select_legal_form')->setText('Select legal entities')->toString();
+
     $form['legal_select_link'] = [
       '#type' => 'markup',
       '#markup' => t('@link', ['@link' => $legal_entity_link]),
@@ -146,7 +142,6 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
       '#title' => $this->t('Your summary of enforcement action(s)'),
       '#default_value' => $this->getDefaultValues("action_summmary_data"),
      ];
-
 
     $form['premises_address'] = [
       '#type' => 'textarea',
