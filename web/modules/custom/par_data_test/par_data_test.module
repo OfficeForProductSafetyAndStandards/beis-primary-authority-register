@@ -45,7 +45,7 @@ function par_data_test_create_entities() {
       fclose($handle);
     }
   }
-  
+
   // Create Advice.
   $advice_1 = \Drupal\par_data\Entity\ParDataAdvice::create([
     'uuid' => '65b1f3b2-5e95-4b73-8a81-f536e6a24530',
@@ -475,6 +475,7 @@ function par_data_test_create_entities() {
     'ons_code' => '123456',
     'field_person' => [
       $authority_person_8->id(),
+      $authority_person_1->id(),
       $authority_person_2->id(),
     ],
     'field_regulatory_function' => [
@@ -556,7 +557,7 @@ function par_data_test_create_entities() {
     'authority_change_comment' => '',
     'organisation_change_comment' => '',
     'field_authority' => [
-      $authority_1->id(),
+      $authority_2->id(),
     ],
     'field_organisation' => [
       $organisation_3->id(),
