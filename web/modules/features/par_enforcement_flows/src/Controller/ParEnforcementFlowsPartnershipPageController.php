@@ -47,19 +47,6 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     // View and perform operations on the information about the business.
     $build['about_business'] = $this->renderSection('About the business', $par_data_organisation, ['comments' => 'about']);
 
-    // Create links for the actions that can be performed on this partnership.
-    $build['partnership_actions'] = [
-      '#type' => 'markup',
-      '#markup' => t('Enforcement Actions:'),
-      '#attributes' => ['class' => ['form-group']],
-    ];
-    $build['partnership_actions']['link'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('raise')->setText('Send notification of enforcement action')->toString(),
-      ]),
-    ];
-
     // Only show SIC Codes and Employee number if the partnership is a direct partnership.
     if ($par_data_partnership->isDirect()) {
       // Add the SIC Codes with the relevant operational links.
