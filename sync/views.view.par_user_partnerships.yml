@@ -221,7 +221,7 @@ display:
           alter:
             alter_text: false
             text: ''
-            make_link: true
+            make_link: false
             path: '/partnership/{{id}}/authority-details'
             absolute: false
             external: false
@@ -286,7 +286,7 @@ display:
           alter:
             alter_text: false
             text: ''
-            make_link: true
+            make_link: false
             path: '/partnership/{{id}}/organisation-details'
             absolute: false
             external: false

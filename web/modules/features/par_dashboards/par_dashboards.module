@@ -8,6 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\ViewExecutable;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\user\Entity\User;
 
 
 /**
@@ -73,4 +74,34 @@ function par_dashboards_views_pre_render(ViewExecutable $view) {
 
   }
 
+}
+
+/**
+ * Implement hook_preprocess_views_view_field().
+ */
+function par_dashboards_preprocess_views_view_field(&$vars) {
+
+  if ($vars['view']->id() != 'par_user_partnerships') {
+    return;
+  }
+
+  $account = User::load(\Drupal::currentUser()->id());
+
+  if ($vars['field']->getField() == '.authority_name') {
+    if ($account->hasPermission('manage my authorities')) {
+      // Convert the name into a link.
+      $url = Url::fromRoute('par_partnership_flows.authority_details', ['par_data_partnership' => $vars['row']->id]);
+      $link = Link::fromTextAndUrl(t($vars['field']->original_value->__toString()), $url);
+      $vars['output'] = $link->toRenderable();
+    }
+  }
+
+  if ($vars['field']->getField() == '.organisation_name') {
+    if ($account->hasPermission('manage my organisations')) {
+      // Convert the name into a link.
+      $url = Url::fromRoute('par_partnership_flows.organisation_details', ['par_data_partnership' => $vars['row']->id]);
+      $link = Link::fromTextAndUrl(t($vars['field']->original_value->__toString()), $url);
+      $vars['output'] = $link->toRenderable();
+    }
+  }
 }
