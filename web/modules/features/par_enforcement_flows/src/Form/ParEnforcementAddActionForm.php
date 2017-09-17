@@ -39,7 +39,7 @@ class ParEnforcementAddActionForm extends ParBaseForm {
     $enforcement_notice_bundle = $this->getParDataManager()->getParBundleEntity('par_data_enforcement_notice');
     $reg_function_bundle = $this->getParDataManager()->getParBundleEntity('par_data_regulatory_function');
 
-    $form['action'] =[
+    $form['action'] = [
       '#type' => 'fieldset',
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
@@ -53,7 +53,6 @@ class ParEnforcementAddActionForm extends ParBaseForm {
       '#suffix' => '</h3>',
     ];
 
-
     $form['action']['text'] = [
       '#type' => 'markup',
       '#markup' => $this->t('If you are proposing more then one enforcement action, you should add these as separate actions using the link below'),
@@ -61,7 +60,6 @@ class ParEnforcementAddActionForm extends ParBaseForm {
       '#suffix' => '</p>',
     ];
 
-    // The advice type.
     $form['enforcement_type'] = [
       '#type' => 'radios',
       '#title' => $this->t('Enforcing type'),
@@ -76,10 +74,8 @@ class ParEnforcementAddActionForm extends ParBaseForm {
       '#title' => $this->t('Title of action'),
       '#type' => 'textfield',
       '#default_value' => $this->getDefaultValues('title_of_action'),
-
     ];
 
-    // The advice type.
     $form['regulatory_functions'] = [
       '#type' => 'radios',
       '#title' => $this->t('Regulatory function to which this relates'),
@@ -92,7 +88,6 @@ class ParEnforcementAddActionForm extends ParBaseForm {
       '#title' => $this->t('Details'),
       '#type' => 'textarea',
       '#default_value' => $this->getDefaultValues('details'),
-
     ];
 
     $add_file_upload_link = $this->getFlow()->getNextLink('file_upload')->setText('Attach file')->toString();
