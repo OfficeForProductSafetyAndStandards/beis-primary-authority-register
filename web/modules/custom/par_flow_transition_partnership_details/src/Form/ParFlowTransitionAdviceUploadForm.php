@@ -27,6 +27,23 @@ class ParFlowTransitionAdviceUploadForm extends ParBaseForm {
     return 'par_flow_transition_partnership_advice_document_upload';
   }
 
+  /**
+   * Helper to get all the editable values when editing or
+   * revisiting a previously edited page.
+   *
+   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
+   *   The Partnership being retrieved.
+   * @param \Drupal\par_data\Entity\ParDataAdvice $par_data_advice
+   *   The advice being retrieved.
+   */
+  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
+    if (isset($par_data_advice)) {
+      // If we're editing an entity we should set the state
+      // to something other than default to avoid conflicts
+      // with existing versions of the same form.
+      $this->setState("edit:{$par_data_advice->id()}");
+    }
+  }
 
   /**
    * {@inheritdoc}
