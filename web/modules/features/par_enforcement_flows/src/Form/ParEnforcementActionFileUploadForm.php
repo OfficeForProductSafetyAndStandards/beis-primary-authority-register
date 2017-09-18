@@ -28,24 +28,6 @@ class ParEnforcementActionFileUploadForm extends ParBaseForm {
   }
 
   /**
-   * Helper to get all the editable values when editing or
-   * revisiting a previously edited page.
-   *
-   * @param \Drupal\par_data\Entity\ParDataEnforcementAction $enforcement_action
-   *   The Partnership being retrieved.
-   * @param \Drupal\par_data\Entity\ParDataAdvice $par_data_advice
-   *   The advice being retrieved.
-   */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataEnforcementAction $enforcement_action = NULL) {
-    if (isset($enforcement_action)) {
-      // If we're editing an entity we should set the state
-      // to something other than default to avoid conflicts
-      // with existing versions of the same form.
-      $this->setState("edit:{$enforcement_action->id()}");
-    }
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataEnforcementAction $enforcement_action = NULL) {
@@ -100,5 +82,4 @@ class ParEnforcementActionFileUploadForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
   }
-
 }
