@@ -1,0 +1,48 @@
+status: true
+dependencies: {  }
+id: partnership_application
+label: 'Partnership Application Flow'
+description: ''
+steps:
+  1:
+    route: par_partnership_flows.partnership_application_start
+    form_id: par_authority_selection
+    redirect:
+      save: 2
+      cancel: 1
+  2:
+    route: par_partnership_flows.partnership_application_type
+    form_id: par_partnership_application_type
+    redirect:
+      save: 3
+      cancel: 1
+  3:
+    route: par_partnership_flows.partnership_application_authority_checklist
+    form_id: par_partnership_application_authority_checklist
+    redirect:
+      save: 4
+      cancel: 1
+  4:
+    route: par_partnership_flows.partnership_application_organisation_search
+    form_id: par_partnership_application_organisation_search
+    redirect:
+      save: 5
+      cancel: 1
+  5:
+    route: par_partnership_flows.partnership_application_organisation_search_confirm
+    form_id: par_partnership_organisation_suggestion
+    redirect:
+      save: 6
+      cancel: 1
+  6:
+    route: par_partnership_flows.partnership_application_organisation_search_add
+    form_id: par_partnership_application_organisation_add
+    redirect:
+      save: 7
+      cancel: 1
+  7:
+    route: par_partnership_flows.partnership_application_details
+    form_id: par_partnership_application_details
+    redirect:
+      save: 7
+      cancel: 1
