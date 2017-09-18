@@ -420,7 +420,7 @@ par_partnership_flows.partnership_application_partnership_about:
   path: '/partnership/new/about'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationAddOrganisationForm::titleCallback'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutForm::titleCallback'
   requirements:
     _permission: 'manage my authorities'
     par_data_partnership: \d+
