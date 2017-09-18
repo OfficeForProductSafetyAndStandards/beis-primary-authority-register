@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "par_migration_enforcement_action"
  * )
  */
-class ParEnforcementNotice extends SqlBase {
+class ParEnforcementAction extends SqlBase {
 
   /**
    * @var string $table The name of the database table.
@@ -90,7 +90,7 @@ class ParEnforcementNotice extends SqlBase {
    */
   public function getIds() {
     return [
-      'enforcement_actions_id' => [
+      'enforcement_action_id' => [
         'type' => 'integer',
       ],
     ];
