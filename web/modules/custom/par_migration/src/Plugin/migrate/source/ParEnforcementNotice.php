@@ -33,7 +33,7 @@ class ParEnforcementNotice extends SqlBase {
    * @var array
    *   A cached array of enforcement actions keyed by enforcement notice ID.
    */
-  protected $action = [];
+  protected $actions = [];
 
   /**
    * {@inheritdoc}
@@ -89,21 +89,6 @@ class ParEnforcementNotice extends SqlBase {
     }
   }
 
-  protected function collectEnforcementActions() {
-    $result = $this->select('par_enforcement_actions', 'p')
-      ->fields('p', [
-        'enforcement_action_id',
-        'enforcement_notice_id',
-      ])
-      ->execute();
-
-    while ($row = $result->fetchAssoc()) {
-      $this->action[$row['enforcement_notice_id']][$row['enforcement_action_id']] = [
-        'target_id' => (int) $row['person_id'],
-      ];
-    }
-  }
-
   /**
    * {@inheritdoc}
    */
@@ -144,9 +129,6 @@ class ParEnforcementNotice extends SqlBase {
 
     $people = array_key_exists($enforcement_notice, $this->people) ? $this->people[$enforcement_notice] : [];
     $row->setSourceProperty('people', $people);
-
-    $actions = array_key_exists($enforcement_notice, $this->actions) ? $this->actions[$enforcement_notice] : [];
-    $row->setSourceProperty('actions', $actions);
 
     return parent::prepareRow($row);
   }

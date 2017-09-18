@@ -49,19 +49,15 @@ process:
     source: summary
   field_enforcement_action:
     -
+      plugin: migration_lookup
+      migration: par_migration_enforcement_action
+      no_stub: true
+      source:
+        enforcement_action_id: null
+        enforcement_notice_id: enforcement_notice_id
+    -
       plugin: skip_on_empty
       method: process
-      source: actions
-    -
-      plugin: iterator
-      process:
-        target_id:
-          plugin: migration_lookup
-          migration: par_migration_enforcement_action
-          source:
-            enforcement_action_id: null
-            enforcement_notice_id: target_id
-          no_stub: true
   field_enforcing_authority:
     -
       plugin: migration_lookup
@@ -109,9 +105,7 @@ destination:
   plugin: 'entity:par_data_enforcement_notice'
 migration_dependencies:
   required:
-    - par_migration_enforcement_action
     - par_migration_partnership
-    - par_migration_people
     - par_migration_legal_entity
     - par_migration_authority
     - par_migration_enforcement_action
