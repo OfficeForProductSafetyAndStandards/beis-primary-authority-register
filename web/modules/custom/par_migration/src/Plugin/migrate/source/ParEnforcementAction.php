@@ -93,6 +93,9 @@ class ParEnforcementAction extends SqlBase {
       'enforcement_action_id' => [
         'type' => 'integer',
       ],
+      'enforcement_notice_id' => [
+        'type' => 'integer',
+      ],
     ];
   }
 
