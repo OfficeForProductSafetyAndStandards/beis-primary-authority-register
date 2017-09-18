@@ -416,11 +416,30 @@ par_partnership_flows.partnership_application_organisation_search_confirm:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsOrganisationSuggestionForm::titleCallback'
   requirements:
     _permission: 'manage my authorities'
-par_partnership_flows.partnership_application_organisation_search_add:
-  path: '/partnership/new/organisation/add'
+par_partnership_flows.partnership_application_partnership_about:
+  path: '/partnership/new/about'
   defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationAddOrganisationForm'
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutForm'
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationAddOrganisationForm::titleCallback'
+  requirements:
+    _permission: 'manage my authorities'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.partnership_application_organisation_address:
+  path: '/partnership/new/organisation/address'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationOrganisationAddressForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationOrganisationAddressForm::titleCallback'
+  requirements:
+    _permission: 'manage my authorities'
+par_partnership_flows.partnership_application_organisation_contact:
+  path: '/partnership/new/organisation/contact'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationOrganisationContactForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationOrganisationContactForm::titleCallback'
   requirements:
     _permission: 'manage my authorities'
 par_partnership_flows.partnership_application_details:
