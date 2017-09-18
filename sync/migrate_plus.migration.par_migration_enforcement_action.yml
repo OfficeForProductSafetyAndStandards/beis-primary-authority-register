@@ -7,7 +7,7 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: 1boEfclS01uqCrydtraW8nCH8dr7qRdgPy20LqO4RQU
+  default_config_hash: 8biQGPeZNFL-p5-aCFPSDIeS1RVJ6NaeCTedA8N2xQ4
 id: par_migration_enforcement_action
 class: null
 field_plugin_method: null
@@ -84,3 +84,4 @@ migration_dependencies:
   required:
     - par_migration_regulatory_functions
     - par_migration_advice
+    - par_migration_enforcement_action_documents
