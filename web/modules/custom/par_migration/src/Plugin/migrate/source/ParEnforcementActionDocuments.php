@@ -13,7 +13,7 @@ use Drupal\migrate\MigrateException;
  *   id = "par_migration_enforcement_action_documents"
  * )
  */
-class ParAdviceDocuments extends SqlBase {
+class ParEnforcementActionDocuments extends SqlBase {
 
   /**
    * @var string $table The name of the database table.

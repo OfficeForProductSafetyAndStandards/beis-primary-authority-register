@@ -13,7 +13,7 @@ use Drupal\migrate\MigrateException;
  *   id = "par_migration_enforcement_person"
  * )
  */
-class ParAuthorityPerson extends SqlBase {
+class ParEnforcementPerson extends SqlBase {
 
   /**
    * @var string $table The name of the database table.
@@ -28,7 +28,6 @@ class ParAuthorityPerson extends SqlBase {
       ->fields('p', [
         'person_id',
         'authority_id',
-        'organisation_id',
         'title',
         'first_name',
         'last_name',
@@ -45,7 +44,6 @@ class ParAuthorityPerson extends SqlBase {
     $fields = [
       'person_id' => $this->t('Person ID'),
       'authority_id' => $this->t('Authority ID'),
-      'organisation_id' => $this->t('Organisation ID'),
       'title' => $this->t('Salutation'),
       'first_name' => $this->t('First name'),
       'last_name' => $this->t('Last name'),
@@ -65,9 +63,6 @@ class ParAuthorityPerson extends SqlBase {
         'type' => 'integer',
       ],
       'authority_id' => [
-        'type' => 'integer',
-      ],
-      'organisation_id' => [
         'type' => 'integer',
       ],
     ];

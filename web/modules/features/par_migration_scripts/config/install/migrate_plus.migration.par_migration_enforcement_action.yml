@@ -31,26 +31,29 @@ process:
     plugin: skip_on_empty
     method: process
     source: details
-  enforcement_action_status:
-    plugin: static_map
-    source: ea_status
-    default_value: approved
-    map:
-      Approved: approved
-      Blocked: blocked
-      Referred: referred
+#  enforcement_action_status:
+#    plugin: static_map
+#    source: ea_status
+#    default_value: null
+#    map:
+#      Deferred: deferred
+#      'No Further Action': no_action
+#      Ready To Serve: ready
+#      Served: served
+#      Unknown: null
+#      'N/A': null
   enforcement_action_notes:
     plugin: skip_on_empty
     method: process
     source: ea_notes
-  primary_authority_status:
-    plugin: static_map
-    source: pa_status
-    default_value: approved
-    map:
-      Approved: approved
-      Blocked: blocked
-      Referred: referred
+#  primary_authority_status:
+#    plugin: static_map
+#    source: pa_status
+#    default_value: approved
+#    map:
+#      Approved: approved
+#      Blocked: blocked
+#      Referred: referred
   primary_authority_notes:
     plugin: skip_on_empty
     method: process
@@ -62,16 +65,6 @@ process:
       no_stub: true
       source:
         regulatory_function_id: regulatory_function_id
-    -
-      plugin: skip_on_empty
-      method: process
-  field_blocked_advice:
-    -
-      plugin: migration_lookup
-      migration: par_migration_advice
-      no_stub: true
-      source:
-        advice_id: advice_id
     -
       plugin: skip_on_empty
       method: process
