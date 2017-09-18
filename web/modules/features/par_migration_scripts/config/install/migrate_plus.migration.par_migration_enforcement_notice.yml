@@ -121,3 +121,5 @@ migration_dependencies:
     - par_migration_people
     - par_migration_legal_entity
     - par_migration_authority
+    - par_migration_enforcement_action
+    - par_migration_enforcement_person

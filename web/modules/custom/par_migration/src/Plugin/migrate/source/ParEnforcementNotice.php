@@ -64,8 +64,7 @@ class ParEnforcementNotice extends SqlBase {
         'notice_date',
         'notice_type',
         'summary',
-      ])
-      ->range(0,1000);
+      ]);
   }
 
   protected function collectPeople() {
