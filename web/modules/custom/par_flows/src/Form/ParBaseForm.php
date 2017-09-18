@@ -162,6 +162,13 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   }
 
   /**
+   * Title callback default.
+   */
+  public function titleCallback() {
+    return $this->t('Primary Authority Register');
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getCacheContexts() {
@@ -344,7 +351,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           'fragment' => $this->getFormElementPageAnchor($name, $form_state)
         ];
 
-        $message = t('%message', ['%message' => $violation->getMessage()->render()]);
+        $message = $this->t($violation->getMessage()->getUntranslatedString(), ['@field' => $name]);
+
         $link = $this->getFlow()->getLinkByStep($this->getFlow()->getCurrentStep(), [], $options)->setText($message)->toString();
 
         $form_state->setErrorByName($name, $link);
@@ -360,6 +368,54 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     $submit_action = $form_state->getTriggeringElement()['#name'];
     $next = $this->getFlow()->getNextRoute($submit_action);
+    $form_state->setRedirect($next, $this->getRouteParams());
+  }
+
+  /**
+   * Cancel submit handler to clear all the current flow temporary form data.
+   *
+   * @code
+   * $form['actions']['cancel'] = [
+   *   '#type' => 'submit',
+   *   '#name' => 'cancel',
+   *   '#value' => $this->t('Cancel'),
+   *   '#submit' => ['::cancelForm'],
+   * ];
+   * @endcode
+   *
+   * @param array $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   */
+  public function cancelForm(array &$form, FormStateInterface $form_state) {
+    // Delete form storage.
+    $this->deleteStore();
+
+    // Go to cancel step.
+    $next = $this->getFlow()->getNextRoute('cancel');
+    $form_state->setRedirect($next, $this->getRouteParams());
+  }
+
+  /**
+   * Cancel submit handler to clear the current temporary form data.
+   *
+   * @code
+   * $form['actions']['previous'] = [
+   *   '#type' => 'submit',
+   *   '#name' => 'previous',
+   *   '#value' => $this->t('Previous'),
+   *   '#submit' => ['::cancelThisForm'],
+   * ];
+   * @endcode
+   *
+   * @param array $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   */
+  public function cancelThisForm(array &$form, FormStateInterface $form_state) {
+    // Delete specific form storage.
+    $this->deleteFormTempData($this->getFormId());
+
+    // Go to cancel step.
+    $next = $this->getFlow()->getNextRoute('cancel');
     $form_state->setRedirect($next, $this->getRouteParams());
   }
 

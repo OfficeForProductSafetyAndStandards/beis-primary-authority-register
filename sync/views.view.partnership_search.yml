@@ -6,7 +6,6 @@ dependencies:
     - field.storage.par_data_organisation.field_legal_entity
     - field.storage.par_data_organisation.field_premises
     - field.storage.par_data_partnership.field_authority_person
-    - system.menu.account
   module:
     - better_exposed_filters
     - csv_serialization
@@ -49,7 +48,7 @@ display:
       exposed_form:
         type: bef
         options:
-          submit_button: Apply
+          submit_button: Search
           reset_button: false
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
@@ -64,7 +63,7 @@ display:
               secondary_label: 'Advanced options'
               autosubmit: false
               autosubmit_hide: false
-            partnership_status:
+            combine:
               bef_format: default
               more_options:
                 is_secondary: false
@@ -790,7 +789,7 @@ display:
           exposed: true
           expose:
             operator_id: combine_op
-            label: 'PA / Business Name'
+            label: 'PA / Organisation Name'
             description: 'Enter keyword(s)'
             use_operator: false
             operator: combine_op

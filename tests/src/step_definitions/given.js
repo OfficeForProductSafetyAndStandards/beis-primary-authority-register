@@ -21,9 +21,13 @@ import resizeScreenSize from '../support/action/resizeScreenSize';
 import loginAsPARUser from '../support/action/loginAsPARUser';
 import resetTheTestData from '../support/action/resetTheTestData';
 import selectNextPartnershipAwaitingReview from '../support/action/selectNextPartnershipAwaitingReview';
+import selectNextBusinessAwaitingReview from '../support/action/selectNextPartnershipAwaitingReview';
+import selectNextHelpdeskPartnershipAwaitingReview from '../support/action/selectNextHelpdeskPartnershipAwaitingReview';
+import selectNextHelpdeskBusinessAwaitingReview from '../support/action/selectNextHelpdeskBusinessAwaitingReview';
 import selectMyNextCoordinatedPartnership from '../support/action/selectMyNextCoordinatedPartnership';
 import relevantSearchResultsCheck from '../support/action/relevantSearchResultsCheck';
-
+import partnershipSearchResultsCheck from '../support/action/partnershipSearchResultsCheck';
+import relevantSearchResultsCheckHelpdesk from '../support/action/relevantSearchResultsCheckHelpdesk';
 
 module.exports = function given() {
     this.Given(
@@ -87,14 +91,40 @@ module.exports = function given() {
     );
 
     this.Given(
+        /^I select next business awaiting review$/,
+        selectNextBusinessAwaitingReview
+    );
+
+    this.Given(
+        /^I select next helpdesk partnership awaiting review$/,
+        selectNextHelpdeskPartnershipAwaitingReview
+    );
+
+    this.Given(
+        /^I select next helpdesk business awaiting review$/,
+        selectNextHelpdeskBusinessAwaitingReview
+    );
+
+    this.Given(
         /^relevant partnerships search results returned for search term "([^"]*)?"$/,
         relevantSearchResultsCheck
     );
 
     this.Given(
+        /^relevant search results returned for partnership search term "([^"]*)?"$/,
+        partnershipSearchResultsCheck
+    );
+
+
+    this.Given(
+        /^relevant helpdesk results returned for search term "([^"]*)?"$/,
+        relevantSearchResultsCheckHelpdesk
+    );
+    this.Given(
         /^I select my next coordinated partnership awaiting review$/,
         selectMyNextCoordinatedPartnership
     );
+    
 
     this.Given(
         /^I reset the test data$/,

@@ -21,7 +21,7 @@ class ParRequiredValidator extends ConstraintValidator {
       }
 
       if (!isset($item->value) || false === $item->value || (empty($item->value) && '0' != $item->value)) {
-        $this->context->addViolation($constraint->message, ['%value' => $item->value]);
+        $this->context->addViolation($constraint->message, ['@value' => $item->value]);
       }
     }
   }

@@ -199,6 +199,7 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
     type: boolean
+    weight: 0
 hidden:
   authority_change_comment: true
   communication_email: true

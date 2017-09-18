@@ -23,10 +23,8 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
       '#attributes' => ['class' => ['form-group']],
       '#title' => 'Advice documentation',
       '#header' => [
-        'Document',
+        'Inspection plans',
         'Status',
-        'Consulted National Regulator',
-        'Approved RD Executive',
       ],
       '#empty' => $this->t("There is no documentation for this partnership."),
     ];
@@ -43,8 +41,6 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
           'data' => [
             'document' => $this->getRenderer()->render($inspection_plan_summary),
             'status' => $inspection_plan->retrieveStringValue('inspection_status'),
-            'consulted' => $inspection_plan->retrieveStringValue('consulted_national_regulator'),
-            'approved' => $inspection_plan->retrieveStringValue('approved_rd_executive'),
           ],
         ];
       }
@@ -55,7 +51,7 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
       '#type' => 'markup',
       '#markup' => t('@link', [
         '@link' => $this->getFlow()->getNextLink('next', $this->getRouteParams(), ['attributes' => ['class' => 'button']])
-          ->setText('Save')
+          ->setText('Done')
           ->toString(),
       ]),
     ];

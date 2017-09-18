@@ -48,19 +48,16 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
-    if ($par_data_partnership) {
-      // If we're editing an entity we should set the state
-      // to something other than default to avoid conflicts
-      // with existing versions of the same form.
-      $this->setState("edit:{$par_data_partnership->id()}");
-    }
 
     if ($par_data_person) {
-      // Contact.
+
+      $this->setState("edit:{$par_data_person->id()}");
+
+      // Load person data.
       $this->loadDataValue("salutation", $par_data_person->get('salutation')->getString());
       $this->loadDataValue("first_name", $par_data_person->get('first_name')->getString());
       $this->loadDataValue("last_name", $par_data_person->get('last_name')->getString());
-      $this->loadDataValue("phone", $par_data_person->get('work_phone')->getString());
+      $this->loadDataValue("work_phone", $par_data_person->get('work_phone')->getString());
       $this->loadDataValue("mobile_phone", $par_data_person->get('mobile_phone')->getString());
       $this->loadDataValue("email", $par_data_person->get('email')->getString());
       $this->loadDataValue("notes", $par_data_person->get('communication_notes')->getString());
@@ -74,7 +71,9 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
 
       // Checkboxes works nicely with keys, filtering booleans for "1" value.
       $this->loadDataValue('preferred_contact', array_keys($contact_options, 1));
+
     }
+
   }
 
   /**
@@ -107,7 +106,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     $form['work_phone'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Work phone'),
-      '#default_value' => $this->getDefaultValues("phone"),
+      '#default_value' => $this->getDefaultValues("work_phone"),
     ];
 
     // The Person's work phone number.
@@ -171,41 +170,40 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // @todo - Need to replace the following with a standard subit routine.
     // Save the value for the about_partnership field.
     $par_data_person = $this->getRouteParam('par_data_person');
+    if ($par_data_person) {
+      $par_data_person->set('salutation', $this->getTempDataValue('salutation'));
+      $par_data_person->set('first_name', $this->getTempDataValue('first_name'));
+      $par_data_person->set('last_name', $this->getTempDataValue('last_name'));
+      $par_data_person->set('work_phone', $this->getTempDataValue('work_phone'));
+      $par_data_person->set('mobile_phone', $this->getTempDataValue('mobile_phone'));
+      $par_data_person->set('email', $this->getTempDataValue('email'));
+      $par_data_person->set('communication_notes', $this->getTempDataValue('notes'));
 
-    $par_data_person->set('salutation', $this->getTempDataValue('salutation'));
-    $par_data_person->set('first_name', $this->getTempDataValue('first_name'));
-    $par_data_person->set('last_name', $this->getTempDataValue('last_name'));
-    $par_data_person->set('work_phone', $this->getTempDataValue('work_phone'));
-    $par_data_person->set('mobile_phone', $this->getTempDataValue('mobile_phone'));
-    $par_data_person->set('email', $this->getTempDataValue('email'));
-    $par_data_person->set('communication_notes', $this->getTempDataValue('notes'));
+      // Save the email preference.
+      $email_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_email'])
+        && !empty($this->getTempDataValue('preferred_contact')['communication_email']);
+      $par_data_person->set('communication_email', $email_preference_value);
+      // Save the work phone preference.
+      $work_phone_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_phone'])
+        && !empty($this->getTempDataValue('preferred_contact')['communication_phone']);
+      $par_data_person->set('communication_phone', $work_phone_preference_value);
+      // Save the mobile phone preference.
+      $mobile_phone_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_mobile'])
+        && !empty($this->getTempDataValue('preferred_contact')['communication_mobile']);
+      $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
 
-    // Save the email preference.
-    $email_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_email'])
-      && !empty($this->getTempDataValue('preferred_contact')['communication_email']);
-    $par_data_person->set('communication_email', $email_preference_value);
-    // Save the work phone preference.
-    $work_phone_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_phone'])
-      && !empty($this->getTempDataValue('preferred_contact')['communication_phone']);
-    $par_data_person->set('communication_phone', $work_phone_preference_value);
-    // Save the mobile phone preference.
-    $mobile_phone_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_mobile'])
-      && !empty($this->getTempDataValue('preferred_contact')['communication_mobile']);
-    $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
-
-    if ($par_data_person->save()) {
-      $this->deleteStore();
-    }
-    else {
-      $message = $this->t('This %person could not be saved for %form_id');
-      $replacements = [
-        '%person' => $this->getTempDataValue('name'),
-        '%form_id' => $this->getFormId(),
-      ];
-      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+      if ($par_data_person->save()) {
+        $this->deleteStore();
+      } else {
+        $message = $this->t('This %person could not be saved for %form_id');
+        $replacements = [
+          '%person' => $this->getTempDataValue('name'),
+          '%form_id' => $this->getFormId(),
+        ];
+        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+      }
     }
 
   }

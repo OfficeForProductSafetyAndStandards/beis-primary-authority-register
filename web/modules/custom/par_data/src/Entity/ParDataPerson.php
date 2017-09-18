@@ -336,6 +336,9 @@ class ParDataPerson extends ParDataEntity {
       ->setLabel(t('E-mail'))
       ->setDescription(t('The e-mail address of this person.'))
       ->addConstraint('par_required')
+      ->addPropertyConstraints('value', [
+        'Email' => ['message' => 'You must enter an email address in a valid format.'],
+      ])
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 500,

@@ -3,9 +3,9 @@ par_partnership_flows.authority_details:
   path: '/partnership/{par_data_partnership}/authority-details'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAuthorityDetailsForm'
-    _title: ''
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAuthorityDetailsForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+authority partnership journey'
+    _permission: 'manage my authorities'
     par_data_partnership: \d+
   options:
     parameters:
@@ -15,9 +15,9 @@ par_partnership_flows.about_partnership:
   path: '/partnership/{par_data_partnership}/about'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+authority partnership journey'
+    _permission: 'manage my authorities'
     par_data_partnership: \d+
   options:
     parameters:
@@ -27,24 +27,39 @@ par_partnership_flows.authority_contact_edit:
   path: '/partnership/{par_data_partnership}/authority/contact/{par_data_person}'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+authority partnership journey'
+    _permission: 'manage my authorities'
     par_data_partnership: \d+
+    par_data_authority: \d+
     par_data_person: \d+
   options:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+      par_data_authority:
+        type: entity:par_data_authority
       par_data_person:
         type: entity:par_data_person
 par_partnership_flows.authority_contact_add:
   path: '/partnership/{par_data_partnership}/authority/contact/add'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+authority partnership journey'
+    _permission: 'manage my authorities'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.authority_contact_add_confirm:
+  path: '/partnership/{par_data_partnership}/authority/contact/add/confirm'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactSuggestionForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactSuggestionForm::titleCallback'
+  requirements:
+    _permission: 'manage my authorities'
     par_data_partnership: \d+
   options:
     parameters:
@@ -54,9 +69,9 @@ par_partnership_flows.advice_list:
   path: '/partnership/{par_data_partnership}/advice/list'
   defaults:
     _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::content'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+authority partnership journey'
+    _permission: 'manage my authorities'
     par_data_partnership: \d+
   options:
     parameters:
@@ -65,10 +80,10 @@ par_partnership_flows.advice_list:
 par_partnership_flows.advice_upload_documents:
   path: '/partnership/{par_data_partnership}/advice/upload'
   defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsUploadForm'
-    _title: 'Primary Authority Register'
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceUploadForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceUploadForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+authority partnership journey'
+    _permission: 'manage my authorities'
     par_data_partnership: \d+
   options:
     parameters:
@@ -78,9 +93,9 @@ par_partnership_flows.advice_add:
   path: '/partnership/{par_data_partnership}/advice/add'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+authority partnership journey'
+    _permission: 'manage my authorities'
     par_data_partnership: \d+
   options:
     parameters:
@@ -89,10 +104,10 @@ par_partnership_flows.advice_add:
 par_partnership_flows.advice_edit_documents:
   path: '/partnership/{par_data_partnership}/advice/{par_data_advice}/upload'
   defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsUploadForm'
-    _title: 'Primary Authority Register'
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceUploadForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceUploadForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+authority partnership journey'
+    _permission: 'manage my authorities'
     par_data_partnership: \d+
     par_data_advice: \d+
   options:
@@ -105,9 +120,9 @@ par_partnership_flows.advice_edit:
   path: '/partnership/{par_data_partnership}/advice/{par_data_advice}/edit'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+authority partnership journey'
+    _permission: 'manage my authorities'
     par_data_partnership: \d+
     par_data_advice: \d+
   options:
@@ -120,9 +135,9 @@ par_partnership_flows.inspection_plan_list:
   path: '/partnership/{par_data_partnership}/inspection/list'
   defaults:
     _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::content'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+authority partnership journey'
+    _permission: 'manage my authorities'
     par_data_partnership: \d+
   options:
     parameters:
@@ -134,9 +149,9 @@ par_partnership_flows.organisation_details:
   path: '/partnership/{par_data_partnership}/organisation-details'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsOrganisationDetailsForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsOrganisationDetailsForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'manage my organisations'
     par_data_partnership: \d+
   options:
     parameters:
@@ -146,9 +161,9 @@ par_partnership_flows.about_business:
   path: '/partnership/{par_data_partnership}/about-business'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutBusinessForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutBusinessForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'manage my organisations'
     par_data_partnership: \d+
   options:
     parameters:
@@ -158,9 +173,9 @@ par_partnership_flows.address_edit:
   path: '/partnership/{par_data_partnership}/address/{par_data_premises}'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAddressForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAddressForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'manage my organisations'
     par_data_partnership: \d+
     par_data_premises: \d+
   options:
@@ -173,9 +188,9 @@ par_partnership_flows.address_add:
   path: '/partnership/{par_data_partnership}/address/add'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAddressForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAddressForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'manage my organisations'
     par_data_partnership: \d+
   options:
     parameters:
@@ -185,36 +200,57 @@ par_partnership_flows.organisation_contact_edit:
   path: '/partnership/{par_data_partnership}/organisation/contact/{par_data_person}'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'manage my organisations'
     par_data_partnership: \d+
+    par_data_organisation: \d+
     par_data_person: \d+
   options:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+      par_data_organisation:
+        type: entity:par_data_organisation
       par_data_person:
         type: entity:par_data_person
 par_partnership_flows.organisation_contact_add:
   path: '/partnership/{par_data_partnership}/organisation/contact/add'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'manage my organisations'
     par_data_partnership: \d+
+    par_data_organisation: \d+
   options:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+      par_data_organisation:
+        type: entity:par_data_organisation
+par_partnership_flows.organisation_contact_add_confirm:
+  path: '/partnership/{par_data_partnership}/organisation/contact/add/confirm'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactSuggestionForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactSuggestionForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    par_data_partnership: \d+
+    par_data_organisation: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_authority:
+        type: entity:par_data_organisation
 par_partnership_flows.legal_entity_edit:
   path: '/partnership/{par_data_partnership}/legal-entity/{par_data_legal_entity}'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'manage my organisations'
     par_data_partnership: \d+
     par_data_legal_entity: \d+
   options:
@@ -227,9 +263,9 @@ par_partnership_flows.legal_entity_add:
   path: '/partnership/{par_data_partnership}/legal-entity/add'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'manage my organisations'
     par_data_partnership: \d+
   options:
     parameters:
@@ -239,9 +275,9 @@ par_partnership_flows.trading_name_edit:
   path: '/partnership/{par_data_partnership}/trading-name/{trading_name_delta}'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsTradingForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsTradingForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'manage my organisations'
     par_data_partnership: \d+
     trading_name_delta: \d+
   options:
@@ -252,36 +288,34 @@ par_partnership_flows.trading_name_add:
   path: '/partnership/{par_data_partnership}/trading-name/add'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsTradingForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsTradingForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'manage my organisations'
     par_data_partnership: \d+
   options:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
 par_partnership_flows.sic_code_edit:
-  path: '/partnership/{par_data_partnership}/sic-code/{par_data_sic_code}'
+  path: '/partnership/{par_data_partnership}/sic-code/{field_sic_code_delta}'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSicCodeForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSicCodeForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'manage my organisations'
     par_data_partnership: \d+
-    par_data_sic_code: \d+
+    field_sic_code_delta: \d+
   options:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-      par_data_sic_code:
-        type: entity:par_data_sic_code
 par_partnership_flows.sic_code_add:
   path: '/partnership/{par_data_partnership}/sic-code/add'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSicCodeForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSicCodeForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'manage my organisations'
     par_data_partnership: \d+
   options:
     parameters:
@@ -291,9 +325,9 @@ par_partnership_flows.employee_number:
   path: '/partnership/{par_data_partnership}/employee-number'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsEmployeeNoForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsEmployeeNoForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'manage my organisations'
     par_data_partnership: \d+
   options:
     parameters:
@@ -303,9 +337,9 @@ par_partnership_flows.sector:
   path: '/partnership/{par_data_partnership}/sector'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSectorForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSectorForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'manage my organisations'
     par_data_partnership: \d+
   options:
     parameters:
@@ -315,12 +349,35 @@ par_partnership_flows.business_size:
   path: '/partnership/{par_data_partnership}/business-size'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsBusinessSizeForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsBusinessSizeForm::titleCallback'
   requirements:
-    _permission: 'bypass partnership journey+business partnership journey+coordinator partnership journey'
+    _permission: 'manage my organisations'
     par_data_partnership: \d+
   options:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-
+par_partnership_flows.advice_view:
+  path: '/partnership/{par_data_partnership}/advice/view'
+  defaults:
+    _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::content'
+    _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.inspection_plan_view:
+  path: '/partnership/{par_data_partnership}/inspection/view'
+  defaults:
+    _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::content'
+    _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
