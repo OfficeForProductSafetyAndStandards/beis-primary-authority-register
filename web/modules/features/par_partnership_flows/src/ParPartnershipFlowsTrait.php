@@ -54,6 +54,10 @@ trait ParPartnershipFlowsTrait {
       return 'partnership_coordinated';
     }
 
+    if (isset($flows['partnership_application'])) {
+      return 'partnership_application';
+    }
+
     // Throw an error if the flow is still ambiguous.
     if (empty($this->flow) && count($flows) >= 1) {
       throw new ParFlowException('The flow name is ambiguous.');
