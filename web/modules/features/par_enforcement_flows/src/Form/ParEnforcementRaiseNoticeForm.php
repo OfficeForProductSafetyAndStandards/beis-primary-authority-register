@@ -42,6 +42,10 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
     $this->retrieveEditableValues();
+    $enforcement_notice_bundle = $this->getParDataManager()->getParBundleEntity('par_data_enforcement_notice');
+
+    //get the correct par_data_authority_id set by the previous form
+    $authority_id = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
 
     // Organisation summary.
     $par_data_organisation = current($par_data_partnership->getOrganisation());
@@ -117,19 +121,24 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
       ];
     }
 
-    $form['email_copy'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Copy in another enforcing officer(optional)'),
-    ];
+    $Legal_entities = $par_data_organisation->getLegalEntity();
+    $legal_entity_reg_names = array();
 
-    $form['email'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Email'),
-      '#default_value' => $this->getDefaultValues("email"),
-    ];
+    foreach ($Legal_entities as  $org_legal_entity) {
+      $legal_entity_reg_names[]  = $org_legal_entity->get('registered_name')->getString();
+    }
 
-    $legal_entity_link = $this->getFlow()->getPrevLink('select_legal_form')->setText('Select legal entities')->toString();
+      $form['legal_entities_select'] = [
+        '#type' => 'radios',
+        '#title' => $this->t('Select a legal entity'),
+        '#options' => $legal_entity_reg_names,
+        '#default_value' => $this->getDefaultValues('notice_type'),
+        '#required' => TRUE,
+        '#prefix' => '<div>',
+        '#suffix' => '</div>',
+      ];
 
+    $legal_entity_link = $this->getFlow()->getPrevLink()->setText('Add a legal entity')->toString();
     $form['legal_select_link'] = [
       '#type' => 'markup',
       '#markup' => t('@link', ['@link' => $legal_entity_link]),
@@ -143,24 +152,61 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
       '#default_value' => $this->getDefaultValues("action_summmary_data"),
      ];
 
-    $form['premises_address'] = [
-      '#type' => 'textarea',
-      '#title' => $this->t('Address of premises concerned (if applicable)'),
-      '#default_value' => $this->getDefaultValues("legal_entity_registered_name"),
+    $form['action_add'] = [
+      '#type' => 'fieldset',
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    $form['action_add']['action_heading']  = [
+      '#type' => 'markup',
+      '#markup' => $this->t('Enforcement action(s)'),
+      '#prefix' => '<h3>',
+      '#suffix' => '</h3>',
     ];
 
     $add_action_link = $this->getFlow()->getNextLink()->setText('Add an enforcement action')->toString();
-    $form['add'] = [
+    $form['action_add']['add_link'] = [
       '#type' => 'markup',
       '#markup' => t('@link', ['@link' => $add_action_link]),
       '#prefix' => '<div>',
       '#suffix' => '</div></br>',
     ];
 
+    $form['action'] = [
+      '#type' => 'fieldset',
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    $form['action']['action_heading']  = [
+      '#type' => 'markup',
+      '#markup' => $this->t('Enforcement action'),
+      '#prefix' => '<h3>',
+      '#suffix' => '</h3>',
+    ];
+
+    $form['action']['text'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('If you are proposing more then one enforcement action, you should add these as separate actions using the link below'),
+    ];
+
+    $form['enforcement_type'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Enforcing type'),
+      '#options' => $enforcement_notice_bundle->getAllowedValues('notice_type'),
+      '#default_value' => $this->getDefaultValues('notice_type'),
+      '#required' => TRUE,
+      '#prefix' => '<div>',
+      '#suffix' => '</div>',
+    ];
+
     $form['next'] = [
       '#type' => 'submit',
       '#name' => 'next',
-      '#value' => $this->t('Next'),
+      '#value' => $this->t('Continue'),
     ];
 
     $cancel_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
