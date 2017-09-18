@@ -85,19 +85,23 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
 
     parent::submitForm($form, $form_state);
 
-    // Save the value for the about_partnership field.
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
-    $par_data_partnership->set('about_partnership', $this->getTempDataValue('about_partnership'));
-    if ($par_data_partnership->save()) {
-      $this->deleteStore();
-    }
-    else {
-      $message = $this->t('The %field field could not be saved for %form_id');
-      $replacements = [
-        '%field' => 'comments',
-        '%form_id' => $this->getFormId(),
-      ];
-      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+
+    if ($par_data_partnership) {
+      // Save the value for the about_partnership field.
+      $par_data_partnership->set('about_partnership', $this->getTempDataValue('about_partnership'));
+      if ($par_data_partnership->save()) {
+        $this->deleteStore();
+      }
+      else {
+        $message = $this->t('The %field field could not be saved for %form_id');
+        $replacements = [
+          '%field' => 'comments',
+          '%form_id' => $this->getFormId(),
+        ];
+        $this->getLogger($this->getLoggerChannel())
+          ->error($message, $replacements);
+      }
     }
   }
 
