@@ -50,7 +50,7 @@ class ParEnforcementAddActionForm extends ParBaseForm {
       '#type' => 'textfield',
       '#default_value' => $this->getDefaultValues('title_of_action'),
     ];
-//function_name
+
     $form['regulatory_functions'] = [
       '#type' => 'radios',
       '#title' => $this->t('Regulatory function to which this relates'),
