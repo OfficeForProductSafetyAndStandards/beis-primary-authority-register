@@ -57,10 +57,10 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       $this->setState("edit:{$par_data_partnership->id()}");
     }
 
-    $address = $par_data_premises->get('address')->first();
-
     if ($par_data_premises) {
-      // Address.
+      $address = $par_data_premises->get('address')->first();
+
+        // Address.
       $this->loadDataValue("address_postal_code", $address->get('postal_code')->getString());
       $this->loadDataValue("address_address_line1", $address->get('address_line1')->getString());
       $this->loadDataValue("address_address_line2", $address->get('address_line2')->getString());
@@ -155,28 +155,31 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
 
     // Save the value for the about_partnership field.
     $premises = $this->getRouteParam('par_data_premises');
-    $address = [
-      'country_code' => $this->getTempDataValue('country_code'),
-      'address_line1' => $this->getTempDataValue('address_line1'),
-      'address_line2' => $this->getTempDataValue('address_line2'),
-      'locality' => $this->getTempDataValue('town_city'),
-      'administrative_area' => $this->getTempDataValue('county'),
-      'postal_code' => $this->getTempDataValue('postcode'),
-    ];
-
-    $premises->set('address', $address);
-    $premises->set('nation', $this->getTempDataValue('country'));
-
-    if ($premises->save()) {
-      $this->deleteStore();
-    }
-    else {
-      $message = $this->t('This %premises could not be saved for %form_id');
-      $replacements = [
-        '%premises' => $premises->get('address')->toString(),
-        '%form_id' => $this->getFormId(),
+    if ($premises) {
+      $address = [
+        'country_code' => $this->getTempDataValue('country_code'),
+        'address_line1' => $this->getTempDataValue('address_line1'),
+        'address_line2' => $this->getTempDataValue('address_line2'),
+        'locality' => $this->getTempDataValue('town_city'),
+        'administrative_area' => $this->getTempDataValue('county'),
+        'postal_code' => $this->getTempDataValue('postcode'),
       ];
-      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+
+      $premises->set('address', $address);
+      $premises->set('nation', $this->getTempDataValue('country'));
+
+      if ($premises->save()) {
+        $this->deleteStore();
+      }
+      else {
+        $message = $this->t('This %premises could not be saved for %form_id');
+        $replacements = [
+          '%premises' => $premises->get('address')->toString(),
+          '%form_id' => $this->getFormId(),
+        ];
+        $this->getLogger($this->getLoggerChannel())
+          ->error($message, $replacements);
+      }
     }
   }
 
