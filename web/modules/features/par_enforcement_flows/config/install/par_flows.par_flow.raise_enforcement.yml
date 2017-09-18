@@ -9,7 +9,7 @@ steps:
     redirect:
       advice: 2
       inspection_plans: 3
-      raise: 5
+      raise: 4
       done: 8
       partnerships: 9
   2:
@@ -33,6 +33,7 @@ steps:
     form_id: par_enforcement_notice_raise
     redirect:
       add_enforcement_action: 6
+      select_legal_form: 10
       next: 7
       cancel: 1
   6:
@@ -41,6 +42,7 @@ steps:
     redirect:
       next: 5
       cancel: 5
+      file_upload: 11
   7:
     route: par_enforcement_flows.raise_confirm
     form_id: par_enforcement_notice_raise_confirm
@@ -48,3 +50,12 @@ steps:
     route: par_dashboards.dashboard
   9:
     route: view.partnership_search.enforcment_flow_search_partnerships
+  10:
+    route: par_enforcement_flows.legal_select
+    form_id: par_legal_select
+  11:
+    route: par_enforcement_flows.upload_action_file
+    form_id: par_enforcement_notice_action_upload_file
+    redirect:
+      upload: 6
+      cancel: 6
