@@ -73,10 +73,11 @@ class ParEnforcementActionFileUploadForm extends ParBaseForm {
     $form['next'] = [
       '#type' => 'submit',
       '#value' => t('Upload'),
+      '#name' => 'upload',
     ];
 
-    // Go back to Advice Documents list.
-    $previous_link = $this->getFlow()->getLinkByStep(6)->setText('Cancel')->toString();
+    // Go back to Action form.
+    $previous_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
     $form['cancel'] = [
       '#type' => 'markup',
       '#markup' => t('@link', ['@link' => $previous_link]),
@@ -98,9 +99,6 @@ class ParEnforcementActionFileUploadForm extends ParBaseForm {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-
-    // Go to the "document add" flow step.
-    $form_state->setRedirect($this->getFlow()->getRouteByStep(11), $this->getRouteParams());
   }
 
 }
