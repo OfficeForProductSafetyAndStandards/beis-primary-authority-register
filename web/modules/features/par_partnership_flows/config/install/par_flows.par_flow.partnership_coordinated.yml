@@ -95,14 +95,25 @@ steps:
       save: 1
       cancel: 1
   14:
+    route: par_partnership_flows.member_upload
+    form_id: par_partnership_member_upload
+    redirect:
+      cancel: 1
+  15:
+    route: par_partnership_flows.member_upload_confirm
+    form_id: par_partnership_member_upload_confirm
+    redirect:
+      save: 1
+      cancel: 14
+  17:
     route: par_partnership_flows.advice_view
     redirect:
       next: 1
       cancel: 1
-  15:
+  18:
     route: par_partnership_flows.inspection_plan_view
     redirect:
       next: 1
       cancel: 1
-  16:
+  19:
     route: view.par_user_partnerships.partnerships_page
