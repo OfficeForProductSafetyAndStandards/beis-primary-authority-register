@@ -132,7 +132,7 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
         '#type' => 'radios',
         '#title' => $this->t('Select a legal entity'),
         '#options' => $legal_entity_reg_names,
-        '#default_value' => $this->getDefaultValues('notice_type'),
+        '#default_value' => $this->getDefaultValues('legal_entities_select'),
         '#required' => TRUE,
         '#prefix' => '<div>',
         '#suffix' => '</div>',
@@ -149,7 +149,7 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
     $form['action_summmary'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Your summary of enforcement action(s)'),
-      '#default_value' => $this->getDefaultValues("action_summmary_data"),
+      '#default_value' => $this->getDefaultValues("action_summmary"),
      ];
 
     $form['action_heading']  = [
@@ -179,7 +179,7 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
       '#type' => 'radios',
       '#title' => $this->t('Enforcing type'),
       '#options' => $enforcement_notice_bundle->getAllowedValues('notice_type'),
-      '#default_value' => $this->getDefaultValues('notice_type'),
+      '#default_value' => $this->getDefaultValues('enforcement_type'),
       '#required' => TRUE,
       '#prefix' => '<div>',
       '#suffix' => '</div>',
