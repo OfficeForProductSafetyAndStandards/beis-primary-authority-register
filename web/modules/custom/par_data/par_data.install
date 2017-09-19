@@ -53,3 +53,56 @@ function par_data_update_8005() {
 function par_data_update_8006() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
+
+/**
+ * Move all organisations to the new organisation bundle.
+ */
+function par_data_update_8007() {
+  $db = \Drupal::database();
+
+  // Change the bundle type.
+  foreach (\Drupal\par_data\Entity\ParDataOrganisation::loadMultiple() as $entity) {
+    if ($entity->hasField('field_coordinator_number')) {
+      $entity->set('coordinator_number', $entity->get('field_coordinator_number')->getString());
+    }
+    $entity->type = 'organisation';
+    $entity->save();
+  }
+
+  // Change all the entity field tables because Entity::save() doesn't do this.
+  $entityManager = \Drupal::service('entity_field.manager');
+  foreach ($entityManager->getFieldDefinitions('par_data_organisation', 'organisation') as $field) {
+    $storage = $field->getFieldStorageDefinition();
+    if ($storage->isBaseField() === TRUE) {
+      continue;
+    }
+
+    $entity_type = \Drupal::service('par_data.manager')->getParEntityType('par_data_organisation');
+    $table_mapping = new \Drupal\Core\Entity\Sql\DefaultTableMapping($entity_type, [$storage]);
+    $table_names = $table_mapping->getDedicatedTableNames($storage);
+
+    foreach ($table_names as $table) {
+      $query = $db->update($table)
+        ->fields(['bundle' => 'organisation'])
+        ->execute();
+    }
+  };
+}
+
+/**
+ * Resave all users.
+ */
+function par_data_update_8008() {
+  // Change the bundle type.
+  foreach (\Drupal\user\Entity\User::loadMultiple() as $entity) {
+    // Remove the old deprecated roles.
+    if ($entity->hasRole('par_coordinator')) {
+      $entity->removeRole('par_coordinator');
+    }
+    if ($entity->hasRole('par_business')) {
+      $entity->removeRole('par_business');
+    }
+    // Re-save the entity.
+    $entity->save();
+  }
+}
