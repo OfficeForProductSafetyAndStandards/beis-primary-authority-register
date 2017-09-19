@@ -37,13 +37,7 @@ class ParEnforcementAddActionForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues();
 
-    $reg_function_bundle = $this->getParDataManager()->getParBundleEntity('par_data_regulatory_function');
-    $reg_functions_entities = $par_data_partnership->getRegulatoryFunction();
-    $reg_function_names = array();
-
-    foreach ($reg_functions_entities as $key => $current_reg_function_obj) {
-      $reg_function_names[] =  $current_reg_function_obj->get('function_name')->getString();
-    }
+    $reg_function_names = $par_data_partnership->getPartnershipRegulatoryFunctionNames();
 
     $form['title_of_action'] = [
       '#title' => $this->t('Title of action'),
