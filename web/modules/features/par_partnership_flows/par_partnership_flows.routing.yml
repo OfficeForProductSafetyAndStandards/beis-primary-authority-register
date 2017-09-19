@@ -357,6 +357,30 @@ par_partnership_flows.business_size:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+par_partnership_flows.member_upload:
+  path: '/partnership/{par_data_partnership}/members-upload'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberUploadForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberUploadForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.member_upload_confirm:
+  path: '/partnership/{par_data_partnership}/members-upload/confirm'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberUploadForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberUploadForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
 par_partnership_flows.advice_view:
   path: '/partnership/{par_data_partnership}/advice/view'
   defaults:
@@ -381,6 +405,8 @@ par_partnership_flows.inspection_plan_view:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+
+# PAR Data Partnership Application Journey
 par_partnership_flows.partnership_application_start:
   path: '/partnership/new'
   defaults:

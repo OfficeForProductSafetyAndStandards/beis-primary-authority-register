@@ -286,7 +286,6 @@ class ParDataOrganisation extends ParDataEntity {
       ->setLabel(t('Coordinator Number'))
       ->setDescription(t('Number of eligible coordinators.'))
       ->addConstraint('par_required')
-      ->setRequired(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
