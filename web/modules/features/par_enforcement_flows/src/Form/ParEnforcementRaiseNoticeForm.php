@@ -138,7 +138,7 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
         '#suffix' => '</div>',
       ];
 
-    $legal_entity_link = $this->getFlow()->getPrevLink()->setText('Add a legal entity')->toString();
+    $legal_entity_link = $this->getFlow()->getPrevLink('add_legal')->setText('Add a legal entity')->toString();
     $form['legal_select_link'] = [
       '#type' => 'markup',
       '#markup' => t('@link', ['@link' => $legal_entity_link]),

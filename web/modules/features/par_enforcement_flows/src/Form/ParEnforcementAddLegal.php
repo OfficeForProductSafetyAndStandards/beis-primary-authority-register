@@ -4,15 +4,12 @@ namespace Drupal\par_enforcement_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_flows\Form\ParBaseForm;
-
-use Drupal\file\Entity\File;
 
 /**
  * The enforcement action document upload form.
  */
-class ParEnforcementActionFileUploadForm extends ParBaseForm {
+class ParEnforcementAddLegal extends ParBaseForm {
 
   /**
    * @var string
@@ -24,38 +21,25 @@ class ParEnforcementActionFileUploadForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'par_enforcement_notice_action_upload_file';
+    return 'par_enforcement_add_legal';
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataEnforcementAction $enforcement_action = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
-    $enforcement_action_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('par_data_enforcement_action', 'document');
-    $field_definition = $enforcement_action_fields['document'];
-    $file_extensions = $field_definition->getSetting('file_extensions');
-
-    // Multiple file field.
-    $form['files'] = [
-      '#type' => 'managed_file',
-      '#title' => t('Upload file(s)'),
-      '#description' => t('Use Ctrl or cmd to select multiple files'),
-      '#upload_location' => 's3private://documents/enforcement_action/',
-      '#multiple' => TRUE,
+    $form['alternative_legal_entity'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Alternative legal entity'),
+      '#default_value' => $this->getDefaultValues("alternative_legal_entity"),
       '#required' => TRUE,
-      '#default_value' => $this->getDefaultValues("files"),
-      '#upload_validators' => [
-        'file_validate_extensions' => [
-          0 => $file_extensions
-        ]
-      ]
     ];
 
     $form['next'] = [
       '#type' => 'submit',
-      '#value' => t('Upload'),
-      '#name' => 'upload',
+      '#value' => t('Continue'),
+      '#name' => 'add_legal',
     ];
 
     // Go back to Action form.
