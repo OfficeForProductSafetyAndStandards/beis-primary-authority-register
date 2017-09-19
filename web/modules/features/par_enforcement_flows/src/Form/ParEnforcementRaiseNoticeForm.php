@@ -152,18 +152,19 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
       '#default_value' => $this->getDefaultValues("action_summmary_data"),
      ];
 
-    $form['action_add'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    $form['action_add']['action_heading']  = [
+    $form['action_heading']  = [
       '#type' => 'markup',
       '#markup' => $this->t('Enforcement action(s)'),
       '#prefix' => '<h3>',
       '#suffix' => '</h3>',
+    ];
+
+    $form['action_add'] = [
+      '#type' => 'fieldset',
+      '#attributes' => ['class' => 'form-group'],
+      '#description' => $this->t('If you are proposing more then one enforcement action, you should add these as separate actions using the link below'),
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
     ];
 
     $add_action_link = $this->getFlow()->getNextLink()->setText('Add an enforcement action')->toString();
@@ -171,26 +172,7 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
       '#type' => 'markup',
       '#markup' => t('@link', ['@link' => $add_action_link]),
       '#prefix' => '<div>',
-      '#suffix' => '</div></br>',
-    ];
-
-    $form['action'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    $form['action']['action_heading']  = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Enforcement action'),
-      '#prefix' => '<h3>',
-      '#suffix' => '</h3>',
-    ];
-
-    $form['action']['text'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('If you are proposing more then one enforcement action, you should add these as separate actions using the link below'),
+      '#suffix' => '</div>',
     ];
 
     $form['enforcement_type'] = [
