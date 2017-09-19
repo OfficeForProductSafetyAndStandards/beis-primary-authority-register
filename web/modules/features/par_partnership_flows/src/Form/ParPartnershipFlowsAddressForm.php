@@ -61,11 +61,11 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       $address = $par_data_premises->get('address')->first();
 
         // Address.
-      $this->loadDataValue("address_postal_code", $address->get('postal_code')->getString());
-      $this->loadDataValue("address_address_line1", $address->get('address_line1')->getString());
-      $this->loadDataValue("address_address_line2", $address->get('address_line2')->getString());
-      $this->loadDataValue("address_locality", $address->get('locality')->getString());
-      $this->loadDataValue("address_administrative_area", $address->get('administrative_area')->getString());
+      $this->loadDataValue("postcode", $address->get('postal_code')->getString());
+      $this->loadDataValue("address_line1", $address->get('address_line1')->getString());
+      $this->loadDataValue("address_line2", $address->get('address_line2')->getString());
+      $this->loadDataValue("town_city", $address->get('locality')->getString());
+      $this->loadDataValue("county", $address->get('administrative_area')->getString());
       $this->loadDataValue("country", $par_data_premises->get('nation')->getString());
       $this->loadDataValue("uprn", $par_data_premises->get('uprn')->getString());
       $this->loadDataValue('premises_id', $par_data_premises->id());
@@ -88,25 +88,25 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
     $form['address_line1'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Address Line 1'),
-      '#default_value' => $this->getDefaultValues("address_address_line1"),
+      '#default_value' => $this->getDefaultValues("address_line1"),
     ];
 
     $form['address_line2'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Address Line 2'),
-      '#default_value' => $this->getDefaultValues("address_address_line2"),
+      '#default_value' => $this->getDefaultValues("address_line2"),
     ];
 
     $form['town_city'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Town / City'),
-      '#default_value' => $this->getDefaultValues("address_locality"),
+      '#default_value' => $this->getDefaultValues("town_city"),
     ];
 
     $form['county'] = [
       '#type' => 'textfield',
       '#title' => $this->t('County'),
-      '#default_value' => $this->getDefaultValues("address_administrative_area"),
+      '#default_value' => $this->getDefaultValues("county"),
     ];
 
     $form['country'] = [
@@ -119,7 +119,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
     $form['postcode'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Postcode'),
-      '#default_value' => $this->getDefaultValues("address_postal_code"),
+      '#default_value' => $this->getDefaultValues("postcode"),
     ];
 
     $form['country_code'] = [
@@ -128,16 +128,20 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       '#default_value' => 'GB',
     ];
 
-    $form['save'] = [
+    $form['actions']['save'] = [
       '#type' => 'submit',
       '#name' => 'save',
-      '#value' => t('Save'),
+      '#value' => $this->t($par_data_partnership ? 'Save' : 'Continue'),
     ];
 
-    $cancel_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
-    $form['cancel'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $cancel_link]),
+    $form['actions']['cancel'] = [
+      '#type' => 'submit',
+      '#name' => 'cancel',
+      '#value' => $this->t('Cancel'),
+      '#submit' => ['::cancelForm'],
+      '#attributes' => [
+        'class' => ['btn-link']
+      ],
     ];
 
     // Make sure to add the person cacheability data to this form.
