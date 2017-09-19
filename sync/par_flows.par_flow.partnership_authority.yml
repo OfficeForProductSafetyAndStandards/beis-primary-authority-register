@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: axBIoV4GOuB4Y-BMAx2qZS_I3gv7wqEDYv-w1PHsWHQ
+  default_config_hash: 5IfSzFGssnqd1NML7OsFGR5vGrVimJ4VIsKbOMmN4yw
 id: partnership_authority
 label: 'Authority Partnership Flow'
 description: ''
@@ -45,7 +45,7 @@ steps:
     route: par_partnership_flows.advice_list
     redirect:
       advice_upload: 7
-      edit: 9
+      edit: 10
       next: 1
       cancel: 1
   7:
