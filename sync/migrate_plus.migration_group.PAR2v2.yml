@@ -1,0 +1,18 @@
+uuid: 3bc3259e-ae63-4eaf-bf26-545a2eae3d5f
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - par_migration
+      - par_migration_scripts
+_core:
+  default_config_hash: UZYipl46iDANfvYwBbcAGwzeLekwmCZe8lnf05BzoGk
+id: PAR2v2
+label: 'PAR2v2 migrations'
+description: 'PAR2 to PAR3 migrations v2.'
+source_type: 'MS-SQL Server'
+module: null
+shared_configuration:
+  source:
+    key: par2v2
