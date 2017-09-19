@@ -98,7 +98,7 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setRequired(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
-        'max_length' => 500,
+        'max_length' => 1000,
         'text_processing' => 0,
       ])
       ->setDefaultValue('')
