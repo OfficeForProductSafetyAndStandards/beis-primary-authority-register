@@ -33,7 +33,7 @@ steps:
     form_id: par_enforcement_notice_raise
     redirect:
       add_enforcement_action: 6
-      select_legal_form: 10
+      add_legal: 10
       next: 7
       cancel: 1
   6:
@@ -51,8 +51,11 @@ steps:
   9:
     route: view.partnership_search.enforcment_flow_search_partnerships
   10:
-    route: par_enforcement_flows.legal_select
-    form_id: par_legal_select
+    route: par_enforcement_flows.add_legal
+    form_id: par_enforcement_add_legal
+    redirect:
+      add_legal: 5
+      cancel: 5
   11:
     route: par_enforcement_flows.upload_action_file
     form_id: par_enforcement_notice_action_upload_file
