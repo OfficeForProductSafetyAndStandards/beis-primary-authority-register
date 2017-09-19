@@ -6,8 +6,8 @@ dependencies:
       - par_migration
       - par_migration_scripts
 id: PAR2v2
-label: 'PAR2v2 migrations'
-description: 'PAR2 to PAR3 migrations v2.'
+label: 'PAR2 migrations v2'
+description: 'PAR2 to PAR3 migrations second run.'
 source_type: 'MS-SQL Server'
 module: null
 shared_configuration:
