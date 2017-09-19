@@ -3,7 +3,9 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\file\FileInterface;
+use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\file\Entity\File;
@@ -15,12 +17,70 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
+  use StringTranslationTrait;
+
+  /**
+   * The column mappings in the CSV.
+   */
+  protected $columns = [
+    'par_data_premises' => [
+      'address' => [
+        'country_code' => 'GB',
+        'address_line1' => 3,
+        'address_line2' => 4,
+        'locality' => 6,
+        'postal_code' => 8,
+      ],
+      'nation' => 7,
+    ],
+    'par_data_person' => [
+      'first_name' => 10,
+      'last_name' => 11,
+      'work_phone' => 12,
+      'mobile_phone' => 13,
+      'email' => 14,
+    ],
+    'par_data_legal_entity' => [
+      'registered_name' => 17,
+      'legal_entity_type' => 18,
+      'registered_number' => 19,
+    ],
+    'par_data_organisation' => [
+      'organisation_name' => 2,
+      'nation' => 7,
+    ],
+    'par_data_coordinated_business' => [
+      'membership_date' => [
+        'value' => 15,
+        'end_value' => 16,
+      ],
+    ]
+  ];
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
     return 'par_partnership_member_upload_confirm';
+  }
+
+  protected function getColumns() {
+    return $this->columns;
+  }
+
+  public function getColumn($entity_type, $field_name, $property = NULL) {
+    $columns = $this->getColumns();
+
+    if ($property) {
+      return isset($columns[$entity_type][$field_name][$property]) ? $columns[$entity_type][$field_name][$property] -1 : NULL;
+    }
+    else {
+      return isset($columns[$entity_type][$field_name]) ? $columns[$entity_type][$field_name] -1 : NULL;
+    }
+  }
+
+  public function getRowValue($row, $column) {
+    return isset($row[$column]) ? $row[$column] : '';
   }
 
   /**
@@ -38,10 +98,6 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
       // to something other than default to avoid conflicts
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()}");
-
-      // Test
-      $members = $this->getDefaultValues("coordinated_members");
-      var_dump(count($members));
     }
   }
 
@@ -51,23 +107,80 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
-    // List all the members.
-    $form['members'] = [
-      '#type' => 'fieldset',
-      '#tree' => TRUE,
-      '#description' => 'Below is a list of all the members that will be added to this partnership.',
-    ];
-    foreach ($this->getDefaultValues("coordinated_members") as $i => $member) {
-      $form['members'][$i] = [
+    $members = $this->getDefaultValues("coordinated_members", [], 'par_partnership_member_upload');
+    if (!empty($members)) {
+      $count = count($members);
+      $form['member_summary'] = [
         '#type' => 'markup',
-        '#description' => 'Member: ' . $member[1],
+        '#markup' => $this->formatPlural($count,
+          '%count member has been found and is ready to be imported.',
+          '%count members have been found and are ready to be imported.',
+          ['%count' => $count]
+        ),
+        '#predix' => '<p>',
+        '#suffix' => '</p>',
+      ];
+
+      $form['members'] = [
+        '#type' => 'fieldset',
+        '#tree' => TRUE,
+        '#title' => 'Below is a list of members that require your attention.',
+      ];
+
+      // Process each row so that we can de-dupe and validate each.
+      foreach ($members as $i => $member) {
+        $row = $members[$i];
+        $name = $this->getRowValue($row, $this->getColumn('par_data_organisation', 'organisation_name'));
+
+        $properties = [
+          'trading_name' => [
+            'trading_name' => $name,
+          ],
+          'organisation_name' => [
+            'organisation_name' => $name,
+          ],
+        ];
+
+        $existing_options = [];
+        foreach ($properties as $group => $conditions) {
+          $existing_options += \Drupal::entityManager()
+            ->getStorage('par_data_organisation')
+            ->loadByProperties($conditions);
+        }
+
+        $viewBuilder = $this->getParDataManager()->getViewBuilder('par_data_organisation');
+
+        $radio_options = [];
+        foreach($existing_options as $option) {
+          $option_view = $viewBuilder->view($option, 'title');
+
+          $radio_options[$option->id()] = $this->renderMarkupField($option_view)['#markup'];
+        }
+
+        if (count($radio_options) >= 1) {
+          $form['members'][$i]['existing_organisation'] = [
+            '#type' => 'radios',
+            '#title' => t('A match was found for @name', ['@name' => $name]),
+            '#description' => t('Did you mean any of these organisations?'),
+            '#options' => $radio_options + ['new' => "Add as a new organisation."],
+            '#required' => TRUE,
+          ];
+        }
+      }
+    }
+    else {
+      $form['members']['summary'] = [
+        '#type' => 'markup',
+        '#description' => 'No members could be found in your CSV, please check the format is correct or contact the helpdesk for further assistance.',
       ];
     }
 
-    $form['next'] = [
+    // @TODO Automatically submit the form if there are no members that require attention.
+
+    $form['save'] = [
       '#type' => 'submit',
-      '#name' => 'next',
-      '#value' => t('Upload'),
+      '#name' => 'save',
+      '#value' => t('Save'),
     ];
 
     // Go back to Advice Documents list.
@@ -83,26 +196,72 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
+
+    $require_attention = $this->getTempDataValue(["members"]);
 
     // Get the advice entity from the URL.
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
 
-    if ($csv = $this->getTempDataValue('coordinated_members')) {
-      $rows = [];
+    $members = $this->getTempDataValue("coordinated_members", 'par_partnership_member_upload');
+    foreach ($members as $i => $member) {
+      $existing = isset($require_attention[$i]['existing_organisation']) && $require_attention[$i]['existing_organisation'] !== 'new' ?
+        $require_attention[$i]['existing_organisation'] : FALSE;
 
-      // Load the submitted files and process the data.
-      $files = File::loadMultiple($csv);
-      foreach ($files as $file) {
-        $rows = $this->getParDataManager()->processCsvFile($file, $rows);
-      }
+      // @TODO Add all this processing to a queue.
+      $child_entities = ['par_data_premises', 'par_data_person', 'par_data_legal_entity'];
+      $entity = ParDataLegalEntity::create([
+        'type' => 'legal_entity',
+        'uid' => 1,
+      ]);
+      foreach ($child_entities as $entity_type => $entity_bundle) {
+        foreach ($this->getColumns()[$entity_type] as $field => $column) {
+          // Get the zero-based column index.
+          $column = $this->getColumn($entity_type, $field);
+          $value = $this->getRowValue($member, $column);
 
-      // Save the data in the User's temp private store for later processing.
-      if (!empty($rows)) {
-        $this->setTempDataValue('coordinated_members', $rows);
+          // Fields with limited values may need to be converted to their stored value.
+          $entity_bundle = $this->getParDataManager()->getParBundleEntity($entity_type);
+          if ($allowed_values = $entity_bundle->getAllowedValues($field)) {
+            $search_key = array_search($value, $allowed_values, TRUE);
+            if ($search_key) {
+              $value = $search_key;
+            }
+          }
+
+          $entity->set($field, $this->getRowValue($member, $column));
+        }
       }
     }
+
+    die;
+  }
+
+  public function addRowToQueue($par_data_partnership, $member, $existing) {
+    // Generate the appropriate data array for passing to the queue.
+    $data = [
+      'partnership' => $par_data_partnership,
+      'row' => $member,
+      'existing' => $existing,
+    ];
+
+    try {
+      $queue = \Drupal::queue('par_partnership_add_members', TRUE);
+      $queue->createQueue();
+      $queue->createItem($data);
+    } catch (\Exception $e) {
+      // Log failed result.
+    }
+
+    drupal_set_message(t('The members are being processed, please check back shortly to see the membership list updated.'), 'status');
   }
 
 }

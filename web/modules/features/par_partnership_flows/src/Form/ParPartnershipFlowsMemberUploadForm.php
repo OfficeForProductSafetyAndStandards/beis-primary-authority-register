@@ -24,13 +24,6 @@ class ParPartnershipFlowsMemberUploadForm extends ParBaseForm {
   }
 
   /**
-   * The number of fields allowed in the CSV.
-   */
-  public function getNumberOfColumns() {
-    return 17;
-  }
-
-  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
@@ -45,10 +38,6 @@ class ParPartnershipFlowsMemberUploadForm extends ParBaseForm {
       // to something other than default to avoid conflicts
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()}");
-
-      // Test
-      $members = $this->getDefaultValues("coordinated_members");
-      var_dump(count($members));
     }
   }
 

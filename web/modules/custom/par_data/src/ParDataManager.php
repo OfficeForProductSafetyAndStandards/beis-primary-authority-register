@@ -508,31 +508,28 @@ class ParDataManager implements ParDataManagerInterface {
 
   /**
    * Process a CSV file
+   *
    * @param FileInterface $file
+   * @param array $rows
+   *   An array to add processed rows to.
+   * @param boolean $skip
+   *   Whether to skip the headers.
+   *
+   * @return array
+   *   An array of row data.
    */
-  public function processCsvFile(FileInterface $file, $rows = []) {
+  public function processCsvFile(FileInterface $file, $rows = [], $skip = TRUE) {
     if (($handle = fopen($file->getFileUri(), "r")) !== FALSE) {
       while (($data = fgetcsv($handle)) !== FALSE) {
-        if ($data !== NULL) {
+        if ($data !== NULL && !$skip) {
           $rows[] = $data;
         }
+        $skip = FALSE;
       }
       fclose($handle);
     }
 
     return $rows;
-  }
-
-  public function processCsvRows(array $rows = [], $queue_worker) {
-    foreach ($rows as $row) {
-      try {
-        $queue = \Drupal::queue($queue_worker);
-        $queue->createQueue();
-        $queue->createItem($row);
-      } catch (\Exception $e) {
-        // Log failed result.
-      }
-    }
   }
 
   /**
