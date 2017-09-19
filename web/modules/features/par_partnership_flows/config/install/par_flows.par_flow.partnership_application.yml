@@ -42,13 +42,13 @@ steps:
       cancel: 1
   7:
     route: par_partnership_flows.partnership_application_organisation_address
-    form_id: par_partnership_application_organisation_address
+    form_id: par_partnership_address
     redirect:
       save: 8
       cancel: 1
   8:
     route: par_partnership_flows.partnership_application_organisation_contact
-    form_id: par_partnership_application_organisation_contact
+    form_id: par_partnership_contact
     redirect:
       save: 9
       cancel: 1
