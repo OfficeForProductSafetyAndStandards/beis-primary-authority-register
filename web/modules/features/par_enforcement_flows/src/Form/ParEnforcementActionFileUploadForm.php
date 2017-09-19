@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_flow_transition_partnership_details\Form;
+namespace Drupal\par_enforcement_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
