@@ -30,6 +30,12 @@ class ParEnforcementNotice extends SqlBase {
   protected $people = [];
 
   /**
+   * @var array
+   *   A cached array of enforcement actions keyed by enforcement notice ID.
+   */
+  protected $actions = [];
+
+  /**
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state) {
@@ -59,13 +65,12 @@ class ParEnforcementNotice extends SqlBase {
       ->fields('en', [
         'enforcement_notice_id',
         'enforcing_authority_id',
-        'primary_authority_id',
+        'partnership_id',
         'legal_entity_id',
         'notice_date',
         'notice_type',
         'summary',
-      ])
-      ->range(0,1000);
+      ]);
   }
 
   protected function collectPeople() {
@@ -78,7 +83,7 @@ class ParEnforcementNotice extends SqlBase {
       ->execute();
 
     while ($row = $result->fetchAssoc()) {
-      $this->people[$row['partnership_id']][$row['person_id']] = [
+      $this->people[$row['enforcement_notice_id']][$row['person_id']] = [
         'target_id' => (int) $row['person_id'],
       ];
     }
@@ -91,7 +96,7 @@ class ParEnforcementNotice extends SqlBase {
     $fields = [
       'enforcement_notice_id' => $this->t('Enforcement Notice ID'),
       'enforcing_authority_id' => $this->t('Enforcing Authority ID'),
-      'primary_authority_id' => $this->t('Primary Authority ID'),
+      'partnership_id' => $this->t('Partnership ID'),
       'legal_entity_id' => $this->t('Legal Entity ID'),
       'notice_date' => $this->t('Notice Date'),
       'notice_type' => $this->t('Notice Type'),
@@ -120,7 +125,7 @@ class ParEnforcementNotice extends SqlBase {
    * @throws \Exception
    */
   function prepareRow(Row $row) {
-    $enforcement_notice = $row->getSourceProperty('authority_id');
+    $enforcement_notice = $row->getSourceProperty('enforcement_notice_id');
 
     $people = array_key_exists($enforcement_notice, $this->people) ? $this->people[$enforcement_notice] : [];
     $row->setSourceProperty('people', $people);

@@ -1,0 +1,48 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - par_migration
+      - par_migration_scripts
+id: par_migration_enforcement_action_documents
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - MS-SQL
+migration_group: PAR2
+label: 'PAR Migration of enforcement action documents'
+source:
+  plugin: par_migration_enforcement_action_documents
+  constants:
+    destination_base_path: 's3private://documents/enforcement_action'
+process:
+  uid:
+    plugin: default_value
+    default_value: 1
+  filename:
+    -
+      plugin: concat
+      delimiter: .
+      source:
+        - document_id
+        - document_name
+    -
+      plugin: trim_characters
+      characters: .
+  destination_full_path:
+    -
+      plugin: concat
+      delimiter: /
+      source:
+        - constants/destination_base_path
+        - '@filename'
+  uri:
+    plugin: file_blob
+    source:
+      - '@destination_full_path'
+      - document_content
+destination:
+  plugin: 'entity:file'
+migration_dependencies: {  }
