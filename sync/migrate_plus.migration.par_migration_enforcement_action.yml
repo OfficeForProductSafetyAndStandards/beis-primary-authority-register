@@ -7,7 +7,7 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: 1boEfclS01uqCrydtraW8nCH8dr7qRdgPy20LqO4RQU
+  default_config_hash: 3FwgVmDScYhKFqYIJy7RjJ8KcHRIjdi_aj6FDK1lCzw
 id: par_migration_enforcement_action
 class: null
 field_plugin_method: null
@@ -37,11 +37,14 @@ process:
   enforcement_action_status:
     plugin: static_map
     source: ea_status
-    default_value: approved
+    default_value: null
     map:
-      Approved: approved
-      Blocked: blocked
-      Referred: referred
+      Deferred: deferred
+      'No Further Action': no_action
+      'Ready To Serve': ready
+      Served: served
+      Unknown: null
+      N/A: null
   enforcement_action_notes:
     plugin: skip_on_empty
     method: process
@@ -68,19 +71,10 @@ process:
     -
       plugin: skip_on_empty
       method: process
-  field_blocked_advice:
-    -
-      plugin: migration_lookup
-      migration: par_migration_advice
-      no_stub: true
-      source:
-        advice_id: advice_id
-    -
-      plugin: skip_on_empty
-      method: process
 destination:
   plugin: 'entity:par_data_enforcement_action'
 migration_dependencies:
   required:
     - par_migration_regulatory_functions
     - par_migration_advice
+    - par_migration_enforcement_action_documents

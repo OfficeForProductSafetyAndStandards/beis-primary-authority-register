@@ -13,6 +13,8 @@ dependencies:
   module:
     - par_data
     - text
+_core:
+  default_config_hash: JdpHYvghD0IxKz-taCwLX9X73yslJSOS20NQa-fgN4E
 id: par_data_organisation.organisation.full
 targetEntityType: par_data_organisation
 bundle: organisation
