@@ -33,14 +33,6 @@ function par_roles_user_presave($account) {
   if ($par_data_manager->isMemberOfOrganisation($account) && !$account->hasRole('par_organisation')) {
     $account->addRole('par_organisation');
   }
-  // {@deprecated}
-  if ($par_data_manager->isMemberOfCoordinator($account) && !$account->hasRole('par_coordinator')) {
-    $account->addRole('par_coordinator');
-  }
-  // {@deprecated}
-  if ($par_data_manager->isMemberOfBusiness($account) && !$account->hasRole('par_business')) {
-    $account->addRole('par_business');
-  }
 }
 
 function par_roles_user_insert($account) {
