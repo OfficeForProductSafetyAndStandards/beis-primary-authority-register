@@ -56,6 +56,9 @@ trait ParDisplayTrait {
 
       // Get all of the available entity entity operation links.
       $elements[$delta] += $this->displayEntityOperationLinks($entity, $field, $delta, $operations);
+      if ($single) {
+        break;
+      }
     }
 
     return $elements;
@@ -84,6 +87,9 @@ trait ParDisplayTrait {
 
       // Get all of the available entity entity operation links.
       $elements[$delta] += $this->displayEntityOperationLinks($entity, $field, $delta, $operations);
+      if ($single) {
+        break;
+      }
     }
 
     return $elements;
