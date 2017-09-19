@@ -46,3 +46,10 @@ function par_data_update_8004() {
 function par_data_update_8005() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
+
+/**
+ * Update fields based on enforcement migration.
+ */
+function par_data_update_8006() {
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
