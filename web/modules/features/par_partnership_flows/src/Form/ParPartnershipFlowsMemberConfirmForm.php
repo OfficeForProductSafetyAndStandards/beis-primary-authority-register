@@ -12,7 +12,7 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 /**
  * The advice document upload form.
  */
-class ParPartnershipFlowsMemberUploadForm extends ParBaseForm {
+class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
@@ -20,14 +20,7 @@ class ParPartnershipFlowsMemberUploadForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'par_partnership_member_upload';
-  }
-
-  /**
-   * The number of fields allowed in the CSV.
-   */
-  public function getNumberOfColumns() {
-    return 17;
+    return 'par_partnership_member_upload_confirm';
   }
 
   /**
@@ -58,21 +51,18 @@ class ParPartnershipFlowsMemberUploadForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
-    // Multiple file field.
-    $form['csv'] = [
-      '#type' => 'managed_file',
-      '#title' => t('Upload file(s)'),
-      '#description' => t('Upload your CSV file, be sure to make sure the information is accurate so that it can all be processed'),
-      '#upload_location' => 's3private://member-csv/',
-      '#multiple' => FALSE,
-      '#required' => TRUE,
-      '#default_value' => $this->getDefaultValues("csv"),
-      '#upload_validators' => [
-        'file_validate_extensions' => [
-          0 => 'csv',
-        ]
-      ]
+    // List all the members.
+    $form['members'] = [
+      '#type' => 'fieldset',
+      '#tree' => TRUE,
+      '#description' => 'Below is a list of all the members that will be added to this partnership.',
     ];
+    foreach ($this->getDefaultValues("coordinated_members") as $i => $member) {
+      $form['members'][$i] = [
+        '#type' => 'markup',
+        '#description' => 'Member: ' . $member[1],
+      ];
+    }
 
     $form['next'] = [
       '#type' => 'submit',
@@ -99,7 +89,7 @@ class ParPartnershipFlowsMemberUploadForm extends ParBaseForm {
     // Get the advice entity from the URL.
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
 
-    if ($csv = $this->getTempDataValue('csv')) {
+    if ($csv = $this->getTempDataValue('coordinated_members')) {
       $rows = [];
 
       // Load the submitted files and process the data.

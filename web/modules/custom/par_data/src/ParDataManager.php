@@ -12,6 +12,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\file\FileInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\user\UserInterface;
 
@@ -503,6 +504,35 @@ class ParDataManager implements ParDataManagerInterface {
     }
 
     return $options;
+  }
+
+  /**
+   * Process a CSV file
+   * @param FileInterface $file
+   */
+  public function processCsvFile(FileInterface $file, $rows = []) {
+    if (($handle = fopen($file->getFileUri(), "r")) !== FALSE) {
+      while (($data = fgetcsv($handle)) !== FALSE) {
+        if ($data !== NULL) {
+          $rows[] = $data;
+        }
+      }
+      fclose($handle);
+    }
+
+    return $rows;
+  }
+
+  public function processCsvRows(array $rows = [], $queue_worker) {
+    foreach ($rows as $row) {
+      try {
+        $queue = \Drupal::queue($queue_worker);
+        $queue->createQueue();
+        $queue->createItem($row);
+      } catch (\Exception $e) {
+        // Log failed result.
+      }
+    }
   }
 
   /**
