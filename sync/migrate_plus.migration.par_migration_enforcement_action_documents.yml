@@ -7,14 +7,14 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: cCQi5_P0f91UxD_SEhNLe2Apb5k25qhuFBEjWzZxYv8
+  default_config_hash: AV9p8aK4-RsI_2KIg-Zkjr-kURpLYQNj7lxB_VZQ-Nc
 id: par_migration_enforcement_action_documents
 class: null
 field_plugin_method: null
 cck_plugin_method: null
 migration_tags:
   - MS-SQL
-migration_group: PAR2
+migration_group: PAR2v2
 label: 'PAR Migration of enforcement action documents'
 source:
   plugin: par_migration_enforcement_action_documents

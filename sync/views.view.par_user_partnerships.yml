@@ -442,6 +442,7 @@ display:
               par_authority: '0'
               par_business: '0'
               par_coordinator: '0'
+              par_organisation: '0'
               par_helpdesk: '0'
           is_grouped: false
           group_info:
