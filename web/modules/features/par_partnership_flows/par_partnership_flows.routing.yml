@@ -442,13 +442,42 @@ par_partnership_flows.partnership_application_organisation_search_confirm:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsOrganisationSuggestionForm::titleCallback'
   requirements:
     _permission: 'manage my authorities'
-par_partnership_flows.partnership_application_organisation_search_add:
-  path: '/partnership/new/organisation/add'
+par_partnership_flows.partnership_application_partnership_about:
+  path: '/partnership/new/about'
   defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationAddOrganisationForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationAddOrganisationForm::titleCallback'
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutForm::titleCallback'
   requirements:
     _permission: 'manage my authorities'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.partnership_application_organisation_address:
+  path: '/partnership/new/organisation/address'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAddressForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAddressForm::titleCallback'
+  requirements:
+    _permission: 'manage my authorities'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.partnership_application_organisation_contact:
+  path: '/partnership/new/organisation/contact'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::titleCallback'
+  requirements:
+    _permission: 'manage my authorities'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
 par_partnership_flows.partnership_application_details:
   path: '/partnership/new/review'
   defaults:
