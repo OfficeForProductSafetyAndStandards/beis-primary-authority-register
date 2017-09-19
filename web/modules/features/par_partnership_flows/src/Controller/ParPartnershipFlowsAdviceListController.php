@@ -82,6 +82,17 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
       $this->addCacheableDependency(current($advice->retrieveEntityValue('document')));
     }
 
+    $build['upload'] = [
+      '#type' => 'markup',
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlow()->getNextLink('advice_upload', $this->getRouteParams())
+          ->setText('Upload a document')
+          ->toString(),
+      ]),
+    ];
+
     $build['save'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
