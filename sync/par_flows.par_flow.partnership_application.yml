@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: 06Sx79OH-Q6sfgHhjDCLAlYbNEdGDC6fqRHrov1Eh70
+  default_config_hash: 5BG5mnAGhUGiCUE3C5LttftRjeCR1ocB7mG3xUkILz0
 id: partnership_application
 label: 'Partnership Application Flow'
 description: ''
@@ -27,26 +27,38 @@ steps:
       save: 4
       cancel: 1
   4:
-    route: par_partnership_flows.partnership_application_organisation_search
-    form_id: par_partnership_application_organisation_search
+    route: par_partnership_flows.partnership_application_partnership_about
+    form_id: par_partnership_about
     redirect:
       save: 5
       cancel: 1
   5:
-    route: par_partnership_flows.partnership_application_organisation_search_confirm
-    form_id: par_partnership_organisation_suggestion
+    route: par_partnership_flows.partnership_application_organisation_search
+    form_id: par_partnership_application_organisation_search
     redirect:
       save: 6
       cancel: 1
   6:
-    route: par_partnership_flows.partnership_application_organisation_search_add
-    form_id: par_partnership_application_organisation_add
+    route: par_partnership_flows.partnership_application_organisation_search_confirm
+    form_id: par_partnership_organisation_suggestion
     redirect:
       save: 7
       cancel: 1
   7:
+    route: par_partnership_flows.partnership_application_organisation_address
+    form_id: par_partnership_address
+    redirect:
+      save: 8
+      cancel: 1
+  8:
+    route: par_partnership_flows.partnership_application_organisation_contact
+    form_id: par_partnership_contact
+    redirect:
+      save: 9
+      cancel: 1
+  9:
     route: par_partnership_flows.partnership_application_details
     form_id: par_partnership_application_details
     redirect:
-      save: 7
+      save: 9
       cancel: 1

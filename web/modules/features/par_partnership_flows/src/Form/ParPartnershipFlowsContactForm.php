@@ -145,16 +145,20 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       '#description' => 'Add any additional notes about how best to contact this person.',
     ];
 
-    $form['save'] = [
+    $form['actions']['save'] = [
       '#type' => 'submit',
       '#name' => 'save',
-      '#value' => t('Save'),
+      '#value' => $this->t($par_data_partnership ? 'Save' : 'Continue'),
     ];
 
-    $cancel_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
-    $form['cancel'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $cancel_link]),
+    $form['actions']['cancel'] = [
+      '#type' => 'submit',
+      '#name' => 'cancel',
+      '#value' => $this->t('Cancel'),
+      '#submit' => ['::cancelForm'],
+      '#attributes' => [
+        'class' => ['btn-link']
+      ],
     ];
 
     // Make sure to add the person cacheability data to this form.
