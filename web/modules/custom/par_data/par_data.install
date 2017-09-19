@@ -46,8 +46,6 @@ function par_data_update_8004() {
 function par_data_update_8005() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
-<<<<<<< HEAD
-=======
 
 /**
  * Update fields based on enforcement migration.
@@ -108,4 +106,3 @@ function par_data_update_8008() {
     $entity->save();
   }
 }
->>>>>>> 994e7505... PAR-301: Added entity update scripts for users and organisations.
