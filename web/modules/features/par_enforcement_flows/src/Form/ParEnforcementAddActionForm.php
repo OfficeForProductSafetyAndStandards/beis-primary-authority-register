@@ -62,7 +62,7 @@ class ParEnforcementAddActionForm extends ParBaseForm {
     $add_file_upload_link = $this->getFlow()->getNextLink('file_upload')->setText('Attach file')->toString();
     $form['add_upload_files'] = [
       '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $add_file_upload_link]) . ' (document, photo or video)',
+      '#markup' => t('@link', ['@link' => $add_file_upload_link]) . ' (document or photo)',
       '#prefix' => '<div>',
       '#suffix' => '</div></br>',
     ];
