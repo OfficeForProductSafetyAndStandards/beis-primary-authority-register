@@ -54,13 +54,8 @@ class ParEnforcementAddActionForm extends ParBaseForm {
     $form['regulatory_functions'] = [
       '#type' => 'radios',
       '#title' => $this->t('Regulatory function to which this relates'),
-<<<<<<< Updated upstream
       '#options' => $reg_function_names,
       '#default_value' => $this->getDefaultValues('function_name'),
-=======
-      '#options' => $reg_function_bundle->getAllowedValues('function_name'),
-      '#default_value' => $this->getDefaultValues('regulatory_functions'),
->>>>>>> Stashed changes
       '#required' => TRUE,
     ];
 
