@@ -372,8 +372,8 @@ par_partnership_flows.member_upload:
 par_partnership_flows.member_upload_confirm:
   path: '/partnership/{par_data_partnership}/members-upload/confirm'
   defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberUploadForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberUploadForm::titleCallback'
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberConfirmForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberConfirmForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     par_data_partnership: \d+
