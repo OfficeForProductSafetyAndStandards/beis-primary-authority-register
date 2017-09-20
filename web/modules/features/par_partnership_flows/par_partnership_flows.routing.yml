@@ -15,7 +15,7 @@ par_partnership_flows.about_partnership:
   path: '/partnership/{par_data_partnership}/about'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutForm::titleCallback'
   requirements:
     _permission: 'manage my authorities'
     par_data_partnership: \d+
@@ -27,7 +27,7 @@ par_partnership_flows.authority_contact_edit:
   path: '/partnership/{par_data_partnership}/authority/contact/{par_data_person}'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::titleCallback'
   requirements:
     _permission: 'manage my authorities'
     par_data_partnership: \d+
@@ -45,7 +45,7 @@ par_partnership_flows.authority_contact_add:
   path: '/partnership/{par_data_partnership}/authority/contact/add'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::titleCallback'
   requirements:
     _permission: 'manage my authorities'
     par_data_partnership: \d+
@@ -57,7 +57,7 @@ par_partnership_flows.authority_contact_add_confirm:
   path: '/partnership/{par_data_partnership}/authority/contact/add/confirm'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactSuggestionForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactSuggestionForm::titleCallback'
   requirements:
     _permission: 'manage my authorities'
     par_data_partnership: \d+
@@ -69,7 +69,7 @@ par_partnership_flows.advice_list:
   path: '/partnership/{par_data_partnership}/advice/list'
   defaults:
     _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::content'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::titleCallback'
   requirements:
     _permission: 'manage my authorities'
     par_data_partnership: \d+
@@ -81,7 +81,7 @@ par_partnership_flows.advice_upload_documents:
   path: '/partnership/{par_data_partnership}/advice/upload'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceUploadForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceUploadForm::titleCallback'
   requirements:
     _permission: 'manage my authorities'
     par_data_partnership: \d+
@@ -93,7 +93,7 @@ par_partnership_flows.advice_add:
   path: '/partnership/{par_data_partnership}/advice/add'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm::titleCallback'
   requirements:
     _permission: 'manage my authorities'
     par_data_partnership: \d+
@@ -105,7 +105,7 @@ par_partnership_flows.advice_edit_documents:
   path: '/partnership/{par_data_partnership}/advice/{par_data_advice}/upload'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceUploadForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceUploadForm::titleCallback'
   requirements:
     _permission: 'manage my authorities'
     par_data_partnership: \d+
@@ -120,7 +120,7 @@ par_partnership_flows.advice_edit:
   path: '/partnership/{par_data_partnership}/advice/{par_data_advice}/edit'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm::titleCallback'
   requirements:
     _permission: 'manage my authorities'
     par_data_partnership: \d+
@@ -135,7 +135,7 @@ par_partnership_flows.inspection_plan_list:
   path: '/partnership/{par_data_partnership}/inspection/list'
   defaults:
     _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::content'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::titleCallback'
   requirements:
     _permission: 'manage my authorities'
     par_data_partnership: \d+
@@ -161,7 +161,7 @@ par_partnership_flows.about_business:
   path: '/partnership/{par_data_partnership}/about-business'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutBusinessForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutBusinessForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     par_data_partnership: \d+
@@ -173,7 +173,7 @@ par_partnership_flows.address_edit:
   path: '/partnership/{par_data_partnership}/address/{par_data_premises}'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAddressForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAddressForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     par_data_partnership: \d+
@@ -188,7 +188,7 @@ par_partnership_flows.address_add:
   path: '/partnership/{par_data_partnership}/address/add'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAddressForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAddressForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     par_data_partnership: \d+
@@ -200,7 +200,7 @@ par_partnership_flows.organisation_contact_edit:
   path: '/partnership/{par_data_partnership}/organisation/contact/{par_data_person}'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     par_data_partnership: \d+
@@ -218,7 +218,7 @@ par_partnership_flows.organisation_contact_add:
   path: '/partnership/{par_data_partnership}/organisation/contact/add'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     par_data_partnership: \d+
@@ -233,7 +233,7 @@ par_partnership_flows.organisation_contact_add_confirm:
   path: '/partnership/{par_data_partnership}/organisation/contact/add/confirm'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactSuggestionForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactSuggestionForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     par_data_partnership: \d+
@@ -248,7 +248,7 @@ par_partnership_flows.legal_entity_edit:
   path: '/partnership/{par_data_partnership}/legal-entity/{par_data_legal_entity}'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     par_data_partnership: \d+
@@ -263,7 +263,7 @@ par_partnership_flows.legal_entity_add:
   path: '/partnership/{par_data_partnership}/legal-entity/add'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     par_data_partnership: \d+
@@ -275,7 +275,7 @@ par_partnership_flows.trading_name_edit:
   path: '/partnership/{par_data_partnership}/trading-name/{trading_name_delta}'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsTradingForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsTradingForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     par_data_partnership: \d+
@@ -288,7 +288,7 @@ par_partnership_flows.trading_name_add:
   path: '/partnership/{par_data_partnership}/trading-name/add'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsTradingForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsTradingForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     par_data_partnership: \d+
@@ -300,7 +300,7 @@ par_partnership_flows.sic_code_edit:
   path: '/partnership/{par_data_partnership}/sic-code/{field_sic_code_delta}'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSicCodeForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSicCodeForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     par_data_partnership: \d+
@@ -313,7 +313,7 @@ par_partnership_flows.sic_code_add:
   path: '/partnership/{par_data_partnership}/sic-code/add'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSicCodeForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSicCodeForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     par_data_partnership: \d+
@@ -325,7 +325,7 @@ par_partnership_flows.employee_number:
   path: '/partnership/{par_data_partnership}/employee-number'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsEmployeeNoForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsEmployeeNoForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     par_data_partnership: \d+
@@ -337,7 +337,7 @@ par_partnership_flows.sector:
   path: '/partnership/{par_data_partnership}/sector'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSectorForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSectorForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     par_data_partnership: \d+
@@ -349,7 +349,31 @@ par_partnership_flows.business_size:
   path: '/partnership/{par_data_partnership}/business-size'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsBusinessSizeForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsBusinessSizeForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.member_upload:
+  path: '/partnership/{par_data_partnership}/members-upload'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberUploadForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberUploadForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.member_upload_confirm:
+  path: '/partnership/{par_data_partnership}/members-upload/confirm'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberConfirmForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberConfirmForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     par_data_partnership: \d+
@@ -361,7 +385,7 @@ par_partnership_flows.advice_view:
   path: '/partnership/{par_data_partnership}/advice/view'
   defaults:
     _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::content'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     par_data_partnership: \d+
@@ -373,7 +397,7 @@ par_partnership_flows.inspection_plan_view:
   path: '/partnership/{par_data_partnership}/inspection/view'
   defaults:
     _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::content'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     par_data_partnership: \d+
@@ -381,3 +405,83 @@ par_partnership_flows.inspection_plan_view:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+
+# PAR Data Partnership Application Journey
+par_partnership_flows.partnership_application_start:
+  path: '/partnership/apply'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAuthoritySuggestionForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAuthoritySuggestionForm::titleCallback'
+  requirements:
+    _permission: 'manage my authorities'
+par_partnership_flows.partnership_application_type:
+  path: '/partnership/apply/type'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationTypeForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationTypeForm::titleCallback'
+  requirements:
+    _permission: 'manage my authorities'
+par_partnership_flows.partnership_application_authority_checklist:
+  path: '/partnership/apply/checklist'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationAuthorityChecklistForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationAuthorityChecklistForm::titleCallback'
+  requirements:
+    _permission: 'manage my authorities'
+par_partnership_flows.partnership_application_organisation_search:
+  path: '/partnership/apply/organisation/search'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationOrganisationSearchForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationOrganisationSearchForm::titleCallback'
+  requirements:
+    _permission: 'manage my authorities'
+par_partnership_flows.partnership_application_organisation_search_confirm:
+  path: '/partnership/apply/organisation/search/confirm'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsOrganisationSuggestionForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsOrganisationSuggestionForm::titleCallback'
+  requirements:
+    _permission: 'manage my authorities'
+par_partnership_flows.partnership_application_partnership_about:
+  path: '/partnership/apply/about'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutForm::titleCallback'
+  requirements:
+    _permission: 'manage my authorities'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.partnership_application_organisation_address:
+  path: '/partnership/apply/organisation/address'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAddressForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAddressForm::titleCallback'
+  requirements:
+    _permission: 'manage my authorities'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.partnership_application_organisation_contact:
+  path: '/partnership/apply/organisation/contact'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::titleCallback'
+  requirements:
+    _permission: 'manage my authorities'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.partnership_application_details:
+  path: '/partnership/apply/review'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationDetailsForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationDetailsForm::titleCallback'
+  requirements:
+    _permission: 'manage my authorities'

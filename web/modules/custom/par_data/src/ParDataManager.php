@@ -12,6 +12,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\file\FileInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\user\UserInterface;
 
@@ -146,6 +147,17 @@ class ParDataManager implements ParDataManagerInterface {
    */
   public function getViewBuilder($entity_type) {
     return $this->entityTypeManager->getViewBuilder($entity_type);
+  }
+
+  /**
+   * Get the settings for a given entity, field and view mode.
+   */
+  public function getFieldDisplay($entity, $field, $view_mode = 'default') {
+    $view_display = \Drupal::entityTypeManager()
+      ->getStorage('entity_view_display')
+      ->load($entity->getEntityTypeId() . '.' . $entity->bundle() . '.' . $view_mode);
+
+    return isset($view_display) && $view_display->getComponent($field->getName()) ? $view_display->getComponent($field->getName()) : ['label' => 'hidden'];
   }
 
   /**
@@ -492,6 +504,32 @@ class ParDataManager implements ParDataManagerInterface {
     }
 
     return $options;
+  }
+
+  /**
+   * Process a CSV file
+   *
+   * @param FileInterface $file
+   * @param array $rows
+   *   An array to add processed rows to.
+   * @param boolean $skip
+   *   Whether to skip the headers.
+   *
+   * @return array
+   *   An array of row data.
+   */
+  public function processCsvFile(FileInterface $file, $rows = [], $skip = TRUE) {
+    if (($handle = fopen($file->getFileUri(), "r")) !== FALSE) {
+      while (($data = fgetcsv($handle)) !== FALSE) {
+        if ($data !== NULL && !$skip) {
+          $rows[] = $data;
+        }
+        $skip = FALSE;
+      }
+      fclose($handle);
+    }
+
+    return $rows;
   }
 
   /**

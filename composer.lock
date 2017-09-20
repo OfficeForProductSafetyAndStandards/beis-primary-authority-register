@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "672687b34524a1f7b303a0395164e646",
+    "content-hash": "c2abf5338f5e9863f60cc00bbf0cf9f0",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -112,16 +112,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.36.7",
+            "version": "3.36.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "421088947540b1c7956cd693b032124e2c74eb76"
+                "reference": "fd0aacadab2f5ae4a43b91bccc164299c5cef7f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/421088947540b1c7956cd693b032124e2c74eb76",
-                "reference": "421088947540b1c7956cd693b032124e2c74eb76",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/fd0aacadab2f5ae4a43b91bccc164299c5cef7f0",
+                "reference": "fd0aacadab2f5ae4a43b91bccc164299c5cef7f0",
                 "shasum": ""
             },
             "require": {
@@ -188,7 +188,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-09-13T18:56:17+00:00"
+            "time": "2017-09-19T22:09:23+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -561,16 +561,16 @@
         },
         {
             "name": "consolidation/annotated-command",
-            "version": "2.4.13",
+            "version": "2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/annotated-command.git",
-                "reference": "abb685e42c83d0b698b4e22059e5d505588f7d3c"
+                "reference": "7a634471471b913e63888b64b626b544799db282"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/abb685e42c83d0b698b4e22059e5d505588f7d3c",
-                "reference": "abb685e42c83d0b698b4e22059e5d505588f7d3c",
+                "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/7a634471471b913e63888b64b626b544799db282",
+                "reference": "7a634471471b913e63888b64b626b544799db282",
                 "shasum": ""
             },
             "require": {
@@ -609,7 +609,7 @@
                 }
             ],
             "description": "Initialize Symfony Console commands from annotated command class methods.",
-            "time": "2017-08-28T20:16:37+00:00"
+            "time": "2017-09-18T21:45:28+00:00"
         },
         {
             "name": "consolidation/output-formatters",
@@ -2654,6 +2654,9 @@
                 "drupal": {
                     "version": "8.x-1.x-dev",
                     "datestamp": "1491979443"
+                },
+                "patches_applied": {
+                    "One time login link": "./patches/one_time_login_redirection.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3107,6 +3110,60 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/password_strength"
             }
+        },
+        {
+            "name": "drupal/queue_ui",
+            "version": "dev-2.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/queue_ui",
+                "reference": "74da9699d23ec470040b219ef9275e1b8a0e24da"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.x-dev",
+                    "datestamp": "1496171943",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "bceyssens",
+                    "homepage": "https://www.drupal.org/user/2743951"
+                },
+                {
+                    "name": "coltrane",
+                    "homepage": "https://www.drupal.org/user/91990"
+                },
+                {
+                    "name": "floretan",
+                    "homepage": "https://www.drupal.org/user/66163"
+                },
+                {
+                    "name": "tsphethean",
+                    "homepage": "https://www.drupal.org/user/881620"
+                }
+            ],
+            "description": "Interface and manager for Drupal queues.",
+            "homepage": "https://www.drupal.org/project/queue_ui",
+            "support": {
+                "source": "http://cgit.drupalcode.org/queue_ui"
+            },
+            "time": "2017-05-30 19:17:17"
         },
         {
             "name": "drupal/range",
@@ -10017,6 +10074,7 @@
         "drupal/login_destination": 20,
         "drupal/migrate_plus": 20,
         "drupal/migrate_tools": 20,
+        "drupal/queue_ui": 20,
         "drupal/config_inspector": 10,
         "drupal/examples": 20
     },

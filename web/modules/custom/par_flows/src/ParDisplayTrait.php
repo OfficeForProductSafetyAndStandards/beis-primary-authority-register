@@ -6,6 +6,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Field\FormatterInterface;
 
 trait ParDisplayTrait {
 
@@ -23,6 +24,7 @@ trait ParDisplayTrait {
    * This prevents the form showing view modes w/ incorrect display weights.
    *
    * @param array $field
+   *   The field being rendered.
    *
    * @return mixed
    */
@@ -35,22 +37,28 @@ trait ParDisplayTrait {
   }
 
 
-  public function renderTextField($entity, $field, $operations = [], $single = FALSE) {
+  public function renderTextField($entity, $field, $view_mode, $operations = [], $single = FALSE) {
     $elements = [];
     foreach ($field as $delta => $value) {
-      $rendered_field = $value->view(['label' => 'hidden']);
       $elements[$delta] = [
         '#type' => 'fieldset',
         '#attributes' => ['class' => 'form-group'],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
+
+      $field_settings = $this->getParDataManager()->getFieldDisplay($entity, $field, 'default');
+      $rendered_field = $value->view($field_settings);
+
       $elements[$delta]['value'] = $this->renderMarkupField($rendered_field);
       $elements[$delta]['value']['#prefix'] = '<div>';
       $elements[$delta]['value']['#suffix'] = '</div>';
 
       // Get all of the available entity entity operation links.
       $elements[$delta] += $this->displayEntityOperationLinks($entity, $field, $delta, $operations);
+      if ($single) {
+        break;
+      }
     }
 
     return $elements;
@@ -79,6 +87,9 @@ trait ParDisplayTrait {
 
       // Get all of the available entity entity operation links.
       $elements[$delta] += $this->displayEntityOperationLinks($entity, $field, $delta, $operations);
+      if ($single) {
+        break;
+      }
     }
 
     return $elements;
@@ -162,7 +173,7 @@ trait ParDisplayTrait {
           $element[$field_name]['items'][] = $this->renderReferenceField($field, $view_mode, $operations, $single);
         }
         else {
-          $element[$field_name]['items'][] = $this->renderTextField($entity, $field, $operations, $single);
+          $element[$field_name]['items'][] = $this->renderTextField($entity, $field, $view_mode, $operations, $single);
         }
 
       }

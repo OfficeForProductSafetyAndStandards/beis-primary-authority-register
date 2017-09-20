@@ -4,6 +4,7 @@ namespace Drupal\par_enforcement_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_data\Entity\ParDataPartnership;
 
 /**
  * The raise form for creating a new enforcement notice.
@@ -33,13 +34,43 @@ class ParEnforcementAddActionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues();
+
+    $reg_function_names = $par_data_partnership->getPartnershipRegulatoryFunctionNames();
+
+    $form['title_of_action'] = [
+      '#title' => $this->t('Title of action'),
+      '#type' => 'textfield',
+      '#default_value' => $this->getDefaultValues('title_of_action'),
+    ];
+
+    $form['regulatory_functions'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Regulatory function to which this relates'),
+      '#options' => $reg_function_names,
+      '#default_value' => $this->getDefaultValues('regulatory_functions'),
+      '#required' => TRUE,
+    ];
+
+    $form['details'] = [
+      '#title' => $this->t('Details'),
+      '#type' => 'textarea',
+      '#default_value' => $this->getDefaultValues('details'),
+    ];
+
+    $add_file_upload_link = $this->getFlow()->getNextLink('file_upload')->setText('Attach file')->toString();
+    $form['add_upload_files'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', ['@link' => $add_file_upload_link]) . ' (document or photo)',
+      '#prefix' => '<div>',
+      '#suffix' => '</div></br>',
+    ];
 
     $form['next'] = [
       '#type' => 'submit',
       '#name' => 'next',
-      '#value' => $this->t('Next'),
+      '#value' => $this->t('Continue'),
     ];
 
     $cancel_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
