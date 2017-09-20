@@ -228,16 +228,12 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     if ($this->getFlowName() == 'partnership_application') {
 
       // Load the Authority.
-      var_dump($this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection'));
       $par_data_authority = ParDataAuthority::load($this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection'));
 
-//      var_dump($par_data_authority->id());
-
+      // @todo see if better way of doing this
       $user = User::load(\Drupal::currentUser()->id());
 
-      var_dump($par_data_authority->get('field_person')->referencedEntities());
-
-//      var_dump($this->parDataManager->getUserPerson($user, $par_data_authority));
+      var_dump($this->parDataManager->getUserPerson($user, $par_data_authority));
 
       die();
 
