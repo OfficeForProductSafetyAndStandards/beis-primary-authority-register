@@ -485,3 +485,10 @@ par_partnership_flows.partnership_application_details:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationDetailsForm::titleCallback'
   requirements:
     _permission: 'manage my authorities'
+par_partnership_flows.partnership_application_invite:
+  path: '/partnership/apply/invite'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInviteForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInviteForm::titleCallback'
+  requirements:
+    _permission: 'manage my authorities'
