@@ -2,10 +2,13 @@
 
 namespace Drupal\par_partnership_flows\Form;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\file\FileInterface;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataLegalEntity;
+use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\file\Entity\File;
@@ -25,9 +28,9 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
   protected $columns = [
     'par_data_premises' => [
       'address' => [
-        'country_code' => 'GB',
         'address_line1' => 3,
         'address_line2' => 4,
+        'address_line3' => 5,
         'locality' => 6,
         'postal_code' => 8,
       ],
@@ -79,8 +82,22 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
     }
   }
 
+  /**
+   * Getting for accessing the values from the CSV row.
+   *
+   * @param $row
+   * @param $column
+   *
+   * @return string
+   *   The value at the given index, a default value, or NULL
+   */
   public function getRowValue($row, $column) {
-    return isset($row[$column]) ? $row[$column] : '';
+    if (isset($row[$column]) && !empty($row[$column])) {
+      return $row[$column];
+    }
+    else {
+      return NULL;
+    }
   }
 
   /**
@@ -132,14 +149,16 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
         $row = $members[$i];
         $name = $this->getRowValue($row, $this->getColumn('par_data_organisation', 'organisation_name'));
 
-        $properties = [
-          'trading_name' => [
-            'trading_name' => $name,
-          ],
-          'organisation_name' => [
-            'organisation_name' => $name,
-          ],
-        ];
+        if (!empty($name)) {
+          $properties = [
+            'trading_name' => [
+              'trading_name' => $name,
+            ],
+            'organisation_name' => [
+              'organisation_name' => $name,
+            ],
+          ];
+        }
 
         $existing_options = [];
         foreach ($properties as $group => $conditions) {
@@ -206,43 +225,48 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $require_attention = $this->getTempDataValue(["members"]);
+    // Get all the members which need attention and extra processing.
+    $attentions = $this->getTempDataValue(["members"]);
 
-    // Get the advice entity from the URL.
-    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    // Get the *full* partnership entity from the URL.
+    $route_partnership = $this->getRouteParam('par_data_partnership');
+    $par_data_partnership = ParDataPartnership::load($route_partnership->id());
 
     $members = $this->getTempDataValue("coordinated_members", 'par_partnership_member_upload');
     foreach ($members as $i => $member) {
-      $existing = isset($require_attention[$i]['existing_organisation']) && $require_attention[$i]['existing_organisation'] !== 'new' ?
-        $require_attention[$i]['existing_organisation'] : FALSE;
+      $requires_attention = isset($attentions[$i]) ? $attentions[$i] : NULL;
 
-      // @TODO Add all this processing to a queue.
-      $child_entities = ['par_data_premises', 'par_data_person', 'par_data_legal_entity'];
-      $entity = ParDataLegalEntity::create([
-        'type' => 'legal_entity',
-        'uid' => 1,
-      ]);
-      foreach ($child_entities as $entity_type => $entity_bundle) {
-        foreach ($this->getColumns()[$entity_type] as $field => $column) {
-          // Get the zero-based column index.
-          $column = $this->getColumn($entity_type, $field);
-          $value = $this->getRowValue($member, $column);
+      // Process the row.
+      $this->processRow($par_data_partnership, $member, $requires_attention);
+    }
 
-          // Fields with limited values may need to be converted to their stored value.
-          $entity_bundle = $this->getParDataManager()->getParBundleEntity($entity_type);
-          if ($allowed_values = $entity_bundle->getAllowedValues($field)) {
-            $search_key = array_search($value, $allowed_values, TRUE);
-            if ($search_key) {
-              $value = $search_key;
-            }
+  }
+
+  public function processRow($par_data_partnership, $member, $attention = NULL) {
+    $existing = isset($attention['existing_organisation']) && $attention['existing_organisation'] !== 'new' ? $attention['existing_organisation'] : FALSE;
+
+    $data = [];
+    foreach ($this->getColumns() as $entity_type => $fields) {
+      $data[$entity_type] = [];
+
+      // Ignore the column index values.
+      foreach ($fields as $field => $properties) {
+        if (is_array($properties)) {
+          $data[$entity_type][$field] = [];
+          foreach ($properties as $property => $index) {
+            $column = $this->getColumn($entity_type, $field, $property);
+            $data[$entity_type][$field][$property] = $this->getRowValue($member, $column);
           }
-
-          $entity->set($field, $this->getRowValue($member, $column));
+        }
+        else {
+          $column = $this->getColumn($entity_type, $field);
+          $data[$entity_type][$field] = $this->getRowValue($member, $column);
         }
       }
     }
 
-    die;
+    // Send all the data off to the queue for processing.
+    $this->addRowToQueue($par_data_partnership, $data, $existing);
   }
 
   public function addRowToQueue($par_data_partnership, $member, $existing) {
@@ -258,7 +282,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
       $queue->createQueue();
       $queue->createItem($data);
     } catch (\Exception $e) {
-      // Log failed result.
+      // @TODO Log this in a way that errors can be reported to the uploader.
     }
 
     drupal_set_message(t('The members are being processed, please check back shortly to see the membership list updated.'), 'status');
