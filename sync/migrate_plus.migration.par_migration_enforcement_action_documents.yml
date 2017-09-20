@@ -7,7 +7,7 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: AV9p8aK4-RsI_2KIg-Zkjr-kURpLYQNj7lxB_VZQ-Nc
+  default_config_hash: WmZTIrTdNO94X0tUAflvIZnXAtosZtnkd9XwyaWFS0Q
 id: par_migration_enforcement_action_documents
 class: null
 field_plugin_method: null
@@ -24,6 +24,7 @@ process:
   uid:
     plugin: default_value
     default_value: 1
+  folder: null
   filename:
     -
       plugin: concat
