@@ -3,9 +3,12 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: GAmWdMyLp4sUNqO1ZflwUB8sebiThaELQ-gvte0SraI
+  default_config_hash: rn2kfSGFp7807RpCPkbMwxbc7dv-hkeKGGvruKoeawE
 id: organisation
 label: Organisation
 description: 'An organisation - usually a commercial one, but not always as it can include charities and other non-commercial ventures - that is covered (or intends to be covered) by a Primary Authority Partnership.'
 help: ''
-configuration: null
+configuration:
+  entity:
+    label_fields:
+      - organisation_name

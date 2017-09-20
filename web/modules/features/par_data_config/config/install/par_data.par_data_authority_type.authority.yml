@@ -6,6 +6,9 @@ label: Authority
 description: 'An Authority is a government body, usually a local authority but occasionally a fire authority or port authority.'
 help: ''
 configuration:
+  entity:
+    label_fields:
+      - authority_name
   authority_type:
     allowed_values:
       council: 'Council Area'
