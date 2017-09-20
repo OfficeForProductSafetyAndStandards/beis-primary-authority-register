@@ -7,6 +7,8 @@ description: 'A Legal Entity is a representation of an Organisation via some for
 help: ''
 configuration:
   entity:
+    label_fields:
+      - registered_name
     required_fields:
       registered_name: 'The %field is required.'
       legal_entity_type: 'The %field is required.'

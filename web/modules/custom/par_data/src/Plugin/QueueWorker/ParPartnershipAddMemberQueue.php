@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Plugin\QueueWorker;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Queue\QueueWorkerBase;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataOrganisation;
@@ -29,7 +30,7 @@ class ParPartnershipAddMemberQueue extends QueueWorkerBase {
    * {@inheritdoc}
    */
   public function processItem($data) {
-    $par_data_partnership = $data['partnership'];
+    $par_data_partnership = ParDataPartnership::load($data['partnership']);
     $member = $data['row'];
     $existing = $data['existing'];
 
@@ -84,11 +85,9 @@ class ParPartnershipAddMemberQueue extends QueueWorkerBase {
       $par_data_coordinated_business->set('field_organisation', [$par_data_organisation->id()]);
       $par_data_coordinated_business->save();
 
-      $par_data_partnership->set('field_coordinated_business', [$par_data_coordinated_business->id()]);
+      $par_data_partnership->get('field_coordinated_business')->appendItem($par_data_coordinated_business->id());
       $par_data_partnership->save();
     }
-
-    var_dump($par_data_coordinated_business->id());
   }
 
   /**
@@ -115,23 +114,16 @@ class ParPartnershipAddMemberQueue extends QueueWorkerBase {
 
       $entity_values = [];
       foreach ($fields as $field => $properties) {
+        $field_definition = $this->getParDataManager()->getFieldDefinition($entity_type->id(), $entity_bundle->id(), $field);
+
         if (is_array($properties)) {
           $entity_values[$field] = [];
           foreach ($properties as $property => $value) {
-            $entity_values[$field][$property] = $value;
+            $entity_values[$field][$property] = $this->processFieldValue($entity_type, $entity_bundle, $field_definition, $value);
           }
         } else {
           $value = $properties;
-
-          // Fields with limited values may need to be converted to their stored value.
-          if ($allowed_values = $entity_bundle->getAllowedValues($field)) {
-            $search_key = array_search($value, $allowed_values, TRUE);
-            if ($search_key) {
-              $value = $search_key;
-            }
-          }
-
-          $entity_values[$field] = $value;
+          $entity_values[$field] = $this->processFieldValue($entity_type, $entity_bundle, $field_definition, $value);
         }
       }
 
@@ -140,7 +132,24 @@ class ParPartnershipAddMemberQueue extends QueueWorkerBase {
         $entities[$entity_type->id()] = $entity_storage->create($entity_default_values + $entity_values);
       }
     }
-
     return $entities;
+  }
+
+  public function processFieldValue($entity_type, $entity_bundle, $field_definition, $value) {
+    // Fields with limited values may need to be converted to their stored value.
+    if ($allowed_values = $entity_bundle->getAllowedValues($field_definition->getName())) {
+      $search_key = array_search($value, $allowed_values, TRUE);
+      if ($search_key) {
+        $value = $search_key;
+      }
+    }
+
+    // Date fields will need to be transformed.
+    if ($field_definition->getType() == 'date' || $field_definition->getType() == 'daterange') {
+      $date = new DrupalDateTime($value);
+      $value = $date->format('Y-m-d');
+    }
+
+    return $value;
   }
 }
