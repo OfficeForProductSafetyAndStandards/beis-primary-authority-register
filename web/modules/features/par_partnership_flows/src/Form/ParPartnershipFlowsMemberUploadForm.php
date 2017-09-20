@@ -3,10 +3,9 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataAdvice;
+use Drupal\file\FileInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
-
 use Drupal\file\Entity\File;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
@@ -33,40 +32,33 @@ class ParPartnershipFlowsMemberUploadForm extends ParBaseForm {
    * @param \Drupal\par_data\Entity\ParDataAdvice $par_data_advice
    *   The advice being retrieved.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
+  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
     if (isset($par_data_partnership)) {
       // If we're editing an entity we should set the state
       // to something other than default to avoid conflicts
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()}");
-
-      $files = $par_data_advice->get('csv')->referencedEntities();
-      $ids = [];
-      foreach ($files as $file) {
-        $ids[] = $file->id();
-      }
-      $this->loadDataValue('files', $ids);
     }
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
-    $this->retrieveEditableValues($par_data_partnership, $par_data_advice);
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+    $this->retrieveEditableValues($par_data_partnership);
 
     // Multiple file field.
     $form['csv'] = [
       '#type' => 'managed_file',
       '#title' => t('Upload file(s)'),
-      '#description' => t('Use Ctrl or cmd to select multiple files'),
+      '#description' => t('Upload your CSV file, be sure to make sure the information is accurate so that it can all be processed'),
       '#upload_location' => 's3private://member-csv/',
       '#multiple' => FALSE,
       '#required' => TRUE,
       '#default_value' => $this->getDefaultValues("csv"),
       '#upload_validators' => [
         'file_validate_extensions' => [
-          0 => ['csv'],
+          0 => 'csv',
         ]
       ]
     ];
@@ -96,8 +88,19 @@ class ParPartnershipFlowsMemberUploadForm extends ParBaseForm {
     // Get the advice entity from the URL.
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
 
-    if ($csv = $this->getTempDataValue('advice_type')) {
-      var_dump($csv); die;
+    if ($csv = $this->getTempDataValue('csv')) {
+      $rows = [];
+
+      // Load the submitted files and process the data.
+      $files = File::loadMultiple($csv);
+      foreach ($files as $file) {
+        $rows = $this->getParDataManager()->processCsvFile($file, $rows);
+      }
+
+      // Save the data in the User's temp private store for later processing.
+      if (!empty($rows)) {
+        $this->setTempDataValue('coordinated_members', $rows);
+      }
     }
   }
 

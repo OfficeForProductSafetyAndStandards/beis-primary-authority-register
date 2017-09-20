@@ -45,6 +45,7 @@
         "drupal/pagerer": "~1.1.0",
         "drupal/password_policy": "~3.0.0",
         "drupal/password_strength": "2.0.0-alpha2",
+        "drupal/queue_ui": "dev-2.x",
         "drupal/range": "~1.1.0",
         "drupal/raven": "^2.3",
         "drupal/robotstxt": "~1.1.0",
