@@ -616,4 +616,13 @@ function par_data_test_create_entities() {
     'roles' => ['par_helpdesk'],
   ]);
   $helpdesk_user->save();
+  $admin_user = User::create([
+    'uuid' => '46e65664-bf34-4713-ab14-740cbe581538',
+    'name' => 'par_admin@example.com',
+    'pass' => 'TestPassword',
+    'mail' => 'par_admin@example.com',
+    'status' => 1,
+    'roles' => ['administrator'],
+  ]);
+  $admin_user->save();
 }
