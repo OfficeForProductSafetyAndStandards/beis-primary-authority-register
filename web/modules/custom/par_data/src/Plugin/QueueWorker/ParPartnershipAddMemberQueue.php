@@ -87,6 +87,8 @@ class ParPartnershipAddMemberQueue extends QueueWorkerBase {
       $par_data_partnership->set('field_coordinated_business', [$par_data_coordinated_business->id()]);
       $par_data_partnership->save();
     }
+
+    var_dump($par_data_coordinated_business->id());
   }
 
   /**

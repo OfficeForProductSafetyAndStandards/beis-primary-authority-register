@@ -242,6 +242,16 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
 
   }
 
+  /**
+   * Helper to process the raw CSV row data and map to entity values.
+   *
+   * @param $par_data_partnership
+   *   The partnership that this member is being attached to.
+   * @param $member
+   *   The raw CSV row data.
+   * @param null $attention
+   *   The attention points are raised to make the user aware of possible data manipulations or errors on input.
+   */
   public function processRow($par_data_partnership, $member, $attention = NULL) {
     $existing = isset($attention['existing_organisation']) && $attention['existing_organisation'] !== 'new' ? $attention['existing_organisation'] : FALSE;
 
@@ -269,6 +279,16 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
     $this->addRowToQueue($par_data_partnership, $data, $existing);
   }
 
+  /**
+   * Helper to add the member to the queue to process intensive operations in the background.
+   * 
+   * @param $par_data_partnership
+   *   The partnership that this member is being attached to.
+   * @param $member
+   *   The raw CSV row data.
+   * @param null $existing
+   *   Whether the organisation being added exists or needs to be created.
+   */
   public function addRowToQueue($par_data_partnership, $member, $existing) {
     // Generate the appropriate data array for passing to the queue.
     $data = [
