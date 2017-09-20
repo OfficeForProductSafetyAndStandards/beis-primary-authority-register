@@ -21,6 +21,7 @@ process:
   uid:
     plugin: default_value
     default_value: 1
+  folder:
   filename:
     -
       plugin: concat
