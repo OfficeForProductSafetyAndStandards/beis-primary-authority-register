@@ -5,8 +5,12 @@ namespace Drupal\par_partnership_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
+//use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\user\Entity\User;
 
 /**
  * The primary contact form for the partnership details steps of the
@@ -174,8 +178,17 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Save the value for the about_partnership field.
+    // Save contact.
     $par_data_person = $this->getRouteParam('par_data_person');
+
+    // @todo implement better way.
+    if (!$par_data_person) {
+      $par_data_person = \Drupal\par_data\Entity\ParDataPerson::create([
+        'type' => 'person',
+        'uid' => 1,
+      ]);
+    }
+
     if ($par_data_person) {
       $par_data_person->set('salutation', $this->getTempDataValue('salutation'));
       $par_data_person->set('first_name', $this->getTempDataValue('first_name'));
@@ -185,7 +198,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       $par_data_person->set('email', $this->getTempDataValue('email'));
       $par_data_person->set('communication_notes', $this->getTempDataValue('notes'));
 
-      // Save the email preference.
+      // Save the contact preferences
       $email_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_email'])
         && !empty($this->getTempDataValue('preferred_contact')['communication_email']);
       $par_data_person->set('communication_email', $email_preference_value);
@@ -199,7 +212,8 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
 
       if ($par_data_person->save()) {
-        $this->deleteStore();
+        // @todo TBC if we want to make this a thing.
+        $this->deleteFormTempData('par_partnership_contact');
       } else {
         $message = $this->t('This %person could not be saved for %form_id');
         $replacements = [
@@ -208,6 +222,116 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
         ];
         $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
       }
+    }
+
+    // @todo possibly put this in a new file.
+    if ($this->getFlowName() == 'partnership_application') {
+
+      // Load the Authority.
+
+      var_dump($this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection'));
+      $par_data_authority = ParDataAuthority::load($this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection'));
+
+      var_dump($par_data_authority->id());
+
+      $user = User::load(\Drupal::currentUser()->id());
+
+      var_dump($this->parDataManager->getUserPerson($user, $par_data_authority));
+
+      die();
+
+      $par_data_premises = \Drupal\par_data\Entity\ParDataPremises::create([
+        'type' => 'premises',
+        // @todo check if needed.
+        // 'name' => $this->getTempDataValue('salutation'),
+        'uid' => \Drupal::currentUser()->id(),
+        'address' => [
+          'country_code' => $this->getDefaultValues('country_code', '', 'par_partnership_address'),
+          'address_line1' => $this->getDefaultValues('address_line1','', 'par_partnership_address'),
+          'address_line2' => $this->getDefaultValues('address_line2','', 'par_partnership_address'),
+          'locality' => $this->getDefaultValues('town_city','', 'par_partnership_address'),
+          'administrative_area' => $this->getDefaultValues('county','', 'par_partnership_address'),
+          'postal_code' => $this->getDefaultValues('postcode','', 'par_partnership_address'),
+        ],
+        'nation' => 'GB-SCT',
+      ]);
+      $par_data_premises->save();
+
+      // Save organisation.
+      $par_data_organisation = \Drupal\par_data\Entity\ParDataOrganisation::create([
+        'type' => 'organisation',
+        'name' => $this->getDefaultValues('organisation_name','', 'par_partnership_application_organisation_search'),
+        'uid' => \Drupal::currentUser()->id(),
+        'organisation_name' => $this->getDefaultValues('organisation_name','', 'par_partnership_application_organisation_search'),
+//        'size' => 'Enormous',
+//        'employees_band' => 50,
+        'nation' => 'GB-SCT',
+//        'comments' => 'ABCD Mart is a department store featured in the Sesame Street direct-to-video special Big Bird Gets Lost.',
+        'premises_mapped' => TRUE,
+//        'trading_name' => [
+//          'ABCD',
+//          'ABCD Mart',
+//        ],
+        'field_person' => [
+          $par_data_person->id(),
+        ],
+        'field_premises' => [
+          $par_data_premises->id(),
+        ],
+//        'field_legal_entity' => [
+//          $legal_entity_1->id()
+//        ],
+//        'field_sic_code' => [
+//          $sic_code_1->save(),
+//        ]
+      ]);
+      $par_data_organisation->save();
+
+      // Save partnership.
+      $partnership = \Drupal\par_data\Entity\ParDataPartnership::create([
+        'type' => 'partnership',
+        'name' => 'Partnership Name?',
+        'uid' => \Drupal::currentUser()->id(),
+        'partnership_type' => $this->getDefaultValues('application_type', '', 'par_partnership_application_type'),
+        'partnership_status' => 'application',
+        'about_partnership' => $this->getDefaultValues('about_partnership', '', 'par_partnership_about'),
+        'terms_authority_agreed' => 1,
+//        'communication_email' => TRUE,
+//        'communication_phone' => TRUE,
+//        'communication_notes' => '',
+//        'approved_date' => '',
+//        'expertise_details' => '',
+//        'cost_recovery' => 'Cost recovered by Jo Smith',
+//        'reject_comment' => '',
+//        'revocation_source' => 'An RD Executive called Sue',
+//        'revocation_date' => '2017-07-01',
+//        'revocation_reason' => 'I saw a rat in Charlie\'s Cafe.',
+//        'authority_change_comment' => '',
+//        'organisation_change_comment' => '',
+        'field_authority' => [
+          $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection'),
+        ],
+        'field_organisation' => [
+          // switch this out.
+//          $this->getDefaultValues('par_data_organisation_id', '', 'par_partnership_organisation_suggestion'),
+          $par_data_organisation->id(),
+        ],
+        'field_authority_person' => [
+          // @todo this needs to become a ParDataPerson.
+          \Drupal::currentUser()->id()
+        ],
+        'field_organisation_person' => [
+          $par_data_person->id()
+        ],
+//        'field_regulatory_function' => [
+//          $regulatory_function_1->id(),
+//        ],
+      ]);
+      $partnership->save();
+
+      var_dump($partnership->id());
+      die();
+
     }
 
   }

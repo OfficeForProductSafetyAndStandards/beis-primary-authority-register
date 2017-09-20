@@ -224,7 +224,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @return EntityInterface[][]
    *   An array of entities keyed by entity type.
    */
-  
+
   public function getRelatedEntities($entity, $entities = [], &$processedEntities = [], $iteration = 0, $force_lookup = FALSE) {
     if (!$entity instanceof ParDataEntityInterface) {
       return $entities;
@@ -244,7 +244,7 @@ class ParDataManager implements ParDataManagerInterface {
     if (isset($processedEntities[$entityHashKey])) {
       return $entities;
     }
-    
+
     // Add hash key to show this node has been processed, whether or not it is used or ignored
     $processedEntities[$entityHashKey] = true;
 
@@ -270,7 +270,7 @@ class ParDataManager implements ParDataManagerInterface {
           $tags[] = $entity_type . ':' . $referenced_entity->id();
         }
       }
-      
+
       \Drupal::cache('data')->set("par_data_relationships:{$entityHashKey}", $relationships, Cache::PERMANENT, $tags);
     }
 
@@ -476,6 +476,19 @@ class ParDataManager implements ParDataManagerInterface {
     return $this->entityTypeManager
       ->getStorage('par_data_person')
       ->loadByProperties(['email' => $account->get('mail')->getString()]);
+  }
+
+  /**
+   * Get the PAR Person id in target entity.
+   *
+   * @param UserInterface $account
+   * @param $entity
+   *
+   * @return array
+   */
+  public function getUserPerson($account, $entity) {
+    $entity_people = $entity->hasField('field_person') ? $entity->get('field_person')->referencedEntities() : [];
+    return array_intersect_key($this->getUserPeople($account), $entity_people);
   }
 
   /**
