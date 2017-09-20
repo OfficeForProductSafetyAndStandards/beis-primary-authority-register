@@ -80,7 +80,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
 
     $radio_options['new'] = "No, it's a new partnership.";
 
-    $form['option'] = [
+    $form['par_data_organisation_id'] = [
       '#type' => 'radios',
       '#title' => t('Did you mean any of these organisations?'),
       '#options' => $radio_options,
