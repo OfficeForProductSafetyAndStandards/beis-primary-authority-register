@@ -14,16 +14,13 @@ Feature: Primary Authority - Change Partnership Details
         # CHECK DASHBOARD CONTENTS DEPENDING ON USER LEVEL
 
         And I expect that element "#block-par-theme-content" contains the text "Your partnerships"
-        And I expect that element "#edit-authority-contacts" contains the text "Find a partnership"
-        And I expect that element "#edit-authority-contacts" contains the text "Messages"
-        When I click on the link "Apply for a new partnership"
+        And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
+        And I expect that element "#block-par-theme-content" contains the text "See all outstanding enforcement notices"
+        When I click on the link "Create a new partnership"
 
         # CREATE NEW PARTNERSHIP FORM
 
-        And I click on the radio "Upper West Side Borough Council Local Authority"
-        And I click on the button "#edit-save"
-        Then I expect that element "h3.heading-medium" contains the text "Type of application"
-        When I click on the radio "Direct Partnership"
+        When I click on the radio "#edit-application-type-direct"
         And I click on the button "#edit-save"
 
         # CONFIRMATIONS
@@ -33,37 +30,28 @@ Feature: Primary Authority - Change Partnership Details
         And I click on the checkbox "#edit-local-authority-suitable-for-nomination"
         And I click on the checkbox "#edit-written-summary-agreed"
         And I click on the checkbox "#edit-terms-organisation-agreed"
-        And I click on the radio "Yes"
-        Then I expect that element "#par-partnership-application-authority-checklist" contains the text "Is this your local authority?"
-        And I click on the radio "Yes"
-        Then I expect that element "#par-partnership-application-organisation-search" contains the text "Organisation Name"
+        And I click on the radio "#edit-business-regulated-by-one-authority-1"
+        And I expect that element "#par-partnership-application-authority-checklist" contains the text "Is this your local authority?"
+        And I click on the radio "#edit-is-local-authority-1"
+        And I click on the button "#edit-save"
 
         # ADD ABOUT THE PARTNERSHIP
 
-        And I add "About the partnership detail" to the inputfield "#about-partnership"
+        Then I expect that element "#par-partnership-about" contains the text "Use this section to give a brief overview of the partnership"
+        When I add "About the partnership detail" to the inputfield "#edit-about-partnership"
         And I click on the button "#edit-save"
 
-        # ORGANISATION DETAILS
+        # ORGANISATION NAME
 
         And I add "Test Create Partnership" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-save"
 
         # SUGGESTED BUSINESSES
 
-        And I click on the button "#edit-save"
-        Then I expect that element ".error-message" does exist
         When I add "SE16 4NX" to the inputfield "#edit-postcode"
-        And I click on the button "#edit-save"
-        Then I expect that element ".error-message" does exist
         And I add "1 Change St" to the inputfield "#edit-address-line1"
-        And I click on the button "#edit-save"
-        Then I expect that element ".error-message" does exist
         And I add "New Change" to the inputfield "#edit-address-line2"
-        And I click on the button "#edit-save"
-        Then I expect that element ".error-message" does exist
         When I add "London" to the inputfield "#edit-town-city"
-        And I click on the button "#edit-save"
-        Then I expect that element ".error-message" does exist
         When I add "London" to the inputfield "#edit-county"
         And I select the option with the text "England" for element "#edit-country"
         And I click on the button "#edit-save"
@@ -82,29 +70,27 @@ Feature: Primary Authority - Change Partnership Details
         And I add "Some additional notes" to the inputfield "#edit-notes"
         And I click on the button "#edit-save"
 
-        # REVIEW PARTNERSHIP DETAILS
-
-        Then I expect that element "span.address-line1" contains the text "1 Change St"
-        And I expect that element "span.address-line2" contains the text "New Change"
-        And I expect that element "span.locality" contains the text "London"
-        And I expect that element "span.postal-code" contains the text "SE16 4NX"
-        And I expect that element "#edit-primary-address" contains the text "England"
-        And I click on the link "#review-confirmation"
-        When I click on the button "#edit-save"
-
-        # CONFIRMATION SCREEN
-
-        And I expect that element "#end-screen" contains the text "999999999"
-
-        # PARTNERSHIPS DASHBOARD FILTERS
-
-        And I add "Test Create Partnership" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-partnership-search"
-        Then I expect that element "td.views-field.views-field-nothing" contains the text "Test Create Partnership"
-        And I expect that element "#status" contains the text ""
+#        # REVIEW PARTNERSHIP DETAILS
+#
+#        Then I expect that element "span.address-line1" contains the text "1 Change St"
+#        And I expect that element "span.address-line2" contains the text "New Change"
+#        And I expect that element "span.locality" contains the text "London"
+#        And I expect that element "span.postal-code" contains the text "SE16 4NX"
+#        And I expect that element "#edit-primary-address" contains the text "England"
+#        And I click on the link "#review-confirmation"
+#        When I click on the button "#edit-save"
+#
+#        # CONFIRMATION SCREEN
+#
+#        And I expect that element "#end-screen" contains the text "999999999"
+#
+#        # PARTNERSHIPS DASHBOARD FILTERS
+#
+#        And I add "Test Create Partnership" to the inputfield "#edit-keywords"
+#        And I click on the button "#edit-submit-partnership-search"
+#        Then I expect that element "td.views-field.views-field-nothing" contains the text "Test Create Partnership"
+#        And I expect that element "#status" contains the text ""
         And I click on the link "Log out"
-        # When I add "the Muppet" to the inputfield "#edit-last-name"
-        # And I click on the button "#edit-submit-partnership-search"
 
      # LOGIN SCREEN
 
@@ -116,8 +102,6 @@ Feature: Primary Authority - Change Partnership Details
         # TERMS AND CONDITIONS SCREEN
 
         Then I expect that element "#par-flow-transition-business-terms" contains the text "Please review the new Primary Authority terms and conditions and confirm that you agree with them"
-        And I click on the button "#edit-save"
-        Then I expect that element ".error-summary" contains the text "You must agree to the new terms and conditions"
         And I click on the checkbox "#edit-terms-conditions"
         And I click on the button "#edit-save"
 
@@ -138,19 +122,10 @@ Feature: Primary Authority - Change Partnership Details
         And I clear the inputfield "#edit-postcode"
         And I clear the inputfield "#edit-county"
         And I click on the button "#edit-save"
-        Then I expect that element ".error-message" does exist
         When I add "SE16 4NX" to the inputfield "#edit-postcode"
-        And I click on the button "#edit-save"
-        Then I expect that element ".error-message" does exist
         And I add "1 Change St" to the inputfield "#edit-address-line1"
-        And I click on the button "#edit-save"
-        Then I expect that element ".error-message" does exist
         And I add "New Change" to the inputfield "#edit-address-line2"
-        And I click on the button "#edit-save"
-        Then I expect that element ".error-message" does exist
         When I add "London" to the inputfield "#edit-town-city"
-        And I click on the button "#edit-save"
-        Then I expect that element ".error-message" does exist
         When I add "London" to the inputfield "#edit-county"
         And I select the option with the text "England" for element "#edit-country"
         When I click on the button "#edit-save"
@@ -244,7 +219,7 @@ Feature: Primary Authority - Change Partnership Details
         And I expect that element "#block-par-theme-content" contains the text "par_authority@example.com"
         And I click on the link "Log out"
 
-        # LOGIN SCREEN
+        # LOGIN SCREEN AS HELPDESK
 
         Given I am logged in as "par_helpdesk@example.com"
         And I open the url "/dashboard"
@@ -258,3 +233,4 @@ Feature: Primary Authority - Change Partnership Details
         When I click on the link "Approve"
         Then the element "#partnership-information" contains the text "The partnership has been approved"
         When I click on the link "Done"
+        And I open the url "/dashboard"
