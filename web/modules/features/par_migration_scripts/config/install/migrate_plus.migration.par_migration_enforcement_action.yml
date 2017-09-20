@@ -75,7 +75,6 @@ process:
       no_stub: true
       source:
         document_id: null
-        owning_object_type: '@document_type'
         owning_object_id: enforcement_action_id
     -
       plugin: skip_on_empty
