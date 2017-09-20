@@ -42,7 +42,7 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()}");
 
-      $this->loadDataValue('about', $par_data_partnership->retrieveStringValue('about_partnership'));
+      $this->loadDataValue('about_partnership', $par_data_partnership->retrieveStringValue('about_partnership'));
     }
   }
 
@@ -56,20 +56,24 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
     $form['about_partnership'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Use this section to give a brief overview of the partnership.'),
-      '#default_value' => $this->getDefaultValues('about'),
+      '#default_value' => $this->getDefaultValues('about_partnership'),
       '#description' => 'Include any information you feel may be useful to enforcing authorities, for example describe the areas of regulation where your partnership is active.',
     ];
 
-    $form['save'] = [
+    $form['actions']['save'] = [
       '#type' => 'submit',
       '#name' => 'save',
-      '#value' => $this->t('Save'),
+      '#value' => $this->t($par_data_partnership ? 'Save' : 'Continue'),
     ];
 
-    $cancel_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
-    $form['cancel'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $cancel_link]),
+    $form['actions']['cancel'] = [
+      '#type' => 'submit',
+      '#name' => 'cancel',
+      '#value' => $this->t('Cancel'),
+      '#submit' => ['::cancelForm'],
+      '#attributes' => [
+        'class' => ['btn-link']
+      ],
     ];
 
     // Make sure to add the partnership cacheability data to this form.
@@ -85,19 +89,23 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
 
     parent::submitForm($form, $form_state);
 
-    // Save the value for the about_partnership field.
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
-    $par_data_partnership->set('about_partnership', $this->getTempDataValue('about_partnership'));
-    if ($par_data_partnership->save()) {
-      $this->deleteStore();
-    }
-    else {
-      $message = $this->t('The %field field could not be saved for %form_id');
-      $replacements = [
-        '%field' => 'comments',
-        '%form_id' => $this->getFormId(),
-      ];
-      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+
+    if ($par_data_partnership) {
+      // Save the value for the about_partnership field.
+      $par_data_partnership->set('about_partnership', $this->getTempDataValue('about_partnership'));
+      if ($par_data_partnership->save()) {
+        $this->deleteStore();
+      }
+      else {
+        $message = $this->t('The %field field could not be saved for %form_id');
+        $replacements = [
+          '%field' => 'comments',
+          '%form_id' => $this->getFormId(),
+        ];
+        $this->getLogger($this->getLoggerChannel())
+          ->error($message, $replacements);
+      }
     }
   }
 
