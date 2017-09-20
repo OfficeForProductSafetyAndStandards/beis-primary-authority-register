@@ -26,6 +26,18 @@ class ParPartnershipFlowsApplicationOrganisationSearchForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  public function titleCallback() {
+    dump($this->getFlowName());
+    if ($this->getFlowName() === 'partnership_application') {
+      return 'New Partnership Application';
+    }
+
+    return parent::titleCallback();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function retrieveEditableValues() {
   }
 

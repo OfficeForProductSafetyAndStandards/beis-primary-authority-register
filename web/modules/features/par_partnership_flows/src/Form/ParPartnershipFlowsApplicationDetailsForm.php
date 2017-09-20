@@ -25,7 +25,7 @@ class ParPartnershipFlowsApplicationDetailsForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    return 'Review';
+    return 'New Partnership Application';
   }
 
   /**
