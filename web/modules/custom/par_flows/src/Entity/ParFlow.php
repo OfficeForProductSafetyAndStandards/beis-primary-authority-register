@@ -38,6 +38,7 @@ use Drupal\par_flows\ParRedirectTrait;
  *   config_export = {
  *     "id",
  *     "label",
+ *     "default_title",
  *     "description",
  *     "steps"
  *   }
@@ -62,6 +63,13 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   protected $label;
 
   /**
+   * The default page title for the flow.
+   *
+   * @var string
+   */
+  protected $default_title;
+
+  /**
    * A brief description of this flow.
    *
    * @var string
@@ -80,6 +88,13 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getDescription() {
     return $this->description;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDefaultTitle() {
+    return $this->default_title;
   }
 
   /**

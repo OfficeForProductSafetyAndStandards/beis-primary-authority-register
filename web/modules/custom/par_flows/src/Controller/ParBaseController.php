@@ -82,6 +82,10 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
    * Title callback default.
    */
   public function titleCallback() {
+    if ($default_title = $this->getFlow()->getDefaultTitle()) {
+      return $this->t($default_title);
+    }
+
     return $this->t('Primary Authority Register');
   }
 

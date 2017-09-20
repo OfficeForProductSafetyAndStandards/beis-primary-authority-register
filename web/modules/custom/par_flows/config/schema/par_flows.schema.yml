@@ -10,6 +10,10 @@ par_flows.par_flow.*:
     label:
       type: label
       label: 'Label'
+    default_title:
+      type: label
+      label: 'Default title'
+      nullable: true
     description:
       type: string
       lavel: 'Description'

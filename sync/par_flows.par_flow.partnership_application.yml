@@ -3,9 +3,10 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: RbWsnnjZIAAheHdgILP3a18T-0LqzlFBpAUox9B1w3c
+  default_config_hash: _DV8iu_tSWDX03IrIkVlaKBste7ATXUf_KRISaTLoC0
 id: partnership_application
 label: 'Partnership Application Flow'
+default_title: 'New Partnership Application'
 description: ''
 steps:
   1:

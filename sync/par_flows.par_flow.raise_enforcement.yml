@@ -6,6 +6,7 @@ _core:
   default_config_hash: nr6HR0j1dlMJkbxJr4I0uC9TvLOBZu4T0uLsRzobsdw
 id: raise_enforcement
 label: 'Raise Enforcement'
+default_title: null
 description: 'The creation flow of an enforcement notice.'
 steps:
   1:

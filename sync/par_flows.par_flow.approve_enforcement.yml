@@ -6,6 +6,7 @@ _core:
   default_config_hash: awPcI3O467wOKZawUhRB_x0p6bfW12b4VU5n4fcf-fg
 id: approve_enforcement
 label: 'Approve Enforcement'
+default_title: null
 description: 'The approval flow for an enforcement notice.'
 steps:
   1:
