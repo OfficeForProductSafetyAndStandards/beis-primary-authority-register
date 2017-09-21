@@ -92,15 +92,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
       '#value' => t('Continue'),
     ];
 
-    $form['actions']['cancel'] = [
-      '#type' => 'submit',
-      '#name' => 'cancel',
-      '#value' => $this->t('Cancel'),
-      '#submit' => ['::cancelFlow'],
-      '#attributes' => [
-        'class' => ['btn-link']
-      ],
-    ];
+    $this->cancelLink($form);
 
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($viewBuilder);

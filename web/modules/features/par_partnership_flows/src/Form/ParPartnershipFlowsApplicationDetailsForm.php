@@ -57,15 +57,7 @@ class ParPartnershipFlowsApplicationDetailsForm extends ParBaseForm {
       '#value' => t('Save'),
     ];
 
-    $form['actions']['cancel'] = [
-      '#type' => 'submit',
-      '#name' => 'cancel',
-      '#value' => $this->t('Cancel'),
-      '#submit' => ['::cancelForm'],
-      '#attributes' => [
-        'class' => ['btn-link']
-      ],
-    ];
+    $this->cancelLink($form);
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($partnership_bundle);

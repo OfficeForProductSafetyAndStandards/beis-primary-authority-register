@@ -764,4 +764,23 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     }
   }
 
+  /**
+   * Adds a render array for a cancel link.
+   *
+   * @param array $form
+   *   Render array to add the cancel button to.
+   */
+  public function cancelLink(array &$form) {
+    $form['actions']['cancel'] = [
+      '#type' => 'submit',
+      '#name' => 'cancel',
+      '#value' => $this->t('Cancel'),
+      '#submit' => ['::cancelForm'],
+      '#limit_validation_errors' => [],
+      '#attributes' => [
+        'class' => ['btn-link']
+      ],
+    ];
+  }
+
 }

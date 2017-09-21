@@ -47,15 +47,7 @@ class ParPartnershipFlowsApplicationOrganisationSearchForm extends ParBaseForm {
       '#value' => t('Continue'),
     ];
 
-    $form['actions']['cancel'] = [
-      '#type' => 'submit',
-      '#name' => 'cancel',
-      '#value' => $this->t('Cancel'),
-      '#submit' => ['::cancelForm'],
-      '#attributes' => [
-        'class' => ['btn-link']
-      ],
-    ];
+    $this->cancelLink($form);
 
     return parent::buildForm($form, $form_state);
   }

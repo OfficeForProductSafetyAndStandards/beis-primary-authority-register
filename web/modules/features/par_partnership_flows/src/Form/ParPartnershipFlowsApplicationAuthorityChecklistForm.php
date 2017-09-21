@@ -181,16 +181,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
       '#value' => $this->t('Continue'),
     ];
 
-    $form['actions']['cancel'] = [
-      '#type' => 'submit',
-      '#name' => 'cancel',
-      '#value' => $this->t('Cancel'),
-      '#submit' => ['::cancelForm'],
-      '#limit_validation_errors' => [],
-      '#attributes' => [
-        'class' => ['btn-link']
-      ],
-    ];
+    $this->cancelLink($form);
 
     $this->addCacheableDependency($applicationType);
 
