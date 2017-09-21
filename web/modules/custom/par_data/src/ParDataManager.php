@@ -150,14 +150,30 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
+   * Get a field definition.
+   */
+  public function getFieldDefinition($entity_type, $bundle, $field) {
+    $entity_fields = $this->entityFieldManager->getFieldDefinitions($entity_type, $bundle);
+    return isset($entity_fields[$field]) ? $entity_fields[$field] : NULL;
+  }
+
+  /**
    * Get the settings for a given entity, field and view mode.
    */
   public function getFieldDisplay($entity, $field, $view_mode = 'default') {
-    $view_display = \Drupal::entityTypeManager()
+    $view_display = $this->entityTypeManager
       ->getStorage('entity_view_display')
       ->load($entity->getEntityTypeId() . '.' . $entity->bundle() . '.' . $view_mode);
 
     return isset($view_display) && $view_display->getComponent($field->getName()) ? $view_display->getComponent($field->getName()) : ['label' => 'hidden'];
+  }
+
+  /**
+   * Get the default for a field.
+   */
+  public function getFieldDefaults($entity_type, $bundle, $field) {
+    $field_definition = $this->getFieldDefinition($entity_type, $bundle, $field);
+    return $field_definition ? $field_definition->getDefaultValueLiteral() : [];
   }
 
   /**

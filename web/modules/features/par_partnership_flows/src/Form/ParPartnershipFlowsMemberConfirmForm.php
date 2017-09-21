@@ -32,9 +32,10 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
         'address_line2' => 4,
         'address_line3' => 5,
         'locality' => 6,
+        'administrative_area' => 7,
         'postal_code' => 8,
       ],
-      'nation' => 7,
+      'nation' => 9,
     ],
     'par_data_person' => [
       'first_name' => 10,
@@ -50,7 +51,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
     ],
     'par_data_organisation' => [
       'organisation_name' => 2,
-      'nation' => 7,
+      'nation' => 9,
     ],
     'par_data_coordinated_business' => [
       'membership_date' => [
@@ -58,6 +59,17 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
         'end_value' => 16,
       ],
     ]
+  ];
+
+  /**
+   * Defaultl values with need to be saved.
+   */
+  protected $defaults = [
+    'par_data_premises' => [
+      'address' => [
+        'country_code' => 'GB',
+      ],
+    ],
   ];
 
   /**
@@ -80,6 +92,10 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
     else {
       return isset($columns[$entity_type][$field_name]) ? $columns[$entity_type][$field_name] -1 : NULL;
     }
+  }
+
+  protected function getDefaults() {
+    return $this->defaults;
   }
 
   /**
@@ -230,14 +246,13 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
 
     // Get the *full* partnership entity from the URL.
     $route_partnership = $this->getRouteParam('par_data_partnership');
-    $par_data_partnership = ParDataPartnership::load($route_partnership->id());
 
     $members = $this->getTempDataValue("coordinated_members", 'par_partnership_member_upload');
     foreach ($members as $i => $member) {
       $requires_attention = isset($attentions[$i]) ? $attentions[$i] : NULL;
 
       // Process the row.
-      $this->processRow($par_data_partnership, $member, $requires_attention);
+      $this->processRow($route_partnership->id(), $member, $requires_attention);
     }
 
   }
@@ -245,14 +260,14 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
   /**
    * Helper to process the raw CSV row data and map to entity values.
    *
-   * @param $par_data_partnership
-   *   The partnership that this member is being attached to.
+   * @param $par_data_partnership_id
+   *   The id of the partnership that this member is being attached to.
    * @param $member
    *   The raw CSV row data.
    * @param null $attention
    *   The attention points are raised to make the user aware of possible data manipulations or errors on input.
    */
-  public function processRow($par_data_partnership, $member, $attention = NULL) {
+  public function processRow($par_data_partnership_id, $member, $attention = NULL) {
     $existing = isset($attention['existing_organisation']) && $attention['existing_organisation'] !== 'new' ? $attention['existing_organisation'] : FALSE;
 
     $data = [];
@@ -275,8 +290,11 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
       }
     }
 
+    // Make sure we set the default values
+    $data = $data + $this->getDefaults();
+
     // Send all the data off to the queue for processing.
-    $this->addRowToQueue($par_data_partnership, $data, $existing);
+    $this->addRowToQueue($par_data_partnership_id, $data, $existing);
   }
 
   /**
@@ -289,10 +307,10 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
    * @param null $existing
    *   Whether the organisation being added exists or needs to be created.
    */
-  public function addRowToQueue($par_data_partnership, $member, $existing) {
+  public function addRowToQueue($par_data_partnership_id, $member, $existing) {
     // Generate the appropriate data array for passing to the queue.
     $data = [
-      'partnership' => $par_data_partnership,
+      'partnership' => $par_data_partnership_id,
       'row' => $member,
       'existing' => $existing,
     ];

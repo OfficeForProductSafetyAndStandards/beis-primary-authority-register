@@ -68,6 +68,17 @@ process:
     -
       plugin: skip_on_empty
       method: process
+  document:
+    -
+      plugin: migration_lookup
+      migration: par_migration_enforcement_action_documents
+      no_stub: true
+      source:
+        document_id: null
+        owning_object_id: enforcement_action_id
+    -
+      plugin: skip_on_empty
+      method: process
 destination:
   plugin: 'entity:par_data_enforcement_action'
 migration_dependencies:

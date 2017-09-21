@@ -3,12 +3,15 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: '-J3Dw5cqbQmmxost-kyoi3h18v4Mh4lPe85czykpOQA'
+  default_config_hash: YkjMEFhlomTZEJyjlx0KxDsGXjWMSChU86DE_NMNsEw
 id: authority
 label: Authority
 description: 'An Authority is a government body, usually a local authority but occasionally a fire authority or port authority.'
 help: ''
 configuration:
+  entity:
+    label_fields:
+      - authority_name
   authority_type:
     allowed_values:
       council: 'Council Area'
