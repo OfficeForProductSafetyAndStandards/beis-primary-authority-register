@@ -7,6 +7,9 @@ description: 'Premises are a location used by either an Authority or an Organisa
 help: ''
 configuration:
   entity:
+    label_fields:
+      - address
+      - nation
     required_fields:
       address_line1: 'The %field is required.'
       address_line2: 'The %field is required.'

@@ -8,19 +8,22 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\user\Entity\User;
+use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
  * Class InviteByEmailBlockForm.
  *
  * @package Drupal\invite\Form
  */
-class ParFlowTransitionInviteForm extends ParBaseForm {
+class ParPartnershipFlowsInviteForm extends ParBaseForm {
+
+  use ParPartnershipFlowsTrait;
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'par_partnership_invite_organisation';
+    return 'par_partnership_invite';
   }
 
   /**
@@ -75,11 +78,6 @@ HEREDOC;
 
     $invite_type = $this->config('invite.invite_type.invite_organisation_member');
     $data = unserialize($invite_type->get('data'));
-
-    $form['leading_paragraph'] = [
-      '#type' => 'markup',
-      '#markup' => t('<p>Review and confirm your data by 14 September 2017</p>'),
-    ];
 
     // Get Sender.
     $form['authority_member'] = [
