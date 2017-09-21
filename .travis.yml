@@ -101,7 +101,7 @@ install:
 # Stamp the code with the build number
 #-----------------------------------------------------------------------------
 
-  - 'echo "#${TRAVIS_BUILD_NUMBER} ${TRAVIS_TAG}: $(date -u)" > web/build_version.txt'
+  - 'echo "{ \"build\" : \"${TRAVIS_BUILD_NUMBER}\", \"tag\":\"${TRAVIS_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt'
 
 ##############################################################################
 ### TEST                                                                   ###
