@@ -155,6 +155,7 @@ class ParPartnershipFlowsApplicationPartnershipSave extends ParBaseForm {
         $par_data_organisation->save();
       } else {
         $par_data_organisation = ParDataOrganisation::load($organisation_id);
+        $organisation_person = $par_data_organisation->get('field_person')->first();
       }
 
       // Save partnership.
@@ -175,15 +176,16 @@ class ParPartnershipFlowsApplicationPartnershipSave extends ParBaseForm {
         'field_authority_person' => [
           $authority_person->id(),
         ],
+        'field_organisation_person' => [
+          $organisation_person->id(),
+        ],
       ]);
 
-      if (isset($organisation_person) && $organisation_person->id()) {
-        $partnership->get('field_organisation_person')->appendItem($organisation_person->id());
+      if ($partnership->save()) {
+        $form_state->setRedirect($this->getFlow()->getNextRoute('save'), ['par_data_partnership' => $partnership->id()]);
+        $this->deleteStore();
       }
 
-      $partnership->save();
-
-      $form_state->setRedirect($this->getFlow()->getNextRoute('save'), ['par_data_partnership' => $partnership->id()]);
     }
 
   }
