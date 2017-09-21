@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c02c5a9039b5b65668026059cf5677f6",
+    "content-hash": "6024cc3e39aacdf050095a73e4b161e3",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -1761,7 +1761,7 @@
                     "Allow migration lookups against sub-sets of migration map ids": "./patches/migration_id_map_sql_lookup_check.patch",
                     "Entity loadByProperty should skip access checks": "https://www.drupal.org/files/issues/2878483-18.patch",
                     "Migration Lookup plugin does not return multiple values when matched and uses deprecated method": "https://www.drupal.org/files/issues/2890844-14.patch",
-                    "PostgreSQL: deal with case insensitivity": "https://www.drupal.org/files/issues/2464481-57.patch"
+                    "PostgreSQL: deal with case insensitivity": "./patches/postgres_case_insensitivity-2464481.patch"
                 }
             },
             "autoload": {

@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_help().
@@ -39,4 +40,34 @@ function par_data_theme() {
       'template' => 'par-data-entity-list',
     ],
   ];
+}
+
+/**
+ * Implements hook_views_query_alter().
+ *
+ * @TODO There is a known outstanding issue with postgres compatability that requires work.
+ * @see Patch #53 only covers entity queries https://www.drupal.org/node/2464481#comment-10076086
+ *
+ * This hook adds case insensitivity to certain views filter fields.
+ * Requires re-working into a more generic solution that covers
+ * all non-entity api queries.
+ *
+ * @param \Drupal\views\ViewExecutable $view
+ * @param $query
+ */
+function par_data_views_query_alter(ViewExecutable $view, $query) {
+
+  // PostgreSQL case insensitive query alter.
+  foreach ($query->where as $group_key => $group) {
+    foreach ($group['conditions'] as $key => $condition) {
+
+      // Only apply to combined fields, Views stamps in queries are useful!
+      if (preg_match('/:views_combine/', $condition['field'])) {
+        // ILIKE is proprietary to PostgreSQL.
+        $query->where[$group_key]['conditions'][$key]['field'] = str_replace('LIKE', 'ILIKE', $condition['field']);
+      }
+
+    }
+  }
+
 }
