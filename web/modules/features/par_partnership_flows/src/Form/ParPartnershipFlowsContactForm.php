@@ -3,6 +3,7 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataAuthority;
@@ -181,7 +182,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     // Save contact.
     $par_data_person = $this->getRouteParam('par_data_person');
 
-    // @todo implement better way.
+    // Create new person.
     if (!$par_data_person) {
       $par_data_person = \Drupal\par_data\Entity\ParDataPerson::create([
         'type' => 'person',
@@ -189,6 +190,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       ]);
     }
 
+    // Save person details.
     if ($par_data_person) {
       $par_data_person->set('salutation', $this->getTempDataValue('salutation'));
       $par_data_person->set('first_name', $this->getTempDataValue('first_name'));
@@ -212,7 +214,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
 
       if ($par_data_person->save()) {
-        // @todo TBC if we want to make this a thing.
+        // only delete the form data for the par_partnership_contact form.
         $this->deleteFormTempData('par_partnership_contact');
       } else {
         $message = $this->t('This %person could not be saved for %form_id');
@@ -224,65 +226,69 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       }
     }
 
-    // @todo possibly put this in a new file.
+    // @todo this needs to be somewhere else.
     if ($this->getFlowName() == 'partnership_application') {
 
       // Load the Authority.
       $par_data_authority = ParDataAuthority::load($this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection'));
 
-      // @todo see if better way of doing this
+      // @todo see possibility of injecting AccountProxy
       $user = User::load(\Drupal::currentUser()->id());
 
-      var_dump($this->parDataManager->getUserPerson($user, $par_data_authority));
+      // @todo ensure this returns somebody.
+      $authority_user = ParDataPerson::load($this->parDataManager->getUserPerson($user, $par_data_authority)[0]);
 
-      die();
+      $organisation_id = $this->getDefaultValues('par_data_organisation_id','', 'par_partnership_organisation_suggestion');
 
-      $par_data_premises = \Drupal\par_data\Entity\ParDataPremises::create([
-        'type' => 'premises',
-        // @todo check if needed.
-        // 'name' => $this->getTempDataValue('salutation'),
-        'uid' => \Drupal::currentUser()->id(),
-        'address' => [
-          'country_code' => $this->getDefaultValues('country_code', '', 'par_partnership_address'),
-          'address_line1' => $this->getDefaultValues('address_line1','', 'par_partnership_address'),
-          'address_line2' => $this->getDefaultValues('address_line2','', 'par_partnership_address'),
-          'locality' => $this->getDefaultValues('town_city','', 'par_partnership_address'),
-          'administrative_area' => $this->getDefaultValues('county','', 'par_partnership_address'),
-          'postal_code' => $this->getDefaultValues('postcode','', 'par_partnership_address'),
-        ],
-        'nation' => 'GB-SCT',
-      ]);
-      $par_data_premises->save();
+      if ($organisation_id === 'new') {
+        $par_data_premises = \Drupal\par_data\Entity\ParDataPremises::create([
+          'type' => 'premises',
+          // 'name' => $this->getTempDataValue('salutation'),
+          'uid' => \Drupal::currentUser()->id(),
+          'address' => [
+            'country_code' => $this->getDefaultValues('country_code', '', 'par_partnership_address'),
+            'address_line1' => $this->getDefaultValues('address_line1','', 'par_partnership_address'),
+            'address_line2' => $this->getDefaultValues('address_line2','', 'par_partnership_address'),
+            'locality' => $this->getDefaultValues('town_city','', 'par_partnership_address'),
+            'administrative_area' => $this->getDefaultValues('county','', 'par_partnership_address'),
+            'postal_code' => $this->getDefaultValues('postcode','', 'par_partnership_address'),
+          ],
+          'nation' => 'GB-SCT',
+        ]);
+        $par_data_premises->save();
 
-      // Save organisation.
-      $par_data_organisation = \Drupal\par_data\Entity\ParDataOrganisation::create([
-        'type' => 'organisation',
-        'name' => $this->getDefaultValues('organisation_name','', 'par_partnership_application_organisation_search'),
-        'uid' => \Drupal::currentUser()->id(),
-        'organisation_name' => $this->getDefaultValues('organisation_name','', 'par_partnership_application_organisation_search'),
-//        'size' => 'Enormous',
-//        'employees_band' => 50,
-        'nation' => 'GB-SCT',
-//        'comments' => 'ABCD Mart is a department store featured in the Sesame Street direct-to-video special Big Bird Gets Lost.',
-        'premises_mapped' => TRUE,
-//        'trading_name' => [
-//          'ABCD',
-//          'ABCD Mart',
-//        ],
-        'field_person' => [
-          $par_data_person->id(),
-        ],
-        'field_premises' => [
-          $par_data_premises->id(),
-        ],
-//        'field_legal_entity' => [
-//          $legal_entity_1->id()
-//        ],
-//        'field_sic_code' => [
-//          $sic_code_1->save(),
-//        ]
-      ]);
-      $par_data_organisation->save();
+        $par_data_organisation = \Drupal\par_data\Entity\ParDataOrganisation::create([
+          'type' => 'organisation',
+          'name' => $this->getDefaultValues('organisation_name','', 'par_partnership_application_organisation_search'),
+          'uid' => \Drupal::currentUser()->id(),
+          'organisation_name' => $this->getDefaultValues('organisation_name','', 'par_partnership_application_organisation_search'),
+          //        'size' => 'Enormous',
+          //        'employees_band' => 50,
+          'nation' => 'GB-SCT',
+          //        'comments' => 'ABCD Mart is a department store featured in the Sesame Street direct-to-video special Big Bird Gets Lost.',
+          'premises_mapped' => TRUE,
+          //        'trading_name' => [
+          //          'ABCD',
+          //          'ABCD Mart',
+          //        ],
+          'field_person' => [
+            $par_data_person->id(),
+          ],
+          'field_premises' => [
+            $par_data_premises->id(),
+          ],
+          //        'field_legal_entity' => [
+          //          $legal_entity_1->id()
+          //        ],
+          //        'field_sic_code' => [
+          //          $sic_code_1->save(),
+          //        ]
+        ]);
+
+        $par_data_organisation->save();
+      } else {
+        $par_data_organisation = ParDataOrganisation::load($organisation_id);
+      }
 
       // Save partnership.
       $partnership = \Drupal\par_data\Entity\ParDataPartnership::create([
@@ -306,23 +312,17 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
 //        'authority_change_comment' => '',
 //        'organisation_change_comment' => '',
         'field_authority' => [
-          $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection'),
+          $par_data_authority->id(),
         ],
         'field_organisation' => [
-          // switch this out.
-//          $this->getDefaultValues('par_data_organisation_id', '', 'par_partnership_organisation_suggestion'),
           $par_data_organisation->id(),
         ],
         'field_authority_person' => [
-          // @todo this needs to become a ParDataPerson.
-          \Drupal::currentUser()->id()
+          $authority_user->id(),
         ],
         'field_organisation_person' => [
-          $par_data_person->id()
+          $par_data_person->id(),
         ],
-//        'field_regulatory_function' => [
-//          $regulatory_function_1->id(),
-//        ],
       ]);
       $partnership->save();
 
