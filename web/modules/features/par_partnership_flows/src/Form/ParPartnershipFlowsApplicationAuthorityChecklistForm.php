@@ -249,14 +249,16 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
         'written_summary_agreed',
         'terms_local_authority_agreed',
       ];
-      foreach ($form_items as $form_item) {
-        $field_name = !empty($form['section_two'][$form_item]['#title']) ? $form['section_two'][$form_item]['#title']->render() : '';
-        $message = t('<a href="#edit-:field_id">The @field is required</a>', [
-          '@field' => Markup::create($field_name),
-          ':field_id' => str_replace('_', '-', $form_item),
-        ]);
-        $form_state->setErrorByName($form_item, $message);
 
+      foreach ($form_items as $form_item) {
+        if (!$form_state->getValue($form_item)) {
+          $field_name = !empty($form['section_one'][$form_item]['#title']) ? $form['section_one'][$form_item]['#title']->render() : '';
+          $message = t('<a href="#edit-:field_id">The @field is required</a>', [
+            '@field' => Markup::create($field_name),
+            ':field_id' => str_replace('_', '-', $form_item),
+          ]);
+          $form_state->setErrorByName($form_item, $message);
+        }
       }
     }
   }
