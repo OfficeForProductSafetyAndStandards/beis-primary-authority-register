@@ -53,6 +53,13 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   protected $userAccount;
 
   /**
+   * Default page title.
+   *
+   * @var \Drupal\Core\StringTranslation\TranslatableMarkup
+   */
+  protected $defaultTitle;
+
+  /**
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.
    *
    * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $flow_storage
@@ -63,7 +70,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   public function __construct(ConfigEntityStorageInterface $flow_storage, ParDataManagerInterface $par_data_manager) {
     $this->flowStorage = $flow_storage;
     $this->parDataManager = $par_data_manager;
-
+    $this->defaultTitle = $this->t('Primary Authority Register');
     $this->setCurrentUser();
   }
 
@@ -79,6 +86,13 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   }
 
   /**
+   * Returns the default title.
+   */
+  public function getDefaultTitle() {
+    return $this->defaultTitle;
+  }
+
+  /**
    * Title callback default.
    */
   public function titleCallback() {
@@ -86,7 +100,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
       return $this->t($default_title);
     }
 
-    return $this->t('Primary Authority Register');
+    return $this->defaultTitle;
   }
 
   /**
