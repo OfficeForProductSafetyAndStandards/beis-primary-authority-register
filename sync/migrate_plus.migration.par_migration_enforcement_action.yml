@@ -7,7 +7,7 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: prof6MKDQne2Saop4PGkLCKI5LdKOGY2Pw8S8I2itiE
+  default_config_hash: qKrT81Gm4RSbc6sQrW9jdQ8_Tz3tGyDvLxqCOwD7UFw
 id: par_migration_enforcement_action
 class: null
 field_plugin_method: null
@@ -68,6 +68,17 @@ process:
       no_stub: true
       source:
         regulatory_function_id: regulatory_function_id
+    -
+      plugin: skip_on_empty
+      method: process
+  document:
+    -
+      plugin: migration_lookup
+      migration: par_migration_enforcement_action_documents
+      no_stub: true
+      source:
+        document_id: null
+        owning_object_id: enforcement_action_id
     -
       plugin: skip_on_empty
       method: process
