@@ -215,8 +215,11 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
           '%person' => $this->getTempDataValue('name'),
           '%form_id' => $this->getFormId(),
         ];
-        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+        $this->getLogger($this->getLoggerChannel())
+          ->error($message, $replacements);
       }
     }
+
+  }
 
 }
