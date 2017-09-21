@@ -84,5 +84,4 @@ destination:
 migration_dependencies:
   required:
     - par_migration_regulatory_functions
-    - par_migration_advice
     - par_migration_enforcement_action_documents

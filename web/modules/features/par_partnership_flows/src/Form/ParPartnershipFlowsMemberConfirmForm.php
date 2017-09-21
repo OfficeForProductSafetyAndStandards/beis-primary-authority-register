@@ -165,6 +165,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
         $row = $members[$i];
         $name = $this->getRowValue($row, $this->getColumn('par_data_organisation', 'organisation_name'));
 
+        $properties = [];
         if (!empty($name)) {
           $properties = [
             'trading_name' => [
@@ -198,6 +199,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
             '#title' => t('A match was found for @name', ['@name' => $name]),
             '#description' => t('Did you mean any of these organisations?'),
             '#options' => $radio_options + ['new' => "Add as a new organisation."],
+            '#default_value' => current(array_keys($radio_options)),
             '#required' => TRUE,
           ];
         }
