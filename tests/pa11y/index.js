@@ -3,7 +3,7 @@
 
 var pa11y = require('pa11y');
 
-var url = 'http://localhost:8111/dv/primary-authority-partnerships/33361/document/2797';
+var url = 'http://localhost:8111/dashboard';
 
 // Create a test instance with some default options
 var test = pa11y({
@@ -47,7 +47,7 @@ var test = pa11y({
         }, function () {
             waitUntil(function () {
                 // Wait until the login has been success and the /news.html has loaded
-                return window.location.href === 'http://localhost:8111/dv/rd-dashboard';
+                return window.location.href === 'http://localhost:8111/dashboard';
             }, 20, function () {
                 // Redirect to the page test page
                 page.evaluate(function () {
