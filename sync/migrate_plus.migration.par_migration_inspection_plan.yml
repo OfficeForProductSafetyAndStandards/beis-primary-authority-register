@@ -7,7 +7,7 @@ dependencies:
       - par_migration
       - par_migration_scripts
 _core:
-  default_config_hash: rQHfLfrJ2ZByVzEuu-Wchc-0CW31eaOzR35smI5P7-M
+  default_config_hash: SYXkNrc29BqWjBnPy3Iom9KF95Pm8cny9VlGkXYYnPM
 id: par_migration_inspection_plan
 class: null
 field_plugin_method: null
@@ -88,7 +88,7 @@ process:
         owning_object_id: inspection_plan_id
     -
       plugin: skip_on_empty
-      method: row
+      method: process
 destination:
   plugin: 'entity:par_data_inspection_plan'
 migration_dependencies:
