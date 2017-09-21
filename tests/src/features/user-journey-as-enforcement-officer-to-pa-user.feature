@@ -3,24 +3,24 @@ Feature: Enforcement officer to Primary Authority
 
     Background:
         # TEST DATA RESET
-        Given I reset the test data
+#        Given I reset the test data
 
     Scenario: Enforcement Officer/PA - Issue enforcement notice
         # LOGIN SCREEN
 
-        Given I am logged in as "par_admin@example.com"
+        Given I am logged in as "par_authority@example.com"
 
         # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
         And I open the url "/dashboard"
         Then I expect that element "#block-par-theme-content" contains the text "See all outstanding enforcement notices"
-        When I click on the link "Search for a partnership"
+        When I click on the link "See all outstanding enforcement notices"
 
         # PARTNERSHIP SEARCH
 
         When I add "ABCD" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
-        When I click on the button "td.views-field.views-field-authority-name a"
+        And I click on the button "td.views-field.views-field-authority-name a"
 
 #        # ENFORCEMENT ACTION FORM
 #
@@ -32,8 +32,9 @@ Feature: Enforcement officer to Primary Authority
 
         # ENFORCEMENT NOTIFY
 
+        Then I expect that element "h3" contains the text "About the business"
         When I click on the link "Send notification of enforcement action"
-        When I click on the radio ".form-radio"
+        And I click on the radio ".form-radio"
         And I add "Some action summary text" to the inputfield "#edit-action-summmary"
         And I click on the radio ".form-radio"
         And I click on the link "Add a legal entity"
