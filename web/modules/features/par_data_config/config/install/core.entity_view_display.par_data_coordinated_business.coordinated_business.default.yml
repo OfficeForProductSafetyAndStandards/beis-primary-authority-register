@@ -6,7 +6,6 @@ dependencies:
     - par_data.par_data_coordinated_business_type.coordinated_business
   module:
     - datetime_range
-    - user
 id: par_data_coordinated_business.coordinated_business.default
 targetEntityType: par_data_coordinated_business
 bundle: coordinated_business
@@ -14,34 +13,23 @@ mode: default
 content:
   field_organisation:
     weight: 1
-    label: above
+    label: hidden
     settings:
-      link: true
+      view_mode: title
+      link: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_entity_view
     region: content
   membership_date:
     label: hidden
     region: content
     settings:
-      separator: '-'
-      format_type: medium
       timezone_override: ''
+      date_format: d/m/Y
+      separator: '-'
     third_party_settings: {  }
-    type: daterange_default
-  name:
-    label: above
-    type: string
-    weight: -4
-    region: content
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  user_id:
-    label: hidden
-    type: author
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-hidden: {  }
+    type: daterange_custom
+    weight: 2
+hidden:
+  name: true
+  user_id: true
