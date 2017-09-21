@@ -1,11 +1,11 @@
-@ci
+@Pending
 Feature: Enforcement officer to Primary Authority
 
     Background:
         # TEST DATA RESET
         Given I reset the test data
 
-    Scenario: Enforcement Officer/PA - Inssue enforcement notice
+    Scenario: Enforcement Officer/PA - Issue enforcement notice
         # LOGIN SCREEN
 
         Given I am logged in as "par_enforcementofficer@example.com"
@@ -52,7 +52,6 @@ Feature: Enforcement officer to Primary Authority
         When I add "Title" to the inputfield "#title"
         And I click on the radio "Fire safety"
         When I add "Details" to the inputfield "#details"
-        And I click on the link "Continue"
         When I click on the radio "#enforcement-action-proposed"
         And I click on the link "Continue"
 

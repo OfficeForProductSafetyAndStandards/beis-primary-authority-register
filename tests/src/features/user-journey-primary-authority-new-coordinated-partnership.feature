@@ -1,4 +1,4 @@
-@ci @journey1 @deprecated
+@Pending @journey1 @deprecated
 Feature: Primary Authority - Change Partnership Details
 
     Background:
@@ -18,14 +18,9 @@ Feature: Primary Authority - Change Partnership Details
         And I expect that element "#block-par-theme-content" contains the text "See all outstanding enforcement notices"
         When I click on the link "Create a new partnership"
 
-        # CHOOSE PARTNERSHIP TYPE
-
-        When I click on the radio ".form-radio"
-        And I click on the button "#edit-save"
-
         # CREATE NEW PARTNERSHIP FORM
 
-        When I click on the radio "#edit-application-type-direct"
+        When I click on the radio "#edit-application-type-coordinated"
         And I click on the button "#edit-save"
 
         # CONFIRMATIONS
@@ -35,9 +30,6 @@ Feature: Primary Authority - Change Partnership Details
         And I click on the checkbox "#edit-local-authority-suitable-for-nomination"
         And I click on the checkbox "#edit-written-summary-agreed"
         And I click on the checkbox "#edit-terms-organisation-agreed"
-        And I click on the radio "#edit-business-regulated-by-one-authority-1"
-        And I expect that element "#par-partnership-application-authority-checklist" contains the text "Is this your local authority?"
-        And I click on the radio "#edit-is-local-authority-1"
         And I click on the button "#edit-save"
 
         # ADD ABOUT THE PARTNERSHIP
@@ -74,27 +66,6 @@ Feature: Primary Authority - Change Partnership Details
         And I click on the radio "#edit-preferred-contact-communication-mobile"
         And I add "Some additional notes" to the inputfield "#edit-notes"
         And I click on the button "#edit-save"
-
-#        # REVIEW PARTNERSHIP DETAILS
-#
-#        Then I expect that element "span.address-line1" contains the text "1 Change St"
-#        And I expect that element "span.address-line2" contains the text "New Change"
-#        And I expect that element "span.locality" contains the text "London"
-#        And I expect that element "span.postal-code" contains the text "SE16 4NX"
-#        And I expect that element "#edit-primary-address" contains the text "England"
-#        And I click on the link "#review-confirmation"
-#        When I click on the button "#edit-save"
-#
-#        # CONFIRMATION SCREEN
-#
-#        And I expect that element "#end-screen" contains the text "999999999"
-#
-#        # PARTNERSHIPS DASHBOARD FILTERS
-#
-#        And I add "Test Create Partnership" to the inputfield "#edit-keywords"
-#        And I click on the button "#edit-submit-partnership-search"
-#        Then I expect that element "td.views-field.views-field-nothing" contains the text "Test Create Partnership"
-#        And I expect that element "#status" contains the text ""
         And I click on the link "Log out"
 
      # LOGIN SCREEN

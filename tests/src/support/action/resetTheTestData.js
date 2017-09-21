@@ -10,7 +10,7 @@ module.exports = (done) => {
      */
     browser.url('/user/login');
     browser.setValue('#edit-name', 'dadmin');
-    browser.setValue('#edit-pass', 'password');
+    browser.setValue('#edit-pass', 'TestPassword');
     browser.click('#edit-submit');
     browser.url('/admin/par-data-test-reset');
     browser.url('/user/logout');
