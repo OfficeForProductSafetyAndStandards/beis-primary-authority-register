@@ -2,7 +2,9 @@
 
 namespace Drupal\par_partnership_flows\Form;
 
+use Drupal\Component\Render\MarkupTrait;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Markup;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
@@ -202,6 +204,61 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
+    // Load application type from previous step.
+    $applicationType = $this->getDefaultValues('application_type', '', 'par_partnership_application_type');
+    if ($applicationType == 'direct') {
+      // Section One validation.
+      $section_one_form_items_required = [
+        'business_eligible_for_partnership',
+        'local_authority_suitable_for_nomination',
+        'written_summary_agreed',
+        'terms_organisation_agreed',
+      ];
+
+      foreach ($section_one_form_items_required as $form_item) {
+        if (!$form_state->getValue($form_item)) {
+          $field_name = !empty($form['section_one'][$form_item]['#title']) ? $form['section_one'][$form_item]['#title']->render() : '';
+          $message = t('<a href="#edit-:field_id">The @field is required</a>', [
+            '@field' => Markup::create($field_name),
+            ':field_id' => str_replace('_', '-', $form_item),
+          ]);
+          $form_state->setErrorByName($form_item, $message);
+        }
+      }
+
+      if (!$form_state->getValue('business_regulated_by_one_authority')) {
+        $message = t('<a href="#edit-:field_id">You need to be authorised to submit an application</a>', [
+          ':field_id' => str_replace('_', '-', 'business_regulated_by_one_authority'),
+        ]);
+        $form_state->setErrorByName('business_regulated_by_one_authority', $message);
+      }
+
+      if ($form_state->getValue('business_regulated_by_one_authority') &&
+        !$form_state->getValue('is_local_authority') &&
+        !$form_state->getValue('business_informed_local_authority_still_regulates')) {
+        $message = t('<a href="#edit-:field_id">The business needs to be informed about local authority.</a>', [
+          ':field_id' => str_replace('_', '-', 'business_informed_local_authority_still_regulates'),
+        ]);
+        $form_state->setErrorByName('business_informed_local_authority_still_regulates', $message);
+      }
+    }
+    elseif ($applicationType == 'coordinated') {
+      $form_items = [
+        'coordinator_local_authority_suitable',
+        'suitable_nomination',
+        'written_summary_agreed',
+        'terms_local_authority_agreed',
+      ];
+      foreach ($form_items as $form_item) {
+        $field_name = !empty($form['section_two'][$form_item]['#title']) ? $form['section_two'][$form_item]['#title']->render() : '';
+        $message = t('<a href="#edit-:field_id">The @field is required</a>', [
+          '@field' => Markup::create($field_name),
+          ':field_id' => str_replace('_', '-', $form_item),
+        ]);
+        $form_state->setErrorByName($form_item, $message);
+
+      }
+    }
   }
 
   /**
