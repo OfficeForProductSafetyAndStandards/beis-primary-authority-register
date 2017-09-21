@@ -73,7 +73,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
 
     // If no suggestions were found we want to automatically submit the form.
     if (count($radio_options) <= 0) {
-      $this->setTempDataValue('option', 'new');
+      $this->setTempDataValue('par_data_organisation_id', 'new');
       $this->submitForm($form, $form_state);
       return $this->redirect($this->getFlow()->getNextRoute('add'), $this->getRouteParams());
     }
