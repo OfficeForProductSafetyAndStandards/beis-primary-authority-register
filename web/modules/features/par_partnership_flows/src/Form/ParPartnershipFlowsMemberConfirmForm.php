@@ -165,6 +165,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
         $row = $members[$i];
         $name = $this->getRowValue($row, $this->getColumn('par_data_organisation', 'organisation_name'));
 
+        $properties = [];
         if (!empty($name)) {
           $properties = [
             'trading_name' => [
