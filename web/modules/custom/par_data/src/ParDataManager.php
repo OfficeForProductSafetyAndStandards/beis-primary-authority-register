@@ -505,11 +505,6 @@ class ParDataManager implements ParDataManagerInterface {
   public function getUserPerson($account, $entity) {
     $entity_people = $entity->hasField('field_person') ? $entity->retrieveEntityIds('field_person') : [];
 
-//    var_dump(array_keys($this->getUserPeople($account)));
-
-//    var_dump($this->getUserPeople($account), $entity_people));
-
-    // @todo something else here.
     return array_intersect_key(array_keys($this->getUserPeople($account)), array_keys($entity_people));
   }
 

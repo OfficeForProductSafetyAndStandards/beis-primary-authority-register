@@ -486,12 +486,17 @@ par_partnership_flows.partnership_application_partnership_save:
   requirements:
     _permission: 'manage my authorities'
 par_partnership_flows.partnership_application_details:
-  path: '/partnership/apply/review'
+  path: '/partnership/{par_data_partnership}/review'
   defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationDetailsForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationDetailsForm::titleCallback'
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAuthorityDetailsForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAuthorityDetailsForm::titleCallback'
   requirements:
     _permission: 'manage my authorities'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
 par_partnership_flows.partnership_application_invite:
   path: '/partnership/apply/{par_data_partnership}/invite/{par_data_person}'
   defaults:
