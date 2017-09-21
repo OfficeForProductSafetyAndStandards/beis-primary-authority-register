@@ -1,4 +1,4 @@
-@Pending
+@ci
 Feature: Enforcement officer to Primary Authority
 
     Background:
@@ -8,32 +8,31 @@ Feature: Enforcement officer to Primary Authority
     Scenario: Enforcement Officer/PA - Issue enforcement notice
         # LOGIN SCREEN
 
-        Given I am logged in as "par_enforcementofficer@example.com"
+        Given I am logged in as "par_admin@example.com"
 
         # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
-        Then I expect that element "#messages" contains the text "See all outstanding enforcement notifications"
+        And I open the url "/dashboard"
+        Then I expect that element "#block-par-theme-content" contains the text "See all outstanding enforcement notices"
         When I click on the link "Search for a partnership"
 
         # PARTNERSHIP SEARCH
 
         When I add "ABCD" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-rd-helpdesk-dashboard"
-        And I scroll to element "#views-exposed-form-rd-helpdesk-dashboard-par-rd-helpdesk-dashboard-page"
+        And I click on the button "#edit-submit-partnership-search"
         When I click on the button "td.views-field.views-field-authority-name a"
 
-        # ENFORCEMENT ACTION FORM
-
-        Should only show PA Contacts, not organisational contacts (as PA view)
-        And I click on the link "scope of partnership"
-        Then the element "#partnership-scope" contains the text "Scope"
-        And I click on the link "Back"
+#        # ENFORCEMENT ACTION FORM
+#
+#        And I click on the link "scope of partnership"
+#        Then the element "#partnership-scope" contains the text "Scope"
+#        And I click on the link "Back"
 
         # CHECK PARTNERSHIP SCREEN
 
         # ENFORCEMENT NOTIFY
 
-        When I click on the link "Send a notification of enforcement action"
+        When I click on the link "Send notification of enforcement action"
         Then I expect that element "h1" contains the text "Organisation name"
         When I click on the radio "Organisation name"
         And I click on the link "Add a legal entity"

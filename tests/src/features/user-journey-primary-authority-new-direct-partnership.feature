@@ -1,11 +1,11 @@
 @ci @journey1 @deprecated
-Feature: Primary Authority - Change Partnership Details
+Feature: New Direct Partnership
 
     Background:
         # TEST DATA RESET
         Given I reset the test data
 
-    Scenario: Primary Authority - Change Partnership Details
+    Scenario: New Direct Partnership
 
         # SEARCH PARTNERSHIPS
 
