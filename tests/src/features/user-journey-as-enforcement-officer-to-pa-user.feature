@@ -33,9 +33,11 @@ Feature: Enforcement officer to Primary Authority
         # ENFORCEMENT NOTIFY
 
         When I click on the link "Send notification of enforcement action"
-        Then I expect that element "h1" contains the text "Organisation name"
-        When I click on the radio "Organisation name"
+        When I click on the radio ".form-radio"
+        And I add "Some action summary text" to the inputfield "#edit-action-summmary"
+        And I click on the radio ".form-radio"
         And I click on the link "Add a legal entity"
+        And I click on the radio "#edit-enforcement-type-proposed"
 
         # ADD LEGAL ENTITIES
 

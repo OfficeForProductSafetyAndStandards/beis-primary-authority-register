@@ -2,14 +2,12 @@
 'use strict';
 
 var pa11y = require('pa11y');
-
-var url = 'http://localhost:8111/dashboard';
+var url = process.env.PA11Y_URL;
 
 // Create a test instance with some default options
 var test = pa11y({
-    parameters: {
-        reporter: 'html'
-
+    options: {
+        reporter: 'csv'
     },
     // actions: [
     //     'set field #edit-name to par_helpdesk@example.com',
