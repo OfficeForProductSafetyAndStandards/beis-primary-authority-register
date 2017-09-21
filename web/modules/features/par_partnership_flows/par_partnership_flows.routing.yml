@@ -478,6 +478,13 @@ par_partnership_flows.partnership_application_organisation_contact:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+par_partnership_flows.partnership_application_partnership_save:
+  path: '/partnership/apply/partnership/save'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationPartnershipSave'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationPartnershipSave::titleCallback'
+  requirements:
+    _permission: 'manage my authorities'
 par_partnership_flows.partnership_application_details:
   path: '/partnership/apply/review'
   defaults:

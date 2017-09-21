@@ -54,14 +54,20 @@ steps:
       save: 9
       cancel: 1
   9:
+    route: par_partnership_flows.partnership_application_partnership_save
+    form_id: par_partnership_application_save
+    redirect:
+      save: 10
+      cancel: 1
+  10:
     route: par_partnership_flows.partnership_application_details
     form_id: par_partnership_application_details
     redirect:
-      save: 10
+      save: 11
       cancel: 1
   10:
     route: par_partnership_flows.partnership_application_invite
     form_id: par_partnership_invite
     redirect:
-      save: 10
+      save: 11
       cancel: 1
