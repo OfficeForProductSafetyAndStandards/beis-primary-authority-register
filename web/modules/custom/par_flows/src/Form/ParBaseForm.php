@@ -347,20 +347,16 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    *   The violations to set.
    */
   public function setFieldViolations($name, FormStateInterface &$form_state, EntityConstraintViolationListInterface $violations) {
-    if (!is_array($name)) {
-      $name = [$name];
-    }
+    $name = (array) $name;
 
     if ($violations) {
       foreach ($violations as $violation) {
-
         $fragment = $this->getFormElementPageAnchor($name, $form_state);
         $options = [
           'fragment' => $fragment,
         ];
 
         $label = end($name);
-
         $message = $this->t($violation->getMessage()->getUntranslatedString(), ['@field' => $label]);
 
         $url = Url::fromUri('internal:#', $options);
@@ -382,9 +378,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    *   The message to set for this element.
    */
   public function setElementError($name, FormStateInterface &$form_state, $message) {
-    if (!is_array($name)) {
-      $name = [$name];
-    }
+    $name = (array) $name;
 
     $fragment = $this->getFormElementPageAnchor($name, $form_state);
     $options = [
@@ -392,7 +386,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     ];
 
     $label = end($name);
-
     $message = $this->t($message, ['@field' => $label])->render();
 
     $url = Url::fromUri('internal:#', $options);
