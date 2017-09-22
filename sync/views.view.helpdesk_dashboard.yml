@@ -1,4 +1,4 @@
-uuid: ddef043f-0c9c-4907-a969-dab1238bf34e
+uuid: 96000516-8647-4f63-be9f-6f53899b788d
 langcode: en
 status: true
 dependencies:
@@ -13,8 +13,8 @@ dependencies:
     - serialization
     - user
     - views_data_export
-id: rd_super_helpdesk_dashboard
-label: '(deprecated) RD Super Helpdesk Dashboard'
+id: helpdesk_dashboard
+label: 'Helpdesk Dashboard'
 module: views
 description: ''
 tag: ''
@@ -240,7 +240,7 @@ display:
             alter_text: false
             text: ''
             make_link: true
-            path: '/dv/primary-authority-partnerships/{{ id }}'
+            path: '/partnership/{{ id }}/authority-details'
             absolute: false
             external: false
             replace_spaces: false
@@ -305,7 +305,7 @@ display:
             alter_text: false
             text: ''
             make_link: true
-            path: '/dv/business-partnerships/{{ id }}'
+            path: '/partnership/{{ id }}/organisation-details'
             absolute: false
             external: false
             replace_spaces: false
@@ -726,7 +726,7 @@ display:
             alter_text: false
             text: ''
             make_link: true
-            path: '/dv/rd-dashboard/invite/{{field_authority_person__target_id}}'
+            path: '/partnership/{{ id }}/authority-details'
             absolute: false
             external: false
             replace_spaces: false
@@ -919,6 +919,49 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.par_data_partnership.field_authority_person'
+  par_rd_helpdesk_dashboard_page:
+    display_plugin: page
+    id: par_rd_helpdesk_dashboard_page
+    display_title: Page
+    position: 1
+    display_options:
+      display_extenders: {  }
+      path: helpdesk
+      footer: {  }
+      defaults:
+        footer: false
+        empty: false
+      menu:
+        type: none
+        title: Dashboard
+        description: ''
+        expanded: false
+        parent: ''
+        weight: 1
+        context: '0'
+        menu_name: account
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: '<p>Sorry, there are no results for your search.</p>'
+          plugin_id: text_custom
+    cache_metadata:
+      max-age: 0
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - user.permissions
+      tags:
+        - 'config:field.storage.par_data_partnership.field_authority_person'
   rd_helpdesk_dashboard_csv_export:
     display_plugin: data_export
     id: rd_helpdesk_dashboard_csv_export
@@ -926,10 +969,11 @@ display:
     position: 2
     display_options:
       display_extenders: {  }
-      path: dv/rd-dashboard/csv-super
-      filename: rd-super-dashboard-export.csv
+      path: helpdesk/csv
+      filename: rd-dashboard-export.csv
       auth: {  }
       displays:
+        par_rd_helpdesk_dashboard_page: par_rd_helpdesk_dashboard_page
         default: '0'
       pager:
         type: none
@@ -1070,7 +1114,7 @@ display:
             alter_text: false
             text: ''
             make_link: true
-            path: '/dv/primary-authority-partnerships/{{ id }}'
+            path: '/partnership/{{ id }}/authority-details'
             absolute: false
             external: false
             replace_spaces: false
@@ -1122,140 +1166,6 @@ display:
           entity_type: par_data_authority
           entity_field: authority_name
           plugin_id: field
-        terms_authority_agreed:
-          id: terms_authority_agreed
-          table: par_partnerships_field_revision
-          field: terms_authority_agreed
-          relationship: none
-          group_type: group
-          admin_label: 'Primary Authority T&Cs Agreed'
-          label: 'PA T&Cs'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: '123'
-          hide_empty: false
-          empty_zero: true
-          hide_alter_empty: true
-          click_sort_column: value
-          type: boolean
-          settings:
-            format: default
-            format_custom_true: ''
-            format_custom_false: ''
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          entity_type: par_data_partnership
-          entity_field: terms_authority_agreed
-          plugin_id: field
-        partnership_info_agreed_authority:
-          id: partnership_info_agreed_authority
-          table: par_partnerships_field_data
-          field: partnership_info_agreed_authority
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 'Authority Partnership Agreed'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: boolean
-          settings:
-            format: default
-            format_custom_true: ''
-            format_custom_false: ''
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          entity_type: par_data_partnership
-          entity_field: partnership_info_agreed_authority
-          plugin_id: field
         organisation_name:
           id: organisation_name
           table: par_organisations_field_data
@@ -1269,7 +1179,7 @@ display:
             alter_text: false
             text: ''
             make_link: true
-            path: '/dv/business-partnerships/{{ id }}'
+            path: '/partnership/{{ id }}/organisation-details'
             absolute: false
             external: false
             replace_spaces: false
@@ -1321,6 +1231,241 @@ display:
           entity_type: par_data_organisation
           entity_field: organisation_name
           plugin_id: field
+        partnership_status:
+          id: partnership_status
+          table: par_partnerships_field_revision
+          field: partnership_status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Partnership Status'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: par_list_formatter
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: par_data_partnership
+          entity_field: partnership_status
+          plugin_id: field
+        terms_authority_agreed:
+          id: terms_authority_agreed
+          table: par_partnerships_field_revision
+          field: terms_authority_agreed
+          relationship: none
+          group_type: group
+          admin_label: 'Primary Authority T&Cs Agreed'
+          label: 'PA T&Cs'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: '123'
+          hide_empty: false
+          empty_zero: true
+          hide_alter_empty: true
+          click_sort_column: value
+          type: par_boolean_formatter
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: par_data_partnership
+          entity_field: terms_authority_agreed
+          plugin_id: field
+        par_combined_status_field:
+          id: par_combined_status_field
+          table: par_partnerships_field_data
+          field: par_combined_status_field
+          relationship: none
+          group_type: group
+          admin_label: 'PA Details'
+          label: 'PA Details'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          status_fields:
+            partnership_info_agreed_authority: partnership_info_agreed_authority
+            terms_authority_agreed: terms_authority_agreed
+            partnership_info_agreed_business: 0
+            terms_organisation_agreed: 0
+          status_on_label: Confirmed
+          status_off_label: 'Awaiting Review'
+          entity_type: par_data_partnership
+          plugin_id: par_partnerships_combined_status_field
+        document_completion:
+          id: document_completion
+          table: par_partnerships_revision
+          field: document_completion
+          relationship: none
+          group_type: group
+          admin_label: 'Primary Authority Document Percentage'
+          label: 'PA Docs'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          entity_type: par_data_partnership
+          plugin_id: par_partnership_revision_documents_completion_percentage
         terms_organisation_agreed:
           id: terms_organisation_agreed
           table: par_partnerships_field_revision
@@ -1370,11 +1515,8 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: boolean
-          settings:
-            format: default
-            format_custom_true: ''
-            format_custom_false: ''
+          type: par_boolean_formatter
+          settings: {  }
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -1388,14 +1530,14 @@ display:
           entity_type: par_data_partnership
           entity_field: terms_organisation_agreed
           plugin_id: field
-        partnership_info_agreed_business:
-          id: partnership_info_agreed_business
+        par_combined_status_field_1:
+          id: par_combined_status_field_1
           table: par_partnerships_field_data
-          field: partnership_info_agreed_business
+          field: par_combined_status_field
           relationship: none
           group_type: group
-          admin_label: ''
-          label: 'Business Partnership Agreed'
+          admin_label: 'Business Details'
+          label: 'Business Details'
           exclude: false
           alter:
             alter_text: false
@@ -1436,25 +1578,15 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: value
-          type: boolean
-          settings:
-            format: default
-            format_custom_true: ''
-            format_custom_false: ''
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
+          status_fields:
+            partnership_info_agreed_business: partnership_info_agreed_business
+            terms_organisation_agreed: terms_organisation_agreed
+            partnership_info_agreed_authority: 0
+            terms_authority_agreed: 0
+          status_on_label: Confirmed
+          status_off_label: 'Awaiting Review'
           entity_type: par_data_partnership
-          entity_field: partnership_info_agreed_business
-          plugin_id: field
+          plugin_id: par_partnerships_combined_status_field
     cache_metadata:
       max-age: -1
       contexts:
