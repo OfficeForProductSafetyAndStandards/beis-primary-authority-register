@@ -1,7 +1,0 @@
-name: PAR Flow Helpdesk Journey
-type: module
-description: The flow for the helpdesk journey.
-core: 8.x
-package: PAR
-dependencies:
-  - par_flows
