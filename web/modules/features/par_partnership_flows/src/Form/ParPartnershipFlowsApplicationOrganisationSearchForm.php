@@ -16,6 +16,11 @@ class ParPartnershipFlowsApplicationOrganisationSearchForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
+  protected $formItems = [
+    'par_data_organisation:organisation' => [
+      'organisation_name' => 'organisation_name',
+    ],
+  ];
   /**
    * {@inheritdoc}
    */
