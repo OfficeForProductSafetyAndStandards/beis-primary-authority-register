@@ -34,6 +34,7 @@ Feature: Enforcement officer to Primary Authority
 
         Then I expect that element "h3" contains the text "About the business"
         When I click on the link "Send notification of enforcement action"
+        And I expect that element "#edit-action-summmary" becomes visible
         And I click on the radio ".form-radio"
         And I add "Some action summary text" to the inputfield "#edit-action-summmary"
         And I click on the radio ".form-radio"
