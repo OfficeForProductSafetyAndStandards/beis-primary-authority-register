@@ -2,7 +2,6 @@
     "name": "TransformCore/beis-par-beta",
     "description": "The beta platform for BEIS PAR.",
     "type": "project",
-    "license": "",
     "repositories": [
         {
             "type": "git",
@@ -42,6 +41,7 @@
         "drupal/migrate_plus": "dev-4.x",
         "drupal/migrate_source_csv": "^2.0.0-rc2",
         "drupal/migrate_tools": "dev-4.x",
+        "drupal/no_autocomplete" : "~1.0.0",
         "drupal/pagerer": "~1.1.0",
         "drupal/password_policy": "~3.0.0",
         "drupal/password_strength": "2.0.0-alpha2",

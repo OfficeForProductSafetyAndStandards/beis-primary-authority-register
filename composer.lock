@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6024cc3e39aacdf050095a73e4b161e3",
+    "content-hash": "eed2c38aeeae3395cb51de41ec5fd91f",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -112,16 +112,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.36.12",
+            "version": "3.36.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "8dfd5056007909cffaa6a344a20b88716deba753"
+                "reference": "aadad22574042e76f5ae3d995cd94b5673dc9b80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8dfd5056007909cffaa6a344a20b88716deba753",
-                "reference": "8dfd5056007909cffaa6a344a20b88716deba753",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/aadad22574042e76f5ae3d995cd94b5673dc9b80",
+                "reference": "aadad22574042e76f5ae3d995cd94b5673dc9b80",
                 "shasum": ""
             },
             "require": {
@@ -188,7 +188,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-09-20T22:14:51+00:00"
+            "time": "2017-09-21T19:39:57+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -561,16 +561,16 @@
         },
         {
             "name": "consolidation/annotated-command",
-            "version": "2.6.1",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/annotated-command.git",
-                "reference": "7a634471471b913e63888b64b626b544799db282"
+                "reference": "5e22a86f53ab1417a6002234fe205e69645326b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/7a634471471b913e63888b64b626b544799db282",
-                "reference": "7a634471471b913e63888b64b626b544799db282",
+                "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/5e22a86f53ab1417a6002234fe205e69645326b8",
+                "reference": "5e22a86f53ab1417a6002234fe205e69645326b8",
                 "shasum": ""
             },
             "require": {
@@ -609,7 +609,7 @@
                 }
             ],
             "description": "Initialize Symfony Console commands from annotated command class methods.",
-            "time": "2017-09-18T21:45:28+00:00"
+            "time": "2017-09-18T22:52:16+00:00"
         },
         {
             "name": "consolidation/output-formatters",
@@ -2940,6 +2940,65 @@
                 "source": "http://cgit.drupalcode.org/migrate_tools"
             },
             "time": "2017-08-28 18:14:44"
+        },
+        {
+            "name": "drupal/no_autocomplete",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/no_autocomplete",
+                "reference": "8.x-1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/no_autocomplete-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "2db2df9b4a1261bf8a7c1332d8a1962fc11f0d75"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0",
+                    "datestamp": "1495486983",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "adriancid",
+                    "homepage": "https://www.drupal.org/user/1962106"
+                },
+                {
+                    "name": "dhruveshdtripathi",
+                    "homepage": "https://www.drupal.org/user/3083735"
+                },
+                {
+                    "name": "jaffaralia",
+                    "homepage": "https://www.drupal.org/user/1450720"
+                },
+                {
+                    "name": "rfay",
+                    "homepage": "https://www.drupal.org/user/30906"
+                }
+            ],
+            "description": "No browser autocomplete in key user forms.",
+            "homepage": "https://www.drupal.org/project/no_autocomplete",
+            "support": {
+                "source": "http://cgit.drupalcode.org/no_autocomplete"
+            }
         },
         {
             "name": "drupal/pagerer",
