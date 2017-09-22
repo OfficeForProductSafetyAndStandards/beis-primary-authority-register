@@ -216,32 +216,20 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
 
       foreach ($section_one_form_items_required as $form_item) {
         if (!$form_state->getValue($form_item)) {
-          $field_name = !empty($form['section_one'][$form_item]['#title']) ? $form['section_one'][$form_item]['#title']->render() : '';
-          $message = t('<a href="#edit-:field_id">The @field is required</a>', [
-            // Need the Markup::create as we have a link in the name and don't
-            // want to show the html of the link.
-            '@field' => Markup::create($field_name),
-            ':field_id' => str_replace('_', '-', $form_item),
-          ]);
-          $form_state->setErrorByName($form_item, $message);
+          $this->setElementError(['section_one', $form_item], $form_state, 'The @field is required');
         }
       }
 
       // Section two validation.
       if (!$form_state->getValue('business_regulated_by_one_authority')) {
-        $message = t('<a href="#edit-:field_id">You need to be authorised to submit an application</a>', [
-          ':field_id' => str_replace('_', '-', 'business_regulated_by_one_authority'),
-        ]);
-        $form_state->setErrorByName('business_regulated_by_one_authority', $message);
+        $this->setElementError('business_regulated_by_one_authority', $form_state, 'You need to be authorised to submit an application');
       }
 
       if ($form_state->getValue('business_regulated_by_one_authority') &&
         !$form_state->getValue('is_local_authority') &&
         !$form_state->getValue('business_informed_local_authority_still_regulates')) {
-        $message = t('<a href="#edit-:field_id">The business needs to be informed about local authority.</a>', [
-          ':field_id' => str_replace('_', '-', 'business_informed_local_authority_still_regulates'),
-        ]);
-        $form_state->setErrorByName('business_informed_local_authority_still_regulates', $message);
+        $this->setElementError('business_informed_local_authority_still_regulates', $form_state, 'The business needs to be informed about local authority.');
+
       }
     }
     elseif ($applicationType == 'coordinated') {
@@ -255,14 +243,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
 
       foreach ($form_items as $form_item) {
         if (!$form_state->getValue($form_item)) {
-          $field_name = !empty($form['section_one'][$form_item]['#title']) ? $form['section_one'][$form_item]['#title']->render() : '';
-          $message = t('<a href="#edit-:field_id">The @field is required</a>', [
-            // Need the Markup::create as we have a link in the name and don't
-            // want to show the html of the link.
-            '@field' => Markup::create($field_name),
-            ':field_id' => str_replace('_', '-', $form_item),
-          ]);
-          $form_state->setErrorByName($form_item, $message);
+          $this->setElementError(['section_one', $form_item], $form_state, 'The @field is required');
         }
       }
     }
