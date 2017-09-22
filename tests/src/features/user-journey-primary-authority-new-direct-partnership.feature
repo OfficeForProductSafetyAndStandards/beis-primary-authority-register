@@ -78,13 +78,13 @@ Feature: New Direct Partnership
 
      # LOGIN SCREEN
 
-        Given I am logged in as "par_business@example.com"
-        And I open the url "/dashboard"
-        When I click on the link "See your partnerships"
-        When I click on the button "Test Create Partnership"
-
-        # TERMS AND CONDITIONS SCREEN
-
+#        Given I am logged in as "par_business@example.com"
+#        And I open the url "/dashboard"
+#        When I click on the link "See your partnerships"
+#        When I click on the button "Test Create Partnership"
+#
+#        # TERMS AND CONDITIONS SCREEN
+#
 #        Then I expect that element "#par-flow-transition-business-terms" contains the text "Please review the new Primary Authority terms and conditions and confirm that you agree with them"
 #        And I click on the checkbox "#edit-terms-conditions"
 #        And I click on the button "#edit-save"

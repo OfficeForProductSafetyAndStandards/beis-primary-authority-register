@@ -34,39 +34,41 @@ Feature: Enforcement officer to Primary Authority
 
         Then I expect that element "h3" contains the text "About the business"
         When I click on the link "Send notification of enforcement action"
-        And I expect that element "#edit-action-summmary" becomes visible
         And I click on the radio ".form-radio"
+        And I click on the button "#edit-save"
+        And I expect that element "#edit-action-summmary" becomes visible
         And I add "Some action summary text" to the inputfield "#edit-action-summmary"
         And I click on the radio ".form-radio"
-        And I click on the link "Add a legal entity"
         And I click on the radio "#edit-enforcement-type-proposed"
+        And I click on the link "Add a legal entity"
+
 
         # ADD LEGAL ENTITIES
 
-        And I click on the button "#edit-save"
-        And I add "A Legal Entity" to the inputfield "#edit-registered-name"
-        And I select the option with the text "Sole Trader" for element "#edit-legal-entity-type"
-        And I click on the button "#edit-save"
+        And I add "A Legal Entity" to the inputfield "#edit-alternative-legal-entity"
+        When I click on the button "#edit-next"
+#        Then I expect that element "#par-enforcement-notice-raise" contains the text "A Legal Entity"
+#        And I select the option with the text "Sole Trader" for element "#edit-legal-entity-type"
+#        And I click on the button "#edit-save"
 
          # ADD ENFORCEMENT ACTION
 
-        And I add "Summary" to the inputfield "#summary"
         And I click on the link "Add an enforcement action"
-        When I add "Title" to the inputfield "#title"
-        And I click on the radio "Fire safety"
-        When I add "Details" to the inputfield "#details"
-        When I click on the radio "#enforcement-action-proposed"
-        And I click on the link "Continue"
+        When I add "Enforcement action title" to the inputfield "#edit-title-of-action"
+#        And I click on the radio ".form-label*=Explosives licensing"
+        And I add "Enforcement action details" to the inputfield "#edit-details"
+        And I click on the button "#edit-next"
+#        Then I expect that element "#par-enforcement-notice-raise" contains the text "Enforcement action title"
 
         # CONFRIMATION SUMMARY CHECK ALL DETAILS
 
-        And I press "Done"
+        And I click on the button "#edit-next"
         When I click on the link "Log out"
 
         # LOGIN AS PA USER TO CHECK MESSAGING
 
-        And I am logged in as "par_authority@example.com"
-        When I click on the link "See all messages"
+#        And I am logged in as "par_authority@example.com"
+#        When I click on the link "See all messages"
 
         # MESSAGES SCREEN
 
