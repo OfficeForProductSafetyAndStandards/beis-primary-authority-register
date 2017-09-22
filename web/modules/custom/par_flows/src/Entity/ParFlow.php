@@ -133,7 +133,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    * {@inheritdoc}
    */
   public function getDefaultTitle() {
-    return $this->t($this->default_title);
+    return $this->default_title;
   }
 
   /**
