@@ -200,6 +200,9 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
 
     // Save the value for the confirmation field.
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    $par_data_organisation = current($par_data_partnership->getOrganisation());
+    $par_data_person = current($par_data_organisation->getPerson());
+
     if ($par_data_partnership && !$par_data_partnership->get('partnership_info_agreed_authority')->getString()) {
 
       $par_data_partnership->set('partnership_info_agreed_authority', $this->getTempDataValue('partnership_info_agreed_authority'));
@@ -217,6 +220,8 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
           ->error($message, $replacements);
       }
     }
+
+    $form_state->setRedirect($this->getFlow()->getNextRoute('save'), ['par_data_partnership' => $par_data_partnership->id(), 'par_data_person' => $par_data_person->id()]);
   }
 
 }
