@@ -6,11 +6,13 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Render\Renderer;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\SessionManagerInterface;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Url;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParBaseInterface;
 use Drupal\par_flows\ParFlowException;
@@ -335,9 +337,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   }
 
   /**
-   * Set the errors for a given field.
+   * Set the errors for a given field based on entity violations.
    *
-   * @param string $name
+   * @param mixed $name
    *   The name of the form element to set the error for.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state to set the error on.
@@ -345,19 +347,51 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    *   The violations to set.
    */
   public function setFieldViolations($name, FormStateInterface &$form_state, EntityConstraintViolationListInterface $violations) {
+    $name = (array) $name;
+
     if ($violations) {
       foreach ($violations as $violation) {
+        $fragment = $this->getFormElementPageAnchor($name, $form_state);
         $options = [
-          'fragment' => $this->getFormElementPageAnchor($name, $form_state)
+          'fragment' => $fragment,
         ];
 
-        $message = $this->t($violation->getMessage()->getUntranslatedString(), ['@field' => $name]);
+        $label = end($name);
+        $message = $this->t($violation->getMessage()->getUntranslatedString(), ['@field' => $label]);
 
-        $link = $this->getFlow()->getLinkByStep($this->getFlow()->getCurrentStep(), [], $options)->setText($message)->toString();
+        $url = Url::fromUri('internal:#', $options);
+        $link = Link::fromTextAndUrl($message, $url)->toString();
 
-        $form_state->setErrorByName($name, $link);
+        $form_state->setErrorByName($label, $link);
       }
     }
+  }
+
+  /**
+   * Set the errors for a given field.
+   *
+   * @param mixed $name
+   *   The name of the form element to set the error for.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state to set the error on.
+   * @param string $message
+   *   The message to set for this element.
+   */
+  public function setElementError($name, FormStateInterface &$form_state, $message) {
+    $name = (array) $name;
+
+    $fragment = $this->getFormElementPageAnchor($name, $form_state);
+    $options = [
+      'fragment' => $fragment,
+    ];
+
+    $label = end($name);
+    $message = $this->t($message, ['@field' => $label])->render();
+
+    $url = Url::fromUri('internal:#', $options);
+    $link = Link::fromTextAndUrl($message, $url)->toString();
+
+    $form_state->setErrorByName($label, $link);
   }
 
   /**
@@ -422,17 +456,16 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   /**
    * Find form element anchor/HTML id.
    *
-   * @param string $name
-   *   The name of the form element to set the error for.
+   * @param array $element_key
+   *   The key of the form element to set the error for.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state to set the error on.
    *
    * @return string $form_element_page_anchor
    *   Form element/wrapper anchor ID.
    */
-  public function getFormElementPageAnchor($name, FormStateInterface &$form_state) {
-
-    $form_element = &NestedArray::getValue($form_state->getCompleteForm(), [$name]);
+  public function getFormElementPageAnchor($element_key, FormStateInterface &$form_state) {
+    $form_element = &NestedArray::getValue($form_state->getCompleteForm(), $element_key);
 
     // Catch some potential FAPI mistakes.
     if (!isset($form_element['#type']) ||
