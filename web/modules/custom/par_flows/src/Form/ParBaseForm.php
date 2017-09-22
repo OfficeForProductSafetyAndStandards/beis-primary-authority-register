@@ -153,7 +153,11 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * Title callback default.
    */
   public function titleCallback() {
-    return $this->t('Primary Authority Register');
+    if ($default_title = $this->getFlow()->getDefaultTitle()) {
+      return $default_title;
+    }
+
+    return $this->getDefaultTitle();
   }
 
   /**

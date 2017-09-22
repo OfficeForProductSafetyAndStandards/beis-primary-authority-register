@@ -43,6 +43,17 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function titleCallback() {
+    if ($this->getFlowName() === 'partnership_application') {
+      return 'New Partnership Application';
+    }
+
+    return parent::titleCallback();
+  }
+
+  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
