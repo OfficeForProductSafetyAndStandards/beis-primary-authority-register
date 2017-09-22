@@ -364,7 +364,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
         $message = $this->t($violation->getMessage()->getUntranslatedString(), ['@field' => $label]);
 
         $url = Url::fromUri('internal:#', $options);
-        $link = Link::fromTextAndUrl($message, $url);
+        $link = Link::fromTextAndUrl($message, $url)->toString();
 
         $form_state->setErrorByName($label, $link);
       }
@@ -393,10 +393,10 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     $label = end($name);
 
-    $message = $this->t($message, ['@field' => $label]);
+    $message = $this->t($message, ['@field' => $label])->render();
 
     $url = Url::fromUri('internal:#', $options);
-    $link = Link::fromTextAndUrl($message, $url);
+    $link = Link::fromTextAndUrl($message, $url)->toString();
 
     $form_state->setErrorByName($label, $link);
   }
