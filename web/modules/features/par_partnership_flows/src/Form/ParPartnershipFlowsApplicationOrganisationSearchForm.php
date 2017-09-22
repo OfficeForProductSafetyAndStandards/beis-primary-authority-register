@@ -16,6 +16,11 @@ class ParPartnershipFlowsApplicationOrganisationSearchForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
+  protected $formItems = [
+    'par_data_organisation:organisation' => [
+      'organisation_name' => 'organisation_name',
+    ],
+  ];
   /**
    * {@inheritdoc}
    */
@@ -53,17 +58,6 @@ class ParPartnershipFlowsApplicationOrganisationSearchForm extends ParBaseForm {
     ];
 
     return parent::buildForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
-
-    if (!$form_state->getValue('is_local_authority')) {
-      $this->setElementError('organisation_name', $form_state, 'Please enter an organisation name.');
-    }
   }
 
   /**
