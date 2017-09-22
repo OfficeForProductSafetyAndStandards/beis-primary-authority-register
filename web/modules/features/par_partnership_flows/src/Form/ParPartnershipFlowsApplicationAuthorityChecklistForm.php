@@ -3,7 +3,7 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\Core\Render\Markup;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
@@ -133,7 +133,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
           'disabled' => [
             'input[name="business_regulated_by_one_authority"]' => ['value' => 0],
             'input[name="is_local_authority"]' => ['value' => 1],
-          ]
+          ],
         ],
       ];
 
@@ -185,13 +185,51 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
-  }
+    // Load application type from previous step.
+    $applicationType = $this->getDefaultValues('application_type', '', 'par_partnership_application_type');
+    if ($applicationType == 'direct') {
+      // Section one validation.
+      // All items in section needs to be ticked before they can proceed.
+      $section_one_form_items_required = [
+        'business_eligible_for_partnership',
+        'local_authority_suitable_for_nomination',
+        'written_summary_agreed',
+        'terms_organisation_agreed',
+      ];
 
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
+      foreach ($section_one_form_items_required as $form_item) {
+        if (!$form_state->getValue($form_item)) {
+          $this->setElementError(['section_one', $form_item], $form_state, 'The @field is required');
+        }
+      }
+
+      // Section two validation.
+      if (!$form_state->getValue('business_regulated_by_one_authority')) {
+        $this->setElementError('business_regulated_by_one_authority', $form_state, 'You need to be authorised to submit an application');
+      }
+
+      if ($form_state->getValue('business_regulated_by_one_authority') &&
+        !$form_state->getValue('is_local_authority') &&
+        !$form_state->getValue('business_informed_local_authority_still_regulates')) {
+        $this->setElementError('business_informed_local_authority_still_regulates', $form_state, 'The business needs to be informed about local authority.');
+
+      }
+    }
+    elseif ($applicationType == 'coordinated') {
+      // All items in section needs to be ticked before they can proceed.
+      $form_items = [
+        'coordinator_local_authority_suitable',
+        'suitable_nomination',
+        'written_summary_agreed',
+        'terms_local_authority_agreed',
+      ];
+
+      foreach ($form_items as $form_item) {
+        if (!$form_state->getValue($form_item)) {
+          $this->setElementError(['section_one', $form_item], $form_state, 'The @field is required');
+        }
+      }
+    }
   }
 
 }
