@@ -68,4 +68,4 @@ steps:
       save: 12
       cancel: 12
   12:
-    route: view.par_user_partnerships.partnerships_page
+    route: par_dashboards.dashboard
