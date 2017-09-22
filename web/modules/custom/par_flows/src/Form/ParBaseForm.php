@@ -345,8 +345,10 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    *   The form state to set the error on.
    * @param \Drupal\Core\Entity\EntityConstraintViolationListInterface $violations
    *   The violations to set.
+   * @param array $replacements
+   *   An optional array of message replacement arguments.
    */
-  public function setFieldViolations($name, FormStateInterface &$form_state, EntityConstraintViolationListInterface $violations) {
+  public function setFieldViolations($name, FormStateInterface &$form_state, EntityConstraintViolationListInterface $violations, $replacements = NULL) {
     $name = (array) $name;
 
     if ($violations) {
@@ -356,13 +358,19 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           'fragment' => $fragment,
         ];
 
-        $label = end($name);
-        $message = $this->t($violation->getMessage()->getUntranslatedString(), ['@field' => $label]);
+        $field_label = end($name);
+        if (!empty($replacements)) {
+          $arguments = is_string($replacements) ? ['@field' => $replacements] : $replacements;
+        }
+        else {
+          $arguments = ['@field' => $field_label];
+        }
+        $message = $this->t($violation->getMessage()->getUntranslatedString(), ['@field' => $field_label]);
 
         $url = Url::fromUri('internal:#', $options);
         $link = Link::fromTextAndUrl($message, $url)->toString();
 
-        $form_state->setErrorByName($label, $link);
+        $form_state->setErrorByName($field_label, $link);
       }
     }
   }
@@ -376,8 +384,10 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    *   The form state to set the error on.
    * @param string $message
    *   The message to set for this element.
+   * @param array $replacements
+   *   An optional array of message replacement arguments.
    */
-  public function setElementError($name, FormStateInterface &$form_state, $message) {
+  public function setElementError($name, FormStateInterface &$form_state, $message, $replacements = NULL) {
     $name = (array) $name;
 
     $fragment = $this->getFormElementPageAnchor($name, $form_state);
@@ -385,13 +395,19 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       'fragment' => $fragment,
     ];
 
-    $label = end($name);
-    $message = $this->t($message, ['@field' => $label])->render();
+    $field_label = end($name);
+    if (!empty($replacements)) {
+      $arguments = is_string($replacements) ? ['@field' => $replacements] : $replacements;
+    }
+    else {
+      $arguments = ['@field' => $field_label];
+    }
+    $message = $this->t($message, $arguments)->render();
 
     $url = Url::fromUri('internal:#', $options);
     $link = Link::fromTextAndUrl($message, $url)->toString();
 
-    $form_state->setErrorByName($label, $link);
+    $form_state->setErrorByName($field_label, $link);
   }
 
   /**
