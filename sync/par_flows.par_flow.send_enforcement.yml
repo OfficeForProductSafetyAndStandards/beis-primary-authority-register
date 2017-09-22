@@ -7,6 +7,7 @@ _core:
 id: send_enforcement
 label: 'Send Enforcement'
 description: 'The send operations for an enforcement notice.'
+save_method: end
 steps:
   1:
     route: par_enforcement_flows.send

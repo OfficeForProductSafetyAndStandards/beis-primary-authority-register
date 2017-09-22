@@ -7,6 +7,7 @@ _core:
 id: raise_enforcement
 label: 'Raise Enforcement'
 description: 'The creation flow of an enforcement notice.'
+save_method: end
 steps:
   1:
     route: par_enforcement_flows.partnership_page

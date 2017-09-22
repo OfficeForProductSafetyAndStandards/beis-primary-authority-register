@@ -7,6 +7,7 @@ _core:
 id: partnership_application
 label: 'Partnership Application Flow'
 description: ''
+save_method: end
 steps:
   1:
     route: par_partnership_flows.partnership_application_start
