@@ -10,6 +10,13 @@ use Drupal\user\Entity\User;
 trait ParControllerTrait {
 
   /**
+   * Default page title.
+   *
+   * @var \Drupal\Core\StringTranslation\TranslatableMarkup
+   */
+  protected $defaultTitle = 'Primary Authority Register';
+
+  /**
    * The account for the current logged in user.
    *
    * @var \Drupal\user\Entity\User
@@ -61,10 +68,17 @@ trait ParControllerTrait {
   }
 
   /**
+   * Returns the default title.
+   */
+  public function getDefaultTitle() {
+    return $this->defaultTitle;
+  }
+
+  /**
    * Title callback default.
    */
   public function titleCallback() {
-    return $this->t('Primary Authority Register');
+    return $this->getDefaultTitle();
   }
 
 }

@@ -9,7 +9,6 @@ use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
-//use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\user\Entity\User;
 
@@ -41,6 +40,17 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
    */
   public function getFormId() {
     return 'par_partnership_contact';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function titleCallback() {
+    if ($this->getFlowName() === 'partnership_application') {
+      return 'New Partnership Application';
+    }
+
+    return parent::titleCallback();
   }
 
   /**
@@ -88,7 +98,6 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
     $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
 
-    // The Person's title.
     $form['salutation'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Title'),
@@ -107,28 +116,25 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       '#default_value' => $this->getDefaultValues("last_name"),
     ];
 
-    // The Person's work phone number.
     $form['work_phone'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Work phone'),
       '#default_value' => $this->getDefaultValues("work_phone"),
     ];
 
-    // The Person's work phone number.
     $form['mobile_phone'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Mobile phone (optional)'),
       '#default_value' => $this->getDefaultValues("mobile_phone"),
     ];
 
-    // The Person's work phone number.
     $form['email'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Email'),
       '#default_value' => $this->getDefaultValues("email"),
     ];
 
-    // Preferred contact methods.
+    // Get preferred contact methods labels.
     $contact_options = [
       'communication_email' => $person_bundle->getBooleanFieldLabel('communication_email', 'on'),
       'communication_phone' => $person_bundle->getBooleanFieldLabel('communication_phone', 'on'),
@@ -190,7 +196,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
 
       if ($par_data_person->save()) {
-        // only delete the form data for the par_partnership_contact form.
+        // Only delete the form data for the par_partnership_contact form.
         $this->deleteFormTempData('par_partnership_contact');
       }
       else {

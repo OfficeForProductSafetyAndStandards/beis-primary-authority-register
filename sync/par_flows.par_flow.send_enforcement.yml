@@ -6,6 +6,7 @@ _core:
   default_config_hash: FvJIXxuKl22aRBxL400EfkgRjw-EIk-KIEoegvmKW1M
 id: send_enforcement
 label: 'Send Enforcement'
+default_title: null
 description: 'The send operations for an enforcement notice.'
 save_method: end
 steps:

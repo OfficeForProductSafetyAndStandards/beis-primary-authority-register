@@ -1,4 +1,0 @@
-access par journey transition business:
-  title: 'Access PAR Transition Journey Business'
-  description: 'A permission to allow access to all the steps of the first journey for the transition site.'
-  restrict access: TRUE

@@ -53,6 +53,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   public function __construct(ConfigEntityStorageInterface $flow_storage, ParDataManagerInterface $par_data_manager, AccountInterface $current_user) {
     $this->flowStorage = $flow_storage;
     $this->parDataManager = $par_data_manager;
+    $this->setCurrentUser();
     $this->setCurrentUser($current_user);
 
     // If no flow entity exists throw a build error.
@@ -77,7 +78,11 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
    * Title callback default.
    */
   public function titleCallback() {
-    return $this->t('Primary Authority Register');
+    if ($default_title = $this->getFlow()->getDefaultTitle()) {
+      return $default_title;
+    }
+
+    return $this->getDefaultTitle();
   }
 
   /**

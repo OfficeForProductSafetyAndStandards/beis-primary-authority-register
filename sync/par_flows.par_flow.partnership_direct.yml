@@ -6,6 +6,7 @@ _core:
   default_config_hash: l1NTmlxLbZ0o-ATrmNR2sRxXuNoTnW5RNmk6MJsd3is
 id: partnership_direct
 label: 'Direct Partnership Flow'
+default_title: null
 description: ''
 save_method: step
 steps:

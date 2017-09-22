@@ -6,6 +6,7 @@ _core:
   default_config_hash: 0MhuOpsNBzCFAQKclwNkdpas_PeKHlZteJgYbAqH6ek
 id: partnership_coordinated
 label: 'Coordinated Partnership Flow'
+default_title: null
 description: ''
 save_method: step
 steps:

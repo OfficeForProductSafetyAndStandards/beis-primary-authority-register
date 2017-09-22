@@ -4,6 +4,7 @@ namespace Drupal\par_flows\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\Core\Link;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_flows\ParDefaultActionsTrait;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
@@ -39,6 +40,7 @@ use Drupal\par_flows\ParRedirectTrait;
  *   config_export = {
  *     "id",
  *     "label",
+ *     "default_title",
  *     "description",
  *     "save_method",
  *     "steps"
@@ -47,6 +49,7 @@ use Drupal\par_flows\ParRedirectTrait;
  */
 class ParFlow extends ConfigEntityBase implements ParFlowInterface {
 
+  use StringTranslationTrait;
   use ParRedirectTrait;
   use ParDefaultActionsTrait;
 
@@ -66,6 +69,13 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    * @var string
    */
   protected $label;
+
+  /**
+   * The default page title for the flow.
+   *
+   * @var string
+   */
+  protected $default_title;
 
   /**
    * A brief description of this flow.
@@ -117,6 +127,13 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getDescription() {
     return $this->description;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDefaultTitle() {
+    return $this->default_title;
   }
 
   /**
