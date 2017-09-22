@@ -175,23 +175,6 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
       ];
     }
 
-    $form['actions']['save'] = [
-      '#type' => 'submit',
-      '#name' => 'save',
-      '#value' => $this->t('Continue'),
-    ];
-
-    $form['actions']['cancel'] = [
-      '#type' => 'submit',
-      '#name' => 'cancel',
-      '#value' => $this->t('Cancel'),
-      '#submit' => ['::cancelForm'],
-      '#limit_validation_errors' => [],
-      '#attributes' => [
-        'class' => ['btn-link'],
-      ],
-    ];
-
     $this->addCacheableDependency($applicationType);
 
     return parent::buildForm($form, $form_state);
@@ -208,15 +191,15 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
       // Section one validation.
       // All items in section needs to be ticked before they can proceed.
       $section_one_form_items_required = [
-        'business_eligible_for_partnership',
-        'local_authority_suitable_for_nomination',
-        'written_summary_agreed',
-        'terms_organisation_agreed',
+        'business_eligible_for_partnership' => 'the business is eligible',
+        'local_authority_suitable_for_nomination' => 'the local authority is suitable for nomination',
+        'written_summary_agreed' => 'a written summary has been agreed',
+        'terms_organisation_agreed' => 'the terms have been agreed',
       ];
 
-      foreach ($section_one_form_items_required as $form_item) {
+      foreach ($section_one_form_items_required as $form_item => $replacement) {
         if (!$form_state->getValue($form_item)) {
-          $this->setElementError(['section_one', $form_item], $form_state, 'The @field is required');
+          $this->setElementError(['section_one', $form_item], $form_state, 'Please confirm that @field', $replacement);
         }
       }
 
@@ -235,15 +218,15 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
     elseif ($applicationType == 'coordinated') {
       // All items in section needs to be ticked before they can proceed.
       $form_items = [
-        'coordinator_local_authority_suitable',
-        'suitable_nomination',
-        'written_summary_agreed',
-        'terms_local_authority_agreed',
+        'coordinator_local_authority_suitable' => 'the business is eligible',
+        'suitable_nomination' => 'the coordinator is suitable for nomination',
+        'written_summary_agreed' => 'a written summary has been agreed',
+        'terms_organisation_agreed' => 'the terms have been agreed',
       ];
 
-      foreach ($form_items as $form_item) {
+      foreach ($form_items as $form_item => $replacement) {
         if (!$form_state->getValue($form_item)) {
-          $this->setElementError(['section_one', $form_item], $form_state, 'The @field is required');
+          $this->setElementError(['section_one', $form_item], $form_state, 'The @field is required', $replacement);
         }
       }
     }

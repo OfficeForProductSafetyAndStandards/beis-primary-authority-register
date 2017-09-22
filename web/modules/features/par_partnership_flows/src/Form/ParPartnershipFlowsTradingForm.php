@@ -77,18 +77,6 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
       '#description' => $this->t("Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State any trading names used by the organisation."),
     ];
 
-    $form['save'] = [
-      '#type' => 'submit',
-      '#name' => 'save',
-      '#value' => t('Save'),
-    ];
-
-    $cancel_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
-    $form['cancel'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $cancel_link]),
-    ];
-
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
 

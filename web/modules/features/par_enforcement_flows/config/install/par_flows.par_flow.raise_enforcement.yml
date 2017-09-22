@@ -3,6 +3,7 @@ dependencies: {  }
 id: raise_enforcement
 label: 'Raise Enforcement'
 description: 'The creation flow of an enforcement notice.'
+save_method: 'end'
 steps:
   1:
     route: par_enforcement_flows.partnership_page
@@ -10,8 +11,7 @@ steps:
       advice: 2
       inspection_plans: 3
       raise: 4
-      done: 8
-      partnerships: 9
+      done: 9
   2:
     route: par_enforcement_flows.advice_view
     redirect:
@@ -42,10 +42,12 @@ steps:
     redirect:
       next: 5
       cancel: 5
-      file_upload: 11
+      upload: 11
   7:
     route: par_enforcement_flows.raise_confirm
     form_id: par_enforcement_notice_raise_confirm
+    redirect:
+      save: 9
   8:
     route: par_dashboards.dashboard
   9:

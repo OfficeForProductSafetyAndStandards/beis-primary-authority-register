@@ -60,22 +60,6 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
       '#description' => 'Include any information you feel may be useful to enforcing authorities, for example describe the areas of regulation where your partnership is active.',
     ];
 
-    $form['actions']['save'] = [
-      '#type' => 'submit',
-      '#name' => 'save',
-      '#value' => $this->t($par_data_partnership ? 'Save' : 'Continue'),
-    ];
-
-    $form['actions']['cancel'] = [
-      '#type' => 'submit',
-      '#name' => 'cancel',
-      '#value' => $this->t('Cancel'),
-      '#submit' => ['::cancelForm'],
-      '#attributes' => [
-        'class' => ['btn-link']
-      ],
-    ];
-
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
 

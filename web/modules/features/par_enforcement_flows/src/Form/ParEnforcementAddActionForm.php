@@ -67,18 +67,6 @@ class ParEnforcementAddActionForm extends ParBaseForm {
       '#suffix' => '</div></br>',
     ];
 
-    $form['next'] = [
-      '#type' => 'submit',
-      '#name' => 'next',
-      '#value' => $this->t('Continue'),
-    ];
-
-    $cancel_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
-    $form['cancel'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $cancel_link]),
-    ];
-
     return parent::buildForm($form, $form_state);
   }
 
