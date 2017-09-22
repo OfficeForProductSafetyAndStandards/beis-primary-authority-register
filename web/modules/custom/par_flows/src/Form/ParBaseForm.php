@@ -2,17 +2,18 @@
 
 namespace Drupal\par_flows\Form;
 
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Renderer;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\SessionManagerInterface;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Url;
 use Drupal\par_data\ParDataManagerInterface;
+use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\ParBaseInterface;
+use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParFlowException;
 use Drupal\user\PrivateTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -30,6 +31,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   use RefinableCacheableDependencyTrait;
   use ParDisplayTrait;
   use StringTranslationTrait;
+  use ParControllerTrait;
 
   /**
    * The Drupal session manager.
@@ -39,25 +41,11 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   private $sessionManager;
 
   /**
-   * The current user object.
-   *
-   * @var \Drupal\Core\Session\AccountInterface
-   */
-  protected $currentUser;
-
-  /**
    * The flow entity storage class, for loading flows.
    *
    * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
    */
   protected $flowStorage;
-
-  /**
-   * The PAR data manager for acting upon PAR Data.
-   *
-   * @var \Drupal\par_data\ParDataManagerInterface
-   */
-  protected $parDataManager;
 
   /**
    * The private temporary storage for persisting multi-step form data.
@@ -99,7 +87,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    *
    * @var array
    */
-  protected $ignoreValues = ['save', 'next', 'cancel'];
+  protected $ignoreValues = ['save', 'done', 'next', 'cancel'];
 
   /**
    * List the mapping between the entity field and the form field.
@@ -135,7 +123,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   public function __construct(PrivateTempStoreFactory $temp_store_factory, SessionManagerInterface $session_manager, AccountInterface $current_user, ConfigEntityStorageInterface $flow_storage, ParDataManagerInterface $par_data_manager) {
     $this->sessionManager = $session_manager;
-    $this->currentUser = $current_user;
+    $this->setCurrentUser($current_user);
     $this->flowStorage = $flow_storage;
     $this->parDataManager = $par_data_manager;
     /** @var \Drupal\user\PrivateTempStore store */
@@ -173,26 +161,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   public function getCacheContexts() {
     return ['user.roles', 'route'];
-  }
-
-  /**
-   * Returns the logger channel specific to errors logged by PAR Forms.
-   *
-   * @return string
-   *   Get the logger channel to use.
-   */
-  public function getLoggerChannel() {
-    return 'par_flows';
-  }
-
-  /**
-   * Returns the PAR data manager.
-   *
-   * @return \Drupal\par_data\ParDataManagerInterface
-   *   Get the logger channel to use.
-   */
-  public function getParDataManager() {
-    return $this->parDataManager;
   }
 
   /**
@@ -286,13 +254,61 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $cache = array(
-      '#cache' => array(
+    // Only ever place a 'done' action by itself.
+    if ($this->getFlow()->hasAction('done')) {
+      $form['actions']['done'] = [
+        '#type' => 'submit',
+        '#name' => 'done',
+        '#value' => $this->t('Done'),
+        '#limit_validation_errors' => [],
+      ];
+    }
+    else {
+      // Only ever do one of either 'next', 'save', 'upload'.
+      if ($this->getFlow()->hasAction('upload')) {
+        $form['actions']['upload'] = [
+          '#type' => 'submit',
+          '#name' => 'upload',
+          '#value' => $this->t('Upload'),
+        ];
+      }
+      elseif ($this->getFlow()->hasAction('save')) {
+        $form['actions']['save'] = [
+          '#type' => 'submit',
+          '#name' => 'save',
+          '#submit' => ['::submitForm', '::saveForm'],
+          '#value' => $this->t('Save'),
+        ];
+      }
+      elseif ($this->getFlow()->hasAction('next')) {
+        $form['actions']['next'] = [
+          '#type' => 'submit',
+          '#name' => 'next',
+          '#value' => $this->t('Continue'),
+        ];
+      }
+
+      if ($this->getFlow()->hasAction('cancel')) {
+        $form['actions']['cancel'] = [
+          '#type' => 'submit',
+          '#name' => 'cancel',
+          '#value' => $this->t('Cancel'),
+          '#submit' => ['::cancelForm'],
+          '#limit_validation_errors' => [],
+          '#attributes' => [
+            'class' => ['btn-link']
+          ],
+        ];
+      }
+    }
+
+    $cache = [
+      '#cache' => [
         'contexts' => $this->getCacheContexts(),
         'tags' => $this->getCacheTags(),
         'max-age' => $this->getCacheMaxAge(),
-      ),
-    );
+      ],
+    ];
 
     return $form + $cache;
   }
@@ -335,29 +351,77 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   }
 
   /**
-   * Set the errors for a given field.
+   * Set the errors for a given field based on entity violations.
    *
-   * @param string $name
+   * @param mixed $name
    *   The name of the form element to set the error for.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state to set the error on.
    * @param \Drupal\Core\Entity\EntityConstraintViolationListInterface $violations
    *   The violations to set.
+   * @param array $replacements
+   *   An optional array of message replacement arguments.
    */
-  public function setFieldViolations($name, FormStateInterface &$form_state, EntityConstraintViolationListInterface $violations) {
+  public function setFieldViolations($name, FormStateInterface &$form_state, EntityConstraintViolationListInterface $violations, $replacements = NULL) {
+    $name = (array) $name;
+
     if ($violations) {
       foreach ($violations as $violation) {
+        $fragment = $this->getFormElementPageAnchor($name, $form_state);
         $options = [
-          'fragment' => $this->getFormElementPageAnchor($name, $form_state)
+          'fragment' => $fragment,
         ];
 
-        $message = $this->t($violation->getMessage()->getUntranslatedString(), ['@field' => $name]);
+        $field_label = end($name);
+        if (!empty($replacements)) {
+          $arguments = is_string($replacements) ? ['@field' => $replacements] : $replacements;
+        }
+        else {
+          $arguments = ['@field' => $field_label];
+        }
+        $message = $this->t($violation->getMessage()->getUntranslatedString(), ['@field' => $field_label]);
 
-        $link = $this->getFlow()->getLinkByStep($this->getFlow()->getCurrentStep(), [], $options)->setText($message)->toString();
+        $url = Url::fromUri('internal:#', $options);
+        $link = Link::fromTextAndUrl($message, $url)->toString();
 
-        $form_state->setErrorByName($name, $link);
+        $form_state->setErrorByName($field_label, $link);
       }
     }
+  }
+
+  /**
+   * Set the errors for a given field.
+   *
+   * @param mixed $name
+   *   The name of the form element to set the error for.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state to set the error on.
+   * @param string $message
+   *   The message to set for this element.
+   * @param array $replacements
+   *   An optional array of message replacement arguments.
+   */
+  public function setElementError($name, FormStateInterface &$form_state, $message, $replacements = NULL) {
+    $name = (array) $name;
+
+    $fragment = $this->getFormElementPageAnchor($name, $form_state);
+    $options = [
+      'fragment' => $fragment,
+    ];
+
+    $field_label = end($name);
+    if (!empty($replacements)) {
+      $arguments = is_string($replacements) ? ['@field' => $replacements] : $replacements;
+    }
+    else {
+      $arguments = ['@field' => $field_label];
+    }
+    $message = $this->t($message, $arguments)->render();
+
+    $url = Url::fromUri('internal:#', $options);
+    $link = Link::fromTextAndUrl($message, $url)->toString();
+
+    $form_state->setErrorByName($field_label, $link);
   }
 
   /**
@@ -372,16 +436,20 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   }
 
   /**
-   * Cancel submit handler to clear all the current flow temporary form data.
+   * Form saving handler.
    *
-   * @code
-   * $form['actions']['cancel'] = [
-   *   '#type' => 'submit',
-   *   '#name' => 'cancel',
-   *   '#value' => $this->t('Cancel'),
-   *   '#submit' => ['::cancelForm'],
-   * ];
-   * @endcode
+   * Required to be overwritten by implementing forms
+   * as will currently not auto-save.
+   *
+   * @param array $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   */
+  public function saveForm(array &$form, FormStateInterface $form_state) {
+
+  }
+
+  /**
+   * Cancel submit handler to clear all the current flow temporary form data.
    *
    * @param array $form
    * @param \Drupal\Core\Form\FormStateInterface $form_state
@@ -391,7 +459,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $this->deleteStore();
 
     // Go to cancel step.
-    $next = $this->getFlow()->getNextRoute('cancel');
+    $next = $this->getFlow()->getPrevRoute('cancel');
     $form_state->setRedirect($next, $this->getRouteParams());
   }
 
@@ -415,24 +483,23 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $this->deleteFormTempData($this->getFormId());
 
     // Go to cancel step.
-    $next = $this->getFlow()->getNextRoute('cancel');
+    $next = $this->getFlow()->getPrevRoute('cancel');
     $form_state->setRedirect($next, $this->getRouteParams());
   }
 
   /**
    * Find form element anchor/HTML id.
    *
-   * @param string $name
-   *   The name of the form element to set the error for.
+   * @param array $element_key
+   *   The key of the form element to set the error for.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state to set the error on.
    *
    * @return string $form_element_page_anchor
    *   Form element/wrapper anchor ID.
    */
-  public function getFormElementPageAnchor($name, FormStateInterface &$form_state) {
-
-    $form_element = &NestedArray::getValue($form_state->getCompleteForm(), [$name]);
+  public function getFormElementPageAnchor($element_key, FormStateInterface &$form_state) {
+    $form_element = &NestedArray::getValue($form_state->getCompleteForm(), $element_key);
 
     // Catch some potential FAPI mistakes.
     if (!isset($form_element['#type']) ||
@@ -492,7 +559,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     $message = 'Data item %item has been retrieved for user %user from the temporary storage %key';
     $replacements = [
-      '%user' => $this->currentUser->getAccountName(),
+      '%user' => $this->getCurrentUser()->getAccountName(),
       '%key' => $this->getFormKey(),
       '%item' => is_array($key) ? implode('|', $key) : $key,
     ];
@@ -557,7 +624,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     $message = $this->t('Data has been retrieved for user %user from the temporary storage %key');
     $replacements = [
-      '%user' => $this->currentUser->getAccountName(),
+      '%user' => $this->getCurrentUser()->getAccountName(),
       '%key' => $this->getFormKey(),
     ];
     $this->getLogger($this->getLoggerChannel())->debug($message, $replacements);
@@ -589,7 +656,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     $message = $this->t('Data has been set for user %user from the temporary storage %key');
     $replacements = [
-      '%user' => $this->currentUser->getUsername(),
+      '%user' => $this->getCurrentUser()->getUsername(),
       '%key' => $this->getFormKey(),
     ];
     $this->getLogger($this->getLoggerChannel())->debug($message, $replacements);
@@ -608,7 +675,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     $message = $this->t('Data has been deleted for user %user from the temporary storage %key');
     $replacements = [
-      '%user' => $this->currentUser->getUsername(),
+      '%user' => $this->getCurrentUser()->getUsername(),
       '%key' => $this->getFormKey(),
     ];
     $this->getLogger($this->getLoggerChannel())->debug($message, $replacements);
@@ -758,7 +825,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * Start a manual session for anonymous users.
    */
   public function startAnonymousSession() {
-    if ($this->currentUser->isAnonymous() && !isset($_SESSION['session_started'])) {
+    if ($this->getCurrentUser()->isAnonymous() && !isset($_SESSION['session_started'])) {
       $_SESSION['session_started'] = TRUE;
       $this->sessionManager->start();
     }

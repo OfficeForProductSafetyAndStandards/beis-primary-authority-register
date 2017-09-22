@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: B2oG15FTi5MIBCgz70orOWqenjmiIvgYa4z6sjNb2jY
+  default_config_hash: FvJIXxuKl22aRBxL400EfkgRjw-EIk-KIEoegvmKW1M
 id: send_enforcement
 label: 'Send Enforcement'
 description: 'The send operations for an enforcement notice.'

@@ -36,19 +36,6 @@ class ParEnforcementAddLegal extends ParBaseForm {
       '#required' => TRUE,
     ];
 
-    $form['next'] = [
-      '#type' => 'submit',
-      '#value' => t('Continue'),
-      '#name' => 'add_legal',
-    ];
-
-    // Go back to Action form.
-    $previous_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
-    $form['cancel'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $previous_link]),
-    ];
-
     return parent::buildForm($form, $form_state);
   }
 

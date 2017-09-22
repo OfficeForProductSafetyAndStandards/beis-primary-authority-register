@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: XG5ZZRfMsAmTzPNGVHInPHZowz4DnDQekaEzlw0t5dA
+  default_config_hash: l1NTmlxLbZ0o-ATrmNR2sRxXuNoTnW5RNmk6MJsd3is
 id: partnership_direct
 label: 'Direct Partnership Flow'
 description: ''
@@ -49,7 +49,7 @@ steps:
     route: par_partnership_flows.organisation_contact_add
     form_id: par_partnership_contact
     redirect:
-      save: 6
+      next: 6
       cancel: 1
   6:
     route: par_partnership_flows.organisation_contact_add_confirm

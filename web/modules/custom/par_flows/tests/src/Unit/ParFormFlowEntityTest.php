@@ -69,8 +69,6 @@ class ParFlowEntityTest extends UnitTestCase {
         ],
       ],
     );
-    $this->testFlow = new ParFlow($values, 'par_flow');
-
     $this->testFlow = $this->getMockBuilder('Drupal\par_flows\Entity\ParFlow')
       ->setMethods(['getCurrentRoute'])
       ->setConstructorArgs([$values, 'par_flow'])
