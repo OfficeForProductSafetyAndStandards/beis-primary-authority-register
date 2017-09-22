@@ -51,12 +51,6 @@ class ParPartnershipFlowsApplicationPartnershipSave extends ParBaseForm {
       '#markup' => 'This form is to self-submit.'
     ];
 
-    $form['actions']['save'] = [
-      '#type' => 'submit',
-      '#name' => 'save',
-      '#value' => $this->t('Save'),
-    ];
-
     // @todo implement self-submit.
 
     return parent::buildForm($form, $form_state);
