@@ -159,10 +159,11 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
     // Display all the legal entities along with the links for the allowed operations on these.
     $form['organisation_contacts'] = $this->renderSection('Contacts - Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed']);
 
-    // Add in the validation fields for the form.
-    if ($this->getFlowName() === 'partnership_application') {
-      // @todo Add checkboxes here.
-    }
+    $form['confirm'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('I confirm I have reviewed the partnership summary information above'),
+      '#disabled' => $par_data_partnership->get('partnership_info_agreed_authority')->getString(),
+    ];
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
