@@ -51,14 +51,6 @@ class ParPartnershipFlowsApplicationDetailsForm extends ParBaseForm {
       '#markup' => "This is basically the done state. A {$this->getDefaultValues('application_type', '', 'par_partnership_application_type')} partnership."
     ];
 
-    $form['actions']['save'] = [
-      '#type' => 'submit',
-      '#name' => 'save',
-      '#value' => t('Save'),
-    ];
-
-    $this->cancelLink($form);
-
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($partnership_bundle);
     $this->addCacheableDependency($person_bundle);

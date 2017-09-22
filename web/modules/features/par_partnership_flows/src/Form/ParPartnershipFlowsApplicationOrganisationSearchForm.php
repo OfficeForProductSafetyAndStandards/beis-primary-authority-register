@@ -41,14 +41,6 @@ class ParPartnershipFlowsApplicationOrganisationSearchForm extends ParBaseForm {
       '#default_value' => $this->getDefaultValues('organisation_name'),
     ];
 
-    $form['actions']['save'] = [
-      '#type' => 'submit',
-      '#name' => 'save',
-      '#value' => t('Continue'),
-    ];
-
-    $this->cancelLink($form);
-
     return parent::buildForm($form, $form_state);
   }
 
