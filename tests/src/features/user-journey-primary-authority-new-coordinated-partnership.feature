@@ -25,19 +25,18 @@ Feature: New Coordinated Partnership
 
         # CREATE NEW PARTNERSHIP FORM
 
-        When I click on the radio "#edit-application-type-direct"
+        When I click on the radio "#edit-application-type-coordinated"
         And I click on the button "#edit-next"
 
         # CONFIRMATIONS
 
-        Then I expect that element "#par-partnership-application-authority-checklist" contains the text "I am authorised to submit this application"
-        When I click on the checkbox "#edit-business-eligible-for-partnership"
-        And I click on the checkbox "#edit-local-authority-suitable-for-nomination"
+        When I click on the checkbox "#edit-coordinator-local-authority-suitable"
+        And I click on the checkbox "#edit-suitable-nomination"
         And I click on the checkbox "#edit-written-summary-agreed"
-        And I click on the checkbox "#edit-terms-organisation-agreed"
-        And I click on the radio "#edit-business-regulated-by-one-authority-1"
-        And I expect that element "#par-partnership-application-authority-checklist" contains the text "Is this your local authority?"
-        And I click on the radio "#edit-is-local-authority-1"
+        And I click on the checkbox "#edit-terms-local-authority-agreed"
+#        And I click on the radio "#edit-business-regulated-by-one-authority-1"
+#        And I expect that element "#par-partnership-application-authority-checklist" contains the text "Is this your local authority?"
+#        And I click on the radio "#edit-is-local-authority-1"
         And I click on the button "#edit-next"
 
         # ADD ABOUT THE PARTNERSHIP

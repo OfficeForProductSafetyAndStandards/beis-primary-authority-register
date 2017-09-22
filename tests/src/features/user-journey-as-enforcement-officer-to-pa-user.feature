@@ -1,4 +1,4 @@
-@ci
+@Pending
 Feature: Enforcement officer to Primary Authority
 
     Background:
@@ -14,7 +14,7 @@ Feature: Enforcement officer to Primary Authority
 
         And I open the url "/dashboard"
         Then I expect that element "#block-par-theme-content" contains the text "See all outstanding enforcement notices"
-        When I click on the link "See all outstanding enforcement notices"
+        When I click on the link "Search for a partnership"
 
         # PARTNERSHIP SEARCH
 
