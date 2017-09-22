@@ -111,19 +111,6 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       '#default_value' => $this->getDefaultValues('regulatory_functions', []),
     ];
 
-    $form['next'] = [
-      '#type' => 'submit',
-      '#name' => 'save',
-      '#value' => t('Save'),
-    ];
-
-    // Go back to Advice Documents list.
-    $previous_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
-    $form['cancel'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $previous_link]),
-    ];
-
     // Make sure to add the document cacheability data to this form.
     $this->addCacheableDependency($par_data_advice);
     $this->addCacheableDependency($advice_bundle);

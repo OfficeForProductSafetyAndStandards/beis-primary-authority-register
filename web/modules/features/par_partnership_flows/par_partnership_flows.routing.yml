@@ -333,18 +333,6 @@ par_partnership_flows.employee_number:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-par_partnership_flows.sector:
-  path: '/partnership/{par_data_partnership}/sector'
-  defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSectorForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSectorForm::titleCallback'
-  requirements:
-    _permission: 'manage my organisations'
-    par_data_partnership: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
 par_partnership_flows.business_size:
   path: '/partnership/{par_data_partnership}/business-size'
   defaults:

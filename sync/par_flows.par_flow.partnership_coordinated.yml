@@ -3,11 +3,12 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: KEKlg-gO6BCwC5f9CIRvMlob87NPB5fzjk7n0IQsYuk
+  default_config_hash: 0MhuOpsNBzCFAQKclwNkdpas_PeKHlZteJgYbAqH6ek
 id: partnership_coordinated
 label: 'Coordinated Partnership Flow'
 default_title: null
 description: ''
+save_method: step
 steps:
   1:
     route: par_partnership_flows.organisation_details
@@ -26,7 +27,7 @@ steps:
       edit_size: 13
       advice: 14
       inspection_plans: 15
-      done: 16
+      done: 17
   2:
     route: par_partnership_flows.about_business
     form_id: par_partnership_about_business
@@ -49,7 +50,7 @@ steps:
     route: par_partnership_flows.organisation_contact_add
     form_id: par_partnership_contact
     redirect:
-      save: 6
+      next: 6
       cancel: 1
   6:
     route: par_partnership_flows.organisation_contact_add_confirm
@@ -88,37 +89,31 @@ steps:
       save: 1
       cancel: 1
   12:
-    route: par_partnership_flows.sector
-    form_id: par_partnership_sector
-    redirect:
-      save: 1
-      cancel: 1
-  13:
     route: par_partnership_flows.business_size
     form_id: par_partnership_business_size
     redirect:
       save: 1
       cancel: 1
-  14:
+  13:
     route: par_partnership_flows.member_upload
     form_id: par_partnership_member_upload
     redirect:
       cancel: 1
-  15:
+  14:
     route: par_partnership_flows.member_upload_confirm
     form_id: par_partnership_member_upload_confirm
     redirect:
       save: 1
-      cancel: 14
-  17:
+      cancel: 13
+  15:
     route: par_partnership_flows.advice_view
     redirect:
       next: 1
       cancel: 1
-  18:
+  16:
     route: par_partnership_flows.inspection_plan_view
     redirect:
       next: 1
       cancel: 1
-  19:
+  17:
     route: view.par_user_partnerships.partnerships_page

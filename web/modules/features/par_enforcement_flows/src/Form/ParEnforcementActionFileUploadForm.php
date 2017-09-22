@@ -52,19 +52,6 @@ class ParEnforcementActionFileUploadForm extends ParBaseForm {
       ]
     ];
 
-    $form['next'] = [
-      '#type' => 'submit',
-      '#value' => t('Upload'),
-      '#name' => 'upload',
-    ];
-
-    // Go back to Action form.
-    $previous_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
-    $form['cancel'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $previous_link]),
-    ];
-
     return parent::buildForm($form, $form_state);
   }
 

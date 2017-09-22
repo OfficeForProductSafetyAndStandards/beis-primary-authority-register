@@ -26,6 +26,14 @@ interface ParFlowInterface {
   public function getDefaultTitle();
 
   /**
+   * Get the method used to save form data within this flow.
+   *
+   * @return string
+   *   The save method.
+   */
+  public function getSaveMethod();
+
+  /**
    * Get all steps in this flow.
    *
    * @return mixed

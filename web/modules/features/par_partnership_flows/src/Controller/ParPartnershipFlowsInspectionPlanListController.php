@@ -47,15 +47,6 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
 
     }
 
-    $build['save'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('next', $this->getRouteParams(), ['attributes' => ['class' => 'button']])
-          ->setText('Done')
-          ->toString(),
-      ]),
-    ];
-
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
 
