@@ -1,0 +1,118 @@
+diff --git a/core/lib/Drupal/Core/Entity/Query/Sql/Condition.php b/core/lib/Drupal/Core/Entity/Query/Sql/Condition.php
+index 22b9123..12f3a59 100644
+--- a/core/lib/Drupal/Core/Entity/Query/Sql/Condition.php
++++ b/core/lib/Drupal/Core/Entity/Query/Sql/Condition.php
+@@ -29,7 +29,6 @@ class Condition extends ConditionBase {
+    * {@inheritdoc}
+    */
+   public function compile($conditionContainer) {
+-
+     // If this is not the top level condition group then the sql query is
+     // added to the $conditionContainer object by this function itself. The
+     // SQL query object is only necessary to pass to Query::addField() so it
+@@ -100,6 +99,9 @@ public static function translateCondition(&$condition, SelectInterface $sql_quer
+       return;
+     }
+ 
++    // The database type of the current connection.
++    $db_type = \Drupal::database()->databaseType();
++
+     // Ensure that the default operator is set to simplify the cases below.
+     if (empty($condition['operator'])) {
+       $condition['operator'] = '=';
+@@ -107,15 +109,32 @@ public static function translateCondition(&$condition, SelectInterface $sql_quer
+     switch ($condition['operator']) {
+       case '=':
+         // If a field explicitly requests that queries should not be case
+-        // sensitive, use the LIKE operator, otherwise keep =.
+-        if ($case_sensitive === FALSE) {
++        // sensitive, use the LIKE operator for MySQL, SQLite, but
++        // otherwise keep =. For PostgreSQL, keep = and explicitly make
++        // the condition not case sensitive.
++        if ($case_sensitive === FALSE && $db_type === 'pgsql') {
++          $condition['where'] = 'LOWER(' . $condition['real_field'] . ') ' . $condition['operator'] . ' LOWER(:value)';
++          $condition['where_args'] = [
++            ':value' => $condition['value'],
++          ];
++        }
++        elseif ($case_sensitive === FALSE) {
+           $condition['value'] = $sql_query->escapeLike($condition['value']);
+           $condition['operator'] = 'LIKE';
+         }
++
+         break;
+       case '<>':
+         // If a field explicitly requests that queries should not be case
+-        // sensitive, use the NOT LIKE operator, otherwise keep <>.
++        // sensitive, use the NOT LIKE operator for MySQL, SQLite, but
++        // otherwise keep <>. For PostgreSQL, keep <> and explicitly make
++        // the condition not case sensitive.
++        if ($case_sensitive === FALSE && $db_type === 'pgsql') {
++          $condition['where'] = 'LOWER(' . $condition['real_field'] . ') ' . $condition['operator'] . ' LOWER(:value)';
++          $condition['where_args'] = [
++            ':value' => $condition['value'],
++          ];
++        }
+         if ($case_sensitive === FALSE) {
+           $condition['value'] = $sql_query->escapeLike($condition['value']);
+           $condition['operator'] = 'NOT LIKE';
+@@ -123,7 +142,18 @@ public static function translateCondition(&$condition, SelectInterface $sql_quer
+         break;
+       case 'STARTS_WITH':
+         if ($case_sensitive) {
+-          $condition['operator'] = 'LIKE BINARY';
++          // For PostgreSQL, explicitly make the condition not case
++          // sensitive.
++          if ($db_type === 'pgsql') {
++            $condition['operator'] = 'LIKE';
++            $condition['where'] = 'LOWER(' . $condition['real_field'] . ') ' . $condition['operator'] . ' LOWER(:value)';
++            $condition['where_args'] = [
++              ':value' => $condition['value'],
++            ];
++          }
++          else {
++            $condition['operator'] = 'LIKE BINARY';
++          }
+         }
+         else {
+           $condition['operator'] = 'LIKE';
+@@ -133,7 +163,18 @@ public static function translateCondition(&$condition, SelectInterface $sql_quer
+ 
+       case 'CONTAINS':
+         if ($case_sensitive) {
+-          $condition['operator'] = 'LIKE BINARY';
++          // For PostgreSQL, explicitly make the condition not case
++          // sensitive.
++          if ($db_type === 'pgsql') {
++            $condition['operator'] = 'LIKE';
++            $condition['where'] = 'LOWER(' . $condition['real_field'] . ') ' . $condition['operator'] . ' LOWER(:value)';
++            $condition['where_args'] = [
++              ':value' => $condition['value'],
++            ];
++          }
++          else {
++            $condition['operator'] = 'LIKE BINARY';
++          }
+         }
+         else {
+           $condition['operator'] = 'LIKE';
+@@ -143,7 +184,18 @@ public static function translateCondition(&$condition, SelectInterface $sql_quer
+ 
+       case 'ENDS_WITH':
+         if ($case_sensitive) {
+-          $condition['operator'] = 'LIKE BINARY';
++          // For PostgreSQL, explicitly make the condition not case
++          // sensitive.
++          if ($db_type === 'pgsql') {
++            $condition['operator'] = 'LIKE';
++            $condition['where'] = 'LOWER(' . $condition['real_field'] . ') ' . $condition['operator'] . ' LOWER(:value)';
++            $condition['where_args'] = [
++              ':value' => $condition['value'],
++            ];
++          }
++          else {
++            $condition['operator'] = 'LIKE BINARY';
++          }
+         }
+         else {
+           $condition['operator'] = 'LIKE';

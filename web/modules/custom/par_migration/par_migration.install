@@ -1,0 +1,46 @@
+<?php
+/**
+ * @file
+ * Installation hooks for par_data module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function par_migration_install() {
+  // Ensure the translation fields are created in the database.
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
+
+/**
+ * Update the PAR entities following migration v2 to assign partnerships to advice.
+ *
+ * Must be run after each iteraction of the PARv2 migration.
+ */
+function par_migration_update_8001() {
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+
+  $db = \Drupal::database();
+
+  // This is the query that needs to be run.
+  // SELECT ma.destid1 AS advice, mp.destid1 AS partnership FROM migrate_map_par_migration_advice_v2 AS ma
+  // LEFT JOIN migrate_map_par_migration_partnership AS mp on ma.sourceid2 = mp.sourceid1
+  // ORDER BY partnership DESC;
+  $query = $db->select('migrate_map_par_migration_advice_v2', 'ma');
+  $query->join('migrate_map_par_migration_partnership', 'mp', 'ma.sourceid2 = mp.sourceid1');
+  $query->fields('ma', ['destid1'])
+    ->fields('mp', ['destid1'])
+    ->orderBy('mp.destid1', 'DESC')
+    ->addTag('par_migration');
+
+  $results = $query->execute();
+
+  $par_data_partnership = NULL;
+  foreach ($results as $record) {
+    if (!$par_data_partnership || $par_data_partnership->id() !== $record->mp_destid1) {
+      $par_data_partnership = \Drupal\par_data\Entity\ParDataPartnership::load($record->mp_destid1);
+    }
+    $par_data_partnership->get('field_advice')->appendItem($record->destid1);
+    $par_data_partnership->save();
+  }
+}

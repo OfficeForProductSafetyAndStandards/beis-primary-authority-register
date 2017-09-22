@@ -57,22 +57,6 @@ class ParPartnershipFlowsApplicationTypeForm extends ParBaseForm {
       '#default_value' => $this->getDefaultValues('application_type'),
     ];
 
-    $form['actions']['save'] = [
-      '#type' => 'submit',
-      '#name' => 'save',
-      '#value' => $this->t('Save'),
-    ];
-
-    $form['actions']['cancel'] = [
-      '#type' => 'submit',
-      '#name' => 'cancel',
-      '#value' => $this->t('Cancel'),
-      '#submit' => ['::cancelForm'],
-      '#attributes' => [
-        'class' => ['btn-link']
-      ],
-    ];
-
     return parent::buildForm($form, $form_state);
   }
 

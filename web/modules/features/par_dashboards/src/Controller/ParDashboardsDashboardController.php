@@ -2,14 +2,60 @@
 
 namespace Drupal\par_dashboards\Controller;
 
-use Drupal\par_flows\Controller\ParBaseController;
-use Drupal\user\Entity\User;
-use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
+use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
+use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\par_data\ParDataManagerInterface;
+use Drupal\par_flows\ParControllerTrait;
+use Drupal\par_flows\ParDisplayTrait;
+use Drupal\par_flows\ParRedirectTrait;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A controller for all PAR Flow Transition pages.
  */
-class ParDashboardsDashboardController extends ParBaseController {
+class ParDashboardsDashboardController extends ControllerBase {
+
+  use ParRedirectTrait;
+  use RefinableCacheableDependencyTrait;
+  use ParDisplayTrait;
+  use ParControllerTrait;
+
+  /**
+   * Constructs a \Drupal\par_flows\Form\ParBaseForm.
+   *
+   * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $flow_storage
+   *   The flow entity storage handler.
+   * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
+   *   The current user object.
+   * @param \Drupal\Core\Session\AccountInterface $current_user
+   *   The current user object.
+   */
+  public function __construct(ConfigEntityStorageInterface $flow_storage, ParDataManagerInterface $par_data_manager, AccountInterface $current_user) {
+    $this->flowStorage = $flow_storage;
+    $this->parDataManager = $par_data_manager;
+    $this->setCurrentUser($current_user);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    $entity_manager = $container->get('entity.manager');
+    return new static(
+      $entity_manager->getStorage('par_flow'),
+      $container->get('par_data.manager'),
+      $container->get('current_user')
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    return ['user.roles'];
+  }
 
   /**
    * {@inheritdoc}
@@ -22,13 +68,12 @@ class ParDashboardsDashboardController extends ParBaseController {
    * {@inheritdoc}
    */
   public function content() {
-    $this->setCurrentUser();
     $build = [];
 
     // Your partnerships.
-    $partnerships =  $this->getParDataManager()->hasMembershipsByType($this->getUserAccount(), 'par_data_partnership');
-    $can_manage_partnerships = $this->getUserAccount()->hasPermission('manage my organisations') || $this->getUserAccount()->hasPermission('manage my authorities');
-    $can_create_partnerships = $this->getUserAccount()->hasPermission('apply for partnership');
+    $partnerships =  $this->getParDataManager()->hasMembershipsByType($this->getCurrentUser(), 'par_data_partnership');
+    $can_manage_partnerships = $this->getCurrentUser()->hasPermission('manage my organisations') || $this->getCurrentUser()->hasPermission('manage my authorities');
+    $can_create_partnerships = $this->getCurrentUser()->hasPermission('apply for partnership');
     if (($partnerships && $can_manage_partnerships) || $can_create_partnerships) {
       $build['partnerships'] = [
         '#type' => 'fieldset',
@@ -59,7 +104,7 @@ class ParDashboardsDashboardController extends ParBaseController {
 
     // Applications, partnerships that need completion.
     // @TODO NEED A WAY TO GET INCOMPLETE APLICATIONS (WE DO NOT RECORD THIS YET). NOT MVP.
-    if ($this->getUserAccount()->hasPermission('complete partnership organisation details')) {
+    if ($this->getCurrentUser()->hasPermission('complete partnership organisation details')) {
       $build['applications'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Applications'),
@@ -75,7 +120,7 @@ class ParDashboardsDashboardController extends ParBaseController {
     }
 
     // Partnerships search link.
-    if ($this->getUserAccount()->hasPermission('enforce organisation')) {
+    if ($this->getCurrentUser()->hasPermission('enforce organisation')) {
       $build['partnerships_find'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Find a partnership'),
@@ -92,7 +137,7 @@ class ParDashboardsDashboardController extends ParBaseController {
     }
 
     // Enforcement notices that need attention.
-    if ($this->getUserAccount()->hasPermission('enforce organisation')) {
+    if ($this->getCurrentUser()->hasPermission('enforce organisation')) {
       $build['messages'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Messages'),
@@ -109,7 +154,7 @@ class ParDashboardsDashboardController extends ParBaseController {
       ];
     }
 
-    return parent::build($build);
+    return $build;
   }
 
 }

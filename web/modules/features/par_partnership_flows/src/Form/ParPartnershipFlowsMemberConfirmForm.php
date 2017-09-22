@@ -165,6 +165,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
         $row = $members[$i];
         $name = $this->getRowValue($row, $this->getColumn('par_data_organisation', 'organisation_name'));
 
+        $properties = [];
         if (!empty($name)) {
           $properties = [
             'trading_name' => [
@@ -198,6 +199,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
             '#title' => t('A match was found for @name', ['@name' => $name]),
             '#description' => t('Did you mean any of these organisations?'),
             '#options' => $radio_options + ['new' => "Add as a new organisation."],
+            '#default_value' => current(array_keys($radio_options)),
             '#required' => TRUE,
           ];
         }
@@ -211,19 +213,6 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
     }
 
     // @TODO Automatically submit the form if there are no members that require attention.
-
-    $form['save'] = [
-      '#type' => 'submit',
-      '#name' => 'save',
-      '#value' => t('Save'),
-    ];
-
-    // Go back to Advice Documents list.
-    $previous_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
-    $form['cancel'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $previous_link]),
-    ];
 
     return parent::buildForm($form, $form_state);
   }

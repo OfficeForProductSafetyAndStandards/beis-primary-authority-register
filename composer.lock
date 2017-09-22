@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c2abf5338f5e9863f60cc00bbf0cf9f0",
+    "content-hash": "6024cc3e39aacdf050095a73e4b161e3",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -112,16 +112,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.36.11",
+            "version": "3.36.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "fd0aacadab2f5ae4a43b91bccc164299c5cef7f0"
+                "reference": "8dfd5056007909cffaa6a344a20b88716deba753"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/fd0aacadab2f5ae4a43b91bccc164299c5cef7f0",
-                "reference": "fd0aacadab2f5ae4a43b91bccc164299c5cef7f0",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8dfd5056007909cffaa6a344a20b88716deba753",
+                "reference": "8dfd5056007909cffaa6a344a20b88716deba753",
                 "shasum": ""
             },
             "require": {
@@ -188,7 +188,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-09-19T22:09:23+00:00"
+            "time": "2017-09-20T22:14:51+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -1760,7 +1760,8 @@
                 "patches_applied": {
                     "Allow migration lookups against sub-sets of migration map ids": "./patches/migration_id_map_sql_lookup_check.patch",
                     "Entity loadByProperty should skip access checks": "https://www.drupal.org/files/issues/2878483-18.patch",
-                    "Migration Lookup plugin does not return multiple values when matched and uses deprecated method": "https://www.drupal.org/files/issues/2890844-14.patch"
+                    "Migration Lookup plugin does not return multiple values when matched and uses deprecated method": "https://www.drupal.org/files/issues/2890844-14.patch",
+                    "PostgreSQL: deal with case insensitivity": "./patches/postgres_case_insensitivity-2464481.patch"
                 }
             },
             "autoload": {
