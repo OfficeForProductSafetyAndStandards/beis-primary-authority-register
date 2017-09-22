@@ -86,7 +86,6 @@ module:
   rdf: 0
   rest: 0
   robotstxt: 0
-  search: 0
   serialization: 0
   shortcut: 0
   sqlsrv: 0
