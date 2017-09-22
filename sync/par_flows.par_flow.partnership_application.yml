@@ -3,11 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-<<<<<<< HEAD
-  default_config_hash: _DV8iu_tSWDX03IrIkVlaKBste7ATXUf_KRISaTLoC0
-=======
-  default_config_hash: Pq1Z2M4wDE7ZxTl8oaYGYmikP6AAdV3Ck7lmtq37gfk
->>>>>>> 4c9e3397b03483c185bf1ce269c53e8de02d0be7
+  default_config_hash: NEcMjoqhDDc8gLoPG4QdiAAADsBT9a8ZeAIan12nuUo
 id: partnership_application
 label: 'Partnership Application Flow'
 default_title: 'New Partnership Application'
@@ -19,53 +15,61 @@ steps:
     form_id: par_authority_selection
     redirect:
       next: 2
-      cancel: 11
+      cancel: 12
   2:
     route: par_partnership_flows.partnership_application_type
     form_id: par_partnership_application_type
     redirect:
-      cancel: 11
+      cancel: 12
   3:
     route: par_partnership_flows.partnership_application_authority_checklist
     form_id: par_partnership_application_authority_checklist
     redirect:
-      cancel: 11
+      cancel: 12
   4:
     route: par_partnership_flows.partnership_application_partnership_about
     form_id: par_partnership_about
     redirect:
-      cancel: 11
+      cancel: 12
   5:
     route: par_partnership_flows.partnership_application_organisation_search
     form_id: par_partnership_application_organisation_search
     redirect:
-      cancel: 11
+      cancel: 12
   6:
     route: par_partnership_flows.partnership_application_organisation_search_confirm
     form_id: par_partnership_organisation_suggestion
     redirect:
-      cancel: 11
+      add: 7
+      save: 9
+      cancel: 12
   7:
     route: par_partnership_flows.partnership_application_organisation_address
     form_id: par_partnership_address
     redirect:
-      cancel: 11
+      cancel: 12
   8:
     route: par_partnership_flows.partnership_application_organisation_contact
     form_id: par_partnership_contact
     redirect:
-      cancel: 11
+      cancel: 12
   9:
-    route: par_partnership_flows.partnership_application_details
-    form_id: par_partnership_application_details
+    route: par_partnership_flows.partnership_application_partnership_save
+    form_id: par_partnership_application_save
     redirect:
       done: 10
-      cancel: 11
+      cancel: 12
   10:
+    route: par_partnership_flows.partnership_application_details
+    form_id: par_partnership_authority_details
+    redirect:
+      save: 11
+      cancel: 12
+  11:
     route: par_partnership_flows.partnership_application_invite
     form_id: par_partnership_invite
     redirect:
-      next: 10
-      cancel: 11
-  11:
+      save: 12
+      cancel: 12
+  12:
     route: view.par_user_partnerships.partnerships_page

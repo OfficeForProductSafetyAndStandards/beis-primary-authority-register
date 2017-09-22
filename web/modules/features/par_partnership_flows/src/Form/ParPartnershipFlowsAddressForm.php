@@ -90,6 +90,11 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $par_data_premises);
     $premises_bundle = $this->getParDataManager()->getParBundleEntity('par_data_premises');
 
+    $form['premises_id'] = [
+      '#type' => 'hidden',
+      '#value' => $this->getDefaultValues('premises_id', 'new'),
+    ];
+
     $form['info'] = [
       '#markup' => t('Edit your registered address'),
       '#prefix' => '<h2>',

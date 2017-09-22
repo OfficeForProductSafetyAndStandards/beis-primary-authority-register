@@ -1,8 +1,0 @@
-name: (deprecated) PAR Flow Transition Journey 3 - Coordinator
-type: module
-description: The flow for the coordinator user Journey.
-core: 8.x
-package: PAR
-dependencies:
-  - par_flows
-  - par_flow_transition_business

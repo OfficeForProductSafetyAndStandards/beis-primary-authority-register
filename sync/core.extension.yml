@@ -55,15 +55,10 @@ module:
   page_cache: 0
   pagerer: 0
   par_ckeditor: 0
-  par_components: 0
   par_dashboards: 0
   par_data: 0
   par_data_config: 0
   par_enforcement_flows: 0
-  par_flow_helpdesk: 0
-  par_flow_transition_business: 0
-  par_flow_transition_coordinator: 0
-  par_flow_transition_partnership_details: 0
   par_flows: 0
   par_header: 0
   par_invite: 0
@@ -72,7 +67,6 @@ module:
   par_migration_scripts: 0
   par_partnership_flows: 0
   par_roles: 0
-  par_styleguide: 0
   par_validation: 0
   password_policy: 0
   password_policy_character_types: 0
