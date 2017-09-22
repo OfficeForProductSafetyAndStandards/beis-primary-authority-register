@@ -4,6 +4,7 @@ namespace Drupal\par_flows\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\Core\Link;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_flows\ParDefaultActionsTrait;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
@@ -48,6 +49,7 @@ use Drupal\par_flows\ParRedirectTrait;
  */
 class ParFlow extends ConfigEntityBase implements ParFlowInterface {
 
+  use StringTranslationTrait;
   use ParRedirectTrait;
   use ParDefaultActionsTrait;
 
@@ -131,7 +133,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    * {@inheritdoc}
    */
   public function getDefaultTitle() {
-    return $this->default_title;
+    return $this->t($this->default_title);
   }
 
   /**

@@ -41,20 +41,6 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   protected $flow;
 
   /**
-   * The account for the current logged in user.
-   *
-   * @var \Drupal\user\Entity\User
-   */
-  protected $userAccount;
-
-  /**
-   * Default page title.
-   *
-   * @var \Drupal\Core\StringTranslation\TranslatableMarkup
-   */
-  protected $defaultTitle;
-
-  /**
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.
    *
    * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $flow_storage
@@ -67,8 +53,8 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   public function __construct(ConfigEntityStorageInterface $flow_storage, ParDataManagerInterface $par_data_manager, AccountInterface $current_user) {
     $this->flowStorage = $flow_storage;
     $this->parDataManager = $par_data_manager;
-
-$this->defaultTitle = $this->t('Primary Authority Register');    $this->setCurrentUser($current_user);
+    $this->setCurrentUser();
+    $this->setCurrentUser($current_user);
 
     // If no flow entity exists throw a build error.
     if (!$this->getFlow()) {
@@ -89,21 +75,14 @@ $this->defaultTitle = $this->t('Primary Authority Register');    $this->setCurre
   }
 
   /**
-   * Returns the default title.
-   */
-  public function getDefaultTitle() {
-    return $this->defaultTitle;
-  }
-
-  /**
    * Title callback default.
    */
   public function titleCallback() {
     if ($default_title = $this->getFlow()->getDefaultTitle()) {
-      return $this->t($default_title);
+      return $default_title;
     }
 
-    return $this->defaultTitle;
+    return $this->getDefaultTitle();
   }
 
   /**
