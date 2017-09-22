@@ -115,6 +115,7 @@ class ParDataOrganisation extends ParDataEntity {
     $fields['organisation_name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Organisation Name'))
       ->setDescription(t('The name of the organisation.'))
+      ->addConstraint('par_required')
       ->setRequired(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([

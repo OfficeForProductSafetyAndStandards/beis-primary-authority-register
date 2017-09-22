@@ -16,11 +16,27 @@ class ParPartnershipFlowsApplicationOrganisationSearchForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
+  protected $formItems = [
+    'par_data_organisation:organisation' => [
+      'organisation_name' => 'organisation_name',
+    ],
+  ];
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
     return 'par_partnership_application_organisation_search';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function titleCallback() {
+    if ($this->getFlowName() === 'partnership_application') {
+      return 'New Partnership Application';
+    }
+
+    return parent::titleCallback();
   }
 
   /**

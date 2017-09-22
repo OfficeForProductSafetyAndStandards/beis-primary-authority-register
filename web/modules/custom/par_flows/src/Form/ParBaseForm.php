@@ -5,6 +5,7 @@ namespace Drupal\par_flows\Form;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\SessionManagerInterface;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
@@ -153,7 +154,11 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * Title callback default.
    */
   public function titleCallback() {
-    return $this->t('Primary Authority Register');
+    if ($default_title = $this->getFlow()->getDefaultTitle()) {
+      return $default_title;
+    }
+
+    return $this->getDefaultTitle();
   }
 
   /**
@@ -261,6 +266,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
         '#name' => 'done',
         '#value' => $this->t('Done'),
         '#limit_validation_errors' => [],
+        '#attributes' => [
+          'class' => ['cta-submit']
+        ],
       ];
     }
     else {
@@ -270,6 +278,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           '#type' => 'submit',
           '#name' => 'upload',
           '#value' => $this->t('Upload'),
+          '#attributes' => [
+            'class' => ['cta-submit']
+          ],
         ];
       }
       elseif ($this->getFlow()->hasAction('save')) {
@@ -278,6 +289,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           '#name' => 'save',
           '#submit' => ['::submitForm', '::saveForm'],
           '#value' => $this->t('Save'),
+          '#attributes' => [
+            'class' => ['cta-submit']
+          ],
         ];
       }
       elseif ($this->getFlow()->hasAction('next')) {
@@ -285,6 +299,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           '#type' => 'submit',
           '#name' => 'next',
           '#value' => $this->t('Continue'),
+          '#attributes' => [
+            'class' => ['cta-submit']
+          ],
         ];
       }
 

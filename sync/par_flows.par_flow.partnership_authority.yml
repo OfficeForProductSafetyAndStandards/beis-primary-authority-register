@@ -6,6 +6,7 @@ _core:
   default_config_hash: 85mBB5a0_rbvuyKSLxIpWsJ38nOFfRj20nKRQforz2o
 id: partnership_authority
 label: 'Authority Partnership Flow'
+default_title: null
 description: ''
 save_method: step
 steps:

@@ -18,6 +18,14 @@ interface ParFlowInterface {
   public function getDescription();
 
   /**
+   * Get the default page title for this flow.
+   *
+   * @return string
+   *   The page title.
+   */
+  public function getDefaultTitle();
+
+  /**
    * Get the method used to save form data within this flow.
    *
    * @return string

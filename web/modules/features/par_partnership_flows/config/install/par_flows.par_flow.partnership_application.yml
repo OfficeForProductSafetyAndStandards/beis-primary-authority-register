@@ -2,6 +2,7 @@ status: true
 dependencies: {  }
 id: partnership_application
 label: 'Partnership Application Flow'
+default_title: 'New Partnership Application'
 description: ''
 save_method: 'end'
 steps:

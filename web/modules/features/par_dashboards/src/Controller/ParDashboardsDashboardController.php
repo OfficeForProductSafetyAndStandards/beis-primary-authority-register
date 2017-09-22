@@ -60,6 +60,13 @@ class ParDashboardsDashboardController extends ControllerBase {
   /**
    * {@inheritdoc}
    */
+  public function titleCallback() {
+    return $this->getDefaultTitle();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function content() {
     $build = [];
 
