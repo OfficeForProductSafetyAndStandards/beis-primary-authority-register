@@ -34,22 +34,11 @@ Feature: Primary Authority - Change Partnership Details
        And I clear the inputfield "#edit-work-phone"
        And I clear the inputfield "#edit-mobile-phone"
        And I clear the inputfield "#edit-email"
-       And I click on the button "#edit-save"
        When I add "Mr" to the inputfield "#edit-salutation"
-       And I click on the button "#edit-save"
-       Then I expect that element ".error-message" does exist
        When I add "Animal" to the inputfield "#edit-first-name"
-       And I click on the button "#edit-save"
-       Then I expect that element ".error-message" does exist
        When I add "the Muppet" to the inputfield "#edit-last-name"
-       And I click on the button "#edit-save"
-       Then I expect that element ".error-message" does exist
        When I add "91723456789" to the inputfield "#edit-work-phone"
-       And I click on the button "#edit-save"
-       Then I expect that element ".error-message" does exist
        When I add "9777777777" to the inputfield "#edit-mobile-phone"
-       And I click on the button "#edit-save"
-       Then I expect that element ".error-message" does exist
        When I add "par_authority_animal@example.com" to the inputfield "#edit-email"
        When I click on the button "#edit-save"
        Then I expect that element "#edit-authority-contacts" contains the text "Animal"
@@ -81,25 +70,25 @@ Feature: Primary Authority - Change Partnership Details
         #  And I upload a valid file
         When I click on the link "edit"
         Then I expect that element "#par-partnership-advice-upload" contains the text "Upload file(s)"
-        When I click on the button "#edit-next"
-#        And I click on the radio "#edit-advice-type-authority-advice"
-        # When I click on the button "#edit-next"
-        # Then I expect that element ".error-message" does exist
-        And I click on the checkbox ".form-label*=Cookie control"
-        When I click on the button "#edit-next"
-        And I click on the link "Done"
-        # Then I expect that element ".table-scroll-wrapper" contains the text "✔"
-        # And the element ".table-scroll-wrapper" contains the text "Cookie control"
 #        When I click on the button "#edit-next"
-        # Then I expect that element ".table-scroll-wrapper" contains the text "100%"
-
-        # INSPECTION PLANS
-
-        # When I select next partnership awaiting review
-        And I click on the link "See all Inspection Plans"
-#        Then I expect that element "#edit-document-list" contains the text "Inspection Plan"
-#        And I click on the checkbox ".form-checkbox"
-        And I click on the link "Done"
+##        And I click on the radio "#edit-advice-type-authority-advice"
+#        # When I click on the button "#edit-next"
+#        # Then I expect that element ".error-message" does exist
+#        And I click on the checkbox ".form-label*=Cookie control"
+#        When I click on the button "#edit-next"
+#        And I click on the link "Done"
+#        # Then I expect that element ".table-scroll-wrapper" contains the text "✔"
+#        # And the element ".table-scroll-wrapper" contains the text "Cookie control"
+##        When I click on the button "#edit-next"
+#        # Then I expect that element ".table-scroll-wrapper" contains the text "100%"
+#
+#        # INSPECTION PLANS
+#
+#        # When I select next partnership awaiting review
+#        And I click on the link "See all Inspection Plans"
+##        Then I expect that element "#edit-document-list" contains the text "Inspection Plan"
+##        And I click on the checkbox ".form-checkbox"
+#        And I click on the link "Done"
 
         # CHECK INSPECTION PLAN CONFIRMED
 

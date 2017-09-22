@@ -43,7 +43,7 @@
       "pa11y": "latest",
       "supertest": "^3.0.0",
       "wdio-allure-reporter": "latest",
-      "wdio-browserstack-service": "latest",
+      "wdio-browserstack-service": "0.1.11",
       "wdio-chromedriver-service": "latest",
       "wdio-cucumber-framework": "0.3.1",
       "wdio-json-reporter": "0.2.1",

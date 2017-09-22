@@ -35,7 +35,7 @@ Feature: Enforcement officer to Primary Authority
         Then I expect that element "h3" contains the text "About the business"
         When I click on the link "Send notification of enforcement action"
         And I click on the radio ".form-radio"
-        And I click on the button "#edit-save"
+        And I click on the button "#edit-next"
         And I expect that element "#edit-action-summmary" becomes visible
         And I add "Some action summary text" to the inputfield "#edit-action-summmary"
         And I click on the radio ".form-radio"
@@ -49,7 +49,7 @@ Feature: Enforcement officer to Primary Authority
         When I click on the button "#edit-next"
 #        Then I expect that element "#par-enforcement-notice-raise" contains the text "A Legal Entity"
 #        And I select the option with the text "Sole Trader" for element "#edit-legal-entity-type"
-#        And I click on the button "#edit-save"
+#        And I click on the button "#edit-next"
 
          # ADD ENFORCEMENT ACTION
 

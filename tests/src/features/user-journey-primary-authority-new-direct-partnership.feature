@@ -21,12 +21,12 @@ Feature: New Direct Partnership
         # CHOOSE PARTNERSHIP TYPE
 
         When I click on the radio ".form-radio"
-        And I click on the button "#edit-save"
+        And I click on the button "#edit-next"
 
         # CREATE NEW PARTNERSHIP FORM
 
         When I click on the radio "#edit-application-type-direct"
-        And I click on the button "#edit-save"
+        And I click on the button "#edit-next"
 
         # CONFIRMATIONS
 
@@ -38,18 +38,18 @@ Feature: New Direct Partnership
         And I click on the radio "#edit-business-regulated-by-one-authority-1"
         And I expect that element "#par-partnership-application-authority-checklist" contains the text "Is this your local authority?"
         And I click on the radio "#edit-is-local-authority-1"
-        And I click on the button "#edit-save"
+        And I click on the button "#edit-next"
 
         # ADD ABOUT THE PARTNERSHIP
 
         Then I expect that element "#par-partnership-about" contains the text "Use this section to give a brief overview of the partnership"
         When I add "About the partnership detail" to the inputfield "#edit-about-partnership"
-        And I click on the button "#edit-save"
+        And I click on the button "#edit-next"
 
         # ORGANISATION NAME
 
         And I add "Test Create Partnership" to the inputfield "#edit-organisation-name"
-        And I click on the button "#edit-save"
+        And I click on the button "#edit-next"
 
         # ADD BUSINESS DETAIL
 
@@ -59,7 +59,7 @@ Feature: New Direct Partnership
         When I add "London" to the inputfield "#edit-town-city"
         When I add "London" to the inputfield "#edit-county"
         And I select the option with the text "England" for element "#edit-country"
-        And I click on the button "#edit-save"
+        And I click on the button "#edit-next"
 
         # MAIN CONTACT
 
@@ -73,7 +73,7 @@ Feature: New Direct Partnership
         And I add "par_business_change@example.com" to the inputfield "#edit-email"
         And I click on the radio "#edit-preferred-contact-communication-mobile"
         And I add "Some additional notes" to the inputfield "#edit-notes"
-        And I click on the button "#edit-save"
+        And I click on the button "#edit-next"
         And I click on the link "Log out"
 
      # LOGIN SCREEN
