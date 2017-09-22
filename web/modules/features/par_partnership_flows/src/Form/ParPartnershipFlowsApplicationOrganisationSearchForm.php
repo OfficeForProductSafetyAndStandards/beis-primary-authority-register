@@ -58,6 +58,17 @@ class ParPartnershipFlowsApplicationOrganisationSearchForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
+
+    if (!$form_state->getValue('is_local_authority')) {
+      $this->setElementError('organisation_name', $form_state, 'Please enter an organisation name.');
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
   }
