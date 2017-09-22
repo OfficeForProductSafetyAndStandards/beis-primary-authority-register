@@ -7,6 +7,7 @@ use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataAuthority;
+use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 //use Drupal\Core\Session\AccountInterface;
@@ -68,18 +69,15 @@ class ParPartnershipFlowsApplicationPartnershipSave extends ParBaseForm {
       // Load the Authority.
       $par_data_authority = ParDataAuthority::load($this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection'));
 
-      // @todo see possibility of injecting AccountProxy.
-      $user = User::load(\Drupal::currentUser()->id());
-
       // get authority person.
-      $authority_person = ParDataPerson::load($this->parDataManager->getUserPerson($user, $par_data_authority)[0]);
+      $authority_person = ParDataPerson::load($this->parDataManager->getUserPerson($this->getCurrentUser(), $par_data_authority)[0]);
 
       $organisation_id = $this->getDefaultValues('par_data_organisation_id','', 'par_partnership_organisation_suggestion');
 
       if ($organisation_id === 'new') {
 
         // Save Main Contact.
-        $organisation_person = \Drupal\par_data\Entity\ParDataPerson::create([
+        $organisation_person = ParDataPerson::create([
           'type' => 'person',
           'uid' => 1,
         ]);
@@ -114,10 +112,9 @@ class ParPartnershipFlowsApplicationPartnershipSave extends ParBaseForm {
         }
 
         // Save business premises.
-        $par_data_premises = \Drupal\par_data\Entity\ParDataPremises::create([
+        $par_data_premises = ParDataPremises::create([
           'type' => 'premises',
-          // 'name' => $this->getTempDataValue('salutation'),
-          'uid' => \Drupal::currentUser()->id(),
+          'uid' => $this->getCurrentUser()->id(),
           'address' => [
             'country_code' => $this->getDefaultValues('country_code', '', 'par_partnership_address'),
             'address_line1' => $this->getDefaultValues('address_line1','', 'par_partnership_address'),
@@ -131,10 +128,9 @@ class ParPartnershipFlowsApplicationPartnershipSave extends ParBaseForm {
         $par_data_premises->save();
 
         // Save organisation.
-        $par_data_organisation = \Drupal\par_data\Entity\ParDataOrganisation::create([
+        $par_data_organisation = ParDataOrganisation::create([
           'type' => 'organisation',
-          'name' => $this->getDefaultValues('organisation_name','', 'par_partnership_application_organisation_search'),
-          'uid' => \Drupal::currentUser()->id(),
+          'uid' => $this->getCurrentUser()->id(),
           'organisation_name' => $this->getDefaultValues('organisation_name','', 'par_partnership_application_organisation_search'),
           'nation' => 'GB-SCT',
           'premises_mapped' => TRUE,
@@ -153,10 +149,9 @@ class ParPartnershipFlowsApplicationPartnershipSave extends ParBaseForm {
       }
 
       // Save partnership.
-      $partnership = \Drupal\par_data\Entity\ParDataPartnership::create([
+      $partnership = ParDataPartnership::create([
         'type' => 'partnership',
-        'name' => 'Partnership Name?',
-        'uid' => \Drupal::currentUser()->id(),
+        'uid' => $this->getCurrentUser()->id(),
         'partnership_type' => $this->getDefaultValues('application_type', '', 'par_partnership_application_type'),
         'partnership_status' => 'application',
         'about_partnership' => $this->getDefaultValues('about_partnership', '', 'par_partnership_about'),
