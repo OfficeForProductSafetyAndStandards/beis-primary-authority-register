@@ -1,3 +1,7 @@
+search public register:
+  title: 'Search public register'
+  description: 'A permission to allow searching of the public register of partnerships.'
+  restrict access: TRUE
 access partnerships dashboard:
   title: 'Access the PAR Dashboard'
   description: 'A permission to allow access to the PAR dashboard.'
