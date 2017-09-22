@@ -128,22 +128,6 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       '#default_value' => 'GB',
     ];
 
-    $form['actions']['save'] = [
-      '#type' => 'submit',
-      '#name' => 'save',
-      '#value' => $this->t($par_data_partnership ? 'Save' : 'Continue'),
-    ];
-
-    $form['actions']['cancel'] = [
-      '#type' => 'submit',
-      '#name' => 'cancel',
-      '#value' => $this->t('Cancel'),
-      '#submit' => ['::cancelForm'],
-      '#attributes' => [
-        'class' => ['btn-link']
-      ],
-    ];
-
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($par_data_premises);
     $this->addCacheableDependency($premises_bundle);

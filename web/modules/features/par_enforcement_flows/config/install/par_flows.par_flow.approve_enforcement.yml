@@ -3,6 +3,7 @@ dependencies: {  }
 id: approve_enforcement
 label: 'Approve Enforcement'
 description: 'The approval flow for an enforcement notice.'
+save_method: 'end'
 steps:
   1:
     route: par_enforcement_flows.approve

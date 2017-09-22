@@ -63,19 +63,6 @@ class ParPartnershipFlowsMemberUploadForm extends ParBaseForm {
       ]
     ];
 
-    $form['next'] = [
-      '#type' => 'submit',
-      '#name' => 'next',
-      '#value' => t('Upload'),
-    ];
-
-    // Go back to Advice Documents list.
-    $previous_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
-    $form['cancel'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $previous_link]),
-    ];
-
     return parent::buildForm($form, $form_state);
   }
 

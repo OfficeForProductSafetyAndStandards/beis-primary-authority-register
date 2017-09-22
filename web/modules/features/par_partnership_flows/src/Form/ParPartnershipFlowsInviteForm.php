@@ -119,21 +119,8 @@ HEREDOC;
       '#default_value' => $this->getDefaultValues('email_body'),
     ];
 
-    $form['save'] = [
-      '#type' => 'submit',
-      '#name' => 'save',
-      '#value' => t('Continue'),
-    ];
-
-    $form['actions']['cancel'] = [
-      '#type' => 'submit',
-      '#name' => 'cancel',
-      '#value' => $this->t('Cancel'),
-      '#submit' => ['::cancelForm'],
-      '#attributes' => [
-        'class' => ['btn-link']
-      ],
-    ];
+    // Disable the default 'save' action which takes precedence over 'next' action.
+    $this->getFlow()->disableAction('save');
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);

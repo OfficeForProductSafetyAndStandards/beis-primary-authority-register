@@ -130,15 +130,6 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     // Display the authority contacts for information.
     $build['authority_contacts'] = $this->renderSection('Contacts - Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed'], ['edit-entity', 'add']);
 
-    $build['save'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('partnerships', $this->getRouteParams(), ['attributes' => ['class' => 'button']])
-            ->setText('Done')
-            ->toString(),
-      ]),
-    ];
-
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
     $this->addCacheableDependency($partnership_bundle);
