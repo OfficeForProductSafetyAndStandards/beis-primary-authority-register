@@ -214,19 +214,6 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
 
     // @TODO Automatically submit the form if there are no members that require attention.
 
-    $form['save'] = [
-      '#type' => 'submit',
-      '#name' => 'save',
-      '#value' => t('Save'),
-    ];
-
-    // Go back to Advice Documents list.
-    $previous_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
-    $form['cancel'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $previous_link]),
-    ];
-
     return parent::buildForm($form, $form_state);
   }
 

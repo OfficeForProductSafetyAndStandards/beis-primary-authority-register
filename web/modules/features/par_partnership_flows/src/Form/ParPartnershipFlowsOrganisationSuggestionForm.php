@@ -86,22 +86,6 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
       '#options' => $radio_options,
     ];
 
-    $form['actions']['save'] = [
-      '#type' => 'submit',
-      '#name' => 'save',
-      '#value' => t('Continue'),
-    ];
-
-    $form['actions']['cancel'] = [
-      '#type' => 'submit',
-      '#name' => 'cancel',
-      '#value' => $this->t('Cancel'),
-      '#submit' => ['::cancelFlow'],
-      '#attributes' => [
-        'class' => ['btn-link']
-      ],
-    ];
-
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($viewBuilder);
     $this->addCacheableDependency($options);

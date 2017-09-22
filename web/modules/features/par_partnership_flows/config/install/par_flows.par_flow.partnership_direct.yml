@@ -3,6 +3,7 @@ dependencies: {  }
 id: partnership_direct
 label: 'Direct Partnership Flow'
 description: ''
+save_method: 'step'
 steps:
   1:
     route: par_partnership_flows.organisation_details
@@ -45,7 +46,7 @@ steps:
     route: par_partnership_flows.organisation_contact_add
     form_id: par_partnership_contact
     redirect:
-      save: 6
+      next: 6
       cancel: 1
   6:
     route: par_partnership_flows.organisation_contact_add_confirm
