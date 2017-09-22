@@ -41,11 +41,6 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   protected $flow;
 
   /**
-   * {@inheritdoc}
-   */
-  protected $defaultActions = ['next', 'cancel'];
-
-  /**
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.
    *
    * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $flow_storage
