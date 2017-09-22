@@ -4,6 +4,7 @@ namespace Drupal\par_flows\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\Core\Link;
+use Drupal\par_flows\ParDefaultActionsTrait;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
 
@@ -39,6 +40,7 @@ use Drupal\par_flows\ParRedirectTrait;
  *     "id",
  *     "label",
  *     "description",
+ *     "save_method",
  *     "steps"
  *   }
  * )
@@ -46,6 +48,10 @@ use Drupal\par_flows\ParRedirectTrait;
 class ParFlow extends ConfigEntityBase implements ParFlowInterface {
 
   use ParRedirectTrait;
+  use ParDefaultActionsTrait;
+
+  const SAVE_STEP = 'step';
+  const SAVE_END = 'end';
 
   /**
    * The flow ID.
@@ -69,6 +75,22 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   protected $description;
 
   /**
+   * The method for saving flow data.
+   *
+   * Allowed values: 'end' (default), 'step'
+   *
+   * Typically for GDS flows this will be at the end,
+   * however, this can be configured to save on each step
+   * by setting the value to 'step'
+   *
+   * These are the defaults and can be overridden on a
+   * form by form basis.
+   *
+   * @var string
+   */
+  protected $save_method;
+
+  /**
    * The steps for this flow.
    *
    * @var array
@@ -78,8 +100,30 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  public function __construct(array $values, $entity_type) {
+    parent::__construct($values, $entity_type);
+
+    // Set the default actions depending on flow save method.
+    $default_actions = $this->getSaveMethod() === ParFlow::SAVE_STEP ? ['save', 'cancel'] : ['next', 'cancel'];
+    $this->setDefaultActions($default_actions);
+
+    // Then let's go back and set any additional operations.
+    $actions = $this->getCurrentStepOperations();
+    $this->setActions($actions);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getDescription() {
     return $this->description;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getSaveMethod() {
+    return $this->save_method === self::SAVE_STEP ? self::SAVE_STEP : self::SAVE_END;
   }
 
   /**
@@ -183,6 +227,39 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getPrevRoute($operation = NULL) {
     return $this->getRouteByStep($this->getPrevStep($operation));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCurrentStepOperations() {
+    return $this->getStepOperations($this->getCurrentStep());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStepOperations($index) {
+    $step = $this->getStep($index);
+    $redirects = isset($step['redirect']) ? $step['redirect'] : [];
+
+    // Get the default actions, these can be disabled
+    // if required on a form by form basis.
+    // See ParDefaultActionsTrait::disableAction()
+    $defaults = $this->getActions();
+
+    // Get the values for the given step.
+    $step_values = !empty($redirects) ? array_keys($redirects) : [];
+
+    if (!empty($defaults) && !empty($step_values)) {
+      return array_unique(array_merge($defaults, $step_values));
+    }
+    elseif (!empty($step_values)) {
+      return $step_values;
+    }
+    else {
+      return $defaults;
+    }
   }
 
   /**
@@ -301,5 +378,4 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     $step = $this->getPrevStep($operation);
     return $this->getLinkByStep($step, $route_params, $link_options);
   }
-
 }

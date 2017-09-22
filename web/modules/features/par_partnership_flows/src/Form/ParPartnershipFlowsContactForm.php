@@ -3,10 +3,14 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
+use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\user\Entity\User;
 
 /**
  * The primary contact form for the partnership details steps of the
@@ -83,7 +87,6 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
     $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
 
-    // The Person's title.
     $form['salutation'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Title'),
@@ -102,28 +105,25 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       '#default_value' => $this->getDefaultValues("last_name"),
     ];
 
-    // The Person's work phone number.
     $form['work_phone'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Work phone'),
       '#default_value' => $this->getDefaultValues("work_phone"),
     ];
 
-    // The Person's work phone number.
     $form['mobile_phone'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Mobile phone (optional)'),
       '#default_value' => $this->getDefaultValues("mobile_phone"),
     ];
 
-    // The Person's work phone number.
     $form['email'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Email'),
       '#default_value' => $this->getDefaultValues("email"),
     ];
 
-    // Preferred contact methods.
+    // Get preferred contact methods labels.
     $contact_options = [
       'communication_email' => $person_bundle->getBooleanFieldLabel('communication_email', 'on'),
       'communication_phone' => $person_bundle->getBooleanFieldLabel('communication_phone', 'on'),
@@ -145,22 +145,6 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       '#description' => 'Add any additional notes about how best to contact this person.',
     ];
 
-    $form['actions']['save'] = [
-      '#type' => 'submit',
-      '#name' => 'save',
-      '#value' => $this->t($par_data_partnership ? 'Save' : 'Continue'),
-    ];
-
-    $form['actions']['cancel'] = [
-      '#type' => 'submit',
-      '#name' => 'cancel',
-      '#value' => $this->t('Cancel'),
-      '#submit' => ['::cancelForm'],
-      '#attributes' => [
-        'class' => ['btn-link']
-      ],
-    ];
-
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($par_data_person);
     $this->addCacheableDependency($person_bundle);
@@ -174,8 +158,10 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Save the value for the about_partnership field.
+    // Save contact.
     $par_data_person = $this->getRouteParam('par_data_person');
+
+    // Save person details.
     if ($par_data_person) {
       $par_data_person->set('salutation', $this->getTempDataValue('salutation'));
       $par_data_person->set('first_name', $this->getTempDataValue('first_name'));
@@ -185,7 +171,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       $par_data_person->set('email', $this->getTempDataValue('email'));
       $par_data_person->set('communication_notes', $this->getTempDataValue('notes'));
 
-      // Save the email preference.
+      // Save the contact preferences
       $email_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_email'])
         && !empty($this->getTempDataValue('preferred_contact')['communication_email']);
       $par_data_person->set('communication_email', $email_preference_value);
@@ -199,14 +185,17 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
 
       if ($par_data_person->save()) {
-        $this->deleteStore();
-      } else {
+        // Only delete the form data for the par_partnership_contact form.
+        $this->deleteFormTempData('par_partnership_contact');
+      }
+      else {
         $message = $this->t('This %person could not be saved for %form_id');
         $replacements = [
           '%person' => $this->getTempDataValue('name'),
           '%form_id' => $this->getFormId(),
         ];
-        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+        $this->getLogger($this->getLoggerChannel())
+          ->error($message, $replacements);
       }
     }
 

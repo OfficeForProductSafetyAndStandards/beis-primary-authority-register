@@ -65,18 +65,6 @@ class ParPartnershipFlowsBusinessSizeForm extends ParBaseForm {
       '#options' => $organisation_bundle->getAllowedValues('size'),
     ];
 
-    $form['save'] = [
-      '#type' => 'submit',
-      '#name' => 'save',
-      '#value' => $this->t('Save'),
-    ];
-
-    $cancel_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
-    $form['cancel'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $cancel_link]),
-    ];
-
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
 

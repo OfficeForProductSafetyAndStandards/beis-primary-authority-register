@@ -13,6 +13,9 @@ par_flows.par_flow.*:
     description:
       type: string
       lavel: 'Description'
+    save_method:
+      type: string
+      lavel: 'Save Method'
     steps:
       type: mapping
       label: "Steps"

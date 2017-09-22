@@ -85,27 +85,10 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
     // Check permissions before adding the links for all operations.
     if ($this->getFlowName() === 'partnership_authority') {
       $build['documentation_list']['#header'][] = 'Actions';
-
-      $build['upload'] = [
-        '#type' => 'markup',
-        '#prefix' => '<p>',
-        '#suffix' => '</p>',
-        '#markup' => t('@link', [
-          '@link' => $this->getFlow()->getNextLink('advice_upload', $this->getRouteParams())
-            ->setText('Upload a document')
-            ->toString(),
-        ]),
-      ];
     }
-
-    $build['save'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('next', $this->getRouteParams(), ['attributes' => ['class' => 'button']])
-          ->setText('Done')
-          ->toString(),
-      ]),
-    ];
+    else {
+      $this->getFlow()->disableAction('upload');
+    }
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);

@@ -87,18 +87,6 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
       '#options' => $authority_options,
     ];
 
-    $form['save'] = [
-      '#type' => 'submit',
-      '#name' => 'next',
-      '#value' => t('Next'),
-    ];
-
-    $cancel_link = $this->getFlow()->getPrevLink('cancel')->setText('Cancel')->toString();
-    $form['cancel'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $cancel_link]),
-    ];
-
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($authority_view_builder);
     $this->addCacheableDependency($authorities);
