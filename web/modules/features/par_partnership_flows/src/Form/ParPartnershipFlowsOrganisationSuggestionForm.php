@@ -55,9 +55,10 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
       ],
     ];
 
-    $options = $this->getParDataManager()->getEntitiesByQuery('par_data_organisation', $conditions);
-
     $organisationViewBuilder = $this->getParDataManager()->getViewBuilder('par_data_organisation');
+
+    $options = $this->getParDataManager()
+      ->getEntitiesByQuery('par_data_organisation', $conditions);
 
     $radio_options = [];
 
@@ -71,15 +72,13 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
     if (count($radio_options) <= 0) {
       $this->setTempDataValue('par_data_organisation_id', 'new');
       $this->submitForm($form, $form_state);
-      return $this->redirect($this->getFlow()->getNextRoute('add'), $this->getRouteParams());
+      return $this->redirect($this->getFlow()->getNextRoute('save'), $this->getRouteParams());
     }
-
-    $radio_options['new'] = "No, it's a new partnership.";
 
     $form['par_data_organisation_id'] = [
       '#type' => 'radios',
       '#title' => t('Did you mean any of these organisations?'),
-      '#options' => $radio_options,
+      '#options' => $radio_options + ['new' => "No, it's a new partnership."],
     ];
 
     // Make sure to add the person cacheability data to this form.
