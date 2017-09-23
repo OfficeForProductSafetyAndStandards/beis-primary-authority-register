@@ -25,13 +25,6 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function titleCallback() {
-    return 'New Partnership Application';
-  }
-
-  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
@@ -53,19 +46,19 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
       return $this->redirect($this->getFlow()->getPrevStep(), $this->getRouteParams());
     }
 
-    $query = \Drupal::entityQuery('par_data_organisation');
+    $conditions = [
+      'name' => [
+        'or' => [
+          ['organisation_name', $searchQuery, 'CONTAINS'],
+          ['trading_name', $searchQuery, 'CONTAINS'],
+        ]
+      ],
+    ];
 
-    $group = $query->orConditionGroup()
-      ->condition('organisation_name', $searchQuery, 'CONTAINS')
-      ->condition('trading_name', $searchQuery, 'CONTAINS');
+    $options = $this->getParDataManager()->getEntitiesByQuery('par_data_organisation', $conditions);
 
-    // Get 10 results.
-    $ids = $query->condition($group)->range(0,10)->execute();
-
-    $par_data_organisation_storage = \Drupal::entityManager()->getStorage('par_data_organisation');
     $organisationViewBuilder = $this->getParDataManager()->getViewBuilder('par_data_organisation');
 
-    $options = $par_data_organisation_storage->loadMultiple($ids);
     $radio_options = [];
 
     foreach($options as $option) {
@@ -119,13 +112,12 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
     // If Organisation exists already (e.g. selected existing organisation)
     // Check if contact details are entered, if not, prompt for main contact.
     if ($par_data_organisation = ParDataOrganisation::load($this->getDefaultValues('par_data_organisation_id', '', 'par_partnership_organisation_suggestion'))) {
-      if (empty($par_data_organisation->retrieveEntityIds('field_person'))) {
+      if ($par_data_organisation->id() &&
+        empty($par_data_organisation->retrieveEntityIds('field_person'))) {
         $form_state->setRedirect($this->getFlow()
           ->getNextRoute('add_contact'), $this->getRouteParams());
       }
     }
-
-    $this->addCacheableDependency($par_data_organisation);
 
   }
 
