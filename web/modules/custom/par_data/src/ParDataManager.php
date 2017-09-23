@@ -519,21 +519,23 @@ class ParDataManager implements ParDataManagerInterface {
    * @see \Drupal\Core\Entity\Query\orConditionGroup
    */
   public function getEntitiesByQuery(string $type, array $conditions, $limit = 10) {
-    $query = \Drupal::entityQuery($type);
+    $entities = [];
 
     foreach ($conditions as $row) {
+      $query = \Drupal::entityQuery($type);
+
       foreach ($row as $condition_operator => $condition_row) {
         $group = (strtoupper($condition_operator) === 'OR') ? $query->orConditionGroup() : $query->andConditionGroup();
 
         foreach ($condition_row as $row) {
           $group->condition(...$row);
         }
+
+        $query->condition($group);
       }
 
-      $query->condition($group);
+      $entities += $query->range(0, $limit)->execute();
     }
-
-    $entities = $query->range(0, $limit)->execute();
 
     return $this->entityManager->getStorage($type)->loadMultiple($entities);
   }
