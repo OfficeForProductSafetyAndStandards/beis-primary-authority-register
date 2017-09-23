@@ -26,13 +26,6 @@ class ParPartnershipFlowsApplicationPartnershipSave extends ParBaseForm {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function titleCallback() {
-    return 'New Partnership Application';
-  }
-
-  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
@@ -71,15 +64,48 @@ class ParPartnershipFlowsApplicationPartnershipSave extends ParBaseForm {
 
       // Load the Authority.
       $par_data_authority = ParDataAuthority::load($this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection'));
-      $par_data_premises = [];
 
-      // Get logged in user ParDataPerson related to the primary authority.
+      // Get logged in user ParDataPerson(s) related to the primary authority.
       $authority_person = ParDataPerson::load($this->parDataManager->getUserPerson($this->getCurrentUser(), $par_data_authority)[0]);
 
       $organisation_id = $this->getDefaultValues('par_data_organisation_id','', 'par_partnership_organisation_suggestion');
 
       if ($organisation_id === 'new') {
+        // Save organisation premises.
+        $par_data_premises = ParDataPremises::create([
+          'type' => 'premises',
+          'uid' => $this->getCurrentUser()->id(),
+          'address' => [
+            'country_code' => $this->getDefaultValues('country_code', '', 'par_partnership_address'),
+            'address_line1' => $this->getDefaultValues('address_line1','', 'par_partnership_address'),
+            'address_line2' => $this->getDefaultValues('address_line2','', 'par_partnership_address'),
+            'locality' => $this->getDefaultValues('town_city','', 'par_partnership_address'),
+            'administrative_area' => $this->getDefaultValues('county','', 'par_partnership_address'),
+            'postal_code' => $this->getDefaultValues('postcode','', 'par_partnership_address'),
+          ],
+          'nation' => 'GB-SCT',
+        ]);
+        $par_data_premises->save();
 
+        // Save organisation.
+        $par_data_organisation = ParDataOrganisation::create([
+          'type' => 'organisation',
+          'organisation_name' => $this->getDefaultValues('organisation_name','', 'par_partnership_application_organisation_search'),
+          'nation' => 'GB-SCT',
+          'premises_mapped' => TRUE,
+          'field_premises' => [
+            $par_data_premises->id(),
+          ],
+        ]);
+
+        $par_data_organisation->save();
+      }
+      else {
+        $par_data_organisation = ParDataOrganisation::load($organisation_id);
+        $organisation_person = current($par_data_organisation->getPerson());
+      }
+
+      if (!$organisation_person->id()) {
         // Save Main Contact.
         $organisation_person = ParDataPerson::create([
           'type' => 'person',
@@ -112,85 +138,13 @@ class ParPartnershipFlowsApplicationPartnershipSave extends ParBaseForm {
             '%email' => $this->getDefaultValues('email', '', 'par_partnership_contact'),
             '%form_id' => $this->getFormId(),
           ];
-          $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+          $this->getLogger($this->getLoggerChannel())
+            ->error($message, $replacements);
         }
 
-        // Save organisation premises.
-        $par_data_premises = ParDataPremises::create([
-          'type' => 'premises',
-          'uid' => $this->getCurrentUser()->id(),
-          'address' => [
-            'country_code' => $this->getDefaultValues('country_code', '', 'par_partnership_address'),
-            'address_line1' => $this->getDefaultValues('address_line1','', 'par_partnership_address'),
-            'address_line2' => $this->getDefaultValues('address_line2','', 'par_partnership_address'),
-            'locality' => $this->getDefaultValues('town_city','', 'par_partnership_address'),
-            'administrative_area' => $this->getDefaultValues('county','', 'par_partnership_address'),
-            'postal_code' => $this->getDefaultValues('postcode','', 'par_partnership_address'),
-          ],
-          'nation' => 'GB-SCT',
-        ]);
-        $par_data_premises->save();
-
-        // Save organisation.
-        $par_data_organisation = ParDataOrganisation::create([
-          'type' => 'organisation',
-          'organisation_name' => $this->getDefaultValues('organisation_name','', 'par_partnership_application_organisation_search'),
-          'nation' => 'GB-SCT',
-          'premises_mapped' => TRUE,
-          'field_person' => [
-            $organisation_person->id(),
-          ],
-          'field_premises' => [
-            $par_data_premises->id(),
-          ],
-        ]);
-
+        // Add to organisation `field_person`.
+        $par_data_organisation->get('field_person')->appendItem($organisation_person->id());
         $par_data_organisation->save();
-      }
-      else {
-        $par_data_organisation = ParDataOrganisation::load($organisation_id);
-        $organisation_person = current($par_data_organisation->getPerson());
-
-        // If Main Contact does not exist, save one from the Main Contact form.
-        if (!$organisation_person->id()) {
-          $organisation_person = ParDataPerson::create([
-            'type' => 'person',
-          ]);
-
-          $organisation_person->set('salutation', $this->getDefaultValues('salutation', '', 'par_partnership_contact'));
-          $organisation_person->set('first_name', $this->getDefaultValues('first_name', '', 'par_partnership_contact'));
-          $organisation_person->set('last_name', $this->getDefaultValues('last_name', '', 'par_partnership_contact'));
-          $organisation_person->set('work_phone', $this->getDefaultValues('work_phone', '', 'par_partnership_contact'));
-          $organisation_person->set('mobile_phone', $this->getDefaultValues('mobile_phone', '', 'par_partnership_contact'));
-          $organisation_person->set('email', $this->getDefaultValues('email', '', 'par_partnership_contact'));
-          $organisation_person->set('communication_notes', $this->getDefaultValues('notes', '', 'par_partnership_contact'));
-
-          // Save the email preference.
-          $email_preference_value = isset($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_email'])
-            && !empty($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_email']);
-          $organisation_person->set('communication_email', $email_preference_value);
-          // Save the work phone preference.
-          $work_phone_preference_value = isset($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_phone'])
-            && !empty($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_phone']);
-          $organisation_person->set('communication_phone', $work_phone_preference_value);
-          // Save the mobile phone preference.
-          $mobile_phone_preference_value = isset($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_mobile'])
-            && !empty($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_mobile']);
-          $organisation_person->set('communication_mobile', $mobile_phone_preference_value);
-
-          if (!$organisation_person->save()) {
-            $message = $this->t('ParDataPerson %email could not be created for %form_id');
-            $replacements = [
-              '%email' => $this->getDefaultValues('email', '', 'par_partnership_contact'),
-              '%form_id' => $this->getFormId(),
-            ];
-            $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-          }
-
-          // Add to organisation `field_person`.
-          $par_data_organisation->get('field_person')->appendItem($organisation_person->id());
-          $par_data_organisation->save();
-        }
       }
 
       // Save partnership.
@@ -228,13 +182,6 @@ class ParPartnershipFlowsApplicationPartnershipSave extends ParBaseForm {
       }
 
     }
-
-    $this->addCacheableDependency($authority_person);
-    $this->addCacheableDependency($organisation_person);
-    $this->addCacheableDependency($par_data_authority);
-    $this->addCacheableDependency($par_data_organisation);
-    $this->addCacheableDependency($par_data_premises);
-    $this->addCacheableDependency($organisation_id);
 
   }
 
