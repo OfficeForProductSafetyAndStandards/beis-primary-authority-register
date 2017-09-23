@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: s6Jr16hmkue5mx3iofcM8bTeWoO89pCx-65LknZqi6Q
+  default_config_hash: XEf2X_BlEnMomZ3X4f2qmLF-1FHkEOBLi0_p1dqQxaQ
 id: partnership_application
 label: 'Partnership Application Flow'
 default_title: 'New Partnership Application'
@@ -35,7 +35,7 @@ steps:
     route: par_partnership_flows.partnership_application_organisation_search
     form_id: par_partnership_application_organisation_search
     redirect:
-      save: 7
+      save: 6
       cancel: 12
   6:
     route: par_partnership_flows.partnership_application_organisation_search_confirm
