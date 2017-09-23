@@ -198,13 +198,13 @@ class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Save the value for the confirmation field.
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
     $par_data_organisation = current($par_data_partnership->getOrganisation());
     $par_data_person = current($par_data_organisation->getPerson());
 
     if ($par_data_partnership && !$par_data_partnership->get('partnership_info_agreed_authority')->getString()) {
 
+      // Save the value for the confirmation field.
       $par_data_partnership->set('partnership_info_agreed_authority', $this->getTempDataValue('partnership_info_agreed_authority'));
 
       if ($par_data_partnership->save()) {
