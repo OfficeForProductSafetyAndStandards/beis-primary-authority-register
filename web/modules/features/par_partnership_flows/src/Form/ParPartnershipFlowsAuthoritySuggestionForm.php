@@ -47,13 +47,8 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues();
 
-    // If a value already exists we can skip to the next step.
-    if ($this->getDefaultValues("par_data_authority_id", NULL)) {
-      return $this->redirect($this->getFlow()->getNextRoute('next'), $this->getRouteParams());
-    }
-
     // Get the authorities the current user is a member of.
-    $authorities= [];
+    $authorities = [];
     if ($this->currentUser()->isAuthenticated()) {
       $account = User::Load($this->currentUser()->id());
       $authorities = $this->getParDataManager()->hasMembershipsByType($account, 'par_data_authority', TRUE);
