@@ -10,7 +10,7 @@ steps:
     route: par_partnership_flows.partnership_application_start
     form_id: par_authority_selection
     redirect:
-      next: 2
+      save: 2
       cancel: 12
   2:
     route: par_partnership_flows.partnership_application_type
@@ -31,18 +31,21 @@ steps:
     route: par_partnership_flows.partnership_application_organisation_search
     form_id: par_partnership_application_organisation_search
     redirect:
+      add: 7
       cancel: 12
   6:
     route: par_partnership_flows.partnership_application_organisation_search_confirm
     form_id: par_partnership_organisation_suggestion
     redirect:
-      add: 7
+      add_address: 7
+      add_contact: 8
       save: 9
       cancel: 12
   7:
     route: par_partnership_flows.partnership_application_organisation_address
     form_id: par_partnership_address
     redirect:
+      save: 8
       cancel: 12
   8:
     route: par_partnership_flows.partnership_application_organisation_contact
@@ -53,7 +56,7 @@ steps:
     route: par_partnership_flows.partnership_application_partnership_save
     form_id: par_partnership_application_save
     redirect:
-      done: 10
+      save: 10
       cancel: 12
   10:
     route: par_partnership_flows.partnership_application_details
