@@ -63,7 +63,6 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
       '#markup' => $this->t('Notification of Enforcement action'),
     ];
 
-
     $form['authority']['authority_name'] = [
       '#type' => 'markup',
       '#markup' => $par_data_authority->get('authority_name')->getString(),
@@ -77,7 +76,6 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-
 
     $form['organisation']['organisation_heading'] = [
       '#type' => 'markup',
@@ -94,7 +92,6 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
 
     // Display the primary address.
     $form['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
-
 
     $form['action_summmary'] = [
       '#type' => 'textarea',
