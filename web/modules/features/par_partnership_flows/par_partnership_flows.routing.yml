@@ -500,3 +500,18 @@ par_partnership_flows.partnership_application_invite:
         type: entity:par_data_partnership
       par_data_person:
         type: entity:par_data_person
+par_partnership_flows.partnership_application_invite_sent:
+  path: '/partnership/apply/{par_data_partnership}/invite/sent/{par_data_person}'
+  defaults:
+    _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInviteSentController::content'
+    _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInviteSentController::titleCallback'
+  requirements:
+    _permission: 'manage my authorities'
+    par_data_partnership: \d+
+    par_data_person: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_person:
+        type: entity:par_data_person

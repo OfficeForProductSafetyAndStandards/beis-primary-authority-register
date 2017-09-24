@@ -177,6 +177,15 @@ HEREDOC;
       $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
     }
 
+    if ($this->getFlowName() === 'partnership_application') {
+      $par_data_partnership = $this->getRouteParam('par_data_partnership');
+      $par_data_person = $this->getRouteParam('par_data_person');
+      $form_state->setRedirect($this->getFlow()
+        ->getNextRoute('next'), [
+        'par_data_partnership' => $par_data_partnership->id(),
+        'par_data_person' => $par_data_person->id()
+      ]);
+    }
   }
 
 }
