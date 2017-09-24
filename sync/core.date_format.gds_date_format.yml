@@ -1,0 +1,8 @@
+uuid: 419ddfd8-5eac-4a94-97cd-6a8afab14364
+langcode: en
+status: true
+dependencies: {  }
+id: gds_date_format
+label: 'GDS Date Format'
+locked: false
+pattern: 'd F Y'

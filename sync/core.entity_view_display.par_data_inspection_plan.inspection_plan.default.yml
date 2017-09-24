@@ -26,7 +26,7 @@ content:
     third_party_settings: {  }
   field_regulatory_function:
     weight: 3
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -49,15 +49,16 @@ content:
       format_custom_true: ''
     third_party_settings: {  }
     type: boolean
+    weight: 0
   valid_date:
     type: daterange_default
     weight: 1
     region: content
     label: hidden
     settings:
-      separator: '-'
-      format_type: medium
       timezone_override: ''
+      format_type: gds_date_format
+      separator: ' to '
     third_party_settings: {  }
 hidden:
   approved_rd_executive: true
