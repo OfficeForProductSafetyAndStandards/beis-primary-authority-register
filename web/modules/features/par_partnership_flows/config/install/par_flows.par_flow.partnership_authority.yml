@@ -25,7 +25,7 @@ steps:
     route: par_partnership_flows.authority_contact_add
     form_id: par_partnership_contact
     redirect:
-      next: 4
+      save: 4
       cancel: 1
   4:
     route: par_partnership_flows.authority_contact_add_confirm
@@ -44,7 +44,7 @@ steps:
     redirect:
       advice_upload: 7
       edit: 9
-      next: 1
+      save: 1
       cancel: 1
   7:
     route: par_partnership_flows.advice_upload_documents
