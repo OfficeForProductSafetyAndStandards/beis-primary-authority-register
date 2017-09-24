@@ -126,7 +126,7 @@ HEREDOC;
     $this->addCacheableDependency($par_data_partnership);
     $this->addCacheableDependency($par_data_person);
 
-    return $form;
+    return parent::buildForm($form, $form_state);
   }
 
   /**
