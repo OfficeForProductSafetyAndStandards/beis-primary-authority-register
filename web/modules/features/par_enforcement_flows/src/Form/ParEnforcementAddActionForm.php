@@ -126,7 +126,7 @@ class ParEnforcementAddActionForm extends ParBaseForm {
     $enforcementAction = \Drupal::entityManager()->getStorage('par_data_enforcement_action')->create($enforcementAction_data);
 
     if ($enforcementAction->save()) {
-      //$this->deleteStore();
+      $this->deleteStore();
     }
     else {
       $message = $this->t('This %premises could not be saved for %form_id');
