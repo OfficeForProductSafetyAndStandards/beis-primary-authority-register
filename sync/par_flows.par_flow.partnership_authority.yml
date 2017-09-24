@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: 85mBB5a0_rbvuyKSLxIpWsJ38nOFfRj20nKRQforz2o
+  default_config_hash: CRZHvFJjb8iJVNpRINEI63j8PPEevq5SNp7Qm2-AFCU
 id: partnership_authority
 label: 'Authority Partnership Flow'
 default_title: null
@@ -30,7 +30,7 @@ steps:
     route: par_partnership_flows.authority_contact_add
     form_id: par_partnership_contact
     redirect:
-      next: 4
+      save: 4
       cancel: 1
   4:
     route: par_partnership_flows.authority_contact_add_confirm
@@ -49,7 +49,7 @@ steps:
     redirect:
       advice_upload: 7
       edit: 9
-      next: 1
+      save: 1
       cancel: 1
   7:
     route: par_partnership_flows.advice_upload_documents
