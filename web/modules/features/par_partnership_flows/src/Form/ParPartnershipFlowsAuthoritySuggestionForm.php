@@ -80,6 +80,7 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
       '#type' => 'radios',
       '#title' => t('Which authority are you acting on behalf of?'),
       '#options' => $authority_options,
+      '#default_value' => $this->getDefaultValues("par_data_authority_id", NULL),
     ];
 
     // Make sure to add the person cacheability data to this form.
