@@ -201,7 +201,7 @@ class ParDataPartnership extends ParDataEntity {
     $partnership_reg_fun_name_list = array();
 
     foreach ($partnership_reg_entities as $key => $current_reg_function_obj) {
-      $partnership_reg_fun_name_list[] =  $current_reg_function_obj->get('function_name')->getString();
+      $partnership_reg_fun_name_list[$current_reg_function_obj->get('id')->getString()] =  $current_reg_function_obj->get('function_name')->getString();
     }
 
     return $partnership_reg_fun_name_list;
