@@ -2,9 +2,7 @@
 
 namespace Drupal\par_data;
 
-use Drupal\clamav\Config;
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Config\Entity\ConfigEntityType;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
@@ -477,6 +475,69 @@ class ParDataManager implements ParDataManagerInterface {
     return $this->entityManager
       ->getStorage($type)
       ->loadMultiple();
+  }
+
+  /**
+   * A helper function to build an entity query and load entities that match.
+   *
+   * @param string $type
+   *   An entity type to query.
+   * @param array $conditions
+   *   Query conditions.
+   * @param integer $limit
+   *   Limit number of results.
+   *
+   * @code
+   * $conditions = [
+   *   [
+   *     'AND/OR' => [
+   *       ['field_name', $searchQuery, 'STARTS_WITH'],
+   *       ['field_nothing', $searchQuery, 'IS NULL'],
+   *       ['field_number', $searchQuery, '>'],
+   *     ]
+   *   ],
+   *   [
+   *     'OR' => [
+   *       ['organisation_name', $searchQuery, 'CONTAINS'],
+   *       ['trading_name', $searchQuery, 'ENDS_WITH']
+   *     ],
+   *   ],
+   *   [
+   *     'AND' => [
+   *       ['organisation_name', $searchQuery, 'LIKE'],
+   *       ['quantity', $searchQuery, '<>']
+   *     ],
+   *   ],
+   * ];
+   * @endcode
+   *
+   * @return \Drupal\Core\Entity\EntityInterface[]
+   *   An array of entity objects indexed by their IDs. Returns an empty array
+   *   if no matching entities are found.
+   *
+   * @see \Drupal\Core\Entity\Query\andConditionGroup
+   * @see \Drupal\Core\Entity\Query\orConditionGroup
+   */
+  public function getEntitiesByQuery(string $type, array $conditions, $limit = 10) {
+    $entities = [];
+
+    foreach ($conditions as $row) {
+      $query = \Drupal::entityQuery($type);
+
+      foreach ($row as $condition_operator => $condition_row) {
+        $group = (strtoupper($condition_operator) === 'OR') ? $query->orConditionGroup() : $query->andConditionGroup();
+
+        foreach ($condition_row as $row) {
+          $group->condition(...$row);
+        }
+
+        $query->condition($group);
+      }
+
+      $entities += $query->range(0, $limit)->execute();
+    }
+
+    return $this->entityManager->getStorage($type)->loadMultiple($entities);
   }
 
   /**

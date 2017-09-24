@@ -10,9 +10,6 @@ use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
-//use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\user\Entity\User;
 
 /**
  * Save the partnership application
@@ -52,8 +49,6 @@ class ParPartnershipFlowsApplicationPartnershipSave extends ParBaseForm {
       '#markup' => 'This form is to self-submit.'
     ];
 
-    // @todo implement self-submit.
-
     return parent::buildForm($form, $form_state);
 
   }
@@ -62,56 +57,21 @@ class ParPartnershipFlowsApplicationPartnershipSave extends ParBaseForm {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+
     parent::submitForm($form, $form_state);
 
-    if ($this->getFlowName() == 'partnership_application') {
+    if ($this->getFlowName() === 'partnership_application') {
 
       // Load the Authority.
       $par_data_authority = ParDataAuthority::load($this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection'));
 
-      // get authority person.
+      // Get logged in user ParDataPerson(s) related to the primary authority.
       $authority_person = ParDataPerson::load($this->parDataManager->getUserPerson($this->getCurrentUser(), $par_data_authority)[0]);
 
       $organisation_id = $this->getDefaultValues('par_data_organisation_id','', 'par_partnership_organisation_suggestion');
 
       if ($organisation_id === 'new') {
-
-        // Save Main Contact.
-        $organisation_person = ParDataPerson::create([
-          'type' => 'person',
-          'uid' => 1,
-        ]);
-
-        $organisation_person->set('salutation', $this->getDefaultValues('salutation', '', 'par_partnership_contact'));
-        $organisation_person->set('first_name', $this->getDefaultValues('first_name', '', 'par_partnership_contact'));
-        $organisation_person->set('last_name', $this->getDefaultValues('last_name', '', 'par_partnership_contact'));
-        $organisation_person->set('work_phone', $this->getDefaultValues('work_phone', '', 'par_partnership_contact'));
-        $organisation_person->set('mobile_phone', $this->getDefaultValues('mobile_phone', '', 'par_partnership_contact'));
-        $organisation_person->set('email', $this->getDefaultValues('email', '', 'par_partnership_contact'));
-        $organisation_person->set('communication_notes', $this->getDefaultValues('notes', '', 'par_partnership_contact'));
-
-        $email_preference_value = isset($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_email'])
-          && !empty($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_email']);
-        $organisation_person->set('communication_email', $email_preference_value);
-        // Save the work phone preference.
-        $work_phone_preference_value = isset($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_phone'])
-          && !empty($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_phone']);
-        $organisation_person->set('communication_phone', $work_phone_preference_value);
-        // Save the mobile phone preference.
-        $mobile_phone_preference_value = isset($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_mobile'])
-          && !empty($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_mobile']);
-        $organisation_person->set('communication_mobile', $mobile_phone_preference_value);
-
-        if (!$organisation_person->save()) {
-          $message = $this->t('This %person could not be saved for %form_id');
-          $replacements = [
-            '%person' => $this->getTempDataValue('name'),
-            '%form_id' => $this->getFormId(),
-          ];
-          $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-        }
-
-        // Save business premises.
+        // Save organisation premises.
         $par_data_premises = ParDataPremises::create([
           'type' => 'premises',
           'uid' => $this->getCurrentUser()->id(),
@@ -130,22 +90,61 @@ class ParPartnershipFlowsApplicationPartnershipSave extends ParBaseForm {
         // Save organisation.
         $par_data_organisation = ParDataOrganisation::create([
           'type' => 'organisation',
-          'uid' => $this->getCurrentUser()->id(),
           'organisation_name' => $this->getDefaultValues('organisation_name','', 'par_partnership_application_organisation_search'),
           'nation' => 'GB-SCT',
           'premises_mapped' => TRUE,
-          'field_person' => [
-            $organisation_person->id(),
-          ],
           'field_premises' => [
             $par_data_premises->id(),
           ],
         ]);
 
         $par_data_organisation->save();
-      } else {
+      }
+      else {
         $par_data_organisation = ParDataOrganisation::load($organisation_id);
-        $organisation_person = $par_data_organisation->get('field_person')->first();
+        $organisation_person = current($par_data_organisation->getPerson());
+      }
+
+      if (!$organisation_person->id()) {
+        // Save Main Contact.
+        $organisation_person = ParDataPerson::create([
+          'type' => 'person',
+        ]);
+
+        $organisation_person->set('salutation', $this->getDefaultValues('salutation', '', 'par_partnership_contact'));
+        $organisation_person->set('first_name', $this->getDefaultValues('first_name', '', 'par_partnership_contact'));
+        $organisation_person->set('last_name', $this->getDefaultValues('last_name', '', 'par_partnership_contact'));
+        $organisation_person->set('work_phone', $this->getDefaultValues('work_phone', '', 'par_partnership_contact'));
+        $organisation_person->set('mobile_phone', $this->getDefaultValues('mobile_phone', '', 'par_partnership_contact'));
+        $organisation_person->set('email', $this->getDefaultValues('email', '', 'par_partnership_contact'));
+        $organisation_person->set('communication_notes', $this->getDefaultValues('notes', '', 'par_partnership_contact'));
+
+        // Save the email preference.
+        $email_preference_value = isset($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_email'])
+          && !empty($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_email']);
+        $organisation_person->set('communication_email', $email_preference_value);
+        // Save the work phone preference.
+        $work_phone_preference_value = isset($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_phone'])
+          && !empty($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_phone']);
+        $organisation_person->set('communication_phone', $work_phone_preference_value);
+        // Save the mobile phone preference.
+        $mobile_phone_preference_value = isset($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_mobile'])
+          && !empty($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_mobile']);
+        $organisation_person->set('communication_mobile', $mobile_phone_preference_value);
+
+        if (!$organisation_person->save()) {
+          $message = $this->t('ParDataPerson %email could not be created for %form_id');
+          $replacements = [
+            '%email' => $this->getDefaultValues('email', '', 'par_partnership_contact'),
+            '%form_id' => $this->getFormId(),
+          ];
+          $this->getLogger($this->getLoggerChannel())
+            ->error($message, $replacements);
+        }
+
+        // Add to organisation `field_person`.
+        $par_data_organisation->get('field_person')->appendItem($organisation_person->id());
+        $par_data_organisation->save();
       }
 
       // Save partnership.
@@ -171,8 +170,15 @@ class ParPartnershipFlowsApplicationPartnershipSave extends ParBaseForm {
       ]);
 
       if ($partnership->save()) {
-        $form_state->setRedirect($this->getFlow()->getNextRoute('save'), ['par_data_partnership' => $partnership->id()]);
         $this->deleteStore();
+        $form_state->setRedirect($this->getFlow()->getNextRoute('save'), ['par_data_partnership' => $partnership->id()]);
+      }
+      else {
+        $message = $this->t('Partnership not saved on %form_id');
+        $replacements = [
+          '%form_id' => $this->getFormId(),
+        ];
+        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
       }
 
     }

@@ -16,8 +16,6 @@ interface ParDataManagerInterface {
   */
   public function getParEntityTypes();
 
-
-
   /**
    * Get a given PAR Data Entity Type
    *
@@ -27,6 +25,18 @@ interface ParDataManagerInterface {
    *   A PAR Data Entity Type
    */
   public function getParEntityType(string $type);
+
+  /**
+   * @param string $type
+   *   An entity type to query.
+   * @param array $conditions
+   *   Array of Conditions.
+   * @param integer $limit
+   *   Limit number of results.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface[]
+   */
+  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL);
 
   /**
    * Gets the entity definition for the class that defines an entities bundles.

@@ -95,11 +95,22 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       '#value' => $this->getDefaultValues('premises_id', 'new'),
     ];
 
-    $form['info'] = [
-      '#markup' => t('Edit your registered address'),
-      '#prefix' => '<h2>',
-      '#suffix' => '</h2>',
-    ];
+    // Show if organisation is available.
+    if ($par_data_premises) {
+      $form['info'] = [
+        '#markup' => t('Edit your registered address'),
+        '#prefix' => '<h2>',
+        '#suffix' => '</h2>',
+      ];
+    }
+
+    if ($this->getFlowName() == 'partnership_application') {
+      $form['info'] = [
+        '#markup' => t("Address for {$this->getDefaultValues('organisation_name', '', 'par_partnership_application_organisation_search')}"),
+        '#prefix' => '<h2>',
+        '#suffix' => '</h2>',
+      ];
+    }
 
     $form['address_line1'] = [
       '#type' => 'textfield',

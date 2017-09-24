@@ -44,29 +44,28 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
-    $properties = [
+    $conditions = [
       'name' => [
-        'first_name' => $this->getDefaultValues('first_name', '', 'par_partnership_contact'),
-        'last_name' => $this->getDefaultValues('last_name', '', 'par_partnership_contact'),
+        'AND' => [
+          ['first_name', $this->getDefaultValues('first_name', '', 'par_partnership_contact'), '='],
+          ['last_name', $this->getDefaultValues('last_name', '', 'par_partnership_contact'), '='],
+        ],
       ],
       'email' => [
-        'email' => $this->getDefaultValues('email', '', 'par_partnership_contact'),
+        'AND' => [
+          ['email', $this->getDefaultValues('email', '', 'par_partnership_contact'), '='],
+        ],
       ],
-      'mobile' => [
-        'mobile_phone' => $this->getDefaultValues('mobile_phone', '', 'par_partnership_contact'),
-      ],
-      'phone' => [
-        'work_phone' => $this->getDefaultValues('work_phone', '', 'par_partnership_contact'),
+      'mobile_phone' => [
+        'OR' => [
+          ['mobile_phone', $this->getDefaultValues('mobile_phone', '', 'par_partnership_contact'), '='],
+          ['work_phone', $this->getDefaultValues('work_phone', '', 'par_partnership_contact'), '='],
+        ],
       ],
     ];
 
-    $people = [];
-    foreach ($properties as $group => $conditions) {
-      $people += \Drupal::entityManager()
-        ->getStorage('par_data_person')
-        ->loadByProperties($conditions);
-    }
-
+    $people = $this->getParDataManager()
+      ->getEntitiesByQuery('par_data_person', $conditions);
 
     $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
 
@@ -77,20 +76,18 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
       $people_options[$person->id()] = $this->renderMarkupField($person_view)['#markup'];
     }
 
-    // If no suggestions were found we want to automatically submit the form.
-    if (count($people_options) <= 0) {
-      $this->setTempDataValue('option', 'new');
-      $this->submitForm($form, $form_state);
-      return $this->redirect($this->getFlow()->getNextRoute('save'), $this->getRouteParams());
-    }
-
-    $people_options['new'] = 'No, I want to create a new user.';
-
-    $form['option'] = [
+    $form['par_data_person_id'] = [
       '#type' => 'radios',
       '#title' => t('Did you mean any of these users?'),
       '#options' => $people_options,
     ];
+
+    // If no suggestions were found we want to automatically submit the form.
+    if (count($people_options) <= 0) {
+      $this->setTempDataValue('par_data_person_id', 'new');
+      $this->submitForm($form, $form_state);
+      return $this->redirect($this->getFlow()->getNextRoute('save'), $this->getRouteParams());
+    }
 
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($person_view_builder);
@@ -116,7 +113,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
     // Get partnership entity from URL.
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
 
-    if ($this->getTempDataValue('option') === 'new') {
+    if ($this->getDefaultValues('par_data_person_id', '', 'par_partnership_contact_suggestion') === 'new') {
 
       // Create new person entity.
        $par_data_person = ParDataPerson::create([
@@ -132,30 +129,29 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
 
       // @todo refactor this to use $this->getTempDataBooleanValue() or similar.
       // Save the email preference.
-      $email_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_email'])
+      $email_preference_value = isset($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_email'])
         && !empty($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_email']);
       $par_data_person->set('communication_email', $email_preference_value);
       // Save the work phone preference.
-      $work_phone_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_phone'])
+      $work_phone_preference_value = isset($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_phone'])
         && !empty($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_phone']);
       $par_data_person->set('communication_phone', $work_phone_preference_value);
       // Save the mobile phone preference.
-      $mobile_phone_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_mobile'])
+      $mobile_phone_preference_value = isset($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_mobile'])
         && !empty($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_mobile']);
       $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
+
+      $par_data_person->save();
 
     }
     else {
 
-      $person_id = $this->getTempDataValue('option');
-
-      if (isset($person_id) && is_numeric($person_id)) {
-        $par_data_person = ParDataPerson::load($person_id);
-      }
+      $person_id = $this->getDefaultValues('par_data_person_id', '', 'par_partnership_contact_suggestion');
+      $par_data_person = ParDataPerson::load($person_id);
 
     }
 
-    if (isset($par_data_person) && $par_data_person->save()) {
+    if ($par_data_person->id()) {
       // Based on the flow we're in we also need to
       // Update field_person on authority or organisation.
       if ($this->getFlowName() === 'partnership_authority') {
@@ -164,7 +160,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
           ->appendItem($par_data_person->id());
 
         // Add the person to the authority as well.
-        $par_data_member_entity = current($par_data_partnership->get('field_authority')->referencedEntities());
+        $par_data_member_entity = current($par_data_partnership->getAuthority());
         $par_data_member_entity->get('field_person')
           ->appendItem($par_data_person->id());
       }
@@ -174,15 +170,14 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
           ->appendItem($par_data_person->id());
 
         // Add the person to the organisation as well.
-        $par_data_member_entity = current($par_data_partnership->get('field_organisation')->referencedEntities());
+        $par_data_member_entity = current($par_data_partnership->getOrganisation());
         $par_data_member_entity->get('field_person')
           ->appendItem($par_data_person->id());
       }
     }
 
-    if ($par_data_person->id() &&
-      $par_data_partnership->save() &&
-      $par_data_member_entity->save()) {
+    if ($par_data_partnership->save() &&
+        $par_data_member_entity->save()) {
       $this->deleteStore();
     }
     else {
