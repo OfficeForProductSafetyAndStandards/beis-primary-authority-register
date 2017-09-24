@@ -151,9 +151,6 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
 
     }
 
-    var_dump($par_data_person->id());
-//    exit();
-
     if ($par_data_person->id()) {
       // Based on the flow we're in we also need to
       // Update field_person on authority or organisation.
