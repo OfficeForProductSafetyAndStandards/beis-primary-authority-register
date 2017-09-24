@@ -3,6 +3,14 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_partnership.full
+    - field.field.par_data_partnership.partnership.field_advice
+    - field.field.par_data_partnership.partnership.field_authority
+    - field.field.par_data_partnership.partnership.field_authority_person
+    - field.field.par_data_partnership.partnership.field_coordinated_business
+    - field.field.par_data_partnership.partnership.field_inspection_plan
+    - field.field.par_data_partnership.partnership.field_organisation
+    - field.field.par_data_partnership.partnership.field_organisation_person
+    - field.field.par_data_partnership.partnership.field_regulatory_function
     - par_data.par_data_partnership_type.partnership
   module:
     - datetime
@@ -14,7 +22,7 @@ mode: full
 content:
   about_partnership:
     type: text_trimmed
-    weight: 6
+    weight: 1
     region: content
     label: hidden
     settings:
@@ -31,12 +39,12 @@ content:
     third_party_settings: {  }
   approved_date:
     type: datetime_default
-    weight: 9
+    weight: 2
     region: content
     label: hidden
     settings:
-      format_type: medium
       timezone_override: ''
+      format_type: gds_date_format
     third_party_settings: {  }
   authority:
     type: entity_reference_entity_view
@@ -102,12 +110,12 @@ content:
     third_party_settings: {  }
   revocation_date:
     type: datetime_default
-    weight: 10
+    weight: 3
     region: content
     label: hidden
     settings:
-      format_type: medium
       timezone_override: ''
+      format_type: gds_date_format
     third_party_settings: {  }
 hidden:
   authority_change_comment: true
@@ -120,6 +128,7 @@ hidden:
   field_advice: true
   field_authority: true
   field_authority_person: true
+  field_coordinated_business: true
   field_inspection_plan: true
   field_organisation: true
   field_organisation_person: true
@@ -133,6 +142,7 @@ hidden:
   reject_comment: true
   revocation_reason: true
   revocation_source: true
+  revoked: true
   tc_authority_agreed: true
   tc_organisation_agreed: true
   terms_authority_agreed: true
