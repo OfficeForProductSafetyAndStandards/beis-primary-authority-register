@@ -105,7 +105,7 @@ class ParEnforcementSubmitNoticeForm extends ParBaseForm {
     '#collapsed' => FALSE,
   ];
 
-  $add_action_link = $this->getFlow()->getNextLink()->setText('Add an enforcement action')->toString();
+  $add_action_link = $this->getFlow()->getNextLink('add_enforcement_action')->setText('Add an enforcement action')->toString();
   $form['action_add']['add_link'] = [
     '#type' => 'markup',
     '#markup' => t('@link', ['@link' => $add_action_link]),
