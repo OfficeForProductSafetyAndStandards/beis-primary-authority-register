@@ -79,6 +79,24 @@ class ParDataOrganisation extends ParDataEntity {
   }
 
   /**
+   * Get all the legal entites associated with the partnership.
+   *
+   * @return array()
+   *   An array containing all the legal entities keyed by entity id's associated with the current partnership.
+   */
+  public function getPartnershipLegalEntities() {
+    $partnership_legal_entities = $this->getLegalEntity();
+
+    $legal_obj_list = array();
+
+    foreach ($partnership_legal_entities as $key => $current_legal_entity) {
+      $legal_obj_list[$current_legal_entity->get('id')->getString()] =  $current_legal_entity->get('registered_name')->getString();
+    }
+
+    return $legal_obj_list;
+  }
+
+  /**
    * Add a legal entity for this Organisation.
    *
    * @param ParDataLegalEntity $legal_entity
