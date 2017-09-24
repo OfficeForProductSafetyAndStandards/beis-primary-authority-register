@@ -1,16 +1,18 @@
+# Permissions that the general public are able to use.
 search public register:
   title: 'Search public register'
   description: 'A permission to allow searching of the public register of partnerships.'
   restrict access: TRUE
+# Permissions related to all helpdesk activities.
+access helpdesk:
+  title: 'Access the PAR Helpdesk'
+  description: 'A permission to allow access to the PAR helpdesk.'
+  restrict access: TRUE
+# Permissions related to all actions applied to partnerships.
 access partnerships dashboard:
   title: 'Access the PAR Dashboard'
   description: 'A permission to allow access to the PAR dashboard.'
   restrict access: TRUE
-search partnership:
-  title: 'Search partnerships'
-  description: 'A permission to allow searching of all partnerships within PAR.'
-  restrict access: TRUE
-# Permissions related to all actions applied to partnerships.
 manage my organisations:
   title: 'Manage my organisations'
   description: 'A permission to allow the management of orgnisations.'
@@ -24,6 +26,10 @@ apply for partnership:
   description: 'A permission to allow members of an authority to apply for new partnerships.'
   restrict access: TRUE
 # Permissions related to enforcement actions.
+search partnership:
+  title: 'Search partnerships'
+  description: 'A permission to allow searching of all partnerships within PAR.'
+  restrict access: TRUE
 enforce organisation:
   title: 'Enforce organisation'
   description: 'A permission to allow enforcement of an organisation.'

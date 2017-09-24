@@ -10,6 +10,9 @@ use Drupal\Core\Field\FormatterInterface;
 
 trait ParDisplayTrait {
 
+  protected $pagerId = 1;
+  protected $numberPerPage = 5;
+
   /**
    * Get renderer service.
    *
@@ -154,6 +157,8 @@ trait ParDisplayTrait {
     }
 
     foreach ($fields as $field_name => $view_mode) {
+      $rows = [];
+
       $element[$field_name] = [
         '#type' => 'fieldset',
         '#collapsible' => FALSE,
@@ -162,20 +167,16 @@ trait ParDisplayTrait {
 
       $field = $entity->get($field_name);
       if (!$field->isEmpty()) {
-        $element[$field_name]['items'] = [
-          '#type' => 'fieldset',
-          '#collapsible' => FALSE,
-          '#collapsed' => FALSE,
-        ];
-
         // Reference fields need to be rendered slightly differently.
         if ($field instanceof EntityReferenceFieldItemListInterface) {
-          $element[$field_name]['items'][] = $this->renderReferenceField($field, $view_mode, $operations, $single);
+          $rows = $this->renderReferenceField($field, $view_mode, $operations, $single);
         }
         else {
-          $element[$field_name]['items'][] = $this->renderTextField($entity, $field, $view_mode, $operations, $single);
+          $rows = $this->renderTextField($entity, $field, $view_mode, $operations, $single);
         }
 
+        // Render the rows using a tabulated pager.
+        $element[$field_name] = $this->renderTable($rows);
       }
       else {
         $element[$field_name]['items'] = [
@@ -190,7 +191,7 @@ trait ParDisplayTrait {
         '#collapsed' => FALSE,
       ];
 
-      // Only add the edit link if it is in the allowed operations.
+      // Only add the add link if it is in the allowed operations.
       if (isset($operations) && (in_array('add', $operations))) {
         try {
           $add_link = $this->getFlow()->getLinkByCurrentOperation('add_' . $field->getName())->setText('add another')->toString();
@@ -205,6 +206,41 @@ trait ParDisplayTrait {
         }
       }
     }
+
+    return $element;
+  }
+
+  public function renderTable($rows) {
+    // Initialize pager and get current page.
+    $current_page = pager_default_initialize(count($rows), $this->numberPerPage, $this->pagerId);
+
+    // Split the items up into chunks:
+    $chunks = array_chunk($rows, $this->numberPerPage);
+
+    $element = [
+      'items' => [
+        '#type' => 'fieldset',
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ],
+      'pager' => [
+        '#type' => 'pager',
+        '#theme' => 'pagerer',
+        '#element' => $this->pagerId,
+        '#weight' => 100,
+        '#config' => [
+          'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
+        ],
+      ]
+    ];
+
+    // Add the items for our current page to the fieldset.
+    foreach ($chunks[$current_page] as $delta => $item) {
+      $element[$delta] = $item;
+    }
+
+    // Increment the pager ID so that any other pager in this page uses a unique element id.
+    $this->pagerId++;
 
     return $element;
   }
