@@ -24,7 +24,7 @@ mode: default
 content:
   about_partnership:
     type: text_trimmed
-    weight: 7
+    weight: 1
     region: content
     label: hidden
     settings:
@@ -41,12 +41,12 @@ content:
     third_party_settings: {  }
   approved_date:
     type: datetime_default
-    weight: 8
+    weight: 2
     region: content
     label: hidden
     settings:
-      format_type: medium
       timezone_override: ''
+      format_type: gds_date_format
     third_party_settings: {  }
   authority:
     type: entity_reference_entity_view
@@ -75,64 +75,64 @@ content:
       trim_length: 600
     third_party_settings: {  }
   field_advice:
-    weight: 16
-    label: above
+    weight: 9
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
     region: content
   field_authority:
-    weight: 17
-    label: above
+    weight: 10
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
     region: content
   field_authority_person:
-    weight: 13
-    label: above
+    weight: 6
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
     region: content
   field_coordinated_business:
-    weight: 19
-    label: above
+    weight: 12
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
     region: content
   field_inspection_plan:
-    weight: 15
-    label: above
+    weight: 8
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
     region: content
   field_organisation:
-    weight: 18
-    label: above
+    weight: 11
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
     region: content
   field_organisation_person:
-    weight: 12
-    label: above
+    weight: 5
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
     region: content
   field_regulatory_function:
-    weight: 14
-    label: above
+    weight: 7
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -158,7 +158,7 @@ content:
     third_party_settings: {  }
   partnership_status:
     type: string
-    weight: 11
+    weight: 4
     region: content
     label: hidden
     settings:
@@ -183,23 +183,13 @@ content:
     third_party_settings: {  }
   revocation_date:
     type: datetime_default
-    weight: 10
+    weight: 3
     region: content
     label: hidden
     settings:
-      format_type: medium
       timezone_override: ''
+      format_type: gds_date_format
     third_party_settings: {  }
-  revoked:
-    label: hidden
-    region: content
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    weight: 0
 hidden:
   authority_change_comment: true
   communication_email: true
@@ -216,6 +206,7 @@ hidden:
   reject_comment: true
   revocation_reason: true
   revocation_source: true
+  revoked: true
   tc_authority_agreed: true
   tc_organisation_agreed: true
   terms_authority_agreed: true
