@@ -44,7 +44,7 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
     $this->retrieveEditableValues();
     $enforcement_notice_bundle = $this->getParDataManager()->getParBundleEntity('par_data_enforcement_notice');
 
-    //get the correct par_data_authority_id set by the previous form
+    //get the correct par_data_authority_id set by the previous form.
     $authority_id = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
 
     // Organisation summary.
@@ -137,7 +137,7 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
 
     $form['alternative_legal_entity'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Alternative legal entity'),
+      '#title' => $this->t('Enter the name of the legal entity'),
       '#default_value' => $this->getDefaultValues("alternative_legal_entity"),
       '#states' => array(
         'visible' => array(
@@ -146,44 +146,6 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
       ),
     ];
 
-    $form['action_summmary'] = [
-      '#type' => 'textarea',
-      '#title' => $this->t('Your summary of enforcement action(s)'),
-      '#default_value' => $this->getDefaultValues("action_summmary"),
-     ];
-
-    /*$form['action_heading']  = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Enforcement action(s)'),
-      '#prefix' => '<h3>',
-      '#suffix' => '</h3>',
-    ];
-
-     $form['action_add'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#description' => $this->t('If you are proposing more then one enforcement action, you should add these as separate actions using the link below'),
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-   $add_action_link = $this->getFlow()->getNextLink()->setText('Add an enforcement action')->toString();
-    $form['action_add']['add_link'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $add_action_link]),
-      '#prefix' => '<div>',
-      '#suffix' => '</div>',
-    ];*/
-
-    $form['enforcement_type'] = [
-      '#type' => 'radios',
-      '#title' => $this->t('Enforcing type'),
-      '#options' => $enforcement_notice_bundle->getAllowedValues('notice_type'),
-      '#default_value' => $this->getDefaultValues('enforcement_type'),
-      '#required' => TRUE,
-      '#prefix' => '<div>',
-      '#suffix' => '</div>',
-    ];
     return parent::buildForm($form, $form_state);
   }
 
@@ -200,42 +162,6 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-
-    $partnership = $this->getRouteParam('par_data_partnership');
-
-    $enforcementNotice_data = [];
-
-    $enforcementNotice_data = [
-      'type' => 'enforcement_notice',
-      'notice_type' => $this->getTempDataValue('enforcement_type'),
-      'summary' => $this->getTempDataValue('action_summmary'),
-      'field_regulatory_function' => $this->getTempDataValue('regulatory_functions'),
-    ];
-
-    $legal_entity_value = $this->getTempDataValue('legal_entities_select');
-
-    if ($legal_entity_value == 'add_new') {
-      $enforcementNotice_data['legal_entity_name'] = $this->getTempDataValue('alternative_legal_entity');
-    } else {
-      //we are dealing with an entity id and storing to an entity ref field.
-      $enforcementNotice_data['field_legal_entity'] = $legal_entity_value;
-    }
-
-    $enforcementAction = \Drupal::entityManager()->getStorage('par_data_enforcement_notice')->create($enforcementNotice_data);
-
-    if ($enforcementAction->save()) {
-      $this->deleteStore();
-      $form_state->setRedirect($this->getFlow()->getNextRoute('next'), ['par_data_partnership' => $partnership->id(), 'par_data_enforcement_notice' =>$enforcementAction->id()]);
-    }
-    else {
-      $message = $this->t('The enforcement entity %entity_id could not be saved for %form_id');
-      $replacements = [
-        '%entity_id' => $enforcementAction->id(),
-        '%form_id' => $this->getFormId(),
-     ];
-      $this->getLogger($this->getLoggerChannel())
-        ->error($message, $replacements);
-    }
   }
 
 }
