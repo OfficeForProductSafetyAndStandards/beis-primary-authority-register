@@ -11,6 +11,7 @@ dependencies:
     - par_data.par_data_enforcement_notice_type.enforcement_notice
   module:
     - datetime
+    - text
 id: par_data_enforcement_notice.enforcement_notice.default
 targetEntityType: par_data_enforcement_notice
 bundle: enforcement_notice
@@ -33,52 +34,31 @@ content:
       link: false
     third_party_settings: {  }
   field_enforcement_action:
-    weight: 6
-    label: above
+    weight: 4
+    label: hidden
     settings:
-      link: true
+      view_mode: default
+      link: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_entity_view
     region: content
   field_enforcing_authority:
-    weight: 12
-    label: above
+    weight: 6
+    label: hidden
     settings:
-      link: true
+      view_mode: title
+      link: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_entity_view
     region: content
   field_legal_entity:
-    weight: 7
-    label: above
+    weight: 5
+    label: hidden
     settings:
-      link: true
+      view_mode: title
+      link: false
     third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_partnership:
-    weight: 11
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_person:
-    weight: 10
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_primary_authority:
-    weight: 9
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_entity_view
     region: content
   legal_entity:
     type: entity_reference_entity_view
@@ -96,14 +76,15 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    weight: 1
   notice_date:
     type: datetime_default
-    weight: 1
+    weight: 2
     region: content
     label: hidden
     settings:
-      format_type: medium
       timezone_override: ''
+      format_type: gds_date_format
     third_party_settings: {  }
   notice_type:
     type: string
@@ -123,12 +104,16 @@ content:
       link: false
     third_party_settings: {  }
   summary:
-    type: basic_string
-    weight: 2
+    type: text_trimmed
+    weight: 3
     region: content
     label: hidden
-    settings: {  }
+    settings:
+      trim_length: 600
     third_party_settings: {  }
 hidden:
+  field_partnership: true
+  field_person: true
+  field_primary_authority: true
   name: true
   user_id: true
