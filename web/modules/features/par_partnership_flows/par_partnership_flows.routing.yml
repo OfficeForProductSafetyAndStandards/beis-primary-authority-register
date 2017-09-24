@@ -2,8 +2,8 @@
 par_partnership_flows.authority_details:
   path: '/partnership/{par_data_partnership}/authority-details'
   defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAuthorityDetailsForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAuthorityDetailsForm::titleCallback'
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsDetailsForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsDetailsForm::titleCallback'
   requirements:
     _permission: 'manage my authorities'
     par_data_partnership: \d+
@@ -148,8 +148,8 @@ par_partnership_flows.inspection_plan_list:
 par_partnership_flows.organisation_details:
   path: '/partnership/{par_data_partnership}/organisation-details'
   defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsOrganisationDetailsForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsOrganisationDetailsForm::titleCallback'
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsDetailsForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsDetailsForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     par_data_partnership: \d+
@@ -476,8 +476,8 @@ par_partnership_flows.partnership_application_partnership_save:
 par_partnership_flows.partnership_application_details:
   path: '/partnership/apply/{par_data_partnership}/review'
   defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAuthorityDetailsForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAuthorityDetailsForm::titleCallback'
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsDetailsForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsDetailsForm::titleCallback'
   requirements:
     _permission: 'manage my authorities'
     par_data_partnership: \d+
