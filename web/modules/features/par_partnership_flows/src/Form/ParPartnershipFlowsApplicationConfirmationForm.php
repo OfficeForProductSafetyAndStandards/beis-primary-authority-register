@@ -10,7 +10,7 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 /**
  * The partnership form for the partnership details.
  */
-class ParPartnershipFlowsAuthorityDetailsForm extends ParBaseForm {
+class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 

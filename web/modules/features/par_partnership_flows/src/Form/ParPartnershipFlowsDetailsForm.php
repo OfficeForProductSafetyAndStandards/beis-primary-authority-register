@@ -159,13 +159,6 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     // operations on these.
     $form['organisation_contacts'] = $this->renderSection('Contacts - Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed']);
 
-    $form['partnership_info_agreed_authority'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('I confirm I have reviewed the partnership summary information above'),
-      '#disabled' => $par_data_partnership->get('partnership_info_agreed_authority')->getString(),
-      '#default_value' => $this->getDefaultValues("partnership_info_agreed_authority"),
-    ];
-
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
     $this->addCacheableDependency($partnership_bundle);
