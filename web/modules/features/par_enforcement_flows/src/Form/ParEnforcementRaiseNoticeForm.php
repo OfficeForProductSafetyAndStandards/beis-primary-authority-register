@@ -121,12 +121,9 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
       ];
     }
 
-    $Legal_entities = $par_data_organisation->getLegalEntity();
-    $legal_entity_reg_names = array();
-
-    foreach ($Legal_entities as  $org_legal_entity) {
-      $legal_entity_reg_names[]  = $org_legal_entity->get('registered_name')->getString();
-    }
+    $legal_entity_reg_names = $par_data_organisation->getPartnershipLegalEntities();
+    //After getting a list of all the associated legal entities add a use custom option.
+    $legal_entity_reg_names['add_new']  = 'Add a legal entity';
 
       $form['legal_entities_select'] = [
         '#type' => 'radios',
@@ -138,12 +135,15 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
         '#suffix' => '</div>',
       ];
 
-    $legal_entity_link = $this->getFlow()->getPrevLink('add_legal')->setText('Add a legal entity')->toString();
-    $form['legal_select_link'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', ['@link' => $legal_entity_link]),
-      '#prefix' => '<div>',
-      '#suffix' => '</div></br>',
+    $form['alternative_legal_entity'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Alternative legal entity'),
+      '#default_value' => $this->getDefaultValues("alternative_legal_entity"),
+      '#states' => array(
+        'visible' => array(
+          ':input[name="legal_entities_select"]' => array('value' => 'add_new'),
+        )
+      ),
     ];
 
     $form['action_summmary'] = [
@@ -152,14 +152,14 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
       '#default_value' => $this->getDefaultValues("action_summmary"),
      ];
 
-    $form['action_heading']  = [
+    /*$form['action_heading']  = [
       '#type' => 'markup',
       '#markup' => $this->t('Enforcement action(s)'),
       '#prefix' => '<h3>',
       '#suffix' => '</h3>',
     ];
 
-    $form['action_add'] = [
+     $form['action_add'] = [
       '#type' => 'fieldset',
       '#attributes' => ['class' => 'form-group'],
       '#description' => $this->t('If you are proposing more then one enforcement action, you should add these as separate actions using the link below'),
@@ -167,13 +167,13 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
       '#collapsed' => FALSE,
     ];
 
-    $add_action_link = $this->getFlow()->getNextLink()->setText('Add an enforcement action')->toString();
+   $add_action_link = $this->getFlow()->getNextLink()->setText('Add an enforcement action')->toString();
     $form['action_add']['add_link'] = [
       '#type' => 'markup',
       '#markup' => t('@link', ['@link' => $add_action_link]),
       '#prefix' => '<div>',
       '#suffix' => '</div>',
-    ];
+    ];*/
 
     $form['enforcement_type'] = [
       '#type' => 'radios',
@@ -184,8 +184,15 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
       '#prefix' => '<div>',
       '#suffix' => '</div>',
     ];
-
     return parent::buildForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    // No validation yet.
+    parent::validateForm($form, $form_state);
   }
 
   /**
@@ -193,6 +200,42 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
+
+    $partnership = $this->getRouteParam('par_data_partnership');
+
+    $enforcementNotice_data = [];
+
+    $enforcementNotice_data = [
+      'type' => 'enforcement_notice',
+      'notice_type' => $this->getTempDataValue('enforcement_type'),
+      'summary' => $this->getTempDataValue('action_summmary'),
+      'field_regulatory_function' => $this->getTempDataValue('regulatory_functions'),
+    ];
+
+    $legal_entity_value = $this->getTempDataValue('legal_entities_select');
+
+    if ($legal_entity_value == 'add_new') {
+      $enforcementNotice_data['legal_entity_name'] = $this->getTempDataValue('alternative_legal_entity');
+    } else {
+      //we are dealing with an entity id and storing to an entity ref field.
+      $enforcementNotice_data['field_legal_entity'] = $legal_entity_value;
+    }
+
+    $enforcementAction = \Drupal::entityManager()->getStorage('par_data_enforcement_notice')->create($enforcementNotice_data);
+
+    if ($enforcementAction->save()) {
+      $this->deleteStore();
+      $form_state->setRedirect($this->getFlow()->getNextRoute('next'), ['par_data_partnership' => $partnership->id(), 'par_data_enforcement_notice' =>$enforcementAction->id()]);
+    }
+    else {
+      $message = $this->t('The enforcement entity %entity_id could not be saved for %form_id');
+      $replacements = [
+        '%entity_id' => $enforcementAction->id(),
+        '%form_id' => $this->getFormId(),
+     ];
+      $this->getLogger($this->getLoggerChannel())
+        ->error($message, $replacements);
+    }
   }
 
 }
