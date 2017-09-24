@@ -86,13 +86,11 @@ class ParDataOrganisation extends ParDataEntity {
    */
   public function getPartnershipLegalEntities() {
     $partnership_legal_entities = $this->getLegalEntity();
-
     $legal_obj_list = array();
 
     foreach ($partnership_legal_entities as $key => $current_legal_entity) {
       $legal_obj_list[$current_legal_entity->get('id')->getString()] =  $current_legal_entity->get('registered_name')->getString();
     }
-
     return $legal_obj_list;
   }
 
