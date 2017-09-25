@@ -11,7 +11,7 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 /**
  * The raise form for creating a new enforcement notice.
  */
-class ParEnforcementRaiseNoticeForm extends ParBaseForm {
+class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
 
   /**
    * {@inheritdoc}
@@ -22,7 +22,7 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'par_enforcement_notice_raise';
+    return 'par_enforcement_notice_raise_details';
   }
 
   /**
@@ -44,7 +44,7 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
     $this->retrieveEditableValues();
     $enforcement_notice_bundle = $this->getParDataManager()->getParBundleEntity('par_data_enforcement_notice');
 
-    //get the correct par_data_authority_id set by the previous form.
+    //get the correct par_data_authority_id set by the previous form
     $authority_id = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
 
     // Organisation summary.
@@ -63,7 +63,6 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
       '#markup' => $this->t('Notification of Enforcement action'),
     ];
 
-
     $form['authority']['authority_name'] = [
       '#type' => 'markup',
       '#markup' => $par_data_authority->get('authority_name')->getString(),
@@ -77,7 +76,6 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-
 
     $form['organisation']['organisation_heading'] = [
       '#type' => 'markup',
@@ -95,55 +93,20 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
     // Display the primary address.
     $form['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
 
-    $form['enforcement_title'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Include the following information'),
-    ];
+    $form['action_summary'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Provide a summary of the enforcement notification'),
+      '#default_value' => $this->getDefaultValues("action_summary"),
+     ];
 
-    $form['enforcement_text'] =[
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-      '#prefix' => '<ul>',
-      '#suffix' => '</ul>',
-    ];
-
-    $enforcement_data = array('Full details of the contravention', 'Which products or services are affected', 'Your proposed text for any statutory notice or draft changes etc', 'Your reasons for proposing the enforcement action');
-
-    foreach ($enforcement_data as $key => $value) {
-
-      $form['enforcement_text']['body'][$key] = [
-        '#type' => 'markup',
-        '#markup' => $this->t($value),
-        '#prefix' => '<li>',
-        '#suffix' => '</li>',
-      ];
-    }
-
-    $legal_entity_reg_names = $par_data_organisation->getPartnershipLegalEntities();
-    //After getting a list of all the associated legal entities add a use custom option.
-    $legal_entity_reg_names['add_new']  = 'Add a legal entity';
-
-      $form['legal_entities_select'] = [
-        '#type' => 'radios',
-        '#title' => $this->t('Select a legal entity'),
-        '#options' => $legal_entity_reg_names,
-        '#default_value' => $this->getDefaultValues('legal_entities_select'),
-        '#required' => TRUE,
-        '#prefix' => '<div>',
-        '#suffix' => '</div>',
-      ];
-
-    $form['alternative_legal_entity'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Enter the name of the legal entity'),
-      '#default_value' => $this->getDefaultValues("alternative_legal_entity"),
-      '#states' => array(
-        'visible' => array(
-          ':input[name="legal_entities_select"]' => array('value' => 'add_new'),
-        )
-      ),
+    $form['enforcement_type'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Enforcing type'),
+      '#options' => $enforcement_notice_bundle->getAllowedValues('notice_type'),
+      '#default_value' => $this->getDefaultValues('enforcement_type'),
+      '#required' => TRUE,
+      '#prefix' => '<div>',
+      '#suffix' => '</div>',
     ];
 
     return parent::buildForm($form, $form_state);
@@ -162,6 +125,44 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
+
+    $partnership = $this->getRouteParam('par_data_partnership');
+    $enforcementNotice_data = [];
+
+    $enforcementNotice_data = [
+      'type' => 'enforcement_notice',
+      'notice_type' => $this->getTempDataValue('enforcement_type'),
+      'summary' => $this->getTempDataValue('action_summary'),
+      'field_regulatory_function' => $this->getTempDataValue('regulatory_functions'),
+    ];
+
+    //get the legal entity assigned from the previous form.
+    $legal_entity_value = $this->getDefaultValues('legal_entities_select', '', 'par_enforcement_notice_raise');
+
+    //check if we are using the legal entity text field instead of the entity ref field.
+    if ($legal_entity_value == 'add_new') {
+      $enforcementNotice_data['legal_entity_name'] = $this->getDefaultValues('alternative_legal_entity', '', 'par_enforcement_notice_raise');
+    } else {
+      //we are dealing with an entity id the storage will be set to an entity ref field.
+      $enforcementNotice_data['field_legal_entity'] = $legal_entity_value;
+    }
+
+    $enforcementAction = \Drupal::entityManager()->getStorage('par_data_enforcement_notice')->create($enforcementNotice_data);
+
+    if ($enforcementAction->save()) {
+      $this->deleteStore();
+      //Go directly to the action setup form we cannot use links within forms without losing form data.
+      $form_state->setRedirect($this->getFlow()->getNextRoute('next'), ['par_data_partnership' => $partnership->id(), 'par_data_enforcement_notice' =>$enforcementAction->id()]);
+    }
+    else {
+      $message = $this->t('The enforcement entity %entity_id could not be saved for %form_id');
+      $replacements = [
+        '%entity_id' => $enforcementAction->id(),
+        '%form_id' => $this->getFormId(),
+     ];
+      $this->getLogger($this->getLoggerChannel())
+        ->error($message, $replacements);
+    }
   }
 
 }

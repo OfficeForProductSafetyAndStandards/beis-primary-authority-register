@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: enJUoDqzBbNaQ4M4VjV7UJsCFlrMTL8HYoIpp_1yrCs
+  default_config_hash: 8IM9jikzwwv2jXgdRREG9KtVtPPrq3Kw7siVjIvNtT0
 id: raise_enforcement
 label: 'Raise Enforcement'
 default_title: null
@@ -37,35 +37,28 @@ steps:
     route: par_enforcement_flows.raise
     form_id: par_enforcement_notice_raise
     redirect:
-      add_enforcement_action: 6
-      add_legal: 10
-      next: 7
+      next: 6
       cancel: 1
   6:
+    route: par_enforcement_flows.raise_details
+    form_id: par_enforcement_notice_raise_details
+    redirect:
+      add_enforcement_action: 7
+      next: 7
+      cancel: 1
+  7:
     route: par_enforcement_flows.add_action
     form_id: par_enforcement_notice_add_action
     redirect:
-      next: 5
+      next: 8
       cancel: 5
-      upload: 11
-  7:
+  8:
     route: par_enforcement_flows.raise_confirm
     form_id: par_enforcement_notice_raise_confirm
     redirect:
+      add_enforcement_action: 7
       save: 9
-  8:
-    route: par_dashboards.dashboard
   9:
-    route: view.partnership_search.enforcment_flow_search_partnerships
+    route: par_dashboards.dashboard
   10:
-    route: par_enforcement_flows.add_legal
-    form_id: par_enforcement_add_legal
-    redirect:
-      add_legal: 5
-      cancel: 5
-  11:
-    route: par_enforcement_flows.upload_action_file
-    form_id: par_enforcement_notice_action_upload_file
-    redirect:
-      upload: 6
-      cancel: 6
+    route: view.partnership_search.enforcment_flow_search_partnerships
