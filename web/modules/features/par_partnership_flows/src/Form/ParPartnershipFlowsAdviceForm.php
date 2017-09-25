@@ -52,13 +52,13 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
 
       // Partnership Confirmation.
       $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
-      $advice_type = $par_data_advice->retrieveStringValue('advice_type');
+      $advice_type = $par_data_advice->get('advice_type')->getString();
       if (isset($allowed_types[$advice_type])) {
         $this->loadDataValue('advice_type', $advice_type);
       }
 
       // Get Regulatory Functions.
-      $regulatory_functions = $par_data_advice->retrieveEntityValue('field_regulatory_function');
+      $regulatory_functions = $par_data_advice->get('field_regulatory_function')->referencedEntities();
       $regulatory_options = [];
       foreach ($regulatory_functions as $function) {
         $regulatory_options[$function->id()] = $function->id();

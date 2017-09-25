@@ -12,6 +12,21 @@ use Drupal\trance\TranceType;
 abstract class ParDataType extends TranceType implements ParDataTypeInterface {
 
   /**
+   * Whether the entity is deletable.
+   */
+  protected $isDeletable;
+
+  /**
+   * Whether the entity is deletable.
+   */
+  protected $isRevokable;
+
+  /**
+   * Whether the entity is deletable.
+   */
+  protected $isArchivable;
+
+  /**
    * The additional configuration options for this entity.
    *
    * Note: Whether a field is 'required' will be dictated by the field storage.
@@ -27,6 +42,27 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
    */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
+  }
+
+  /**
+   * Helper to discover whether this entity can be deleted.
+   */
+  public function isDeletable() {
+    return $this->isDeletable;
+  }
+
+  /**
+   * Helper to discover whether this entity can be deleted.
+   */
+  public function isRevokable() {
+    return $this->isRevokable;
+  }
+
+  /**
+   * Helper to discover whether this entity can be deleted.
+   */
+  public function isArchivable() {
+    return $this->isArchivable;
   }
 
   /**

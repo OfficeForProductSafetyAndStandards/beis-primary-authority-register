@@ -40,14 +40,14 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
 
       // The second column contains a summary of the confirmed details.
       $advice_details = '';
-      $advice_type_value = $advice->retrieveStringValue('advice_type');
+      $advice_type_value = $advice->get('advice_type')->getString();
       if ($advice_type = $advice->getTypeEntity()->getAllowedFieldlabel('advice_type', $advice_type_value)){
         $advice_details = "{$advice_type}";
         if ($regulatory_functions = $advice->getRegulatoryFunction()) {
           $advice_details .= " covering: " . PHP_EOL;
           $names = [];
           foreach ($regulatory_functions as $regulatory_function) {
-            $names[] = $regulatory_function->retrieveStringValue('function_name');
+            $names[] = $regulatory_function->get('function_name')->getString();
           }
           $advice_details .= implode(', ', $names);
         }
@@ -79,7 +79,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
 
       // Make sure to add the document cacheability data to this form.
       $this->addCacheableDependency($advice);
-      $this->addCacheableDependency(current($advice->retrieveEntityValue('document')));
+      $this->addCacheableDependency(current($advice->get('document')->referencedEntities()));
     }
 
     // Check permissions before adding the links for all operations.

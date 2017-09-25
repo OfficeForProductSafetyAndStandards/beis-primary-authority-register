@@ -42,7 +42,7 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()}");
 
-      $this->loadDataValue('about_partnership', $par_data_partnership->retrieveStringValue('about_partnership'));
+      $this->loadDataValue('about_partnership', $par_data_partnership->get('about_partnership')->getString());
     }
   }
 
