@@ -113,13 +113,7 @@ class ParEnforcementAddActionForm extends ParBaseForm {
       'type' => 'enforcement_action',
       'title' => $title,
       'details' => $this->getTempDataValue('details'),
-      'enforcement_action_status' => 'PENDING',
-      'enforcement_action_notes' => 'PENDING',
-      'primary_authority_status' => 'PENDING',
-      'primary_authority_notes' => '',
-      'referral_notes' => '',
       'document' => $this->getDefaultValues("files"),
-      'field_blocked_advice' => [],
       'field_regulatory_function' => $this->getTempDataValue('regulatory_functions'),
     ];
 
