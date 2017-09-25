@@ -11,7 +11,7 @@ dependencies:
     - par_data
     - text
 _core:
-  default_config_hash: xWNw6vh1C_nGYBSNMRuUcLR5b53lfAY3WBiTIbMyViQ
+  default_config_hash: rfXJhewplf80EL8QbASGEnF09fSY15R64Op8ZSQrHVc
 id: par_data_advice.advice.default
 targetEntityType: par_data_advice
 bundle: advice
@@ -69,7 +69,6 @@ content:
     third_party_settings: {  }
 hidden:
   name: true
-  revoked: true
   user_id: true
   visible_authority: true
   visible_business: true
