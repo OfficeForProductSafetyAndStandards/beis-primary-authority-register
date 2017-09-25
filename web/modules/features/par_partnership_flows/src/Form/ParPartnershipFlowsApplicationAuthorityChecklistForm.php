@@ -17,13 +17,6 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function titleCallback() {
-    return 'New Partnership Application';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getFormId() {
     return 'par_partnership_application_authority_checklist';
   }

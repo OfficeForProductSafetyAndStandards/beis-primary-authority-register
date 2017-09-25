@@ -43,17 +43,6 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function titleCallback() {
-    if ($this->getFlowName() === 'partnership_application') {
-      return 'New Partnership Application';
-    }
-
-    return parent::titleCallback();
-  }
-
-  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
@@ -101,7 +90,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     if ($this->getFlowName() == 'partnership_application') {
       $form['info'] = [
         '#type' => 'markup',
-        '#markup' => $this->t("Main Contact for {$this->getDefaultValues('organisation_name', '', 'par_partnership_application_organisation_search')}"),
+        '#markup' => $this->t("Main Contact for {$this->getDefaultValues('organisation_name', '', 'par_partnership_application_organisation')}"),
         '#prefix' => '<h2>',
         '#suffix' => '</h2>',
       ];
