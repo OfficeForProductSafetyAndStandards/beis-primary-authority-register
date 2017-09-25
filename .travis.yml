@@ -113,6 +113,7 @@ before_script:
 script:
   - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
   - travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
+  - travis_retry docker exec -it par_beta_web bash -c 'php composer.phar install' && docker exec -it par_beta_web /var/www/html/vendor/bin/drush --root=/var/www/html/web config-import -y && docker exec -it par_beta_web /var/www/html/vendor/bin/drush --root=/var/www/html/web cr
   - travis_retry docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run test:build"
 
 #-----------------------------------------------------------------------------
