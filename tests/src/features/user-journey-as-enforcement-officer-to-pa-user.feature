@@ -1,4 +1,4 @@
-@Pending
+@ci
 Feature: Enforcement officer to Primary Authority
 
     Background:
