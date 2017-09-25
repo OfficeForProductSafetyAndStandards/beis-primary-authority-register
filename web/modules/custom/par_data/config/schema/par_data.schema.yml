@@ -81,7 +81,6 @@ par_data.par_data_authority_type.*:
       type: boolean
       label: 'Whether the entity is archivable.'
       nullable: true
-      label: 'Whether the entity is archivable.'
     configuration:
       type: sequence
       nullable: true
@@ -442,7 +441,6 @@ par_data.par_data_regulatory_function_t.*:
       type: boolean
       label: 'Whether the entity is archivable.'
       nullable: true
-      label: 'Whether the entity is archivable.'
     configuration:
       type: sequence
       nullable: true
