@@ -106,3 +106,10 @@ function par_data_update_8008() {
     $entity->save();
   }
 }
+
+/**
+ * Adding action state fields to all entities.
+ */
+function par_data_update_8009() {
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
