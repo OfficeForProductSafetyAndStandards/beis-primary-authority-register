@@ -17,7 +17,7 @@ dependencies:
     - datetime
     - text
 _core:
-  default_config_hash: R6nzRIg-IybAJndsgZ5pFmGsfbLQnoH_3N7YHZW9GAc
+  default_config_hash: TrpcmhkDIfbUfUlbO-Xc5VuILul23xIB1RdJ2XbrXfg
 id: par_data_partnership.partnership.full
 targetEntityType: par_data_partnership
 bundle: partnership
@@ -145,7 +145,6 @@ hidden:
   reject_comment: true
   revocation_reason: true
   revocation_source: true
-  revoked: true
   tc_authority_agreed: true
   tc_organisation_agreed: true
   terms_authority_agreed: true
