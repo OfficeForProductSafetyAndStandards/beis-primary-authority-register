@@ -42,10 +42,20 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
       'title' => t('Combined Status Field'),
       'field' => [
         'title' => t('Combined Status Field'),
-        'help' => t('Provides a status field that combines several field statuses'),
+        'help' => t('Provides a status field that combines several field statuses.'),
         'id' => 'par_partnerships_combined_status_field',
       ],
     );
+
+    // Add the current company computed field to Views.
+    $data['par_partnerships_field_data']['par_data_states'] = [
+      'title' => t('PAR Status (including states)'),
+      'field' => [
+        'title' => t('PAR Status (including states)'),
+        'help' => t('Provides the status field for PAR entities.'),
+        'id' => 'par_data_status',
+      ],
+    ];
 
     // Custom filter for Par Membership checks.
     $data['par_partnerships_field_data']['id_filter'] = [
