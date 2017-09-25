@@ -7,7 +7,7 @@ description: ''
 help: ''
 configuration:
   entity:
-    status_field: enforcement_action_status
+    status_field: primary_authority_status
   enforcement_action_status:
     allowed_values:
       unknown: Unknown

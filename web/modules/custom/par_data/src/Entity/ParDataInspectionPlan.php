@@ -149,9 +149,8 @@ class ParDataInspectionPlan extends ParDataEntity {
       ->setDisplayConfigurable('view', TRUE);
 
     // Inspection Status.
-    // {@deprecated} We will use the concept of workflow states going forward.
     $fields['inspection_status'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('(deprecated) Inspection Status'))
+      ->setLabel(t('Inspection Status'))
       ->setDescription(t('The current status of the inspection plan itself. For example, current, expired, replaced.'))
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)
