@@ -17,13 +17,6 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function titleCallback() {
-    return 'New Partnership Application';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getFormId() {
     return 'par_partnership_application_authority_checklist';
   }
@@ -194,7 +187,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
         'business_eligible_for_partnership' => 'the business is eligible',
         'local_authority_suitable_for_nomination' => 'the local authority is suitable for nomination',
         'written_summary_agreed' => 'a written summary has been agreed',
-        'terms_organisation_agreed' => 'the terms have been agreed',
+        'terms_organisation_agreed' => 'the Primary Authority Terms and Conditions have been agreed',
       ];
 
       foreach ($section_one_form_items_required as $form_item => $replacement) {
@@ -221,12 +214,12 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
         'coordinator_local_authority_suitable' => 'the business is eligible',
         'suitable_nomination' => 'the coordinator is suitable for nomination',
         'written_summary_agreed' => 'a written summary has been agreed',
-        'terms_organisation_agreed' => 'the terms have been agreed',
+        'terms_local_authority_agreed' => 'the local authority agrees to Primary Authority Terms and Conditions',
       ];
 
       foreach ($form_items as $form_item => $replacement) {
         if (!$form_state->getValue($form_item)) {
-          $this->setElementError(['section_one', $form_item], $form_state, 'The @field is required', $replacement);
+          $this->setElementError(['section_one', $form_item], $form_state, 'Please confirm that @field', $replacement);
         }
       }
     }

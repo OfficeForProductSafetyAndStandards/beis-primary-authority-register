@@ -7,7 +7,7 @@ save_method: 'step'
 steps:
   1:
     route: par_partnership_flows.authority_details
-    form_id: par_partnership_authority_details
+    form_id: par_partnership_details
     redirect:
       edit_about_partnership: 2
       add_field_authority_person: 3
@@ -25,7 +25,7 @@ steps:
     route: par_partnership_flows.authority_contact_add
     form_id: par_partnership_contact
     redirect:
-      next: 4
+      save: 4
       cancel: 1
   4:
     route: par_partnership_flows.authority_contact_add_confirm
@@ -43,8 +43,8 @@ steps:
     route: par_partnership_flows.advice_list
     redirect:
       advice_upload: 7
-      edit: 9
-      next: 1
+      edit: 10
+      save: 1
       cancel: 1
   7:
     route: par_partnership_flows.advice_upload_documents

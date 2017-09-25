@@ -2,9 +2,7 @@
 
 namespace Drupal\par_data;
 
-use Drupal\clamav\Config;
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Config\Entity\ConfigEntityType;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
@@ -14,6 +12,7 @@ use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\file\FileInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\user\UserInterface;
 
 /**
@@ -480,6 +479,69 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
+   * A helper function to build an entity query and load entities that match.
+   *
+   * @param string $type
+   *   An entity type to query.
+   * @param array $conditions
+   *   Query conditions.
+   * @param integer $limit
+   *   Limit number of results.
+   *
+   * @code
+   * $conditions = [
+   *   [
+   *     'AND/OR' => [
+   *       ['field_name', $searchQuery, 'STARTS_WITH'],
+   *       ['field_nothing', $searchQuery, 'IS NULL'],
+   *       ['field_number', $searchQuery, '>'],
+   *     ]
+   *   ],
+   *   [
+   *     'OR' => [
+   *       ['organisation_name', $searchQuery, 'CONTAINS'],
+   *       ['trading_name', $searchQuery, 'ENDS_WITH']
+   *     ],
+   *   ],
+   *   [
+   *     'AND' => [
+   *       ['organisation_name', $searchQuery, 'LIKE'],
+   *       ['quantity', $searchQuery, '<>']
+   *     ],
+   *   ],
+   * ];
+   * @endcode
+   *
+   * @return \Drupal\Core\Entity\EntityInterface[]
+   *   An array of entity objects indexed by their IDs. Returns an empty array
+   *   if no matching entities are found.
+   *
+   * @see \Drupal\Core\Entity\Query\andConditionGroup
+   * @see \Drupal\Core\Entity\Query\orConditionGroup
+   */
+  public function getEntitiesByQuery(string $type, array $conditions, $limit = 10) {
+    $entities = [];
+
+    foreach ($conditions as $row) {
+      $query = \Drupal::entityQuery($type);
+
+      foreach ($row as $condition_operator => $condition_row) {
+        $group = (strtoupper($condition_operator) === 'OR') ? $query->orConditionGroup() : $query->andConditionGroup();
+
+        foreach ($condition_row as $row) {
+          $group->condition(...$row);
+        }
+
+        $query->condition($group);
+      }
+
+      $entities += $query->range(0, $limit)->execute();
+    }
+
+    return $this->entityManager->getStorage($type)->loadMultiple($entities);
+  }
+
+  /**
    * Get the PAR People that share the same email with the user account.
    *
    * @param UserInterface $account
@@ -495,17 +557,21 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
-   * Get the PAR Person id in target entity.
+   * Get the PAR Person related to a user in the target entity.
    *
    * @param UserInterface $account
-   * @param $entity
+   *   The account
+   * @param ParDataEntityInterface $entity
+   *   The authority or organisation entity to get the user for.
    *
-   * @return array
+   * @return ParDataPerson
    */
   public function getUserPerson($account, $entity) {
     $entity_people = $entity->hasField('field_person') ? $entity->retrieveEntityIds('field_person') : [];
+    $user_people = $this->getUserPeople($account);
 
-    return array_intersect_key(array_keys($this->getUserPeople($account)), array_keys($entity_people));
+    $person_id = current(array_intersect_key(array_keys($user_people), array_keys($entity_people)));
+    return !empty($person_id) ? ParDataPerson::load($person_id) : NULL;
   }
 
   /**

@@ -3,6 +3,7 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Form\ParBaseForm;
@@ -24,13 +25,6 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function titleCallback() {
-    return 'New Partnership Application';
-  }
-
-  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
@@ -38,35 +32,39 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues() {
+
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $searchQuery = $this->getDefaultValues('organisation_name', '', 'par_partnership_application_organisation');
 
-    $properties = [
-      'trading_name' => [
-        'trading_name' => $this->getDefaultValues('organisation_name', '', 'par_partnership_application_organisation_search'),
-      ],
-      'organisation_name' => [
-        'organisation_name' => $this->getDefaultValues('organisation_name', '', 'par_partnership_application_organisation_search'),
+    // Go to previous step if search query is not specified.
+    if (!$searchQuery) {
+      // @TODO Find a way to notify the user they have been redirected.
+      return $this->redirect($this->getFlow()->getPrevRoute(), $this->getRouteParams());
+    }
+
+    $conditions = [
+      'name' => [
+        'OR' => [
+          ['organisation_name', $searchQuery, 'CONTAINS'],
+          ['trading_name', $searchQuery, 'CONTAINS'],
+        ]
       ],
     ];
 
-    $options = [];
-    foreach ($properties as $group => $conditions) {
-      $options += \Drupal::entityManager()
-        ->getStorage('par_data_organisation')
-        ->loadByProperties($conditions);
-    }
+    $organisationViewBuilder = $this->getParDataManager()->getViewBuilder('par_data_organisation');
 
-    $viewBuilder = $this->getParDataManager()->getViewBuilder('par_data_organisation');
+    $options = $this->getParDataManager()
+      ->getEntitiesByQuery('par_data_organisation', $conditions);
 
     $radio_options = [];
 
     foreach($options as $option) {
-      $option_view = $viewBuilder->view($option, 'summary');
+      $option_view = $organisationViewBuilder->view($option, 'summary');
 
       $radio_options[$option->id()] = $this->renderMarkupField($option_view)['#markup'];
     }
@@ -75,21 +73,19 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
     if (count($radio_options) <= 0) {
       $this->setTempDataValue('par_data_organisation_id', 'new');
       $this->submitForm($form, $form_state);
-      return $this->redirect($this->getFlow()->getNextRoute('add'), $this->getRouteParams());
+      return $this->redirect($this->getFlow()->getNextRoute(), $this->getRouteParams());
     }
-
-    $radio_options['new'] = "No, it's a new partnership.";
 
     $form['par_data_organisation_id'] = [
       '#type' => 'radios',
       '#title' => t('Did you mean any of these organisations?'),
-      '#options' => $radio_options,
+      '#options' => $radio_options + ['new' => "No, it's a new partnership."],
+      '#default_value' => $this->getDefaultValues('par_data_organisation_id', 'new'),
     ];
 
     // Make sure to add the person cacheability data to this form.
-    $this->addCacheableDependency($viewBuilder);
+    $this->addCacheableDependency($organisationViewBuilder);
     $this->addCacheableDependency($options);
-    $this->addCacheableDependency($properties);
 
     return parent::buildForm($form, $form_state);
   }
@@ -107,6 +103,21 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
+
+    // If an existing organisation was selected and has an address
+    // and contact, skip to the review step, or skip to the contact
+    // step if an existing organisation was selected which has an
+    // address but no contact.
+    $organisation_id = $this->getDefaultValues('par_data_organisation_id', '', 'par_partnership_organisation_suggestion');
+    if ($par_data_organisation = ParDataOrganisation::load($organisation_id)) {
+      if (!$par_data_organisation->get('field_person')->isEmpty()) {
+        $form_state->setRedirect($this->getFlow()->getNextRoute('review'), $this->getRouteParams());
+      }
+      elseif ($par_data_organisation->get('field_person')->isEmpty()
+        && !$par_data_organisation->get('field_premises')->isEmpty()) {
+        $form_state->setRedirect($this->getFlow()->getNextRoute('add_contact'), $this->getRouteParams());
+      }
+    }
   }
 
 }
