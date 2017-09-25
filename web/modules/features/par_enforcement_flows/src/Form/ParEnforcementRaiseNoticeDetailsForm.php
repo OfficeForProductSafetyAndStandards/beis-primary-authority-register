@@ -93,10 +93,10 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
     // Display the primary address.
     $form['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
 
-    $form['action_summmary'] = [
+    $form['action_summary'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('Provide a summary of the enforcement action(s)'),
-      '#default_value' => $this->getDefaultValues("action_summmary"),
+      '#title' => $this->t('Provide a summary of the enforcement notification'),
+      '#default_value' => $this->getDefaultValues("action_summary"),
      ];
 
     $form['enforcement_type'] = [
@@ -132,7 +132,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
     $enforcementNotice_data = [
       'type' => 'enforcement_notice',
       'notice_type' => $this->getTempDataValue('enforcement_type'),
-      'summary' => $this->getTempDataValue('action_summmary'),
+      'summary' => $this->getTempDataValue('action_summary'),
       'field_regulatory_function' => $this->getTempDataValue('regulatory_functions'),
     ];
 
