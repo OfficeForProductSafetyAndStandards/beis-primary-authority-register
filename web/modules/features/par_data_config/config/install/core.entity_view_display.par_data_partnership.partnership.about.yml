@@ -6,6 +6,7 @@ dependencies:
     - field.field.par_data_partnership.partnership.field_advice
     - field.field.par_data_partnership.partnership.field_authority
     - field.field.par_data_partnership.partnership.field_authority_person
+    - field.field.par_data_partnership.partnership.field_coordinated_business
     - field.field.par_data_partnership.partnership.field_inspection_plan
     - field.field.par_data_partnership.partnership.field_organisation
     - field.field.par_data_partnership.partnership.field_organisation_person
@@ -92,6 +93,7 @@ hidden:
   field_advice: true
   field_authority: true
   field_authority_person: true
+  field_coordinated_business: true
   field_inspection_plan: true
   field_organisation: true
   field_organisation_person: true
@@ -108,6 +110,7 @@ hidden:
   revocation_date: true
   revocation_reason: true
   revocation_source: true
+  revoked: true
   tc_authority_agreed: true
   tc_organisation_agreed: true
   terms_authority_agreed: true

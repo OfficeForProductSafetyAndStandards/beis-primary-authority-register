@@ -10,7 +10,6 @@ steps:
     route: par_partnership_flows.partnership_application_start
     form_id: par_authority_selection
     redirect:
-      next: 2
       cancel: 12
   2:
     route: par_partnership_flows.partnership_application_type
@@ -28,16 +27,16 @@ steps:
     redirect:
       cancel: 12
   5:
-    route: par_partnership_flows.partnership_application_organisation_search
-    form_id: par_partnership_application_organisation_search
+    route: par_partnership_flows.partnership_application_organisation_name
+    form_id: par_partnership_application_organisation
     redirect:
       cancel: 12
   6:
-    route: par_partnership_flows.partnership_application_organisation_search_confirm
+    route: par_partnership_flows.partnership_application_organisation_confirm
     form_id: par_partnership_organisation_suggestion
     redirect:
-      add: 7
-      save: 9
+      review: 9
+      add_contact: 8
       cancel: 12
   7:
     route: par_partnership_flows.partnership_application_organisation_address
@@ -50,22 +49,20 @@ steps:
     redirect:
       cancel: 12
   9:
-    route: par_partnership_flows.partnership_application_partnership_save
-    form_id: par_partnership_application_save
+    route: par_partnership_flows.partnership_application_review
+    form_id: par_partnership_application_confirmation
     redirect:
-      done: 10
+      save: 10
       cancel: 12
   10:
-    route: par_partnership_flows.partnership_application_details
-    form_id: par_partnership_authority_details
-    redirect:
-      save: 11
-      cancel: 12
-  11:
     route: par_partnership_flows.partnership_application_invite
     form_id: par_partnership_invite
     redirect:
-      save: 12
+      next: 11
       cancel: 12
+  11:
+    route: par_partnership_flows.partnership_application_invite_sent
+    redirect:
+      done: 12
   12:
-    route: view.par_user_partnerships.partnerships_page
+    route: par_dashboards.dashboard

@@ -43,8 +43,28 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    if ($this->getFlowName() === 'partnership_application') {
-      return 'New Partnership Application';
+    $par_data_premises = $this->getRouteParam('par_data_premises');
+
+    if ($this->getFlowName() == 'partnership_application') {
+      $organisation_name = $this->getDefaultValues('organisation_name', '', 'par_partnership_application_organisation');
+      return "Add address for $organisation_name";
+    }
+    // Show if organisation is available.
+    else {
+      $form['info'] = [
+        '#markup' => t('Edit the registered address'),
+        '#prefix' => '<h2>',
+        '#suffix' => '</h2>',
+      ];
+    }
+
+
+
+
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    if ($par_data_partnership) {
+      $par_data_organisation = current($par_data_partnership->getOrganisation());
+      return $par_data_organisation->get('organisation_name')->getString();
     }
 
     return parent::titleCallback();
@@ -93,12 +113,6 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
     $form['premises_id'] = [
       '#type' => 'hidden',
       '#value' => $this->getDefaultValues('premises_id', 'new'),
-    ];
-
-    $form['info'] = [
-      '#markup' => t('Edit your registered address'),
-      '#prefix' => '<h2>',
-      '#suffix' => '</h2>',
     ];
 
     $form['address_line1'] = [

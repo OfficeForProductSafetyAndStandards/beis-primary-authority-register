@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_advice.title
+    - field.field.par_data_advice.advice.field_regulatory_function
     - par_data.par_data_advice_type.advice
   module:
     - file_entity
@@ -26,9 +27,11 @@ content:
 hidden:
   advice_type: true
   field_regulatory_function: true
+  issue_date: true
   name: true
   notes: true
   regulatory_function: true
+  revoked: true
   user_id: true
   visible_authority: true
   visible_business: true

@@ -3,6 +3,12 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_enforcement_notice.title
+    - field.field.par_data_enforcement_notice.enforcement_notice.field_enforcement_action
+    - field.field.par_data_enforcement_notice.enforcement_notice.field_enforcing_authority
+    - field.field.par_data_enforcement_notice.enforcement_notice.field_legal_entity
+    - field.field.par_data_enforcement_notice.enforcement_notice.field_partnership
+    - field.field.par_data_enforcement_notice.enforcement_notice.field_person
+    - field.field.par_data_enforcement_notice.enforcement_notice.field_primary_authority
     - par_data.par_data_enforcement_notice_type.enforcement_notice
   module:
     - datetime
@@ -18,14 +24,22 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  legal_entity_name:
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
   notice_date:
     type: datetime_default
     weight: 1
     region: content
     label: hidden
     settings:
-      format_type: medium
       timezone_override: ''
+      format_type: gds_date_format
     third_party_settings: {  }
   notice_type:
     type: string
@@ -38,8 +52,11 @@ content:
 hidden:
   enforcing_authority: true
   field_enforcement_action: true
+  field_enforcing_authority: true
   field_enforcingauthority: true
   field_legal_entity: true
+  field_partnership: true
+  field_person: true
   field_primary_authority: true
   legal_entity: true
   name: true

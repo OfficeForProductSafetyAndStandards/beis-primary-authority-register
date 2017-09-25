@@ -28,17 +28,6 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function titleCallback() {
-    if ($this->getFlowName() === 'partnership_application') {
-      return 'New Partnership Application';
-    }
-
-    return parent::titleCallback();
-  }
-
-  /**
    * Helper to get all the editable values.
    *
    * Used for when editing or revisiting a previously edited page.
@@ -81,7 +70,6 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-
     parent::submitForm($form, $form_state);
 
     $par_data_partnership = $this->getRouteParam('par_data_partnership');

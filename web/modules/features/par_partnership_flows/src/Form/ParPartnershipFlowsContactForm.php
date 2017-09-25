@@ -43,17 +43,6 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function titleCallback() {
-    if ($this->getFlowName() === 'partnership_application') {
-      return 'New Partnership Application';
-    }
-
-    return parent::titleCallback();
-  }
-
-  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
@@ -98,9 +87,25 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
     $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
 
+    if ($this->getFlowName() == 'partnership_application') {
+      $form['info'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t("Main Contact for {$this->getDefaultValues('organisation_name', '', 'par_partnership_application_organisation')}"),
+        '#prefix' => '<h2>',
+        '#suffix' => '</h2>',
+      ];
+
+      $form['help_text'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('State who is the main contact for the business. It might be the business owner, or an employee in charge of regulatory compliance. Their contact information will be visible to anyone logging into the Primary Authority Register, including enforcement officers.'),
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+      ];
+    }
+
     $form['salutation'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Title'),
+      '#title' => $this->t('Title (optional)'),
       '#default_value' => $this->getDefaultValues("salutation"),
     ];
 
@@ -143,7 +148,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
 
     $form['preferred_contact'] = [
       '#type' => 'checkboxes',
-      '#title' => $this->t('Preferred method of contact'),
+      '#title' => $this->t('Preferred method of contact (optional)'),
       '#options' => $contact_options,
       '#default_value' => $this->getDefaultValues("preferred_contact", []),
       '#return_value' => 'on',
