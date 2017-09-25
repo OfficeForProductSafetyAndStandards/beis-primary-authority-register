@@ -24,7 +24,7 @@ use Drupal\user\UserInterface;
  *   ),
  *   bundle_label = @Translation("PAR Partnership type"),
  *   handlers = {
- *     "storage" = "Drupal\trance\TranceStorage",
+ *     "storage" = "Drupal\par_data\ParDataStorage",
  *     "storage_schema" = "Drupal\trance\TranceStorageSchema",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "list_builder" = "Drupal\trance\TranceListBuilder",
