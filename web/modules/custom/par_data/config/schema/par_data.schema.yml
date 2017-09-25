@@ -540,12 +540,11 @@ par_data.configuration_type.status_transitions:
   type: sequence
   label: 'Statuses'
   sequence:
-   type: sequence
-     label: 'Transitions'
-     sequence:
-      label:
-        type: string
-        label: 'Transition from'
+    type: sequence
+    label: 'Transitions'
+    sequence:
+      type: string
+      label: 'Transition from'
 par_data.configuration_type.label_fields:
   type: sequence
   label: 'Administrative Label Fields'
