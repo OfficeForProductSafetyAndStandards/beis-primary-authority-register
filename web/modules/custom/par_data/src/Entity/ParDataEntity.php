@@ -133,6 +133,12 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     }
   }
 
+  public function restore() {
+    if (!$this->isNew()) {
+
+    }
+  }
+
   /**
    * Get the boolean value for a field.
    *
