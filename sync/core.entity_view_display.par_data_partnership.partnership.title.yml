@@ -14,7 +14,7 @@ dependencies:
     - field.field.par_data_partnership.partnership.field_regulatory_function
     - par_data.par_data_partnership_type.partnership
 _core:
-  default_config_hash: 5fLvoMDykZgarzib8MjkklwQc5H8cQqDeObjgM6i48Y
+  default_config_hash: jzwUticyzaYhBPLycZIuXAN-KVsmA6iFo1_U_qMF8OE
 id: par_data_partnership.partnership.title
 targetEntityType: par_data_partnership
 bundle: partnership
@@ -80,7 +80,6 @@ hidden:
   revocation_date: true
   revocation_reason: true
   revocation_source: true
-  revoked: true
   tc_authority_agreed: true
   tc_organisation_agreed: true
   terms_authority_agreed: true

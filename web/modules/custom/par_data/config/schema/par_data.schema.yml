@@ -29,6 +29,18 @@ par_data.par_data_advice_type.*:
       label: 'Help'
     uuid:
       type: string
+    isDeletable:
+      type: boolean
+      label: 'Whether the entity is deletable.'
+      nullable: true
+    isRevokable:
+      type: boolean
+      label: 'Whether the entity is revokable.'
+      nullable: true
+    isArchivable:
+      type: boolean
+      label: 'Whether the entity is archivable.'
+      nullable: true
     configuration:
       type: sequence
       nullable: true
@@ -57,6 +69,18 @@ par_data.par_data_authority_type.*:
       label: 'Help'
     uuid:
       type: string
+    isDeletable:
+      type: boolean
+      label: 'Whether the entity is deletable.'
+      nullable: true
+    isRevokable:
+      type: boolean
+      label: 'Whether the entity is revokable.'
+      nullable: true
+    isArchivable:
+      type: boolean
+      label: 'Whether the entity is archivable.'
+      nullable: true
     configuration:
       type: sequence
       nullable: true
@@ -85,6 +109,18 @@ par_data.par_data_enforcement_notice_type.*:
       label: 'Help'
     uuid:
       type: string
+    isDeletable:
+      type: boolean
+      label: 'Whether the entity is deletable.'
+      nullable: true
+    isRevokable:
+      type: boolean
+      label: 'Whether the entity is revokable.'
+      nullable: true
+    isArchivable:
+      type: boolean
+      label: 'Whether the entity is archivable.'
+      nullable: true
     configuration:
       type: sequence
       nullable: true
@@ -113,6 +149,18 @@ par_data.par_data_inspection_plan_type.*:
       label: 'Help'
     uuid:
       type: string
+    isDeletable:
+      type: boolean
+      label: 'Whether the entity is deletable.'
+      nullable: true
+    isRevokable:
+      type: boolean
+      label: 'Whether the entity is revokable.'
+      nullable: true
+    isArchivable:
+      type: boolean
+      label: 'Whether the entity is archivable.'
+      nullable: true
     configuration:
       type: sequence
       nullable: true
@@ -141,6 +189,18 @@ par_data.par_data_legal_entity_type.*:
       label: 'Help'
     uuid:
       type: string
+    isDeletable:
+      type: boolean
+      label: 'Whether the entity is deletable.'
+      nullable: true
+    isRevokable:
+      type: boolean
+      label: 'Whether the entity is revokable.'
+      nullable: true
+    isArchivable:
+      type: boolean
+      label: 'Whether the entity is archivable.'
+      nullable: true
     configuration:
       type: sequence
       nullable: true
@@ -169,6 +229,18 @@ par_data.par_data_organisation_type.*:
       label: 'Help'
     uuid:
       type: string
+    isDeletable:
+      type: boolean
+      label: 'Whether the entity is deletable.'
+      nullable: true
+    isRevokable:
+      type: boolean
+      label: 'Whether the entity is revokable.'
+      nullable: true
+    isArchivable:
+      type: boolean
+      label: 'Whether the entity is archivable.'
+      nullable: true
     configuration:
       type: sequence
       nullable: true
@@ -197,6 +269,18 @@ par_data.par_data_coordinated_business_type.*:
       label: 'Help'
     uuid:
       type: string
+    isDeletable:
+      type: boolean
+      label: 'Whether the entity is deletable.'
+      nullable: true
+    isRevokable:
+      type: boolean
+      label: 'Whether the entity is revokable.'
+      nullable: true
+    isArchivable:
+      type: boolean
+      label: 'Whether the entity is archivable.'
+      nullable: true
     configuration:
       type: sequence
       nullable: true
@@ -225,6 +309,18 @@ par_data.par_data_partnership_type.*:
       label: 'Help'
     uuid:
       type: string
+    isDeletable:
+      type: boolean
+      label: 'Whether the entity is deletable.'
+      nullable: true
+    isRevokable:
+      type: boolean
+      label: 'Whether the entity is revokable.'
+      nullable: true
+    isArchivable:
+      type: boolean
+      label: 'Whether the entity is archivable.'
+      nullable: true
     configuration:
       type: sequence
       nullable: true
@@ -253,6 +349,18 @@ par_data.par_data_person_type.*:
       label: 'Help'
     uuid:
       type: string
+    isDeletable:
+      type: boolean
+      label: 'Whether the entity is deletable.'
+      nullable: true
+    isRevokable:
+      type: boolean
+      label: 'Whether the entity is revokable.'
+      nullable: true
+    isArchivable:
+      type: boolean
+      label: 'Whether the entity is archivable.'
+      nullable: true
     configuration:
       type: sequence
       nullable: true
@@ -281,6 +389,18 @@ par_data.par_data_premises_type.*:
       label: 'Help'
     uuid:
       type: string
+    isDeletable:
+      type: boolean
+      label: 'Whether the entity is deletable.'
+      nullable: true
+    isRevokable:
+      type: boolean
+      label: 'Whether the entity is revokable.'
+      nullable: true
+    isArchivable:
+      type: boolean
+      label: 'Whether the entity is archivable.'
+      nullable: true
     configuration:
       type: sequence
       nullable: true
@@ -309,6 +429,18 @@ par_data.par_data_regulatory_function_t.*:
       label: 'Help'
     uuid:
       type: string
+    isDeletable:
+      type: boolean
+      label: 'Whether the entity is deletable.'
+      nullable: true
+    isRevokable:
+      type: boolean
+      label: 'Whether the entity is revokable.'
+      nullable: true
+    isArchivable:
+      type: boolean
+      label: 'Whether the entity is archivable.'
+      nullable: true
     configuration:
       type: sequence
       nullable: true
@@ -337,6 +469,18 @@ par_data.par_data_sic_code_type.*:
       label: 'Help'
     uuid:
       type: string
+    isDeletable:
+      type: boolean
+      label: 'Whether the entity is deletable.'
+      nullable: true
+    isRevokable:
+      type: boolean
+      label: 'Whether the entity is revokable.'
+      nullable: true
+    isArchivable:
+      type: boolean
+      label: 'Whether the entity is archivable.'
+      nullable: true
     configuration:
       type: sequence
       nullable: true
@@ -365,6 +509,18 @@ par_data.par_data_enforcement_action_type.*:
       label: 'Help'
     uuid:
       type: string
+    isDeletable:
+      type: boolean
+      label: 'Whether the entity is deletable.'
+      nullable: true
+    isRevokable:
+      type: boolean
+      label: 'Whether the entity is revokable.'
+      nullable: true
+    isArchivable:
+      type: boolean
+      label: 'Whether the entity is archivable.'
+      nullable: true
     configuration:
       type: sequence
       nullable: true

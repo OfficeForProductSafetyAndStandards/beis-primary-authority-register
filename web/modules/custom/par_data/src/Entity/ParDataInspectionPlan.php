@@ -171,22 +171,6 @@ class ParDataInspectionPlan extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Revoked.
-    $fields['revoked'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Revoked'))
-      ->setDescription(t('Whether the inspection plan has been revoked.'))
-      ->setRevisionable(TRUE)
-      ->setDisplayOptions('form', [
-        'type' => 'boolean_checkbox',
-        'weight' => 3,
-      ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-        'weight' => 0,
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
     return $fields;
   }
 
