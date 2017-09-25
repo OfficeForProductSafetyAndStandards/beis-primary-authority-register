@@ -51,6 +51,11 @@ Feature: New Direct Partnership
         And I add "Test Create Partnership" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
 
+        # CONFIRM NEW PARTNERSHIP
+
+        And I click on the radio "#edit-par-data-organisation-id-new"
+        And I click on the button "#edit-next"
+
         # ADD BUSINESS DETAIL
 
         When I add "SE16 4NX" to the inputfield "#edit-postcode"

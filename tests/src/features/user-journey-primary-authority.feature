@@ -11,7 +11,7 @@ Feature: Primary Authority - Change Partnership Details
 
         Given I am logged in as "par_authority@example.com"
         And I expect that element "#block-par-theme-content" contains the text "Your partnerships"
-        And I expect that element "#block-par-theme-content" contains the text "Find a partnership"
+        And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
         And I expect that element "#block-par-theme-content" contains the text "Messages"
         When I click on the link "See your partnerships"
 
@@ -27,8 +27,9 @@ Feature: Primary Authority - Change Partnership Details
        And I add "test partnership info change" to the inputfield "#edit-about-partnership"
        And I click on the button "#edit-save"
        Then I expect that element "#edit-about-partnership" contains the text "test partnership info change"
-       When I click on the button "/html/body/main/div[2]/div[4]/form/div[12]/fieldset/div/fieldset/div[1]/fieldset/div[1]/fieldset/a"
-       And I clear the inputfield "#edit-salutation"
+       When I click on the button "/html/body/main/div[2]/div[4]/form/div[12]/fieldset/div[2]/fieldset/a"
+
+        And I clear the inputfield "#edit-salutation"
        And I clear the inputfield "#edit-first-name"
        And I clear the inputfield "#edit-last-name"
        And I clear the inputfield "#edit-work-phone"
@@ -46,7 +47,7 @@ Feature: Primary Authority - Change Partnership Details
        And I expect that element "#edit-authority-contacts" contains the text "par_authority_animal@example.com"
        And I expect that element "#edit-authority-contacts" contains the text "91723456789"
        And I expect that element "#edit-authority-contacts" contains the text "9777777777"
-       When I click on the button "/html/body/main/div[2]/div[4]/form/div[12]/fieldset/div/fieldset/div[1]/fieldset/div[2]/fieldset/a"
+       When I click on the button "/html/body/main/div[2]/div[4]/form/div[12]/fieldset/div[3]/fieldset/a"
        And I add "Miss" to the inputfield "#edit-first-name"
        And I add "Piggy" to the inputfield "#edit-last-name"
        And I add "par_authority_piggy@example.com" to the inputfield "#edit-email"
@@ -69,7 +70,11 @@ Feature: Primary Authority - Change Partnership Details
         #  And I click on the link "Upload a document"
         #  And I upload a valid file
         When I click on the link "edit"
+
+        # BUG - UPLOAD NOT AVAILABLE
+
         Then I expect that element "#par-partnership-advice-upload" contains the text "Upload file(s)"
+
 #        When I click on the button "#edit-next"
 ##        And I click on the radio "#edit-advice-type-authority-advice"
 #        # When I click on the button "#edit-next"
