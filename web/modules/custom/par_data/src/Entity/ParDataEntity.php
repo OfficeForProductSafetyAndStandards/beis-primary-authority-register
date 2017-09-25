@@ -107,6 +107,13 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     return FALSE;
   }
 
+  /*
+   * Whether the entity was transitioned from the old PAR2 system.
+   */
+  public function isTransitioned() {
+    // @TODO Work out the business rules for this.
+  }
+
 
   public function revoke() {
     if (!$this->isNew()) {
