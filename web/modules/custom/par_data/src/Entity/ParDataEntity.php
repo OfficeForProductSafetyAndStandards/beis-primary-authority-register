@@ -107,6 +107,25 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     return FALSE;
   }
 
+
+  public function revoke() {
+    if (!$this->isNew()) {
+      // $this->entityManager()->getStorage($this->entityTypeId)->delete(array($this->id() => $this));
+    }
+  }
+
+  public function unrevoke() {
+    if (!$this->isNew()) {
+
+    }
+  }
+
+  public function archive() {
+    if (!$this->isNew()) {
+
+    }
+  }
+
   /**
    * Get the boolean value for a field.
    *
