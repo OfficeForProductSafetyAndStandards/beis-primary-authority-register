@@ -11,6 +11,15 @@ isArchivable: false
 configuration:
   entity:
     status_field: partnership_status
+    status_transitions:
+      awaiting_review:
+        - default
+      confirmed_authority:
+        - awaiting_review
+      confirmed_business:
+        - confirmed_authority
+      confirmed_rd:
+        - confirmed_business
     completed_fields:
       - about_partnership
     required_fields:
@@ -20,6 +29,7 @@ configuration:
       awaiting_review: 'Awaiting Review'
       confirmed_authority: 'Confirmed by the Authority'
       confirmed_business: 'Confirmed by the Organisation'
+      confirmed_rd: 'Active'
   partnership_type:
     allowed_values:
       direct: Direct
