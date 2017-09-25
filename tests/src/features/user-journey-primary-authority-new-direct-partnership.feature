@@ -3,7 +3,7 @@ Feature: New Direct Partnership
 
     Background:
         # TEST DATA RESET
-        Given I reset the test data
+#        Given I reset the test data
 
     Scenario: New Direct Partnership
 
@@ -31,24 +31,33 @@ Feature: New Direct Partnership
         # CONFIRMATIONS
 
         Then I expect that element "#par-partnership-application-authority-checklist" contains the text "I am authorised to submit this application"
+        When I click on the button "#edit-next"
+        Then I expect that element ".error-summary-heading" is visible
         When I click on the checkbox "#edit-business-eligible-for-partnership"
+        And I click on the button "#edit-next"
+        Then I expect that element ".error-summary-heading" is visible
         And I click on the checkbox "#edit-local-authority-suitable-for-nomination"
+        And I click on the button "#edit-next"
+        Then I expect that element ".error-summary-heading" is visible
         And I click on the checkbox "#edit-written-summary-agreed"
+        And I click on the button "#edit-next"
+        Then I expect that element ".error-summary-heading" is visible
         And I click on the checkbox "#edit-terms-organisation-agreed"
         And I click on the radio "#edit-business-regulated-by-one-authority-1"
         And I expect that element "#par-partnership-application-authority-checklist" contains the text "Is this your local authority?"
         And I click on the radio "#edit-is-local-authority-1"
-        And I click on the button "#edit-next"
+        When I click on the button "#edit-next"
+        Then I expect that element "error-summary-heading" is not visible
 
         # ADD ABOUT THE PARTNERSHIP
 
-        Then I expect that element "#par-partnership-about" contains the text "Use this section to give a brief overview of the partnership"
+        And I expect that element "#par-partnership-about" contains the text "Use this section to give a brief overview of the partnership"
         When I add "About the partnership detail" to the inputfield "#edit-about-partnership"
         And I click on the button "#edit-next"
 
         # ORGANISATION NAME
 
-        And I add "Test Create Partnership" to the inputfield "#edit-organisation-name"
+        And I add "Test" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
 
         # CONFIRM NEW PARTNERSHIP
@@ -79,15 +88,25 @@ Feature: New Direct Partnership
         And I click on the radio "#edit-preferred-contact-communication-mobile"
         And I add "Some additional notes" to the inputfield "#edit-notes"
         And I click on the button "#edit-next"
-        And I click on the link "Log out"
+        And I click on the checkbox "#edit-partnership-info-agreed-authority"
+        And I click on the button "#edit-save"
 
-     # LOGIN SCREEN
+        # EMAIL
+
+        Then the inputfield "#edit-email-subject" contains the text "New Partnership on the Primary Authority Register"
+        When I click on the button "#edit-next"
+        Then the element "#block-par-theme-content" contains the text "par_business_change@example.com"
+
+        # CHECK APPEARS IN SEARCH
 
 #        Given I am logged in as "par_business@example.com"
-#        And I open the url "/dashboard"
-#        When I click on the link "See your partnerships"
-#        When I click on the button "Test Create Partnership"
-#
+        And I open the url "/dashboard"
+        When I click on the link "Search for a partnership"
+        And I add "test" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-partnership-search"
+        Then the element ".table-scroll-wrapper" contains the text "Test"
+        And I click on the link "Log out"
+
 #        # TERMS AND CONDITIONS SCREEN
 #
 #        Then I expect that element "#par-flow-transition-business-terms" contains the text "Please review the new Primary Authority terms and conditions and confirm that you agree with them"

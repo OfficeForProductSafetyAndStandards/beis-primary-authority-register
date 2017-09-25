@@ -3,7 +3,7 @@ Feature: Primary Authority - Change Partnership Details
 
     Background:
         # TEST DATA RESET
-        Given I reset the test data
+#        Given I reset the test data
 
     Scenario: Primary Authority - Change Partnership Details
 
