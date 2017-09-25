@@ -416,15 +416,15 @@ par_partnership_flows.partnership_application_authority_checklist:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationAuthorityChecklistForm::titleCallback'
   requirements:
     _permission: 'manage my authorities'
-par_partnership_flows.partnership_application_organisation_search:
-  path: '/partnership/apply/organisation/search'
+par_partnership_flows.partnership_application_organisation_name:
+  path: '/partnership/apply/organisation/name'
   defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationOrganisationSearchForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationOrganisationSearchForm::titleCallback'
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationOrganisationForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationOrganisationForm::titleCallback'
   requirements:
     _permission: 'manage my authorities'
-par_partnership_flows.partnership_application_organisation_search_confirm:
-  path: '/partnership/apply/organisation/search/confirm'
+par_partnership_flows.partnership_application_organisation_confirm:
+  path: '/partnership/apply/organisation/confirm'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsOrganisationSuggestionForm'
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsOrganisationSuggestionForm::titleCallback'
@@ -466,18 +466,11 @@ par_partnership_flows.partnership_application_organisation_contact:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-par_partnership_flows.partnership_application_partnership_save:
-  path: '/partnership/apply/partnership/save'
+par_partnership_flows.partnership_application_review:
+  path: '/partnership/apply/review'
   defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationPartnershipSave'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationPartnershipSave::titleCallback'
-  requirements:
-    _permission: 'manage my authorities'
-par_partnership_flows.partnership_application_details:
-  path: '/partnership/apply/{par_data_partnership}/review'
-  defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsDetailsForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsDetailsForm::titleCallback'
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationConfirmationForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsApplicationConfirmationForm::titleCallback'
   requirements:
     _permission: 'manage my authorities'
     par_data_partnership: \d+

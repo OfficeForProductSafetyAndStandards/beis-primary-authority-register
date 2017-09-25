@@ -40,32 +40,48 @@ class ParPartnershipFlowsInviteForm extends ParBaseForm {
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()},{$par_data_person->id()}");
     }
+
     if ($par_data_person) {
       // Set the default subject for the invite email, this can be changed by the user.
-      $this->loadDataValue("email_subject", 'Important updates to the Primary Authority Register');
-      $this->loadDataValue("business_member", $par_data_person->retrieveStringValue('email'));
+      $this->loadDataValue("email_subject", 'New Partnership on the Primary Authority Register');
 
+      // Get the email for the business contact that this email will go to.
+      $this->loadDataValue("business_member", $par_data_person->get('email')->getString());
+
+      // Get the authority user's email and name.
       $account = User::load($this->currentUser()->id());
-      $authority_person_name = '';
-      foreach ($this->parDataManager->getUserPeople($account) as $authority_person) {
-        if ($par_data_partnership->personIsAuthorityMember($authority_person)) {
-          $this->loadDataValue("authority_member", $par_data_person->retrieveStringValue('email'));
-          $authority_person_name = $authority_person->getFullName();
-          break 1;
-        }
-      }
-      $message_body = <<<HEREDOC
+      $authority = current($par_data_partnership->get('field_authority')->referencedEntities());
+      $authority_person = $this->getParDataManager()->getUserPerson($account, $authority);
+
+      $this->loadDataValue("authority_member", $authority_person->get('email')->getString());
+      $authority_person_name = $authority_person->getFullName();
+
+      // Get the user accounts related to the business user.
+      if ($business_user = $par_data_person->getUserAccount()) {
+        $message_body = <<<HEREDOC
 Dear {$par_data_person->getFullName()},
 
-I'm writing to ask you to check and update if necessary the information held about your business in the Primary Authority Register. To do this, please follow this link:
+A new partnership has been created for you by {$authority->get('authority_name')->getString()}. Please log in to the Primary Authority Register to update your business's details. To do this, please follow this link:
 
-[invite:invite-accept-link]
-
-The Department for Business, Energy and Industrial Strategy is making changes to the Primary Authority scheme. From October, a new version of the Primary Authority Register website will be launched. We're asking all businesses like yours to update their details in the Register so that all information in the new website is correct when it launches.
+[site:login-url]
 
 Thanks for your help.
 {$authority_person_name}
 HEREDOC;
+      }
+      else {
+        $message_body = <<<HEREDOC
+Dear {$par_data_person->getFullName()},
+
+A new partnership has been created for you by {$authority->get('authority_name')->getString()}. Please create your account with the Primary Authority Register so that you can manage your business's details. To do this, please follow this link:
+
+[invite:invite-accept-link]
+
+Thanks for your help.
+{$authority_person_name}
+HEREDOC;
+      }
+
       $this->loadDataValue("email_body", $message_body);
     }
   }
@@ -85,13 +101,13 @@ HEREDOC;
       '#title' => t('Your email'),
       '#required' => TRUE,
       '#disabled' => TRUE,
-      '#default_value' => $this->currentUser->getEmail(),
+      '#default_value' => $this->getCurrentUser()->getEmail(),
       '#description' => 'You cannot change your email here. If you want to send this invite from a different email address please contact the helpdesk.',
     ];
     $form['inviter'] = [
       '#type' => 'hidden',
       '#title' => t('Inviter'),
-      '#value' => $this->currentUser->id(),
+      '#value' => $this->getCurrentUser()->id(),
     ];
 
     // Get Recipient.
@@ -101,7 +117,7 @@ HEREDOC;
       '#required' => TRUE,
       '#disabled' => TRUE,
       '#default_value' => $this->getDefaultValues('business_member'),
-      '#description' => 'This is the businesses primary contact and cannot be changed here. If you need to send this invite to another person please contact the helpdesk.',
+      '#description' => 'This is the businesses primary contact. If you need to send this invite to another person please contact the helpdesk.',
     ];
 
     // Allow the message subject to be changed.
@@ -142,8 +158,15 @@ HEREDOC;
       $form_state->setErrorByName('email_body', $this->t('<a href="#edit-email-body">The Message is required.</a>'));
     }
     // Check that the email body contains an invite accept link.
-    if (!strpos($form_state->getValue('email_body'), '[invite:invite-accept-link]')) {
-      $form_state->setErrorByName('email_body', "Please make sure you have the invite token '[invite:invite-accept-link]' somewhere in your message.");
+    $par_data_person = $this->getRouteParam('par_data_person');
+    if ($business_user = $par_data_person->getUserAccount()) {
+      $required_token = '[site:login-url]';
+    }
+    else{
+      $required_token = '[invite:invite-accept-link]';
+    }
+    if (!strpos($form_state->getValue('email_body'), $required_token)) {
+      $form_state->setErrorByName('email_body', "Please make sure you have the invite token '$required_token' somewhere in your message.");
     }
 
     parent::validateForm($form, $form_state);

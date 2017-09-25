@@ -40,14 +40,6 @@ class ParPartnershipFlowsInviteSentController extends ParBaseController {
       '#suffix' => '</p>',
     ];
 
-    // Not 100% certain this is needed.
-    $build['contact_email'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('An email confirmation has also been sent to:'),
-      '#prefix' => '<p><strong>',
-      '#suffix' => '</strong></p>',
-    ];
-
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
 

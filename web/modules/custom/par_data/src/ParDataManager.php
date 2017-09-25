@@ -12,6 +12,7 @@ use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\file\FileInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\user\UserInterface;
 
 /**
@@ -556,17 +557,21 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
-   * Get the PAR Person id in target entity.
+   * Get the PAR Person related to a user in the target entity.
    *
    * @param UserInterface $account
-   * @param $entity
+   *   The account
+   * @param ParDataEntityInterface $entity
+   *   The authority or organisation entity to get the user for.
    *
-   * @return array
+   * @return ParDataPerson
    */
   public function getUserPerson($account, $entity) {
     $entity_people = $entity->hasField('field_person') ? $entity->retrieveEntityIds('field_person') : [];
+    $user_people = $this->getUserPeople($account);
 
-    return array_intersect_key(array_keys($this->getUserPeople($account)), array_keys($entity_people));
+    $person_id = current(array_intersect_key(array_keys($user_people), array_keys($entity_people)));
+    return !empty($person_id) ? ParDataPerson::load($person_id) : NULL;
   }
 
   /**

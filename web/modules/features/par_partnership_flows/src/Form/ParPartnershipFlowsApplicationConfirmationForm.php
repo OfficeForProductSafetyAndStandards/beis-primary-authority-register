@@ -3,7 +3,11 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\par_data\Entity\ParDataAuthority;
+use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
@@ -18,7 +22,7 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'par_partnership_authority_details';
+    return 'par_partnership_application_confirmation';
   }
 
   /**
@@ -35,70 +39,64 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
   }
 
   /**
-   * Helper to get all the editable values.
-   *
-   * Used for when editing or revisiting a previously edited page.
-   *
-   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
-   *   The Authority being retrieved.
-   */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
-    if ($par_data_partnership) {
-      // If we're editing an entity we should set the state
-      // to something other than default to avoid conflicts
-      // with existing versions of the same form.
-      $this->setState("edit:{$par_data_partnership->id()}");
-
-      $this->loadDataValue("partnership_info_agreed_authority", $par_data_partnership->get('partnership_info_agreed_authority')->getString());
-    }
-
-  }
-
-  /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
-    $this->retrieveEditableValues($par_data_partnership);
+  public function buildForm(array $form, FormStateInterface $form_state) {
+    // Save the partnership so that it can be retrieved for review.
+    $par_data_partnership = $this->savePartnership($form, $form_state);
+
     // Configuration for each entity is contained within the bundle.
     $partnership_bundle = $this->getParDataManager()->getParBundleEntity('par_data_partnership');
     $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
     $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
     $premises_bundle = $this->getParDataManager()->getParBundleEntity('par_data_premises');
 
-    // Organisation summary.
-    $par_data_organisation = current($par_data_partnership->getOrganisation());
+    if ($par_data_partnership) {
+      $form['partnership_id'] = [
+        '#type' => 'hidden',
+        '#value' => $par_data_partnership->id()
+      ];
 
-    // Display the primary address along with the link to edit it.
-    $form['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
+      // Organisation summary.
+      $par_data_organisation = current($par_data_partnership->getOrganisation());
 
-    // View and perform operations on the information about the business.
-    $form['about_business'] = $this->renderSection('About the business', $par_data_organisation, ['comments' => 'about']);
+      // Display the primary address along with the link to edit it.
+      $form['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
 
-    // Everything below is for the authorioty to edit and add to.
-    $par_data_authority = current($par_data_partnership->getAuthority());
-    $form['authority'] = [
-      '#type' => 'markup',
-      '#markup' => $par_data_authority->get('authority_name')->getString(),
-      '#prefix' => '<h1>',
-      '#suffix' => '</h1>',
-    ];
+      // Everything below is for the authorioty to edit and add to.
+      $par_data_authority = current($par_data_partnership->getAuthority());
+      $form['authority'] = [
+        '#type' => 'markup',
+        '#markup' => $par_data_authority->get('authority_name')->getString(),
+        '#prefix' => '<h1>',
+        '#suffix' => '</h1>',
+      ];
 
-    // Display details about the partnership for information.
-    $form['about_partnership'] = $this->renderSection('About the partnership', $par_data_partnership, ['about_partnership' => 'about']);
+      // Display details about the partnership for information.
+      $form['about_partnership'] = $this->renderSection('About the partnership', $par_data_partnership, ['about_partnership' => 'about']);
 
-    // Display the authority contacts for information.
-    $form['authority_contacts'] = $this->renderSection('Contacts - Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed']);
+      // Display the authority contacts for information.
+      $form['authority_contacts'] = $this->renderSection('Contacts - Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed']);
 
-    // Display all the legal entities along with the links for the allowed
-    // operations on these.
-    $form['organisation_contacts'] = $this->renderSection('Contacts - Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed']);
+      // Display all the legal entities along with the links for the allowed
+      // operations on these.
+      $form['organisation_contacts'] = $this->renderSection('Contacts - Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed']);
 
-    $form['partnership_info_agreed_authority'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('I confirm I have reviewed the partnership summary information above'),
-      '#disabled' => $par_data_partnership->get('partnership_info_agreed_authority')->getString(),
-      '#default_value' => $this->getDefaultValues("partnership_info_agreed_authority"),
-    ];
+      $form['partnership_info_agreed_authority'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('I confirm I have reviewed the partnership summary information above'),
+        '#disabled' => $par_data_partnership->get('partnership_info_agreed_authority')->getString(),
+        '#default_value' => $this->getDefaultValues("partnership_info_agreed_authority"),
+      ];
+    }
+    else {
+      $form['help_text'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('The partnership could not be created, please contact the Helpdesk if this problem persits.'),
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+      ];
+    }
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
@@ -128,30 +126,169 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    $par_data_partnership = ParDataPartnership::load($this->getTempDataValue('partnership_id'));
+
     $par_data_organisation = current($par_data_partnership->getOrganisation());
     $par_data_person = current($par_data_organisation->getPerson());
 
     if ($par_data_partnership && !$par_data_partnership->get('partnership_info_agreed_authority')->getString()) {
-
       // Save the value for the confirmation field.
       $par_data_partnership->set('partnership_info_agreed_authority', $this->getTempDataValue('partnership_info_agreed_authority'));
+    }
 
-      if ($par_data_partnership->save()) {
-        $this->deleteStore();
+    if ($par_data_partnership->save()) {
+      $this->deleteStore();
+
+      $route_params = [
+        'par_data_partnership' => $par_data_partnership->id(),
+        'par_data_person' => $par_data_person->id()
+      ];
+      $form_state->setRedirect($this->getFlow()->getNextRoute('save'), $route_params);
+    }
+    else {
+      $message = $this->t('This %confirm could not be saved for %form_id');
+      $replacements = [
+        '%confirm' => $par_data_partnership->get('partnership_info_agreed_authority')->toString(),
+        '%form_id' => $this->getFormId(),
+      ];
+      $this->getLogger($this->getLoggerChannel())
+        ->error($message, $replacements);
+
+      // If the partnership could not be saved the application can't be progressed.
+      // @TODO Find a better way to alert the user without redirecting them away from the form.
+      drupal_set_message('There was an error progressing your partnership, please contact the helpdesk for more information.');
+      $form_state->setRedirect($this->getFlow()->getPrevRoute('cancel'));
+    }
+  }
+
+  /**
+   * Helper function to save the partnership.
+   */
+  public function savePartnership($form, $form_state) {
+    // Check that the partnership hasn't already been saved.
+    if ($partnership_id = $this->getTempDataValue('partnership_id', NULL)) {
+      return ParDataPartnership::load($partnership_id);
+    }
+
+    // Load the Authority.
+    $acting_authority = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
+    if ($par_data_authority = ParDataAuthority::load($acting_authority)) {
+      // Get logged in user ParDataPerson(s) related to the primary authority.
+      $authority_person = $this->getParDataManager()->getUserPerson($this->getCurrentUser(), $par_data_authority);
+    }
+
+    // Load an existing address if provided.
+    $existing_organisation = $this->getDefaultValues('par_data_organisation_id','new', 'par_partnership_organisation_suggestion');
+    if ($existing_organisation !== 'new' && !empty($existing_organisation)) {
+      $par_data_organisation = ParDataOrganisation::load($existing_organisation);
+
+      // Get the address and or contact from the existing organisation.
+      if ($par_data_organisation && !$par_data_organisation->get('field_premises')->isEmpty()) {
+        $par_data_premises = current($par_data_organisation->get('field_premises')->referencedEntities());
       }
-      else {
-        $message = $this->t('This %confirm could not be saved for %form_id');
-        $replacements = [
-          '%confirm' => $par_data_partnership->get('partnership_info_agreed_authority')->toString(),
-          '%form_id' => $this->getFormId(),
-        ];
-        $this->getLogger($this->getLoggerChannel())
-          ->error($message, $replacements);
+      if ($par_data_organisation && !$par_data_organisation->get('field_person')->isEmpty()) {
+        $organisation_person = current($par_data_organisation->get('field_person')->referencedEntities());
+      }
+    }
+    // Create a new organisation but do not save yet.
+    else {
+      $par_data_organisation = ParDataOrganisation::create([
+        'type' => 'organisation',
+        'organisation_name' => $this->getDefaultValues('organisation_name','', 'par_partnership_application_organisation'),
+      ]);
+    }
+
+    if (!isset($par_data_premises)) {
+      $par_data_premises = ParDataPremises::create([
+        'type' => 'premises',
+        'uid' => $this->getCurrentUser()->id(),
+        'address' => [
+          'country_code' => $this->getDefaultValues('country_code', '', 'par_partnership_address'),
+          'address_line1' => $this->getDefaultValues('address_line1','', 'par_partnership_address'),
+          'address_line2' => $this->getDefaultValues('address_line2','', 'par_partnership_address'),
+          'locality' => $this->getDefaultValues('town_city','', 'par_partnership_address'),
+          'administrative_area' => $this->getDefaultValues('county','', 'par_partnership_address'),
+          'postal_code' => $this->getDefaultValues('postcode','', 'par_partnership_address'),
+        ],
+        'nation' => $this->getDefaultValues('country','', 'par_partnership_address'),
+      ]);
+
+      // Add this premises to the organisation.
+      if ($par_data_premises->save()) {
+        $par_data_organisation->get('field_premises')->appendItem($par_data_premises->id());
+        $par_data_organisation->set('nation', $this->getDefaultValues('country','', 'par_partnership_address'));
+      }
+    }
+    if (!isset($organisation_person)) {
+      $email_preference_value = isset($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_email'])
+        && !empty($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_email']);
+      $work_phone_preference_value = isset($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_phone'])
+        && !empty($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_phone']);
+      $mobile_phone_preference_value = isset($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_mobile'])
+        && !empty($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_mobile']);
+
+      $organisation_person = ParDataPerson::create([
+        'type' => 'person',
+        'salutation' => $this->getDefaultValues('salutation', '', 'par_partnership_contact'),
+        'first_name' => $this->getDefaultValues('first_name', '', 'par_partnership_contact'),
+        'last_name' => $this->getDefaultValues('last_name', '', 'par_partnership_contact'),
+        'work_phone' => $this->getDefaultValues('work_phone', '', 'par_partnership_contact'),
+        'mobile_phone' => $this->getDefaultValues('mobile_phone', '', 'par_partnership_contact'),
+        'email' => $this->getDefaultValues('email', '', 'par_partnership_contact'),
+        'communication_email' => $email_preference_value,
+        'communication_phone' => $work_phone_preference_value,
+        'communication_mobile' => $mobile_phone_preference_value,
+        'communication_notes' => $this->getDefaultValues('notes', '', 'par_partnership_contact'),
+      ]);
+
+      // Add this person to the organisation.
+      if ($organisation_person->save()) {
+        $par_data_organisation->get('field_person')->appendItem($organisation_person->id());
       }
     }
 
-    $form_state->setRedirect($this->getFlow()->getNextRoute('save'), ['par_data_partnership' => $par_data_partnership->id(), 'par_data_person' => $par_data_person->id()]);
+    // A partnership must have an organisation and an authority to be created.
+    if (isset($par_data_organisation) && isset($par_data_authority)
+      && $par_data_organisation->save() && $par_data_authority->id()) {
+      $par_data_partnership = ParDataPartnership::create([
+        'type' => 'partnership',
+        'status' => 0,
+        'uid' => $this->getCurrentUser()->id(),
+        'partnership_type' => $this->getDefaultValues('application_type', '', 'par_partnership_application_type'),
+        'partnership_status' => 'application',
+        'about_partnership' => $this->getDefaultValues('about_partnership', '', 'par_partnership_about'),
+        'terms_authority_agreed' => 1,
+        'field_authority' => [
+          $par_data_authority->id(),
+        ],
+        'field_organisation' => [
+          $par_data_organisation->id(),
+        ],
+        'field_authority_person' => [
+          $authority_person->id(),
+        ],
+        'field_organisation_person' => [
+          $organisation_person->id(),
+        ],
+      ]);
+    }
+
+    if (isset($par_data_partnership) && $par_data_partnership->save()) {
+      // Persist the information in the temporary store here
+      // because the application is not yet complete.
+      $this->setTempDataValue('partnership_id', $par_data_partnership->id());
+      return $par_data_partnership;
+    }
+    else {
+      $message = $this->t('Partnership not saved on %form_id');
+      $replacements = [
+        '%form_id' => $this->getFormId(),
+      ];
+      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+    }
+
+    // This application can't be progressed if there is no partnership.
+    return FALSE;
   }
 
 }

@@ -12,7 +12,7 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
  * The primary contact form for the partnership details steps of the
  * 1st Data Validation/Transition User Journey.
  */
-class ParPartnershipFlowsApplicationOrganisationSearchForm extends ParBaseForm {
+class ParPartnershipFlowsApplicationOrganisationForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
@@ -25,20 +25,13 @@ class ParPartnershipFlowsApplicationOrganisationSearchForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'par_partnership_application_organisation_search';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function retrieveEditableValues() {
+    return 'par_partnership_application_organisation';
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $this->retrieveEditableValues();
 
     $form['organisation_name'] = [
       '#type' => 'textfield',
