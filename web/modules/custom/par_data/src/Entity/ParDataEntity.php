@@ -125,9 +125,14 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     return TRUE;
   }
 
+  public function delete() {
+    if (!$this->isNew() && $this->getTypeEntity()->isDeletable() && !$this->isDeleted()) {
+      return parent::delete();
+    }
+  }
 
   public function revoke() {
-    if (!$this->isNew() && !$this->isDeleted()) {
+    if (!$this->isNew() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, TRUE);
       return ($this->save() === SAVED_UPDATED);
     }
@@ -135,7 +140,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   public function unrevoke() {
-    if (!$this->isNew() && $this->isRevoked()) {
+    if (!$this->isNew() && $this->getTypeEntity()->isRevokable() && $this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, FALSE);
       return ($this->save() === SAVED_UPDATED);
     }
@@ -149,7 +154,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   True if the entity was restored, false for all other results.
    */
   public function archive() {
-    if (!$this->isNew() && !$this->isRevoked()) {
+    if (!$this->isNew() && $this->getTypeEntity()->isArchivable() && !$this->isArchived()) {
       $this->set(ParDataEntity::ARCHIVE_FIELD, TRUE);
       return ($this->save() === SAVED_UPDATED);
     }
@@ -163,7 +168,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   True if the entity was restored, false for all other results.
    */
   public function restore() {
-    if (!$this->isNew() && $this->isArchived()) {
+    if (!$this->isNew() && $this->getTypeEntity()->isRevokable() && $this->isArchived()) {
       $this->set(ParDataEntity::ARCHIVE_FIELD, FALSE);
       return ($this->save() === SAVED_UPDATED);
     }
