@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: ahHhd_B-RoiPvYputal2BN4xH70hUqSdvMvMuPbPulo
+  default_config_hash: UhNg_tbR-O80LQ4HBd5dMImHIO52fIgbfQvayJHQ-c4
 id: enforcement_action
 label: 'Enforcement Action'
 description: ''
@@ -15,7 +15,6 @@ configuration:
   entity:
     status_field: primary_authority_status
     status_transitions:
-      awaiting_approval: null
       allowed:
         - awaiting_approval
       blocked:

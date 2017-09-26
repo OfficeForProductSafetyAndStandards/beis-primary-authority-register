@@ -12,7 +12,6 @@ configuration:
   entity:
     status_field: primary_authority_status
     status_transitions:
-      awaiting_approval:
       allowed:
         - awaiting_approval
       blocked:
