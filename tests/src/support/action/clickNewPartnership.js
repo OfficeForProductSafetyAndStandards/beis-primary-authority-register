@@ -4,15 +4,12 @@
  * @param  {String}   keyword       The search keyword
  */
 
-module.exports = (done) => {
-    /**
-     * The command to perform on the browser object (addValue or setValue)
-     * @type {String}
-     */
-
-    const isVisible = browser.isVisible('#edit-par-data-organisation-id-new');
-    if (isVisible) {
-        browser.click('#edit-par-data-organisation-id-new');
+module.exports = (done) =>
+{
+    let isVisible = browser.isVisible('#edit-par-data-organisation-id-new');
+    if (isVisible = true) {
+        //browser.click('#edit-par-data-organisation-id-new');
+        browser.click('#edit-next');
     } else {
     }
     done();
