@@ -57,6 +57,16 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
       ],
     ];
 
+    // Add the current company computed field to Views.
+    $data[$this->entityType->getDataTable()]['par_flow_link'] = [
+      'title' => t('PAR Flow Link'),
+      'field' => [
+        'title' => t('PAR Flow Link'),
+        'help' => t('Provides a link with the entity title.'),
+        'id' => 'par_flow_link',
+      ],
+    ];
+
     // Custom filter for Par Membership checks.
     $data['par_partnerships_field_data']['id_filter'] = [
       'title' => t('Partnership: Can user update?'),
