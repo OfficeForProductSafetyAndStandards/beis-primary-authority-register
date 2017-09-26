@@ -3,14 +3,17 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: 8ZNuZoYpLpUAzueG2hJOd7ivUnu370mJg49b1h9X4Dw
+  default_config_hash: 97hjw8kzdsDdfewTIfGB8K09Z7WKh25gN44xM_1aKHY
 id: enforcement_action
 label: 'Enforcement Action'
 description: ''
 help: ''
+isDeletable: true
+isRevokable: false
+isArchivable: false
 configuration:
   entity:
-    status_field: enforcement_action_status
+    status_field: primary_authority_status
   enforcement_action_status:
     allowed_values:
       unknown: Unknown

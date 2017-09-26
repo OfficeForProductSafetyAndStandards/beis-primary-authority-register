@@ -230,7 +230,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     // Determine whether we can change the value based on the current status.
     if (!$this->canTransition($value)) {
       // Throw exception.
-      var_dump('excepted'); die;
     }
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
