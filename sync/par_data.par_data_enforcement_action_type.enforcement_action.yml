@@ -3,14 +3,24 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: 8ZNuZoYpLpUAzueG2hJOd7ivUnu370mJg49b1h9X4Dw
+  default_config_hash: UhNg_tbR-O80LQ4HBd5dMImHIO52fIgbfQvayJHQ-c4
 id: enforcement_action
 label: 'Enforcement Action'
 description: ''
 help: ''
+isDeletable: true
+isRevokable: false
+isArchivable: false
 configuration:
   entity:
-    status_field: enforcement_action_status
+    status_field: primary_authority_status
+    status_transitions:
+      allowed:
+        - awaiting_approval
+      blocked:
+        - awaiting_approval
+      referred:
+        - awaiting_approval
   enforcement_action_status:
     allowed_values:
       unknown: Unknown
@@ -20,5 +30,7 @@ configuration:
       ready_serve: 'Ready To Serve'
   primary_authority_status:
     allowed_values:
-      allowed: Allowed
+      awaiting_approval: 'Awaiting approval'
+      allowed: Approved
       blocked: Blocked
+      referred: Referred

@@ -3,11 +3,14 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: Bfsh5DOO47UzX2qb-wYu8oe9MvFk0Q2lNId5NUwLgWk
+  default_config_hash: wrki7aitgcqYMP91SLE29qN1WZ5_4i0b1FAy_30Y-4w
 id: regulatory_function
 label: 'Regulatory Function'
 description: 'PAR3 will cover 7 high-level Regulatory Functions: Environmental Health, Trading Standards, Fire Safety, Licensing, Petrol Storage Certification, Explosives Licensing, Health and Safety (Scotland)'
 help: ''
+isDeletable: true
+isRevokable: false
+isArchivable: false
 configuration:
   entity:
     label_fields:
