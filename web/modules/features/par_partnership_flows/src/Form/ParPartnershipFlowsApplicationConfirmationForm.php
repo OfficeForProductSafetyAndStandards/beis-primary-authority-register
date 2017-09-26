@@ -252,10 +252,8 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
       && $par_data_organisation->save() && $par_data_authority->id()) {
       $par_data_partnership = ParDataPartnership::create([
         'type' => 'partnership',
-        'status' => 0,
         'uid' => $this->getCurrentUser()->id(),
         'partnership_type' => $this->getDefaultValues('application_type', '', 'par_partnership_application_type'),
-        'partnership_status' => 'application',
         'about_partnership' => $this->getDefaultValues('about_partnership', '', 'par_partnership_about'),
         'terms_authority_agreed' => 1,
         'field_authority' => [
