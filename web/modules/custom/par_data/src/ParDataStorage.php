@@ -35,11 +35,6 @@ class ParDataStorage extends TranceStorage {
     // Perform the delete and reset the static cache for the deleted entities.
     $this->doDelete($keyed_entities);
     $this->resetCache(array_keys($keyed_entities));
-
-    // We still need to clear the entity caches to remove it from everywhere.
-    foreach ($entities as $entity) {
-      $entity->invalidateTagsOnSave(TRUE);
-    }
   }
 
   /**
