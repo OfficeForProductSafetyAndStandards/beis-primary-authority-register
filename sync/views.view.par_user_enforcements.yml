@@ -6,6 +6,7 @@ dependencies:
     - field.storage.par_data_enforcement_notice.field_partnership
     - par_data.par_data_enforcement_notice_type.enforcement_notice
   module:
+    - pagerer
     - par_data
 id: par_user_enforcements
 label: 'Par User Enforcements'
@@ -47,23 +48,21 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       pager:
-        type: mini
+        type: pagerer
         options:
+          preset: gds_list_pagination
           items_per_page: 10
           offset: 0
-          id: 0
-          total_pages: null
+          id: '0'
+          total_pages: ''
           expose:
-            items_per_page: false
+            items_per_page: 0
             items_per_page_label: 'Items per page'
             items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
+            items_per_page_options_all: 0
             items_per_page_options_all_label: '- All -'
-            offset: false
+            offset: 0
             offset_label: Offset
-          tags:
-            previous: ‹‹
-            next: ››
       style:
         type: table
       row:
@@ -271,8 +270,8 @@ display:
           entity_type: par_data_enforcement_notice
           entity_field: type
           plugin_id: bundle
-        id_filter:
-          id: id_filter
+        id_filter_1:
+          id: id_filter_1
           table: par_partnerships_field_data
           field: id_filter
           relationship: field_partnership
@@ -308,8 +307,8 @@ display:
             group_items: {  }
           entity_type: par_data_partnership
           plugin_id: par_member
-        id_filter_1:
-          id: id_filter_1
+        id_filter:
+          id: id_filter
           table: par_enforcement_notices_field_data
           field: id_filter
           relationship: none
