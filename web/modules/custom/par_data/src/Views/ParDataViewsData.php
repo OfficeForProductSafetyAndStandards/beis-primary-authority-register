@@ -48,7 +48,7 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
     );
 
     // Add the current company computed field to Views.
-    $data[$this->entityType->getDataTable()]['par_data_status'] = [
+    $data[$this->entityType->getDataTable()]['par_status'] = [
       'title' => t('PAR Status'),
       'field' => [
         'title' => t('PAR Status'),

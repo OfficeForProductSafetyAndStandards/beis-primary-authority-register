@@ -6,7 +6,7 @@ dependencies:
     - par_data.par_data_organisation_type.business
 id: par_data_organisation.business.full
 targetEntityType: par_data_organisation
-bundle: organisation
+bundle: business
 mode: full
 content:
   comments:

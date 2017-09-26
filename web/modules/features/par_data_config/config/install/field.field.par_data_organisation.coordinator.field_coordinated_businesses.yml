@@ -19,7 +19,7 @@ settings:
   handler: 'default:par_data_organisation'
   handler_settings:
     target_bundles:
-      organisation: organisation
+      business: business
     sort:
       field: organisation_name
       direction: ASC

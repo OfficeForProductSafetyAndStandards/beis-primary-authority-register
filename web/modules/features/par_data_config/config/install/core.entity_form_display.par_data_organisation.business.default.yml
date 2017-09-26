@@ -9,7 +9,7 @@ dependencies:
     - par_data.par_data_organisation_type.business
 id: par_data_organisation.business.default
 targetEntityType: par_data_organisation
-bundle: organisation
+bundle: business
 mode: default
 content:
   field_legal_entity:

@@ -5,9 +5,6 @@ id: person
 label: Person
 description: 'A Person is a named individual who can feature in a number of different ways within PAR.  A Person may, or may not, be a user of the PAR application.'
 help: ''
-isDeletable: true
-isRevokable: false
-isArchivable: false
 configuration:
   entity:
     label_fields:

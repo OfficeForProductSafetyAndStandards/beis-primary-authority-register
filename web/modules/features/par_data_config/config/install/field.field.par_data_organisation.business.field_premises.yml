@@ -8,7 +8,7 @@ dependencies:
 id: par_data_organisation.business.field_premises
 field_name: field_premises
 entity_type: par_data_organisation
-bundle: organisation
+bundle: business
 label: Premises
 description: 'The premises of this organisation. The first premises will be the primary premises.'
 required: false

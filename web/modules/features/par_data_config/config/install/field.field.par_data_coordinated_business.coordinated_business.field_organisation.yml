@@ -21,9 +21,11 @@ settings:
   handler: 'default:par_data_organisation'
   handler_settings:
     target_bundles:
+      business: business
+      coordinator: coordinator
       organisation: organisation
     sort:
       field: _none
     auto_create: false
-    auto_create_bundle: organisation
+    auto_create_bundle: business
 field_type: entity_reference

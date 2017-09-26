@@ -12,7 +12,7 @@ dependencies:
     - text
 id: par_data_organisation.business.about
 targetEntityType: par_data_organisation
-bundle: organisation
+bundle: business
 mode: about
 content:
   comments:
