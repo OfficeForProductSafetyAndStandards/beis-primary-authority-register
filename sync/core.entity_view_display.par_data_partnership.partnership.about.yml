@@ -16,7 +16,7 @@ dependencies:
   module:
     - text
 _core:
-  default_config_hash: zvk8lP9M2A8L_zysQRqL3tWN94gdJKF2pfzSTkCVvPQ
+  default_config_hash: u2jjeNeNqSQIzRfV_wp_SxVJw7LVEjHJLjbVcgO8iPc
 id: par_data_partnership.partnership.about
 targetEntityType: par_data_partnership
 bundle: partnership
@@ -113,7 +113,6 @@ hidden:
   revocation_date: true
   revocation_reason: true
   revocation_source: true
-  revoked: true
   tc_authority_agreed: true
   tc_organisation_agreed: true
   terms_authority_agreed: true

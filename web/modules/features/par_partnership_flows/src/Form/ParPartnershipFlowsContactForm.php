@@ -68,9 +68,9 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
 
       // Get preferred contact methods.
       $contact_options = [
-        'communication_email' => $par_data_person->retrieveBooleanValue('communication_email'),
-        'communication_phone' => $par_data_person->retrieveBooleanValue('communication_phone'),
-        'communication_mobile' => $par_data_person->retrieveBooleanValue('communication_mobile'),
+        'communication_email' => $par_data_person->getBoolean('communication_email'),
+        'communication_phone' => $par_data_person->getBoolean('communication_phone'),
+        'communication_mobile' => $par_data_person->getBoolean('communication_mobile'),
       ];
 
       // Checkboxes works nicely with keys, filtering booleans for "1" value.

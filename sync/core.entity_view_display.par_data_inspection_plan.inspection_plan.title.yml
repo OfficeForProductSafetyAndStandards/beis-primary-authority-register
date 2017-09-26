@@ -9,7 +9,7 @@ dependencies:
   module:
     - file_entity
 _core:
-  default_config_hash: oQ9XVDyA5FEPcE_ipnYHwWsv-bSJwU99avwJT8_UwlU
+  default_config_hash: dNXKqdzYBHaDHxI3gk9LOfOyBD7EJivRjC7kt6r0xiY
 id: par_data_inspection_plan.inspection_plan.title
 targetEntityType: par_data_inspection_plan
 bundle: inspection_plan
@@ -30,6 +30,5 @@ hidden:
   field_regulatory_function: true
   inspection_status: true
   name: true
-  revoked: true
   user_id: true
   valid_date: true
