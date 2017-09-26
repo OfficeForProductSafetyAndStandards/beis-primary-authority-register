@@ -27,6 +27,6 @@ foreach ($details as &$item) {
 $result = $pubnub->publish()
     ->channel('travis_tests')
     ->message($details)
-    ->ttl(5)
+    ->ttl(1800)
     ->sync();
         

@@ -135,9 +135,9 @@ script:
 #-----------------------------------------------------------------------------
   
 after_script:
-  - cd dashboard/tools
-  - composer install
-  - php push-travis.php ../../tests/reports/phpunit.latest.xml
+  - if [[ $TRAVIS_BRANCH == 'master' ]]; then cd dashboard/tools; fi
+  - if [[ $TRAVIS_BRANCH == 'master' ]]; then composer install; fi
+  - if [[ $TRAVIS_BRANCH == 'master' ]]; then php push-travis.php ../../tests/reports/phpunit.latest.xml; fi
 
 ##############################################################################
 ### DEPLOY                                                                 ###
