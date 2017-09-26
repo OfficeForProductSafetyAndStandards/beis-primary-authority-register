@@ -48,10 +48,10 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
     );
 
     // Add the current company computed field to Views.
-    $data['par_partnerships_field_data']['par_data_states'] = [
-      'title' => t('PAR Status (including states)'),
+    $data['par_partnerships_field_data']['par_data_status'] = [
+      'title' => t('PAR Status'),
       'field' => [
-        'title' => t('PAR Status (including states)'),
+        'title' => t('PAR Status'),
         'help' => t('Provides the status field for PAR entities.'),
         'id' => 'par_data_status',
       ],

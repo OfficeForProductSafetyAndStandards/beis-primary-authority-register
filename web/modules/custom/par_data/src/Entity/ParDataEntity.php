@@ -406,18 +406,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       ])
       ->setDisplayConfigurable('view', FALSE);
 
-    // Create a computed status field for rendering the PAR Status.
-    $fields['par_status'] = BaseFieldDefinition::create('par_status')
-      ->setName('par_status')
-      ->setLabel(t('PAR Status'))
-      ->setComputed(TRUE)
-      ->setClass('\Drupal\par_data\ParComputedFIeldItemList')
-      ->setDisplayConfigurable('view', TRUE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-        'weight' => -5,
-      ]);
-
     return $fields;
   }
 

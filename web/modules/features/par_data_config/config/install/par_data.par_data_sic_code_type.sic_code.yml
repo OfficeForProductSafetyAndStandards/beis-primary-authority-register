@@ -5,4 +5,7 @@ id: sic_code
 label: 'SIC Code'
 description: 'An SIC is a Standard Industry Classification, used to describe the major areas that an Organisation does.'
 help: ''
+isDeletable: true
+isRevokable: false
+isArchivable: false
 configuration: null

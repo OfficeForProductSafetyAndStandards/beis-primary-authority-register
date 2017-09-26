@@ -5,6 +5,9 @@ id: enforcement_action
 label: 'Enforcement Action'
 description: ''
 help: ''
+isDeletable: true
+isRevokable: false
+isArchivable: false
 configuration:
   entity:
     status_field: primary_authority_status
