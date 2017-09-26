@@ -8,6 +8,7 @@ weight: 6
 is_admin: null
 permissions:
   - 'access content overview'
+  - 'access helpdesk'
   - 'access helpdesk dashboard'
   - 'access par journey transition business'
   - 'access par journey transition coordinator'
