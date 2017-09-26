@@ -83,14 +83,14 @@ Feature: New Coordinated Partnership
 
         # HELPDESK USER
 
-        Given I am logged in as "par_helpdesk@example.com"
-        Then the element ".table-scroll-wrapper" contains the text "Acme Test"
-        When I click on the link "Revoke partnership"
-        Then the element ".table-scroll-wrapper" contains the text "Are you sure you want to Revoke this partnership"
-        And I add "A revoke reason" to the inputfield "#revoke-reason"
-        When I press "Revoke"
-        Then the element ".table-scroll-wrapper" contains the text "This partnership has been revoked"
-        When I press "Done"
+#        Given I am logged in as "par_helpdesk@example.com"
+#        Then the element ".table-scroll-wrapper" contains the text "Acme Test"
+#        When I click on the link "Revoke partnership"
+#        Then the element ".table-scroll-wrapper" contains the text "Are you sure you want to Revoke this partnership"
+#        And I add "A revoke reason" to the inputfield "#revoke-reason"
+#        When I press "Revoke"
+#        Then the element ".table-scroll-wrapper" contains the text "This partnership has been revoked"
+#        When I press "Done"
 #
 #        # TERMS AND CONDITIONS SCREEN
 #

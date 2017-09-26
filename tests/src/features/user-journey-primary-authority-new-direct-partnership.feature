@@ -103,24 +103,16 @@ Feature: New Direct Partnership
         When I click on the button "#edit-next"
         Then the element "#block-par-theme-content" contains the text "par_business_change@example.com"
 
-        # CHECK APPEARS IN SEARCH
-
-        And I open the url "/dashboard"
-        When I click on the link "Search for a partnership"
-        And I add "Aceme" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-partnership-search"
-        Then the element ".table-scroll-wrapper" contains the text "Acme"
-        And I click on the link "Log out"
 
 #        # HELPDESK USER
 
-        Given I am logged in as "par_helpdesk@example.com"
-        Then the element ".table-scroll-wrapper" contains the text "Acme Test"
-        When I click on the link "Approve partnership"
-        Then the element ".table-scroll-wrapper" contains the text "Are you sure you want to Approve this partnership"
-        When I press "Approve"
-        Then the element ".table-scroll-wrapper" contains the text "This partnership has been Approved"
-        When I press "Done"
+#        Given I am logged in as "par_helpdesk@example.com"
+#        Then the element ".table-scroll-wrapper" contains the text "Acme Test"
+#        When I click on the link "Approve partnership"
+#        Then the element ".table-scroll-wrapper" contains the text "Are you sure you want to Approve this partnership"
+#        When I press "Approve"
+#        Then the element ".table-scroll-wrapper" contains the text "This partnership has been Approved"
+#        When I press "Done"
 
 #
 #        Then I expect that element "#par-flow-transition-business-terms" contains the text "Please review the new Primary Authority terms and conditions and confirm that you agree with them"
