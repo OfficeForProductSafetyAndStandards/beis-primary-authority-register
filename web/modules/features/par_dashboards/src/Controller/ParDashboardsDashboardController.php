@@ -102,23 +102,6 @@ class ParDashboardsDashboardController extends ControllerBase {
       }
     }
 
-    // Applications, partnerships that need completion.
-    // @TODO NEED A WAY TO GET INCOMPLETE APLICATIONS (WE DO NOT RECORD THIS YET). NOT MVP.
-    if ($this->getCurrentUser()->hasPermission('complete partnership organisation details')) {
-      $build['applications'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t('Applications'),
-        '#attributes' => ['class' => 'form-group'],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
-      $manage_my_partnerships = $this->getLinkByRoute('view.par_user_partnerships.partnerships_page');
-      $build['applications']['see'] = [
-        '#type' => 'markup',
-        '#markup' => $manage_my_partnerships->setText('See my pending partnerships')->toString(),
-      ];
-    }
-
     // Partnerships search link.
     if ($this->getCurrentUser()->hasPermission('enforce organisation')) {
       $build['partnerships_find'] = [
@@ -147,7 +130,7 @@ class ParDashboardsDashboardController extends ControllerBase {
       ];
 
       // @TODO TO BE ADDED. WE NEED A SEPARATE VIEW PAGE FOR MANAGING ALL NOTICES.
-      //$search_partnerships = $this->getLinkByRoute('view.par_user_enforcements.enforcment_notice_messages');
+      $search_partnerships = $this->getLinkByRoute('view.par_user_enforcements.enforcment_notice_messages');
       $build['messages']['link'] = [
         '#type' => 'markup',
         '#markup' => $search_partnerships ? $search_partnerships->setText('See all outstanding enforcement notices')->toString() : '(none)',
