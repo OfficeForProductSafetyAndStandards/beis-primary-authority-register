@@ -10,7 +10,7 @@ dependencies:
     - datetime_range
     - file_entity
 _core:
-  default_config_hash: d4czAfeq_OFvX3ScXQFesI6gUwuFv_0TshLJF4bN20A
+  default_config_hash: 1pJKTyYBK2EOZ_m0vVIzES51xAS0Z64DFW1lXCFLZ-Q
 id: par_data_inspection_plan.inspection_plan.summary
 targetEntityType: par_data_inspection_plan
 bundle: inspection_plan
@@ -41,5 +41,4 @@ hidden:
   field_regulatory_function: true
   inspection_status: true
   name: true
-  revoked: true
   user_id: true

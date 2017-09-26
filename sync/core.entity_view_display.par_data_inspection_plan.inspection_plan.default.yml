@@ -9,7 +9,7 @@ dependencies:
     - datetime_range
     - file_entity
 _core:
-  default_config_hash: mjEr7aZ014UIn4NoU96BW6JoweINo5ZbpHZPWL9qYpY
+  default_config_hash: 2zB-ZUS3Eghqsf7yFqtm3zlkP_vcrXep9FmdzHoYEsw
 id: par_data_inspection_plan.inspection_plan.default
 targetEntityType: par_data_inspection_plan
 bundle: inspection_plan
@@ -40,16 +40,6 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  revoked:
-    label: hidden
-    region: content
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    weight: 0
   valid_date:
     type: daterange_default
     weight: 1

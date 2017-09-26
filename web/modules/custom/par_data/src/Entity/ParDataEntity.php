@@ -2,7 +2,9 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\trance\Trance;
@@ -23,64 +25,18 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     return \Drupal::service('par_data.manager');
   }
 
-  /*
-   * Validate the fields.
-   *
-   * @TODO REPLACE THIS WITH ENTITY VALIDATION API IN BETA.
-   *
-   * @param array $fields
-   * 'comments' => [
-   *   'value' => $form_state->getValue('about_business'),
-   *   'type' => 'boolean',
-   *   'min_selected' => 1,
-   *   'key' => 'about_business',
-   *   'tokens' => [
-   *      '%field' => $form['about_business']['#title']->render(),
-   *    ]
-   *  ],
-   *
-   * min_selected - IF not specified then all needs to be checked.
-   * @return array
-   *   Array of errors with field names or empty if there are no errors.
+  /**
+   * Get the type entity.
    */
-  public function validateFields(array $fields) {
-    $error = [];
-    $required_fields = $this->getRequiredFields();
+  public function getTypeEntity() {
+    return $this->type->entity;
+  }
 
-    foreach($fields as $field_name => $field_info) {
-      if (!empty($required_fields[$field_name])) {
-
-        // Field has been located so need to validate it.
-        if (empty($field_info['value'])) {
-          $error[$field_info['key']] = t('<a href="#edit-' . str_replace('_', '-', $field_info['key'])  . '">' . $required_fields[$field_name] . '</a>', $field_info['tokens']);
-        }
-        elseif (is_array($field_info['value'])) {
-          // Check the type of hte field if specified.
-          if ($field_info['type'] === 'boolean') {
-
-            $count = count($field_info['value']);
-
-            if (isset($field_info['min_selected'])) {
-              $count = $field_info['min_selected'];
-            }
-            foreach ($field_info['value'] as $item => $value) {
-              if ($value) {
-                $count--;
-              }
-              if ($count <= 0) {
-                break;
-              }
-            }
-
-            if ($count > 0) {
-              $error[$field_info['key']] = t('<a href="#edit-' . str_replace('_', '-', $field_info['key'])  . '">' . $required_fields[$field_name] . '</a>', $field_info['tokens']);
-            }
-          }
-        }
-      }
-    }
-
-    return $error;
+  /**
+   * {@inheritdoc}
+   */
+  public function getViewBuilder() {
+    return \Drupal::entityTypeManager()->getViewBuilder($this->getEntityTypeId());
   }
 
   /**
@@ -101,6 +57,54 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     }
 
     return isset($label) && !empty($label) ? $label : parent::label();
+  }
+
+  /**
+   * Set a default administrative title for entities where we don't really need one.
+   *
+   * @return string
+   */
+  public static function setDefaultTitle() {
+    return uniqid();
+  }
+
+  /**
+   * Whether this entity is deleted.
+   *
+   * @return bool
+   */
+  public function isDeleted() {
+    if ($this->getTypeEntity()->isDeletable() && $this->getBoolean('deleted')) {
+      return TRUE;
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * Whether this entity is revoked.
+   *
+   * @return bool
+   */
+  public function isRevoked() {
+    if ($this->getTypeEntity()->isRevokable() && $this->getBoolean('revoked')) {
+      return TRUE;
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * Whether this entity is archived.
+   *
+   * @return bool
+   */
+  public function isArchived() {
+    if ($this->getTypeEntity()->isArchivable() && $this->getBoolean('archived')) {
+      return TRUE;
+    }
+
+    return FALSE;
   }
 
   /**
@@ -127,58 +131,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     }
 
     return $ids;
-  }
-
-  /**
-   * Get the value for a field.
-   *
-   * {@deprecated}
-   *
-   * @return string
-   */
-  public function retrieveStringValue($field_name) {
-    $field = $this->hasField($field_name) ? $this->get($field_name) : NULL;
-    $value = isset($field) ? $field->getString() : '';
-    return $value;
-  }
-
-  /**
-   * Get the value for a field.
-   *
-   * {@deprecated}
-   *
-   * @return array
-   */
-  public function retrieveEntityValue($field_name) {
-    $field = $this->hasField($field_name) ? $this->get($field_name) : NULL;
-    return isset($field) && $field->getFieldDefinition()->getType() === 'entity_reference' ? $field->referencedEntities() : [];
-  }
-
-  /**
-   * Get the value for a field.
-   *
-   * {@deprecated}
-   *
-   * @return boolean
-   */
-  public function retrieveBooleanValue($field_name) {
-    $field = $this->hasField($field_name) ? $this->get($field_name) : NULL;
-
-    return isset($field) && !empty($field->getString()) ? TRUE : FALSE;
-  }
-
-  /**
-   * Get the type entity.
-   */
-  public function getTypeEntity() {
-    return $this->type->entity;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getViewBuilder() {
-    return \Drupal::entityTypeManager()->getViewBuilder($this->getEntityTypeId());
   }
 
   /**
@@ -290,15 +242,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Set a default administrative title for entities where we don't really need one.
-   *
-   * @return string
-   */
-  public static function setDefaultTitle() {
-    return uniqid();
-  }
-
-  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
@@ -309,6 +252,51 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         'max_length' => 255,
         'text_processing' => 0,
       ]);
+
+    // We will apply action state fields to all par entities for consistency
+    // but will only use certain actions on certain entities.
+    $fields['deleted'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Deleted'))
+      ->setDescription(t('Whether the entity has been deleted.'))
+      ->setRevisionable(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 3,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', FALSE);
+    $fields['revoked'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Revoked'))
+      ->setDescription(t('Whether the entity has been revoked.'))
+      ->setRevisionable(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 3,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', FALSE);
+    $fields['archived'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Revoked'))
+      ->setDescription(t('Whether the entity has been archived.'))
+      ->setRevisionable(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 3,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', FALSE);
 
     return $fields;
   }

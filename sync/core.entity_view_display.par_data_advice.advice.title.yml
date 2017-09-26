@@ -9,7 +9,7 @@ dependencies:
   module:
     - file_entity
 _core:
-  default_config_hash: rRJvf4DzLhR9dV6QQdLlfF5DokX6k65zDMPyyQvEPfY
+  default_config_hash: 9qgRxsWkfiI7bBRQLtHZ3NtGPzzkSMWVzOFoFfPJHQA
 id: par_data_advice.advice.title
 targetEntityType: par_data_advice
 bundle: advice
@@ -31,7 +31,6 @@ hidden:
   name: true
   notes: true
   regulatory_function: true
-  revoked: true
   user_id: true
   visible_authority: true
   visible_business: true
