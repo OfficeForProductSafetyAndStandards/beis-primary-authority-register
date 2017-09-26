@@ -7,6 +7,6 @@ dependencies:
 _core:
   default_config_hash: vRNrR2NqUbQVKJ-kqQo_GK8kUTTolKQRgzE9j4ZE1gM
 id: par_data_enforcement_action.summary
-label: Full
+label: Summary
 targetEntityType: par_data_enforcement_action
 cache: true
