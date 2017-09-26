@@ -8,4 +8,7 @@ id: coordinated_business
 label: 'Coordinated Business'
 description: 'A coordinated business is a business that is a member of a coordinated partnership.'
 help: ''
+isDeletable: true
+isRevokable: false
+isArchivable: false
 configuration: null
