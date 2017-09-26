@@ -18,8 +18,6 @@ use Drupal\trance\Trance;
  */
 class ParDataEntity extends Trance implements ParDataEntityInterface {
 
-  use EntityPublishedTrait;
-
   const DELETE_FIELD = 'deleted';
   const REVOKE_FIELD = 'revoked';
   const ARCHIVE_FIELD = 'archive';
