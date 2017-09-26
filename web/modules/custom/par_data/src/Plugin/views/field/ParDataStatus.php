@@ -34,8 +34,7 @@ class ParDataStatus extends FieldPluginBase {
   public function render(ResultRow $values) {
     $entity = $values->_entity;
     if ($entity instanceof ParDataEntityInterface) {
-      return $entity->getParStatus();
+      return t($entity->getParStatus());
     }
-    return NULL;
   }
 }

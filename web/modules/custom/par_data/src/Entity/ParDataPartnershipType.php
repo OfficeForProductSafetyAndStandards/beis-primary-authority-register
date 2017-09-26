@@ -35,6 +35,9 @@ namespace Drupal\par_data\Entity;
  *     "label",
  *     "description",
  *     "help",
+ *     "isDeletable",
+ *     "isRevokable",
+ *     "isArchivable",
  *     "configuration",
  *   }
  * )
