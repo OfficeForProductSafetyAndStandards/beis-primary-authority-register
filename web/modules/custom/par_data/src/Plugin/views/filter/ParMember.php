@@ -51,9 +51,21 @@ class ParMember extends FilterPluginBase {
 
     $par_entity_type = $this->par_data_manager->getParEntityType($this->getEntityType());
 
-    // Get memberships field e.g. "par_partnerships_field_data.id".
+    // The normal use of ensureMyTable() here breaks Views.
+    // So instead we trick the filter into using the alias of the base table.
+    // @see https://www.drupal.org/node/271833.
+    // If a relationship is set, we must use the alias it provides.
+    if (!empty($this->relationship)) {
+      $this->tableAlias = $this->relationship;
+    }
+    // If no relationship, then use the alias of the base table.
+    else {
+      $this->tableAlias = $this->query->ensureTable($this->view->storage->get('base_table'));
+    }
+
+    // Get field to query e.g. "par_partnerships_field_data.id".
     $id = $par_entity_type->getKeys()['id'];
-    $revision_table = "{$par_entity_type->getDataTable()}.{$id}";
+    $revision_table = "{$this->tableAlias}.{$id}";
 
     // Where filter on partnership id to those the user is allowed to update.
     $this->query->addWhere(0, $revision_table, $membership_filter, 'in');

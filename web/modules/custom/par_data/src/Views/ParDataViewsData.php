@@ -68,7 +68,7 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
     ];
 
     // Custom filter for Par Membership checks.
-    $data['par_partnerships_field_data']['id_filter'] = [
+    $data[$this->entityType->getDataTable()]['id_filter'] = [
       'title' => t('Partnership: Can user update?'),
       'filter' => [
         'title' => t('Partnership: Can user update?'),

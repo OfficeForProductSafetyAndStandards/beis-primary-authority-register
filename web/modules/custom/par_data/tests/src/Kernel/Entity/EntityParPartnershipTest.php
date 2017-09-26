@@ -44,7 +44,6 @@ class EntityParPartnershipTest extends ParDataTestBase {
 
     $values = [
       'partnership_type' => '',
-      'partnership_status' => '',
       'about_partnership' => '',
     ];
 

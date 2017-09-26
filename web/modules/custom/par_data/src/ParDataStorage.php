@@ -45,4 +45,26 @@ class ParDataStorage extends TranceStorage {
       $entity->set(ParDataEntity::DELETE_FIELD, TRUE)->save();
     }
   }
+
+  /**
+   * Add some default options to newly created entities.
+   *
+   * {@inheritdoc}
+   */
+  public function create(array $values = []) {
+    $bundle = isset($values['type']) ? $values['type'] : NULL;
+    $bundle_entity = \Drupal::service('par_data.manager')->getParBundleEntity($this->entityTypeId, $bundle);
+
+    // Set the type if not already set.
+    $values['type'] = $bundle_entity && isset($values['type']) ? $values['type'] : $bundle_entity->id();
+
+    // Set the default status (as the first allowed_status value configured).z
+    $status_field = $bundle_entity->getConfigurationElementByType('entity', 'status_field');
+    $allowed_statuses = $bundle_entity->getAllowedValues($status_field);
+    if (isset($status_field) && empty($values[$status_field]) && !empty($allowed_statuses)) {
+      $values[$status_field] = key($allowed_statuses);
+    }
+
+    return parent::create($values);
+  }
 }
