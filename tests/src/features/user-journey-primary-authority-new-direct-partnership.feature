@@ -62,7 +62,7 @@ Feature: New Direct Partnership
 
         # ORGANISATION NAME
 
-        And I add "Test" to the inputfield "#edit-organisation-name"
+        And I add "Acme Test" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
 
         # CONFIRM NEW PARTNERSHIP
@@ -113,6 +113,10 @@ Feature: New Direct Partnership
         And I click on the link "Log out"
 
 #        # TERMS AND CONDITIONS SCREEN
+
+        Given I am logged in as "par_helpdesk@example.com"
+        Then the element ".table-scroll-wrapper" contains the text "Acme Test"
+
 #
 #        Then I expect that element "#par-flow-transition-business-terms" contains the text "Please review the new Primary Authority terms and conditions and confirm that you agree with them"
 #        And I click on the checkbox "#edit-terms-conditions"
