@@ -66,7 +66,6 @@ content:
     third_party_settings: {  }
 hidden:
   name: true
-  revoked: true
   user_id: true
   visible_authority: true
   visible_business: true

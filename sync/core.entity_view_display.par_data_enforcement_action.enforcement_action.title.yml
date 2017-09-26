@@ -8,9 +8,6 @@ dependencies:
     - field.field.par_data_enforcement_action.enforcement_action.field_blocked_advice
     - field.field.par_data_enforcement_action.enforcement_action.field_regulatory_function
     - par_data.par_data_enforcement_action_type.enforcement_action
-  module:
-    - file
-    - text
 _core:
   default_config_hash: 7OXAkjpVzQ72VOsgZzF6mWbKiia9uJj-a8FiSE4Uqck
 id: par_data_enforcement_action.enforcement_action.title
@@ -18,51 +15,6 @@ targetEntityType: par_data_enforcement_action
 bundle: enforcement_action
 mode: title
 content:
-  details:
-    type: text_trimmed
-    weight: 5
-    region: content
-    label: hidden
-    settings:
-      trim_length: 600
-    third_party_settings: {  }
-  document:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: file_default
-  enforcement_action_notes:
-    label: hidden
-    type: text_default
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    weight: 2
-  enforcement_action_status:
-    label: hidden
-    region: content
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    weight: 1
-  primary_authority_notes:
-    label: hidden
-    type: text_default
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    weight: 4
-  primary_authority_status:
-    label: hidden
-    type: string
-    region: content
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 3
   title:
     type: string
     weight: 0
@@ -74,8 +26,12 @@ content:
 hidden:
   action_referral: true
   blocked_advice: true
+  details: true
+  document: true
   ea_notes: true
   ea_status: true
+  enforcement_action_notes: true
+  enforcement_action_status: true
   enforcement_notice: true
   field_action_referral: true
   field_blocked_advice: true
@@ -83,6 +39,8 @@ hidden:
   name: true
   pa_notes: true
   pa_status: true
+  primary_authority_notes: true
+  primary_authority_status: true
   referral_notes: true
   regulatory_function: true
   user_id: true
