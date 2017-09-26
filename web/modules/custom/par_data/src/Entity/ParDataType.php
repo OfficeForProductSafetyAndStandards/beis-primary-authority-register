@@ -115,6 +115,34 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
   /**
    * {@inheritdoc}
    */
+  public function getStatusTransitions($status) {
+    // Get the names of any fields required.
+    $status_transitions = $this->getConfigurationElementByType('entity', 'status_transitions');
+    if (empty($status_transitions)) {
+      return [];
+    }
+
+    // Return the statuses that are acceptable to transition from.
+    // Or all status values if none are specified.
+    if (isset($status_transitions[$status])) {
+      return $status_transitions[$status];
+    }
+    else {
+      return $this->getAllowedValues($this->getConfigurationElementByType('entity', 'status_field'));
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function transitionAllowed($from, $to) {
+    $transitions = $this->getStatusTransitions($to);
+    return isset($transitions[$from]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getRequiredFields() {
     // Get the names of any fields required.
     $required_fields = $this->getConfigurationElementByType('entity', 'required_fields');

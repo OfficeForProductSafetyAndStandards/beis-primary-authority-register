@@ -3,11 +3,14 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: 7TTvXBXnKMFR8VAKVu_j_Yn-JZ7TIj-lU-oTBAEHwnQ
+  default_config_hash: ht8XQymt1DfLW86tw9GW1jb1w5ALBiVrbOnvIBiLnC8
 id: inspection_plan
 label: 'Inspection Plan'
 description: 'An Inspection Plan is a template for carrying out particular types of inspections that has been agreed with the Primary Authority in a partnership; all enforcement officers from all local authorities have to use that plan.'
 help: ''
+isDeletable: true
+isRevokable: true
+isArchivable: false
 configuration:
   entity:
     status_field: inspection_status

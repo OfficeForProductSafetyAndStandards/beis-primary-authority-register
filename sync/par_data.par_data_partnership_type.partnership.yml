@@ -3,14 +3,26 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: sClDdYY99UwTduVYGRnKEc2_6eNMpFP7ZwB71qDDpB0
+  default_config_hash: fxKBDe5mLpsBVGjzgMe0rBn7Pu4SDnzAxY5q-8XuWBQ
 id: partnership
 label: Partnership
 description: 'A Partnership is a relationship between a Primary Authority and either a Business ("direct partnership") or a Co-ordinator ("co-ordinated partnership").  Note that in the latter case, the Business records may or may not be held in the PAR3 database.'
 help: ''
+isDeletable: true
+isRevokable: true
+isArchivable: false
 configuration:
   entity:
     status_field: partnership_status
+    status_transitions:
+      awaiting_review:
+        - default
+      confirmed_authority:
+        - awaiting_review
+      confirmed_business:
+        - confirmed_authority
+      confirmed_rd:
+        - confirmed_business
     completed_fields:
       - about_partnership
     required_fields:
@@ -20,6 +32,7 @@ configuration:
       awaiting_review: 'Awaiting Review'
       confirmed_authority: 'Confirmed by the Authority'
       confirmed_business: 'Confirmed by the Organisation'
+      confirmed_rd: Active
   partnership_type:
     allowed_values:
       direct: Direct

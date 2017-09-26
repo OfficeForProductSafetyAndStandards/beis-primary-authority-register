@@ -3,6 +3,7 @@
 namespace Drupal\par_data\Entity;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -15,6 +16,12 @@ use Drupal\trance\Trance;
  * @ingroup par_data
  */
 class ParDataEntity extends Trance implements ParDataEntityInterface {
+
+  use EntityPublishedTrait;
+
+  const DELETE_FIELD = 'deleted';
+  const REVOKE_FIELD = 'revoked';
+  const ARCHIVE_FIELD = 'archive';
 
   /**
    * Simple getter to inject the PAR Data Manager service.
@@ -74,7 +81,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * @return bool
    */
   public function isDeleted() {
-    if ($this->getTypeEntity()->isDeletable() && $this->getBoolean('deleted')) {
+    if ($this->getTypeEntity()->isDeletable() && $this->getBoolean(self::DELETE_FIELD)) {
       return TRUE;
     }
 
@@ -87,7 +94,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * @return bool
    */
   public function isRevoked() {
-    if ($this->getTypeEntity()->isRevokable() && $this->getBoolean('revoked')) {
+    if ($this->getTypeEntity()->isRevokable() && $this->getBoolean(self::REVOKE_FIELD)) {
       return TRUE;
     }
 
@@ -100,11 +107,160 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * @return bool
    */
   public function isArchived() {
-    if ($this->getTypeEntity()->isArchivable() && $this->getBoolean('archived')) {
+    if ($this->getTypeEntity()->isArchivable() && $this->getBoolean(self::ARCHIVE_FIELD)) {
       return TRUE;
     }
 
     return FALSE;
+  }
+
+  /*
+   * Whether the entity was transitioned from the old
+   * PAR2 system on 1 October 2017.
+   */
+  public function isTransitioned() {
+    if($this->getRawStatus() && $this->getRawStatus() === 'n/a') {
+      return FALSE;
+    }
+    return TRUE;
+  }
+
+  /**
+   * Delete if this entity is deletable and is not new.
+   */
+  public function delete() {
+    if (!$this->isNew() && $this->getTypeEntity()->isDeletable() && !$this->isDeleted()) {
+      return parent::delete();
+    }
+  }
+
+  /**
+   * Revoke if this entity is revokable and is not new.
+   *
+   * @return boolean
+   *   True if the entity was revoked, false for all other results.
+   */
+  public function revoke() {
+    if (!$this->isNew() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
+      $this->set(ParDataEntity::REVOKE_FIELD, TRUE);
+      return ($this->save() === SAVED_UPDATED);
+    }
+    return FALSE;
+  }
+
+  /**
+   * Unrevoke a revoked entity
+   *
+   * @return boolean
+   *   True if the entity was unrevoked, false for all other results.
+   *
+   */
+  public function unrevoke() {
+    if (!$this->isNew() && $this->getTypeEntity()->isRevokable() && $this->isRevoked()) {
+      $this->set(ParDataEntity::REVOKE_FIELD, FALSE);
+      return ($this->save() === SAVED_UPDATED);
+    }
+    return FALSE;
+  }
+
+  /**
+   * Archive if the entity is archivable and is not new.
+   *
+   * @return boolean
+   *   True if the entity was restored, false for all other results.
+   */
+  public function archive() {
+    if (!$this->isNew() && $this->getTypeEntity()->isArchivable() && !$this->isArchived()) {
+      $this->set(ParDataEntity::ARCHIVE_FIELD, TRUE);
+      return ($this->save() === SAVED_UPDATED);
+    }
+    return FALSE;
+  }
+
+  /**
+   * Restore an archived entity.
+   *
+   * @return boolean
+   *   True if the entity was restored, false for all other results.
+   */
+  public function restore() {
+    if (!$this->isNew() && $this->getTypeEntity()->isRevokable() && $this->isArchived()) {
+      $this->set(ParDataEntity::ARCHIVE_FIELD, FALSE);
+      return ($this->save() === SAVED_UPDATED);
+    }
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRawStatus() {
+    if ($this->isDeleted()) {
+      return 'deleted';
+    }
+    if ($this->isRevoked()) {
+      return 'revoked';
+    }
+    if ($this->isArchived()) {
+      return 'archived';
+    }
+    if (!$this->isTransitioned()) {
+      return 'n/a';
+    }
+
+    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+
+    if (isset($field_name) && $this->hasField($field_name)) {
+      $status = $this->get($field_name)->getString();
+    }
+
+    return isset($status) ? $status : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getParStatus() {
+    if ($this->isDeleted()) {
+      return 'Deleted';
+    }
+    if ($this->isRevoked()) {
+      return 'Revoked';
+    }
+    if ($this->isArchived()) {
+      return 'Archived';
+    }
+    if (!$this->isTransitioned()) {
+      return 'Not transitioned from PAR2';
+    }
+
+    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+    $raw_status = $this->getRawStatus();
+    return $field_name && $raw_status ? $this->getTypeEntity()->getAllowedFieldlabel($field_name, $raw_status) : '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setParStatus($value) {
+    // Determine whether we can change the value based on the current status.
+    if (!$this->canTransition($value)) {
+      // Throw exception.
+    }
+
+    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+    $allowed_values = $this->getTypeEntity()->getAllowedValues($field_name);
+    if (isset($allowed_values[$value])) {
+      $this->set($field_name, $value);
+    }
+  }
+
+  /**
+   * Determine whether this entity can transition
+   */
+  public function canTransition($status) {
+    $current_status = $this->getRawStatus();
+    return $this->getTypeEntity()->transitionAllowed($current_status, $status);
   }
 
   /**
@@ -174,39 +330,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     }
 
     return $target && isset($entities[$target]) ? array_filter($entities[$target]) : $entities;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getRawStatus() {
-    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
-
-    if (isset($field_name) && $this->hasField($field_name)) {
-      $status = $this->get($field_name)->getString();
-    }
-
-    return isset($status) ? $status : NULL;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getParStatus() {
-    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
-    $raw_status = $this->getRawStatus();
-    return $this->getTypeEntity()->getAllowedFieldlabel($field_name, $raw_status);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setParStatus($value) {
-    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
-    $allowed_values = $this->getTypeEntity()->getAllowedValues($field_name);
-    if (isset($allowed_values[$value])) {
-      $this->set($field_name, $value);
-    }
   }
 
   /**

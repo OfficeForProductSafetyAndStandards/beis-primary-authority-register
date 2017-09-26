@@ -24,7 +24,7 @@ use Drupal\user\UserInterface;
  *   ),
  *   bundle_label = @Translation("PAR Partnership type"),
  *   handlers = {
- *     "storage" = "Drupal\trance\TranceStorage",
+ *     "storage" = "Drupal\par_data\ParDataStorage",
  *     "storage_schema" = "Drupal\trance\TranceStorageSchema",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "list_builder" = "Drupal\trance\TranceListBuilder",
@@ -244,9 +244,8 @@ class ParDataPartnership extends ParDataEntity {
       ->setDisplayConfigurable('view', TRUE);
 
     // Partnership Status.
-    // {@deprecated} We will use the concept of workflow states going forward.
     $fields['partnership_status'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('(deprecated) Partnership Status'))
+      ->setLabel(t('Partnership Status'))
       ->setDescription(t('The current status of the partnership plan itself. For example, current, expired, replaced.'))
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)
