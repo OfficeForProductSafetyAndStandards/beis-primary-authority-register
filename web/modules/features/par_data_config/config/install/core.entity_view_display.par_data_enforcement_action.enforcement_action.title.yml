@@ -1,22 +1,18 @@
-uuid: cdde39f4-c1a8-4174-9d7c-a0ab3ea77527
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.par_data_enforcement_action.summary
+    - core.entity_view_mode.par_data_enforcement_action.title
     - field.field.par_data_enforcement_action.enforcement_action.field_action_referral
     - field.field.par_data_enforcement_action.enforcement_action.field_blocked_advice
     - field.field.par_data_enforcement_action.enforcement_action.field_regulatory_function
     - par_data.par_data_enforcement_action_type.enforcement_action
   module:
-    - file
     - text
-_core:
-  default_config_hash: tu2zE04w1Dsq4qdkz4p0KL0kw7AjuXGaIdUmA4KfjpU
-id: par_data_enforcement_action.enforcement_action.summary
+id: par_data_enforcement_action.enforcement_action.title
 targetEntityType: par_data_enforcement_action
 bundle: enforcement_action
-mode: summary
+mode: title
 content:
   details:
     type: text_trimmed
@@ -26,13 +22,6 @@ content:
     settings:
       trim_length: 600
     third_party_settings: {  }
-  document:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: file_default
   enforcement_action_notes:
     label: hidden
     type: text_default
