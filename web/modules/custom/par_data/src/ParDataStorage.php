@@ -58,7 +58,7 @@ class ParDataStorage extends TranceStorage {
     // Set the type if not already set.
     $values['type'] = $bundle_entity && isset($values['type']) ? $values['type'] : $bundle_entity->id();
 
-    // Set the default status (as the first allowed_status value configured.
+    // Set the default status (as the first allowed_status value configured).
     $status_field = $bundle_entity->getConfigurationElementByType('entity', 'status_field');
     $allowed_statuses = $bundle_entity->getAllowedValues($status_field);
     if (isset($status_field) && !empty($allowed_statuses)) {
