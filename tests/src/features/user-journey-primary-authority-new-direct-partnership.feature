@@ -107,9 +107,9 @@ Feature: New Direct Partnership
 
         And I open the url "/dashboard"
         When I click on the link "Search for a partnership"
-        And I add "test" to the inputfield "#edit-keywords"
+        And I add "Aceme" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
-        Then the element ".table-scroll-wrapper" contains the text "Test"
+        Then the element ".table-scroll-wrapper" contains the text "Acme"
         And I click on the link "Log out"
 
 #        # HELPDESK USER
