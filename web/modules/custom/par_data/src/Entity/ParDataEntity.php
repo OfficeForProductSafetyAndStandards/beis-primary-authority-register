@@ -125,12 +125,21 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     return TRUE;
   }
 
+  /**
+   * Delete if this entity is deletable and is not new.
+   */
   public function delete() {
     if (!$this->isNew() && $this->getTypeEntity()->isDeletable() && !$this->isDeleted()) {
       return parent::delete();
     }
   }
 
+  /**
+   * Revoke if this entity is revokable and is not new.
+   *
+   * @return boolean
+   *   True if the entity was revoked, false for all other results.
+   */
   public function revoke() {
     if (!$this->isNew() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, TRUE);
@@ -139,6 +148,13 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     return FALSE;
   }
 
+  /**
+   * Unrevoke a revoked entity
+   *
+   * @return boolean
+   *   True if the entity was unrevoked, false for all other results.
+   *
+   */
   public function unrevoke() {
     if (!$this->isNew() && $this->getTypeEntity()->isRevokable() && $this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, FALSE);
@@ -148,7 +164,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Archive an entity.
+   * Archive if the entity is archivable and is not new.
    *
    * @return boolean
    *   True if the entity was restored, false for all other results.
