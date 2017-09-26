@@ -130,10 +130,10 @@ class ParDashboardsDashboardController extends ControllerBase {
       ];
 
       // @TODO TO BE ADDED. WE NEED A SEPARATE VIEW PAGE FOR MANAGING ALL NOTICES.
-      $search_partnerships = $this->getLinkByRoute('view.par_user_enforcements.enforcment_notice_messages');
+      $search_partnerships = $this->getLinkByRoute('view.par_user_enforcements.enforcement_notices_page');
       $build['messages']['link'] = [
         '#type' => 'markup',
-        '#markup' => $search_partnerships ? $search_partnerships->setText('See all outstanding enforcement notices')->toString() : '(none)',
+        '#markup' => $search_partnerships ? $search_partnerships->setText('See enforcement notifications')->toString() : '(none)',
       ];
     }
 
