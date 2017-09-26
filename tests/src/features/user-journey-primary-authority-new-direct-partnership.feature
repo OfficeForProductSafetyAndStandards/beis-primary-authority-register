@@ -67,8 +67,9 @@ Feature: New Direct Partnership
 
         # CONFIRM NEW PARTNERSHIP
 
-        And I click on the radio "#edit-par-data-organisation-id-new"
-        And I click on the button "#edit-next"
+        And I click new partnership if presented with choices
+#        And I click on the radio "#edit-par-data-organisation-id-new"
+#        And I click on the button "#edit-next"
 
         # ADD BUSINESS DETAIL
 
@@ -104,7 +105,6 @@ Feature: New Direct Partnership
 
         # CHECK APPEARS IN SEARCH
 
-#        Given I am logged in as "par_business@example.com"
         And I open the url "/dashboard"
         When I click on the link "Search for a partnership"
         And I add "test" to the inputfield "#edit-keywords"
@@ -112,10 +112,15 @@ Feature: New Direct Partnership
         Then the element ".table-scroll-wrapper" contains the text "Test"
         And I click on the link "Log out"
 
-#        # TERMS AND CONDITIONS SCREEN
+#        # HELPDESK USER
 
         Given I am logged in as "par_helpdesk@example.com"
         Then the element ".table-scroll-wrapper" contains the text "Acme Test"
+        When I click on the link "Approve partnership"
+        Then the element ".table-scroll-wrapper" contains the text "Are you sure you want to Approve this partnership"
+        When I press "Approve"
+        Then the element ".table-scroll-wrapper" contains the text "This partnership has been Approved"
+        When I press "Done"
 
 #
 #        Then I expect that element "#par-flow-transition-business-terms" contains the text "Please review the new Primary Authority terms and conditions and confirm that you agree with them"

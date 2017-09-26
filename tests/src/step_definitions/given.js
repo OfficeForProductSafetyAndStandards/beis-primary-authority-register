@@ -27,6 +27,7 @@ import selectNextHelpdeskBusinessAwaitingReview from '../support/action/selectNe
 import selectMyNextCoordinatedPartnership from '../support/action/selectMyNextCoordinatedPartnership';
 import relevantSearchResultsCheck from '../support/action/relevantSearchResultsCheck';
 import partnershipSearchResultsCheck from '../support/action/partnershipSearchResultsCheck';
+import clickNewPartnership from '../support/action/clickNewPartnership';
 import relevantSearchResultsCheckHelpdesk from '../support/action/relevantSearchResultsCheckHelpdesk';
 
 module.exports = function given() {
@@ -38,6 +39,11 @@ module.exports = function given() {
     this.Given(
         /^I check the homepage response code is 200$/,
         checkResponseCode
+    );
+
+    this.Given(
+        /^I click new partnership if presented with choices$/,
+        clickNewPartnership
     );
 
     this.Given(
@@ -124,7 +130,7 @@ module.exports = function given() {
         /^I select my next coordinated partnership awaiting review$/,
         selectMyNextCoordinatedPartnership
     );
-    
+
 
     this.Given(
         /^I reset the test data$/,

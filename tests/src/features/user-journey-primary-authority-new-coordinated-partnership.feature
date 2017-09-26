@@ -52,8 +52,9 @@ Feature: New Coordinated Partnership
 
         # CONFIRM NEW PARTNERSHIP
 
-        And I click on the radio "#edit-par-data-organisation-id-new"
-        And I click on the button "#edit-next"
+        And I click new partnership if presented with choices
+#        And I click on the radio "#edit-par-data-organisation-id-new"
+#        And I click on the button "#edit-next"
 
         # ADD BUSINESS DETAIL
 
@@ -80,12 +81,16 @@ Feature: New Coordinated Partnership
         And I click on the button "#edit-next"
         And I click on the link "Log out"
 
-     # LOGIN SCREEN
+        # HELPDESK USER
 
-#        Given I am logged in as "par_coordinator@example.com"
-#        And I open the url "/dashboard"
-#        When I click on the link "See your partnerships"
-#        When I click on the button "Test Create Partnership"
+        Given I am logged in as "par_helpdesk@example.com"
+        Then the element ".table-scroll-wrapper" contains the text "Acme Test"
+        When I click on the link "Revoke partnership"
+        Then the element ".table-scroll-wrapper" contains the text "Are you sure you want to Revoke this partnership"
+        And I add "A revoke reason" to the inputfield "#revoke-reason"
+        When I press "Revoke"
+        Then the element ".table-scroll-wrapper" contains the text "This partnership has been revoked"
+        When I press "Done"
 #
 #        # TERMS AND CONDITIONS SCREEN
 #
