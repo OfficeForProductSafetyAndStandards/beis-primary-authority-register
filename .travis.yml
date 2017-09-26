@@ -130,6 +130,15 @@ script:
   - if [[ $TRAVIS_TAG != '' ]]; then mkdir $TRAVIS_TAG; fi
   - if [[ $TRAVIS_TAG != '' ]]; then tar --exclude="./$TRAVIS_TAG" -zcf $TRAVIS_TAG/$TRAVIS_TAG.tar.gz .; fi
 
+#-----------------------------------------------------------------------------
+# Push test results to PubNub
+#-----------------------------------------------------------------------------
+  
+after_script:
+  - cd dashboard/tools
+  - composer install
+  - php push-travis.php ../../tests/reports/phpunit.latest.xml
+
 ##############################################################################
 ### DEPLOY                                                                 ###
 ##############################################################################
