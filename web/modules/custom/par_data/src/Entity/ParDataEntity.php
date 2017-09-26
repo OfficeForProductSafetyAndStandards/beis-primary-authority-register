@@ -4,6 +4,7 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityPublishedTrait;
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -73,6 +74,16 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    */
   public static function setDefaultTitle() {
     return uniqid();
+  }
+
+  /**
+   * Will return true if the entity is allowed to exist within the system.
+   * Or false if it has been soft-removed.
+   *
+   * @return bool
+   */
+  public function isLiving() {
+    return !$this->isDeleted() && $this->isTransitioned();
   }
 
   /**

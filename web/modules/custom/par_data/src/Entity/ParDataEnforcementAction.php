@@ -64,6 +64,10 @@ use Drupal\Core\Field\BaseFieldDefinition;
  */
 class ParDataEnforcementAction extends ParDataEntity {
 
+  const APPROVED = 'allowed';
+  const BLOCKED = 'blocked';
+  const REFERRED = 'referred';
+
   /**
    * Get the blocked advice for this Enforcement Action.
    */
@@ -83,6 +87,121 @@ class ParDataEnforcementAction extends ParDataEntity {
    */
   public function getRegulatoryFunction() {
     return $this->get('field_regulatory_function')->referencedEntities();
+  }
+
+
+
+  /**
+   * Whether this entity is deleted.
+   *
+   * @return bool
+   */
+  public function isApproved() {
+    $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+    $current_status = $status_field ? $this->get($status_field)->getString() : NULL;
+    if ($current_status === self::APPROVED) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  /**
+   * Whether this entity is revoked.
+   *
+   * @return bool
+   */
+  public function isBlocked() {
+    $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+    $current_status = $status_field ? $this->get($status_field)->getString() : NULL;
+    if ($current_status === self::BLOCKED) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  /**
+   * Whether this entity is archived.
+   *
+   * @return bool
+   */
+  public function isReferred() {
+    $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+    $current_status = $status_field ? $this->get($status_field)->getString() : NULL;
+    if ($current_status === self::REFERRED) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  /**
+   * Delete if this entity is deletable and is not new.
+   */
+  public function approve() {
+    if (!$this->isNew() && !$this->isApproved()) {
+      $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+      $this->set($status_field, self::APPROVED);
+      return ($this->save() === SAVED_UPDATED);
+    }
+    return FALSE;
+  }
+
+  /**
+   * Revoke if this entity is revokable and is not new.
+   *
+   * @return boolean
+   *   True if the entity was revoked, false for all other results.
+   */
+  public function block() {
+    if (!$this->isNew() && !$this->isBlocked()) {
+      $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+      $this->set($status_field, self::BLOCKED);
+      return ($this->save() === SAVED_UPDATED);
+    }
+    return FALSE;
+  }
+
+  /**
+   * Unrevoke a revoked entity
+   *
+   * @return boolean
+   *   True if the entity was unrevoked, false for all other results.
+   *
+   */
+  public function refer() {
+    if (!$this->isNew() && !$this->isReferred()) {
+      $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+      $this->set($status_field, self::REFERRED);
+      return ($this->save() === SAVED_UPDATED);
+    }
+    return FALSE;
+  }
+
+  /**
+   * Archive if the entity is archivable and is not new.
+   *
+   * @return boolean
+   *   True if the entity was restored, false for all other results.
+   */
+  public function archive() {
+    if (!$this->isNew() && $this->getTypeEntity()->isArchivable() && !$this->isArchived()) {
+      $this->set(ParDataEntity::ARCHIVE_FIELD, TRUE);
+      return ($this->save() === SAVED_UPDATED);
+    }
+    return FALSE;
+  }
+
+  /**
+   * Restore an archived entity.
+   *
+   * @return boolean
+   *   True if the entity was restored, false for all other results.
+   */
+  public function restore() {
+    if (!$this->isNew() && $this->getTypeEntity()->isRevokable() && $this->isArchived()) {
+      $this->set(ParDataEntity::ARCHIVE_FIELD, FALSE);
+      return ($this->save() === SAVED_UPDATED);
+    }
+    return FALSE;
   }
 
   /**
