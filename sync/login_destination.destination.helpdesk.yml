@@ -2,6 +2,8 @@ uuid: 52e62349-8f7e-44cf-a6a2-37e249666010
 langcode: en
 status: true
 dependencies: {  }
+_core:
+  default_config_hash: FBoWQ-n2Va6zOtJmdJyFXTlK9YfgTdytUzvT-SPYSf4
 name: helpdesk
 label: Helpdesk
 triggers:
