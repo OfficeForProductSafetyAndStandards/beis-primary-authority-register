@@ -17,8 +17,8 @@ Feature: Primary Authority - Change Partnership Details
 
         # PARTNERSHIPS DASHBOARD
 
-        And relevant search results returned for partnership search term "Council"
-        And I click on the button "td.views-field.views-field-authority-name a"
+        And relevant search results returned for partnership search term "Co Mart"
+        And I click on the button "td.views-field.views-field-par-flow-link a"
         And I expect that element "h1" is not empty
 
         # REVIEW PARTNERSHIPS DETAILS
@@ -27,7 +27,7 @@ Feature: Primary Authority - Change Partnership Details
         And I add "test partnership info change" to the inputfield "#edit-about-partnership"
         And I click on the button "#edit-save"
         Then I expect that element "#edit-about-partnership" contains the text "test partnership info change"
-        When I select the edit link //*[@id=\"edit-0--9\"]/a
+        When I click on the button "/html/body/main/div[2]/div[4]/form/div[12]/fieldset/div[2]/fieldset/a"
         And I clear the inputfield "#edit-salutation"
         And I clear the inputfield "#edit-first-name"
         And I clear the inputfield "#edit-last-name"
@@ -57,18 +57,19 @@ Feature: Primary Authority - Change Partnership Details
         And I expect that element "#edit-authority-contacts" contains the text "par_authority_animal@example.com"
         And I expect that element "#edit-authority-contacts" contains the text "91723456789"
         And I expect that element "#edit-authority-contacts" contains the text "9777777777"
-        When I click on the button "/html/body/main/div[2]/div[4]/form/div[12]/fieldset/div/fieldset/div[1]/fieldset/div[2]/fieldset/a"
-        And I add "Miss" to the inputfield "#edit-first-name"
-        And I add "Piggy" to the inputfield "#edit-last-name"
-        And I add "par_authority_piggy@example.com" to the inputfield "#edit-email"
-        And I add "917234567899" to the inputfield "#edit-work-phone"
-        And I add "97777777779" to the inputfield "#edit-mobile-phone"
-        When I click on the button "#edit-save"
-        Then I expect that element "#edit-authority-contacts" contains the text "Miss"
-        Then I expect that element "#edit-authority-contacts" contains the text "Piggy"
-        Then I expect that element "#edit-authority-contacts" contains the text "par_authority_piggy@example.com"
-        Then I expect that element "#edit-authority-contacts" contains the text "917234567899"
-        Then I expect that element "#edit-authority-contacts" contains the text "97777777779"
+        And I scroll to element "#edit-organisation-contacts"
+#        When I click on the button "/html/body/main/div[2]/div[4]/form/div[12]/fieldset/div[3]/fieldset/a"
+#        And I add "Miss" to the inputfield "#edit-first-name"
+#        And I add "Piggy" to the inputfield "#edit-last-name"
+#        And I add "par_authority_piggy@example.com" to the inputfield "#edit-email"
+#        And I add "917234567899" to the inputfield "#edit-work-phone"
+#        And I add "97777777779" to the inputfield "#edit-mobile-phone"
+#        When I click on the button "#edit-save"
+#        Then I expect that element "#edit-authority-contacts" contains the text "Miss"
+#        Then I expect that element "#edit-authority-contacts" contains the text "Piggy"
+#        Then I expect that element "#edit-authority-contacts" contains the text "par_authority_piggy@example.com"
+#        Then I expect that element "#edit-authority-contacts" contains the text "917234567899"
+#        Then I expect that element "#edit-authority-contacts" contains the text "97777777779"
         # And I click on the checkbox "#edit-confirmation"
         # And I click on the button "#edit-save"
         # Then I expect that element "#block-par-theme-content" contains the text "Confirmed by the Authority"
@@ -77,26 +78,26 @@ Feature: Primary Authority - Change Partnership Details
 
         # When I select next partnership awaiting review
         And I click on the button "a*=See all Advice"
+        And I click on the link "Cancel"
         #  And I click on the link "Upload a document"
         #  And I upload a valid file
-        And I click on the link "edit"
-        And I click on the radio "#edit-advice-type-authority-advice"
+#        And I click on the link "edit"
+#        And I click on the radio "#edit-advice-type-authority-advice"
         # When I click on the button "#edit-next"
         # Then I expect that element ".error-message" does exist
-        And I click on the checkbox ".form-label*=Cookie control"
-        When I click on the button "#edit-next"
+#        And I click on the checkbox ".form-label*=Cookie control"
+#        When I click on the button "#edit-save"
         # Then I expect that element ".table-scroll-wrapper" contains the text "✔"
         # And the element ".table-scroll-wrapper" contains the text "Cookie control"
-        When I click on the link "Save"
         # Then I expect that element ".table-scroll-wrapper" contains the text "100%"
 
         # INSPECTION PLANS
 
         # When I select next partnership awaiting review
-        When I click on the link "See all Inspection Plans"
+#        When I click on the link "See all Inspection Plans"
 #        Then I expect that element "#edit-document-list" contains the text "Inspection Plan"
 #        And I click on the checkbox ".form-checkbox"
-        And I click on the link "Save"
+#        And I click on the link "Save"
 
         # CHECK INSPECTION PLAN CONFIRMED
 
