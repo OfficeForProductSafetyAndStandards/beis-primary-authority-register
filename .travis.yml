@@ -53,7 +53,7 @@ install:
   - docker exec -it par_beta_web bash -c "echo 'deb http://dl.google.com/linux/chrome/deb/ stable main' >> /etc/apt/sources.list.d/google.list"
   - docker exec -it par_beta_web bash -c "apt-get update"
   - docker exec -it par_beta_web bash -c "apt-get install -y google-chrome-stable"
-#  - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
+  - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
 
 #-----------------------------------------------------------------------------
 # Setup local config defaults
@@ -101,7 +101,7 @@ install:
 # Stamp the code with the build number
 #-----------------------------------------------------------------------------
 
-  - 'echo "{ \"build\" : \"${TRAVIS_BUILD_NUMBER}\", \"tag\":\"${TRAVIS_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt'
+  - 'echo "#${TRAVIS_BUILD_NUMBER} ${TRAVIS_TAG}: $(date -u)" > web/build_version.txt'
 
 ##############################################################################
 ### TEST                                                                   ###
@@ -129,15 +129,6 @@ script:
   - rm .env
   - if [[ $TRAVIS_TAG != '' ]]; then mkdir $TRAVIS_TAG; fi
   - if [[ $TRAVIS_TAG != '' ]]; then tar --exclude="./$TRAVIS_TAG" -zcf $TRAVIS_TAG/$TRAVIS_TAG.tar.gz .; fi
-
-#-----------------------------------------------------------------------------
-# Push test results to PubNub
-#-----------------------------------------------------------------------------
-  
-after_script:
-  - if [[ $TRAVIS_BRANCH == 'master' ]]; then cd dashboard/tools; fi
-  - if [[ $TRAVIS_BRANCH == 'master' ]]; then composer install; fi
-  - if [[ $TRAVIS_BRANCH == 'master' ]]; then php push-travis.php ../../tests/reports/phpunit.latest.xml; fi
 
 ##############################################################################
 ### DEPLOY                                                                 ###
