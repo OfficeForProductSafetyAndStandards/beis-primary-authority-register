@@ -48,6 +48,8 @@ trait ParDisplayTrait {
    *   The section name to display on operation links.
    * @param EntityReferenceFieldItemListInterface $field
    *   The field to render.
+   * @param EntityInterface $entity
+   *   The entity that we're performing the operations on.
    * @param string $view_mode
    *   The view mode to render the fields from.
    * @param array $operations
@@ -100,7 +102,7 @@ trait ParDisplayTrait {
    * @param bool $single
    *   Whether or not to only return the first item.
    *
-   * @return null
+   * @return array
    */
   public function renderReferenceField($section, $field, $view_mode = 'summary', $operations = [], $single = FALSE) {
     $elements = [];
@@ -132,8 +134,12 @@ trait ParDisplayTrait {
    *   The entity that we're performing the operations on.
    * @param FieldItemListInterface $field
    *   The field that the operation relates to.
+   * @param integer $delta
+   *   The field delta to display the opperation link for.
    * @param array $operations
    *   An array of operations that we want to get.
+   *
+   * @return array
    */
   public function displayEntityOperationLinks($section, $entity, $field, $delta = NULL, $operations = []) {
     $operation_links = [];

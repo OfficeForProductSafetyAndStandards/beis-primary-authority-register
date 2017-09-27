@@ -173,7 +173,7 @@ class ParDataOrganisation extends ParDataEntity {
 
     // Number of Employees.
     $fields['employees_band'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Number of Employee'))
+      ->setLabel(t('Number of Employees'))
       ->setDescription(t('The band that best represents the number of employees.'))
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)
