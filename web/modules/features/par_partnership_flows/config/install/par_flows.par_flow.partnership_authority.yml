@@ -42,14 +42,15 @@ steps:
   6:
     route: par_partnership_flows.advice_list
     redirect:
-      advice_upload: 7
+      upload: 7
       edit: 10
-      save: 1
+      done: 1
       cancel: 1
   7:
     route: par_partnership_flows.advice_upload_documents
     form_id: par_partnership_upload
     redirect:
+      upload: 8
       cancel: 6
   8:
     route: par_partnership_flows.advice_add
