@@ -50,17 +50,27 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    */
   public function label() {
     $label_fields = $this->getTypeEntity()->getConfigurationElementByType('entity', 'label_fields');
+    $labels = [];
     if (isset($label_fields) && is_string($label_fields)) {
-
+      $labels[] = $this->get($label_fields)->getString();
     }
     else if (isset($label_fields) && is_array($label_fields)) {
-      $label = '';
       foreach ($label_fields as $field) {
-        if ($this->hasField($field)) {
-          $label .= " " . $this->get($field)->getString();
+        list($field_name, $property_name) = explode(':', $field . ':');
+
+        if ($this->hasField($field_name)) {
+          if (!empty($property_name)) {
+            $labels[] = current($this->get($field_name)->getValue())[$property_name];
+          }
+          else {
+            $labels[] = $this->get($field_name)->getString();
+          }
         }
       }
     }
+
+    //var_dump($labels); die;
+    $label = implode(' ', $labels);
 
     return isset($label) && !empty($label) ? $label : parent::label();
   }

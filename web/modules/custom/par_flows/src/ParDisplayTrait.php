@@ -39,8 +39,27 @@ trait ParDisplayTrait {
     ];
   }
 
-
-  public function renderTextField($entity, $field, $view_mode, $operations = [], $single = FALSE) {
+  /**
+   * Display a FieldItemList that is not an entity reference using the given settings.
+   *
+   * Adds the required operations to each field item that gets rendered.
+   *
+   * @param string $section
+   *   The section name to display on operation links.
+   * @param EntityReferenceFieldItemListInterface $field
+   *   The field to render.
+   * @param EntityInterface $entity
+   *   The entity that we're performing the operations on.
+   * @param string $view_mode
+   *   The view mode to render the fields from.
+   * @param array $operations
+   *   The array of operations to add for each field item.
+   * @param bool $single
+   *   Whether or not to only return the first item.
+   *
+   * @return null
+   */
+  public function renderTextField($section, $entity, $field, $view_mode, $operations = [], $single = FALSE) {
     $elements = [];
     foreach ($field as $delta => $value) {
       $elements[$delta] = [
@@ -58,7 +77,7 @@ trait ParDisplayTrait {
       $elements[$delta]['value']['#suffix'] = '</div>';
 
       // Get all of the available entity entity operation links.
-      $elements[$delta] += $this->displayEntityOperationLinks($entity, $field, $delta, $operations);
+      $elements[$delta] += $this->displayEntityOperationLinks($section, $entity, $field, $delta, $operations);
       if ($single) {
         break;
       }
@@ -68,14 +87,24 @@ trait ParDisplayTrait {
   }
 
   /**
+   * Display an EntityReferenceFieldItemList using the given settings.
+   *
+   * Adds the required operations to each field item that gets rendered.
+   *
+   * @param string $section
+   *   The section name to display on operation links.
    * @param EntityReferenceFieldItemListInterface $field
    *   The field to render.
+   * @param string $view_mode
+   *   The view mode to render the fields from.
+   * @param array $operations
+   *   The array of operations to add for each field item.
    * @param bool $single
    *   Whether or not to only return the first item.
    *
-   * @return null
+   * @return array
    */
-  public function renderReferenceField($field, $view_mode = 'summary', $operations = [], $single = FALSE) {
+  public function renderReferenceField($section, $field, $view_mode = 'summary', $operations = [], $single = FALSE) {
     $elements = [];
     foreach ($field->referencedEntities() as $delta => $entity) {
       $entity_view_builder = $this->getParDataManager()->getViewBuilder($entity->getEntityTypeId());
@@ -89,7 +118,7 @@ trait ParDisplayTrait {
       $elements[$delta]['entity'] = $this->renderMarkupField($rendered_entity);
 
       // Get all of the available entity entity operation links.
-      $elements[$delta] += $this->displayEntityOperationLinks($entity, $field, $delta, $operations);
+      $elements[$delta] += $this->displayEntityOperationLinks($section, $entity, $field, $delta, $operations);
       if ($single) {
         break;
       }
@@ -99,15 +128,29 @@ trait ParDisplayTrait {
   }
 
   /**
+   * @param string $section
+   *   The section name to display on operation links.
    * @param EntityInterface $entity
    *   The entity that we're performing the operations on.
    * @param FieldItemListInterface $field
    *   The field that the operation relates to.
+   * @param integer $delta
+   *   The field delta to display the opperation link for.
    * @param array $operations
    *   An array of operations that we want to get.
+   *
+   * @return array
    */
-  public function displayEntityOperationLinks($entity, $field, $delta = NULL, $operations = []) {
+  public function displayEntityOperationLinks($section, $entity, $field, $delta = NULL, $operations = []) {
     $operation_links = [];
+
+    // Reference fields need to be rendered slightly differently.
+    if ($field instanceof EntityReferenceFieldItemListInterface) {
+      $link_name_suffix = strtolower($entity->label());
+    }
+    else {
+      $link_name_suffix = strtolower($field->getFieldDefinition()->getLabel());
+    }
 
     // Only add the edit link if it is in the allowed operations.
     if (isset($operations) && (in_array('edit-entity', $operations) || in_array('edit-field', $operations))) {
@@ -122,7 +165,7 @@ trait ParDisplayTrait {
       }
 
       try {
-        $edit_link = $this->getFlow()->getLinkByCurrentOperation('edit_' . $field->getName(), $params)->setText('edit')->toString();
+        $edit_link = $this->getFlow()->getLinkByCurrentOperation('edit_' . $field->getName(), $params)->setText("edit {$link_name_suffix}")->toString();
       }
       catch (ParFlowException $e) {
         $this->getLogger($this->getLoggerChannel())->error($e);
@@ -169,10 +212,10 @@ trait ParDisplayTrait {
       if (!$field->isEmpty()) {
         // Reference fields need to be rendered slightly differently.
         if ($field instanceof EntityReferenceFieldItemListInterface) {
-          $rows = $this->renderReferenceField($field, $view_mode, $operations, $single);
+          $rows = $this->renderReferenceField($section, $field, $view_mode, $operations, $single);
         }
         else {
-          $rows = $this->renderTextField($entity, $field, $view_mode, $operations, $single);
+          $rows = $this->renderTextField($section, $entity, $field, $view_mode, $operations, $single);
         }
 
         // Render the rows using a tabulated pager.
@@ -183,6 +226,10 @@ trait ParDisplayTrait {
           '#type' => 'markup',
           '#markup' => $this->t('(none)'),
         ];
+        // If displaying the add action don't display the edit as well.
+        if (!in_array('add', $operations)) {
+          $element[$field_name]['items'] += $this->displayEntityOperationLinks($section, $entity, $field, 0, $operations);
+        }
       }
 
       $element[$field_name]['operations'] = [
@@ -192,9 +239,10 @@ trait ParDisplayTrait {
       ];
 
       // Only add the add link if it is in the allowed operations.
+      $link_name_suffix = strtolower($field->getFieldDefinition()->getLabel());
       if (isset($operations) && (in_array('add', $operations))) {
         try {
-          $add_link = $this->getFlow()->getLinkByCurrentOperation('add_' . $field->getName())->setText('add another')->toString();
+          $add_link = $this->getFlow()->getLinkByCurrentOperation('add_' . $field->getName())->setText("add another {$link_name_suffix}")->toString();
         } catch (ParFlowException $e) {
           $this->getLogger($this->getLoggerChannel())->error($e);
         }

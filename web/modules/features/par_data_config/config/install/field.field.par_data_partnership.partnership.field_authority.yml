@@ -9,7 +9,7 @@ id: par_data_partnership.partnership.field_authority
 field_name: field_authority
 entity_type: par_data_partnership
 bundle: partnership
-label: Authorities
+label: Authority
 description: 'The authorities for this partnership.'
 required: false
 translatable: false
