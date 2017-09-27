@@ -32,9 +32,12 @@ class ParDataStatus extends FieldPluginBase {
    * @{inheritdoc}
    */
   public function render(ResultRow $values) {
-    $entity = $values->_entity;
+    $entity = $this->getEntity($values);
+
     if ($entity instanceof ParDataEntityInterface) {
-      return t($entity->getParStatus());
+      $status = $entity->getParStatus();
+
+      return $status ? t($status) : '';
     }
   }
 }
