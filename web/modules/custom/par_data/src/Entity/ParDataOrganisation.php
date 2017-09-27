@@ -173,7 +173,7 @@ class ParDataOrganisation extends ParDataEntity {
 
     // Number of Employees.
     $fields['employees_band'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Number of Employees'))
+      ->setLabel(t('Number of Employee'))
       ->setDescription(t('The band that best represents the number of employees.'))
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)
@@ -217,7 +217,7 @@ class ParDataOrganisation extends ParDataEntity {
 
     // Comments.
     $fields['comments'] = BaseFieldDefinition::create('text_long')
-      ->setLabel(t('Comments'))
+      ->setLabel(t('About the Organisation'))
       ->setDescription(t('Comments about this organisation.'))
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)
