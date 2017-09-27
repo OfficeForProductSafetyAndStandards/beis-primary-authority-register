@@ -12,7 +12,7 @@ id: par_data_partnership.partnership.field_regulatory_function
 field_name: field_regulatory_function
 entity_type: par_data_partnership
 bundle: partnership
-label: 'Regulatory Functions'
+label: 'Regulatory Function'
 description: 'The regulatory functions for this partnership.'
 required: false
 translatable: false

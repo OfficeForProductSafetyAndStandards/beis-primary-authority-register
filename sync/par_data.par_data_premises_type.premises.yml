@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: msVW1EFQqk2m9KD4o4sVTJSz__XNwMHF_NNPuTWbphQ
+  default_config_hash: Av9ZamwE0E5mRf9CEtsazUvHIBCxL1NAeuvetXtpLc4
 id: premises
 label: Premises
 description: 'Premises are a location used by either an Authority or an Organisation.'
@@ -14,8 +14,7 @@ isArchivable: false
 configuration:
   entity:
     label_fields:
-      - address
-      - nation
+      - 'address:address_line1'
     required_fields:
       address_line1: 'The %field is required.'
       address_line2: 'The %field is required.'
