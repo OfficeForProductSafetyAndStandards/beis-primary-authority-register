@@ -52,7 +52,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
 
       // Partnership Confirmation.
       $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
-      if (!$this->currentUser()->hasPermission('update paa2la')) {
+      if (!$this->currentUser()->hasPermission('update primary authority advice to local authorities')) {
         unset($allowed_types['authority_advice']);
       }
       $advice_type = $par_data_advice->get('advice_type')->getString();
