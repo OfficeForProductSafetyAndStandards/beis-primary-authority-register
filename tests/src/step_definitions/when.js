@@ -18,12 +18,18 @@ import setPromptText from '../support/action/setPromptText';
 import submitForm from '../support/action/submitForm';
 import fillInForm from '../support/action/fillInForm';
 import uploadAValidFile from '../support/action/uploadFile';
+import selectTheEditLink from '../support/action/selectTheEditLink';
 
 
 module.exports = function when() {
     this.When(
         /^I (click|doubleclick) on the (link|button|radio|checkbox|business|element) "([^"]*)?"$/,
         clickElement
+    );
+
+    this.When(
+        /^I select the edit link (.*)$/,
+        selectTheEditLink
     );
 
     this.When(

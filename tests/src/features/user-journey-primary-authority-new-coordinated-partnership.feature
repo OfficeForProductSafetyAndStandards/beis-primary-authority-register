@@ -15,7 +15,7 @@ Feature: New Coordinated Partnership
 
         And I expect that element "#block-par-theme-content" contains the text "Your partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
-        And I expect that element "#block-par-theme-content" contains the text "See all outstanding enforcement notices"
+        And I expect that element "#block-par-theme-content" contains the text "See enforcement notifications"
         When I click on the link "Create a new partnership"
 
         # CHOOSE PARTNERSHIP TYPE
