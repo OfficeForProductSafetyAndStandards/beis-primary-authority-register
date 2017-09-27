@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: tZOJifeEiHnKUq5Oc-bLTSTBW44RiWcf9JvEyM8o1rY
+  default_config_hash: Sv_jvDI5CZ-pOLrITaBMobgOToOPz03qvp4f_O8G1P0
 id: approve_enforcement
 label: 'Approve Enforcement'
 default_title: null
@@ -14,9 +14,16 @@ steps:
     route: par_enforcement_flows.approve
     form_id: par_enforcement_notice_approve
     redirect:
-      cancel: 3
+      cancel: 4
   2:
+    route: par_enforcement_flows.referred_authority
+    form_id: par_enforcement_referred_authority
+    redirect:
+      cancel: 4
+  3:
     route: par_enforcement_flows.approve_confirm
     form_id: par_enforcement_notice_approve_confirm
-  3:
-    route: view.rd_helpdesk_dashboard.par_rd_helpdesk_dashboard_page
+    redirect:
+      cancel: 4
+  4:
+    route: par_dashboards.dashboard

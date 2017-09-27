@@ -27,6 +27,5 @@ hidden:
   field_regulatory_function: true
   inspection_status: true
   name: true
-  revoked: true
   user_id: true
   valid_date: true

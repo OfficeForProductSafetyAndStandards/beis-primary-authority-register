@@ -4,6 +4,7 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityPublishedTrait;
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -16,8 +17,6 @@ use Drupal\trance\Trance;
  * @ingroup par_data
  */
 class ParDataEntity extends Trance implements ParDataEntityInterface {
-
-  use EntityPublishedTrait;
 
   const DELETE_FIELD = 'deleted';
   const REVOKE_FIELD = 'revoked';
@@ -76,6 +75,16 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
+   * Will return true if the entity is allowed to exist within the system.
+   * Or false if it has been soft-removed.
+   *
+   * @return bool
+   */
+  public function isLiving() {
+    return !$this->isDeleted() && $this->isTransitioned();
+  }
+
+  /**
    * Whether this entity is deleted.
    *
    * @return bool
@@ -119,7 +128,9 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * PAR2 system on 1 October 2017.
    */
   public function isTransitioned() {
-    if($this->getRawStatus() && $this->getRawStatus() === 'n/a') {
+    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+
+    if (isset($field_name) && $this->hasField($field_name) && !$this->get($field_name)->isEmpty() && $this->get($field_name)->getString() === 'n/a') {
       return FALSE;
     }
     return TRUE;

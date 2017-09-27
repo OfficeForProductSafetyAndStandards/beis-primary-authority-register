@@ -60,7 +60,6 @@ content:
 hidden:
   field_regulatory_function: true
   name: true
-  revoked: true
   user_id: true
   visible_authority: true
   visible_business: true

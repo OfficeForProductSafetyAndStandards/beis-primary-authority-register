@@ -27,7 +27,7 @@ configuration:
       ready_serve: 'Ready To Serve'
   primary_authority_status:
     allowed_values:
-      awaiting_approval: Awaiting approval
+      awaiting_approval: 'Awaiting approval'
       allowed: Approved
       blocked: Blocked
       referred: Referred

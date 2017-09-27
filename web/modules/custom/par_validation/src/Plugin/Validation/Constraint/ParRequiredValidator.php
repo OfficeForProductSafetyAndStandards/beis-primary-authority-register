@@ -20,6 +20,7 @@ class ParRequiredValidator extends ConstraintValidator {
         break;
       }
 
+      // @TODO We need to make sure this validator checks for properties other than 'value'.
       if (!isset($item->value) || false === $item->value || (empty($item->value) && '0' != $item->value)) {
         $this->context->addViolation($constraint->message, ['@value' => $item->value]);
       }
