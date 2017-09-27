@@ -150,7 +150,11 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
         $files_to_add[] = $file->id();
 
       }
-      $par_data_advice->set('document', $files_to_add);
+
+      // Check if any files to add from the Advice Upload form.
+      if ($files_to_add) {
+        $par_data_advice->set('document', $files_to_add);
+      }
 
       if ($par_data_advice->save()) {
         $this->deleteStore();
