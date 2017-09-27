@@ -1,9 +1,10 @@
+uuid: db37e583-e448-4405-9475-adc424488180
 langcode: en
 status: true
 dependencies:
   module:
     - par_data
-id: par_data_enforcement_action.summary
-label: Summary
+id: par_data_enforcement_action.title
+label: Title
 targetEntityType: par_data_enforcement_action
 cache: true

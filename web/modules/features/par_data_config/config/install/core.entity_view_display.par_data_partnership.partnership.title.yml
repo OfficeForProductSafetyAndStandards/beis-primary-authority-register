@@ -77,7 +77,6 @@ hidden:
   revocation_date: true
   revocation_reason: true
   revocation_source: true
-  revoked: true
   tc_authority_agreed: true
   tc_organisation_agreed: true
   terms_authority_agreed: true
