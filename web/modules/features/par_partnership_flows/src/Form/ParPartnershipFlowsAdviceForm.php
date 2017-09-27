@@ -52,7 +52,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
 
       // Partnership Confirmation.
       $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
-      if (!$this->currentUser()->hasPermission('add par_data_advice entities')) {
+      if (!$this->currentUser()->hasPermission('update paa2la')) {
         unset($allowed_types['authority_advice']);
       }
       $advice_type = $par_data_advice->get('advice_type')->getString();
@@ -98,7 +98,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     }
 
     $allowed_types = $advice_bundle->getAllowedValues('advice_type');
-    if (!$this->currentUser()->hasPermission('add par_data_advice entities')) {
+    if (!$this->currentUser()->hasPermission('update paa2la')) {
       unset($allowed_types['authority_advice']);
     }
 
