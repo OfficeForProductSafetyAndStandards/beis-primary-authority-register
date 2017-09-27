@@ -59,6 +59,15 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
     $field_definition = $par_data_advice_fields['document'];
     $file_extensions = $field_definition->getSetting('file_extensions');
 
+    $form['advice_type_help_text'] = [
+      '#type' => 'fieldset',
+      '#attributes' => [
+        'class' => ['form-group'],
+      ],
+      '#title' => $this->t('How to upload Primary Authority Advice to Local Authorities'),
+      '#description' => $this->t('To upload Primary Authority Advice to a Local Authority, email it to <a href="mailto:pa@beis.gov.uk">pa@beis.gov.uk</a> with details of the business it applies to and we’ll get back to you shortly.'),
+    ];
+
     // Multiple file field.
     $form['files'] = [
       '#type' => 'managed_file',

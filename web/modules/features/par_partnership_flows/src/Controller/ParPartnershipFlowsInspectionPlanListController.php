@@ -18,6 +18,15 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
    */
   public function content(ParDataPartnership $par_data_partnership = NULL) {
 
+    $form['inspection_plan_help_text'] = [
+      '#type' => 'fieldset',
+      '#attributes' => [
+        'class' => ['form-group'],
+      ],
+      '#title' => $this->t('How to upload an Inspection Plan'),
+      '#description' => $this->t('To upload an Inspection Plan, email it to <a href="mailto:pa@beis.gov.uk">pa@beis.gov.uk</a> with details of the business it applies to and we’ll get back to you shortly.'),
+    ];
+
     $build['documentation_list'] = [
       '#theme' => 'table',
       '#attributes' => ['class' => ['form-group']],

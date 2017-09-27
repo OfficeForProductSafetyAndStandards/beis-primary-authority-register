@@ -105,10 +105,22 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     // The advice type.
     $form['advice_type'] = [
       '#type' => 'radios',
+      '#attributes' => [
+        'class' => ['form-group'],
+      ],
       '#title' => $this->t('Type of advice'),
       '#options' => $allowed_types,
       '#default_value' => $this->getDefaultValues('advice_type'),
       '#required' => TRUE,
+    ];
+
+    $form['advice_type_help_text'] = [
+      '#type' => 'fieldset',
+      '#attributes' => [
+        'class' => ['form-group'],
+      ],
+      '#title' => $this->t('How to upload Primary Authority Advice to Local Authorities'),
+      '#description' => $this->t('To upload Primary Authority Advice to a Local Authority, email it to <a href="mailto:pa@beis.gov.uk">pa@beis.gov.uk</a> with details of the business it applies to and we’ll get back to you shortly.'),
     ];
 
     // The regulatory functions of the advice entity.
