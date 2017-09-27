@@ -344,10 +344,18 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       ]);
 
       foreach ($form_items as $field_name => $form_item) {
+        $field_definition = $this->getParDataManager()->getFieldDefinition($entity->getEntityTypeId(), $entity->bundle(), $field_name);
+
         if (is_array($form_item)) {
           $field_value = [];
           foreach ($form_item as $field_property => $form_property_item) {
-            $field_value[$field_property] = $form_state->getValue($form_property_item);
+            // For entity reference fields we need to transform the ids to integers.
+            if ($field_definition->getType() === 'entity_reference' && $field_property === 'target_id') {
+              $field_value[$field_property] = (int) $form_state->getValue($form_property_item);
+            }
+            else {
+              $field_value[$field_property] = $form_state->getValue($form_property_item);
+            }
           }
         }
         else {
@@ -356,12 +364,18 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
         $entity->set($field_name, $field_value);
 
-        $violations = $entity->validate()->filterByFieldAccess()
-          ->getByFields([
-            $field_name,
-          ]);
+        try {
+          $violations = $entity->validate()->filterByFieldAccess()
+            ->getByFields([
+              $field_name,
+            ]);
 
-        $this->setFieldViolations($field_name, $form_state, $violations);
+          $this->setFieldViolations($field_name, $form_state, $violations);
+        }
+        catch(\Exception $e) {
+          $this->getLogger($this->getLoggerChannel())->critical('An error occurred validating form %form_id: @detail.', ['%form_id' => $this->getFormId(), '@details' => $e->getMessage()]);
+          $form_state->setError($form, 'An error occurred while checking your submission, please contact the helpdesk if this problem persists.');
+        }
       }
     }
 
@@ -574,14 +588,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       $value = $default;
     }
 
-    $message = 'Data item %item has been retrieved for user %user from the temporary storage %key';
-    $replacements = [
-      '%user' => $this->getCurrentUser()->getAccountName(),
-      '%key' => $this->getFormKey(),
-      '%item' => is_array($key) ? implode('|', $key) : $key,
-    ];
-    $this->getLogger($this->getLoggerChannel())->debug($message, $replacements);
-
     return $value;
   }
 
@@ -639,13 +645,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $this->startAnonymousSession();
     $data = $this->store->get($this->getFormKey($form_id));
 
-    $message = $this->t('Data has been retrieved for user %user from the temporary storage %key');
-    $replacements = [
-      '%user' => $this->getCurrentUser()->getAccountName(),
-      '%key' => $this->getFormKey(),
-    ];
-    $this->getLogger($this->getLoggerChannel())->debug($message, $replacements);
-
     return $data ?: [];
   }
 
@@ -661,22 +660,12 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $form_id = !empty($form_id) ? $form_id : $this->getFormId();
 
     if (!$data || !is_array($data)) {
-      $message = $this->t('Temporary data could not be saved for form %form_id');
-      $replacements = ['%form_id' => $form_id];
-      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
       return;
     }
 
     // Start an anonymous session if required.
     $this->startAnonymousSession();
     $this->store->set($this->getFormKey($form_id), $data);
-
-    $message = $this->t('Data has been set for user %user from the temporary storage %key');
-    $replacements = [
-      '%user' => $this->getCurrentUser()->getUsername(),
-      '%key' => $this->getFormKey(),
-    ];
-    $this->getLogger($this->getLoggerChannel())->debug($message, $replacements);
   }
 
   /**
@@ -689,13 +678,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $form_id = !empty($form_id) ? $form_id : $this->getFormId();
 
     $this->store->delete($this->getFormKey($form_id));
-
-    $message = $this->t('Data has been deleted for user %user from the temporary storage %key');
-    $replacements = [
-      '%user' => $this->getCurrentUser()->getUsername(),
-      '%key' => $this->getFormKey(),
-    ];
-    $this->getLogger($this->getLoggerChannel())->debug($message, $replacements);
   }
 
   /**
