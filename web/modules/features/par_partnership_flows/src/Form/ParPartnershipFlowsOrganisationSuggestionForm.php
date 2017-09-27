@@ -64,9 +64,8 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
     $radio_options = [];
 
     foreach($options as $option) {
-      $option_view = $organisationViewBuilder->view($option, 'summary');
-
-      $radio_options[$option->id()] = $this->renderMarkupField($option_view)['#markup'];
+      $label = $this->renderSection('Organisation', $option, ['organisation_name' => 'summary', 'field_premises' => 'summary'], ['edit-entity'], FALSE, TRUE);
+      $radio_options[$option->id()] = render($label);
     }
 
     // If no suggestions were found we want to automatically submit the form.
