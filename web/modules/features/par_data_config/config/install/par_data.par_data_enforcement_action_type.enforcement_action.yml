@@ -28,6 +28,6 @@ configuration:
   primary_authority_status:
     allowed_values:
       awaiting_approval: 'Awaiting approval'
-      approved: Approved
+      allowed: Approved
       blocked: Blocked
       referred: Referred

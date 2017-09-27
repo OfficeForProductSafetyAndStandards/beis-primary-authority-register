@@ -9,7 +9,8 @@ dependencies:
     - field.field.par_data_enforcement_action.enforcement_action.field_regulatory_function
     - par_data.par_data_enforcement_action_type.enforcement_action
   module:
-    - file
+    - file_entity
+    - par_data
     - text
 _core:
   default_config_hash: tu2zE04w1Dsq4qdkz4p0KL0kw7AjuXGaIdUmA4KfjpU
@@ -30,24 +31,26 @@ content:
     label: hidden
     weight: 4
     region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: file_default
-  field_regulatory_function:
-    type: entity_reference_label
-    weight: 1
-    region: content
-    label: above
     settings:
-      link: true
+      access_message: 'You don''t have access to download this file.'
+      text: 'Download [file:name]'
     third_party_settings: {  }
-  primary_authority_status:
-    type: string
+    type: file_download_link
+  field_regulatory_function:
+    type: entity_reference_entity_view
     weight: 2
     region: content
     label: hidden
     settings:
-      link_to_entity: false
+      view_mode: title
+      link: false
+    third_party_settings: {  }
+  primary_authority_status:
+    type: par_list_formatter
+    weight: 1
+    region: content
+    label: hidden
+    settings: {  }
     third_party_settings: {  }
   title:
     type: string
