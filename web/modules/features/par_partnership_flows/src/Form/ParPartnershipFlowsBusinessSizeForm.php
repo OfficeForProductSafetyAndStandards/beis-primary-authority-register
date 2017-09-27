@@ -60,7 +60,7 @@ class ParPartnershipFlowsBusinessSizeForm extends ParBaseForm {
     // Business details.
     $form['business_size'] = [
       '#type' => 'select',
-      '#title' => $this->t('Number of associations'),
+      '#title' => $this->t('Number of members'),
       '#default_value' => $this->getDefaultValues('business_size'),
       '#options' => $organisation_bundle->getAllowedValues('size'),
     ];
