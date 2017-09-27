@@ -60,7 +60,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
         if ($this->hasField($field_name)) {
           if (!empty($property_name)) {
-            $labels[] = current($this->get($field_name)->getValues())[$property_name];
+            $labels[] = current($this->get($field_name)->getValue())[$property_name];
           }
           else {
             $labels[] = $this->get($field_name)->getString();
