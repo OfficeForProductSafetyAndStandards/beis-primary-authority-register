@@ -97,7 +97,7 @@ class ParDashboardsDashboardController extends ControllerBase {
         $create_partnerships = $this->getLinkByRoute('par_partnership_flows.partnership_application_start');
         $build['partnerships']['add'] = [
           '#type' => 'markup',
-          '#markup' => $create_partnerships->setText('Create a new partnership')->toString(),
+          '#markup' => $create_partnerships->setText('Apply for a new partnership')->toString(),
         ];
       }
     }
