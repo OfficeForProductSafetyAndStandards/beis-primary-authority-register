@@ -301,3 +301,12 @@ fieldset, legend {
     background: #006633;
   }
 }
+
+#footer {
+  .footer-meta {
+    .copyright a {
+      background-image: url("../assets/images/PAR/PAR-logo.png");
+      background-size: 100px 100px;
+    }
+  }
+}
