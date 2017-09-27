@@ -150,6 +150,11 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
         $this->setElementError(['actions', $delta, 'primary_authority_status'], $form_state, 'Every action in this notice must be reviewed before you can proceed.');
       }
 
+      // Set an error if this action has already been reviewed.
+      if ($action->isApproved() || $action->isBlocked() || $action->isReferred()) {
+        $this->setElementError(['actions', $delta, 'primary_authority_status'], $form_state, 'This action has already been reviewed.');
+      }
+
       // Set an error if it is not possible to change to this status.
       if (!isset($form_data['primary_authority_status']) || !$action->canTransition($form_data['primary_authority_status'])) {
         $this->setElementError(['actions', $delta, 'primary_authority_status'], $form_state, 'This action cannot be changed because it has already been reviewed.');
