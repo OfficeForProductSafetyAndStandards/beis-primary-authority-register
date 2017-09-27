@@ -130,10 +130,11 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
     $enforcementNotice_data = [];
 
     $enforcementNotice_data = [
-      'type' => 'enforcement_notice',
       'notice_type' => $this->getTempDataValue('enforcement_type'),
       'summary' => $this->getTempDataValue('action_summary'),
       'field_regulatory_function' => $this->getTempDataValue('regulatory_functions'),
+      'field_enforcing_authority' => $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection'),
+      'field_partnership' => $partnership->id(),
     ];
 
     //get the legal entity assigned from the previous form.
