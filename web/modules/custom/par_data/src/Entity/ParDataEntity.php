@@ -128,7 +128,9 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * PAR2 system on 1 October 2017.
    */
   public function isTransitioned() {
-    if($this->getRawStatus() && $this->getRawStatus() === 'n/a') {
+    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+
+    if (isset($field_name) && $this->hasField($field_name) && !$this->get($field_name)->isEmpty() && $this->get($field_name)->getString() === 'n/a') {
       return FALSE;
     }
     return TRUE;

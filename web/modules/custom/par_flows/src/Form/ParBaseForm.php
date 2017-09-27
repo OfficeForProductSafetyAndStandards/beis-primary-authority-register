@@ -344,10 +344,18 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       ]);
 
       foreach ($form_items as $field_name => $form_item) {
+        $field_definition = $this->getParDataManager()->getFieldDefinition($entity->getEntityTypeId(), $entity->bundle(), $field_name);
+
         if (is_array($form_item)) {
           $field_value = [];
           foreach ($form_item as $field_property => $form_property_item) {
-            $field_value[$field_property] = $form_state->getValue($form_property_item);
+            // For entity reference fields we need to transform the ids to integers.
+            if ($field_definition->getType() === 'entity_reference' && $field_property === 'target_id') {
+              $field_value[$field_property] = (int) $form_state->getValue($form_property_item);
+            }
+            else {
+              $field_value[$field_property] = $form_state->getValue($form_property_item);
+            }
           }
         }
         else {
@@ -356,12 +364,18 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
         $entity->set($field_name, $field_value);
 
-        $violations = $entity->validate()->filterByFieldAccess()
-          ->getByFields([
-            $field_name,
-          ]);
+        try {
+          $violations = $entity->validate()->filterByFieldAccess()
+            ->getByFields([
+              $field_name,
+            ]);
 
-        $this->setFieldViolations($field_name, $form_state, $violations);
+          $this->setFieldViolations($field_name, $form_state, $violations);
+        }
+        catch(\Exception $e) {
+          $this->getLogger($this->getLoggerChannel())->critical('An error occurred validating form %form_id: @detail.', ['%form_id' => $this->getFormId(), '@details' => $e->getMessage()]);
+          $form_state->setError($form, 'An error occurred while checking your submission, please contact the helpdesk if this problem persists.');
+        }
       }
     }
 

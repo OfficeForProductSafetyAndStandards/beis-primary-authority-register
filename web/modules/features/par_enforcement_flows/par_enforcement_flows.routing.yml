@@ -116,6 +116,18 @@ par_enforcement_flows.approve:
     parameters:
       par_data_enforcement_notice:
         type: entity:par_data_enforcement_notice
+par_enforcement_flows.referred_authority:
+  path: '/enforcement-notice/{par_data_enforcement_notice}/refer-to'
+  defaults:
+    _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementReferredAuthorityForm'
+    _title: 'Approve Enforcement Notice'
+  requirements:
+    _permission: 'approve enforcement notice'
+    par_data_enforcement_notice: \d+
+  options:
+    parameters:
+      par_data_enforcement_notice:
+        type: entity:par_data_enforcement_notice
 par_enforcement_flows.approve_confirm:
   path: '/enforcement-notice/{par_data_enforcement_notice}/approve/confirm'
   defaults:

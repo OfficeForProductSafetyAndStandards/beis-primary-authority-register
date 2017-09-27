@@ -1,10 +1,10 @@
 <?php
 
-namespace Drupal\par_flows;
+namespace Drupal\par_data;
 
 /**
  * An exception thrown when a specific route or step could not be found in the PAR Flow
  */
-class ParFlowException extends \LogicException {
+class ParDataException extends \LogicException {
 
 }
