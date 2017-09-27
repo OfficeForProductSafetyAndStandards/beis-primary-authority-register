@@ -204,7 +204,7 @@ ul.error-summary-list li {
 }
 
 .areas-of-advice ul li, .partnership-document ul li {
-  background: url(../assets/images/document-icon.png) 0px 2px/15px 20px no-repeat;
+  background: url("../assets/images/document-icon.png") 0px 2px/15px 20px no-repeat;
   padding-left: 20px;
 }
 
@@ -214,12 +214,12 @@ ul.error-summary-list li {
 }
 
 .collapse a {
-  background: url(../assets/images/expand.png) right/20px 15px no-repeat;
+  background: url("../assets/images/expand.png") right/20px 15px no-repeat;
   padding-right: 20px;
 }
 
 .expand a {
-  background: url(../assets/images/collapse.png) right/15px 20px no-repeat;
+  background: url("../assets/images/collapse.png") right/15px 20px no-repeat;
   padding-right: 20px;
 }
 
@@ -261,7 +261,7 @@ a.no-pointer-events {
 /* Iconography */
 
 .file {
-  background: url(/themes/custom/par_theme/assets/images/document-icon.png) 0px 2px/15px 20px no-repeat;
+  background: url("../assets/images/document-icon.png") 0px 2px/15px 20px no-repeat;
   padding-left: 20px;
 }
 
