@@ -121,6 +121,17 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
+
+    if (!array_keys(array_filter($form_state->getValue('regulatory_functions')))) {
+      $this->setElementError('regulatory_functions', $form_state, 'Please select at least one regulatory function.');
+    };
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
