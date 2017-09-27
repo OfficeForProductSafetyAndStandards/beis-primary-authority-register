@@ -54,7 +54,8 @@ function par_data_entity_bundle_field_info_alter(&$fields, \Drupal\Core\Entity\E
   $par_data_manager = \Drupal::service('par_data.manager');
   if ($par_data_manager->getParEntityType($entity_type->id())) {
     foreach ($fields as $name => $field) {
-      $fields[$name]->addConstraint('par_required', []);
+      // @TODO Implement validation of reference fields.
+      // $fields[$name]->addConstraint('par_required', []);
     }
   }
 }
