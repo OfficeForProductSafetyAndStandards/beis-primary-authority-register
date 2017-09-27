@@ -28,7 +28,6 @@ hidden:
   name: true
   notes: true
   regulatory_function: true
-  revoked: true
   user_id: true
   visible_authority: true
   visible_business: true

@@ -10,6 +10,7 @@ namespace Drupal\par_data\Plugin\views\field;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\views\ResultRow;
@@ -59,7 +60,7 @@ class ParFlowLink extends FieldPluginBase {
     parent::buildOptionsForm($form, $form_state);
 
     $form['title'] = [
-      '#title' => 'Title (optional)',
+      '#title' => 'Title',
       '#description' => 'Select the title for this link.',
       '#type' => 'textfield',
       '#default_value' => $this->options['title']  ?: '',
@@ -90,13 +91,13 @@ class ParFlowLink extends FieldPluginBase {
   public function render(ResultRow $values) {
     $entity = $values->_entity;
 
-    if ($entity instanceof ParDataPartnership) {
+    if ($entity instanceof ParDataEntityInterface) {
       $tokens = $this->getRenderTokens([]);
 
       $path = strip_tags(Html::decodeEntities($this->viewsTokenReplace($this->options['link'], $tokens)));
       $title = strip_tags(Html::decodeEntities($this->viewsTokenReplace($this->options['title'], $tokens)));
 
-      $text = empty($title) ? $entity->label() : t($title);
+      $text = !empty($title) ? t($title) : 'Continue';
       $url = !empty($path) ? Url::fromUserInput($path) : NULL;
       $link = $url ? Link::fromTextAndUrl($text, $url)->toRenderable() : NULL;
 
