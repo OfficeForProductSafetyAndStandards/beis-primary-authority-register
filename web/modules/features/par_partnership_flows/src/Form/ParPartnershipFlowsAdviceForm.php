@@ -52,6 +52,9 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
 
       // Partnership Confirmation.
       $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
+      if (!$this->currentUser()->hasPermission('update primary authority advice to local authorities')) {
+        unset($allowed_types['authority_advice']);
+      }
       $advice_type = $par_data_advice->get('advice_type')->getString();
       if (isset($allowed_types[$advice_type])) {
         $this->loadDataValue('advice_type', $advice_type);
@@ -94,11 +97,16 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       }
     }
 
+    $allowed_types = $advice_bundle->getAllowedValues('advice_type');
+    if (!$this->currentUser()->hasPermission('update primary authority advice to local authorities')) {
+      unset($allowed_types['authority_advice']);
+    }
+
     // The advice type.
     $form['advice_type'] = [
       '#type' => 'radios',
       '#title' => $this->t('Type of advice'),
-      '#options' => $advice_bundle->getAllowedValues('advice_type'),
+      '#options' => $allowed_types,
       '#default_value' => $this->getDefaultValues('advice_type'),
       '#required' => TRUE,
     ];
