@@ -9,7 +9,7 @@ id: par_data_enforcement_notice.enforcement_notice.field_enforcement_action
 field_name: field_enforcement_action
 entity_type: par_data_enforcement_notice
 bundle: enforcement_notice
-label: 'Enforcement Actions'
+label: 'Enforcement Action'
 description: 'Enforcement actions that relate to this notice.'
 required: false
 translatable: false
