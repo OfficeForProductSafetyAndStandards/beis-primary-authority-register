@@ -98,7 +98,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     }
 
     $allowed_types = $advice_bundle->getAllowedValues('advice_type');
-    if (!$this->currentUser()->hasPermission('update paa2la')) {
+    if (!$this->currentUser()->hasPermission('update primary authority advice to local authorities')) {
       unset($allowed_types['authority_advice']);
     }
 
