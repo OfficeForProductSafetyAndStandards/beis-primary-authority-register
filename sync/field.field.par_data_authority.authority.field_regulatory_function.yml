@@ -10,7 +10,7 @@ id: par_data_authority.authority.field_regulatory_function
 field_name: field_regulatory_function
 entity_type: par_data_authority
 bundle: authority
-label: 'Regulatory Functions'
+label: 'Regulatory Function'
 description: 'The regulatory functions this authority is responsible for.'
 required: false
 translatable: false

@@ -9,7 +9,7 @@ id: par_data_authority.authority.field_allowed_regulatory_fn
 field_name: field_allowed_regulatory_fn
 entity_type: par_data_authority
 bundle: authority
-label: 'Allowed Regulatory Functions'
+label: 'Allowed Regulatory Function'
 description: 'The regulatory functions this authority is allowed to serve.'
 required: false
 translatable: false

@@ -187,7 +187,7 @@ class ParDataAuthority extends ParDataEntity {
 
     // Comments.
     $fields['comments'] = BaseFieldDefinition::create('text_long')
-      ->setLabel(t('Comments'))
+      ->setLabel(t('About the Authority'))
       ->setDescription(t('Comments about this authority.'))
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)
