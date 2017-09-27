@@ -3,11 +3,14 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: H_WKsKIPIjIoGAljDSWFR8uLP-l9Fe-ka_QNGdLElI0
+  default_config_hash: ZLQsLg0kESBT8YMhyzDQx2cwY6KaNOfJV2cl9vQ7ARQ
 id: business
 label: Business
 description: 'A Business is an Organisation - usually a commercial one, but not always - that is covered (or intends to be covered) by a Primary Authority Partnership.'
 help: ''
+isDeletable: null
+isRevokable: null
+isArchivable: null
 configuration:
   entity:
     required_fields:
@@ -25,10 +28,10 @@ configuration:
       GB-NIR: 'Northern Ireland'
   employees_band:
     allowed_values:
+      10: 0-9
       50: 10-49
       250: 50-249
       1000: 250+
-      10: 0-9
   size:
     allowed_values:
       small: Small
