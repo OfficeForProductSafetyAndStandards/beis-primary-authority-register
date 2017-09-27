@@ -41,6 +41,19 @@ class ParEnforcementReferredAuthorityForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
     $this->retrieveEditableValues($par_data_enforcement_notice);
 
+    $referrals = FALSE;
+    foreach ($par_data_enforcement_notice->get('field_enforcement_action')->referencedEntities() as $delta => $action) {
+      $form_data = $this->getTempDataValue(['actions', $delta], 'par_enforcement_notice_approve');
+      if ($form_data['primary_authority_status'] === ParDataEnforcementAction::REFERRED) {
+        $referrals = TRUE;
+        break;
+      }
+    }
+    // Redirect to the next page if there are no referrals.
+    if (!$referrals) {
+      return $this->redirect($this->getFlow()->getNextRoute('next'), $this->getRouteParams());
+    }
+
     // Discover all authorities that are responsible for
     // partnerships with this organisation.
     // @TODO Implement a better method to do this.
