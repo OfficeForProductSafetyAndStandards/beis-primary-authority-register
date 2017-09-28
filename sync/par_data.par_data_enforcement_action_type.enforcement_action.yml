@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: UhNg_tbR-O80LQ4HBd5dMImHIO52fIgbfQvayJHQ-c4
+  default_config_hash: mUKonWFaFU5DDUWgDJeO1FsG6owS1kNSzBslM_mxLDk
 id: enforcement_action
 label: 'Enforcement Action'
 description: ''
@@ -13,6 +13,8 @@ isRevokable: false
 isArchivable: false
 configuration:
   entity:
+    label_fields:
+      - title
     status_field: primary_authority_status
     status_transitions:
       allowed:

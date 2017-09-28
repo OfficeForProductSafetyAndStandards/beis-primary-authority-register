@@ -10,6 +10,8 @@ isRevokable: false
 isArchivable: false
 configuration:
   entity:
+    label_fields:
+      - title
     status_field: primary_authority_status
     status_transitions:
       allowed:
