@@ -12,11 +12,10 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
       # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
-    And I scroll to element "#views-exposed-form-rd-helpdesk-dashboard-par-rd-helpdesk-dashboard-page"
+    And I click on the link "See your partnerships"
     When I add "ABCD" to the inputfield "#edit-keywords"
-    And I click on the button "#edit-submit-rd-helpdesk-dashboard"
-    And I scroll to element "#views-exposed-form-rd-helpdesk-dashboard-par-rd-helpdesk-dashboard-page"
-    When I click on the button "td.views-field.views-field-authority-name a"
+    And I click on the button "#edit-submit-par-user-partnerships"
+    When I click on the button "td.views-field.views-field-par-flow-link"
 
       # ENFORCEMENT ACTION FORM
 
