@@ -30,8 +30,14 @@ function par_roles_user_presave($account) {
   if ($par_data_manager->isMemberOfAuthority($account) && !$account->hasRole('par_authority')) {
     $account->addRole('par_authority');
   }
+  elseif ($account->hasRole('par_authority')) {
+    $account->removeRole('par_authority');
+  }
   if ($par_data_manager->isMemberOfOrganisation($account) && !$account->hasRole('par_organisation')) {
     $account->addRole('par_organisation');
+  }
+  elseif ($account->hasRole('par_organisation')) {
+    $account->removeRole('par_authority');
   }
 }
 

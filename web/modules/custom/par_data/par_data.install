@@ -148,3 +148,15 @@ function par_data_update_8010() {
     }
   };
 }
+
+/**
+ * Resave all users.
+ */
+function par_data_update_8011() {
+  // Change the bundle type.
+  foreach (\Drupal\user\Entity\User::loadMultiple() as $entity) {
+    // Re-save the entity.
+    $entity->save();
+  }
+}
+
