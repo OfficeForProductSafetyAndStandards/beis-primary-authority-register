@@ -55,8 +55,6 @@ content:
     type: string
     weight: 0
 hidden:
-  coordinator_number: true
-  coordinator_type: true
   field_coordinated_businesses: true
   field_person: true
   field_sic_code: true
