@@ -37,7 +37,7 @@ function par_roles_user_presave($account) {
     $account->addRole('par_organisation');
   }
   elseif ($account->hasRole('par_organisation')) {
-    $account->removeRole('par_authority');
+    $account->removeRole('par_organisation');
   }
 }
 
