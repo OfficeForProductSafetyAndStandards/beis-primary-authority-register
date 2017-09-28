@@ -626,9 +626,9 @@ display:
           group_type: group
           admin_label: ''
           order: DESC
-          exposed: false
+          exposed: true
           expose:
-            label: ''
+            label: Date
           entity_type: par_data_enforcement_notice
           entity_field: notice_date
           plugin_id: standard
@@ -664,6 +664,8 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
       tags:
         - 'config:field.storage.par_data_enforcement_notice.field_enforcing_authority'
         - 'config:field.storage.par_data_partnership.field_organisation'
@@ -681,6 +683,8 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
       tags:
         - 'config:field.storage.par_data_enforcement_notice.field_enforcing_authority'
         - 'config:field.storage.par_data_partnership.field_organisation'
