@@ -5,6 +5,9 @@ id: business
 label: Business
 description: 'A Business is an Organisation - usually a commercial one, but not always - that is covered (or intends to be covered) by a Primary Authority Partnership.'
 help: ''
+isDeletable: null
+isRevokable: null
+isArchivable: null
 configuration:
   entity:
     required_fields:
