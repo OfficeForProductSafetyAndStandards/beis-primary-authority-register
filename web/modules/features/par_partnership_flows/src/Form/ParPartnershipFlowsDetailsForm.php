@@ -157,7 +157,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
 
     // Display all the legal entities along with the links for the allowed
     // operations on these.
-    $form['organisation_contacts'] = $this->renderSection('Contacts - Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed']);
+    $form['organisation_contacts'] = $this->renderSection('Contacts - Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed'], ['edit-entity', 'add']);
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);

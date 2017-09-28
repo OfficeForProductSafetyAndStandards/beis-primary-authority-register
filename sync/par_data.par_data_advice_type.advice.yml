@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: mwibKI5bwhvplU6A3YA8LKl8uDld2kCgUbsIkCmvRqM
+  default_config_hash: oTmmD8DO0Q4sI3oXpDOfmK3YNU9L6fpuyNwhkJGtPP8
 id: advice
 label: Advice
 description: 'Advice is given by a Primary Authority in the context of a Partnership.'
@@ -13,6 +13,8 @@ isRevokable: true
 isArchivable: true
 configuration:
   entity:
+    label_fields:
+      - document
     completed_fields:
       - advice_type
       - field_regulatory_function

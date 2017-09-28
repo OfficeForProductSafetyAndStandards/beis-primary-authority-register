@@ -10,6 +10,8 @@ isRevokable: true
 isArchivable: true
 configuration:
   entity:
+    label_fields:
+      - document
     completed_fields:
       - advice_type
       - field_regulatory_function
