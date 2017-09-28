@@ -8,7 +8,7 @@
     "test:build": "./node_modules/.bin/wdio wdio.BUILD.conf.js",
     "test:dev": "./node_modules/.bin/wdio wdio.DEV.conf.js",
     "test:validate": "eslint 'src/**/*.js'",
-    "setup": "./node_modules/.bin/wdio --spec src/features/setup-users.feature wdio.BUILDSETUP.conf.js",
+    "setup": "./node_modules/.bin/wdio wdio.BUILDSETUP.conf.js",
     "allure": "npm run allure:generate",
     "allure:generate": "./node_modules/.bin/allure generate --clean ./allure-results/"
   },
