@@ -8,7 +8,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
   Scenario: Enforcement Officer/PA - Issue enforcement notice
       # LOGIN SCREEN
 
-    Given I am logged in as "par_enforcementofficer@example.com"
+    Given I am logged in as "par_authority@example.com"
 
       # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
