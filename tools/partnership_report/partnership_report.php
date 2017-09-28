@@ -1,45 +1,50 @@
 <?php
 
-$originalLines = file('./partnership_report.csv');
+$lines = file('./partnership_report.csv');
 
-$totalLines = count($originalLines);
+$lines = array_unique($lines, SORT_REGULAR);
 
-$colours = ['#ddd', '#fff'];
+$assoc = [];
 
-$lines = [];
+$legalEntities = [];
 $lastKey = '';
-$legalEntityNames = [];
-$lastCsv = null;
-
-foreach ($originalLines as $line) {
-    $csv = str_getcsv($line);
-    $key = $csv[4] . '_' . $csv[5];
+foreach ($lines as $line) {
+    $line = str_getcsv($line);
+    $key = $line[4] . '_' . $line[5];
     
-    if ($key == $lastKey) {
-        $legalEntityNames[] = $csv[6];
+    if ($lastKey != $key && $lastKey != '') {
+        $assoc[] = [
+            'partnership_nominated_date' => $line[0],
+            'partnership_revoked_date' => $line[1],
+            'partnership_status' => $line[2],
+            'partnership_type' => $line[3],
+            'primary_authority' => $line[4],
+            'organisation_name' => $line[5],
+            'legal_entities' => implode(PHP_EOL, $legalEntities),
+            'legal_entity_count' => count($legalEntities),
+            'inspection_plan_status' => $line[7],
+            'advice_type' => $line[8],
+            'sector' => $line[9],
+            'business_size' => $line[10],
+        ];
+        $legalEntities = [];
     } else {
-        if ($lastCsv) {
-            $lastCsv[7] = count($legalEntityNames);
-            $lastCsv[6] = implode(PHP_EOL, $legalEntityNames);
-            $lines[] = $lastCsv;
-        }
-        
-        $lastKey = $key;
-        $legalEntityNames = [$csv[6]];
-        $lastCsv = $csv;
+        $legalEntities[] = $line[6];
     }
+    $lastKey = $key;
 }
+
+$colours = ['#eee', '#fff'];
 
 $s = '';
 $lineCount = 0;
 
-foreach ($lines as $line) {
-    
+foreach ($assoc as $row) {
     $stripeColour = $colours[$lineCount++ % 2];
     $s .= '<tr>';
-    foreach ($line as $c) {
-        $c = str_replace(PHP_EOL, '<br>', $c);
-        $s .= '<td style="background-color:' . $stripeColour . '">' . $c . '</td>';
+    foreach ($row as $key => $value) {
+        $value = str_replace(PHP_EOL, '<br>', $value);
+        $s .= '<td style="background-color:' . $stripeColour . '">' . $value . '</td>';
     }
     $s .= '</tr>' . PHP_EOL;
 }
@@ -55,7 +60,7 @@ $o .= '<th>Partnership Type</th>';
 $o .= '<th>Primary Authority</th>';
 $o .= '<th>Organisation Name</th>';
 $o .= '<th>Legal Entities</th>';
-$o .= '<th>No. of legal entities (Co-ord)</th>';
+$o .= '<th>Number of Legal Entities</th>';
 $o .= '<th>Inspection Plan published</th>';
 $o .= '<th>Advice published</th>';
 $o .= '<th>Business sector (Direct)</th>';

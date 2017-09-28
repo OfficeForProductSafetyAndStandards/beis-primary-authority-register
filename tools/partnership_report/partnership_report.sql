@@ -7,11 +7,10 @@ COPY(
     par_authorities_field_data.authority_name,
     par_organisations_field_data.organisation_name,
     par_legal_entities_field_data.registered_name,
-    1,
     par_inspection_plans_field_data.inspection_status,
-    par_advice_field_data.status,
-    par_sic_codes_field_data.sic_code,
-    par_organisations_field_data.employees_band,
+    par_advice_field_data.advice_type,
+    par_sic_codes_field_data.description,
+    par_organisations_field_data.employees_band
 FROM
     par_partnerships_field_data,
     par_data_partnership__field_authority,
@@ -62,9 +61,12 @@ AND
     par_inspection_plans_field_data.revoked is null AND par_inspection_plans_field_data.deleted is null    
 AND 
     par_advice_field_data.revoked is null AND par_advice_field_data.deleted is null
+AND 
+    NOT partnership_status = 'n/a'
 ORDER BY
     par_authorities_field_data.authority_name,
     par_organisations_field_data.organisation_name,
-    par_legal_entities_field_data.registered_name
+    par_legal_entities_field_data.registered_name,
+    par_advice_field_data.advice_type
 ) To stdout With CSV DELIMITER ',';
 
