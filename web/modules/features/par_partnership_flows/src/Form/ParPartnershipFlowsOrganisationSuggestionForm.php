@@ -50,8 +50,8 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
     $conditions = [
       'name' => [
         'OR' => [
-          ['organisation_name', $searchQuery, 'CONTAINS'],
-          ['trading_name', $searchQuery, 'CONTAINS'],
+          ['organisation_name', $searchQuery, 'STARTS_WITH'],
+          ['trading_name', $searchQuery, 'STARTS_WITH'],
         ]
       ],
     ];
