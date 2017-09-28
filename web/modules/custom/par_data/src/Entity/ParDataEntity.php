@@ -7,6 +7,7 @@ use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\trance\Trance;
@@ -52,27 +53,36 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     $label_fields = $this->getTypeEntity()->getConfigurationElementByType('entity', 'label_fields');
     $labels = [];
     if (isset($label_fields) && is_string($label_fields)) {
-      $labels[] = $this->get($label_fields)->getString();
+      $labels[] = $this->getLabelValue($label_fields);
     }
     else if (isset($label_fields) && is_array($label_fields)) {
       foreach ($label_fields as $field) {
-        list($field_name, $property_name) = explode(':', $field . ':');
-
-        if ($this->hasField($field_name)) {
-          if (!empty($property_name)) {
-            $labels[] = current($this->get($field_name)->getValue())[$property_name];
-          }
-          else {
-            $labels[] = $this->get($field_name)->getString();
-          }
-        }
+        $labels[] = $this->getLabelValue($field);
       }
     }
 
-    //var_dump($labels); die;
     $label = implode(' ', $labels);
 
     return isset($label) && !empty($label) ? $label : parent::label();
+  }
+
+  protected function getLabelValue($value) {
+    list($field_name, $property_name) = explode(':', $value . ':');
+
+    if ($this->hasField($field_name)) {
+      if ($this->get($field_name) instanceof EntityReferenceFieldItemListInterface) {
+        return current($this->get($field_name)->referencedEntities())->label();
+      }
+      elseif (!empty($property_name)) {
+        return current($this->get($field_name)->getValue())[$property_name];
+      }
+      else {
+        return $this->get($field_name)->getString();
+      }
+    }
+    else {
+      return $value;
+    }
   }
 
   /**

@@ -59,7 +59,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
     $organisationViewBuilder = $this->getParDataManager()->getViewBuilder('par_data_organisation');
 
     $options = $this->getParDataManager()
-      ->getEntitiesByQuery('par_data_organisation', $conditions);
+      ->getEntitiesByQuery('par_data_organisation', $conditions, 10);
 
     $radio_options = [];
 

@@ -519,7 +519,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @see \Drupal\Core\Entity\Query\andConditionGroup
    * @see \Drupal\Core\Entity\Query\orConditionGroup
    */
-  public function getEntitiesByQuery(string $type, array $conditions, $limit = 10) {
+  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL) {
     $entities = [];
 
     foreach ($conditions as $row) {
@@ -535,7 +535,11 @@ class ParDataManager implements ParDataManagerInterface {
         $query->condition($group);
       }
 
-      $entities += $query->range(0, $limit)->execute();
+      if ($limit) {
+        $query->range(0, $limit);
+      }
+
+      $entities += $query->execute();
     }
 
     return $this->entityManager->getStorage($type)->loadMultiple($entities);
