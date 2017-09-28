@@ -19,13 +19,13 @@ Feature: Business User - Manage Addresses
         Then I expect that element "td.views-field.views-field-nothing" is not visible
         When I add "ABCD" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
-        Then I expect that element "td.views-field.views-field-nothing" contains the text "ABCD Mart"
+        Then I expect that element "views-field views-field-par-flow-link-1" contains the text "ABCD Mart"
         When I select the option with the text "Confirmed by Business" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-par-user-partnerships"
-        Then I expect that element "td.views-field.views-field-nothing" is not visible
+        Then I expect that element "views-field views-field-par-flow-link-1" is not visible
         When I select the option with the text "Awaiting Review" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-par-user-partnerships"
-        Then I expect that element "td.views-field.views-field-nothing" contains the text "ABCD Mart"
+        Then I expect that element "views-field views-field-par-flow-link-1" contains the text "ABCD Mart"
         When I click on the button "a*=ABCD Mart"
 
         # TERMS AND CONDITIONS SCREEN

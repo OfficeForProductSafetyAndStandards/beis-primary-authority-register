@@ -48,7 +48,8 @@ Feature: New Direct Partnership
         When I click on the button "#edit-next"
         Then I expect that element ".error-summary-heading" is visible
         And I expect that element "#par-partnership-application-authority-checklist" contains the text "Is this your local authority?"
-        And I click on the radio "#edit-business-informed-local-authority-still-regulates-1"
+        And I click on the radio "#edit-business-regulated-by-one-authority-1"
+        And I click on the radio "#edit-is-local-authority-1"
 #        And I expect that element ".error-summary" contains the text "The business needs to be informed about local authority"
         When I click on the button "#edit-next"
         Then I expect that element "error-summary-heading" is not visible

@@ -34,9 +34,8 @@ Feature: New Coordinated Partnership
         And I click on the checkbox "#edit-suitable-nomination"
         And I click on the checkbox "#edit-written-summary-agreed"
         And I click on the checkbox "#edit-terms-local-authority-agreed"
-        And I click on the radio "#edit-business-regulated-by-one-authority-1"
-#        And I expect that element "#par-partnership-application-authority-checklist" contains the text "Is this your local authority?"
-        And I click on the radio "#edit-is-local-authority-1"
+#        And I click on the radio "#edit-business-regulated-by-one-authority-1"
+#        And I click on the radio "#edit-is-local-authority-1"
         And I click on the button "#edit-next"
 
         # ADD ABOUT THE PARTNERSHIP
