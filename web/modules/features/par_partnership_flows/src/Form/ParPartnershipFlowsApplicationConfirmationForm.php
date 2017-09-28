@@ -60,17 +60,23 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
       // Organisation summary.
       $par_data_organisation = current($par_data_partnership->getOrganisation());
 
+      // Display organisation name.
+      $form['organisation_name'] = $this->renderSection('Organisation name', $par_data_organisation, ['organisation_name' => 'summary'], [], FALSE, TRUE);
+      $form['organisation_name']['#prefix'] = '<h3 class="heading-medium fieldset-legend">';
+      $form['organisation_name']['#suffix'] = '</h3>';
+
       // Display the primary address along with the link to edit it.
       $form['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
 
-      // Everything below is for the authorioty to edit and add to.
+      // Everything below is for the authority to edit and add to.
       $par_data_authority = current($par_data_partnership->getAuthority());
       $form['authority'] = [
         '#type' => 'markup',
         '#markup' => $par_data_authority->get('authority_name')->getString(),
-        '#prefix' => '<h1>',
-        '#suffix' => '</h1>',
+        '#prefix' => '<h3 class="heading-medium fieldset-legend">',
+        '#suffix' => '</h3>',
       ];
+      $form['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
 
       // Display details about the partnership for information.
       $form['about_partnership'] = $this->renderSection('About the partnership', $par_data_partnership, ['about_partnership' => 'about']);
