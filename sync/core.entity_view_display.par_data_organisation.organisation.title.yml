@@ -10,6 +10,8 @@ dependencies:
     - field.field.par_data_organisation.organisation.field_premises
     - field.field.par_data_organisation.organisation.field_sic_code
     - par_data.par_data_organisation_type.organisation
+_core:
+  default_config_hash: MnlkulbvrfFNIrnhH6nnaUjS9FTOqVYnWSdp1_xz_Qw
 id: par_data_organisation.organisation.title
 targetEntityType: par_data_organisation
 bundle: organisation

@@ -4,11 +4,10 @@ status: true
 dependencies:
   config:
     - field.storage.par_data_partnership.field_organisation
-    - par_data.par_data_organisation_type.business
-    - par_data.par_data_organisation_type.coordinator
+    - par_data.par_data_organisation_type.organisation
     - par_data.par_data_partnership_type.partnership
 _core:
-  default_config_hash: Wz0HPmZTNjYUXBxZ3EYpyRnw_0K1xRYhJFKTbDDbjcM
+  default_config_hash: gE9XllCzR9aKvRBmXmVTXPfgy5jp_fhAskGdrXEb6gs
 id: par_data_partnership.partnership.field_organisation
 field_name: field_organisation
 entity_type: par_data_partnership
@@ -23,10 +22,9 @@ settings:
   handler: 'default:par_data_organisation'
   handler_settings:
     target_bundles:
-      business: business
-      coordinator: coordinator
+      organisation: organisation
     sort:
       field: _none
     auto_create: false
-    auto_create_bundle: business
+    auto_create_bundle: organisation
 field_type: entity_reference

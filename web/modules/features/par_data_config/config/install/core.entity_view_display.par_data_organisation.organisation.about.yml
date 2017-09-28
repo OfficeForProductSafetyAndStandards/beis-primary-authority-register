@@ -24,6 +24,8 @@ content:
     third_party_settings: {  }
     type: text_default
 hidden:
+  coordinator_number: true
+  coordinator_type: true
   employees_band: true
   field_coordinated_businesses: true
   field_legal_entity: true
