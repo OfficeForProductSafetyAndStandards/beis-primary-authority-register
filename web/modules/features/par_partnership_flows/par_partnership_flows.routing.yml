@@ -2,7 +2,7 @@
 par_partnership_flows.helpdesk_partnership_update:
   path: '/helpdesk/update'
   defaults:
-    _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsPartnershipSearchController::content'
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsPartnershipSearchForm'
     _title: 'Transition Partnerships'
   requirements:
     _permission: 'access helpdesk'
