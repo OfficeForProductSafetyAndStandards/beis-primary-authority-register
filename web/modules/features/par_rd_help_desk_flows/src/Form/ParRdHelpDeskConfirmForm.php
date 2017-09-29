@@ -84,6 +84,8 @@ class ParRdHelpDeskConfirmForm extends ParBaseForm {
       '#suffix' => '</p></div>',
     ];
 
+    // Defensive coding we are dealing with an approved partnership we are not changing the state of
+    // the entity so avoid confusion by disabling the regulatory functions.
     if ($par_data_partnership->getRawStatus() == 'confirmed_rd') {
       $form['partnership_regulatory_functions']['#disabled'] = TRUE;
     }
