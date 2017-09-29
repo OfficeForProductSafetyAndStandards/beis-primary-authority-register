@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_partnership_flows\Form;
+namespace Drupal\par_rd_help_desk_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\invite\Entity\Invite;
@@ -17,7 +17,10 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
  */
 class ParPartnershipFlowsInviteForm extends ParBaseForm {
 
-  use ParPartnershipFlowsTrait;
+  /**
+   * {@inheritdoc}
+   */
+  protected $flow = 'invite';
 
   /**
    * {@inheritdoc}

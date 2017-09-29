@@ -1,0 +1,20 @@
+status: true
+dependencies: {  }
+id: invite
+label: 'Invite PAR Users'
+description: 'Invite PAR Users to register for an account.'
+save_method: 'end'
+steps:
+  1:
+    route: par_help_desks_flows.invite_members
+    form_id: par_partnership_invite
+    redirect:
+      next: 2
+      cancel: 3
+  2:
+    route: par_help_desks_flows.invite_sent
+    form_id: par_rd_help_desk_approve
+    redirect:
+      done: 3
+  3:
+    route: view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page
