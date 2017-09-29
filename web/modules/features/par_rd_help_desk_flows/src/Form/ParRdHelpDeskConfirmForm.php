@@ -112,7 +112,7 @@ class ParRdHelpDeskConfirmForm extends ParBaseForm {
     $partnership = $this->getRouteParam('par_data_partnership');
     $selected_regulatory_functions = $this->getTempDataValue('partnership_regulatory_functions');
 
-    // We only to status to active on a partnership on none active ones.
+    // We only want to update the status of none active partnerships.
     if ($partnership->getRawStatus() !== 'confirmed_rd') {
 
       $partnership->setParStatus('confirmed_rd');
