@@ -9,7 +9,7 @@ id: par_data_authority.authority.field_premises
 field_name: field_premises
 entity_type: par_data_authority
 bundle: authority
-label: Premises
+label: Address
 description: 'The premises of this organisation. The first premises will be the primary premises'
 required: false
 translatable: false

@@ -9,7 +9,7 @@ id: par_data_organisation.organisation.field_premises
 field_name: field_premises
 entity_type: par_data_organisation
 bundle: organisation
-label: Premises
+label: Address
 description: ''
 required: false
 translatable: true

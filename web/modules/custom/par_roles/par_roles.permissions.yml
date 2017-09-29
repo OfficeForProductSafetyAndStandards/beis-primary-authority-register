@@ -46,3 +46,7 @@ send enforcement notice:
   title: 'Send Enforcement Notice'
   description: 'Allow a user to send the enforcement notice they raised against an Organisation.'
   restrict access: TRUE
+update primary authority advice to local authorities:
+  title: 'Update Primary Authority advice to Local Authorities'
+  description: 'Update primary authority advice to local authorities.'
+  restrict access: TRUE

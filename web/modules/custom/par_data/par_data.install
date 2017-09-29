@@ -113,3 +113,73 @@ function par_data_update_8008() {
 function par_data_update_8009() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
+
+/**
+ * Re-running conversion of business bundle to organisation bundle because of new business entries.
+ */
+function par_data_update_8010() {
+  $db = \Drupal::database();
+
+  // Change the bundle type.
+  foreach (entity_load_multiple_by_properties('par_data_organisation', ['type' => 'business']) as $entity) {
+    if ($entity->hasField('field_coordinator_number')) {
+      $entity->set('coordinator_number', $entity->get('field_coordinator_number')->getString());
+    }
+    $entity->type = 'organisation';
+    $entity->save();
+  }
+
+  // Change all the entity field tables because Entity::save() doesn't do this.
+  $entityManager = \Drupal::service('entity_field.manager');
+  foreach ($entityManager->getFieldDefinitions('par_data_organisation', 'organisation') as $field) {
+    $storage = $field->getFieldStorageDefinition();
+    if ($storage->isBaseField() === TRUE) {
+      continue;
+    }
+
+    $entity_type = \Drupal::service('par_data.manager')->getParEntityType('par_data_organisation');
+    $table_mapping = new \Drupal\Core\Entity\Sql\DefaultTableMapping($entity_type, [$storage]);
+    $table_names = $table_mapping->getDedicatedTableNames($storage);
+
+    foreach ($table_names as $table) {
+      $db->update($table)
+        ->fields(['bundle' => 'organisation'])
+        ->execute();
+    }
+  };
+}
+
+/**
+ * Resave all users.
+ */
+function par_data_update_8011() {
+  // Change the bundle type.
+  foreach (\Drupal\user\Entity\User::loadMultiple() as $entity) {
+    // Re-save the entity.
+    $entity->save();
+  }
+}
+
+/**
+ * Remove traces of deleted modules.
+ */
+function par_data_update_8012() {
+  // Delete the following modules.
+  $db = \Drupal::database();
+  $db->delete('key_value')
+    ->condition('collection', 'system.schema')
+    ->condition('name', ['par_flow_transition_business', 'par_flow_transition_partnership_details', 'par_flow_transition_coordinator', 'par_flow_helpdesk'], 'IN')
+    ->execute();
+}
+
+/**
+ * Resave all users.
+ */
+function par_data_update_8013() {
+  // Change the bundle type.
+  foreach (\Drupal\user\Entity\User::loadMultiple() as $entity) {
+    // Re-save the entity.
+    $entity->save();
+  }
+}
+

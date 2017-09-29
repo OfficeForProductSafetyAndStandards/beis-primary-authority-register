@@ -10,6 +10,8 @@ isRevokable: true
 isArchivable: false
 configuration:
   entity:
+    label_fields:
+      - document
     status_field: inspection_status
   inspection_status:
     allowed_values:

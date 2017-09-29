@@ -65,7 +65,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
     ];
 
     $people = $this->getParDataManager()
-      ->getEntitiesByQuery('par_data_person', $conditions);
+      ->getEntitiesByQuery('par_data_person', $conditions, 10);
 
     $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
 

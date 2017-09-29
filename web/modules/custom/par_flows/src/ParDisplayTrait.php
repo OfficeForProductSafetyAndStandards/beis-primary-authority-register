@@ -35,7 +35,7 @@ trait ParDisplayTrait {
     $rendered_field = $this->getRenderer()->render($field);
     return [
       '#type' => 'markup',
-      '#markup' => $rendered_field ? $rendered_field : '(none)',
+      '#markup' => $rendered_field ? $rendered_field : '<p>(none)</p>',
     ];
   }
 
@@ -77,7 +77,7 @@ trait ParDisplayTrait {
       $elements[$delta]['value']['#suffix'] = '</div>';
 
       // Get all of the available entity entity operation links.
-      $elements[$delta] += $this->displayEntityOperationLinks($section, $entity, $field, $delta, $operations);
+      $elements[$delta] += $this->displayEntityOperationLinks($section, $entity, $field, $delta, $operations, $single);
       if ($single) {
         break;
       }
@@ -118,7 +118,7 @@ trait ParDisplayTrait {
       $elements[$delta]['entity'] = $this->renderMarkupField($rendered_entity);
 
       // Get all of the available entity entity operation links.
-      $elements[$delta] += $this->displayEntityOperationLinks($section, $entity, $field, $delta, $operations);
+      $elements[$delta] += $this->displayEntityOperationLinks($section, $entity, $field, $delta, $operations, $single);
       if ($single) {
         break;
       }
@@ -138,14 +138,16 @@ trait ParDisplayTrait {
    *   The field delta to display the opperation link for.
    * @param array $operations
    *   An array of operations that we want to get.
+   * @param bool $single
+   *   Whether or not to only return the first item.
    *
    * @return array
    */
-  public function displayEntityOperationLinks($section, $entity, $field, $delta = NULL, $operations = []) {
+  public function displayEntityOperationLinks($section, $entity, $field, $delta = NULL, $operations = [], $single = FALSE) {
     $operation_links = [];
 
     // Reference fields need to be rendered slightly differently.
-    if ($field instanceof EntityReferenceFieldItemListInterface) {
+    if ($field instanceof EntityReferenceFieldItemListInterface && !$single) {
       $link_name_suffix = strtolower($entity->label());
     }
     else {
@@ -210,6 +212,11 @@ trait ParDisplayTrait {
 
       $field = $entity->get($field_name);
       if (!$field->isEmpty()) {
+        // If there is only one value treat the field as single.
+        if ($field->count() <= 1) {
+          $single = TRUE;
+        }
+
         // Reference fields need to be rendered slightly differently.
         if ($field instanceof EntityReferenceFieldItemListInterface) {
           $rows = $this->renderReferenceField($section, $field, $view_mode, $operations, $single);
@@ -224,7 +231,7 @@ trait ParDisplayTrait {
       else {
         $element[$field_name]['items'] = [
           '#type' => 'markup',
-          '#markup' => $this->t('(none)'),
+          '#markup' => '<p>(none)</p>',
         ];
         // If displaying the add action don't display the edit as well.
         if (!in_array('add', $operations)) {
