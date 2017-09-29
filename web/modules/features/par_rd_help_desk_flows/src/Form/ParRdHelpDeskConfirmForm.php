@@ -59,6 +59,7 @@ class ParRdHelpDeskConfirmForm extends ParBaseForm {
     $form['partnership_text'] = [
       '#type' => 'markup',
       '#markup' => $par_data_organisation->get('organisation_name')->getString() . ' ' . $par_data_authority->get('authority_name')->getString(),
+      '#default_value' => $this->getDefaultValues('partnership_text'),
       '#prefix' => '<div><p>',
       '#suffix' => '</p></div>',
     ];
@@ -88,6 +89,7 @@ class ParRdHelpDeskConfirmForm extends ParBaseForm {
     // the entity so avoid confusion by disabling the regulatory functions.
     if ($par_data_partnership->getRawStatus() == 'confirmed_rd') {
       $form['partnership_regulatory_functions']['#disabled'] = TRUE;
+      $form['confirm_authorisation_select']['#disabled'] = TRUE;
     }
 
     return parent::buildForm($form, $form_state);
