@@ -1,4 +1,4 @@
-@Pending @journey1 @deprecated
+@ci @journey1 @deprecated
 Feature: Primary Authority - Change Partnership Details
 
     Background:
@@ -9,7 +9,7 @@ Feature: Primary Authority - Change Partnership Details
 
         # SEARCH PARTNERSHIPS
 
-        Given I am logged in as "f040f97dab3e0312230acf0f242ab7bf@localhost.localdomain"
+        Given I am logged in as "par_authority@example.com"
         And I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
         And I expect that element "#block-par-theme-content" contains the text "Messages"
@@ -17,7 +17,7 @@ Feature: Primary Authority - Change Partnership Details
 
         # PARTNERSHIPS DASHBOARD
 
-        And I add "Co Mart" to the inputfield "#edit-keywords"
+        And I add "Acme Test" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
         And I click on the button "a*=Council"
         And I expect that element "h1" is not empty
