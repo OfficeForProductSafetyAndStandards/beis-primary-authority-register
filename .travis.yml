@@ -113,7 +113,8 @@ before_script:
 script:
   - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
   - travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
-  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run setup && /usr/local/n/versions/node/7.2.1/bin/npm run test:build"
+  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run test:setup"
+  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run test:build"
 #-----------------------------------------------------------------------------
 # Generate HTML reports with screenshots. HTML report location: tests/reports/allure-reports/index.html, TAR it up.
 #-----------------------------------------------------------------------------
