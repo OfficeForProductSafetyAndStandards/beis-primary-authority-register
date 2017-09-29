@@ -27,7 +27,14 @@ class ParRdHelpDeskConfirmForm extends ParBaseForm {
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    */
-  public function retrieveEditableValues() {
+  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
+
+    if ($par_data_partnership) {
+      // If we're editing an entity we should set the state
+      // to something other than default to avoid conflicts
+      // with existing versions of the same form.
+      $this->setState("edit:{$par_data_partnership->id()}");
+    }
 
   }
 
@@ -35,10 +42,12 @@ class ParRdHelpDeskConfirmForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
-    $this->retrieveEditableValues();
 
     $par_data_organisation = current($par_data_partnership->getOrganisation());
     $par_data_authority = current($par_data_partnership->getAuthority());
+    $regulatory_function_name_options = $this->parDataManager->getAllSystemRegulatoryFunctions();
+
+    $this->retrieveEditableValues($par_data_partnership);
 
     $form['partnership_title'] = [
       '#type' => 'markup',
@@ -50,6 +59,7 @@ class ParRdHelpDeskConfirmForm extends ParBaseForm {
     $form['partnership_text'] = [
       '#type' => 'markup',
       '#markup' => $par_data_organisation->get('organisation_name')->getString() . ' ' . $par_data_authority->get('authority_name')->getString(),
+      '#default_value' => $this->getDefaultValues('partnership_text'),
       '#prefix' => '<div><p>',
       '#suffix' => '</p></div>',
     ];
@@ -64,6 +74,23 @@ class ParRdHelpDeskConfirmForm extends ParBaseForm {
       '#prefix' => '<div><p>',
       '#suffix' => '</p></div>',
     ];
+
+    $form['partnership_regulatory_functions'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Regulatory function to which this relates'),
+      '#options' => $regulatory_function_name_options,
+      '#default_value' => $this->getDefaultValues('partnership_regulatory_functions'),
+      '#required' => TRUE,
+      '#prefix' => '<div><p>',
+      '#suffix' => '</p></div>',
+    ];
+
+    // Defensive coding we are dealing with an approved partnership we are not changing the state of
+    // the entity so avoid confusion by disabling the regulatory functions.
+    if ($par_data_partnership->getRawStatus() == 'confirmed_rd') {
+      $form['partnership_regulatory_functions']['#disabled'] = TRUE;
+      $form['confirm_authorisation_select']['#disabled'] = TRUE;
+    }
 
     return parent::buildForm($form, $form_state);
   }
@@ -83,17 +110,24 @@ class ParRdHelpDeskConfirmForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     $partnership = $this->getRouteParam('par_data_partnership');
-    $partnership->setParStatus('confirmed_rd');
+    $selected_regulatory_functions = $this->getTempDataValue('partnership_regulatory_functions');
 
-    if (!$partnership->save()) {
+    // We only want to update the status of none active partnerships.
+    if ($partnership->getRawStatus() !== 'confirmed_rd') {
 
-      $message = $this->t('This %partnership could not be approved for %form_id');
-      $replacements = [
-        '%partnership' => $partnership->id(),
-        '%form_id' => $this->getFormId(),
-      ];
-      $this->getLogger($this->getLoggerChannel())
-        ->error($message, $replacements);
+      $partnership->setParStatus('confirmed_rd');
+      $partnership->set('field_regulatory_function', $selected_regulatory_functions);
+
+      if (!$partnership->save()) {
+
+        $message = $this->t('This %partnership could not be approved for %form_id');
+        $replacements = [
+          '%partnership' => $partnership->id(),
+          '%form_id' => $this->getFormId(),
+        ];
+        $this->getLogger($this->getLoggerChannel())
+          ->error($message, $replacements);
+      }
     }
   }
 
