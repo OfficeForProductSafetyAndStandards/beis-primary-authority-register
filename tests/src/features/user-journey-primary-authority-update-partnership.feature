@@ -13,12 +13,12 @@ Feature: Primary Authority - Change Partnership Details
         And I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
         And I expect that element "#block-par-theme-content" contains the text "Messages"
-        When I click on the link "Search for a partnership"
+        When I click on the link "See your partnerships"
 
         # PARTNERSHIPS DASHBOARD
 
-        And I add "Co Mart" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-partnership-search"
+        And I add "Test" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-par-user-partnerships"
         And I click on the button "a*=Council"
         And I expect that element "h1" is not empty
 
@@ -28,7 +28,7 @@ Feature: Primary Authority - Change Partnership Details
         And I add "test partnership info change" to the inputfield "#edit-about-partnership"
         And I click on the button "#edit-save"
         Then I expect that element "#edit-about-partnership" contains the text "test partnership info change"
-        When I click on the link "edit animal the muppet"
+        When I click on the link "edit authority contact"
         And I clear the inputfield "#edit-salutation"
         And I clear the inputfield "#edit-work-phone"
         And I clear the inputfield "#edit-mobile-phone"
@@ -49,11 +49,10 @@ Feature: Primary Authority - Change Partnership Details
         And I expect that element "#edit-authority-contacts" contains the text "91723456789"
         And I expect that element "#edit-authority-contacts" contains the text "9777777777"
         And I scroll to element "#edit-organisation-contacts"
-        When I click on the link "edit kermit the frog"
-        And I clear the inputfield "#edit-salutation"
-        And I clear the inputfield "#edit-work-phone"
-        And I clear the inputfield "#edit-mobile-phone"
-        And I clear the inputfield "#edit-email"
+        When I click on the link "add another authority contact"
+        And I add "Miss" to the inputfield "#edit-salutation"
+        And I add "Miss" to the inputfield "#edit-first-name"
+        And I add "Piggy" to the inputfield "#edit-last-name"
         And I add "par_authority_piggy@example.com" to the inputfield "#edit-email"
         And I add "917234567899" to the inputfield "#edit-work-phone"
         And I add "97777777779" to the inputfield "#edit-mobile-phone"
@@ -70,7 +69,7 @@ Feature: Primary Authority - Change Partnership Details
         And I click on the button "a*=See all Advice"
         When I click on the link "Upload"
         Then I expect that element "h3" contains the text "How to upload Primary Authority Advice to Local Authorities"
-        And I click on the button "Cancel"
+        And I click on the button "#edit-cancel"
         #  And I click on the link "Upload a document"
         #  And I upload a valid file
         And I click on the link "edit"
