@@ -10,6 +10,6 @@ config.capabilities = [{
 config.screenshotPath = './errorShots/';
 config.services = ['selenium-standalone'];
 config.baseUrl = 'http://127.0.0.1:80';
-config.tags = '@setup';
+config.tags = '@setup, ~@Pending, ~@ci, ~@deprecated, ~@Bug';
 config.cucumberOpts.failFast = true;
 exports.config = config;
