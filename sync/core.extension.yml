@@ -94,6 +94,7 @@ module:
   toolbar: 0
   trance: 0
   user: 0
+  views_bulk_operations: 0
   views_data_export: 0
   views_ui: 0
   menu_link_content: 1
