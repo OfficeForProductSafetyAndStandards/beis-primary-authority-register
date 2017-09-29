@@ -12,10 +12,10 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
       # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
-    And I click on the link "See your partnerships"
-    When I add "ABCD" to the inputfield "#edit-keywords"
-    And I click on the button "#edit-submit-par-user-partnerships"
-    When I click on the button "td.views-field.views-field-par-flow-link"
+    And I click on the link "Search for a partnership"
+    When I add "Co Mart" to the inputfield "#edit-keywords"
+    And I click on the button "#edit-submit-partnership-search"
+    When I click on the button "td.views-field.views-field-authority-name a"
 
       # ENFORCEMENT ACTION FORM
 

@@ -60,8 +60,7 @@ Feature: Primary Authority - Change Partnership Details
         Then I expect that element "#edit-authority-contacts" contains the text "par_authority_piggy@example.com"
         Then I expect that element "#edit-authority-contacts" contains the text "917234567899"
         Then I expect that element "#edit-authority-contacts" contains the text "97777777779"
-         And I click on the checkbox "#edit-confirmation"
-         And I click on the button "#edit-save"
+
 #         Then I expect that element "#block-par-theme-content" contains the text "Confirmed by the Authority"
 
        # DOCUMENTATION
@@ -70,7 +69,7 @@ Feature: Primary Authority - Change Partnership Details
         And I click on the button "a*=See all Advice"
         When I click on the link "Upload"
         Then I expect that element "h3" contains the text "How to upload Primary Authority Advice to Local Authorities"
-        And I click on the link "Cancel"
+        And I click on the button "Cancel"
         #  And I click on the link "Upload a document"
         #  And I upload a valid file
         And I click on the link "edit"
@@ -78,11 +77,14 @@ Feature: Primary Authority - Change Partnership Details
         When I click on the button "#edit-next"
         Then I expect that element ".error-message" does exist
         And I click on the checkbox ".form-label*=Cookie control"
-        When I click on the button "#edit-next"
+        When I click on the button "#edit-save"
         # Then I expect that element ".table-scroll-wrapper" contains the text "✔"
         # And the element ".table-scroll-wrapper" contains the text "Cookie control"
         When I click on the link "Done"
         Then I expect that element "#edit-regulatory-functions" contains the text "Cookie control"
+        And I click on the checkbox "#edit-partnership-info-agreed-authority"
+        And I click on the button "#edit-done"
+
 
         # INSPECTION PLANS
 

@@ -16,16 +16,16 @@ Feature: New Direct Partnership
         And I expect that element "#block-par-theme-content" contains the text "Your partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
         And I expect that element "#block-par-theme-content" contains the text "See enforcement notifications"
-        When I click on the link "Create a new partnership"
+        When I click on the link "Apply for a new partnership"
 
         # CHOOSE PARTNERSHIP TYPE
 
-        When I click on the radio ".form-radio"
-        And I click on the button "#edit-next"
+#        When I click on the radio ".form-radio"
+#        And I click on the button "#edit-next"
 
         # CREATE NEW PARTNERSHIP FORM
 
-        And I expect that element "h3" contains the text "Type of application"
+        And I expect that element "h1" contains the text "New Partnership Application"
         When I click on the radio "#edit-application-type-direct"
         And I click on the button "#edit-next"
 
