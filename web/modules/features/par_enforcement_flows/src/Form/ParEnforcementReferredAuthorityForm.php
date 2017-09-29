@@ -72,7 +72,7 @@ class ParEnforcementReferredAuthorityForm extends ParBaseForm {
     ];
 
     $organisation_partnerships = $this->getParDataManager()
-      ->getEntitiesByQuery('par_data_partnership', $conditions);
+      ->getEntitiesByQuery('par_data_partnership', $conditions, 10);
 
     // Load all the authorities belonging to these partnerships.
     $authorities = [];

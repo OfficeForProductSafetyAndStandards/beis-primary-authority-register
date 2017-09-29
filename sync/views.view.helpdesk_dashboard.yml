@@ -75,7 +75,7 @@ display:
         type: pagerer
         options:
           preset: gds_list_pagination
-          items_per_page: 25
+          items_per_page: 10
           offset: 0
           id: '0'
           total_pages: ''
@@ -650,6 +650,44 @@ display:
           entity_type: par_data_partnership
           entity_field: partnership_status
           plugin_id: string
+        status:
+          id: status
+          table: par_partnerships_field_data
+          field: status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: '1'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: par_data_partnership
+          entity_field: status
+          plugin_id: boolean
       sorts: {  }
       title: 'RD Helpdesk Dashboard'
       header: {  }

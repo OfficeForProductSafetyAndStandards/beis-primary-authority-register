@@ -122,7 +122,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
         $build['cancel'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
-            '@link' => $this->getFlow()->getNextLink('done')
+            '@link' => $this->getFlow()->getPrevLink('cancel')
               ->setText('Cancel')
               ->toString(),
           ]),

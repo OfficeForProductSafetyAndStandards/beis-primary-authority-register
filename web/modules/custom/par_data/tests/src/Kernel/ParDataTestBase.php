@@ -387,7 +387,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     $legal_entity->save();
 
     return [
-      'type' => 'coordinator',
+      'type' => 'organisation',
       'organisation_name' => 'Test Organisation',
       'size' => 'Enormous',
       'employees_band' => '10-50',

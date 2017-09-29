@@ -9,6 +9,10 @@ isDeletable: true
 isRevokable: false
 isArchivable: false
 configuration:
+  entity:
+    label_fields:
+      - notice_type
+      - notice_date
   notice_type:
     allowed_values:
       proposed: Proposed

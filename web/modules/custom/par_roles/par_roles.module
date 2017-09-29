@@ -27,11 +27,20 @@ function par_roles_user_presave($account) {
   $par_data_manager = \Drupal::service('par_data.manager');
 
   // Add the correct roles to this user account also.
-  if ($par_data_manager->isMemberOfAuthority($account) && !$account->hasRole('par_authority')) {
+  $authority_member = $par_data_manager->isMemberOfAuthority($account);
+  if ($authority_member && !$account->hasRole('par_authority')) {
     $account->addRole('par_authority');
   }
-  if ($par_data_manager->isMemberOfOrganisation($account) && !$account->hasRole('par_organisation')) {
+  elseif (!$authority_member && $account->hasRole('par_authority')) {
+    $account->removeRole('par_authority');
+  }
+
+  $organisation_member = $par_data_manager->isMemberOfOrganisation($account);
+  if ($organisation_member && !$account->hasRole('par_organisation')) {
     $account->addRole('par_organisation');
+  }
+  elseif (!$organisation_member && $account->hasRole('par_organisation')) {
+    $account->removeRole('par_organisation');
   }
 }
 
