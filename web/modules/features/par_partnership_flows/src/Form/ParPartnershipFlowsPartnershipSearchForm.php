@@ -2,6 +2,7 @@
 
 namespace Drupal\par_partnership_flows\Form;
 
+use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_flows\ParDisplayTrait;
@@ -14,6 +15,7 @@ class ParPartnershipFlowsPartnershipSearchForm extends FormBase {
 
   use ParDisplayTrait;
   use ParRedirectTrait;
+  use RefinableCacheableDependencyTrait;
 
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
@@ -75,6 +77,8 @@ class ParPartnershipFlowsPartnershipSearchForm extends FormBase {
         '#type' => 'markup',
         '#markup' => $link->toString(),
       ];
+
+      $this->addCacheableDependency($entity);
     }
 
     $partnerships = $this->getPartnerships();
@@ -100,26 +104,14 @@ class ParPartnershipFlowsPartnershipSearchForm extends FormBase {
 
   public function getPartnerships() {
     $conditions = [
-      'authority_info' => [
-        'OR' => [
-          ['partnership_info_agreed_authority', 0],
-          ['partnership_info_agreed_authority', NULL, 'IS NULL'],
-        ],
-      ],
       'authority_terms' => [
         'OR' => [
           ['terms_authority_agreed', 0],
           ['terms_authority_agreed', NULL, 'IS NULL'],
-        ],
-      ],
-      'business_info' => [
-        'OR' => [
+          ['partnership_info_agreed_authority', 0],
+          ['partnership_info_agreed_authority', NULL, 'IS NULL'],
           ['partnership_info_agreed_business', 0],
           ['partnership_info_agreed_business', NULL, 'IS NULL'],
-        ],
-      ],
-      'business_terms' => [
-        'OR' => [
           ['terms_organisation_agreed', 0],
           ['terms_organisation_agreed', NULL, 'IS NULL'],
         ],
