@@ -13,12 +13,12 @@ Feature: Primary Authority - Change Partnership Details
         And I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
         And I expect that element "#block-par-theme-content" contains the text "Messages"
-        When I click on the link "See your partnerships"
+        When I click on the link "Search for a partnership"
 
         # PARTNERSHIPS DASHBOARD
 
         And I add "Co Mart" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-par-user-partnerships"
+        And I click on the button "#edit-submit-partnership-search"
         And I click on the button "a*=Council"
         And I expect that element "h1" is not empty
 
