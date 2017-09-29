@@ -160,3 +160,15 @@ function par_data_update_8011() {
   }
 }
 
+/**
+ * Remove traces of deleted modules.
+ */
+function par_data_update_8012() {
+  // Delete the following modules.
+  $db = \Drupal::database();
+  $db->delete('key_value')
+    ->condition('collection', 'system.schema')
+    ->condition('name', ['par_flow_transition_business', 'par_flow_transition_partnership_details', 'par_flow_transition_coordinator', 'par_flow_helpdesk'], 'IN')
+    ->execute();
+}
+

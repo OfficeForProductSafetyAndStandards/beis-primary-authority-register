@@ -101,7 +101,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * @return bool
    */
   public function isLiving() {
-    return !$this->isDeleted() && $this->isTransitioned();
+    return !$this->isDeleted() && $this->isTransitioned() && $this->getBoolean('status');
   }
 
   /**
@@ -157,10 +157,37 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
+   * Invalidate entities so that they are not transitioned to PAR3.
+   */
+  public function invalidate() {
+    // Only three entities can be transitioned.
+    if (!in_array($this->getEntityTypeId(), ['par_data_partnership', 'par_data_advice', 'par_data_inspection_plan'])) {
+      return FALSE;
+    }
+    if (!$this->isNew() && $this->isTransitioned()) {
+      // Set the status to unpublished to make filtering from display easier.
+      $this->delete();
+
+      $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+
+      if (isset($field_name) && $this->hasField($field_name) && !$this->get($field_name)->isEmpty() && $this->get($field_name)->getString() === 'n/a') {
+        return $this->set($field_name, 'n/a')->save();
+      }
+      elseif ($this->hasField('obsolete')) {
+        return $this->set('obsolete', FALSE)->save();
+      }
+    }
+    return FALSE;
+  }
+
+  /**
    * Delete if this entity is deletable and is not new.
    */
   public function delete() {
     if (!$this->isNew() && $this->getTypeEntity()->isDeletable() && !$this->isDeleted()) {
+      // Set the status to unpublished to make filtering from display easier.
+      $this->set('status', 0);
+
       return parent::delete();
     }
   }
@@ -413,6 +440,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       ->setLabel(t('Deleted'))
       ->setDescription(t('Whether the entity has been deleted.'))
       ->setRevisionable(TRUE)
+      ->setDefaultValue(FALSE)
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => 3,
@@ -427,6 +455,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       ->setLabel(t('Revoked'))
       ->setDescription(t('Whether the entity has been revoked.'))
       ->setRevisionable(TRUE)
+      ->setDefaultValue(FALSE)
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => 3,
@@ -441,6 +470,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       ->setLabel(t('Revoked'))
       ->setDescription(t('Whether the entity has been archived.'))
       ->setRevisionable(TRUE)
+      ->setDefaultValue(FALSE)
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => 3,

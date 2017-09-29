@@ -35,7 +35,7 @@ trait ParDisplayTrait {
     $rendered_field = $this->getRenderer()->render($field);
     return [
       '#type' => 'markup',
-      '#markup' => $rendered_field ? $rendered_field : '(none)',
+      '#markup' => $rendered_field ? $rendered_field : '<p>(none)</p>',
     ];
   }
 
@@ -231,7 +231,7 @@ trait ParDisplayTrait {
       else {
         $element[$field_name]['items'] = [
           '#type' => 'markup',
-          '#markup' => $this->t('(none)'),
+          '#markup' => '<p>(none)</p>',
         ];
         // If displaying the add action don't display the edit as well.
         if (!in_array('add', $operations)) {
