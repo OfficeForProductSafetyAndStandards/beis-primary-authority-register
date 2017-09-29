@@ -43,6 +43,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
     Then I expect that element "#par-enforcement-notice-raise-confirm" contains the text "An enforcement action title"
     And I click on the button "#edit-next"
     Then I expect that element "#block-par-theme-content" contains the text "See enforcement notifications"
+    When I click on the link "See enforcement notifications"
 
 
 #

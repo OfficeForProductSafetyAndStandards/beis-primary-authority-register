@@ -17,8 +17,9 @@ Feature: Primary Authority - Change Partnership Details
 
         # PARTNERSHIPS DASHBOARD
 
-        And relevant search results returned for partnership search term "Mart"
-        And I click on the button "td.views-field.views-field-par-flow-link a"
+        And I add "Co Mart" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-par-user-partnerships"
+        And I click on the button "a*=Council"
         And I expect that element "h1" is not empty
 
         # REVIEW PARTNERSHIPS DETAILS
