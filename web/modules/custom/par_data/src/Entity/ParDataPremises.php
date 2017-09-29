@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Entity;
 
+use CommerceGuys\Addressing\AddressFormat\AddressField;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
@@ -74,6 +75,21 @@ class ParDataPremises extends ParDataEntity {
     $fields['address'] = BaseFieldDefinition::create('address')
       ->setLabel(t('Address'))
       ->setDescription(t('The address details.'))
+      ->addPropertyConstraints('administrative_area', [
+        'NotNull' => ['message' => 'Please enter a little ditty here please please.'],
+      ])
+      ->addPropertyConstraints('locality', [
+        'NotNull' => ['message' => 'Please enter a little ditty here please please.'],
+      ])
+      ->addPropertyConstraints('address_line1', [
+        'NotNull' => ['message' => 'Please enter a little ditty here please please.'],
+      ])
+      ->addPropertyConstraints('address_line2', [
+        'NotNull' => ['message' => 'Please enter a little ditty here please please.'],
+      ])
+      ->addPropertyConstraints('postal_code', [
+        'NotNull' => ['message' => 'Please enter a little ditty here please please.'],
+      ])
       ->setRevisionable(TRUE)
       ->setCardinality(1)
       ->setSettings([
