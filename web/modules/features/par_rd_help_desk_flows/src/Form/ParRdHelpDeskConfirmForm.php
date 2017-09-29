@@ -49,7 +49,7 @@ class ParRdHelpDeskConfirmForm extends ParBaseForm {
 
     $form['partnership_text'] = [
       '#type' => 'markup',
-      '#markup' => $par_data_organisation->get('organisation_name')->getString() . ' '. $par_data_authority->get('authority_name')->getString(),
+      '#markup' => $par_data_organisation->get('organisation_name')->getString() . ' ' . $par_data_authority->get('authority_name')->getString(),
       '#prefix' => '<div><p>',
       '#suffix' => '</p></div>',
     ];
