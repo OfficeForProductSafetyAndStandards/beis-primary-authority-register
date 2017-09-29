@@ -86,18 +86,20 @@ class ParDashboardsDashboardController extends ControllerBase {
       // Manage my partnerships link.
       if ($partnerships) {
         $manage_my_partnerships = $this->getLinkByRoute('view.par_user_partnerships.partnerships_page');
+        $manage_link = $manage_my_partnerships->setText('See your partnerships')->toString();
         $build['partnerships']['see'] = [
           '#type' => 'markup',
-          '#markup' => $manage_my_partnerships->setText('See your partnerships')->toString(),
+          '#markup' => "<p>{$manage_link}</p>",
         ];
       }
 
       // Create partnerships link.
       if ($can_create_partnerships) {
         $create_partnerships = $this->getLinkByRoute('par_partnership_flows.partnership_application_start');
+        $apply_link = $create_partnerships->setText('Apply for a new partnership')->toString();
         $build['partnerships']['add'] = [
           '#type' => 'markup',
-          '#markup' => $create_partnerships->setText('Apply for a new partnership')->toString(),
+          '#markup' => "<p>{$apply_link}</p>",
         ];
       }
     }
@@ -113,9 +115,10 @@ class ParDashboardsDashboardController extends ControllerBase {
       ];
 
       $search_partnerships = $this->getLinkByRoute('view.partnership_search.enforcment_flow_search_partnerships');
+      $search_link = $search_partnerships->setText('Search for a partnership')->toString();
       $build['partnerships_find']['link'] = [
         '#type' => 'markup',
-        '#markup' => $search_partnerships->setText('Search for a partnership')->toString(),
+        '#markup' => "<p>{$search_link}</p>",
       ];
     }
 
@@ -129,11 +132,12 @@ class ParDashboardsDashboardController extends ControllerBase {
         '#collapsed' => FALSE,
       ];
 
-      // @TODO TO BE ADDED. WE NEED A SEPARATE VIEW PAGE FOR MANAGING ALL NOTICES.
+
       $search_partnerships = $this->getLinkByRoute('view.par_user_enforcements.enforcement_notices_page');
+      $enforcement_notices_link = $search_partnerships ? $search_partnerships->setText('See enforcement notifications')->toString() : '(none)';
       $build['messages']['link'] = [
         '#type' => 'markup',
-        '#markup' => $search_partnerships ? $search_partnerships->setText('See enforcement notifications')->toString() : '(none)',
+        '#markup' => "<p>{$enforcement_notices_link}</p>",
       ];
     }
 
