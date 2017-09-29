@@ -172,3 +172,14 @@ function par_data_update_8012() {
     ->execute();
 }
 
+/**
+ * Resave all users.
+ */
+function par_data_update_8013() {
+  // Change the bundle type.
+  foreach (\Drupal\user\Entity\User::loadMultiple() as $entity) {
+    // Re-save the entity.
+    $entity->save();
+  }
+}
+
