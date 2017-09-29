@@ -7,6 +7,7 @@ $lines = array_unique($lines, SORT_REGULAR);
 $assoc = [];
 
 $legalEntities = [];
+$adviceTypes = [];
 $lastKey = '';
 foreach ($lines as $line) {
     $line = str_getcsv($line);
@@ -20,16 +21,19 @@ foreach ($lines as $line) {
             'partnership_type' => $line[3],
             'primary_authority' => $line[4],
             'organisation_name' => $line[5],
+            'nation' => $line[11],
             'legal_entities' => implode(PHP_EOL, $legalEntities),
             'legal_entity_count' => count($legalEntities),
             'inspection_plan_status' => $line[7],
-            'advice_type' => $line[8],
+            'advice_type' => implode(PHP_EOL, $adviceTypes),
             'sector' => $line[9],
             'business_size' => $line[10],
         ];
         $legalEntities = [];
+        $adviceTypes = [];
     } else {
         $legalEntities[] = $line[6];
+        $adviceTypes[] = $line[8];
     }
     $lastKey = $key;
 }
@@ -59,6 +63,7 @@ $o .= '<th>Partnership Status</th>';
 $o .= '<th>Partnership Type</th>';
 $o .= '<th>Primary Authority</th>';
 $o .= '<th>Organisation Name</th>';
+$o .= '<th>Nation</th>';
 $o .= '<th>Legal Entities</th>';
 $o .= '<th>Number of Legal Entities</th>';
 $o .= '<th>Inspection Plan published</th>';
