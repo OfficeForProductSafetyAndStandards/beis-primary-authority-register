@@ -188,6 +188,23 @@ class ParPartnershipFlowsPartnershipSearchForm extends FormBase {
     foreach ($inspection_plans as $i) {
       $i->invalidate();
     }
+
+    // Then update all entities that remain transitioned to the correct statuses.
+    $conditions = [
+      'type' => [
+        'AND' => [
+          ['status', 1]
+        ],
+      ],
+    ];
+
+    $partnerships = $this->getParDataManager()
+      ->getEntitiesByQuery('par_data_partnership', $conditions);
+
+    foreach ($partnerships as $entity) {
+      $entity->setParStatus('confirmed_rd');
+      $entity->save();
+    }
   }
 
 }
