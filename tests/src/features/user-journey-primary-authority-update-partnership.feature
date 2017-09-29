@@ -17,7 +17,7 @@ Feature: Primary Authority - Change Partnership Details
 
         # PARTNERSHIPS DASHBOARD
 
-        And I add "Acme Test" to the inputfield "#edit-keywords"
+        And I add "Test Create" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
         And I click on the button "a*=Council"
         And I expect that element "h1" is not empty
@@ -28,7 +28,7 @@ Feature: Primary Authority - Change Partnership Details
         And I add "test partnership info change" to the inputfield "#edit-about-partnership"
         And I click on the button "#edit-save"
         Then I expect that element "#edit-about-partnership" contains the text "test partnership info change"
-        When I click on the link "edit animal the muppet"
+        When I click on the link "edit authority contact"
         And I clear the inputfield "#edit-salutation"
         And I clear the inputfield "#edit-work-phone"
         And I clear the inputfield "#edit-mobile-phone"
@@ -71,17 +71,17 @@ Feature: Primary Authority - Change Partnership Details
         Then I expect that element "h3" contains the text "How to upload Primary Authority Advice to Local Authorities"
         And I click on the button "#edit-cancel"
         #  And I click on the link "Upload a document"
-        #  And I upload a valid file
-        And I click on the link "edit"
-        And I click on the radio "#edit-advice-type-authority-advice"
-        When I click on the button "#edit-next"
-        Then I expect that element ".error-message" does exist
-        And I click on the checkbox ".form-label*=Cookie control"
-        When I click on the button "#edit-save"
+#        #  And I upload a valid file
+#        And I click on the link "edit"
+#        And I click on the radio "#edit-advice-type-authority-advice"
+#        When I click on the button "#edit-next"
+#        Then I expect that element ".error-message" does exist
+#        And I click on the checkbox ".form-label*=Cookie control"
+#        When I click on the button "#edit-save"
         # Then I expect that element ".table-scroll-wrapper" contains the text "✔"
         # And the element ".table-scroll-wrapper" contains the text "Cookie control"
         When I click on the link "Done"
-        Then I expect that element "#edit-regulatory-functions" contains the text "Cookie control"
+#        Then I expect that element "#edit-regulatory-functions" contains the text "Cookie control"
         And I click on the checkbox "#edit-partnership-info-agreed-authority"
         And I click on the button "#edit-done"
 
