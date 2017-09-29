@@ -24,5 +24,5 @@ Feature: Create users
     And I add "TestPassword" to the inputfield "#edit-pass-pass2"
     And I click on the button "#edit-submit"
     Then the element ".messages" is visible
-    And I click on the link "Log out"
-    And
+    And I open the url "/user/logout"
+    
