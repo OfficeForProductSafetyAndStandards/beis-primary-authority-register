@@ -42,10 +42,10 @@ class ParRdHelpDeskConfirmForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
-    $this->retrieveEditableValues($par_data_partnership);
 
     $par_data_organisation = current($par_data_partnership->getOrganisation());
     $par_data_authority = current($par_data_partnership->getAuthority());
+    $this->retrieveEditableValues($par_data_partnership);
 
     $form['partnership_title'] = [
       '#type' => 'markup',
@@ -90,17 +90,22 @@ class ParRdHelpDeskConfirmForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     $partnership = $this->getRouteParam('par_data_partnership');
-    $partnership->setParStatus('confirmed_rd');
 
-    if (!$partnership->save()) {
+    // We only to status to active on a partnership on none active ones.
+    if (!$partnership->getParStatus() === 'Active') {
 
-      $message = $this->t('This %partnership could not be approved for %form_id');
-      $replacements = [
-        '%partnership' => $partnership->id(),
-        '%form_id' => $this->getFormId(),
-      ];
-      $this->getLogger($this->getLoggerChannel())
-        ->error($message, $replacements);
+      $partnership->setParStatus('confirmed_rd');
+
+      if (!$partnership->save()) {
+
+        $message = $this->t('This %partnership could not be approved for %form_id');
+        $replacements = [
+          '%partnership' => $partnership->id(),
+          '%form_id' => $this->getFormId(),
+        ];
+        $this->getLogger($this->getLoggerChannel())
+          ->error($message, $replacements);
+      }
     }
   }
 
