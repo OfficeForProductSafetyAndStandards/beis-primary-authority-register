@@ -2,10 +2,10 @@
 par_help_desks_flows.confirm:
   path: '/helpdesk/partnership/{par_data_partnership}/confirm'
   defaults:
-    _form: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskConfirmForm'
+    _form: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskApproveConfirmForm'
     _title: 'Please confirm'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'approve partnerships via rd help desk'
     par_data_partnership: \d+
   options:
     parameters:
@@ -17,7 +17,7 @@ par_help_desks_flows.approve:
     _form: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskApproveForm'
     _title: 'Partnership approved'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'approve partnerships via rd help desk'
     par_data_partnership: \d+
   options:
     parameters:

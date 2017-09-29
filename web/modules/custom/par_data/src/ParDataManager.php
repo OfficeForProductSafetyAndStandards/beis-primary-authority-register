@@ -654,4 +654,24 @@ class ParDataManager implements ParDataManagerInterface {
     return $average;
   }
 
+  /**
+   * Get an array of all regulatory function entities keyed ids.
+   *
+   * @return array
+   *   A list of all system regulatory functions keyed by ids with the values being the
+   *   regulatory function name or an empty array.
+   */
+  public function getAllSystemRegulatoryFunctions() {
+
+    $regulatory_function_name_options = [];
+
+    $regulatory_function_names = $this->getEntitiesByType('par_data_regulatory_function');
+
+    foreach ($regulatory_function_names as $regulatory_function_entity ) {
+      $regulatory_function_name_options[$regulatory_function_entity->id()] =$regulatory_function_entity->get('function_name')->getString();
+    }
+
+    return $regulatory_function_name_options;
+  }
+
 }
