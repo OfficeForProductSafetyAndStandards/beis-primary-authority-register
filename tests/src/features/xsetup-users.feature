@@ -1,7 +1,7 @@
 @ci
 Feature: Create users
 
-  Scenario: Create
+  Scenario: Create users
     Given I am logged in as "par_admin@example.com"
     And I open the url "/admin/people/create"
     And I click on the checkbox "#edit-roles-par-authority"
@@ -24,3 +24,5 @@ Feature: Create users
     And I add "TestPassword" to the inputfield "#edit-pass-pass2"
     And I click on the button "#edit-submit"
     Then the element ".messages" is visible
+    And I click on the link "Log out"
+    And
