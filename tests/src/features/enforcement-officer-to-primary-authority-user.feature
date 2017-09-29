@@ -20,7 +20,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
       # ENFORCEMENT ACTION FORM
 
     When I click on the link "Send notification of enforcement action"
-    Then I expect that element "h1" contains the text "Raise Enforcement Notice"
+    Then I expect that element "#block-par-theme-page-title" contains the text "Raise Enforcement Notice"
     When I click on the radio ".form-radio"
     And I click on the button "#edit-next"
 

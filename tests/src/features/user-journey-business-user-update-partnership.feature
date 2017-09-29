@@ -17,16 +17,16 @@ Feature: Business User - Manage Addresses
         And I add "DCBA" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
         Then I expect that element "td.views-field.views-field-nothing" is not visible
-        When I add "ABCD" to the inputfield "#edit-keywords"
+        When I add "Co Mart" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
-        Then I expect that element "views-field views-field-par-flow-link-1" contains the text "ABCD Mart"
+        Then I expect that element "views-field views-field-par-flow-link-1" contains the text "Co Mart"
         When I select the option with the text "Confirmed by Business" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-par-user-partnerships"
         Then I expect that element "views-field views-field-par-flow-link-1" is not visible
         When I select the option with the text "Awaiting Review" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-par-user-partnerships"
-        Then I expect that element "views-field views-field-par-flow-link-1" contains the text "ABCD Mart"
-        When I click on the button "a*=ABCD Mart"
+        Then I expect that element "views-field views-field-par-flow-link-1" contains the text "Co Mart"
+        When I click on the button "a*=Co Mart"
 
         # TERMS AND CONDITIONS SCREEN
 

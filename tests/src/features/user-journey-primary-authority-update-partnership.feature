@@ -17,7 +17,7 @@ Feature: Primary Authority - Change Partnership Details
 
         # PARTNERSHIPS DASHBOARD
 
-        And relevant search results returned for partnership search term "Co Mart"
+        And relevant search results returned for partnership search term "Mart"
         And I click on the button "td.views-field.views-field-par-flow-link a"
         And I expect that element "h1" is not empty
 
