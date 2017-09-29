@@ -1,4 +1,4 @@
-@ci @journey1 @deprecated
+@Pending @journey1 @deprecated
 Feature: Primary Authority - Change Partnership Details
 
     Background:
@@ -9,7 +9,7 @@ Feature: Primary Authority - Change Partnership Details
 
         # SEARCH PARTNERSHIPS
 
-        Given I am logged in as "par_authority@example.com"
+        Given I am logged in as "f040f97dab3e0312230acf0f242ab7bf@localhost.localdomain"
         And I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
         And I expect that element "#block-par-theme-content" contains the text "Messages"
@@ -28,7 +28,7 @@ Feature: Primary Authority - Change Partnership Details
         And I add "test partnership info change" to the inputfield "#edit-about-partnership"
         And I click on the button "#edit-save"
         Then I expect that element "#edit-about-partnership" contains the text "test partnership info change"
-        When I click on the link "edit authority contact"
+        When I click on the link "edit animal the muppet"
         And I clear the inputfield "#edit-salutation"
         And I clear the inputfield "#edit-work-phone"
         And I clear the inputfield "#edit-mobile-phone"
