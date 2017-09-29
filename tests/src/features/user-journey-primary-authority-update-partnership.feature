@@ -17,7 +17,7 @@ Feature: Primary Authority - Change Partnership Details
 
         # PARTNERSHIPS DASHBOARD
 
-        And I add "Test" to the inputfield "#edit-keywords"
+        And I add "Co Mart" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
         And I click on the button "a*=Council"
         And I expect that element "h1" is not empty
