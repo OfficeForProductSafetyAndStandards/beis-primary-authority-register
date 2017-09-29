@@ -27,7 +27,14 @@ class ParRdHelpDeskConfirmForm extends ParBaseForm {
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    */
-  public function retrieveEditableValues() {
+  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
+
+    if ($par_data_partnership) {
+      // If we're editing an entity we should set the state
+      // to something other than default to avoid conflicts
+      // with existing versions of the same form.
+      $this->setState("edit:{$par_data_partnership->id()}");
+    }
 
   }
 
@@ -35,7 +42,7 @@ class ParRdHelpDeskConfirmForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
-    $this->retrieveEditableValues();
+    $this->retrieveEditableValues($par_data_partnership);
 
     $par_data_organisation = current($par_data_partnership->getOrganisation());
     $par_data_authority = current($par_data_partnership->getAuthority());
