@@ -29,19 +29,33 @@ FROM
 WHERE
     par_data_partnership__field_organisation.field_organisation_target_id = par_organisations_field_data.id
 AND 
-    par_partnerships_field_data.revoked is null AND par_partnerships_field_data.deleted is null
+    (par_partnerships_field_data.revoked is null OR par_partnerships_field_data.revoked = 0)
 AND 
-    par_authorities_field_data.revoked is null AND par_authorities_field_data.deleted is null
+    (par_partnerships_field_data.deleted is null OR par_partnerships_field_data.deleted = 0)
 AND 
-    par_legal_entities_field_data.revoked is null AND par_legal_entities_field_data.deleted is null    
+    (par_authorities_field_data.revoked is null OR par_authorities_field_data.revoked = 0)
 AND 
-    par_organisations_field_data.revoked is null AND par_organisations_field_data.deleted is null            
+    (par_authorities_field_data.deleted is null OR par_authorities_field_data.deleted = 0)
 AND 
-    par_inspection_plans_field_data.revoked is null AND par_inspection_plans_field_data.deleted is null    
+    (par_legal_entities_field_data.revoked is null OR par_legal_entities_field_data.revoked = 0)
 AND 
-    par_advice_field_data.revoked is null AND par_advice_field_data.deleted is null
+    (par_legal_entities_field_data.deleted is null OR par_legal_entities_field_data.deleted = 0)   
 AND 
-    NOT partnership_status = 'n/a'
+    (par_organisations_field_data.revoked is null OR par_organisations_field_data.revoked = 0) 
+AND 
+    (par_organisations_field_data.deleted is null OR par_organisations_field_data.deleted = 0)            
+AND 
+    (par_inspection_plans_field_data.revoked is null OR par_inspection_plans_field_data.revoked = 0)
+AND 
+    (par_inspection_plans_field_data.deleted is null OR par_inspection_plans_field_data.deleted = 0)    
+AND 
+    (par_advice_field_data.revoked is null OR par_advice_field_data.revoked = 0)
+AND 
+    (par_advice_field_data.deleted is null OR par_advice_field_data.deleted = 0)
+AND 
+    NOT par_partnerships_field_data.partnership_status = 'n/a'
+AND
+    par_partnerships_field_data.status = 1
 ORDER BY
     par_authorities_field_data.authority_name,
     par_organisations_field_data.organisation_name,
