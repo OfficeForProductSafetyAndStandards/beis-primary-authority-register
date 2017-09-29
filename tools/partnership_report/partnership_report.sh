@@ -1,4 +1,4 @@
-cf ssh par-beta-production -c "cd app/tools/partnership_report && python partnership_report.py" > ./partnership_report.csv
+cf ssh par-beta-$1 -c "cd app/tools/partnership_report && python partnership_report.py" > ./partnership_report.csv
 php partnership_report.php
 cf push --hostname par-beta-csv-green par-beta-csv-green
 cf map-route par-beta-csv-green cloudapps.digital -n par-beta-csv
