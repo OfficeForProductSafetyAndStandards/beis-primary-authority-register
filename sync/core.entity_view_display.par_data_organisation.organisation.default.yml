@@ -13,7 +13,7 @@ dependencies:
     - par_data
     - text
 _core:
-  default_config_hash: _0QoDpRp4faN6cIw-0XipPNpRzKzAwkBxzS8B6KqO7k
+  default_config_hash: ESvVFe9teg3lvbQdA5AwOPajqLbpJjiRWRnrNmdKFk0
 id: par_data_organisation.organisation.default
 targetEntityType: par_data_organisation
 bundle: organisation

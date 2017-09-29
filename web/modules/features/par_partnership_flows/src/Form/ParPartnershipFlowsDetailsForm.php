@@ -49,7 +49,8 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()}");
 
-      $this->loadDataValue("partnership_info_agreed_authority", $par_data_partnership->get('partnership_info_agreed_authority')->getString());
+      $checkbox = $this->getInformationCheckbox($par_data_partnership);
+      $this->loadDataValue($checkbox, $par_data_partnership->getBoolean($checkbox));
     }
 
   }
@@ -86,7 +87,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
 
     // Only show Members list, Sectors and Number of businesses if the partnership is a coordinated partnership.
     if ($par_data_partnership->isCoordinated()) {
-      $form['associations'] = $this->renderSection('Number of Associations', $par_data_organisation, ['size' => 'full'], ['edit-field']);
+      $form['associations'] = $this->renderSection('Number of members', $par_data_organisation, ['size' => 'full'], ['edit-field']);
 
       // Display all the legal entities along with the links for the allowed operations on these.
       $form['members'] = $this->renderSection('Members', $par_data_partnership, ['field_coordinated_business' => 'title']);
@@ -157,7 +158,18 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
 
     // Display all the legal entities along with the links for the allowed
     // operations on these.
-    $form['organisation_contacts'] = $this->renderSection('Contacts - Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed']);
+    $form['organisation_contacts'] = $this->renderSection('Contacts - Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed'], ['edit-entity', 'add']);
+
+    $checkbox = $this->getInformationCheckbox();
+    if (!$par_data_partnership->getBoolean($checkbox)) {
+      $form[$checkbox] = [
+        '#type' => 'checkbox',
+        '#title' => t("Confirm that you have reviewed the details for this partnership."),
+        '#default_value' => $this->getDefaultValues($checkbox, FALSE),
+        '#disabled' => $this->getDefaultValues($checkbox, FALSE),
+        '#return_value' => 'on',
+      ];
+    }
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
@@ -170,14 +182,29 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
   }
 
   /**
+   * Helper function to get the information checkbox required. False if none required.
+   */
+  public function getInformationCheckbox() {
+    if ($this->getFlowName() === 'partnership_authority') {
+      return 'partnership_info_agreed_authority';
+    }
+    else {
+      return 'partnership_info_agreed_business';
+    }
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+
     // Make sure the confirm box is ticked.
-    if (!$form_state->getValue('partnership_info_agreed_authority')) {
-      $this->setElementError('partnership_info_agreed_authority', $form_state, 'Please confirm you have reviewed the details.');
+    $checkbox = $this->getInformationCheckbox();
+    if (!$par_data_partnership->getBoolean($checkbox) && !$form_state->getValue($checkbox)) {
+      $this->setElementError($checkbox, $form_state, 'Please confirm you have reviewed the details.');
     }
   }
 
@@ -188,15 +215,16 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
-    $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $par_data_person = current($par_data_organisation->getPerson());
 
-    if ($par_data_partnership && !$par_data_partnership->get('partnership_info_agreed_authority')->getString()) {
+    $checkbox = $this->getInformationCheckbox();
+    if ($par_data_partnership && !$par_data_partnership->getBoolean($checkbox)) {
 
       // Save the value for the confirmation field.
-      $par_data_partnership->set('partnership_info_agreed_authority', $this->getTempDataValue('partnership_info_agreed_authority'));
+      if ($checkbox) {
+        $par_data_partnership->set($checkbox, $this->getTempDataValue($checkbox));
+      }
 
-      if ($par_data_partnership->save()) {
+      if ($checkbox && $par_data_partnership->save()) {
         $this->deleteStore();
       }
       else {

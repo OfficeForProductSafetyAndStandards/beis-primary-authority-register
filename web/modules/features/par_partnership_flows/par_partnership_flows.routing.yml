@@ -1,3 +1,12 @@
+# A helpdesk journey for updating partnerships
+par_partnership_flows.helpdesk_partnership_update:
+  path: '/helpdesk/update'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsPartnershipSearchForm'
+    _title: 'Transition Partnerships'
+  requirements:
+    _permission: 'access helpdesk'
+
 # PAR Data Authority Partnership Journey
 par_partnership_flows.authority_details:
   path: '/partnership/{par_data_partnership}/authority-details'

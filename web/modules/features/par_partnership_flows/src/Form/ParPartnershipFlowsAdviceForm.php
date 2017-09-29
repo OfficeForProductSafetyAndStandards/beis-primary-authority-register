@@ -52,6 +52,9 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
 
       // Partnership Confirmation.
       $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
+      if (!$this->currentUser()->hasPermission('update primary authority advice to local authorities')) {
+        unset($allowed_types['authority_advice']);
+      }
       $advice_type = $par_data_advice->get('advice_type')->getString();
       if (isset($allowed_types[$advice_type])) {
         $this->loadDataValue('advice_type', $advice_type);
@@ -94,13 +97,30 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       }
     }
 
+    $allowed_types = $advice_bundle->getAllowedValues('advice_type');
+    if (!$this->currentUser()->hasPermission('update primary authority advice to local authorities')) {
+      unset($allowed_types['authority_advice']);
+    }
+
     // The advice type.
     $form['advice_type'] = [
       '#type' => 'radios',
+      '#attributes' => [
+        'class' => ['form-group'],
+      ],
       '#title' => $this->t('Type of advice'),
-      '#options' => $advice_bundle->getAllowedValues('advice_type'),
+      '#options' => $allowed_types,
       '#default_value' => $this->getDefaultValues('advice_type'),
       '#required' => TRUE,
+    ];
+
+    $form['advice_type_help_text'] = [
+      '#type' => 'fieldset',
+      '#attributes' => [
+        'class' => ['form-group'],
+      ],
+      '#title' => $this->t('How to upload Primary Authority Advice to Local Authorities'),
+      '#description' => $this->t('To upload Primary Authority Advice to a Local Authority, email it to <a href="mailto:pa@beis.gov.uk">pa@beis.gov.uk</a> with details of the business it applies to and we’ll get back to you shortly.'),
     ];
 
     // The regulatory functions of the advice entity.
@@ -116,6 +136,17 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     $this->addCacheableDependency($advice_bundle);
 
     return parent::buildForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
+
+    if (!array_keys(array_filter($form_state->getValue('regulatory_functions')))) {
+      $this->setElementError('regulatory_functions', $form_state, 'Please select at least one regulatory function.');
+    };
   }
 
   /**
@@ -150,7 +181,11 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
         $files_to_add[] = $file->id();
 
       }
-      $par_data_advice->set('document', $files_to_add);
+
+      // Check if there are files to add from the Advice Upload form.
+      if ($files_to_add) {
+        $par_data_advice->set('document', $files_to_add);
+      }
 
       if ($par_data_advice->save()) {
         $this->deleteStore();

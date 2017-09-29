@@ -217,7 +217,7 @@ class ParDataOrganisation extends ParDataEntity {
 
     // Comments.
     $fields['comments'] = BaseFieldDefinition::create('text_long')
-      ->setLabel(t('Comments'))
+      ->setLabel(t('About the Organisation'))
       ->setDescription(t('Comments about this organisation.'))
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)

@@ -50,8 +50,8 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
     $conditions = [
       'name' => [
         'OR' => [
-          ['organisation_name', $searchQuery, 'CONTAINS'],
-          ['trading_name', $searchQuery, 'CONTAINS'],
+          ['organisation_name', $searchQuery, 'STARTS_WITH'],
+          ['trading_name', $searchQuery, 'STARTS_WITH'],
         ]
       ],
     ];
@@ -59,14 +59,13 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
     $organisationViewBuilder = $this->getParDataManager()->getViewBuilder('par_data_organisation');
 
     $options = $this->getParDataManager()
-      ->getEntitiesByQuery('par_data_organisation', $conditions);
+      ->getEntitiesByQuery('par_data_organisation', $conditions, 10);
 
     $radio_options = [];
 
     foreach($options as $option) {
-      $option_view = $organisationViewBuilder->view($option, 'summary');
-
-      $radio_options[$option->id()] = $this->renderMarkupField($option_view)['#markup'];
+      $label = $this->renderSection('Organisation', $option, ['organisation_name' => 'summary', 'field_premises' => 'summary'], ['edit-entity'], FALSE, TRUE);
+      $radio_options[$option->id()] = render($label);
     }
 
     // If no suggestions were found we want to automatically submit the form.

@@ -11,8 +11,7 @@ isArchivable: false
 configuration:
   entity:
     label_fields:
-      - address
-      - nation
+      - 'address:address_line1'
     required_fields:
       address_line1: 'The %field is required.'
       address_line2: 'The %field is required.'
