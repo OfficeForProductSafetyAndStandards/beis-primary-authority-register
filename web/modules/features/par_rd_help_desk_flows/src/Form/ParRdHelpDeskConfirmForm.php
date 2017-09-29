@@ -45,6 +45,8 @@ class ParRdHelpDeskConfirmForm extends ParBaseForm {
 
     $par_data_organisation = current($par_data_partnership->getOrganisation());
     $par_data_authority = current($par_data_partnership->getAuthority());
+    $regulatory_function_name_options = $this->parDataManager->getAllSystemRegulatoryFunctions();
+
     $this->retrieveEditableValues($par_data_partnership);
 
     $form['partnership_title'] = [
@@ -72,6 +74,20 @@ class ParRdHelpDeskConfirmForm extends ParBaseForm {
       '#suffix' => '</p></div>',
     ];
 
+    $form['partnership_regulatory_functions'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Regulatory function to which this relates'),
+      '#options' => $regulatory_function_name_options,
+      '#default_value' => $this->getDefaultValues('partnership_regulatory_functions'),
+      '#required' => TRUE,
+      '#prefix' => '<div><p>',
+      '#suffix' => '</p></div>',
+    ];
+
+    if ($par_data_partnership->getRawStatus() == 'confirmed_rd') {
+      $form['partnership_regulatory_functions']['#disabled'] = TRUE;
+    }
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -90,11 +106,13 @@ class ParRdHelpDeskConfirmForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     $partnership = $this->getRouteParam('par_data_partnership');
+    $selected_regulatory_functions = $this->getTempDataValue('partnership_regulatory_functions');
 
     // We only to status to active on a partnership on none active ones.
-    if (!$partnership->getParStatus() === 'Active') {
+    if ($partnership->getRawStatus() !== 'confirmed_rd') {
 
       $partnership->setParStatus('confirmed_rd');
+      $partnership->set('field_regulatory_function', $selected_regulatory_functions);
 
       if (!$partnership->save()) {
 
