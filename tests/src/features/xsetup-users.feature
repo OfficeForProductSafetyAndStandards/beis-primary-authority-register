@@ -1,4 +1,4 @@
-@ci
+@setup
 Feature: Create users
 
   Scenario: Create users
