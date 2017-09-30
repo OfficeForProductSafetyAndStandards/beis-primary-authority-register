@@ -134,6 +134,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
       'summary' => $this->getTempDataValue('action_summary'),
       'field_regulatory_function' => $this->getTempDataValue('regulatory_functions'),
       'field_enforcing_authority' => $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection'),
+      'field_organisation' => $this->getDefaultValues('par_data_organisation_id', '', 'par_data_organisation_id'),
       'field_partnership' => $partnership->id(),
     ];
 

@@ -73,7 +73,8 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     if ($par_data_partnership->isCoordinated()) {
       $build['associations'] = $this->renderSection('Number of Associations', $par_data_organisation, ['size' => 'full']);
 
-      // @TODO We need to add members list and Sectors. TBD Later.
+      // Display all the legal entities along with the links for the allowed operations on these.
+      $build['members'] = $this->renderSection('Members', $par_data_partnership, ['field_coordinated_business' => 'title']);
     }
 
     // Display all the legal entities along with the links for the allowed operations on these.
