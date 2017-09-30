@@ -35,10 +35,23 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I click on the radio "#edit-regulatory-functions-1"
         And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
         And I click on the button "#edit-next"
+        Then I expect that element "#par-enforcement-notice-raise-confirm" contains the text "action summary enforcement notice"
+        And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Title of the enforcement notice"
+        And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Some details about the enforcement notice"
+        And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "You will be notified by email of the outcome of this notification"
         And I click on the button "#edit-save"
 
 
-#      # ENFORCEMENT ACTION DETAILS
+#        #MESSAGING
+
+#        When I click on the link "Log out"
+#        And I am logged in as "par_helpdesk@example.com"
+#        And I open url "/enforcement-notices"
+#        And I click on the link "Title of the enforcement notice"
+#        And I click the radio "Allow"
+#        And I click on the button "#edit-save"
+#        Then I expect that element "#block-par-theme-page-title" contains the text "Success"
+
 #
 #        And I add "An enforcement action title" to the inputfield "#last-name"
 #        When I click on the radio "#edit-enforcement-type-proposed"
@@ -80,7 +93,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 #
 #      # LOGIN AS PA USER TO CHECK MESSAGING
 #
-#    And I am logged in as "par_authority@example.com"
+#    And I am logged in as "par_@example.com"
 #    Then I expect that element "#secure-messages" contains the text "You have 1 new message"
 #    When I click on the link "#secure-message"
 #    Then I expect that element "h1" contains the text "Enforcement notification from"
