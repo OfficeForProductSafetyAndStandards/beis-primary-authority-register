@@ -49,7 +49,7 @@ Feature: Primary Authority - Change Partnership Details
     And I expect that element "#edit-authority-contacts" contains the text "91723456789"
     And I expect that element "#edit-authority-contacts" contains the text "9777777777"
     And I scroll to element "#edit-organisation-contacts"
-    When I click on the link "add another authority contact"
+    When I click on the button "/html/body/main/div[2]/div[4]/form/div[12]/fieldset/div[4]/fieldset/a"
     And I add "Miss" to the inputfield "#edit-salutation"
     And I add "Miss" to the inputfield "#edit-first-name"
     And I add "Piggy" to the inputfield "#edit-last-name"
