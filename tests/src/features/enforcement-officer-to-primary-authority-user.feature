@@ -13,7 +13,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
         And I click on the link "Search for a partnership"
-        When I add "Co Mart" to the inputfield "#edit-keywords"
+        When I add "Bradford" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
         When I click on the button "td.views-field.views-field-authority-name a"
 
@@ -61,7 +61,10 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         Then I expect that element "#bpar-rd-help-desk-approve" contains the text "Partnership is approved between"
         And I click on the button "#edit-done"
 
-#
+        # REFER FORM
+
+        # BLOCK FORM
+
 #        And I add "An enforcement action title" to the inputfield "#last-name"
 #        When I click on the radio "#edit-enforcement-type-proposed"
 #
