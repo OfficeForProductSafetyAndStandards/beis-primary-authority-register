@@ -2,6 +2,8 @@
 
 namespace Drupal\par_actions\Plugin\Action;
 
+use Drupal\invite\Entity\Invite;
+use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\views_bulk_operations\Action\ViewsBulkOperationsActionBase;
 use Drupal\views_bulk_operations\Action\ViewsBulkOperationsPreconfigurationInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -39,12 +41,53 @@ class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements Views
      * the public getView() method.
      */
 
-    // Do some processing..
-    // ...
+    if ($entity instanceof ParDataPartnership) {
+      // Get the authority from the partnership and send to all the members.
+      $partnership_members = $entity->get('field_authority_person')->referencedEntities();
+
+      // Make sure they are members of the authority.
+      $par_data_authority = current($entity->get('field_authority')->referencedEntities());
+      $authority_members = $par_data_authority->retrieveEntityIds('field_person');
+
+      $token_service = \Drupal::token();
+
+      foreach ($partnership_members as $delta => $member) {
+        if (in_array($member->id(), $authority_members)) {
+//          try {
+
+            $input = 'recipient: [par:member-name] and the sender is: [current-user:mail] asdfadsfasdf [not:valid]';
+            $body = $token_service->replace($input, ['par' => $member]);
+
+var_dump($body); die;
+//            $invite = Invite::create([
+//              'type' => 'invite_authority_member',
+//              'user_id' => \Drupal::currentUser()->id(),
+//              'invitee' => \Drupal::currentUser()->getEmail(),
+//            ]);
+//            $invite->set('field_invite_email_address', $member->get('email')->getString());
+//            $invite->set('field_invite_email_subject', $this->configuration['par_bulk_invite_message_subject']);
+//            $invite->set('field_invite_email_body', $this->configuration['par_bulk_invite_message_body']);
+//            $invite->setPlugin('invite_by_email');
+//
+//            $invite->save();
+//          }
+//          catch (\Exception $e) {
+//            drupal_set_message("Error occurred executing invitation: {$e->getMessage()}", 'error');
+//          }
+        }
+      }
+    }
+
     drupal_set_message($entity->label());
-    return sprintf('Example action (configuration: %s)', print_r($this->configuration, TRUE));
+
+    return sprintf('Action executed for %s', $entity->label());
   }
 
+  /**
+   * Getter for the default invitation message.
+   *
+   * @return string
+   */
   public function getDefaultMessage() {
     $message_body = <<<HEREDOC
 Dear [par-invite:recipient-name],
@@ -58,7 +101,6 @@ In order to access the new PA Register, please click on the following link: [sit
 After registering, you can continue to access the new PA Register at using the following link: [site:url]
 
 Thanks for your help.
-[par-invite:sender-name]
 HEREDOC;
 
     return $message_body;
@@ -76,7 +118,7 @@ HEREDOC;
     $form['par_bulk_invite_message_subject'] = [
       '#title' => $this->t('Message subject'),
       '#type' => 'textfield',
-      '#default_value' => isset($values['par_bulk_invite_message_subject']) ? $values['par_bulk_invite_message_subject'] : $this->getDefaultMessage(),
+      '#default_value' => isset($values['par_bulk_invite_message_subject']) ? $values['par_bulk_invite_message_subject'] : 'New Primary Authority Register',
     ];
 
     return $form;
@@ -97,15 +139,17 @@ HEREDOC;
    *   The configuration form.
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $form['par_bulk_invite_message_body'] = [
-      '#title' => $this->t('Message body'),
-      '#type' => 'textarea',
-      '#default_value' => $form_state->getValue('par_bulk_invite_message_body'),
-    ];
+    $body = $form_state->getValue('par_bulk_invite_message_body') ?: $this->getDefaultMessage();
+    $subject = $form_state->getValue('par_bulk_invite_message_subject') ?: 'New Primary Authority Register';
     $form['par_bulk_invite_message_subject'] = [
       '#title' => $this->t('Message subject'),
       '#type' => 'textfield',
-      '#default_value' => $form_state->getValue('par_bulk_invite_message_subject'),
+      '#default_value' => $subject,
+    ];
+    $form['par_bulk_invite_message_body'] = [
+      '#title' => $this->t('Message body'),
+      '#type' => 'textarea',
+      '#default_value' => $body,
     ];
 
     return $form;
@@ -126,7 +170,8 @@ HEREDOC;
     // This is not required here, when this method is not defined,
     // form values are assigned to the action configuration by default.
     // This function is a must only when user input processing is needed.
-    $this->configuration['example_config_setting'] = $form_state->getValue('example_config_setting');
+    $this->configuration['par_bulk_invite_message_body'] = $form_state->getValue('par_bulk_invite_message_body');
+    $this->configuration['par_bulk_invite_message_subject'] = $form_state->getValue('par_bulk_invite_message_subject');
   }
 
   /**

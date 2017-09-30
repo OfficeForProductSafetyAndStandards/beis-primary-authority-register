@@ -1,6 +1,6 @@
-uuid: 664ec4a1-1944-4818-8d0f-5a0b5ac554ce
+uuid: 16aae97c-1d83-4649-822b-454c2f3a2ff7
 langcode: en
 status: true
 dependencies: {  }
-id: invite_organisation_member
+id: invite_authority_member
 sending_methods: invite_by_email||0
