@@ -19,10 +19,19 @@ class ParRequiredValidator extends ConstraintValidator {
       if ($this->skipValidate()) {
         break;
       }
+      foreach ($constraint->properties as $key => $value) {
+        if (isset($key) && is_string($key)) {
+          $message = $value['message'];
+          $property = $key;
+        }
+        else {
+          $message = $constraint->message;
+          $property = $value;
+        }
 
-      // @TODO We need to make sure this validator checks for properties other than 'value'.
-      if (!isset($item->value) || false === $item->value || (empty($item->value) && '0' != $item->value)) {
-        $this->context->addViolation($constraint->message, ['@value' => $item->value]);
+        if (!isset($item->$property) || false === $item->$property || (empty($item->$property) && '0' != $item->$property)) {
+          $this->context->addViolation($message, ['@value' => $item->$property]);
+        }
       }
     }
   }
