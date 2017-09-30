@@ -351,6 +351,18 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
+   * Get a referenced entity field as an options array.
+   */
+  public function getEntityFieldAsOptions($field_name) {
+    if (!$this->hasField($field_name) || !$this->get($field_name) instanceof EntityReferenceFieldItemListInterface) {
+      return [];
+    }
+
+    $entities = $this->get($field_name)->referencedEntities();
+    return $this->getParDataManager()->getEntitiesAsOptions($entities);
+  }
+
+  /**
    * Get all the relationships for this entity.
    *
    * @param string $target

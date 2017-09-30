@@ -546,6 +546,25 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
+   * Helper function to get all entities as options.
+   *
+   * @param EntityInterface $entities
+   *   An array of entities to turn into options.
+   * @param array $options
+   *   An optional array of options to append to.
+   *
+   * @return []
+   *   An array of options keyed by entity id.
+   */
+  public function getEntitiesAsOptions($entities, $options = []) {
+    foreach ($entities as $entity) {
+      $options[$entity->id()] = $entity->label();
+    }
+
+    return $options;
+  }
+
+  /**
    * Get the PAR People that share the same email with the user account.
    *
    * @param UserInterface $account
@@ -652,26 +671,6 @@ class ParDataManager implements ParDataManagerInterface {
     $average = ceil($median);
 
     return $average;
-  }
-
-  /**
-   * Get an array of all regulatory function entities keyed ids.
-   *
-   * @return array
-   *   A list of all system regulatory functions keyed by ids with the values being the
-   *   regulatory function name or an empty array.
-   */
-  public function getAllSystemRegulatoryFunctions() {
-
-    $regulatory_function_name_options = [];
-
-    $regulatory_function_names = $this->getEntitiesByType('par_data_regulatory_function');
-
-    foreach ($regulatory_function_names as $regulatory_function_entity ) {
-      $regulatory_function_name_options[$regulatory_function_entity->id()] =$regulatory_function_entity->get('function_name')->getString();
-    }
-
-    return $regulatory_function_name_options;
   }
 
 }

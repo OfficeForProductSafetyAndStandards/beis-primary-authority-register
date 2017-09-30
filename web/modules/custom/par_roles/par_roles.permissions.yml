@@ -8,6 +8,18 @@ access helpdesk:
   title: 'Access the PAR Helpdesk'
   description: 'A permission to allow access to the PAR helpdesk.'
   restrict access: TRUE
+update primary authority advice to local authorities:
+  title: 'Update Primary Authority advice to Local Authorities'
+  description: 'Update primary authority advice to local authorities.'
+  restrict access: TRUE
+approve partnerships via rd help desk:
+  title: 'Approve partnerships via rd help desk'
+  description: 'Approve a given partnership.'
+  restrict access: TRUE
+invite authority members:
+  title: 'Invite authority members to create accounts'
+  description: 'Invite authority members that do not have user accounts to register with the system.'
+  restrict access: TRUE
 # Permissions related to all actions applied to partnerships.
 access partnerships dashboard:
   title: 'Access the PAR Dashboard'
@@ -45,12 +57,4 @@ approve enforcement notice:
 send enforcement notice:
   title: 'Send Enforcement Notice'
   description: 'Allow a user to send the enforcement notice they raised against an Organisation.'
-  restrict access: TRUE
-update primary authority advice to local authorities:
-  title: 'Update Primary Authority advice to Local Authorities'
-  description: 'Update primary authority advice to local authorities.'
-  restrict access: TRUE
-approve partnerships via rd help desk:
-  title: 'Approve partnerships via rd help desk'
-  description: 'Approve a given partnership.'
   restrict access: TRUE

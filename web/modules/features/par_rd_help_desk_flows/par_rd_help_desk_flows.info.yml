@@ -1,8 +1,8 @@
-name: PAR RD Help Desk Flows
+name: 'PAR RD Help Desk Flows'
 type: module
-description: Creates the flows and components required for all RD-Help-Desk operations within the PAR.
+description: 'Creates the flows and components required for all RD-Help-Desk operations within the PAR.'
 core: 8.x
 package: PAR
 dependencies:
-  - par_flows
   - par_data
+  - par_flows

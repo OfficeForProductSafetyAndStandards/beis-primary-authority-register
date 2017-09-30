@@ -124,10 +124,11 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     ];
 
     // The regulatory functions of the advice entity.
+    $regulatory_function_options = $par_data_partnership->getEntityFieldAsOptions('par_data_regulatory_function');
     $form['regulatory_functions'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Regulatory functions this advice covers'),
-      '#options' => $this->getParDataManager()->getRegulatoryFunctionsAsOptions(),
+      '#options' => $regulatory_function_options,
       '#default_value' => $this->getDefaultValues('regulatory_functions', []),
     ];
 
