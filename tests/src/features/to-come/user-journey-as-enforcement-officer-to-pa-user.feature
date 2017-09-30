@@ -1,26 +1,26 @@
 @Pending
 Feature: Enforcement officer to Primary Authority
 
-    Background:
+  Background:
         # TEST DATA RESET
 #        Given I reset the test data
 
-    Scenario: Enforcement Officer/PA - Issue enforcement notice
-        # LOGIN SCREEN
+  Scenario: Enforcement Officer/PA - Issue enforcement notice
+      # LOGIN SCREEN
 
-        Given I am logged in as "par_authority@example.com"
+    Given I am logged in as "par_authority@example.com"
 
-        # PARTNERSHIP TASKS SCREEN/DASHBOARD
+      # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
-        And I open the url "/dashboard"
-        Then I expect that element "#block-par-theme-content" contains the text "See all outstanding enforcement notices"
-        When I click on the link "Search for a partnership"
+    And I open the url "/dashboard"
+    Then I expect that element "#block-par-theme-content" contains the text "See all outstanding enforcement notices"
+    When I click on the link "Search for a partnership"
 
-        # PARTNERSHIP SEARCH
+      # PARTNERSHIP SEARCH
 
-        When I add "ABCD" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-partnership-search"
-        And I click on the button "td.views-field.views-field-authority-name a"
+    When I add "ABCD" to the inputfield "#edit-keywords"
+    And I click on the button "#edit-submit-partnership-search"
+    And I click on the button "td.views-field.views-field-authority-name a"
 
 #        # ENFORCEMENT ACTION FORM
 #
@@ -28,42 +28,42 @@ Feature: Enforcement officer to Primary Authority
 #        Then the element "#partnership-scope" contains the text "Scope"
 #        And I click on the link "Back"
 
-        # CHECK PARTNERSHIP SCREEN
+      # CHECK PARTNERSHIP SCREEN
 
-        # ENFORCEMENT NOTIFY
+      # ENFORCEMENT NOTIFY
 
-        Then I expect that element "h3" contains the text "About the business"
-        When I click on the link "Send notification of enforcement action"
-        And I click on the radio ".form-radio"
-        And I click on the button "#edit-next"
-        And I expect that element "#edit-action-summmary" becomes visible
-        And I add "Some action summary text" to the inputfield "#edit-action-summmary"
-        And I click on the radio ".form-radio"
-        And I click on the radio "#edit-enforcement-type-proposed"
-        And I click on the link "Add a legal entity"
+    Then I expect that element "h3" contains the text "About the business"
+    When I click on the link "Send notification of enforcement action"
+    And I click on the radio ".form-radio"
+    And I click on the button "#edit-next"
+    And I expect that element "#edit-action-summmary" becomes visible
+    And I add "Some action summary text" to the inputfield "#edit-action-summmary"
+    And I click on the radio ".form-radio"
+    And I click on the radio "#edit-enforcement-type-proposed"
+    And I click on the link "Add a legal entity"
 
 
-        # ADD LEGAL ENTITIES
+      # ADD LEGAL ENTITIES
 
-        And I add "A Legal Entity" to the inputfield "#edit-alternative-legal-entity"
-        When I click on the button "#edit-next"
+    And I add "A Legal Entity" to the inputfield "#edit-alternative-legal-entity"
+    When I click on the button "#edit-next"
 #        Then I expect that element "#par-enforcement-notice-raise" contains the text "A Legal Entity"
 #        And I select the option with the text "Sole Trader" for element "#edit-legal-entity-type"
 #        And I click on the button "#edit-next"
 
-         # ADD ENFORCEMENT ACTION
+       # ADD ENFORCEMENT ACTION
 
-        And I click on the link "Add an enforcement action"
-        When I add "Enforcement action title" to the inputfield "#edit-title-of-action"
+    And I click on the link "Add an enforcement action"
+    When I add "Enforcement action title" to the inputfield "#edit-title-of-action"
 #        And I click on the radio ".form-label*=Explosives licensing"
-        And I add "Enforcement action details" to the inputfield "#edit-details"
-        And I click on the button "#edit-next"
+    And I add "Enforcement action details" to the inputfield "#edit-details"
+    And I click on the button "#edit-next"
 #        Then I expect that element "#par-enforcement-notice-raise" contains the text "Enforcement action title"
 
-        # CONFRIMATION SUMMARY CHECK ALL DETAILS
+      # CONFRIMATION SUMMARY CHECK ALL DETAILS
 
-        And I click on the button "#edit-next"
-        When I click on the link "Log out"
+    And I click on the button "#edit-next"
+    When I click on the link "Log out"
 
         # LOGIN AS PA USER TO CHECK MESSAGING
 
