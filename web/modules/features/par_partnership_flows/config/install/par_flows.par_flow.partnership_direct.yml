@@ -1,9 +1,11 @@
+langcode: en
 status: true
 dependencies: {  }
 id: partnership_direct
 label: 'Direct Partnership Flow'
+default_title: null
 description: ''
-save_method: 'step'
+save_method: step
 steps:
   1:
     route: par_partnership_flows.organisation_details

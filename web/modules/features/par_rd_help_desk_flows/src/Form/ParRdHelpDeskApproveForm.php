@@ -27,7 +27,14 @@ class ParRdHelpDeskApproveForm extends ParBaseForm {
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    */
-  public function retrieveEditableValues(ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
+  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
+
+    if ($par_data_partnership) {
+      // If we're editing an entity we should set the state
+      // to something other than default to avoid conflicts
+      // with existing versions of the same form.
+      $this->setState("edit:{$par_data_partnership->id()}");
+    }
   }
 
   /**
@@ -37,6 +44,7 @@ class ParRdHelpDeskApproveForm extends ParBaseForm {
 
     $par_data_organisation = current($par_data_partnership->getOrganisation());
     $par_data_authority = current($par_data_partnership->getAuthority());
+    $this->retrieveEditableValues($par_data_partnership);
 
     $form['partnership_title'] = [
       '#type' => 'markup',

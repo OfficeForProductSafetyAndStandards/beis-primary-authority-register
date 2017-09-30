@@ -1,25 +1,57 @@
-# PAR RD Help Desk journeys
-par_help_desks_flows.confirm:
+# PAR RD Help Desk journey - approve partnership
+par_help_desks_flows.confirm_partnership:
   path: '/helpdesk/partnership/{par_data_partnership}/confirm'
   defaults:
-    _form: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskConfirmForm'
+    _form: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskApproveConfirmForm'
     _title: 'Please confirm'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'approve partnerships via rd help desk'
     par_data_partnership: \d+
   options:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-par_help_desks_flows.approve:
+par_help_desks_flows.approve_partnership:
   path: '/helpdesk/partnership/{par_data_partnership}/approved'
   defaults:
     _form: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskApproveForm'
     _title: 'Partnership approved'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'approve partnerships via rd help desk'
     par_data_partnership: \d+
   options:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+
+# PAR RD Help Desk journey - invite users
+par_help_desks_flows.invite_members:
+  path: '/helpdesk/partnership/{par_data_partnership}/invite/{par_data_person}'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInviteForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInviteForm::titleCallback'
+  requirements:
+    _permission: 'invite authority members'
+    par_data_partnership: \d+
+    par_data_person: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_person:
+        type: entity:par_data_person
+par_help_desks_flows.invite_sent:
+  path: '/helpdesk/partnership/{par_data_partnership}/invite/{par_data_person}/sent'
+  defaults:
+    _controller: '\Drupal\par_rd_help_desk_flows\Controller\ParRdHelpDeskInviteSentController::content'
+    _title_callback: '\Drupal\par_rd_help_desk_flows\Controller\ParRdHelpDeskInviteSentController::titleCallback'
+  requirements:
+    _permission: 'invite authority members'
+    par_data_partnership: \d+
+    par_data_person: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_person:
+        type: entity:par_data_person

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_partnership_flows\Form;
+namespace Drupal\par_rd_help_desk_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\invite\Entity\Invite;
@@ -17,7 +17,10 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
  */
 class ParPartnershipFlowsInviteForm extends ParBaseForm {
 
-  use ParPartnershipFlowsTrait;
+  /**
+   * {@inheritdoc}
+   */
+  protected $flow = 'invite';
 
   /**
    * {@inheritdoc}
@@ -42,71 +45,22 @@ class ParPartnershipFlowsInviteForm extends ParBaseForm {
     }
 
     if ($par_data_person) {
+      // Set the default subject for the invite email, this can be changed by the user.
+      $this->loadDataValue("email_subject", 'New Partnership on the Primary Authority Register');
+
       // Get the email for the business contact that this email will go to.
-      $this->loadDataValue("recipient_email", $par_data_person->get('email')->getString());
-      $recipient_exists = $par_data_person->getUserAccount();
-      $this->loadDataValue("recipient_exists", !empty($recipient_exists));
+      $this->loadDataValue("business_member", $par_data_person->get('email')->getString());
 
-      // Get the sender's email and name.
-      // For helpdesk users this is a generic title ,
-      // and for all other users with a PAR Person record
-      // this is tailored to who is inviting.
+      // Get the authority user's email and name.
       $account = User::load($this->currentUser()->id());
-      $this->loadDataValue("sender_email", $account->getEmail());
-      if($account->hasPermission('invite authority members')) {
-        $sender_name = 'BEIS RD Department';
-      }
-      else {
-        $authority = current($par_data_partnership->get('field_authority')->referencedEntities());
-        $authority_person = $authority ? $this->getParDataManager()->getUserPerson($account, $authority) : NULL;
+      $authority = current($par_data_partnership->get('field_authority')->referencedEntities());
+      $authority_person = $this->getParDataManager()->getUserPerson($account, $authority);
 
-        $sender_name = '';
-        if (isset($authority_person)) {
-          $sender_name = $authority_person->getFullName();
-        }
-      }
-      $this->loadDataValue("sender_name", $sender_name);
+      $this->loadDataValue("authority_member", $authority_person->get('email')->getString());
+      $authority_person_name = $authority_person->getFullName();
 
       // Get the user accounts related to the business user.
-      if ($this->getFlowName() === 'invite_authority_members' && !$recipient_exists) {
-        $email_subject = 'New Primary Authority Register';
-
-        $message_body = <<<HEREDOC
-Dear {$par_data_person->getFullName()},
-
-Primary Authority has been simplified and is now open to all UK businesses.
-
-Simplifying the scheme has required the creation of an entirely new Primary Authority Register in order to accommodate the greater volume of businesses and partnerships.
-
-In order to access the new PA Register, please click on the following link: [invite:invite-accept-link]
-
-After registering, you can continue to access the new PA Register at using the following link: [site:url]
-
-Thanks for your help.
-{$sender_name}
-HEREDOC;
-      }
-      elseif ($this->getFlowName() === 'invite_authority_members') {
-        $email_subject = 'New Primary Authority Register';
-
-        $message_body = <<<HEREDOC
-Dear {$par_data_person->getFullName()},
-
-Primary Authority has been simplified and is now open to all UK businesses.
-
-Simplifying the scheme has required the creation of an entirely new Primary Authority Register in order to accommodate the greater volume of businesses and partnerships.
-
-In order to access the new PA Register, please click on the following link: [site:login-url]
-
-After registering, you can continue to access the new PA Register at using the following link: [site:url]
-
-Thanks for your help.
-{$sender_name}
-HEREDOC;
-      }
-      elseif ($recipient_exists) {
-        $email_subject = 'Invitation to join the Primary Authority Register';
-
+      if ($business_user = $par_data_person->getUserAccount()) {
         $message_body = <<<HEREDOC
 Dear {$par_data_person->getFullName()},
 
@@ -115,12 +69,10 @@ A new partnership has been created for you by {$authority->get('authority_name')
 [site:login-url]
 
 Thanks for your help.
-{$sender_name}
+{$authority_person_name}
 HEREDOC;
       }
       else {
-        $email_subject = 'Invitation to join the Primary Authority Register';
-
         $message_body = <<<HEREDOC
 Dear {$par_data_person->getFullName()},
 
@@ -129,12 +81,9 @@ A new partnership has been created for you by {$authority->get('authority_name')
 [invite:invite-accept-link]
 
 Thanks for your help.
-{$sender_name}
+{$authority_person_name}
 HEREDOC;
       }
-
-      // Set the default subject for the invite email, this can be changed by the user.
-      $this->loadDataValue("email_subject", $email_subject);
 
       $this->loadDataValue("email_body", $message_body);
     }
@@ -149,30 +98,14 @@ HEREDOC;
     $invite_type = $this->config('invite.invite_type.invite_organisation_member');
     $data = unserialize($invite_type->get('data'));
 
-    if ($this->getDefaultValues('recipient_exists', FALSE)) {
-      $form['recipient_exists'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('This person has already accepted an invitation, you do not need to re-inite them.'),
-        '#prefix' => '<p><strong>',
-        '#suffix' => '</strong></p>',
-      ];
-    }
-
-
     // Get Sender.
-    if ($this->getFlowName() === 'invite_authority_members') {
-      $description = 'You cannot change your email here.';
-    }
-    else {
-      $description = 'You cannot change your email here. If you want to send this invite from a different email address please contact the helpdesk.';
-    }
-    $form['sender_email'] = [
+    $form['authority_member'] = [
       '#type' => 'textfield',
       '#title' => t('Your email'),
       '#required' => TRUE,
       '#disabled' => TRUE,
-      '#default_value' => $this->getDefaultValues('sender_email'),
-      '#description' => $description,
+      '#default_value' => $this->getCurrentUser()->getEmail(),
+      '#description' => 'You cannot change your email here. If you want to send this invite from a different email address please contact the helpdesk.',
     ];
     $form['inviter'] = [
       '#type' => 'hidden',
@@ -181,21 +114,13 @@ HEREDOC;
     ];
 
     // Get Recipient.
-    if ($this->getFlowName() === 'invite_authority_members') {
-      $description = 'This is the contact for the authority.';
-      $title = t('Authority contact email');
-    }
-    else {
-      $description = 'This is the businesses primary contact. If you need to send this invite to another person please contact the helpdesk.';
-      $title = t('Business contact email');
-    }
-    $form['recipient_email'] = [
+    $form['business_member'] = [
       '#type' => 'textfield',
-      '#title' => $title,
+      '#title' => t('Business contact email'),
       '#required' => TRUE,
       '#disabled' => TRUE,
-      '#default_value' => $this->getDefaultValues('recipient_email'),
-      '#description' => $description,
+      '#default_value' => $this->getDefaultValues('business_member'),
+      '#description' => 'This is the businesses primary contact. If you need to send this invite to another person please contact the helpdesk.',
     ];
 
     // Allow the message subject to be changed.
@@ -227,6 +152,7 @@ HEREDOC;
    * Validate the form to make sure the correct values have been entered.
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+
     if (empty($form_state->getValue('email_subject'))) {
       $form_state->setErrorByName('email_subject', $this->t('<a href="#edit-email-subject">The Message subject is required.</a>'));
     }
@@ -236,7 +162,7 @@ HEREDOC;
     }
     // Check that the email body contains an invite accept link.
     $par_data_person = $this->getRouteParam('par_data_person');
-    if ($par_data_person->getUserAccount()) {
+    if ($business_user = $par_data_person->getUserAccount()) {
       $required_token = '[site:login-url]';
     }
     else{
@@ -258,9 +184,9 @@ HEREDOC;
     $invite = Invite::create([
       'type' => 'invite_organisation_member',
       'user_id' => $this->getTempDataValue('inviter'),
-      'invitee' => $this->getTempDataValue('recipient_email'),
+      'invitee' => $this->getTempDataValue('business_member'),
     ]);
-    $invite->set('field_invite_email_address', $this->getTempDataValue('recipient_email'));
+    $invite->set('field_invite_email_address', $this->getTempDataValue('business_member'));
     $invite->set('field_invite_email_subject', $this->getTempDataValue('email_subject'));
     $invite->set('field_invite_email_body', $this->getTempDataValue('email_body'));
     $invite->setPlugin('invite_by_email');
@@ -271,7 +197,7 @@ HEREDOC;
       $message = $this->t('This invite could not be sent for %person on %form_id');
       $replacements = [
         '%invite' => $this->getTempDataValue('first_name') . ' ' . $this->getTempDataValue('last_name'),
-        '%person' => $this->getTempDataValue('recipient_email'),
+        '%person' => $this->getTempDataValue('business_member'),
         '%form_id' => $this->getFormId(),
       ];
       $this->getLogger($this->getLoggerChannel())->error($message, $replacements);

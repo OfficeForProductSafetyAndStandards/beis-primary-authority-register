@@ -55,6 +55,7 @@ module:
   options: 0
   page_cache: 0
   pagerer: 0
+  par_actions: 0
   par_ckeditor: 0
   par_dashboards: 0
   par_data: 0
@@ -67,6 +68,7 @@ module:
   par_migration: 0
   par_migration_scripts: 0
   par_partnership_flows: 0
+  par_rd_help_desk_flows: 0
   par_roles: 0
   par_validation: 0
   password_policy: 0
@@ -93,6 +95,7 @@ module:
   toolbar: 0
   trance: 0
   user: 0
+  views_bulk_operations: 0
   views_data_export: 0
   views_ui: 0
   menu_link_content: 1

@@ -1,6 +1,9 @@
+uuid: 828aac2e-725a-4523-bf54-c79b6c6dcaa2
 langcode: en
 status: true
 dependencies: {  }
+_core:
+  default_config_hash: iSUvcXaAAE0MT6dAzumpN4E5dDzAjRoeETlkNgmyyUk
 id: approve_partnership
 label: 'Approve Partnership'
 default_title: null
