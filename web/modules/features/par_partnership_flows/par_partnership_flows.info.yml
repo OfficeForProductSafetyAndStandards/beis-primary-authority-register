@@ -1,8 +1,8 @@
-name: PAR Partnership Flows
+name: 'PAR Partnership Flows'
 type: module
-description: Creates the flows and components required for CRUD operations on Partnerships.
+description: 'Creates the flows and components required for CRUD operations on Partnerships.'
 core: 8.x
 package: PAR
 dependencies:
-  - par_flows
   - par_data
+  - par_flows

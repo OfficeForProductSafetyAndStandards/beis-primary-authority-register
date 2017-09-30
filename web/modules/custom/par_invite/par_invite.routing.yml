@@ -1,4 +1,4 @@
-# PAR Data Transition Journey 1 - Partnership Details
+# PAR Invitation form.
 par_invite.welcome:
   path: '/par-invite/accept/{invite}'
   defaults:

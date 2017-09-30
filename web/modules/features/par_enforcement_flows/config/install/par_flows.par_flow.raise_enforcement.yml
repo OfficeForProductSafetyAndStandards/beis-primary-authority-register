@@ -1,9 +1,11 @@
+langcode: en
 status: true
 dependencies: {  }
 id: raise_enforcement
 label: 'Raise Enforcement'
+default_title: null
 description: 'The creation flow of an enforcement notice.'
-save_method: 'end'
+save_method: end
 steps:
   1:
     route: par_enforcement_flows.partnership_page
@@ -57,4 +59,3 @@ steps:
     route: par_dashboards.dashboard
   10:
     route: view.partnership_search.enforcment_flow_search_partnerships
-

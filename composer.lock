@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3fb4db53b069619c2c8f15665a4d2661",
+    "content-hash": "931673c1c79fbb8d71b562e47649f88f",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -112,16 +112,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.36.16",
+            "version": "3.36.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "f8bb15a002e709cba85de3981b0ffac7968fffb5"
+                "reference": "4bf27e8808e5e08a71b7fbdb951f51918c57a1c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f8bb15a002e709cba85de3981b0ffac7968fffb5",
-                "reference": "f8bb15a002e709cba85de3981b0ffac7968fffb5",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4bf27e8808e5e08a71b7fbdb951f51918c57a1c6",
+                "reference": "4bf27e8808e5e08a71b7fbdb951f51918c57a1c6",
                 "shasum": ""
             },
             "require": {
@@ -188,7 +188,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-09-27T22:02:13+00:00"
+            "time": "2017-09-29T19:46:41+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -3690,6 +3690,69 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/twig_tweak",
                 "issues": "https://www.drupal.org/project/issues/twig_tweak"
+            }
+        },
+        {
+            "name": "drupal/views_bulk_operations",
+            "version": "1.0.0-alpha2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/views_bulk_operations",
+                "reference": "8.x-1.0-alpha2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/views_bulk_operations-8.x-1.0-alpha2.zip",
+                "reference": "8.x-1.0-alpha2",
+                "shasum": "c3dc543b1bd85c2448e98787e5edd594ac60d607"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-alpha2",
+                    "datestamp": "1505723344",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Graber",
+                    "homepage": "https://www.drupal.org/user/1599440"
+                },
+                {
+                    "name": "Jon Pugh",
+                    "homepage": "https://www.drupal.org/user/17028"
+                },
+                {
+                    "name": "bojanz",
+                    "homepage": "https://www.drupal.org/user/86106"
+                },
+                {
+                    "name": "infojunkie",
+                    "homepage": "https://www.drupal.org/user/48424"
+                },
+                {
+                    "name": "joelpittet",
+                    "homepage": "https://www.drupal.org/user/160302"
+                }
+            ],
+            "description": "Views Bulk Operation",
+            "homepage": "https://www.drupal.org/project/views_bulk_operations",
+            "support": {
+                "source": "http://cgit.drupalcode.org/views_bulk_operations"
             }
         },
         {
