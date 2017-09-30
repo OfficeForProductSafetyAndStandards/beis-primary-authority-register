@@ -1,4 +1,4 @@
-@Pending
+@ci
 Feature: Enforcement Officer/PA - Enforcement Notice Process
 
     Background:
@@ -44,13 +44,22 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
 #        #MESSAGING
 
-#        When I click on the link "Log out"
-#        And I am logged in as "par_helpdesk@example.com"
-#        And I open url "/enforcement-notices"
-#        And I click on the link "Title of the enforcement notice"
-#        And I click the radio "Allow"
-#        And I click on the button "#edit-save"
-#        Then I expect that element "#block-par-theme-page-title" contains the text "Success"
+        When I click on the link "Log out"
+        And I am logged in as "par_helpdesk@example.com"
+        And I select the option with the text "Awaiting Review" for element "#edit-partnership-status"
+        When I click on the link "Approve partnership"
+
+        # APPROVAL FORM
+
+        And I click on the button "#edit-next"
+        And I expect that element ".error-message" does exist
+        And I click on the radio ".form-radio"
+        And I click on the button "#edit-next"
+        And I expect that element ".error-message" does exist
+        And I click on the radio "#edit-partnership-regulatory-functions-2"
+        And I click on the button "#edit-next"
+        Then I expect that element "#bpar-rd-help-desk-approve" contains the text "Partnership is approved between"
+        And I click on the button "#edit-done"
 
 #
 #        And I add "An enforcement action title" to the inputfield "#last-name"
