@@ -17,7 +17,7 @@ Feature: Primary Authority - Change Partnership Details
 
       # PARTNERSHIPS DASHBOARD
 
-    And I add "National Federation of Property" to the inputfield "#edit-keywords"
+    And I add "" to the inputfield "#edit-keywords"
     And I click on the button "#edit-submit-helpdesk-dashboard"
     And I click on the button "a*=Council"
     And I expect that element "h1" is not empty
@@ -72,12 +72,12 @@ Feature: Primary Authority - Change Partnership Details
     And I click on the button "#edit-cancel"
       #  And I click on the link "Upload a document"
 #        #  And I upload a valid file
-    And I click on the link "edit"
-    And I click on the radio "#edit-advice-type-authority-advice"
-    When I click on the button "#edit-save"
-    Then I expect that element ".error-message" does exist
-    And I click on the checkbox ".form-label*=Trading standards"
-    When I click on the button "#edit-save"
+#    And I click on the link "edit"
+#    And I click on the radio "#edit-advice-type-authority-advice"
+#    When I click on the button "#edit-save"
+#    Then I expect that element ".error-message" does exist
+#    And I click on the checkbox ".form-label*=Trading standards"
+#    When I click on the button "#edit-save"
       # Then I expect that element ".table-scroll-wrapper" contains the text "✔"
       # And the element ".table-scroll-wrapper" contains the text "Cookie control"
     When I click on the link "Done"
