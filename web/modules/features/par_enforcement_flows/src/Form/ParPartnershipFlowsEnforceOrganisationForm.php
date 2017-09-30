@@ -52,39 +52,54 @@ class ParPartnershipFlowsEnforceOrganisationForm extends ParBaseForm {
     }
     elseif ($par_data_partnership->isCoordinated()) {
       $members = [];
-      foreach ($par_data_partnership->get('field_coordinated_business')->referencedEntities() as $coordinated_member) {
-        $coordinated_organisation = $coordinated_member->get('field_organisation')->referencedEntities();
-        $members = $this->getParDataManager()->getEntitiesAsOptions($coordinated_organisation, $members);
+      foreach ($par_data_partnership->get('field_coordinated_business')
+                 ->referencedEntities() as $coordinated_member) {
+        $coordinated_organisation = $coordinated_member->get('field_organisation')
+          ->referencedEntities();
+        $members = $this->getParDataManager()
+          ->getEntitiesAsOptions($coordinated_organisation, $members);
       }
 
-      // Initialize pager and get current page.
-      $number_of_items = 10;
-      $current_page = pager_default_initialize(count($members), $number_of_items);
+      if (empty($members)) {
+        $form['no_members'] = [
+          '#type' => 'markup',
+          '#markup' => $this->t('Sorry but there are no members for this organisation.'),
+        ];
 
-      // Split the items up into chunks:
-      $chunks = array_chunk($members, $number_of_items, TRUE);
-
-      // Add the items for our current page to the fieldset.
-      $page_options = [];
-      foreach ($chunks[$current_page] as $delta => $item) {
-        $page_options[$delta] = $item;
+        $this->getFlow()->disableAction('next');
       }
+      else {
+        // Initialize pager and get current page.
+        $number_of_items = 10;
+        $current_page = pager_default_initialize(count($members), $number_of_items);
 
-      $form['par_data_organisation_id'] = [
-        '#type' => 'radios',
-        '#title' => t('Choose the member to enforce?'),
-        '#options' => $page_options,
-        '#default_value' => $this->getDefaultValues('par_data_organisation_id', []),
-      ];
+        // Split the items up into chunks:
+        $chunks = array_chunk($members, $number_of_items, TRUE);
 
-      $form['pager'] = [
-        '#type' => 'pager',
-        '#theme' => 'pagerer',
-        '#element' => 0,
-        '#config' => [
-          'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
-        ],
-      ];
+        // Add the items for our current page to the fieldset.
+        $page_options = [];
+
+        foreach ($chunks[$current_page] as $delta => $item) {
+          $page_options[$delta] = $item;
+        }
+
+        $form['par_data_organisation_id'] = [
+          '#type' => 'radios',
+          '#title' => t('Choose the member to enforce?'),
+          '#options' => $page_options,
+          '#default_value' => $this->getDefaultValues('par_data_organisation_id', []),
+        ];
+
+        $form['pager'] = [
+          '#type' => 'pager',
+          '#theme' => 'pagerer',
+          '#element' => 0,
+          '#config' => [
+            'preset' => $this->config('pagerer.settings')
+              ->get('core_override_preset'),
+          ],
+        ];
+      }
     }
 
     return parent::buildForm($form, $form_state);

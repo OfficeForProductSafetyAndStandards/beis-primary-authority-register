@@ -93,6 +93,7 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
         '#title' => $this->t('I confirm I have reviewed the partnership summary information above'),
         '#disabled' => $par_data_partnership->get('partnership_info_agreed_authority')->getString(),
         '#default_value' => $this->getDefaultValues("partnership_info_agreed_authority"),
+        '#return_value' => 'on',
       ];
     }
     else {
@@ -137,9 +138,12 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
     $par_data_organisation = current($par_data_partnership->getOrganisation());
     $par_data_person = current($par_data_organisation->getPerson());
 
-    if ($par_data_partnership && !$par_data_partnership->get('partnership_info_agreed_authority')->getString()) {
+    if ($par_data_partnership && !$par_data_partnership->getBoolean('partnership_info_agreed_authority')) {
       // Save the value for the confirmation field.
-      $par_data_partnership->set('partnership_info_agreed_authority', $this->getTempDataValue('partnership_info_agreed_authority'));
+      $par_data_partnership->set('partnership_info_agreed_authority', $this->decideBooleanValue($this->getTempDataValue('partnership_info_agreed_authority')));
+
+      // Set partnership status.
+      $par_data_partnership->set('partnership_status', 'confirmed_authority');
     }
 
     if ($par_data_partnership->save()) {

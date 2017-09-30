@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: w3hO1_rHchQE9kph9zXHqz1i8Nez0xtAG5ydKLD5VAA
+  default_config_hash: V8e50Q4Ua2AUVbZslwdhBeRjKlVxKptKAMI3a_B5QUU
 id: partnership_authority
 label: 'Authority Partnership Flow'
 default_title: null
@@ -19,7 +19,7 @@ steps:
       edit_field_authority_person: 5
       advice: 6
       inspection_plans: 11
-      done: 12
+      save: 12
   2:
     route: par_partnership_flows.about_partnership
     form_id: par_partnership_about
