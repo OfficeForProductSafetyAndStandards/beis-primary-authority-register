@@ -86,11 +86,16 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
     if ($this->getFlowName() === 'partnership_authority') {
       $build['documentation_list']['#header'][] = 'Actions';
 
+      $build['actions'] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => 'form-group'],
+      ];
+
       $build['actions']['upload'] = [
         '#type' => 'markup',
         '#markup' => t('@link', [
-          '@link' => $this->getFlow()->getNextLink('upload', $this->getRouteParams(), ['attributes' => ['class' => 'form-group']])
-            ->setText('Upload')
+          '@link' => $this->getFlow()->getNextLink('upload', $this->getRouteParams())
+            ->setText('Upload advice')
             ->toString(),
         ]),
       ];
