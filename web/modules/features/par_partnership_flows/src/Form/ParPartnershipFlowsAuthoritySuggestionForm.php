@@ -90,4 +90,14 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
     return parent::buildForm($form, $form_state);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
+    if (!$form_state->getValue('par_data_authority_id')) {
+      $this->setElementError('par_data_authority_id', $form_state, 'Please select an authority.');
+    }
+  }
+
 }
