@@ -68,7 +68,6 @@ class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements Views
       $token_service = \Drupal::token();
 
       foreach ($partnership_members as $delta => $member) {
-        drupal_set_message($member->id());
         // Don't invite the user if they already have an account.
         $account_exists = (bool) $this->getParDataManager()->getEntitiesByProperty('user', 'mail', $member->get('email')->getString());
 
