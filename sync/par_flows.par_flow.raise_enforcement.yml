@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: t-YAjjE4Mzf1UGIMWuwrxTd8E0dc9lVwlT0WIk-_oNA
+  default_config_hash: 6FbwiueFsL0iUbExN6hiPnHB-2gq7cmlDoPYgJafhPo
 id: raise_enforcement
 label: 'Raise Enforcement'
 default_title: null
@@ -24,7 +24,7 @@ steps:
   3:
     route: par_enforcement_flows.inspection_plan_view
     redirect:
-      cancel: 1
+      done: 1
   4:
     route: par_enforcement_flows.authority_select
     form_id: par_authority_selection

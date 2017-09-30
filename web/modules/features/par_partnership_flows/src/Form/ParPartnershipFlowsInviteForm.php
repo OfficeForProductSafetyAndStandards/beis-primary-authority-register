@@ -149,15 +149,14 @@ HEREDOC;
     $invite_type = $this->config('invite.invite_type.invite_organisation_member');
     $data = unserialize($invite_type->get('data'));
 
-    if ($this->getDefaultValues('recipient_exists', FALSE)) {
+    if ($this->getDefaultValues('recipient_exists', FALSE) && $this->getFlowName() === 'invite_authority_members') {
       $form['recipient_exists'] = [
         '#type' => 'markup',
-        '#markup' => $this->t('This person has already accepted an invitation, you do not need to re-inite them.'),
+        '#markup' => $this->t('This person has already accepted an invitation, you do not need to re-invite them.'),
         '#prefix' => '<p><strong>',
         '#suffix' => '</strong></p>',
       ];
     }
-
 
     // Get Sender.
     if ($this->getFlowName() === 'invite_authority_members') {
