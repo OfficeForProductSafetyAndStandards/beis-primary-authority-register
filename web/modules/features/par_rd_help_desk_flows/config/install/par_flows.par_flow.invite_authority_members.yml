@@ -1,9 +1,11 @@
+langcode: en
 status: true
 dependencies: {  }
 id: invite_authority_members
 label: 'Invite PAR Authority Users'
+default_title: null
 description: 'Invite PAR Authority Users to register for an account.'
-save_method: 'end'
+save_method: end
 steps:
   1:
     route: par_help_desks_flows.invite_members

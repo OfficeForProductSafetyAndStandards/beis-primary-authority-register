@@ -1,9 +1,11 @@
+langcode: en
 status: true
 dependencies: {  }
 id: approve_enforcement
 label: 'Approve Enforcement'
+default_title: null
 description: 'The approval flow for an enforcement notice.'
-save_method: 'end'
+save_method: end
 steps:
   1:
     route: par_enforcement_flows.approve
