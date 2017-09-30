@@ -15,7 +15,7 @@ class ParRdHelpDeskInviteSentController extends ParBaseController {
   /**
    * {@inheritdoc}
    */
-  protected $flow = 'invite';
+  protected $flow = 'invite_authority_members';
 
   /**
    * {@inheritdoc}
