@@ -9,16 +9,16 @@ Feature: Primary Authority - Change Partnership Details
 
       # SEARCH PARTNERSHIPS
 
-    Given I am logged in as "par_authority@example.com"
-    And I expect that element "#block-par-theme-content" contains the text "See your partnerships"
-    And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
-    And I expect that element "#block-par-theme-content" contains the text "Messages"
-    When I click on the link "See your partnerships"
+    Given I am logged in as "par_helpdesk@example.com"
+#    And I expect that element "#block-par-theme-content" contains the text "See your partnerships"
+#    And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
+#    And I expect that element "#block-par-theme-content" contains the text "Messages"
+#    When I click on the link "See your partnerships"
 
       # PARTNERSHIPS DASHBOARD
 
-    And I add "Co Mart" to the inputfield "#edit-keywords"
-    And I click on the button "#edit-submit-par-user-partnerships"
+    And I add "Horsham" to the inputfield "#edit-keywords"
+    And I click on the button "#edit-submit-helpdesk-dashboard"
     And I click on the button "a*=Council"
     And I expect that element "h1" is not empty
 
@@ -28,7 +28,7 @@ Feature: Primary Authority - Change Partnership Details
     And I add "test partnership info change" to the inputfield "#edit-about-partnership"
     And I click on the button "#edit-save"
     Then I expect that element "#edit-about-partnership" contains the text "test partnership info change"
-    When I click on the link "edit big bird"
+    When I click on the button "/html/body/main/div[2]/div[4]/form/div[12]/fieldset/div[2]/fieldset/a"
     And I clear the inputfield "#edit-salutation"
     And I clear the inputfield "#edit-work-phone"
     And I clear the inputfield "#edit-mobile-phone"
