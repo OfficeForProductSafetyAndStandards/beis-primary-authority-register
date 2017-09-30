@@ -63,8 +63,7 @@ class ParPartnershipFlowsEnforceOrganisationForm extends ParBaseForm {
           '#markup' => $this->t('Sorry but there are no members for this organisation.'),
         ];
 
-        // @todo Need to clear the continue button.
-        return parent::buildForm($form, $form_state);
+        $this->getFlow()->disableAction('next');
       }
       // Initialize pager and get current page.
       $number_of_items = 10;
