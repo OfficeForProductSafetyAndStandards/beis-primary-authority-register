@@ -207,7 +207,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       // Create new advice entity.
       $par_data_advice = ParDataAdvice::create([
         'type' => 'advice',
-        'uid' => 1
+        'uid' => 1,
       ]);
 
       // Check if there are files to add from the Advice Upload form.
