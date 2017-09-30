@@ -27,6 +27,13 @@ use Drupal\Core\Session\AccountInterface;
 class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements ViewsBulkOperationsPreconfigurationInterface {
 
   /**
+   * Getter for the Par Data Manager service.
+   */
+  public function getParDataManager() {
+    return \Drupal::service('par_data.manager');
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function execute($entity = NULL) {
@@ -52,35 +59,32 @@ class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements Views
       $token_service = \Drupal::token();
 
       foreach ($partnership_members as $delta => $member) {
-        if (in_array($member->id(), $authority_members)) {
-//          try {
+        // Don't invite the user if they already have an account.
+        $account_exists = (bool) $this->getParDataManager()->getEntitiesByProperty('user', 'mail', $member->get('email')->getString());
 
-            $input = 'recipient: [par:member-name] and the sender is: [current-user:mail] asdfadsfasdf [not:valid]';
-            $body = $token_service->replace($input, ['par' => $member]);
+        if (in_array($member->id(), $authority_members) && !$account_exists) {
+          try {
+            $subject = $token_service->replace($this->configuration['par_bulk_invite_message_subject'], ['par' => $member]);
+            $body = $token_service->replace($this->configuration['par_bulk_invite_message_body'], ['par' => $member]);
 
-var_dump($body); die;
-//            $invite = Invite::create([
-//              'type' => 'invite_authority_member',
-//              'user_id' => \Drupal::currentUser()->id(),
-//              'invitee' => \Drupal::currentUser()->getEmail(),
-//            ]);
-//            $invite->set('field_invite_email_address', $member->get('email')->getString());
-//            $invite->set('field_invite_email_subject', $this->configuration['par_bulk_invite_message_subject']);
-//            $invite->set('field_invite_email_body', $this->configuration['par_bulk_invite_message_body']);
-//            $invite->setPlugin('invite_by_email');
-//
-//            $invite->save();
-//          }
-//          catch (\Exception $e) {
-//            drupal_set_message("Error occurred executing invitation: {$e->getMessage()}", 'error');
-//          }
+            $invite = Invite::create([
+              'type' => 'invite_authority_member',
+              'user_id' => \Drupal::currentUser()->id(),
+              'invitee' => \Drupal::currentUser()->getEmail(),
+            ]);
+            $invite->set('field_invite_email_address', $member->get('email')->getString());
+            $invite->set('field_invite_email_subject', $subject);
+            $invite->set('field_invite_email_body', $body);
+            $invite->setPlugin('invite_by_email');
+
+            $invite->save();
+          }
+          catch (\Exception $e) {
+            drupal_set_message("Error occurred executing invitation: {$e->getMessage()}", 'error');
+          }
         }
       }
     }
-
-    drupal_set_message($entity->label());
-
-    return sprintf('Action executed for %s', $entity->label());
   }
 
   /**
@@ -90,7 +94,7 @@ var_dump($body); die;
    */
   public function getDefaultMessage() {
     $message_body = <<<HEREDOC
-Dear [par-invite:recipient-name],
+Dear [par:member-name],
 
 Primary Authority has been simplified and is now open to all UK businesses.
 

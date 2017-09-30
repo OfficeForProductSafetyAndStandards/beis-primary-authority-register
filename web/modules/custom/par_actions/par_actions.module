@@ -26,13 +26,13 @@ function par_actions_token_info() {
 /**
  * Implements hook_tokens().
  */
-function par_actions_email_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+function par_actions_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
   $replacements = [];
   if ($type == 'par') {
 
     foreach ($tokens as $name => $original) {
       switch ($name) {
-        case 'par:member-name':
+        case 'member-name':
           if ($data['par'] instanceof ParDataPerson) {
             $replacements[$original] = $data['par']->getFullName();
           }
