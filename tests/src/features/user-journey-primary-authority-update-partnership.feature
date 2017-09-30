@@ -17,7 +17,7 @@ Feature: Primary Authority - Change Partnership Details
 
       # PARTNERSHIPS DASHBOARD
 
-    And I add "" to the inputfield "#edit-keywords"
+    And I add "Kentucky Fried Chicken" to the inputfield "#edit-keywords"
     And I click on the button "#edit-submit-helpdesk-dashboard"
     And I click on the button "a*=Council"
     And I expect that element "h1" is not empty
@@ -80,9 +80,9 @@ Feature: Primary Authority - Change Partnership Details
 #    When I click on the button "#edit-save"
       # Then I expect that element ".table-scroll-wrapper" contains the text "✔"
       # And the element ".table-scroll-wrapper" contains the text "Cookie control"
-    When I click on the link "Done"
+    And I click on the button "a*=Done"
 #        Then I expect that element "#edit-regulatory-functions" contains the text "Cookie control"
-    And I click on the checkbox "#edit-partnership-info-agreed-authority"
+#    And I click on the checkbox "#edit-partnership-info-agreed-authority"
     And I click on the button "#edit-save"
     Then I expect that element "h1" contains the text "Primary Authority Register"
 
