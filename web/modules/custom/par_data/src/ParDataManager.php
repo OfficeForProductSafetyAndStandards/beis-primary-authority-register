@@ -546,6 +546,25 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
+   * Helper function to get all entities as options.
+   *
+   * @param EntityInterface $entities
+   *   An array of entities to turn into options.
+   * @param array $options
+   *   An optional array of options to append to.
+   *
+   * @return []
+   *   An array of options keyed by entity id.
+   */
+  public function getEntitiesAsOptions($entities, $options = []) {
+    foreach ($entities as $entity) {
+      $options[$entity->id()] = $entity->label();
+    }
+
+    return $options;
+  }
+
+  /**
    * Get the PAR People that share the same email with the user account.
    *
    * @param UserInterface $account

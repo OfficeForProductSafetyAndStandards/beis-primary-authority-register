@@ -45,7 +45,6 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
 
     $par_data_organisation = current($par_data_partnership->getOrganisation());
     $par_data_authority = current($par_data_partnership->getAuthority());
-    $regulatory_function_name_options = $this->parDataManager->getAllSystemRegulatoryFunctions();
 
     $this->retrieveEditableValues($par_data_partnership);
 
@@ -71,18 +70,17 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
       '#title' => $this->t('Check to confirm you are authorised to approve this partnership'),
       '#options' => $confirm_text_options,
       '#required' => TRUE,
-      '#prefix' => '<div><p>',
-      '#suffix' => '</p></div>',
     ];
 
+
+    $regulatory_functions = $this->getParDataManager()->getEntitiesByType('par_data_regulatory_function');
+    $regulatory_function_options = $this->getParDataManager()->getEntitiesAsOptions($regulatory_functions);
     $form['partnership_regulatory_functions'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Regulatory function to which this relates'),
-      '#options' => $regulatory_function_name_options,
-      '#default_value' => $this->getDefaultValues('partnership_regulatory_functions'),
+      '#options' => $regulatory_function_options,
+      '#default_value' => $this->getDefaultValues('partnership_regulatory_functions', []),
       '#required' => TRUE,
-      '#prefix' => '<div><p>',
-      '#suffix' => '</p></div>',
     ];
 
     // Defensive coding we are dealing with an approved partnership we are not changing the state of
@@ -90,6 +88,13 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
     if ($par_data_partnership->getRawStatus() == 'confirmed_rd') {
       $form['partnership_regulatory_functions']['#disabled'] = TRUE;
       $form['confirm_authorisation_select']['#disabled'] = TRUE;
+
+      $form['approved_partnership'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('This partnership has already been approved.'),
+        '#prefix' => '<div><strong>',
+        '#suffix' => '</strong></div>',
+      ];
     }
 
     return parent::buildForm($form, $form_state);

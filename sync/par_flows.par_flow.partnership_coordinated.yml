@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: mcxGdVhXk_VSqs4OczhpYxsiKWy645pCv9vOK6We2EA
+  default_config_hash: oQk7UubufaLXGHRiXcDpkl5E09ttD0Ok4sY3ndcSlbY
 id: partnership_coordinated
 label: 'Coordinated Partnership Flow'
 default_title: null
@@ -23,9 +23,10 @@ steps:
       edit_field_legal_entity: 9
       add_trading_name: 10
       edit_trading_name: 11
-      edit_size: 12
-      advice: 15
-      inspection_plans: 16
+      edit_sector: 12
+      edit_size: 13
+      advice: 14
+      inspection_plans: 15
       done: 17
   2:
     route: par_partnership_flows.about_business
