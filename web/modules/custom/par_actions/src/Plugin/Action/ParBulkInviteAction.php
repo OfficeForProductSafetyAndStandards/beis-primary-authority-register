@@ -54,7 +54,7 @@ class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements Views
       // If we're inviting all members get the authority straight from the partnership.
       if ($all_members === TRUE) {
         $par_data_authority = current($entity->get('field_authority')->referencedEntities());
-        $partnership_members = $par_data_authority->get('field_person')->referencedEntities();
+        $partnership_members = $authority_members = $par_data_authority->get('field_person')->referencedEntities();
       }
       else {
         // Get the authority from the partnership and send to all the members.
