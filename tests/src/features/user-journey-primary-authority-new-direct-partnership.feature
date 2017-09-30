@@ -99,10 +99,10 @@ Feature: New Direct Partnership
 
         # EMAIL
 
-        Then the inputfield "#edit-email-subject" contains the text "New Partnership on the Primary Authority Register"
+        Then the inputfield "#edit-email-subject" contains the text "Invitation to join the Primary Authority Registe"
         When I click on the button "#edit-next"
-#        Then the element "#block-par-theme-content" contains the text "par_business_change@example.com"
-
+        Then the element "#block-par-theme-content" contains the text "Your partnership application has been sent to"
+        And the element "#block-par-theme-content" contains the text "par_business_change@example.com"
 
 #        # HELPDESK USER
 
