@@ -62,7 +62,7 @@ class ParPartnershipFlowsEnforceOrganisationForm extends ParBaseForm {
       $current_page = pager_default_initialize(count($members), $number_of_items);
 
       // Split the items up into chunks:
-      $chunks = array_chunk($members, $number_of_items);
+      $chunks = array_chunk($members, $number_of_items, TRUE);
 
       // Add the items for our current page to the fieldset.
       $page_options = [];
