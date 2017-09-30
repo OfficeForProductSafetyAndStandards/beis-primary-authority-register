@@ -19,7 +19,8 @@ Feature: New Direct Partnership
     When I click on the link "Apply for a new partnership"
 
       # CHOOSE PARTNERSHIP TYPE
-
+    And I click on the button "#edit-next"
+    Then I expect that element ".error-message" contains the text "Please select the type of application"
     When I click on the radio ".form-radio"
     And I click on the button "#edit-next"
 
