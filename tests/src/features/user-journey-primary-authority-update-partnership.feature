@@ -80,11 +80,11 @@ Feature: Primary Authority - Change Partnership Details
 #    When I click on the button "#edit-save"
       # Then I expect that element ".table-scroll-wrapper" contains the text "✔"
       # And the element ".table-scroll-wrapper" contains the text "Cookie control"
-    And I click on the button ".button"
+#    And I click on the button ".button"
 #        Then I expect that element "#edit-regulatory-functions" contains the text "Cookie control"
 #    And I click on the checkbox "#edit-partnership-info-agreed-authority"
-    And I click on the button "#edit-save"
-    Then I expect that element "h1" contains the text "Primary Authority Register"
+#    And I click on the button "#edit-save"
+#    Then I expect that element "h1" contains the text "Primary Authority Register"
 
         # INSPECTION PLANS
 
