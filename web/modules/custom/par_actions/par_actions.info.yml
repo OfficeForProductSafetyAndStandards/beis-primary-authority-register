@@ -6,4 +6,3 @@ package: PAR
 dependencies:
   - views
   - invite
-  - tokens
