@@ -16,7 +16,7 @@ steps:
       edit_field_authority_person: 5
       advice: 6
       inspection_plans: 11
-      done: 12
+      save: 12
   2:
     route: par_partnership_flows.about_partnership
     form_id: par_partnership_about

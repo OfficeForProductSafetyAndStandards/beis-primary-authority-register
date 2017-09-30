@@ -221,7 +221,11 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
 
       // Save the value for the confirmation field.
       if ($checkbox) {
-        $par_data_partnership->set($checkbox, $this->getTempDataValue($checkbox));
+        $par_data_partnership->set($checkbox, $this->decideBooleanValue($this->getTempDataValue($checkbox)));
+
+        // Set partnership status.
+        $par_data_partnership->set('partnership_status',
+          ($checkbox === 'partnership_info_agreed_authority') ? 'confirmed_authority' : 'confirmed_business');
       }
 
       if ($checkbox && $par_data_partnership->save()) {
