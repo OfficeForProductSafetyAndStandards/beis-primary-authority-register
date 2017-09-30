@@ -1,4 +1,4 @@
-@ci
+@Pending
 Feature: Enforcement Officer/PA - Enforcement Notice Process
 
     Background:
