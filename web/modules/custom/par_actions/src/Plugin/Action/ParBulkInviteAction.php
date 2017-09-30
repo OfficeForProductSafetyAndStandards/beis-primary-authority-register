@@ -49,16 +49,26 @@ class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements Views
      */
 
     if ($entity instanceof ParDataPartnership) {
-      // Get the authority from the partnership and send to all the members.
-      $partnership_members = $entity->get('field_authority_person')->referencedEntities();
+      $all_members = (bool) $this->configuration['par_bulk_invite_all_authority_members'];
 
-      // Make sure they are members of the authority.
-      $par_data_authority = current($entity->get('field_authority')->referencedEntities());
-      $authority_members = $par_data_authority->retrieveEntityIds('field_person');
+      // If we're inviting all members get the authority straight from the partnership.
+      if ($all_members === TRUE) {
+        $par_data_authority = current($entity->get('field_authority')->referencedEntities());
+        $partnership_members = $par_data_authority->get('field_person')->referencedEntities();
+      }
+      else {
+        // Get the authority from the partnership and send to all the members.
+        $partnership_members = $entity->get('field_authority_person')->referencedEntities();
+
+        // Make sure they are members of the authority.
+        $par_data_authority = current($entity->get('field_authority')->referencedEntities());
+        $authority_members = $par_data_authority->retrieveEntityIds('field_person');
+      }
 
       $token_service = \Drupal::token();
 
       foreach ($partnership_members as $delta => $member) {
+        drupal_set_message($member->id());
         // Don't invite the user if they already have an account.
         $account_exists = (bool) $this->getParDataManager()->getEntitiesByProperty('user', 'mail', $member->get('email')->getString());
 
@@ -114,6 +124,12 @@ HEREDOC;
    * {@inheritdoc}
    */
   public function buildPreConfigurationForm(array $form, array $values, FormStateInterface $form_state) {
+    $form['par_bulk_invite_all_authority_members'] = [
+      '#title' => $this->t('Invite all authority members'),
+      '#description' => $this->t('If checked this will send invites to all members of the authority, not just those responsible for a partnership.'),
+      '#type' => 'checkbox',
+      '#default_value' => isset($values['par_bulk_invite_all_authority_members']) ? TRUE : FALSE,
+    ];
     $form['par_bulk_invite_message_body'] = [
       '#title' => $this->t('Message body'),
       '#type' => 'textarea',
@@ -145,6 +161,12 @@ HEREDOC;
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $body = $form_state->getValue('par_bulk_invite_message_body') ?: $this->getDefaultMessage();
     $subject = $form_state->getValue('par_bulk_invite_message_subject') ?: 'New Primary Authority Register';
+    $form['par_bulk_invite_all_authority_members'] = [
+      '#title' => $this->t('Invite all authority members'),
+      '#description' => $this->t('If checked this will send invites to all members of the authority, not just those responsible for a partnership.'),
+      '#type' => 'checkbox',
+      '#default_value' => $form_state->getValue('par_bulk_invite_message_subject') ? TRUE : FALSE,
+    ];
     $form['par_bulk_invite_message_subject'] = [
       '#title' => $this->t('Message subject'),
       '#type' => 'textfield',
@@ -174,6 +196,7 @@ HEREDOC;
     // This is not required here, when this method is not defined,
     // form values are assigned to the action configuration by default.
     // This function is a must only when user input processing is needed.
+    $this->configuration['par_bulk_invite_all_authority_members'] = $form_state->getValue('par_bulk_invite_all_authority_members');
     $this->configuration['par_bulk_invite_message_body'] = $form_state->getValue('par_bulk_invite_message_body');
     $this->configuration['par_bulk_invite_message_subject'] = $form_state->getValue('par_bulk_invite_message_subject');
   }
