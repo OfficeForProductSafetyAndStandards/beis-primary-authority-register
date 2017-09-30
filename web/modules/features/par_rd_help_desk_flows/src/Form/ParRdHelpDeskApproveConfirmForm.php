@@ -72,7 +72,6 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
       '#required' => TRUE,
     ];
 
-
     $regulatory_functions = $this->getParDataManager()->getEntitiesByType('par_data_regulatory_function');
     $regulatory_function_options = $this->getParDataManager()->getEntitiesAsOptions($regulatory_functions);
     $form['partnership_regulatory_functions'] = [
