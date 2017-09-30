@@ -17,7 +17,7 @@ Feature: Primary Authority - Change Partnership Details
 
       # PARTNERSHIPS DASHBOARD
 
-    And I add "Cotswold Home Inspectors" to the inputfield "#edit-keywords"
+    And I add "National Federation of Property" to the inputfield "#edit-keywords"
     And I click on the button "#edit-submit-helpdesk-dashboard"
     And I click on the button "a*=Council"
     And I expect that element "h1" is not empty
