@@ -610,22 +610,6 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
-   * Get the available options for regulatory functions.
-   *
-   * @return array
-   *   An array of options keyed by ID.
-   */
-  public function getRegulatoryFunctionsAsOptions() {
-    $options = [];
-    $storage = $this->getParEntityType('par_data_regulatory_function');
-    foreach ($this->getEntityTypeStorage($storage->id())->loadMultiple() as $function) {
-      $options[$function->id()] = $function->get('function_name')->getString();
-    }
-
-    return $options;
-  }
-
-  /**
    * Process a CSV file
    *
    * @param FileInterface $file

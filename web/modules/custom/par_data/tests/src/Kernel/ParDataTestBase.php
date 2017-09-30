@@ -302,6 +302,10 @@ class ParDataTestBase extends EntityKernelTestBase {
     $enforcing_authority = ParDataAuthority::create($this->getAuthorityValues());
     $enforcing_authority->save();
 
+    // @TODO We must create an organisation to add to this enforcement
+    //  notice, however, the legal entity created for the partnership
+    // must match the legal entity created for the organisation.
+
     // We need to create a Legal Entity first.
     $legal_entity = ParDataLegalEntity::create($this->getLegalEntityValues());
     $legal_entity->save();

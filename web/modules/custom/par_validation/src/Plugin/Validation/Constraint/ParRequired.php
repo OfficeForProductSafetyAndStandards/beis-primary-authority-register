@@ -20,6 +20,11 @@ class ParRequired extends Constraint {
   public $message = 'You must fill in the missing information.';
 
   /**
+   * The properties that we want to validate.
+   */
+  public $properties = ['value'];
+
+  /**
    * @return string
    *   The full class name for the constraint validator.
    */

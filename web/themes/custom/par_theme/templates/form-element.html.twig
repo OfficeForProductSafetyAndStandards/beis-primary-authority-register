@@ -59,7 +59,7 @@
     'js-form-item-' ~ name|clean_class,
     title_display not in ['after', 'before'] ? 'form-no-label',
     disabled == 'disabled' ? 'form-disabled',
-    errors and type not in ['radio', 'checkbox'] ? 'form-group-error'
+    errors and type not in ['radio'] ? 'form-group-error'
   ]
 %}
 {%

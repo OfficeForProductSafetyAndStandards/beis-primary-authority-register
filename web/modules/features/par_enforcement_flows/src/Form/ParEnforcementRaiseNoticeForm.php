@@ -3,6 +3,7 @@
 namespace Drupal\par_enforcement_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_data\Entity\ParDataPartnership;
@@ -45,10 +46,20 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
     $enforcement_notice_bundle = $this->getParDataManager()->getParBundleEntity('par_data_enforcement_notice');
 
     //get the correct par_data_authority_id set by the previous form.
-    $authority_id = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
+    $enforcing_authority_id = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
+    $organisation_id = $this->getDefaultValues('par_data_organisation_id', '', 'par_enforce_organisation');
+
+    if (empty($enforcing_authority_id) || empty($organisation_id)) {
+      $form['enforcement_ids'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('You have not selected an organisation to enforce or an authroity to enforce on behalf of, please go back to the previous steps to complete this form.'),
+        '#prefix' => '<p><strong>',
+        '#suffix' => '</strong><p>',
+      ];
+    }
 
     // Organisation summary.
-    $par_data_organisation = current($par_data_partnership->getOrganisation());
+    $par_data_organisation = ParDataOrganisation::load($organisation_id);
     $par_data_authority = current($par_data_partnership->getAuthority());
 
     $form['authority'] =[
@@ -122,14 +133,22 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
     }
 
     $legal_entity_reg_names = $par_data_organisation->getPartnershipLegalEntities();
-    //After getting a list of all the associated legal entities add a use custom option.
+    // After getting a list of all the associated legal entities add a use custom option.
     $legal_entity_reg_names['add_new']  = 'Add a legal entity';
+
+    // Choose the defaults based on how many legal entities there are to choose from.
+    if (count($legal_entity_reg_names) >= 1 && !$this->getDefaultValues('legal_entities_select', FALSE)) {
+      $default = key($legal_entity_reg_names);
+    }
+    elseif (count($legal_entity_reg_names) < 1 && !$this->getDefaultValues('legal_entities_select', FALSE)) {
+      $default = 'add_new';
+    }
 
       $form['legal_entities_select'] = [
         '#type' => 'radios',
         '#title' => $this->t('Select a legal entity'),
         '#options' => $legal_entity_reg_names,
-        '#default_value' => $this->getDefaultValues('legal_entities_select'),
+        '#default_value' => $this->getDefaultValues('legal_entities_select', $default),
         '#required' => TRUE,
         '#prefix' => '<div>',
         '#suffix' => '</div>',
@@ -155,6 +174,10 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
+
+    if (empty($enforcing_authority_id) || empty($organisation_id)) {
+      $this->setElementError('enforcement_ids', $form_state, 'Please select an organisation to enforce or an authroity to enforce on behalf of to proceed.');
+    }
   }
 
   /**
