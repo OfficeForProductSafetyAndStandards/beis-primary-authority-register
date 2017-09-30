@@ -57,6 +57,15 @@ class ParPartnershipFlowsEnforceOrganisationForm extends ParBaseForm {
         $members = $this->getParDataManager()->getEntitiesAsOptions($coordinated_organisation, $members);
       }
 
+      if (empty($members)) {
+        $form['no_members'] = [
+          '#type' => 'markup',
+          '#markup' => $this->t('Sorry but there are no members for this organisation.'),
+        ];
+
+        // @todo Need to clear the continue button.
+        return parent::buildForm($form, $form_state);
+      }
       // Initialize pager and get current page.
       $number_of_items = 10;
       $current_page = pager_default_initialize(count($members), $number_of_items);
@@ -66,6 +75,7 @@ class ParPartnershipFlowsEnforceOrganisationForm extends ParBaseForm {
 
       // Add the items for our current page to the fieldset.
       $page_options = [];
+
       foreach ($chunks[$current_page] as $delta => $item) {
         $page_options[$delta] = $item;
       }
