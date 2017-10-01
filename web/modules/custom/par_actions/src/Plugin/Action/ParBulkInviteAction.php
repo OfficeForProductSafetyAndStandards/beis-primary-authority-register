@@ -54,11 +54,11 @@ class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements Views
       // If we're inviting all members get the authority straight from the partnership.
       if ($all_members === TRUE) {
         $par_data_authority = current($entity->get('field_authority')->referencedEntities());
-        $partnership_members = $authority_members = $par_data_authority->get('field_person')->referencedEntities();
+        $members = $par_data_authority->get('field_person')->referencedEntities();
       }
       else {
-        // Get the authority from the partnership and send to all the members.
-        $partnership_members = $entity->get('field_authority_person')->referencedEntities();
+        // Get the MEMBERS from the partnership and send to all the members that are with an authority.
+        $members = $entity->get('field_authority_person')->referencedEntities();
 
         // Make sure they are members of the authority.
         $par_data_authority = current($entity->get('field_authority')->referencedEntities());
@@ -67,12 +67,14 @@ class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements Views
 
       $token_service = \Drupal::token();
 
-      foreach ($partnership_members as $delta => $member) {
+      foreach ($members as $delta => $member) {
         // Don't invite the user if they already have an account.
         $account_exists = (bool) $this->getParDataManager()->getEntitiesByProperty('user', 'mail', $member->get('email')->getString());
+        drupal_set_message($member->get('email')->getString());
 
-        if (in_array($member->id(), $authority_members) && !$account_exists) {
+        if (($all_members === TRUE || in_array($member->id(), $authority_members)) && !$account_exists) {
           try {
+            drupal_set_message($member->get('email')->getString());
             $subject = $token_service->replace($this->configuration['par_bulk_invite_message_subject'], ['par' => $member]);
             $body = $token_service->replace($this->configuration['par_bulk_invite_message_body'], ['par' => $member]);
 
