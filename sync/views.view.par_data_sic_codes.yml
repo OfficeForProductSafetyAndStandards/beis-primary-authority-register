@@ -1,6 +1,6 @@
 uuid: 94611297-aa03-4726-86ec-498fb3ccde3a
 langcode: en
-status: true
+status: false
 dependencies:
   module:
     - pagerer

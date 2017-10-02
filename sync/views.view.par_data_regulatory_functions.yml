@@ -1,6 +1,6 @@
 uuid: 21030860-5435-469c-bbe1-f7ce11cdf097
 langcode: en
-status: true
+status: false
 dependencies:
   module:
     - par_data
@@ -138,6 +138,7 @@ display:
       empty: {  }
       relationships: {  }
       arguments: {  }
+      display_extenders: {  }
     cache_metadata:
       max-age: 0
       contexts:
