@@ -50,11 +50,14 @@ class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements Views
      */
 
     $invite_existing = (bool) $this->configuration['par_bulk_invite_existing'];
-    $token_service = \Drupal::token();
 
     // Set up an array to store all invited users.
-    if (empty($context['sandbox']['invited'])) {
+    if (empty($this->context['sandbox'])) {
       $context['sandbox']['invited'] = [];
+      $context['sandbox']['count'] = 0;
+    }
+    else {
+      $context = $this->context;
     }
 
     if ($entity instanceof ParDataPerson) {
@@ -83,6 +86,7 @@ class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements Views
           $invite->setPlugin('invite_by_email');
 
           if ($invite->save()) {
+            $context['sandbox']['count']++;
             $context['sandbox']['invited'][] = $email;
           }
         }
@@ -95,6 +99,8 @@ class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements Views
     else {
       drupal_set_message("This action can only be performed on PAR people", 'error');
     }
+
+    $this->setContext($context);
   }
 
   /**
