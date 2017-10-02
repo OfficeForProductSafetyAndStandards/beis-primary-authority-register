@@ -8,19 +8,23 @@ use Drupal\par_data\Entity\ParDataPerson;
  * Implements hook_token_info().
  */
 function par_actions_token_info() {
-  $info = [];
-  $info['types']['par'] = [
-    'name' => t('PAR'),
-    'description' => ('PAR data tokens.'),
+  $type = [
+    'name' => t('PAR Invite'),
+    'description' => t('PAR extended invite tokens.'),
+    'needs-data' => 'invite'
   ];
 
-  $info['tokens']['par']['par:member-name'] = [
+  // Add custom par tokens to invitation.
+  $invite['par:member-name'] = [
     'name' => t('PAR member name'),
     'description' => t('Name of the PAR Member.'),
     'dynamic' => TRUE,
   ];
 
-  return $info;
+  return [
+    'types' => ['invite' => $type],
+    'tokens' => ['invite' => $invite],
+  ];
 }
 
 /**
@@ -28,13 +32,14 @@ function par_actions_token_info() {
  */
 function par_actions_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
   $replacements = [];
-  if ($type == 'par') {
+  if ($type == 'invite') {
 
+    $person = current($data['invite']->get('field_invite_par_person')->referencedEntities());
     foreach ($tokens as $name => $original) {
       switch ($name) {
-        case 'member-name':
-          if ($data['par'] instanceof ParDataPerson) {
-            $replacements[$original] = $data['par']->getFullName();
+        case 'par:member-name':
+          if ($person && $person instanceof ParDataPerson) {
+            $replacements[$original] = $person->label();
           }
           break;
 

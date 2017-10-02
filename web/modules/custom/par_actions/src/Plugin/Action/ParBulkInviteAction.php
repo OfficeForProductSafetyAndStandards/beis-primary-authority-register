@@ -50,11 +50,14 @@ class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements Views
      */
 
     $invite_existing = (bool) $this->configuration['par_bulk_invite_existing'];
-    $token_service = \Drupal::token();
 
     // Set up an array to store all invited users.
-    if (empty($context['sandbox']['invited'])) {
+    if (empty($this->context['sandbox'])) {
       $context['sandbox']['invited'] = [];
+      $context['sandbox']['count'] = 0;
+    }
+    else {
+      $context = $this->context;
     }
 
     if ($entity instanceof ParDataPerson) {
@@ -67,20 +70,23 @@ class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements Views
 
       if ((!$account_exists || $invite_existing) && (!empty($email) && !$already_invited)) {
         try {
-          $subject = $token_service->replace($this->configuration['par_bulk_invite_message_subject'], ['par' => $entity]);
-          $body = $token_service->replace($this->configuration['par_bulk_invite_message_body'], ['par' => $entity]);
-
           $invite = Invite::create([
             'type' => 'invite_authority_member',
             'user_id' => \Drupal::currentUser()->id(),
             'invitee' => \Drupal::currentUser()->getEmail(),
           ]);
+
+          $subject = $this->configuration['par_bulk_invite_message_subject'];
+          $body = $this->configuration['par_bulk_invite_message_body'];
+
           $invite->set('field_invite_email_address', $email);
           $invite->set('field_invite_email_subject', $subject);
           $invite->set('field_invite_email_body', $body);
+          $invite->set('field_invite_par_person', [$entity->id()]);
           $invite->setPlugin('invite_by_email');
 
           if ($invite->save()) {
+            $context['sandbox']['count']++;
             $context['sandbox']['invited'][] = $email;
           }
         }
@@ -93,6 +99,8 @@ class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements Views
     else {
       drupal_set_message("This action can only be performed on PAR people", 'error');
     }
+
+    $this->setContext($context);
   }
 
   /**
@@ -102,13 +110,13 @@ class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements Views
    */
   public function getDefaultMessage() {
     $message_body = <<<HEREDOC
-Dear [par:member-name],
+Dear [invite:par:member-name],
 
 Primary Authority has been simplified and is now open to all UK businesses.
 
 Simplifying the scheme has required the creation of an entirely new Primary Authority Register in order to accommodate the greater volume of businesses and partnerships.
 
-In order to access the new PA Register, please click on the following link: [site:login-url]
+In order to access the new PA Register, please click on the following link: [invite:invite-accept-link]
 
 After registering, you can continue to access the new PA Register at using the following link: [site:url]
 
