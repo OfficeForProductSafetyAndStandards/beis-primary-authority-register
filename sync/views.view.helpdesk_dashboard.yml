@@ -12,7 +12,6 @@ dependencies:
     - rest
     - serialization
     - user
-    - views_bulk_operations
     - views_data_export
 _core:
   default_config_hash: SY11evCZNodUP24CXAHlPlJ1xihSq8HJlr6mdZOzAk0
@@ -652,7 +651,7 @@ display:
                 value: confirmed_business
               4:
                 title: Active
-                operator: '!='
+                operator: '='
                 value: confirmed_rd
           entity_type: par_data_partnership
           entity_field: partnership_status
@@ -771,66 +770,6 @@ display:
           content: '<p>Sorry, there are no results for your search.</p>'
           plugin_id: text_custom
       fields:
-        views_bulk_operations_bulk_form:
-          id: views_bulk_operations_bulk_form
-          table: views
-          field: views_bulk_operations_bulk_form
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          batch: 1
-          batch_size: '10'
-          form_step: true
-          action_title: Action
-          selected_actions:
-            par_bulk_invite: par_bulk_invite
-          preconfiguration:
-            par_bulk_invite:
-              label_override: 'Invite authority members'
-              par_bulk_invite_message_body: "Dear [par-invite:recipient-name],\n\nPrimary Authority has been simplified and is now open to all UK businesses.\n\nSimplifying the scheme has required the creation of an entirely new Primary Authority Register in order to accommodate the greater volume of businesses and partnerships.\n\nIn order to access the new PA Register, please click on the following link: [site:login-url]\n\nAfter registering, you can continue to access the new PA Register at using the following link: [site:url]\n\nThanks for your help.\n[par-invite:sender-name]"
-              par_bulk_invite_message_subject: 'New Primary Authority Register'
-          plugin_id: views_bulk_operations_bulk_form
         id:
           id: id
           table: par_partnerships_field_revision

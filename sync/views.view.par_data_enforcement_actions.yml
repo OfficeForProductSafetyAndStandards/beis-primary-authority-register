@@ -1,6 +1,6 @@
 uuid: a612ef2f-d04e-43d3-b143-f2de196fa846
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - field.storage.par_data_enforcement_action.field_regulatory_function

@@ -1,6 +1,6 @@
 uuid: 924475be-4df2-42d7-9bd6-32c93ba87f9c
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - field.storage.par_data_organisation.field_legal_entity
