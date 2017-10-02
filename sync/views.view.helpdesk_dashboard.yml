@@ -1094,69 +1094,6 @@ display:
           entity_type: par_data_partnership
           entity_field: partnership_status
           plugin_id: field
-        field_authority_person:
-          id: field_authority_person
-          table: par_data_partnership__field_authority_person
-          field: field_authority_person
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 'Invite Authority Contacts'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: true
-            path: '/helpdesk/partnership/{{ id }}/invite/{{ field_authority_person__target_id }}'
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_label
-          settings:
-            link: false
-          group_column: target_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 5
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
         par_flow_link:
           id: par_flow_link
           table: par_authorities_field_data
@@ -1218,8 +1155,7 @@ display:
         - url
         - url.query_args
         - user.permissions
-      tags:
-        - 'config:field.storage.par_data_partnership.field_authority_person'
+      tags: {  }
   rd_helpdesk_dashboard_csv_export:
     display_plugin: data_export
     id: rd_helpdesk_dashboard_csv_export

@@ -714,7 +714,7 @@ display:
           relationship: none
           group_type: group
           admin_label: Authority
-          required: false
+          required: true
           entity_type: par_data_person
           plugin_id: entity_reverse
         reverse__par_data_partnership__field_authority_person:
