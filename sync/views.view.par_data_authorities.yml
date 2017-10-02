@@ -1,6 +1,6 @@
 uuid: 1abb5d61-f87d-4e3e-9df7-97f9b7569390
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - field.storage.par_data_authority.field_allowed_regulatory_fn

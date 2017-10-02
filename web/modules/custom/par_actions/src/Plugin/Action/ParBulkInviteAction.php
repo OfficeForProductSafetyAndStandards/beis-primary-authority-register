@@ -4,6 +4,7 @@ namespace Drupal\par_actions\Plugin\Action;
 
 use Drupal\invite\Entity\Invite;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\views_bulk_operations\Action\ViewsBulkOperationsActionBase;
 use Drupal\views_bulk_operations\Action\ViewsBulkOperationsPreconfigurationInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -48,53 +49,49 @@ class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements Views
      * the public getView() method.
      */
 
-    if ($entity instanceof ParDataPartnership) {
-      $all_members = (bool) $this->configuration['par_bulk_invite_all_authority_members'];
+    $invite_existing = (bool) $this->configuration['par_bulk_invite_existing'];
+    $token_service = \Drupal::token();
 
-      // If we're inviting all members get the authority straight from the partnership.
-      if ($all_members === TRUE) {
-        $par_data_authority = current($entity->get('field_authority')->referencedEntities());
-        $members = $par_data_authority->get('field_person')->referencedEntities();
-      }
-      else {
-        // Get the MEMBERS from the partnership and send to all the members that are with an authority.
-        $members = $entity->get('field_authority_person')->referencedEntities();
+    // Set up an array to store all invited users.
+    if (empty($context['sandbox']['invited'])) {
+      $context['sandbox']['invited'] = [];
+    }
 
-        // Make sure they are members of the authority.
-        $par_data_authority = current($entity->get('field_authority')->referencedEntities());
-        $authority_members = $par_data_authority->retrieveEntityIds('field_person');
-      }
+    if ($entity instanceof ParDataPerson) {
+      $email = $entity->get('email')->getString();
 
-      $token_service = \Drupal::token();
+      // Don't invite the user if they already have an account
+      // or have already been invited.
+      $account_exists = $email ? (bool) $this->getParDataManager()->getEntitiesByProperty('user', 'mail', $entity->get('email')->getString()) : FALSE;
+      $already_invited = $email ? in_array($email, $context['sandbox']['invited']) : FALSE;
 
-      foreach ($members as $delta => $member) {
-        // Don't invite the user if they already have an account.
-        $account_exists = (bool) $this->getParDataManager()->getEntitiesByProperty('user', 'mail', $member->get('email')->getString());
-        drupal_set_message($member->get('email')->getString());
+      if ((!$account_exists || $invite_existing) && (!empty($email) && !$already_invited)) {
+        try {
+          $subject = $token_service->replace($this->configuration['par_bulk_invite_message_subject'], ['par' => $entity]);
+          $body = $token_service->replace($this->configuration['par_bulk_invite_message_body'], ['par' => $entity]);
 
-        if (($all_members === TRUE || in_array($member->id(), $authority_members)) && !$account_exists) {
-          try {
-            drupal_set_message($member->get('email')->getString());
-            $subject = $token_service->replace($this->configuration['par_bulk_invite_message_subject'], ['par' => $member]);
-            $body = $token_service->replace($this->configuration['par_bulk_invite_message_body'], ['par' => $member]);
+          $invite = Invite::create([
+            'type' => 'invite_authority_member',
+            'user_id' => \Drupal::currentUser()->id(),
+            'invitee' => \Drupal::currentUser()->getEmail(),
+          ]);
+          $invite->set('field_invite_email_address', $email);
+          $invite->set('field_invite_email_subject', $subject);
+          $invite->set('field_invite_email_body', $body);
+          $invite->setPlugin('invite_by_email');
 
-            $invite = Invite::create([
-              'type' => 'invite_authority_member',
-              'user_id' => \Drupal::currentUser()->id(),
-              'invitee' => \Drupal::currentUser()->getEmail(),
-            ]);
-            $invite->set('field_invite_email_address', $member->get('email')->getString());
-            $invite->set('field_invite_email_subject', $subject);
-            $invite->set('field_invite_email_body', $body);
-            $invite->setPlugin('invite_by_email');
-
-            $invite->save();
-          }
-          catch (\Exception $e) {
-            drupal_set_message("Error occurred executing invitation: {$e->getMessage()}", 'error');
+          if ($invite->save()) {
+            $context['sandbox']['invited'][] = $email;
           }
         }
+        catch (\Exception $e) {
+          drupal_set_message("Error occurred executing invitation: {$e->getMessage()}", 'error');
+        }
       }
+
+    }
+    else {
+      drupal_set_message("This action can only be performed on PAR people", 'error');
     }
   }
 
@@ -125,11 +122,11 @@ HEREDOC;
    * {@inheritdoc}
    */
   public function buildPreConfigurationForm(array $form, array $values, FormStateInterface $form_state) {
-    $form['par_bulk_invite_all_authority_members'] = [
-      '#title' => $this->t('Invite all authority members'),
-      '#description' => $this->t('If checked this will send invites to all members of the authority, not just those responsible for a partnership.'),
+    $form['par_bulk_invite_existing'] = [
+      '#title' => $this->t('Invite existimg members'),
+      '#description' => $this->t('If checked this will re-invite eixsting members.'),
       '#type' => 'checkbox',
-      '#default_value' => isset($values['par_bulk_invite_all_authority_members']) ? TRUE : FALSE,
+      '#default_value' => isset($values['par_bulk_invite_existing']) ? TRUE : FALSE,
     ];
     $form['par_bulk_invite_message_body'] = [
       '#title' => $this->t('Message body'),
@@ -166,7 +163,7 @@ HEREDOC;
       '#title' => $this->t('Invite all authority members'),
       '#description' => $this->t('If checked this will send invites to all members of the authority, not just those responsible for a partnership.'),
       '#type' => 'checkbox',
-      '#default_value' => $form_state->getValue('par_bulk_invite_message_subject') ? TRUE : FALSE,
+      '#default_value' => $form_state->getValue('par_bulk_invite_existing') ? TRUE : FALSE,
     ];
     $form['par_bulk_invite_message_subject'] = [
       '#title' => $this->t('Message subject'),
@@ -197,7 +194,7 @@ HEREDOC;
     // This is not required here, when this method is not defined,
     // form values are assigned to the action configuration by default.
     // This function is a must only when user input processing is needed.
-    $this->configuration['par_bulk_invite_all_authority_members'] = $form_state->getValue('par_bulk_invite_all_authority_members');
+    $this->configuration['par_bulk_invite_existing'] = $form_state->getValue('par_bulk_invite_existing');
     $this->configuration['par_bulk_invite_message_body'] = $form_state->getValue('par_bulk_invite_message_body');
     $this->configuration['par_bulk_invite_message_subject'] = $form_state->getValue('par_bulk_invite_message_subject');
   }
