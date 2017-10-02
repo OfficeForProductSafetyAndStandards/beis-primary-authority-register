@@ -111,6 +111,12 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
 
     // Save the value for the about_partnership field.
     $legal_entity = $this->getRouteParam('par_data_legal_entity');
+
+    // Only legal entity type "limited_company" saves a companies house number.
+    if ($legal_entity && $this->getTempDataValue('legal_entity_type') !== 'limited_company') {
+      $this->setTempDataValue('company_house_no', NULL);
+    }
+
     if (!empty($legal_entity)) {
       $legal_entity->set('registered_name', $this->getTempDataValue('registered_name'));
       $legal_entity->set('legal_entity_type', $this->getTempDataValue('legal_entity_type'));
