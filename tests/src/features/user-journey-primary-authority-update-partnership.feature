@@ -17,7 +17,7 @@ Feature: Primary Authority - Change Partnership Details
 
       # PARTNERSHIPS DASHBOARD
 
-    And I add "Kentucky Fried Chicken" to the inputfield "#edit-keywords"
+    And I add "Council" to the inputfield "#edit-keywords"
     And I click on the button "#edit-submit-helpdesk-dashboard"
     And I click on the button "a*=Council"
     And I expect that element "h1" is not empty
