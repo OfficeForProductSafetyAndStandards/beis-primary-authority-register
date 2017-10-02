@@ -67,17 +67,19 @@ class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements Views
 
       if ((!$account_exists || $invite_existing) && (!empty($email) && !$already_invited)) {
         try {
-          $subject = $token_service->replace($this->configuration['par_bulk_invite_message_subject'], ['par' => $entity]);
-          $body = $token_service->replace($this->configuration['par_bulk_invite_message_body'], ['par' => $entity]);
-
           $invite = Invite::create([
             'type' => 'invite_authority_member',
             'user_id' => \Drupal::currentUser()->id(),
             'invitee' => \Drupal::currentUser()->getEmail(),
           ]);
+
+          $subject = $this->configuration['par_bulk_invite_message_subject'];
+          $body = $this->configuration['par_bulk_invite_message_body'];
+
           $invite->set('field_invite_email_address', $email);
           $invite->set('field_invite_email_subject', $subject);
           $invite->set('field_invite_email_body', $body);
+          $invite->set('field_invite_par_person', [$entity->id()]);
           $invite->setPlugin('invite_by_email');
 
           if ($invite->save()) {
