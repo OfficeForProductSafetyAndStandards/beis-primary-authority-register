@@ -18,6 +18,7 @@ Feature: Primary Authority - Change Partnership Details
       # PARTNERSHIPS DASHBOARD
 
     And I add "Council" to the inputfield "#edit-keywords"
+    And I click on the button "#edit-submit-helpdesk-dashboard"
     And I click on the button "td.views-field.views-field-authority-name a"
     And I expect that element "h1" is not empty
 
