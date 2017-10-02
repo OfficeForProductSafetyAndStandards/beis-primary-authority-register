@@ -1,46 +1,58 @@
 @Pending
 Feature: Enforcement Officer/PA - Enforcement Notice Process
 
-  Background:
-      # TEST DATA RESET
-    Given I reset the test data
+    Background:
+        # TEST DATA RESET
+        Given I reset the test data
 
-  Scenario: Enforcement Officer/PA - Issue enforcement notice
-      # LOGIN SCREEN
+    Scenario: Enforcement Officer/PA - Issue enforcement notice
+        # LOGIN SCREEN
 
-    Given I am logged in as "par_authority@example.com"
+        Given I am logged in as "par_authority@example.com"
 
-      # PARTNERSHIP TASKS SCREEN/DASHBOARD
+        # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
-    And I click on the link "Search for a partnership"
-    When I add "Bradford" to the inputfield "#edit-keywords"
-    And I click on the button "#edit-submit-partnership-search"
-    When I click on the button "td.views-field.views-field-authority-name a"
+        And I click on the link "Search for a partnership"
+        When I add "Lower East" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-partnership-search"
+        When I click on the button "td.views-field.views-field-authority-name a"
 
-      # ENFORCEMENT ACTION FORM
+        # ENFORCEMENT ACTION FORM
 
-    When I click on the link "Send notification of enforcement action"
-    Then I expect that element "h3" contains the text "Which authority are you acting on behalf of"
-    When I click on the radio ".form-radio"
-    And I click on the button "#edit-next"
-#    Then I expect that element "#block-par-theme-page-title" contains the text "Raise Enforcement Notice"
+        When I click on the link "Send notification of enforcement action"
+        Then I expect that element "h3" contains the text "Which authority are you acting on behalf of"
+        When I click on the radio ".form-radio"
+        And I click on the button "#edit-next"
 
-    # ENFORCEMENT SUMMARY
+        # CHOOSE MEMBER
 
-    And I add "action summary enforcement notice" to the inputfield "#edit-action-sumary"
-    And I click on the radio "#edit-enforcement-type-proposed"
-    And I click on the button "#edit-next"
+#        Then I expect that element "#edit-par-data-organisation-id--wrapper" contains the text "Choose the member to enforce"
+#        And I click on the radio "input*=Cornish Cheese"
+#        And I click on the button "#edit-next"
 
-    And I add "Title of the enforcement notice" to the inputfield "#edit-title-of-action"
-    And I click on the radio "#edit-regulatory-functions-1"
-    And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
-    And I click on the button "#edit-next"
-    Then I expect that element "#par-enforcement-notice-raise-confirm" contains the text "action summary enforcement notice"
-    And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Title of the enforcement notice"
-    And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Some details about the enforcement notice"
-    And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "You will be notified by email of the outcome of this notification"
-    And I click on the button "#edit-save"
+        # CHOOSE LEGAL ENTITY
 
+#        And I click on the radio "#edit-legal-entities-select-add-new"
+        And I add "Legal Entity 1" to the inputfield "Enter the name of the legal entity"
+        And I click on the button "#edit-next"
+
+      # ENFORCEMENT SUMMARY
+
+        And I add "action summary enforcement notice" to the inputfield "#edit-action-sumary"
+        And I click on the radio "#edit-enforcement-type-proposed"
+        And I click on the button "#edit-next"
+
+        And I add "Title of the enforcement notice" to the inputfield "#edit-title-of-action"
+        And I click on the radio "#edit-regulatory-functions-1"
+        And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
+        And I click on the button "#edit-next"
+        Then I expect that element "#par-enforcement-notice-raise-confirm" contains the text "action summary enforcement notice"
+        And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Title of the enforcement notice"
+        And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Some details about the enforcement notice"
+        And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Once the primary authority receives this notification, they have 5 working days to respond to you if they intend to block the action"
+        And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "You will be notified by email of the outcome of this notification"
+        When I click on the button "#edit-save"
+        Then I expect that element "h1.heading-xlarge" contains the text "Primary Authority Register"
 
         # REFER FORM
 
