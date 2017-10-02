@@ -53,7 +53,7 @@ install:
   - docker exec -it par_beta_web bash -c "echo 'deb http://dl.google.com/linux/chrome/deb/ stable main' >> /etc/apt/sources.list.d/google.list"
   - docker exec -it par_beta_web bash -c "apt-get update"
   - docker exec -it par_beta_web bash -c "apt-get install -y google-chrome-stable"
-  - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
+#  - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
 
 #-----------------------------------------------------------------------------
 # Setup local config defaults
@@ -101,7 +101,7 @@ install:
 # Stamp the code with the build number
 #-----------------------------------------------------------------------------
 
-  - 'echo "#${TRAVIS_BUILD_NUMBER} ${TRAVIS_TAG}: $(date -u)" > web/build_version.txt'
+  - 'echo "{ \"build\" : \"${TRAVIS_BUILD_NUMBER}\", \"tag\":\"${TRAVIS_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt'
 
 ##############################################################################
 ### TEST                                                                   ###
@@ -112,13 +112,14 @@ before_script:
 
 script:
   - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
-  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
-  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/wdio wdio.BUILD.conf.js"
+#  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
+#  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run test:build"
+
 #-----------------------------------------------------------------------------
 # Generate HTML reports with screenshots. HTML report location: tests/reports/allure-reports/index.html, TAR it up.
 #-----------------------------------------------------------------------------
-  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run allure && tar -cf reports/allure-report.tar.gz ./allure-results"
-  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/pa11y-ci -T 1 -j -s 'http://localhost/sitemap.xml' -f 'https://par-beta-test.cloudapps.digital' -r 'http://localhost:80' > ./reports/wcag2aa_report.json"
+#  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run allure && tar -cf reports/allure-report.tar.gz ./allure-results"
+#  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/pa11y-ci -T 1 -j -s 'http://localhost/sitemap.xml' -f 'https://par-beta-test.cloudapps.digital' -r 'http://localhost:80' > ./reports/wcag2aa_report.json"
 
 #-----------------------------------------------------------------------------
 # Remove .env file created in previous steps.
