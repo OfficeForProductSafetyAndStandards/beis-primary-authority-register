@@ -1,84 +1,84 @@
 @ci @journey1 @deprecated
 Feature: New Coordinated Partnership
 
-  Background:
-      # TEST DATA RESET
-    Given I reset the test data
+    Background:
+        # TEST DATA RESET
+        Given I reset the test data
 
-  Scenario: New Coordinated Partnership
+    Scenario: New Coordinated Partnership
 
-      # SEARCH PARTNERSHIPS
+        # SEARCH PARTNERSHIPS
 
-    Given I am logged in as "par_authority@example.com"
+        Given I am logged in as "par_authority@example.com"
 
-      # CHECK DASHBOARD CONTENTS DEPENDING ON USER LEVEL
+        # CHECK DASHBOARD CONTENTS DEPENDING ON USER LEVEL
 
-    And I expect that element "#block-par-theme-content" contains the text "Your partnerships"
-    And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
-    And I expect that element "#block-par-theme-content" contains the text "See enforcement notifications"
-    When I click on the link "Apply for a new partnership"
+        And I expect that element "#block-par-theme-content" contains the text "Your partnerships"
+        And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
+        And I expect that element "#block-par-theme-content" contains the text "See enforcement notifications"
+        When I click on the link "Apply for a new partnership"
 
-      # CHOOSE PARTNERSHIP TYPE
+        # CHOOSE PARTNERSHIP TYPE
 
-    When I click on the radio ".form-radio"
-    And I click on the button "#edit-next"
+        When I click on the radio ".form-radio"
+        And I click on the button "#edit-next"
 
-      # CREATE NEW PARTNERSHIP FORM
+        # CREATE NEW PARTNERSHIP FORM
 
-    When I click on the radio "#edit-application-type-coordinated"
-    And I click on the button "#edit-next"
+        When I click on the radio "#edit-application-type-coordinated"
+        And I click on the button "#edit-next"
 
-      # CONFIRMATIONS
+        # CONFIRMATIONS
 
-    When I click on the checkbox "#edit-coordinator-local-authority-suitable"
-    And I click on the checkbox "#edit-suitable-nomination"
-    And I click on the checkbox "#edit-written-summary-agreed"
-    And I click on the checkbox "#edit-terms-local-authority-agreed"
-#        And I click on the radio "#edit-business-regulated-by-one-authority-1"
-#        And I click on the radio "#edit-is-local-authority-1"
-    And I click on the button "#edit-next"
+        When I click on the checkbox "#edit-coordinator-local-authority-suitable"
+        And I click on the checkbox "#edit-suitable-nomination"
+        And I click on the checkbox "#edit-written-summary-agreed"
+        And I click on the checkbox "#edit-terms-local-authority-agreed"
+  #        And I click on the radio "#edit-business-regulated-by-one-authority-1"
+  #        And I click on the radio "#edit-is-local-authority-1"
+        And I click on the button "#edit-next"
 
-      # ADD ABOUT THE PARTNERSHIP
+        # ADD ABOUT THE PARTNERSHIP
 
-    Then I expect that element "h1.heading-xlarge" contains the text "New Partnership Application"
-    When I add "About the partnership detail" to the inputfield "#edit-about-partnership"
-    And I click on the button "#edit-next"
+        Then I expect that element "h1.heading-xlarge" contains the text "New Partnership Application"
+        When I add "About the partnership detail" to the inputfield "#edit-about-partnership"
+        And I click on the button "#edit-next"
 
-      # ORGANISATION NAME
+        # ORGANISATION NAME
 
-    And I add "Test Create Partnership" to the inputfield "#edit-organisation-name"
-    And I click on the button "#edit-next"
+        And I add "Test Create Partnership" to the inputfield "#edit-organisation-name"
+        And I click on the button "#edit-next"
 
-      # CONFIRM NEW PARTNERSHIP
+        # CONFIRM NEW PARTNERSHIP
 
-    And I click new partnership if presented with choices
-#        And I click on the radio "#edit-par-data-organisation-id-new"
-#        And I click on the button "#edit-next"
+        And I click new partnership if presented with choices
+  #        And I click on the radio "#edit-par-data-organisation-id-new"
+  #        And I click on the button "#edit-next"
 
-      # ADD BUSINESS DETAIL
+        # ADD BUSINESS DETAIL
 
-    When I add "SE16 4NX" to the inputfield "#edit-postcode"
-    And I add "1 Change St" to the inputfield "#edit-address-line1"
-    And I add "New Change" to the inputfield "#edit-address-line2"
-    When I add "London" to the inputfield "#edit-town-city"
-    When I add "London" to the inputfield "#edit-county"
-    And I select the option with the text "England" for element "#edit-country"
-    And I click on the button "#edit-next"
+        When I add "SE16 4NX" to the inputfield "#edit-postcode"
+        And I add "1 Change St" to the inputfield "#edit-address-line1"
+        And I add "New Change" to the inputfield "#edit-address-line2"
+        When I add "London" to the inputfield "#edit-town-city"
+        When I add "London" to the inputfield "#edit-county"
+        And I select the option with the text "England" for element "#edit-country"
+        And I click on the button "#edit-next"
 
-      # MAIN CONTACT
+        # MAIN CONTACT
 
-    When I add "Mr" to the inputfield "#edit-salutation"
-    And I add "Fozzie" to the inputfield "#edit-first-name"
-    And I add "Bear" to the inputfield "#edit-last-name"
-    And I add "999999999" to the inputfield "#edit-work-phone"
-    And I add "1111111111111" to the inputfield "#edit-mobile-phone"
-    And I add "02079999999" to the inputfield "#edit-work-phone"
-    And I add "078659999999" to the inputfield "#edit-mobile-phone"
-    And I add "par_business_change@example.com" to the inputfield "#edit-email"
-    And I click on the radio "#edit-preferred-contact-communication-mobile"
-    And I add "Some additional notes" to the inputfield "#edit-notes"
-    And I click on the button "#edit-next"
-    And I click on the link "Log out"
+        When I add "Mr" to the inputfield "#edit-salutation"
+        And I add "Fozzie" to the inputfield "#edit-first-name"
+        And I add "Bear" to the inputfield "#edit-last-name"
+        And I add "999999999" to the inputfield "#edit-work-phone"
+        And I add "1111111111111" to the inputfield "#edit-mobile-phone"
+        And I add "02079999999" to the inputfield "#edit-work-phone"
+        And I add "078659999999" to the inputfield "#edit-mobile-phone"
+        And I add "par_business_change@example.com" to the inputfield "#edit-email"
+        And I click on the radio "#edit-preferred-contact-communication-mobile"
+        And I add "Some additional notes" to the inputfield "#edit-notes"
+        And I click on the button "#edit-next"
+        And I click on the link "Log out"
 
         # HELPDESK USER
 

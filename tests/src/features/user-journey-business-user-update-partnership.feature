@@ -1,4 +1,4 @@
-@Pending @journey2 @deprecated
+@ci @journey2 @deprecated
 Feature: Business User - Manage Addresses
 
     Background:
@@ -21,27 +21,24 @@ Feature: Business User - Manage Addresses
         And I clear the inputfield "#edit-postcode"
         And I clear the inputfield "#edit-county"
         And I click on the button "#edit-save"
-        Then I expect that element ".error-message" does exist
+        Then I expect that element ".error-summary" does exist
         When I add "SE16 4NX" to the inputfield "#edit-postcode"
         And I click on the button "#edit-save"
-        Then I expect that element ".error-message" does exist
+        Then I expect that element ".error-summary" does exist
         And I add "1 Change St" to the inputfield "#edit-address-line1"
         And I click on the button "#edit-save"
-        Then I expect that element ".error-message" does exist
+        Then I expect that element ".error-summary" does exist
         And I add "New Change" to the inputfield "#edit-address-line2"
         And I click on the button "#edit-save"
-        Then I expect that element ".error-message" does exist
+        Then I expect that element ".error-summary" does exist
         When I add "London" to the inputfield "#edit-town-city"
-        And I click on the button "#edit-save"
-        Then I expect that element ".error-message" does exist
         When I add "London" to the inputfield "#edit-county"
         And I select the option with the text "England" for element "#edit-country"
         When I click on the button "#edit-save"
-        Then I expect that element "span.address-line1" contains the text "1 Change St"
-        And I expect that element "span.address-line2" contains the text "New Change"
-        And I expect that element "span.locality" contains the text "London"
-        And I expect that element "span.postal-code" contains the text "SE16 4NX"
-        And I expect that element "#edit-primary-address" contains the text "England"
+        Then I expect that element "#edit-registered-address" contains the text "1 Change St"
+        And I expect that element "#edit-registered-address" contains the text "New Change"
+        And I expect that element "#edit-registered-address" contains the text "London"
+        And I expect that element "#edit-registered-address" contains the text "SE16 4NX"
 
         # EDIT ABOUT THE BUSINESS
 
@@ -70,7 +67,7 @@ Feature: Business User - Manage Addresses
         And I clear the inputfield "#edit-registered-name"
         When I add "Changed" to the inputfield "#edit-registered-name"
         And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
-        And I clear the inputfield "#edit-company-house-n"
+        And I clear the inputfield "#edit-company-house-no"
         When I add "0123456789" to the inputfield "#edit-company-house-no"
         And I click on the button "#edit-save"
         Then I expect that element "#edit-legal-entities" contains the text "Changed"
@@ -85,14 +82,12 @@ Feature: Business User - Manage Addresses
         Then I expect that element "#edit-legal-entities" contains the text "New Legal Entity"
         Then I expect that element "#edit-legal-entities" contains the text "Partnership"
 
-
         # ADD NEW TRADING NAME
 
         When I click on the link "add another trading name"
         When I add "Different Trading Name" to the inputfield "#edit-trading-name"
         And I click on the button "#edit-save"
-        Then I expect that element "#edit-employee-no" contains the text "Different Trading Name"
-
+        Then I expect that element "#edit-trading-names" contains the text "Different Trading Name"
 
         # EDIT MAIN BUSINESS CONTACT
 
@@ -117,5 +112,3 @@ Feature: Business User - Manage Addresses
 
         And I click on the checkbox "#edit-partnership-info-agreed-business"
         And I click on the button "#edit-save"
-
-
