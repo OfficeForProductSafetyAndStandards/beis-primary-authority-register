@@ -160,8 +160,8 @@ HEREDOC;
     $body = $form_state->getValue('par_bulk_invite_message_body') ?: $this->getDefaultMessage();
     $subject = $form_state->getValue('par_bulk_invite_message_subject') ?: 'New Primary Authority Register';
     $form['par_bulk_invite_all_authority_members'] = [
-      '#title' => $this->t('Invite all authority members'),
-      '#description' => $this->t('If checked this will send invites to all members of the authority, not just those responsible for a partnership.'),
+      '#title' => $this->t('Invite existimg members'),
+      '#description' => $this->t('If checked this will re-invite eixsting members.'),
       '#type' => 'checkbox',
       '#default_value' => $form_state->getValue('par_bulk_invite_existing') ? TRUE : FALSE,
     ];
