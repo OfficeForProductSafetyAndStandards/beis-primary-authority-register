@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "931673c1c79fbb8d71b562e47649f88f",
+    "content-hash": "babff73a9e221e786840e82be245ab0c",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -112,16 +112,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.36.17",
+            "version": "3.36.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "4bf27e8808e5e08a71b7fbdb951f51918c57a1c6"
+                "reference": "80a150c061f36276a1618fa858e763c874309365"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4bf27e8808e5e08a71b7fbdb951f51918c57a1c6",
-                "reference": "4bf27e8808e5e08a71b7fbdb951f51918c57a1c6",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/80a150c061f36276a1618fa858e763c874309365",
+                "reference": "80a150c061f36276a1618fa858e763c874309365",
                 "shasum": ""
             },
             "require": {
@@ -188,7 +188,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-09-29T19:46:41+00:00"
+            "time": "2017-10-02T19:28:24+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -3380,58 +3380,6 @@
             "support": {
                 "source": "http://git.drupal.org/project/robotstxt.git",
                 "issues": "https://www.drupal.org/project/issues/robotstxt"
-            }
-        },
-        {
-            "name": "drupal/sqlsrv",
-            "version": "2.13.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupal.org/project/sqlsrv",
-                "reference": "8.x-2.13"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/sqlsrv-8.x-2.13.zip",
-                "reference": "8.x-2.13",
-                "shasum": "a89649f126b981e86734f238d532de29f62fa3b4"
-            },
-            "require": {
-                "drupal/core": "~8.0",
-                "php": "^7.0"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-2.x": "2.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-2.13",
-                    "datestamp": "1499421242",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Damien Tournoud",
-                    "homepage": "https://www.drupal.org/user/22211"
-                },
-                {
-                    "name": "david_garcia",
-                    "homepage": "https://www.drupal.org/user/696200"
-                }
-            ],
-            "description": "Driver for SQL Server and SQL Azure",
-            "homepage": "https://www.drupal.org/project/sqlsrv",
-            "support": {
-                "source": "http://cgit.drupalcode.org/sqlsrv"
             }
         },
         {
@@ -8536,7 +8484,8 @@
                 "source": "http://cgit.drupalcode.org/examples",
                 "issues": "https://www.drupal.org/project/issues/examples",
                 "documentation": "https://api.drupal.org/api/examples"
-            }
+            },
+            "time": "2017-09-22 17:39:55"
         },
         {
             "name": "fabpot/goutte",
