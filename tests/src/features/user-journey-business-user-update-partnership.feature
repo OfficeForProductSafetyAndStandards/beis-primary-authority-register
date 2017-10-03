@@ -4,6 +4,7 @@ Feature: Business User - Manage Addresses
     Scenario: Business User - Manage Addresses
 
         Given I am logged in as "par_admin@example.com"
+        And I reset the test data
         And I open the url "/admin/people"
         And I select the option with the value "par_organisation" for element "#edit-role"
         And I add "77" to the inputfield "#edit-user"
@@ -16,7 +17,7 @@ Feature: Business User - Manage Addresses
         And I add "TestPassword" to the inputfield "#edit-pass-pass2"
         # Then I expect that element ".messages" is not visible
         When I click on the button "#edit-submit"
-        Then the element ".messages" contains the text "The changes have been saved"
+#        Then the element ".messages" contains the text "The changes have been saved"
         And I store the user email address
         And I open the url "/user/logout"
 

@@ -1,4 +1,4 @@
-@Pending
+@ci
 Feature: Create users
 
     Scenario: Create users
