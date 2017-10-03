@@ -99,11 +99,13 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
       '#default_value' => $this->getDefaultValues("action_summary"),
      ];
 
+    $enforcement_notice_bundle = $enforcement_notice_bundle->getAllowedValues('notice_type');
+
     $form['enforcement_type'] = [
       '#type' => 'radios',
       '#title' => $this->t('Enforcing type'),
-      '#options' => $enforcement_notice_bundle->getAllowedValues('notice_type'),
-      '#default_value' => $this->getDefaultValues('enforcement_type'),
+      '#options' => $enforcement_notice_bundle,
+      '#default_value' => $enforcement_notice_bundle[proposed],
       '#required' => TRUE,
       '#prefix' => '<div>',
       '#suffix' => '</div>',
@@ -118,6 +120,17 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
+
+    $enforcing_authority_id = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
+    $organisation_id = $this->getDefaultValues('par_data_organisation_id', '', 'par_enforce_organisation');
+
+    if (empty($enforcing_authority_id)) {
+      $this->setElementError('authority_enforcement_ids', $form_state, 'Please select an authority to enforce on behalf of to proceed.');
+    }
+
+    if (empty($organisation_id)) {
+      $this->setElementError('organisation_enforcement_ids', $form_state, 'Please select an organisation to enforce on behalf of to proceed.');
+    }
   }
 
   /**
