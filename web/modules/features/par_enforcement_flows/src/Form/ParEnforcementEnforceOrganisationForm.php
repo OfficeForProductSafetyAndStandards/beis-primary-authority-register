@@ -64,6 +64,8 @@ class ParEnforcementEnforceOrganisationForm extends ParBaseForm {
         $form['no_members'] = [
           '#type' => 'markup',
           '#markup' => $this->t('Sorry but there are no members for this organisation.'),
+          '#prefix' => '<p><strong>',
+          '#suffix' => '</strong><p>',
         ];
 
         $this->getFlow()->disableAction('next');
