@@ -66,6 +66,12 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
       ];
     }
 
+    // Defensive coding don't attempt to render form elements without having the appropriate object
+    // $par_data_organisation and $par_data_authority proceeding without them will cause system failures.
+    if (empty($organisation_id) || empty($enforcing_authority_id)) {
+      return parent::buildForm($form, $form_state);
+    }
+
     // Organisation summary.
     $par_data_organisation = ParDataOrganisation::load($organisation_id);
     $par_data_authority = current($par_data_partnership->getAuthority());
