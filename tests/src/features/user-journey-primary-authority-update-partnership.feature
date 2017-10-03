@@ -1,4 +1,4 @@
-@ci @journey1 @deprecated
+@Pending @journey1 @deprecated
 Feature: Primary Authority - Change Partnership Details
 
 #    Background:
