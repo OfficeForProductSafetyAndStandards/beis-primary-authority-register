@@ -7,17 +7,17 @@ Feature: Business User - Manage Addresses
 
     Scenario: Business User - Manage Addresses
         # LOGIN SCREEN
-        Given I am logged in as "par_admin@example.com"
-        And I open the url "/user/1546"
-        And I click on the link "Edit"
-        And I scroll to element "#edit-pass-pass2"
-        And I add "TestPassword" to the inputfield "#edit-pass-pass1"
-        # Then I expect that element ".messages" is not visible
-        And I add "TestPassword" to the inputfield "#edit-pass-pass2"
-        # Then I expect that element ".messages" is not visible
-        When I click on the button "#edit-submit"
-        Then the element ".messages" contains the text "The changes have been saved"
-        And I open the url "/user/logout"
+#        Given I am logged in as "par_admin@example.com"
+#        And I open the url "/user/1546"
+#        And I click on the link "Edit"
+#        And I scroll to element "#edit-pass-pass2"
+#        And I add "TestPassword" to the inputfield "#edit-pass-pass1"
+#        # Then I expect that element ".messages" is not visible
+#        And I add "TestPassword" to the inputfield "#edit-pass-pass2"
+#        # Then I expect that element ".messages" is not visible
+#        When I click on the button "#edit-submit"
+#        Then the element ".messages" contains the text "The changes have been saved"
+#        And I open the url "/user/logout"
 
 
         Given I am logged in as "e9d5b4e522250761f5e3560770c0d7cb@localhost.localdomain"
