@@ -19,6 +19,7 @@ import openWebsite from '../support/action/openWebsite';
 import checkResponseCode from '../support/action/checkResponseCode';
 import resizeScreenSize from '../support/action/resizeScreenSize';
 import loginAsPARUser from '../support/action/loginAsPARUser';
+import loginAsStoredUser from '../support/action/loginAsStoredUser';
 import resetTheTestData from '../support/action/resetTheTestData';
 import selectNextPartnershipAwaitingReview from '../support/action/selectNextPartnershipAwaitingReview';
 import selectNextBusinessAwaitingReview from '../support/action/selectNextPartnershipAwaitingReview';
@@ -29,6 +30,8 @@ import relevantSearchResultsCheck from '../support/action/relevantSearchResultsC
 import partnershipSearchResultsCheck from '../support/action/partnershipSearchResultsCheck';
 import clickNewPartnership from '../support/action/clickNewPartnership';
 import relevantSearchResultsCheckHelpdesk from '../support/action/relevantSearchResultsCheckHelpdesk';
+import storeEmailAddress from '../support/check/storeEmailAddress';
+
 
 module.exports = function given() {
     this.Given(
@@ -44,6 +47,11 @@ module.exports = function given() {
     this.Given(
         /^I click new partnership if presented with choices$/,
         clickNewPartnership
+    );
+
+    this.Given(
+        /^I store the user email address$/,
+        storeEmailAddress
     );
 
     this.Given(
@@ -89,6 +97,11 @@ module.exports = function given() {
     this.Given(
         /^I am logged in as "([^"]*)?"$/,
         loginAsPARUser
+    );
+
+    this.Given(
+        /^I am logged in as stored user$/,
+        loginAsStoredUser
     );
 
     this.Given(

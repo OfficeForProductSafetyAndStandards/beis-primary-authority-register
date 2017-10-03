@@ -9,21 +9,26 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         # LOGIN SCREEN
 
 #        Given I am logged in as "par_admin@example.com"
-#        And I open the url "/user/1451"
-#        And I click on the link "Edit"
-#        And I scroll to element "#edit-pass-pass2"
-#        And I add "TestPassword" to the inputfield "#edit-pass-pass1"
-#        # Then I expect that element ".messages" is not visible
-#        And I add "TestPassword" to the inputfield "#edit-pass-pass2"
-#        # Then I expect that element ".messages" is not visible
-#        When I click on the button "#edit-submit"
-#        Then the element ".messages" contains the text "The changes have been saved"
-#        And I open the url "/user/logout"
+        And I open the url "/admin/people"
+        And I select the option with the value "par_authority" for element "#edit-role"
+        And I add "88" to the inputfield "#edit-user"
+        And I click on the button "#edit-submit-user-admin-people"
+        And I click on the button "td.views-field.views-field-name a.username"
+        And I click on the link "Edit"
+        And I scroll to element "#edit-pass-pass2"
+        And I add "TestPassword" to the inputfield "#edit-pass-pass1"
+        # Then I expect that element ".messages" is not visible
+        And I add "TestPassword" to the inputfield "#edit-pass-pass2"
+        # Then I expect that element ".messages" is not visible
+        When I click on the button "#edit-submit"
+        Then the element ".messages" contains the text "The changes have been saved"
+        And I store the user email address
+        And I open the url "/user/logout"
 
 
         # PARTNERSHIPS DASHBOARD
 
-        Given I am logged in as "30ce09b7fcab1dfba7ad1ecf22e3fc4a@localhost.localdomain"
+        Given I am logged in as stored user
 
         # PARTNERSHIP TASKS SCREEN/DASHBOARD
 

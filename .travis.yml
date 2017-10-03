@@ -115,7 +115,7 @@ script:
   - travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
   - travis_retry docker exec -it par_beta_web /var/www/html/vendor/bin/drush --root=/var/www/html/web --uri='localhost:80' upwd 5b49820e39cb21bd5a573fe79c6f7e29@localhost.localdomain --password=TestPassword
   - travis_retry docker exec -it par_beta_web /var/www/html/vendor/bin/drush --root=/var/www/html/web --uri='localhost:80' upwd 30ce09b7fcab1dfba7ad1ecf22e3fc4a@localhost.localdomain --password=TestPassword
-  - travis_retry docker exec -it par_beta_web /var/www/html/vendor/bin/drush --root=/var/www/html/web --uri='localhost:80' upwd e9d5b4e522250761f5e3560770c0d7cb@localhost.localdomain  --password=TestPassword
+  - travis_retry docker exec -it par_beta_web /var/www/html/vendor/bin/drush --root=/var/www/html/web --uri='localhost:80' upwd e9d5b4e522250761f5e3560770c0d7cb@localhost.localdomain --password=TestPassword
   - travis_retry docker exec -it par_beta_web /var/www/html/vendor/bin/drush --root=/var/www/html/web --uri='localhost:80' upwd a3433b67b13b54ccd9da78d746b26d0f@localhost.localdomain --password=TestPassword
   - travis_retry docker exec -it par_beta_web /var/www/html/vendor/bin/drush --root=/var/www/html/web --uri='localhost:80' upwd 3a5988ce52a41abe005f235091a114c2@localhost.localdomain --password=TestPassword
   - travis_retry docker exec -it par_beta_web /var/www/html/vendor/bin/drush --root=/var/www/html/web --uri='localhost:80' upwd 6ecb528a50db98c331628edce1aae197@localhost.localdomain --password=TestPassword
