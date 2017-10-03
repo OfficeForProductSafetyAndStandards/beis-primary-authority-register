@@ -19,7 +19,7 @@ import submitForm from '../support/action/submitForm';
 import fillInForm from '../support/action/fillInForm';
 import uploadAValidFile from '../support/action/uploadFile';
 import selectTheEditLink from '../support/action/selectTheEditLink';
-
+import selectFirstPrimaryContactToEdit from '../support/action/selectFirstPrimaryContactToEdit';
 
 module.exports = function when() {
     this.When(
@@ -40,6 +40,11 @@ module.exports = function when() {
     this.When(
         /^I upload a valid file$/,
         uploadAValidFile
+    );
+
+    this.When(
+        /^I select the first primary contact to edit$/,
+        selectFirstPrimaryContactToEdit
     );
 
     this.When(

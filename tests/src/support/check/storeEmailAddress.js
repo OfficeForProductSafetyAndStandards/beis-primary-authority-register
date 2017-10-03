@@ -7,6 +7,8 @@
 module.exports = (done) =>
 {
     process.env['TEST_USER'] = browser.getValue('#edit-mail');
+    process.env['TEST_DISPLAYNAME'] = browser.getValue('#edit-name');
     console.log(browser.getValue('#edit-mail'));
+    console.log(browser.getValue('#edit-name'));
     done();
 };
