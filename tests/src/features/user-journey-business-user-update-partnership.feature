@@ -1,9 +1,9 @@
 @ci @journey2 @deprecated
 Feature: Business User - Manage Addresses
 
-    Background:
-        # TEST DATA RESET
-        Given I reset the test data
+#    Background:
+#        # TEST DATA RESET
+#        Given I reset the test data
 
     Scenario: Business User - Manage Addresses
         # LOGIN SCREEN
@@ -12,9 +12,9 @@ Feature: Business User - Manage Addresses
         And I click on the link "Edit"
         And I scroll to element "#edit-pass-pass2"
         And I add "TestPassword" to the inputfield "#edit-pass-pass1"
-        Then I expect that element ".messages" is not visible
+#        Then I expect that element ".messages" is not visible
         And I add "TestPassword" to the inputfield "#edit-pass-pass2"
-        Then I expect that element ".messages" is not visible
+#        Then I expect that element ".messages" is not visible
         When I click on the button "#edit-submit"
         Then the element ".messages" contains the text "The changes have been saved"
         And I open the url "/user/logout"
