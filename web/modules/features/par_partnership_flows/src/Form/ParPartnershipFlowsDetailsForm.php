@@ -76,7 +76,8 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     // View and perform operations on the information about the business.
     $form['about_business'] = $this->renderSection('About the business', $par_data_organisation, ['comments' => 'about'], ['edit-field']);
 
-    // Only show SIC Codes and Employee number if the partnership is a direct partnership.
+    // Only show SIC Codes and Employee number if the partnership is a direct
+    // partnership.
     if ($par_data_partnership->isDirect()) {
       // Add the SIC Codes with the relevant operational links.
       $form['sic_codes'] = $this->renderSection('SIC Codes', $par_data_organisation, ['field_sic_code' => 'full'], ['edit-field', 'add']);
@@ -85,18 +86,34 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
       $form['employee_no'] = $this->renderSection('Number of Employees', $par_data_organisation, ['employees_band' => 'full'], ['edit-field']);
     }
 
-    // Only show Members list, Sectors and Number of businesses if the partnership is a coordinated partnership.
+    // Only show Members list, Sectors and Number of businesses if the
+    // partnership is a coordinated partnership.
     if ($par_data_partnership->isCoordinated()) {
       $form['associations'] = $this->renderSection('Number of members', $par_data_organisation, ['size' => 'full'], ['edit-field']);
 
-      // Display all the legal entities along with the links for the allowed operations on these.
+      // Display all the legal entities along with the links for the allowed
+      // operations on these.
       $form['members'] = $this->renderSection('Members', $par_data_partnership, ['field_coordinated_business' => 'title']);
     }
 
-    // Display all the legal entities along with the links for the allowed operations on these.
-    $form['legal_entities'] = $this->renderSection('Legal Entities', $par_data_organisation, ['field_legal_entity' => 'summary'], ['edit-entity', 'add']);
+    // Display all the legal entities along with the links for the allowed
+    // operations on these.
+    $operations = [];
+    $checkbox = $this->getInformationCheckbox();
+    if ($checkbox === 'partnership_info_agreed_business' && !$par_data_partnership->getBoolean($checkbox)) {
+      // Get current user and check permissions.
+      $account = $this->getCurrentUser();
+      if ($account->hasPermission('edit par_data_legal_entity entities')) {
+        $operations[] = 'edit-entity';
+      }
+      if ($account->hasPermission('add par_data_legal_entity entities')) {
+        $operations[] = 'add';
+      }
+    }
+    $form['legal_entities'] = $this->renderSection('Legal Entities', $par_data_organisation, ['field_legal_entity' => 'summary'], $operations);
 
-    // Display all the trading names along with the links for the allowed operations on these.
+    // Display all the trading names along with the links for the allowed
+    // operations on these.
     $form['trading_names'] = $this->renderSection('Trading Names', $par_data_organisation, ['trading_name' => 'full'], ['edit-field', 'add']);
 
     // Everything below is for the authorioty to edit and add to.

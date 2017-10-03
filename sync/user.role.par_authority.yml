@@ -36,7 +36,6 @@ permissions:
   - 'edit par_data_authority entities'
   - 'edit par_data_enforcement_notice entities'
   - 'edit par_data_inspection_plan entities'
-  - 'edit par_data_legal_entity entities'
   - 'edit par_data_organisation entities'
   - 'edit par_data_partnership entities'
   - 'edit par_data_person entities'
