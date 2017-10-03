@@ -1,4 +1,4 @@
-@ci @journey2 @deprecated
+@Pending @journey2 @deprecated
 Feature: Business User - Manage Addresses
 
 #    Background:
