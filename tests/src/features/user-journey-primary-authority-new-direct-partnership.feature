@@ -9,7 +9,22 @@ Feature: New Direct Partnership
 
         # SEARCH PARTNERSHIPS
 
-        Given I am logged in as "par_authority@example.com"
+        Given I am logged in as "par_admin@example.com"
+        And I open the url "/user/1226"
+        And I click on the link "Edit"
+        And I scroll to element "#edit-pass-pass2"
+        And I add "TestPassword" to the inputfield "#edit-pass-pass1"
+        Then I expect that element ".messages" is not visible
+        And I add "TestPassword" to the inputfield "#edit-pass-pass2"
+        Then I expect that element ".messages" is not visible
+        When I click on the button "#edit-submit"
+        Then the element ".messages" contains the text "The changes have been saved"
+        And I open the url "/user/logout"
+
+
+        # PARTNERSHIPS DASHBOARD
+
+        Given I am logged in as "3a5988ce52a41abe005f235091a114c2@localhost.localdomain"
 
         # CHECK DASHBOARD CONTENTS DEPENDING ON USER LEVEL
 
@@ -32,26 +47,26 @@ Feature: New Direct Partnership
 
         Then I expect that element "#par-partnership-application-authority-checklist" contains the text "I am authorised to submit this application"
         When I click on the button "#edit-next"
-        Then I expect that element ".error-summary-heading" is visible
+        Then I expect that element ".error-summary" is visible
         When I click on the checkbox "#edit-business-eligible-for-partnership"
         And I click on the button "#edit-next"
-        Then I expect that element ".error-summary-heading" is visible
+        Then I expect that element ".error-summary" is visible
         And I click on the checkbox "#edit-local-authority-suitable-for-nomination"
         And I click on the button "#edit-next"
-        Then I expect that element ".error-summary-heading" is visible
+        Then I expect that element ".error-summary" is visible
         And I click on the checkbox "#edit-written-summary-agreed"
         And I click on the button "#edit-next"
-        Then I expect that element ".error-summary-heading" is visible
+        Then I expect that element ".error-summary" is visible
         And I click on the checkbox "#edit-terms-organisation-agreed"
         And I click on the radio "#edit-business-regulated-by-one-authority-1"
         When I click on the button "#edit-next"
-        Then I expect that element ".error-summary-heading" is visible
+        Then I expect that element ".error-summary" is visible
         And I expect that element "#par-partnership-application-authority-checklist" contains the text "Is this your local authority?"
         And I click on the radio "#edit-business-regulated-by-one-authority-1"
         And I click on the radio "#edit-is-local-authority-1"
   #        And I expect that element ".error-summary" contains the text "The business needs to be informed about local authority"
         When I click on the button "#edit-next"
-        Then I expect that element "error-summary-heading" is not visible
+        Then I expect that element "error-summary" is not visible
 
         # ADD ABOUT THE PARTNERSHIP
 

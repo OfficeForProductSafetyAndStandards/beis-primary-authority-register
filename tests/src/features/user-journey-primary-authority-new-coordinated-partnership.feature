@@ -9,7 +9,22 @@ Feature: New Coordinated Partnership
 
         # SEARCH PARTNERSHIPS
 
-        Given I am logged in as "par_authority@example.com"
+        Given I am logged in as "par_admin@example.com"
+        And I open the url "/user/119"
+        And I click on the link "Edit"
+        And I scroll to element "#edit-pass-pass2"
+        And I add "TestPassword" to the inputfield "#edit-pass-pass1"
+        Then I expect that element ".messages" is not visible
+        And I add "TestPassword" to the inputfield "#edit-pass-pass2"
+        Then I expect that element ".messages" is not visible
+        When I click on the button "#edit-submit"
+        Then the element ".messages" contains the text "The changes have been saved"
+        And I open the url "/user/logout"
+
+
+        # PARTNERSHIPS DASHBOARD
+
+        Given I am logged in as "a3433b67b13b54ccd9da78d746b26d0f@localhost.localdomain"
 
         # CHECK DASHBOARD CONTENTS DEPENDING ON USER LEVEL
 
@@ -20,8 +35,8 @@ Feature: New Coordinated Partnership
 
         # CHOOSE PARTNERSHIP TYPE
 
-        When I click on the radio ".form-radio"
-        And I click on the button "#edit-next"
+#        When I click on the radio ".form-radio"
+#        And I click on the button "#edit-next"
 
         # CREATE NEW PARTNERSHIP FORM
 
