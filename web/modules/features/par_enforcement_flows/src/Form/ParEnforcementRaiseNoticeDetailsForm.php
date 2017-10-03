@@ -129,6 +129,8 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
     $partnership = $this->getRouteParam('par_data_partnership');
     $enforcementNotice_data = [];
 
+    $time = new \DateTime();
+
     $enforcementNotice_data = [
       'notice_type' => $this->getTempDataValue('enforcement_type'),
       'summary' => $this->getTempDataValue('action_summary'),
@@ -136,6 +138,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
       'field_enforcing_authority' => $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection'),
       'field_organisation' => $this->getDefaultValues('par_data_organisation_id', '', 'par_data_organisation_id'),
       'field_partnership' => $partnership->id(),
+      'notice_date' => $time->format("Y-m-d"),
     ];
 
     //get the legal entity assigned from the previous form.
@@ -152,7 +155,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
     $enforcementAction = \Drupal::entityManager()->getStorage('par_data_enforcement_notice')->create($enforcementNotice_data);
 
     if ($enforcementAction->save()) {
-      $this->deleteStore();
+//      $this->deleteStore();
       //Go directly to the action setup form we cannot use links within forms without losing form data.
       $form_state->setRedirect($this->getFlow()->getNextRoute('next'), ['par_data_partnership' => $partnership->id(), 'par_data_enforcement_notice' =>$enforcementAction->id()]);
     }
