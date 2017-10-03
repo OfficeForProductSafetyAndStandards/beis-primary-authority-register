@@ -1,10 +1,6 @@
 @ci
 Feature: Enforcement notice management
 
-    Background:
-        # TEST DATA RESET
-        Given I reset the test data
-
     Scenario: Enforcement notice management
 
         # LOGIN SCREEN

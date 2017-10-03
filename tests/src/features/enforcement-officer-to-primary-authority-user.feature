@@ -1,10 +1,6 @@
 @ci
 Feature: Enforcement Officer/PA - Enforcement Notice Process
 
-    Background:
-        # TEST DATA RESET
-        Given I reset the test data
-
     Scenario: Enforcement Officer/PA - Issue enforcement notice
         # LOGIN SCREEN
 
@@ -32,16 +28,16 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
         And I click on the link "Search for a partnership"
-        When I add "Lower East" to the inputfield "#edit-keywords"
+        When I add "Council" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
         When I click on the button "td.views-field.views-field-authority-name a"
 
         # ENFORCEMENT ACTION FORM
 
         When I click on the link "Send notification of enforcement action"
-        Then I expect that element "h3" contains the text "Which authority are you acting on behalf of"
-        When I click on the radio ".form-radio"
-        And I click on the button "#edit-next"
+#        Then I expect that element "h3" contains the text "Which authority are you acting on behalf of"
+#        When I click on the radio ".form-radio"
+#        And I click on the button "#edit-next"
 
         # CHOOSE MEMBER
 

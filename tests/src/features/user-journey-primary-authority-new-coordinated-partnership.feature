@@ -1,10 +1,6 @@
 @ci @journey1 @deprecated
 Feature: New Coordinated Partnership
 
-    Background:
-        # TEST DATA RESET
-        Given I reset the test data
-
     Scenario: New Coordinated Partnership
 
         # SEARCH PARTNERSHIPS

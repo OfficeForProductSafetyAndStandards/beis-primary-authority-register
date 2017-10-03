@@ -1,10 +1,6 @@
 @Bug @Pending @journey2 @deprecated
 Feature: Business User - Manage Addresses
 
-    Background:
-        # TEST DATA RESET
-        Given I reset the test data
-
     Scenario: Business User - Manage Addresses
 
         Given I am logged in as "par_admin@example.com"
