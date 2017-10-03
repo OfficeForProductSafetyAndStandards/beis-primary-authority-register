@@ -1,4 +1,4 @@
-@Pending @journey1 @deprecated
+@ci @journey1 @deprecated
 Feature: New Coordinated Partnership
 
     Background:
