@@ -13,7 +13,7 @@ use Drupal\user\Entity\User;
 /**
  * The de-duping form.
  */
-class ParPartnershipFlowsEnforceOrganisationForm extends ParBaseForm {
+class ParEnforcementEnforceOrganisationForm extends ParBaseForm {
 
   /**
    * {@inheritdoc}
