@@ -1,4 +1,4 @@
-@Pending @journey2 @deprecated
+@ci @journey2 @deprecated
 Feature: Business User - Manage Addresses
 
     Background:
@@ -7,9 +7,22 @@ Feature: Business User - Manage Addresses
 
     Scenario: Business User - Manage Addresses
         # LOGIN SCREEN
+        Given I am logged in as "par_admin@example.com"
+        And I open the url "/user/1576"
+        And I click on the link "Edit"
+        And I scroll to element "#edit-pass-pass2"
+        And I add "TestPassword" to the inputfield "#edit-pass-pass1"
+        Then I expect that element ".messages" is not visible
+        And I add "TestPassword" to the inputfield "#edit-pass-pass2"
+        Then I expect that element ".messages" is not visible
+        When I click on the button "#edit-submit"
+        Then the element ".messages" contains the text "The changes have been saved"
+        And I open the url "/user/logout"
 
-        Given I am logged in as "par_helpdesk@example.com"
-        And I click on the button "td.views-field.views-field-organisation-name a"
+
+        Given I am logged in as "72b8be50dc79cbccfde660cfde1be75e@localhost.localdomain"
+        And I click on the link "See your partnerships"
+        And I click on the button "td.views-field.views-field-par-flow-link-1 a"
         And I expect that element "h1" is not empty
 
         # EDIT REGISTERED ADDRESS
@@ -110,5 +123,5 @@ Feature: Business User - Manage Addresses
 
         # COMPLETE CHANGES
 
-        And I click on the checkbox "#edit-partnership-info-agreed-business"
         And I click on the button "#edit-save"
+        Then I expect that element "h1" contains the text "Primary Authority Register"
