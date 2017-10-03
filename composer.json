@@ -11,7 +11,6 @@
     "require": {
         "composer/installers": "^1.2",
         "cweagans/composer-patches": "^1.6",
-        "david/mssql": "dev-master",
         "drupal-composer/drupal-scaffold": "~2.3.0",
         "drupal/address": "~1.2.0",
         "drupal/better_exposed_filters": "~3.0.0",
@@ -34,9 +33,6 @@
         "drupal/invite": "1.x-dev#a25b6e11580660f2653c36b0c4669b73ef453f7c",
         "drupal/login_destination": "1.x-dev#98892eb84eba6fe69d4fc48dc5b1fdaccb21c8a7",
         "drupal/mailsystem": "~4.1.0",
-        "drupal/migrate_plus": "dev-4.x",
-        "drupal/migrate_source_csv": "^2.0.0-rc2",
-        "drupal/migrate_tools": "dev-4.x",
         "drupal/no_autocomplete": "~1.0.0",
         "drupal/pagerer": "~1.1.0",
         "drupal/password_policy": "~3.0.0",
