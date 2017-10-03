@@ -1,4 +1,4 @@
-@ci @journey1 @deprecated
+@Pending @Bug @journey1 @deprecated
 Feature: New Coordinated Partnership
 
     Scenario: New Coordinated Partnership
