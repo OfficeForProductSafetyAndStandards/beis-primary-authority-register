@@ -1,5 +1,33 @@
 <?php
 
+function createRow($key, $line)
+{
+    global $legalEntities, $adviceTypes, $assoc, $count;
+    
+    echo $count++ . ") " . $key . PHP_EOL;
+    
+    $legalEntities = array_unique($legalEntities, SORT_REGULAR);
+    $adviceTypes = array_unique($adviceTypes, SORT_REGULAR);
+    $assoc[] = [
+        'partnership_nominated_date' => $line[0],
+        'partnership_revoked_date' => $line[1],
+        'partnership_status' => $line[2],
+        'partnership_type' => ucfirst($line[3]),
+        'primary_authority' => $line[4],
+        'organisation_name' => $line[5],
+        'nation' => $line[11],
+        'legal_entities' => implode(PHP_EOL, $legalEntities),
+        'legal_entity_count' => count($legalEntities),
+        'inspection_plan_status' => $line[7] == 'current' ? 'Yes' : 'No',
+        'advice_to_business' => in_array('business_advice', $adviceTypes) ? 'Yes' : 'No',
+        'advice_to_authority' => in_array('authority_advice', $adviceTypes) ? 'Yes' : 'No',
+        'sector' => $line[9],
+        'business_size' => $line[10],
+    ];
+    $legalEntities = [];
+    $adviceTypes = [];
+    
+}
 $lines = file('./partnership_report.csv');
 
 $lines = array_unique($lines, SORT_REGULAR);
@@ -9,41 +37,27 @@ $assoc = [];
 $legalEntities = [];
 $adviceTypes = [];
 $lastKey = '';
+$lastLine = [];
+$count = 0;
 foreach ($lines as $line) {
     $line = str_getcsv($line);
     $key = $line[4] . '_' . $line[5];
     
     if ($lastKey != $key && $lastKey != '') {
-        $legalEntities = array_unique($legalEntities, SORT_REGULAR);
-        $adviceTypes = array_unique($adviceTypes, SORT_REGULAR);
-        $assoc[] = [
-            'partnership_nominated_date' => $line[0],
-            'partnership_revoked_date' => $line[1],
-            'partnership_status' => $line[2],
-            'partnership_type' => ucfirst($line[3]),
-            'primary_authority' => $line[4],
-            'organisation_name' => $line[5],
-            'nation' => $line[11],
-            'legal_entities' => implode(PHP_EOL, $legalEntities),
-            'legal_entity_count' => count($legalEntities),
-            'inspection_plan_status' => $line[7] == 'current' ? 'Yes' : 'No',
-            'advice_to_business' => in_array('business_advice', $adviceTypes) ? 'Yes' : 'No',
-            'advice_to_authority' => in_array('authority_advice', $adviceTypes) ? 'Yes' : 'No',
-            'sector' => $line[9],
-            'business_size' => $line[10],
-        ];
-        $legalEntities = [];
-        $adviceTypes = [];
+        createRow($lastKey, $lastLine);
     } else {
-        if (!empty($line[6])) {
+        if (!empty($line[6]) && empty($line[16]) && empty($line[17])) {
             $legalEntities[] = $line[6];
         }
-        if (!empty($line[8])) {
+        if (!empty($line[8]) && empty($line[12]) && empty($line[13])) {
             $adviceTypes[] = $line[8];
         }
     }
     $lastKey = $key;
+    $lastLine = $line;
 }
+
+createRow($lastKey, $lastLine);
 
 $colours = ['#eee', '#fff'];
 
