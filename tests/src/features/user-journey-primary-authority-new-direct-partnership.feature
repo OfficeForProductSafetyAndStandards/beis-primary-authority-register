@@ -39,8 +39,8 @@ Feature: New Direct Partnership
         When I click on the link "Apply for a new partnership"
 
         # CHOOSE PARTNERSHIP TYPE
-        When I click on the radio ".form-radio"
-        And I click on the button "#edit-next"
+#        When I click on the radio ".form-radio"
+#        And I click on the button "#edit-next"
 
         # CREATE NEW PARTNERSHIP FORM
 

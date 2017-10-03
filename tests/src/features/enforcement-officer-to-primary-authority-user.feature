@@ -8,7 +8,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
     Scenario: Enforcement Officer/PA - Issue enforcement notice
         # LOGIN SCREEN
 
-#        Given I am logged in as "par_admin@example.com"
+        Given I am logged in as "par_admin@example.com"
         And I open the url "/admin/people"
         And I select the option with the value "par_authority" for element "#edit-role"
         And I add "88" to the inputfield "#edit-user"
@@ -24,7 +24,6 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         Then the element ".messages" contains the text "The changes have been saved"
         And I store the user email address
         And I open the url "/user/logout"
-
 
         # PARTNERSHIPS DASHBOARD
 

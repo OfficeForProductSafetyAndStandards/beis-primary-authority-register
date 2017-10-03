@@ -12,7 +12,6 @@ Feature: Enforcement notice management
         Given I am logged in as "par_admin@example.com"
         And I open the url "/admin/people"
         And I select the option with the value "par_helpdesk" for element "#edit-role"
-        And I add "99" to the inputfield "#edit-user"
         And I click on the button "#edit-submit-user-admin-people"
         And I click on the button "td.views-field.views-field-name a.username"
         And I click on the link "Edit"
