@@ -17,7 +17,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I add "TestPassword" to the inputfield "#edit-pass-pass2"
         # Then I expect that element ".messages" is not visible
         When I click on the button "#edit-submit"
-        Then the element ".messages" contains the text "The changes have been saved"
+        # Then the element ".messages" contains the text "The changes have been saved"
         And I open the url "/user/logout"
 
 
