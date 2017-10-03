@@ -28,7 +28,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         # PARTNERSHIP TASKS SCREEN/DASHBOARD
 
         And I click on the link "Search for a partnership"
-        When I add "Council" to the inputfield "#edit-keywords"
+        When I add "Cheesemakers" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
         When I click on the button "td.views-field.views-field-authority-name a"
 
@@ -41,14 +41,14 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
         # CHOOSE MEMBER
 
-#        Then I expect that element "#edit-par-data-organisation-id--wrapper" contains the text "Choose the member to enforce"
-#        And I click on the radio "input*=Cornish Cheese"
-#        And I click on the button "#edit-next"
+        Then I expect that element "#edit-par-data-organisation-id--wrapper" contains the text "Choose the member to enforce"
+        And I click on the radio "label*=Cornish Cheese"
+        And I click on the button "#edit-next"
 
         # CHOOSE LEGAL ENTITY
 
-#        And I click on the radio "#edit-legal-entities-select-add-new"
-        And I add "Legal Entity 1" to the inputfield "Enter the name of the legal entity"
+        And I click on the radio "#edit-legal-entities-select-add-new"
+        And I add "Legal Entity 1" to the inputfield "#edit-alternative-legal-entity"
         And I click on the button "#edit-next"
 
       # ENFORCEMENT SUMMARY
