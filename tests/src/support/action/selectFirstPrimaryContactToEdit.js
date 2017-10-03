@@ -15,8 +15,8 @@ module.exports = (done) => {
         width: 1024,
         height: 768,
     });
-    var primarycontact = process.env.TEST_DISPLAYNAME;
-    var primaryContact = primarycontact.splice(4, 0, " ");
+
+    var primaryContact = browser.getValue("div#block-par-theme-content div fieldset.form-group.js-form-item.form-item.js-form-wrapper.form-wrapper.inline div fieldset.form-group.js-form-item.form-item.js-form-wrapper.form-wrapper.inline div");
     console.log(primaryContact);
     browser.element('a*=edit ' + primaryContact).click();
     done();
