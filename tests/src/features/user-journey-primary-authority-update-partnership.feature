@@ -38,7 +38,7 @@ Feature: Primary Authority - Change Partnership Details
         And I click on the button "#edit-save"
         Then I expect that element "#edit-about-partnership" contains the text "test partnership info change"
 #        And I select the first primary contact to edit
-        And I click on the button "/html/body/main/div[2]/div[4]/form/div[12]/fieldset/div[2]/fieldset/a"
+        And I click on the button "fieldset#edit-0--9.form-group.js-form-item.form-item.js-form-wrapper.form-wrapper.inline a"
 #        When I click on the button "/html/body/main/div[2]/div[4]/form/div[12]/fieldset/div[2]/fieldset/a"
         And I clear the inputfield "#edit-salutation"
         And I clear the inputfield "#edit-work-phone"
