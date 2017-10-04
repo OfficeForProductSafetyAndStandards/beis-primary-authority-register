@@ -141,22 +141,22 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
       'notice_date' => $time->format("Y-m-d"),
     ];
 
-    //get the legal entity assigned from the previous form.
+    // Get the legal entity assigned from the previous form.
     $legal_entity_value = $this->getDefaultValues('legal_entities_select', '', 'par_enforcement_notice_raise');
 
-    //check if we are using the legal entity text field instead of the entity ref field.
+    // Check if we are using the legal entity text field instead of the entity ref field.
     if ($legal_entity_value == 'add_new') {
       $enforcementNotice_data['legal_entity_name'] = $this->getDefaultValues('alternative_legal_entity', '', 'par_enforcement_notice_raise');
     } else {
-      //we are dealing with an entity id the storage will be set to an entity ref field.
+      // We are dealing with an entity id the storage will be set to an entity ref field.
       $enforcementNotice_data['field_legal_entity'] = $legal_entity_value;
     }
 
     $enforcementAction = \Drupal::entityManager()->getStorage('par_data_enforcement_notice')->create($enforcementNotice_data);
 
     if ($enforcementAction->save()) {
-//      $this->deleteStore();
-      //Go directly to the action setup form we cannot use links within forms without losing form data.
+      $this->deleteStore();
+      // Go directly to the action setup form we cannot use links within forms without losing form data.
       $form_state->setRedirect($this->getFlow()->getNextRoute('next'), ['par_data_partnership' => $partnership->id(), 'par_data_enforcement_notice' =>$enforcementAction->id()]);
     }
     else {
