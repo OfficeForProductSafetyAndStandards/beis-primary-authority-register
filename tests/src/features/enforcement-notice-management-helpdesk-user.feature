@@ -1,4 +1,4 @@
-@ci
+@Bug @Pending
 Feature: Enforcement notice management
 
     Scenario: Enforcement notice management
@@ -25,10 +25,10 @@ Feature: Enforcement notice management
         # PARTNERSHIPS DASHBOARD
 
         Given I am logged in as stored user
-        And I select the option with the text "Awaiting Review" for element "#edit-partnership-status"
-        When I add "Cambridgeshire" to the inputfield "#edit-keywords"
+        And I select the option with the text "Active" for element "#edit-partnership-status"
+#        When I add "Cambridgeshire" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-helpdesk-dashboard"
-        When I click on the link "Approve partnership"
+        When I click on the button "td.views-field.views-field-par-flow-link a"
 
         # APPROVAL FORM
 

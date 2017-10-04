@@ -37,6 +37,7 @@ Feature: New Coordinated Partnership
 
         # CHOOSE PARTNERSHIP TYPE
 
+        And I click on authority selection if available
 #        When I click on the radio ".form-radio"
 #        And I click on the button "#edit-next"
 

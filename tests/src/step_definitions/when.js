@@ -34,7 +34,7 @@ module.exports = function when() {
     );
 
     this.When(
-        /^ click on authority selection if available$/,
+        /^I click on authority selection if available$/,
         selectAnAuthorityForPartnership
     );
 

@@ -55,12 +55,12 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
       # ENFORCEMENT SUMMARY
 
-        And I add "action summary enforcement notice" to the inputfield "#edit-action-sumary"
+        And I add "action summary enforcement notice" to the inputfield "#edit-action-summary"
         And I click on the radio "#edit-enforcement-type-proposed"
         And I click on the button "#edit-next"
 
         And I add "Title of the enforcement notice" to the inputfield "#edit-title-of-action"
-        And I click on the radio "#edit-regulatory-functions-1"
+#        And I click on the radio "#edit-regulatory-functions-1"
         And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
         And I click on the button "#edit-next"
         Then I expect that element "#par-enforcement-notice-raise-confirm" contains the text "action summary enforcement notice"
