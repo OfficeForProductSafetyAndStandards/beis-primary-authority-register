@@ -42,7 +42,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
     $this->retrieveEditableValues();
-    $enforcement_notice_bundle = $this->getParDataManager()->getParBundleEntity('par_data_enforcement_notice');
+    $enforcement_notice_entity = $this->getParDataManager()->getParBundleEntity('par_data_enforcement_notice');
 
     //get the correct par_data_authority_id set by the previous form
     $authority_id = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
@@ -99,13 +99,13 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
       '#default_value' => $this->getDefaultValues("action_summary"),
      ];
 
-    $enforcement_notice_bundle = $enforcement_notice_bundle->getAllowedValues('notice_type');
+    $enforcement_notice_entity = $enforcement_notice_entity->getAllowedValues('notice_type');
 
     $form['enforcement_type'] = [
       '#type' => 'radios',
       '#title' => $this->t('Enforcing type'),
-      '#options' => $enforcement_notice_bundle,
-      '#default_value' => $enforcement_notice_bundle[proposed],
+      '#options' => $enforcement_notice_entity,
+      '#default_value' => key($enforcement_notice_entity),
       '#required' => TRUE,
       '#prefix' => '<div>',
       '#suffix' => '</div>',
