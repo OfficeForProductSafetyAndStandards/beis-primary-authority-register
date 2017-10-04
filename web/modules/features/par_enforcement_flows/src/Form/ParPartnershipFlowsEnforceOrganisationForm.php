@@ -85,7 +85,7 @@ class ParPartnershipFlowsEnforceOrganisationForm extends ParBaseForm {
 
         $form['par_data_organisation_id'] = [
           '#type' => 'radios',
-          '#title' => t('Choose the member to enforce?'),
+          '#title' => t('Choose the member to enforce'),
           '#options' => $page_options,
           '#default_value' => $this->getDefaultValues('par_data_organisation_id', []),
         ];
