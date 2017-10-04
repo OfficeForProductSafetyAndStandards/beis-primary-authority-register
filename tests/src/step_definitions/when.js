@@ -20,6 +20,7 @@ import fillInForm from '../support/action/fillInForm';
 import uploadAValidFile from '../support/action/uploadFile';
 import selectTheEditLink from '../support/action/selectTheEditLink';
 import selectFirstPrimaryContactToEdit from '../support/action/selectFirstPrimaryContactToEdit';
+import selectAnAuthorityForPartnership from '../support/action/selectAnAuthorityForPartnership';
 
 module.exports = function when() {
     this.When(
@@ -30,6 +31,11 @@ module.exports = function when() {
     this.When(
         /^I select the edit link (.*)$/,
         selectTheEditLink
+    );
+
+    this.When(
+        /^ click on authority selection if available$/,
+        selectAnAuthorityForPartnership
     );
 
     this.When(
