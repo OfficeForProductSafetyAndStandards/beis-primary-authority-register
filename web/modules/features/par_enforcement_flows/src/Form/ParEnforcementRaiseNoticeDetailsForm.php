@@ -129,6 +129,8 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
     $partnership = $this->getRouteParam('par_data_partnership');
     $enforcementNotice_data = [];
 
+    $time = new \DateTime();
+
     $enforcementNotice_data = [
       'notice_type' => $this->getTempDataValue('enforcement_type'),
       'summary' => $this->getTempDataValue('action_summary'),
@@ -136,16 +138,17 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
       'field_enforcing_authority' => $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection'),
       'field_organisation' => $this->getDefaultValues('par_data_organisation_id', '', 'par_data_organisation_id'),
       'field_partnership' => $partnership->id(),
+      'notice_date' => $time->format("Y-m-d"),
     ];
 
-    //get the legal entity assigned from the previous form.
+    // Get the legal entity assigned from the previous form.
     $legal_entity_value = $this->getDefaultValues('legal_entities_select', '', 'par_enforcement_notice_raise');
 
-    //check if we are using the legal entity text field instead of the entity ref field.
+    // Check if we are using the legal entity text field instead of the entity ref field.
     if ($legal_entity_value == 'add_new') {
       $enforcementNotice_data['legal_entity_name'] = $this->getDefaultValues('alternative_legal_entity', '', 'par_enforcement_notice_raise');
     } else {
-      //we are dealing with an entity id the storage will be set to an entity ref field.
+      // We are dealing with an entity id the storage will be set to an entity ref field.
       $enforcementNotice_data['field_legal_entity'] = $legal_entity_value;
     }
 
@@ -153,7 +156,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
 
     if ($enforcementAction->save()) {
       $this->deleteStore();
-      //Go directly to the action setup form we cannot use links within forms without losing form data.
+      // Go directly to the action setup form we cannot use links within forms without losing form data.
       $form_state->setRedirect($this->getFlow()->getNextRoute('next'), ['par_data_partnership' => $partnership->id(), 'par_data_enforcement_notice' =>$enforcementAction->id()]);
     }
     else {
