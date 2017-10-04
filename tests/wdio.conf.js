@@ -123,15 +123,12 @@ exports.config = {
     //     //     outputDir: './reports/allure/',
     //     // },
     // },
-    reporters: ['json', 'spec', 'allure'],
+    reporters: ['json', 'spec'],
     reporterOptions: {
         json: {
             outputDir: './reports/',
             filename: 'report',
             combined: true,
-        },
-        allure: {
-            outputDir: './allure-results',
         },
     },
     //

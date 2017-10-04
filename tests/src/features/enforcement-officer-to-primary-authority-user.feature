@@ -1,4 +1,4 @@
-@Pending @Bug
+@ci @Bug
 Feature: Enforcement Officer/PA - Enforcement Notice Process
 
     Scenario: Enforcement Officer/PA - Issue enforcement notice
@@ -47,7 +47,8 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I click on the button "#edit-next"
 
         # CHOOSE LEGAL ENTITY
-
+        
+        And I scroll to element "#edit-legal-entities-select-add-new"
         And I click on the radio "#edit-legal-entities-select-add-new"
         And I add "Legal Entity 1" to the inputfield "#edit-alternative-legal-entity"
         And I click on the button "#edit-next"

@@ -1,4 +1,4 @@
-@Bug @Pending @journey2 @deprecated
+@ci @Pending @journey2 @deprecated
 Feature: Business User - Manage Addresses
 
     Scenario: Business User - Manage Addresses
