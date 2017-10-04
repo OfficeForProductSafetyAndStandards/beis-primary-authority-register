@@ -67,11 +67,11 @@ Feature: Primary Authority - Change Partnership Details
         When I click on the link "Upload advice"
         Then I expect that element "h3" contains the text "How to upload Primary Authority Advice to Local Authorities"
         And I click on the button "#edit-cancel"
-        Then I expect that element "#block-par-theme-content" contains the text "Upload advice"
-        When I click on the button ".button"
-#    And I click on the checkbox "#edit-partnership-info-agreed-authority"
-        And I click on the button "#edit-save"
-        Then I expect that element "h1" contains the text "Primary Authority Register"
+#        Then I expect that element "#block-par-theme-content" contains the text "Upload advice"
+#        When I click on the button ".button"
+##    And I click on the checkbox "#edit-partnership-info-agreed-authority"
+#        And I click on the button "#edit-save"
+#        Then I expect that element "h1" contains the text "Primary Authority Register"
 
         # INSPECTION PLANS
 
