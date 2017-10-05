@@ -51,3 +51,38 @@ SQL;
     drush_sql_register_post_sync_op('sanitise_par_people_revisions', dt('Sanitise PAR Data Person revision records'), $par_data_person_revision_query);
   }
 }
+
+/**
+ * Implements hook_drush_command().
+ */
+function par_data_drush_command() {
+  $commands = [];
+  $commands['par-cache-warm'] = [
+    'description' => 'Warm the caches for PAR Data',
+    'aliases' => ['pcw'],
+    'examples' => [
+      'drush pcw',
+    ],
+  ];
+  return $commands;
+}
+
+function drush_par_data_par_cache_warm() {
+  $par_data_manager = \Drupal::service('par_data.manager');
+  $existing = [];
+  $processed = [];
+
+  $authorities = $par_data_manager->getEntitiesByType('par_data_authority');
+  foreach ($authorities as $authority) {
+    $par_data_manager->getRelatedEntities($authority, $existing, $processed);
+    drush_print("Warmed authority: {$authority->label()}");
+  }
+
+  $organisations = $par_data_manager->getEntitiesByType('par_data_organisation');
+  foreach ($organisations as $organisation) {
+    $par_data_manager->getRelatedEntities($organisation, $existing, $processed);
+    drush_print("Warmed organisation: {$organisation->label()}");
+  }
+
+  return 'Cache warmed for authorities and organisations.';
+}

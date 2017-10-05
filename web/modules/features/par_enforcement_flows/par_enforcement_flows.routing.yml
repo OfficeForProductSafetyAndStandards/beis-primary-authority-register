@@ -52,8 +52,8 @@ par_enforcement_flows.authority_select:
 par_enforcement_flows.enforce_organisation:
   path: '/enforcement-notice/{par_data_partnership}/enforce-organisation'
   defaults:
-    _form: '\Drupal\par_enforcement_flows\Form\ParPartnershipFlowsEnforceOrganisationForm'
-    _title_callback: '\Drupal\par_enforcement_flows\Form\ParPartnershipFlowsEnforceOrganisationForm::titleCallback'
+    _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementEnforceOrganisationForm'
+    _title_callback: '\Drupal\par_enforcement_flows\Form\ParEnforcementEnforceOrganisationForm::titleCallback'
   requirements:
     _permission: 'raise enforcement notice'
     par_data_partnership: \d+
