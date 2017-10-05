@@ -377,13 +377,63 @@ $settings['update_free_access'] = FALSE;
  * Be aware, however, that it is likely that this would allow IP
  * address spoofing unless more advanced precautions are taken.
  */
-# $settings['reverse_proxy'] = TRUE;
+$settings['reverse_proxy'] = TRUE;
 
 /**
  * Specify every reverse proxy IP address in your environment.
  * This setting is required if $settings['reverse_proxy'] is TRUE.
  */
-# $settings['reverse_proxy_addresses'] = array('a.b.c.d', ...);
+
+/** http://d7uri8nf7uskq.cloudfront.net/tools/list-cloudfront-ips */
+
+$cloudFrontGlobalIps = [
+    "13.32.0.0/15",
+    "52.46.0.0/18",
+    "52.84.0.0/15",
+    "52.222.128.0/17",
+    "54.182.0.0/16",
+    "54.192.0.0/16",
+    "54.230.0.0/16",
+    "54.239.128.0/18",
+    "54.239.192.0/19",
+    "54.240.128.0/18",
+    "204.246.164.0/22",
+    "204.246.168.0/22",
+    "204.246.174.0/23",
+    "204.246.176.0/20",
+    "205.251.192.0/19",
+    "205.251.249.0/24",
+    "205.251.250.0/23",
+    "205.251.252.0/23",
+    "205.251.254.0/24",
+    "216.137.32.0/19"
+];
+
+$cloudFrontRegionalEdgeIps = [
+    "13.54.63.128/26",
+    "13.59.250.0/26",
+    "13.113.203.0/24",
+    "13.124.199.0/24",
+    "13.228.69.0/24",
+    "34.195.252.0/24",
+    "34.226.14.0/24",
+    "34.232.163.208/29",
+    "35.158.136.0/24",
+    "35.162.63.192/26",
+    "35.167.191.128/26",
+    "52.15.127.128/26",
+    "52.52.191.128/26",
+    "52.56.127.0/25",
+    "52.57.254.0/24",
+    "52.66.194.128/26",
+    "52.78.247.128/26",
+    "52.199.127.192/26",
+    "52.212.248.0/26",
+    "52.220.191.0/26",
+    "54.233.255.128/26"
+];
+
+$settings['reverse_proxy_addresses'] = ['127.0.0.1'] + $cloudFrontGlobalIps + $cloudFrontRegionalEdgeIps;
 
 /**
  * Set this value if your proxy server sends the client IP in a header
