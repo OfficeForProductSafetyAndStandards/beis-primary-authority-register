@@ -101,14 +101,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     $operations = [];
     $checkbox = $this->getInformationCheckbox();
     if ($checkbox === 'partnership_info_agreed_business' && !$par_data_partnership->getBoolean($checkbox)) {
-      // Get current user and check permissions.
-      $account = $this->getCurrentUser();
-      if ($account->hasPermission('edit par_data_legal_entity entities')) {
-        $operations[] = 'edit-entity';
-      }
-      if ($account->hasPermission('add par_data_legal_entity entities')) {
-        $operations[] = 'add';
-      }
+        $operations = ['edit-entity','add'];
     }
     $form['legal_entities'] = $this->renderSection('Legal Entities', $par_data_organisation, ['field_legal_entity' => 'summary'], $operations);
 
