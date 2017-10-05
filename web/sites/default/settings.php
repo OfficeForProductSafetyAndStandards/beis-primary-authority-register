@@ -383,6 +383,9 @@ $settings['reverse_proxy'] = TRUE;
  * Specify every reverse proxy IP address in your environment.
  * This setting is required if $settings['reverse_proxy'] is TRUE.
  */
+
+/** http://d7uri8nf7uskq.cloudfront.net/tools/list-cloudfront-ips */
+
 $cloudFrontGlobalIps = [
     "13.32.0.0/15",
     "52.46.0.0/18",
