@@ -11,7 +11,7 @@ function createRow($key, $line)
     $assoc[] = [
         'partnership_nominated_date' => $line[0],
         'partnership_revoked_date' => $line[1],
-        'partnership_status' => $line[2],
+        'partnership_status' => $line[2] == 'confirmed_rd' ? 'Active' : $line[2],
         'partnership_type' => ucfirst($line[3]),
         'primary_authority' => $line[4],
         'organisation_name' => $line[5],
