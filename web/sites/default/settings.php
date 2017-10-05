@@ -383,7 +383,7 @@ $settings['reverse_proxy'] = TRUE;
  * Specify every reverse proxy IP address in your environment.
  * This setting is required if $settings['reverse_proxy'] is TRUE.
  */
-$cloudfrontGlobalIps = [
+$cloudFrontGlobalIps = [
     "13.32.0.0/15",
     "52.46.0.0/18",
     "52.84.0.0/15",
@@ -430,7 +430,7 @@ $cloudFrontRegionalEdgeIps = [
     "54.233.255.128/26"
 ];
 
-$settings['reverse_proxy_addresses'] = ['127.0.0.1'] + $cloudfrontGlobalIps + $cloudFrontRegionalEdgeIps;
+$settings['reverse_proxy_addresses'] = ['127.0.0.1'] + $cloudFrontGlobalIps + $cloudFrontRegionalEdgeIps;
 
 /**
  * Set this value if your proxy server sends the client IP in a header
