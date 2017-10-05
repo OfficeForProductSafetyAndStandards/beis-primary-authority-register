@@ -11,6 +11,7 @@ is_admin: false
 permissions:
   - 'access comments'
   - 'access content'
+  - 'access par_data_regulatory_function entities'
   - 'access site-wide contact form'
   - 'search content'
   - 'search public register'
