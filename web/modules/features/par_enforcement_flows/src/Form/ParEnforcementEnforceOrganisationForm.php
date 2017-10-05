@@ -13,7 +13,7 @@ use Drupal\user\Entity\User;
 /**
  * The de-duping form.
  */
-class ParPartnershipFlowsEnforceOrganisationForm extends ParBaseForm {
+class ParEnforcementEnforceOrganisationForm extends ParBaseForm {
 
   /**
    * {@inheritdoc}
@@ -64,6 +64,8 @@ class ParPartnershipFlowsEnforceOrganisationForm extends ParBaseForm {
         $form['no_members'] = [
           '#type' => 'markup',
           '#markup' => $this->t('Sorry but there are no members for this organisation.'),
+          '#prefix' => '<p><strong>',
+          '#suffix' => '</strong><p>',
         ];
 
         $this->getFlow()->disableAction('next');
