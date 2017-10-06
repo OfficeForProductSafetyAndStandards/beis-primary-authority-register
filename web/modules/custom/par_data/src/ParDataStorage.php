@@ -16,6 +16,13 @@ use Drupal\trance\TranceStorage;
 class ParDataStorage extends TranceStorage {
 
   /**
+   * Hard delete all PAR Data Entities.
+   */
+  public function destroy(array $entities) {
+    parent::delete($entities);
+  }
+
+  /**
    * Soft delete all PAR Data entities.
    *
    * {@inheritdoc}
@@ -26,24 +33,15 @@ class ParDataStorage extends TranceStorage {
       return;
     }
 
-    // Ensure that the entities are keyed by ID.
+    // Perform the delete and key the entities correctly.
     $keyed_entities = [];
     foreach ($entities as $entity) {
+      $entity->set(ParDataEntity::DELETE_FIELD, TRUE)->save();
       $keyed_entities[$entity->id()] = $entity;
     }
 
-    // Perform the delete and reset the static cache for the deleted entities.
-    $this->doDelete($keyed_entities);
+    // Reset the static cache for the deleted entities.
     $this->resetCache(array_keys($keyed_entities));
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function doDelete($entities) {
-    foreach ($entities as $id => $entity) {
-      $entity->set(ParDataEntity::DELETE_FIELD, TRUE)->save();
-    }
   }
 
   /**
