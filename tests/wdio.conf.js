@@ -9,7 +9,7 @@ exports.config = {
     // then the current working directory is where your package.json resides, so
     // `wdio` will be called from there.
     //
-    specs: ['./src/features/**/*.feature'],
+    specs: ['./src/features/*.feature'],
     // Patterns to exclude.
     // exclude: ['./src/features/backlog/**/*.feature'],
     //
@@ -123,15 +123,12 @@ exports.config = {
     //     //     outputDir: './reports/allure/',
     //     // },
     // },
-    reporters: ['json', 'spec', 'allure'],
+    reporters: ['json', 'spec'],
     reporterOptions: {
         json: {
             outputDir: './reports/',
             filename: 'report',
             combined: true,
-        },
-        allure: {
-            outputDir: './allure-results',
         },
     },
     //

@@ -1,15 +1,32 @@
 @ci @journey1 @deprecated
 Feature: New Direct Partnership
 
-    Background:
-        # TEST DATA RESET
-        Given I reset the test data
-
     Scenario: New Direct Partnership
 
         # SEARCH PARTNERSHIPS
 
-        Given I am logged in as "par_authority@example.com"
+        Given I am logged in as "par_admin@example.com"
+        And I reset the test data
+        And I open the url "/admin/people"
+        And I select the option with the value "par_authority" for element "#edit-role"
+        And I add "55" to the inputfield "#edit-user"
+        And I click on the button "#edit-submit-user-admin-people"
+        And I click on the button "td.views-field.views-field-name a.username"
+        And I click on the link "Edit"
+        And I scroll to element "#edit-pass-pass2"
+        And I add "TestPassword" to the inputfield "#edit-pass-pass1"
+        # Then I expect that element ".messages" is not visible
+        And I add "TestPassword" to the inputfield "#edit-pass-pass2"
+        # Then I expect that element ".messages" is not visible
+        When I click on the button "#edit-submit"
+#        Then the element ".messages" contains the text "The changes have been saved"
+        And I store the user email address
+        And I open the url "/user/logout"
+
+
+        # PARTNERSHIPS DASHBOARD
+
+        Given I am logged in as stored user
 
         # CHECK DASHBOARD CONTENTS DEPENDING ON USER LEVEL
 
@@ -20,8 +37,9 @@ Feature: New Direct Partnership
 
         # CHOOSE PARTNERSHIP TYPE
 
-        When I click on the radio ".form-radio"
-        And I click on the button "#edit-next"
+        And I click on authority selection if available
+#        When I click on the radio ".form-radio"
+#        And I click on the button "#edit-next"
 
         # CREATE NEW PARTNERSHIP FORM
 
@@ -33,26 +51,26 @@ Feature: New Direct Partnership
 
         Then I expect that element "#par-partnership-application-authority-checklist" contains the text "I am authorised to submit this application"
         When I click on the button "#edit-next"
-        Then I expect that element ".error-summary-heading" is visible
+        Then I expect that element ".error-summary" is visible
         When I click on the checkbox "#edit-business-eligible-for-partnership"
         And I click on the button "#edit-next"
-        Then I expect that element ".error-summary-heading" is visible
+        Then I expect that element ".error-summary" is visible
         And I click on the checkbox "#edit-local-authority-suitable-for-nomination"
         And I click on the button "#edit-next"
-        Then I expect that element ".error-summary-heading" is visible
+        Then I expect that element ".error-summary" is visible
         And I click on the checkbox "#edit-written-summary-agreed"
         And I click on the button "#edit-next"
-        Then I expect that element ".error-summary-heading" is visible
+        Then I expect that element ".error-summary" is visible
         And I click on the checkbox "#edit-terms-organisation-agreed"
         And I click on the radio "#edit-business-regulated-by-one-authority-1"
         When I click on the button "#edit-next"
-        Then I expect that element ".error-summary-heading" is visible
+        Then I expect that element ".error-summary" is visible
         And I expect that element "#par-partnership-application-authority-checklist" contains the text "Is this your local authority?"
         And I click on the radio "#edit-business-regulated-by-one-authority-1"
         And I click on the radio "#edit-is-local-authority-1"
-#        And I expect that element ".error-summary" contains the text "The business needs to be informed about local authority"
+  #        And I expect that element ".error-summary" contains the text "The business needs to be informed about local authority"
         When I click on the button "#edit-next"
-        Then I expect that element "error-summary-heading" is not visible
+        Then I expect that element "error-summary" is not visible
 
         # ADD ABOUT THE PARTNERSHIP
 
@@ -68,8 +86,8 @@ Feature: New Direct Partnership
         # CONFIRM NEW PARTNERSHIP
 
         And I click new partnership if presented with choices
-#        And I click on the radio "#edit-par-data-organisation-id-new"
-#        And I click on the button "#edit-next"
+  #        And I click on the radio "#edit-par-data-organisation-id-new"
+  #        And I click on the button "#edit-next"
 
         # ADD BUSINESS DETAIL
 
@@ -99,10 +117,10 @@ Feature: New Direct Partnership
 
         # EMAIL
 
-        Then the inputfield "#edit-email-subject" contains the text "New Partnership on the Primary Authority Register"
+        Then the inputfield "#edit-email-subject" contains the text "Invitation to join the Primary Authority Registe"
         When I click on the button "#edit-next"
-        Then the element "#block-par-theme-content" contains the text "par_business_change@example.com"
-
+#    Then the element "#block-par-theme-content" contains the text "Your partnership application has been sent to"
+#    Then the element "#block-par-theme-content" contains the text "par_business_change@example.com"
 
 #        # HELPDESK USER
 

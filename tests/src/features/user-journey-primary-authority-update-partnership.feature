@@ -1,25 +1,34 @@
-@Pending @journey1 @deprecated
+@ci @journey1 @deprecated
 Feature: Primary Authority - Change Partnership Details
-
-    Background:
-        # TEST DATA RESET
-        Given I reset the test data
 
     Scenario: Primary Authority - Change Partnership Details
 
         # SEARCH PARTNERSHIPS
 
-        Given I am logged in as "f040f97dab3e0312230acf0f242ab7bf@localhost.localdomain"
-        And I expect that element "#block-par-theme-content" contains the text "See your partnerships"
-        And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
-        And I expect that element "#block-par-theme-content" contains the text "Messages"
-        When I click on the link "See your partnerships"
+        Given I am logged in as "par_admin@example.com"
+        And I reset the test data
+        And I open the url "/admin/people"
+        And I select the option with the value "par_authority" for element "#edit-role"
+        And I add "44" to the inputfield "#edit-user"
+        And I click on the button "#edit-submit-user-admin-people"
+        And I click on the button "td.views-field.views-field-name a.username"
+        And I click on the link "Edit"
+        And I scroll to element "#edit-pass-pass2"
+        And I add "TestPassword" to the inputfield "#edit-pass-pass1"
+        # Then I expect that element ".messages" is not visible
+        And I add "TestPassword" to the inputfield "#edit-pass-pass2"
+        # Then I expect that element ".messages" is not visible
+        When I click on the button "#edit-submit"
+#        Then the element ".messages" contains the text "The changes have been saved"
+        And I store the user email address
+        And I open the url "/user/logout"
+
 
         # PARTNERSHIPS DASHBOARD
 
-        And I add "Co Mart" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-par-user-partnerships"
-        And I click on the button "a*=Council"
+        Given I am logged in as stored user
+        And I click on the link "See your partnerships"
+        When I click on the button "td.views-field.views-field-par-flow-link a"
         And I expect that element "h1" is not empty
 
         # REVIEW PARTNERSHIPS DETAILS
@@ -28,7 +37,9 @@ Feature: Primary Authority - Change Partnership Details
         And I add "test partnership info change" to the inputfield "#edit-about-partnership"
         And I click on the button "#edit-save"
         Then I expect that element "#edit-about-partnership" contains the text "test partnership info change"
-        When I click on the link "edit animal the muppet"
+#        And I select the first primary contact to edit
+        And I click on the button "fieldset#edit-0--9.form-group.js-form-item.form-item.js-form-wrapper.form-wrapper.inline a"
+#        When I click on the button "/html/body/main/div[2]/div[4]/form/div[12]/fieldset/div[2]/fieldset/a"
         And I clear the inputfield "#edit-salutation"
         And I clear the inputfield "#edit-work-phone"
         And I clear the inputfield "#edit-mobile-phone"
@@ -36,55 +47,31 @@ Feature: Primary Authority - Change Partnership Details
         And I click on the button "#edit-save"
         When I add "Mr" to the inputfield "#edit-salutation"
         And I click on the button "#edit-save"
-        Then I expect that element ".error-message" does exist
+        Then I expect that element ".error-summary" does exist
         When I add "91723456789" to the inputfield "#edit-work-phone"
         And I click on the button "#edit-save"
-        Then I expect that element ".error-message" does exist
+        Then I expect that element ".error-summary" does exist
         When I add "9777777777" to the inputfield "#edit-mobile-phone"
         And I click on the button "#edit-save"
-        Then I expect that element ".error-message" does exist
+        Then I expect that element ".error-summary" does exist
         When I add "par_authority_animal@example.com" to the inputfield "#edit-email"
         When I click on the button "#edit-save"
         And I expect that element "#edit-authority-contacts" contains the text "par_authority_animal@example.com"
         And I expect that element "#edit-authority-contacts" contains the text "91723456789"
         And I expect that element "#edit-authority-contacts" contains the text "9777777777"
-        And I scroll to element "#edit-organisation-contacts"
-        When I click on the link "add another authority contact"
-        And I add "Miss" to the inputfield "#edit-salutation"
-        And I add "Miss" to the inputfield "#edit-first-name"
-        And I add "Piggy" to the inputfield "#edit-last-name"
-        And I add "par_authority_piggy@example.com" to the inputfield "#edit-email"
-        And I add "917234567899" to the inputfield "#edit-work-phone"
-        And I add "97777777779" to the inputfield "#edit-mobile-phone"
-        When I click on the button "#edit-save"
-        Then I expect that element "#edit-authority-contacts" contains the text "par_authority_piggy@example.com"
-        Then I expect that element "#edit-authority-contacts" contains the text "917234567899"
-        Then I expect that element "#edit-authority-contacts" contains the text "97777777779"
-
-#         Then I expect that element "#block-par-theme-content" contains the text "Confirmed by the Authority"
 
        # DOCUMENTATION
 
         # When I select next partnership awaiting review
         And I click on the button "a*=See all Advice"
-        When I click on the link "Upload"
+        When I click on the link "Upload advice"
         Then I expect that element "h3" contains the text "How to upload Primary Authority Advice to Local Authorities"
         And I click on the button "#edit-cancel"
-        #  And I click on the link "Upload a document"
-        #  And I upload a valid file
-        And I click on the link "edit"
-        And I click on the radio "#edit-advice-type-authority-advice"
-        When I click on the button "#edit-next"
-        Then I expect that element ".error-message" does exist
-        And I click on the checkbox ".form-label*=Cookie control"
-        When I click on the button "#edit-save"
-        # Then I expect that element ".table-scroll-wrapper" contains the text "✔"
-        # And the element ".table-scroll-wrapper" contains the text "Cookie control"
-        When I click on the link "Done"
-        Then I expect that element "#edit-regulatory-functions" contains the text "Cookie control"
-        And I click on the checkbox "#edit-partnership-info-agreed-authority"
-        And I click on the button "#edit-done"
-
+#        Then I expect that element "#block-par-theme-content" contains the text "Upload advice"
+#        When I click on the button ".button"
+##    And I click on the checkbox "#edit-partnership-info-agreed-authority"
+#        And I click on the button "#edit-save"
+#        Then I expect that element "h1" contains the text "Primary Authority Register"
 
         # INSPECTION PLANS
 

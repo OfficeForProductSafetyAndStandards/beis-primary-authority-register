@@ -1,15 +1,32 @@
-@ci @journey1 @deprecated
+@ci @Bug @journey1 @deprecated
 Feature: New Coordinated Partnership
-
-    Background:
-        # TEST DATA RESET
-        Given I reset the test data
 
     Scenario: New Coordinated Partnership
 
         # SEARCH PARTNERSHIPS
 
-        Given I am logged in as "par_authority@example.com"
+        Given I am logged in as "par_admin@example.com"
+        And I reset the test data
+        And I open the url "/admin/people"
+        And I select the option with the value "par_authority" for element "#edit-role"
+        And I add "66" to the inputfield "#edit-user"
+        And I click on the button "#edit-submit-user-admin-people"
+        And I click on the button "td.views-field.views-field-name a.username"
+        And I click on the link "Edit"
+        And I scroll to element "#edit-pass-pass2"
+        And I add "TestPassword" to the inputfield "#edit-pass-pass1"
+        # Then I expect that element ".messages" is not visible
+        And I add "TestPassword" to the inputfield "#edit-pass-pass2"
+        # Then I expect that element ".messages" is not visible
+        When I click on the button "#edit-submit"
+#        Then the element ".messages" contains the text "The changes have been saved"
+        And I store the user email address
+        And I open the url "/user/logout"
+
+
+        # PARTNERSHIPS DASHBOARD
+
+        Given I am logged in as stored user
 
         # CHECK DASHBOARD CONTENTS DEPENDING ON USER LEVEL
 
@@ -20,8 +37,9 @@ Feature: New Coordinated Partnership
 
         # CHOOSE PARTNERSHIP TYPE
 
-        When I click on the radio ".form-radio"
-        And I click on the button "#edit-next"
+        And I click on authority selection if available
+#        When I click on the radio ".form-radio"
+#        And I click on the button "#edit-next"
 
         # CREATE NEW PARTNERSHIP FORM
 
@@ -34,13 +52,13 @@ Feature: New Coordinated Partnership
         And I click on the checkbox "#edit-suitable-nomination"
         And I click on the checkbox "#edit-written-summary-agreed"
         And I click on the checkbox "#edit-terms-local-authority-agreed"
-#        And I click on the radio "#edit-business-regulated-by-one-authority-1"
-#        And I click on the radio "#edit-is-local-authority-1"
+  #        And I click on the radio "#edit-business-regulated-by-one-authority-1"
+  #        And I click on the radio "#edit-is-local-authority-1"
         And I click on the button "#edit-next"
 
         # ADD ABOUT THE PARTNERSHIP
 
-        Then I expect that element "#par-partnership-about" contains the text "Use this section to give a brief overview of the partnership"
+        Then I expect that element "h1.heading-xlarge" contains the text "New Partnership Application"
         When I add "About the partnership detail" to the inputfield "#edit-about-partnership"
         And I click on the button "#edit-next"
 
@@ -52,8 +70,8 @@ Feature: New Coordinated Partnership
         # CONFIRM NEW PARTNERSHIP
 
         And I click new partnership if presented with choices
-#        And I click on the radio "#edit-par-data-organisation-id-new"
-#        And I click on the button "#edit-next"
+  #        And I click on the radio "#edit-par-data-organisation-id-new"
+  #        And I click on the button "#edit-next"
 
         # ADD BUSINESS DETAIL
 

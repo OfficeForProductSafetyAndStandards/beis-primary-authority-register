@@ -1,6 +1,6 @@
 @Pending
 Feature: Enforcement Officer to Coordinated Partnership
-    
+
     Background:
         # TEST DATA RESET
         Given I reset the test data

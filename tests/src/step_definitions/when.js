@@ -19,7 +19,8 @@ import submitForm from '../support/action/submitForm';
 import fillInForm from '../support/action/fillInForm';
 import uploadAValidFile from '../support/action/uploadFile';
 import selectTheEditLink from '../support/action/selectTheEditLink';
-
+import selectFirstPrimaryContactToEdit from '../support/action/selectFirstPrimaryContactToEdit';
+import selectAnAuthorityForPartnership from '../support/action/selectAnAuthorityForPartnership';
 
 module.exports = function when() {
     this.When(
@@ -33,6 +34,11 @@ module.exports = function when() {
     );
 
     this.When(
+        /^I click on authority selection if available$/,
+        selectAnAuthorityForPartnership
+    );
+
+    this.When(
         /^I click on the link "([^"]*)?" in the page area "([^"]*)?"$/,
         clickChildElement
     );
@@ -40,6 +46,11 @@ module.exports = function when() {
     this.When(
         /^I upload a valid file$/,
         uploadAValidFile
+    );
+
+    this.When(
+        /^I select the first primary contact to edit$/,
+        selectFirstPrimaryContactToEdit
     );
 
     this.When(
