@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Entity;
 
+use CommerceGuys\Addressing\AddressFormat\AddressField;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 

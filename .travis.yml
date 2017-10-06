@@ -17,8 +17,6 @@ cache:
     - $HOME/.composer/cache/files
 
 before_install:
-  - openssl aes-256-cbc -K $encrypted_4284186b3c3c_key -iv $encrypted_4284186b3c3c_iv
-    -in auth.json.enc -out auth.json -d
   - openssl aes-256-cbc -K $encrypted_6db5a3a5521e_key -iv $encrypted_6db5a3a5521e_iv
     -in .env.continuous.enc -out cf/.env.continuous -d
 

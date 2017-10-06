@@ -1,9 +1,11 @@
+langcode: en
 status: true
 dependencies: {  }
 id: partnership_authority
 label: 'Authority Partnership Flow'
+default_title: null
 description: ''
-save_method: 'step'
+save_method: step
 steps:
   1:
     route: par_partnership_flows.authority_details
@@ -14,7 +16,7 @@ steps:
       edit_field_authority_person: 5
       advice: 6
       inspection_plans: 11
-      done: 12
+      save: 12
   2:
     route: par_partnership_flows.about_partnership
     form_id: par_partnership_about
@@ -77,4 +79,3 @@ steps:
       cancel: 1
   12:
     route: view.par_user_partnerships.partnerships_page
-

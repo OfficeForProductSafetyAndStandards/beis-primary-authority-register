@@ -303,4 +303,4 @@ $options['skip-tables']['common'] = array('migration_*', 'test*');
 $command_specific['sql-sanitize'] = ['sanitize-email' => 'no'];
 
 // Ensure drush always has enough memory.
-ini_set('memory_limit', '512M');
+ini_set('memory_limit', '-1');

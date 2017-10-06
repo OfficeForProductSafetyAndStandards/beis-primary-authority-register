@@ -3,4 +3,4 @@ langcode: en
 status: true
 dependencies: {  }
 id: invite_organisation_member
-sending_methods: invite_by_email
+sending_methods: invite_by_email||0

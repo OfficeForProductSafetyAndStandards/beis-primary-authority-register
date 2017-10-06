@@ -1,0 +1,25 @@
+uuid: 828aac2e-725a-4523-bf54-c79b6c6dcaa2
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: iSUvcXaAAE0MT6dAzumpN4E5dDzAjRoeETlkNgmyyUk
+id: approve_partnership
+label: 'Approve Partnership'
+default_title: null
+description: 'The approve operations for a given partnership.'
+save_method: end
+steps:
+  1:
+    route: par_help_desks_flows.confirm_partnership
+    form_id: par_rd_help_desk_confirm
+    redirect:
+      next: 2
+      cancel: 3
+  2:
+    route: par_help_desks_flows.approve_partnership
+    form_id: par_rd_help_desk_approve
+    redirect:
+      done: 3
+  3:
+    route: view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page

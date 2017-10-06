@@ -1,0 +1,52 @@
+<?php
+
+use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\Core\Link;
+use Drupal\par_data\Entity\ParDataPerson;
+
+/**
+ * Implements hook_token_info().
+ */
+function par_actions_token_info() {
+  $type = [
+    'name' => t('PAR Invite'),
+    'description' => t('PAR extended invite tokens.'),
+    'needs-data' => 'invite'
+  ];
+
+  // Add custom par tokens to invitation.
+  $invite['par:member-name'] = [
+    'name' => t('PAR member name'),
+    'description' => t('Name of the PAR Member.'),
+    'dynamic' => TRUE,
+  ];
+
+  return [
+    'types' => ['invite' => $type],
+    'tokens' => ['invite' => $invite],
+  ];
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function par_actions_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+  if ($type == 'invite') {
+
+    $person = current($data['invite']->get('field_invite_par_person')->referencedEntities());
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        case 'par:member-name':
+          if ($person && $person instanceof ParDataPerson) {
+            $replacements[$original] = $person->label();
+          }
+          break;
+
+        default:
+      }
+    }
+  }
+
+  return $replacements;
+}

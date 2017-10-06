@@ -1,6 +1,6 @@
 uuid: 558abf7c-b063-4c64-89cf-a6d28bc5de4b
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - field.storage.par_data_enforcement_notice.field_enforcing_authority

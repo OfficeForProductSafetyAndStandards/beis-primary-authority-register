@@ -1,6 +1,6 @@
 uuid: af6ba5f9-ef9e-4f21-aca8-cdb29d82f42a
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - field.storage.par_data_advice.field_regulatory_function

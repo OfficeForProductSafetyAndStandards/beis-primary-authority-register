@@ -60,17 +60,23 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
       // Organisation summary.
       $par_data_organisation = current($par_data_partnership->getOrganisation());
 
+      // Display organisation name.
+      $form['organisation_name'] = $this->renderSection('Organisation name', $par_data_organisation, ['organisation_name' => 'summary'], [], FALSE, TRUE);
+      $form['organisation_name']['#prefix'] = '<h3 class="heading-medium fieldset-legend">';
+      $form['organisation_name']['#suffix'] = '</h3>';
+
       // Display the primary address along with the link to edit it.
       $form['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
 
-      // Everything below is for the authorioty to edit and add to.
+      // Everything below is for the authority to edit and add to.
       $par_data_authority = current($par_data_partnership->getAuthority());
       $form['authority'] = [
         '#type' => 'markup',
         '#markup' => $par_data_authority->get('authority_name')->getString(),
-        '#prefix' => '<h1>',
-        '#suffix' => '</h1>',
+        '#prefix' => '<h3 class="heading-medium fieldset-legend">',
+        '#suffix' => '</h3>',
       ];
+      $form['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
 
       // Display details about the partnership for information.
       $form['about_partnership'] = $this->renderSection('About the partnership', $par_data_partnership, ['about_partnership' => 'about']);
@@ -87,6 +93,7 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
         '#title' => $this->t('I confirm I have reviewed the partnership summary information above'),
         '#disabled' => $par_data_partnership->get('partnership_info_agreed_authority')->getString(),
         '#default_value' => $this->getDefaultValues("partnership_info_agreed_authority"),
+        '#return_value' => 'on',
       ];
     }
     else {
@@ -131,9 +138,12 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
     $par_data_organisation = current($par_data_partnership->getOrganisation());
     $par_data_person = current($par_data_organisation->getPerson());
 
-    if ($par_data_partnership && !$par_data_partnership->get('partnership_info_agreed_authority')->getString()) {
+    if ($par_data_partnership && !$par_data_partnership->getBoolean('partnership_info_agreed_authority')) {
       // Save the value for the confirmation field.
-      $par_data_partnership->set('partnership_info_agreed_authority', $this->getTempDataValue('partnership_info_agreed_authority'));
+      $par_data_partnership->set('partnership_info_agreed_authority', $this->decideBooleanValue($this->getTempDataValue('partnership_info_agreed_authority')));
+
+      // Set partnership status.
+      $par_data_partnership->set('partnership_status', 'confirmed_authority');
     }
 
     if ($par_data_partnership->save()) {

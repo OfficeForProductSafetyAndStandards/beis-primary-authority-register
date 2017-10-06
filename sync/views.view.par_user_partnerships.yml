@@ -613,6 +613,10 @@ display:
                 title: 'Confirmed by Business'
                 operator: '='
                 value: confirmed_business
+              4:
+                title: Active
+                operator: '='
+                value: confirmed_rd
           entity_type: par_data_partnership
           entity_field: partnership_status
           plugin_id: string

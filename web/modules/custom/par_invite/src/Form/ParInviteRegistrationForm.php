@@ -116,7 +116,6 @@ class ParInviteRegistrationForm extends FormBase {
     // Save user account.
     $result = $user->save();
 
-    // @todo Need to assigning user to a role and link them to the par_person entity.
     // If the account has been saved then need to redirect to the correct page.
     if ($result) {
       // Log the user into the site.

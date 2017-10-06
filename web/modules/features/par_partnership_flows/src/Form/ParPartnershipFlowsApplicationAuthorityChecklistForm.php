@@ -201,7 +201,10 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
         $this->setElementError(['section_two','business_regulated_by_one_authority'], $form_state, 'You need to be authorised to submit an application');
       }
 
-      if ($form_state->getValue('business_regulated_by_one_authority') &&
+      if ($form_state->getValue('is_local_authority') === FALSE) {
+        $this->setElementError(['section_two','is_local_authority'], $form_state, 'Please confirm if this is your local authority.');
+      }
+      elseif ($form_state->getValue('business_regulated_by_one_authority') &&
         !$form_state->getValue('is_local_authority') &&
         !$form_state->getValue('business_informed_local_authority_still_regulates')) {
         $this->setElementError(['section_two','business_informed_local_authority_still_regulates'], $form_state, 'The business needs to be informed about local authority.');
