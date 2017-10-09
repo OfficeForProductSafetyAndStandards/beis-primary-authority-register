@@ -66,7 +66,7 @@ If you want to rebuild without re-cloning the repository:
 ##### Reloading test data
 
     vagrant ssh
-    docker exec -i par_beta_web bash -c "vendor/bin/drush sql-cli @dev --root=/var/www/html/web < docker/fresh_drupal_postgres.sql"
+    docker exec -i par_beta_web bash -c "vendor/bin/drush sql-cli @dev --root=/var/www/html/web < devops/docker/fresh_drupal_postgres.sql"
     
 ##### Refreshing dependencies
 

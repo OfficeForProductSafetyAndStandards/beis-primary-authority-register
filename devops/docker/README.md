@@ -9,7 +9,7 @@ If you've not got your key installed already, add your private key:
     
 Install [docker](https://docs.docker.com/engine/installation/linux/ubuntu/) (or [Docker for Windows](https://docs.docker.com/docker-for-windows/install/), or [Docker for Mac](https://docs.docker.com/docker-for-mac/install/)), then:
 
-    cd docker
+    cd devops/docker
     sh setup.sh
     
 Request the hash salt from another member of the team and add this to the hash setting at the bottom of your local settings file:
@@ -76,7 +76,7 @@ Sometimes its useful to only execute a single feature file, to do so use the fol
     
 ### Drush dump
 
-    docker exec -i par_beta_web  /var/www/html/vendor/bin/drush sql-dump @dev --root=/var/www/html/web --result-file=/var/www/html/docker/fresh_drupal_postgres.sql --structure-tables-key=common --skip-tables-key=common
+    docker exec -i par_beta_web  /var/www/html/vendor/bin/drush sql-dump @dev --root=/var/www/html/web --result-file=/var/www/html/devops/docker/fresh_drupal_postgres.sql --structure-tables-key=common --skip-tables-key=common
     
 ### Drush import
 
