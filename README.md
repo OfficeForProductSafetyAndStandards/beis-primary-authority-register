@@ -60,7 +60,7 @@ If you want to rebuild without re-cloning the repository:
 ##### Running a Drupal update (includes clearing the cache)
 
     vagrant ssh
-    cd /vagrant
+    cd /vagrant/devops/scripts
     sh drupal-update.sh
     
 ##### Reloading test data

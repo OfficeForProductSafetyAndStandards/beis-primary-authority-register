@@ -44,4 +44,4 @@ fi
 
 # Update Drupal
 
-    docker exec -i par_beta_web bash -c "sh drupal-update.sh /var/www/html"
+    docker exec -i par_beta_web bash -c "sh devops/scripts/drupal-update.sh /var/www/html"

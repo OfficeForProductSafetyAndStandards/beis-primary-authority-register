@@ -1,4 +1,4 @@
-USAGE="Usage: drupal-update.sh project_root drupal_env target_filename"
+USAGE="Usage: drupal-dump.sh project_root drupal_env target_filename"
 
 if [ -n "$1" ]; then
   PROJECT_ROOT=$1
