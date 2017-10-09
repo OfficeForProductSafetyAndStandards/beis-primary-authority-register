@@ -37,16 +37,6 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
       ],
     );
 
-    // Combined Status Field.
-    $data['par_partnerships_field_data']['par_combined_status_field'] = array(
-      'title' => t('Combined Status Field'),
-      'field' => [
-        'title' => t('Combined Status Field'),
-        'help' => t('Provides a status field that combines several field statuses.'),
-        'id' => 'par_partnerships_combined_status_field',
-      ],
-    );
-
     // PAR Partnership Status Filter.
     $data['par_partnerships_field_data']['partnership_status'] = [
       'filter' => [
