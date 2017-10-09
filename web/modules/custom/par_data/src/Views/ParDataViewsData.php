@@ -47,7 +47,16 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
       ],
     );
 
-    // Add the current company computed field to Views.
+    // PAR Partnership Status Filter.
+    $data['par_partnerships_field_data']['partnership_status'] = [
+      'filter' => [
+        'title' => t('PAR Partnership Status'),
+        'help' => t('Provides a partnership status field filter for PAR partnerships.'),
+        'id' => 'par_data_field_allowed_options_filter',
+      ],
+    ];
+
+    // PAR Status Field and Filter.
     $data[$this->entityType->getDataTable()]['par_status'] = [
       'title' => t('PAR Status'),
       'field' => [
@@ -57,7 +66,7 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
       ],
     ];
 
-    // Add the current company computed field to Views.
+    // PAR Flow Link.
     $data[$this->entityType->getDataTable()]['par_flow_link'] = [
       'title' => t('PAR Flow Link'),
       'field' => [
