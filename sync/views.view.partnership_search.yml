@@ -861,6 +861,43 @@ display:
           entity_type: par_data_partnership
           entity_field: status
           plugin_id: boolean
+        partnership_status:
+          id: partnership_status
+          table: par_partnerships_field_data
+          field: partnership_status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: confirmed_rd
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: par_data_partnership
+          plugin_id: par_data_field_allowed_options_filter
       sorts: {  }
       title: 'Primary Authority Register'
       header: {  }

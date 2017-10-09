@@ -563,6 +563,49 @@ display:
           entity_type: par_data_partnership
           entity_field: status
           plugin_id: boolean
+        partnership_status:
+          id: partnership_status
+          table: par_partnerships_field_data
+          field: partnership_status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: confirmed_rd
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: 'PAR Partnership Status'
+            description: ''
+            use_operator: false
+            operator: partnership_status_op
+            identifier: partnership_status
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              par_authority: '0'
+              par_enforcement: '0'
+              par_organisation: '0'
+              par_helpdesk: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: par_data_partnership
+          plugin_id: par_data_partnership_partnership_status
       sorts:
         organisation_name:
           id: organisation_name
