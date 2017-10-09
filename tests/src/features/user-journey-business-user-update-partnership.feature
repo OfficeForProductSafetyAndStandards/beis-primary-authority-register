@@ -4,7 +4,7 @@ Feature: Business User - Manage Addresses
     Scenario: Business User - Manage Addresses
 
         Given I am logged in as "par_admin@example.com"
-        And I reset the test data
+        #         And I reset the test data
         And I open the url "/admin/people"
         And I select the option with the value "par_organisation" for element "#edit-role"
         And I add "77" to the inputfield "#edit-user"
