@@ -38,10 +38,19 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
     );
 
     // PAR Partnership Status Filter.
-    $data['par_partnerships_field_data']['partnership_status'] = [
+    $data[$this->entityType->getDataTable()]['partnership_status'] = [
       'filter' => [
         'title' => t('PAR Partnership Status'),
-        'help' => t('Provides a partnership status field filter for PAR partnerships.'),
+        'help' => t('Provides a partnership status field filter with options.'),
+        'id' => 'par_data_field_allowed_options_filter',
+      ],
+    ];
+
+    // PAR Enforcement Action Status Filter.
+    $data[$this->entityType->getDataTable()]['enforcement_action_status'] = [
+      'filter' => [
+        'title' => t('PAR Enforcement Status'),
+        'help' => t('Provides a enforcement status field filter with options.'),
         'id' => 'par_data_field_allowed_options_filter',
       ],
     ];
