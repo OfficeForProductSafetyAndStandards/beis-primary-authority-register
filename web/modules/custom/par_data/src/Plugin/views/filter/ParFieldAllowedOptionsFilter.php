@@ -12,7 +12,7 @@ use Drupal\user\Entity\User;
 /**
  * @ingroup views_filter_handlers
  *
- * @ViewsFilter("par_data_field_allowed_options_filter")
+ * @ViewsFilter("par_data_status_filter")
  */
 class ParFieldAllowedOptionsFilter extends FilterPluginBase {
 
