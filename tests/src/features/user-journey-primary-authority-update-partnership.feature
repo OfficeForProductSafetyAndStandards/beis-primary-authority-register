@@ -42,7 +42,7 @@ Feature: Primary Authority - Change Partnership Details
         When I click on the link "Upload advice"
         Then I expect that element "h3" contains the text "How to upload Primary Authority Advice to Local Authorities"
         And I click on the button "#edit-cancel"
-        And I click on the link "Done"
+#        And I click on the link "Done"
 #        And I click on the link "edit"
 #        Then I expect that element "#block-par-theme-content" contains the text "Upload advice"
 #        When I click on the button ".button"
