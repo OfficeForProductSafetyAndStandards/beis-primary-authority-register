@@ -42,6 +42,8 @@ Feature: Primary Authority - Change Partnership Details
         When I click on the link "Upload advice"
         Then I expect that element "h3" contains the text "How to upload Primary Authority Advice to Local Authorities"
         And I click on the button "#edit-cancel"
+        And I click on the link "Done"
+#        And I click on the link "edit"
 #        Then I expect that element "#block-par-theme-content" contains the text "Upload advice"
 #        When I click on the button ".button"
 ##    And I click on the checkbox "#edit-partnership-info-agreed-authority"
@@ -52,9 +54,8 @@ Feature: Primary Authority - Change Partnership Details
 
         # When I select next partnership awaiting review
 #        When I click on the link "See all Inspection Plans"
-#        Then I expect that element "#edit-document-list" contains the text "Inspection Plan"
-#        And I click on the checkbox ".form-checkbox"
-#        And I click on the link "Save"
+#        Then I expect that element "#block-par-theme-content" contains the text "Inspection Plans"
+#        And I click on the link "Continue"
 
         # CHECK INSPECTION PLAN CONFIRMED
 
