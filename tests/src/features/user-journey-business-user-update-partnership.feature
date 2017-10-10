@@ -5,7 +5,8 @@ Feature: Business User - Manage Addresses
 
         # PARTNERSHIPS DASHBOARD
 
-        Given I am logged in as "par_business@example.com"
+        Given I reset the test data
+        And I am logged in as "par_business@example.com"
         And I click on the link "See your partnerships"
         And I click on the button "td.views-field.views-field-par-flow-link-1 a"
         And I expect that element "h1" is not empty

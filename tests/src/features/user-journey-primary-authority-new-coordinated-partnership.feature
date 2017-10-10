@@ -5,7 +5,8 @@ Feature: New Coordinated Partnership
 
         # SEARCH PARTNERSHIPS
 
-        Given I am logged in as "par_authority@example.com"
+        Given I reset the test data
+        And I am logged in as "par_authority@example.com"
         And I expect that element "#block-par-theme-content" contains the text "Your partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
         And I expect that element "#block-par-theme-content" contains the text "See enforcement notifications"

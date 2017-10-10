@@ -5,7 +5,8 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
         # LOGIN SCREEN
 
-        Given I am logged in as "par_authority@example.com"
+        Given I reset the test data
+        And I am logged in as "par_authority@example.com"
         And I click on the link "Search for a partnership"
         When I add "ABCD" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"

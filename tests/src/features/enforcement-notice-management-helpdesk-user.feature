@@ -5,7 +5,8 @@ Feature: Enforcement notice management
 
         # PARTNERSHIPS DASHBOARD
 
-        Given I am logged in as "par_helpdesk@example.com"
+        Given I reset the test data
+        And I am logged in as "par_helpdesk@example.com"
         And I select the option with the text "Active" for element "#edit-partnership-status"
 #        When I add "Cambridgeshire" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-helpdesk-dashboard"
