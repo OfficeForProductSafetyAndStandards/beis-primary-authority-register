@@ -11,7 +11,13 @@ COPY(
     par_advice_field_data.advice_type,
     par_sic_codes_field_data.description,
     par_organisations_field_data.employees_band,
-    par_authorities_field_data.nation
+    par_authorities_field_data.nation,
+    par_advice_field_data.deleted,
+    par_advice_field_data.revoked,
+    par_inspection_plans_field_data.deleted,
+    par_inspection_plans_field_data.revoked,
+    par_legal_entities_field_data.deleted,
+    par_legal_entities_field_data.revoked
 FROM
     par_partnerships_field_data
         LEFT OUTER JOIN par_data_partnership__field_advice ON (par_partnerships_field_data.id = par_data_partnership__field_advice.entity_id)
@@ -37,21 +43,9 @@ AND
 AND 
     (par_authorities_field_data.deleted is null OR par_authorities_field_data.deleted = 0)
 AND 
-    (par_legal_entities_field_data.revoked is null OR par_legal_entities_field_data.revoked = 0)
-AND 
-    (par_legal_entities_field_data.deleted is null OR par_legal_entities_field_data.deleted = 0)   
-AND 
     (par_organisations_field_data.revoked is null OR par_organisations_field_data.revoked = 0) 
 AND 
     (par_organisations_field_data.deleted is null OR par_organisations_field_data.deleted = 0)            
-AND 
-    (par_inspection_plans_field_data.revoked is null OR par_inspection_plans_field_data.revoked = 0)
-AND 
-    (par_inspection_plans_field_data.deleted is null OR par_inspection_plans_field_data.deleted = 0)    
-AND 
-    (par_advice_field_data.revoked is null OR par_advice_field_data.revoked = 0)
-AND 
-    (par_advice_field_data.deleted is null OR par_advice_field_data.deleted = 0)
 AND 
     NOT par_partnerships_field_data.partnership_status = 'n/a'
 AND

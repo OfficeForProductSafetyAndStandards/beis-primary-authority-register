@@ -151,7 +151,7 @@ class ParDataOrganisation extends ParDataEntity {
 
     // Size.
     $fields['size'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Size'))
+      ->setLabel(t('Number of members'))
       ->setDescription(t('The size of the organisation.'))
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)
