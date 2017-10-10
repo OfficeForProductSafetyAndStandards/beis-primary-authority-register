@@ -1,4 +1,4 @@
-@ci @Pending
+@ci
 Feature: Enforcement notice management
 
     Scenario: Enforcement notice management
