@@ -7,6 +7,7 @@ Feature: Business User - Manage Addresses
 
         Given I reset the test data
         And I am logged in as "par_business@example.com"
+        And I wait on element "h3" for 20000ms to be visible
         And I click on the link "See your partnerships"
         And I click on the button "td.views-field.views-field-par-flow-link-1 a"
         And I expect that element "h1" is not empty
