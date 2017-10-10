@@ -3,28 +3,9 @@ Feature: Business User - Manage Addresses
 
     Scenario: Business User - Manage Addresses
 
-        Given I am logged in as "par_admin@example.com"
-        #         And I reset the test data
-        And I open the url "/admin/people"
-        And I select the option with the value "par_organisation" for element "#edit-role"
-        And I add "77" to the inputfield "#edit-user"
-        And I click on the button "#edit-submit-user-admin-people"
-        And I click on the button "td.views-field.views-field-name a.username"
-        And I click on the link "Edit"
-        And I scroll to element "#edit-pass-pass2"
-        And I add "TestPassword" to the inputfield "#edit-pass-pass1"
-        # Then I expect that element ".messages" is not visible
-        And I add "TestPassword" to the inputfield "#edit-pass-pass2"
-        # Then I expect that element ".messages" is not visible
-        When I click on the button "#edit-submit"
-#        Then the element ".messages" contains the text "The changes have been saved"
-        And I store the user email address
-        And I open the url "/user/logout"
-
-
         # PARTNERSHIPS DASHBOARD
 
-        Given I am logged in as stored user
+        Given I am logged in as "par_business@example.com"
         And I click on the link "See your partnerships"
         And I click on the button "td.views-field.views-field-par-flow-link-1 a"
         And I expect that element "h1" is not empty
@@ -116,13 +97,13 @@ Feature: Business User - Manage Addresses
         And I add "1111111111111" to the inputfield "#edit-mobile-phone"
         And I add "02079999999" to the inputfield "#edit-work-phone"
         And I add "078659999999" to the inputfield "#edit-mobile-phone"
-        And I add "par_business_change@example.com" to the inputfield "#edit-email"
+        And I add "bb0b6a4fb855c1dbac76e3c31a71a406@localhost.localdomain" to the inputfield "#edit-email"
         And I click on the radio "#edit-preferred-contact-communication-mobile"
         And I add "Some additional notes" to the inputfield "#edit-notes"
         And I click on the button "#edit-save"
         Then I expect that element "#edit-organisation-contacts" contains the text "Harvey"
         And I expect that element "#edit-organisation-contacts" contains the text "Kneeslapper"
-        And I expect that element "#edit-organisation-contacts" contains the text "par_business_change@example.com"
+        And I expect that element "#edit-organisation-contacts" contains the text "bb0b6a4fb855c1dbac76e3c31a71a406@localhost.localdomain"
         And I expect that element "#edit-organisation-contacts" contains the text "2079999999"
         And I expect that element "#edit-organisation-contacts" contains the text "78659999999"
 

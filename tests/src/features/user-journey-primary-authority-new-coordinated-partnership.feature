@@ -5,31 +5,7 @@ Feature: New Coordinated Partnership
 
         # SEARCH PARTNERSHIPS
 
-        Given I am logged in as "par_admin@example.com"
-        #         And I reset the test data
-        And I open the url "/admin/people"
-        And I select the option with the value "par_authority" for element "#edit-role"
-        And I add "66" to the inputfield "#edit-user"
-        And I click on the button "#edit-submit-user-admin-people"
-        And I click on the button "td.views-field.views-field-name a.username"
-        And I click on the link "Edit"
-        And I scroll to element "#edit-pass-pass2"
-        And I add "TestPassword" to the inputfield "#edit-pass-pass1"
-        # Then I expect that element ".messages" is not visible
-        And I add "TestPassword" to the inputfield "#edit-pass-pass2"
-        # Then I expect that element ".messages" is not visible
-        When I click on the button "#edit-submit"
-#        Then the element ".messages" contains the text "The changes have been saved"
-        And I store the user email address
-        And I open the url "/user/logout"
-
-
-        # PARTNERSHIPS DASHBOARD
-
-        Given I am logged in as stored user
-
-        # CHECK DASHBOARD CONTENTS DEPENDING ON USER LEVEL
-
+        Given I am logged in as "par_authority@example.com"
         And I expect that element "#block-par-theme-content" contains the text "Your partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
         And I expect that element "#block-par-theme-content" contains the text "See enforcement notifications"
@@ -37,9 +13,9 @@ Feature: New Coordinated Partnership
 
         # CHOOSE PARTNERSHIP TYPE
 
-        And I click on authority selection if available
-#        When I click on the radio ".form-radio"
-#        And I click on the button "#edit-next"
+#        And I click on authority selection if available
+        When I click on the radio ".form-radio"
+        And I click on the button "#edit-next"
 
         # CREATE NEW PARTNERSHIP FORM
 
@@ -64,7 +40,7 @@ Feature: New Coordinated Partnership
 
         # ORGANISATION NAME
 
-        And I add "Test Create Partnership" to the inputfield "#edit-organisation-name"
+        And I add "Business For Coordinated Partnership" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
 
         # CONFIRM NEW PARTNERSHIP
@@ -92,7 +68,7 @@ Feature: New Coordinated Partnership
         And I add "1111111111111" to the inputfield "#edit-mobile-phone"
         And I add "02079999999" to the inputfield "#edit-work-phone"
         And I add "078659999999" to the inputfield "#edit-mobile-phone"
-        And I add "par_business_change@example.com" to the inputfield "#edit-email"
+        And I add "par_business@example.com" to the inputfield "#edit-email"
         And I click on the radio "#edit-preferred-contact-communication-mobile"
         And I add "Some additional notes" to the inputfield "#edit-notes"
         And I click on the button "#edit-next"
