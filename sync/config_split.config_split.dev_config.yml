@@ -11,6 +11,7 @@ module:
   devel: 0
   par_data_test: 0
   queue_ui: 0
+  webprofiler: 0
 theme: {  }
 blacklist:
   - par_data.settings
