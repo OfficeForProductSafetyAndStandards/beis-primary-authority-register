@@ -52,10 +52,20 @@ class ParFieldAllowedOptionsFilter extends FilterPluginBase {
       return;
     }
 
-    // Get data table.
-    $data_table = $this->par_data_manager->getParEntityType($this->getEntityType())->get('data_table');
+    // The normal use of ensureMyTable() here breaks Views.
+    // So instead we trick the filter into using the alias of the base table.
+    // @see https://www.drupal.org/node/271833.
+    // If a relationship is set, we must use the alias it provides.
+    if (!empty($this->relationship)) {
+      $this->tableAlias = $this->relationship;
+    }
+    // If no relationship, then use the alias of the base table.
+    else {
+      $this->tableAlias = $this->query->ensureTable($this->view->storage->get('base_table'));
+    }
 
-    $field = "{$data_table}.{$this->realField}";
+    // Get field to query e.g. "par_partnerships_field_data.partnership_status".
+    $field = "{$this->tableAlias}.{$this->realField}";
 
     $this->query->addWhere(0, $field, $this->value, 'in');
   }
