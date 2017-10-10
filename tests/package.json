@@ -5,7 +5,7 @@
   "homepage": "https://github.com/webdriverio/cucumber-boilerplate",
   "scripts": {
     "test": "npm run test:build",
-    "test:build": "/var/www/html/vendor/bin/drush --root=/var/www/html/web pm-uninstall -y par_data_test && /var/www/html/vendor/bin/drush --root=/var/www/html/web en -y par_data_test && /var/www/html/vendor/bin/drush --root=/var/www/html/web config-set -y par_data.settings stubbed true && ./node_modules/.bin/wdio wdio.BUILD.conf.js",
+    "test:build": "./node_modules/.bin/wdio wdio.BUILD.conf.js",
     "test:dev": "./node_modules/.bin/wdio wdio.DEV.conf.js",
     "test:validate": "eslint 'src/**/*.js'",
     "allure": "npm run allure:generate",
