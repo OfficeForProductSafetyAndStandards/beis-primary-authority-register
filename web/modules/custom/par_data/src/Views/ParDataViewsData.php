@@ -42,9 +42,14 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
     );
 
     // PAR Status Filter.
+    // This will always get the allowed statuses from the first bundle.
+    // @TODO Get the list of bundles which the view supports and use these.
+    $par_entity = $this->getParDataManager()->getParEntityType($this->entityType->id());
     $entity_bundle = $this->getParDataManager()->getParBundleEntity($this->entityType->id());
-    $status_field = $entity_bundle->getConfigurationElementByType('entity', 'status_field');
-    if ($status_field) {
+    if (isset($par_entity) && isset($entity_bundle)) {
+      $status_field = $entity_bundle->getConfigurationElementByType('entity', 'status_field');
+    }
+    if (isset($status_field)) {
       $data[$this->entityType->getDataTable()][$status_field] = [
         'title' => t('PAR Status'),
         'filter' => [
