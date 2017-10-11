@@ -7,7 +7,7 @@ Feature: Business User - Manage Addresses
 
         Given I reset the test data
         And I am logged in as "par_business@example.com"
-        And I wait on element "h3" for 20000ms to be visible
+        And I open the url "/dashboard"
         And I click on the link "See your partnerships"
         And I click on the button "td.views-field.views-field-par-flow-link-1 a"
         And I expect that element "h1" is not empty
@@ -108,6 +108,7 @@ Feature: Business User - Manage Addresses
         And I expect that element "#edit-organisation-contacts" contains the text "bb0b6a4fb855c1dbac76e3c31a71a406@localhost.localdomain"
         And I expect that element "#edit-organisation-contacts" contains the text "2079999999"
         And I expect that element "#edit-organisation-contacts" contains the text "78659999999"
+        And I click on the checkbox "#edit-partnership-info-agreed-business"
 
         # COMPLETE CHANGES
 
