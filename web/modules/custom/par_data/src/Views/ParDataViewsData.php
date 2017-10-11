@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Views;
 
+use Drupal\par_data\Entity\ParDataTypeInterface;
 use Drupal\views\EntityViewsData;
 use Drupal\views\EntityViewsDataInterface;
 
@@ -46,7 +47,7 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
     // @TODO Get the list of bundles which the view supports and use these.
     $par_entity = $this->getParDataManager()->getParEntityType($this->entityType->id());
     $entity_bundle = $this->getParDataManager()->getParBundleEntity($this->entityType->id());
-    if (isset($par_entity) && isset($entity_bundle)) {
+    if (isset($par_entity) && isset($entity_bundle) && $entity_bundle instanceof ParDataTypeInterface) {
       $status_field = $entity_bundle->getConfigurationElementByType('entity', 'status_field');
     }
     if (isset($status_field)) {
