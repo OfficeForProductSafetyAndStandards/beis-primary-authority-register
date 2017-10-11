@@ -140,8 +140,8 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
 
     // Return the true or False based on the returned value from getStatusTransitions
     // this can either be a string or an array of default options.
-    if (isset($transitions[$from])  || isset($transitions)) {
-     return TRUE;
+    if (isset($transitions[$from]) || isset($transitions)) {
+      return TRUE;
     }
     else {
       return FALSE;
