@@ -137,7 +137,10 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
    */
   public function transitionAllowed($from, $to) {
     $transitions = $this->getStatusTransitions($to);
-    return isset($transitions[$from]);
+
+    // Return true or False based on the returned value from getStatusTransitions
+    // this can either be a string or an array of default options.
+    return isset($transitions);
   }
 
   /**
