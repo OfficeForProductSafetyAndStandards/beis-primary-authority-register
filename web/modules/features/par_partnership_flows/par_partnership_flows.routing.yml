@@ -205,6 +205,18 @@ par_partnership_flows.address_add:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+par_partnership_flows.address_add_confirm:
+  path: '/partnership/{par_data_partnership}/address/add/confirm'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAddressSuggestionForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAddressSuggestionForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
 par_partnership_flows.organisation_contact_edit:
   path: '/partnership/{par_data_partnership}/organisation/contact/{par_data_person}'
   defaults:
