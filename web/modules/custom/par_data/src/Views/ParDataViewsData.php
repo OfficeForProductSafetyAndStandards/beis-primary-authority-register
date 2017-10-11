@@ -51,13 +51,10 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
       $status_field = $entity_bundle->getConfigurationElementByType('entity', 'status_field');
     }
     if (isset($status_field)) {
-      $data[$this->entityType->getDataTable()][$status_field] = [
+      $data[$this->entityType->getDataTable()][$status_field]['filter'] = [
         'title' => t('PAR Status'),
-        'filter' => [
-          'title' => t('PAR Status'),
-          'help' => t('Provides a status filter with configurable values to include.'),
-          'id' => 'par_data_status_filter',
-        ],
+        'help' => t('Provides a status filter with configurable values to include.'),
+        'id' => 'par_data_status_filter',
       ];
     }
 
