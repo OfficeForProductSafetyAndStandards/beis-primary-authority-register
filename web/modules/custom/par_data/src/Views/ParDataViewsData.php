@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Views;
 
+use Drupal\par_data\Entity\ParDataTypeInterface;
 use Drupal\views\EntityViewsData;
 use Drupal\views\EntityViewsDataInterface;
 
@@ -9,6 +10,10 @@ use Drupal\views\EntityViewsDataInterface;
  * Provides Views data for trance entities.
  */
 class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterface {
+
+  public function getParDataManager() {
+    return \Drupal::service('par_data.manager');
+  }
 
   /**
    * {@inheritdoc}
@@ -37,17 +42,23 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
       ],
     );
 
-    // Combined Status Field.
-    $data['par_partnerships_field_data']['par_combined_status_field'] = array(
-      'title' => t('Combined Status Field'),
-      'field' => [
-        'title' => t('Combined Status Field'),
-        'help' => t('Provides a status field that combines several field statuses.'),
-        'id' => 'par_partnerships_combined_status_field',
-      ],
-    );
+    // PAR Status Filter.
+    // This will always get the allowed statuses from the first bundle.
+    // @TODO Get the list of bundles which the view supports and use these.
+    $par_entity = $this->getParDataManager()->getParEntityType($this->entityType->id());
+    $entity_bundle = $this->getParDataManager()->getParBundleEntity($this->entityType->id());
+    if (isset($par_entity) && isset($entity_bundle) && $entity_bundle instanceof ParDataTypeInterface) {
+      $status_field = $entity_bundle->getConfigurationElementByType('entity', 'status_field');
+    }
+    if (isset($status_field)) {
+      $data[$this->entityType->getDataTable()][$status_field]['filter'] = [
+        'title' => t('PAR Status'),
+        'help' => t('Provides a status filter with configurable values to include.'),
+        'id' => 'par_data_status_filter',
+      ];
+    }
 
-    // Add the current company computed field to Views.
+    // PAR Status Field.
     $data[$this->entityType->getDataTable()]['par_status'] = [
       'title' => t('PAR Status'),
       'field' => [
@@ -57,7 +68,7 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
       ],
     ];
 
-    // Add the current company computed field to Views.
+    // PAR Flow Link.
     $data[$this->entityType->getDataTable()]['par_flow_link'] = [
       'title' => t('PAR Flow Link'),
       'field' => [
@@ -69,10 +80,10 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
 
     // Custom filter for Par Membership checks.
     $data[$this->entityType->getDataTable()]['id_filter'] = [
-      'title' => t('Partnership: Can user update?'),
+      'title' => t('Membership Filter'),
       'filter' => [
-        'title' => t('Partnership: Can user update?'),
-        'help' => t('Filter by partnerships this user can update.'),
+        'title' => t('Membership Filter'),
+        'help' => t('Filter by entities this user can update.'),
         'id' => 'par_member',
       ],
     ];

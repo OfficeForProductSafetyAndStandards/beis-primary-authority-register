@@ -166,30 +166,3 @@ par_enforcement_flows.send:
     parameters:
       par_data_enforcement_notice:
         type: entity:par_data_enforcement_notice
-
-# PAR Data attach documents to enforcement actions
-par_enforcement_flows.upload_action_file:
-  path: '/enforcement-notice/{par_data_partnership}/raise/action/upload'
-  defaults:
-    _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementActionFileUploadForm'
-    _title: 'Upload documents'
-  requirements:
-    _permission: 'send enforcement notice'
-    par_data_partnership: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-# PAR Data attach documents to enforcement actions
-par_enforcement_flows.add_legal:
-  path: '/partnership/{par_data_partnership}/raise/add/legal'
-  defaults:
-    _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementAddLegal'
-    _title: ''
-  requirements:
-    _permission: 'send enforcement notice'
-    par_data_partnership: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
