@@ -1,4 +1,4 @@
-@Pending
+@ci
 Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
 
     Scenario: Enforcement Officer/Coordinator - Issue enforcement notice
@@ -36,7 +36,7 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
         And I click on the radio "#edit-enforcement-type-proposed"
         And I click on the button "#edit-next"
 
-        And I add "Title of the enforcement notice" to the inputfield "#edit-title-of-action"
+        And I add "Title of the enforcement notice Three" to the inputfield "#edit-title-of-action"
         And I click on the radio ".option*=Cookie control"
         And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
         And I click on the button "#edit-next"

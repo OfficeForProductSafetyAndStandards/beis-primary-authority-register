@@ -1,4 +1,4 @@
-@Pending @Bug
+@ci @Bug
 Feature: Enforcement Officer/PA - Enforcement Notice Process
 
     Scenario: Enforcement Officer/PA - Issue enforcement notice
@@ -7,7 +7,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         Given I reset the test data
         And I am logged in as "par_authority@example.com"
         And I click on the link "Search for a partnership"
-        When I add "ABCD" to the inputfield "#edit-keywords"
+        When I add "Charlie" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
         When I click on the button "td.views-field.views-field-authority-name a"
 
@@ -20,9 +20,9 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
 #        # CHOOSE MEMBER
 #
-#        Then I expect that element "#edit-par-data-organisation-id--wrapper" contains the text "Choose the member to enforce"
-#        And I click on the radio "label*=Cornish Cheese"
-#        And I click on the button "#edit-next"
+        Then I expect that element "#par-enforce-organisation" contains the text "Choose the member to enforce"
+        And I click on the radio "label*=Hooper"
+        And I click on the button "#edit-next"
 
         # CHOOSE LEGAL ENTITY
 
@@ -37,12 +37,12 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I click on the radio "#edit-enforcement-type-proposed"
         And I click on the button "#edit-next"
 
-        And I add "Title of the enforcement notice" to the inputfield "#edit-title-of-action"
+        And I add "Title of enforcement notice Two" to the inputfield "#edit-title-of-action"
         And I click on the radio ".option*=Cookie control"
         And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
         And I click on the button "#edit-next"
         Then I expect that element "#par-enforcement-notice-raise-confirm" contains the text "action summary enforcement notice"
-        And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Title of the enforcement notice"
+        And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Title of enforcement notice Two"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Some details about the enforcement notice"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Once the primary authority receives this notification, they have 5 working days to respond to you if they intend to block the action"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "You will be notified by email of the outcome of this notification"
