@@ -1,4 +1,4 @@
-@Pending @journey2 @deprecated
+@ci @journey2 @deprecated
 Feature: Business User - Manage Addresses
 
     Scenario: Business User - Manage Addresses
@@ -52,7 +52,7 @@ Feature: Business User - Manage Addresses
         When I click on the link "edit number of members"
         And I select the option with the text "Small" for element "#edit-business-size"
         And I click on the button "#edit-save"
-        Then I expect that element "#edit-associations" contains the text "Small"
+        Then I expect that element "#edit-associations" contains the text "small"
 
         # EDIT LEGAL ENTITY
 
