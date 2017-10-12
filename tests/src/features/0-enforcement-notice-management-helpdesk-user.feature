@@ -17,7 +17,9 @@ Feature: Enforcement notice management
         And I click on the link "Title of enforcement notice One"
         And I click on the radio "#edit-actions-0-primary-authority-status-approved"
         And I click on the button "#edit-actions-next"
-        Then I expect that element "#par-rd-help-desk-approve" contains the text "Enforcement allowed"
+        Then I expect that element "h1" contains the text "Confirm Enforcement Notice"
+        And I click on the button "#edit-actions-next"
+#        Then I expect that element "#par-rd-help-desk-approve" contains the text "Enforcement allowed"
 
 #        # BLOCK
 
@@ -29,7 +31,9 @@ Feature: Enforcement notice management
         And I click on the radio "#edit-actions-0-primary-authority-status-blocked"
         When I add "Some notes about why enforcement action blocked" to the inputfield "#edit-actions-0-primary-authority-notes"
         And I click on the button "#edit-actions-next"
-        Then I expect that element "#par-rd-help-desk-approve" contains the text "Enforcement blocked"
+        Then I expect that element "h1" contains the text "Confirm Enforcement Notice"
+        And I click on the button "#edit-actions-next"
+#        Then I expect that element "#par-rd-help-desk-approve" contains the text "Enforcement blocked"
 
         # REFER FORM
 
@@ -41,4 +45,6 @@ Feature: Enforcement notice management
         And I click on the radio "#edit-actions-0-primary-authority-status-refer"
         When I add "Some notes about why enforcement action referred" to the inputfield "#edit-actions-0-referral-notes"
         And I click on the button "#edit-actions-next"
-        Then I expect that element "#par-rd-help-desk-approve" contains the text "Enforcement referred"
+        Then I expect that element "h1" contains the text "Confirm Enforcement Notice"
+        And I click on the button "#edit-actions-next"
+#        Then I expect that element "#par-rd-help-desk-approve" contains the text "Enforcement referred"
