@@ -199,6 +199,41 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
           ->error($message, $replacements);
       }
     }
+    else {
+      // Adding a new premises.
+      $par_data_partnership = $this->getRouteParam('par_data_partnership');
+      $par_data_organisation = current($par_data_partnership->getOrganisation());
+      $par_data_premises = ParDataPremises::create([
+        'type' => 'premises',
+        'uid' => $this->getCurrentUser()->id(),
+        'address' => [
+          'country_code' => $this->getDefaultValues('country_code', '', 'par_partnership_address'),
+          'address_line1' => $this->getDefaultValues('address_line1', '', 'par_partnership_address'),
+          'address_line2' => $this->getDefaultValues('address_line2', '', 'par_partnership_address'),
+          'locality' => $this->getDefaultValues('town_city', '', 'par_partnership_address'),
+          'administrative_area' => $this->getDefaultValues('county', '', 'par_partnership_address'),
+          'postal_code' => $this->getDefaultValues('postcode', '', 'par_partnership_address'),
+        ],
+        'nation' => $this->getDefaultValues('country', '', 'par_partnership_address'),
+      ]);
+
+      $par_data_premises->save();
+      // Add to field_premises.
+      $par_data_organisation->get('field_premises')
+        ->appendItem($par_data_premises->id());
+      if ($par_data_organisation->save()) {
+        $this->deleteStore();
+      }
+      else {
+        $message = $this->t('This %premises could not be saved for %form_id');
+        $replacements = [
+          '%premises' => $this->getTempDataValue('address_line1'),
+          '%form_id' => $this->getFormId(),
+        ];
+        $this->getLogger($this->getLoggerChannel())
+          ->error($message, $replacements);
+      }
+    }
   }
 
 }
