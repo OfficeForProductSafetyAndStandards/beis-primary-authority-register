@@ -189,7 +189,7 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
 
     // Load an existing address if provided.
     $existing_organisation = $this->getDefaultValues('par_data_organisation_id','new', 'par_partnership_organisation_suggestion');
-    if ($existing_organisation !== 'new' && !empty($existing_organisation)) {
+    if (isset($existing_organisation) && $existing_organisation !== 'new') {
       $par_data_organisation = ParDataOrganisation::load($existing_organisation);
 
       // Get the address and or contact from the existing organisation.

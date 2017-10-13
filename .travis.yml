@@ -58,6 +58,7 @@ install:
 #-----------------------------------------------------------------------------
 
   - cp web/sites/example.settings.local.php web/sites/default/settings.local.php
+  - sudo bash ./tools/fix-permissions.sh --drupal_path=./web
 
 #-----------------------------------------------------------------------------
 # Create .env file
