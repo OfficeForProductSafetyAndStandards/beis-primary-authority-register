@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: Sv_jvDI5CZ-pOLrITaBMobgOToOPz03qvp4f_O8G1P0
+  default_config_hash: 8HEB1I2IeHAf56MVasNQE4-6Yxnx8SatF36iBzYFdjs
 id: approve_enforcement
 label: 'Approve Enforcement'
 default_title: null
@@ -26,4 +26,4 @@ steps:
     redirect:
       cancel: 4
   4:
-    route: par_dashboards.dashboard
+    route: view.par_user_enforcements.enforcement_notices_page
