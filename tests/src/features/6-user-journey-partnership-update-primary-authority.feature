@@ -3,7 +3,7 @@ Feature: Primary Authority - Change Partnership Details
 
     Scenario: Primary Authority - Change Partnership Details
 
-        Given I reset the test data
+#        Given I reset the test data
         And I am logged in as "par_authority@example.com"
         And I click on the link "See your partnerships"
         When I click on the button "td.views-field.views-field-par-flow-link a"

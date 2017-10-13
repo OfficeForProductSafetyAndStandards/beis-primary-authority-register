@@ -5,7 +5,7 @@ Feature: New Coordinated Partnership
 
         # SEARCH PARTNERSHIPS
 
-        Given I reset the test data
+#        Given I reset the test data
         And I am logged in as "par_authority@example.com"
         And I expect that element "#block-par-theme-content" contains the text "Your partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
@@ -41,7 +41,7 @@ Feature: New Coordinated Partnership
 
         # ORGANISATION NAME
 
-        And I add "Business For Coordinated Partnership" to the inputfield "#edit-organisation-name"
+        And I add "Business For Coordinated Partnership 1" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
 
         # CONFIRM NEW PARTNERSHIP
