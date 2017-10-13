@@ -1,4 +1,4 @@
-@ci @Bug @journey1 @deprecated
+@ci
 Feature: New Coordinated Partnership
 
     Scenario: New Coordinated Partnership
@@ -69,7 +69,7 @@ Feature: New Coordinated Partnership
         And I add "1111111111111" to the inputfield "#edit-mobile-phone"
         And I add "02079999999" to the inputfield "#edit-work-phone"
         And I add "078659999999" to the inputfield "#edit-mobile-phone"
-        And I add "par_business@example.com" to the inputfield "#edit-email"
+        And I add "par_coordinator@example.com" to the inputfield "#edit-email"
         And I click on the radio "#edit-preferred-contact-communication-mobile"
         And I add "Some additional notes" to the inputfield "#edit-notes"
         And I click on the button "#edit-next"

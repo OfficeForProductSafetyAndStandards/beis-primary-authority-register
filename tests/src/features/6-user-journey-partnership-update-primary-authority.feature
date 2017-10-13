@@ -1,4 +1,4 @@
-@ci @journey1 @deprecated
+@ci
 Feature: Primary Authority - Change Partnership Details
 
     Scenario: Primary Authority - Change Partnership Details

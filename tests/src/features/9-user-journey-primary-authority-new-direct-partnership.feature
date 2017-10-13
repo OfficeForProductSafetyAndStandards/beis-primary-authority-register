@@ -1,4 +1,4 @@
-@ci @journey1 @deprecated
+@ci
 Feature: New Direct Partnership
 
     Scenario: New Direct Partnership

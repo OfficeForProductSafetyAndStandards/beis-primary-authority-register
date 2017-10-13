@@ -1,4 +1,4 @@
-@ci @Bug
+@ci
 Feature: Enforcement Officer/PA - Enforcement Notice Process
 
     Scenario: Enforcement Officer/PA - Issue enforcement notice
@@ -15,11 +15,11 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
         When I click on the link "Send notification of enforcement action"
         Then I expect that element "h3" contains the text "Which authority are you acting on behalf of"
-        When I click on the radio "div*=Lower East Side Borough Council"
+        When I click on the radio ".form-radio"
         And I click on the button "#edit-next"
 
-#        # CHOOSE MEMBER
-#
+        # CHOOSE MEMBER
+
         Then I expect that element "#par-enforce-organisation" contains the text "Choose the member to enforce"
         And I click on the radio "label*=Hooper"
         And I click on the button "#edit-next"
@@ -41,6 +41,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I click on the radio ".option*=Cookie control"
         And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
         And I click on the button "#edit-next"
+        And I scroll to element "#par-enforcement-notice-raise-confirm"
         Then I expect that element "#par-enforcement-notice-raise-confirm" contains the text "action summary enforcement notice"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Title of enforcement notice Two"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Some details about the enforcement notice"
