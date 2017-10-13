@@ -55,7 +55,7 @@ Feature: New Direct Partnership
 
         # ORGANISATION NAME
 
-        And I add "Business For Direct Partnership" to the inputfield "#edit-organisation-name"
+        And I add "Business For Direct Partnership 1" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
 #        And I click on the radio ".form-radio"
 #        And I click on the button "#edit-next"

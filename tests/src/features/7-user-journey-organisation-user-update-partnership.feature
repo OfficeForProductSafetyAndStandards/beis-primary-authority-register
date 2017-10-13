@@ -5,11 +5,11 @@ Feature: Business User - Manage Addresses
 
         # PARTNERSHIPS DASHBOARD
 
-        Given I reset the test data
+#        Given I reset the test data
         And I am logged in as "par_business@example.com"
         And I open the url "/dashboard"
         And I click on the link "See your partnerships"
-        And I click on the link "Business For Direct Partnership"
+        And I click on the link "Business For Direct Partnership 1"
         And I expect that element "h1" is not empty
 
         # EDIT REGISTERED ADDRESS
