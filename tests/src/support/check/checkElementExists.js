@@ -13,6 +13,5 @@ module.exports = (isExisting, elem, done) => {
     } else {
         checkIfElementExists(elem, true);
     }
-
     done();
 };

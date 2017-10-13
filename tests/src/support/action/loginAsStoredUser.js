@@ -8,13 +8,14 @@ module.exports = (done) => {
      * The command to perform on the browser object (addValue or setValue)
      * @type {String}
      */
+    browser.setViewportSize({
+        width: 1024,
+        height: 768,
+    });
+    const username = process.env.TEST_USER;
     browser.url('/user/login');
-    browser.setValue('#edit-name', 'par_admin@example.com');
+    browser.setValue('#edit-name', username);
     browser.setValue('#edit-pass', 'TestPassword');
     browser.click('#edit-submit');
-    browser.url('/admin/par-data-test-reset');
-    browser.click('#toolbar-item-user');
-    browser.click('li.logout a');
-    browser.url('/user/logout');
     done();
 };

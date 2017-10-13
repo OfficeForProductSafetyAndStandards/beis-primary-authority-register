@@ -14,7 +14,8 @@ module.exports = {
         };
 
         page.evaluate(function () {
-            document.getElementById("edit-name").value = "par_helpdesk@example.com";
+            window.open("http://localhost:8111/user/login");
+            document.getElementById("edit-name").value = "par_authority@example.com";
             document.getElementById("edit-pass").value = "TestPassword";
             document.getElementById("edit-submit").click();
         }, function () {
