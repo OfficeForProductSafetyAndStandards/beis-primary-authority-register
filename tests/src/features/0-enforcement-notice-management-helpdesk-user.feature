@@ -5,7 +5,7 @@ Feature: Enforcement notice management
 
         # PARTNERSHIPS DASHBOARD
 
-        Given I reset the test data
+#        Given I reset the test data
         And I am logged in as "par_helpdesk@example.com"
         When I click on the button "a*=Dashboard"
         And I click on the link "See enforcement notifications"
