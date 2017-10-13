@@ -184,6 +184,15 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
+   * Destroy and entity, and completely remove.
+   */
+  public function destroy() {
+    if (!$this->isNew()) {
+      $this->entityManager()->getStorage($this->entityTypeId)->destroy([$this->id() => $this]);
+    }
+  }
+
+  /**
    * Delete if this entity is deletable and is not new.
    */
   public function delete() {
