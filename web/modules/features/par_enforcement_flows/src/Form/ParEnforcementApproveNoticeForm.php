@@ -150,8 +150,12 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
         $this->setElementError(['actions', $delta, 'primary_authority_status'], $form_state, 'Every action in this notice must be reviewed before you can proceed.');
       }
 
-      if ($form_data['primary_authority_status'] == $action::BLOCKED && empty($form_data['primary_authority_notes'])) {
-   //     $this->setElementError(['actions', $delta, 'primary_authority_status'], $form_state, 'An action cannot be blocked without the required .');
+      if ($form_data['primary_authority_status'] == ParDataEnforcementAction::BLOCKED && empty($form_data['primary_authority_notes'])) {
+        $this->setElementError(['actions', $delta, 'primary_authority_status'], $form_state, 'If you plan to block this action you must provide the enforcing authority with a valid reason.');
+      }
+
+      if ($form_data['primary_authority_status'] == ParDataEnforcementAction::REFERRED && empty($form_data['primary_authority_notes'])) {
+        $this->setElementError(['actions', $delta, 'referral_notes'], $form_state, 'If you plan to refer this action you must provide the enforcing authority with a valid reason.');
       }
 
       // Set an error if this action has already been reviewed.
@@ -177,50 +181,42 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
     foreach ($par_data_enforcement_notice->get('field_enforcement_action')->referencedEntities() as $delta => $action) {
       $form_data = $form_state->getValue(['actions', $delta], 'par_enforcement_notice_approve');
 
-      print($form_data['primary_authority_notes']);
-      print($form_data['referral_notes']);
-      die($form_data['primary_authority_status']);
-
       switch ($form_data['primary_authority_status']) {
-        case 'approved':
+        case ParDataEnforcementAction::APPROVED:
           if (!$action->approve()) {
-            $message = $this->t('The enforcement notification action entity %entity_id could not be updated to an approved state for %form_id');
+            $message = $this->t('The enforcement notification action entity %entity_id could not be updated to a approved state within %form_id');
             $replacements = [
               '%entity_id' => $action->id(),
               '%form_id' => $this->getFormId(),
             ];
-            $this->getLogger($this->getLoggerChannel())
-              ->error($message, $replacements);
+            $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
           }
           break;
 
-        case 'blocked':
+        case ParDataEnforcementAction::BLOCKED:
           if (!$action->block($form_data['primary_authority_notes'])) {
-            $message = $this->t('The enforcement notification action entity %entity_id could not be updated to an blocked state for %form_id');
+            $message = $this->t('The enforcement notification action entity %entity_id could not be updated to a blocked state within %form_id');
             $replacements = [
               '%entity_id' => $action->id(),
               '%form_id' => $this->getFormId(),
             ];
-            $this->getLogger($this->getLoggerChannel())
-              ->error($message, $replacements);
+            $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
           }
           break;
 
-        case 'referred':
+        case ParDataEnforcementAction::REFERRED:
           if (!$action->refer($form_data['referral_notes'])) {
-            $message = $this->t('The enforcement notification action entity %entity_id could not be updated to an referred state for %form_id');
+            $message = $this->t('The enforcement notification action entity %entity_id could not be updated to a referred state within %form_id');
             $replacements = [
               '%entity_id' => $action->id(),
               '%form_id' => $this->getFormId(),
             ];
-            $this->getLogger($this->getLoggerChannel())
-              ->error($message, $replacements);
+            $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
           }
-          break;
+        break;
       }
 
     }
     $this->deleteStore();
-    $form_state->setRedirect($this->getFlow()->getNextRoute('next'));
   }
 }
