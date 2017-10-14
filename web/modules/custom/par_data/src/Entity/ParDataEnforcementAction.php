@@ -147,7 +147,10 @@ class ParDataEnforcementAction extends ParDataEntity {
   }
 
   /**
-   * Revoke if this entity is revokable and is not new.
+   * Revoke if this entity is revokable and is not new
+   *
+   * @param string $authority_notes
+   *  primary authority notes submitted when the status is updated to blocked in the form.
    *
    * @return boolean
    *   True if the entity was revoked, false for all other results.
@@ -155,10 +158,8 @@ class ParDataEnforcementAction extends ParDataEntity {
   public function block($authority_notes) {
     if (!$this->isNew() && !$this->isBlocked()) {
       $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
-      $block_notes_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'primary_authority_notes');
       $this->set($status_field, self::BLOCKED);
-      $this->set($block_notes_field, $authority_notes);
-
+      $this->set('primary_authority_notes', $authority_notes);
       return ($this->save() === SAVED_UPDATED);
     }
     return FALSE;
@@ -167,6 +168,9 @@ class ParDataEnforcementAction extends ParDataEntity {
   /**
    * Unrevoke a revoked entity
    *
+   * @param string $authority_notes
+   *  referral notes indicating the reason for the referral status update in the form.
+   *
    * @return boolean
    *   True if the entity was unrevoked, false for all other results.
    *
@@ -174,10 +178,8 @@ class ParDataEnforcementAction extends ParDataEntity {
   public function refer($refer_notes) {
     if (!$this->isNew() && !$this->isReferred()) {
       $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
-      $refer_notes_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'referral_notes');
       $this->set($status_field, self::REFERRED);
-      $this->set($refer_notes_field, $refer_notes);
-
+      $this->set('referral_notes', $refer_notes);
       return ($this->save() === SAVED_UPDATED);
     }
     return FALSE;
