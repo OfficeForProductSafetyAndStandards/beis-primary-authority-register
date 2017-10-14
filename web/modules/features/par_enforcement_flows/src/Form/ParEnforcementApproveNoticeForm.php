@@ -111,7 +111,7 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
         '#type' => 'textarea',
         '#title' => $this->t('If you plan to block this action you must provide the enforcing authority with a valid reason.'),
         '#default_value' => $this->getDefaultValues("primary_authority_notes"),
-        '#disabled' =>$this->getDefaultValues(['actions', $delta, 'disabled'], FALSE),
+        '#disabled' => $this->getDefaultValues(['actions', $delta, 'disabled'], FALSE),
         '#states' => [
           'visible' => [
             ':input[name="actions[' . $delta . '][primary_authority_status]"]' => ['value' => ParDataEnforcementAction::BLOCKED],
