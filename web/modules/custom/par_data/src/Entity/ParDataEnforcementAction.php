@@ -100,7 +100,6 @@ class ParDataEnforcementAction extends ParDataEntity {
     $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
     $current_status = $status_field ? $this->get($status_field)->getString() : NULL;
     if ($current_status === self::APPROVED) {
-      die($this->id());
       return TRUE;
     }
     return FALSE;
