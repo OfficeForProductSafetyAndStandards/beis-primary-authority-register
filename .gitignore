@@ -37,8 +37,10 @@ web/themes/custom/par_theme/map/
 web/themes/custom/par_theme/assets/vendor/
 
 # Exclude Drupal files.
-/web/sites/*/files/
-/private/
+/web/sites/*/files/*
+!/web/sites/*/files/.gitkeep
+/private/*
+!/private/.gitkeep
 
 # Ignore environment specific and sensitive information.
 /web/sites/*/settings.local.php
@@ -77,7 +79,4 @@ package.box
 .env
 .env.*
 !.env.continuous.enc
-
-# Exclude private repo credentials
-auth.json
 

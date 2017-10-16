@@ -116,6 +116,11 @@ class ParDashboardsDashboardController extends ControllerBase {
 
       $search_partnerships = $this->getLinkByRoute('view.partnership_search.enforcment_flow_search_partnerships');
       $search_link = $search_partnerships->setText('Search for a partnership')->toString();
+
+      $build['partnerships_find']['text'] = [
+        '#type' => 'markup',
+        '#markup' => "<p>Search for active partnerships to check advice and raise notice of enforcement action.</p>",
+      ];
       $build['partnerships_find']['link'] = [
         '#type' => 'markup',
         '#markup' => "<p>{$search_link}</p>",

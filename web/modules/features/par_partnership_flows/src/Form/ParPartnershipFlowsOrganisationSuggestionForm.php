@@ -107,8 +107,11 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
     // and contact, skip to the review step, or skip to the contact
     // step if an existing organisation was selected which has an
     // address but no contact.
-    $organisation_id = $this->getDefaultValues('par_data_organisation_id', '', 'par_partnership_organisation_suggestion');
-    if ($par_data_organisation = ParDataOrganisation::load($organisation_id)) {
+    $organisation_id = $this->getDefaultValues('par_data_organisation_id', NULL);
+    if (isset($organisation_id) && $organisation_id !== 'new') {
+      $par_data_organisation = ParDataOrganisation::load($organisation_id);
+    }
+    if (isset($par_data_organisation)) {
       if (!$par_data_organisation->get('field_person')->isEmpty()) {
         $form_state->setRedirect($this->getFlow()->getNextRoute('review'), $this->getRouteParams());
       }

@@ -458,6 +458,11 @@ class ParDataManager implements ParDataManagerInterface {
    *   An array of entities found with this value.
    */
   public function getEntitiesByProperty($type, $field, $value) {
+    // Check that a value is specified.
+    if (is_null($value)) {
+      return [];
+    }
+
     return $this->entityTypeManager
       ->getStorage($type)
       ->loadByProperties([$field => $value]);

@@ -23,4 +23,4 @@ steps:
     redirect:
       cancel: 4
   4:
-    route: par_dashboards.dashboard
+    route: view.par_user_enforcements.enforcement_notices_page
