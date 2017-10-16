@@ -10,6 +10,7 @@ dependencies:
     - datetime
     - pagerer
     - par_data
+    - user
 id: par_user_enforcements
 label: 'Par User Enforcements'
 module: views
@@ -26,8 +27,9 @@ display:
     position: 0
     display_options:
       access:
-        type: none
-        options: {  }
+        type: perm
+        options:
+          perm: 'access par_data_enforcement_notice entities'
       cache:
         type: tag
         options: {  }
@@ -704,6 +706,7 @@ display:
         - url.query_args
         - 'url.query_args:sort_by'
         - 'url.query_args:sort_order'
+        - user.permissions
       tags:
         - 'config:field.storage.par_data_enforcement_notice.field_enforcing_authority'
         - 'config:field.storage.par_data_partnership.field_organisation'
@@ -723,6 +726,7 @@ display:
         - url.query_args
         - 'url.query_args:sort_by'
         - 'url.query_args:sort_order'
+        - user.permissions
       tags:
         - 'config:field.storage.par_data_enforcement_notice.field_enforcing_authority'
         - 'config:field.storage.par_data_partnership.field_organisation'
