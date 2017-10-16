@@ -154,7 +154,7 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
         $this->setElementError(['actions', $delta, 'primary_authority_status'], $form_state, 'If you plan to block this action you must provide the enforcing authority with a valid reason.');
       }
 
-      if ($form_data['primary_authority_status'] == ParDataEnforcementAction::REFERRED && empty($form_data['primary_authority_notes'])) {
+      if ($form_data['primary_authority_status'] == ParDataEnforcementAction::REFERRED && empty($form_data['referral_notes'])) {
         $this->setElementError(['actions', $delta, 'referral_notes'], $form_state, 'If you plan to refer this action you must provide the enforcing authority with a valid reason.');
       }
 
@@ -181,7 +181,7 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
     foreach ($par_data_enforcement_notice->get('field_enforcement_action')->referencedEntities() as $delta => $action) {
       $form_data = $form_state->getValue(['actions', $delta], 'par_enforcement_notice_approve');
 
-      switch ($form_data['primary_authority_status']) {
+      /*switch ($form_data['primary_authority_status']) {
         case ParDataEnforcementAction::APPROVED:
           if (!$action->approve()) {
             $message = $this->t('The enforcement notification action entity %entity_id could not be updated to a approved state within %form_id');
@@ -214,7 +214,7 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
             $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
           }
         break;
-      }
+      }*/
 
     }
     $this->deleteStore();
