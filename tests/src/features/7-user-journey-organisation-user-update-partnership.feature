@@ -1,4 +1,4 @@
-@Pending
+@ci
 Feature: Business User - Manage Addresses
 
     Scenario: Business User - Manage Addresses
