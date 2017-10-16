@@ -1,4 +1,4 @@
-@Pending
+@ci
 Feature: Business User - Manage Addresses
 
     Scenario: Business User - Manage Addresses
@@ -56,15 +56,15 @@ Feature: Business User - Manage Addresses
 
         # EDIT LEGAL ENTITY
 
-        When I click on the link "edit legal entity"
-        And I clear the inputfield "#edit-registered-name"
-        When I add "Changed" to the inputfield "#edit-registered-name"
-        And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
-        And I clear the inputfield "#edit-company-house-no"
-        When I add "0123456789" to the inputfield "#edit-company-house-no"
-        And I click on the button "#edit-save"
-        Then I expect that element "#edit-legal-entities" contains the text "Changed"
-        Then I expect that element "#edit-legal-entities" contains the text "Limited Company"
+#        When I click on the link "edit legal entity"
+#        And I clear the inputfield "#edit-registered-name"
+#        When I add "Changed" to the inputfield "#edit-registered-name"
+#        And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
+#        And I clear the inputfield "#edit-company-house-no"
+#        When I add "0123456789" to the inputfield "#edit-company-house-no"
+#        And I click on the button "#edit-save"
+#        Then I expect that element "#edit-legal-entities" contains the text "Changed"
+#        Then I expect that element "#edit-legal-entities" contains the text "Limited Company"
 
         # ADD LEGAL ENTITY
 
@@ -84,7 +84,7 @@ Feature: Business User - Manage Addresses
 
         # EDIT MAIN BUSINESS CONTACT
 
-        When I click on the link "edit ernie muppet"
+        When I click on the link "edit organisation contact"
         And I add "Harvey" to the inputfield "#edit-first-name"
         And I add "Kneeslapper" to the inputfield "#edit-last-name"
         And I add "999999999" to the inputfield "#edit-work-phone"
