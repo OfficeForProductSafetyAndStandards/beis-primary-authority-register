@@ -36,13 +36,14 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
         And I click on the radio "#edit-enforcement-type-proposed"
         And I click on the button "#edit-next"
 
-        And I add "Title of the enforcement notice Three" to the inputfield "#edit-title-of-action"
+        And I add "Title of enforcement notice Three" to the inputfield "#edit-title-of-action"
         And I click on the radio ".option*=Cookie control"
         And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
         And I click on the button "#edit-next"
+        And I reload the page
         And I scroll to element "#par-enforcement-notice-raise-confirm"
         Then I expect that element "#par-enforcement-notice-raise-confirm" contains the text "action summary enforcement notice"
-        And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Title of the enforcement notice"
+        And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Title of enforcement notice Three"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Some details about the enforcement notice"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Once the primary authority receives this notification, they have 5 working days to respond to you if they intend to block the action"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "You will be notified by email of the outcome of this notification"

@@ -35,11 +35,11 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I add "action summary enforcement notice" to the inputfield "#edit-action-summary"
         And I click on the radio "#edit-enforcement-type-proposed"
         And I click on the button "#edit-next"
-
         And I add "Title of enforcement notice One" to the inputfield "#edit-title-of-action"
         And I click on the radio ".option*=Cookie control"
         And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
         And I click on the button "#edit-next"
+        And I reload the page
         And I scroll to element "#par-enforcement-notice-raise-confirm"
         Then I expect that element "#par-enforcement-notice-raise-confirm" contains the text "action summary enforcement notice"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Title of enforcement notice One"

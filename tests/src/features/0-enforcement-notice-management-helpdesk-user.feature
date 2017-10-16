@@ -42,6 +42,7 @@ Feature: Enforcement notice management
         And I select the option with the text "Desc" for element "#edit-sort-order"
         And I click on the button "#edit-submit-par-user-enforcements"
         And I click on the link "Title of enforcement notice Three"
+        And I reload the page
         And I click on the radio "#edit-actions-0-primary-authority-status-refer"
         When I add "Some notes about why enforcement action referred" to the inputfield "#edit-actions-0-referral-notes"
         And I click on the button "#edit-actions-next"
