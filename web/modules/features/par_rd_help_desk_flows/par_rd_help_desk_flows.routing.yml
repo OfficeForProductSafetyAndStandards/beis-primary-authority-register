@@ -6,6 +6,7 @@ par_help_desks_flows.confirm_partnership:
     _title: 'Please confirm'
   requirements:
     _permission: 'approve partnerships via rd help desk'
+    _custom_access: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskApproveConfirmForm::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
@@ -23,7 +24,6 @@ par_help_desks_flows.approve_partnership:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-
 # PAR RD Help Desk journey - invite users
 par_help_desks_flows.invite_members:
   path: '/helpdesk/partnership/{par_data_partnership}/invite/{par_data_person}'
