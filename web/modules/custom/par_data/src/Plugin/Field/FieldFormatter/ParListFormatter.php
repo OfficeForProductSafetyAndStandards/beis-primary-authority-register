@@ -5,6 +5,7 @@ namespace Drupal\par_data\Plugin\Field\FieldFormatter;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\ParDataManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -65,11 +66,53 @@ class ParListFormatter extends FormatterBase {
     foreach ($items as $delta => $item) {
       $value = $bundle_entity->getAllowedFieldlabel($field_name, $item->value);
       // Render each element as markup.
+      if (!$value) {
+        if ($this->getSetting('default_option') === 'custom') {
+          $value = $this->getSetting('custom_text');
+        }
+        else {
+          $value = $item->value;
+        }
+      }
+
       $element[$delta] = [
         '#type' => 'markup',
-        '#markup' => $value ? $value : 'Unknown value',
+        '#markup' => $value,
       ];
     }
+
+    return $element;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultSettings() {
+    return [
+      'default_option' => 'string',
+      'custom_text' => 'Unknown value',
+    ] + parent::defaultSettings();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    $element['default_option'] = [
+      '#title' => t('Default option when there is no match'),
+      '#type' => 'select',
+      '#options' => [
+        'string' => $this->t('Display string value if no match'),
+        'custom' => $this->t('Display custom text'),
+      ],
+      '#default_value' => $this->getSetting('default_option'),
+    ];
+
+    $element['custom_text'] = [
+      '#title' => t('Custom text'),
+      '#type' => 'textfield',
+      '#default_value' => $this->getSetting('custom_text'),
+    ];
 
     return $element;
   }
