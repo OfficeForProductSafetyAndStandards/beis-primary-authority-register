@@ -22,6 +22,7 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityConstraintViolationListInterface;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\par_flows\ParDisplayTrait;
+use Drupal\Core\Access\AccessResult;
 
 /**
  * The base form controller for all PAR forms.
@@ -33,6 +34,13 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   use ParDisplayTrait;
   use StringTranslationTrait;
   use ParControllerTrait;
+
+  /**
+   * The access result
+   *
+   * @var \Drupal\Core\Access\AccessResult
+   */
+  protected $accessResult;
 
   /**
    * The Drupal session manager.
@@ -253,6 +261,20 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     if (isset($values)) {
       $this->ignoreValues = $values;
     }
+  }
+
+  /**
+   * Access callback
+   * Useful for custom business logic for access.
+   *
+   * @see \Drupal\Core\Access\AccessResult
+   *   The options for callback.
+   *
+   * @return \Drupal\Core\Access\AccessResult
+   *   The access result.
+   */
+  public function accessCallback() {
+    return $this->accessResult ? $this->accessResult : AccessResult::allowed();
   }
 
   /**
