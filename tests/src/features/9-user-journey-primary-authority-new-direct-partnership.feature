@@ -4,6 +4,7 @@ Feature: New Direct Partnership
     Scenario: New Direct Partnership
 
         Given I reset the test data
+        Given I have a screen that is 3840 by 2160 pixels
         And I am logged in as "par_authority@example.com"
         And I expect that element "#block-par-theme-content" contains the text "Your partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
@@ -42,7 +43,7 @@ Feature: New Direct Partnership
         Then I expect that element ".error-summary" is visible
         And I expect that element "#par-partnership-application-authority-checklist" contains the text "Is this your local authority?"
         And I click on the radio "#edit-business-regulated-by-one-authority-1"
-        And I click on the radio "#edit-is-local-authority-1"
+        And I click on the radio "#edit-is-local-authority-1a"
   #        And I expect that element ".error-summary" contains the text "The business needs to be informed about local authority"
         When I click on the button "#edit-next"
         Then I expect that element "error-summary" is not visible
