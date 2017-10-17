@@ -41,7 +41,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I click on the radio ".option*=Cookie control"
         And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
         And I click on the button "#edit-next"
-        And I scroll to element "#par-enforcement-notice-raise-confirm"
+        And I scroll to element "#footer"
         Then I expect that element "#par-enforcement-notice-raise-confirm" contains the text "action summary enforcement notice"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Title of enforcement notice Two"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Some details about the enforcement notice"
