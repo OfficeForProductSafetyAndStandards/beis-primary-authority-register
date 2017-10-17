@@ -50,8 +50,5 @@
     "wdio-spec-reporter": "0.1.0",
     "webdrivercss": "^1.1.10",
     "webdriverio": "4.7.1"
-  },
-  "devDependencies": {
-    "wdio-screenshot": "^0.6.0"
   }
 }
