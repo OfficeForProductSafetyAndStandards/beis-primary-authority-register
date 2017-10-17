@@ -583,11 +583,8 @@ par_data.configuration_type.boolean_values:
       label: 'Off value'
 field.formatter.settings.par_list_formatter:
   type: mapping
-  label: 'PAr list formatter'
+  label: 'Par list formatter'
   mapping:
-    default_option:
-      type: string
-      label: 'Default option'
-    custom_text:
-      type: string
-      label: 'Custom text'
+    display_original_value:
+      type: boolean
+      label: 'Display the original value'

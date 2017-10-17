@@ -29,8 +29,7 @@ content:
     region: content
     label: hidden
     settings:
-      default_option: string
-      custom_text: Unknown
+      display_original_value: true
     third_party_settings: {  }
   field_legal_entity:
     weight: 2

@@ -66,13 +66,8 @@ class ParListFormatter extends FormatterBase {
     foreach ($items as $delta => $item) {
       $value = $bundle_entity->getAllowedFieldlabel($field_name, $item->value);
       // Render each element as markup.
-      if (!$value) {
-        if ($this->getSetting('default_option') === 'custom') {
-          $value = $this->getSetting('custom_text');
-        }
-        else {
-          $value = $item->value;
-        }
+      if (!$value && $this->getSetting('display_original_value')) {
+        $value = $item->value;
       }
 
       $element[$delta] = [
@@ -89,8 +84,7 @@ class ParListFormatter extends FormatterBase {
    */
   public static function defaultSettings() {
     return [
-      'default_option' => 'string',
-      'custom_text' => 'Unknown value',
+      'display_original_value' => FALSE,
     ] + parent::defaultSettings();
   }
 
@@ -98,20 +92,10 @@ class ParListFormatter extends FormatterBase {
    * {@inheritdoc}
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
-    $element['default_option'] = [
-      '#title' => t('Default option when there is no match'),
-      '#type' => 'select',
-      '#options' => [
-        'string' => $this->t('Display string value if no match'),
-        'custom' => $this->t('Display custom text'),
-      ],
+    $element['display_original_value'] = [
+      '#title' => t('Display original value if there is no match'),
+      '#type' => 'checkbox',
       '#default_value' => $this->getSetting('default_option'),
-    ];
-
-    $element['custom_text'] = [
-      '#title' => t('Custom text'),
-      '#type' => 'textfield',
-      '#default_value' => $this->getSetting('custom_text'),
     ];
 
     return $element;
