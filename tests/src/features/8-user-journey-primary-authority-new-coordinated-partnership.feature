@@ -6,8 +6,7 @@ Feature: New Coordinated Partnership
         # SEARCH PARTNERSHIPS
 
 #        Given I reset the test data
-        Given I have a screen that is 1920 by 1080 pixels
-        And I am logged in as "par_authority@example.com"
+        Given I am logged in as "par_authority@example.com"
         And I expect that element "#block-par-theme-content" contains the text "Your partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
         And I expect that element "#block-par-theme-content" contains the text "See enforcement notifications"

@@ -6,8 +6,7 @@ Feature: Enforcement notice management
         # PARTNERSHIPS DASHBOARD
 
 #        Given I reset the test data
-        Given I have a screen that is 1920 by 1080 pixels
-        And I am logged in as "par_helpdesk@example.com"
+        Given I am logged in as "par_helpdesk@example.com"
         When I click on the button "a*=Dashboard"
         And I click on the link "See enforcement notifications"
         And I select the option with the text "Desc" for element "#edit-sort-order"

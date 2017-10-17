@@ -6,8 +6,7 @@ Feature: Business User - Manage Addresses
         # PARTNERSHIPS DASHBOARD
 
 #        Given I reset the test data
-        Given I have a screen that is 1920 by 1080 pixels
-        And I am logged in as "par_coordinator@example.com"
+        Given I am logged in as "par_coordinator@example.com"
         And I open the url "/dashboard"
         And I click on the link "See your partnerships"
         And I click on the link "Business For Coordinated Partnership 1"
