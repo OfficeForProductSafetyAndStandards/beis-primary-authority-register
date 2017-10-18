@@ -212,7 +212,6 @@ trait ParDisplayTrait {
 
       $field = $entity->get($field_name);
       if (!$field->isEmpty()) {
-        $single = FALSE;
         // If there is only one value treat the field as single.
         if ($field->count() <= 1) {
           $single = TRUE;
