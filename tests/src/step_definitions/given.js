@@ -28,6 +28,7 @@ import selectNextHelpdeskBusinessAwaitingReview from '../support/action/selectNe
 import selectMyNextCoordinatedPartnership from '../support/action/selectMyNextCoordinatedPartnership';
 import relevantSearchResultsCheck from '../support/action/relevantSearchResultsCheck';
 import partnershipSearchResultsCheck from '../support/action/partnershipSearchResultsCheck';
+import reloadThePage from '../support/action/reloadThePage';
 import clickNewPartnership from '../support/action/clickNewPartnership';
 import relevantSearchResultsCheckHelpdesk from '../support/action/relevantSearchResultsCheckHelpdesk';
 import storeEmailAddress from '../support/check/storeEmailAddress';
@@ -37,6 +38,11 @@ module.exports = function given() {
     this.Given(
         /^I open the (url|site) "([^"]*)?"$/,
         openWebsite
+    );
+
+    this.Given(
+        /^I reload the page$/,
+        reloadThePage
     );
 
     this.Given(

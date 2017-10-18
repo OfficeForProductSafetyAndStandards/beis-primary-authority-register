@@ -6,7 +6,7 @@ Feature: Enforcement notice management
         # PARTNERSHIPS DASHBOARD
 
 #        Given I reset the test data
-        And I am logged in as "par_helpdesk@example.com"
+        Given I am logged in as "par_helpdesk@example.com"
         When I add "Charlie" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-helpdesk-dashboard"
         When I click on the button "a*=Approve partnership"
