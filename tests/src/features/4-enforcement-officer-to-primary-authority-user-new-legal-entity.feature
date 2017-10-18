@@ -1,10 +1,10 @@
-@ci
+@Pending
 Feature: Enforcement Officer/PA - Enforcement Notice Process
 
     Scenario: Enforcement Officer/PA - Issue enforcement notice
         # LOGIN SCREEN
 
-#        Given I reset the test data
+#       Given I reset the test data
         Given I am logged in as "par_authority@example.com"
         And I click on the link "Search for a partnership"
         When I add "Charlie" to the inputfield "#edit-keywords"
