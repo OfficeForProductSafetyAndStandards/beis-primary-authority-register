@@ -72,7 +72,7 @@ class ParListFormatter extends FormatterBase {
 
       $element[$delta] = [
         '#type' => 'markup',
-        '#markup' => $value,
+        '#markup' => $value ? $value : 'Unknown value',
       ];
     }
 
