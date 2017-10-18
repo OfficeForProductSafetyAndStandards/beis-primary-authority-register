@@ -57,10 +57,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
         '#suffix' => '</h2>',
       ];
     }
-
-
-
-
+    
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
     if ($par_data_partnership) {
       $par_data_organisation = current($par_data_partnership->getOrganisation());
@@ -171,7 +168,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Save the value for the about_partnership field.
+    // Create or update an existing PAR Premises record.
     $premises = $this->getRouteParam('par_data_premises') ? $this->getRouteParam('par_data_premises') : ParDataPremises::create([
       'type' => 'premises',
       'uid' => $this->getCurrentUser()->id(),
@@ -191,8 +188,8 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       $premises->set('nation', $this->getTempDataValue('country'));
 
       if ($premises->save()) {
+        // Add premises to partnership if a new PAR Premises record is created.
         if (!$this->getRouteParam('par_data_premises')) {
-          // Adding a new premises.
           $par_data_partnership = $this->getRouteParam('par_data_partnership');
           $par_data_organisation = current($par_data_partnership->getOrganisation());
           // Add to field_premises.
