@@ -1,4 +1,4 @@
-@Pending
+@ci
 Feature: Business User - Manage Addresses
 
     Scenario: Business User - Manage Addresses
@@ -105,4 +105,4 @@ Feature: Business User - Manage Addresses
         # COMPLETE CHANGES
 
         And I click on the button "#edit-done"
-        Then I expect that element ".views-field-partnership-status" contains the text "Confirmed by the Organisation"
+        Then I expect that element ".views-field-partnership-status" not contains the text "Confirmed by the Organisation"

@@ -1,4 +1,4 @@
-@Pending
+@ci
 Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
 
     Scenario: Enforcement Officer/Coordinator - Issue enforcement notice
