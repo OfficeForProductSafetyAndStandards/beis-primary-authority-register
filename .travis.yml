@@ -144,7 +144,7 @@ after_script:
 
 after_success:
   - cf login -a api.cloud.service.gov.uk -u chris.moreton@transformuk.com -p $CF_PASSWORD
-  - cf/push-continuous.sh
+  - if [[ $TRAVIS_BRANCH == 'master' ]]; then cf/push-continuous.sh; fi
 
 #-----------------------------------------------------------------------------
 # For tagged builds, send the packaged build to S3
