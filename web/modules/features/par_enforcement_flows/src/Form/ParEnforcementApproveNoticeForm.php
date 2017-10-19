@@ -110,7 +110,7 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
       $form['actions'][$delta]['primary_authority_notes'] = [
         '#type' => 'textarea',
         '#title' => $this->t('If you plan to block this action you must provide the enforcing authority with a valid reason.'),
-        '#default_value' => $this->getDefaultValues("primary_authority_notes"),
+        '#default_value' => $this->getDefaultValues(['actions', $delta, 'primary_authority_notes'], NULL),
         '#disabled' => $this->getDefaultValues(['actions', $delta, 'disabled'], FALSE),
         '#states' => [
           'visible' => [
@@ -122,7 +122,7 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
       $form['actions'][$delta]['referral_notes'] = [
         '#type' => 'textarea',
         '#title' => $this->t('If you plan to refer this action you must provide the enforcing authority with a valid reason.'),
-        '#default_value' => $this->getDefaultValues("referral_notes"),
+        '#default_value' => $this->getDefaultValues(['actions', $delta, 'referral_notes'], NULL),
         '#disabled' => $this->getDefaultValues(['actions', $delta, 'disabled'], FALSE),
         '#states' => [
           'visible' => [
@@ -175,48 +175,5 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-
-    $par_data_enforcement_notice = $this->getRouteParam('par_data_enforcement_notice');
-
-    foreach ($par_data_enforcement_notice->get('field_enforcement_action')->referencedEntities() as $delta => $action) {
-      $form_data = $form_state->getValue(['actions', $delta], 'par_enforcement_notice_approve');
-
-      /*switch ($form_data['primary_authority_status']) {
-        case ParDataEnforcementAction::APPROVED:
-          if (!$action->approve()) {
-            $message = $this->t('The enforcement notification action entity %entity_id could not be updated to a approved state within %form_id');
-            $replacements = [
-              '%entity_id' => $action->id(),
-              '%form_id' => $this->getFormId(),
-            ];
-            $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-          }
-          break;
-
-        case ParDataEnforcementAction::BLOCKED:
-          if (!$action->block($form_data['primary_authority_notes'])) {
-            $message = $this->t('The enforcement notification action entity %entity_id could not be updated to a blocked state within %form_id');
-            $replacements = [
-              '%entity_id' => $action->id(),
-              '%form_id' => $this->getFormId(),
-            ];
-            $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-          }
-          break;
-
-        case ParDataEnforcementAction::REFERRED:
-          if (!$action->refer($form_data['referral_notes'])) {
-            $message = $this->t('The enforcement notification action entity %entity_id could not be updated to a referred state within %form_id');
-            $replacements = [
-              '%entity_id' => $action->id(),
-              '%form_id' => $this->getFormId(),
-            ];
-            $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-          }
-        break;
-      }*/
-
-    }
-    $this->deleteStore();
   }
 }
