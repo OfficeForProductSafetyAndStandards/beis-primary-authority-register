@@ -95,7 +95,7 @@ class ParListFormatter extends FormatterBase {
     $element['display_original_value'] = [
       '#title' => t('Display original value if there is no match'),
       '#type' => 'checkbox',
-      '#default_value' => $this->getSetting('default_option'),
+      '#default_value' => $this->getSetting('display_original_value'),
     ];
 
     return $element;
