@@ -212,17 +212,18 @@ trait ParDisplayTrait {
 
       $field = $entity->get($field_name);
       if (!$field->isEmpty()) {
+        $single_item = FALSE;
         // If there is only one value treat the field as single.
         if ($field->count() <= 1) {
-          $single = TRUE;
+          $single_item = TRUE;
         }
 
         // Reference fields need to be rendered slightly differently.
         if ($field instanceof EntityReferenceFieldItemListInterface) {
-          $rows = $this->renderReferenceField($section, $field, $view_mode, $operations, $single);
+          $rows = $this->renderReferenceField($section, $field, $view_mode, $operations, $single_item);
         }
         else {
-          $rows = $this->renderTextField($section, $entity, $field, $view_mode, $operations, $single);
+          $rows = $this->renderTextField($section, $entity, $field, $view_mode, $operations, $single_item);
         }
 
         // Render the rows using a tabulated pager.
