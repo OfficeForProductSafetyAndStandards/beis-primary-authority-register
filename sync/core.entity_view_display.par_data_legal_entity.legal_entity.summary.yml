@@ -16,7 +16,7 @@ mode: summary
 content:
   legal_entity_type:
     type: par_list_formatter
-    weight: 2
+    weight: 1
     region: content
     label: hidden
     settings: {  }
@@ -31,7 +31,7 @@ content:
     third_party_settings: {  }
   registered_number:
     type: string
-    weight: 1
+    weight: 2
     region: content
     label: hidden
     settings:
