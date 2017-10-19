@@ -80,3 +80,5 @@ package.box
 .env.*
 !.env.continuous.enc
 
+auth.json
+
