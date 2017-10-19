@@ -54,3 +54,5 @@ $settings['cache']['bins']['render'] = 'cache.backend.null';
  * in the early stages of development, you may want to disable it.
  */
 $settings['cache']['bins']['dynamic_page_cache'] = 'cache.backend.null';
+
+ini_set('memory_limit', '512M');

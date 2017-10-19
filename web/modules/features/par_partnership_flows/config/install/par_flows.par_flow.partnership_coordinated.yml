@@ -23,7 +23,7 @@ steps:
       edit_size: 12
       advice: 15
       inspection_plans: 16
-      done: 17
+      save: 17
   2:
     route: par_partnership_flows.about_business
     form_id: par_partnership_about_business
