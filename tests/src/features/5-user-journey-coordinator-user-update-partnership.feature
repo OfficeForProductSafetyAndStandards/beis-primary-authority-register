@@ -104,5 +104,5 @@ Feature: Business User - Manage Addresses
 
         # COMPLETE CHANGES
 
-        And I click on the button "#edit-done"
+        And I click on the button "#edit-save"
         Then I expect that element ".views-field-partnership-status" not contains the text "Confirmed by the Organisation"
