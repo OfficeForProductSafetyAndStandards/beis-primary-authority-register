@@ -31,7 +31,8 @@ content:
     weight: 0
     region: content
     label: hidden
-    settings: {  }
+    settings:
+      display_original_value: true
     third_party_settings: {  }
   field_legal_entity:
     weight: 2

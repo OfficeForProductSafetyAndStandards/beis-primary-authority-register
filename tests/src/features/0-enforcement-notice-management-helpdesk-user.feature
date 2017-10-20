@@ -1,11 +1,10 @@
-@Pending
+@Pending @Bug
 Feature: Enforcement notice management
 
     Scenario: Enforcement notice management
 
         # PARTNERSHIPS DASHBOARD
 
-#        Given I reset the test data
         Given I am logged in as "par_helpdesk@example.com"
         When I click on the button "a*=Dashboard"
         And I click on the link "See enforcement notifications"
@@ -23,16 +22,19 @@ Feature: Enforcement notice management
 
 #        # BLOCK
 
-        When I click on the button "a*=Dashboard"
-        And I click on the link "See enforcement notifications"
-        And I select the option with the text "Desc" for element "#edit-sort-order"
-        And I click on the button "#edit-submit-par-user-enforcements"
-        And I click on the link "Title of enforcement notice Two"
-        And I click on the radio "#edit-actions-0-primary-authority-status-blocked"
-        When I add "Some notes about why enforcement action blocked" to the inputfield "#edit-actions-0-primary-authority-notes"
-        And I click on the button "#edit-actions-next"
-        Then I expect that element "h1" contains the text "Confirm Enforcement Notice"
-        And I click on the button "#edit-actions-next"
+#        When I click on the button "a*=Dashboard"
+#        And I click on the link "See enforcement notifications"
+#        And I select the option with the text "Desc" for element "#edit-sort-order"
+#        And I click on the button "#edit-submit-par-user-enforcements"
+#        And I click on the link "Title of enforcement notice Two"
+#        And I click on the radio "#edit-actions-0-primary-authority-status-blocked"
+#        And I click on the button "#edit-actions-next"
+#        Then I expect that element ".error-summary" does exist
+#        And I scroll to element "#edit-actions-0-primary-authority-notes"
+#        When I add "Some notes about why enforcement action blocked" to the inputfield "#edit-actions-0-primary-authority-notes"
+#        And I click on the button "#edit-actions-next"
+#        Then I expect that element "h1" contains the text "Confirm Enforcement Notice"
+#        And I click on the button "#edit-actions-next"
 #        Then I expect that element "#par-rd-help-desk-approve" contains the text "Enforcement blocked"
 
         # REFER FORM
