@@ -188,27 +188,27 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       $premises->set('nation', $this->getTempDataValue('country'));
 
       $par_data_partnership = $this->getRouteParam('par_data_partnership');
-      $par_data_organisation = current($par_data_partnership->getOrganisation());
 
       // Check we are updating an existing partnership/organisation.
-      if ($par_data_partnership->id() &&
-          $par_data_organisation->id() &&
+      if ($par_data_partnership &&
+          $par_data_organisation = current($par_data_partnership->getOrganisation()) &&
           $premises->save()) {
 
-        // Add premises to partnership if a new PAR Premises record is created.
+        // Add premises to organisation if a new PAR Premises record is created.
         if (!$this->getRouteParam('par_data_premises')) {
           // Add to field_premises.
           $par_data_organisation->get('field_premises')
             ->appendItem($premises->id());
           $par_data_organisation->save();
         }
+
         $this->deleteStore();
 
       }
       else {
-        $message = $this->t('This %premises could not be saved for %form_id');
+        $message = $this->t('Address %premises could not be saved for %form_id');
         $replacements = [
-          '%premises' => $premises->get('address')->toString(),
+          '%premises' => print_r($address, 1),
           '%form_id' => $this->getFormId(),
         ];
         $this->getLogger($this->getLoggerChannel())
