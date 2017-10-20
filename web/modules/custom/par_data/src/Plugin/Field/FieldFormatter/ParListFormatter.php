@@ -5,6 +5,7 @@ namespace Drupal\par_data\Plugin\Field\FieldFormatter;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\ParDataManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -65,11 +66,37 @@ class ParListFormatter extends FormatterBase {
     foreach ($items as $delta => $item) {
       $value = $bundle_entity->getAllowedFieldlabel($field_name, $item->value);
       // Render each element as markup.
+      if (!$value && $this->getSetting('display_original_value')) {
+        $value = $item->value;
+      }
+
       $element[$delta] = [
         '#type' => 'markup',
         '#markup' => $value ? $value : 'Unknown value',
       ];
     }
+
+    return $element;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultSettings() {
+    return [
+      'display_original_value' => FALSE,
+    ] + parent::defaultSettings();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    $element['display_original_value'] = [
+      '#title' => t('Display original value if there is no match'),
+      '#type' => 'checkbox',
+      '#default_value' => $this->getSetting('display_original_value'),
+    ];
 
     return $element;
   }
