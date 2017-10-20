@@ -57,7 +57,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
         '#suffix' => '</h2>',
       ];
     }
-    
+
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
     if ($par_data_partnership) {
       $par_data_organisation = current($par_data_partnership->getOrganisation());
@@ -187,17 +187,23 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       $premises->set('address', $address);
       $premises->set('nation', $this->getTempDataValue('country'));
 
-      if ($premises->save()) {
+      $par_data_partnership = $this->getRouteParam('par_data_partnership');
+      $par_data_organisation = current($par_data_partnership->getOrganisation());
+
+      // Check we are updating an existing partnership/organisation.
+      if ($par_data_partnership->id() &&
+          $par_data_organisation->id() &&
+          $premises->save()) {
+
         // Add premises to partnership if a new PAR Premises record is created.
         if (!$this->getRouteParam('par_data_premises')) {
-          $par_data_partnership = $this->getRouteParam('par_data_partnership');
-          $par_data_organisation = current($par_data_partnership->getOrganisation());
           // Add to field_premises.
           $par_data_organisation->get('field_premises')
             ->appendItem($premises->id());
           $par_data_organisation->save();
         }
         $this->deleteStore();
+
       }
       else {
         $message = $this->t('This %premises could not be saved for %form_id');
