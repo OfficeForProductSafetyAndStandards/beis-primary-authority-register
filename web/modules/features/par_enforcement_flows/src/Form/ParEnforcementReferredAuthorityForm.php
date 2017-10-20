@@ -103,7 +103,6 @@ class ParEnforcementReferredAuthorityForm extends ParBaseForm {
     // partnerships with this organisation.
     // @TODO Implement a better method to do this.
     $par_data_partnership = current($par_data_enforcement_notice->get('field_partnership')->referencedEntities());
-    $par_data_authority = current($par_data_partnership->get('field_authority')->referencedEntities());
     $par_data_organisation = current($par_data_partnership->get('field_organisation')->referencedEntities());
 
     // Get all partnerships with the same organisation,
