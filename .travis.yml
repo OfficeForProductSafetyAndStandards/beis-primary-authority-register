@@ -20,17 +20,6 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_6db5a3a5521e_key -iv $encrypted_6db5a3a5521e_iv
     -in .env.continuous.enc -out cf/.env.continuous -d
 
-install:
-
-#-----------------------------------------------------------------------------
-# Install Cloud Foundry CLI, for deployment, if on master branch
-#-----------------------------------------------------------------------------
-
-  - if [[ $TRAVIS_BRANCH == 'master' || $TRAVIS_TAG != '' ]]; then wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -; fi
-  - if [[ $TRAVIS_BRANCH == 'master' || $TRAVIS_TAG != '' ]]; then echo "deb http://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list; fi
-  - if [[ $TRAVIS_BRANCH == 'master' || $TRAVIS_TAG != '' ]]; then sudo apt-get update; fi
-  - if [[ $TRAVIS_BRANCH == 'master' || $TRAVIS_TAG != '' ]]; then sudo apt-get install cf-cli; fi
-
 #-----------------------------------------------------------------------------
 # Bring up Docker containers
 #-----------------------------------------------------------------------------
@@ -138,14 +127,6 @@ after_script:
   - if [[ $TRAVIS_BRANCH == 'master' ]]; then cd dashboard/tools; fi
   - if [[ $TRAVIS_BRANCH == 'master' ]]; then composer install; fi
   - if [[ $TRAVIS_BRANCH == 'master' ]]; then php push-travis.php ../../tests/reports/phpunit.latest.xml; fi
-
-##############################################################################
-### DEPLOY                                                                 ###
-##############################################################################
-
-after_success:
-  - cf login -a api.cloud.service.gov.uk -u chris.moreton@transformuk.com -p $CF_PASSWORD
-  - if [[ $TRAVIS_BRANCH == 'master' ]]; then cf/push-continuous.sh; fi
 
 #-----------------------------------------------------------------------------
 # For tagged builds, send the packaged build to S3

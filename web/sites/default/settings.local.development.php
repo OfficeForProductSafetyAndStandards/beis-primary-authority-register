@@ -1,6 +1,6 @@
 <?php
 
-ini_set('memory_limit','256M');
+ini_set('memory_limit','512M');
 ini_set('max_execution_time', 90);
 
 $databases['default']['default'] = array (
@@ -54,3 +54,5 @@ $settings['cache']['bins']['render'] = 'cache.backend.null';
  * in the early stages of development, you may want to disable it.
  */
 $settings['cache']['bins']['dynamic_page_cache'] = 'cache.backend.null';
+
+ini_set('memory_limit', '512M');
