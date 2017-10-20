@@ -1,7 +1,7 @@
 const config = require('./wdio.conf.js').config;
 
 config.capabilities = [{
-    browserName: 'phantomjs'
+    browserName: 'chrome'
 }];
 config.screenshotPath = './errorShots/';
 config.services = ['selenium-standalone'];
