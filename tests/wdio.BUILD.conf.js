@@ -1,7 +1,7 @@
 const config = require('./wdio.conf.js').config;
 
 config.capabilities = [{
-    browserName: 'phantomjs'
+    browserName: 'phantomjs',
     //chromeOptions: {
     //    binary: '/usr/bin/google-chrome',
     //    args: ['headless', 'no-sandbox', 'disable-gpu']

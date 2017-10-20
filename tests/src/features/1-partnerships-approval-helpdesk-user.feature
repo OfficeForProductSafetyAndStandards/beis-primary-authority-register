@@ -1,4 +1,4 @@
-@Pending
+@ci
 Feature: Enforcement notice management
 
     Scenario: Enforcement notice management
@@ -7,7 +7,8 @@ Feature: Enforcement notice management
 
 #        Given I reset the test data
         Given I am logged in as "par_helpdesk@example.com"
-        When I add "Charlie" to the inputfield "#edit-keywords"
+        When I add "Business For Direct Partnership 1" to the inputfield "#edit-keywords"
+        And I select the option with the text "- Any -" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-helpdesk-dashboard"
         When I click on the button "a*=Approve partnership"
 #
@@ -18,7 +19,7 @@ Feature: Enforcement notice management
         And I click on the radio "#edit-partnership-regulatory-functions-2"
         And I click on the button "#edit-next"
         Then I expect that element "#par-rd-help-desk-approve" contains the text "Partnership is approved between"
-        And I expect that element "#par-rd-help-desk-approve" contains the text "Charlie's"
+        And I expect that element "#par-rd-help-desk-approve" contains the text "Business For Direct Partnership 1"
         And I expect that element "#par-rd-help-desk-approve" contains the text "Upper West Side Borough Council"
         And I click on the button "#edit-done"
 
