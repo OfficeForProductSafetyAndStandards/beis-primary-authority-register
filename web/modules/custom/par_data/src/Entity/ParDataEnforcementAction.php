@@ -170,9 +170,6 @@ class ParDataEnforcementAction extends ParDataEntity {
    * @param string $authority_notes
    *  referral notes indicating the reason for the referral status update in the form.
    *
-   * @param string $authority_notes
-   *  referral notes indicating the reason for the referral status update in the form.
-   *
    * @return boolean
    *   True if the entity has been set to a referred state, false for all other results.
    *
@@ -193,11 +190,15 @@ class ParDataEnforcementAction extends ParDataEntity {
    * @return ParDataEnforcementAction $action
    *  cloned action entity if a referral exists or NULL.
    */
-  public function cloneReferredEnforcementAction($referral_authority_id) {
+  public function cloneReferredEnforcementAction($referral_authority_id, $action_id) {
 
     if ($referral_authority_id) {
       // Duplicate this action before changing the status.
       $cloned_action = $this->createDuplicate();
+      // As we are referring an action by cloning the original we need to set the original
+      // action id on the copied (referred action) this indicates that the action in question
+      // has been referred once and can no longer be referred.
+      $cloned_action->set('field_action_referral', $action_id);
       // If a new duplicate enforcement action has been saved to the system return it.
       if ($cloned_action->save()) {
         return $cloned_action;

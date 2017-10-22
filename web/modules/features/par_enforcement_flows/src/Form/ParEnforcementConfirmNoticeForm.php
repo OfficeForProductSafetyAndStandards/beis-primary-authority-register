@@ -204,7 +204,7 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
           $referral_authority_id = $this->getTempDataValue([$action_id], 'par_enforcement_referred_authority');
 
           try {
-            $cloned_action = $action->cloneReferredEnforcementAction($referral_authority_id);
+            $cloned_action = $action->cloneReferredEnforcementAction($referral_authority_id, $action_id);
           }
           catch (ParDataException $e) {
             $replacements = [
