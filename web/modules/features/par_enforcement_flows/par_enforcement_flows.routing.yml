@@ -141,7 +141,7 @@ par_enforcement_flows.referred_authority:
       par_data_enforcement_notice:
         type: entity:par_data_enforcement_notice
 par_enforcement_flows.approve_confirm:
-  path: '/enforcement-notice/{par_data_enforcement_notice}/approve/confirm'
+  path: '/enforcement-notice/{par_data_enforcement_notice}/confirm'
   defaults:
     _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementConfirmNoticeForm'
     _title: 'Confirm Enforcement Notice'
