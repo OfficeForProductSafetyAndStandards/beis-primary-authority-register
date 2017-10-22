@@ -170,6 +170,9 @@ class ParDataEnforcementAction extends ParDataEntity {
    * @param string $authority_notes
    *  referral notes indicating the reason for the referral status update in the form.
    *
+   * @param string $authority_notes
+   *  referral notes indicating the reason for the referral status update in the form.
+   *
    * @return boolean
    *   True if the entity has been set to a referred state, false for all other results.
    *
