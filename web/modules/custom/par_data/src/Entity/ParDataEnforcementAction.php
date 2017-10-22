@@ -175,13 +175,16 @@ class ParDataEnforcementAction extends ParDataEntity {
   }
 
   /**
-   * Unrevoke a revoked entity
+   *  Refer an Action of an Enforcement notification.
+   *
+   * @param string $authority_notes
+   *  referral notes indicating the reason for the referral status update in the form.
    *
    * @param string $authority_notes
    *  referral notes indicating the reason for the referral status update in the form.
    *
    * @return boolean
-   *   True if the entity was unrevoked, false for all other results.
+   *   True if the entity has been set to a referred state, false for all other results.
    *
    */
   public function refer($refer_notes) {
