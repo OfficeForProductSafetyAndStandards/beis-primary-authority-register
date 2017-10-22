@@ -41,7 +41,8 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
-    $this->retrieveEditableValues();
+
+    $this->retrieveEditableValues($par_data_enforcement_notice);
 
     $form['authority'] = $this->renderSection('Notification of Enforcement action from', $par_data_enforcement_notice, ['field_enforcing_authority' => 'title']);
 
@@ -66,7 +67,9 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
         '#collapsed' => FALSE,
       ];
     }
+
     foreach ($par_data_enforcement_notice->get('field_enforcement_action')->referencedEntities() as $delta => $action) {
+
       $form['actions'][$delta] = [
         '#type' => 'fieldset',
         '#collapsible' => FALSE,
@@ -75,9 +78,8 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
 
       $form['actions'][$delta]['title'] = $this->renderSection('Title of action', $action, ['title' => 'title']);
 
-      $status_field = $action->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
       $status_value = $this->getTempDataValue(['actions', $delta, 'primary_authority_status'], 'par_enforcement_notice_approve');
-      $status = $action->getTypeEntity()->getAllowedFieldlabel($status_field, $status_value);
+
       $date = \Drupal::service('date.formatter')->format(time(), 'gds_date_format');
       $form['actions'][$delta]['status'] = [
         '#type' => 'fieldset',
@@ -86,7 +88,7 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
         '#collapsed' => FALSE,
         'value' => [
           '#type' => 'markup',
-          '#markup' => $this->t('You %status this action on @date', ['%status' => $status, '@date' => $date]),
+          '#markup' => $this->t('You %status this action on @date', ['%status' => $status_value, '@date' => $date]),
         ],
       ];
 
@@ -94,7 +96,7 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
         $reason = $this->getTempDataValue(['actions', $delta, 'primary_authority_notes'], 'par_enforcement_notice_approve');
       }
       elseif ($status_value === ParDataEnforcementAction::REFERRED) {
-        $reason = $this->getTempDataValue(['actions', $delta, 'primary_authority_notes'], 'par_enforcement_notice_approve');
+        $reason = $this->getTempDataValue(['actions', $delta, 'referral_notes'], 'par_enforcement_notice_approve');
       }
 
       if (isset($reason)) {
@@ -146,104 +148,104 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Save the notice so that the updates values are available for confirmation.
-    if ($this->saveNotice($form, $form_state)) {
+    $par_data_enforcement_notice = $this->getRouteParam('par_data_enforcement_notice');
+
+    if ($this->referral_cloning($par_data_enforcement_notice)) {
       $this->deleteStore();
     }
     else {
-      $par_data_enforcement_notice = $this->getRouteParam('par_data_enforcement_notice');
       $message = $this->t('The enforcement notice %confirm could not be approved for %form_id');
       $replacements = [
         '%confirm' => $par_data_enforcement_notice->id(),
         '%form_id' => $this->getFormId(),
       ];
-      $this->getLogger($this->getLoggerChannel())
-        ->error($message, $replacements);
+      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
     }
   }
 
   /**
    * Helper function to save the notice.
    */
-  public function saveNotice($form, $form_state) {
-    $par_data_enforcement_notice = $this->getRouteParam('par_data_enforcement_notice');
+  public function referral_cloning($par_data_enforcement_notice) {
 
-    // Duplicate any referral actions.
-    $referrals = [];
     foreach ($par_data_enforcement_notice->get('field_enforcement_action')->referencedEntities() as $delta => $action) {
+
       $form_data = $this->getTempDataValue(['actions', $delta], 'par_enforcement_notice_approve');
-      if ($form_data['primary_authority_status'] === ParDataEnforcementAction::REFERRED) {
-        // Duplicate this action before changing the status.
-        $referrals[$delta] = $action->createDuplicate()->save();
-      }
-    }
+      $action_id = $action->id();
 
-    // If there are any referrals create a new notice for the referred to authority.
-    $referred_to = $this->getTempDataValue('referred_to', 'par_enforcement_referred_authority');
-    $primary_authority = ParDataAuthority::load($referred_to);
-    if (!empty($referrals) && $primary_authority) {
-      // Create the new notice.
-      $referral_notice = $par_data_enforcement_notice->createDuplicate();
-      $referral_notice->set('field_primary_authority', $primary_authority->id());
-
-      // Loop through all referrals and create a new notice for them.
-      foreach ($referrals as $delta => $referral) {
-        $referral_notice->get('field_enforcement_action')->appendItem($primary_authority->id());
-      }
-
-      if (isset($referral_notice) && $referral_notice->save()) {
-        // Persist the information in the temporary store here
-        // because the application is not yet complete.
-        $this->setTempDataValue('referral_id', $referral_notice->id());
-        return $referral_notice;
-      }
-      else {
-        $message = $this->t('Referred enforcement notice not saved on %form_id');
-        $replacements = [
-          '%form_id' => $this->getFormId(),
-        ];
-        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-      }
-    }
-
-    // Loop through all the enforcement actions on the notice and save the status.
-    foreach ($par_data_enforcement_notice->get('field_enforcement_action')->referencedEntities() as $delta => $action) {
-      $form_data = $this->getTempDataValue(['actions', $delta], 'par_enforcement_notice_approve');
-
-      if ($form_data['primary_authority_status'] === ParDataEnforcementAction::APPROVED) {
-
-        // Approve the action and save.
-        $action->approve();
-      }
-      elseif ($form_data['primary_authority_status'] === ParDataEnforcementAction::BLOCKED) {
-        // Set the reason for blocking this action.
-        $action->set('primary_authority_notes', $form_data['primary_authority_notes']);
-
-        // Block the action and save.
-        $action->block();
-      }
-      elseif ($form_data['primary_authority_status'] === ParDataEnforcementAction::REFERRED) {
-        // Set the reason for referring this action.
-        // And the authority this is being referred to.
-        $action->set('primary_authority_notes', $form_data['primary_authority_notes']);
-
-        try {
-          if (!isset($referrals[$delta]) && $referrals[$delta]->id()) {
-            $action->set('field_action_referral', $referrals[$delta]->id());
+      switch ($form_data['primary_authority_status']) {
+        case ParDataEnforcementAction::APPROVED:
+          if (!$action->approve()) {
+            $message = $this->t('The enforcement notification action entity %entity_id could not be updated to a approved state within %form_id');
+            $replacements = [
+              '%entity_id' => $action_id,
+              '%form_id' => $this->getFormId(),
+            ];
+            $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+            return FALSE;
           }
-          else{
-            throw new ParDataException("The referal action could not be created, please contact the helpdesk.");
-          }
-        }
-        catch (ParDataException $e) {
-          $this->getLogger($this->getLoggerChannel())
-            ->error($e->getMessage());
-        }
+          break;
 
-        // Refer the action and save.
-        $action->refer();
+        case ParDataEnforcementAction::BLOCKED:
+          if (!$action->block($form_data['primary_authority_notes'])) {
+            $message = $this->t('The enforcement notification action entity %entity_id could not be updated to a blocked state within %form_id');
+            $replacements = [
+              '%entity_id' => $action_id,
+              '%form_id' => $this->getFormId(),
+            ];
+            $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+            return FALSE;
+          }
+          break;
+
+        case ParDataEnforcementAction::REFERRED:
+
+          // The authority to refer the current action to.
+          $referral_authority_id = $this->getTempDataValue([$action_id], 'par_enforcement_referred_authority');
+
+          try {
+            $cloned_action = $action->cloneReferredEnforcementAction($referral_authority_id);
+          }
+          catch (ParDataException $e) {
+            $replacements = [
+              '%action' => $action_id,
+            ];
+            $this->getLogger($this->getLoggerChannel())->error($e->getMessage(), $replacements);
+            return FALSE;
+          }
+
+          if (isset($cloned_action)) {
+            try {
+              // Create a new Enforcement notice for every referred action.
+              $referral_notice = $action->cloneEnforcementNotice($action_id, $cloned_action, $par_data_enforcement_notice);
+            }
+            catch (ParDataException $e) {
+              $replacements = [
+                '%action' => $action_id,
+              ];
+              $this->getLogger($this->getLoggerChannel())->error($e->getMessage(), $replacements);
+              return FALSE;
+            }
+            if (isset($referral_notice)) {
+              // Persist the information in the temporary store here
+              // because the application is not yet complete.
+              $this->setTempDataValue('referral_id' . $action_id, $referral_notice->id());
+
+              if (!$action->refer($form_data['referral_notes'])) {
+                $message = $this->t('The enforcement notification action entity %entity_id could not be updated to a referred state within %form_id');
+                $replacements = [
+                  '%entity_id' => $action_id,
+                  '%form_id' => $this->getFormId(),
+                ];
+                $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+                return FALSE;
+              }
+            }
+          }
+          break;
       }
     }
+    return TRUE;
   }
 
 }
