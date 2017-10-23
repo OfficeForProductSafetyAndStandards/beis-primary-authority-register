@@ -1,7 +1,5 @@
 <?php
 
-$settings['hash_salt'] = 'THIS_IS_THE_HASH_SALT';
-
 $databases['default']['default'] = array (
   'database' => 'par',
   'username' => 'par',
@@ -23,7 +21,5 @@ if (file_exists($app_root . '/' . $site_path . '/services.local.yml')) {
   $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.local.yml';
 }
 
-$settings['trusted_host_patterns'] = [];
-
 // Ensure travis always runs with the same memory that other environments do.
-ini_set('memory_limit', '256M');
+ini_set('memory_limit', '512M');

@@ -4,7 +4,8 @@ function createRow($key, $line)
 {
     global $legalEntities, $adviceTypes, $assoc, $count;
     
-    echo $count++ . ") " . $key . PHP_EOL;
+    $count ++;
+    echo $count . ") " . $key . PHP_EOL;
     
     $legalEntities = array_unique($legalEntities, SORT_REGULAR);
     $adviceTypes = array_unique($adviceTypes, SORT_REGULAR);
@@ -40,9 +41,11 @@ $lastKey = '';
 $lastLine = [];
 $count = 0;
 foreach ($lines as $line) {
-    $line = str_getcsv($line);
-    $key = $line[4] . '_' . $line[5];
     
+    $line = str_getcsv($line);
+    
+    $key = $line[3] . '_' . $line[4] . '_' . $line[5];
+
     if ($lastKey != $key && $lastKey != '') {
         createRow($lastKey, $lastLine);
     }
@@ -50,8 +53,9 @@ foreach ($lines as $line) {
     if (!empty($line[6]) && empty($line[16]) && empty($line[17])) {
         $legalEntities[] = $line[6];
     }
-    if (!empty($line[8]) && empty($line[12]) && empty($line[13])) {
-        $adviceTypes[] = $line[8];
+    
+    if (!empty($line[8]) && empty($line[12]) && empty($line[13])) {         
+       $adviceTypes[] = $line[8];
     }
     
     $lastKey = $key;

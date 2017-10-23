@@ -5,6 +5,7 @@ namespace Drupal\par_rd_help_desk_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\Core\Access\AccessResult;
 
 /**
  * The confirming the user is authorised to approve partnerships.
@@ -21,6 +22,18 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
    */
   public function getFormId() {
     return 'par_rd_help_desk_confirm';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function accessCallback(ParDataPartnership $par_data_partnership = NULL) {
+    // 403 if the partnership is active/approved by RD.
+    if ($par_data_partnership->getRawStatus() === 'confirmed_rd') {
+      $this->accessResult = AccessResult::forbidden('The partnership is active.');
+    }
+
+    return parent::accessCallback();
   }
 
   /**
@@ -50,20 +63,20 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
 
     $form['partnership_title'] = [
       '#type' => 'markup',
-      '#markup' => $this->t('Partnership between between'),
+      '#markup' => $this->t('Partnership between'),
       '#prefix' => '<div><h2>',
       '#suffix' => '</h2></div>',
     ];
 
     $form['partnership_text'] = [
       '#type' => 'markup',
-      '#markup' => $par_data_organisation->get('organisation_name')->getString() . ' ' . $par_data_authority->get('authority_name')->getString(),
+      '#markup' => $par_data_organisation->get('organisation_name')->getString() . ' and ' . $par_data_authority->get('authority_name')->getString(),
       '#default_value' => $this->getDefaultValues('partnership_text'),
       '#prefix' => '<div><p>',
       '#suffix' => '</p></div>',
     ];
 
-    $confirm_text_options[]  = $this->t('I am authorised to approve this partnership');
+    $confirm_text_options[] = $this->t('I am authorised to approve this partnership');
 
     $form['confirm_authorisation_select'] = [
       '#type' => 'radios',
@@ -121,6 +134,10 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
 
       $partnership->setParStatus('confirmed_rd');
       $partnership->set('field_regulatory_function', $selected_regulatory_functions);
+
+      // Set approved date to today.
+      $time = new \DateTime();
+      $partnership->set('approved_date', $time->format("Y-m-d"));
 
       if (!$partnership->save()) {
 

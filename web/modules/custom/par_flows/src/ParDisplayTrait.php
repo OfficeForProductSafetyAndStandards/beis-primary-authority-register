@@ -212,17 +212,18 @@ trait ParDisplayTrait {
 
       $field = $entity->get($field_name);
       if (!$field->isEmpty()) {
+        $single_item = FALSE;
         // If there is only one value treat the field as single.
         if ($field->count() <= 1) {
-          $single = TRUE;
+          $single_item = TRUE;
         }
 
         // Reference fields need to be rendered slightly differently.
         if ($field instanceof EntityReferenceFieldItemListInterface) {
-          $rows = $this->renderReferenceField($section, $field, $view_mode, $operations, $single);
+          $rows = $this->renderReferenceField($section, $field, $view_mode, $operations, $single_item);
         }
         else {
-          $rows = $this->renderTextField($section, $entity, $field, $view_mode, $operations, $single);
+          $rows = $this->renderTextField($section, $entity, $field, $view_mode, $operations, $single_item);
         }
 
         // Render the rows using a tabulated pager.
@@ -247,7 +248,7 @@ trait ParDisplayTrait {
 
       // Only add the add link if it is in the allowed operations.
       $link_name_suffix = strtolower($field->getFieldDefinition()->getLabel());
-      if (isset($operations) && (in_array('add', $operations))) {
+      if (isset($operations) && (in_array('add', $operations)) && !($single && !$field->isEmpty())) {
         try {
           $add_link = $this->getFlow()->getLinkByCurrentOperation('add_' . $field->getName())->setText("add another {$link_name_suffix}")->toString();
         } catch (ParFlowException $e) {

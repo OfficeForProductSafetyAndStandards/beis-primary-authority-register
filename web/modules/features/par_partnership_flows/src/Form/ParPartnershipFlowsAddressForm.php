@@ -58,9 +58,6 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       ];
     }
 
-
-
-
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
     if ($par_data_partnership) {
       $par_data_organisation = current($par_data_partnership->getOrganisation());
@@ -171,8 +168,12 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Save the value for the about_partnership field.
-    $premises = $this->getRouteParam('par_data_premises');
+    // Create or update an existing PAR Premises record.
+    $premises = $this->getRouteParam('par_data_premises') ? $this->getRouteParam('par_data_premises') : ParDataPremises::create([
+      'type' => 'premises',
+      'uid' => $this->getCurrentUser()->id(),
+    ]);
+
     if ($premises) {
       $address = [
         'country_code' => $this->getTempDataValue('country_code'),
@@ -186,13 +187,28 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       $premises->set('address', $address);
       $premises->set('nation', $this->getTempDataValue('country'));
 
-      if ($premises->save()) {
+      $par_data_partnership = $this->getRouteParam('par_data_partnership');
+
+      // Check we are updating an existing partnership/organisation.
+      if ($par_data_partnership &&
+          $par_data_organisation = current($par_data_partnership->getOrganisation()) &&
+          $premises->save()) {
+
+        // Add premises to organisation if a new PAR Premises record is created.
+        if (!$this->getRouteParam('par_data_premises')) {
+          // Add to field_premises.
+          $par_data_organisation->get('field_premises')
+            ->appendItem($premises->id());
+          $par_data_organisation->save();
+        }
+
         $this->deleteStore();
+
       }
       else {
-        $message = $this->t('This %premises could not be saved for %form_id');
+        $message = $this->t('Address %premises could not be saved for %form_id');
         $replacements = [
-          '%premises' => $premises->get('address')->toString(),
+          '%premises' => print_r($address, 1),
           '%form_id' => $this->getFormId(),
         ];
         $this->getLogger($this->getLoggerChannel())

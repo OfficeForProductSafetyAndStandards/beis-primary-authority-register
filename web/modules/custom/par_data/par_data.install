@@ -183,3 +183,15 @@ function par_data_update_8013() {
   }
 }
 
+/**
+ * Remove traces of deleted modules.
+ */
+function par_data_update_8014() {
+  // Delete the following modules.
+  $db = \Drupal::database();
+  $db->delete('key_value')
+    ->condition('collection', 'system.schema')
+    ->condition('name', ['par_migration', 'par_migration_scripts', 'migrate_tools', 'migrate_source_csv', 'migrate_plus', 'sqlsrv'], 'IN')
+    ->execute();
+}
+

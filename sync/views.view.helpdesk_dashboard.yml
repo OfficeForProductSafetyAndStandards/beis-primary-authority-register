@@ -1106,7 +1106,7 @@ display:
           alter:
             alter_text: false
             text: ''
-            make_link: true
+            make_link: false
             path: '/helpdesk/partnership/{{ id }}/confirm'
             absolute: false
             external: false
@@ -1138,13 +1138,13 @@ display:
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
-          empty: ''
+          empty: N/A
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
           title: 'Approve partnership'
-          link: ''
-          hidden: 0
+          link: '/helpdesk/partnership/{{ id }}/confirm'
+          hidden: 1
           entity_type: par_data_authority
           plugin_id: par_flow_link
     cache_metadata:

@@ -45,38 +45,24 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
     // Save the partnership so that it can be retrieved for review.
     $par_data_partnership = $this->savePartnership($form, $form_state);
 
-    // Configuration for each entity is contained within the bundle.
-    $partnership_bundle = $this->getParDataManager()->getParBundleEntity('par_data_partnership');
-    $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
-    $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
-    $premises_bundle = $this->getParDataManager()->getParBundleEntity('par_data_premises');
-
     if ($par_data_partnership) {
       $form['partnership_id'] = [
         '#type' => 'hidden',
-        '#value' => $par_data_partnership->id()
+        '#value' => $par_data_partnership->id(),
       ];
 
       // Organisation summary.
       $par_data_organisation = current($par_data_partnership->getOrganisation());
 
-      // Display organisation name.
-      $form['organisation_name'] = $this->renderSection('Organisation name', $par_data_organisation, ['organisation_name' => 'summary'], [], FALSE, TRUE);
-      $form['organisation_name']['#prefix'] = '<h3 class="heading-medium fieldset-legend">';
-      $form['organisation_name']['#suffix'] = '</h3>';
+      // Display organisation name and organisation primary address.
+      $form['organisation_name'] = $this->renderSection('Organisation', $par_data_organisation, ['organisation_name' => 'title'], [], TRUE, TRUE);
+      $form['organisation_registered_address'] = $this->renderSection('Organisation address', $par_data_organisation, ['field_premises' => 'summary'], [], TRUE, TRUE);
 
-      // Display the primary address along with the link to edit it.
-      $form['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
-
-      // Everything below is for the authority to edit and add to.
       $par_data_authority = current($par_data_partnership->getAuthority());
-      $form['authority'] = [
-        '#type' => 'markup',
-        '#markup' => $par_data_authority->get('authority_name')->getString(),
-        '#prefix' => '<h3 class="heading-medium fieldset-legend">',
-        '#suffix' => '</h3>',
-      ];
-      $form['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
+
+      // Display Primary Authority name and address.
+      $form['primary_authority_name'] = $this->renderSection('Primary Authority', $par_data_authority, ['authority_name' => 'title'], [], TRUE, TRUE);
+      $form['primary_authority_registered_address'] = $this->renderSection('Primary Authority address', $par_data_authority, ['field_premises' => 'summary'], [], TRUE, TRUE);
 
       // Display details about the partnership for information.
       $form['about_partnership'] = $this->renderSection('About the partnership', $par_data_partnership, ['about_partnership' => 'about']);
@@ -107,10 +93,6 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
-    $this->addCacheableDependency($partnership_bundle);
-    $this->addCacheableDependency($person_bundle);
-    $this->addCacheableDependency($legal_entity_bundle);
-    $this->addCacheableDependency($premises_bundle);
 
     return parent::buildForm($form, $form_state);
   }
@@ -189,7 +171,7 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
 
     // Load an existing address if provided.
     $existing_organisation = $this->getDefaultValues('par_data_organisation_id','new', 'par_partnership_organisation_suggestion');
-    if ($existing_organisation !== 'new' && !empty($existing_organisation)) {
+    if (isset($existing_organisation) && $existing_organisation !== 'new') {
       $par_data_organisation = ParDataOrganisation::load($existing_organisation);
 
       // Get the address and or contact from the existing organisation.

@@ -20,17 +20,6 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_6db5a3a5521e_key -iv $encrypted_6db5a3a5521e_iv
     -in .env.continuous.enc -out cf/.env.continuous -d
 
-install:
-
-#-----------------------------------------------------------------------------
-# Install Cloud Foundry CLI, for deployment, if on master branch
-#-----------------------------------------------------------------------------
-
-  - if [[ $TRAVIS_BRANCH == 'master' || $TRAVIS_TAG != '' ]]; then wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -; fi
-  - if [[ $TRAVIS_BRANCH == 'master' || $TRAVIS_TAG != '' ]]; then echo "deb http://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list; fi
-  - if [[ $TRAVIS_BRANCH == 'master' || $TRAVIS_TAG != '' ]]; then sudo apt-get update; fi
-  - if [[ $TRAVIS_BRANCH == 'master' || $TRAVIS_TAG != '' ]]; then sudo apt-get install cf-cli; fi
-
 #-----------------------------------------------------------------------------
 # Bring up Docker containers
 #-----------------------------------------------------------------------------
@@ -51,13 +40,15 @@ install:
   - docker exec -it par_beta_web bash -c "echo 'deb http://dl.google.com/linux/chrome/deb/ stable main' >> /etc/apt/sources.list.d/google.list"
   - docker exec -it par_beta_web bash -c "apt-get update"
   - docker exec -it par_beta_web bash -c "apt-get install -y google-chrome-stable"
-#  - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
+  - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
+  - chmod -R 777 private
 
 #-----------------------------------------------------------------------------
 # Setup local config defaults
 #-----------------------------------------------------------------------------
 
   - cp web/sites/example.settings.local.php web/sites/default/settings.local.php
+  - sudo bash ./tools/fix-permissions.sh --drupal_path=./web
 
 #-----------------------------------------------------------------------------
 # Create .env file
@@ -110,13 +101,13 @@ before_script:
 
 script:
   - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
-#  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
-#  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run test:build"
+  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
+  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run test:build"
 
 #-----------------------------------------------------------------------------
 # Generate HTML reports with screenshots. HTML report location: tests/reports/allure-reports/index.html, TAR it up.
 #-----------------------------------------------------------------------------
-#  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run allure && tar -cf reports/allure-report.tar.gz ./allure-results"
+#  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && if [ -d ./errorShots ]; then tar -cf reports/errorShots.tar.gz ./errorShots; fi"
 #  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/pa11y-ci -T 1 -j -s 'http://localhost/sitemap.xml' -f 'https://par-beta-test.cloudapps.digital' -r 'http://localhost:80' > ./reports/wcag2aa_report.json"
 
 #-----------------------------------------------------------------------------
@@ -136,14 +127,6 @@ after_script:
   - if [[ $TRAVIS_BRANCH == 'master' ]]; then cd dashboard/tools; fi
   - if [[ $TRAVIS_BRANCH == 'master' ]]; then composer install; fi
   - if [[ $TRAVIS_BRANCH == 'master' ]]; then php push-travis.php ../../tests/reports/phpunit.latest.xml; fi
-
-##############################################################################
-### DEPLOY                                                                 ###
-##############################################################################
-
-after_success:
-  - cf login -a api.cloud.service.gov.uk -u chris.moreton@transformuk.com -p $CF_PASSWORD
-  - cf/push-continuous.sh
 
 #-----------------------------------------------------------------------------
 # For tagged builds, send the packaged build to S3

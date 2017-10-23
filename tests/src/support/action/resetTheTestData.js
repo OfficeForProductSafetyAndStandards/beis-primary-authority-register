@@ -9,10 +9,12 @@ module.exports = (done) => {
      * @type {String}
      */
     browser.url('/user/login');
-    browser.setValue('#edit-name', 'dadmin');
-    browser.setValue('#edit-pass', 'password');
+    browser.setValue('#edit-name', 'par_admin@example.com');
+    browser.setValue('#edit-pass', 'TestPassword');
     browser.click('#edit-submit');
     browser.url('/admin/par-data-test-reset');
+    browser.click('#toolbar-item-user');
+    browser.click('li.logout a');
     browser.url('/user/logout');
     done();
 };
