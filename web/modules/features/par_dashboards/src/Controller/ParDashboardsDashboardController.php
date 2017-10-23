@@ -5,12 +5,16 @@ namespace Drupal\par_dashboards\Controller;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Queue\QueueFactory;
+use Drupal\Core\Queue\QueueInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_flows\ParRedirectTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use RapidWeb\UkBankHolidays\Factories\UkBankHolidayFactory;
+
 
 /**
  * A controller for all PAR Flow Transition pages.
@@ -69,6 +73,31 @@ class ParDashboardsDashboardController extends ControllerBase {
    */
   public function content() {
     $build = [];
+
+    $query = \Drupal::entityQuery('par_data_enforcement_notice');
+
+    $allHolidays = UkBankHolidayFactory::getAll();
+
+    $daysBehind = 5;
+
+    var_dump($daysBehind);
+
+    $entities = $query->sort('id', 'DESC')->range(0,10)->execute();
+
+    /** @var QueueFactory $queue_factory */
+    $queue_factory = \Drupal::service('queue');
+    /** @var QueueInterface $queue */
+    $queue = $queue_factory->get('cron_enforcement_notice_action_auto_approval');
+
+    $allHolidays = UkBankHolidayFactory::getAll();
+
+    var_dump($allHolidays);
+
+    foreach ($entities as $id) {
+      $item = new \stdClass();
+      $item->id = $id;
+      $queue->createItem($item);
+    }
 
     // Your partnerships.
     $partnerships =  $this->getParDataManager()->hasMembershipsByType($this->getCurrentUser(), 'par_data_partnership');

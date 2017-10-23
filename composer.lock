@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f8e4a55188a4cddbc6a19097f9ea580",
+    "content-hash": "78b30da80fbe832bfe07522e2d2b7090",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -5273,6 +5273,88 @@
                 "shell"
             ],
             "time": "2017-07-29T19:30:02+00:00"
+        },
+        {
+            "name": "rapidwebltd/php-uk-bank-holidays",
+            "version": "v2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rapidwebltd/php-uk-bank-holidays.git",
+                "reference": "5bfdb029a3c6d495fc1b92907306c1820116fbcd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rapidwebltd/php-uk-bank-holidays/zipball/5bfdb029a3c6d495fc1b92907306c1820116fbcd",
+                "reference": "5bfdb029a3c6d495fc1b92907306c1820116fbcd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3",
+                "rapidwebltd/rw-file-cache": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "RapidWeb\\UkBankHolidays\\": "./src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL3"
+            ],
+            "description": "php uk bank holidays is a simple tool that allows you to retrive uk bank holidays in a easy to read format.",
+            "keywords": [
+                "PHP Library",
+                "PHP uk bank holidays library",
+                "bank holidays",
+                "library",
+                "uk bank holidays"
+            ],
+            "time": "2017-04-03T12:56:58+00:00"
+        },
+        {
+            "name": "rapidwebltd/rw-file-cache",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rapidwebltd/RW-File-Cache.git",
+                "reference": "3d9548f4269ba603635e5e86eceee10e9f633903"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rapidwebltd/RW-File-Cache/zipball/3d9548f4269ba603635e5e86eceee10e9f633903",
+                "reference": "3d9548f4269ba603635e5e86eceee10e9f633903",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "rapidweb\\RWFileCache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL3"
+            ],
+            "description": "PHP File-based Caching Library",
+            "homepage": "https://github.com/rapidwebltd/RW-File-Cache",
+            "keywords": [
+                "cache",
+                "caching",
+                "caching library",
+                "file cache",
+                "library",
+                "php"
+            ],
+            "time": "2017-03-13T12:33:56+00:00"
         },
         {
             "name": "sentry/sentry",

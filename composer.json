@@ -51,6 +51,7 @@
         "drupal/xmlsitemap": "~1.0.0",
         "drush/config-extra": "~1.0.0",
         "drush/drush": "~8.1.0",
+        "rapidwebltd/php-uk-bank-holidays": "^2.0",
         "vlucas/phpdotenv": "~2.4.0"
     },
     "require-dev": {

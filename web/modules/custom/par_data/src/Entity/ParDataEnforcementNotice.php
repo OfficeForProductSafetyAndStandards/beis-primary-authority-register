@@ -86,10 +86,23 @@ class ParDataEnforcementNotice extends ParDataEntity {
   }
 
   /**
-   * Get the enforcement action for this Enforcement Notice.
+   * Get the enforcement actions for this Enforcement Notice.
    */
-  public function getEnforcementAction() {
+  public function getEnforcementActions() {
     return $this->get('field_enforcement_action')->referencedEntities();
+  }
+
+  /**
+   * Get the enforcement actions for this Enforcement Notice.
+   */
+  public function getEnforcementActionsStatuses() {
+    $enforcement_actions = $this->getEnforcementActions();
+
+    foreach ($enforcement_actions as $enforcement_action) {
+      $action_statuses[] = $enforcement_action->isAwaitingApproval();
+    }
+
+    return (isset($action_statuses) && array_product($action_statuses) === 1);
   }
 
   /**
