@@ -9,7 +9,6 @@ Feature: Primary Authority - Change Partnership Details
         When I add "Charlie" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
         And I click on the button "td.views-field.views-field-par-flow-link a"
-        And I expect that element "h1" is not empty
 
         # REVIEW PARTNERSHIPS DETAILS
 

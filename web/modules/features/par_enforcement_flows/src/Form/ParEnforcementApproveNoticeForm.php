@@ -110,7 +110,7 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
       $form['actions'][$delta]['primary_authority_notes'] = [
         '#type' => 'textarea',
         '#title' => $this->t('If you plan to block this action you must provide the enforcing authority with a valid reason.'),
-        '#default_value' => $this->getDefaultValues("primary_authority_notes"),
+        '#default_value' => $this->getDefaultValues(['actions', $delta, 'primary_authority_notes'], NULL),
         '#disabled' => $this->getDefaultValues(['actions', $delta, 'disabled'], FALSE),
         '#states' => [
           'visible' => [
@@ -122,7 +122,7 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
       $form['actions'][$delta]['referral_notes'] = [
         '#type' => 'textarea',
         '#title' => $this->t('If you plan to refer this action you must provide the enforcing authority with a valid reason.'),
-        '#default_value' => $this->getDefaultValues("referral_notes"),
+        '#default_value' => $this->getDefaultValues(['actions', $delta, 'referral_notes'], NULL),
         '#disabled' => $this->getDefaultValues(['actions', $delta, 'disabled'], FALSE),
         '#states' => [
           'visible' => [
@@ -150,6 +150,14 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
         $this->setElementError(['actions', $delta, 'primary_authority_status'], $form_state, 'Every action in this notice must be reviewed before you can proceed.');
       }
 
+      if ($form_data['primary_authority_status'] == ParDataEnforcementAction::BLOCKED && empty($form_data['primary_authority_notes'])) {
+        $this->setElementError(['actions', $delta, 'primary_authority_status'], $form_state, 'If you plan to block this action you must provide the enforcing authority with a valid reason.');
+      }
+
+      if ($form_data['primary_authority_status'] == ParDataEnforcementAction::REFERRED && empty($form_data['referral_notes'])) {
+        $this->setElementError(['actions', $delta, 'referral_notes'], $form_state, 'If you plan to refer this action you must provide the enforcing authority with a valid reason.');
+      }
+
       // Set an error if this action has already been reviewed.
       if ($action->isApproved() || $action->isBlocked() || $action->isReferred()) {
         $this->setElementError(['actions', $delta, 'primary_authority_status'], $form_state, 'This action has already been reviewed.');
@@ -162,4 +170,10 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
     }
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    parent::submitForm($form, $form_state);
+  }
 }

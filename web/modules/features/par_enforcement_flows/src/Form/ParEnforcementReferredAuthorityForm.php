@@ -39,26 +39,70 @@ class ParEnforcementReferredAuthorityForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
-    $this->retrieveEditableValues($par_data_enforcement_notice);
 
+    $this->retrieveEditableValues($par_data_enforcement_notice);
+    $authorities = $this->get_all_authorities_for_organisation($par_data_enforcement_notice);
     $referrals = FALSE;
+
     foreach ($par_data_enforcement_notice->get('field_enforcement_action')->referencedEntities() as $delta => $action) {
+
       $form_data = $this->getTempDataValue(['actions', $delta], 'par_enforcement_notice_approve');
+
       if ($form_data['primary_authority_status'] === ParDataEnforcementAction::REFERRED) {
         $referrals = TRUE;
-        break;
+
+        // It is only possibly to refer
+        if (count($authorities) >= 0) {
+
+          $form['referred_to'][$delta] = [
+            '#type' => 'fieldset',
+            '#collapsible' => FALSE,
+            '#collapsed' => FALSE,
+          ];
+
+          $form['referred_to'][$delta]['titles'][$action->id()]= $this->renderSection('Title of action', $action, ['title' => 'title'],'', TRUE);
+
+          $form['referred_to'][$delta]['referrals'][$action->id()] = [
+            '#type' => 'radios',
+            '#title' => $this->t('Choose an authority to refer to'),
+            '#options' => $authorities,
+            '#default_value' => $this->getDefaultValues(['referred_to', $delta, $action->id()], 'par_enforcement_referred_authority'),
+            '#required' => TRUE,
+          ];
+        }
+        else {
+          $form['help_text'] = [
+            '#type' => 'markup',
+            '#attributes' => ['class' => 'form-group'],
+            '#markup' => 'There are no authorities that this action can be referred to, please return to the previous step and change your review.',
+          ];
+          // If no authorities are found on this partnership we should not continue looping through actions.
+          return parent::buildForm($form, $form_state);
+        }
       }
     }
+
     // Redirect to the next page if there are no referrals.
     if (!$referrals) {
       return $this->redirect($this->getFlow()->getNextRoute('next'), $this->getRouteParams());
     }
 
+    return parent::buildForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
+  }
+
+  public function get_all_authorities_for_organisation(ParDataEnforcementNotice $par_data_enforcement_notice) {
+
     // Discover all authorities that are responsible for
     // partnerships with this organisation.
     // @TODO Implement a better method to do this.
     $par_data_partnership = current($par_data_enforcement_notice->get('field_partnership')->referencedEntities());
-    $par_data_authority = current($par_data_partnership->get('field_authority')->referencedEntities());
     $par_data_organisation = current($par_data_partnership->get('field_organisation')->referencedEntities());
 
     // Get all partnerships with the same organisation,
@@ -78,46 +122,19 @@ class ParEnforcementReferredAuthorityForm extends ParBaseForm {
     $authorities = [];
     foreach ($organisation_partnerships as $partnership) {
       $authority = current($partnership->get('field_authority')->referencedEntities());
+
       if ($partnership->isLiving() && $authority->isLiving()) {
         $authorities[$authority->id()] = $authority->label();
       }
     }
 
-    // It is only possibly to refer
-    if (count($authorities) >= 0) {
-      $form['referred_to'] = [
-        '#type' => 'radios',
-        '#title' => $this->t('Choose an authority to refer to'),
-        '#options' => $authorities,
-        '#default_value' => $this->getDefaultValues('referred_to', ParDataEnforcementAction::APPROVED),
-        '#required' => TRUE,
-      ];
-    }
-    else {
-      $form['help_text'] = [
-        '#type' => 'markup',
-        '#attributes' => ['class' => 'form-group'],
-        '#markup' => 'There are no authorities that this action can be referred to, please return to the previous step and change your review.',
-      ];
-    }
-
-    return parent::buildForm($form, $form_state);
+    return $authorities;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
-
-    try {
-
-    }
-    catch(\Exception $e) {
-      $this->getLogger($this->getLoggerChannel())->critical('An error occurred validating form %form_id: @detail.', ['%form_id' => $this->getFormId(), '@details' => $e->getMessage()]);
-      $form_state->setError($form, 'An error occurred while checking your submission, please contact the helpdesk if this problem persists.');
-    }
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    parent::submitForm($form, $form_state);
   }
-
-
 }
