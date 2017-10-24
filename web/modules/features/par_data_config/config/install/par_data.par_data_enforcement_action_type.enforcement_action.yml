@@ -33,3 +33,4 @@ configuration:
       allowed: Approved
       blocked: Blocked
       referred: Referred
+      approved: Approved
