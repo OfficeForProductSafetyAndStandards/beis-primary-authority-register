@@ -43,6 +43,7 @@ abstract class ParEnforcementNoticeAutoApproval extends QueueWorkerBase implemen
     if ($notice->areEnforcementActionsAllAwaitingApproval()) {
       foreach ($notice->getEnforcementActions() as $enforcement_action) {
         $enforcement_action->approve();
+        \Drupal::logger('par_actions')->notice("{$notice->id()} approving {$enforcement_action->id()}");
       }
     }
 

@@ -59,13 +59,13 @@ function enforcement_notices_queue($job = NULL) {
   $query = \Drupal::entityQuery('par_data_enforcement_notice');
 
   $allHolidays = UkBankHolidayFactory::getAll();
-
-  var_dump($allHolidays);
-
-  // @todo implement working days/ holiday includer ['2017-10-20', '']
-  $daysBehind = 5;
-
-  var_dump($daysBehind);
+//
+//  var_dump($allHolidays);
+//
+//  // @todo implement working days/ holiday includer ['2017-10-20', '']
+//  $daysBehind = 5;
+//
+//  var_dump($daysBehind);
 
   $entities = $query->sort('id', 'DESC')->range(0,20)->execute();
 
@@ -77,8 +77,8 @@ function enforcement_notices_queue($job = NULL) {
   foreach ($entities as $id) {
     $item = new \stdClass();
     $item->id = $id;
-    \Drupal::logger('steve')->error("adding {$item->id} to queue");
-//    $queue->createItem($item);
+    \Drupal::logger('par_actions')->notice("adding {$item->id} to queue");
+    $queue->createItem($item);
   }
 
 }
