@@ -1,8 +1,11 @@
 <?php
 
+use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Link;
 use Drupal\par_data\Entity\ParDataPerson;
+use Drush\Queue\QueueInterface;
+use RapidWeb\UkBankHolidays\Factories\UkBankHolidayFactory;
 
 /**
  * Implements hook_token_info().
@@ -49,4 +52,33 @@ function par_actions_tokens($type, $tokens, array $data, array $options, Bubblea
   }
 
   return $replacements;
+}
+
+function enforcement_notices_queue($job = NULL) {
+
+  $query = \Drupal::entityQuery('par_data_enforcement_notice');
+
+  $allHolidays = UkBankHolidayFactory::getAll();
+
+  var_dump($allHolidays);
+
+  // @todo implement working days/ holiday includer ['2017-10-20', '']
+  $daysBehind = 5;
+
+  var_dump($daysBehind);
+
+  $entities = $query->sort('id', 'DESC')->range(0,20)->execute();
+
+  /** @var QueueFactory $queue_factory */
+  $queue_factory = \Drupal::service('queue');
+  /** @var QueueInterface $queue */
+  $queue = $queue_factory->get('cron_enforcement_notice_action_auto_approval');
+
+  foreach ($entities as $id) {
+    $item = new \stdClass();
+    $item->id = $id;
+    \Drupal::logger('steve')->error("adding {$item->id} to queue");
+//    $queue->createItem($item);
+  }
+
 }

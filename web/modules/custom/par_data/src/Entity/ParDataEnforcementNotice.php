@@ -93,9 +93,10 @@ class ParDataEnforcementNotice extends ParDataEntity {
   }
 
   /**
-   * Get the enforcement actions for this Enforcement Notice.
+   * Check if a notice referenced actions are all awaiting approval.
+   * Handy for the auto-approval cron job.
    */
-  public function getEnforcementActionsStatuses() {
+  public function areEnforcementActionsAllAwaitingApproval() {
     $enforcement_actions = $this->getEnforcementActions();
 
     foreach ($enforcement_actions as $enforcement_action) {

@@ -74,31 +74,6 @@ class ParDashboardsDashboardController extends ControllerBase {
   public function content() {
     $build = [];
 
-    $query = \Drupal::entityQuery('par_data_enforcement_notice');
-
-    $allHolidays = UkBankHolidayFactory::getAll();
-
-    $daysBehind = 5;
-
-    var_dump($daysBehind);
-
-    $entities = $query->sort('id', 'DESC')->range(0,10)->execute();
-
-    /** @var QueueFactory $queue_factory */
-    $queue_factory = \Drupal::service('queue');
-    /** @var QueueInterface $queue */
-    $queue = $queue_factory->get('cron_enforcement_notice_action_auto_approval');
-
-    $allHolidays = UkBankHolidayFactory::getAll();
-
-    var_dump($allHolidays);
-
-    foreach ($entities as $id) {
-      $item = new \stdClass();
-      $item->id = $id;
-      $queue->createItem($item);
-    }
-
     // Your partnerships.
     $partnerships =  $this->getParDataManager()->hasMembershipsByType($this->getCurrentUser(), 'par_data_partnership');
     $can_manage_partnerships = $this->getCurrentUser()->hasPermission('manage my organisations') || $this->getCurrentUser()->hasPermission('manage my authorities');
