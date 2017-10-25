@@ -1,3 +1,4 @@
+uuid: 0c270540-1f96-47ee-a1b6-809f8e09708a
 langcode: en
 status: true
 dependencies:
@@ -5,6 +6,7 @@ dependencies:
     - par_actions
 title: 'Queues enforcement notices for automatic approval'
 id: notice_cron
+weight: 0
 module: par_actions
 callback: enforcement_notices_queue
 scheduler:
