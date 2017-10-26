@@ -17,6 +17,13 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
   use ParPartnershipFlowsTrait;
 
   /**
+   * PAR Data Person ID.
+   *
+   * @var string
+   */
+  protected $par_data_person_id;
+
+  /**
    * {@inheritdoc}
    */
   public function getFormId() {
@@ -86,7 +93,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
     if (count($people_options) <= 0) {
       $this->setTempDataValue('par_data_person_id', 'new');
       $this->submitForm($form, $form_state);
-      return $this->redirect($this->getFlow()->getNextRoute('save'), $this->getRouteParams());
+      return $this->redirect($this->getFlow()->getNextRoute('save'), $this->getRouteParams() + ['par_data_person' => $this->par_data_person_id]);
     }
 
     // Make sure to add the person cacheability data to this form.
@@ -179,6 +186,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
     if ($par_data_partnership->save() &&
         $par_data_member_entity->save()) {
       $this->deleteStore();
+      $this->par_data_person_id = $par_data_person->id();
     }
     else {
       $message = $this->t('This %person could not be saved for %form_id');
