@@ -84,8 +84,6 @@ par_partnership_flows.authority_contact_invite:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-      par_data_authority:
-        type: entity:par_data_authority
       par_data_person:
         type: entity:par_data_person
 par_partnership_flows.authority_contact_invite_sent:
