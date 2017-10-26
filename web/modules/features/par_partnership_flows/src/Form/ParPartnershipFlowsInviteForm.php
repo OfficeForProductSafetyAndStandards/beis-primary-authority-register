@@ -53,18 +53,20 @@ class ParPartnershipFlowsInviteForm extends ParBaseForm {
       // this is tailored to who is inviting.
       $account = User::load($this->currentUser()->id());
       $this->loadDataValue("sender_email", $account->getEmail());
+
+      $authority = current($par_data_partnership->get('field_authority')->referencedEntities());
+      $authority_person = $authority ? $this->getParDataManager()->getUserPerson($account, $authority) : NULL;
+
       if($account->hasPermission('invite authority members')) {
         $sender_name = 'BEIS RD Department';
       }
       else {
-        $authority = current($par_data_partnership->get('field_authority')->referencedEntities());
-        $authority_person = $authority ? $this->getParDataManager()->getUserPerson($account, $authority) : NULL;
-
         $sender_name = '';
         if (isset($authority_person)) {
           $sender_name = $authority_person->getFullName();
         }
       }
+
       $this->loadDataValue("sender_name", $sender_name);
 
       // Get the user accounts related to the business user.
