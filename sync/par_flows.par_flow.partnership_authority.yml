@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: TvMj5iuC3HxHKS8LLzimxGMbwZT0-SDdOne8GhpsKw8
+  default_config_hash: U0z_9f8cVNhC5p04OUtl4IFnjMxNaJ4LmoQLtckwfgM
 id: partnership_authority
 label: 'Authority Partnership Flow'
 default_title: null
@@ -16,8 +16,8 @@ steps:
     redirect:
       edit_about_partnership: 2
       add_field_authority_person: 3
-      edit_field_authority_person: 6
-      advice: 7
+      edit_field_authority_person: 7
+      advice: 8
       inspection_plans: 12
       save: 13
   2:
@@ -40,50 +40,52 @@ steps:
       cancel: 1
   5:
     route: par_partnership_flows.authority_contact_invite
-    form_id: par_partnership_contact
+    form_id: par_partnership_invite
     redirect:
-      save: 1
+      save: 6
       cancel: 1
   6:
+    route: par_partnership_flows.authority_contact_invite_sent
+    redirect:
+      done: 1
+  7:
     route: par_partnership_flows.authority_contact_edit
     form_id: par_partnership_contact
     redirect:
       save: 1
       cancel: 1
-  7:
+  8:
     route: par_partnership_flows.advice_list
     redirect:
-      upload: 8
+      upload: 9
       edit: 11
       done: 1
       cancel: 1
-  8:
+  9:
     route: par_partnership_flows.advice_upload_documents
     form_id: par_partnership_upload
     redirect:
-      upload: 9
+      upload: 10
       cancel: 7
-  9:
+  10:
     route: par_partnership_flows.advice_add
     form_id: par_partnership_advice
     redirect:
       save: 7
       cancel: 8
-  10:
+  11:
     route: par_partnership_flows.advice_edit_documents
     form_id: par_partnership_advice_upload
     redirect:
-      upload: 11
-      cancel: 7
-  11:
+      upload: 9
+      cancel: 8
+  12:
     route: par_partnership_flows.advice_edit
     form_id: par_partnership_advice
     redirect:
-      save: 7
-      cancel: 7
-  12:
+      save: 8
+      cancel: 8
+  13:
     route: par_partnership_flows.inspection_plan_list
     redirect:
       done: 1
-  13:
-    route: view.par_user_partnerships.partnerships_page
