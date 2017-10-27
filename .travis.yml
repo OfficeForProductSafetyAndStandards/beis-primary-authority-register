@@ -36,10 +36,10 @@ before_install:
   - composer install -v
   - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
   - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm run gulp"
-  - docker exec -it par_beta_web bash -c "wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - "
-  - docker exec -it par_beta_web bash -c "echo 'deb http://dl.google.com/linux/chrome/deb/ stable main' >> /etc/apt/sources.list.d/google.list"
-  - docker exec -it par_beta_web bash -c "apt-get update"
-  - docker exec -it par_beta_web bash -c "apt-get install -y google-chrome-stable"
+  # download specific chrome version as this works nicely with WDIO.
+  - docker exec -it par_beta_web bash -c "dpkg -i google-chrome-stable_62.0.3202.62-1_amd64.deb"
+  # fix dependencies for chrome deb.
+  - docker exec -it par_beta_web bash -c "apt-get -f install"
   - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
   - chmod -R 777 private
 
@@ -122,7 +122,7 @@ script:
 #-----------------------------------------------------------------------------
 # Push test results to PubNub
 #-----------------------------------------------------------------------------
-  
+
 after_script:
   - if [[ $TRAVIS_BRANCH == 'master' ]]; then cd dashboard/tools; fi
   - if [[ $TRAVIS_BRANCH == 'master' ]]; then composer install; fi
