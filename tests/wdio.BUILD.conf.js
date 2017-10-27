@@ -4,7 +4,7 @@ config.capabilities = [{
   browserName: 'chrome',
   chromeOptions: {
     binary: '/usr/bin/google-chrome',
-    args: ['headless', 'no-sandbox', 'disable-gpu']
+    args: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1200,2000']
   }
 }];
 config.screenshotPath = './errorShots/';
