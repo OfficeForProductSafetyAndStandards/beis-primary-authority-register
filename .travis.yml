@@ -15,6 +15,7 @@ cache:
     - node_modules
     - tests/node_modules
     - $HOME/.composer/cache/files
+    - $HOME/google-chrome-stable_62.0.3202.62-1_amd64.deb
 
 before_install:
   - openssl aes-256-cbc -K $encrypted_6db5a3a5521e_key -iv $encrypted_6db5a3a5521e_iv
@@ -37,6 +38,7 @@ before_install:
   - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
   - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm run gulp"
   # download specific chrome version as this works nicely with WDIO.
+  - docker exec -it par_beta_web bash -c "if [ ! -f ./google-chrome-stable_62.0.3202.62-1_amd64.deb ]; then wget http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_62.0.3202.62-1_amd64.deb; fi"
   - docker exec -it par_beta_web bash -c "dpkg -i google-chrome-stable_62.0.3202.62-1_amd64.deb"
   # fix dependencies for chrome deb.
   - docker exec -it par_beta_web bash -c "apt-get -f install"
