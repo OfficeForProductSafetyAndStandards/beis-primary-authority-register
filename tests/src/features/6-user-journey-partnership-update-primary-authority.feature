@@ -26,6 +26,7 @@ Feature: Primary Authority - Change Partnership Details
         And I click on the button "#edit-save"
         Then I expect that element ".error-summary" does exist
         When I add "91723456789" to the inputfield "#edit-work-phone"
+        When I add "9777777777" to the inputfield "#edit-mobile-phone"
         When I click on the button "#edit-save"
         And I expect that element "#edit-authority-contacts" contains the text "91723456789"
         And I expect that element "#edit-authority-contacts" contains the text "9777777777"
