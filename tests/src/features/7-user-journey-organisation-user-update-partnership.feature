@@ -107,7 +107,6 @@ Feature: Business User - Manage Addresses
         And I expect that element "#edit-organisation-contacts" contains the text "Kneeslapper"
         And I expect that element "#edit-organisation-contacts" contains the text "2079999999"
         And I expect that element "#edit-organisation-contacts" contains the text "78659999999"
-        And I click on the checkbox "#edit-partnership-info-agreed-business"
 
         # COMPLETE CHANGES
 
