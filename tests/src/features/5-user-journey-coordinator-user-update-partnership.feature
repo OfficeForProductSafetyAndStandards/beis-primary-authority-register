@@ -91,7 +91,6 @@ Feature: Business User - Manage Addresses
         And I add "1111111111111" to the inputfield "#edit-mobile-phone"
         And I add "02079999999" to the inputfield "#edit-work-phone"
         And I add "078659999999" to the inputfield "#edit-mobile-phone"
-        And I add "bb0b6a4fb855c1dbac76e3c31a71a406@localhost.localdomain" to the inputfield "#edit-email"
         And I click on the radio "#edit-preferred-contact-communication-mobile"
         And I add "Some additional notes" to the inputfield "#edit-notes"
         And I click on the button "#edit-save"
