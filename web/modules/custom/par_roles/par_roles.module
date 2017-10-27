@@ -28,7 +28,7 @@ function par_roles_user_presave($account) {
 
   // Add the correct roles to this user account also.
   $authority_member = $par_data_manager->isMemberOfAuthority($account);
-  if ($authority_member && !$account->hasRole('par_authority')) {
+  if ($authority_member && !$account->hasRole('par_authority') && !$account->hasRole('par_enforcement')) {
     $account->addRole('par_authority');
   }
   elseif (!$authority_member && $account->hasRole('par_authority')) {
@@ -47,6 +47,12 @@ function par_roles_user_presave($account) {
 function par_roles_user_insert($account) {
   $par_data_manager = \Drupal::service('par_data.manager');
   $par_data_manager->linkPeople($account);
+
+  // Remove PAR Authority Member role if an enforcing officer.
+  if ($account->hasRole('par_authority') && $account->hasRole('par_enforcement')) {
+    $account->removeRole('par_authority');
+    $account->save();
+  }
 }
 
 function par_roles_user_update($account) {
