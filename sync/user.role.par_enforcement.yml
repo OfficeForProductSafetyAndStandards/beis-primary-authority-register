@@ -43,7 +43,6 @@ permissions:
   - 'edit par_data_sic_code entities'
   - 'enforce organisation'
   - invite_type_invite_organisation_member
-  - 'manage my authorities'
   - 'raise enforcement notice'
   - 'search partnership'
   - 'send enforcement notice'
