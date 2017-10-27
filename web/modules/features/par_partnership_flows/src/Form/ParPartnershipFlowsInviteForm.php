@@ -19,11 +19,21 @@ class ParPartnershipFlowsInviteForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
+  /** @var invite type */
+  protected $invite_type;
+
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
     return 'par_partnership_invite';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function titleCallback() {
+    return 'Notify user of partnership invitation';
   }
 
   /**
@@ -39,6 +49,16 @@ class ParPartnershipFlowsInviteForm extends ParBaseForm {
       // to something other than default to avoid conflicts
       // with existing versions of the same form.
       $this->setState("edit:{$par_data_partnership->id()},{$par_data_person->id()}");
+    }
+
+    // Flows containing the Authority Contact step.
+    if (in_array($this->getFlowName(), ['invite_authority_members', 'partnership_authority'])) {
+      $this->invite_type = "invite_authority_member";
+    }
+
+    // Flows containing the Organisation Contact step.
+    if (in_array($this->getFlowName(), ['partnership_application', 'partnership_direct'])) {
+      $this->invite_type = "invite_organisation_member";
     }
 
     if ($par_data_person) {
@@ -107,7 +127,7 @@ Thanks for your help.
 HEREDOC;
       }
       elseif ($recipient_exists) {
-        $email_subject = 'Invitation to join the Primary Authority Register';
+        $email_subject = 'Login to view new partnership on Primary Authority Register';
 
         $message_body = <<<HEREDOC
 Dear {$par_data_person->getFullName()},
@@ -148,10 +168,10 @@ HEREDOC;
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
 
-    $invite_type = $this->config('invite.invite_type.invite_organisation_member');
+    $invite_type = $this->config("invite.invite_type.{$this->invite_type}");
     $data = unserialize($invite_type->get('data'));
 
-    if ($this->getDefaultValues('recipient_exists', FALSE) && $this->getFlowName() === 'invite_authority_members') {
+    if ($this->getDefaultValues('recipient_exists', FALSE)) {
       $form['recipient_exists'] = [
         '#type' => 'markup',
         '#markup' => $this->t('This person has already accepted an invitation, you do not need to re-invite them.'),
@@ -182,14 +202,15 @@ HEREDOC;
     ];
 
     // Get Recipient.
-    if ($this->getFlowName() === 'invite_authority_members') {
-      $description = 'This is the contact for the authority.';
-      $title = t('Authority contact email');
+    if ($this->invite_type === 'invite_authority_member') {
+      $description = $this->t('This is the contact email address for the new authority member/enforcement officer.');
+      $title = t('Authority Member email');
     }
     else {
-      $description = 'This is the businesses primary contact. If you need to send this invite to another person please contact the helpdesk.';
-      $title = t('Business contact email');
+      $description = $this->t('This is the organisation\'s contact email address. If you need to send this invite to another person please contact the helpdesk.');
+      $title = t('Organisation Contact email');
     }
+
     $form['recipient_email'] = [
       '#type' => 'textfield',
       '#title' => $title,
@@ -214,6 +235,39 @@ HEREDOC;
       '#default_value' => $this->getDefaultValues('email_body'),
     ];
 
+    // @todo remove this when PAR User Management is complete.
+    // Show option to amend role if not already an existing user.
+    // This is actually to prevent somebody stripping a user of the authority
+    // role until full user management and contacts are on a partnership basis.
+    if (!$this->getDefaultValues('recipient_exists', FALSE)) {
+
+      foreach (user_roles() as $user_role) {
+        if (empty($user_role->get('_core'))) {
+          $par_roles[$user_role->id()] = $user_role->label();
+        }
+      }
+
+      if (!empty($par_roles)) {
+        $form['target_role'] = [
+          '#type' => 'select',
+          '#required' => TRUE,
+          '#title' => t('Role'),
+          '#description' => t('Please select the role to apply to the invitee.'),
+          // @todo reduce options.
+          '#options' => array_filter($par_roles, function ($role_id) {
+            if ($this->invite_type === 'invite_authority_member') {
+              return in_array($role_id, ['par_authority', 'par_enforcement']);
+            }
+            if ($this->invite_type === 'invite_organisation_member') {
+              return in_array($role_id, ['par_organisation']);
+            }
+          }, ARRAY_FILTER_USE_KEY),
+          '#default_value' => $data['target_role'],
+        ];
+      }
+
+    }
+
     // Disable the default 'save' action which takes precedence over 'next' action.
     $this->getFlow()->disableAction('save');
 
@@ -228,6 +282,11 @@ HEREDOC;
    * Validate the form to make sure the correct values have been entered.
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+
+    if (empty($form_state->getValue('recipient_email'))) {
+      $form_state->setErrorByName('recipient_email', $this->t('<a href="#edit-recipient-email">The Recipient email is required.</a>'));
+    }
+
     if (empty($form_state->getValue('email_subject'))) {
       $form_state->setErrorByName('email_subject', $this->t('<a href="#edit-email-subject">The Message subject is required.</a>'));
     }
@@ -244,7 +303,7 @@ HEREDOC;
       $required_token = '[invite:invite-accept-link]';
     }
     if (!strpos($form_state->getValue('email_body'), $required_token)) {
-      $form_state->setErrorByName('email_body', "Please make sure you have the invite token '$required_token' somewhere in your message.");
+      $form_state->setErrorByName('email_body', $this->t("<a href=\"#edit-email-body\">Please make sure you have the invite token '@invite_token' somewhere in your message.</a>", ['@invite_token' => $required_token]));
     }
 
     parent::validateForm($form, $form_state);
@@ -256,15 +315,21 @@ HEREDOC;
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
+    // Override invite type if selected the Enforcement Officer role in form.
+    if ($this->invite_type === 'invite_authority_member' &&
+      $this->getTempDataValue('target_role') === 'par_enforcement') {
+      $this->invite_type = 'invite_enforcement_officer';
+    }
+
     $invite = Invite::create([
-      'type' => 'invite_organisation_member',
+      'type' => $this->invite_type,
       'user_id' => $this->getTempDataValue('inviter'),
       'invitee' => $this->getTempDataValue('recipient_email'),
     ]);
     $invite->set('field_invite_email_address', $this->getTempDataValue('recipient_email'));
     $invite->set('field_invite_email_subject', $this->getTempDataValue('email_subject'));
     $invite->set('field_invite_email_body', $this->getTempDataValue('email_body'));
-    $invite->setPlugin('invite_by_email');
+    $invite->setPlugin('invite_link');
     if ($invite->save()) {
       $this->deleteStore();
     }

@@ -86,13 +86,15 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
     $form['par_data_person_id'] = [
       '#type' => 'radios',
       '#title' => t('Did you mean any of these users?'),
-      '#options' => $people_options,
+      '#options' => $people_options + ['new' => 'No, it is not one of the above, create a new contact.'],
     ];
 
     // If no suggestions were found we want to automatically submit the form.
-    if (count($people_options) <= 0) {
+    if (count($people_options) === 0) {
       $this->setTempDataValue('par_data_person_id', 'new');
       $this->submitForm($form, $form_state);
+
+      // Pass param PAR Person created in the submit handler to the next step.
       return $this->redirect($this->getFlow()->getNextRoute('save'), $this->getRouteParams() + ['par_data_person' => $this->par_data_person_id]);
     }
 
@@ -159,6 +161,10 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
     }
 
     if ($par_data_person->id()) {
+
+      // Set route param for invite form.
+      $this->par_data_person_id = $par_data_person->id();
+
       // Based on the flow we're in we also need to
       // Update field_person on authority or organisation.
       if ($this->getFlowName() === 'partnership_authority') {
@@ -186,7 +192,9 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
     if ($par_data_partnership->save() &&
         $par_data_member_entity->save()) {
       $this->deleteStore();
-      $this->par_data_person_id = $par_data_person->id();
+
+      // Inject PAR Person we just created into the next step.
+      $form_state->setRedirect($this->getFlow()->getNextRoute('save'), $this->getRouteParams() + ['par_data_person' => $this->par_data_person_id]);
     }
     else {
       $message = $this->t('This %person could not be saved for %form_id');
