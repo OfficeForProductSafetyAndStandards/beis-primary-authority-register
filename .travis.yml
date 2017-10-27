@@ -40,7 +40,7 @@ before_install:
   # download specific chrome version as this works nicely with WDIO.
   - docker exec -it par_beta_web bash -c "if [ ! -f ./google-chrome-stable_62.0.3202.62-1_amd64.deb ]; then wget http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_62.0.3202.62-1_amd64.deb; fi"
   # gedebi should install dependencies.
-  - docker exec -it par_beta_web bash -c "apt-get install gdebi-core"
+  - docker exec -it par_beta_web bash -c "apt-get -y update && apt-get install -y gdebi-core"
   - docker exec -it par_beta_web bash -c "gdebi -n google-chrome-stable_62.0.3202.62-1_amd64.deb"
   - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
   - chmod -R 777 private
