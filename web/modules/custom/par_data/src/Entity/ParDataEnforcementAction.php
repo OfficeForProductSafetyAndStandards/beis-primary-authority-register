@@ -67,6 +67,7 @@ class ParDataEnforcementAction extends ParDataEntity {
   const APPROVED = 'approved';
   const BLOCKED = 'blocked';
   const REFERRED = 'referred';
+  const AWAITING = 'awaiting_approval';
 
   /**
    * Get the blocked advice for this Enforcement Action.
@@ -182,6 +183,28 @@ class ParDataEnforcementAction extends ParDataEntity {
       return ($this->save() === SAVED_UPDATED);
     }
     return FALSE;
+  }
+
+  /**
+ *  Get the referred note data from the current action.
+ *
+ * @return String referred_text | NULL
+ *   The referred text stored on the current action or null.
+ *
+ */
+  public function getReferralNotes() {
+    return $this->get('referral_notes')->getString();
+  }
+
+  /**
+   *  Get the primary authority notes data from the current action.
+   *
+   * @return String primary_authority_notes | NULL
+   *   The referred text stored on the current action or null.
+   *
+   */
+  public function getPrimaryAuthorityNotes() {
+    return $this->get('primary_authority_notes')->getString();
   }
 
   /**
