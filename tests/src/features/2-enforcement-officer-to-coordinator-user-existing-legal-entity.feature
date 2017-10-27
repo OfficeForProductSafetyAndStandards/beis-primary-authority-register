@@ -16,7 +16,7 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
 
         When I click on the link "Send notification of enforcement action"
         Then I expect that element "h3" contains the text "Which authority are you acting on behalf of"
-        When I click on the radio ".form-radio"
+        When I click on the radio "#edit-par-data-authority-id-546"
         And I click on the button "#edit-next"
 
 #        # CHOOSE MEMBER
