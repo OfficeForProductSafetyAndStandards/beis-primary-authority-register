@@ -15,7 +15,6 @@ cache:
     - node_modules
     - tests/node_modules
     - $HOME/.composer/cache/files
-    - $HOME/google-chrome-stable_62.0.3202.62-1_amd64.deb
 
 before_install:
   - openssl aes-256-cbc -K $encrypted_6db5a3a5521e_key -iv $encrypted_6db5a3a5521e_iv
