@@ -329,7 +329,7 @@ HEREDOC;
     $invite->set('field_invite_email_address', $this->getTempDataValue('recipient_email'));
     $invite->set('field_invite_email_subject', $this->getTempDataValue('email_subject'));
     $invite->set('field_invite_email_body', $this->getTempDataValue('email_body'));
-    $invite->setPlugin('invite_link');
+    $invite->setPlugin('invite_by_email');
     if ($invite->save()) {
       $this->deleteStore();
     }
