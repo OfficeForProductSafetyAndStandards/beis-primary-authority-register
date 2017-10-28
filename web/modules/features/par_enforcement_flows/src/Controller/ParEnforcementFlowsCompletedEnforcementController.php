@@ -115,7 +115,18 @@ class ParEnforcementFlowsCompletedEnforcementController extends ParBaseControlle
     ];
     // Display all enforcement actions assigned to this enforcement action.
     foreach ($enforcement_actions as $enforcement_action) {
-      $build[$enforcement_action->id()]['action_title'] = $this->renderSection('Proposed enforcement action', $enforcement_action, ['title' => 'title'], [], TRUE, TRUE);
+      $action_state = $enforcement_action->get('primary_authority_status')->getString();
+
+      if ($action_state === ParDataEnforcementAction::REFERRED) {
+        $reason =  $this->renderSection('Reason', $enforcement_action, ['referral_notes' => 'summary'], [], TRUE, TRUE);
+      }
+      if ($action_state === ParDataEnforcementAction::BLOCKED) {
+        $reason =  $this->renderSection('Reason', $enforcement_action, ['primary_authority_notes' => 'summary'], [], TRUE, TRUE);
+      }
+
+      $build[$enforcement_action->id()]['action_title'] = $this->renderSection('Title of action', $enforcement_action, ['title' => 'title'], [], TRUE, TRUE);
+      $build[$enforcement_action->id()]['decision'] = $this->renderSection('Decision', $enforcement_action, ['primary_authority_status' => 'summary'], [], TRUE, TRUE);
+      $build[$enforcement_action->id()]['reason'] = $reason ? $reason : NULL;
       $build[$enforcement_action->id()]['action_regulatory_function'] = $this->renderSection('Regulatory function', $enforcement_action, ['field_regulatory_function' => 'summary'], [], TRUE, TRUE);
       $build[$enforcement_action->id()]['action_details'] = $this->renderSection('Details', $enforcement_action, ['details' => 'summary'], [], TRUE, TRUE);
       $build[$enforcement_action->id()]['action_attach_title'] = $doc_title;
