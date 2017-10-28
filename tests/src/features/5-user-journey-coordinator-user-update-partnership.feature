@@ -100,9 +100,7 @@ Feature: Business User - Manage Addresses
         And I expect that element "#edit-organisation-contacts" contains the text "bb0b6a4fb855c1dbac76e3c31a71a406@localhost.localdomain"
         And I expect that element "#edit-organisation-contacts" contains the text "2079999999"
         And I expect that element "#edit-organisation-contacts" contains the text "78659999999"
-        And I click on the checkbox "#edit-partnership-info-agreed-business"
 
         # COMPLETE CHANGES
 
         And I click on the button "#edit-save"
-        Then I expect that element ".views-field-partnership-status" not contains the text "Confirmed by the Organisation"
