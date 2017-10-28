@@ -38,14 +38,10 @@ Feature: Primary Authority - Change Partnership Details
         And I expect that element "#edit-authority-contacts" contains the text "91723456789"
         And I expect that element "#edit-authority-contacts" contains the text "9777777777"
 
-       # DOCUMENTATION
+        # DOCUMENTATION
 
         # When I select next partnership awaiting review
         And I click on the button "a*=See all Advice"
         When I click on the link "Upload advice"
         Then I expect that element "h3" contains the text "How to upload Primary Authority Advice to Local Authorities"
         When I click on the button "#edit-cancel"
-        And I click on the button ".button"
-        And I click on the checkbox "#edit-partnership-info-agreed-authority"
-        And I click on the button "#edit-save"
-        Then I expect that element "h1" contains the text "Primary Authority Register"
