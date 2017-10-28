@@ -22,10 +22,6 @@ class ParEnforcementFlowsCompletedEnforcementController extends ParBaseControlle
    */
   public function accessCallback(ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
 
-    // current user should be the enforcement officer or the primary authority user.
-    // the enforcement notice state should be acted on
-    // none of the attached actions should be in awaiting approve state.
-
     $allowed_actions = [
       ParDataEnforcementAction::APPROVED,
       ParDataEnforcementAction::BLOCKED,
@@ -54,8 +50,6 @@ class ParEnforcementFlowsCompletedEnforcementController extends ParBaseControlle
    */
   public function content(ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
 
-
-
     // Organisation summary.
     $partnership = current($par_data_enforcement_notice->getPartnership());
     $par_data_organisation = current($partnership->getOrganisation());
@@ -63,7 +57,6 @@ class ParEnforcementFlowsCompletedEnforcementController extends ParBaseControlle
 
     // Load all enforcement actions for the current enforcement notification.
     $enforcement_actions = $par_data_enforcement_notice->getEnforcementAction();
-
 
     $build['authority'] =[
       '#type' => 'fieldset',
@@ -90,7 +83,6 @@ class ParEnforcementFlowsCompletedEnforcementController extends ParBaseControlle
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-
 
     $build['organisation']['organisation_heading'] = [
       '#type' => 'markup',
