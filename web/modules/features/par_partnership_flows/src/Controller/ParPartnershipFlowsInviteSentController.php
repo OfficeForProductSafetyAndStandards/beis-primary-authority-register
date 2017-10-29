@@ -17,25 +17,26 @@ class ParPartnershipFlowsInviteSentController extends ParBaseController {
   /**
    * {@inheritdoc}
    */
+  public function titleCallback() {
+    return 'Invite sent';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function content(ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
 
     $build['sent_to'] = [
       '#type' => 'markup',
-      '#markup' => $this->t('Your partnership application has been sent to:<br> %name', ['%name' => $par_data_person->get('email')->getString()]),
+      '#markup' => $this->t('Further details sent to %email', ['%email' => $par_data_person->get('email')->getString()]),
       '#prefix' => '<p><strong>',
       '#suffix' => '</strong></p>',
     ];
 
-    $build['call_person'] = [
+    $build['help_text'] = [
       '#type' => 'markup',
-      '#markup' => $this->t('Why don’t you give %name a call to confirm they have received the application and see if they have any questions?', ['%name' => $par_data_person->get('first_name')->getString()]),
-      '#prefix' => '<p>',
-      '#suffix' => '</p>',
-    ];
-
-    $build['telephone'] = [
-      '#type' => 'markup',
-      '#markup' => $par_data_person->get('work_phone')->getString(),
+      '#markup' => $this->t('%name will receive an email with a link to register/login to the PAR website.',
+        ['%name' => $par_data_person->getFullName()]),
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];

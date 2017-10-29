@@ -60,15 +60,9 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
-    // Configuration for each entity is contained within the bundle.
-    $partnership_bundle = $this->getParDataManager()->getParBundleEntity('par_data_partnership');
-    $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
-    $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
-    $premises_bundle = $this->getParDataManager()->getParBundleEntity('par_data_premises');
 
     // Display all the information that can be modified by the organisation.
     $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $organisation_builder = $this->getParDataManager()->getViewBuilder('par_data_organisation');
 
     // Display the primary address along with the link to edit it.
     $form['registered_address'] = $this->renderSection('Organisation address', $par_data_organisation, ['field_premises' => 'summary'], ['edit-entity', 'add'], TRUE, TRUE);
@@ -101,7 +95,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     $operations = [];
     $checkbox = $this->getInformationCheckbox();
     if ($checkbox === 'partnership_info_agreed_business' && !$par_data_partnership->getBoolean($checkbox)) {
-        $operations = ['edit-entity','add'];
+      $operations = ['edit-entity','add'];
     }
     $form['legal_entities'] = $this->renderSection('Legal Entities', $par_data_organisation, ['field_legal_entity' => 'summary'], $operations);
 
@@ -183,10 +177,6 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
-    $this->addCacheableDependency($partnership_bundle);
-    $this->addCacheableDependency($person_bundle);
-    $this->addCacheableDependency($legal_entity_bundle);
-    $this->addCacheableDependency($premises_bundle);
 
     return parent::buildForm($form, $form_state);
   }

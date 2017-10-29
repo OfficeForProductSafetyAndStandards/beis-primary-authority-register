@@ -9,8 +9,8 @@ module.exports = (username, done) => {
      * @type {String}
      */
     browser.setViewportSize({
-        width: 1024,
-        height: 768,
+        width: 1200,
+        height: 2000
     });
     browser.url('/user/login');
     browser.setValue('#edit-name', username);

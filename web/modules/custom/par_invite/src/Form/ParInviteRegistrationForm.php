@@ -60,6 +60,8 @@ class ParInviteRegistrationForm extends FormBase {
     $form['account']['email'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Email'),
+      '#default_value' => $invite_email,
+      '#disabled' => TRUE,
     ];
 
     $form['account']['pass'] = [
@@ -87,7 +89,7 @@ class ParInviteRegistrationForm extends FormBase {
       $form_state->setErrorByName('email', $this->t('<a href="#edit-email">The @field is required.</a>', ['@field' => $form['account']['email']['#title']]));
     }
     elseif ($form_state->getValue('email') != $invite_email) {
-      $form_state->setErrorByName('email', $this->t('<a href="#edit-email">Email provided doesn\'t match the one the invite was sent to</a>'));
+      $this->setErrorByName('email', $this->t('<a href="#edit-email">Email provided doesn\'t match the one the invite was sent to</a>'));
     }
   }
 

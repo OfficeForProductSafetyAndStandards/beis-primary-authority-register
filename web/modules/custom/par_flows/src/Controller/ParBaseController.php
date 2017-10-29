@@ -110,6 +110,8 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
       if ($this->getFlow()->hasAction('next')) {
         $build['next'] = [
           '#type' => 'markup',
+          '#prefix' => '<div class="form-group">',
+          '#suffix' => '</div>',
           '#markup' => t('@link', [
             '@link' => $this->getFlow()->getNextLink('next', $this->getRouteParams(), ['attributes' => ['class' => 'button']])
               ->setText('Continue')
@@ -121,6 +123,8 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
       if ($this->getFlow()->hasAction('cancel')) {
         $build['cancel'] = [
           '#type' => 'markup',
+          '#prefix' => '<div>',
+          '#suffix' => '</div>',
           '#markup' => t('@link', [
             '@link' => $this->getFlow()->getPrevLink('cancel')
               ->setText('Cancel')
