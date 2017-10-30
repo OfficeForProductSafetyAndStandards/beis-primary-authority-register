@@ -137,6 +137,8 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       '#type' => 'textfield',
       '#title' => $this->t('Email'),
       '#default_value' => $this->getDefaultValues("email"),
+      // Prevent modifying email if editing an existing user.
+      '#disabled' => !empty($par_data_person),
     ];
 
     // Get preferred contact methods labels.
@@ -166,6 +168,31 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     $this->addCacheableDependency($person_bundle);
 
     return parent::buildForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    // Validate required fields.
+    // @todo create wrapper for setErrorByName as this is ugly creating a link.
+    if (empty($form_state->getValue('email'))) {
+      $form_state->setErrorByName('email', $this->t('<a href="#edit-email">The email field is required.</a>'));
+    }
+
+    if (empty($form_state->getValue('first_name'))) {
+      $form_state->setErrorByName('first_name', $this->t('<a href="#edit-first-name">The first name field is required.</a>'));
+    }
+
+    if (empty($form_state->getValue('last_name'))) {
+      $form_state->setErrorByName('last_name', $this->t('<a href="#edit-last-name">The last name field is required.</a>'));
+    }
+
+    if (empty($form_state->getValue('work_phone'))) {
+      $form_state->setErrorByName('work_phone', $this->t('<a href="#edit-work-phone">The work phone field is required.</a>'));
+    }
+
+    parent::validateForm($form, $form_state);
   }
 
   /**
