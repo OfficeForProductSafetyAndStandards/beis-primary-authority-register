@@ -57,9 +57,22 @@ function par_actions_tokens($type, $tokens, array $data, array $options, Bubblea
 
 function enforcement_notices_queue($job = NULL) {
 
-  $query = \Drupal::entityQuery('par_data_enforcement_notice');
+  // Find date to process.
+  $holidays = array_column(UkBankHolidayFactory::getAll(), 'date', 'date');
 
-  $entities = $query->sort('id', 'DESC')->range(0,500)->execute();
+  $calculator = new BusinessDaysCalculator(
+    new DateTime('now'),
+    $holidays,
+    [BusinessDaysCalculator::SATURDAY, BusinessDaysCalculator::SUNDAY]
+  );
+
+  $calculator->removeBusinessDays(4);
+
+  $query = \Drupal::entityQuery('par_data_enforcement_notice');
+  $query->condition('field_enforcement_action.entity.primary_authority_status', 'awaiting_approval');
+  $query->condition('notice_date', $calculator->getDate()->format('Y-m-d'));
+
+  $entities = $query->execute();
 
   /** @var QueueFactory $queue_factory */
   $queue_factory = \Drupal::service('queue');
