@@ -64,7 +64,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  */
 class ParDataEnforcementAction extends ParDataEntity {
 
-  const APPROVED = 'approved';
+  const APPROVED = 'allowed';
   const BLOCKED = 'blocked';
   const REFERRED = 'referred';
   const AWAITING = 'awaiting_approval';
