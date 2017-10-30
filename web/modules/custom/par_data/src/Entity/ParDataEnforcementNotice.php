@@ -2,8 +2,11 @@
 
 namespace Drupal\par_data\Entity;
 
+use DateTime;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\par_actions\Plugin\Factory\BusinessDaysCalculator;
+use RapidWeb\UkBankHolidays\Factories\UkBankHolidayFactory;
 
 /**
  * Defines the par_data_enforcement_notice entity.
@@ -104,6 +107,24 @@ class ParDataEnforcementNotice extends ParDataEntity {
     }
 
     return (isset($action_statuses) && array_product($action_statuses) === 1);
+  }
+
+  public function getAutomaticApprovalDate() {
+    $holidays = array_column(UkBankHolidayFactory::getAll(), 'date', 'date');
+
+    $calculator = new BusinessDaysCalculator(
+      new DateTime($this->get('notice_date')->getString()),
+      $holidays,
+      [BusinessDaysCalculator::SATURDAY, BusinessDaysCalculator::SUNDAY]
+    );
+
+    $calculator->addBusinessDays(5); // Add five business days.
+
+    return $calculator->getDate()->format('Y-m-d');
+  }
+
+  public function isAutomaticApprovalDate() {
+    return $this->getAutomaticApprovalDate() === date('Y-m-d');
   }
 
   /**

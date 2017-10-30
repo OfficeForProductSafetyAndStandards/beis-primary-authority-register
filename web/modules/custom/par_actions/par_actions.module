@@ -6,6 +6,7 @@ use Drupal\Core\Link;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drush\Queue\QueueInterface;
 use RapidWeb\UkBankHolidays\Factories\UkBankHolidayFactory;
+use Drupal\par_actions\Plugin\Factory\BusinessDaysCalculator;
 
 /**
  * Implements hook_token_info().
@@ -58,25 +59,16 @@ function enforcement_notices_queue($job = NULL) {
 
   $query = \Drupal::entityQuery('par_data_enforcement_notice');
 
-  $allHolidays = UkBankHolidayFactory::getAll();
-//
-//  var_dump($allHolidays);
-//
-//  // @todo implement working days/ holiday includer ['2017-10-20', '']
-//  $daysBehind = 5;
-//
-//  var_dump($daysBehind);
-
-  $entities = $query->sort('id', 'DESC')->range(0,20)->execute();
+  $entities = $query->sort('id', 'DESC')->range(0,500)->execute();
 
   /** @var QueueFactory $queue_factory */
   $queue_factory = \Drupal::service('queue');
   /** @var QueueInterface $queue */
   $queue = $queue_factory->get('cron_enforcement_notice_action_auto_approval');
 
-  foreach ($entities as $id) {
+  foreach ($entities as $entity_id) {
     $item = new \stdClass();
-    $item->id = $id;
+    $item->id = $entity_id;
     \Drupal::logger('par_actions')->notice("adding {$item->id} to queue");
     $queue->createItem($item);
   }
