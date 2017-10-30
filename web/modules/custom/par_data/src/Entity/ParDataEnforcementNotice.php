@@ -72,6 +72,13 @@ class ParDataEnforcementNotice extends ParDataEntity {
   }
 
   /**
+   * Get the Partnership for this Enforcement Notice.
+   */
+  public function getPartnership() {
+    return $this->get('field_partnership')->referencedEntities();
+  }
+
+  /**
    * Get the enforcing authority for this Enforcement Notice.
    */
   public function getEnforcingAuthority() {

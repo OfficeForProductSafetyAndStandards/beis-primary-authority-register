@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: FvJIXxuKl22aRBxL400EfkgRjw-EIk-KIEoegvmKW1M
+  default_config_hash: Y0uOwoGFUvq3k-KLidK-FHckxL3SIT2NseFp8Zrk-NE
 id: send_enforcement
 label: 'Send Enforcement'
 default_title: null
