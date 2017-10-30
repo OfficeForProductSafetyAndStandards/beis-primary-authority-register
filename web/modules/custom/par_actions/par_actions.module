@@ -55,7 +55,7 @@ function par_actions_tokens($type, $tokens, array $data, array $options, Bubblea
   return $replacements;
 }
 
-function enforcement_notices_queue($job = NULL) {
+fucnction enforcement_notices_queue($job = NULL) {
 
   $query = \Drupal::entityQuery('par_data_enforcement_notice');
 
