@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: V8e50Q4Ua2AUVbZslwdhBeRjKlVxKptKAMI3a_B5QUU
+  default_config_hash: lLNenXYA3vkxmqjSMQtvSlrKQd5X3ArAYW_n3JnQg4M
 id: partnership_authority
 label: 'Authority Partnership Flow'
 default_title: null
@@ -16,10 +16,10 @@ steps:
     redirect:
       edit_about_partnership: 2
       add_field_authority_person: 3
-      edit_field_authority_person: 5
-      advice: 6
-      inspection_plans: 11
-      save: 12
+      edit_field_authority_person: 7
+      advice: 8
+      inspection_plans: 13
+      save: 14
   2:
     route: par_partnership_flows.about_partnership
     form_id: par_partnership_about
@@ -36,49 +36,58 @@ steps:
     route: par_partnership_flows.authority_contact_add_confirm
     form_id: par_partnership_contact_suggestion
     redirect:
-      save: 1
+      save: 5
       cancel: 1
   5:
+    route: par_partnership_flows.authority_contact_invite
+    form_id: par_partnership_invite
+    redirect:
+      save: 6
+      cancel: 1
+  6:
+    route: par_partnership_flows.authority_contact_invite_sent
+    redirect:
+      done: 1
+  7:
     route: par_partnership_flows.authority_contact_edit
     form_id: par_partnership_contact
     redirect:
       save: 1
       cancel: 1
-  6:
+  8:
     route: par_partnership_flows.advice_list
     redirect:
-      upload: 7
-      edit: 10
+      upload: 9
+      edit: 11
       done: 1
       cancel: 1
-  7:
+  9:
     route: par_partnership_flows.advice_upload_documents
     form_id: par_partnership_upload
     redirect:
-      upload: 8
-      cancel: 6
-  8:
+      upload: 10
+      cancel: 7
+  10:
     route: par_partnership_flows.advice_add
     form_id: par_partnership_advice
     redirect:
-      save: 6
-      cancel: 6
-  9:
+      save: 7
+      cancel: 8
+  11:
     route: par_partnership_flows.advice_edit_documents
     form_id: par_partnership_advice_upload
     redirect:
-      upload: 10
-      cancel: 6
-  10:
+      upload: 9
+      cancel: 8
+  12:
     route: par_partnership_flows.advice_edit
     form_id: par_partnership_advice
     redirect:
-      save: 6
-      cancel: 6
-  11:
+      save: 8
+      cancel: 8
+  13:
     route: par_partnership_flows.inspection_plan_list
     redirect:
-      next: 1
-      cancel: 1
-  12:
+      done: 1
+  14:
     route: view.par_user_partnerships.partnerships_page
