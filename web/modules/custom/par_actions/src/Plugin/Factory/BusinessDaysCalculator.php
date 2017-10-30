@@ -37,6 +37,16 @@ class BusinessDaysCalculator {
     }
   }
 
+  public function removeBusinessDays($howManyDays) {
+    $i = 0;
+    while ($i < $howManyDays) {
+      $this->date->modify("-1 day");
+      if ($this->isBusinessDay($this->date)) {
+        $i++;
+      }
+    }
+  }
+
   public function getDate() {
     return $this->date;
   }

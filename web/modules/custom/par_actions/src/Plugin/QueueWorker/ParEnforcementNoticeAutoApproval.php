@@ -22,12 +22,10 @@ abstract class ParEnforcementNoticeAutoApproval extends QueueWorkerBase implemen
   public function processItem($data) {
     $notice = ParDataEnforcementNotice::load($data->id);
 
-    if ($notice->areEnforcementActionsAllAwaitingApproval() && $notice->isAutomaticApprovalDate()) {
-      foreach ($notice->getEnforcementActions() as $enforcement_action) {
-        $enforcement_action->approve();
-        \Drupal::logger('par_actions')
-          ->notice("{$notice->id()} approving {$enforcement_action->id()}");
-      }
+    foreach ($notice->getEnforcementActions() as $enforcement_action) {
+      $enforcement_action->approve();
+      \Drupal::logger('par_actions')
+        ->notice("{$notice->id()} approving {$enforcement_action->id()}");
     }
 
     return $data->id;

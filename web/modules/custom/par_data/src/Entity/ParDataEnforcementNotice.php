@@ -95,20 +95,6 @@ class ParDataEnforcementNotice extends ParDataEntity {
     return $this->get('field_enforcement_action')->referencedEntities();
   }
 
-  /**
-   * Check if a notice referenced actions are all awaiting approval.
-   * Handy for the auto-approval cron job.
-   */
-  public function areEnforcementActionsAllAwaitingApproval() {
-    $enforcement_actions = $this->getEnforcementActions();
-
-    foreach ($enforcement_actions as $enforcement_action) {
-      $action_statuses[] = $enforcement_action->isAwaitingApproval();
-    }
-
-    return (isset($action_statuses) && array_product($action_statuses) === 1);
-  }
-
   public function getAutomaticApprovalDate() {
     $holidays = array_column(UkBankHolidayFactory::getAll(), 'date', 'date');
 
@@ -119,6 +105,20 @@ class ParDataEnforcementNotice extends ParDataEntity {
     );
 
     $calculator->addBusinessDays(5); // Add five business days.
+
+    return $calculator->getDate()->format('Y-m-d');
+  }
+
+  public function getProcessedDate() {
+    $holidays = array_column(UkBankHolidayFactory::getAll(), 'date', 'date');
+
+    $calculator = new BusinessDaysCalculator(
+      new DateTime(),
+      $holidays,
+      [BusinessDaysCalculator::SATURDAY, BusinessDaysCalculator::SUNDAY]
+    );
+
+    $calculator->removeBusinessDays(5); // Remove five business days.
 
     return $calculator->getDate()->format('Y-m-d');
   }
