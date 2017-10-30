@@ -6,6 +6,7 @@ package: PAR
 dependencies:
   - address
   - better_exposed_filters
+  - csv_serialization
   - datetime
   - datetime_range
   - field
@@ -13,6 +14,10 @@ dependencies:
   - file_entity
   - pagerer
   - par_data
+  - rest
+  - serialization
   - text
   - user
   - views
+  - views_bulk_operations
+  - views_data_export
