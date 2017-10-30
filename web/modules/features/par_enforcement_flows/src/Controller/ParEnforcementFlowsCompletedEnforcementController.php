@@ -124,6 +124,7 @@ class ParEnforcementFlowsCompletedEnforcementController extends ParBaseControlle
         $reason =  $this->renderSection('Reason', $enforcement_action, ['primary_authority_notes' => 'summary'], [], TRUE, TRUE);
       }
 
+      $build[$enforcement_action->id()]['action_id'] = $this->renderSection('Proposed enforcement action reference', $enforcement_action, ['id' => 'id'], [], TRUE, TRUE);
       $build[$enforcement_action->id()]['action_title'] = $this->renderSection('Title of action', $enforcement_action, ['title' => 'title'], [], TRUE, TRUE);
       $build[$enforcement_action->id()]['decision'] = $this->renderSection('Decision', $enforcement_action, ['primary_authority_status' => 'summary'], [], TRUE, TRUE);
       $build[$enforcement_action->id()]['reason'] = $reason ? $reason : NULL;
