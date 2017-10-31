@@ -55,35 +55,46 @@ function par_actions_tokens($type, $tokens, array $data, array $options, Bubblea
   return $replacements;
 }
 
-fucnction enforcement_notices_queue($job = NULL) {
+function par_actions_cron() {
+  $scheduler = \Drupal::service('plugin.manager.par_scheduler');
 
-  // Find date to process.
-  $holidays = array_column(UkBankHolidayFactory::getAll(), 'date', 'date');
-
-  $calculator = new BusinessDaysCalculator(
-    new DateTime('now'),
-    $holidays,
-    [BusinessDaysCalculator::SATURDAY, BusinessDaysCalculator::SUNDAY]
-  );
-
-  $calculator->removeBusinessDays(4);
-
-  $query = \Drupal::entityQuery('par_data_enforcement_notice');
-  $query->condition('field_enforcement_action.entity.primary_authority_status', 'awaiting_approval');
-  $query->condition('notice_date', $calculator->getDate()->format('Y-m-d'));
-
-  $entities = $query->execute();
-
-  /** @var QueueFactory $queue_factory */
-  $queue_factory = \Drupal::service('queue');
-  /** @var QueueInterface $queue */
-  $queue = $queue_factory->get('cron_enforcement_notice_action_auto_approval');
-
-  foreach ($entities as $entity_id) {
-    $item = new \stdClass();
-    $item->id = $entity_id;
-    \Drupal::logger('par_actions')->notice("adding {$item->id} to queue");
-    $queue->createItem($item);
+  foreach ($scheduler->getDefinitions() as $definition) {
+    $plugin = $this->createInstance($definition['id'], $definition);
+    $plugin->buildQueue();
   }
-
 }
+
+//function enforcement_notices_queue($job = NULL) {
+//
+//  // Find date to process.
+//  $holidays = array_column(UkBankHolidayFactory::getAll(), 'date', 'date');
+//
+//  $calculator = new BusinessDaysCalculator(
+//    new DateTime('now'),
+//    $holidays,
+//    [BusinessDaysCalculator::SATURDAY, BusinessDaysCalculator::SUNDAY]
+//  );
+//
+//  $calculator->removeBusinessDays(4);
+//
+//  $query = \Drupal::entityQuery('par_data_enforcement_notice');
+//  $query->condition('notice_date', $calculator->getDate()->format('Y-m-d'));
+//
+//
+//  $query->condition('field_enforcement_action.entity.primary_authority_status', 'awaiting_approval');
+//
+//  $entities = $query->execute();
+//
+//  /** @var QueueFactory $queue_factory */
+//  $queue_factory = \Drupal::service('queue');
+//  /** @var QueueInterface $queue */
+//  $queue = $queue_factory->get('cron_enforcement_notice_action_auto_approval');
+//
+//  foreach ($entities as $entity_id) {
+//    $item = new \stdClass();
+//    $item->id = $entity_id;
+//    \Drupal::logger('par_actions')->notice("adding {$item->id} to queue");
+//    $queue->createItem($item);
+//  }
+//
+//}

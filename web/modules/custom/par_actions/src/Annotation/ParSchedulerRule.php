@@ -79,4 +79,11 @@ class ParSchedulerRule extends Plugin {
    */
   public $datetime;
 
+  /**
+   * The action to be performed on the entity.
+   *
+   * @var string
+   */
+  public $action;
+
 }

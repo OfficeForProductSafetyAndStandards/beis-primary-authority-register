@@ -49,14 +49,7 @@ class ParScheduleManager extends DefaultPluginManager {
 
     // Assign a default property to search for.
     if (!isset($definition['property'])) {
-      $definition['property'] = 'created',
-    }
-
-    // Assign a default time to search since.
-    if (isset($definition['time'])) {
-      $definition['time'] += [
-        'time' => '-5 days',
-      ];
+      $definition['property'] = 'created';
     }
   }
 
@@ -67,6 +60,20 @@ class ParScheduleManager extends DefaultPluginManager {
    */
   public function createInstance($plugin_id, array $configuration = []) {
     return parent::createInstance($plugin_id, $configuration);
+  }
+
+  /**
+   * Get only the enabled rules.
+   */
+  public function getDefinitions($only_active = FALSE) {
+    $definitions = [];
+    foreach (parent::getDefinitions() as $id => $definition) {
+      if (!$only_active || !empty($definition['status'])) {
+        $definitions[$id] = $definition;
+      }
+    }
+
+    return $definitions;
   }
 
 }

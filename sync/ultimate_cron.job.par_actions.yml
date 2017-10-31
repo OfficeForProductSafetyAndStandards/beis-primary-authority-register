@@ -4,11 +4,11 @@ status: true
 dependencies:
   module:
     - par_actions
-title: 'Queues enforcement notices for automatic approval'
-id: notice_cron
+title: 'Process all shceduled PAR rules.'
+id: par_actions
 weight: 0
 module: par_actions
-callback: enforcement_notices_queue
+callback: par_actions_cron
 scheduler:
   id: simple
   configuration:
