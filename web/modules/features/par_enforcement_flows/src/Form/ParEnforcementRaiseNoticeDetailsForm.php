@@ -144,7 +144,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
 
     $partnership = $this->getRouteParam('par_data_partnership');
 
-    // Load the Authority.
+    // Load the enforcing Authority.
     $acting_authority = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
 
     if ($par_data_authority = ParDataAuthority::load($acting_authority)) {

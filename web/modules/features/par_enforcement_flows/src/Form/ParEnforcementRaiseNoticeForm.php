@@ -4,6 +4,7 @@ namespace Drupal\par_enforcement_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataOrganisation;
+use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_data\Entity\ParDataPartnership;
@@ -74,7 +75,7 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
 
     // Organisation summary.
     $par_data_organisation = ParDataOrganisation::load($organisation_id);
-    $par_data_authority = current($par_data_partnership->getAuthority());
+    $par_data_authority = ParDataAuthority::load($enforcing_authority_id);
 
     $form['authority'] = [
       '#type' => 'fieldset',
