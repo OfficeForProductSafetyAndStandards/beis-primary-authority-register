@@ -80,19 +80,19 @@ class ParEnforcementOfficerDetailsForm extends ParBaseForm {
 
     $form['first_name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('First name'),
+      '#title' => $this->t('Please confirm your first name'),
       '#default_value' => $this->getDefaultValues("first_name"),
     ];
 
     $form['last_name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Last name'),
+      '#title' => $this->t('Please confirm your last name'),
       '#default_value' => $this->getDefaultValues("last_name"),
     ];
 
     $form['work_phone'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Work phone'),
+      '#title' => $this->t('Please confirm your work phone'),
       '#default_value' => $this->getDefaultValues("work_phone"),
     ];
 
