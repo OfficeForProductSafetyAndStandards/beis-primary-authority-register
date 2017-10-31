@@ -26,6 +26,15 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function accessCallback(ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
+
+    // Additional business logic can implement here to 403.
+    return parent::accessCallback();
+  }
+
+  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    */
@@ -41,6 +50,9 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
       foreach ($par_data_enforcement_notice->get('field_enforcement_action')->referencedEntities() as $delta => $action) {
         if (in_array($action->getRawStatus(), $allowed_actions)) {
           $this->loadDataValue(['actions', $delta, 'disabled'], TRUE);
+          $this->loadDataValue(['actions', $delta, 'primary_authority_status'], $action->getRawStatus());
+          $this->loadDataValue(['actions', $delta, 'referral_notes'], $action->getReferralNotes());
+          $this->loadDataValue(['actions', $delta, 'primary_authority_notes'], $action->getPrimaryAuthorityNotes());
         }
       }
     }
@@ -76,6 +88,7 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
       ];
     }
     foreach ($par_data_enforcement_notice->get('field_enforcement_action')->referencedEntities() as $delta => $action) {
+
       $form['actions'][$delta] = [
         '#type' => 'fieldset',
         '#collapsible' => FALSE,

@@ -14,6 +14,7 @@ use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\par_flows\ParDisplayTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Access\AccessResult;
 
 /**
 * A controller for all styleguide page output.
@@ -25,6 +26,13 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   use ParDisplayTrait;
   use StringTranslationTrait;
   use ParControllerTrait;
+
+  /**
+   * The access result
+   *
+   * @var \Drupal\Core\Access\AccessResult
+   */
+  protected $accessResult;
 
   /**
    * The flow entity storage class, for loading flows.
@@ -176,6 +184,20 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
    */
   public function getFlowStorage() {
     return $this->flowStorage;
+  }
+
+  /**
+   * Access callback
+   * Useful for custom business logic for access.
+   *
+   * @see \Drupal\Core\Access\AccessResult
+   *   The options for callback.
+   *
+   * @return \Drupal\Core\Access\AccessResult
+   *   The access result.
+   */
+  public function accessCallback() {
+    return $this->accessResult ? $this->accessResult : AccessResult::allowed();
   }
 
 }
