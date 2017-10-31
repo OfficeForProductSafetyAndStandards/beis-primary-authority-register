@@ -12,8 +12,8 @@ use Drupal\user\Entity\User;
 use Drupal\par_data\Entity\ParDataAuthority;
 
 /**
- * The primary contact form for the partnership details steps of the
- * 1st Data Validation/Transition User Journey.
+ * Enforcement officer details form used to update/store new details
+ * for the enforcing officer during the raise enforcement flow.
  */
 class ParEnforcementOfficerDetailsForm extends ParBaseForm {
 
