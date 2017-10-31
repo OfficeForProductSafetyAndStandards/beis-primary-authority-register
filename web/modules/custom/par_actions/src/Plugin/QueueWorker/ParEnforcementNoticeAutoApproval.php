@@ -14,21 +14,17 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
 * Provides base functionality for the ParEnforcementNoticeAutoApproval Queue Workers.
 */
-abstract class ParEnforcementNoticeAutoApproval extends QueueWorkerBase implements ContainerFactoryPluginInterface {
+abstract class ParEnforcementNoticeAutoApproval extends QueueWorkerBase {
 
   /**
   * {@inheritdoc}
   */
   public function processItem($data) {
-    $notice = ParDataEnforcementNotice::load($data->id);
+    $notice = ParDataEnforcementNotice::load($data['entity']->id());
 
     foreach ($notice->getEnforcementActions() as $enforcement_action) {
       $enforcement_action->approve();
-      \Drupal::logger('par_actions')
-        ->notice("{$notice->id()} approving {$enforcement_action->id()}");
     }
-
-    return $data->id;
   }
 
 }

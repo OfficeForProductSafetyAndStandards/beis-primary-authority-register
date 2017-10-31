@@ -73,11 +73,11 @@ class ParSchedulerRule extends Plugin {
   public $property;
 
   /**
-   * The datetime relative to the entity/property.
+   * The time relative to the entity/property.
    *
    * @var string
    */
-  public $datetime;
+  public $time;
 
   /**
    * The action to be performed on the entity.

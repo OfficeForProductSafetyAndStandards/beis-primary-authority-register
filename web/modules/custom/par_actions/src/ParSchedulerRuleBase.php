@@ -3,9 +3,12 @@
 namespace Drupal\par_actions;
 
 use Drupal\Component\Plugin\PluginBase;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Queue\QueueInterface;
+use Drupal\par_actions\Plugin\Factory\BusinessDaysCalculator;
 use Drupal\par_data\ParDataManagerInterface;
+use RapidWeb\UkBankHolidays\Factories\UkBankHolidayFactory;
 
 /**
  * Provides a base implementation for a ParSchedule plugin.
@@ -56,7 +59,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
    * {@inheritdoc}
    */
   public function getTime() {
-    return $this->pluginDefinition['datetime'];
+    return $this->pluginDefinition['time'];
   }
 
   /**
@@ -79,19 +82,32 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
    * {@inheritdoc}
    */
   public function query() {
+    $current_time = new DrupalDateTime('now');
+    $scheduled_time = new DrupalDateTime($this->getTime());
+
     // Find date to process.
     $holidays = array_column(UkBankHolidayFactory::getAll(), 'date', 'date');
 
     $calculator = new BusinessDaysCalculator(
-      new DateTime('now'),
+      $current_time,
       $holidays,
       [BusinessDaysCalculator::SATURDAY, BusinessDaysCalculator::SUNDAY]
     );
 
-    $calculator->removeBusinessDays(4);
+    // Calculate the consituent parts based on the relative time diff.
+    $diff = $current_time->diff($scheduled_time);
+    $days = $diff->format("%a");
+    if ($diff->invert) {
+      $calculator->removeBusinessDays($days);
+      $operator = '<=';
+    }
+    else {
+      $calculator->addBusinessDays($days);
+      $operator = '>=';
+    }
 
     $query = \Drupal::entityQuery($this->getEntity());
-    $query->condition($this->getProperty(), $calculator->getDate()->format('Y-m-d'));
+    $query->condition($this->getProperty(), $calculator->getDate()->format('Y-m-d'), $operator);
 
     return $query;
   }

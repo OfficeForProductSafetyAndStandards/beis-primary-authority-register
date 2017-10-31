@@ -59,7 +59,7 @@ function par_actions_cron() {
   $scheduler = \Drupal::service('plugin.manager.par_scheduler');
 
   foreach ($scheduler->getDefinitions(TRUE) as $definition) {
-    $plugin = $this->createInstance($definition['id'], $definition);
+    $plugin = $scheduler->createInstance($definition['id'], $definition);
     $plugin->buildQueue();
   }
 }
