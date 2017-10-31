@@ -4,16 +4,16 @@ status: true
 dependencies:
   module:
     - par_actions
-title: 'Process all shceduled PAR rules.'
+title: 'Process all scheduled PAR rules.'
 id: par_actions
 weight: 0
 module: par_actions
 callback: par_actions_cron
 scheduler:
-  id: simple
+  id: crontab
   configuration:
     rules:
-      - '*/5+@ * * * *'
+      - '0 7,19 * * *'
 launcher:
   id: serial
   configuration:
