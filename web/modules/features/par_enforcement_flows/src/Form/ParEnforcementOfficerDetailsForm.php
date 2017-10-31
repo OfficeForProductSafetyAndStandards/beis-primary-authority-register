@@ -101,9 +101,6 @@ class ParEnforcementOfficerDetailsForm extends ParBaseForm {
       '#value' => $enforcing_authority_id,
     ];
 
-    // Make sure to add the person cacheability data to this form.
-    //$this->addCacheableDependency($authority_person);
-
     return parent::buildForm($form, $form_state);
   }
 
