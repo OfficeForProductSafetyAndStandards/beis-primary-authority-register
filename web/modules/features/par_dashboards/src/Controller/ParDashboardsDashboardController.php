@@ -5,16 +5,12 @@ namespace Drupal\par_dashboards\Controller;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Queue\QueueFactory;
-use Drupal\Core\Queue\QueueInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_flows\ParRedirectTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use RapidWeb\UkBankHolidays\Factories\UkBankHolidayFactory;
-
 
 /**
  * A controller for all PAR Flow Transition pages.
