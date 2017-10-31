@@ -52,8 +52,20 @@ class ParEnforcementFlowsCompletedEnforcementController extends ParBaseControlle
 
     // Organisation summary.
     $partnership = current($par_data_enforcement_notice->getPartnership());
-    $par_data_organisation = current($partnership->getOrganisation());
-    $par_data_authority = current($partnership->getAuthority());
+    $enforced_organisation = current($par_data_enforcement_notice->getEnforcedOrganisation());
+    $enforcing_authority = current($par_data_enforcement_notice->getEnforcingAuthority());
+
+    // If custom enforced organisation has been selected via the additional form use the selected organisation.
+    // else fall back to the partnership organisation.
+    if (empty($enforced_organisation)) {
+      $enforced_organisation = current($partnership->getOrganisation());
+    }
+
+    // If custom enforcing authority has been selected via the additional form use the selected authority.
+    // else fall back to the partnership authority.
+    if (empty($enforcing_authority)) {
+      $enforcing_authority = current($partnership->getAuthority());
+    }
 
     // Load all enforcement actions for the current enforcement notification.
     $enforcement_actions = $par_data_enforcement_notice->getEnforcementAction();
@@ -72,7 +84,7 @@ class ParEnforcementFlowsCompletedEnforcementController extends ParBaseControlle
 
     $build['authority']['authority_name'] = [
       '#type' => 'markup',
-      '#markup' => $par_data_authority->get('authority_name')->getString(),
+      '#markup' => $enforcing_authority->get('authority_name')->getString(),
       '#prefix' => '<div><h2>',
       '#suffix' => '</h2></div>',
     ];
@@ -93,7 +105,7 @@ class ParEnforcementFlowsCompletedEnforcementController extends ParBaseControlle
 
     $build['organisation']['organisation_name'] = [
       '#type' => 'markup',
-      '#markup' => $par_data_organisation->get('organisation_name')->getString(),
+      '#markup' => $enforced_organisation->get('organisation_name')->getString(),
     ];
 
     $build['registered_address']['registered_address_heading'] = [
@@ -104,7 +116,7 @@ class ParEnforcementFlowsCompletedEnforcementController extends ParBaseControlle
     ];
 
     // Display the primary address.
-    $build['registered_address']['address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
+    $build['registered_address']['address'] = $this->renderSection('Registered address', $enforced_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
     $build['enforcement_summary'] = $this->renderSection('Summary of enforcement notice', $par_data_enforcement_notice, ['summary' => 'summary'], [], TRUE, TRUE);
 
     $doc_title =[
