@@ -102,38 +102,6 @@ class ParDataEnforcementNotice extends ParDataEntity {
     return $this->get('field_enforcement_action')->referencedEntities();
   }
 
-  public function getAutomaticApprovalDate() {
-    $holidays = array_column(UkBankHolidayFactory::getAll(), 'date', 'date');
-
-    $calculator = new BusinessDaysCalculator(
-      new DateTime($this->get('notice_date')->getString()),
-      $holidays,
-      [BusinessDaysCalculator::SATURDAY, BusinessDaysCalculator::SUNDAY]
-    );
-
-    $calculator->addBusinessDays(5); // Add five business days.
-
-    return $calculator->getDate()->format('Y-m-d');
-  }
-
-  public function getProcessedDate() {
-    $holidays = array_column(UkBankHolidayFactory::getAll(), 'date', 'date');
-
-    $calculator = new BusinessDaysCalculator(
-      new DateTime(),
-      $holidays,
-      [BusinessDaysCalculator::SATURDAY, BusinessDaysCalculator::SUNDAY]
-    );
-
-    $calculator->removeBusinessDays(5); // Remove five business days.
-
-    return $calculator->getDate()->format('Y-m-d');
-  }
-
-  public function isAutomaticApprovalDate() {
-    return $this->getAutomaticApprovalDate() === date('Y-m-d');
-  }
-
   /**
    * {@inheritdoc}
    */
