@@ -17,14 +17,12 @@ cache:
     - $HOME/.composer/cache/files
 
 before_install:
-#-----------------------------------------------------------------------------
-# Bring up Docker containers
-#-----------------------------------------------------------------------------
 
-  - cd docker
-  - docker-compose up -d
-  - cd ..
+#-----------------------------------------------------------------------------
+# Read environment variables from the vault
+#-----------------------------------------------------------------------------
   - wget https://releases.hashicorp.com/vault/0.8.3/vault_0.8.3_linux_amd64.zip?_ga=2.114681028.2146718551.1509545645-360348542.1509545645
+  - unzip vault_0.8.3_linux_amd64.zip
   - export VAULT_ADDR=https://vault.primary-authority.beis.gov.uk:8200
   - ./vault auth -method=userpass username=travis password=$VAULT_PASSWORD
   - ./vault unseal $VAULT_UNSEAL_TOKEN
@@ -45,6 +43,13 @@ before_install:
   - PUBNUB_SUBSCRIBE_KEY=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
   - SENTRY_DSN=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
   - SENTRY_DSN_PUBLIC=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
+  
+#-----------------------------------------------------------------------------
+# Bring up Docker containers
+#-----------------------------------------------------------------------------  
+  - cd docker
+  - docker-compose up -d
+  - cd ..
 
 #-----------------------------------------------------------------------------
 # Install dependencies
