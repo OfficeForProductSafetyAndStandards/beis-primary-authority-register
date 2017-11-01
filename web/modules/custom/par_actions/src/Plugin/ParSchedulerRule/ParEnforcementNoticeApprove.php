@@ -13,7 +13,7 @@ use Drupal\par_actions\ParSchedulerRuleBase;
  *   cron = {"time" = 15},
  *   entity = "par_data_enforcement_notice",
  *   property = "notice_date",
- *   time = "-5 days",
+ *   time = "-4 days",
  *   action = "cron_enforcement_notice_action_auto_approval"
  * )
  */
