@@ -829,8 +829,8 @@ if ($env_services = getenv("VCAP_SERVICES")) {
   $services = json_decode($env_services);
   $credentials = isset($services->postgres) ? $services->postgres[0]->credentials : NULL;
 }
-if ($credentials) {
-  $databases['default']['default'] = array (
+if (isset($credentials)) {
+  $databases['default']['default'] = [
     'database' => $credentials->name,
     'username' => $credentials->username,
     'password' => $credentials->password,
@@ -839,7 +839,7 @@ if ($credentials) {
     'port' => $credentials->port,
     'namespace' => 'Drupal\\Core\\Database\\Driver\\pgsql',
     'driver' => 'pgsql',
-  );
+  ];
 }
 
 // Set flysystem configuration to use local files for all environments,
