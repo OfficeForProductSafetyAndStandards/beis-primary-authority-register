@@ -6,21 +6,21 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
- * Defines the par_data_deviation_request entity.
+ * Defines the par_data_inspection_feedback entity.
  *
  * @ingroup par_data
  *
  * @ContentEntityType(
- *   id = "par_data_deviation_request",
- *   label = @Translation("PAR Deviation Request"),
- *   label_collection = @Translation("PAR Deviation Requests"),
- *   label_singular = @Translation("PAR Deviation Request"),
- *   label_plural = @Translation("PAR Deviation Requests"),
+ *   id = "par_data_inspection_feedback",
+ *   label = @Translation("PAR Inspection Feedback"),
+ *   label_collection = @Translation("PAR Inspection Feedbacks"),
+ *   label_singular = @Translation("PAR Inspection Feedback"),
+ *   label_plural = @Translation("PAR Inspection Feedbacks"),
  *   label_count = @PluralTranslation(
- *     singular = "@count deviation request",
- *     plural = "@count deviation requests"
+ *     singular = "@count inspection_feedback",
+ *     plural = "@count inspection_feedbacks"
  *   ),
- *   bundle_label = @Translation("PAR Deviation Request type"),
+ *   bundle_label = @Translation("PAR Inspection Feedback type"),
  *   handlers = {
  *     "storage" = "Drupal\par_data\ParDataStorage",
  *     "storage_schema" = "Drupal\trance\TranceStorageSchema",
@@ -35,11 +35,11 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     },
  *     "access" = "Drupal\par_data\Access\ParDataAccessControlHandler",
  *   },
- *   base_table = "par_inspection_plan_deviation_requests",
- *   data_table = "par_inspection_plan_deviation_requests_field_data",
- *   revision_table = "par_inspection_plan_deviation_requests_revision",
- *   revision_data_table = "par_inspection_plan_deviation_requests_field_revision",
- *   admin_permission = "administer par_data_deviation_request entities",
+ *   base_table = "par_inspection_plan_feedback",
+ *   data_table = "par_inspection_plan_feedback_field_data",
+ *   revision_table = "par_inspection_plan_feedback_revision",
+ *   revision_data_table = "par_inspection_plan_feedback_field_revision",
+ *   admin_permission = "administer par_data_inspection_feedback entities",
  *   translatable = TRUE,
  *   entity_keys = {
  *     "id" = "id",
@@ -52,20 +52,20 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     "status" = "status"
  *   },
  *   links = {
- *     "collection" = "/admin/content/par_data/par_data_deviation_request",
- *     "canonical" = "/admin/content/par_data/par_data_deviation_request/{par_data_deviation_request}",
- *     "edit-form" = "/admin/content/par_data/par_data_deviation_request/{par_data_deviation_request}/edit",
- *     "delete-form" = "/admin/content/par_data/par_data_deviation_request/{par_data_deviation_request}/delete"
+ *     "collection" = "/admin/content/par_data/par_data_inspection_feedback",
+ *     "canonical" = "/admin/content/par_data/par_data_inspection_feedback/{par_data_inspection_feedback}",
+ *     "edit-form" = "/admin/content/par_data/par_data_inspection_feedback/{par_data_inspection_feedback}/edit",
+ *     "delete-form" = "/admin/content/par_data/par_data_inspection_feedback/{par_data_inspection_feedback}/delete"
  *   },
- *   bundle_entity_type = "par_data_deviation_request_type",
+ *   bundle_entity_type = "par_data_inspection_feedback_type",
  *   permission_granularity = "bundle",
- *   field_ui_base_route = "entity.par_data_deviation_request_type.edit_form"
+ *   field_ui_base_route = "entity.par_data_inspection_feedback_type.edit_form"
  * )
  */
-class ParDataDeviationRequest extends ParDataEntity {
+class ParDataInspectionFeedback extends ParDataEntity {
 
   /**
-   * Get the primary authority for this Deviation Request.
+   * Get the primary authority for this Inspection Feedback.
    */
   public function getPrimaryAuthority() {
     return $this->get('field_primary_authority')->referencedEntities();
@@ -80,7 +80,7 @@ class ParDataDeviationRequest extends ParDataEntity {
     // Request Date.
     $fields['request_date'] = BaseFieldDefinition::create('datetime')
       ->setLabel(t('Request Date'))
-      ->setDescription(t('The date this deviation request was issued.'))
+      ->setDescription(t('The date this inspection feedback was issued.'))
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
@@ -100,7 +100,7 @@ class ParDataDeviationRequest extends ParDataEntity {
     // Notes.
     $fields['notes'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Notes'))
-      ->setDescription(t('Notes about this deviation request.'))
+      ->setDescription(t('Notes about this inspection feedback.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
@@ -143,7 +143,7 @@ class ParDataDeviationRequest extends ParDataEntity {
     // PA notes.
     $fields['primary_authority_notes'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Primary Authority Notes'))
-      ->setDescription(t('Notes about this deviation request from the primary authority.'))
+      ->setDescription(t('Notes about this inspection feedback from the primary authority.'))
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
