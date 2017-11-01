@@ -64,7 +64,6 @@ use Drupal\Core\Field\BaseFieldDefinition;
  */
 class ParDataEnforcementAction extends ParDataEntity {
 
-  const AWAITING_APPROVAL = 'awaiting_approval';
   const APPROVED = 'approved';
   const BLOCKED = 'blocked';
   const REFERRED = 'referred';
@@ -141,7 +140,7 @@ class ParDataEnforcementAction extends ParDataEntity {
   public function isAwaitingApproval() {
     $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
     $current_status = $status_field ? $this->get($status_field)->getString() : NULL;
-    return ($current_status === self::AWAITING_APPROVAL);
+    return ($current_status === self::AWAITING);
   }
 
   /**
