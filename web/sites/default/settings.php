@@ -829,7 +829,7 @@ if ($env_services = getenv("VCAP_SERVICES")) {
   $services = json_decode($env_services);
   $credentials = isset($services->postgres) ? $services->postgres[0]->credentials : NULL;
 }
-if ($credentials) {
+if (isset($credentials)) {
   $databases['default']['default'] = array (
     'database' => $credentials->name,
     'username' => $credentials->username,
