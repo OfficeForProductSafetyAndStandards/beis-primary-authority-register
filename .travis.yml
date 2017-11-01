@@ -21,7 +21,7 @@ before_install:
 #-----------------------------------------------------------------------------
 # Read environment variables from the vault
 #-----------------------------------------------------------------------------
-  - wget https://releases.hashicorp.com/vault/0.8.3/vault_0.8.3_linux_amd64.zip?_ga=2.114681028.2146718551.1509545645-360348542.1509545645
+  - wget https://releases.hashicorp.com/vault/0.8.3/vault_0.8.3_linux_amd64.zip
   - unzip ./vault_0.8.3_linux_amd64.zip
   - export VAULT_ADDR=https://vault.primary-authority.beis.gov.uk:8200
   - ./vault auth -method=userpass username=travis password=$VAULT_PASSWORD
