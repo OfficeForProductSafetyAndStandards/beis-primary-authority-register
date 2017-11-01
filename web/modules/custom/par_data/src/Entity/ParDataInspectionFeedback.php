@@ -57,19 +57,12 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     "edit-form" = "/admin/content/par_data/par_data_inspection_feedback/{par_data_inspection_feedback}/edit",
  *     "delete-form" = "/admin/content/par_data/par_data_inspection_feedback/{par_data_inspection_feedback}/delete"
  *   },
- *   bundle_entity_type = "par_data_inspection_feedback_type",
+ *   bundle_entity_type = "par_data_inspection_feedback_t",
  *   permission_granularity = "bundle",
- *   field_ui_base_route = "entity.par_data_inspection_feedback_type.edit_form"
+ *   field_ui_base_route = "entity.par_data_inspection_feedback_t.edit_form"
  * )
  */
 class ParDataInspectionFeedback extends ParDataEntity {
-
-  /**
-   * Get the primary authority for this Inspection Feedback.
-   */
-  public function getPrimaryAuthority() {
-    return $this->get('field_primary_authority')->referencedEntities();
-  }
 
   /**
    * {@inheritdoc}

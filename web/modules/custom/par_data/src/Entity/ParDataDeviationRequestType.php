@@ -6,7 +6,7 @@ namespace Drupal\par_data\Entity;
  * Defines the par_data_deviation_request_type entity.
  *
  * @ConfigEntityType(
- *   id = "par_data_deviation_request_type",
+ *   id = "par_data_deviation_request_t",
  *   label = @Translation("PAR Deviation Request Type"),
  *   handlers = {
  *     "list_builder" = "Drupal\trance\TranceTypeListBuilder",

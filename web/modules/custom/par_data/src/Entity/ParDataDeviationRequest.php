@@ -57,19 +57,12 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     "edit-form" = "/admin/content/par_data/par_data_deviation_request/{par_data_deviation_request}/edit",
  *     "delete-form" = "/admin/content/par_data/par_data_deviation_request/{par_data_deviation_request}/delete"
  *   },
- *   bundle_entity_type = "par_data_deviation_request_type",
+ *   bundle_entity_type = "par_data_deviation_request_t",
  *   permission_granularity = "bundle",
- *   field_ui_base_route = "entity.par_data_deviation_request_type.edit_form"
+ *   field_ui_base_route = "entity.par_data_deviation_request_t.edit_form"
  * )
  */
 class ParDataDeviationRequest extends ParDataEntity {
-
-  /**
-   * Get the primary authority for this Deviation Request.
-   */
-  public function getPrimaryAuthority() {
-    return $this->get('field_primary_authority')->referencedEntities();
-  }
 
   /**
    * {@inheritdoc}
