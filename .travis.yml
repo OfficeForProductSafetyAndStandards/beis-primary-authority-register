@@ -16,11 +16,17 @@ cache:
     - tests/node_modules
     - $HOME/.composer/cache/files
 
+addons:
+  apt:
+    packages:
+      - iproute2
+      
 before_install:
 
 #-----------------------------------------------------------------------------
 # Read environment variables from the vault
 #-----------------------------------------------------------------------------
+  - ip a 
   - wget https://releases.hashicorp.com/vault/0.8.3/vault_0.8.3_linux_amd64.zip
   - unzip ./vault_0.8.3_linux_amd64.zip
   - export VAULT_ADDR=https://vault.primary-authority.beis.gov.uk:8200
