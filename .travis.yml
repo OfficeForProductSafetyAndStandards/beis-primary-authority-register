@@ -17,9 +17,6 @@ cache:
     - $HOME/.composer/cache/files
 
 before_install:
-  - openssl aes-256-cbc -K $encrypted_6db5a3a5521e_key -iv $encrypted_6db5a3a5521e_iv
-    -in .env.continuous.enc -out cf/.env.continuous -d
-
 #-----------------------------------------------------------------------------
 # Bring up Docker containers
 #-----------------------------------------------------------------------------
@@ -27,6 +24,10 @@ before_install:
   - cd docker
   - docker-compose up -d
   - cd ..
+  - vault auth -method=userpass username=travis password=$VAULT_PASSWORD
+  - vault unseal $VAULT_UNSEAL_TOKEN
+  - VAULT_VARS=( PAR_HASH_SALT S3_BUCKET S3_BUCKET_ARTIFACTS PAR_GOVUK_NOTIFY_KEY PAR_GOVUK_NOTIFY_TEMPLATE S3_BUCKET_PUBLIC S3_BUCKET_PRIVATE CF_PASSWORD BSK_USER BSK_KEY S3_ACCESS_KEY S3_SECRET_KEY DATAFILE PUBNUB_PUBLISH_KEY PUBNUB_SUBSCRIBE_KEY SENTRY_DSN SENTRY_DSN_PUBLIC ) 
+  - for VAR in "${VAULT_VARS[@]}"; do S3_BUCKET=`vault read -field=$VAR secret/par/env/travis`; done
 
 #-----------------------------------------------------------------------------
 # Install dependencies

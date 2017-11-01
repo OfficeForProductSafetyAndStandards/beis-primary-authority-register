@@ -3,4 +3,6 @@
 build-*/
 beis-primary-authority-register/
 *.tar.gz
+update-vault-travis.sh
+
 
