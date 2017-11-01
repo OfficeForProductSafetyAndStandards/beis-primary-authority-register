@@ -55,18 +55,6 @@ class ParEnforcementFlowsCompletedEnforcementController extends ParBaseControlle
     $enforced_organisation = current($par_data_enforcement_notice->getEnforcedOrganisation());
     $enforcing_authority = current($par_data_enforcement_notice->getEnforcingAuthority());
 
-    // If custom enforced organisation has been selected via the additional form use the selected organisation.
-    // else fall back to the partnership organisation.
-    if (empty($enforced_organisation)) {
-      $enforced_organisation = current($partnership->getOrganisation());
-    }
-
-    // If custom enforcing authority has been selected via the additional form use the selected authority.
-    // else fall back to the partnership authority.
-    if (empty($enforcing_authority)) {
-      $enforcing_authority = current($partnership->getAuthority());
-    }
-
     // Load all enforcement actions for the current enforcement notification.
     $enforcement_actions = $par_data_enforcement_notice->getEnforcementAction();
 
