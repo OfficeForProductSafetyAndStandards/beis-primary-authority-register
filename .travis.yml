@@ -142,7 +142,7 @@ deploy:
     skip_cleanup: true
     local_dir: $TRAVIS_TAG
     on:
-      repo: TransformCore/beis-par-beta
+      repo: UKGovernmentBEIS/beis-primary-authority-register
       tags: true
 
 ##############################################################################

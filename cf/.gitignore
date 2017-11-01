@@ -1,6 +1,6 @@
 .env.*
 .htpasswd
 build-*/
-beis-par-beta/
+beis-primary-authority-register/
 *.tar.gz
 
