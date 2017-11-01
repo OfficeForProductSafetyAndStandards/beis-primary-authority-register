@@ -24,8 +24,10 @@ before_install:
   - cd docker
   - docker-compose up -d
   - cd ..
-  - vault auth -method=userpass username=travis password=$VAULT_PASSWORD
-  - vault unseal $VAULT_UNSEAL_TOKEN
+  - wget https://releases.hashicorp.com/vault/0.8.3/vault_0.8.3_linux_amd64.zip?_ga=2.114681028.2146718551.1509545645-360348542.1509545645
+  - export VAULT_ADDR=https://vault.primary-authority.beis.gov.uk:8200
+  - ./vault auth -method=userpass username=travis password=$VAULT_PASSWORD
+  - ./vault unseal $VAULT_UNSEAL_TOKEN
   - PAR_HASH_SALT=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
   - S3_BUCKET=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
   - S3_BUCKET_ARTIFACTS=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
