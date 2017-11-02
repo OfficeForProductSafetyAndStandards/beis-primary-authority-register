@@ -2,7 +2,7 @@
 
 ## Primary Authority Register
 
-[![Build Status](https://travis-ci.org/TransformCore/beis-par-beta.svg?branch=master)](https://travis-ci.org/TransformCore/beis-par-beta)
+[![Build Status](https://travis-ci.org/UKGovernmentBEIS/beis-primary-authority-register.svg?branch=master)](https://travis-ci.org/UKGovernmentBEIS/beis-primary-authority-register)
 
 ### Web Application
 
@@ -23,11 +23,11 @@ The Vagrant development environment wraps a virtual machine around the Docker se
 
 #### Destroy everything
 
-If you already have the repository cloned, destroy it and reclone it. Also shutdown and delete any existing VirtualBox VMs for beis-par-beta.
+If you already have the repository cloned, destroy it and reclone it. Also shutdown and delete any existing VirtualBox VMs for beis-primary-authority-register.
 
-    rm -rf beis-par-beta
-    git clone git@github.com:TransformCore/beis-par-beta
-    cd beis-par-beta
+    rm -rf beis-primary-authority-register
+    git clone git@github.com:UKGovernmentBEIS/beis-primary-authority-register
+    cd beis-primary-authority-register
     
 #### Setup environment variables
 
@@ -101,4 +101,5 @@ e.g.
     ./push.sh staging v0.0.31    
     
 Full instructions on setting AWS keys and environment variables for the target environment can be found in the push.sh script itself.
+
 
