@@ -1,0 +1,21 @@
+# This file specifies which users will be automatically asked to review certain files
+# when a pull request is made that touches those files.
+
+############
+# Default
+############
+*                @kalpaitch @stemount @jon-edery @chris-moreton
+
+############
+# Overrides
+############
+/.travis.yml@chris-moreton
+/.bp-config/     @chris-moreton
+/devops/         @chris-moreton
+/dashboard/      @chris-moreton
+/docker/         @chris-moreton
+/cf/             @chris-moreton
+/*.sh            @chris-moreton
+
+/tests/        @jaffamonkey
+
