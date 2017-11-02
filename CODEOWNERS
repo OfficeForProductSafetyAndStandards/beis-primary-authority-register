@@ -9,7 +9,7 @@
 ############
 # Overrides
 ############
-/.travis.yml@chris-moreton
+/.travis.yml     @chris-moreton
 /.bp-config/     @chris-moreton
 /devops/         @chris-moreton
 /dashboard/      @chris-moreton
