@@ -743,7 +743,18 @@ display:
     display_options:
       display_extenders: {  }
       path: helpdesk
-      footer: {  }
+      footer:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: '<a href="https://par-beta-csv.cloudapps.digital/">CSV Download (requires user/pass)</a>'
+          plugin_id: text_custom
       defaults:
         footer: false
         empty: false
@@ -1167,8 +1178,8 @@ display:
       filename: rd-dashboard-export.csv
       auth: {  }
       displays:
-        par_rd_helpdesk_dashboard_page: par_rd_helpdesk_dashboard_page
         default: '0'
+        par_rd_helpdesk_dashboard_page: '0'
       pager:
         type: none
         options:
