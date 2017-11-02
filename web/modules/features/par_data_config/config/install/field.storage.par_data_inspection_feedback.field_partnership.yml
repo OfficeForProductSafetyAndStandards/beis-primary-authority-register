@@ -1,15 +1,14 @@
-uuid: 632823c6-6525-441a-b32d-348e35ee6673
 langcode: en
 status: true
 dependencies:
   module:
     - par_data
-id: par_data_enforcement_notice.field_primary_authority
-field_name: field_primary_authority
-entity_type: par_data_enforcement_notice
+id: par_data_inspection_feedback.field_partnership
+field_name: field_partnership
+entity_type: par_data_inspection_feedback
 type: entity_reference
 settings:
-  target_type: par_data_authority
+  target_type: par_data_partnership
 module: core
 locked: false
 cardinality: 1

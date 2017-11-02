@@ -1,0 +1,12 @@
+uuid: b9adf09b-2146-4599-beff-14e3ef07eed3
+langcode: en
+status: true
+dependencies: {  }
+id: inspection_feedback
+label: 'Inspection Feedback'
+description: ''
+help: ''
+isDeletable: null
+isRevokable: null
+isArchivable: null
+configuration: null

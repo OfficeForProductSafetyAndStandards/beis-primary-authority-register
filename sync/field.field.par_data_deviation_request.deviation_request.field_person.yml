@@ -1,19 +1,19 @@
-uuid: ff3f54f8-16ad-4bf7-9ee9-b91e509128e1
+uuid: 1ed5467f-8095-4df6-a38b-039a63521392
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.par_data_enforcement_notice.field_person
-    - par_data.par_data_enforcement_notice_type.enforcement_notice
+    - field.storage.par_data_deviation_request.field_person
+    - par_data.par_data_deviation_request_type.deviation_request
     - par_data.par_data_person_type.person
-id: par_data_enforcement_notice.enforcement_notice.field_person
+id: par_data_deviation_request.deviation_request.field_person
 field_name: field_person
-entity_type: par_data_enforcement_notice
-bundle: enforcement_notice
+entity_type: par_data_deviation_request
+bundle: deviation_request
 label: 'Enforcing Person'
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:

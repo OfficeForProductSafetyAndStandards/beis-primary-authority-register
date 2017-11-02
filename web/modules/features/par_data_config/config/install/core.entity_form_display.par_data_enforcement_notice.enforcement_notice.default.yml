@@ -8,7 +8,6 @@ dependencies:
     - field.field.par_data_enforcement_notice.enforcement_notice.field_organisation
     - field.field.par_data_enforcement_notice.enforcement_notice.field_partnership
     - field.field.par_data_enforcement_notice.enforcement_notice.field_person
-    - field.field.par_data_enforcement_notice.enforcement_notice.field_primary_authority
     - par_data.par_data_enforcement_notice_type.enforcement_notice
   module:
     - datetime
@@ -65,15 +64,6 @@ content:
     region: content
   field_person:
     weight: 30
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
-  field_primary_authority:
-    weight: 29
     settings:
       match_operator: CONTAINS
       size: 60

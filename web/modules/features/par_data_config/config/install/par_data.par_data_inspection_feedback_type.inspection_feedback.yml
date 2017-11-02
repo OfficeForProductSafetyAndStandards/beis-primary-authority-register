@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies: {  }
+id: inspection_feedback
+label: 'Inspection Feedback'
+description: ''
+help: ''
+isDeletable: null
+isRevokable: null
+isArchivable: null
+configuration: null

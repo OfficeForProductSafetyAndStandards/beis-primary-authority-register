@@ -3,15 +3,15 @@ status: true
 dependencies:
   module:
     - par_data
-id: par_data_enforcement_notice.field_primary_authority
-field_name: field_primary_authority
-entity_type: par_data_enforcement_notice
+id: par_data_inspection_feedback.field_person
+field_name: field_person
+entity_type: par_data_inspection_feedback
 type: entity_reference
 settings:
-  target_type: par_data_authority
+  target_type: par_data_person
 module: core
 locked: false
-cardinality: 1
+cardinality: -1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false

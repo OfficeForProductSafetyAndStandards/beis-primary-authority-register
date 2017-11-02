@@ -1,1 +1,14 @@
 bundle: PAR
+excluded:
+  - views.view.helpdesk_dashboard
+  - views.view.par_data_advice
+  - views.view.par_data_authorities
+  - views.view.par_data_enforcement_actions
+  - views.view.par_data_enforcement_notices
+  - views.view.par_data_organisations
+  - views.view.par_data_partnerships
+  - views.view.par_data_person
+  - views.view.par_people
+  - views.view.partnership_search
+  - views.view.public_register
+required: true
