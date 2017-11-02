@@ -13,7 +13,7 @@ use Drupal\par_data\Entity\ParDataAuthority;
 /**
  * The raise form for creating a new enforcement notice.
  */
-class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
+class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
 
   /**
    * {@inheritdoc}
@@ -46,55 +46,48 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
     $this->retrieveEditableValues();
     $enforcement_notice_entity = $this->getParDataManager()->getParBundleEntity('par_data_enforcement_notice');
 
-    // Get the correct authority id / organisation id set within the previous form.
-    $enforcing_authority_id = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
-    $organisation_id = $this->getDefaultValues('par_data_organisation_id', '', 'par_enforce_organisation');
+    // Ensure we have all the required enforcement data stored in the cache in order to proceed.
+    $cached_enforcement_data = $this->validateEnforcementCachedData();
 
-    // Load required entities for the enforcement flow.
-    $par_data_organisation = ParDataOrganisation::load($organisation_id);
-    $par_data_authority = ParDataAuthority::load($enforcing_authority_id);
+    if ($cached_enforcement_data === TRUE){
+      $raise_enforcement_form = $this->BuildRaiseEnforcementFormElements();
+      $form = array_merge($form, $raise_enforcement_form);
+    }
+    else {
+      $form = array_merge($form, $cached_enforcement_data);
+      return parent::buildForm($form, $form_state);
+    }
 
-    $form['authority'] =[
+    $form['enforcement_title'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('Include the following information'),
+    ];
+
+    $form['enforcement_text'] =[
       '#type' => 'fieldset',
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
+      '#prefix' => '<ul>',
+      '#suffix' => '</ul>',
     ];
 
-    $form['authority']['authority_heading']  = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Notification of Enforcement action'),
+    $enforcement_data = [
+      'Full details of the contravention',
+      'Which products or services are affected',
+      'Your proposed text for any statutory notice or draft changes etc',
+      'Your reasons for proposing the enforcement action',
     ];
 
-    $form['authority']['authority_name'] = [
-      '#type' => 'markup',
-      '#markup' => $par_data_authority->get('authority_name')->getString(),
-      '#prefix' => '<div><h1>',
-      '#suffix' => '</h1></div>',
-    ];
+    foreach ($enforcement_data as $key => $value) {
 
-    $form['organisation'] =[
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    $form['organisation']['organisation_heading'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Regarding'),
-
-    ];
-
-    $form['organisation']['organisation_name'] = [
-      '#type' => 'markup',
-      '#markup' => $par_data_organisation->get('organisation_name')->getString(),
-      '#prefix' => '<h1>',
-      '#suffix' => '</h1>',
-    ];
-
-    // Display the primary address.
-    $form['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
+      $form['enforcement_text']['body'][$key] = [
+        '#type' => 'markup',
+        '#markup' => $this->t($value),
+        '#prefix' => '<li>',
+        '#suffix' => '</li>',
+      ];
+    }
 
     $form['action_summary'] = [
       '#type' => 'textarea',
@@ -142,15 +135,12 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $partnership = $this->getRouteParam('par_data_partnership');
+    if ($authority_person = $this->getEnforcingPerson()) {
+      $enforcement_officer_id = $authority_person->id() ? $authority_person->id() : NULL;
+    }
 
-    // Load the enforcing Authority.
-    $acting_authority = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
-
-    if ($par_data_authority = ParDataAuthority::load($acting_authority)) {
-      // Get logged in user ParDataPerson related to the primary authority.
-      $authority_person = $this->getParDataManager()->getUserPerson($this->getCurrentUser(), $par_data_authority);
-      $authority_person_id = $authority_person->id() ? $authority_person->id() : NULL;
+    if ($partnership = $this->getRouteParam('par_data_partnership')) {
+      $partnership_id = $partnership->id() ? $partnership->id() : NULL;
     }
 
     $time = new \DateTime();
@@ -158,15 +148,15 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
     $enforcementNotice_data = [
       'notice_type' => $this->getTempDataValue('enforcement_type'),
       'summary' => $this->getTempDataValue('action_summary'),
-      'field_enforcing_authority' => $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection'),
-      'field_organisation' => $this->getDefaultValues('par_data_organisation_id', '', 'par_enforce_organisation'),
-      'field_person' =>  $authority_person_id,
-      'field_partnership' => $partnership->id(),
+      'field_enforcing_authority' => $this->getEnforcingAuthorityID(),
+      'field_organisation' => $this->getEnforcedOrganisationID(),
+      'field_person' =>  $enforcement_officer_id,
+      'field_partnership' => $partnership_id,
       'notice_date' => $time->format("Y-m-d"),
     ];
 
     // Get the legal entity assigned from the previous form.
-    $legal_entity_value = $this->getDefaultValues('legal_entities_select', '', 'par_enforcement_notice_raise');
+    $legal_entity_value = $this->getEnforcedLegalEntity();
 
     // Check if we are using the legal entity text field instead of the entity ref field.
     if ($legal_entity_value == 'add_new') {
@@ -181,7 +171,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
     if ($enforcementAction->save()) {
       $this->deleteStore();
       // Go directly to the action setup form we cannot use links within forms without losing form data.
-      $form_state->setRedirect($this->getFlow()->getNextRoute('next'), ['par_data_partnership' => $partnership->id(), 'par_data_enforcement_notice' =>$enforcementAction->id()]);
+      $form_state->setRedirect($this->getFlow()->getNextRoute('next'), ['par_data_partnership' => $partnership->id(), 'par_data_enforcement_notice' => $enforcementAction->id()]);
     }
     else {
       $message = $this->t('The enforcement entity %entity_id could not be saved for %form_id');
