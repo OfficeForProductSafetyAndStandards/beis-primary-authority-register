@@ -16,40 +16,8 @@ cache:
     - tests/node_modules
     - $HOME/.composer/cache/files
 
-addons:
-  apt:
-    packages:
-      - iproute2
-      
 before_install:
 
-#-----------------------------------------------------------------------------
-# Read environment variables from the vault
-#-----------------------------------------------------------------------------
-  - ip a 
-  - wget https://releases.hashicorp.com/vault/0.8.3/vault_0.8.3_linux_amd64.zip
-  - unzip ./vault_0.8.3_linux_amd64.zip
-  - export VAULT_ADDR=https://vault.primary-authority.beis.gov.uk:8200
-  - ./vault auth -method=userpass username=travis password=$VAULT_PASSWORD
-  - ./vault unseal $VAULT_UNSEAL_TOKEN
-  - PAR_HASH_SALT=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
-  - S3_BUCKET=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
-  - S3_BUCKET_ARTIFACTS=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
-  - PAR_GOVUK_NOTIFY_KEY=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
-  - PAR_GOVUK_NOTIFY_TEMPLATE=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
-  - S3_BUCKET_PUBLIC=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
-  - S3_BUCKET_PRIVATE=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
-  - CF_PASSWORD=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
-  - BSK_USER=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
-  - BSK_KEY=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
-  - S3_ACCESS_KEY=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
-  - S3_SECRET_KEY=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
-  - DATAFILE=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
-  - PUBNUB_PUBLISH_KEY=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
-  - PUBNUB_SUBSCRIBE_KEY=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
-  - SENTRY_DSN=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
-  - SENTRY_DSN_PUBLIC=`vault read -field=PAR_HASH_SALT secret/par/env/travis`
-  
 #-----------------------------------------------------------------------------
 # Bring up Docker containers
 #-----------------------------------------------------------------------------  
