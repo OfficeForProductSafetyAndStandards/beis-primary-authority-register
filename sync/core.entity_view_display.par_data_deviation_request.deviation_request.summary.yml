@@ -4,10 +4,16 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_deviation_request.summary
+    - field.field.par_data_deviation_request.deviation_request.field_enforcing_authority
+    - field.field.par_data_deviation_request.deviation_request.field_inspection_plan
+    - field.field.par_data_deviation_request.deviation_request.field_partnership
+    - field.field.par_data_deviation_request.deviation_request.field_person
     - par_data.par_data_deviation_request_type.deviation_request
   module:
     - datetime
     - text
+_core:
+  default_config_hash: QuMyew9yHj3ctgMZ4VxHgrjNXMi6Tn_RVcWAPhPBfVY
 id: par_data_deviation_request.deviation_request.summary
 targetEntityType: par_data_deviation_request
 bundle: deviation_request
@@ -38,6 +44,10 @@ content:
     third_party_settings: {  }
     type: datetime_default
 hidden:
+  field_enforcing_authority: true
+  field_inspection_plan: true
+  field_partnership: true
+  field_person: true
   name: true
   primary_authority_notes: true
   user_id: true
