@@ -3,8 +3,8 @@
 ## Prerequisites
 
 * Cloud Foundry tools and login credentials for Gov.uk PaaS
-* Hashicorp Vault tools and login credentials for the beis-par-beta project vault
-* AWS tools and keys for the beis-par-beta project buckets
+* Hashicorp Vault tools and login credentials for the beis-primary-authority-register project vault
+* AWS tools and keys for the beis-primary-authority-register project buckets
 
 ## Setup
 
@@ -54,7 +54,7 @@ Use the push script to deploy the application to PaaS.
 
 We skip the post deploy scripts, as we need to seed the database before those scripts can run.
 
-From the root of the beis-par-beta repository:
+From the root of the beis-primary-authority-register repository:
    
     cf push -f cf/manifests/manifest.ENV_SLUG.yml
     
