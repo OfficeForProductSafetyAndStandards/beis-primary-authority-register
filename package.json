@@ -4,7 +4,7 @@
   "license": "SEE LICENSE IN LICENSE.txt",
   "repository": {
     "type": "git",
-    "url": "https://github.com/TransformCore/beis-par-beta"
+    "url": "https://github.com/UKGovernmentBEIS/beis-primary-authority-register"
   },
   "engines" : {
     "node" : ">=7.0.0"
