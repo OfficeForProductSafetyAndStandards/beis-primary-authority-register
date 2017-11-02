@@ -10,12 +10,14 @@
 # Overrides
 ############
 /.travis.yml     @chris-moreton
+/Vagrantfile     @chris-moreton
 /.bp-config/     @chris-moreton
 /devops/         @chris-moreton
 /dashboard/      @chris-moreton
 /docker/         @chris-moreton
 /cf/             @chris-moreton
 /*.sh            @chris-moreton
+/tools/          @chris-moreton
 
 /tests/          @jaffamonkey
 
