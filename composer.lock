@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f8e4a55188a4cddbc6a19097f9ea580",
+    "content-hash": "04fa6ce9cac7e743bab359a7a7a2b18e",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -3820,10 +3820,6 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "8.0.x-dev"
-                },
-                "patches_applied": {
-                    "Drush sql-dump compatibility with PostgresSQL 9.5+": "./patches/drush-sqldump-postgres95.patch",
-                    "Fix SQL dump problem where extra params are passed when trying only to list tables": "./patches/drush-sql-dump-no-extra-fix.patch"
                 }
             },
             "autoload": {
@@ -8304,7 +8300,8 @@
                 "source": "http://cgit.drupalcode.org/examples",
                 "issues": "https://www.drupal.org/project/issues/examples",
                 "documentation": "https://api.drupal.org/api/examples"
-            }
+            },
+            "time": "2017-11-01 18:57:05"
         },
         {
             "name": "fabpot/goutte",
