@@ -26,13 +26,22 @@ function par_roles_help($route_name, RouteMatchInterface $route_match) {
 function par_roles_user_presave($account) {
   $par_data_manager = \Drupal::service('par_data.manager');
 
-  // Add the correct roles to this user account also.
+  // Check whether they are the last user with a given role in any of their authorities.
   $authority_member = $par_data_manager->isMemberOfAuthority($account);
-  if ($authority_member && !$account->hasRole('par_authority') && !$account->hasRole('par_enforcement')) {
-    $account->addRole('par_authority');
+
+  // Add the relevant authority role if they are an authority member.
+  if ($authority_member) {
+    $other_authority_members = $par_data_manager->isRoleInAllMemberAuthorities($account, ['par_authority']);
+    // If there are no other par_authority members the default role is par_authority.
+    $new_authority_role = !$other_authority_members ? 'par_authority' : 'par_enforcement';
+
+    if (!$account->hasRole('par_authority') && !$account->hasRole('par_enforcement')) {
+      $account->addRole($new_authority_role);
+    }
   }
-  elseif (!$authority_member && $account->hasRole('par_authority')) {
+  elseif ($account->hasRole('par_authority')) {
     $account->removeRole('par_authority');
+    $account->removeRole('par_enforcement');
   }
 
   $organisation_member = $par_data_manager->isMemberOfOrganisation($account);
@@ -47,12 +56,6 @@ function par_roles_user_presave($account) {
 function par_roles_user_insert($account) {
   $par_data_manager = \Drupal::service('par_data.manager');
   $par_data_manager->linkPeople($account);
-
-  // Remove PAR Authority Member role if an enforcing officer.
-  if ($account->hasRole('par_authority') && $account->hasRole('par_enforcement')) {
-    $account->removeRole('par_authority');
-    $account->save();
-  }
 }
 
 function par_roles_user_update($account) {

@@ -10,9 +10,11 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\file\FileInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 
 /**
@@ -411,37 +413,65 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
-   * Checks if the person is a member of a coordinator member.
+   * Helper function to get all the roles filled within a users's authorities.
    *
-   * {@deprecated}
+   * @param ParDataEntityInterface[] $entities
+   *   The authority entities to look for roles in.
+   * @param boolean $include_member
+   *   Whether to include the originating member and their roles.
+   *
+   * @return array
+   *   An array of member's keyed by authority and then role id.
    */
-  public function isMemberOfCoordinator($account) {
-    foreach ($this->hasMembershipsByType($account, 'par_data_organisation',  TRUE) as $id => $membership) {
-      foreach ($this->getEntitiesByProperty('par_data_partnership', 'field_organisation', $id) as $partnership) {
-        if ($partnership->isCoordinated()) {
-          return true;
+  public function getRolesInAuthorities(array $entities, $include_member = FALSE) {
+    $roles = [];
+    foreach ($entities as $authority) {
+      $members = $authority->getPerson();
+
+      $roles[$authority->uuid()] = [];
+      foreach ($members as $member) {
+        $user = $member->getUserAccount();
+
+        // Only look up other member's roles unless choosing to include the member.
+        if ($user && ($user->id() !== $account->id() || $include_member)) {
+          foreach ($user->getRoles() as $role) {
+            $roles[$authority->uuid()][$role][] = $member;
+          }
         }
       }
     }
 
-    return FALSE;
+    return $roles;
   }
 
   /**
-   * Checks if the person is a member of an business member.
+   * Check whether given roles exist in any of the member's authorities.
    *
-   * {@deprecated}
+   * Allows determination of whether they are the last user with a given
+   * role in any of their authorities as this affects whether they can
+   * be assigned roles or even removed from the system.
+   *
+   * @param AccountInterface $account
+   *   The user account to check member authorities by.
+   * @param $roles
+   *   An array of roles to lookup.
+   *
+   * @return bool
+   *   If the roles exist in ALL authorities return true, otherwise false.
    */
-  public function isMemberOfBusiness($account) {
-    foreach ($this->hasMembershipsByType($account, 'par_data_organisation',  TRUE) as $id => $membership) {
-      foreach ($this->getEntitiesByProperty('par_data_partnership', 'field_organisation', $id) as $partnership) {
-        if ($partnership->isDirect()) {
-          return true;
+  public function isRoleInAllMemberAuthorities(AccountInterface $account, $roles) {
+    $authorities = $this->isMemberOfAuthority($account);
+    $authority_roles = $this->getRolesInMemberAuthorities($authorities);
+
+    foreach ($roles as $role) {
+      foreach ($authority_roles as $authority) {
+        if (!isset($authority[$role]) || empty($authority[$role])) {
+          return FALSE;
         }
       }
     }
 
-    return FALSE;
+    return TRUE;
   }
 
   /**
