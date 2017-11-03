@@ -5,8 +5,8 @@ Feature: Enforcement notice management
 
         # PARTNERSHIPS DASHBOARD
 
-        Given I am logged in as "par_enforcement_officer@example.com"
-        When I click on the button "a*=Dashboard"
+        Given I am logged in as "par_authority@example.com"
+#        When I click on the button "a*=Dashboard"
         And I click on the link "See enforcement notifications"
         And I select the option with the text "Desc" for element "#edit-sort-order"
         And I click on the button "#edit-submit-par-user-enforcements"
