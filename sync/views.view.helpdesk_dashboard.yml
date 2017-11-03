@@ -861,7 +861,7 @@ display:
             alt: ''
             rel: ''
             link_class: ''
-            prefix: ''
+            prefix: '<span class="visually-hidden">View the partnership details for </span>'
             suffix: ''
             target: ''
             nl2br: false
@@ -926,7 +926,7 @@ display:
             alt: ''
             rel: ''
             link_class: ''
-            prefix: ''
+            prefix: '<span class="visually-hidden">View the partnership details for </span>'
             suffix: ''
             target: ''
             nl2br: false
@@ -1171,7 +1171,6 @@ display:
       auth: {  }
       displays:
         default: '0'
-        par_rd_helpdesk_dashboard_page: '0'
       pager:
         type: none
         options:
