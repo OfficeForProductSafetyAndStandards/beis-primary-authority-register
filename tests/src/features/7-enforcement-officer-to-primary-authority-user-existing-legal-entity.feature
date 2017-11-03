@@ -25,6 +25,17 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I click on the radio "label*=Fix-It Shop"
         And I click on the button "#edit-next"
 
+        # ENTER EO DETAILS
+
+        When I add "Fozzie" to the inputfield "#edit-first-name"
+        And I click on the button "#edit-next"
+        Then I expect that element ".error-summary" does exist
+        When I add "Bear" to the inputfield "#edit-last-name"
+        And I click on the button "#edit-next"
+        Then I expect that element ".error-summary" does exist
+        When I add "fozzie.bear@gmail.com" to the inputfield "#edit-work-phone"
+        And I click on the button "#edit-next"
+
         # CHOOSE LEGAL ENTITY
 
         And the element "h3.heading-medium" contains the text "Select a legal entity"

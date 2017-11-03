@@ -19,10 +19,21 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
         When I click on the radio ".form-radio"
         And I click on the button "#edit-next"
 
-#        # CHOOSE MEMBER
-#
+        # CHOOSE MEMBER
+
         Then I expect that element "#par-enforce-organisation" contains the text "Choose the member to enforce"
         And I click on the radio "label*=Laundromat"
+        And I click on the button "#edit-next"
+
+        # ENTER EO DETAILS
+
+        When I add "Fozzie" to the inputfield "#edit-first-name"
+        And I click on the button "#edit-next"
+        Then I expect that element ".error-summary" does exist
+        When I add "Bear" to the inputfield "#edit-last-name"
+        And I click on the button "#edit-next"
+        Then I expect that element ".error-summary" does exist
+        When I add "fozzie.bear@gmail.com" to the inputfield "#edit-work-phone"
         And I click on the button "#edit-next"
 
         # CHOOSE LEGAL ENTITY
