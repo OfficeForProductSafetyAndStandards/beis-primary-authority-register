@@ -67,6 +67,7 @@ class ParDataEnforcementAction extends ParDataEntity {
   const APPROVED = 'approved';
   const BLOCKED = 'blocked';
   const REFERRED = 'referred';
+  const AWAITING = 'awaiting_approval';
 
   /**
    * Get the blocked advice for this Enforcement Action.
@@ -89,10 +90,8 @@ class ParDataEnforcementAction extends ParDataEntity {
     return $this->get('field_regulatory_function')->referencedEntities();
   }
 
-
-
   /**
-   * Whether this entity is deleted.
+   * Check if this entity is approved.
    *
    * @return bool
    */
@@ -106,7 +105,7 @@ class ParDataEnforcementAction extends ParDataEntity {
   }
 
   /**
-   * Whether this entity is revoked.
+   * Check if this entity is revoked.
    *
    * @return bool
    */
@@ -120,7 +119,7 @@ class ParDataEnforcementAction extends ParDataEntity {
   }
 
   /**
-   * Whether this entity is archived.
+   * Check if this entity is referred.
    *
    * @return bool
    */
@@ -134,7 +133,18 @@ class ParDataEnforcementAction extends ParDataEntity {
   }
 
   /**
-   * Delete if this entity is deletable and is not new.
+   * Check if this entity is awaiting approval.
+   *
+   * @return bool
+   */
+  public function isAwaitingApproval() {
+    $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+    $current_status = $status_field ? $this->get($status_field)->getString() : NULL;
+    return ($current_status === self::AWAITING);
+  }
+
+  /**
+   * Approve an enforcement action.
    */
   public function approve() {
     if (!$this->isNew() && !$this->isApproved()) {
@@ -182,6 +192,28 @@ class ParDataEnforcementAction extends ParDataEntity {
       return ($this->save() === SAVED_UPDATED);
     }
     return FALSE;
+  }
+
+  /**
+ *  Get the referred note data from the current action.
+ *
+ * @return String referred_text | NULL
+ *   The referred text stored on the current action or null.
+ *
+ */
+  public function getReferralNotes() {
+    return $this->get('referral_notes')->getString();
+  }
+
+  /**
+   *  Get the primary authority notes data from the current action.
+   *
+   * @return String primary_authority_notes | NULL
+   *   The referred text stored on the current action or null.
+   *
+   */
+  public function getPrimaryAuthorityNotes() {
+    return $this->get('primary_authority_notes')->getString();
   }
 
   /**

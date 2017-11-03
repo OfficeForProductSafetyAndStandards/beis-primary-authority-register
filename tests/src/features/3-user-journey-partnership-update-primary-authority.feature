@@ -20,31 +20,20 @@ Feature: Primary Authority - Change Partnership Details
         And I clear the inputfield "#edit-salutation"
         And I clear the inputfield "#edit-work-phone"
         And I clear the inputfield "#edit-mobile-phone"
-        And I clear the inputfield "#edit-email"
         And I click on the button "#edit-save"
         When I add "Mr" to the inputfield "#edit-salutation"
         And I click on the button "#edit-save"
         Then I expect that element ".error-summary" does exist
         When I add "91723456789" to the inputfield "#edit-work-phone"
-        And I click on the button "#edit-save"
-        Then I expect that element ".error-summary" does exist
         When I add "9777777777" to the inputfield "#edit-mobile-phone"
-        And I click on the button "#edit-save"
-        Then I expect that element ".error-summary" does exist
-        When I add "par_authority@example.com" to the inputfield "#edit-email"
         When I click on the button "#edit-save"
-        And I expect that element "#edit-authority-contacts" contains the text "par_authority@example.com"
         And I expect that element "#edit-authority-contacts" contains the text "91723456789"
         And I expect that element "#edit-authority-contacts" contains the text "9777777777"
 
-       # DOCUMENTATION
+        # DOCUMENTATION
 
         # When I select next partnership awaiting review
         And I click on the button "a*=See all Advice"
         When I click on the link "Upload advice"
         Then I expect that element "h3" contains the text "How to upload Primary Authority Advice to Local Authorities"
         When I click on the button "#edit-cancel"
-        And I click on the button ".button"
-        And I click on the checkbox "#edit-partnership-info-agreed-authority"
-        And I click on the button "#edit-save"
-        Then I expect that element "h1" contains the text "Primary Authority Register"

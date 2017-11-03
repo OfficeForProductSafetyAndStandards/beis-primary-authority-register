@@ -13,6 +13,7 @@ pages_type: 0
 pages: ''
 roles:
   par_authority: par_authority
+  par_enforcement: par_enforcement
   par_organisation: par_organisation
 weight: 0
 enabled: true

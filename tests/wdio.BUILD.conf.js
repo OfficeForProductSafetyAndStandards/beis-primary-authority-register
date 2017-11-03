@@ -1,11 +1,11 @@
 const config = require('./wdio.conf.js').config;
 
 config.capabilities = [{
-  browserName: 'chrome',
+  browserName: 'phantomjs',
   chromeOptions: {
-        binary: '/usr/bin/google-chrome',
-        args: ['headless', 'no-sandbox', 'disable-gpu']
-    }
+    binary: '/usr/bin/google-chrome',
+    args: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1200,2000']
+  }
 }];
 config.screenshotPath = './errorShots/';
 config.services = ['selenium-standalone'];

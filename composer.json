@@ -45,12 +45,14 @@
         "drupal/trance": "~1.1.0",
         "drupal/twig_field_value": "~1.1.0",
         "drupal/twig_tweak": "~1.8.0",
+        "drupal/ultimate_cron": "^2.0@alpha",
         "drupal/views_bulk_operations": "~1.0.0",
         "drupal/views_data_export": "~1.0.0",
         "drupal/views_field_view": "~1.0.0",
         "drupal/xmlsitemap": "~1.0.0",
         "drush/config-extra": "~1.0.0",
         "drush/drush": "~8.1.0",
+        "rapidwebltd/php-uk-bank-holidays": "^2.0",
         "vlucas/phpdotenv": "~2.4.0"
     },
     "require-dev": {
@@ -95,10 +97,6 @@
             "drupal/health_check": {
                 "Health Check doesn't check Drupal application": "https://www.drupal.org/files/issues/health_check_doesn_t-2892294-2.patch"
             },
-            "drush/drush": {
-                "Drush sql-dump compatibility with PostgresSQL 9.5+": "./patches/drush-sqldump-postgres95.patch",
-                "Fix SQL dump problem where extra params are passed when trying only to list tables": "./patches/drush-sql-dump-no-extra-fix.patch"
-            },            
             "drupal/clamav": {
                 "Add support for ClamAV via a REST daemon": "./patches/clamav_add_rest_client.patch"
             },

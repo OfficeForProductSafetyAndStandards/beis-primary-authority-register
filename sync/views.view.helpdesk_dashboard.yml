@@ -97,19 +97,25 @@ display:
           default_row_class: true
           override: true
           sticky: false
-          caption: ''
+          caption: 'Search results'
           summary: ''
           description: ''
           columns:
             id: id
+            authority_name: authority_name
             organisation_name: organisation_name
-            terms_authority_agreed: terms_authority_agreed
-            terms_organisation_agreed: terms_organisation_agreed
+            partnership_type: partnership_type
             partnership_status: partnership_status
-            nothing: nothing
-            nothing_1: nothing_1
+            par_flow_link: par_flow_link
           info:
             id:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            authority_name:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -123,14 +129,7 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            terms_authority_agreed:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            terms_organisation_agreed:
+            partnership_type:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -144,14 +143,7 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            nothing:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            nothing_1:
+            par_flow_link:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -743,7 +735,18 @@ display:
     display_options:
       display_extenders: {  }
       path: helpdesk
-      footer: {  }
+      footer:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: '<a href="https://par-beta-csv.cloudapps.digital/">CSV Download (requires user/pass)</a>'
+          plugin_id: text_custom
       defaults:
         footer: false
         empty: false
@@ -1167,8 +1170,8 @@ display:
       filename: rd-dashboard-export.csv
       auth: {  }
       displays:
-        par_rd_helpdesk_dashboard_page: par_rd_helpdesk_dashboard_page
         default: '0'
+        par_rd_helpdesk_dashboard_page: '0'
       pager:
         type: none
         options:

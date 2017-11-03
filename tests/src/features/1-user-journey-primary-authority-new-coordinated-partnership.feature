@@ -73,6 +73,10 @@ Feature: New Coordinated Partnership
         And I click on the radio "#edit-preferred-contact-communication-mobile"
         And I add "Some additional notes" to the inputfield "#edit-notes"
         And I click on the button "#edit-next"
+
+        # SAVE PARTNERSHIP APPLICATION
+        And I click on the checkbox "#edit-partnership-info-agreed-authority"
+        And I click on the button "#edit-save"
         And I click on the link "Log out"
 
         # HELPDESK USER

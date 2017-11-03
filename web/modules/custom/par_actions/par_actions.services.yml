@@ -1,0 +1,4 @@
+services:
+  plugin.manager.par_scheduler:
+    class: Drupal\par_actions\ParScheduleManager
+    parent: default_plugin_manager

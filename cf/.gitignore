@@ -1,6 +1,8 @@
 .env.*
 .htpasswd
 build-*/
-beis-par-beta/
+beis-primary-authority-register/
 *.tar.gz
+update-vault-travis.sh
+
 

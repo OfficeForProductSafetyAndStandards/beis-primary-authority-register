@@ -24,3 +24,7 @@ steps:
       cancel: 4
   4:
     route: view.par_user_enforcements.enforcement_notices_page
+  5:
+    route: par_enforcement_flows.completed_enforcement
+    redirect:
+      done: 4
