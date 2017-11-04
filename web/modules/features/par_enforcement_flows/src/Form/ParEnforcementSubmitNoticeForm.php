@@ -44,6 +44,7 @@ class ParEnforcementSubmitNoticeForm extends ParBaseForm {
     $enforced_authority = current($par_data_enforcement_notice->getEnforcingAuthority());
     $enforced_organisation = current($par_data_enforcement_notice->getEnforcedOrganisation());
     $enforced_legal_entity = current($par_data_enforcement_notice->getLegalEntity());
+    $enforcing_officer = current($par_data_enforcement_notice->getEnforcingPerson());
 
     if ($enforced_legal_entity) {
       $enforced_legal_entity_name = $enforced_legal_entity->get('registered_name')->getString();
@@ -96,6 +97,11 @@ class ParEnforcementSubmitNoticeForm extends ParBaseForm {
 
     // Display the primary address.
     $form['registered_address'] = $this->renderSection('Registered address', $enforced_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
+
+    $form['enforcement_officer_name'] = $this->renderSection('Enforcing officer name', $enforcing_officer, ['first_name' => 'summary','last_name' => 'summary'], [], TRUE, TRUE);
+    $form['enforcement_officer_telephone'] = $this->renderSection('Enforcing officer telephone number', $enforcing_officer, ['work_phone' => 'summary'], [], TRUE, TRUE);
+    $form['enforcement_officer_email'] = $this->renderSection('Enforcing officer email address', $enforcing_officer, ['email' => 'summary'], [], TRUE, TRUE);
+
     $form['enforcement_summary'] = $this->renderSection('Summary of enforcement notice', $par_data_enforcement_notice, ['summary' => 'summary'], [], TRUE, TRUE);
 
     // Display all enforcement actions assigned to this enforcement action.
