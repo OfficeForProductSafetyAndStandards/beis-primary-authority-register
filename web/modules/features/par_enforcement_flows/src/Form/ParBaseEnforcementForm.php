@@ -5,6 +5,7 @@ namespace Drupal\par_enforcement_flows\Form;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataOrganisation;
+use Drupal\par_data\Entity\ParDataLegalEntity;
 
 /**
  * The base form controller for all PAR raise enforcement forms.
@@ -33,10 +34,25 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
   }
 
   /**
-   * Get the cached enforced organisation ID.
+   * Get the cached enforced legal entity ID.
    */
   public function getEnforcedLegalEntity() {
     return $this->getDefaultValues('legal_entities_select', '', 'par_enforcement_notice_raise');;
+  }
+
+  /**
+   * Get the cached enforced legal entity registered name.
+   */
+  public function getEnforcedLegalEntityName() {
+
+    $selected_entity =  $this->getEnforcedLegalEntity();
+
+    if ($selected_entity == 'add_new') {
+      return $this->getDefaultValues('alternative_legal_entity', '', 'par_enforcement_notice_raise');
+    }
+    else {
+      return ParDataLegalEntity::load($selected_entity)->get('registered_name')->getString();
+    }
   }
 
   /**
@@ -62,6 +78,15 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
     // Load required entities for the enforcement flow.
     $par_data_organisation = $this->getEnforcedOrganisationEntity();
     $par_data_authority = $this->getEnforcingAuthorityEntity();
+
+    // Depending on the form in this process we may not have a legal entity yet.
+    if ($this->getEnforcedLegalEntity()) {
+      $enforced_entity_name = $this->getEnforcedLegalEntityName();
+    }
+    else {
+      $enforced_entity_name = $par_data_organisation->get('organisation_name')->getString();
+    }
+
 
     $form['authority'] =[
       '#type' => 'fieldset',
@@ -97,7 +122,7 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
 
     $form['organisation']['organisation_name'] = [
       '#type' => 'markup',
-      '#markup' => $par_data_organisation->get('organisation_name')->getString(),
+      '#markup' => $enforced_entity_name,
       '#prefix' => '<h1>',
       '#suffix' => '</h1>',
     ];
@@ -159,7 +184,9 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
   }
 
   /**
-   *  Get the cached enforced organisation ID..
+   *  Get the enforcing officer ParDataPerson object.
+   *
+   * @return ParDataPerson object | FALSE
    */
   public function getEnforcingPerson() {
 
