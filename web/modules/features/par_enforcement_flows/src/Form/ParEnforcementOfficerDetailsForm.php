@@ -36,7 +36,9 @@ class ParEnforcementOfficerDetailsForm extends ParBaseEnforcementForm {
    * @param \Drupal\par_data\Entity\ParDataPerson $authority_person
    *   The ParDataPerson being retrieved.
    */
-  public function retrieveEditableValues() {
+  public function retrieveEditableValues(ParDataPartnership $par_data_partnership) {
+
+    $this->setState("edit:{$par_data_partnership->id()}");
 
     if ($enforcement_officer = $this->getEnforcingPerson()) {
       // Load person data.
@@ -52,6 +54,7 @@ class ParEnforcementOfficerDetailsForm extends ParBaseEnforcementForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state,ParDataPartnership $par_data_partnership = NULL) {
 
+    $this->retrieveEditableValues($par_data_partnership);
     // Ensure we have all the required enforcement data stored in the cache in order to proceed.
     $this->retrieveEditableValues();
     $cached_enforcement_data = $this->validateEnforcementCachedData();
