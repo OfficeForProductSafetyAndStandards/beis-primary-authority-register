@@ -43,6 +43,13 @@ class ParEnforcementSubmitNoticeForm extends ParBaseForm {
     // Get the correct par_data_authority_id set by the previous form.
     $enforced_authority = current($par_data_enforcement_notice->getEnforcingAuthority());
     $enforced_organisation = current($par_data_enforcement_notice->getEnforcedOrganisation());
+    $enforced_legal_entity = current($par_data_enforcement_notice->getLegalEntity());
+
+    if ($enforced_legal_entity) {
+      $enforced_legal_entity_name = $enforced_legal_entity->get('registered_name')->getString();
+    } else {
+      $enforced_legal_entity_name = $par_data_enforcement_notice->get('legal_entity_name')->getString();
+    }
 
     // Load all enforcement actions for the current enforcement notification.
     $enforcement_actions = $par_data_enforcement_notice->getEnforcementActions();
@@ -82,7 +89,7 @@ class ParEnforcementSubmitNoticeForm extends ParBaseForm {
 
     $form['organisation']['organisation_name'] = [
       '#type' => 'markup',
-      '#markup' => $enforced_organisation->get('organisation_name')->getString(),
+      '#markup' => $enforced_legal_entity_name,
       '#prefix' => '<h1>',
       '#suffix' => '</h1>',
     ];
