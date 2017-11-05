@@ -62,6 +62,3 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         When I click on the button "#edit-save"
         Then I expect that element "h1.heading-xlarge" contains the text "Primary Authority Register"
 
-        # REFER FORM
-
-        # BLOCK FORM

@@ -1,6 +1,13 @@
 @ci @Bug
 Feature: Enforcement notice management
 
+
+#    Scenario 3
+#    As a member of the enforcing authority
+#        When all the actions on an enforcement notice are undecided
+#        And I go to the See enforcement notifications page from my dashboard
+#        Then I should NOT see enforcement notice listed
+
     Scenario: Enforcement notice management
 
         # PARTNERSHIPS DASHBOARD
@@ -33,3 +40,15 @@ Feature: Enforcement notice management
 #        Then I expect that element "h1" contains the text "Confirm Enforcement Notice"
 #        And I click on the button "#edit-actions-next"
 ##        Then I expect that element "#par-rd-help-desk-approve" contains the text "Enforcement referred"
+
+
+#    Scenario 1
+#    As a member of the enforcing authority
+#        When all the actions on an enforcement notice have been decided
+#        And I go to the See enforcement notifications page from my dashboard
+#        Then I should see enforcement notice listed which have been blocked or allowed
+#    Scenario 2
+#    As a member of the enforcing authority
+#        When all the actions on an enforcement notice have been referred
+#        And I go to the See enforcement notifications page from my dashboard
+#        Then I should NOT see enforcement notice listed
