@@ -24,6 +24,13 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I click on the radio "label*=Hooper"
         And I click on the button "#edit-next"
 
+       # ENTER EO DETAILS
+
+        When I add "Fozzie" to the inputfield "#edit-first-name"
+        When I add "Bear" to the inputfield "#edit-last-name"
+        When I add "fozzie.bear@gmail.com" to the inputfield "#edit-work-phone"
+        And I click on the button "#edit-next"
+
         # CHOOSE LEGAL ENTITY
 
         And I scroll to element "#edit-legal-entities-select-add-new"
