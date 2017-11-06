@@ -1,4 +1,4 @@
-@ci @Bug
+@Pending @Bug
 Feature: Enforcement notice management
 
 #        When all the actions on an enforcement notice are undecided
