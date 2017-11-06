@@ -7,6 +7,7 @@ use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\Core\Access\AccessResult;
 
 /**
  * The confirmation for creating a new enforcement notice.
@@ -30,7 +31,13 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
    */
   public function accessCallback(ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
 
-    // Additional business logic can implement here to 403.
+    // This form should only be accessed if none of the enforcement notice actions have been acted on.
+    foreach ($par_data_enforcement_notice->get('field_enforcement_action')->referencedEntities() as $delta => $action) {
+      // Set an error if this action has already been reviewed.
+      if ($action->isApproved() || $action->isBlocked() || $action->isReferred()) {
+        $this->accessResult = AccessResult::forbidden('This action has already been reviewed.');
+      }
+    }
     return parent::accessCallback();
   }
 
