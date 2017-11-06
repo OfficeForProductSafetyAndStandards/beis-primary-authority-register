@@ -5,7 +5,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         # LOGIN SCREEN
 
 #       Given I reset the test data
-        Given I am logged in as "par_authority@example.com"
+        Given I am logged in as "par_enforcement_officer@example.com"
         And I click on the link "Search for a partnership"
         When I add "Charlie" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
@@ -49,8 +49,20 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I click on the radio ".option*=Cookie control"
         And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
         And I click on the button "#edit-next"
+
+
+        # ADD ENFORCEMENT ACTION
+
+        And I add "Added Enforcement Action" to the inputfield "#edit-title-of-action"
+        And I click on the radio ".option*=Alphabet learning"
+        And I add "Added Enforcement Action details" to the inputfield "#edit-details"
+        And I click on the button "#edit-next"
+
+        # CHECK DETAILS
+
         And I scroll to element "#footer"
-        Then I expect that element "#par-enforcement-notice-raise-confirm" contains the text "action summary enforcement notice"
+        Then I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Added Enforcement Action"
+        And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "action summary enforcement notice"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Title of enforcement notice Four"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Some details about the enforcement notice"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Once the primary authority receives this notification, they have 5 working days to respond to you if they intend to block the action"

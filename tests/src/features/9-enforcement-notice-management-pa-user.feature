@@ -10,12 +10,6 @@ Feature: Enforcement notice management
         Given I am logged in as "par_authority@example.com"
         When I click on the link "See enforcement notifications"
         Then the element "#views-exposed-form-par-user-enforcements-enforcement-notices-page" not contains the text "Title of enforcement notice"
-        And I click on the link "Log out"
-
-        # PARTNERSHIPS DASHBOARD
-
-        Given I am logged in as "par_authority@example.com"
-#        When I click on the button "a*=Dashboard"
         And I click on the link "See enforcement notifications"
         And I select the option with the text "Desc" for element "#edit-sort-order"
         And I click on the button "#edit-submit-par-user-enforcements"
@@ -27,6 +21,8 @@ Feature: Enforcement notice management
         And I click on the button "#edit-actions-next"
         Then I expect that element "h1" contains the text "Confirm Enforcement Notice"
         And I click on the button "#edit-actions-next"
+        When I click on the link "See enforcement notifications"
+        Then the element "#views-exposed-form-par-user-enforcements-enforcement-notices-page" not contains the text "Title of enforcement notice Four"
 #       Then I expect that element "#par-rd-help-desk-approve" contains the text "Enforcement allowed"
 
 #        # BLOCK FORM
@@ -48,14 +44,13 @@ Feature: Enforcement notice management
         And I click on the radio "#edit-actions-0-primary-authority-status-referred"
         When I add "Some notes about why enforcement action referred" to the inputfield "#edit-actions-0-referral-notes"
         And I click on the button "#edit-actions-next"
+        And I click on the radio ".option*=Upper West Side Borough Council"
+        And I click on the button "#edit-actions-next"
         Then I expect that element "h1" contains the text "Confirm Enforcement Notice"
         And I click on the button "#edit-actions-next"
 #        Then I expect that element "#par-rd-help-desk-approve" contains the text "Enforcement referred"
-
-        And I click on the link "Log out"
-        Given I am logged in as "par_enforcement_officer@example.com"
         When I click on the link "See enforcement notifications"
-        Then the element "#views-exposed-form-par-user-enforcements-enforcement-notices-page" contains the text "Title of enforcement notice"
+        Then the element "#views-exposed-form-par-user-enforcements-enforcement-notices-page" contains the text "Title of enforcement notice One"
 
 
 #    Scenario 1
