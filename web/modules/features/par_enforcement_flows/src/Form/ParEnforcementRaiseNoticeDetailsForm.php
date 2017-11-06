@@ -79,15 +79,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       'Your reasons for proposing the enforcement action',
     ];
 
-    foreach ($enforcement_data as $key => $value) {
-
-      $form['enforcement_text']['body'][$key] = [
-        '#type' => 'markup',
-        '#markup' => $this->t($value),
-        '#prefix' => '<li>',
-        '#suffix' => '</li>',
-      ];
-    }
+    $form['enforcement_text'] = [ '#theme' => 'item_list', '#items' => $enforcement_data, ];
 
     $form['action_summary'] = [
       '#type' => 'textarea',
