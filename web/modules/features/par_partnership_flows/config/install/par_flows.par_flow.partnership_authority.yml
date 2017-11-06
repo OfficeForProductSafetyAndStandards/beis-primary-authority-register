@@ -63,12 +63,12 @@ steps:
     form_id: par_partnership_upload
     redirect:
       upload: 10
-      cancel: 7
+      cancel: 8
   10:
     route: par_partnership_flows.advice_add
     form_id: par_partnership_advice
     redirect:
-      save: 7
+      save: 8
       cancel: 8
   11:
     route: par_partnership_flows.advice_edit_documents
