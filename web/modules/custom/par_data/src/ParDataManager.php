@@ -417,13 +417,13 @@ class ParDataManager implements ParDataManagerInterface {
    *
    * @param ParDataEntityInterface[] $entities
    *   The authority entities to look for roles in.
-   * @param boolean $include_member
-   *   Whether to include the originating member and their roles.
+   * @param AccountInterface $account
+   *   If a user is passed their roles will be ignored.
    *
    * @return array
    *   An array of member's keyed by authority and then role id.
    */
-  public function getRolesInAuthorities(array $entities, $include_member = FALSE) {
+  public function getRolesInAuthorities(array $entities, $account = NULL) {
     $roles = [];
     foreach ($entities as $authority) {
       $members = $authority->getPerson();
@@ -432,8 +432,7 @@ class ParDataManager implements ParDataManagerInterface {
       foreach ($members as $member) {
         $user = $member->getUserAccount();
 
-        // Only look up other member's roles unless choosing to include the member.
-        if ($user && ($user->id() !== $account->id() || $include_member)) {
+        if (isset($user) && (!isset($account) || $user->id() !== $account->id())) {
           foreach ($user->getRoles() as $role) {
             $roles[$authority->uuid()][$role][] = $member;
           }
@@ -461,7 +460,7 @@ class ParDataManager implements ParDataManagerInterface {
    */
   public function isRoleInAllMemberAuthorities(AccountInterface $account, $roles) {
     $authorities = $this->isMemberOfAuthority($account);
-    $authority_roles = $this->getRolesInMemberAuthorities($authorities);
+    $authority_roles = $this->getRolesInAuthorities($authorities, $account);
 
     foreach ($roles as $role) {
       foreach ($authority_roles as $authority) {
