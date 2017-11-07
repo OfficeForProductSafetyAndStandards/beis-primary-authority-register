@@ -57,7 +57,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
     if ($applicationType == 'direct') {
       $form['section_one']['header'] = [
         '#type' => 'markup',
-        '#markup' => $this->t('I confirm that…'),
+        '#markup' => $this->t('I confirm that'),
         '#prefix' => '<h3 class="heading-medium">',
         '#suffix' => '</h3>',
       ];
@@ -90,17 +90,9 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
         '#return_value' => 'on',
       ];
 
-      // @todo find out if these are another step or relevant on this page.
-      $form['section_two']['header'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('Business Questions'),
-        '#prefix' => '<h3 class="heading-medium">',
-        '#suffix' => '</h3>',
-      ];
-
       $form['section_two']['business_regulated_by_one_authority'] = [
         '#type' => 'radios',
-        '#title' => $this->t('I am authorised to submit this application'),
+        '#title' => $this->t('Is the business regulated by only one local authority?'),
         '#options' => [
           1 => 'Yes',
           0 => 'No',
@@ -147,7 +139,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
     elseif ($applicationType == 'coordinated') {
       $form['section_one']['header'] = [
         '#type' => 'markup',
-        '#markup' => $this->t('I confirm that…'),
+        '#markup' => $this->t('I confirm that'),
         '#prefix' => '<h3 class="heading-medium">',
         '#suffix' => '</h3>',
       ];
