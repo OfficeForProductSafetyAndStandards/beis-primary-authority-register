@@ -3,11 +3,11 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: gsP-GfFH13mg1E3is86aAyeQ066BCFYdufT4V3E3cGM
+  default_config_hash: eOeZktngyEIqJx6Tzq1IaCV-Hdgw_Y0URqSEwlPau7U
 id: partnership_coordinated
 label: 'Coordinated Partnership Flow'
 default_title: null
-default_section_title: null
+default_section_title: 'Coordinated partnership'
 description: ''
 save_method: step
 steps:

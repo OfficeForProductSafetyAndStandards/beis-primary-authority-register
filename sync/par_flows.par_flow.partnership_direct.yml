@@ -3,11 +3,11 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: nt05NTwOP3-ZWI4eNXhHlhywEY9QB3cP9wzdOJ0oB3U
+  default_config_hash: MfDJoD5Cv3DJq8cMSPNEHYJy24cx__hAtCfpJueZjG0
 id: partnership_direct
 label: 'Direct Partnership Flow'
 default_title: null
-default_section_title: 'Primary Authority partnership information for'
+default_section_title: 'Primary Authority partnership information'
 description: ''
 save_method: step
 steps:
