@@ -20,7 +20,6 @@ Feature: Enforcement notice management
         And I click on the button "#edit-next"
         Then I expect that element "#par-rd-help-desk-approve" contains the text "Partnership is approved between"
         And I expect that element "#par-rd-help-desk-approve" contains the text "Business For Direct Partnership 1"
-        And I expect that element "#par-rd-help-desk-approve" contains the text "Upper West Side Borough Council"
         And I click on the button "#edit-done"
 
         When I open the url "/helpdesk"
