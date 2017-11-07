@@ -26,20 +26,34 @@ function par_roles_help($route_name, RouteMatchInterface $route_match) {
 function par_roles_user_presave($account) {
   $par_data_manager = \Drupal::service('par_data.manager');
 
-  // Add the correct roles to this user account also.
+  // Check whether they are the last user with a given role in any of their authorities.
   $authority_member = $par_data_manager->isMemberOfAuthority($account);
-  if ($authority_member && !$account->hasRole('par_authority') && !$account->hasRole('par_enforcement')) {
-    $account->addRole('par_authority');
+
+  // Add the relevant authority role if they are an authority member.
+  if ($authority_member) {
+    $secondary_user = $par_data_manager->isRoleInAllMemberAuthorities($account, ['par_authority']);
+
+    // If there are no other primary authority users in any of the member's
+    // authorities then assign them the primary authority role.
+    if (!$secondary_user) {
+      $account->addRole('par_authority');
+      $account->removeRole('par_enforcement');
+    }
+    elseif ((!$account->hasRole('par_authority') && !$account->hasRole('par_enforcement'))) {
+      $account->addRole('par_enforcement');
+      $account->removeRole('par_authority');
+    }
   }
-  elseif (!$authority_member && $account->hasRole('par_authority')) {
+  else {
     $account->removeRole('par_authority');
+    $account->removeRole('par_enforcement');
   }
 
   $organisation_member = $par_data_manager->isMemberOfOrganisation($account);
-  if ($organisation_member && !$account->hasRole('par_organisation')) {
+  if ($organisation_member) {
     $account->addRole('par_organisation');
   }
-  elseif (!$organisation_member && $account->hasRole('par_organisation')) {
+  elseif (!$organisation_member) {
     $account->removeRole('par_organisation');
   }
 }
@@ -47,12 +61,6 @@ function par_roles_user_presave($account) {
 function par_roles_user_insert($account) {
   $par_data_manager = \Drupal::service('par_data.manager');
   $par_data_manager->linkPeople($account);
-
-  // Remove PAR Authority Member role if an enforcing officer.
-  if ($account->hasRole('par_authority') && $account->hasRole('par_enforcement')) {
-    $account->removeRole('par_authority');
-    $account->save();
-  }
 }
 
 function par_roles_user_update($account) {
