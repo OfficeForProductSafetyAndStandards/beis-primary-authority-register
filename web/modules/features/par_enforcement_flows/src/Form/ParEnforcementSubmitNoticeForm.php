@@ -6,6 +6,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
+use Drupal\par_data\Entity\ParDataOrganisation;
+use Drupal\par_data\Entity\ParDataAuthority;
 
 /**
  * The confirmation for creating a new enforcement notice.
@@ -38,9 +40,9 @@ class ParEnforcementSubmitNoticeForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
     $this->retrieveEditableValues();
 
-    // Organisation summary.
-    $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $par_data_authority = current($par_data_partnership->getAuthority());
+    // Get the correct par_data_authority_id set by the previous form.
+    $enforced_authority = current($par_data_enforcement_notice->getEnforcingAuthority());
+    $enforced_organisation = current($par_data_enforcement_notice->getEnforcedOrganisation());
 
     // Load all enforcement actions for the current enforcement notification.
     $enforcement_actions = $par_data_enforcement_notice->getEnforcementActions();
@@ -59,7 +61,7 @@ class ParEnforcementSubmitNoticeForm extends ParBaseForm {
 
     $form['authority']['authority_name'] = [
       '#type' => 'markup',
-      '#markup' => $par_data_authority->get('authority_name')->getString(),
+      '#markup' => $enforced_authority->get('authority_name')->getString(),
       '#prefix' => '<div><h1>',
       '#suffix' => '</h1></div>',
     ];
@@ -80,13 +82,13 @@ class ParEnforcementSubmitNoticeForm extends ParBaseForm {
 
     $form['organisation']['organisation_name'] = [
       '#type' => 'markup',
-      '#markup' => $par_data_organisation->get('organisation_name')->getString(),
+      '#markup' => $enforced_organisation->get('organisation_name')->getString(),
       '#prefix' => '<h1>',
       '#suffix' => '</h1>',
     ];
 
     // Display the primary address.
-    $form['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
+    $form['registered_address'] = $this->renderSection('Registered address', $enforced_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
     $form['enforcement_summary'] = $this->renderSection('Summary of enforcement notice', $par_data_enforcement_notice, ['summary' => 'summary'], [], TRUE, TRUE);
 
     // Display all enforcement actions assigned to this enforcement action.
