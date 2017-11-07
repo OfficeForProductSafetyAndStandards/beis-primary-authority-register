@@ -40,14 +40,6 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function titleCallback() {
-    $this->pageTitle = 'Are you looking for one of these businesses?';
-    return parent::titleCallback();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $searchQuery = $this->getDefaultValues('organisation_name', '', 'par_partnership_application_organisation');
 
