@@ -90,10 +90,8 @@ class ParDataEnforcementAction extends ParDataEntity {
     return $this->get('field_regulatory_function')->referencedEntities();
   }
 
-
-
   /**
-   * Whether this entity is deleted.
+   * Check if this entity is approved.
    *
    * @return bool
    */
@@ -107,7 +105,7 @@ class ParDataEnforcementAction extends ParDataEntity {
   }
 
   /**
-   * Whether this entity is revoked.
+   * Check if this entity is revoked.
    *
    * @return bool
    */
@@ -121,7 +119,7 @@ class ParDataEnforcementAction extends ParDataEntity {
   }
 
   /**
-   * Whether this entity is archived.
+   * Check if this entity is referred.
    *
    * @return bool
    */
@@ -135,7 +133,18 @@ class ParDataEnforcementAction extends ParDataEntity {
   }
 
   /**
-   * Delete if this entity is deletable and is not new.
+   * Check if this entity is awaiting approval.
+   *
+   * @return bool
+   */
+  public function isAwaitingApproval() {
+    $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+    $current_status = $status_field ? $this->get($status_field)->getString() : NULL;
+    return ($current_status === self::AWAITING);
+  }
+
+  /**
+   * Approve an enforcement action.
    */
   public function approve() {
     if (!$this->isNew() && !$this->isApproved()) {

@@ -97,19 +97,25 @@ display:
           default_row_class: true
           override: true
           sticky: false
-          caption: ''
+          caption: 'Search results'
           summary: ''
           description: ''
           columns:
             id: id
+            authority_name: authority_name
             organisation_name: organisation_name
-            terms_authority_agreed: terms_authority_agreed
-            terms_organisation_agreed: terms_organisation_agreed
+            partnership_type: partnership_type
             partnership_status: partnership_status
-            nothing: nothing
-            nothing_1: nothing_1
+            par_flow_link: par_flow_link
           info:
             id:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            authority_name:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -123,14 +129,7 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            terms_authority_agreed:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            terms_organisation_agreed:
+            partnership_type:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -144,14 +143,7 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            nothing:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            nothing_1:
+            par_flow_link:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -869,7 +861,7 @@ display:
             alt: ''
             rel: ''
             link_class: ''
-            prefix: ''
+            prefix: '<span class="visually-hidden">View the partnership details for </span>'
             suffix: ''
             target: ''
             nl2br: false
@@ -934,7 +926,7 @@ display:
             alt: ''
             rel: ''
             link_class: ''
-            prefix: ''
+            prefix: '<span class="visually-hidden">View the partnership details for </span>'
             suffix: ''
             target: ''
             nl2br: false
@@ -1179,7 +1171,6 @@ display:
       auth: {  }
       displays:
         default: '0'
-        par_rd_helpdesk_dashboard_page: '0'
       pager:
         type: none
         options:

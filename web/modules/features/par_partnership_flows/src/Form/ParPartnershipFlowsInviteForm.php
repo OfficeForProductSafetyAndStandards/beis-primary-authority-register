@@ -252,7 +252,7 @@ HEREDOC;
           '#type' => 'select',
           '#required' => TRUE,
           '#title' => t('Role'),
-          '#description' => t('Please select the role to apply to the invitee.'),
+          '#description' => t('Choose which role to give this person.'),
           // @todo reduce options.
           '#options' => array_filter($par_roles, function ($role_id) {
             if ($this->invite_type === 'invite_authority_member') {

@@ -45,12 +45,14 @@
         "drupal/trance": "~1.1.0",
         "drupal/twig_field_value": "~1.1.0",
         "drupal/twig_tweak": "~1.8.0",
+        "drupal/ultimate_cron": "^2.0@alpha",
         "drupal/views_bulk_operations": "~1.0.0",
         "drupal/views_data_export": "~1.0.0",
         "drupal/views_field_view": "~1.0.0",
         "drupal/xmlsitemap": "~1.0.0",
         "drush/config-extra": "~1.0.0",
         "drush/drush": "~8.1.0",
+        "rapidwebltd/php-uk-bank-holidays": "^2.0",
         "vlucas/phpdotenv": "~2.4.0"
     },
     "require-dev": {
@@ -121,7 +123,6 @@
             },
             "drupal/core": {
                 "Allow migration lookups against sub-sets of migration map ids": "./patches/migration_id_map_sql_lookup_check.patch",
-                "Entity loadByProperty should skip access checks": "https://www.drupal.org/files/issues/2878483-18.patch",
                 "Migration Lookup plugin does not return multiple values when matched and uses deprecated method": "https://www.drupal.org/files/issues/2890844-14.patch",
                 "PostgreSQL: deal with case insensitivity": "./patches/postgres_case_insensitivity-2464481.patch"
             }

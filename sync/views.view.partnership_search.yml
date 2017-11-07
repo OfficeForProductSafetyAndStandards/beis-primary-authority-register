@@ -89,17 +89,16 @@ display:
           default_row_class: true
           override: true
           sticky: false
-          caption: ''
+          caption: 'Search results'
           summary: ''
           description: ''
           columns:
             id: id
             organisation_name: organisation_name
-            terms_authority_agreed: terms_authority_agreed
-            terms_organisation_agreed: terms_organisation_agreed
-            partnership_status: partnership_status
-            nothing: nothing
-            nothing_1: nothing_1
+            authority_name: authority_name
+            trading_name: trading_name
+            field_legal_entity: field_legal_entity
+            field_premises: field_premises
           info:
             id:
               sortable: false
@@ -115,37 +114,24 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            terms_authority_agreed:
+            authority_name:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            terms_organisation_agreed:
-              sortable: false
-              default_sort_order: asc
+            trading_name:
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            partnership_status:
-              sortable: false
-              default_sort_order: asc
+            field_legal_entity:
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            nothing:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            nothing_1:
-              sortable: false
-              default_sort_order: asc
+            field_premises:
               align: ''
               separator: ''
               empty_column: false
@@ -919,7 +905,7 @@ display:
             alt: ''
             rel: ''
             link_class: ''
-            prefix: ''
+            prefix: '<span class="visually-hidden">View the partnership details for </span>'
             suffix: ''
             target: ''
             nl2br: false
@@ -984,7 +970,7 @@ display:
             alt: ''
             rel: ''
             link_class: ''
-            prefix: ''
+            prefix: '<span class="visually-hidden">View the partnership details for </span>'
             suffix: ''
             target: ''
             nl2br: false

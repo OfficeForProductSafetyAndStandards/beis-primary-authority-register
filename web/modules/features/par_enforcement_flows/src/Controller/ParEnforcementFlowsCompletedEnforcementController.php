@@ -56,7 +56,7 @@ class ParEnforcementFlowsCompletedEnforcementController extends ParBaseControlle
     $par_data_authority = current($partnership->getAuthority());
 
     // Load all enforcement actions for the current enforcement notification.
-    $enforcement_actions = $par_data_enforcement_notice->getEnforcementAction();
+    $enforcement_actions = $par_data_enforcement_notice->getEnforcementActions();
 
     $build['authority'] =[
       '#type' => 'fieldset',

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2063972b31acb3743bb4e9565c920ec5",
+    "content-hash": "18099fd926e82355dace1b2f56b1c9a9",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -112,16 +112,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.36.35",
+            "version": "3.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "cb1cd051ef07dfbe6b181e552378e7a1673b228c"
+                "reference": "24031a1ffbcd26dea0e55662198a3f5454e02cff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/cb1cd051ef07dfbe6b181e552378e7a1673b228c",
-                "reference": "cb1cd051ef07dfbe6b181e552378e7a1673b228c",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/24031a1ffbcd26dea0e55662198a3f5454e02cff",
+                "reference": "24031a1ffbcd26dea0e55662198a3f5454e02cff",
                 "shasum": ""
             },
             "require": {
@@ -188,7 +188,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-11-01T23:08:48+00:00"
+            "time": "2017-11-07T00:13:20+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -1582,16 +1582,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.4.1",
+            "version": "8.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "dbdd31c4e1a21d2188622107c0b856f5c1b0e56e"
+                "reference": "68d25c07b7306340900abc4020c38683a817f0eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/dbdd31c4e1a21d2188622107c0b856f5c1b0e56e",
-                "reference": "dbdd31c4e1a21d2188622107c0b856f5c1b0e56e",
+                "url": "https://api.github.com/repos/drupal/core/zipball/68d25c07b7306340900abc4020c38683a817f0eb",
+                "reference": "68d25c07b7306340900abc4020c38683a817f0eb",
                 "shasum": ""
             },
             "require": {
@@ -1773,7 +1773,7 @@
                 "GPL-2.0+"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2017-11-01T18:38:24+00:00"
+            "time": "2017-11-03T13:20:16+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -3456,18 +3456,81 @@
             }
         },
         {
-            "name": "drupal/views_bulk_operations",
-            "version": "1.0.0-alpha2",
+            "name": "drupal/ultimate_cron",
+            "version": "2.0.0-alpha2",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/views_bulk_operations",
-                "reference": "8.x-1.0-alpha2"
+                "url": "https://git.drupal.org/project/ultimate_cron",
+                "reference": "8.x-2.0-alpha2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/views_bulk_operations-8.x-1.0-alpha2.zip",
-                "reference": "8.x-1.0-alpha2",
-                "shasum": "c3dc543b1bd85c2448e98787e5edd594ac60d607"
+                "url": "https://ftp.drupal.org/files/projects/ultimate_cron-8.x-2.0-alpha2.zip",
+                "reference": "8.x-2.0-alpha2",
+                "shasum": "adfebde3e4c13b99c6edbf0f4b994b9e91ce7ef7"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.0-alpha2",
+                    "datestamp": "1503075545",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Berdir",
+                    "homepage": "https://www.drupal.org/user/214652"
+                },
+                {
+                    "name": "Dane Powell",
+                    "homepage": "https://www.drupal.org/user/339326"
+                },
+                {
+                    "name": "arnested",
+                    "homepage": "https://www.drupal.org/user/245635"
+                },
+                {
+                    "name": "gielfeldt",
+                    "homepage": "https://www.drupal.org/user/366993"
+                },
+                {
+                    "name": "miro_dietiker",
+                    "homepage": "https://www.drupal.org/user/227761"
+                }
+            ],
+            "description": "Cron",
+            "homepage": "https://www.drupal.org/project/ultimate_cron",
+            "support": {
+                "source": "http://cgit.drupalcode.org/ultimate_cron"
+            }
+        },
+        {
+            "name": "drupal/views_bulk_operations",
+            "version": "1.0.0-beta2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/views_bulk_operations",
+                "reference": "8.x-1.0-beta2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/views_bulk_operations-8.x-1.0-beta2.zip",
+                "reference": "8.x-1.0-beta2",
+                "shasum": "84b751c2eacc037b85e432e73c1585fe4aebcd1b"
             },
             "require": {
                 "drupal/core": "*"
@@ -3478,11 +3541,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha2",
-                    "datestamp": "1505723344",
+                    "version": "8.x-1.0-beta2",
+                    "datestamp": "1509968585",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -4697,16 +4760,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v3.1.1",
+            "version": "v3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "a1e8e1a30e1352f118feff1a8481066ddc2f234a"
+                "reference": "08131e7ff29de6bb9f12275c7d35df71f25f4d89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/a1e8e1a30e1352f118feff1a8481066ddc2f234a",
-                "reference": "a1e8e1a30e1352f118feff1a8481066ddc2f234a",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/08131e7ff29de6bb9f12275c7d35df71f25f4d89",
+                "reference": "08131e7ff29de6bb9f12275c7d35df71f25f4d89",
                 "shasum": ""
             },
             "require": {
@@ -4744,7 +4807,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2017-09-02T17:10:46+00:00"
+            "time": "2017-11-04T11:48:34+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -5163,16 +5226,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.8.13",
+            "version": "v0.8.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "cdb5593c3684bab74e10fcfffe4a0c8d1c39695d"
+                "reference": "91e53c16560bdb8b9592544bb38429ae00d6baee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/cdb5593c3684bab74e10fcfffe4a0c8d1c39695d",
-                "reference": "cdb5593c3684bab74e10fcfffe4a0c8d1c39695d",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/91e53c16560bdb8b9592544bb38429ae00d6baee",
+                "reference": "91e53c16560bdb8b9592544bb38429ae00d6baee",
                 "shasum": ""
             },
             "require": {
@@ -5232,7 +5295,89 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2017-10-19T06:13:20+00:00"
+            "time": "2017-11-04T16:06:49+00:00"
+        },
+        {
+            "name": "rapidwebltd/php-uk-bank-holidays",
+            "version": "v2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rapidwebltd/php-uk-bank-holidays.git",
+                "reference": "5bfdb029a3c6d495fc1b92907306c1820116fbcd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rapidwebltd/php-uk-bank-holidays/zipball/5bfdb029a3c6d495fc1b92907306c1820116fbcd",
+                "reference": "5bfdb029a3c6d495fc1b92907306c1820116fbcd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3",
+                "rapidwebltd/rw-file-cache": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "RapidWeb\\UkBankHolidays\\": "./src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL3"
+            ],
+            "description": "php uk bank holidays is a simple tool that allows you to retrive uk bank holidays in a easy to read format.",
+            "keywords": [
+                "PHP Library",
+                "PHP uk bank holidays library",
+                "bank holidays",
+                "library",
+                "uk bank holidays"
+            ],
+            "time": "2017-04-03T12:56:58+00:00"
+        },
+        {
+            "name": "rapidwebltd/rw-file-cache",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rapidwebltd/RW-File-Cache.git",
+                "reference": "3d9548f4269ba603635e5e86eceee10e9f633903"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rapidwebltd/RW-File-Cache/zipball/3d9548f4269ba603635e5e86eceee10e9f633903",
+                "reference": "3d9548f4269ba603635e5e86eceee10e9f633903",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "rapidweb\\RWFileCache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL3"
+            ],
+            "description": "PHP File-based Caching Library",
+            "homepage": "https://github.com/rapidwebltd/RW-File-Cache",
+            "keywords": [
+                "cache",
+                "caching",
+                "caching library",
+                "file cache",
+                "library",
+                "php"
+            ],
+            "time": "2017-03-13T12:33:56+00:00"
         },
         {
             "name": "sentry/sentry",
@@ -6650,16 +6795,16 @@
         },
         {
             "name": "twistor/flysystem-stream-wrapper",
-            "version": "v1.0.7",
+            "version": "v1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twistor/flysystem-stream-wrapper.git",
-                "reference": "d89928f504af7807e46d018baf966db8140124eb"
+                "reference": "00278abc16bc4bd759e1ec4f2eadb0432fe8d5ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twistor/flysystem-stream-wrapper/zipball/d89928f504af7807e46d018baf966db8140124eb",
-                "reference": "d89928f504af7807e46d018baf966db8140124eb",
+                "url": "https://api.github.com/repos/twistor/flysystem-stream-wrapper/zipball/00278abc16bc4bd759e1ec4f2eadb0432fe8d5ac",
+                "reference": "00278abc16bc4bd759e1ec4f2eadb0432fe8d5ac",
                 "shasum": ""
             },
             "require": {
@@ -6667,9 +6812,7 @@
                 "twistor/stream-util": "~1.0"
             },
             "require-dev": {
-                "phpspec/prophecy": "^1.2.0",
-                "phpspec/prophecy-phpunit": "^1.0.2",
-                "phpunit/phpunit": "~4.1"
+                "phpunit/phpunit": "~4.8"
             },
             "type": "library",
             "autoload": {
@@ -6689,7 +6832,7 @@
             ],
             "description": "Adapts Flysystem filesystems to PHP stream wrappers.",
             "homepage": "http://github.com/twistor/flysystem-stream-wrapper",
-            "time": "2016-04-29T08:24:19+00:00"
+            "time": "2017-11-06T05:32:20+00:00"
         },
         {
             "name": "twistor/stream-util",
@@ -8013,7 +8156,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/examples",
-                "reference": "0ca88a3d098d2c0b9e752e94a1ed5600b86b6c0e"
+                "reference": "dea6782b90837f53e1e0ca21956b680b1c7811c3"
             },
             "require": {
                 "drupal/core": "*"
@@ -8029,7 +8172,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1509046387",
+                    "datestamp": "1509562686",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -8112,8 +8255,7 @@
                 "source": "http://cgit.drupalcode.org/examples",
                 "issues": "https://www.drupal.org/project/issues/examples",
                 "documentation": "https://api.drupal.org/api/examples"
-            },
-            "time": "2017-11-01 18:57:05"
+            }
         },
         {
             "name": "fabpot/goutte",
@@ -9886,6 +10028,7 @@
         "drupal/invite": 20,
         "drupal/login_destination": 20,
         "drupal/queue_ui": 20,
+        "drupal/ultimate_cron": 15,
         "drupal/config_inspector": 10,
         "drupal/examples": 20
     },
