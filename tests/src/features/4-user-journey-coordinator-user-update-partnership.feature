@@ -1,4 +1,4 @@
-@Pending @Bug
+@ci @Bug
 Feature: Coordinator User - Manage Addresses
 
     Scenario: Coordinator User - Manage Addresses
