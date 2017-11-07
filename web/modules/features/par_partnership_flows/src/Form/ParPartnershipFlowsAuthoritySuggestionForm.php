@@ -16,18 +16,13 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
+  protected $pageTitle = 'Which authority are you acting on behalf of?';
+
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
     return 'par_authority_selection';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function titleCallback() {
-    return 'Choose your authority';
   }
 
   /**

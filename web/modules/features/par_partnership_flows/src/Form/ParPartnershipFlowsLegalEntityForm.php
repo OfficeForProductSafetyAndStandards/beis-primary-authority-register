@@ -35,6 +35,19 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
   ];
 
   /**
+   * {@inheritdoc}
+   */
+  public function titleCallback() {
+    $legal_entity = $this->getRouteParam('par_data_legal_entity');
+
+    $form_context = $legal_entity ? 'Change the legal entity for your organisation' : 'Add a legal entity for your organisation';
+
+    $this->pageTitle = "Update Partnership Information | {$form_context}";
+
+    return parent::titleCallback();
+  }
+
+  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *

@@ -35,6 +35,13 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
   ];
 
   /**
+   * {@inheritdoc}
+   */
+  public function titleCallback() {
+    return "Primary Authority Advice | Edit document type and regulatory functions";
+  }
+
+  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *

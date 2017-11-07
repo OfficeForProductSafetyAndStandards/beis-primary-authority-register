@@ -14,12 +14,7 @@ class ParPartnershipFlowsInviteSentController extends ParBaseController {
 
   use ParPartnershipFlowsTrait;
 
-  /**
-   * {@inheritdoc}
-   */
-  public function titleCallback() {
-    return 'Invite sent';
-  }
+  protected $pageTitle = 'Notification sent';
 
   /**
    * {@inheritdoc}

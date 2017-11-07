@@ -21,6 +21,9 @@ class ParPartnershipFlowsApplicationOrganisationForm extends ParBaseForm {
       'organisation_name' => 'organisation_name',
     ],
   ];
+
+  protected $pageTitle = 'Who are you in partnership with?';
+
   /**
    * {@inheritdoc}
    */
