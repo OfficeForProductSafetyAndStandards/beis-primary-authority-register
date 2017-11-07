@@ -12,4 +12,5 @@ config.services = ['selenium-standalone'];
 config.baseUrl = 'http://127.0.0.1:80';
 config.tags = '@ci, ~@Pending, ~@setup, ~@deprecated, ~@Bug';
 config.cucumberOpts.failFast = true;
+config.bail = 1;
 exports.config = config;
