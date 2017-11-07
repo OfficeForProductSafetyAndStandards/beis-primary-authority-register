@@ -5,8 +5,6 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
         # LOGIN SCREEN
 
-#        Given I reset the test data
-
         Given I am logged in as "par_enforcement_officer@example.com"
         And I click on the link "Search for a partnership"
         When I add "Charlie" to the inputfield "#edit-keywords"
@@ -19,7 +17,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I click on authority selection if available
 
 #        # CHOOSE MEMBER
-#
+
         Then I expect that element "#par-enforce-organisation" contains the text "Choose the member to enforce"
         And I click on the radio "label*=Fix-It Shop"
         And I click on the button "#edit-next"
