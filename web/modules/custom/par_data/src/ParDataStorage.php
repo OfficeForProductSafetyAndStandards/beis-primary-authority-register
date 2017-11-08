@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data;
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\trance\TranceStorage;
 use Drupal\Core\Entity\EntityInterface;
@@ -69,6 +70,9 @@ class ParDataStorage extends TranceStorage {
     if (isset($status_field) && empty($values[$status_field]) && !empty($allowed_statuses)) {
       $values[$status_field] = key($allowed_statuses);
     }
+
+    // Clear all empty values.
+    $values = NestedArray::filter($values);
 
     return parent::create($values);
   }
