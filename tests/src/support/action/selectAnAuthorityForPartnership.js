@@ -17,7 +17,7 @@ module.exports = (done) =>
      */
     const nrOfElements = browser.elements('#edit-par-data-authority-id--wrapper').value;
     if (nrOfElements > 0) {
-        browser.element('.form-radio').click();
+        browser.element('.someElem*=City Enforcement Squad').click();
         browser.element('#edit-next').click();
         done();
     }
