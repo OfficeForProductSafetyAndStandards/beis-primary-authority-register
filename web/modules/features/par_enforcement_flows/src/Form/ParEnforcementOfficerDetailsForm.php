@@ -43,6 +43,7 @@ class ParEnforcementOfficerDetailsForm extends ParBaseEnforcementForm {
       $this->loadDataValue("first_name", $enforcement_officer->get('first_name')->getString());
       $this->loadDataValue("last_name", $enforcement_officer->get('last_name')->getString());
       $this->loadDataValue("work_phone", $enforcement_officer->get('work_phone')->getString());
+      $this->loadDataValue("enforcement_officer_id", $enforcement_officer->id());
     }
   }
 
@@ -80,6 +81,11 @@ class ParEnforcementOfficerDetailsForm extends ParBaseEnforcementForm {
       '#type' => 'textfield',
       '#title' => $this->t('Please confirm your work phone'),
       '#default_value' => $this->getDefaultValues("work_phone"),
+    ];
+
+    $form['enforcement_officer_id'] = [
+      '#type' => 'hidden',
+      '#value' => $this->getDefaultValues('enforcement_officer_id'),
     ];
 
     return parent::buildForm($form, $form_state);

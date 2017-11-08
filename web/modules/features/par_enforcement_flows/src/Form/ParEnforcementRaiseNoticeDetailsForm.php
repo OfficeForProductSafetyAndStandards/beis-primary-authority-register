@@ -135,13 +135,12 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    if ($authority_person = $this->getEnforcingPerson()) {
-      $enforcement_officer_id = $authority_person->id() ? $authority_person->id() : NULL;
-    }
 
     if ($partnership = $this->getRouteParam('par_data_partnership')) {
       $partnership_id = $partnership->id() ? $partnership->id() : NULL;
     }
+
+    $enforcement_officer_id = $this->getTempDataValue('enforcement_officer_id') ? $this->getTempDataValue('enforcement_officer_id') : NULL;
 
     $time = new \DateTime();
 

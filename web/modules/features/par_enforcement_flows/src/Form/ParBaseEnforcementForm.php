@@ -19,6 +19,13 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
   }
 
   /**
+   *  Get the cached enforcing person ID.
+   */
+  public function getEnforcingPersonID() {
+    return $this->getDefaultValues('enforcement_officer_id', '', 'par_enforcement_officer_details');
+  }
+
+  /**
    * Get the cached enforced organisation ID.
    */
   public function getEnforcedOrganisationID() {
