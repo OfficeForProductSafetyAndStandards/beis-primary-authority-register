@@ -121,11 +121,21 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
     // Get the correct authority id / organisation id set within the previous form.
     $enforcing_authority_id = $this->getEnforcingAuthorityID();
     $enforced_organisation_id = $this->getEnforcedOrganisationID();
+    $enforcement_officer_id = $this->getEnforcingPersonID();
 
     if (empty($enforcing_authority_id)) {
       $form['authority_enforcement_ids'] = [
         '#type' => 'markup',
         '#markup' => $this->t('You have not selected an authority to enforce on behalf of, please go back to the previous steps to complete this form.'),
+        '#prefix' => '<p><strong>',
+        '#suffix' => '</strong><p>',
+      ];
+    }
+
+    if (empty($enforcement_officer_id)) {
+      $form['enforcement_ids'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('There is no valid enforcement officer data in the system please contact the help-desk.'),
         '#prefix' => '<p><strong>',
         '#suffix' => '</strong><p>',
       ];
