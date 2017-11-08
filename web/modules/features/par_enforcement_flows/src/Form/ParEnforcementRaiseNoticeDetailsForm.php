@@ -140,8 +140,6 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       $partnership_id = $partnership->id() ? $partnership->id() : NULL;
     }
 
-    $enforcement_officer_id = $this->getTempDataValue('enforcement_officer_id') ? $this->getTempDataValue('enforcement_officer_id') : NULL;
-
     $time = new \DateTime();
 
     $enforcementNotice_data = [
@@ -149,7 +147,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       'summary' => $this->getTempDataValue('action_summary'),
       'field_enforcing_authority' => $this->getEnforcingAuthorityID(),
       'field_organisation' => $this->getEnforcedOrganisationID(),
-      'field_person' =>  $enforcement_officer_id,
+      'field_person' =>  $this->getEnforcingPersonID(),
       'field_partnership' => $partnership_id,
       'notice_date' => $time->format("Y-m-d"),
     ];
