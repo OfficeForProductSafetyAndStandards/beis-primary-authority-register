@@ -49,6 +49,6 @@
     "wdio-selenium-standalone-service": "0.0.9",
     "wdio-spec-reporter": "0.1.0",
     "webdrivercss": "^1.1.10",
-    "webdriverio": "4.7.1"
+    "webdriverio": "4.8.0"
   }
 }

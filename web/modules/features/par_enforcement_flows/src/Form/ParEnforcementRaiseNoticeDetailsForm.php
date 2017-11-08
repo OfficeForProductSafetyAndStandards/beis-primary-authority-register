@@ -7,6 +7,8 @@ use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
+use Drupal\par_data\Entity\ParDataOrganisation;
+use Drupal\par_data\Entity\ParDataAuthority;
 
 /**
  * The raise form for creating a new enforcement notice.
@@ -44,12 +46,13 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
     $this->retrieveEditableValues();
     $enforcement_notice_entity = $this->getParDataManager()->getParBundleEntity('par_data_enforcement_notice');
 
-    //get the correct par_data_authority_id set by the previous form
-    $authority_id = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
+    // Get the correct authority id / organisation id set within the previous form.
+    $enforcing_authority_id = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
+    $organisation_id = $this->getDefaultValues('par_data_organisation_id', '', 'par_enforce_organisation');
 
-    // Organisation summary.
-    $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $par_data_authority = current($par_data_partnership->getAuthority());
+    // Load required entities for the enforcement flow.
+    $par_data_organisation = ParDataOrganisation::load($organisation_id);
+    $par_data_authority = ParDataAuthority::load($enforcing_authority_id);
 
     $form['authority'] =[
       '#type' => 'fieldset',
@@ -140,16 +143,24 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     $partnership = $this->getRouteParam('par_data_partnership');
-    $enforcementNotice_data = [];
+
+    // Load the enforcing Authority.
+    $acting_authority = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
+
+    if ($par_data_authority = ParDataAuthority::load($acting_authority)) {
+      // Get logged in user ParDataPerson related to the primary authority.
+      $authority_person = $this->getParDataManager()->getUserPerson($this->getCurrentUser(), $par_data_authority);
+      $authority_person_id = $authority_person->id() ? $authority_person->id() : NULL;
+    }
 
     $time = new \DateTime();
 
     $enforcementNotice_data = [
       'notice_type' => $this->getTempDataValue('enforcement_type'),
       'summary' => $this->getTempDataValue('action_summary'),
-      'field_regulatory_function' => $this->getTempDataValue('regulatory_functions'),
       'field_enforcing_authority' => $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection'),
-      'field_organisation' => $this->getDefaultValues('par_data_organisation_id', '', 'par_data_organisation_id'),
+      'field_organisation' => $this->getDefaultValues('par_data_organisation_id', '', 'par_enforce_organisation'),
+      'field_person' =>  $authority_person_id,
       'field_partnership' => $partnership->id(),
       'notice_date' => $time->format("Y-m-d"),
     ];

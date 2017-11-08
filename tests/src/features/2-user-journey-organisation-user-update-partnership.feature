@@ -1,4 +1,4 @@
-@ci
+@ci @Bug
 Feature: Business User - Manage Addresses
 
     Scenario: Business User - Manage Addresses
