@@ -1,6 +1,9 @@
-<?php 
+<?php
 
 $settings['trusted_host_patterns'] = ['primary-authority.beis.gov.uk'];
+
+// Setting to enable PAR Green header/footer override.
+$settings['par_branded_header_footer'] = TRUE;
 
 // Only use S3 public store when required.
 if (getenv('S3_BUCKET_PUBLIC')) {
