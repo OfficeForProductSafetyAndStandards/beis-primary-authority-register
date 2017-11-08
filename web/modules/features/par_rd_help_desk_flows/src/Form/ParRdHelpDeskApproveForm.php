@@ -53,14 +53,22 @@ class ParRdHelpDeskApproveForm extends ParBaseForm {
     $par_data_authority = current($par_data_partnership->getAuthority());
     $this->retrieveEditableValues($par_data_partnership);
 
-    $form['partnership_title'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Partnership is approved between'),
-      '#prefix' => '<h3>',
-      '#suffix' => '</h3>',
+    $form['partnership_info'] =[
+      '#type' => 'fieldset',
+      '#title' => $this->t('Partnership is approved between'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
     ];
+//
+//    $build['partnership_info']['partnership_between_heading'] = [
+//      '#type' => 'markup',
+//      '#markup' => $this->t('In partnership with'),
+//      '#prefix' => '<h2>',
+//      '#suffix' => '</h2>',
+//    ];
 
-    $form['partnership_text'] = [
+    $form['partnership_info']['partnership_between'] = [
       '#type' => 'markup',
       '#markup' => "{$par_data_organisation->get('organisation_name')->getString()} and {$par_data_authority->get('authority_name')->getString()}",
       '#prefix' => '<p>',
