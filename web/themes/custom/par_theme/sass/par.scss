@@ -294,19 +294,21 @@ fieldset, legend {
   margin: 0 0 0.5em 0;
 }
 
-/* PAR Header/Footer */
-#global-header {
-  .header-wrapper,
-  & {
-    background: #006633;
+// PAR green branded header/footer.
+.par-header-footer {
+  #global-header {
+    .header-wrapper,
+    & {
+      background: #006633;
+    }
   }
-}
 
-#footer {
-  .footer-meta {
-    .copyright a {
-      background-image: url("../assets/images/PAR/PAR-logo.png");
-      background-size: 100px 100px;
+  #footer {
+    .footer-meta {
+      .copyright a {
+        background-image: url("../assets/images/PAR/PAR-logo.png");
+        background-size: 100px 100px;
+      }
     }
   }
 }

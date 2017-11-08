@@ -1,6 +1,21 @@
 <?php
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Site\Settings;
+
+/**
+ * Implements hook_preprocess_page().
+ *
+ * @param array $variables
+ */
+function par_theme_preprocess_html(array &$variables) {
+
+  // Add override class to page to display PAR green branded app.
+  if (Settings::get('par_branded_header_footer', FALSE)) {
+    $variables['attributes']['class'][] = 'par-header-footer';
+  }
+
+}
 
 /**
  * Implements hook_preprocess_fieldset().

@@ -8,7 +8,7 @@ Cucumberjs/Webdriverio
 To run your tests just call the [WDIO runner](http://webdriver.io/guide/testrunner/gettingstarted.html):
 
 ```
-$ ./node_modules/.bin/wdio wdio.<CONFIG>.conf.js
+$ ./node_modules/.bin/wdio wdio.DEV.conf.js
 ```
 
 Environments available are: 
@@ -20,7 +20,7 @@ Environments available are:
 Sometimes its useful to only execute a single feature file, to do so use the following command:
 
 ```sh
-$ ./node_modules/.bin/wdio --spec ./test/features/select.feature wdio.<CONFIG>.conf.js
+$ ./node_modules/.bin/wdio --spec ./test/features/select.feature wdio.DEV.conf.js
 ```
 
 # 
