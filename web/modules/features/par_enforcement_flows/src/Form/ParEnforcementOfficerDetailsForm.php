@@ -4,18 +4,13 @@ namespace Drupal\par_enforcement_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\user\Entity\User;
-use Drupal\par_data\Entity\ParDataAuthority;
-
 /**
  * Enforcement officer details form used to update/store new details
  * for the enforcing officer during the raise enforcement flow.
  */
-class ParEnforcementOfficerDetailsForm extends ParBaseForm {
+class ParEnforcementOfficerDetailsForm extends ParBaseEnforcementForm {
 
   use ParPartnershipFlowsTrait;
 
@@ -41,13 +36,14 @@ class ParEnforcementOfficerDetailsForm extends ParBaseForm {
    * @param \Drupal\par_data\Entity\ParDataPerson $authority_person
    *   The ParDataPerson being retrieved.
    */
-  public function retrieveEditableValues(ParDataPerson $authority_person = NULL) {
+  public function retrieveEditableValues() {
 
-    if ($authority_person) {
+    if ($enforcement_officer = $this->getEnforcingPerson()) {
       // Load person data.
-      $this->loadDataValue("first_name", $authority_person->get('first_name')->getString());
-      $this->loadDataValue("last_name", $authority_person->get('last_name')->getString());
-      $this->loadDataValue("work_phone", $authority_person->get('work_phone')->getString());
+      $this->loadDataValue("first_name", $enforcement_officer->get('first_name')->getString());
+      $this->loadDataValue("last_name", $enforcement_officer->get('last_name')->getString());
+      $this->loadDataValue("work_phone", $enforcement_officer->get('work_phone')->getString());
+      $this->loadDataValue("enforcement_officer_id", $enforcement_officer->id());
     }
   }
 
@@ -56,27 +52,18 @@ class ParEnforcementOfficerDetailsForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state,ParDataPartnership $par_data_partnership = NULL) {
 
-    // Load the Authority.
-    $enforcing_authority_id = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
+    // Ensure we have all the required enforcement data stored in the cache in order to proceed.
+    $this->retrieveEditableValues();
+    $cached_enforcement_data = $this->validateEnforcementCachedData();
 
-    if (empty($enforcing_authority_id)) {
-      $form['authority_enforcement_ids'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('You have not selected an authority to enforce on behalf of, please go back to the previous steps to complete this form.'),
-        '#prefix' => '<p><strong>',
-        '#suffix' => '</strong><p>',
-      ];
-      // Defensive coding don't attempt to render form elements without having the appropriate object
-      // $par_data_organisation and $par_data_authority proceeding without them will cause system failures.
+    if ($cached_enforcement_data === TRUE){
+      $raise_enforcement_form = $this->BuildRaiseEnforcementFormElements();
+      $form = array_merge($form, $raise_enforcement_form);
+    }
+    else {
+      $form = array_merge($form, $cached_enforcement_data);
       return parent::buildForm($form, $form_state);
     }
-
-    if ($par_data_authority = ParDataAuthority::load($enforcing_authority_id)) {
-      // Get logged in user ParDataPerson(s) related to the primary authority.
-      $authority_person = $this->getParDataManager()->getUserPerson($this->getCurrentUser(), $par_data_authority);
-    }
-
-    $this->retrieveEditableValues($authority_person);
 
     $form['first_name'] = [
       '#type' => 'textfield',
@@ -96,9 +83,9 @@ class ParEnforcementOfficerDetailsForm extends ParBaseForm {
       '#default_value' => $this->getDefaultValues("work_phone"),
     ];
 
-    $form['action_id'] = [
+    $form['enforcement_officer_id'] = [
       '#type' => 'hidden',
-      '#value' => $enforcing_authority_id,
+      '#value' => $this->getDefaultValues('enforcement_officer_id'),
     ];
 
     return parent::buildForm($form, $form_state);
@@ -108,17 +95,34 @@ class ParEnforcementOfficerDetailsForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    // Validate required fields.
-    if (empty($form_state->getValue('first_name'))) {
-      $form_state->setErrorByName('first_name', $this->t('<a href="#edit-first-name">The first name field is required.</a>'));
+
+    $enforcing_authority_id = $this->getEnforcingAuthorityID();
+    $enforced_organisation_id = $this->getEnforcedOrganisationID();
+    $cached_data_available = TRUE;
+
+    if (empty($enforcing_authority_id)) {
+      $this->setElementError('authority_enforcement_ids', $form_state, 'Please select an authority to enforce on behalf of to proceed.');
+      $cached_data_available = FALSE;
     }
 
-    if (empty($form_state->getValue('last_name'))) {
-      $form_state->setErrorByName('last_name', $this->t('<a href="#edit-last-name">The last name field is required.</a>'));
+    if (empty($enforced_organisation_id)) {
+      $this->setElementError('organisation_enforcement_ids', $form_state, 'Please select an organisation to enforce on behalf of to proceed.');
+      $cached_data_available = FALSE;
     }
+    // Only validate the form fields if they have been rendered.
+    if ($cached_data_available === TRUE) {
+      // Validate required fields.
+      if (empty($form_state->getValue('first_name'))) {
+        $form_state->setErrorByName('first_name', $this->t('<a href="#edit-first-name">The first name field is required.</a>'));
+      }
 
-    if (empty($form_state->getValue('work_phone'))) {
-      $form_state->setErrorByName('work_phone', $this->t('<a href="#edit-work-phone">The work phone field is required.</a>'));
+      if (empty($form_state->getValue('last_name'))) {
+        $form_state->setErrorByName('last_name', $this->t('<a href="#edit-last-name">The last name field is required.</a>'));
+      }
+
+      if (empty($form_state->getValue('work_phone'))) {
+        $form_state->setErrorByName('work_phone', $this->t('<a href="#edit-work-phone">The work phone field is required.</a>'));
+      }
     }
 
     parent::validateForm($form, $form_state);
@@ -130,23 +134,15 @@ class ParEnforcementOfficerDetailsForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Load the enforcing Authority.
-    $enforcing_authority_id = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
+    $enforcement_officer = $this->getEnforcingPerson();
 
-    if ($par_data_authority = ParDataAuthority::load($enforcing_authority_id)) {
-      // Get logged in user ParDataPerson(s) related to the primary authority.
-      $authority_person = $this->getParDataManager()->getUserPerson($this->getCurrentUser(), $par_data_authority);
-    }
+    // Save updated par person details.
+    if ($enforcement_officer) {
+      $enforcement_officer->set('first_name', $this->getTempDataValue('first_name'));
+      $enforcement_officer->set('last_name', $this->getTempDataValue('last_name'));
+      $enforcement_officer->set('work_phone', $this->getTempDataValue('work_phone'));
 
-    // Save person details.
-    if ($authority_person) {
-      $authority_person->set('first_name', $this->getTempDataValue('first_name'));
-      $authority_person->set('last_name', $this->getTempDataValue('last_name'));
-      $authority_person->set('work_phone', $this->getTempDataValue('work_phone'));
-
-      if ($authority_person->save()) {
-      }
-      else {
+      if (!$enforcement_officer->save()) {
         $message = $this->t('This %person could not be updated/saved for %form_id');
         $replacements = [
           '%person' => $this->getTempDataValue('first_name'),
@@ -156,7 +152,6 @@ class ParEnforcementOfficerDetailsForm extends ParBaseForm {
           ->error($message, $replacements);
       }
     }
-
   }
 
 }
