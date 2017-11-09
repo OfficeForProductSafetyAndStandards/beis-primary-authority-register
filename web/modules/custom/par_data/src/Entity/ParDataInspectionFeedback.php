@@ -94,6 +94,7 @@ class ParDataInspectionFeedback extends ParDataEntity {
     $fields['notes'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Notes'))
       ->setDescription(t('Notes about this inspection feedback.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
@@ -116,6 +117,7 @@ class ParDataInspectionFeedback extends ParDataEntity {
     $fields['primary_authority_status'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Primary Authority Status'))
       ->setDescription(t('The status of the primary authority on this request.'))
+      ->setRequired(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 255,
