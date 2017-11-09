@@ -6,6 +6,7 @@ use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataLegalEntity;
+use Drupal\par_data\Entity\ParDataPerson;
 
 /**
  * The base form controller for all PAR raise enforcement forms.
