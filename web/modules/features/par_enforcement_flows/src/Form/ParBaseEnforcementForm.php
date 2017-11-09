@@ -72,31 +72,6 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
   }
 
   /**
-   * Get the cached enforced legal entity registered name.
-   */
-  public function getEnforcedLegalEntityName() {
-
-    $selected_entity =  $this->getEnforcedLegalEntity();
-
-    if ($selected_entity == 'add_new') {
-      return $this->getDefaultValues('alternative_legal_entity', '', 'par_enforcement_notice_raise');
-    }
-    else {
-      return ParDataLegalEntity::load($selected_entity)->get('registered_name')->getString();
-    }
-  }
-
-  /**
-   *  Get the cached enforcing authority entity.
-   *
-   *  @return ParDataAuthority
-   *    ParDataAuthority entity object
-   */
-  public function getEnforcingAuthorityEntity() {
-    return ParDataAuthority::load($this->getEnforcingAuthorityID());
-  }
-
-  /**
    * Get the cached enforced organisation entity.
    *
    * @return ParDataOrganisation
