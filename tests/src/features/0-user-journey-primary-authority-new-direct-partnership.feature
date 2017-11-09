@@ -12,8 +12,8 @@ Feature: New Direct Partnership For PA To Approve
 
         # CHOOSE PARTNERSHIP TYPE
 
-#        And I click on authority selection if available
-        When I click on the radio ".form-radio"
+        And I click on authority selection if available
+#        When I click on the radio ".form-radio"
         And I click on the button "#edit-next"
 
         # CREATE NEW PARTNERSHIP FORM

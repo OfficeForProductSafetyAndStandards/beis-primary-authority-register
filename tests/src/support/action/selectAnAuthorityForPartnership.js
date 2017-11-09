@@ -15,13 +15,13 @@ module.exports = (done) =>
      * The method to call on the browser object
      * @type {String}
      */
-    const nrOfElements = browser.elements('#edit-par-data-authority-id--wrapper').value;
-    if (nrOfElements > 0) {
-        browser.element('.someElem*=City Enforcement Squad').click();
+    //const nrOfElements = browser.elements('#edit-par-data-authority-id--wrapper').value;
+    //if (nrOfElements > 0) {
+        browser.element('.authority_name*=City Enforcement Squad').click();
         browser.element('#edit-next').click();
         done();
-    }
-    else {
-        done();
-    }
+    //}
+    //else {
+    //    done();
+    //}
 };
