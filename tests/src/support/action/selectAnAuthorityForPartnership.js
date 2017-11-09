@@ -15,10 +15,10 @@ module.exports = (done) =>
      * The method to call on the browser object
      * @type {String}
      */
-    //const nrOfElements = browser.elements('#edit-par-data-authority-id--wrapper').value;
-    //if (nrOfElements > 0) {
-        browser.element('.authority_name*=City Enforcement Squad').click();
-        browser.element('#edit-next').click();
+    //const nrOfElements = browser.elements('#par-authority-selection').value;
+    //if (nrOfElements != 0) {
+        browser.element('.form-label*=City Enforcement Squad').click();
+        //browser.element('#edit-next').click();
         done();
     //}
     //else {
