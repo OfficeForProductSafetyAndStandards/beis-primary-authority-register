@@ -72,6 +72,16 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
   }
 
   /**
+   *  Get the cached enforcing authority entity.   
+   *    
+   *  @return ParDataAuthority    
+   *    ParDataAuthority entity object    
+   */   
+  public function getEnforcingAuthorityEntity() {   
+    return ParDataAuthority::load($this->getEnforcingAuthorityID());    
+  }   
+    
+  /**
    * Get the cached enforced organisation entity.
    *
    * @return ParDataOrganisation
