@@ -63,15 +63,6 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       '#markup' => $this->t('Include the following information'),
     ];
 
-    $form['enforcement_text'] =[
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-      '#prefix' => '<ul>',
-      '#suffix' => '</ul>',
-    ];
-
     $enforcement_data = [
       'Full details of the contravention',
       'Which products or services are affected',
