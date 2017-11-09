@@ -127,9 +127,6 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    if ($authority_person = $this->getEnforcingPerson()) {
-      $enforcement_officer_id = $authority_person->id() ? $authority_person->id() : NULL;
-    }
 
     if ($partnership = $this->getRouteParam('par_data_partnership')) {
       $partnership_id = $partnership->id() ? $partnership->id() : NULL;
@@ -142,7 +139,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       'summary' => $this->getTempDataValue('action_summary'),
       'field_enforcing_authority' => $this->getEnforcingAuthorityID(),
       'field_organisation' => $this->getEnforcedOrganisationID(),
-      'field_person' =>  $enforcement_officer_id,
+      'field_person' =>  $this->getEnforcingPersonID(),
       'field_partnership' => $partnership_id,
       'notice_date' => $time->format("Y-m-d"),
     ];
@@ -158,17 +155,17 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       $enforcementNotice_data['field_legal_entity'] = $legal_entity_value;
     }
 
-    $enforcementAction = \Drupal::entityManager()->getStorage('par_data_enforcement_notice')->create($enforcementNotice_data);
+    $enforcementNotification = \Drupal::entityManager()->getStorage('par_data_enforcement_notice')->create($enforcementNotice_data);
 
-    if ($enforcementAction->save()) {
+    if ($enforcementNotification->save()) {
       $this->deleteStore();
       // Go directly to the action setup form we cannot use links within forms without losing form data.
-      $form_state->setRedirect($this->getFlow()->getNextRoute('next'), ['par_data_partnership' => $partnership->id(), 'par_data_enforcement_notice' => $enforcementAction->id()]);
+      $form_state->setRedirect($this->getFlow()->getNextRoute('next'), ['par_data_partnership' => $partnership->id(), 'par_data_enforcement_notice' => $enforcementNotification->id()]);
     }
     else {
       $message = $this->t('The enforcement entity %entity_id could not be saved for %form_id');
       $replacements = [
-        '%entity_id' => $enforcementAction->id(),
+        '%entity_id' => $enforcementNotification->id(),
         '%form_id' => $this->getFormId(),
      ];
       $this->getLogger($this->getLoggerChannel())
