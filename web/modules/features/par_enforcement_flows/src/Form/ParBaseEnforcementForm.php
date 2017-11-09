@@ -15,13 +15,19 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
 
   /**
    *  Get the cached enforcing authority ID.
+   *
+   *  @return string
+   *    Enforcing authority ID stored in te temp cache.
    */
   public function getEnforcingAuthorityID() {
     return $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
   }
 
   /**
-   *  Get the cached enforcing person ID.
+   *  Get the cached enforcing officer ID.
+   *
+   * @return string
+   *  Enforcing officer ID stored in te temp cache.
    */
   public function getEnforcingPersonID() {
     return $this->getDefaultValues('enforcement_officer_id', '', 'par_enforcement_officer_details');
@@ -29,6 +35,9 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
 
   /**
    * Get the cached enforced organisation ID.
+   *
+   * @return string
+   *  Enforced organisation ID stored in te temp cache.
    */
   public function getEnforcedOrganisationID() {
     return $this->getDefaultValues('par_data_organisation_id', '', 'par_enforce_organisation');
@@ -36,13 +45,19 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
 
   /**
    * Get the cached enforced legal entity ID.
+   *
+   * @return string
+   *    Enforced legal entity ID stored in te temp cache.
    */
   public function getEnforcedLegalEntity() {
-    return $this->getDefaultValues('legal_entities_select', '', 'par_enforcement_notice_raise');;
+    return $this->getDefaultValues('legal_entities_select', '', 'par_enforcement_notice_raise');
   }
 
   /**
    * Get the cached enforced legal entity registered name.
+   *
+   *  @return ParDataLegalEntity | string
+   *    ParDataLegalEntity entity object or the custom text entered in the form.
    */
   public function getEnforcedLegalEntityName() {
 
@@ -58,6 +73,9 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
 
   /**
    *  Get the cached enforcing authority entity.
+   *
+   *  @return ParDataAuthority
+   *    ParDataAuthority entity object
    */
   public function getEnforcingAuthorityEntity() {
     return ParDataAuthority::load($this->getEnforcingAuthorityID());
@@ -65,6 +83,9 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
 
   /**
    * Get the cached enforced organisation entity.
+   *
+   * @return ParDataOrganisation
+   *  ParDataOrganisation entity object
    */
   public function getEnforcedOrganisationEntity() {
     return ParDataOrganisation::load($this->getEnforcedOrganisationID());
@@ -72,6 +93,9 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
 
   /**
    * Get the cached enforcing officer entity.
+   *
+   * @return ParDataPerson
+   *  ParDataPerson entity object
    */
   public function getEnforcingOfficerEntity() {
     return ParDataPerson::load($this->getEnforcingPersonID());
@@ -80,6 +104,10 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
   /**
    * Constructs the enforcement form elements shared across the enforcement
    * forms within the raise enforcement flow.
+   *
+   * @return $form
+   *  Render array containing the form elements required for the raise flow.
+   *
    */
   public function BuildRaiseEnforcementFormElements() {
 
