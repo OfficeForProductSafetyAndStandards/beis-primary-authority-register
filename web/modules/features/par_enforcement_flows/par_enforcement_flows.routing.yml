@@ -61,6 +61,18 @@ par_enforcement_flows.enforce_organisation:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+par_enforcement_flows.officer_details:
+  path: '/enforcement-notice/{par_data_partnership}/enforcing-officer'
+  defaults:
+    _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementOfficerDetailsForm'
+    _title_callback: '\Drupal\par_enforcement_flows\Form\ParEnforcementOfficerDetailsForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
 par_enforcement_flows.raise:
   path: '/enforcement-notice/{par_data_partnership}/raise'
   defaults:
@@ -133,7 +145,7 @@ par_enforcement_flows.referred_authority:
   path: '/enforcement-notice/{par_data_enforcement_notice}/refer-to'
   defaults:
     _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementReferredAuthorityForm'
-    _title: 'Approve Enforcement Notice'
+    _title: 'Refer Enforcement Notice'
   requirements:
     _permission: 'approve enforcement notice'
     par_data_enforcement_notice: \d+
