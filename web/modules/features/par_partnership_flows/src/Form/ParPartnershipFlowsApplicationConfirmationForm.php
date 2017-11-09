@@ -39,27 +39,11 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
   }
 
   /**
-   * Helper to get all the editable values when editing or
-   * revisiting a previously edited page.
-   *
-   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
-   *   The Partnership being retrieved.
-   */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership) {
-    $this->setState("edit:{$par_data_partnership->id()}");
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-
     // Save the partnership so that it can be retrieved for review.
     $par_data_partnership = $this->savePartnership($form, $form_state);
-
-    if ($par_data_partnership) {
-      $this->retrieveEditableValues($par_data_partnership);
-    }
 
     if ($par_data_partnership) {
       $form['partnership_id'] = [
