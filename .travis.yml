@@ -20,7 +20,7 @@ before_install:
 
 #-----------------------------------------------------------------------------
 # Bring up Docker containers
-#-----------------------------------------------------------------------------  
+#-----------------------------------------------------------------------------
   - cd docker
   - docker-compose up -d
   - cd ..
@@ -33,11 +33,6 @@ before_install:
   - composer install -v
   - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
   - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm run gulp"
-  # download specific chrome version as this works nicely with WDIO.
-  - docker exec -it par_beta_web bash -c "if [ ! -f ./google-chrome-stable_62.0.3202.62-1_amd64.deb ]; then wget http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_62.0.3202.62-1_amd64.deb; fi"
-  # gedebi should install dependencies.
-  - docker exec -it par_beta_web bash -c "apt-get -y update && apt-get install -y gdebi-core"
-  - docker exec -it par_beta_web bash -c "gdebi -n google-chrome-stable_62.0.3202.62-1_amd64.deb"
   - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
   - chmod -R 777 private
 
@@ -96,11 +91,13 @@ before_install:
 
 before_script:
   - docker exec -ti par_beta_web bash -c "export DISPLAY=:99.0"
+# Ping Drupal app to warm caches, write to tmp dir.
+  - docker exec -i par_beta_web bash -c "wget http://localhost:80 -O /tmp/index.html"
 
 script:
   - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
   - travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
-  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run test:build"
+  - docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run test:build"
 
 #-----------------------------------------------------------------------------
 # Generate HTML reports with screenshots. HTML report location: tests/reports/allure-reports/index.html, TAR it up.

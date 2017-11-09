@@ -6,10 +6,9 @@ Feature: Primary Authority - Change Partnership Details
 #        Given I reset the test data
         Given I am logged in as "par_authority@example.com"
         And I click on the link "See your partnerships"
-        When I add "Business For" to the inputfield "#edit-keywords"
+        When I add "Charlie" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
         And I click on the button "td.views-field.views-field-par-flow-link a"
-        And I expect that element "h1" is not empty
 
         # REVIEW PARTNERSHIPS DETAILS
 
@@ -17,7 +16,7 @@ Feature: Primary Authority - Change Partnership Details
         And I add "test partnership info change" to the inputfield "#edit-about-partnership"
         And I click on the button "#edit-save"
         Then I expect that element "#edit-about-partnership" contains the text "test partnership info change"
-        And I click on the button "a*=edit authority contact"
+        And I click on the button "a*=edit big bird"
         And I clear the inputfield "#edit-salutation"
         And I clear the inputfield "#edit-work-phone"
         And I clear the inputfield "#edit-mobile-phone"

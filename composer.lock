@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "04fa6ce9cac7e743bab359a7a7a2b18e",
+    "content-hash": "01e943ff48d04e8f1b413135d91d1b7c",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -3454,6 +3454,69 @@
             }
         },
         {
+            "name": "drupal/ultimate_cron",
+            "version": "2.0.0-alpha2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/ultimate_cron",
+                "reference": "8.x-2.0-alpha2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/ultimate_cron-8.x-2.0-alpha2.zip",
+                "reference": "8.x-2.0-alpha2",
+                "shasum": "adfebde3e4c13b99c6edbf0f4b994b9e91ce7ef7"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.0-alpha2",
+                    "datestamp": "1503075545",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Berdir",
+                    "homepage": "https://www.drupal.org/user/214652"
+                },
+                {
+                    "name": "Dane Powell",
+                    "homepage": "https://www.drupal.org/user/339326"
+                },
+                {
+                    "name": "arnested",
+                    "homepage": "https://www.drupal.org/user/245635"
+                },
+                {
+                    "name": "gielfeldt",
+                    "homepage": "https://www.drupal.org/user/366993"
+                },
+                {
+                    "name": "miro_dietiker",
+                    "homepage": "https://www.drupal.org/user/227761"
+                }
+            ],
+            "description": "Cron",
+            "homepage": "https://www.drupal.org/project/ultimate_cron",
+            "support": {
+                "source": "http://cgit.drupalcode.org/ultimate_cron"
+            }
+        },
+        {
             "name": "drupal/views_bulk_operations",
             "version": "1.0.0-alpha2",
             "source": {
@@ -5273,6 +5336,88 @@
                 "shell"
             ],
             "time": "2017-10-19T06:13:20+00:00"
+        },
+        {
+            "name": "rapidwebltd/php-uk-bank-holidays",
+            "version": "v2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rapidwebltd/php-uk-bank-holidays.git",
+                "reference": "5bfdb029a3c6d495fc1b92907306c1820116fbcd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rapidwebltd/php-uk-bank-holidays/zipball/5bfdb029a3c6d495fc1b92907306c1820116fbcd",
+                "reference": "5bfdb029a3c6d495fc1b92907306c1820116fbcd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3",
+                "rapidwebltd/rw-file-cache": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "RapidWeb\\UkBankHolidays\\": "./src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL3"
+            ],
+            "description": "php uk bank holidays is a simple tool that allows you to retrive uk bank holidays in a easy to read format.",
+            "keywords": [
+                "PHP Library",
+                "PHP uk bank holidays library",
+                "bank holidays",
+                "library",
+                "uk bank holidays"
+            ],
+            "time": "2017-04-03T12:56:58+00:00"
+        },
+        {
+            "name": "rapidwebltd/rw-file-cache",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rapidwebltd/RW-File-Cache.git",
+                "reference": "3d9548f4269ba603635e5e86eceee10e9f633903"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rapidwebltd/RW-File-Cache/zipball/3d9548f4269ba603635e5e86eceee10e9f633903",
+                "reference": "3d9548f4269ba603635e5e86eceee10e9f633903",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "rapidweb\\RWFileCache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL3"
+            ],
+            "description": "PHP File-based Caching Library",
+            "homepage": "https://github.com/rapidwebltd/RW-File-Cache",
+            "keywords": [
+                "cache",
+                "caching",
+                "caching library",
+                "file cache",
+                "library",
+                "php"
+            ],
+            "time": "2017-03-13T12:33:56+00:00"
         },
         {
             "name": "sentry/sentry",
@@ -10018,6 +10163,7 @@
         "drupal/invite": 20,
         "drupal/login_destination": 20,
         "drupal/queue_ui": 20,
+        "drupal/ultimate_cron": 15,
         "drupal/config_inspector": 10,
         "drupal/examples": 20
     },

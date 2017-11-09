@@ -1,7 +1,7 @@
 const config = require('./wdio.conf.js').config;
 
 config.capabilities = [{
-  browserName: 'phantomjs',
+  browserName: 'chrome',
   chromeOptions: {
     binary: '/usr/bin/google-chrome',
     args: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1200,2000']
@@ -12,4 +12,5 @@ config.services = ['selenium-standalone'];
 config.baseUrl = 'http://127.0.0.1:80';
 config.tags = '@ci, ~@Pending, ~@setup, ~@deprecated, ~@Bug';
 config.cucumberOpts.failFast = true;
+config.bail = 1;
 exports.config = config;
