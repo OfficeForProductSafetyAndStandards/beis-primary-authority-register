@@ -14,7 +14,10 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         # ENFORCEMENT ACTION FORM
 
         When I click on the link "Send notification of enforcement action"
-        And I click on authority selection if available
+        And I click on the button "#edit-cancel"
+        And I click on the link "Send notification of enforcement action"
+#        And I click on authority selection if available
+#        And I click on the button "#edit-next"
 
         # CHOOSE MEMBER
 
@@ -23,10 +26,12 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I click on the button "#edit-next"
 
         # ENTER EO DETAILS
-
-        When I add "Fozzie" to the inputfield "#edit-first-name"
-        When I add "Bear" to the inputfield "#edit-last-name"
-        When I add "fozzie.bear@gmail.com" to the inputfield "#edit-work-phone"
+        When I clear the inputfield "#edit-work-phone"
+        And I clear the inputfield "#edit-first-name"
+        And I clear the inputfield "#edit-last-name"
+        And I add "Fozzie" to the inputfield "#edit-first-name"
+        And I add "Bear" to the inputfield "#edit-last-name"
+        And I add "01234780898" to the inputfield "#edit-work-phone"
         And I click on the button "#edit-next"
 
         # CHOOSE LEGAL ENTITY
@@ -64,6 +69,14 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Some details about the enforcement notice"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Once the primary authority receives this notification, they have 5 working days to respond to you if they intend to block the action"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "You will be notified by email of the outcome of this notification"
+
+        # CHECK EO DETAILS
+
+        And I expect that element "#edit-enforcement-officer-name" contains the text "Fozzie"
+        And I expect that element "#edit-enforcement-officer-name" contains the text "Bear"
+        And I expect that element "#edit-enforcement-officer-telephone" contains the text "01234780898"
+        And I expect that element "#edit-enforcement-officer-email" contains the text "par_enforcement_officer@example.com"
+
         When I click on the button "#edit-save"
         Then I expect that element "h1.heading-xlarge" contains the text "Primary Authority Register"
 
