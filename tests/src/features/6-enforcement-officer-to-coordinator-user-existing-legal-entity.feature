@@ -15,7 +15,10 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
         # ENFORCEMENT ACTION FORM
 
         When I click on the link "Send notification of enforcement action"
-        And I click on authority selection if available
+        And I click on the button "#edit-cancel"
+        And I click on the link "Send notification of enforcement action"
+#        And I click on authority selection if available
+#        And I click on the button "#edit-next"
 
         # CHOOSE MEMBER
 
