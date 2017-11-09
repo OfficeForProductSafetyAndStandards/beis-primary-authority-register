@@ -940,7 +940,7 @@ display:
           hide_alter_empty: true
           title: '{{ title }}'
           link: '/enforcement-notice/{{ id }}/approve'
-          hidden: 0
+          hidden: 1
           entity_type: par_data_enforcement_notice
           plugin_id: par_flow_link
         par_flow_link_1:
