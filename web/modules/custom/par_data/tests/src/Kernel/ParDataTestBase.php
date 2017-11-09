@@ -18,6 +18,7 @@ use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataLegalEntityType;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataOrganisationType;
+use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPartnershipType;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPersonType;
@@ -334,6 +335,80 @@ class ParDataTestBase extends EntityKernelTestBase {
       ],
       'field_enforcement_action' => [
         $enforcement_action->id(),
+      ],
+      'field_person' => [
+        $person->id(),
+      ],
+    ] + $this->getBaseValues();
+
+  }
+
+  public function getDeviationRequestValues() {
+    // We need to create an Enforcing Authority first.
+    $enforcing_authority = ParDataAuthority::create($this->getAuthorityValues());
+    $enforcing_authority->save();
+
+    $people = $enforcing_authority->get('field_person')->referencedEntities();
+    $person = current($people);
+
+    // We need to create a partnership
+    $partnership = ParDataPartnership::create($this->getDirectPartnershipValues());
+    $partnership->save();
+
+    $inspection_plans = $partnership->get('field_inspection_plan')->referencedEntities();
+    $inspection_plan = current($inspection_plans);
+
+    return [
+      'type' => 'deviation_request',
+      'request_date' => '2017-10-01',
+      'notes' => $this->randomString(1000),
+      'primary_authority_status' => 'Closure',
+      'primary_authority_comments' => $this->randomString(1000),
+      'field_enforcing_authority' => [
+        $enforcing_authority->id(),
+      ],
+      'field_partnership' => [
+        $partnership->id(),
+      ],
+      'field_inspection_plan' => [
+        $inspection_plan->id(),
+      ],
+      'field_person' => [
+        $person->id(),
+      ],
+    ] + $this->getBaseValues();
+
+  }
+
+  public function getInspectionFeedbackValues() {
+    // We need to create an Enforcing Authority first.
+    $enforcing_authority = ParDataAuthority::create($this->getAuthorityValues());
+    $enforcing_authority->save();
+
+    $people = $enforcing_authority->get('field_person')->referencedEntities();
+    $person = current($people);
+
+    // We need to create a partnership
+    $partnership = ParDataPartnership::create($this->getDirectPartnershipValues());
+    $partnership->save();
+
+    $inspection_plans = $partnership->get('field_inspection_plan')->referencedEntities();
+    $inspection_plan = current($inspection_plans);
+
+    return [
+      'type' => 'inspection_feedback',
+      'request_date' => '2017-10-01',
+      'notes' => $this->randomString(1000),
+      'primary_authority_status' => 'Closure',
+      'primary_authority_comments' => $this->randomString(1000),
+      'field_enforcing_authority' => [
+        $enforcing_authority->id(),
+      ],
+      'field_partnership' => [
+        $partnership->id(),
+      ],
+      'field_inspection_plan' => [
+        $inspection_plan->id(),
       ],
       'field_person' => [
         $person->id(),
