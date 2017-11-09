@@ -11,6 +11,8 @@ dependencies:
   module:
     - datetime
     - text
+_core:
+  default_config_hash: 0BqqZe4QmmVKogKeU9nRbqUDWuzs8XahKU65S6P4it4
 id: par_data_deviation_request.deviation_request.default
 targetEntityType: par_data_deviation_request
 bundle: deviation_request

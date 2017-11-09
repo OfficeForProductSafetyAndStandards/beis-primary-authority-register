@@ -11,6 +11,8 @@ dependencies:
   module:
     - datetime
     - text
+_core:
+  default_config_hash: hjq61t7iy-mRtnYg8O95CCnvJGIE3QTHYIR5vSRdEGc
 id: par_data_inspection_feedback.inspection_feedback.default
 targetEntityType: par_data_inspection_feedback
 bundle: inspection_feedback

@@ -44,7 +44,6 @@ class EntityParInspectionFeedbackTest extends ParDataTestBase {
     $values = [
       'request_date' => '',
       'notes' => '',
-      'primary_authority_status' => '',
     ];
 
     $entity = ParDataInspectionFeedback::create($values + $this->getInspectionFeedbackValues());

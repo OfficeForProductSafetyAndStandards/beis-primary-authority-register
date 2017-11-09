@@ -44,7 +44,6 @@ class EntityParDeviationRequestTest extends ParDataTestBase {
     $values = [
       'request_date' => '',
       'notes' => '',
-      'primary_authority_status' => '',
     ];
 
     $entity = ParDataDeviationRequest::create($values + $this->getDeviationRequestValues());

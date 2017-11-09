@@ -9,9 +9,13 @@ use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataAuthorityType;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataCoordinatedBusinessType;
+use Drupal\par_data\Entity\ParDataDeviationRequest;
+use Drupal\par_data\Entity\ParDataDeviationRequestType;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_data\Entity\ParDataEnforcementActionType;
 use Drupal\par_data\Entity\ParDataEnforcementNoticeType;
+use Drupal\par_data\Entity\ParDataInspectionFeedback;
+use Drupal\par_data\Entity\ParDataInspectionFeedbackType;
 use Drupal\par_data\Entity\ParDataInspectionPlan;
 use Drupal\par_data\Entity\ParDataInspectionPlanType;
 use Drupal\par_data\Entity\ParDataLegalEntity;
@@ -44,6 +48,8 @@ class ParDataTestBase extends EntityKernelTestBase {
     'access par_data_advice entities',
     'access par_data_authority entities',
     'access par_data_enforcement_notice entities',
+    'access par_data_deviation_request entities',
+    'access par_data_inspection_feedback entities',
     'access par_data_inspection_plan entities',
     'access par_data_legal_entity entities',
     'access par_data_organisation entities',
@@ -56,6 +62,8 @@ class ParDataTestBase extends EntityKernelTestBase {
     'edit par_data_advice entities',
     'edit par_data_authority entities',
     'edit par_data_enforcement_notice entities',
+    'edit par_data_deviation_request entities',
+    'edit par_data_inspection_feedback entities',
     'edit par_data_inspection_plan entities',
     'edit par_data_legal_entity entities',
     'edit par_data_organisation entities',
@@ -88,6 +96,8 @@ class ParDataTestBase extends EntityKernelTestBase {
       'par_data_authority',
       'par_data_enforcement_action',
       'par_data_enforcement_notice',
+      'par_data_deviation_request',
+      'par_data_inspection_feedback',
       'par_data_inspection_plan',
       'par_data_legal_entity',
       'par_data_organisation',
@@ -132,6 +142,20 @@ class ParDataTestBase extends EntityKernelTestBase {
     $type = ParDataEnforcementNoticeType::create([
       'id' => 'enforcement_notice',
       'label' => 'Enforcement Notice',
+    ]);
+    $type->save();
+
+    // Create the entity bundles required for testing.
+    $type = ParDataDeviationRequestType::create([
+      'id' => 'deviation_request',
+      'label' => 'Deviation Request',
+    ]);
+    $type->save();
+
+    // Create the entity bundles required for testing.
+    $type = ParDataInspectionFeedbackType::create([
+      'id' => 'inspection_feedback',
+      'label' => 'Inspection Feedback',
     ]);
     $type->save();
 
@@ -362,8 +386,8 @@ class ParDataTestBase extends EntityKernelTestBase {
       'type' => 'deviation_request',
       'request_date' => '2017-10-01',
       'notes' => $this->randomString(1000),
-      'primary_authority_status' => 'Closure',
-      'primary_authority_comments' => $this->randomString(1000),
+      'primary_authority_status' => 'awaiting',
+      'primary_authority_notes' => $this->randomString(1000),
       'field_enforcing_authority' => [
         $enforcing_authority->id(),
       ],
@@ -399,8 +423,8 @@ class ParDataTestBase extends EntityKernelTestBase {
       'type' => 'inspection_feedback',
       'request_date' => '2017-10-01',
       'notes' => $this->randomString(1000),
-      'primary_authority_status' => 'Closure',
-      'primary_authority_comments' => $this->randomString(1000),
+      'primary_authority_status' => 'awaiting',
+      'primary_authority_notes' => $this->randomString(1000),
       'field_enforcing_authority' => [
         $enforcing_authority->id(),
       ],

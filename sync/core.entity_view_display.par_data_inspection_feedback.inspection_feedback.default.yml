@@ -12,6 +12,8 @@ dependencies:
     - datetime
     - text
     - user
+_core:
+  default_config_hash: bD71-JNePuIGxSYKgsNY7LBORlEP0GQ7wuMkVIAntZ0
 id: par_data_inspection_feedback.inspection_feedback.default
 targetEntityType: par_data_inspection_feedback
 bundle: inspection_feedback

@@ -6,6 +6,8 @@ dependencies:
     - field.storage.par_data_deviation_request.field_person
     - par_data.par_data_deviation_request_type.deviation_request
     - par_data.par_data_person_type.person
+_core:
+  default_config_hash: CgJd07Eal-FJO8ITbmYKji_2z8KZS_ARHaOEoOjH0SA
 id: par_data_deviation_request.deviation_request.field_person
 field_name: field_person
 entity_type: par_data_deviation_request
