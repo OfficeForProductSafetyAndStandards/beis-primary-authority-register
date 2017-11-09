@@ -56,7 +56,6 @@ class ParEnforcementOfficerDetailsForm extends ParBaseEnforcementForm {
 
     $this->retrieveEditableValues($par_data_partnership);
     // Ensure we have all the required enforcement data stored in the cache in order to proceed.
-    $this->retrieveEditableValues();
     $cached_enforcement_data = $this->validateEnforcementCachedData();
 
     if ($cached_enforcement_data === TRUE){
@@ -137,7 +136,7 @@ class ParEnforcementOfficerDetailsForm extends ParBaseEnforcementForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $enforcement_officer = $this->getEnforcingPerson();
+    $enforcement_officer = $this->getEnforcingOfficerEntity();
 
     // Save updated par person details.
     if ($enforcement_officer) {
