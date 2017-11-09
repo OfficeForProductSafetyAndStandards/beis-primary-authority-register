@@ -67,14 +67,14 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
    * Get the cached enforced organisation entity.
    */
   public function getEnforcedOrganisationEntity() {
-    return  ParDataOrganisation::load($this->getEnforcedOrganisationID());
+    return ParDataOrganisation::load($this->getEnforcedOrganisationID());
   }
 
   /**
    * Get the cached enforcing officer entity.
    */
   public function getEnforcingOfficerEntity() {
-    return  ParDataPerson::load($this->getEnforcingPersonID());
+    return ParDataPerson::load($this->getEnforcingPersonID());
   }
 
   /**
