@@ -38,14 +38,18 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
-
+    $this->setState("edit:{$par_data_partnership->id()}");
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
-    $this->retrieveEditableValues();
+
+    // Only set the state for the temp cache if we are passing a partnership object via the route.
+    if ($par_data_partnership) {
+      $this->retrieveEditableValues($par_data_partnership);
+    }
 
     // Get the authorities the current user is a member of.
     $authorities = [];

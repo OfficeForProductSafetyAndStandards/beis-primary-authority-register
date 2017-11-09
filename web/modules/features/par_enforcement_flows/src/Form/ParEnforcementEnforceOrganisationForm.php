@@ -34,8 +34,8 @@ class ParEnforcementEnforceOrganisationForm extends ParBaseForm {
    * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The Partnership being retrieved.
    */
-  public function retrieveEditableValues() {
-
+  public function retrieveEditableValues(ParDataPartnership $par_data_partnership) {
+    $this->setState("edit:{$par_data_partnership->id()}");
   }
 
   /**
@@ -43,6 +43,7 @@ class ParEnforcementEnforceOrganisationForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
+    $this->retrieveEditableValues($par_data_partnership);
     // If the partnership is direct we can set the organisation
     // and move onto the next step.
     if ($par_data_partnership->isDirect()) {
