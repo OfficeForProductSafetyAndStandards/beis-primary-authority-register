@@ -100,6 +100,20 @@ class ParDataEnforcementNotice extends ParDataEntity {
   }
 
   /**
+   * Get the enforced organisation for this Enforcement Notice.
+   */
+  public function getEnforcedOrganisation() {
+    return $this->get('field_organisation')->referencedEntities();
+  }
+
+  /**
+   * Get the enforcing officer person for the current Enforcement notice.
+   */
+  public function getEnforcingPerson() {
+    return $this->get('field_person')->referencedEntities();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
