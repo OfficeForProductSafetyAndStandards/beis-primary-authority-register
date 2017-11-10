@@ -35,7 +35,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
-
+    $this->setState("edit:{$par_data_partnership->id()}");
   }
 
   /**
@@ -43,7 +43,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
-    $this->retrieveEditableValues();
+    $this->retrieveEditableValues($par_data_partnership);
     $enforcement_notice_entity = $this->getParDataManager()->getParBundleEntity('par_data_enforcement_notice');
 
     // Ensure we have all the required enforcement data stored in the cache in order to proceed.
@@ -63,15 +63,6 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       '#markup' => $this->t('Include the following information'),
     ];
 
-    $form['enforcement_text'] =[
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-      '#prefix' => '<ul>',
-      '#suffix' => '</ul>',
-    ];
-
     $enforcement_data = [
       'Full details of the contravention',
       'Which products or services are affected',
@@ -79,15 +70,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       'Your reasons for proposing the enforcement action',
     ];
 
-    foreach ($enforcement_data as $key => $value) {
-
-      $form['enforcement_text']['body'][$key] = [
-        '#type' => 'markup',
-        '#markup' => $this->t($value),
-        '#prefix' => '<li>',
-        '#suffix' => '</li>',
-      ];
-    }
+    $form['enforcement_text'] = [ '#theme' => 'item_list', '#items' => $enforcement_data, ];
 
     $form['action_summary'] = [
       '#type' => 'textarea',
