@@ -12,13 +12,11 @@ Feature: New Coordinated Partnership
         And I expect that element "#block-par-theme-content" contains the text "See enforcement notifications"
         When I click on the link "Apply for a new partnership"
         And I click on the button "#edit-cancel"
-        Then I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
-        And I click on the link "Apply for a new partnership"
+        When I click on the link "Apply for a new partnership"
 
         # CHOOSE PARTNERSHIP TYPE
 
-#        And I click on authority selection if available
-        When I click on the radio ".form-radio"
+        And I click on authority selection if available
         And I click on the button "#edit-next"
 
         # CREATE NEW PARTNERSHIP FORM

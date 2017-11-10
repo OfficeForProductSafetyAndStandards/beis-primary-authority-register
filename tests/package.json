@@ -40,7 +40,6 @@
     "jest": "20.0.4",
     "pa11y-ci": "latest",
     "pa11y": "latest",
-    "supertest": "^3.0.0",
     "wdio-browserstack-service": "0.1.11",
     "wdio-chromedriver-service": "latest",
     "wdio-cucumber-framework": "0.3.1",
@@ -49,6 +48,6 @@
     "wdio-selenium-standalone-service": "0.0.9",
     "wdio-spec-reporter": "0.1.0",
     "webdrivercss": "^1.1.10",
-    "webdriverio": "4.7.1"
+    "webdriverio": "4.8.0"
   }
 }
