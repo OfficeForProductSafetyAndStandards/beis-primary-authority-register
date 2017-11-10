@@ -36,7 +36,7 @@ Feature: New Coordinated Partnership
 
         # ADD ABOUT THE PARTNERSHIP
 
-        Then I expect that element "h1.heading-xlarge" contains the text "New Partnership Application"
+        Then I expect that element "h1.heading-xlarge" contains the text "New partnership application"
         When I add "About the partnership detail" to the inputfield "#edit-about-partnership"
         And I click on the button "#edit-next"
 

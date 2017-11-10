@@ -31,6 +31,19 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  public function titleCallback() {
+    // Load application type from previous step.
+    $applicationType = ucfirst($this->getDefaultValues('application_type', '', 'par_partnership_application_type'));
+
+    // Set page title.
+    $this->pageTitle = "{$applicationType} partnership application";
+
+    return parent::titleCallback();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $this->retrieveEditableValues();
 

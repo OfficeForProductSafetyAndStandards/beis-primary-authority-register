@@ -42,6 +42,21 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     return 'par_partnership_contact';
   }
 
+  public function titleCallback() {
+    // Check if editing an existing entity.
+    $par_data_person = $this->getRouteParam('par_data_person');
+
+    // Display appropriate title.
+    $this->pageTitle = $par_data_person ? 'Edit a contact' : 'Add a contact';
+
+    // Override page title for Partnership Application journey.
+    if ($this->getFlowName() === 'partnership_application') {
+      $this->pageTitle = 'Add a contact for the business';
+    }
+
+    return parent::titleCallback();
+  }
+
   /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
