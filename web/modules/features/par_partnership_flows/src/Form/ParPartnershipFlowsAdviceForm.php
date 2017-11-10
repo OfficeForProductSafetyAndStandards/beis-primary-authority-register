@@ -84,10 +84,6 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $par_data_advice);
     $advice_bundle = $this->getParDataManager()->getParBundleEntity('par_data_advice');
 
-    // Render the document in view mode to allow users to
-    // see which one they're confirming details for.
-    $document_view_builder = $this->getParDataManager()->getViewBuilder('par_data_advice');
-
     // Get files from "par_partnership_advice_upload" step.
     $files = $this->getDefaultValues("files", '', 'par_partnership_advice_upload');
     if ($files) {

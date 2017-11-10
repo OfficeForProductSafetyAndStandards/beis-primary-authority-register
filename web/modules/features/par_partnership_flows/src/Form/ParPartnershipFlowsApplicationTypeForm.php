@@ -51,7 +51,7 @@ class ParPartnershipFlowsApplicationTypeForm extends ParBaseForm {
     ];
 
     $form['application_type_fieldset']['application_type'] = [
-      '#title' => 'Type of application',
+      '#title' => 'Choose a type of partnership',
       '#type' => 'radios',
       '#options' => $partnership_bundle->getAllowedValues('partnership_type'),
       '#default_value' => $this->getDefaultValues('application_type'),
