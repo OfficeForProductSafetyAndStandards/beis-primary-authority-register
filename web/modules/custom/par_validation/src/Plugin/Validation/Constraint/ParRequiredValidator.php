@@ -14,8 +14,13 @@ class ParRequiredValidator extends ConstraintValidator {
    * {@inheritdoc}
    */
   public function validate($items, Constraint $constraint) {
+    // Check to make sure there are field values.
+    if ($items->isEmpty() && !$this->skipValidate()) {
+      $this->context->addViolation($constraint->message, ['@value' => $items->getName()]);
+    }
+
+    // Check to make sure all the field values are not empty.
     foreach ($items as $item) {
-      // Ignore validating any users that have the bypass permission.
       if ($this->skipValidate()) {
         break;
       }
