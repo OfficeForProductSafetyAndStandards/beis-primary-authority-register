@@ -13,6 +13,8 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
 
   use ParPartnershipFlowsTrait;
 
+  protected $pageTitle = 'Inspection Plans';
+
   /**
    * {@inheritdoc}
    */

@@ -1,4 +1,4 @@
-uuid: 38a6f416-edfe-4394-ac6a-b333d64f7b94
+uuid: 68752978-6d3d-4a64-8259-e18686cd9712
 langcode: en
 status: true
 dependencies: {  }
@@ -7,6 +7,7 @@ _core:
 id: approve_enforcement
 label: 'Approve Enforcement'
 default_title: null
+default_section_title: null
 description: 'The approval flow for an enforcement notice.'
 save_method: end
 steps:

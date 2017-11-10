@@ -32,7 +32,10 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
     if ($par_data_partnership) {
       $par_data_organisation = current($par_data_partnership->getOrganisation());
-      return $par_data_organisation->get('organisation_name')->getString();
+      $this->pageTitle = $par_data_organisation->get('organisation_name')->getString();
+    }
+    else {
+      $this->pageTitle = 'Review the partnership summary information below';
     }
 
     return parent::titleCallback();

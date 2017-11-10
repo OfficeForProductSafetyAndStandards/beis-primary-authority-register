@@ -17,6 +17,8 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
+  protected $pageTitle = 'Are you looking for one of these businesses?';
+
   /**
    * {@inheritdoc}
    */

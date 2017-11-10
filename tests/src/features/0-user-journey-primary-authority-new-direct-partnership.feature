@@ -19,7 +19,7 @@ Feature: New Direct Partnership For PA To Approve
 
         # CREATE NEW PARTNERSHIP FORM
 
-        And I expect that element "h1" contains the text "New Partnership Application"
+        Then I expect that element "h1.heading-xlarge" contains the text "New partnership application"
         When I click on the radio "#edit-application-type-direct"
         And I click on the button "#edit-next"
 
