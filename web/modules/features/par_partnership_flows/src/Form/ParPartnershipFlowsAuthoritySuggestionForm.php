@@ -77,7 +77,7 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
 
     $form['par_data_authority_id'] = [
       '#type' => 'radios',
-      '#title' => t('Which authority are you acting on behalf of?'),
+      '#title' => t('Choose a Primary Authority'),
       '#options' => $authority_options,
       '#default_value' => $this->getDefaultValues("par_data_authority_id", NULL),
     ];

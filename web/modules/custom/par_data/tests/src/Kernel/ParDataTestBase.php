@@ -75,6 +75,8 @@ class ParDataTestBase extends EntityKernelTestBase {
     'edit par_data_sic_code entities',
   ];
 
+  protected $entityTypes = [];
+
   /**
    * {@inheritdoc}
    */
@@ -91,7 +93,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     $this->setUpFilesystem();
 
     // Install out entity hooks.
-    $entity_types = [
+    $this->entityTypes = [
       'par_data_advice',
       'par_data_authority',
       'par_data_enforcement_action',
@@ -109,7 +111,7 @@ class ParDataTestBase extends EntityKernelTestBase {
       'par_data_sic_code',
     ];
 
-    foreach ($entity_types as $type) {
+    foreach ($this->entityTypes as $type) {
       // Set up schema for par_data.
       $this->installEntitySchema($type);
     }
@@ -228,7 +230,6 @@ class ParDataTestBase extends EntityKernelTestBase {
 
   public function getBaseValues() {
     return [
-      'name' => 'test',
       'uid' => $this->account,
       'type' => 'UNKNOWN',
     ];
@@ -347,6 +348,7 @@ class ParDataTestBase extends EntityKernelTestBase {
       'type' => 'enforcement_notice',
       'notice_type' => 'Closure',
       'notice_date' => '2017-10-01',
+      'legal_entity_name' => 'Unassigned Legal Entity Ltd',
       'summary' => $this->randomString(1000),
       'field_primary_authority' => [
         $primary_authority->id(),
