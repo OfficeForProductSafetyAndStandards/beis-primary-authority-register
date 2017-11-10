@@ -3,16 +3,13 @@
 namespace Drupal\par_enforcement_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_flows\ParFlowException;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
  * The raise form for creating a new enforcement notice.
  */
-class ParEnforcementRaiseNoticeForm extends ParBaseForm {
+class ParEnforcementRaiseNoticeForm extends ParBaseEnforcementForm {
 
   /**
    * {@inheritdoc}
@@ -44,114 +41,20 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
 
     $this->retrieveEditableValues();
 
-    // Get the correct par_data_authority_id set by the previous form.
-    $enforcing_authority_id = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
-    $organisation_id = $this->getDefaultValues('par_data_organisation_id', '', 'par_enforce_organisation');
+    // Ensure we have all the required enforcement data stored in the cache in order to proceed.
+    $cached_enforcement_data = $this->validateEnforcementCachedData();
 
-    if (empty($enforcing_authority_id)) {
-      $form['authority_enforcement_ids'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('You have not selected an authority to enforce on behalf of, please go back to the previous steps to complete this form.'),
-        '#prefix' => '<p><strong>',
-        '#suffix' => '</strong><p>',
-      ];
+    if ($cached_enforcement_data === TRUE){
+      $raise_enforcement_form = $this->BuildRaiseEnforcementFormElements();
+      $form = array_merge($form, $raise_enforcement_form);
     }
-
-    if (empty($organisation_id)) {
-      $form['organisation_enforcement_ids'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('You have not selected an organisation to enforce on behalf of, please go back to the previous steps to complete this form.'),
-        '#prefix' => '<p><strong>',
-        '#suffix' => '</strong><p>',
-      ];
-    }
-
-    // Defensive coding don't attempt to render form elements without having the appropriate object
-    // $par_data_organisation and $par_data_authority proceeding without them will cause system failures.
-    if (empty($organisation_id) || empty($enforcing_authority_id)) {
+    else {
+      $form = array_merge($form, $cached_enforcement_data);
       return parent::buildForm($form, $form_state);
     }
 
-    // Organisation summary.
-    $par_data_organisation = ParDataOrganisation::load($organisation_id);
-    $par_data_authority = current($par_data_partnership->getAuthority());
 
-    $form['authority'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    $form['authority']['authority_heading'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Notification of Enforcement action'),
-    ];
-
-
-    $form['authority']['authority_name'] = [
-      '#type' => 'markup',
-      '#markup' => $par_data_authority->get('authority_name')->getString(),
-      '#prefix' => '<div><h1>',
-      '#suffix' => '</h1></div>',
-    ];
-
-    $form['organisation'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-
-    $form['organisation']['organisation_heading'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Regarding'),
-
-    ];
-
-    $form['organisation']['organisation_name'] = [
-      '#type' => 'markup',
-      '#markup' => $par_data_organisation->get('organisation_name')->getString(),
-      '#prefix' => '<h1>',
-      '#suffix' => '</h1>',
-    ];
-
-    // Display the primary address.
-    $form['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
-
-    $form['enforcement_title'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Include the following information'),
-    ];
-
-    $form['enforcement_text'] =[
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-      '#prefix' => '<ul>',
-      '#suffix' => '</ul>',
-    ];
-
-    $enforcement_data = [
-      'Full details of the contravention',
-      'Which products or services are affected',
-      'Your proposed text for any statutory notice or draft changes etc',
-      'Your reasons for proposing the enforcement action',
-    ];
-
-    foreach ($enforcement_data as $key => $value) {
-
-      $form['enforcement_text']['body'][$key] = [
-        '#type' => 'markup',
-        '#markup' => $this->t($value),
-        '#prefix' => '<li>',
-        '#suffix' => '</li>',
-      ];
-    }
-
-    $legal_entity_reg_names = $par_data_organisation->getPartnershipLegalEntities();
+    $legal_entity_reg_names = $this->getEnforcedOrganisationLegalEntities();
     // After getting a list of all the associated legal entities add a use
     // custom option.
     $legal_entity_reg_names['add_new'] = 'Add a legal entity';
@@ -193,18 +96,18 @@ class ParEnforcementRaiseNoticeForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
 
-    $enforcing_authority_id = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
-    $organisation_id = $this->getDefaultValues('par_data_organisation_id', '', 'par_enforce_organisation');
+    $enforcing_authority_id = $this->getEnforcingAuthorityID();
+    $enforced_organisation_id = $this->getEnforcedOrganisationID();
 
     if (empty($enforcing_authority_id)) {
       $this->setElementError('authority_enforcement_ids', $form_state, 'Please select an authority to enforce on behalf of to proceed.');
     }
 
-    if (empty($organisation_id)) {
+    if (empty($enforced_organisation_id)) {
       $this->setElementError('organisation_enforcement_ids', $form_state, 'Please select an organisation to enforce on behalf of to proceed.');
     }
+    parent::validateForm($form, $form_state);
   }
 
 }

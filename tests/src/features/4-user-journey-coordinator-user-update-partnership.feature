@@ -1,7 +1,7 @@
-@ci
-Feature: Business User - Manage Addresses
+@Pending @Bug
+Feature: Coordinator User - Manage Addresses
 
-    Scenario: Business User - Manage Addresses
+    Scenario: Coordinator User - Manage Addresses
 
         # PARTNERSHIPS DASHBOARD
 
