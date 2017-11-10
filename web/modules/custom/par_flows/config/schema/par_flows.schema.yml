@@ -14,6 +14,10 @@ par_flows.par_flow.*:
       type: label
       label: 'Default title'
       nullable: true
+    default_section_title:
+      type: string
+      label: 'Default section title'
+      nullable: true
     description:
       type: string
       lavel: 'Description'
@@ -38,4 +42,3 @@ par_flows.par_flow.*:
           sequence:
             type: integer
             label: "Operation Redirect"
-

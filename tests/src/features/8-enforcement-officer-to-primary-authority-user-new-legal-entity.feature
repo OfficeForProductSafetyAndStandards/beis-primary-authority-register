@@ -5,7 +5,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         # LOGIN SCREEN
 
 #       Given I reset the test data
-        Given I am logged in as "par_authority@example.com"
+        Given I am logged in as "par_enforcement_officer@example.com"
         And I click on the link "Search for a partnership"
         When I add "Charlie" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
@@ -14,14 +14,22 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         # ENFORCEMENT ACTION FORM
 
         When I click on the link "Send notification of enforcement action"
-        Then I expect that element "h3" contains the text "Which authority are you acting on behalf of"
-        When I click on the radio ".form-radio"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-cancel"
+        And I click on the link "Send notification of enforcement action"
+#        And I click on authority selection if available
+#        And I click on the button "#edit-next"
 
         # CHOOSE MEMBER
 
         Then I expect that element "#par-enforce-organisation" contains the text "Choose the member to enforce"
         And I click on the radio "label*=Hooper"
+        And I click on the button "#edit-next"
+
+       # ENTER EO DETAILS
+
+        When I add "Fozzie" to the inputfield "#edit-first-name"
+        When I add "Bear" to the inputfield "#edit-last-name"
+        When I add "fozzie.bear@gmail.com" to the inputfield "#edit-work-phone"
         And I click on the button "#edit-next"
 
         # CHOOSE LEGAL ENTITY

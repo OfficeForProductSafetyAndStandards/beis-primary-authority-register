@@ -4,6 +4,7 @@ dependencies: {  }
 id: send_enforcement
 label: 'Send Enforcement'
 default_title: null
+default_section_title: null
 description: 'The send operations for an enforcement notice.'
 save_method: end
 steps:

@@ -22,18 +22,13 @@ class ParPartnershipFlowsInviteForm extends ParBaseForm {
   /** @var invite type */
   protected $invite_type;
 
+  protected $pageTitle = 'Notify user of partnership invitation';
+
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
     return 'par_partnership_invite';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function titleCallback() {
-    return 'Notify user of partnership invitation';
   }
 
   /**

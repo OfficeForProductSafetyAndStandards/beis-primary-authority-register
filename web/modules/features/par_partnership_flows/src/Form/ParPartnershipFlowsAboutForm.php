@@ -20,6 +20,8 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
     ],
   ];
 
+  protected $pageTitle = 'Edit the details about the Partnership';
+
   /**
    * {@inheritdoc}
    */

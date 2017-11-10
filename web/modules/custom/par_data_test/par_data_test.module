@@ -656,6 +656,7 @@ function par_data_test_create_entities() {
     'nation' => 'USA',
     'ons_code' => '123456',
     'field_person' => [
+      $authority_person_2->id(),
       $authority_person_8->id(),
     ],
     'field_regulatory_function' => [
@@ -779,6 +780,7 @@ function par_data_test_create_entities() {
     'mail' => 'par_enforcement_officer@example.com',
     'name' => 'par_enforcement_officer@example.com',
     'status' => 1,
+    'roles' => ['par_enforcement'],
   ]);
   $enforcement_officer_user->save();
   $coordinator_user = User::create([
