@@ -101,6 +101,7 @@ if [ $? != 0 ]; then
 fi
 
 export AWS_ACCESS_KEY_ID=`vault read -field=AWS_ACCESS_KEY_ID secret/par/deploy/aws`
+export AWS_DEFAULT_REGION="eu-west-1"
 
 if [ $? != 0 ]; then
 	exit 1
