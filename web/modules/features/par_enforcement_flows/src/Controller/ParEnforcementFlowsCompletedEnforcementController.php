@@ -50,6 +50,8 @@ class ParEnforcementFlowsCompletedEnforcementController extends ParBaseControlle
    */
   public function content(ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
 
+    $reason = NULL;
+
     // Organisation summary.
     $enforced_organisation = current($par_data_enforcement_notice->getEnforcedOrganisation());
     $enforced_legal_entity = current($par_data_enforcement_notice->getLegalEntity());
