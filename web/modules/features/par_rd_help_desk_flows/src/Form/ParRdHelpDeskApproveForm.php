@@ -60,17 +60,10 @@ class ParRdHelpDeskApproveForm extends ParBaseForm {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-//
-//    $build['partnership_info']['partnership_between_heading'] = [
-//      '#type' => 'markup',
-//      '#markup' => $this->t('In partnership with'),
-//      '#prefix' => '<h2>',
-//      '#suffix' => '</h2>',
-//    ];
 
     $form['partnership_info']['partnership_between'] = [
       '#type' => 'markup',
-      '#markup' => "{$par_data_organisation->get('organisation_name')->getString()} and {$par_data_authority->get('authority_name')->getString()}",
+      '#markup' => $par_data_partnership->label(),
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];
