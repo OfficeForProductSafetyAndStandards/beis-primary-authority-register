@@ -1,0 +1,7 @@
+applications:
+- name: par-beta-production-monitor
+memory: 64M
+disk_quota: 1024M
+host: par-beta-production-monitor
+buildpack: staticfile_buildpack
+
