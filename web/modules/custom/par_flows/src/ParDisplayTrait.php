@@ -164,6 +164,9 @@ trait ParDisplayTrait {
       }
       if (in_array('edit-entity', $operations)) {
         $params[$entity->getEntityTypeId()] = $entity->id();
+
+        // Edit link to include the entity title.
+        $link_name_suffix = $entity->label();
       }
 
       try {
