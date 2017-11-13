@@ -1,7 +1,7 @@
 applications:
-- name: par-beta-production-monitor
+- name: par-beta-monitoring
 memory: 64M
 disk_quota: 1024M
-host: par-beta-production-monitor
-buildpack: staticfile_buildpack
-
+host: par-beta-monitoring
+buildpack: python_buildpack
+health-check-type: none
