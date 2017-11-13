@@ -1,12 +1,13 @@
-uuid: cfe7446a-c296-40ce-8cec-6c2879345924
+uuid: 4c5ec2e0-6634-406d-8a33-4120eb7b4316
 langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: 2mmaeLX09BR2FOpzSq9WBsHKpowBhLPKq_vH-TSa0qo
+  default_config_hash: MfDJoD5Cv3DJq8cMSPNEHYJy24cx__hAtCfpJueZjG0
 id: partnership_direct
 label: 'Direct Partnership Flow'
 default_title: null
+default_section_title: 'Primary Authority partnership information'
 description: ''
 save_method: step
 steps:

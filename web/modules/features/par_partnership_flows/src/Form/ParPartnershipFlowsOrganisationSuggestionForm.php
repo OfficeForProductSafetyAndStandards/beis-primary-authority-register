@@ -17,6 +17,8 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
+  protected $pageTitle = 'Are you looking for one of these businesses?';
+
   /**
    * {@inheritdoc}
    */
@@ -56,8 +58,6 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
       ],
     ];
 
-    $organisationViewBuilder = $this->getParDataManager()->getViewBuilder('par_data_organisation');
-
     $options = $this->getParDataManager()
       ->getEntitiesByQuery('par_data_organisation', $conditions, 10);
 
@@ -77,13 +77,12 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
 
     $form['par_data_organisation_id'] = [
       '#type' => 'radios',
-      '#title' => t('Did you mean any of these organisations?'),
-      '#options' => $radio_options + ['new' => "No, it's a new partnership."],
+      '#title' => t('Choose an existing business or create a new business'),
+      '#options' => $radio_options + ['new' => "no, the business is not currently in a partnership with any other primary authority"],
       '#default_value' => $this->getDefaultValues('par_data_organisation_id', 'new'),
     ];
 
     // Make sure to add the person cacheability data to this form.
-    $this->addCacheableDependency($organisationViewBuilder);
     $this->addCacheableDependency($options);
 
     return parent::buildForm($form, $form_state);

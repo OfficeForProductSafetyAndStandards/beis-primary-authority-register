@@ -18,9 +18,9 @@
   <h1{{ title_attributes.addClass('heading-xlarge') }}>
     {# Handle views page titles doing something completely different! #}
     {% if title['#markup'] %}
-      {% set page_title = title['#markup']|e %}
+      {% set page_title = title['#markup'] %}
     {% else %}
-      {% set page_title = title|e %}
+      {% set page_title = title %}
     {% endif %}
 
     {% if '|' in page_title %}

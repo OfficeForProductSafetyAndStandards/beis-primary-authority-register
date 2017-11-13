@@ -16,18 +16,13 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
+  protected $pageTitle = 'Which authority are you acting on behalf of?';
+
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
     return 'par_authority_selection';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function titleCallback() {
-    return 'Choose your authority';
   }
 
   /**
@@ -38,14 +33,18 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
-
+    $this->setState("edit:{$par_data_partnership->id()}");
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
-    $this->retrieveEditableValues();
+
+    // Only set the state for the temp cache if we are passing a partnership object via the route.
+    if ($par_data_partnership) {
+      $this->retrieveEditableValues($par_data_partnership);
+    }
 
     // Get the authorities the current user is a member of.
     $authorities = [];
@@ -78,7 +77,7 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
 
     $form['par_data_authority_id'] = [
       '#type' => 'radios',
-      '#title' => t('Which authority are you acting on behalf of?'),
+      '#title' => t('Choose a Primary Authority'),
       '#options' => $authority_options,
       '#default_value' => $this->getDefaultValues("par_data_authority_id", NULL),
     ];

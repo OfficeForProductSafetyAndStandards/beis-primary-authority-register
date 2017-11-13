@@ -1,12 +1,13 @@
-uuid: 92b133e0-c9b2-4ca7-b3a8-632fe383d687
+uuid: 5307cc4d-a4e6-4d55-a2d6-160fe35c1b71
 langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: gsP-GfFH13mg1E3is86aAyeQ066BCFYdufT4V3E3cGM
+  default_config_hash: eOeZktngyEIqJx6Tzq1IaCV-Hdgw_Y0URqSEwlPau7U
 id: partnership_coordinated
 label: 'Coordinated Partnership Flow'
 default_title: null
+default_section_title: 'Coordinated partnership'
 description: ''
 save_method: step
 steps:

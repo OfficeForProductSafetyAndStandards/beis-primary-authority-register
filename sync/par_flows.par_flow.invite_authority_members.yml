@@ -1,12 +1,13 @@
-uuid: ece4100d-5c62-44ca-bdda-0f9c81eed0b6
+uuid: c0906e9b-e941-44d2-bd5d-cfeb90a5924e
 langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: 6-Pa8lliG-O5qBm8ZHPlw9WITus1Zi5tvijmi11-8PQ
+  default_config_hash: H3V4p5JMoQq_hI_8beLEhdscIbo1TzHAdeXSNXUCOUQ
 id: invite_authority_members
 label: 'Invite PAR Authority Users'
 default_title: null
+default_section_title: null
 description: 'Invite PAR Authority Users to register for an account.'
 save_method: end
 steps:

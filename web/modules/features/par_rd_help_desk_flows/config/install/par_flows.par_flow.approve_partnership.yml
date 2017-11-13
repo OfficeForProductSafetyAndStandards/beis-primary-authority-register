@@ -4,6 +4,7 @@ dependencies: {  }
 id: approve_partnership
 label: 'Approve Partnership'
 default_title: null
+default_section_title: null
 description: 'The approve operations for a given partnership.'
 save_method: end
 steps:
