@@ -320,10 +320,6 @@ class ParDataTestBase extends EntityKernelTestBase {
   }
 
   public function getEnforcementNoticeValues() {
-    // We need to create a Primary Authority first.
-    $primary_authority = ParDataAuthority::create($this->getAuthorityValues());
-    $primary_authority->save();
-
     // We need to create an Enforcing Authority first.
     $enforcing_authority = ParDataAuthority::create($this->getAuthorityValues());
     $enforcing_authority->save();
@@ -350,9 +346,6 @@ class ParDataTestBase extends EntityKernelTestBase {
       'notice_date' => '2017-10-01',
       'legal_entity_name' => 'Unassigned Legal Entity Ltd',
       'summary' => $this->randomString(1000),
-      'field_primary_authority' => [
-        $primary_authority->id(),
-      ],
       'field_enforcing_authority' => [
         $enforcing_authority->id(),
       ],
