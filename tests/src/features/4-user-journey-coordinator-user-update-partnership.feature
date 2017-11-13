@@ -42,7 +42,7 @@ Feature: Coordinator User - Manage Addresses
 
         # EDIT ABOUT THE BUSINESS
 
-        When I click on the link "edit about the organisation"
+        When I click on the link "edit about the business"
         And I add "Change to the about business details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-save"
         Then I expect that element "#edit-about-business" contains the text "Change to the about business details section"
