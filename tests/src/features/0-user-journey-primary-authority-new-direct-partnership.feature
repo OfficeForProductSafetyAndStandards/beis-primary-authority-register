@@ -4,7 +4,7 @@ Feature: New Direct Partnership For PA To Approve
     Scenario: New Direct Partnership
 
         Given I am logged in as "par_authority@example.com"
-        And I expect that element "#block-par-theme-content" contains the text "Your partnerships"
+        And I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
         And I expect that element "#block-par-theme-content" contains the text "See enforcement notifications"
         When I click on the link "Apply for a new partnership"
@@ -25,7 +25,6 @@ Feature: New Direct Partnership For PA To Approve
 
         # CONFIRMATIONS
 
-        Then I expect that element ".error-summary" is visible
         When I click on the checkbox "#edit-business-eligible-for-partnership"
         And I click on the button "#edit-next"
         Then I expect that element ".error-summary" is visible
