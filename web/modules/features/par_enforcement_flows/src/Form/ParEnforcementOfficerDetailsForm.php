@@ -33,7 +33,6 @@ class ParEnforcementOfficerDetailsForm extends ParBaseEnforcementForm {
     return parent::titleCallback();
   }
 
-
     /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
