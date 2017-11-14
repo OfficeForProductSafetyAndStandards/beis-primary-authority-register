@@ -101,7 +101,7 @@ par_enforcement_flows.add_action:
   path: '/enforcement-notice/{par_data_partnership}/raise/{par_data_enforcement_notice}/action/add'
   defaults:
     _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementAddActionForm'
-    _title: 'Add Action to Enforcement Notice'
+    _title_callback: '\Drupal\par_enforcement_flows\Form\ParEnforcementAddActionForm::titleCallback'
   requirements:
     _permission: 'raise enforcement notice'
     par_data_partnership: \d+
