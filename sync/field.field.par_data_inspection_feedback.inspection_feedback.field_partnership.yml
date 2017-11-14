@@ -1,0 +1,30 @@
+uuid: 109eb3fd-a421-4831-9a3d-70739efbf673
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_inspection_feedback.field_partnership
+    - par_data.par_data_inspection_feedback_type.inspection_feedback
+    - par_data.par_data_partnership_type.partnership
+_core:
+  default_config_hash: R3GZwJmlebAkF0hEX9x_17WsJXVjTq6H4BGmdcH-S8I
+id: par_data_inspection_feedback.inspection_feedback.field_partnership
+field_name: field_partnership
+entity_type: par_data_inspection_feedback
+bundle: inspection_feedback
+label: Partnership
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_partnership'
+  handler_settings:
+    target_bundles:
+      partnership: partnership
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

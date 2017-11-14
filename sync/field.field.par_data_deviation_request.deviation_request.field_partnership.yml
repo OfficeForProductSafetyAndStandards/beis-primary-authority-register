@@ -1,0 +1,30 @@
+uuid: 1e84af0c-d76f-4017-855d-37c28ec58108
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_deviation_request.field_partnership
+    - par_data.par_data_deviation_request_type.deviation_request
+    - par_data.par_data_partnership_type.partnership
+_core:
+  default_config_hash: MFDsGGl5VFig4adwe5-cr6N9tLcHnw6X1zsfhyJO864
+id: par_data_deviation_request.deviation_request.field_partnership
+field_name: field_partnership
+entity_type: par_data_deviation_request
+bundle: deviation_request
+label: Partnership
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_partnership'
+  handler_settings:
+    target_bundles:
+      partnership: partnership
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

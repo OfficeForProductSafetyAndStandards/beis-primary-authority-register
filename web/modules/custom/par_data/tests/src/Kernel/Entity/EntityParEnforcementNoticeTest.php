@@ -22,6 +22,9 @@ class EntityParEnforcementNoticeTest extends ParDataTestBase {
   public function testEntityValidate() {
     $entity = ParDataEnforcementNotice::create($this->getEnforcementNoticeValues());
     $violations = $entity->validate();
+    foreach ($violations as $violation) {
+      var_dump($violation->getMessage());
+    }
     $this->assertEqual(count($violations->getFieldNames()), 0, 'No violations when validating a default Par Enforcement Notice entity.');
   }
 
