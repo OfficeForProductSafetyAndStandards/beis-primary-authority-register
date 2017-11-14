@@ -5,5 +5,5 @@ wdioConfig.config.capabilities = [{
 }];
 wdioConfig.config.baseUrl = 'http://127.0.0.1:8111';
 wdioConfig.config.tags = '@ci, ~@Pending, ~@Bug';
-
+wdioConfig.config.services = ['selenium-standalone'];
 exports.config = wdioConfig.config;
