@@ -29,6 +29,7 @@ before_install:
 # Install dependencies
 #-----------------------------------------------------------------------------
 
+  - docker exec -i par_beta_web bash -c "cd /var/www/html/tools && bash ./fix-permissions.sh"
   - phpenv config-rm xdebug.ini
   - composer install -v
   - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
@@ -41,7 +42,6 @@ before_install:
 #-----------------------------------------------------------------------------
 
   - cp web/sites/example.settings.local.php web/sites/default/settings.local.php
-  - sudo bash ./tools/fix-permissions.sh --drupal_path=./web
 
 #-----------------------------------------------------------------------------
 # Create .env file

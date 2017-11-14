@@ -148,7 +148,7 @@ trait ParDisplayTrait {
 
     // Reference fields need to be rendered slightly differently.
     if ($field instanceof EntityReferenceFieldItemListInterface && !$single) {
-      $link_name_suffix = strtolower($entity->label());
+      $link_name_suffix = $entity->label();
     }
     else {
       $link_name_suffix = strtolower($field->getFieldDefinition()->getLabel());

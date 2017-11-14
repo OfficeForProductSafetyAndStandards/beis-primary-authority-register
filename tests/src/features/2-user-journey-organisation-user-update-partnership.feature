@@ -42,7 +42,7 @@ Feature: Business User - Manage Addresses
 
         # EDIT ABOUT THE BUSINESS
 
-        When I click on the link "edit about the organisation"
+        When I click on the link "edit about the business"
         And I add "Change to the about business details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-save"
         Then I expect that element "#edit-about-business" contains the text "Change to the about business details section"
@@ -57,9 +57,9 @@ Feature: Business User - Manage Addresses
         # ADD EMPLOYEES
 
         When I click on the link "edit number of employees"
-        And I select the option with the text "50-249" for element "#edit-employees-band"
+        And I select the option with the text "50 to 249" for element "#edit-employees-band"
         And I click on the button "#edit-save"
-        Then I expect that element "#edit-employee-no" contains the text "50-249"
+        Then I expect that element "#edit-employee-no" contains the text "50 to 249"
 
         # EDIT LEGAL ENTITY
 
