@@ -166,7 +166,6 @@ exports.config = {
         // <number> timeout for step definitions
         timeout: 120000,
     },
-
     //
     // =====
     // Hooks
