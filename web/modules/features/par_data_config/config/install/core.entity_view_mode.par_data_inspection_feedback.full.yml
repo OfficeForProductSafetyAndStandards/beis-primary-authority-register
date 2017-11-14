@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_inspection_feedback.full
+label: Full
+targetEntityType: par_data_inspection_feedback
+cache: true

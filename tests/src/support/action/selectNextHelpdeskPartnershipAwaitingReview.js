@@ -3,7 +3,7 @@
  * @param  {Function} done          Function to execute when finished
  */
 
-module.exports = (done) => {
+module.exports = () => {
     /**
      * The command to perform on the browser object (addValue or setValue)
      * @type {String}
@@ -16,5 +16,4 @@ module.exports = (done) => {
     browser.selectByValue('#edit-partnership-status', '1');
     browser.click('#edit-submit-rd-helpdesk-dashboard');
     browser.click('td.views-field.views-field-authority-name a');
-    done();
 };

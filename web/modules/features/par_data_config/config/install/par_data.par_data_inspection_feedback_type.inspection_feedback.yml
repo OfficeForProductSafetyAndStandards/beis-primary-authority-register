@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies: {  }
+id: inspection_feedback
+label: 'Inspection Feedback'
+description: ''
+help: ''
+isDeletable: null
+isRevokable: null
+isArchivable: null
+configuration:
+  entity:
+    label_fields:
+      - field_partnership
+    status_field: primary_authority_status
+    status_transitions:
+      approved:
+        - awaiting_approval
+      blocked:
+        - awaiting_approval
+      referred:
+        - awaiting_approval
+  primary_authority_status:
+    allowed_values:
+      awaiting: 'Awaiting Review'
+      approved: Approved
+      blocked: Blocked

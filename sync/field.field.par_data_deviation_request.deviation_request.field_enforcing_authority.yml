@@ -1,0 +1,30 @@
+uuid: 2c72d011-d098-4590-8767-020b1eb60965
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_deviation_request.field_enforcing_authority
+    - par_data.par_data_authority_type.authority
+    - par_data.par_data_deviation_request_type.deviation_request
+_core:
+  default_config_hash: RMtEPvURdnsZ5hpt4Edl_U1Vz5VmjJ069S1OhXrYM-M
+id: par_data_deviation_request.deviation_request.field_enforcing_authority
+field_name: field_enforcing_authority
+entity_type: par_data_deviation_request
+bundle: deviation_request
+label: 'Enforcing Authority'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_authority'
+  handler_settings:
+    target_bundles:
+      authority: authority
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
