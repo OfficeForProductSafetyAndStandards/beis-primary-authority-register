@@ -4,7 +4,7 @@
  * @param  {String}   keyword       The search keyword
  */
 
-module.exports = (done) =>
+module.exports = () =>
 {
     let isVisible = browser.isVisible('#edit-par-data-organisation-id-new');
     if (isVisible = true) {
@@ -12,5 +12,4 @@ module.exports = (done) =>
         browser.click('#edit-next');
     } else {
     }
-    done();
 };

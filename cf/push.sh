@@ -233,4 +233,6 @@ if [[ $1 != "environment-only" ]]; then
     cf rename par-beta-$ENV-green par-beta-$ENV
     
     cf scale par-beta-$ENV -i $INSTANCES
+
+    cf ssh par-beta-$ENV -c "cd app/tools && python cache_warmer.py"
 fi
