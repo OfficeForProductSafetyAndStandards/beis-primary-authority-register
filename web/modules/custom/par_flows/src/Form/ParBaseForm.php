@@ -175,8 +175,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     }
 
     // Do we have a form flow subheader?
-    if (!empty($this->getFlow()->getDefaultSectionTitle() &&
-        !empty($this->pageTitle))) {
+    if (!empty($this->getFlow()->getDefaultSectionTitle()) &&
+        !empty($this->pageTitle)) {
       $this->pageTitle = "{$this->getFlow()->getDefaultSectionTitle()} | {$this->pageTitle}";
     }
 

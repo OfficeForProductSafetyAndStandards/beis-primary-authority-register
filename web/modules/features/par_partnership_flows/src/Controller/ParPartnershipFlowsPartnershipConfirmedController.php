@@ -10,11 +10,11 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 /**
  * A controller for displaying the application confirmation.
  */
-class ParPartnershipFlowsInviteSentController extends ParBaseController {
+class ParPartnershipFlowsPartnershipConfirmedController extends ParBaseController {
 
   use ParPartnershipFlowsTrait;
 
-  protected $pageTitle = 'Notification sent';
+  protected $pageTitle = 'Partnership confirmed';
 
   /**
    * {@inheritdoc}
