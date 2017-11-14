@@ -50,9 +50,11 @@ class ParEnforcementFlowsCompletedEnforcementController extends ParBaseControlle
    */
   public function content(ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
 
+    $reason = NULL;
+
     // Organisation summary.
-    $partnership = current($par_data_enforcement_notice->getPartnership());
     $enforced_organisation = current($par_data_enforcement_notice->getEnforcedOrganisation());
+    $enforced_legal_entity = current($par_data_enforcement_notice->getLegalEntity());
     $enforcing_authority = current($par_data_enforcement_notice->getEnforcingAuthority());
     $enforcing_officer = current($par_data_enforcement_notice->getEnforcingPerson());
 
@@ -73,7 +75,7 @@ class ParEnforcementFlowsCompletedEnforcementController extends ParBaseControlle
 
     $build['authority']['authority_name'] = [
       '#type' => 'markup',
-      '#markup' => $enforcing_authority->get('authority_name')->getString(),
+      '#markup' => !empty($enforcing_authority) ? $enforcing_authority->get('authority_name')->getString() : NULL,
       '#prefix' => '<div><h2>',
       '#suffix' => '</h2></div>',
     ];
@@ -94,18 +96,14 @@ class ParEnforcementFlowsCompletedEnforcementController extends ParBaseControlle
 
     $build['organisation']['organisation_name'] = [
       '#type' => 'markup',
-      '#markup' => $enforced_organisation->get('organisation_name')->getString(),
+      '#markup' => !empty($enforced_legal_entity) ? $enforced_legal_entity->get('registered_name')->getString() : NULL,
     ];
 
-    $build['registered_address']['registered_address_heading'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Business address'),
-      '#prefix' => '<h2>',
-      '#suffix' => '</h2>',
-    ];
-
-    // Display the primary address.
-    $build['registered_address']['address'] = $this->renderSection('Registered address', $enforced_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
+    // Only display an address if we have an organisation.
+    if (!empty($enforced_organisation)) {
+      // Display the primary address.
+      $build['registered_address']['address'] = $this->renderSection('Registered address', $enforced_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
+    }
     // To account for enforcement notification data created before enforcement officer release.
     if (!empty($enforcing_officer)) {
       $build['enforcement_officer_name'] = $this->renderSection('Enforcing officer name', $enforcing_officer, ['first_name' => 'summary', 'last_name' => 'summary'], [], TRUE, TRUE);
