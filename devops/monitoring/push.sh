@@ -39,7 +39,6 @@ CF_LOGIN_ENDPOINT=`vault read -field=CF_LOGIN_ENDPOINT secret/par/monitor/cf`
 CF_LOGIN_PASSWORD=`vault read -field=CF_LOGIN_PASSWORD secret/par/monitor/cf`
 PUBNUB_PUBLISH_KEY=`vault read -field=PUBNUB_PUBLISH_KEY secret/par/monitor/cf`
 PUBNUB_SUBSCRIBE_KEY=`vault read -field=PUBNUB_SUBSCRIBE_KEY secret/par/monitor/cf`
-CF_APP_KEY=`vault read -field=CF_APP_KEY secret/par/monitor/cf`
 
 ####################################################################################
 # Reseal the vault
@@ -62,6 +61,5 @@ cf set-env $TARGET_ENV CF_LOGIN_ENDPOINT $CF_LOGIN_ENDPOINT
 cf set-env $TARGET_ENV CF_LOGIN_PASSWORD $CF_LOGIN_PASSWORD
 cf set-env $TARGET_ENV PUBNUB_PUBLISH_KEY $PUBNUB_PUBLISH_KEY
 cf set-env $TARGET_ENV PUBNUB_SUBSCRIBE_KEY $PUBNUB_SUBSCRIBE_KEY
-cf set-env $TARGET_ENV CF_APP_KEY $CF_APP_KEY
 
 cf restage $TARGET_ENV

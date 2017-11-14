@@ -28,13 +28,27 @@ while True:
     token_content = json.load(token_resp)
     
     access_token = token_content['access_token']
-    refresh_token = token_content['refresh_token']
     
-    stats_req = urllib2.Request('https://' + os.environ['CF_ENDPOINT'] + '/v2/apps/' + os.environ['CF_APP_KEY'] + '/stats')
+    apps_req = urllib2.Request('https://' + os.environ['CF_ENDPOINT'] + '/v2/apps')
+    apps_req.add_header('Authorization', 'Bearer ' + access_token)
+
+    apps_resp = urllib2.urlopen(apps_req)
+    apps_content = json.load(apps_resp)
+    
+    resources = apps_content['resources']
+    
+    for resource in resources:
+        if resource['entity']['name'] == 'par-beta-production':
+            guid = resource['metadata']['guid']
+            break
+            
+    print guid
+        
+    stats_req = urllib2.Request('https://' + os.environ['CF_ENDPOINT'] + '/v2/apps/' + guid + '/stats')
     stats_req.add_header('Authorization', 'Bearer ' + access_token)
 
     stats_resp = urllib2.urlopen(stats_req)
-    body = json.load(stats_resp)
+    stats_content = json.load(stats_resp)
     
     def publish_callback(result, status):
         pass
@@ -42,6 +56,6 @@ while True:
         # Handle PNPublishResult and PNStatus
 
     print "Publishing..."
-    pubnub.publish().channel('cloud_foundry_8').message(body).async(publish_callback)
+    pubnub.publish().channel('cloud_foundry_8').message(stats_content).async(publish_callback)
     
     sleep(5)
