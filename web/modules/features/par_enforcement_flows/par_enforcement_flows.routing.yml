@@ -77,7 +77,7 @@ par_enforcement_flows.raise:
   path: '/enforcement-notice/{par_data_partnership}/raise'
   defaults:
     _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementRaiseNoticeForm'
-    _title: 'Raise Enforcement Notice'
+    _title_callback: '\Drupal\par_enforcement_flows\Form\ParEnforcementRaiseNoticeForm::titleCallback'
   requirements:
     _permission: 'raise enforcement notice'
     par_data_partnership: \d+
@@ -89,7 +89,7 @@ par_enforcement_flows.raise_details:
   path: '/enforcement-notice/{par_data_partnership}/raise/details'
   defaults:
     _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementRaiseNoticeDetailsForm'
-    _title: 'Raise Enforcement Notice'
+    _title_callback: '\Drupal\par_enforcement_flows\Form\ParEnforcementRaiseNoticeDetailsForm::titleCallback'
   requirements:
     _permission: 'raise enforcement notice'
     par_data_partnership: \d+
