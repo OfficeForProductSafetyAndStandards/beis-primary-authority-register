@@ -3,7 +3,8 @@ Feature: New Direct Partnership For PA To Approve
 
     Scenario: New Direct Partnership
 
-        Given I am logged in as "par_authority@example.com"
+        Given I pause for 120000ms
+        And I am logged in as "par_authority@example.com"
         And I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
         And I expect that element "#block-par-theme-content" contains the text "See enforcement notifications"
