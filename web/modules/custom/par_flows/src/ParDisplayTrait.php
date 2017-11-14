@@ -148,7 +148,7 @@ trait ParDisplayTrait {
 
     // Reference fields need to be rendered slightly differently.
     if ($field instanceof EntityReferenceFieldItemListInterface && !$single) {
-      $link_name_suffix = strtolower($entity->label());
+      $link_name_suffix = $entity->label();
     }
     else {
       $link_name_suffix = strtolower($field->getFieldDefinition()->getLabel());
@@ -164,9 +164,6 @@ trait ParDisplayTrait {
       }
       if (in_array('edit-entity', $operations)) {
         $params[$entity->getEntityTypeId()] = $entity->id();
-
-        // Edit link to include the entity title.
-        $link_name_suffix = $entity->label();
       }
 
       try {
