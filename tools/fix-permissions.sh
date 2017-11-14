@@ -26,7 +26,7 @@ main() {
     rm "$tmp"
     # Not volumes, so need to be chowned
     chown -R "$owner:$group" /var/{lock,log,run}/apache*
-    exec /usr/sbin/apache2ctl "$@"
+    exec /usr/sbin/apache2ctl restart
 }
 
 ##
