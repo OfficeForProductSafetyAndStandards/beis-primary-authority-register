@@ -3,7 +3,7 @@ status: true
 dependencies: {  }
 id: raise_enforcement
 label: 'Raise Enforcement'
-default_title: null
+default_title: 'Notification of Enforcement action'
 default_section_title: null
 description: 'The creation flow of an enforcement notice.'
 save_method: end
