@@ -327,7 +327,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     // We need to create a partnership
     $partnership = ParDataPartnership::create($this->getDirectPartnershipValues());
     $partnership->save();
-    $primary_authority = current($partnership->getAuthorityPeople());
+    $primary_authority = current($partnership->getAuthority());
 
     // We need to create a Legal Entity first.
     $organisation = ParDataOrganisation::create($this->getOrganisationValues());
