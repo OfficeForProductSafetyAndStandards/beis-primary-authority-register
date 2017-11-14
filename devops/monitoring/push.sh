@@ -25,7 +25,7 @@ fi
 # Get environment variables that will be set on the target environment
 ####################################################################################
 
-BEIS_PAR_PUBNUB_SUBSCRIBE_KEY=`vault read -field=BEIS_PAR_PUBNUB_SUBSCRIBE_KEY secret/par/monitor/production`
+CF_ENDPOINT=`vault read -field=CF_ENDPOINT secret/par/monitor/cf`
 
 if [ $? != 0 ]; then
 	exit 1
@@ -34,9 +34,12 @@ if [ $? != 0 ]; then
     echo "################################################################################################"
 fi
 
-BEIS_PAR_PUBNUB_PUBLISH_KEY=`vault read -field=BEIS_PAR_PUBNUB_PUBLISH_KEY secret/par/monitor/production`
-BEIS_PAR_CF_APP_KEY=`vault read -field=BEIS_PAR_CF_APP_KEY secret/par/monitor/production`
-BEIS_PAR_CF_API_AUTH_TOKEN=`cf oauth-token`
+CF_LOGIN_EMAIL=`vault read -field=CF_LOGIN_EMAIL secret/par/monitor/cf`
+CF_LOGIN_ENDPOINT=`vault read -field=CF_LOGIN_ENDPOINT secret/par/monitor/cf`
+CF_LOGIN_PASSWORD=`vault read -field=CF_LOGIN_PASSWORD secret/par/monitor/cf`
+PUBNUB_PUBLISH_KEY=`vault read -field=PUBNUB_PUBLISH_KEY secret/par/monitor/cf`
+PUBNUB_SUBSCRIBE_KEY=`vault read -field=PUBNUB_SUBSCRIBE_KEY secret/par/monitor/cf`
+CF_APP_KEY=`vault read -field=CF_APP_KEY secret/par/monitor/cf`
 
 ####################################################################################
 # Reseal the vault
@@ -53,9 +56,12 @@ cf push
 
 TARGET_ENV=par-beta-monitoring
 
-cf set-env $TARGET_ENV BEIS_PAR_PUBNUB_SUBSCRIBE_KEY $BEIS_PAR_PUBNUB_SUBSCRIBE_KEY
-cf set-env $TARGET_ENV BEIS_PAR_PUBNUB_PUBLISH_KEY $BEIS_PAR_PUBNUB_PUBLISH_KEY
-cf set-env $TARGET_ENV BEIS_PAR_CF_APP_KEY $BEIS_PAR_CF_APP_KEY
-cf set-env $TARGET_ENV BEIS_PAR_CF_API_AUTH_TOKEN "$BEIS_PAR_CF_API_AUTH_TOKEN"
+cf set-env $TARGET_ENV CF_ENDPOINT $CF_ENDPOINT
+cf set-env $TARGET_ENV CF_LOGIN_EMAIL $CF_LOGIN_EMAIL
+cf set-env $TARGET_ENV CF_LOGIN_ENDPOINT $CF_LOGIN_ENDPOINT
+cf set-env $TARGET_ENV CF_LOGIN_PASSWORD $CF_LOGIN_PASSWORD
+cf set-env $TARGET_ENV PUBNUB_PUBLISH_KEY $PUBNUB_PUBLISH_KEY
+cf set-env $TARGET_ENV PUBNUB_SUBSCRIBE_KEY $PUBNUB_SUBSCRIBE_KEY
+cf set-env $TARGET_ENV CF_APP_KEY $CF_APP_KEY
 
 cf restage $TARGET_ENV
