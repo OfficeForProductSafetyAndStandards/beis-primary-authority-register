@@ -1,7 +1,7 @@
 @ci
-Feature: Enforcement notice management
+Feature: Helpdesk approve partnership
 
-    Scenario: Enforcement notice management
+    Scenario: Helpdesk approve partnership
 
         # PARTNERSHIPS DASHBOARD
 
@@ -14,10 +14,9 @@ Feature: Enforcement notice management
 #
 #        # APPROVAL FORM
 
-        And I click on the button "#edit-next"
         Then I expect that element "#par-rd-help-desk-approve" contains the text "Partnership is approved between"
         And I expect that element "#par-rd-help-desk-approve" contains the text "Business For Direct Partnership 1"
-        And I click on the button "#edit-done"
+        And I click on the button "#edit-next"
 
         When I open the url "/helpdesk"
         When I add "Business For Direct Partnership 1" to the inputfield "#edit-keywords"
