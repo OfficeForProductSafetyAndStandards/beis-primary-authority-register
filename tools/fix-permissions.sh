@@ -26,6 +26,7 @@ main() {
     rm "$tmp"
     # Not volumes, so need to be chowned
     chown -R "$owner:$group" /var/{lock,log,run}/apache*
+    echo "ServerName localhost" >> /etc/apache2/apache2.conf
     exec /usr/sbin/apache2ctl restart
 }
 
