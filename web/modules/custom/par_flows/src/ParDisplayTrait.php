@@ -170,7 +170,7 @@ trait ParDisplayTrait {
         $edit_link = $this->getFlow()->getLinkByCurrentOperation('edit_' . $field->getName(), $params)->setText("edit {$link_name_suffix}")->toString();
       }
       catch (ParFlowException $e) {
-        $this->getLogger($this->getLoggerChannel())->error($e);
+        $this->getLogger($this->getLoggerChannel())->warning($e);
       }
       if (isset($edit_link)) {
         $operation_links['edit'] = [
@@ -191,7 +191,6 @@ trait ParDisplayTrait {
    * with the relevant operational links.
    */
   public function renderSection($section, $entity, $fields, $operations = [], $title = TRUE, $single = FALSE) {
-
     // If rendering logic is called on an NULL object prevent system failures.
     if (empty($entity)) {
       return;
@@ -217,19 +216,23 @@ trait ParDisplayTrait {
       ];
 
       $field = $entity->get($field_name);
-      if (!$field->isEmpty()) {
-        $single_item = FALSE;
-        // If there is only one value treat the field as single.
-        if ($field->count() <= 1) {
-          $single_item = TRUE;
-        }
 
+      // Can only choose to display a single value
+      // if there is more than one to start with.
+      if ($field->isEmpty()) {
+        $single = FALSE;
+      }
+      elseif ($field->count() === 1) {
+        $single = TRUE;
+      }
+
+      if (!$field->isEmpty()) {
         // Reference fields need to be rendered slightly differently.
         if ($field instanceof EntityReferenceFieldItemListInterface) {
-          $rows = $this->renderReferenceField($section, $field, $view_mode, $operations, $single_item);
+          $rows = $this->renderReferenceField($section, $field, $view_mode, $operations, $single);
         }
         else {
-          $rows = $this->renderTextField($section, $entity, $field, $view_mode, $operations, $single_item);
+          $rows = $this->renderTextField($section, $entity, $field, $view_mode, $operations, $single);
         }
 
         // Render the rows using a tabulated pager.
@@ -252,13 +255,14 @@ trait ParDisplayTrait {
         '#collapsed' => FALSE,
       ];
 
-      // Only add the add link if it is in the allowed operations.
+      // Only add the add link if it is in the allowed operations
+      // and if the field isn't single and empty.
       $link_name_suffix = strtolower($field->getFieldDefinition()->getLabel());
-      if (isset($operations) && (in_array('add', $operations)) && !($single && !$field->isEmpty())) {
+      if (isset($operations) && in_array('add', $operations) && !$single) {
         try {
           $add_link = $this->getFlow()->getLinkByCurrentOperation('add_' . $field->getName())->setText("add another {$link_name_suffix}")->toString();
         } catch (ParFlowException $e) {
-          $this->getLogger($this->getLoggerChannel())->error($e);
+          $this->getLogger($this->getLoggerChannel())->warning($e);
         }
         if (isset($add_link)) {
           $element[$field_name]['operations']['add'] = [
