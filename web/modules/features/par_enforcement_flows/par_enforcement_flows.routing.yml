@@ -116,7 +116,7 @@ par_enforcement_flows.raise_confirm:
   path: '/enforcement-notice/{par_data_partnership}/raise/{par_data_enforcement_notice}/confirm'
   defaults:
     _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementSubmitNoticeForm'
-    _title: 'Primary Authority Register'
+    _title_callback: '\Drupal\par_enforcement_flows\Form\ParEnforcementSubmitNoticeForm::titleCallback'
   requirements:
     _permission: 'raise enforcement notice'
     par_data_partnership: \d+
