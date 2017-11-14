@@ -28,6 +28,18 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function titleCallback() {
+
+    $enforcementFlowTitle = $this->RaiseEnforcementTitleCallback();
+    if ($enforcementFlowTitle) {
+      $this->pageTitle =  $enforcementFlowTitle;
+    }
+    return parent::titleCallback();
+  }
+
+  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
@@ -58,9 +70,19 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       return parent::buildForm($form, $form_state);
     }
 
+
+    $form['summary_title'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('Summary of enforcement notification'),
+      '#prefix' => '<h3>',
+      '#suffix' => '</h3>',
+    ];
+
     $form['enforcement_title'] = [
       '#type' => 'markup',
       '#markup' => $this->t('Include the following information'),
+      '#prefix' => '<h4>',
+      '#suffix' => '</h4>',
     ];
 
     $enforcement_data = [
@@ -70,7 +92,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       'Your reasons for proposing the enforcement action',
     ];
 
-    $form['enforcement_text'] = [ '#theme' => 'item_list', '#items' => $enforcement_data, ];
+    $form['enforcement_text'] = [ '#theme' => 'item_list', '#items' => $enforcement_data];
 
     $form['action_summary'] = [
       '#type' => 'textarea',
@@ -82,12 +104,12 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
 
     $form['enforcement_type'] = [
       '#type' => 'radios',
-      '#title' => $this->t('Enforcing type'),
+      '#title' => $this->t('This enforcement action is'),
       '#options' => $enforcement_notice_entity,
       '#default_value' => key($enforcement_notice_entity),
       '#required' => TRUE,
-      '#prefix' => '<div>',
-      '#suffix' => '</div>',
+      '#prefix' => '<div><h3>',
+      '#suffix' => '</h3></div>',
     ];
 
     return parent::buildForm($form, $form_state);
