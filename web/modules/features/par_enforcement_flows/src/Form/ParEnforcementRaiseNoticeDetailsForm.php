@@ -70,19 +70,39 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       return parent::buildForm($form, $form_state);
     }
 
+    $enforcement_notice_entity = $enforcement_notice_entity->getAllowedValues('notice_type');
+
+    $form['enforcement_type'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('This enforcement action is'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    $form['enforcement_type']['type'] = [
+      '#type' => 'radios',
+      '#options' => $enforcement_notice_entity,
+      '#default_value' => key($enforcement_notice_entity),
+      '#required' => TRUE,
+      '#prefix' => '<div><h3>',
+      '#suffix' => '</h3></div>',
+    ];
 
     $form['summary_title'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Summary of enforcement notification'),
-      '#prefix' => '<h3>',
-      '#suffix' => '</h3>',
+      '#type' => 'fieldset',
+      '#title' => $this->t('Summary of enforcement notification'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
     ];
 
     $form['enforcement_title'] = [
-      '#type' => 'markup',
+      '#type' => 'fieldset',
       '#markup' => $this->t('Include the following information'),
-      '#prefix' => '<h4>',
-      '#suffix' => '</h4>',
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
     ];
 
     $enforcement_data = [
@@ -94,23 +114,18 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
 
     $form['enforcement_text'] = [ '#theme' => 'item_list', '#items' => $enforcement_data];
 
-    $form['action_summary'] = [
-      '#type' => 'textarea',
+
+    $form['action_summary_title'] = [
+      '#type' => 'fieldset',
       '#title' => $this->t('Provide a summary of the enforcement notification'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      ];
+
+    $form['action_summary_title']['action_summary'] = [
+      '#type' => 'textarea',
       '#default_value' => $this->getDefaultValues("action_summary"),
      ];
-
-    $enforcement_notice_entity = $enforcement_notice_entity->getAllowedValues('notice_type');
-
-    $form['enforcement_type'] = [
-      '#type' => 'radios',
-      '#title' => $this->t('This enforcement action is'),
-      '#options' => $enforcement_notice_entity,
-      '#default_value' => key($enforcement_notice_entity),
-      '#required' => TRUE,
-      '#prefix' => '<div><h3>',
-      '#suffix' => '</h3></div>',
-    ];
 
     return parent::buildForm($form, $form_state);
   }
