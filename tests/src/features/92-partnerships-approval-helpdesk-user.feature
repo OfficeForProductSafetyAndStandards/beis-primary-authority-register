@@ -15,9 +15,6 @@ Feature: Enforcement notice management
 #        # APPROVAL FORM
 
         And I click on the button "#edit-next"
-        And I click on the radio "#edit-confirm-authorisation-select-0"
-        And I click on the radio "#edit-partnership-regulatory-functions-2"
-        And I click on the button "#edit-next"
         Then I expect that element "#par-rd-help-desk-approve" contains the text "Partnership is approved between"
         And I expect that element "#par-rd-help-desk-approve" contains the text "Business For Direct Partnership 1"
         And I click on the button "#edit-done"
