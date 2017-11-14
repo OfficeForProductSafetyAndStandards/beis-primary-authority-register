@@ -12,7 +12,7 @@ id: par_data_enforcement_notice.enforcement_notice.field_primary_authority
 field_name: field_primary_authority
 entity_type: par_data_enforcement_notice
 bundle: enforcement_notice
-label: 'Primary Authority (deprecated)'
+label: 'Primary Authority'
 description: 'The primary authority that issued this enforcement notice.'
 required: false
 translatable: false

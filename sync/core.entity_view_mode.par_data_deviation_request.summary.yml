@@ -1,0 +1,12 @@
+uuid: 765a06f9-bc5c-441b-afae-19abab4aa206
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+_core:
+  default_config_hash: yAmk70L5scg8y1OEPVGkVl4cgUCmSaai2rvIV5dsaHM
+id: par_data_deviation_request.summary
+label: Summary
+targetEntityType: par_data_deviation_request
+cache: true
