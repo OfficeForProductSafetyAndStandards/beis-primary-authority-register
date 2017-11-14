@@ -7,6 +7,7 @@ dependencies:
     - field.field.par_data_enforcement_notice.enforcement_notice.field_enforcement_action
     - field.field.par_data_enforcement_notice.enforcement_notice.field_enforcing_authority
     - field.field.par_data_enforcement_notice.enforcement_notice.field_legal_entity
+    - field.field.par_data_enforcement_notice.enforcement_notice.field_organisation
     - field.field.par_data_enforcement_notice.enforcement_notice.field_partnership
     - field.field.par_data_enforcement_notice.enforcement_notice.field_person
     - field.field.par_data_enforcement_notice.enforcement_notice.field_primary_authority
@@ -84,6 +85,7 @@ hidden:
   field_enforcing_authority: true
   field_enforcingauthority: true
   field_legal_entity: true
+  field_organisation: true
   field_partnership: true
   field_person: true
   field_primary_authority: true

@@ -10,7 +10,7 @@ id: par_data_enforcement_notice.enforcement_notice.field_person
 field_name: field_person
 entity_type: par_data_enforcement_notice
 bundle: enforcement_notice
-label: Person
+label: 'Enforcing Person'
 description: ''
 required: false
 translatable: false

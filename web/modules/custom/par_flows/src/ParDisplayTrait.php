@@ -191,6 +191,12 @@ trait ParDisplayTrait {
    * with the relevant operational links.
    */
   public function renderSection($section, $entity, $fields, $operations = [], $title = TRUE, $single = FALSE) {
+
+    // If rendering logic is called on an NULL object prevent system failures.
+    if (empty($entity)) {
+      return;
+    }
+
     $element = [
       '#type' => 'fieldset',
       '#attributes' => ['class' => 'form-group'],
