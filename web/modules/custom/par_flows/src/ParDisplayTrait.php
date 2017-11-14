@@ -170,7 +170,7 @@ trait ParDisplayTrait {
         $edit_link = $this->getFlow()->getLinkByCurrentOperation('edit_' . $field->getName(), $params)->setText("edit {$link_name_suffix}")->toString();
       }
       catch (ParFlowException $e) {
-        $this->getLogger($this->getLoggerChannel())->warning($e);
+        $this->getLogger($this->getLoggerChannel())->notice($e);
       }
       if (isset($edit_link)) {
         $operation_links['edit'] = [
@@ -262,7 +262,7 @@ trait ParDisplayTrait {
         try {
           $add_link = $this->getFlow()->getLinkByCurrentOperation('add_' . $field->getName())->setText("add another {$link_name_suffix}")->toString();
         } catch (ParFlowException $e) {
-          $this->getLogger($this->getLoggerChannel())->warning($e);
+          $this->getLogger($this->getLoggerChannel())->notice($e);
         }
         if (isset($add_link)) {
           $element[$field_name]['operations']['add'] = [

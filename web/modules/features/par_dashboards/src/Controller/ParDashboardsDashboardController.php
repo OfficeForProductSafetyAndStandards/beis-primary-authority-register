@@ -70,6 +70,8 @@ class ParDashboardsDashboardController extends ControllerBase {
   public function content() {
     $build = [];
 
+    throw new Exception('Test fatal error for Sentry logging.');
+
     // Your partnerships.
     $partnerships =  $this->getParDataManager()->hasMembershipsByType($this->getCurrentUser(), 'par_data_partnership');
     $can_manage_partnerships = $this->getCurrentUser()->hasPermission('manage my organisations') || $this->getCurrentUser()->hasPermission('manage my authorities');
