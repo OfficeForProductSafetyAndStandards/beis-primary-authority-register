@@ -32,6 +32,9 @@ while [ "$#" -gt 0 ]; do
     --httpd_group=*)
         httpd_group="${1#*=}"
         ;;
+    --private_files=*)
+        private_files="${1#*=}"
+        ;;
     --help) print_help;;
     *)
       printf "***********************************************************\n"
@@ -57,6 +60,9 @@ if [ -z "${drupal_user}" ] || [[ $(id -un "${drupal_user}" 2> /dev/null) != "${d
   print_help
   exit 1
 fi
+
+printf "Changing permissions of "${private_files}" to "rwxrwx----"...\n"
+chmod -R chmod ug=rwx,o= ${private_files}
 
 cd $drupal_path
 # printf "Changing ownership of all contents of "${drupal_path}":\n user => "${drupal_user}" \t group => "${httpd_group}"\n"
