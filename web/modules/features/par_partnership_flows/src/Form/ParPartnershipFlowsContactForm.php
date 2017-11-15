@@ -105,14 +105,14 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     if ($this->getFlowName() == 'partnership_application') {
       $form['info'] = [
         '#type' => 'markup',
-        '#markup' => $this->t("Main Contact for {$this->getDefaultValues('organisation_name', '', 'par_partnership_application_organisation')}"),
+        '#markup' => $this->t("Providing contact information"),
         '#prefix' => '<h2>',
         '#suffix' => '</h2>',
       ];
 
       $form['help_text'] = [
         '#type' => 'markup',
-        '#markup' => $this->t('State who is the main contact for the business. It might be the business owner, or an employee in charge of regulatory compliance. Their contact information will be visible to anyone logging into the Primary Authority Register, including enforcement officers.'),
+        '#markup' => $this->t('State who is the main contact for the business. It might be the business owner, or an employee in charge of regulatory compliance.'),
         '#prefix' => '<p>',
         '#suffix' => '</p>',
       ];
@@ -120,37 +120,38 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
 
     $form['salutation'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Title (optional)'),
+      '#title' => $this->t('Enter the title (optional)'),
+      '#description' => $this->t('For example, Ms Mr Mrs Dr'),
       '#default_value' => $this->getDefaultValues("salutation"),
     ];
 
     $form['first_name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('First name'),
+      '#title' => $this->t('Enter the first name'),
       '#default_value' => $this->getDefaultValues("first_name"),
     ];
 
     $form['last_name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Last name'),
+      '#title' => $this->t('Enter the last name'),
       '#default_value' => $this->getDefaultValues("last_name"),
     ];
 
     $form['work_phone'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Work phone'),
+      '#title' => $this->t('Enter the work phone number'),
       '#default_value' => $this->getDefaultValues("work_phone"),
     ];
 
     $form['mobile_phone'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Mobile phone (optional)'),
+      '#title' => $this->t('Enter the mobile phone number (optional)'),
       '#default_value' => $this->getDefaultValues("mobile_phone"),
     ];
 
     $form['email'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Email'),
+      '#type' => 'email',
+      '#title' => $this->t('Enter the email address'),
       '#default_value' => $this->getDefaultValues("email"),
       // Prevent modifying email if editing an existing user.
       '#disabled' => !empty($par_data_person),
@@ -165,7 +166,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
 
     $form['preferred_contact'] = [
       '#type' => 'checkboxes',
-      '#title' => $this->t('Preferred method of contact (optional)'),
+      '#title' => $this->t('Select the preferred methods of contact (optional)'),
       '#options' => $contact_options,
       '#default_value' => $this->getDefaultValues("preferred_contact", []),
       '#return_value' => 'on',
@@ -173,7 +174,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
 
     $form['notes'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('Contact notes (optional)'),
+      '#title' => $this->t('Provide contact notes (optional)'),
       '#default_value' => $this->getDefaultValues('notes'),
       '#description' => 'Add any additional notes about how best to contact this person.',
     ];

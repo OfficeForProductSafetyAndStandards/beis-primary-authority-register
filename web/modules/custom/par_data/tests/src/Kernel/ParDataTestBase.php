@@ -9,15 +9,20 @@ use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataAuthorityType;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataCoordinatedBusinessType;
+use Drupal\par_data\Entity\ParDataDeviationRequest;
+use Drupal\par_data\Entity\ParDataDeviationRequestType;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_data\Entity\ParDataEnforcementActionType;
 use Drupal\par_data\Entity\ParDataEnforcementNoticeType;
+use Drupal\par_data\Entity\ParDataInspectionFeedback;
+use Drupal\par_data\Entity\ParDataInspectionFeedbackType;
 use Drupal\par_data\Entity\ParDataInspectionPlan;
 use Drupal\par_data\Entity\ParDataInspectionPlanType;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataLegalEntityType;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataOrganisationType;
+use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPartnershipType;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPersonType;
@@ -35,7 +40,7 @@ use Drupal\par_data\Entity\ParDataSicCodeType;
  */
 class ParDataTestBase extends EntityKernelTestBase {
 
-  static $modules = ['trance', 'par_validation', 'par_data', 'par_data_config', 'address', 'datetime', 'datetime_range', 'file', 'file_entity'];
+  static $modules = ['language', 'content_translation', 'trance', 'par_validation', 'par_data', 'par_data_config', 'address', 'datetime', 'datetime_range', 'file', 'file_entity'];
 
   protected $account = 1;
 
@@ -43,6 +48,8 @@ class ParDataTestBase extends EntityKernelTestBase {
     'access par_data_advice entities',
     'access par_data_authority entities',
     'access par_data_enforcement_notice entities',
+    'access par_data_deviation_request entities',
+    'access par_data_inspection_feedback entities',
     'access par_data_inspection_plan entities',
     'access par_data_legal_entity entities',
     'access par_data_organisation entities',
@@ -55,6 +62,8 @@ class ParDataTestBase extends EntityKernelTestBase {
     'edit par_data_advice entities',
     'edit par_data_authority entities',
     'edit par_data_enforcement_notice entities',
+    'edit par_data_deviation_request entities',
+    'edit par_data_inspection_feedback entities',
     'edit par_data_inspection_plan entities',
     'edit par_data_legal_entity entities',
     'edit par_data_organisation entities',
@@ -65,6 +74,8 @@ class ParDataTestBase extends EntityKernelTestBase {
     'edit par_data_regulatory_function entities',
     'edit par_data_sic_code entities',
   ];
+
+  protected $entityTypes = [];
 
   /**
    * {@inheritdoc}
@@ -82,11 +93,13 @@ class ParDataTestBase extends EntityKernelTestBase {
     $this->setUpFilesystem();
 
     // Install out entity hooks.
-    $entity_types = [
+    $this->entityTypes = [
       'par_data_advice',
       'par_data_authority',
       'par_data_enforcement_action',
       'par_data_enforcement_notice',
+      'par_data_deviation_request',
+      'par_data_inspection_feedback',
       'par_data_inspection_plan',
       'par_data_legal_entity',
       'par_data_organisation',
@@ -98,7 +111,7 @@ class ParDataTestBase extends EntityKernelTestBase {
       'par_data_sic_code',
     ];
 
-    foreach ($entity_types as $type) {
+    foreach ($this->entityTypes as $type) {
       // Set up schema for par_data.
       $this->installEntitySchema($type);
     }
@@ -131,6 +144,20 @@ class ParDataTestBase extends EntityKernelTestBase {
     $type = ParDataEnforcementNoticeType::create([
       'id' => 'enforcement_notice',
       'label' => 'Enforcement Notice',
+    ]);
+    $type->save();
+
+    // Create the entity bundles required for testing.
+    $type = ParDataDeviationRequestType::create([
+      'id' => 'deviation_request',
+      'label' => 'Deviation Request',
+    ]);
+    $type->save();
+
+    // Create the entity bundles required for testing.
+    $type = ParDataInspectionFeedbackType::create([
+      'id' => 'inspection_feedback',
+      'label' => 'Inspection Feedback',
     ]);
     $type->save();
 
@@ -203,7 +230,6 @@ class ParDataTestBase extends EntityKernelTestBase {
 
   public function getBaseValues() {
     return [
-      'name' => 'test',
       'uid' => $this->account,
       'type' => 'UNKNOWN',
     ];
@@ -294,21 +320,19 @@ class ParDataTestBase extends EntityKernelTestBase {
   }
 
   public function getEnforcementNoticeValues() {
-    // We need to create a Primary Authority first.
-    $primary_authority = ParDataAuthority::create($this->getAuthorityValues());
-    $primary_authority->save();
-
     // We need to create an Enforcing Authority first.
     $enforcing_authority = ParDataAuthority::create($this->getAuthorityValues());
     $enforcing_authority->save();
 
-    // @TODO We must create an organisation to add to this enforcement
-    //  notice, however, the legal entity created for the partnership
-    // must match the legal entity created for the organisation.
+    // We need to create a partnership
+    $partnership = ParDataPartnership::create($this->getDirectPartnershipValues());
+    $partnership->save();
+    $primary_authority = current($partnership->getAuthority());
 
     // We need to create a Legal Entity first.
-    $legal_entity = ParDataLegalEntity::create($this->getLegalEntityValues());
-    $legal_entity->save();
+    $organisation = ParDataOrganisation::create($this->getOrganisationValues());
+    $organisation->save();
+    $legal_entity = current($organisation->getLegalEntity());
 
     // We need to create an Enforcement Action first.
     $enforcement_action = ParDataEnforcementAction::create($this->getEnforcementActionValues());
@@ -322,18 +346,99 @@ class ParDataTestBase extends EntityKernelTestBase {
       'type' => 'enforcement_notice',
       'notice_type' => 'Closure',
       'notice_date' => '2017-10-01',
+      'legal_entity_name' => 'Unassigned Legal Entity Ltd',
       'summary' => $this->randomString(1000),
-      'field_primary_authority' => [
-        $primary_authority->id(),
-      ],
       'field_enforcing_authority' => [
         $enforcing_authority->id(),
+      ],
+      'field_organisation' => [
+        $organisation->id(),
+      ],
+      'field_partnership' => [
+        $partnership->id(),
+      ],
+      'field_primary_authority' => [
+        $primary_authority->id(),
       ],
       'field_legal_entity' => [
         $legal_entity->id(),
       ],
       'field_enforcement_action' => [
         $enforcement_action->id(),
+      ],
+      'field_person' => [
+        $person->id(),
+      ],
+    ] + $this->getBaseValues();
+
+  }
+
+  public function getDeviationRequestValues() {
+    // We need to create an Enforcing Authority first.
+    $enforcing_authority = ParDataAuthority::create($this->getAuthorityValues());
+    $enforcing_authority->save();
+
+    $people = $enforcing_authority->get('field_person')->referencedEntities();
+    $person = current($people);
+
+    // We need to create a partnership
+    $partnership = ParDataPartnership::create($this->getDirectPartnershipValues());
+    $partnership->save();
+
+    $inspection_plans = $partnership->get('field_inspection_plan')->referencedEntities();
+    $inspection_plan = current($inspection_plans);
+
+    return [
+      'type' => 'deviation_request',
+      'request_date' => '2017-10-01',
+      'notes' => $this->randomString(1000),
+      'primary_authority_status' => 'awaiting',
+      'primary_authority_notes' => $this->randomString(1000),
+      'field_enforcing_authority' => [
+        $enforcing_authority->id(),
+      ],
+      'field_partnership' => [
+        $partnership->id(),
+      ],
+      'field_inspection_plan' => [
+        $inspection_plan->id(),
+      ],
+      'field_person' => [
+        $person->id(),
+      ],
+    ] + $this->getBaseValues();
+
+  }
+
+  public function getInspectionFeedbackValues() {
+    // We need to create an Enforcing Authority first.
+    $enforcing_authority = ParDataAuthority::create($this->getAuthorityValues());
+    $enforcing_authority->save();
+
+    $people = $enforcing_authority->get('field_person')->referencedEntities();
+    $person = current($people);
+
+    // We need to create a partnership
+    $partnership = ParDataPartnership::create($this->getDirectPartnershipValues());
+    $partnership->save();
+
+    $inspection_plans = $partnership->get('field_inspection_plan')->referencedEntities();
+    $inspection_plan = current($inspection_plans);
+
+    return [
+      'type' => 'inspection_feedback',
+      'request_date' => '2017-10-01',
+      'notes' => $this->randomString(1000),
+      'primary_authority_status' => 'awaiting',
+      'primary_authority_notes' => $this->randomString(1000),
+      'field_enforcing_authority' => [
+        $enforcing_authority->id(),
+      ],
+      'field_partnership' => [
+        $partnership->id(),
+      ],
+      'field_inspection_plan' => [
+        $inspection_plan->id(),
       ],
       'field_person' => [
         $person->id(),

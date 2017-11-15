@@ -73,7 +73,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       if ($this->get($field_name)->isEmpty()) {
         return '(none)';
       }
-      else if ($this->get($field_name) instanceof EntityReferenceFieldItemListInterface) {
+      elseif ($this->get($field_name) instanceof EntityReferenceFieldItemListInterface) {
         return current($this->get($field_name)->referencedEntities())->label();
       }
       elseif (!empty($property_name)) {

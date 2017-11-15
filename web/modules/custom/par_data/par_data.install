@@ -195,3 +195,10 @@ function par_data_update_8014() {
     ->execute();
 }
 
+/**
+ * Update to physical model v11.
+ */
+function par_data_update_8015() {
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
+

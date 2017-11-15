@@ -38,7 +38,7 @@ class ParPartnershipFlowsApplicationOrganisationForm extends ParBaseForm {
 
     $form['organisation_name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Organisation Name'),
+      '#title' => $this->t('Provide the business or organisation name'),
       '#default_value' => $this->getDefaultValues('organisation_name'),
     ];
 
