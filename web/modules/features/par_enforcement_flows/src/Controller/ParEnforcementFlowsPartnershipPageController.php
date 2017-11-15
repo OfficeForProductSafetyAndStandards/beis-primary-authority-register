@@ -60,8 +60,6 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
 
     $build['partnership_actions']['link']['value'] = ['#type' => 'markup',
       '#markup' => $link ? $link : '<p>(none)</p>',
-      '#prefix' => '<div>',
-      '#suffix' => '</div>',
     ];
 
     // Only show SIC Codes and Employee number if the partnership is a direct partnership.
