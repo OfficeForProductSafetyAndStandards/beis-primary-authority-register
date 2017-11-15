@@ -31,6 +31,7 @@ while [ "$#" -gt 0 ]; do
         ;;
     --httpd_group=*)
         httpd_group="${1#*=}"
+        ;;
     --private_files=*)
         private_files="${1#*=}"
         ;;
