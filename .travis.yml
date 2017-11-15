@@ -56,6 +56,8 @@ before_install:
   - echo "APP_ENV=travis" >> .env
   - echo "BSK_USER=$BSK_USER" >> .env
   - echo "BSK_KEY=$BSK_KEY" >> .env
+  - echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+  - echo "SENTRY_DSN_PUBLIC=$SENTRY_DSN_PUBLIC" >> .env
   - cat .env
 
 #-----------------------------------------------------------------------------
@@ -112,6 +114,7 @@ script:
 #-----------------------------------------------------------------------------
 
   - rm .env
+
   - if [[ $TRAVIS_TAG != '' ]]; then mkdir $TRAVIS_TAG; fi
   - if [[ $TRAVIS_TAG != '' ]]; then tar --exclude="./$TRAVIS_TAG" -zcf $TRAVIS_TAG/$TRAVIS_TAG.tar.gz .; fi
 
