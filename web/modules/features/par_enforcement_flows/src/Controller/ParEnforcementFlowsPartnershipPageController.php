@@ -64,10 +64,10 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     // Only show SIC Codes and Employee number if the partnership is a direct partnership.
     if ($par_data_partnership->isDirect()) {
       // Add the SIC Codes with the relevant operational links.
-      $build['sic_codes'] = $this->renderSection('SIC Codes', $par_data_organisation, ['field_sic_code' => 'full']);
+      $build['sic_codes'] = $this->renderSection('Standard Industrial Classification (SIC) codes', $par_data_organisation, ['field_sic_code' => 'full']);
 
       // Add the number of employees with a link to edit the field.
-      $build['employee_no'] = $this->renderSection('Number of Employees', $par_data_organisation, ['employees_band' => 'full']);
+      $build['employee_no'] = $this->renderSection('Number of employees', $par_data_organisation, ['employees_band' => 'full']);
     }
 
     // Only show Members list, Sectors and Number of businesses if the partnership is a coordinated partnership.
@@ -79,10 +79,10 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     }
 
     // Display all the legal entities along with the links for the allowed operations on these.
-    $build['legal_entities'] = $this->renderSection('Legal Entities', $par_data_organisation, ['field_legal_entity' => 'summary']);
+    $build['legal_entities'] = $this->renderSection('Legal entities', $par_data_organisation, ['field_legal_entity' => 'summary']);
 
     // Display all the trading names along with the links for the allowed operations on these.
-    $build['trading_names'] = $this->renderSection('Trading Names', $par_data_organisation, ['trading_name' => 'full']);
+    $build['trading_names'] = $this->renderSection('Trading names', $par_data_organisation, ['trading_name' => 'full']);
 
     // Everything below is for the authorioty to edit and add to.
     $build['authority'] = [
@@ -103,7 +103,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
 
     $build['inspection_plans'] = [
       '#type' => 'fieldset',
-      '#title' => t('Inspection plans:'),
+      '#title' => t('Inspection Plans:'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
@@ -117,7 +117,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
 
     $build['advice'] = [
       '#type' => 'fieldset',
-      '#title' => t('Advice and Documents:'),
+      '#title' => t('Advice and documents:'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
