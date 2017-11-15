@@ -191,6 +191,7 @@ trait ParDisplayTrait {
    * with the relevant operational links.
    */
   public function renderSection($section, $entity, $fields, $operations = [], $title = TRUE, $single = FALSE) {
+
     // If rendering logic is called on an NULL object prevent system failures.
     if (empty($entity)) {
       return;
@@ -216,23 +217,19 @@ trait ParDisplayTrait {
       ];
 
       $field = $entity->get($field_name);
-
-      // Can only choose to display a single value
-      // if there is more than one to start with.
-      if ($field->isEmpty()) {
-        $single = FALSE;
-      }
-      elseif ($field->count() === 1) {
-        $single = TRUE;
-      }
-
       if (!$field->isEmpty()) {
+        $single_item = FALSE;
+        // If there is only one value treat the field as single.
+        if ($field->count() <= 1) {
+          $single_item = TRUE;
+        }
+
         // Reference fields need to be rendered slightly differently.
         if ($field instanceof EntityReferenceFieldItemListInterface) {
-          $rows = $this->renderReferenceField($section, $field, $view_mode, $operations, $single);
+          $rows = $this->renderReferenceField($section, $field, $view_mode, $operations, $single_item);
         }
         else {
-          $rows = $this->renderTextField($section, $entity, $field, $view_mode, $operations, $single);
+          $rows = $this->renderTextField($section, $entity, $field, $view_mode, $operations, $single_item);
         }
 
         // Render the rows using a tabulated pager.
@@ -255,10 +252,9 @@ trait ParDisplayTrait {
         '#collapsed' => FALSE,
       ];
 
-      // Only add the add link if it is in the allowed operations
-      // and if the field isn't single and empty.
+      // Only add the add link if it is in the allowed operations.
       $link_name_suffix = strtolower($field->getFieldDefinition()->getLabel());
-      if (isset($operations) && in_array('add', $operations) && !$single) {
+      if (isset($operations) && (in_array('add', $operations)) && !($single && !$field->isEmpty())) {
         try {
           $add_link = $this->getFlow()->getLinkByCurrentOperation('add_' . $field->getName())->setText("add another {$link_name_suffix}")->toString();
         } catch (ParFlowException $e) {
