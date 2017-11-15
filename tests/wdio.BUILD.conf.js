@@ -10,6 +10,7 @@ wdioConfig.config.baseUrl = 'http://127.0.0.1:80';
 wdioConfig.config.tags = '@ci, ~@Pending, ~@setup, ~@deprecated, ~@Bug';
 wdioConfig.config.screenshotPath = './errorShots/';
 //wdioConfig.services = ['selenium-standalone'];
+wdioConfig.config.bail = 1;
 wdioConfig.config.cucumberOpts.failFast = true;
 
 exports.config = wdioConfig.config;
