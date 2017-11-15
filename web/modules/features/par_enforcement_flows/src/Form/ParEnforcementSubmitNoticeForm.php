@@ -33,6 +33,10 @@ class ParEnforcementSubmitNoticeForm extends ParBaseEnforcementForm {
 
     $par_data_enforcement_notice = $this->getRouteParam('par_data_enforcement_notice');
 
+    if (!$par_data_enforcement_notice) {
+      return parent::titleCallback();
+    }
+
     if ($par_data_enforcement_notice->get('legal_entity_name')->getString()) {
       $enforced_legal_entity_name = $par_data_enforcement_notice->get('legal_entity_name')->getString();
     }
@@ -40,11 +44,8 @@ class ParEnforcementSubmitNoticeForm extends ParBaseEnforcementForm {
       $enforced_legal_entity = current($par_data_enforcement_notice->getLegalEntity());
       $enforced_legal_entity_name = $enforced_legal_entity->get('registered_name')->getString();
     }
+    $this->pageTitle = 'Summary of the proposed enforcement action(s) regarding |' . $enforced_legal_entity_name;
 
-    if ($par_data_enforcement_notice) {
-
-      $this->pageTitle = 'Summary of the proposed enforcement action(s) regarding |' . $enforced_legal_entity_name;
-    }
     return parent::titleCallback();
   }
 
