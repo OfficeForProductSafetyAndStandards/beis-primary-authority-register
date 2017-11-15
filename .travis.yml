@@ -40,7 +40,6 @@ before_install:
 #-----------------------------------------------------------------------------
 
   - cp web/sites/example.settings.local.php web/sites/default/settings.local.php
-  - sudo bash ./tools/fix-permissions.sh --drupal_path=./web
   - chmod -R 777 private
   - chmod -R 777 web/sites/default/files
   
