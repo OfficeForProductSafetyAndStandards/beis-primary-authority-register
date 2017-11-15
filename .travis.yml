@@ -98,7 +98,7 @@ before_script:
   - docker exec -i par_beta_web bash -c "wget http://localhost:80 -O /tests/reports/tested-homepage.html"
 
 script:
-#  - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
+  - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
   - travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
   - docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run test:build"
 
