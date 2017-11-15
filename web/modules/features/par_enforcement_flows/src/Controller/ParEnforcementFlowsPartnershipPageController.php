@@ -56,13 +56,6 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
       '#collapsed' => FALSE,
     ];
 
-    $build['partnership_actions']['link'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
     $link = $this->getFlow()->getNextLink('raise')->setText('Send a notification of a proposed enforcement action')->toString();
 
     $build['partnership_actions']['link']['value'] = ['#type' => 'markup',
