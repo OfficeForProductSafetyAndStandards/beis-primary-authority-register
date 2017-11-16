@@ -97,6 +97,9 @@
             "drupal/health_check": {
                 "Health Check doesn't check Drupal application": "https://www.drupal.org/files/issues/health_check_doesn_t-2892294-2.patch"
             },
+            "drupal/http_response_headers": {
+                "Logging of header modificaton should be switched off": "https://www.drupal.org/files/issues/remove-logging-2909459-4.patch"
+            },
             "drupal/clamav": {
                 "Add support for ClamAV via a REST daemon": "./patches/clamav_add_rest_client.patch"
             },
