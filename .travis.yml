@@ -92,7 +92,7 @@ install:
 #-----------------------------------------------------------------------------
 
   - docker exec -t par_beta_web bash -c "usermod --uid=2000 www-data"
-  - docker exec -t par_beta_web bash -c "groupmod --gid=2000 root"-
+  - docker exec -t par_beta_web bash -c "groupmod --gid=2000 root"
   - cd /docker
   - docker stop par_beta_web
   - docker start par_beta_web
