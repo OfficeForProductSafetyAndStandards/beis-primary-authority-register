@@ -86,9 +86,17 @@ install:
 
   - docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cex -n"
-  - docker exec -t par_beta_web bash -c "usermod --uid=2000 www-data"
-  - docker exec -t par_beta_web bash -c "groupmod --gid=2000 root"
 
+#-----------------------------------------------------------------------------
+# Fix Docker permissions
+#-----------------------------------------------------------------------------
+
+  - docker exec -t par_beta_web bash -c "usermod --uid=2000 www-data"
+  - docker exec -t par_beta_web bash -c "groupmod --gid=2000 root"-
+  - cd /docker
+  - docker stop par_beta_web
+  - docker start par_beta_web
+  
 #-----------------------------------------------------------------------------
 # Stamp the code with the build number
 #-----------------------------------------------------------------------------
