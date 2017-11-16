@@ -94,7 +94,7 @@ before_install:
 before_script:
   - docker exec -ti par_beta_web bash -c "export DISPLAY=:99.0"
 # Ping Drupal app to warm caches, write to tmp dir.
-  - docker exec -i par_beta_web bash -c "wget http://localhost:80 -O /tmp/tested-homepage.html"
+  - docker exec -i par_beta_web bash -c "curl -o -I -L -s -X GET -w "%{http_code}\n" http://127.0.0.1:80"
 
 script:
   - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
