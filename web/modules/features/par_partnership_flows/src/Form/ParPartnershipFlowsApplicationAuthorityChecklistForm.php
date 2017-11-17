@@ -128,10 +128,12 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
         '#default_value' => $this->getDefaultValues('business_informed_local_authority_still_regulates', FALSE),
         '#states' => [
           'visible' => [
-            'input[name="business_regulated_by_one_authority"]' => ['value' => 0],
+            'input[name="business_regulated_by_one_authority"]' => ['value' => 1],
+            'input[name="is_local_authority"]' => ['value' => 0],
           ],
           'disabled' => [
-            'input[name="business_regulated_by_one_authority"]' => ['value' => 1],
+            'input[name="business_regulated_by_one_authority"]' => ['value' => 0],
+            'input[name="is_local_authority"]' => ['value' => 1],
           ],
         ],
       ];
@@ -204,16 +206,14 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
 
       // Section two validation.
 
-      // Check if no value is provided.
+      // Check if an empty value is provided.
       if ($form_state->getValue('business_regulated_by_one_authority') === FALSE) {
         $this->setElementError(['section_two','business_regulated_by_one_authority'], $form_state, 'Please confirm if the business regulated by only one local authority.');
       }
 
+      // Warn that business needs to be informed their local authority still regulates.
       if ($form_state->getValue('business_regulated_by_one_authority') == 1 &&
-        $form_state->getValue('is_local_authority') == 0) {
-        $this->setElementError(['section_two','is_local_authority'], $form_state, 'Please confirm you are the local authority.');
-      }
-      elseif ($form_state->getValue('business_regulated_by_one_authority') == 0 &&
+        $form_state->getValue('is_local_authority') == 0 &&
         $form_state->getValue('business_informed_local_authority_still_regulates') == 0) {
         $this->setElementError(['section_two','business_informed_local_authority_still_regulates'], $form_state, 'The business needs to be informed about local authority.');
       }
