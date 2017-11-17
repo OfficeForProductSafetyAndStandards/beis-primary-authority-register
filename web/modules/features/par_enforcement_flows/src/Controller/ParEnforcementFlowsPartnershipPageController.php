@@ -22,9 +22,11 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
     if ($par_data_partnership) {
       $par_data_organisation = current($par_data_partnership->getOrganisation());
-      return $par_data_organisation->get('organisation_name')->getString();
-    }
 
+      if ($par_data_organisation && $org_name = $par_data_organisation->get('organisation_name')->getString()) {
+        $this->pageTitle = "Primary authority information for | {$org_name}";
+      }
+    }
     return parent::titleCallback();
   }
 
@@ -131,7 +133,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     ];
 
     // Display the authority contacts for information.
-    $build['authority_contacts'] = $this->renderSection('Contacts - Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed'], ['edit-entity', 'add']);
+    $build['authority_contacts'] = $this->renderSection('Contacts at the Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed'], ['edit-entity', 'add']);
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
