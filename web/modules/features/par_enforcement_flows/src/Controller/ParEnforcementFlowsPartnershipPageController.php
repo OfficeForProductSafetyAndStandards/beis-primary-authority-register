@@ -22,6 +22,8 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
     if ($par_data_partnership) {
       $par_data_organisation = current($par_data_partnership->getOrganisation());
+      return $par_data_organisation->get('organisation_name')->getString();
+    }
 
       if ($par_data_organisation && $org_name = $par_data_organisation->get('organisation_name')->getString())
         $this->pageTitle = "Primary authority information for | " . $org_name;
@@ -64,10 +66,10 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     // Only show SIC Codes and Employee number if the partnership is a direct partnership.
     if ($par_data_partnership->isDirect()) {
       // Add the SIC Codes with the relevant operational links.
-      $build['sic_codes'] = $this->renderSection('Standard Industrial Classification (SIC) codes', $par_data_organisation, ['field_sic_code' => 'full']);
+      $build['sic_codes'] = $this->renderSection('SIC Codes', $par_data_organisation, ['field_sic_code' => 'full']);
 
       // Add the number of employees with a link to edit the field.
-      $build['employee_no'] = $this->renderSection('Number of employees', $par_data_organisation, ['employees_band' => 'full']);
+      $build['employee_no'] = $this->renderSection('Number of Employees', $par_data_organisation, ['employees_band' => 'full']);
     }
 
     // Only show Members list, Sectors and Number of businesses if the partnership is a coordinated partnership.
@@ -79,10 +81,10 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     }
 
     // Display all the legal entities along with the links for the allowed operations on these.
-    $build['legal_entities'] = $this->renderSection('Legal entities', $par_data_organisation, ['field_legal_entity' => 'summary']);
+    $build['legal_entities'] = $this->renderSection('Legal Entities', $par_data_organisation, ['field_legal_entity' => 'summary']);
 
     // Display all the trading names along with the links for the allowed operations on these.
-    $build['trading_names'] = $this->renderSection('Trading names', $par_data_organisation, ['trading_name' => 'full']);
+    $build['trading_names'] = $this->renderSection('Trading Names', $par_data_organisation, ['trading_name' => 'full']);
 
     // Everything below is for the authorioty to edit and add to.
     $build['authority'] = [
@@ -103,7 +105,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
 
     $build['inspection_plans'] = [
       '#type' => 'fieldset',
-      '#title' => t('Inspection Plans:'),
+      '#title' => t('Inspection plans:'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
@@ -117,7 +119,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
 
     $build['advice'] = [
       '#type' => 'fieldset',
-      '#title' => t('Advice and documents:'),
+      '#title' => t('Advice and Documents:'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
@@ -130,7 +132,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     ];
 
     // Display the authority contacts for information.
-    $build['authority_contacts'] = $this->renderSection('Contacts at the Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed'], ['edit-entity', 'add']);
+    $build['authority_contacts'] = $this->renderSection('Contacts - Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed'], ['edit-entity', 'add']);
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
