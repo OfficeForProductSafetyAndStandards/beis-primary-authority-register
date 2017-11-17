@@ -48,6 +48,8 @@ exports.config = {
         //
         browserName: 'chrome',
     }],
+    
+    bail: 1,
     //
     // ===================
     // Test Configurations
