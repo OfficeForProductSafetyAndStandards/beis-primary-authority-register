@@ -103,7 +103,7 @@ install:
 
 before_script:
 # Warm caches
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush pcw"
+#  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush pcw"
 # Ping Drupal app to warm caches, write to tmp dir.
   - curl --silent http://127.0.0.1:8111 > /dev/null
 
