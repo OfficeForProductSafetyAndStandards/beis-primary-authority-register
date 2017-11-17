@@ -34,7 +34,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
 
     $enforcementFlowTitle = $this->RaiseEnforcementTitleCallback();
     if ($enforcementFlowTitle) {
-      $this->pageTitle =  $enforcementFlowTitle;
+      $this->pageTitle = $enforcementFlowTitle;
     }
     return parent::titleCallback();
   }
@@ -85,8 +85,6 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       '#options' => $enforcement_notice_entity,
       '#default_value' => key($enforcement_notice_entity),
       '#required' => TRUE,
-      '#prefix' => '<div><h3>',
-      '#suffix' => '</h3></div>',
     ];
 
     $form['summary_title'] = [
@@ -114,7 +112,6 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
 
     $form['enforcement_text'] = [ '#theme' => 'item_list', '#items' => $enforcement_data];
 
-
     $form['action_summary_title'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Provide a summary of the enforcement notification'),
@@ -125,7 +122,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
     $form['action_summary_title']['action_summary'] = [
       '#type' => 'textarea',
       '#default_value' => $this->getDefaultValues("action_summary"),
-     ];
+   ];
 
     return parent::buildForm($form, $form_state);
   }

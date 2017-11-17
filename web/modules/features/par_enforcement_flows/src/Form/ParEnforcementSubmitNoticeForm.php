@@ -44,7 +44,7 @@ class ParEnforcementSubmitNoticeForm extends ParBaseEnforcementForm {
       $enforced_legal_entity = current($par_data_enforcement_notice->getLegalEntity());
       $enforced_legal_entity_name = $enforced_legal_entity->get('registered_name')->getString();
     }
-    $this->pageTitle = 'Summary of the proposed enforcement action(s) regarding |' . $enforced_legal_entity_name;
+    $this->pageTitle = "Summary of the proposed enforcement action(s) regarding | {$enforced_legal_entity_name}";
 
     return parent::titleCallback();
   }
