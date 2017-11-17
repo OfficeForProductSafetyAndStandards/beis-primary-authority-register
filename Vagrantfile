@@ -25,7 +25,15 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 8111, host: 8111
   config.vm.network "forwarded_port", guest: 5411, host: 5411
 
-  config.vm.synced_folder ".", "/vagrant", type: "nfs"
+  host_user_id = Process.uid
+  host_group_id = Process.gid
+
+  if (/darwin/ =~ RUBY_PLATFORM) != nil
+    config.vm.synced_folder ".", "/vagrant", nfs: true, :bsd__nfs_options => ["mapall=#{host_user_id}:#{host_group_id}"]
+  else
+    config.vm.synced_folder ".", "/vagrant", nfs: true, :linux__nfs_options => ["no_root_squash"]
+  end
+
   config.vm.provision "shell", inline: $script
   config.vm.provision :shell, :inline => "sudo rm /etc/localtime && sudo ln -s /usr/share/zoneinfo/Europe/London /etc/localtime", run: "always"
 
