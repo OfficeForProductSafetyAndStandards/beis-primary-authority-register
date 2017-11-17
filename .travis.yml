@@ -105,7 +105,7 @@ before_script:
 # Warm caches
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush pcw"
 # Ping Drupal app to warm caches, write to tmp dir.
-  - curl -o /tmp/tested-homepage.html http://127.0.0.1:8111
+  - curl http://127.0.0.1:8111 > /dev/null
 
 script:
 #  - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
@@ -160,7 +160,6 @@ addons:
     debug: false
     paths:
       - ./tests/reports
-      - /tmp/tested-homepage.html
     target_paths: tests/$TRAVIS_BUILD_NUMBER
     bucket: transform-par-beta-artifacts
     s3_region: eu-west-1
