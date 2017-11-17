@@ -23,12 +23,19 @@ before_install:
 #-----------------------------------------------------------------------------
   - cd docker
   - docker-compose up -d
+# set web server / docker root uid/gid to match Travis uid.
+  - docker exec -t par_beta_web bash -c "usermod --uid=2000 www-data"
+  - docker exec -t par_beta_web bash -c "groupmod --gid=2000 root"
+# restart servers after changing uid/gids.
+  - docker-compose stop
+  - docker-compose up -d
   - cd ..
 
 #-----------------------------------------------------------------------------
 # Install dependencies
 #-----------------------------------------------------------------------------
 
+install:
   - phpenv config-rm xdebug.ini
   - composer install -v
   - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
@@ -40,8 +47,13 @@ before_install:
 #-----------------------------------------------------------------------------
 
   - cp web/sites/example.settings.local.php web/sites/default/settings.local.php
-  - sudo bash ./tools/fix-permissions.sh --drupal_path=./web --private_files=./private
-  
+  - chmod -R 777 private
+  - chmod -R 777 web/sites/default
+  - if [ ! -d web/sites/default/files ]; then mkdir web/sites/default/files; fi
+  - chmod -R 777 web/sites/default/files
+  - docker exec -it par_beta_web bash -c "chmod -R 777 /var/www/html/private"
+  - docker exec -it par_beta_web bash -c "chmod -R 777 /var/www/html/web/sites/default/files"
+
 #-----------------------------------------------------------------------------
 # Create .env file
 #-----------------------------------------------------------------------------
@@ -91,9 +103,8 @@ before_install:
 ##############################################################################
 
 before_script:
-  - docker exec -ti par_beta_web bash -c "export DISPLAY=:99.0"
-# Ping Drupal app to warm caches, write to tmp dir.
-  - docker exec -i par_beta_web bash -c "wget http://localhost:80 -O /tmp/tested-homepage.html"
+# Ping Drupal app.
+  - curl --silent http://127.0.0.1:8111 > /dev/null
 
 script:
   - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
@@ -103,8 +114,7 @@ script:
 #-----------------------------------------------------------------------------
 # Generate HTML reports with screenshots. HTML report location: tests/reports/allure-reports/index.html, TAR it up.
 #-----------------------------------------------------------------------------
-  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && if [ -d ./errorShots ]; then tar -cf reports/errorShots.tar.gz ./errorShots; fi"
-#  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/pa11y-ci -T 1 -j -s 'http://localhost/sitemap.xml' -f 'https://par-beta-test.cloudapps.digital' -r 'http://localhost:80' > ./reports/wcag2aa_report.json"
+#  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && if [ -d ./errorShots ]; then tar -cf reports/errorShots.tar.gz ./errorShots; fi"
 
 #-----------------------------------------------------------------------------
 # Remove .env file created in previous steps.
@@ -112,7 +122,6 @@ script:
 #-----------------------------------------------------------------------------
 
   - rm .env
-
   - if [[ $TRAVIS_TAG != '' ]]; then mkdir $TRAVIS_TAG; fi
   - if [[ $TRAVIS_TAG != '' ]]; then tar --exclude="./$TRAVIS_TAG" -zcf $TRAVIS_TAG/$TRAVIS_TAG.tar.gz .; fi
 
@@ -145,14 +154,14 @@ deploy:
 ### STORE ARTIFACTS                                                        ###
 ##############################################################################
 
-addons:
-  artifacts:
-    debug: false
-    paths:
-      - ./tests/reports
-    target_paths: tests/$TRAVIS_BUILD_NUMBER
-    bucket: transform-par-beta-artifacts
-    s3_region: eu-west-1
+#addons:
+#  artifacts:
+#    debug: false
+#    paths:
+#      - ./tests/reports
+#    target_paths: tests/$TRAVIS_BUILD_NUMBER
+#    bucket: transform-par-beta-artifacts
+#    s3_region: eu-west-1
 
 notifications:
   slack:
