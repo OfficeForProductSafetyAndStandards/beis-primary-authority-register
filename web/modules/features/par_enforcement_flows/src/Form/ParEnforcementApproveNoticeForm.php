@@ -29,6 +29,14 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  public function titleCallback() {
+    $this->pageTitle = "Make a decision | Proposed enforcement action(s)";
+    return parent::titleCallback();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function accessCallback(ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
 
     // This form should only be accessed if none of the enforcement notice actions have been acted on.
