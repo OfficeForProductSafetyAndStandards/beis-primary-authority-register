@@ -22,4 +22,5 @@ if (file_exists($app_root . '/' . $site_path . '/services.local.yml')) {
 }
 
 // Ensure travis always runs with the same memory that other environments do.
-ini_set('memory_limit', '512M');
+ini_set('memory_limit', '2048M');
+ini_set('max_execution_time', 300);

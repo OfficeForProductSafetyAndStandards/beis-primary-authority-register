@@ -1,0 +1,7 @@
+applications:
+- name: par-beta-monitoring
+memory: 256M
+disk_quota: 512M
+host: par-beta-monitoring
+buildpack: python_buildpack
+health-check-type: none

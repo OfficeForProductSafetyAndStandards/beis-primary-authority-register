@@ -1,7 +1,7 @@
 <?php
 
 ini_set('memory_limit','512M');
-ini_set('max_execution_time', 90);
+ini_set('max_execution_time', 300);
 
 $databases['default']['default'] = array (
   'database' => 'par',
