@@ -31,13 +31,12 @@ before_install:
   - docker-compose up -d
   - cd ..
 
-install:
-  - phpenv config-rm xdebug.ini
-
 #-----------------------------------------------------------------------------
 # Install dependencies
 #-----------------------------------------------------------------------------
 
+install:
+  - phpenv config-rm xdebug.ini
   - composer install -v
   - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
   - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm run gulp"
