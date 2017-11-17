@@ -8,7 +8,7 @@ Feature: Helpdesk approve partnership
         When I add "Business For Direct Partnership 1" to the inputfield "#edit-keywords"
         And I select the option with the text "- Any -" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-helpdesk-dashboard"
-        When I click on the link "a*=Approve partnership"
+        Then I click on the link "Approve partnership"
 
         # APPROVAL REVIEW SCREEN
         Then I expect that element "#par-rd-help-desk-confirm" contains the text "Partnership between"
