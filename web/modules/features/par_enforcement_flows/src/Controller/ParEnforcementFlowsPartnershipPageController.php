@@ -22,9 +22,11 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
     if ($par_data_partnership) {
       $par_data_organisation = current($par_data_partnership->getOrganisation());
-      return $par_data_organisation->get('organisation_name')->getString();
-    }
 
+      if ($par_data_organisation && $org_name = $par_data_organisation->get('organisation_name')->getString()) {
+        $this->pageTitle = "Primary authority information for | {$org_name}";
+      }
+    }
     return parent::titleCallback();
   }
 
