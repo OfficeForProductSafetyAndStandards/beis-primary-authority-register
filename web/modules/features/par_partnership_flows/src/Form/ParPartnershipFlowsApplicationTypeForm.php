@@ -20,6 +20,8 @@ class ParPartnershipFlowsApplicationTypeForm extends ParBaseForm {
 //    ],
 //  ];
 
+  protected $pageTitle = 'What kind of partnership are you applying for?';
+
   /**
    * {@inheritdoc}
    */
@@ -40,7 +42,7 @@ class ParPartnershipFlowsApplicationTypeForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $this->retrieveEditableValues();
     $partnership_bundle = $this->getParDataManager()->getParBundleEntity('par_data_partnership');
-    
+
     $form['application_type_fieldset'] = [
       '#type' => 'fieldset',
       '#attributes' => ['class' => 'form-group'],
@@ -49,7 +51,7 @@ class ParPartnershipFlowsApplicationTypeForm extends ParBaseForm {
     ];
 
     $form['application_type_fieldset']['application_type'] = [
-      '#title' => 'Type of application',
+      '#title' => 'Choose a type of partnership',
       '#type' => 'radios',
       '#options' => $partnership_bundle->getAllowedValues('partnership_type'),
       '#default_value' => $this->getDefaultValues('application_type'),

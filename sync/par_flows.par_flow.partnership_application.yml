@@ -1,12 +1,13 @@
-uuid: c1a916b4-3ba9-4e7e-ae6c-304d12fe6841
+uuid: 96dadded-aab6-44da-8c36-613e99e26998
 langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: ZMztu9Hkl0CFqBPTpqY8UjErDhNtzJse9XyLtRfRYW4
+  default_config_hash: 1xdDhK8JCyKPoZCSFoadQ2dnGk3_cMOEz2tVqPA6Wh0
 id: partnership_application
 label: 'Partnership Application Flow'
 default_title: 'New Partnership Application'
+default_section_title: 'New partnership application'
 description: ''
 save_method: end
 steps:

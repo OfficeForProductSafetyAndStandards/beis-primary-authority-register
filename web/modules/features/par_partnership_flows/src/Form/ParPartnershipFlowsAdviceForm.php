@@ -35,6 +35,13 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
   ];
 
   /**
+   * {@inheritdoc}
+   */
+  public function titleCallback() {
+    return "Primary Authority Advice | Edit document type and regulatory functions";
+  }
+
+  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
@@ -76,10 +83,6 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_advice);
     $advice_bundle = $this->getParDataManager()->getParBundleEntity('par_data_advice');
-
-    // Render the document in view mode to allow users to
-    // see which one they're confirming details for.
-    $document_view_builder = $this->getParDataManager()->getViewBuilder('par_data_advice');
 
     // Get files from "par_partnership_advice_upload" step.
     $files = $this->getDefaultValues("files", '', 'par_partnership_advice_upload');

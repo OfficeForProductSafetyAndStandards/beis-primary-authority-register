@@ -28,7 +28,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
     if ($par_data_partnership) {
       $par_data_organisation = current($par_data_partnership->getOrganisation());
-      return "Primary Authority partnership information | {$par_data_organisation->get('organisation_name')->getString()}";
+      $this->pageTitle = $par_data_organisation->get('organisation_name')->getString();
     }
 
     return parent::titleCallback();
@@ -65,7 +65,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     $par_data_organisation = current($par_data_partnership->getOrganisation());
 
     // Display the primary address along with the link to edit it.
-    $form['registered_address'] = $this->renderSection('Organisation address', $par_data_organisation, ['field_premises' => 'summary'], ['edit-entity', 'add'], TRUE, TRUE);
+    $form['registered_address'] = $this->renderSection('Business address', $par_data_organisation, ['field_premises' => 'summary'], ['edit-entity', 'add'], TRUE, TRUE);
 
     // View and perform operations on the information about the business.
     $form['about_business'] = $this->renderSection('About the business', $par_data_organisation, ['comments' => 'about'], ['edit-field']);
@@ -74,7 +74,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     // partnership.
     if ($par_data_partnership->isDirect()) {
       // Add the SIC Codes with the relevant operational links.
-      $form['sic_codes'] = $this->renderSection('SIC Codes', $par_data_organisation, ['field_sic_code' => 'full'], ['edit-field', 'add']);
+      $form['sic_codes'] = $this->renderSection('Standard industrial classification (SIC) codes', $par_data_organisation, ['field_sic_code' => 'full'], ['edit-field', 'add']);
 
       // Add the number of employees with a link to edit the field.
       $form['employee_no'] = $this->renderSection('Number of Employees', $par_data_organisation, ['employees_band' => 'full'], ['edit-field']);
@@ -97,13 +97,13 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     if ($checkbox === 'partnership_info_agreed_business' && !$par_data_partnership->getBoolean($checkbox)) {
       $operations = ['edit-entity','add'];
     }
-    $form['legal_entities'] = $this->renderSection('Legal Entities', $par_data_organisation, ['field_legal_entity' => 'summary'], $operations);
+    $form['legal_entities'] = $this->renderSection('Legal entities', $par_data_organisation, ['field_legal_entity' => 'summary'], $operations);
 
     // Display all the trading names along with the links for the allowed
     // operations on these.
-    $form['trading_names'] = $this->renderSection('Trading Names', $par_data_organisation, ['trading_name' => 'full'], ['edit-field', 'add']);
+    $form['trading_names'] = $this->renderSection('Trading names', $par_data_organisation, ['trading_name' => 'full'], ['edit-field', 'add']);
 
-    // Everything below is for the authorioty to edit and add to.
+    // Everything below is for the authority to edit and add to.
     $par_data_authority = current($par_data_partnership->getAuthority());
     $form['authority'] = [
       '#type' => 'markup',
@@ -158,17 +158,17 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     ];
 
     // Display the authority contacts for information.
-    $form['authority_contacts'] = $this->renderSection('Contacts - Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed'], ['edit-entity', 'add']);
+    $form['authority_contacts'] = $this->renderSection('Contacts at the Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed'], ['edit-entity', 'add']);
 
     // Display all the legal entities along with the links for the allowed
     // operations on these.
-    $form['organisation_contacts'] = $this->renderSection('Contacts - Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed'], ['edit-entity', 'add']);
+    $form['organisation_contacts'] = $this->renderSection('Contacts at the organisation', $par_data_partnership, ['field_organisation_person' => 'detailed'], ['edit-entity', 'add']);
 
     $checkbox = $this->getInformationCheckbox();
     if (!$par_data_partnership->getBoolean($checkbox)) {
       $form[$checkbox] = [
         '#type' => 'checkbox',
-        '#title' => t("Confirm that you have reviewed the details for this partnership."),
+        '#title' => t("I confirm I have reviewed the information above"),
         '#default_value' => $this->getDefaultValues($checkbox, FALSE),
         '#disabled' => $this->getDefaultValues($checkbox, FALSE),
         '#return_value' => 'on',

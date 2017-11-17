@@ -7,15 +7,16 @@ Feature: New Coordinated Partnership
 
 #        Given I reset the test data
         Given I am logged in as "par_authority@example.com"
-        And I expect that element "#block-par-theme-content" contains the text "Your partnerships"
+        And I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
         And I expect that element "#block-par-theme-content" contains the text "See enforcement notifications"
+        When I click on the link "Apply for a new partnership"
+        And I click on the button "#edit-cancel"
         When I click on the link "Apply for a new partnership"
 
         # CHOOSE PARTNERSHIP TYPE
 
-#        And I click on authority selection if available
-        When I click on the radio ".form-radio"
+        And I click on authority selection if available
         And I click on the button "#edit-next"
 
         # CREATE NEW PARTNERSHIP FORM
@@ -35,7 +36,7 @@ Feature: New Coordinated Partnership
 
         # ADD ABOUT THE PARTNERSHIP
 
-        Then I expect that element "h1.heading-xlarge" contains the text "New Partnership Application"
+        Then I expect that element "h1.heading-xlarge" contains the text "New partnership application"
         When I add "About the partnership detail" to the inputfield "#edit-about-partnership"
         And I click on the button "#edit-next"
 

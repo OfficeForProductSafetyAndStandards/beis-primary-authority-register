@@ -20,11 +20,22 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
     ],
   ];
 
+  protected $pageTitle = 'Edit the details about the Partnership';
+
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
     return 'par_partnership_about';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function titleCallback() {
+    $this->pageTitle = 'Edit the details about the Partnership';
+
+    return parent::titleCallback();
   }
 
   /**
@@ -55,9 +66,9 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
     // Business details.
     $form['about_partnership'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('Use this section to give a brief overview of the partnership.'),
+      '#title' => $this->t('Provide information about the Partnership'),
       '#default_value' => $this->getDefaultValues('about_partnership'),
-      '#description' => 'Include any information you feel may be useful to enforcing authorities, for example describe the areas of regulation where your partnership is active.',
+      '#description' => '<p>Use this section to give a brief overview of the partnership. Include any information you feel may be useful to enforcing authorities.</p>',
     ];
 
     // Make sure to add the partnership cacheability data to this form.

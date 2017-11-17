@@ -1,4 +1,4 @@
-@ci @Bug
+@Pending @Bug
 Feature: Business User - Manage Addresses
 
     Scenario: Business User - Manage Addresses
@@ -10,7 +10,6 @@ Feature: Business User - Manage Addresses
         And I open the url "/dashboard"
         And I click on the link "See your partnerships"
         And I click on the link "Business For Direct Partnership 1"
-        And I reload the page
         And I expect that element "h1" is not empty
 
         # EDIT REGISTERED ADDRESS

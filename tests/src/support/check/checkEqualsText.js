@@ -1,24 +1,24 @@
 /**
  * Check if the given elements text is the same as the given text
- * @param  {String}   type          Type of element (inputfield or element)
+ * @param  {String}   elementType   Element type (element or button)
  * @param  {String}   element       Element selector
  * @param  {String}   falseCase     Whether to check if the content equals the
  *                                  given text or not
  * @param  {String}   expectedText  The text to validate against
- * @param  {Function} done          Function to execute when finished
  */
-module.exports = (type, element, falseCase, expectedText, done) => {
+module.exports = (elementType, element, falseCase, expectedText) => {
     /**
      * The command to execute on the browser object
      * @type {String}
      */
-    const command = (type !== 'inputfield') ? 'getText' : 'getValue';
+    let command = 'getValue';
 
-    /**
-     * Function to execute when finished
-     * @type {Function}
-     */
-    let doneCallback = done;
+    if (
+        elementType === 'button' ||
+        browser.getAttribute(element, 'value') === null
+    ) {
+        command = 'getText';
+    }
 
     /**
      * The expected text to validate against
@@ -33,8 +33,7 @@ module.exports = (type, element, falseCase, expectedText, done) => {
     let boolFalseCase = !!falseCase;
 
     // Check for empty element
-    if (!doneCallback && typeof parsedExpectedText === 'function') {
-        doneCallback = parsedExpectedText;
+    if (typeof parsedExpectedText === 'function') {
         parsedExpectedText = '';
 
         boolFalseCase = !boolFalseCase;
@@ -52,6 +51,4 @@ module.exports = (type, element, falseCase, expectedText, done) => {
     } else {
         parsedExpectedText.should.equal(text);
     }
-
-    doneCallback();
 };

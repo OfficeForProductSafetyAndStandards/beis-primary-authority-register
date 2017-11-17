@@ -32,34 +32,21 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
     if ($par_data_partnership) {
       $par_data_organisation = current($par_data_partnership->getOrganisation());
-      return $par_data_organisation->get('organisation_name')->getString();
+      $this->pageTitle = $par_data_organisation->get('organisation_name')->getString();
+    }
+    else {
+      $this->pageTitle = 'Review the partnership summary information below';
     }
 
     return parent::titleCallback();
   }
 
   /**
-   * Helper to get all the editable values when editing or
-   * revisiting a previously edited page.
-   *
-   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
-   *   The Partnership being retrieved.
-   */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership) {
-    $this->setState("edit:{$par_data_partnership->id()}");
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-
     // Save the partnership so that it can be retrieved for review.
     $par_data_partnership = $this->savePartnership($form, $form_state);
-
-    if ($par_data_partnership) {
-      $this->retrieveEditableValues($par_data_partnership);
-    }
 
     if ($par_data_partnership) {
       $form['partnership_id'] = [
@@ -70,29 +57,22 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
       // Organisation summary.
       $par_data_organisation = current($par_data_partnership->getOrganisation());
 
-      // Display organisation name and organisation primary address.
-      $form['organisation_name'] = $this->renderSection('Organisation', $par_data_organisation, ['organisation_name' => 'title'], [], TRUE, TRUE);
-      $form['organisation_registered_address'] = $this->renderSection('Organisation address', $par_data_organisation, ['field_premises' => 'summary'], [], TRUE, TRUE);
-
-      $par_data_authority = current($par_data_partnership->getAuthority());
-
-      // Display Primary Authority name and address.
-      $form['primary_authority_name'] = $this->renderSection('Primary Authority', $par_data_authority, ['authority_name' => 'title'], [], TRUE, TRUE);
-      $form['primary_authority_registered_address'] = $this->renderSection('Primary Authority address', $par_data_authority, ['field_premises' => 'summary'], [], TRUE, TRUE);
-
       // Display details about the partnership for information.
       $form['about_partnership'] = $this->renderSection('About the partnership', $par_data_partnership, ['about_partnership' => 'about']);
 
       // Display the authority contacts for information.
-      $form['authority_contacts'] = $this->renderSection('Contacts - Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed']);
+      $form['authority_contacts'] = $this->renderSection('Contacts at the Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed']);
 
-      // Display all the legal entities along with the links for the allowed
-      // operations on these.
-      $form['organisation_contacts'] = $this->renderSection('Contacts - Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed']);
+      // Display organisation name and organisation primary address.
+      $form['organisation_name'] = $this->renderSection('Business name', $par_data_organisation, ['organisation_name' => 'title'], [], TRUE, TRUE);
+      $form['organisation_registered_address'] = $this->renderSection('Business address', $par_data_organisation, ['field_premises' => 'summary'], [], TRUE, TRUE);
+
+      // Display contacts at the organisation.
+      $form['organisation_contacts'] = $this->renderSection('Contacts at the Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed']);
 
       $form['partnership_info_agreed_authority'] = [
         '#type' => 'checkbox',
-        '#title' => $this->t('I confirm I have reviewed the partnership summary information above'),
+        '#title' => $this->t('I confirm I have reviewed the information above'),
         '#disabled' => $par_data_partnership->get('partnership_info_agreed_authority')->getString(),
         '#default_value' => $this->getDefaultValues("partnership_info_agreed_authority"),
         '#return_value' => 'on',

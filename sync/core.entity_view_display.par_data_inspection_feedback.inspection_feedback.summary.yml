@@ -1,0 +1,53 @@
+uuid: af9e8347-e2a0-409f-857d-dcaf7e638087
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_inspection_feedback.summary
+    - field.field.par_data_inspection_feedback.inspection_feedback.field_enforcing_authority
+    - field.field.par_data_inspection_feedback.inspection_feedback.field_inspection_plan
+    - field.field.par_data_inspection_feedback.inspection_feedback.field_partnership
+    - field.field.par_data_inspection_feedback.inspection_feedback.field_person
+    - par_data.par_data_inspection_feedback_type.inspection_feedback
+  module:
+    - datetime
+    - text
+_core:
+  default_config_hash: gb4MWpxT_k0JQrQRFOUuQG31i9bYRe3GAaIVvSsOxVQ
+id: par_data_inspection_feedback.inspection_feedback.summary
+targetEntityType: par_data_inspection_feedback
+bundle: inspection_feedback
+mode: summary
+content:
+  notes:
+    label: hidden
+    type: text_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  primary_authority_status:
+    label: hidden
+    weight: 2
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  request_date:
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      timezone_override: ''
+      format_type: gds_date_format
+    third_party_settings: {  }
+    type: datetime_default
+hidden:
+  field_enforcing_authority: true
+  field_inspection_plan: true
+  field_partnership: true
+  field_person: true
+  name: true
+  primary_authority_notes: true
+  user_id: true

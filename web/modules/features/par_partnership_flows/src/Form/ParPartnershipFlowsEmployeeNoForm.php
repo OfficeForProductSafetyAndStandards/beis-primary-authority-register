@@ -15,6 +15,8 @@ class ParPartnershipFlowsEmployeeNoForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
+  protected $pageTitle = 'Edit number of employees';
+
   /**
    * {@inheritdoc}
    */
@@ -50,12 +52,6 @@ class ParPartnershipFlowsEmployeeNoForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
     $organisation_bundle = $this->getParDataManager()->getParBundleEntity('par_data_organisation');
-
-    $form['info'] = [
-      '#markup' => t('Edit the number of employees that work across your organisation.'),
-      '#prefix' => '<h2>',
-      '#suffix' => '</h2>',
-    ];
 
     // Business details.
     $form['employees_band'] = [

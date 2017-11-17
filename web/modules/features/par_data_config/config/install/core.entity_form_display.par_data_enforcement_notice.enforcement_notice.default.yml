@@ -19,7 +19,7 @@ bundle: enforcement_notice
 mode: default
 content:
   field_enforcement_action:
-    weight: 26
+    weight: 4
     settings:
       match_operator: CONTAINS
       size: 60
@@ -28,7 +28,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_enforcing_authority:
-    weight: 32
+    weight: 8
     settings:
       match_operator: CONTAINS
       size: 60
@@ -37,7 +37,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_legal_entity:
-    weight: 27
+    weight: 5
     settings:
       match_operator: CONTAINS
       size: 60
@@ -46,7 +46,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_organisation:
-    weight: 33
+    weight: 9
     settings:
       match_operator: CONTAINS
       size: 60
@@ -55,7 +55,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_partnership:
-    weight: 31
+    weight: 7
     settings:
       match_operator: CONTAINS
       size: 60
@@ -64,7 +64,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_person:
-    weight: 30
+    weight: 6
     settings:
       match_operator: CONTAINS
       size: 60
@@ -73,23 +73,24 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_primary_authority:
-    weight: 29
+    type: entity_reference_autocomplete
+    weight: 2
+    region: content
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   langcode:
     type: language_select
-    weight: 10
+    weight: 3
     region: content
-    settings: {  }
+    settings:
+      include_locked: true
     third_party_settings: {  }
   name:
     type: string_textfield
-    weight: -4
+    weight: 1
     region: content
     settings:
       size: 60
@@ -97,11 +98,11 @@ content:
     third_party_settings: {  }
   user_id:
     type: entity_reference_autocomplete
-    weight: 5
+    weight: 0
+    region: content
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
-    region: content
     third_party_settings: {  }
 hidden: {  }

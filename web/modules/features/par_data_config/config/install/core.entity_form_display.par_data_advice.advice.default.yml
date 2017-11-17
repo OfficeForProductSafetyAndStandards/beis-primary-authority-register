@@ -5,6 +5,7 @@ dependencies:
     - field.field.par_data_advice.advice.field_regulatory_function
     - par_data.par_data_advice_type.advice
   module:
+    - datetime
     - file
     - text
 id: par_data_advice.advice.default
@@ -25,7 +26,8 @@ content:
     type: language_select
     weight: 10
     region: content
-    settings: {  }
+    settings:
+      include_locked: true
     third_party_settings: {  }
   name:
     type: string_textfield

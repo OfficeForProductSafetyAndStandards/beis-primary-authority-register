@@ -1,0 +1,12 @@
+uuid: fc22c8c8-7402-435a-9fb8-a20b0ff06ee1
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+_core:
+  default_config_hash: gkFNF0kPwH_iqPQhvOoCP29PZprvGd_OoBeVeaKj39Q
+id: par_data_inspection_feedback.title
+label: Title
+targetEntityType: par_data_inspection_feedback
+cache: true

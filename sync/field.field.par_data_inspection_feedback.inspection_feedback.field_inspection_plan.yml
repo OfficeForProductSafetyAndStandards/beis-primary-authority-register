@@ -1,0 +1,30 @@
+uuid: 7b9da06a-db93-4dae-8218-0b94bfd34173
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_inspection_feedback.field_inspection_plan
+    - par_data.par_data_inspection_feedback_type.inspection_feedback
+    - par_data.par_data_inspection_plan_type.inspection_plan
+_core:
+  default_config_hash: kq0SV3GH7H0AHNr2cEFstbKkIvaCYfweIBV_Ytteb3Y
+id: par_data_inspection_feedback.inspection_feedback.field_inspection_plan
+field_name: field_inspection_plan
+entity_type: par_data_inspection_feedback
+bundle: inspection_feedback
+label: 'Inspection Plan'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_inspection_plan'
+  handler_settings:
+    target_bundles:
+      inspection_plan: inspection_plan
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

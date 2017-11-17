@@ -68,6 +68,11 @@ class ParDataEnforcementNotice extends ParDataEntity {
    * Get the primary authority for this Enforcement Notice.
    */
   public function getPrimaryAuthority() {
+    if ($this->get('field_primary_authority')->isEmpty()) {
+      $partnership = current($this->getPartnership());
+      $primary_authority = current($partnership->getAuthorityPeople());
+      return $primary_authority;
+    }
     return $this->get('field_primary_authority')->referencedEntities();
   }
 

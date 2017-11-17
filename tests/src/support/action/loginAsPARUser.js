@@ -3,7 +3,7 @@
  * @param  {Function} done          Function to execute when finished
  */
 
-module.exports = (username, done) => {
+module.exports = (username) => {
     /**
      * The command to perform on the browser object (addValue or setValue)
      * @type {String}
@@ -16,5 +16,4 @@ module.exports = (username, done) => {
     browser.setValue('#edit-name', username);
     browser.setValue('#edit-pass', 'TestPassword');
     browser.click('#edit-submit');
-    done();
 };

@@ -4,6 +4,7 @@ dependencies: {  }
 id: partnership_application
 label: 'Partnership Application Flow'
 default_title: 'New Partnership Application'
+default_section_title: 'New partnership application'
 description: ''
 save_method: end
 steps:

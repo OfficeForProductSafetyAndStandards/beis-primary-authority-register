@@ -81,6 +81,41 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
+   * Get the organisation for this Partnership.
+   */
+  public function getOrganisation() {
+    return $this->get('field_organisation')->referencedEntities();
+  }
+
+  /**
+   * Get the authority for this Partnership.
+   */
+  public function getAuthority() {
+    return $this->get('field_authority')->referencedEntities();
+  }
+
+  /**
+   * Get the advice for this Partnership.
+   */
+  public function getAdvice() {
+    return $this->get('field_advice')->referencedEntities();
+  }
+
+  /**
+   * Get the inspection plans for this Partnership.
+   */
+  public function getInspectionPlan() {
+    return $this->get('field_inspection_plan')->referencedEntities();
+  }
+
+  /**
+   * Get the regulatory functions for this Partnership.
+   */
+  public function getRegulatoryFunction() {
+    return $this->get('field_regulatory_function')->referencedEntities();
+  }
+
+  /**
    * Check if a par person is a member of the organisation.
    *
    * {@deprecated}
@@ -152,41 +187,6 @@ class ParDataPartnership extends ParDataEntity {
     else {
       return FALSE;
     }
-  }
-
-  /**
-   * Get the organisation for this Partnership.
-   */
-  public function getOrganisation() {
-    return $this->get('field_organisation')->referencedEntities();
-  }
-
-  /**
-   * Get the authority for this Partnership.
-   */
-  public function getAuthority() {
-    return $this->get('field_authority')->referencedEntities();
-  }
-
-  /**
-   * Get the advice for this Partnership.
-   */
-  public function getAdvice() {
-    return $this->get('field_advice')->referencedEntities();
-  }
-
-  /**
-   * Get the inspection plans for this Partnership.
-   */
-  public function getInspectionPlan() {
-    return $this->get('field_inspection_plan')->referencedEntities();
-  }
-
-  /**
-   * Get the regulatory functions for this Partnership.
-   */
-  public function getRegulatoryFunction() {
-    return $this->get('field_regulatory_function')->referencedEntities();
   }
 
   /**

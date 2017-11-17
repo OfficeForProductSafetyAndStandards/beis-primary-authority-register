@@ -1,23 +1,23 @@
 /**
  * Check if the given elements contains text
- * @param  {String}   type      Type of element (inputfield or element)
- * @param  {String}   element   Element selector
- * @param  {String}   falseCase Whether to check if the content contains text
- *                              or not
- * @param  {Function} done      Function to execute when finished
+ * @param  {String}   elementType   Element type (element or button)
+ * @param  {String}   element       Element selector
+ * @param  {String}   falseCase     Whether to check if the content contains
+ *                                  text or not
  */
-module.exports = (type, element, falseCase, done) => {
+module.exports = (elementType, element, falseCase) => {
     /**
      * The command to perform on the browser object
      * @type {String}
      */
-    const command = (type !== 'inputfield') ? 'getText' : 'getValue';
+    let command = 'getValue';
 
-    /**
-     * Callback to trigger when done
-     * @type {Function}
-     */
-    let doneCallback = done;
+    if (
+        elementType === 'button' ||
+        browser.getAttribute(element, 'value') === null
+    ) {
+        command = 'getText';
+    }
 
     /**
      * False case
@@ -31,8 +31,7 @@ module.exports = (type, element, falseCase, done) => {
      */
     const text = browser[command](element);
 
-    if (typeof falseCase === 'function') {
-        doneCallback = falseCase;
+    if (typeof falseCase === 'undefined') {
         boolFalseCase = false;
     } else {
         boolFalseCase = !!falseCase;
@@ -43,6 +42,4 @@ module.exports = (type, element, falseCase, done) => {
     } else {
         expect(text).to.not.equal('');
     }
-
-    doneCallback();
 };

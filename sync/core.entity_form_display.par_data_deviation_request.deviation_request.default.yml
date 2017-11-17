@@ -1,0 +1,75 @@
+uuid: 6d9d3159-3715-4ae1-9260-89fe23b6e306
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.par_data_deviation_request.deviation_request.field_enforcing_authority
+    - field.field.par_data_deviation_request.deviation_request.field_inspection_plan
+    - field.field.par_data_deviation_request.deviation_request.field_partnership
+    - field.field.par_data_deviation_request.deviation_request.field_person
+    - par_data.par_data_deviation_request_type.deviation_request
+  module:
+    - datetime
+    - text
+_core:
+  default_config_hash: 0BqqZe4QmmVKogKeU9nRbqUDWuzs8XahKU65S6P4it4
+id: par_data_deviation_request.deviation_request.default
+targetEntityType: par_data_deviation_request
+bundle: deviation_request
+mode: default
+content:
+  field_enforcing_authority:
+    weight: 26
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_inspection_plan:
+    weight: 27
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_partnership:
+    weight: 28
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_person:
+    weight: 29
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  user_id:
+    type: entity_reference_autocomplete
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    region: content
+    third_party_settings: {  }
+hidden:
+  langcode: true
