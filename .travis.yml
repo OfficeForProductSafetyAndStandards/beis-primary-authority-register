@@ -25,8 +25,8 @@ before_install:
   - docker-compose up -d
   - docker exec -t par_beta_web bash -c "usermod --uid=2000 www-data"
   - docker exec -t par_beta_web bash -c "groupmod --gid=2000 root"
-  - docker stop par_beta_web
-  - docker start par_beta_web
+  - docker-compose stop
+  - docker-compose up -d
   - cd ..
 
 install:
@@ -52,7 +52,7 @@ install:
   - chmod -R 777 web/sites/default/files
   - docker exec -it par_beta_web bash -c "chmod -R 777 /var/www/html/private"
   - docker exec -it par_beta_web bash -c "chmod -R 777 /var/www/html/web/sites/default/files"
-  
+
 #-----------------------------------------------------------------------------
 # Create .env file
 #-----------------------------------------------------------------------------
@@ -105,7 +105,7 @@ before_script:
 # Warm caches
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush pcw"
 # Ping Drupal app to warm caches, write to tmp dir.
-  - docker exec -i par_beta_web bash -c "wget http://localhost:80 -O /tmp/tested-homepage.html"
+  - curl -o /tmp/tested-homepage.html http://127.0.0.1:8111
 
 script:
 #  - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
@@ -160,6 +160,7 @@ addons:
     debug: false
     paths:
       - ./tests/reports
+      - /tmp/tested-homepage.html
     target_paths: tests/$TRAVIS_BUILD_NUMBER
     bucket: transform-par-beta-artifacts
     s3_region: eu-west-1
