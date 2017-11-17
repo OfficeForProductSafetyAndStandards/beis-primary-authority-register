@@ -105,7 +105,7 @@ before_script:
 # Warm caches
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush pcw"
 # Ping Drupal app to warm caches, write to tmp dir.
-  - curl http://127.0.0.1:8111 > /dev/null
+  - curl --silent http://127.0.0.1:8111 > /dev/null
 
 script:
 #  - travis_retry docker exec -i par_beta_web /var/www/html/vendor/phpunit/phpunit/phpunit
