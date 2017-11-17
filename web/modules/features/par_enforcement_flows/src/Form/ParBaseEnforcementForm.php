@@ -204,7 +204,7 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
       $this->setState("edit:{$par_data_partnership->id()}");
       $enforced_entity_name = $this->getEnforcedEntityName();
 
-      if  ($enforced_entity_name){
+      if ($enforced_entity_name){
         return  'Proposed enforcement notification regarding | '. $enforced_entity_name;
       }
     }
@@ -226,7 +226,7 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
       return $this->getEnforcedLegalEntityName();
     }
     elseif ($this->getEnforcedOrganisationEntity()) {
-      return  $this->getEnforcedOrganisationEntity()->get('organisation_name')->getString();
+      return $this->getEnforcedOrganisationEntity()->get('organisation_name')->getString();
     }
     else {
       return FALSE;
