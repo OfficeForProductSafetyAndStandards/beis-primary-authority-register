@@ -4,8 +4,8 @@
 
 language: php
 
-#php:
-#  - 7.1
+php:
+  - 7.1
 
 services:
   - docker
@@ -46,7 +46,7 @@ install:
 # Setup local config defaults
 #-----------------------------------------------------------------------------
 
-  - cp web/sites/example.settings.local.php web/sites/default/settings.local.php
+#  - cp web/sites/example.settings.local.php web/sites/default/settings.local.php
   - chmod -R 777 private
   - chmod -R 777 web/sites/default
   - if [ ! -d web/sites/default/files ]; then mkdir web/sites/default/files; fi
