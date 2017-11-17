@@ -1,16 +1,16 @@
-const config = require('./wdio.conf.js').config;
-
-config.capabilities = [{
-  browserName: 'chrome',
-  chromeOptions: {
-    binary: '/usr/bin/google-chrome',
-    args: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1200,2000']
-  }
+const wdioConfig = require('./wdio.conf.js');
+wdioConfig.config.capabilities = [{
+    browserName: 'chrome',
+    chromeOptions: {
+        binary: '/usr/bin/google-chrome',
+        args: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1200,2000']
+    }
 }];
-config.screenshotPath = './errorShots/';
-config.services = ['selenium-standalone'];
-config.baseUrl = 'http://127.0.0.1:80';
-config.tags = '@ci, ~@Pending, ~@setup, ~@deprecated, ~@Bug';
-config.cucumberOpts.failFast = true;
-config.bail = 1;
-exports.config = config;
+wdioConfig.config.baseUrl = 'http://127.0.0.1:80';
+wdioConfig.config.tags = '@ci, ~@Pending, ~@setup, ~@deprecated, ~@Bug';
+wdioConfig.config.screenshotPath = './errorShots/';
+//wdioConfig.services = ['selenium-standalone'];
+wdioConfig.config.bail = 1;
+wdioConfig.config.cucumberOpts.failFast = true;
+
+exports.config = wdioConfig.config;

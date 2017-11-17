@@ -1,8 +1,7 @@
 name: 'PAR Data Config'
-type: module
 description: 'The configuration required to correctly setup the PAR Data entities.'
+type: module
 core: 8.x
-package: PAR
 dependencies:
   - address
   - better_exposed_filters
@@ -14,6 +13,7 @@ dependencies:
   - file_entity
   - pagerer
   - par_data
+  - par_data_config
   - rest
   - serialization
   - text
@@ -21,3 +21,4 @@ dependencies:
   - views
   - views_bulk_operations
   - views_data_export
+package: PAR

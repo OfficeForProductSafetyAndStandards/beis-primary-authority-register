@@ -1,54 +1,55 @@
 {
-  "name": "cucumber-boilerplate",
-  "version": "1.1.1",
-  "description": "Boilerplate project to run WebdriverIO tests with Cucumber",
-  "homepage": "https://github.com/webdriverio/cucumber-boilerplate",
-  "scripts": {
-    "test": "npm run test:build",
-    "test:build": "./node_modules/.bin/wdio wdio.BUILD.conf.js",
-    "test:dev": "./node_modules/.bin/wdio wdio.DEV.conf.js",
-    "test:validate": "eslint 'src/**/*.js'",
-    "allure": "npm run allure:generate",
-    "allure:generate": "./node_modules/.bin/allure generate --clean ./allure-results/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/webdriverio/cucumber-boilerplate.git"
-  },
-  "bugs": {
-    "url": "https://github.com/webdriverio/cucumber-boilerplate/issues"
-  },
-  "keywords": [
-    "webdriverio",
-    "cucumber",
-    "test",
-    "selenium"
-  ],
-  "author": "Christian Bromann <christian@saucelabs.com>",
-  "license": "MIT",
-  "dependencies": {
-    "artillery": "latest",
-    "babel-polyfill": "6.23.0",
-    "babel-preset-es2015": "6.24.1",
-    "babel-register": "6.24.1",
-    "chai": "4.0.2",
-    "cucumber": "2.3.1",
-    "eslint": "3.19.0",
-    "eslint-config-airbnb-base": "11.2.0",
-    "eslint-plugin-import": "2.3.0",
-    "http-server": "0.10.0",
-    "jest": "20.0.4",
-    "pa11y-ci": "latest",
-    "pa11y": "latest",
-    "supertest": "^3.0.0",
-    "wdio-browserstack-service": "0.1.11",
-    "wdio-chromedriver-service": "latest",
-    "wdio-cucumber-framework": "0.3.1",
-    "wdio-json-reporter": "0.2.1",
-    "wdio-phantomjs-service": "0.2.2",
-    "wdio-selenium-standalone-service": "0.0.9",
-    "wdio-spec-reporter": "0.1.0",
-    "webdrivercss": "^1.1.10",
-    "webdriverio": "4.8.0"
-  }
+    "name": "cucumber-boilerplate",
+    "version": "1.1.1",
+    "description": "Boilerplate project to run WebdriverIO tests with Cucumber",
+    "homepage": "https://github.com/webdriverio/cucumber-boilerplate",
+    "scripts": {
+        "test": "npm run test:build",
+        "test:build": "./node_modules/.bin/wdio wdio.BUILD.conf.js",
+        "test:dev": "./node_modules/.bin/wdio wdio.DEV.conf.js",
+        "test:validate": "eslint 'src/**/*.js'",
+        "allure": "npm run allure:generate",
+        "allure:generate": "./node_modules/.bin/allure generate --clean ./allure-results/"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/webdriverio/cucumber-boilerplate.git"
+    },
+    "bugs": {
+        "url": "https://github.com/webdriverio/cucumber-boilerplate/issues"
+    },
+    "keywords": [
+        "webdriverio",
+        "cucumber",
+        "test",
+        "selenium"
+    ],
+    "author": "Christian Bromann <christian@saucelabs.com>",
+    "license": "MIT",
+    "dependencies": {
+        "artillery": "latest",
+        "babel-preset-es2015": "6.24.0",
+        "babel-register": "~6.26.0",
+        "chai": "~4.1.2",
+        "cucumber": "2.3.1",
+        "pa11y-ci": "latest",
+        "pa11y": "latest",
+        "wdio-browserstack-service": "0.1.11",
+        "wdio-chromedriver-service": "latest",
+        "wdio-json-reporter": "0.2.1",
+        "wdio-cucumber-framework": "~1.0.2",
+        "wdio-phantomjs-service": "~0.2.2",
+        "wdio-selenium-standalone-service": "~0.0.9",
+        "wdio-spec-reporter": "~0.1.2",
+        "webdrivercss": "^1.1.10",
+        "webdriverio": "4.9.8",
+        "babel-jest": "~21.2.0",
+        "babel-polyfill": "~6.26.0",
+        "eslint": "~4.11.0",
+        "eslint-config-airbnb-base": "~12.1.0",
+        "eslint-plugin-import": "~2.8.0",
+        "forever": "~0.15.3",
+        "http-server": "~0.10.0",
+        "jest": "~21.2.0"
+    }
 }

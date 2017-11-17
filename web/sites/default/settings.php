@@ -819,7 +819,9 @@ $settings['file_scan_ignore_directories'] = [
  * if another deployment were made without exporting the values
  * to their config yaml files.
  */
-$settings['config_readonly'] = TRUE;
+if (PHP_SAPI !== 'cli') {
+  $settings['config_readonly'] = TRUE;
+}
 
 /**
  * Extract the database credentials from the VCAP_SERVICES environment variable

@@ -1,12 +1,13 @@
-uuid: 828aac2e-725a-4523-bf54-c79b6c6dcaa2
+uuid: fbadd2d4-d207-44d2-af1d-f22d87f6732d
 langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: iSUvcXaAAE0MT6dAzumpN4E5dDzAjRoeETlkNgmyyUk
+  default_config_hash: 6nrFcHlQQkWAkZFZd39W3NsNACCokl5ai8_kQSYqfDg
 id: approve_partnership
 label: 'Approve Partnership'
 default_title: null
+default_section_title: null
 description: 'The approve operations for a given partnership.'
 save_method: end
 steps:

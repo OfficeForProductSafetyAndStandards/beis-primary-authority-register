@@ -2,19 +2,13 @@
  * Open the given URL
  * @param  {String}   type Type of navigation (url or site)
  * @param  {String}   page The URL to navigate to
- * @param  {Function} done Function to execute when finished
  */
-module.exports = (type, page, done) => {
+module.exports = (type, page) => {
     /**
      * The URL to navigate to
      * @type {String}
      */
     const url = (type === 'url') ? page : browser.options.baseUrl + page;
-    browser.setViewportSize({
-        width: 1024,
-        height: 768,
-    });
-    browser.url(url);
 
-    done();
+    browser.url(url);
 };

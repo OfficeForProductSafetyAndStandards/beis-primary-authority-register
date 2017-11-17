@@ -47,7 +47,6 @@ class EntityParOrganisationTest extends ParDataTestBase {
       'employees_band' => '',
       'nation' => '',
       'comments' => '',
-      'premises_mapped' => '',
       'trading_name' => '',
       'coordinator_type' => '',
       'coordinator_number' => '',

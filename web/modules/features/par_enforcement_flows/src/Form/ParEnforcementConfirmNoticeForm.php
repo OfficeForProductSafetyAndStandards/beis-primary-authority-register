@@ -59,6 +59,7 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
 
     $this->retrieveEditableValues($par_data_enforcement_notice);
+    $enforcing_officer = current($par_data_enforcement_notice->getEnforcingPerson());
 
     $form['authority'] = $this->renderSection('Notification of Enforcement action from', $par_data_enforcement_notice, ['field_enforcing_authority' => 'title']);
 
@@ -72,6 +73,10 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
     else {
       $form['legal_entity'] = $this->renderSection('Regarding', $par_data_enforcement_notice, ['legal_entity_name' => 'summary']);
     }
+
+    $form['enforcement_officer_name'] = $this->renderSection('Enforcing officer name', $enforcing_officer, ['first_name' => 'summary','last_name' => 'summary'], [], TRUE, TRUE);
+    $form['enforcement_officer_telephone'] = $this->renderSection('Enforcing officer telephone number', $enforcing_officer, ['work_phone' => 'summary'], [], TRUE, TRUE);
+    $form['enforcement_officer_email'] = $this->renderSection('Enforcing officer email address', $enforcing_officer, ['email' => 'summary'], [], TRUE, TRUE);
 
     // Show details of each action.
     if (!$par_data_enforcement_notice->get('field_enforcement_action')->isEmpty()) {

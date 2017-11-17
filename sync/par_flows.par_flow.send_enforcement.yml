@@ -1,4 +1,4 @@
-uuid: 84d1d8f5-cb25-46ad-a3bf-16e7403d6057
+uuid: 885a517a-aac6-47f1-b941-b0ed3571dfe1
 langcode: en
 status: true
 dependencies: {  }
@@ -7,6 +7,7 @@ _core:
 id: send_enforcement
 label: 'Send Enforcement'
 default_title: null
+default_section_title: null
 description: 'The send operations for an enforcement notice.'
 save_method: end
 steps:

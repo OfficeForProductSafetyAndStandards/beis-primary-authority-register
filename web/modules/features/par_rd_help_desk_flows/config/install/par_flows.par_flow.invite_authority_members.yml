@@ -4,6 +4,7 @@ dependencies: {  }
 id: invite_authority_members
 label: 'Invite PAR Authority Users'
 default_title: null
+default_section_title: null
 description: 'Invite PAR Authority Users to register for an account.'
 save_method: end
 steps:

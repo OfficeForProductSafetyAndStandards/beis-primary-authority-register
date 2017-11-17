@@ -6,7 +6,7 @@
  *                              or not
  * @param  {Function} done      Function to execute when finished
  */
-module.exports = (type, element, falseCase, done) => {
+module.exports = (type, element, falseCase) => {
     /**
      * The command to perform on the browser object
      * @type {String}
@@ -17,7 +17,6 @@ module.exports = (type, element, falseCase, done) => {
      * Callback to trigger when done
      * @type {Function}
      */
-    let doneCallback = done;
 
     /**
      * False case
@@ -43,6 +42,4 @@ module.exports = (type, element, falseCase, done) => {
     } else {
         expect(text).to.not.equal('');
     }
-
-    doneCallback();
 };

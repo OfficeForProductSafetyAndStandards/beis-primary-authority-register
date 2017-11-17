@@ -3,7 +3,7 @@
  * @param  {Function} done          Function to execute when finished
  */
 
-module.exports = (done) => {
+module.exports = () => {
     /**
      * The command to perform on the browser object (addValue or setValue)
      * @type {String}
@@ -19,5 +19,4 @@ module.exports = (done) => {
     var primaryContact = browser.getValue("div#block-par-theme-content div fieldset.form-group.js-form-item.form-item.js-form-wrapper.form-wrapper.inline div fieldset.form-group.js-form-item.form-item.js-form-wrapper.form-wrapper.inline div");
     console.log(primaryContact);
     browser.element('a*=edit ' + primaryContact).click();
-    done();
 };

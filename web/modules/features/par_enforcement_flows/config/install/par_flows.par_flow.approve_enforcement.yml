@@ -4,6 +4,7 @@ dependencies: {  }
 id: approve_enforcement
 label: 'Approve Enforcement'
 default_title: null
+default_section_title: null
 description: 'The approval flow for an enforcement notice.'
 save_method: end
 steps:

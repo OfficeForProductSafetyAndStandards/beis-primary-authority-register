@@ -4,6 +4,7 @@ dependencies: {  }
 id: partnership_authority
 label: 'Authority Partnership Flow'
 default_title: null
+default_section_title: 'Primary Authority partnership information'
 description: ''
 save_method: step
 steps:

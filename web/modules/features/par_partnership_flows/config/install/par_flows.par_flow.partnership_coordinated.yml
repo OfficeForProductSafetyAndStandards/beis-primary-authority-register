@@ -4,6 +4,7 @@ dependencies: {  }
 id: partnership_coordinated
 label: 'Coordinated Partnership Flow'
 default_title: null
+default_section_title: 'Coordinated partnership'
 description: ''
 save_method: step
 steps:

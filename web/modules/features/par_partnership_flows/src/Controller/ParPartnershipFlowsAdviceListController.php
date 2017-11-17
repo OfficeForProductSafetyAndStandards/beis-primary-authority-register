@@ -13,6 +13,8 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
 
   use ParPartnershipFlowsTrait;
 
+  protected $pageTitle = 'Advice';
+
   /**
    * {@inheritdoc}
    */

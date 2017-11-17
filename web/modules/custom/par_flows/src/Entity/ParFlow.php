@@ -41,6 +41,7 @@ use Drupal\par_flows\ParRedirectTrait;
  *     "id",
  *     "label",
  *     "default_title",
+ *     "default_section_title",
  *     "description",
  *     "save_method",
  *     "steps"
@@ -76,6 +77,13 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    * @var string
    */
   protected $default_title;
+
+  /**
+   * The default subheader title for the flow.
+   *
+   * @var string
+   */
+  protected $default_section_title;
 
   /**
    * A brief description of this flow.
@@ -134,6 +142,13 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getDefaultTitle() {
     return $this->default_title;
+  }
+
+  /**
+   * Get the default section title to show in GDS subheader.
+   */
+  public function getDefaultSectionTitle() {
+    return $this->default_section_title;
   }
 
   /**

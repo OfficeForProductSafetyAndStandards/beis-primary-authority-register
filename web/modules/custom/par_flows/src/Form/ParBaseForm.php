@@ -116,6 +116,13 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   protected $formItems = [];
 
+  /**
+   * Page title.
+   *
+   * @var string
+   */
+  protected $pageTitle;
+
   /*
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.
    *
@@ -162,11 +169,18 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * Title callback default.
    */
   public function titleCallback() {
-    if ($default_title = $this->getFlow()->getDefaultTitle()) {
+    if (empty($this->pageTitle) &&
+        $default_title = $this->getFlow()->getDefaultTitle()) {
       return $default_title;
     }
 
-    return $this->getDefaultTitle();
+    // Do we have a form flow subheader?
+    if (!empty($this->getFlow()->getDefaultSectionTitle() &&
+        !empty($this->pageTitle))) {
+      $this->pageTitle = "{$this->getFlow()->getDefaultSectionTitle()} | {$this->pageTitle}";
+    }
+
+    return $this->pageTitle;
   }
 
   /**

@@ -7,6 +7,7 @@ use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\Core\Access\AccessResult;
 
 /**
  * The confirmation for creating a new enforcement notice.
@@ -30,7 +31,13 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
    */
   public function accessCallback(ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
 
-    // Additional business logic can implement here to 403.
+    // This form should only be accessed if none of the enforcement notice actions have been acted on.
+    foreach ($par_data_enforcement_notice->get('field_enforcement_action')->referencedEntities() as $delta => $action) {
+      // Set an error if this action has already been reviewed.
+      if ($action->isApproved() || $action->isBlocked() || $action->isReferred()) {
+        $this->accessResult = AccessResult::forbidden('This action has already been reviewed.');
+      }
+    }
     return parent::accessCallback();
   }
 
@@ -64,6 +71,8 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
     $this->retrieveEditableValues($par_data_enforcement_notice);
 
+    $enforcing_officer = current($par_data_enforcement_notice->getEnforcingPerson());
+
     $form['authority'] = $this->renderSection('Notification of Enforcement action from', $par_data_enforcement_notice, ['field_enforcing_authority' => 'title']);
 
     if (!$par_data_enforcement_notice->get('field_legal_entity')->isEmpty()) {
@@ -75,6 +84,13 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
     }
     else {
       $form['legal_entity'] = $this->renderSection('Regarding', $par_data_enforcement_notice, ['legal_entity_name' => 'summary']);
+    }
+
+    // To account for enforcement notification data created before enforcement officer release.
+    if (!empty($enforcing_officer)) {
+      $form['enforcement_officer_name'] = $this->renderSection('Enforcing officer name', $enforcing_officer, ['first_name' => 'summary', 'last_name' => 'summary'], [], TRUE, TRUE);
+      $form['enforcement_officer_telephone'] = $this->renderSection('Enforcing officer telephone number', $enforcing_officer, ['work_phone' => 'summary'], [], TRUE, TRUE);
+      $form['enforcement_officer_email'] = $this->renderSection('Enforcing officer email address', $enforcing_officer, ['email' => 'summary'], [], TRUE, TRUE);
     }
 
     // Show details of each action.

@@ -1,0 +1,72 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.par_data_inspection_feedback.inspection_feedback.field_enforcing_authority
+    - field.field.par_data_inspection_feedback.inspection_feedback.field_inspection_plan
+    - field.field.par_data_inspection_feedback.inspection_feedback.field_partnership
+    - field.field.par_data_inspection_feedback.inspection_feedback.field_person
+    - par_data.par_data_inspection_feedback_type.inspection_feedback
+  module:
+    - datetime
+    - text
+id: par_data_inspection_feedback.inspection_feedback.default
+targetEntityType: par_data_inspection_feedback
+bundle: inspection_feedback
+mode: default
+content:
+  field_enforcing_authority:
+    weight: 26
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_inspection_plan:
+    weight: 27
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_partnership:
+    weight: 28
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_person:
+    weight: 29
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  user_id:
+    type: entity_reference_autocomplete
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    region: content
+    third_party_settings: {  }
+hidden:
+  langcode: true

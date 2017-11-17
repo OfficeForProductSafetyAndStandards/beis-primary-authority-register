@@ -49,6 +49,13 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   protected $flow;
 
   /**
+   * Page title.
+   *
+   * @var string
+   */
+  protected $pageTitle;
+
+  /**
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.
    *
    * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $flow_storage
@@ -86,11 +93,18 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
    * Title callback default.
    */
   public function titleCallback() {
-    if ($default_title = $this->getFlow()->getDefaultTitle()) {
+    if (!$this->pageTitle &&
+      $default_title = $this->getFlow()->getDefaultTitle()) {
       return $default_title;
     }
 
-    return $this->getDefaultTitle();
+    // Do we have a form flow subheader?
+    if (!empty($this->getFlow()->getDefaultSectionTitle() &&
+      !empty($this->pageTitle))) {
+      $this->pageTitle = "{$this->getFlow()->getDefaultSectionTitle()} | {$this->pageTitle}";
+    }
+
+    return $this->pageTitle;
   }
 
   /**

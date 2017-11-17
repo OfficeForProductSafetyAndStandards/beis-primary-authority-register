@@ -170,7 +170,7 @@ trait ParDisplayTrait {
         $edit_link = $this->getFlow()->getLinkByCurrentOperation('edit_' . $field->getName(), $params)->setText("edit {$link_name_suffix}")->toString();
       }
       catch (ParFlowException $e) {
-        $this->getLogger($this->getLoggerChannel())->error($e);
+        $this->getLogger($this->getLoggerChannel())->notice($e);
       }
       if (isset($edit_link)) {
         $operation_links['edit'] = [
@@ -191,6 +191,12 @@ trait ParDisplayTrait {
    * with the relevant operational links.
    */
   public function renderSection($section, $entity, $fields, $operations = [], $title = TRUE, $single = FALSE) {
+
+    // If rendering logic is called on an NULL object prevent system failures.
+    if (empty($entity)) {
+      return;
+    }
+
     $element = [
       '#type' => 'fieldset',
       '#attributes' => ['class' => 'form-group'],
@@ -252,7 +258,7 @@ trait ParDisplayTrait {
         try {
           $add_link = $this->getFlow()->getLinkByCurrentOperation('add_' . $field->getName())->setText("add another {$link_name_suffix}")->toString();
         } catch (ParFlowException $e) {
-          $this->getLogger($this->getLoggerChannel())->error($e);
+          $this->getLogger($this->getLoggerChannel())->notice($e);
         }
         if (isset($add_link)) {
           $element[$field_name]['operations']['add'] = [
