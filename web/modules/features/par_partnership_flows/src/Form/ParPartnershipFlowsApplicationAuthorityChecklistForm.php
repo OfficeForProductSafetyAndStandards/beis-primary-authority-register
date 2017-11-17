@@ -112,6 +112,9 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
           'visible' => [
             'input[name="business_regulated_by_one_authority"]' => ['value' => 1],
           ],
+          'disabled' => [
+            'input[name="business_regulated_by_one_authority"]' => ['value' => 0],
+          ],
         ],
       ];
 
@@ -125,12 +128,10 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
         '#default_value' => $this->getDefaultValues('business_informed_local_authority_still_regulates', FALSE),
         '#states' => [
           'visible' => [
-            'input[name="business_regulated_by_one_authority"]' => ['value' => 1],
-            'input[name="is_local_authority"]' => ['value' => 0],
+            'input[name="business_regulated_by_one_authority"]' => ['value' => 0],
           ],
           'disabled' => [
-            'input[name="business_regulated_by_one_authority"]' => ['value' => 0],
-            'input[name="is_local_authority"]' => ['value' => 1],
+            'input[name="business_regulated_by_one_authority"]' => ['value' => 1],
           ],
         ],
       ];
@@ -202,18 +203,19 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
       }
 
       // Section two validation.
-      if (!$form_state->getValue('business_regulated_by_one_authority')) {
-        $this->setElementError(['section_two','business_regulated_by_one_authority'], $form_state, 'You need to be authorised to submit an application');
+
+      // Check if no value is provided.
+      if ($form_state->getValue('business_regulated_by_one_authority') === FALSE) {
+        $this->setElementError(['section_two','business_regulated_by_one_authority'], $form_state, 'Please confirm if the business regulated by only one local authority.');
       }
 
-      if ($form_state->getValue('is_local_authority') === FALSE) {
-        $this->setElementError(['section_two','is_local_authority'], $form_state, 'Please confirm if this is your local authority.');
+      if ($form_state->getValue('business_regulated_by_one_authority') == 1 &&
+        $form_state->getValue('is_local_authority') == 0) {
+        $this->setElementError(['section_two','is_local_authority'], $form_state, 'Please confirm you are the local authority.');
       }
-      elseif ($form_state->getValue('business_regulated_by_one_authority') &&
-        !$form_state->getValue('is_local_authority') &&
-        !$form_state->getValue('business_informed_local_authority_still_regulates')) {
+      elseif ($form_state->getValue('business_regulated_by_one_authority') == 0 &&
+        $form_state->getValue('business_informed_local_authority_still_regulates') == 0) {
         $this->setElementError(['section_two','business_informed_local_authority_still_regulates'], $form_state, 'The business needs to be informed about local authority.');
-
       }
     }
     elseif ($applicationType == 'coordinated') {
