@@ -65,13 +65,6 @@ module:
   par_rd_help_desk_flows: 0
   par_roles: 0
   par_validation: 0
-  password_policy: 0
-  password_policy_character_types: 0
-  password_policy_characters: 0
-  password_policy_history: 0
-  password_policy_length: 0
-  password_policy_username: 0
-  password_strength: 0
   path: 0
   raven: 0
   rdf: 0

@@ -55,11 +55,11 @@ function par_actions_tokens($type, $tokens, array $data, array $options, Bubblea
   return $replacements;
 }
 
-function par_actions_cron() {
-  $scheduler = \Drupal::service('plugin.manager.par_scheduler');
-
-  foreach ($scheduler->getDefinitions(TRUE) as $definition) {
-    $plugin = $scheduler->createInstance($definition['id'], $definition);
-    $plugin->buildQueue();
-  }
-}
+//function par_actions_cron() {
+//  $scheduler = \Drupal::service('plugin.manager.par_scheduler');
+//
+//  foreach ($scheduler->getDefinitions(TRUE) as $definition) {
+//    $plugin = $scheduler->createInstance($definition['id'], $definition);
+//    $plugin->buildQueue();
+//  }
+//}
