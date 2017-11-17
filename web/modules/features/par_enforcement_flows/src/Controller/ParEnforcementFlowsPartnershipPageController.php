@@ -102,7 +102,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
 
     $build['inspection_plans'] = [
       '#type' => 'fieldset',
-      '#title' => t('Inspection Plans:'),
+      '#title' => t('Inspection Plans'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
@@ -116,7 +116,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
 
     $build['advice'] = [
       '#type' => 'fieldset',
-      '#title' => t('Advice and documents:'),
+      '#title' => t('Advice and documents'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
