@@ -169,6 +169,15 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
   /**
    * {@inheritdoc}
    */
+  public function getBooleanFieldValues($field_name) {
+    $boolean_values = $this->getConfigurationElementByType($field_name, 'boolean_values');
+
+    return isset($boolean_values) ? $boolean_values : FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getAllowedValues($field_name) {
     $allowed_values = $this->getConfigurationElementByType($field_name, 'allowed_values');
     return $allowed_values ? $allowed_values : [];

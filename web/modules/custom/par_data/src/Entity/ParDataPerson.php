@@ -147,53 +147,24 @@ class ParDataPerson extends ParDataEntity {
   }
 
   public function getFullName() {
-    return $this->get('first_name')->getString() . ' ' . $this->get('last_name')->getString();
+    return implode(" ", [
+      $this->get('salutation')->getString(),
+      $this->get('first_name')->getString(),
+      $this->get('last_name')->getString(),
+    ]);
   }
 
-  /**
-   * @param string $method_id
-   */
-  public function setPreferredCommunication($method_id) {
-    $methods = $this->getPreferredCommunicationMethods();
+  public function getCommunicationField($field, $key) {
 
-    foreach ($methods as $id => $method) {
-      if ($method_id === $id) {
-        $this->set('communication_' . $id, TRUE);
-      }
-      else {
-        $this->set('communication_' . $id, FALSE);
-      }
-    }
-  }
+    if ($this->get($key)->getString() == 1) {
+      $preference_message = $this->getTypeEntity()
+        ->getBooleanFieldLabel($key,
+          $this->get($key)->getString());
 
-  /**
-   * Get the preferred communication method.
-   *
-   * @return string|null
-   */
-  public function getPreferredCommunicationMethodId() {
-    $methods = $this->getPreferredCommunicationMethods();
-
-    foreach ($methods as $method_id => $method) {
-      if ($this->get('communication_' . $method_id)->getString()) {
-        return $method_id;
-      }
+      return "{$this->get($field)->getString()} ({$preference_message})";
     }
 
-    return NULL;
-  }
-
-  /**
-   * Get the preferred communication method label.
-   *
-   * @param string $method_id
-   *   The id of the method we want the label for.
-   *
-   * @return int|null
-   */
-  public function getPreferredCommunicationMethodLabel($method_id) {
-    $methods = $this->getPreferredCommunicationMethods();
-    return isset($methods[$method_id]) ? $methods[$method_id] : '';
+    return $this->get($field)->getString();
   }
 
   /**
