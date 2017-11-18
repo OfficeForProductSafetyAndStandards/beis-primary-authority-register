@@ -33,8 +33,6 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I click on the button "#edit-next"
 
         # CHOOSE LEGAL ENTITY
-
-        And the element "h3.heading-medium" contains the text "Select a legal entity"
         And I click on the button "#edit-next"
 
       # ENFORCEMENT SUMMARY
