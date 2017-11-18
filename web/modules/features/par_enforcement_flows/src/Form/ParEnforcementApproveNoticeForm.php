@@ -30,7 +30,7 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    $this->pageTitle = "Make a decision | Proposed enforcement action(s)";
+    $this->pageTitle =  "Make a decision | Proposed enforcement action(s)";
     return parent::titleCallback();
   }
 

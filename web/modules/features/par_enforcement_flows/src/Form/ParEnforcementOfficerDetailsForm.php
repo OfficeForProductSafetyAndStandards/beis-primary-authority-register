@@ -22,12 +22,16 @@ class ParEnforcementOfficerDetailsForm extends ParBaseEnforcementForm {
   }
 
   /**
-   * Title callback default.
+   * {@inheritdoc}
    */
   public function titleCallback() {
-    return;
-  }
 
+    $enforcementFlowTitle = $this->RaiseEnforcementTitleCallback();
+    if ($enforcementFlowTitle) {
+      $this->pageTitle =  $enforcementFlowTitle;
+    }
+    return parent::titleCallback();
+  }
 
     /**
    * Helper to get all the editable values when editing or
