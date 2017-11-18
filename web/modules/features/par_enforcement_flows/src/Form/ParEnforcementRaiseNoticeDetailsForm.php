@@ -110,7 +110,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       'Your reasons for proposing the enforcement action',
     ];
 
-    $form['enforcement_text'] = [ '#theme' => 'item_list', '#items' => $enforcement_data];
+    $form['enforcement_text'] = ['#theme' => 'item_list', '#items' => $enforcement_data];
 
     $form['action_summary_title'] = [
       '#type' => 'fieldset',
