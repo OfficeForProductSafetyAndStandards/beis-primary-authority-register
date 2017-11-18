@@ -54,7 +54,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
         # ADD ENFORCEMENT ACTION
 
-        When I click on the link "Add an enforcement action"
+        When I click on the link "Add another enforcement action"
         And I add "Added Enforcement Action" to the inputfield "#edit-title-of-action"
         And I click on the radio ".option*=Alphabet learning"
         And I add "Added Enforcement Action details" to the inputfield "#edit-details"
