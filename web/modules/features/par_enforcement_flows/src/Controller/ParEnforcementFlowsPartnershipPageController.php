@@ -22,9 +22,11 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
     if ($par_data_partnership) {
       $par_data_organisation = current($par_data_partnership->getOrganisation());
-      return $par_data_organisation->get('organisation_name')->getString();
-    }
 
+      if ($par_data_organisation && $org_name = $par_data_organisation->get('organisation_name')->getString()) {
+        $this->pageTitle = "Primary authority information for | {$org_name}";
+      }
+    }
     return parent::titleCallback();
   }
 
@@ -49,15 +51,17 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
 
     // Create links for the actions that can be performed on this partnership.
     $build['partnership_actions'] = [
-      '#type' => 'markup',
-      '#markup' => t('Enforcement Actions:'),
-      '#attributes' => ['class' => ['form-group']],
+      '#type' => 'fieldset',
+      '#title' => t('Send a message about this business'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
     ];
-    $build['partnership_actions']['link'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('raise')->setText('Send notification of enforcement action')->toString(),
-      ]),
+
+    $link = $this->getFlow()->getNextLink('raise')->setText('Send a notification of a proposed enforcement action')->toString();
+
+    $build['partnership_actions']['link'] = ['#type' => 'markup',
+      '#markup' => $link ? $link : '<p>(none)</p>',
     ];
 
     // Only show SIC Codes and Employee number if the partnership is a direct partnership.
@@ -129,7 +133,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     ];
 
     // Display the authority contacts for information.
-    $build['authority_contacts'] = $this->renderSection('Contacts - Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed'], ['edit-entity', 'add']);
+    $build['authority_contacts'] = $this->renderSection('Contacts at the Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed'], ['edit-entity', 'add']);
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);

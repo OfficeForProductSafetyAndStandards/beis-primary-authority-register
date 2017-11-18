@@ -16,7 +16,7 @@ Feature: Primary Authority - Change Partnership Details
         And I add "test partnership info change" to the inputfield "#edit-about-partnership"
         And I click on the button "#edit-save"
         Then I expect that element "#edit-about-partnership" contains the text "test partnership info change"
-        And I click on the button "a*=edit big bird"
+        And I click on the button "a*=edit Big Bird"
         And I clear the inputfield "#edit-salutation"
         And I clear the inputfield "#edit-work-phone"
         And I clear the inputfield "#edit-mobile-phone"
