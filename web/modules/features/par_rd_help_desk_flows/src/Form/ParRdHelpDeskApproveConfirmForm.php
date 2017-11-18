@@ -27,6 +27,13 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  public function titleCallback() {
+    return 'Confirmation | Are you authorised to approve this partnership?';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function accessCallback(ParDataPartnership $par_data_partnership = NULL) {
     // 403 if the partnership is active/approved by RD.
     if ($par_data_partnership->getRawStatus() === 'confirmed_rd') {
@@ -61,27 +68,30 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
 
     $this->retrieveEditableValues($par_data_partnership);
 
-    $form['partnership_title'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Partnership between'),
-      '#prefix' => '<div><h2>',
-      '#suffix' => '</h2></div>',
+    // Present partnership info.
+    $form['partnership_info'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Partnership between'),
+      '#attributes' => ['class' => 'form-group'],
     ];
 
-    $form['partnership_text'] = [
+    $form['partnership_info']['partnership_text'] = [
       '#type' => 'markup',
-      '#markup' => $par_data_organisation->get('organisation_name')->getString() . ' and ' . $par_data_authority->get('authority_name')->getString(),
-      '#default_value' => $this->getDefaultValues('partnership_text'),
-      '#prefix' => '<div><p>',
-      '#suffix' => '</p></div>',
+      '#markup' => $par_data_partnership->label(),
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
     ];
 
-    $confirm_text_options[] = $this->t('I am authorised to approve this partnership');
+    // Auth.
+    $form['partnership_approve'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Please confirm you are authorised to approve this partnership'),
+      '#attributes' => ['class' => 'form-group'],
+    ];
 
-    $form['confirm_authorisation_select'] = [
-      '#type' => 'radios',
-      '#title' => $this->t('Check to confirm you are authorised to approve this partnership'),
-      '#options' => $confirm_text_options,
+    $form['partnership_approve']['confirm_authorisation_select'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Yes, I am authorised to approve this partnership'),
       '#required' => TRUE,
     ];
 
@@ -89,7 +99,7 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
     $regulatory_function_options = $this->getParDataManager()->getEntitiesAsOptions($regulatory_functions);
     $form['partnership_regulatory_functions'] = [
       '#type' => 'checkboxes',
-      '#title' => $this->t('Regulatory function to which this relates'),
+      '#title' => $this->t('Please choose the regulatory functions of this partnership'),
       '#options' => $regulatory_function_options,
       '#default_value' => $this->getDefaultValues('partnership_regulatory_functions', []),
       '#required' => TRUE,

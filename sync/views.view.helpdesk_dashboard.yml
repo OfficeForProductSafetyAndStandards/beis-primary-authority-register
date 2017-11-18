@@ -634,11 +634,11 @@ display:
                 operator: '='
                 value: awaiting_review
               2:
-                title: 'Confirmed by Authority'
+                title: 'Confirmed by the Authority'
                 operator: '='
                 value: confirmed_authority
               3:
-                title: 'Confirmed by Business'
+                title: 'Confirmed by the Business'
                 operator: '='
                 value: confirmed_business
               4:
