@@ -44,7 +44,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
       # ENFORCEMENT SUMMARY
 
         And I add "action summary enforcement notice" to the inputfield "#edit-action-summary"
-        And I click on the radio "#edit-enforcement-type-proposed"
+        And I click on the radio "#edit-type-proposed"
         And I click on the button "#edit-next"
         And I add "Title of enforcement notice Four" to the inputfield "#edit-title-of-action"
         And I click on the radio ".option*=Cookie control"
