@@ -28,7 +28,7 @@ class ParEnforcementOfficerDetailsForm extends ParBaseEnforcementForm {
 
     $enforcementFlowTitle = $this->RaiseEnforcementTitleCallback();
     if ($enforcementFlowTitle) {
-      $this->pageTitle =  $enforcementFlowTitle;
+      $this->pageTitle = $enforcementFlowTitle;
     }
     return parent::titleCallback();
   }
