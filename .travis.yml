@@ -91,6 +91,7 @@ install:
 
   - docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cex -n"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush core-requirements --severity=2"
 
 #-----------------------------------------------------------------------------
 # Stamp the code with the build number
@@ -106,8 +107,8 @@ before_script:
 # Ping Drupal app.
   - curl --silent http://127.0.0.1:8111 > /dev/null
 
-script:
-  - docker exec -ti par_beta_web bash -c "if (./vendor/bin/paratest -p16 --configuration=phpunit.xml | grep -i 'OK') then exit 0 else exit 1 fi"
+script
+  - docker exec -ti par_beta_web bash -c "if (./vendor/bin/paratest -p16 --configuration=phpunit.xml | grep -i 'OK'); then exit 0; else exit 1; fi"
   - travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
   - docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run test:build"
 
