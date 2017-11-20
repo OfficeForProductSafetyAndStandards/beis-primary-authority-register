@@ -328,4 +328,67 @@ trait ParDisplayTrait {
 
   }
 
+  /**
+   * A simplified field renderer function to render entity fields for form elements or provide section title
+   * for required entity fields without all the overhead of dealing with all the .
+   *
+   * @param string $section
+   *   The section title to use for this field-set.
+   *
+   * @param Entity $entity
+   *   The entity containing the fields to be rendered.
+   *
+   * @param array $fields
+   *   An array containing the field names and display modes to be rendered.
+   *
+   * @param Boolean $title
+   *   Weather or not to display a title for this section.
+   *
+   *  @param Boolean $section_title_only
+   *    An option to only output a title with the correct markup.
+   *
+   * @return mixed
+   */
+  public function renderedElementRenderSection($section, $entity, $fields, $title = TRUE, $section_title_only = FALSE) {
+
+    // If rendering logic is called on an NULL object prevent system failures.
+    if (empty($entity)) {
+      return;
+    }
+
+    $element = [
+      '#type' => 'fieldset',
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    if ($title) {
+      $element['#title'] = t("$section");
+    }
+    // If we are only we only want a section title return the form elements.
+    if ($section_title_only == TRUE) {
+      return $element;
+    }
+
+    foreach ($fields as $field_name => $view_mode) {
+
+      $rendered_field = $entity->get($field_name)->view($view_mode);
+      $rendered_element =  $this->getRenderer()->render($rendered_field);
+
+      $element[$field_name] = [
+        '#type' => 'fieldset',
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+
+      $element[$field_name]['value'] = [
+        '#type' => 'markup',
+        '#markup' => $rendered_element ? $rendered_element : '<p>(none)</p>',
+        '#prefix' => '<div>',
+        '#suffix' => '</div>',
+      ];
+    }
+    return $element;
+  }
 }
