@@ -330,7 +330,7 @@ trait ParDisplayTrait {
 
   /**
    * A simplified field renderer function to render entity fields for form elements or provide section title
-   * for required entity fields without all the overhead of dealing with all the .
+   * for required entity fields without rendering a complete field.
    *
    * @param string $section
    *   The section title to use for this field-set.
