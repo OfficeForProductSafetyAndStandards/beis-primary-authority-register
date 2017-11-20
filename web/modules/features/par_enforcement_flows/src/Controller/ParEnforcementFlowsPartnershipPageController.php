@@ -19,6 +19,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
    * {@inheritdoc}
    */
   public function titleCallback() {
+
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
     if ($par_data_partnership) {
       $par_data_organisation = current($par_data_partnership->getOrganisation());

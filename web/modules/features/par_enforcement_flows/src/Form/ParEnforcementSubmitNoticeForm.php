@@ -12,7 +12,7 @@ use Drupal\par_data\Entity\ParDataAuthority;
 /**
  * The confirmation for creating a new enforcement notice.
  */
-class ParEnforcementSubmitNoticeForm extends ParBaseForm {
+class ParEnforcementSubmitNoticeForm extends ParBaseEnforcementForm {
 
   /**
    * {@inheritdoc}
@@ -24,6 +24,29 @@ class ParEnforcementSubmitNoticeForm extends ParBaseForm {
    */
   public function getFormId() {
     return 'par_enforcement_notice_raise_confirm';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function titleCallback() {
+
+    $par_data_enforcement_notice = $this->getRouteParam('par_data_enforcement_notice');
+
+    if (!$par_data_enforcement_notice) {
+      return parent::titleCallback();
+    }
+
+    if ($par_data_enforcement_notice->get('legal_entity_name')->getString()) {
+      $enforced_legal_entity_name = $par_data_enforcement_notice->get('legal_entity_name')->getString();
+    }
+    else {
+      $enforced_legal_entity = current($par_data_enforcement_notice->getLegalEntity());
+      $enforced_legal_entity_name = $enforced_legal_entity->get('registered_name')->getString();
+    }
+    $this->pageTitle = "Summary of the proposed enforcement action(s) regarding | {$enforced_legal_entity_name}";
+
+    return parent::titleCallback();
   }
 
   /**
@@ -42,61 +65,12 @@ class ParEnforcementSubmitNoticeForm extends ParBaseForm {
 
     // Get the correct par_data_authority_id set by the previous form.
     $enforced_authority = current($par_data_enforcement_notice->getEnforcingAuthority());
-    $enforced_organisation = current($par_data_enforcement_notice->getEnforcedOrganisation());
-    $enforced_legal_entity = current($par_data_enforcement_notice->getLegalEntity());
     $enforcing_officer = current($par_data_enforcement_notice->getEnforcingPerson());
-
-    if ($enforced_legal_entity) {
-      $enforced_legal_entity_name = $enforced_legal_entity->get('registered_name')->getString();
-    } else {
-      $enforced_legal_entity_name = $par_data_enforcement_notice->get('legal_entity_name')->getString();
-    }
 
     // Load all enforcement actions for the current enforcement notification.
     $enforcement_actions = $par_data_enforcement_notice->getEnforcementActions();
 
-    $form['authority'] =[
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    $form['authority']['authority_heading'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Add an enforcement action'),
-    ];
-
-    $form['authority']['authority_name'] = [
-      '#type' => 'markup',
-      '#markup' => $enforced_authority->get('authority_name')->getString(),
-      '#prefix' => '<div><h1>',
-      '#suffix' => '</h1></div>',
-    ];
-
-    $form['organisation'] =[
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-
-    $form['organisation']['organisation_heading'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Regarding'),
-
-    ];
-
-    $form['organisation']['organisation_name'] = [
-      '#type' => 'markup',
-      '#markup' => $enforced_legal_entity_name,
-      '#prefix' => '<h1>',
-      '#suffix' => '</h1>',
-    ];
-
-    // Display the primary address.
-    $form['registered_address'] = $this->renderSection('Registered address', $enforced_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
+    $form['authority'] = $this->renderSection('Enforced by', $enforced_authority, ['authority_name' => 'summary']);
 
     $form['enforcement_officer_name'] = $this->renderSection('Enforcing officer name', $enforcing_officer, ['first_name' => 'summary','last_name' => 'summary'], [], TRUE, TRUE);
     $form['enforcement_officer_telephone'] = $this->renderSection('Enforcing officer telephone number', $enforcing_officer, ['work_phone' => 'summary'], [], TRUE, TRUE);
@@ -112,41 +86,32 @@ class ParEnforcementSubmitNoticeForm extends ParBaseForm {
       $form[$enforcement_action->id()]['action_attach'] = $this->renderMarkupField($enforcement_action->get('document')->view('full'));
     }
 
-    $form['action_heading'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Enforcement action(s)'),
-      '#prefix' => '<h3><p>',
-      '#suffix' => '</p></h3>',
-    ];
-
     $form['action_add'] = [
       '#type' => 'fieldset',
       '#attributes' => ['class' => 'form-group'],
-      '#description' => $this->t('If you are proposing more then one enforcement action, you should add these as separate actions using the link below'),
+      '#title' => $this->t('Multiple actions'),
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
 
-    $add_action_link = $this->getFlow()->getNextLink('add_enforcement_action')->setText('Add an enforcement action')->toString();
+    $add_action_link = $this->getFlow()->getNextLink('add_enforcement_action')->setText('Add another enforcement action')->toString();
     $form['action_add']['add_link'] = [
       '#type' => 'markup',
       '#markup' => t('@link', ['@link' => $add_action_link]),
-      '#prefix' => '<div>',
-      '#suffix' => '</div>',
     ];
 
     $form['action_text'] = [
       '#type' => 'markup',
       '#markup' => $this->t('Once the primary authority receives this notification, they have 5 working days to respond to you if they intend to block the action/s'),
-      '#prefix' => '<h3><p>',
-      '#suffix' => '</p></h3>',
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
     ];
 
     $form['action_notification'] = [
       '#type' => 'markup',
       '#markup' => $this->t('You will be notified by email of the outcome of this notification'),
-      '#prefix' => '<h3><p>',
-      '#suffix' => '</p></h3>',
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
     ];
 
     return parent::buildForm($form, $form_state);

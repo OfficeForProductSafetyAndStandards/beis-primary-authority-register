@@ -43,14 +43,12 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
         And I click on the button "#edit-next"
 
         # CHOOSE LEGAL ENTITY
-
-        And the element "h3.heading-medium" contains the text "Select a legal entity"
         And I click on the button "#edit-next"
 
       # ENFORCEMENT SUMMARY
 
         And I add "action summary enforcement notice" to the inputfield "#edit-action-summary"
-        And I click on the radio "#edit-enforcement-type-proposed"
+        And I click on the radio "#edit-type-proposed"
         And I click on the button "#edit-next"
 
         And I add "Title of enforcement notice Three" to the inputfield "#edit-title-of-action"
