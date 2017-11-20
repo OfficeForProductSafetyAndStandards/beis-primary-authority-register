@@ -31,8 +31,6 @@ class ParDataTypeTest extends UnitTestCase {
   protected function setUp() {
     parent::setUp();
 
-    $this->assertTrue(FALSE, 'Tahnkfully failed');
-
     $values = array(
       'id' => 'test',
       'title' => 'Test Data Entity Type',
