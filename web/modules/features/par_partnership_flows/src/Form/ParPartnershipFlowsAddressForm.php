@@ -43,14 +43,12 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    if ($this->getFlowName() === 'partnership_application') {
-      $this->pageTitle = 'New business information';
-    }
-
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
     if ($par_data_partnership) {
-      $par_data_organisation = current($par_data_partnership->getOrganisation());
       $this->pageTitle = 'Edit your business address';
+    }
+    else {
+      $this->pageTitle = 'New business information';
     }
 
     return parent::titleCallback();
