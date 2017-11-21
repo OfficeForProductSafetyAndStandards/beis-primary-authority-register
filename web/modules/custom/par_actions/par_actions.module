@@ -56,7 +56,7 @@ function par_actions_tokens($type, $tokens, array $data, array $options, Bubblea
 function par_actions_cron() {
   $scheduler = \Drupal::service('plugin.manager.par_scheduler');
 
-  foreach ($scheduler->getDefinitions(FALSE) as $definition) {
+  foreach ($scheduler->getDefinitions(TRUE) as $definition) {
     $scheduler->run($definition);
   }
 }

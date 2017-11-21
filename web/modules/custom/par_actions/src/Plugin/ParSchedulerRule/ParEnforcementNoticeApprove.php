@@ -14,7 +14,7 @@ use Drupal\par_actions\ParSchedulerRuleBase;
  *   entity = "par_data_enforcement_notice",
  *   property = "notice_date",
  *   time = "-4 days",
- *   queue = TRUE,
+ *   queue = FALSE,
  *   status = FALSE,
  *   action = "par_action_approve"
  * )

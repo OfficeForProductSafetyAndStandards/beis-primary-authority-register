@@ -91,7 +91,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
    * @return mixed
    */
   public function getActionManager() {
-    return \Drupal::service('action_manager');
+    return \Drupal::service('plugin.manager.action');
   }
 
   /**

@@ -109,7 +109,7 @@ class ParScheduleManager extends DefaultPluginManager {
       // than the minimum interval time.
       $last_run = \Drupal::state()->get("par_actions.{$plugin->getPluginId()}.last_schedule", 0);
       if ($last_run >= REQUEST_TIME - self::MIN_INTERVAL) {
-        //return;
+        return;
       }
 
       \Drupal::state()->set("par_actions.{$plugin->getPluginId()}.last_schedule", REQUEST_TIME);

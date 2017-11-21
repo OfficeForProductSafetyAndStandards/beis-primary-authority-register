@@ -21,7 +21,7 @@ class ParScheduledActionsWorker extends QueueWorkerBase {
    * @return mixed
    */
   public function getActionManager() {
-    return \Drupal::service('action_manager');
+    return \Drupal::service('plugin.manager.action');
   }
 
   /**
@@ -40,18 +40,16 @@ class ParScheduledActionsWorker extends QueueWorkerBase {
    * {@inheritdoc}
    */
   public function processItem($data) {
-    var_dump($data['action']); die('asdfasdf');
     if (!isset($data['action']) || !isset($data['entity'])) {
-      return FALSE;
+      return;
     }
 
     $configuration = isset($data['configuration']) ? $data['configuration'] : [];
 
     $action = $this->getActionPlugin($data['action'], $configuration);
 
-    var_dump($action->getPluginId());
 
-    return $action->execute($data['entity']);
+    $action->execute($data['entity']);
   }
 
 }
