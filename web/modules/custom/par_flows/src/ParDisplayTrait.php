@@ -374,20 +374,15 @@ trait ParDisplayTrait {
     foreach ($fields as $field_name => $view_mode) {
 
       $rendered_field = $entity->get($field_name)->view($view_mode);
-      $rendered_element =  $this->getRenderer()->render($rendered_field);
-
       $element[$field_name] = [
         '#type' => 'fieldset',
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
 
-      $element[$field_name]['value'] = [
-        '#type' => 'markup',
-        '#markup' => $rendered_element ? $rendered_element : '<p>(none)</p>',
-        '#prefix' => '<div>',
-        '#suffix' => '</div>',
-      ];
+      $element[$field_name]['value'] = $this->renderMarkupField($rendered_field);
+      $element[$field_name]['value']['#prefix'] = '<div>';
+      $element[$field_name]['value']['#suffix'] = '</div>';
     }
     return $element;
   }
