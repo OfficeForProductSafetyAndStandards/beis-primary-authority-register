@@ -27,7 +27,8 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
   public function titleCallback() {
     $trading_name_delta = $this->getRouteParam('trading_name_delta');
 
-    $action = $this->t(is_numeric($trading_name_delta) ? 'Edit' : 'Add another');
+    // Check from the route if we are editing an existing trading name.
+    $action = $this->t(is_numeric($trading_name_delta) ? 'Edit' : 'Add a');
 
     $this->pageTitle = "Update partnership information | {$action} trading name for your organisation";
 
