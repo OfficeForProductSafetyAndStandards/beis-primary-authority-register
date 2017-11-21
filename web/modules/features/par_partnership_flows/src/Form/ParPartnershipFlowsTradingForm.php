@@ -14,6 +14,8 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
+  protected $pageTitle = 'Add another trading name for your organisation';
+
   /**
    * {@inheritdoc}
    */
@@ -65,16 +67,15 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $trading_name_delta = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $trading_name_delta);
 
-    $form['intro'] = [
-      '#markup' => $this->t('Change the Trading Name of your organisation'),
-      '#prefix' => '<h2>',
-      '#suffix' => '</h2>',
+    $form['trading_name_fieldset'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Enter a trading name'),
     ];
 
-    $form['trading_name'] = [
+    $form['trading_name_fieldset']['trading_name'] = [
       '#type' => 'textfield',
       '#default_value' => $this->getDefaultValues("trading_name"),
-      '#description' => $this->t("Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State any trading names used by the organisation."),
+      '#description' => $this->t("<p>Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State any trading names used by the organisation.</p>"),
     ];
 
     // Make sure to add the person cacheability data to this form.
