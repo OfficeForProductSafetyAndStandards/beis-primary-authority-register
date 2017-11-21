@@ -10,6 +10,7 @@ Feature: Business User - Manage Addresses
         And I add "par_business@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
+        And I open the url "/dashboard"
         Then I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I click on the link "See your partnerships"
         And I click on the link "Business For Direct Partnership 1"
