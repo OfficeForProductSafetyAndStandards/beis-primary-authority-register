@@ -6,6 +6,7 @@ use Drupal\Component\Plugin\Factory\DefaultFactory;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
+use Drupal\Core\Logger\LoggerChannelTrait;
 
 /**
  * Provides a PAR Schedule plugin manager.
@@ -15,6 +16,15 @@ use Drupal\Core\Plugin\DefaultPluginManager;
  * @see plugin_api
  */
 class ParScheduleManager extends DefaultPluginManager {
+
+  use LoggerChannelTrait;
+
+  /**
+   * The minimum interval required between runs.
+   *
+   * This allows the queued items to be processed before the next run.
+   */
+  const MIN_INTERVAL = 3600;
 
   /**
    * Constructs a ParScheduleManager object.
@@ -39,6 +49,16 @@ class ParScheduleManager extends DefaultPluginManager {
     $this->alterInfo('par_scheduler_info');
     $this->setCacheBackend($cache_backend, 'par_scheduler_info_plugins');
     $this->factory = new DefaultFactory($this->getDiscovery());
+  }
+
+  /**
+   * Returns the logger channel specific to errors logged by PAR Actions.
+   *
+   * @return string
+   *   Get the logger channel to use.
+   */
+  public function getLoggerChannel() {
+    return 'par';
   }
 
   /**
@@ -74,6 +94,31 @@ class ParScheduleManager extends DefaultPluginManager {
     }
 
     return $definitions;
+  }
+
+  /**
+   * A helper method to run any plugin instance.
+   *
+   * @param $definition
+   */
+  public function run($definition) {
+    $plugin = $this->createInstance($definition['id'], $definition);
+
+    try {
+      // Ensure that scheduler plugins cannot be run more frequently
+      // than the minimum interval time.
+      $last_run = \Drupal::state()->get("par_actions.{$plugin->getPluginId()}.last_schedule", 0);
+      if ($last_run >= REQUEST_TIME - self::MIN_INTERVAL) {
+        //return;
+      }
+
+      \Drupal::state()->set("par_actions.{$plugin->getPluginId()}.last_schedule", REQUEST_TIME);
+
+      $plugin->run();
+    }
+    catch (ParActionsException $e) {
+      $this->getLogger($this->getLoggerChannel())->error($e);
+    }
   }
 
 }

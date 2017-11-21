@@ -80,6 +80,14 @@ class ParSchedulerRule extends Plugin {
   public $time;
 
   /**
+   * Whether to resolve this action by sticking it in a queue
+   * instead of trying to resolve immediately.
+   *
+   * @var boolean
+   */
+  public $queue;
+
+  /**
    * The action to be performed on the entity.
    *
    * @var string

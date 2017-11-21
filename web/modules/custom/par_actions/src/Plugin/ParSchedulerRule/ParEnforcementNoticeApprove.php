@@ -14,7 +14,9 @@ use Drupal\par_actions\ParSchedulerRuleBase;
  *   entity = "par_data_enforcement_notice",
  *   property = "notice_date",
  *   time = "-4 days",
- *   action = "cron_enforcement_notice_action_auto_approval"
+ *   queue = TRUE,
+ *   status = FALSE,
+ *   action = "par_action_approve"
  * )
  */
 class ParEnforcementNoticeApprove extends ParSchedulerRuleBase {
