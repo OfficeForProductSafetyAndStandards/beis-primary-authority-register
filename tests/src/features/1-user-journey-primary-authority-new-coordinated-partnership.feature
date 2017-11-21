@@ -5,9 +5,11 @@ Feature: New Coordinated Partnership
 
         # SEARCH PARTNERSHIPS
 
-#        Given I reset the test data
-        Given I am logged in as "par_authority@example.com"
-        And I expect that element "#block-par-theme-content" contains the text "See your partnerships"
+        Given I open the url "/user/login"
+        And I add "par_authority@example.com" to the inputfield "#edit-name"
+        And I add "TestPassword" to the inputfield "#edit-pass"
+        When I click on the button "#edit-submit"
+        Then I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
         And I expect that element "#block-par-theme-content" contains the text "See enforcement notifications"
         When I click on the link "Apply for a new partnership"

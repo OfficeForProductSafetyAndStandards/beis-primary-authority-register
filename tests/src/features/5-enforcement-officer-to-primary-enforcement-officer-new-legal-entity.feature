@@ -1,13 +1,16 @@
-@ci
+@ci @PAR859 @PAR962
 Feature: Enforcement Officer/PA - Enforcement Notice Process
 
     Scenario: Enforcement Officer/PA - Issue enforcement notice
-        # LOGIN SCREEN
 
-#       Given I reset the test data
-        Given I am logged in as "par_enforcement_officer@example.com"
-        And I click on the link "Search for a partnership"
-        When I add "Charlie" to the inputfield "#edit-keywords"
+        # LOGIN SCREEN
+        Given I open the url "/user/login"
+        And I add "par_enforcement_officer@example.com" to the inputfield "#edit-name"
+        And I add "TestPassword" to the inputfield "#edit-pass"
+        When I click on the button "#edit-submit"
+        Then I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
+        When I click on the link "Search for a partnership"
+        And I add "Charlie" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
         When I click on the button "td.views-field.views-field-authority-name a"
 
@@ -77,6 +80,15 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I expect that element "#edit-enforcement-officer-telephone" contains the text "01234780898"
         And I expect that element "#edit-enforcement-officer-email" contains the text "par_enforcement_officer@example.com"
 
+#        When I store all EO data to use in later step
+
         When I click on the button "#edit-save"
         Then I expect that element "h1.heading-xlarge" contains the text "Primary Authority Register"
 
+#       # CHECK ALL AUTHORITY MEMBERS NOTIFIED #PAR-859 #PAR-962
+#
+#        And email body should contain all relevant EO data
+#
+#        # ALL AUTHORITY MEMBERS NOTIFIED #PAR-962
+#
+#        And I expect that notification email has been sent to all authority members
