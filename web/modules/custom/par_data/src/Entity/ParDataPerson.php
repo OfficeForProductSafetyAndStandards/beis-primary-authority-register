@@ -146,6 +146,12 @@ class ParDataPerson extends ParDataEntity {
     return $saved ? $account : NULL;
   }
 
+  /**
+   * Get PAR Person's full name.
+   *
+   * @return string
+   *   Their full name including title/salutation field.
+   */
   public function getFullName() {
     return implode(" ", [
       $this->get('salutation')->getString(),
@@ -154,17 +160,26 @@ class ParDataPerson extends ParDataEntity {
     ]);
   }
 
-  public function getCommunicationField($field, $key) {
-
+  /**
+   * Helper function to build a combined field string.
+   *
+   * @param string $user_field
+   *   Field name/id of a user field e.g. email, work_phone, mobile_phone.
+   * @param string $preference_field
+   *   Preference field id.
+   * @return string
+   *   Their full name including title/salutation field.
+   */
+  public function getCommunicationField($user_field, $key) {
     if ($this->get($key)->getString() == 1) {
       $preference_message = $this->getTypeEntity()
         ->getBooleanFieldLabel($key,
           $this->get($key)->getString());
 
-      return "{$this->get($field)->getString()} ({$preference_message})";
+      return "{$this->get($user_field)->getString()} ({$preference_message})";
     }
 
-    return $this->get($field)->getString();
+    return $this->get($user_field)->getString();
   }
 
   /**

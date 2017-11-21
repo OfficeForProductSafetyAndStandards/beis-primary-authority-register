@@ -5,9 +5,12 @@
  * Contains par_data.module.
  */
 
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataPersonType;
 use Drupal\views\ViewExecutable;
 
@@ -46,6 +49,8 @@ function par_data_theme() {
 }
 
 /**
+ * @todo do we need this?
+ *
  * Implements hook_entity_bundle_field_info_alter().
  *
  * Adds the par_required constraint to all bundle fields.
@@ -97,37 +102,32 @@ function par_data_views_query_alter(ViewExecutable $view, $query) {
  * Implements hook_entity_extra_field_info().
  */
 function par_data_entity_extra_field_info() {
-
   $extra = [];
+
+  $extra_field_info_defaults = [
+    'visible' => TRUE,
+  ];
 
   foreach (ParDataPersonType::loadMultiple() as $bundle) {
     $extra['par_data_person'][$bundle->Id()]['display']['full_name_pseudo_field'] = [
       'label' => t('Full Name'),
-      'description' => t('This is my own pseudo-field'),
       'weight' => 0,
-      'visible' => TRUE,
-    ];
-
-    $extra['par_data_person'][$bundle->Id()]['display']['email_pseudo_field'] = [
-      'label' => t('e-mail'),
-      'description' => t('This is my own pseudo-field'),
-      'weight' => 1,
-      'visible' => TRUE,
-    ];
+    ] + $extra_field_info_defaults;
 
     $extra['par_data_person'][$bundle->Id()]['display']['work_phone_pseudo_field'] = [
-      'label' => t('work phone'),
-      'description' => t('This is my own pseudo-field'),
-      'weight' => 2,
-      'visible' => TRUE,
-    ];
+      'label' => t('Work phone number displaying contact preferences'),
+      'weight' => 1,
+    ] + $extra_field_info_defaults;
 
     $extra['par_data_person'][$bundle->Id()]['display']['mobile_phone_pseudo_field'] = [
-      'label' => t('mobile phone'),
-      'description' => t('This is my own pseudo-field'),
+      'label' => t('Mobile phone number displaying contact preferences'),
+      'weight' => 2,
+    ] + $extra_field_info_defaults;
+
+    $extra['par_data_person'][$bundle->Id()]['display']['email_pseudo_field'] = [
+      'label' => t('E-mail address displaying contact preferences'),
       'weight' => 3,
-      'visible' => TRUE,
-    ];
+    ] + $extra_field_info_defaults;
   }
 
   return $extra;
@@ -135,36 +135,45 @@ function par_data_entity_extra_field_info() {
 
 
 /**
- * Implements hook_ENTITY_TYPE_view().
+ * Implements hook_entity_view().
  */
 function par_data_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  $field_defaults = [
-    '#type' => 'markup',
-    '#prefix' => '<div>',
-    '#suffix' => '</div>',
-  ];
 
-  if ($display->getComponent('full_name_pseudo_field')) {
-    $build['full_name_pseudo_field'] = [
-      '#markup' => $entity->getFullName(),
-    ] + $field_defaults;
-  }
+  if ($entity->getEntityTypeId() === 'par_data_person') {
+    $field_defaults = [
+      '#type' => 'markup',
+      '#prefix' => '<div>',
+      '#suffix' => '</div>',
+    ];
 
-  if ($display->getComponent('email_pseudo_field')) {
-    $build['email_pseudo_field'] = [
-      '#markup' => $entity->getCommunicationField('email', 'communication_email'),
-    ] + $field_defaults;
-  }
-
-  if ($display->getComponent('work_phone_pseudo_field')) {
-    $build['work_phone_pseudo_field'] = [
-        '#markup' => $entity->getCommunicationField('work_phone', 'communication_phone'),
+    if ($display->getComponent('full_name_pseudo_field')) {
+      $build['full_name_pseudo_field'] = [
+        '#plain_text' => $entity->getFullName(),
       ] + $field_defaults;
+    }
+
+    if ($display->getComponent('work_phone_pseudo_field')) {
+      $build['work_phone_pseudo_field'] = [
+        '#plain_text' => $entity->getCommunicationField('work_phone', 'communication_phone'),
+      ] + $field_defaults;
+    }
+
+    if ($display->getComponent('mobile_phone_pseudo_field')) {
+      $build['mobile_phone_pseudo_field'] = [
+        '#plain_text' => $entity->getCommunicationField('mobile_phone', 'communication_mobile'),
+      ] + $field_defaults;
+    }
+
+    if ($display->getComponent('email_pseudo_field')) {
+      $email = $entity->getCommunicationField('email', 'communication_email');
+
+      $email_link = Link::fromTextAndUrl($email,
+        Url::fromUri("mailto:{$email}"));
+
+      $build['email_pseudo_field'] = [
+        '#markup' => Xss::filter($email_link->toString(), ['a']),
+      ] + $field_defaults;
+    }
   }
 
-  if ($display->getComponent('mobile_phone_pseudo_field')) {
-    $build['mobile_phone_pseudo_field'] = [
-        '#markup' => $entity->getCommunicationField('mobile_phone', 'communication_mobile'),
-      ] + $field_defaults;
-  }
 }
