@@ -3,6 +3,7 @@
 namespace Drupal\par_actions\Plugin\QueueWorker;
 
 use Drupal\Core\Queue\QueueWorkerBase;
+use Drupal\par_actions\ParActionsException;
 
 /**
 * A cron worker to process long running actions.
@@ -46,10 +47,18 @@ class ParScheduledActionsWorker extends QueueWorkerBase {
 
     $configuration = isset($data['configuration']) ? $data['configuration'] : [];
 
+
     $action = $this->getActionPlugin($data['action'], $configuration);
+    if (empty($action)) {
+      throw new ParActionsException("The {$data['action']} action could not be loaded.");
+    }
 
-
-    $action->execute($data['entity']);
+    try {
+      $action->execute($data['entity']);
+    }
+    catch (\Exception $e) {
+      throw new ParActionsException("The {$data['action']} action could not be processed.");
+    }
   }
 
 }
