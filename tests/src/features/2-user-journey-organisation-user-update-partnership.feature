@@ -43,26 +43,26 @@ Feature: Business User - Manage Addresses
         And I expect that element "#edit-registered-address" contains the text "London"
         And I expect that element "#edit-registered-address" contains the text "SE16 4NX"
 
-        # EDIT ABOUT THE BUSINESS
-
-        When I click on the link "edit about the business"
-        And I add "Change to the about business details section" to the inputfield "#edit-about-business"
-        And I click on the button "#edit-save"
-        Then I expect that element "#edit-about-business" contains the text "Change to the about business details section"
-
-        # ADD SIC CODES
-
-        When I click on the link "add another sic code"
-        And I select the option with the text "10-0 Health and social care" for element "#edit-sic-code"
-        And I click on the button "#edit-save"
-        Then I expect that element "#edit-sic-codes" contains the text "Health and social care"
-
-        # ADD EMPLOYEES
-
-        When I click on the link "edit number of employees"
-        And I select the option with the value "250" for element "#edit-employees-band"
-        And I click on the button "#edit-save"
-        Then I expect that element "#edit-employee-no" contains the text "50 to 249"
+#        # EDIT ABOUT THE BUSINESS
+#
+#        When I click on the link "edit about the business"
+#        And I add "Change to the about business details section" to the inputfield "#edit-about-business"
+#        And I click on the button "#edit-save"
+#        Then I expect that element "#edit-about-business" contains the text "Change to the about business details section"
+#
+#        # ADD SIC CODES
+#
+#        When I click on the link "add another sic code"
+#        And I select the option with the text "10-0 Health and social care" for element "#edit-sic-code"
+#        And I click on the button "#edit-save"
+#        Then I expect that element "#edit-sic-codes" contains the text "Health and social care"
+#
+#        # ADD EMPLOYEES
+#
+#        When I click on the link "edit number of employees"
+#        And I select the option with the value "250" for element "#edit-employees-band"
+#        And I click on the button "#edit-save"
+#        Then I expect that element "#edit-employee-no" contains the text "50 to 249"
 
         # EDIT LEGAL ENTITY
 
