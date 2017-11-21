@@ -217,16 +217,13 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
    *  Helper function to get either the legal entity name or organisation depending on whats available.
    *
    * @return string  | FALSE
-   *  The name of the enforced entity or organisation or False if we don't have one.
+   *  The name of the enforced legal entity or False if we don't have one.
    */
   function getEnforcedEntityName() {
 
     // Depending on the form in this process we may not have a legal entity yet.
     if ($this->getEnforcedLegalEntity()) {
       return $this->getEnforcedLegalEntityName();
-    }
-    elseif ($this->getEnforcedOrganisationEntity()) {
-      return $this->getEnforcedOrganisationEntity()->get('organisation_name')->getString();
     }
     else {
       return FALSE;
