@@ -13,9 +13,9 @@ use Drupal\par_actions\ParSchedulerRuleBase;
  *   cron = {"time" = 15},
  *   entity = "par_data_enforcement_notice",
  *   property = "notice_date",
- *   time = "-4 days",
+ *   time = "-6 days",
  *   queue = FALSE,
- *   status = FALSE,
+ *   status = TRUE,
  *   action = "par_action_approve"
  * )
  */
