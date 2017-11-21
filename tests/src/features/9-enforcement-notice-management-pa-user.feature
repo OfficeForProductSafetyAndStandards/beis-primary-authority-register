@@ -3,10 +3,14 @@ Feature: Enforcement notice management
 
     Scenario: Enforcement notice management
 
-        Given I am logged in as "par_enforcement_officer@example.com"
+        Given I open the url "/user/login"
+        And I add "par_enforcement_officer@example.com" to the inputfield "#edit-name"
+        And I add "TestPassword" to the inputfield "#edit-pass"
+        When I click on the button "#edit-submit"
+        Then I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
         When I click on the link "See enforcement notifications"
         Then the element "#views-exposed-form-par-user-enforcements-enforcement-notices-page" not contains the text "Title of enforcement notice"
-        Then I expect that element "a*=Title of enforcement notice One" does not exist
+        And I expect that element "a*=Title of enforcement notice One" does not exist
         And I expect that element "a*=Title of enforcement notice Three" does not exist
         And I expect that element "a*=Title of enforcement notice Four" does not exist
         And I expect that element "a*=Added Enforcement Action" does not exist

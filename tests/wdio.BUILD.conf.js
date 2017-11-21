@@ -7,7 +7,7 @@ wdioConfig.config.capabilities = [{
     }
 }];
 wdioConfig.config.baseUrl = 'http://127.0.0.1:80';
-wdioConfig.config.tags = '@ci, ~@Pending, ~@setup, ~@deprecated, ~@Bug';
+wdioConfig.config.tags = '@ci, ~@Pending, ~@setup, ~@deprecated, ~@Bug, ~@smoketest';
 wdioConfig.config.screenshotPath = './errorShots/';
 //wdioConfig.services = ['selenium-standalone'];
 wdioConfig.config.bail = 1;
