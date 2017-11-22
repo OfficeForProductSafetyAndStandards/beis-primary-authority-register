@@ -5,9 +5,9 @@
   "homepage": "https://github.com/webdriverio/cucumber-boilerplate",
   "scripts": {
     "test": "npm run test:build",
-    "test:build": "./node_modules/.bin/wdio wdio.BUILD.conf.js && ./node_modules/.bin/allure generate --clean -o ./reports/html ./reports/allure",
+    "test:build": "./node_modules/.bin/wdio wdio.BUILD.conf.js && ./node_modules/.bin/allure generate --clean -o ./reports/html ./reports/allure && rm -rf ./reports/allure",
     "test:smoke": "./node_modules/.bin/wdio wdio.SMOKE.conf.js",
-    "test:dev": "./node_modules/.bin/wdio wdio.DEV.conf.js && ./node_modules/.bin/allure generate --clean -o ./reports/html ./reports/allure",
+    "test:dev": "./node_modules/.bin/wdio wdio.DEV.conf.js && ./node_modules/.bin/allure generate --clean -o ./reports/html ./reports/allure && rm -rf ./reports/allure",
     "test:validate": "eslint 'src/**/*.js'",
     "generatereport": "allure generate --clean -o ./reports/html ./reports/allure"
   },
