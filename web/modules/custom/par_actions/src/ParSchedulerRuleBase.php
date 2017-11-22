@@ -65,6 +65,13 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
   /**
    * {@inheritdoc}
    */
+  public function getQueue() {
+    return $this->pluginDefinition['queue'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getAction() {
     return $this->pluginDefinition['action'];
   }
@@ -76,6 +83,27 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
    */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
+  }
+
+  /**
+   * Get the action manager service.
+   *
+   * @return mixed
+   */
+  public function getActionManager() {
+    return \Drupal::service('plugin.manager.action');
+  }
+
+  /**
+   * Create an instance of a given action plugin.
+   *
+   * @param $plugin_id
+   * @param array $configuration
+   *
+   * @return mixed
+   */
+  public function getActionPlugin($plugin_id, $configuration = []) {
+    return $this->getActionManager()->createInstance($plugin_id, $configuration);
   }
 
   /**
@@ -123,17 +151,36 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
   }
 
   /**
+   * Run the rule plugins action.
+   *
+   * Some actions will run immediately, some will run from a queue.
+   */
+  public function run() {
+    if ($this->getQueue()) {
+      $this->buildQueue();
+    }
+    else {
+      $action = $this->getActionPlugin($this->getAction());
+      $entities = $this->getItems();
+      foreach ($entities as $entity) {
+        $action->execute($entity);
+      }
+    }
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function buildQueue() {
     /** @var QueueFactory $queue_factory */
     $queue_factory = \Drupal::service('queue');
     /** @var QueueInterface $queue */
-    $queue = $queue_factory->get($this->getAction());
+    $queue = $queue_factory->get('par_scheduled_actions');
 
     $entities = $this->getItems();
     foreach ($entities as $entity) {
       $item = [
+        'rule' => $this->getPluginId(),
         'entity' => $entity,
         'action' => $this->getAction(),
       ];

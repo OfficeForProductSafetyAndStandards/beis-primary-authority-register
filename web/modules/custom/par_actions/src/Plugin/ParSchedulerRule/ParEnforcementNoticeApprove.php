@@ -10,11 +10,12 @@ use Drupal\par_actions\ParSchedulerRuleBase;
  * @ParSchedulerRule(
  *   id = "approve_enforcement",
  *   title = @Translation("Auto-approval of enforcement notices."),
- *   cron = {"time" = 15},
  *   entity = "par_data_enforcement_notice",
  *   property = "notice_date",
- *   time = "-4 days",
- *   action = "cron_enforcement_notice_action_auto_approval"
+ *   time = "-6 days",
+ *   queue = FALSE,
+ *   status = TRUE,
+ *   action = "par_action_approve"
  * )
  */
 class ParEnforcementNoticeApprove extends ParSchedulerRuleBase {
