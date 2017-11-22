@@ -53,6 +53,9 @@ function par_actions_tokens($type, $tokens, array $data, array $options, Bubblea
   return $replacements;
 }
 
+/**
+ * Implements hook_cron().
+ */
 function par_actions_cron() {
   $scheduler = \Drupal::service('plugin.manager.par_scheduler');
 

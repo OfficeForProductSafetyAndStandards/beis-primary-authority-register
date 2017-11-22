@@ -20,6 +20,11 @@ class ParScheduleManager extends DefaultPluginManager {
   use LoggerChannelTrait;
 
   /**
+   * The logger channel to use.
+   */
+  const PAR_LOGGER_CHANNEL = 'par';
+
+  /**
    * The minimum interval required between runs.
    *
    * This allows the queued items to be processed before the next run.
@@ -100,6 +105,7 @@ class ParScheduleManager extends DefaultPluginManager {
    * A helper method to run any plugin instance.
    *
    * @param $definition
+   *   The ParScheduleRule plugin definition to run.
    */
   public function run($definition) {
     $plugin = $this->createInstance($definition['id'], $definition);
@@ -107,18 +113,41 @@ class ParScheduleManager extends DefaultPluginManager {
     try {
       // Ensure that scheduler plugins cannot be run more frequently
       // than the minimum interval time.
-      $last_run = \Drupal::state()->get("par_actions.{$plugin->getPluginId()}.last_schedule", 0);
+      $last_run = $this->getSchedulerLastRun($plugin);
       if ($last_run >= REQUEST_TIME - self::MIN_INTERVAL) {
         return;
       }
 
-      \Drupal::state()->set("par_actions.{$plugin->getPluginId()}.last_schedule", REQUEST_TIME);
+      $this->setSchedulerLastRun($plugin);
 
       $plugin->run();
     }
     catch (ParActionsException $e) {
-      $this->getLogger($this->getLoggerChannel())->error($e);
+      $this->getLogger(self::PAR_LOGGER_CHANNEL)->error($e);
     }
+  }
+
+  /**
+   * Helper method to check when a plugin last ran.
+   *
+   * @param $plugin
+   *   The plugin to check when it last ran.
+   *
+   * @return mixed
+   *   The timestamp when this plugin was last run.
+   */
+  public function getSchedulerLastRun($plugin) {
+    return \Drupal::state()->get("par_actions.{$plugin->getPluginId()}.last_schedule", 0);
+  }
+
+  /**
+   * Helper method to set when the plugin runs.
+   *
+   * @param $plugin
+   *   The plugin to check when it last ran.
+   */
+  public function setSchedulerLastRun($plugin) {
+    \Drupal::state()->set("par_actions.{$plugin->getPluginId()}.last_schedule", REQUEST_TIME);
   }
 
 }

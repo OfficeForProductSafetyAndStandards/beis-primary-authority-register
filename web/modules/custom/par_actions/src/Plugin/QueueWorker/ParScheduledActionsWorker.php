@@ -47,7 +47,6 @@ class ParScheduledActionsWorker extends QueueWorkerBase {
 
     $configuration = isset($data['configuration']) ? $data['configuration'] : [];
 
-
     $action = $this->getActionPlugin($data['action'], $configuration);
     if (empty($action)) {
       throw new ParActionsException("The {$data['action']} action could not be loaded.");
