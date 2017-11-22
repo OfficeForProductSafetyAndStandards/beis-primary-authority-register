@@ -57,16 +57,6 @@ class ParScheduleManager extends DefaultPluginManager {
   }
 
   /**
-   * Returns the logger channel specific to errors logged by PAR Actions.
-   *
-   * @return string
-   *   Get the logger channel to use.
-   */
-  public function getLoggerChannel() {
-    return 'par';
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function processDefinition(&$definition, $plugin_id) {
