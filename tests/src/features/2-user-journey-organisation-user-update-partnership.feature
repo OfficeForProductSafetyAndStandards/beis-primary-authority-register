@@ -146,6 +146,7 @@ Feature: Business User - Manage Addresses
         # ADD NEW TRADING NAME
 
         When I click on the link "add another trading name"
+        Then I expect that element "h1.heading-xlarge" contains the text "Add another trading name for your organisation"
         When I add "Different Trading Name" to the inputfield "#edit-trading-name"
         And I click on the button "#edit-save"
         Then I expect that element "#edit-trading-names" contains the text "Different Trading Name"

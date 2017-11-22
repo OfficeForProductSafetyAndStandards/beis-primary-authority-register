@@ -23,14 +23,15 @@ Sometimes its useful to only execute a single feature file, to do so use the fol
 $ ./node_modules/.bin/wdio --spec ./test/features/select.feature wdio.DEV.conf.js
 ```
 
-# 
-
 ## Maintaining tests (Gherkin)
 
 Most maintenance of tests involves updating things such as the way elements are referenced.  
 
 This is within the Gherkin, so easy to update. 
 
+## JMeter Load tests
+
+* ./jmeter -n -t /jmeter/load-test-plan.jmx -l /jmeter/file.csv
 
 # List of predefined steps
 
