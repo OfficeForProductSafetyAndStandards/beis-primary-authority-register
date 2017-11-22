@@ -1,0 +1,28 @@
+uuid: a6a4124a-7dfe-4d7b-86fb-b8f07dc47fa4
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.file.par_attachments
+    - file_entity.type.document
+  module:
+    - file
+id: file.document.par_attachments
+targetEntityType: file
+bundle: document
+mode: par_attachments
+content:
+  filename:
+    type: file_link
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      link_to_file: true
+    third_party_settings: {  }
+hidden:
+  filemime: true
+  filesize: true
+  langcode: true
+  uid: true
+  uri: true
