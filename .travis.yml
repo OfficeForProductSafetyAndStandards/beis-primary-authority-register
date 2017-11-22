@@ -118,7 +118,7 @@ script:
 #-----------------------------------------------------------------------------
 # Generate HTML reports with screenshots. HTML report location: tests/reports/allure-reports/index.html, TAR it up.
 #-----------------------------------------------------------------------------
-  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && if [ -d ./errorShots ]; then tar -cf reports/errorShots.tar.gz ./errorShots; fi"
+  - travis_retry docker exec -ti par_beta_web bash -c "cd tests/reports && if [ -d ./html ]; then tar -cf reports/reportHTML.tar.gz ./html; fi"
 
 #-----------------------------------------------------------------------------
 # Remove .env file created in previous steps.
