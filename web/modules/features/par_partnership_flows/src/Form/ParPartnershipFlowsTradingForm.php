@@ -28,7 +28,7 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
     $trading_name_delta = $this->getRouteParam('trading_name_delta');
 
     // Check from the route if we are editing an existing trading name.
-    $action = $this->t($trading_name_delta ? 'Edit' : 'Add a');
+    $action = isset($trading_name_delta) ? 'Edit' : 'Add a';
 
     $this->pageTitle = "Update partnership information | {$action} trading name for your organisation";
 

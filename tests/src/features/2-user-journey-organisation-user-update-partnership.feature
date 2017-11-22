@@ -85,9 +85,18 @@ Feature: Business User - Manage Addresses
         # ADD NEW TRADING NAME
 
         When I click on the link "add another trading name"
+        Then I expect that element "#block-par-theme-page-title" contains the text "Add a trading name for your organisation"
         When I add "Different Trading Name" to the inputfield "#edit-trading-name"
         And I click on the button "#edit-save"
         Then I expect that element "#edit-trading-names" contains the text "Different Trading Name"
+
+        # EDIT TRADING NAME
+
+        When I click on the link "edit trading name"
+        Then I expect that element "#block-par-theme-page-title" contains the text "Edit trading name for your organisation"
+        When I add "Different Trading Name (edited)" to the inputfield "#edit-trading-name"
+        And I click on the button "#edit-save"
+        Then I expect that element "#edit-trading-names" contains the text "Different Trading Name (edited)"
 
         # EDIT MAIN BUSINESS CONTACT
 
