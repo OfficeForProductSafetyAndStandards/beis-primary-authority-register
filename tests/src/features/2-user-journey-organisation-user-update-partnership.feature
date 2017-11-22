@@ -1,13 +1,17 @@
-@Pending @Bug
+@ci @PAR990 @PAR991
 Feature: Business User - Manage Addresses
+
 
     Scenario: Business User - Manage Addresses
 
         # PARTNERSHIPS DASHBOARD
 
-#        Given I reset the test data
-        Given I am logged in as "par_business@example.com"
+        Given I open the url "/user/login"
+        And I add "par_business@example.com" to the inputfield "#edit-name"
+        And I add "TestPassword" to the inputfield "#edit-pass"
+        When I click on the button "#edit-submit"
         And I open the url "/dashboard"
+        Then I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I click on the link "See your partnerships"
         And I click on the link "Business For Direct Partnership 1"
         And I expect that element "h1" is not empty
@@ -40,8 +44,8 @@ Feature: Business User - Manage Addresses
         And I expect that element "#edit-registered-address" contains the text "London"
         And I expect that element "#edit-registered-address" contains the text "SE16 4NX"
 
-        # EDIT ABOUT THE BUSINESS
-
+#        # EDIT ABOUT THE BUSINESS
+#
         When I click on the link "edit about the business"
         And I add "Change to the about business details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-save"
@@ -57,9 +61,9 @@ Feature: Business User - Manage Addresses
         # ADD EMPLOYEES
 
         When I click on the link "edit number of employees"
-        And I select the option with the text "50-249" for element "#edit-employees-band"
+        And I select the option with the value "250" for element "#edit-employees-band"
         And I click on the button "#edit-save"
-        Then I expect that element "#edit-employee-no" contains the text "50-249"
+        Then I expect that element "#edit-employee-no" contains the text "50 to 249"
 
         # EDIT LEGAL ENTITY
 
@@ -73,40 +77,107 @@ Feature: Business User - Manage Addresses
 #        Then I expect that element "#edit-legal-entities" contains the text "Changed"
 #        Then I expect that element "#edit-legal-entities" contains the text "Limited Company"
 
-        # ADD LEGAL ENTITY
+        # ADD LEGAL ENTITY Limited Company
 
+        When I click on the link "add another legal entity"
+        When I add "New Limited Company" to the inputfield "#edit-registered-name"
+        And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
+#        Then I expect that element "#par-partnership-legal" contains the text "Registration Number"
+        When I add "1234567890" to the inputfield "#edit-company-house-no"
+        And I click on the button "#edit-save"
+        Then I expect that element "#edit-legal-entities" contains the text "New Limited Company"
+        Then I expect that element "#edit-legal-entities" contains the text "Limited Company"
+        Then I expect that element "#edit-legal-entities" contains the text "1234567890"
+
+#        # ADD ANOTHER LEGAL ENTITY Registered Charity
+#
 #        When I click on the link "add another legal entity"
-#        When I add "New Legal Entity" to the inputfield "#edit-registered-name"
-#        And I select the option with the text "Partnership" for element "#edit-legal-entity-type"
+#        When I add "New Registered Charity" to the inputfield "#edit-registered-name"
+#        And I select the option with the text "Registered Charities" for element "#edit-legal-entity-type"
+#        When I add "1234567890" to the inputfield "#edit-company-house-no"
 #        And I click on the button "#edit-save"
-#        Then I expect that element "#edit-legal-entities" contains the text "New Legal Entity"
-#        Then I expect that element "#edit-legal-entities" contains the text "Partnership"
+#        Then I expect that element "#edit-legal-entities" contains the text "New Registered Charity"
+#        Then I expect that element "#edit-legal-entities" contains the text "Limited Company"
+#        Then I expect that element "#edit-legal-entities" contains the text "2345678901"
+#
+#        # ADD ANOTHER LEGAL ENTITY Public Limited Company
+#
+#        When I click on the link "add another legal entity"
+#        When I add "New Limited Company" to the inputfield "#edit-registered-name"
+#        And I select the option with the text "Public Limited Company" for element "#edit-legal-entity-type"
+#        When I add "1234567890" to the inputfield "#edit-company-house-no"
+#        And I click on the button "#edit-save"
+#        Then I expect that element "#edit-legal-entities" contains the text "New Public Limited Company"
+#        Then I expect that element "#edit-legal-entities" contains the text "Public Limited Company"
+#        Then I expect that element "#edit-legal-entities" contains the text "3456789012"
+#
+#        # ADD ANOTHER LEGAL ENTITY Limited Partnership
+#
+#        When I click on the link "add another legal entity"
+#        When I add "New Limited Partnership" to the inputfield "#edit-registered-name"
+#        And I select the option with the text "Limited Partnership" for element "#edit-legal-entity-type"
+#        When I add "1234567890" to the inputfield "#edit-company-house-no"
+#        And I click on the button "#edit-save"
+#        Then I expect that element "#edit-legal-entities" contains the text "New Limited Partnership"
+#        Then I expect that element "#edit-legal-entities" contains the text "Limited Company"
+#        Then I expect that element "#edit-legal-entities" contains the text "4567890123"
+#
+#        # ADD ANOTHER LEGAL ENTITY Limited Liability Partnership
+#
+#        When I click on the link "add another legal entity"
+#        When I add "New Limited Liability Partnership" to the inputfield "#edit-registered-name"
+#        And I select the option with the text "Limited Liability Partnership" for element "#edit-legal-entity-type"
+#        When I add "1234567890" to the inputfield "#edit-company-house-no"
+#        And I click on the button "#edit-save"
+#        Then I expect that element "#edit-legal-entities" contains the text "New Limited Liability Partnership"
+#        Then I expect that element "#edit-legal-entities" contains the text "Limited Company"
+#        Then I expect that element "#edit-legal-entities" contains the text "5678901234"
+#
+#         # ADD ANOTHER LEGAL ENTITY
+#
+#        When I click on the link "add another legal entity"
+#        When I add "New Sole Trader" to the inputfield "#edit-registered-name"
+#        And I select the option with the text "Sole Trader" for element "#edit-legal-entity-type"
+#        And I expect that element "#edit-company-house-no" is not visible
+#        When I click on the button "#edit-save"
+#        Then I expect that element "#edit-legal-entities" contains the text "New Sole Trader"
+#        And I expect that element "#edit-legal-entities" contains the text "Sole Trader"
 
         # ADD NEW TRADING NAME
 
         When I click on the link "add another trading name"
+        Then I expect that element "h1.heading-xlarge" contains the text "Add another trading name for your organisation"
         When I add "Different Trading Name" to the inputfield "#edit-trading-name"
         And I click on the button "#edit-save"
         Then I expect that element "#edit-trading-names" contains the text "Different Trading Name"
 
         # EDIT MAIN BUSINESS CONTACT
 
-#        When I click on the link "edit organisation contact"
-        And I click on the button "/html/body/main/div[2]/div[4]/form/div[13]/fieldset/div[2]/fieldset/a"
+        When I click on the link "edit organisation contact"
+        And I clear the inputfield "#edit-first-name"
+        And I clear the inputfield "#edit-last-name"
+        And I clear the inputfield "#edit-work-phone"
+        And I clear the inputfield "#edit-mobile-phone"
         And I add "Harvey" to the inputfield "#edit-first-name"
         And I add "Kneeslapper" to the inputfield "#edit-last-name"
-        And I add "999999999" to the inputfield "#edit-work-phone"
-        And I add "1111111111111" to the inputfield "#edit-mobile-phone"
-        And I add "02079999999" to the inputfield "#edit-work-phone"
-        And I add "078659999999" to the inputfield "#edit-mobile-phone"
+        And I add "02078886666" to the inputfield "#edit-work-phone"
+        And I add "07965465723" to the inputfield "#edit-mobile-phone"
         And I click on the radio "#edit-preferred-contact-communication-mobile"
         And I add "Some additional notes" to the inputfield "#edit-notes"
         And I click on the button "#edit-save"
         Then I expect that element "#edit-organisation-contacts" contains the text "Harvey"
         And I expect that element "#edit-organisation-contacts" contains the text "Kneeslapper"
-        And I expect that element "#edit-organisation-contacts" contains the text "2079999999"
-        And I expect that element "#edit-organisation-contacts" contains the text "78659999999"
+        And I expect that element "#edit-organisation-contacts" contains the text "02078886666"
+        And I expect that element "#edit-organisation-contacts" contains the text "07965465723"
 
         # COMPLETE CHANGES
 
+        When I click on the button "#edit-save"
+        And I click on the checkbox "#edit-partnership-info-agreed-business"
         And I click on the button "#edit-save"
+        And I select the option with the value "3" for element "#edit-partnership-status"
+        And I click on the button "#edit-submit-par-user-partnerships"
+        And I expect that element "#block-par-theme-content" contains the text "Business For Direct Partnership 1"
+
+
+

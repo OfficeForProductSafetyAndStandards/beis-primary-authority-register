@@ -4,7 +4,11 @@ Feature: Helpdesk approve partnership
     Scenario: Helpdesk approve partnership
 
         # HELPDESK DASHBOARD
-        Given I am logged in as "par_helpdesk@example.com"
+
+        Given I open the url "/user/login"
+        And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
+        And I add "TestPassword" to the inputfield "#edit-pass"
+        When I click on the button "#edit-submit"
         When I add "Business For Direct Partnership 1" to the inputfield "#edit-keywords"
         And I select the option with the text "- Any -" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-helpdesk-dashboard"
