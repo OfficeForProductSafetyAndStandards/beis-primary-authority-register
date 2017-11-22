@@ -3,6 +3,7 @@
 
 var pa11y = require('pa11y');
 var url = process.env.PA11Y_URL;
+var async = require('async');
 
 // Create a test instance with some default options
 var test = pa11y({
@@ -39,6 +40,7 @@ var test = pa11y({
         };
 
         page.evaluate(function () {
+            window.open("http://localhost:8111/user/login");
             document.getElementById("edit-name").value = "par_authority@example.com";
             document.getElementById("edit-pass").value = "TestPassword";
             document.getElementById("edit-submit").click();
@@ -46,24 +48,28 @@ var test = pa11y({
             waitUntil(function () {
                 // Wait until the login has been success and the /news.html has loaded
                 return window.location.href === 'http://localhost:8111/dashboard';
-            }, 20, function () {
-                // Redirect to the page test page
-                page.evaluate(function () {
-                    window.location.href = url;
-                });
-                waitUntil(function () {
-                    // Wait until the page has been loaded before running pa11y
-                    return window.location.href === url;
-                }, 20, next);
-            });
+            }, 20, next);
         });
     }
 });
 
-// Test http://example.com/
-test.run('localhost:8111/user/login', function (error, result) {
+async.series({
+
+    // Test the first url
+    login: test.run.bind(test, 'http://localhost:8111/user/login'),
+
+    // Test second url
+    dashboard: test.run.bind(test, 'http://localhost:8111/dashboard'),
+
+    // Test second url
+    partnerships: test.run.bind(test, 'http://localhost:8111/partnerships')
+
+}, function(error, results) {
     if (error) {
         return console.error(error.message);
     }
-    console.log(result);
+    //console.log(results.login);
+    console.log(results.dashboard);
+    console.log(results.partnerships);
+
 });

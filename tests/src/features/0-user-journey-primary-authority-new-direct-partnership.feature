@@ -1,10 +1,13 @@
-@ci
+@ci @smoketest @PAR952 @PAR947
 Feature: New Direct Partnership For PA To Approve
 
     Scenario: New Direct Partnership
 
-        Given I am logged in as "par_authority@example.com"
-        And I expect that element "#block-par-theme-content" contains the text "See your partnerships"
+        Given I open the url "/user/login"
+        And I add "par_authority@example.com" to the inputfield "#edit-name"
+        And I add "TestPassword" to the inputfield "#edit-pass"
+        When I click on the button "#edit-submit"
+        Then I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
         And I expect that element "#block-par-theme-content" contains the text "See enforcement notifications"
         When I click on the link "Apply for a new partnership"
@@ -40,8 +43,16 @@ Feature: New Direct Partnership For PA To Approve
         Then I expect that element ".error-summary" is visible
         And I expect that element "#par-partnership-application-authority-checklist" contains the text "Is this your local authority?"
         And I click on the radio "#edit-business-regulated-by-one-authority-1"
+
+        # BUG PAR-952
+
+        When I click on the radio "#edit-is-local-authority-0"
+#        And I expect that element "#edit-business-informed-local-authority-still-regulates-1" is visible
+#        And I expect that element "//*[@id=\"par-partnership-application-authority-checklist\"]/div[7]" contains the text "I confirm the business has been informed that the local authority in which it is located will continue to regulate it"
+
+        # CONFIRM YOUR AUTHORITY
+
         And I click on the radio "#edit-is-local-authority-1"
-  #        And I expect that element ".error-summary" contains the text "The business needs to be informed about local authority"
         When I click on the button "#edit-next"
         Then I expect that element "error-summary" is not visible
 
@@ -94,3 +105,9 @@ Feature: New Direct Partnership For PA To Approve
 
         Then the inputfield "#edit-email-subject" contains the text "Invitation to join the Primary Authority Register"
         When I click on the button "#edit-next"
+
+        # BUG PAR-947
+
+#        Then I expect that element "body" not contains the text "Error"
+
+
