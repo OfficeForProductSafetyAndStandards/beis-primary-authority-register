@@ -189,8 +189,30 @@ trait ParDisplayTrait {
    *
    * Display all of the fields on the given legal entity
    * with the relevant operational links.
+   *
+   * @param string $section
+   *   The section title to use for this field-set.
+   *
+   * @param Entity $entity
+   *   The entity containing the fields to be rendered.
+   *
+   * @param array $fields
+   *   An array containing the field names and display modes to be rendered.
+   *
+   * @param array $operations
+   *   An array required operations.
+   *
+   * @param Boolean $title
+   *   Weather or not to display a title for this section.
+   *
+   * @param Boolean $single
+   *
+   * @param Boolean $section_title_only
+   *    An option to only output a title with the correct markup.
+   *
+   * @return mixed
    */
-  public function renderSection($section, $entity, $fields, $operations = [], $title = TRUE, $single = FALSE) {
+  public function renderSection($section, $entity, $fields, $operations = [], $title = TRUE, $single = FALSE, $section_title_only = FALSE) {
 
     // If rendering logic is called on an NULL object prevent system failures.
     if (empty($entity)) {
@@ -205,6 +227,11 @@ trait ParDisplayTrait {
     ];
     if ($title) {
       $element['#title'] = t("$section");
+    }
+
+    // If we are only we only want a section title return the form elements.
+    if ($section_title_only == TRUE) {
+      return $element;
     }
 
     foreach ($fields as $field_name => $view_mode) {
@@ -327,5 +354,4 @@ trait ParDisplayTrait {
     return '✔';
 
   }
-
 }
