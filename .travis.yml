@@ -116,7 +116,7 @@ script:
   - docker exec -ti par_beta_web bash -c "cd tests/jmeter && ./apache-jmeter-3.3/bin/jmeter -n -t load-test-plan.jmx -l report.jtl"
 
 #-----------------------------------------------------------------------------
- Generate HTML reports with screenshots. HTML report location: tests/reports/allure-reports/index.html, TAR it up.
+# Generate HTML reports with screenshots. HTML report location: tests/reports/allure-reports/index.html, TAR it up.
 #-----------------------------------------------------------------------------
   - travis_retry docker exec -ti par_beta_web bash -c "cd tests/reports && if [ -d ./html ]; then tar -cf reports/reportHTML.tar.gz ./html; fi"
 
