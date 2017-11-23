@@ -54,7 +54,7 @@ Feature: Business User - Manage Addresses
         # ADD SIC CODES
 
         When I click on the link "add another sic code"
-        And I select the option with the text "10-0 Health and social care" for element "#edit-sic-code"
+        And I select the option with the text "110-0 Health and social care" for element "#edit-sic-code"
         And I click on the button "#edit-save"
         Then I expect that element "#edit-sic-codes" contains the text "Health and social care"
 
