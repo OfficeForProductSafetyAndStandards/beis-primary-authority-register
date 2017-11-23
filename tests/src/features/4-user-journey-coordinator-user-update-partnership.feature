@@ -1,4 +1,4 @@
-@Pending
+@ci
 Feature: Coordinator User - Manage Addresses
 
     Scenario: Coordinator User - Manage Addresses
