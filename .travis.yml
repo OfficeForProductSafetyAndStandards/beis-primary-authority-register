@@ -71,6 +71,8 @@ install:
   - echo "BSK_KEY=$BSK_KEY" >> .env
   - echo "SENTRY_DSN=$SENTRY_DSN" >> .env
   - echo "SENTRY_DSN_PUBLIC=$SENTRY_DSN_PUBLIC" >> .env
+  - echo "CLAMAV_HTTP_USER=$CLAMAV_HTTP_USER" >> .env
+  - echo "CLAMAV_HTTP_PASS=$CLAMAV_HTTP_PASS" >> .env
   - cat .env
 
 #-----------------------------------------------------------------------------
