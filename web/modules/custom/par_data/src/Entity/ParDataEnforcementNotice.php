@@ -119,6 +119,15 @@ class ParDataEnforcementNotice extends ParDataEntity {
   }
 
   /**
+   * Approve all actions of an enforcement notice.
+   */
+  public function approve() {
+    foreach ($this->getEnforcementActions() as $action) {
+      $action->approve();
+    }
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {

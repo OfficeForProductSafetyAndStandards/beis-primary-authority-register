@@ -1,0 +1,10 @@
+uuid: 1196a215-2034-4d74-9cfe-a40640d742d2
+langcode: en
+status: true
+dependencies:
+  module:
+    - file
+id: file.par_attachments
+label: par_attachments
+targetEntityType: file
+cache: true
