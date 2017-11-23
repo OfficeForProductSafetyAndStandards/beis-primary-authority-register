@@ -117,7 +117,7 @@ script:
 # Run Jmeter
 #-----------------------------------------------------------------------------
   - docker exec -ti par_beta_web bash -c "cd tests/jmeter && wget http://mirror.reverse.net/pub/apache//jmeter/binaries/apache-jmeter-3.3.tgz && wget https://www.apache.org/dist/jmeter/binaries/apache-jmeter-3.3.tgz.asc && wget -O - https://www.apache.org/dist/jmeter/KEYS |gpg --import && gpg --verify apache-jmeter-3.3.tgz.asc && tar -zxf apache-jmeter-3.3.tgz && rm apache-jmeter-3.3.tgz"
-  - docker exec -ti par_beta_web bash -c "cd tests/jmeter/apache-jmeter-3.3/lib/ext && wget https://jmeter-plugins.org/get/"
+  - docker exec -ti par_beta_web bash -c "cd tests/jmeter/apache-jmeter-3.3/lib/ext && curl https://jmeter-plugins.org/get/"
   - docker exec -ti par_beta_web bash -c "cd tests/jmeter && ./apache-jmeter-3.3/bin/jmeter -n -t load-test-plan.jmx -l ../reports/jmeter/report.jtl"
   - docker exec -ti par_beta_web bash -c "cd tests/jmeter && chmod 755 generate_files_from_jtl.sh && ./generate_files_from_jtl.sh"
 

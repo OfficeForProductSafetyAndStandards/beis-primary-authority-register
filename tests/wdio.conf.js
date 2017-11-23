@@ -127,7 +127,7 @@ exports.config = {
     reporterOptions: {
         outputDir: './reports/',
         filename: 'report',
-        combined: true,
+        combined: false,
         allure: {
             outputDir: './reports/allure/'
         }
