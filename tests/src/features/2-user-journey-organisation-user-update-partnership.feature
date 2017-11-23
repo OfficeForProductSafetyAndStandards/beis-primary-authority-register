@@ -112,6 +112,7 @@ Feature: Business User - Manage Addresses
 
         # ADD ANOTHER LEGAL ENTITY - Sole Trader
 
+        When I click on the link "add another legal entity"
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Primary Authority partnership information"
         Then I expect that element "h1.heading-xlarge" contains the text "Add a legal entity for your organisation"
         When I add "New Sole Trader" to the inputfield "#edit-registered-name"
