@@ -114,7 +114,9 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
             ['value' => 'public_limited_company'],
             ['value' => 'limited_liability_partnership'],
             ['value' => 'registered_charity'],
+            ['value' => 'partnership'],
             ['value' => 'limited_partnership'],
+            ['value' => 'other'],
           ],
         ],
       ],
@@ -137,11 +139,11 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
 
     // Nullify registration number
     $registered_number_types = [
-      'partnership',
       'limited_company',
       'public_limited_company',
       'limited_liability_partnership',
       'registered_charity',
+      'partnership',
       'limited_partnership',
       'other',
     ];
