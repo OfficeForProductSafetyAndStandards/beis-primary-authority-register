@@ -16,9 +16,7 @@ Feature: New Direct Partnership For PA To Approve
         # CHOOSE AUTHORITY REPRESENTED
 
         Then I expect that element "h1.heading-xlarge" contains the text "Which authority are you acting on behalf of?"
-        Then I expect that element ".authority_name" contains the text "City Enforcement Squad"
-        Then I expect that element ".authority_type" contains the text "Metropolitan District"
-        And I click on authority selection if available
+        And I click on the radio "label*=Metropolitan District"
         And I click on the button "#edit-next"
 
         # CHOOSE PARTNERSHIP TYPE
