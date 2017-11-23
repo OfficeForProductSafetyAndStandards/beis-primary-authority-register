@@ -11,6 +11,7 @@ services:
   - docker
 
 cache:
+  yarn: true
   directories:
     - node_modules
     - tests/node_modules
@@ -40,9 +41,23 @@ before_install:
 install:
   - phpenv config-rm xdebug.ini
   - composer install -v
-  - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
-  - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm run gulp"
-  - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && /usr/local/n/versions/node/7.2.1/bin/npm install"
+
+  # Update to current node LTS.
+  - docker exec -it par_beta_web bash -c "n 8"
+
+  # Install yarn.
+  - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+  - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+  - apt-get install apt-transport-https
+  - apt-get update
+  - apt-get install yarn
+
+  # Install dependencies.
+  - docker exec -it par_beta_web bash -c "yarn install"
+  - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && yarn install --ignore-engines"
+
+  # Run gulp task runner tasks.
+  - docker exec -it par_beta_web bash -c "npm run gulp"
 
 #-----------------------------------------------------------------------------
 # Setup local config defaults
@@ -112,8 +127,8 @@ before_script:
 
 script:
   - docker exec -it par_beta_web sh -c "./vendor/bin/paratest --processes=16 --log-junit=./tests/reports/phpunit.latest.xml"
-  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
-  - docker exec -it par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run test:build"
+  - travis_retry docker exec -it par_beta_web bash -c "cd tests && yarn install --ignore-engines"
+  - docker exec -it par_beta_web bash -c "cd tests && npm run test:build"
 
 #-----------------------------------------------------------------------------
 # Generate tar with test screenshots to tests/reports/errorShots.tar.gz
