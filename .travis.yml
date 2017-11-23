@@ -25,7 +25,10 @@ before_install:
   - docker-compose up -d
 # set web server / docker root uid/gid to match Travis uid.
   - docker exec -t par_beta_web bash -c "usermod --uid=2000 www-data"
-  - docker exec -t par_beta_web bash -c "groupmod --gid=2000 root"
+  - docker exec -t par_beta_web bash -c "groupmod --gid=2000 www-data"
+  - docker exec -t par_beta_web bash -c "adduser root www-data"
+  - docker exec -t par_beta_web bash -c "adduser composer www-data"
+
 # restart servers after changing uid/gids.
   - docker-compose stop
   - docker-compose up -d
@@ -108,7 +111,7 @@ before_script:
   - curl --silent http://127.0.0.1:8111 > /dev/null
 
 script:
-  - docker exec -i par_beta_web /var/www/html/vendor/bin/paratest -p16
+  - docker exec -ti par_beta_web /var/www/html/vendor/bin/paratest -p16
   - travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
   - docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run test:build"
 
