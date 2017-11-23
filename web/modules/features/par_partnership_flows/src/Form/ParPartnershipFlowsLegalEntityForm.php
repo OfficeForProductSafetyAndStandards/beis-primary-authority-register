@@ -137,11 +137,13 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
 
     // Nullify registration number
     $registered_number_types = [
+      'partnership',
       'limited_company',
       'public_limited_company',
       'limited_liability_partnership',
       'registered_charity',
-      'limited_partnership'
+      'limited_partnership',
+      'other',
     ];
 
     // Nullify registered number if not one of the types specified.
