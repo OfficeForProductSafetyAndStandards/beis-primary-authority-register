@@ -48,9 +48,9 @@ install:
   # Install yarn.
   - docker exec -it par_beta_web bash -c "curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -"
   - docker exec -it par_beta_web bash -c "echo 'deb https://dl.yarnpkg.com/debian/ stable main' | tee /etc/apt/sources.list.d/yarn.list"
-  - docker exec -it par_beta_web bash -c "apt-get install apt-transport-https"
-  - docker exec -it par_beta_web bash -c "apt-get update"
-  - docker exec -it par_beta_web bash -c "apt-get install yarn"
+  - docker exec -it par_beta_web bash -c "apt-get install apt-transport-https -y"
+  - docker exec -it par_beta_web bash -c "apt-get update -y"
+  - docker exec -it par_beta_web bash -c "apt-get install yarn -y"
 
   # Install dependencies.
   - docker exec -it par_beta_web bash -c "yarn install"
