@@ -59,6 +59,7 @@ steps:
     redirect:
       add_enforcement_action: 9
       save: 11
+      cancel: 1
   11:
     route: par_dashboards.dashboard
   12:
