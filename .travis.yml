@@ -1,174 +1,111 @@
-##############################################################################
-### BUILD                                                                  ###
-##############################################################################
-
 language: php
-
 php:
-  - 7.1
-
+- 7.1
 services:
-  - docker
-
+- docker
 cache:
   directories:
-    - node_modules
-    - tests/node_modules
-    - $HOME/.composer/cache/files
-
+  - node_modules
+  - tests/node_modules
+  - "$HOME/.composer/cache/files"
 before_install:
-
-#-----------------------------------------------------------------------------
-# Bring up Docker containers
-#-----------------------------------------------------------------------------
-  - cd docker
-  - docker-compose up -d
-# set web server / docker root uid/gid to match Travis uid.
-  - docker exec -t par_beta_web bash -c "usermod --uid=2000 www-data"
-  - docker exec -t par_beta_web bash -c "groupmod --gid=2000 www-data"
-  - docker exec -t par_beta_web bash -c "adduser root www-data"
-  - docker exec -t par_beta_web bash -c "adduser composer www-data"
-
-# restart servers after changing uid/gids.
-  - docker-compose stop
-  - docker-compose up -d
-  - cd ..
-
-#-----------------------------------------------------------------------------
-# Install dependencies
-#-----------------------------------------------------------------------------
-
+- cd docker
+- docker-compose up -d
+- docker exec -t par_beta_web bash -c "usermod --uid=2000 www-data"
+- docker exec -t par_beta_web bash -c "groupmod --gid=2000 www-data"
+- docker exec -t par_beta_web bash -c "adduser root www-data"
+- docker exec -t par_beta_web bash -c "adduser composer www-data"
+- docker-compose stop
+- docker-compose up -d
+- cd ..
 install:
-  - phpenv config-rm xdebug.ini
-  - composer install -v
-  - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
-  - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm run gulp"
-  - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
-
-#-----------------------------------------------------------------------------
-# Setup local config defaults
-#-----------------------------------------------------------------------------
-
-#  - cp web/sites/example.settings.local.php web/sites/default/settings.local.php
-  - chmod -R 777 private
-  - chmod -R 777 web/sites/default
-  - if [ ! -d web/sites/default/files ]; then mkdir web/sites/default/files; fi
-  - chmod -R 777 web/sites/default/files
-  - docker exec -it par_beta_web bash -c "chmod -R 777 /var/www/html/private"
-  - docker exec -it par_beta_web bash -c "chmod -R 777 /var/www/html/web/sites/default/files"
-
-#-----------------------------------------------------------------------------
-# Create .env file
-#-----------------------------------------------------------------------------
-
-  - echo "S3_BUCKET_ARTIFACTS=$S3_BUCKET_ARTIFACTS" > .env
-  - echo "S3_ACCESS_KEY=$S3_ACCESS_KEY" >> .env
-  - echo "S3_SECRET_KEY=$S3_SECRET_KEY" >> .env
-  - echo "PAR_HASH_SALT=$PAR_HASH_SALT" >> .env
-  - echo "DATAFILE=$DATAFILE" >> .env
-  - echo "APP_ENV=travis" >> .env
-  - echo "BSK_USER=$BSK_USER" >> .env
-  - echo "BSK_KEY=$BSK_KEY" >> .env
-  - echo "SENTRY_DSN=$SENTRY_DSN" >> .env
-  - echo "SENTRY_DSN_PUBLIC=$SENTRY_DSN_PUBLIC" >> .env
-  - echo "CLAMAV_HTTP_USER=$CLAMAV_HTTP_USER" >> .env
-  - echo "CLAMAV_HTTP_PASS=$CLAMAV_HTTP_PASS" >> .env
-  - cat .env
-
-#-----------------------------------------------------------------------------
-# Import dev data from S3
-#-----------------------------------------------------------------------------
-
-  - sleep 5
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sql-cli @dev < ../docker/fresh_drupal_postgres.sql"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush fsg s3backups $DATAFILE.tar.gz /dump.sql.tar.gz"
-  - docker exec -i par_beta_web bash -c "cd / && tar --no-same-owner -zxvf dump.sql.tar.gz"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sql-cli @dev < /$DATAFILE"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sqlsan @dev -y"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
-
-#-----------------------------------------------------------------------------
-# Run further Drush commands
-#-----------------------------------------------------------------------------
-
-  - docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cex -n"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush core-requirements --severity=2"
-
-#-----------------------------------------------------------------------------
-# Stamp the code with the build number
-#-----------------------------------------------------------------------------
-
-  - 'echo "{ \"build\" : \"${TRAVIS_BUILD_NUMBER}\", \"tag\":\"${TRAVIS_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt'
-
-##############################################################################
-### TEST                                                                   ###
-##############################################################################
-
+- phpenv config-rm xdebug.ini
+- composer install -v
+- docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
+- docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm run
+  gulp"
+- docker exec -it par_beta_web bash -c "cd /var/www/html/tests && rm -rf node_modules
+  && /usr/local/n/versions/node/7.2.1/bin/npm install"
+- chmod -R 777 private
+- chmod -R 777 web/sites/default
+- if [ ! -d web/sites/default/files ]; then mkdir web/sites/default/files; fi
+- chmod -R 777 web/sites/default/files
+- docker exec -it par_beta_web bash -c "chmod -R 777 /var/www/html/private"
+- docker exec -it par_beta_web bash -c "chmod -R 777 /var/www/html/web/sites/default/files"
+- echo "S3_BUCKET_ARTIFACTS=$S3_BUCKET_ARTIFACTS" > .env
+- echo "S3_ACCESS_KEY=$S3_ACCESS_KEY" >> .env
+- echo "S3_SECRET_KEY=$S3_SECRET_KEY" >> .env
+- echo "PAR_HASH_SALT=$PAR_HASH_SALT" >> .env
+- echo "DATAFILE=$DATAFILE" >> .env
+- echo "APP_ENV=travis" >> .env
+- echo "BSK_USER=$BSK_USER" >> .env
+- echo "BSK_KEY=$BSK_KEY" >> .env
+- echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+- echo "SENTRY_DSN_PUBLIC=$SENTRY_DSN_PUBLIC" >> .env
+- echo "CLAMAV_HTTP_USER=$CLAMAV_HTTP_USER" >> .env
+- echo "CLAMAV_HTTP_PASS=$CLAMAV_HTTP_PASS" >> .env
+- cat .env
+- sleep 5
+- docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sql-cli @dev
+  < ../docker/fresh_drupal_postgres.sql"
+- docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
+- docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
+- docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush fsg s3backups
+  $DATAFILE.tar.gz /dump.sql.tar.gz"
+- docker exec -i par_beta_web bash -c "cd / && tar --no-same-owner -zxvf dump.sql.tar.gz"
+- docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sql-cli @dev
+  < /$DATAFILE"
+- docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sqlsan @dev -y"
+- docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
+- docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
+- docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
+- docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cex -n"
+- docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush core-requirements
+  --severity=2"
+- 'echo "{ \"build\" : \"${TRAVIS_BUILD_NUMBER}\", \"tag\":\"${TRAVIS_TAG}\", \"time\":\"$(date
+  -u)\"}" > web/build_version.txt'
 before_script:
-# Ping Drupal app.
-  - curl --silent http://127.0.0.1:8111 > /dev/null
-
+- curl --silent http://127.0.0.1:8111 > /dev/null
 script:
-  - docker exec -it par_beta_web bash -c "./vendor/bin/paratest -p 16 --log-junit=./tests/reports/phpunit.latest.xml"
-  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
-  - docker exec -it par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run test:build"
-
-#-----------------------------------------------------------------------------
-# Generate HTML reports with screenshots. HTML report location: tests/reports/allure-reports/index.html, TAR it up.
-#-----------------------------------------------------------------------------
-  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && if [ -d ./errorShots ]; then tar -cf reports/errorShots.tar.gz ./errorShots; fi"
-
-#-----------------------------------------------------------------------------
-# Remove .env file created in previous steps.
-# If tagged build, tar up the files ready for S3.
-#-----------------------------------------------------------------------------
-
-  - rm .env
-  - if [[ $TRAVIS_TAG != '' ]]; then mkdir $TRAVIS_TAG; fi
-  - if [[ $TRAVIS_TAG != '' ]]; then tar --exclude="./$TRAVIS_TAG" -zcf $TRAVIS_TAG/$TRAVIS_TAG.tar.gz .; fi
-
-#-----------------------------------------------------------------------------
-# Push test results to PubNub
-#-----------------------------------------------------------------------------
-
+- docker exec -it par_beta_web bash -c "./vendor/bin/paratest -p 16 --log-junit=./tests/reports/phpunit.latest.xml"
+- travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules
+  && /usr/local/n/versions/node/7.2.1/bin/npm install"
+- docker exec -it par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm
+  run test:build"
+- travis_retry docker exec -ti par_beta_web bash -c "cd tests && if [ -d ./errorShots
+  ]; then tar -cf reports/errorShots.tar.gz ./errorShots; fi"
+- rm .env
+- if [[ $TRAVIS_TAG != '' ]]; then mkdir $TRAVIS_TAG; fi
+- if [[ $TRAVIS_TAG != '' ]]; then tar --exclude="./$TRAVIS_TAG" -zcf $TRAVIS_TAG/$TRAVIS_TAG.tar.gz
+  .; fi
 after_script:
-  - if [[ $TRAVIS_BRANCH == 'master' ]]; then cd dashboard/tools; fi
-  - if [[ $TRAVIS_BRANCH == 'master' ]]; then composer install; fi
-  - if [[ $TRAVIS_BRANCH == 'master' ]]; then php push-travis.php ../../tests/reports/phpunit.latest.xml; fi
-
-#-----------------------------------------------------------------------------
-# For tagged builds, send the packaged build to S3
-#-----------------------------------------------------------------------------
-
+- if [[ $TRAVIS_BRANCH == 'master' ]]; then cd dashboard/tools; fi
+- if [[ $TRAVIS_BRANCH == 'master' ]]; then composer install; fi
+- if [[ $TRAVIS_BRANCH == 'master' ]]; then php push-travis.php ../../tests/reports/phpunit.latest.xml;
+  fi
 deploy:
-  - provider: s3
-    access_key_id: $S3_ACCESS_KEY
-    secret_access_key: $S3_SECRET_KEY
-    bucket: "transform-par-beta-artifacts"
-    upload-dir: builds
-    skip_cleanup: true
-    local_dir: $TRAVIS_TAG
-    on:
-      repo: UKGovernmentBEIS/beis-primary-authority-register
-      tags: true
-
-##############################################################################
-### STORE ARTIFACTS                                                        ###
-##############################################################################
-
+- provider: s3
+  access_key_id: "$S3_ACCESS_KEY"
+  secret_access_key: "$S3_SECRET_KEY"
+  bucket: transform-par-beta-artifacts
+  upload-dir: builds
+  skip_cleanup: true
+  local_dir: "$TRAVIS_TAG"
+  on:
+    repo: UKGovernmentBEIS/beis-primary-authority-register
+    tags: true
 addons:
   artifacts:
     debug: false
     paths:
-      - ./tests/reports
+    - "./tests/reports"
     target_paths: tests/$TRAVIS_BUILD_NUMBER
     bucket: transform-par-beta-artifacts
     s3_region: eu-west-1
-
 notifications:
   slack:
     secure: oRuAo84heWUp6MVcM22dx/FZUV5HUVvsegEDaiVggQmNo2zYzNQhgAY7P9GpnaPWo53inCoFfwrwn9V+sj2uwUwrtWQg71qCTU3FIZicqYBB44rp+7/YdpuNqCYtbbY50UJpsZtqRIffWB4iS0YZ2bd+SkvsJskzRzbHC9qRjrSq0Hmb1DuxQCiE+M9TM7n4phY1dPTxTm1g1WwShr1zKXTfhDDK2k9r9kQGpJFP5rrE5cch0kBPJP29rgijeJq5uFS99+QyiVRJcqStXYl2JvKXTMS3sVk+OgSHeeRaaY0dbQSPcn4mTgcQKMVpfAUXVD6mUlkj4WYDXjdQSZdbgVvsX5tQg/6kG52wXgB+vDsmwKoBcTZLndNUQc9nCA02A+WVLyru318JmxwtaLo7CqRJArG3vItryMl7SxUA5QM1XB77iOe25m1aXEvJkUa54p6P7T62Gr0qfaEnCAeNRu33nS/16g+Znbp34jIwmmt+f3q2Uo3XV9cQgYj46ixzSjw5OPTHQSEpCHE8jtkXP80/N8jlXYLm7kTJapSWKEdbQf6J5a7Oj8Hv7Jq0QoPZmRpfa9L5PwJHd38p1JmxnVFbZMS4dQGyTwgyehf62cIDVi+5Pl3XPdQJ9FcMSTGOCXSrPGmJRHBt+o8bOuIzWMBHYqgnmHNNQ+oK/SEFhyw=
+env:
+  global:
+  - secure: Fs3vok73zakpxIio13QqNuGlUoLVGeaE85FbFTTQI3+xdHWzVGausI7HW7GRh32cQP3jgPazcIe4WE/og4FHWwPIJzRzknbkaBN6zsmETS2nhh7H8rNCbw/vXqC1hXhXK3VdaIvuL9t+UBaqeojrgIvF7DVs5G3shtKX6om5NscxYDUmIMPeQL5gaIXVcGGIVlyL7rruQQ8swt1ld9YtNhoGv9zhJjezr5r2qGwrJkx2JkPWJJre6Dy8PaPWaOKQ9vV3NtI+uG2mbctBkBqG05XZ1Rm3V8r8lOyDhpQcWkn8M616QMkd/bWZgcS97RX7MEdKBQIhEGFAo66z76Uc+PwgnTy8hF3pM6oF1adrw9GBfbMD5gsS/KVLjs/GOlHF3blsoFALk99K/6WIt3/5682LmXxvY56lnJOBMWgDOiWk8dlmj5CXLnxEN8GCgMDphV+xkv8luN3H18dtnHQ9dp8p1w4CNwopsUXW/PgOdQput8DRP74Y0D3cpGMjoHEhY1kxuWghwy2q+SHCgrvMzjyZs4EXWJSQiGQmqw5AjUzntR2BsqEsne78L5SBC6rCcMalTcWf+BSHITI75RiEdzUg+wSciV5FMWwD1OBlAqgjeOpocWcoTvUYQW4jl6HnwWyOuIKYPTZnkqsKQjDsrfLsAgxtVZNRh4E6/y3ZJBY=
+  - secure: YvuovVEMdtjejZNoJ+s717JzY23FgvzJdfY84XV6yfsp+Ko+OaPM2ypdv5uD+j2oeBwNP5dSdECQiCYXNUxvrDsy6x4/1W9zM86Jv7Z0RJ3Hyfiq7QW7W/HU0kJpiZHetnFWWrXZIpu6JGZLos0DAsn4ydKF4Mn+ZCa8aGhZGL6vw/xsedB4ywn3TbTUh1b3awaZiBntVJkgu7NydDfgZnbXGhgXXxu3Ja5wjvmUVao7VtS0R8NfT0RU43Ml/b9ObcwlyTSaGEF035SbroaP6FwD8qH5/MXYV2AjHLFwcU0FWDMW4J03/5QjOC3KO4P4i+YK/ETaLmBo/1lOi4/gCBEDatJZk7hXje0r3gYpfl/mag6s9Huadk2oSXmPJ399lqZiIdZbvJBZb3u9Mi1cvb4x4rP6GY94bsA/0Q0ijrizwH8sE8YaFK9xElg5kQUjhmpapEEjGBCtmcGTh2GPOipVUsIWM42WOznRiogj/gMtKtgzXZy48OpmjKvsuMwHxjPu3EEg6xS5gmmMoN7fsKY0e99AhntmxX+4HJMC16lRI9LNoQFWmkmHOllGpw9Ts0cw0GuekXh8tRwOFsqz1o25JJ7n400531toyonPiMeKKcLtDzTH8KUCb7dgpXeEgTa6JmkBcJOdSE/XVvPdsPJNg8h7kY3TBygSp8CSAkw=
