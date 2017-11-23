@@ -8,5 +8,6 @@ module.exports = (filename) => {
      * The command to perform on the browser object (addValue or setValue)
      * @type {String}
      */
-    browser.chooseFile('#edit-files-upload', filename)
+    const toUpload = 'tests/src/files/test1.png';
+    browser.chooseFile('#edit-files-upload', filename);
 };

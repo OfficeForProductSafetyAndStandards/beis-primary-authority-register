@@ -18,6 +18,7 @@ import setCookie from '../support/action/setCookie';
 import setInputField from '../support/action/setInputField';
 import setPromptText from '../support/action/setPromptText';
 import submitForm from '../support/action/submitForm';
+import uploadTheFile from '../support/action/uploadTheFile';
 import selectAnAuthorityForPartnership from '../support/action/selectAnAuthorityForPartnership';
 
 
@@ -45,6 +46,12 @@ defineSupportCode(({ When }) => {
     When(
         /^I clear the inputfield "([^"]*)?"$/,
         clearInputField
+    );
+
+
+    When(
+        /^I upload the file "([^"]*)?"$/,
+        uploadTheFile
     );
 
     When(

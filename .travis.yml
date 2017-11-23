@@ -111,7 +111,7 @@ script:
   - docker exec -i par_beta_web /var/www/html/vendor/bin/paratest -p16
   - travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
   - docker exec -ti par_beta_web bash -c "cd tests/jmeter && /usr/local/n/versions/node/7.2.1/bin/npm run test:build"
-  - docker exec -ti par_beta_web bash -c "cd tests/jmeter && /usr/local/n/versions/node/7.2.1/bin/npm run generatereport"
+  - docker exec -ti par_beta_web bash -c "cd tests/jmeter && /usr/local/n/versions/node/7.2.1/bin/npm run allure:generate"
 
 #-----------------------------------------------------------------------------
 # Run Jmeter

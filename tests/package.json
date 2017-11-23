@@ -9,7 +9,7 @@
     "test:smoke": "./node_modules/.bin/wdio wdio.SMOKE.conf.js",
     "test:dev": "./node_modules/.bin/wdio wdio.DEV.conf.js",
     "test:validate": "eslint 'src/**/*.js'",
-    "generatereport": "./node_modules/.bin/allure generate --clean -o ./reports/html ./reports/allure && rm -rf ./reports/allure"
+    "allure:generate": "./node_modules/.bin/allure generate --clean -o ./reports/html ./reports/allure"
   },
   "repository": {
     "type": "git",
