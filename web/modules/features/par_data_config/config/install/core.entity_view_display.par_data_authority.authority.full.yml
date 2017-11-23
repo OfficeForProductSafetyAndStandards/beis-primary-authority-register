@@ -33,12 +33,11 @@ content:
       display_original_value: false
     third_party_settings: {  }
   comments:
-    type: text_trimmed
+    type: text_default
     weight: 5
     region: content
     label: hidden
-    settings:
-      trim_length: 600
+    settings: {  }
     third_party_settings: {  }
   nation:
     type: string
