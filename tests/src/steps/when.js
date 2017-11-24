@@ -47,7 +47,6 @@ defineSupportCode(({ When }) => {
         clearInputField
     );
 
-
     When(
         /^I upload the file "([^"]*)?"$/,
         uploadTheFile
