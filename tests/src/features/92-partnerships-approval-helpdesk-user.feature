@@ -10,7 +10,7 @@ Feature: Helpdesk approve partnership
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         When I add "Business For Direct Partnership 1" to the inputfield "#edit-keywords"
-        And I select the option with the text "- Any -" for element "#edit-partnership-status"
+        And I select the option with the text "Confirmed by the Business" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-helpdesk-dashboard"
         Then I click on the link "Approve partnership"
 
@@ -22,8 +22,8 @@ Feature: Helpdesk approve partnership
         And I click on the button "#edit-next"
 
         # APPROVAL CONFIRMATION SCREEN
-        Then I expect that element "#par-rd-help-desk-approve" contains the text "Partnership is approved between"
-        And I expect that element "#par-rd-help-desk-approve" contains the text "Business For Direct Partnership 1"
+        Then I expect that element "#edit-partnership-info" contains the text "Partnership is approved between"
+        And I expect that element "#edit-partnership-info" contains the text "Business For Direct Partnership 1"
         And I click on the button "#edit-done"
 
         # GO BACK TO HELPDESK

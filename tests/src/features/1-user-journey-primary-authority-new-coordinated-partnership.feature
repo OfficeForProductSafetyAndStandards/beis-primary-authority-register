@@ -169,7 +169,7 @@ Feature: New Coordinated Partnership
 #        When I click on the button "form#par-flow-transition-business-details #edit-legal-entity a.flow-link"
 #        And I add "Legal Entity Change" to the inputfield "#edit-registered-name"
 #        And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
-#        And I add "987654321" to the inputfield "#edit-company-house-no"
+#        And I add "987654321" to the inputfield "#edit-registered-number"
 #        And I click on the button "#edit-next"
 #        Then I expect that element "#edit-legal-entity" contains the text "Legal Entity Change"
 #        And I expect that element "#edit-legal-entity" contains the text "987654321"

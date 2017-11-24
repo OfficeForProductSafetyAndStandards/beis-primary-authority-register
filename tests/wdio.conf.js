@@ -48,7 +48,6 @@ exports.config = {
         //
         browserName: 'chrome',
     }],
-
     bail: 1,
     //
     // ===================
@@ -127,7 +126,7 @@ exports.config = {
     reporterOptions: {
         outputDir: './reports/',
         filename: 'report',
-        combined: false,
+        combined: true,
         allure: {
             outputDir: './reports/allure/'
         }

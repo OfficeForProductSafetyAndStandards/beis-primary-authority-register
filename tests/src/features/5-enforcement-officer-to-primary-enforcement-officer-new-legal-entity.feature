@@ -51,16 +51,16 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I add "Title of enforcement notice Four" to the inputfield "#edit-title-of-action"
         And I click on the radio ".option*=Cookie control"
         And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
-        And I upload the file "./files/test1.png"
+        And I upload the file "./src/features/files/test1.png"
         And I click on the button "#edit-next"
 
         # ADD ENFORCEMENT ACTION
 
-        When I click on the link "Add another enforcement action"
-        And I add "Added Enforcement Action" to the inputfield "#edit-title-of-action"
-        And I click on the radio ".option*=Alphabet learning"
-        And I add "Added Enforcement Action details" to the inputfield "#edit-details"
-        And I click on the button "#edit-next"
+#        When I click on the link "Add another enforcement action"
+#        And I add "Added Enforcement Action" to the inputfield "#edit-title-of-action"
+#        And I click on the radio ".option*=Alphabet learning"
+#        And I add "Added Enforcement Action details" to the inputfield "#edit-details"
+#        And I click on the button "#edit-next"
 
         # CHECK DETAILS
 
