@@ -798,13 +798,9 @@ govuk-elements-sass@~3.1.0:
   dependencies:
     govuk_frontend_toolkit "^7.1.0"
 
-govuk_frontend_toolkit@^7.1.0:
+govuk_frontend_toolkit@^7.1.0, govuk_frontend_toolkit@~7.2.0:
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/govuk_frontend_toolkit/-/govuk_frontend_toolkit-7.2.0.tgz#5c006d83c3de33c7da49f720cadae83f58783158"
-
-govuk_frontend_toolkit@~6.0.4:
-  version "6.0.4"
-  resolved "https://registry.yarnpkg.com/govuk_frontend_toolkit/-/govuk_frontend_toolkit-6.0.4.tgz#fc4b741b16d27ec1a3cd1c4f3830972d333c7044"
 
 graceful-fs@4.X, graceful-fs@^4.1.2:
   version "4.1.11"
