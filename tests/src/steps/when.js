@@ -17,7 +17,7 @@ import setCookie from '../support/action/setCookie';
 import setInputField from '../support/action/setInputField';
 import setPromptText from '../support/action/setPromptText';
 import submitForm from '../support/action/submitForm';
-import uploadTheFile from '../support/action/uploadTheFile';
+import uploadTheFile from '../support/action/uploadTheFlle.js';
 import selectAnAuthorityForPartnership from '../support/action/selectAnAuthorityForPartnership';
 
 
