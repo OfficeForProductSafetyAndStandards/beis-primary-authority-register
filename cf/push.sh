@@ -150,7 +150,7 @@ if [[ $1 != "environment-only" ]]; then
     ####################################################################################
     
     BUILD_DIR=build-$ENV
-    rm -rf $BUILD_DIR
+    sudo rm -rf $BUILD_DIR
     mkdir $BUILD_DIR
     
     cd $BUILD_DIR
@@ -170,6 +170,7 @@ if [[ $1 != "environment-only" ]]; then
     ####################################################################################
     
     tar -zxvf $VER.tar.gz
+    sudo chmod -R 755 web/sites/default
     rm $VER.tar.gz
     
     ####################################################################################
