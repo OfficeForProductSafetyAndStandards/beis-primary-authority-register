@@ -1,5 +1,4 @@
 import { defineSupportCode } from 'cucumber';
-
 import clearInputField from '../support/action/clearInputField';
 import clickElement from '../support/action/clickElement';
 import clickChildElement from '../support/action/clickElement';
