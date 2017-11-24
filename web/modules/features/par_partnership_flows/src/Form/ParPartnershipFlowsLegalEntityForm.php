@@ -86,14 +86,13 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
 
     $form['legal_entity_intro_fieldset']['intro'] = [
       '#type' => 'markup',
-      '#markup' => $this->t("<p>A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisation such as trusts and charities.</p>"),
+      '#markup' => "<p>" . $this->t("A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisations such as trusts and charities.") . "</p>",
     ];
 
     $form['registered_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter name of the legal entity'),
       '#default_value' => $this->getDefaultValues("legal_entity_registered_name"),
-      '#description' => $this->t('A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisation such as trusts and charities.'),
     ];
 
     $form['legal_entity_type'] = [
