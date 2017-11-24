@@ -45,7 +45,7 @@ Feature: Business User - Manage Addresses
         And I expect that element "#edit-registered-address" contains the text "SE16 4NX"
 
 #        # EDIT ABOUT THE BUSINESS
-#
+
         When I click on the link "edit about the business"
         And I add "Change to the about business details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-save"
@@ -71,77 +71,56 @@ Feature: Business User - Manage Addresses
 #        And I clear the inputfield "#edit-registered-name"
 #        When I add "Changed" to the inputfield "#edit-registered-name"
 #        And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
-#        And I clear the inputfield "#edit-registered-number"
-#        When I add "0123456789" to the inputfield "#edit-registered-number"
+#        And I clear the inputfield "#edit-company-house-no"
+#        When I add "0123456789" to the inputfield "#edit-company-house-no"
 #        And I click on the button "#edit-save"
 #        Then I expect that element "#edit-legal-entities" contains the text "Changed"
 #        Then I expect that element "#edit-legal-entities" contains the text "Limited Company"
 
-        # ADD LEGAL ENTITY Limited Company
+        # ADD LEGAL ENTITY - Limited Liability Partnership
 
         When I click on the link "add another legal entity"
-        When I add "New Limited Company" to the inputfield "#edit-registered-name"
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Primary Authority partnership information"
+        Then I expect that element "h1.heading-xlarge" contains the text "Add a legal entity for your organisation"
+        Then I expect that element ".form-item-registered-name label" contains the text "Enter name of the legal entity"
+        When I add "New LLP Company" to the inputfield "#edit-registered-name"
+        Then I expect that element ".form-item-legal-entity-type label" contains the text "Select type of Legal Entity"
+
+        Then I expect that element ".form-item-registered-number" is visible
+        And I select the option with the text "Sole Trader" for element "#edit-legal-entity-type"
+        Then I expect that element ".form-item-registered-number" is not visible
+        And I select the option with the text "Other" for element "#edit-legal-entity-type"
+        Then I expect that element ".form-item-registered-number" is visible
+        And I select the option with the text "Registered Charities" for element "#edit-legal-entity-type"
+        Then I expect that element ".form-item-registered-number" is visible
         And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
-#        Then I expect that element "#par-partnership-legal" contains the text "Registration Number"
+        Then I expect that element ".form-item-registered-number" is visible
+        And I select the option with the text "Public Limited Company" for element "#edit-legal-entity-type"
+        Then I expect that element ".form-item-registered-number" is visible
+        And I select the option with the text "Limited Partnership" for element "#edit-legal-entity-type"
+        Then I expect that element ".form-item-registered-number" is visible
+        And I select the option with the text "Limited Liability Partnership" for element "#edit-legal-entity-type"
+        Then I expect that element ".form-item-registered-number" is visible
+
+        Then I expect that element ".form-item-registered-number label" contains the text "Provide the registration number"
         When I add "1234567890" to the inputfield "#edit-registered-number"
+
         And I click on the button "#edit-save"
-        Then I expect that element "#edit-legal-entities" contains the text "New Limited Company"
-        Then I expect that element "#edit-legal-entities" contains the text "Limited Company"
+        Then I expect that element "#edit-legal-entities" contains the text "New LLP Company"
+        Then I expect that element "#edit-legal-entities" contains the text "Limited Liability Partnership"
         Then I expect that element "#edit-legal-entities" contains the text "1234567890"
 
-#        # ADD ANOTHER LEGAL ENTITY Registered Charity
-#
-#        When I click on the link "add another legal entity"
-#        When I add "New Registered Charity" to the inputfield "#edit-registered-name"
-#        And I select the option with the text "Registered Charities" for element "#edit-legal-entity-type"
-#        When I add "1234567890" to the inputfield "#edit-registered-number"
-#        And I click on the button "#edit-save"
-#        Then I expect that element "#edit-legal-entities" contains the text "New Registered Charity"
-#        Then I expect that element "#edit-legal-entities" contains the text "Limited Company"
-#        Then I expect that element "#edit-legal-entities" contains the text "2345678901"
-#
-#        # ADD ANOTHER LEGAL ENTITY Public Limited Company
-#
-#        When I click on the link "add another legal entity"
-#        When I add "New Limited Company" to the inputfield "#edit-registered-name"
-#        And I select the option with the text "Public Limited Company" for element "#edit-legal-entity-type"
-#        When I add "1234567890" to the inputfield "#edit-registered-number"
-#        And I click on the button "#edit-save"
-#        Then I expect that element "#edit-legal-entities" contains the text "New Public Limited Company"
-#        Then I expect that element "#edit-legal-entities" contains the text "Public Limited Company"
-#        Then I expect that element "#edit-legal-entities" contains the text "3456789012"
-#
-#        # ADD ANOTHER LEGAL ENTITY Limited Partnership
-#
-#        When I click on the link "add another legal entity"
-#        When I add "New Limited Partnership" to the inputfield "#edit-registered-name"
-#        And I select the option with the text "Limited Partnership" for element "#edit-legal-entity-type"
-#        When I add "1234567890" to the inputfield "#edit-registered-number"
-#        And I click on the button "#edit-save"
-#        Then I expect that element "#edit-legal-entities" contains the text "New Limited Partnership"
-#        Then I expect that element "#edit-legal-entities" contains the text "Limited Company"
-#        Then I expect that element "#edit-legal-entities" contains the text "4567890123"
-#
-#        # ADD ANOTHER LEGAL ENTITY Limited Liability Partnership
-#
-#        When I click on the link "add another legal entity"
-#        When I add "New Limited Liability Partnership" to the inputfield "#edit-registered-name"
-#        And I select the option with the text "Limited Liability Partnership" for element "#edit-legal-entity-type"
-#        When I add "1234567890" to the inputfield "#edit-registered-number"
-#        And I click on the button "#edit-save"
-#        Then I expect that element "#edit-legal-entities" contains the text "New Limited Liability Partnership"
-#        Then I expect that element "#edit-legal-entities" contains the text "Limited Company"
-#        Then I expect that element "#edit-legal-entities" contains the text "5678901234"
-#
-#         # ADD ANOTHER LEGAL ENTITY
-#
-#        When I click on the link "add another legal entity"
-#        When I add "New Sole Trader" to the inputfield "#edit-registered-name"
-#        And I select the option with the text "Sole Trader" for element "#edit-legal-entity-type"
-#        And I expect that element "#edit-registered-number" is not visible
-#        When I click on the button "#edit-save"
-#        Then I expect that element "#edit-legal-entities" contains the text "New Sole Trader"
-#        And I expect that element "#edit-legal-entities" contains the text "Sole Trader"
+        # ADD ANOTHER LEGAL ENTITY - Sole Trader
+
+        When I click on the link "add another legal entity"
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Primary Authority partnership information"
+        Then I expect that element "h1.heading-xlarge" contains the text "Add a legal entity for your organisation"
+        When I add "New Sole Trader" to the inputfield "#edit-registered-name"
+        And I select the option with the text "Sole Trader" for element "#edit-legal-entity-type"
+        Then I expect that element ".form-item-registered-number" is not visible
+        And I click on the button "#edit-save"
+        Then I expect that element "#edit-legal-entities" contains the text "New Sole Trader"
+        Then I expect that element "#edit-legal-entities" contains the text "Sole Trader"
 
         # ADD NEW TRADING NAME
 
