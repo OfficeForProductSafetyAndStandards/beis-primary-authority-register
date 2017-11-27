@@ -93,7 +93,7 @@ class ParEnforcementSubmitNoticeForm extends ParBaseEnforcementForm {
       $form['action_' . $enforcement_action->id()]['action_title'] = $this->renderSection('Proposed enforcement action', $enforcement_action, ['title' => 'title'], [], TRUE, TRUE);
       $form['action_' . $enforcement_action->id()]['action_regulatory_function'] = $this->renderSection('Regulatory function', $enforcement_action, ['field_regulatory_function' => 'summary'], [], TRUE, TRUE);
       $form['action_' . $enforcement_action->id()]['action_details'] = $this->renderSection('Details', $enforcement_action, ['details' => 'summary'], [], TRUE, TRUE);
-      $form['action_' . $enforcement_action->id()]['action_attach'] = $this->renderSection('Attachments',$enforcement_action, ['document' => 'par_attachments'], TRUE);
+      $form['action_' . $enforcement_action->id()]['action_attach'] = $this->renderSection('Attachments', $enforcement_action, ['document' => 'par_attachments'], [], TRUE);
     }
 
     $form['action_add'] = [
