@@ -679,7 +679,7 @@ display:
         weight: 0
         context: '0'
         menu_name: main
-      title: 'Search the Primary Authority Register'
+      title: 'Primary Authority Register | Search for a partnership'
       defaults:
         title: false
     cache_metadata:
