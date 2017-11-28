@@ -129,6 +129,8 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
         '#default_value' => $this->getDefaultValues(['actions', $delta, 'primary_authority_status'], ParDataEnforcementAction::APPROVED),
         '#disabled' => $this->getDefaultValues(['actions', $delta, 'disabled'], FALSE),
         '#required' => TRUE,
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
       ];
 
       $form['actions'][$delta]['primary_authority_notes'] = [
