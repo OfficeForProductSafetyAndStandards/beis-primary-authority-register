@@ -18,7 +18,8 @@ Feature: Enforcement notice management
         And I click on the link "Title of enforcement notice Two"
         And I click on the radio "#edit-actions-0-primary-authority-status-approved"
         And I click on the button "#edit-actions-next"
-        Then I expect that element "#block-par-theme-page-title"Confirmation Enforcement action decision"
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Confirmation"
+        Then I expect that element "h1.heading-xlarge" contains the text "Enforcement action decision"
         And I click on the button "#edit-actions-next"
 #       Then I expect that element "#par-rd-help-desk-approve" contains the text "Enforcement allowed"
 
