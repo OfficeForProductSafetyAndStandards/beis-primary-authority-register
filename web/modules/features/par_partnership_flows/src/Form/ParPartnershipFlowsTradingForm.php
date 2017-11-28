@@ -22,6 +22,20 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function titleCallback() {
+    $trading_name_delta = $this->getRouteParam('trading_name_delta');
+
+    // Check from the route if we are editing an existing trading name.
+    $action = isset($trading_name_delta) ? 'Edit' : 'Add a';
+
+    $this->pageTitle = "Update partnership information | {$action} trading name for your organisation";
+
+    return $this->pageTitle;
+  }
+
+  /**
    * Helper to get all the editable values.
    *
    * Used for when editing or revisiting a previously edited page.
@@ -65,16 +79,16 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $trading_name_delta = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $trading_name_delta);
 
-    $form['intro'] = [
-      '#markup' => $this->t('Change the Trading Name of your organisation'),
-      '#prefix' => '<h2>',
-      '#suffix' => '</h2>',
+    $form['trading_name_fieldset'] = [
+      '#type' => 'fieldset',
+      '#attributes' => ['class' => 'form-group'],
+      '#title' => $this->t('Enter a trading name'),
     ];
 
-    $form['trading_name'] = [
+    $form['trading_name_fieldset']['trading_name'] = [
       '#type' => 'textfield',
       '#default_value' => $this->getDefaultValues("trading_name"),
-      '#description' => $this->t("Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State any trading names used by the organisation."),
+      '#description' => $this->t("<p>Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State any trading names used by the organisation.</p>"),
     ];
 
     // Make sure to add the person cacheability data to this form.

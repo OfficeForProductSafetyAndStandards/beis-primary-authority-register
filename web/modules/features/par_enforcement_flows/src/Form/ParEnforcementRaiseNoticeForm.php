@@ -24,6 +24,18 @@ class ParEnforcementRaiseNoticeForm extends ParBaseEnforcementForm {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function titleCallback() {
+
+    $enforcementFlowTitle = $this->RaiseEnforcementTitleCallback();
+    if ($enforcementFlowTitle) {
+      $this->pageTitle = $enforcementFlowTitle;
+    }
+    return parent::titleCallback();
+  }
+
+  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *

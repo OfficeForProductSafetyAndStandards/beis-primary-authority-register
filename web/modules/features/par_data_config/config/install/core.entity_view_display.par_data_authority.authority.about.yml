@@ -16,12 +16,11 @@ bundle: authority
 mode: about
 content:
   comments:
-    type: text_trimmed
+    type: text_default
     weight: 0
     region: content
     label: hidden
-    settings:
-      trim_length: 600
+    settings: {  }
     third_party_settings: {  }
   person:
     type: entity_reference_entity_view

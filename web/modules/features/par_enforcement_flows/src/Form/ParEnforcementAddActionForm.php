@@ -24,6 +24,20 @@ class ParEnforcementAddActionForm extends ParBaseForm {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function titleCallback() {
+
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+
+    if ($par_data_partnership) {
+      $this->setState("edit:{$par_data_partnership->id()}");
+      $this->pageTitle = 'Provide details of the proposed enforcement action | Add an action to the  enforcement notice';
+    }
+    return parent::titleCallback();
+  }
+
+  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    */
@@ -39,22 +53,34 @@ class ParEnforcementAddActionForm extends ParBaseForm {
 
     $reg_function_names = $par_data_partnership->getPartnershipRegulatoryFunctionNames();
 
-    $form['title_of_action'] = [
-      '#title' => $this->t('Title of action'),
+    $form['title_of_action_title'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Enter the title of action'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+    ];
+
+    $form['title_of_action_title']['title_of_action'] = [
       '#type' => 'textfield',
       '#default_value' => $this->getDefaultValues('title_of_action'),
     ];
 
     $form['regulatory_functions'] = [
       '#type' => 'radios',
-      '#title' => $this->t('Regulatory function to which this relates'),
+      '#title' => $this->t('Choose a regulatory function to which this action relates'),
       '#options' => $reg_function_names,
       '#default_value' => $this->getDefaultValues('regulatory_functions'),
       '#required' => TRUE,
     ];
 
-    $form['details'] = [
-      '#title' => $this->t('Details'),
+    $form['details_title'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Provide details about this action'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+    ];
+
+    $form['details_title']['details'] = [
       '#type' => 'textarea',
       '#default_value' => $this->getDefaultValues('details'),
     ];
@@ -63,11 +89,16 @@ class ParEnforcementAddActionForm extends ParBaseForm {
     $field_definition = $enforcement_action_fields['document'];
     $file_extensions = $field_definition->getSetting('file_extensions');
 
+    $form['files_title'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Add an attachment'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+    ];
+
     // Multiple file field.
-    $form['files'] = [
+    $form['files_title']['files'] = [
       '#type' => 'managed_file',
-      '#title' => t('Attach file(s)'),
-      '#description' => t('(document or photo)'),
       '#upload_location' => 's3private://documents/enforcement_action/',
       '#multiple' => TRUE,
       '#default_value' => $this->getDefaultValues("files"),

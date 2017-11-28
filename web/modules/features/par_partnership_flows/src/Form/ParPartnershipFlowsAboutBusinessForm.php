@@ -16,6 +16,8 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
 
   protected $formItems = [];
 
+  protected $pageTitle = 'Edit the details about the business';
+
   /**
    * {@inheritdoc}
    */
@@ -59,15 +61,13 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
 
     $this->retrieveEditableValues($par_data_partnership);
 
-    $form['intro'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Edit the details about your organisation'),
-      '#prefix' => '<h2>',
-      '#suffix' => '</h2>',
+    $form['about_business_fieldset'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Provide information about the business'),
     ];
 
     // Business details.
-    $form['about_business'] = [
+    $form['about_business_fieldset']['about_business'] = [
       '#type' => 'textarea',
       '#default_value' => $this->getDefaultValues('about_business'),
       '#description' => '<p>Use this section to give a brief overview of the business.</p><p>Include any information you feel may be useful to enforcing authorities.</p>',

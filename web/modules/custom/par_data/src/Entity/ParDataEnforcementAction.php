@@ -277,34 +277,6 @@ class ParDataEnforcementAction extends ParDataEntity {
   }
 
   /**
-   * Archive if the entity is archivable and is not new.
-   *
-   * @return boolean
-   *   True if the entity was restored, false for all other results.
-   */
-  public function archive() {
-    if (!$this->isNew() && $this->getTypeEntity()->isArchivable() && !$this->isArchived()) {
-      $this->set(ParDataEntity::ARCHIVE_FIELD, TRUE);
-      return ($this->save() === SAVED_UPDATED);
-    }
-    return FALSE;
-  }
-
-  /**
-   * Restore an archived entity.
-   *
-   * @return boolean
-   *   True if the entity was restored, false for all other results.
-   */
-  public function restore() {
-    if (!$this->isNew() && $this->getTypeEntity()->isRevokable() && $this->isArchived()) {
-      $this->set(ParDataEntity::ARCHIVE_FIELD, FALSE);
-      return ($this->save() === SAVED_UPDATED);
-    }
-    return FALSE;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {

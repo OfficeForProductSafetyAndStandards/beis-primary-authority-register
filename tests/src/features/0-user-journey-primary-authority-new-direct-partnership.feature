@@ -4,6 +4,7 @@ Feature: New Direct Partnership For PA To Approve
     Scenario: New Direct Partnership
 
         Given I am logged in as "par_authority@example.com"
+        Then I expect that element "h1.heading-xlarge" contains the text "Primary Authority Register"
         And I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
         And I expect that element "#block-par-theme-content" contains the text "See enforcement notifications"
@@ -12,12 +13,13 @@ Feature: New Direct Partnership For PA To Approve
         When I click on the link "Apply for a new partnership"
 
 
-        # CHOOSE PARTNERSHIP TYPE
+        # CHOOSE AUTHORITY REPRESENTED
 
-        And I click on authority selection if available
+        Then I expect that element "h1.heading-xlarge" contains the text "Which authority are you acting on behalf of?"
+        And I click on the radio "label*=Metropolitan District"
         And I click on the button "#edit-next"
 
-        # CREATE NEW PARTNERSHIP FORM
+        # CHOOSE PARTNERSHIP TYPE
 
         Then I expect that element "h1.heading-xlarge" contains the text "New partnership application"
         When I click on the radio "#edit-application-type-direct"
