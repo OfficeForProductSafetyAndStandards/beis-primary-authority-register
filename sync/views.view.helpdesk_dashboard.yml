@@ -687,7 +687,7 @@ display:
           entity_field: status
           plugin_id: boolean
       sorts: {  }
-      title: 'RD Helpdesk Dashboard'
+      title: 'RD Help Desk | Dashboard'
       header: {  }
       footer: {  }
       empty: {  }
