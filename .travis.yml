@@ -125,7 +125,7 @@ script:
 #-----------------------------------------------------------------------------
 # Generate tar with test screenshots to tests/reports/errorShots.tar.gz
 #-----------------------------------------------------------------------------
-  - docker exec -ti par_beta_web bash -c "cd tests/reports && if [ -d ./html ]; then tar -cf reportHTML.tar.gz ./html; fi"
+#  - docker exec -ti par_beta_web bash -c "cd tests/reports && if [ -d ./html ]; then tar -cf reportHTML.tar.gz ./html; fi"
   - travis_retry docker exec -ti par_beta_web bash -c "cd tests && if [ -d ./errorShots ]; then tar -cf reports/errorShots.tar.gz ./errorShots; fi"
 
 #-----------------------------------------------------------------------------
