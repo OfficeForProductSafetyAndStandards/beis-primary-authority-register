@@ -48,10 +48,6 @@ exports.config = {
         //
         browserName: 'chrome',
     }],
-<<<<<<< HEAD
-=======
-
->>>>>>> master
     bail: 1,
     //
     // ===================
@@ -123,35 +119,21 @@ exports.config = {
     // installed before running any tests.
     framework: 'cucumber',
     //
-<<<<<<< HEAD
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: http://webdriver.io/guide/testrunner/reporters.html
     reporters: ['json', 'spec', 'allure'],
-=======
     // Save test report to ./tests/reports/report.json
     // see: http://webdriver.io/guide/testrunner/reporters.html
-    reporters: ['spec', 'json'],
->>>>>>> master
     reporterOptions: {
         outputDir: './reports/',
         filename: 'report',
         combined: true,
-<<<<<<< HEAD
         allure: {
             outputDir: './reports/allure/'
         }
     },
-    //reporters: ['spec', 'json'],
-    //reporterOptions: {
-    //    outputDir: './reports/',
-    //    filename: 'report',
-    //    combined: true
-    //},
-=======
-    },
->>>>>>> master
-    //
+
     // If you are using Cucumber you need to specify the location of your step
     // definitions.
     cucumberOpts: {
