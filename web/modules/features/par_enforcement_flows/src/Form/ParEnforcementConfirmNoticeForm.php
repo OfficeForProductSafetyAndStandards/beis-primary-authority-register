@@ -39,6 +39,14 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  public function titleCallback() {
+    $this->pageTitle = "Confirmation| Enforcement action decision";
+    return parent::titleCallback();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getFormId() {
     return 'par_enforcement_notice_approve_confirm';
   }
