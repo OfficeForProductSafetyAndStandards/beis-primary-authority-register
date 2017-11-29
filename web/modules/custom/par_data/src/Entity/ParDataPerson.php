@@ -2,8 +2,11 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\user\UserInterface;
 
 /**
@@ -161,25 +164,85 @@ class ParDataPerson extends ParDataEntity {
   }
 
   /**
-   * Helper function to build a combined field string.
+   * Get PAR Person's work phone pseudo-field value.
    *
-   * @param string $user_field
-   *   Field name/id of a user field e.g. email, work_phone, mobile_phone.
-   * @param string $preference_field
-   *   Preference field id.
    * @return string
-   *   Their full name including title/salutation field.
+   *   PAR Person's work phone including preference text.
    */
-  public function getCommunicationField($user_field, $key) {
-    if ($this->get($key)->getString() == 1) {
-      $preference_message = $this->getTypeEntity()
-        ->getBooleanFieldLabel($key,
-          $this->get($key)->getString());
+  public function getWorkPhone() {
+    return $this->getCommunicationFieldText(
+      $this->get('work_phone')->getString(),
+      'communication_phone'
+    );
+  }
 
-      return "{$this->get($user_field)->getString()} ({$preference_message})";
+  /**
+   * Get PAR Person's mobile phone pseudo-field value.
+   *
+   * @return string
+   *   PAR Person's mobile phone including preference text.
+   */
+  public function getMobilePhone() {
+    return $this->getCommunicationFieldText(
+      $this->get('mobile_phone')->getString(),
+      'communication_mobile'
+    );
+  }
+
+  /**
+   * Get PAR Person's email pseudo-field value.
+   *
+   * @return string
+   *   PAR Person's email mailto link including preference text.
+   */
+  public function getEmailLink() {
+    $email = $this->get('email')->getString();
+
+    $email_link = Link::fromTextAndUrl($email,
+      Url::fromUri("mailto:{$email}"));
+
+    $email_link_safe = Xss::filter($email_link->toString(), ['a']);
+
+    return $this->getCommunicationFieldText(
+      $email_link_safe,
+      'communication_email'
+    );
+  }
+
+  /**
+   * Helper function to format communication pseudo field value.
+   *
+   * @param string $text
+   *   Text to display.
+   * @param string $preference_field
+   *   Preference field machine name.
+   * @return string
+   *   Pseudo field value.
+   */
+  public function getCommunicationFieldText($text, $preference_field) {
+    if ($preference_message = $this->getCommunicationPreferredText($preference_field)) {
+      return "{$text} ({$preference_message})";
     }
 
-    return $this->get($user_field)->getString();
+    return $text;
+  }
+
+  /**
+   * Helper function to get preference field boolean "on" value.
+   *
+   * @param string $preference_field
+   *   Preference field id.
+   * @return string|null
+   *   Preference field boolean value label text.
+   */
+  public function getCommunicationPreferredText($preference_field) {
+    if ($this->get($preference_field)->getString() == 1) {
+      $preference_message = $this->getTypeEntity()
+        ->getBooleanFieldLabel($preference_field,
+          $this->get($preference_field)->getString());
+    }
+
+    return isset($preference_message) ? $preference_message : null;
   }
 
   /**
