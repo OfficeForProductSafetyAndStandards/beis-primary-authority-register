@@ -5,12 +5,9 @@
  * Contains par_data.module.
  */
 
-use Drupal\Component\Utility\Xss;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Link;
-use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataPersonType;
 use Drupal\views\ViewExecutable;
 
@@ -154,24 +151,19 @@ function par_data_entity_view(array &$build, EntityInterface $entity, EntityView
 
     if ($display->getComponent('work_phone_pseudo_field')) {
       $build['work_phone_pseudo_field'] = [
-        '#plain_text' => $entity->getCommunicationField('work_phone', 'communication_phone'),
+        '#plain_text' => $entity->getWorkPhone(),
       ] + $field_defaults;
     }
 
     if ($display->getComponent('mobile_phone_pseudo_field')) {
       $build['mobile_phone_pseudo_field'] = [
-        '#plain_text' => $entity->getCommunicationField('mobile_phone', 'communication_mobile'),
+        '#plain_text' => $entity->getMobilePhone(),
       ] + $field_defaults;
     }
 
     if ($display->getComponent('email_pseudo_field')) {
-      $email = $entity->getCommunicationField('email', 'communication_email');
-
-      $email_link = Link::fromTextAndUrl($email,
-        Url::fromUri("mailto:{$email}"));
-
       $build['email_pseudo_field'] = [
-        '#markup' => Xss::filter($email_link->toString(), ['a']),
+        '#markup' => $entity->getEmailLink(),
       ] + $field_defaults;
     }
   }
