@@ -120,36 +120,56 @@
     </div>
    </div>
    <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-3">
      <div class="statcard p-4" id="last_build_status">
       <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
-      <span class="statcard-desc">Build Status</span>
+      <span class="statcard-desc">Status</span>
      </div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-3">
      <div class="statcard p-4" id="last_build_duration">
       <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
-      <span class="statcard-desc">Last Build Duration</span>
+      <span class="statcard-desc">Duration</span>
      </div>
     </div>
+    <div class="col-sm-3">
+     <div class="statcard p-4" id="latest_release_tag">
+      <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
+      <span class="statcard-desc">Release</span>
+     </div>
+    </div>
+    <div class="col-sm-3">
+     <div class="statcard p-4" id="branch_version">
+      <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
+      <span class="statcard-desc">Branch</span>
+     </div>
+    </div>
+
    </div>
-   <div class="row">
-     <div class="col-sm-4">
-      <div class="statcard p-4" id="production_version">
-       <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
-       <span class="statcard-desc">Production</span>
+     <div class="row">
+       <div class="col-sm-3">
+        <div class="statcard p-4" id="production_version">
+         <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
+         <span class="statcard-desc">Production</span>
+        </div>
+       </div>
+       <div class="col-sm-3">
+        <div class="statcard p-4" id="staging_version">
+         <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
+         <span class="statcard-desc">Staging</span>
+        </div>
+       </div>
+       <div class="col-sm-3">
+        <div class="statcard p-4" id="assessment_version">
+         <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
+         <span class="statcard-desc">Assessment</span>
+        </div>
       </div>
-     </div>
-     <div class="col-sm-4">
-      <div class="statcard p-4" id="staging_version">
-       <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
-       <span class="statcard-desc">Staging</span>
-      </div>
-     </div>
-     <div class="col-sm-4">
-      <div class="statcard p-4" id="assessment_version">
-       <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
-       <span class="statcard-desc">Assessment</span>
+       <div class="col-sm-3">
+        <div class="statcard p-4" id="demo_version">
+         <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
+         <span class="statcard-desc">Demo</span>
+        </div>
       </div>
    </div>   
   </div>
@@ -157,9 +177,20 @@
  </div>
 
  <div class="row" style="height:200px;margin-bottom:1em">
-  <div class="col-sm-12">
-  <h3>&nbsp;Response Time History (24 hours)</h3>
+
+  <div class="col-sm-4">
+  <h3>&nbsp;Resource Use (24 hours)</h3>
+  <canvas id="resource_use_history"></canvas>
+  </div>
+  <div class="col-sm-4">
+  <h3>&nbsp;Response Time (24 hours)</h3>
   <canvas id="response_time_history"></canvas>
+  </div>
+  <div class="col-sm-4">
+    <div class="row">
+
+
+    </div>
   </div>
  </div>
  <div class="row">
@@ -305,19 +336,21 @@
               $('#pull_time_' + i).html("Updated " + moment(pulls[i].updated_at).fromNow())
             }
 
+            $('#latest_release_tag > .statcard-number').html(data.releases[0].tag_name);
+            $('#latest_release_tag').addClass('statcard-success');
         });
       }
 
       function renderBuildVersions() {
         $.get("/stats/build_versions", function(data, status) {
            
-           const envs = ['production', 'staging', 'assessment'];
+           const envs = ['production', 'staging', 'assessment', 'demo', 'branch'];
 
            envs.forEach(function(env) {
              var id = '#' + env + '_version';
              $(id + ' > .statcard-number').html(data[env]);
              var status = 'danger';
-             if (data[env].indexOf('v') == 0) {
+             if (typeof data[env] != undefined) {
                 status = 'success';
              }
              var el = $(id);
@@ -375,6 +408,7 @@
                     }]
                 },
                 options: {
+                    animation : false,
                     maintainAspectRatio: false,
                     responsive: true,
                     stepped:false,
@@ -392,7 +426,7 @@
                     },
                     scales: {
                         xAxes: [{
-                            display: true,
+                            display: false,
                         }],
                         yAxes: [{
                             display: true,
@@ -409,7 +443,7 @@
       }
 
       renderGitHubStats();
-      setInterval(renderGitHubStats, 20000);
+      setInterval(renderGitHubStats, 120000);
 
       renderBuildVersions();
       setInterval(renderBuildVersions, 18000);

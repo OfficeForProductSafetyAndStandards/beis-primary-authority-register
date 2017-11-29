@@ -16,10 +16,12 @@ class GitHubStatsService
 
 		$commits = $client->get('/repos/UKGovernmentBEIS/beis-primary-authority-register/commits')->getBody()->getContents();
 		$pullRequests = $client->get('/repos/UKGovernmentBEIS/beis-primary-authority-register/pulls')->getBody()->getContents();
+		$releases = $client->get('/repos/UKGovernmentBEIS/beis-primary-authority-register/releases')->getBody()->getContents();
 
         return [
         	'commits' => json_decode($commits),
         	'pull_requests' => json_decode($pullRequests),
+        	'releases' => json_decode($releases),
         ];
     }
 }
