@@ -377,9 +377,18 @@
                 options: {
                     maintainAspectRatio: false,
                     responsive: true,
+                    stepped:false,
                     title:{
-                        display:true,
-                        text:'Chart.js Line Chart - Logarithmic'
+                        display:false,
+                        text:''
+                    },
+                    elements: {
+                        point: {
+                            radius: 0
+                        }
+                    },
+                    legend: {
+                        display: false
                     },
                     scales: {
                         xAxes: [{
@@ -400,10 +409,10 @@
       }
 
       renderGitHubStats();
-      setInterval(renderGitHubStats(), 20000);
+      setInterval(renderGitHubStats, 20000);
 
       renderBuildVersions();
-      setInterval(renderBuildVersions(), 18000);
+      setInterval(renderBuildVersions, 18000);
 
       renderTravisStats();
       setInterval(renderTravisStats, 12000);
