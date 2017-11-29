@@ -109,6 +109,11 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
     }
     foreach ($par_data_enforcement_notice->get('field_enforcement_action')->referencedEntities() as $delta => $action) {
 
+      $form['actions'][$delta] = [
+        '#type' => 'fieldset',
+         '#attributes' => ['class' => 'form-group'],
+       ];
+      
       $form['actions'][$delta]['title'] = $this->renderSection('Title of action', $action, ['title' => 'title']);
       $form['actions'][$delta]['regulatory_function'] = $this->renderSection('Regulatory function', $action, ['field_regulatory_function' => 'title']);
       $form['actions'][$delta]['details'] = $this->renderSection('Details', $action, ['details' => 'full']);
