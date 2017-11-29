@@ -9,7 +9,7 @@ use PubNub\PNConfiguration;
 use PubNub\Exceptions\PubNubUnsubscribeException;	
 use Config;
  
-class CloudFoundryStatsService extends SubscribeCallback {
+class PubNubService extends SubscribeCallback {
 	private $result = '';
 
 	public function getResult() {
@@ -42,7 +42,7 @@ class CloudFoundryStatsService extends SubscribeCallback {
         // handle incoming presence data
     }
 
-    public function stats() {
+    public function stats($channel) {
          
 		$pnconf = new PNConfiguration();
 		$pubnub = new PubNub($pnconf);
@@ -53,7 +53,7 @@ class CloudFoundryStatsService extends SubscribeCallback {
 		 
 		// Subscribe to a channel, this is not async.
 		$pubnub->subscribe()
-		    ->channels("cloud_foundry_8")
+		    ->channels($channel)
 		    ->execute();
 
 		return $this->result;

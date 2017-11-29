@@ -18,3 +18,4 @@ Route::get('/stats/travis', 'IndexController@travisStats');
 Route::get('/stats/github', 'IndexController@gitHubStats');
 Route::get('/stats/build_versions', 'IndexController@buildVersionStats');
 Route::get('/stats/uptime', 'IndexController@uptimeStats');
+Route::get('/stats/tests', 'IndexController@testStats');

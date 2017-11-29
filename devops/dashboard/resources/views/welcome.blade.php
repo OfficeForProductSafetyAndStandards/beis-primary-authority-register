@@ -179,25 +179,16 @@
  <div class="row" style="height:200px;margin-bottom:1em">
 
   <div class="col-sm-4">
-  <h3>&nbsp;Resource Use (24 hours)</h3>
-  <canvas id="resource_use_history"></canvas>
+  
   </div>
   <div class="col-sm-4">
   <h3>&nbsp;Response Time (24 hours)</h3>
   <canvas id="response_time_history"></canvas>
   </div>
   <div class="col-sm-4">
-    <div class="row">
-
-
-    </div>
-  </div>
- </div>
- <div class="row">
-  <div class="col-sm-6">
-  <h3>&nbsp;Open Pull Requests</h3>
-  <table class="table" id="commit_list">
-    @for ($i=0; $i<10; $i++)
+      <h3>&nbsp;Open Pull Requests</h3>
+  <table class="table" id="pull_request_list">
+    @for ($i=0; $i<4; $i++)
       <tr>
         <td id="pull_author_{{ $i }}"></td>
         <td id="pull_title_{{ $i }}"></td>
@@ -205,12 +196,24 @@
       </tr>
     @endfor
   </table>
+    <div class="row">
+
+
+    </div>
+  </div>
+ </div>
+ <div class="row">
+  <div class="col-sm-4">
+
  </div>
 
-  <div class="col-sm-6">
+  <div class="col-sm-4">
+  
+ </div>
+ <div class="col-sm-4">
   <h3>&nbsp;Recent Commits</h3>
- <table class="table" id="pull_request_list">
-    @for ($i=0; $i<10; $i++)
+ <table class="table" id="commit_list">
+    @for ($i=0; $i<7; $i++)
       <tr>
         <td id="commit_author_{{ $i }}"></td>
         <td id="commit_title_{{ $i }}"></td>

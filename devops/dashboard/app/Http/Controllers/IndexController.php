@@ -12,7 +12,7 @@ class IndexController extends Controller
      * @return void
      */
     public function __construct(
-        \App\Services\CloudFoundryStatsService $cloudFoundryStatsService,
+        \App\Services\PubNubService $pubNubService,
         \App\Services\UptimeRobotStatsService $uptimeRobotStatsService,
         \App\Services\BuildVersionService $buildVersionService,
         \App\Services\TravisStatsService $travisStatsService,
@@ -20,7 +20,7 @@ class IndexController extends Controller
     )
     {
         $this->services['uptime'] = $uptimeRobotStatsService;
-        $this->services['cf'] = $cloudFoundryStatsService;
+        $this->services['pubnub'] = $pubNubService;
         $this->services['travis'] = $travisStatsService;
         $this->services['github'] = $gitHubStatsService;
         $this->services['build_versions'] = $buildVersionService;
@@ -35,9 +35,15 @@ class IndexController extends Controller
     {
         return view('welcome');
     }
+
     public function cloudFoundryStats()
     {
-        return $this->services['cf']->stats();
+        return $this->services['pubnub']->stats('cloud_foundry_8');
+    }
+
+    public function testStats()
+    {
+        return $this->services['pubnub']->stats('travis_tests');
     }
 
     public function uptimeStats()

@@ -163,7 +163,8 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        App\Providers\CloudFoundryStatsServiceProvider::class,
+
+        App\Providers\PubNubServiceProvider::class,
         App\Providers\GitHubStatsServiceProvider::class,
         App\Providers\TravisStatsServiceProvider::class,
         App\Providers\UptimeRobotStatsServiceProvider::class,
