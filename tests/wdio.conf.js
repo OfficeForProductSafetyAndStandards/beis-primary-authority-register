@@ -34,7 +34,7 @@ exports.config = {
     // spawned. The property handles how many capabilities from the same test
     // should run tests.
     //
-    maxInstances: 1,
+    maxInstances: 2,
     //
     // If you have trouble getting all important capabilities together, check
     // out the Sauce Labs platform configurator - a great tool to configure your
@@ -44,7 +44,7 @@ exports.config = {
         // maxInstances can get overwritten per capability. So if you have an
         // in-house Selenium grid with only 5 firefox instance available you can
         // make sure that not more than 5 instance gets started at a time.
-        maxInstances: 1,
+        maxInstances: 2,
         //
         browserName: 'chrome',
     }],
@@ -122,18 +122,14 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: http://webdriver.io/guide/testrunner/reporters.html
-    reporters: ['json', 'spec', 'allure'],
+    reporters: ['json', 'spec'],
     // Save test report to ./tests/reports/report.json
     // see: http://webdriver.io/guide/testrunner/reporters.html
     reporterOptions: {
         outputDir: './reports/',
         filename: 'report',
         combined: true,
-        allure: {
-            outputDir: './reports/allure/'
-        }
     },
-
     // If you are using Cucumber you need to specify the location of your step
     // definitions.
     cucumberOpts: {
