@@ -20,6 +20,7 @@ Feature: Enforcement notice management
         And I click on the button "a*=Dashboard"
         And I click on the link "See enforcement notifications"
         And I click on the link "Title of enforcement notice Four"
+        Then the element "#edit-actions-0-primary-authority-status--wrapper h3.heading-medium" contains the text "Decide to allow or block this action, or refer this action to another Primary Authority"
         And I click on the radio "#edit-actions-0-primary-authority-status-approved"
         And I click on the button "#edit-actions-next"
 #        Then I expect that element "h1" contains the text "Confirm Enforcement Notice"
