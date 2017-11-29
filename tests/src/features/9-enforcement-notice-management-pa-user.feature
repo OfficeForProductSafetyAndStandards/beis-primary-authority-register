@@ -19,6 +19,7 @@ Feature: Enforcement notice management
         Given I am logged in as "par_authority@example.com"
         And I click on the button "a*=Dashboard"
         And I click on the link "See enforcement notifications"
+        Then the element ".heading-small" contains the text "Your enforcement notifications"
         And I click on the link "Title of enforcement notice Four"
         Then the element "#edit-actions-0-primary-authority-status--wrapper h3.heading-medium" contains the text "Decide to allow or block this action, or refer this action to another Primary Authority"
         And I click on the radio "#edit-actions-0-primary-authority-status-approved"
