@@ -237,9 +237,7 @@ class ParDataPerson extends ParDataEntity {
    */
   public function getCommunicationPreferredText($preference_field) {
     if ($this->get($preference_field)->getString() == 1) {
-      $preference_message = $this->getTypeEntity()
-        ->getBooleanFieldLabel($preference_field,
-          $this->get($preference_field)->getString());
+      $preference_message = "preferred";
     }
 
     return isset($preference_message) ? $preference_message : null;
