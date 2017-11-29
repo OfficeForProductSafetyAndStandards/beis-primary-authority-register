@@ -157,7 +157,7 @@ Feature: Business User - Manage Addresses
         And I click on the button "#edit-save"
         Then I expect that element "#edit-organisation-contacts" contains the text "Dr Harvey Kneeslapper"
         And I expect that element "#edit-organisation-contacts" contains the text "02078886666"
-        And I expect that element "#edit-organisation-contacts" contains the text "07965465723 (Preferred communication by work phone)"
+        And I expect that element "#edit-organisation-contacts" contains the text "07965465723 (Preferred communication by mobile phone)"
 
         # COMPLETE CHANGES
 
