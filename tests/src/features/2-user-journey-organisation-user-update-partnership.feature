@@ -141,21 +141,23 @@ Feature: Business User - Manage Addresses
         # EDIT MAIN BUSINESS CONTACT
 
         When I click on the link "edit organisation contact"
+        And I clear the inputfield "#edit-salutation"
         And I clear the inputfield "#edit-first-name"
         And I clear the inputfield "#edit-last-name"
         And I clear the inputfield "#edit-work-phone"
         And I clear the inputfield "#edit-mobile-phone"
+        And I clear the inputfield "#edit-notes"
+        And I add "Dr" to the inputfield "#edit-salutation"
         And I add "Harvey" to the inputfield "#edit-first-name"
         And I add "Kneeslapper" to the inputfield "#edit-last-name"
         And I add "02078886666" to the inputfield "#edit-work-phone"
         And I add "07965465723" to the inputfield "#edit-mobile-phone"
-        And I click on the radio "#edit-preferred-contact-communication-mobile"
+        And I check the checkbox "#edit-preferred-contact-communication-mobile"
         And I add "Some additional notes" to the inputfield "#edit-notes"
         And I click on the button "#edit-save"
-        Then I expect that element "#edit-organisation-contacts" contains the text "Harvey"
-        And I expect that element "#edit-organisation-contacts" contains the text "Kneeslapper"
+        Then I expect that element "#edit-organisation-contacts" contains the text "Dr Harvey Kneeslapper"
         And I expect that element "#edit-organisation-contacts" contains the text "02078886666"
-        And I expect that element "#edit-organisation-contacts" contains the text "07965465723"
+        And I expect that element "#edit-organisation-contacts" contains the text "07965465723 (Preferred communication by work phone)"
 
         # COMPLETE CHANGES
 
