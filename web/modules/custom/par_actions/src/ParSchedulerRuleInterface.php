@@ -20,6 +20,11 @@ interface ParSchedulerRuleInterface extends PluginInspectionInterface {
   public function getItems();
 
   /**
+   * Runs the plugin.
+   */
+  public function run();
+
+  /**
    * Adds all unprocessed items into the queue.
    */
   public function buildQueue();

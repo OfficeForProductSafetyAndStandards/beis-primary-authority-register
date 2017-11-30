@@ -767,7 +767,7 @@ display:
           entity_type: par_data_partnership
           plugin_id: par_data_field_allowed_options_filter
       sorts: {  }
-      title: 'Primary Authority Register'
+      title: 'Primary Authority Register | Search for a partnership'
       header: {  }
       footer: {  }
       empty: {  }

@@ -50,15 +50,6 @@ class ParSchedulerRule extends Plugin {
   public $status = TRUE;
 
   /**
-   * An associative array containing the optional key:
-   *   - time: (optional) How much time Drupal cron should spend on calling
-   *     this worker in seconds. Defaults to 15.
-   *
-   * @var array (optional)
-   */
-  public $cron;
-
-  /**
    * The entity type to query.
    *
    * @var string
@@ -78,6 +69,14 @@ class ParSchedulerRule extends Plugin {
    * @var string
    */
   public $time;
+
+  /**
+   * Whether to resolve this action by sticking it in a queue
+   * instead of trying to resolve immediately.
+   *
+   * @var boolean
+   */
+  public $queue;
 
   /**
    * The action to be performed on the entity.

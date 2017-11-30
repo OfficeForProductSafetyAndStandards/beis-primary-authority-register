@@ -1,13 +1,14 @@
-@Pending @Bug
+@ci
 Feature: Coordinator User - Manage Addresses
 
     Scenario: Coordinator User - Manage Addresses
 
         # PARTNERSHIPS DASHBOARD
-
-#        Given I reset the test data
-        Given I am logged in as "par_coordinator@example.com"
-        And I open the url "/dashboard"
+        Given I open the url "/user/login"
+        And I add "par_coordinator@example.com" to the inputfield "#edit-name"
+        And I add "TestPassword" to the inputfield "#edit-pass"
+        When I click on the button "#edit-submit"
+        Then I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I click on the link "See your partnerships"
         And I click on the link "Business For Coordinated Partnership 1"
         And I expect that element "h1" is not empty
@@ -60,8 +61,8 @@ Feature: Coordinator User - Manage Addresses
 #        And I clear the inputfield "#edit-registered-name"
 #        When I add "Changed" to the inputfield "#edit-registered-name"
 #        And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
-#        And I clear the inputfield "#edit-company-house-no"
-#        When I add "0123456789" to the inputfield "#edit-company-house-no"
+#        And I clear the inputfield "#edit-registered-number"
+#        When I add "0123456789" to the inputfield "#edit-registered-number"
 #        And I click on the button "#edit-save"
 #        Then I expect that element "#edit-legal-entities" contains the text "Changed"
 #        Then I expect that element "#edit-legal-entities" contains the text "Limited Company"
@@ -78,9 +79,18 @@ Feature: Coordinator User - Manage Addresses
         # ADD NEW TRADING NAME
 
         When I click on the link "add another trading name"
+        Then I expect that element "h1.heading-xlarge" contains the text "Add a trading name for your organisation"
         When I add "Different Trading Name" to the inputfield "#edit-trading-name"
         And I click on the button "#edit-save"
         Then I expect that element "#edit-trading-names" contains the text "Different Trading Name"
+
+        # EDIT TRADING NAME
+
+        When I click on the link "edit trading name"
+        Then I expect that element "h1.heading-xlarge" contains the text "Edit trading name for your organisation"
+        When I add "Different Trading Name (edited)" to the inputfield "#edit-trading-name"
+        And I click on the button "#edit-save"
+        Then I expect that element "#edit-trading-names" contains the text "Different Trading Name (edited)"
 
         # EDIT MAIN BUSINESS CONTACT
 
@@ -101,4 +111,10 @@ Feature: Coordinator User - Manage Addresses
 
         # COMPLETE CHANGES
 
+        When I click on the button "#edit-save"
+        And I click on the checkbox "#edit-partnership-info-agreed-business"
         And I click on the button "#edit-save"
+        And I select the option with the value "3" for element "#edit-partnership-status"
+        And I click on the button "#edit-submit-par-user-partnerships"
+        And I expect that element "#block-par-theme-content" contains the text "Business For Coordinated Partnership 1"
+

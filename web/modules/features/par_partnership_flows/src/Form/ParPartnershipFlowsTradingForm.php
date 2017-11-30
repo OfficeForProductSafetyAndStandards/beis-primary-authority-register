@@ -14,13 +14,25 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
-  protected $pageTitle = 'Add another trading name for your organisation';
-
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
     return 'par_partnership_trading_name';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function titleCallback() {
+    $trading_name_delta = $this->getRouteParam('trading_name_delta');
+
+    // Check from the route if we are editing an existing trading name.
+    $action = isset($trading_name_delta) ? 'Edit' : 'Add a';
+
+    $this->pageTitle = "Update partnership information | {$action} trading name for your organisation";
+
+    return $this->pageTitle;
   }
 
   /**
@@ -69,6 +81,7 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
 
     $form['trading_name_fieldset'] = [
       '#type' => 'fieldset',
+      '#attributes' => ['class' => 'form-group'],
       '#title' => $this->t('Enter a trading name'),
     ];
 

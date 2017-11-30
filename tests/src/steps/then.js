@@ -16,6 +16,8 @@ import checkModalText from '../support/check/checkModalText';
 import checkNewWindow from '../support/check/checkNewWindow';
 import checkOffset from '../support/check/checkOffset';
 import checkProperty from '../support/check/checkProperty';
+import checkEmailRecipients from '../support/check/checkEmailRecipients';
+import openEmailFile from '../support/check/openEmailFile';
 import checkSelected from '../support/check/checkSelected';
 import checkTitle from '../support/check/checkTitle';
 import checkURL from '../support/check/checkURL';
@@ -37,6 +39,16 @@ defineSupportCode(({ Then }) => {
     Then(
         /^I expect that element "([^"]*)?" is( not)* visible$/,
         isVisible
+    );
+
+    Then(
+        /^I expect that notification email has been sent to all authority members$/,
+        checkEmailRecipients
+    );
+
+    Then(
+        /^email body should contain all relevant EO data$/,
+        openEmailFile
     );
 
     Then(

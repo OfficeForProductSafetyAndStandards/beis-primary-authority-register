@@ -4,7 +4,13 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_authority.summary
+    - field.field.par_data_authority.authority.field_allowed_regulatory_fn
+    - field.field.par_data_authority.authority.field_person
+    - field.field.par_data_authority.authority.field_premises
+    - field.field.par_data_authority.authority.field_regulatory_function
     - par_data.par_data_authority_type.authority
+  module:
+    - par_data
 _core:
   default_config_hash: 63fKT_sy9nVXWyICykOE2hDWDO-cfVimjSpUc1p-8rU
 id: par_data_authority.authority.summary
@@ -21,12 +27,12 @@ content:
       link_to_entity: false
     third_party_settings: {  }
   authority_type:
-    type: string
+    type: par_list_formatter
     weight: 1
     region: content
     label: hidden
     settings:
-      link_to_entity: false
+      display_original_value: false
     third_party_settings: {  }
   regulatory_function:
     type: entity_reference_entity_view

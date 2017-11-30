@@ -3,10 +3,13 @@ Feature: Primary Authority - Change Partnership Details
 
     Scenario: Primary Authority - Change Partnership Details
 
-#        Given I reset the test data
-        Given I am logged in as "par_authority@example.com"
-        And I click on the link "See your partnerships"
-        When I add "Charlie" to the inputfield "#edit-keywords"
+        Given I open the url "/user/login"
+        And I add "par_authority@example.com" to the inputfield "#edit-name"
+        And I add "TestPassword" to the inputfield "#edit-pass"
+        When I click on the button "#edit-submit"
+        Then I expect that element "#block-par-theme-content" contains the text "See your partnerships"
+        When I click on the link "See your partnerships"
+        And I add "Charlie" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
         And I click on the button "td.views-field.views-field-par-flow-link a"
 
@@ -27,8 +30,8 @@ Feature: Primary Authority - Change Partnership Details
         When I add "91723456789" to the inputfield "#edit-work-phone"
         When I add "9777777777" to the inputfield "#edit-mobile-phone"
         When I click on the button "#edit-save"
-        And I expect that element "#edit-authority-contacts" contains the text "91723456789"
-        And I expect that element "#edit-authority-contacts" contains the text "9777777777"
+        And I expect that element ".work_phone" contains the text "91723456789"
+        And I expect that element ".mobile_phone" contains the text "9777777777"
 
         # DOCUMENTATION
 

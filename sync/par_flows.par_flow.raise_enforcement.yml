@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: oFjuQr7CKxZQ35cWNiNTRAJTwSx4kamKe_V3E_nRugo
+  default_config_hash: 92uh2GyAo5iIek0DHd4sB8wO5tUzR5vmFoBZ4Gf0yAc
 id: raise_enforcement
 label: 'Raise Enforcement'
 default_title: 'Notification of Enforcement action'
@@ -62,6 +62,7 @@ steps:
     redirect:
       add_enforcement_action: 9
       save: 11
+      cancel: 1
   11:
     route: par_dashboards.dashboard
   12:
