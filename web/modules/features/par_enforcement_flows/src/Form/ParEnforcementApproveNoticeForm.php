@@ -129,7 +129,7 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
       }
       $form['actions'][$delta]['primary_authority_status'] = [
         '#type' => 'radios',
-        '#title' => $this->t('Review this action'),
+        '#title' => $this->t('Decide to allow or block this action, or refer this action to another Primary Authority '),
         '#options' => $statuses,
         '#default_value' => $this->getDefaultValues(['actions', $delta, 'primary_authority_status'], ParDataEnforcementAction::APPROVED),
         '#disabled' => $this->getDefaultValues(['actions', $delta, 'disabled'], FALSE),
