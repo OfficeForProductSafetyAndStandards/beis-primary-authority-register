@@ -6,7 +6,7 @@ Feature: New Coordinated Partnership
         # SEARCH PARTNERSHIPS
 
         Given I open the url "/user/login"
-        And I add "par_enforcement_officer@example.com" to the inputfield "#edit-name"
+        And I add "par_authority@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         Then I expect that element "#block-par-theme-content" contains the text "See your partnerships"
