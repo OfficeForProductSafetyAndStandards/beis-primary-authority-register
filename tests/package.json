@@ -39,7 +39,7 @@
     "fs-extra": "latest",
     "http-server": "~0.10.0",
     "jest": "~21.2.0",
-    "pa11y": "4.13.1",
+    "pa11y": "latest",
     "wdio-browserstack-service": "0.1.11",
     "wdio-chromedriver-service": "latest",
     "wdio-cucumber-framework": "~1.0.2",
