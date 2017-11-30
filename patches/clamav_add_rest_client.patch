@@ -205,7 +205,7 @@ index 0000000..56a45be
 +    if (isset($response) && isset($response->file->status)) {
 +      $result = $response->file->status == 'OK' ? Scanner::FILE_IS_CLEAN : Scanner::FILE_IS_INFECTED;
 +
-+      if (isset($response->file->foundViruses)) {
++      if (isset($response->file->foundViruses->stream)) {
 +        $this->virusName = current($response->file->foundViruses->stream);
 +      }
 +    }
