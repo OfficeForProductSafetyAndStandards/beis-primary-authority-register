@@ -15,6 +15,7 @@ import selectOption from '../support/action/selectOption';
 import selectOptionByIndex from '../support/action/selectOptionByIndex';
 import setCookie from '../support/action/setCookie';
 import setInputField from '../support/action/setInputField';
+import enterInRandomText from '../support/action/enterInRandomText';
 import setPromptText from '../support/action/setPromptText';
 import submitForm from '../support/action/submitForm';
 import uploadTheFile from '../support/action/uploadTheFile.js';
@@ -40,6 +41,11 @@ defineSupportCode(({ When }) => {
     When(
         /^I (add|set) "([^"]*)?" to the inputfield "([^"]*)?"$/,
         setInputField
+    );
+
+    When(
+        /^I add "([^"]*)?" random chars of text to field "([^"]*)?"$/,
+        enterInRandomText
     );
 
     When(

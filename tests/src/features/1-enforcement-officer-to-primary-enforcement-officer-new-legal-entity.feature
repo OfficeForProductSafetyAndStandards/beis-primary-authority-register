@@ -46,6 +46,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
       # ENFORCEMENT SUMMARY
 
         And I add "action summary enforcement notice" to the inputfield "#edit-action-summary"
+#        And I add "600" random chars of text to field "#edit-action-summary"
         And I click on the radio "#edit-type-proposed"
         And I click on the button "#edit-next"
         And I add "Title of enforcement notice Four" to the inputfield "#edit-title-of-action"
@@ -54,6 +55,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I upload the file "./src/features/files/test1.png"
         And I click on the button "#edit-next"
         Then I expect that element ".filename" contains the text "test1.png"
+
         # ADD ENFORCEMENT ACTION
 
 #        When I click on the link "Add another enforcement action"
@@ -65,7 +67,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         # CHECK DETAILS
 
         Then I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Title of enforcement notice Four"
-        And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Some details about the enforcement notice"
+        And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "last text in a long string"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Once the primary authority receives this notification, they have 5 working days to respond to you if they intend to block the action"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "You will be notified by email of the outcome of this notification"
 

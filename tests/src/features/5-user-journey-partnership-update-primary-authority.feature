@@ -30,8 +30,8 @@ Feature: Primary Authority - Change Partnership Details
         When I add "91723456789" to the inputfield "#edit-work-phone"
         When I add "9777777777" to the inputfield "#edit-mobile-phone"
         When I click on the button "#edit-save"
-        And I expect that element "#edit-authority-contacts" contains the text "91723456789"
-        And I expect that element "#edit-authority-contacts" contains the text "9777777777"
+        And I expect that element ".work_phone" contains the text "91723456789"
+        And I expect that element ".mobile_phone" contains the text "9777777777"
 
         # DOCUMENTATION
 
