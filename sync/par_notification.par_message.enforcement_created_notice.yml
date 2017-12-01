@@ -1,0 +1,8 @@
+uuid: 614b1def-c1ca-4f28-8606-b4d05fb1f8aa
+langcode: en
+status: true
+dependencies: {  }
+id: enforcement_created_notice
+label: 'New enforcement notification to primary authority'
+subject: 'Primary Authority - Notification of Proposed Enforcement'
+message: "Dear Colleague,\r\n\r\nThis email is confirmation that you have received an enforcement notification. You must respond within 5 working days, or this will default to ‘allow’. Please log on to the PA Register to see the full details of the notification and to respond.\r\n\r\nThank you."
