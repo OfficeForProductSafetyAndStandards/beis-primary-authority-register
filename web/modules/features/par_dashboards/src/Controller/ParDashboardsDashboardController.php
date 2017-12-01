@@ -127,23 +127,37 @@ class ParDashboardsDashboardController extends ControllerBase {
       ];
     }
 
-    // Enforcement notices that need attention.
+    // Enforcement Notice links.
     if ($this->getCurrentUser()->hasPermission('enforce organisation')) {
       $build['messages'] = [
         '#type' => 'fieldset',
-        '#title' => $this->t('Messages'),
+        '#title' => $this->t('Your messages'),
         '#attributes' => ['class' => 'form-group'],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
 
+      if ($this->getCurrentUser()->hasPermission('send enforcement notice')) {
+        $link = $this->getLinkByRoute('view.par_user_enforcement_list.enforcement_notices_sent')
+          ->setText('See enforcement notifications sent')
+          ->toString();
 
-      $search_partnerships = $this->getLinkByRoute('view.par_user_enforcements.enforcement_notices_page');
-      $enforcement_notices_link = $search_partnerships ? $search_partnerships->setText('See enforcement notifications')->toString() : '(none)';
-      $build['messages']['link'] = [
-        '#type' => 'markup',
-        '#markup' => "<p>{$enforcement_notices_link}</p>",
-      ];
+        $build['messages'][] = [
+          '#type' => 'markup',
+          '#markup' => "<p>{$link}</p>",
+        ];
+      }
+
+      if ($this->getCurrentUser()->hasPermission('manage my authorities')) {
+        $link = $this->getLinkByRoute('view.par_user_enforcement_list.enforcement_notices_received')
+          ->setText('See enforcement notifications received')
+          ->toString();
+
+        $build['messages'][] = [
+          '#type' => 'markup',
+          '#markup' => "<p>{$link}</p>",
+        ];
+      }
     }
 
     return $build;
