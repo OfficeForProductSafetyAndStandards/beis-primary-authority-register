@@ -14,7 +14,7 @@ dependencies:
     - par_data
     - user
 id: par_user_enforcement_list
-label: 'Par User Enforcement List'
+label: 'PAR Enforcement Notices List'
 module: views
 description: ''
 tag: ''
@@ -31,7 +31,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'send enforcement notice'
+          perm: 'approve enforcement notice'
       cache:
         type: tag
         options: {  }
@@ -101,15 +101,23 @@ display:
           description: ''
           columns:
             id: id
-            notice_date: notice_date
             title: title
+            notice_date: notice_date
             par_flow_link: par_flow_link
             par_flow_link_1: par_flow_link
             field_enforcing_authority: field_enforcing_authority
             field_organisation: field_organisation
             par_status: par_status
+            field_authority: field_authority
           info:
             id:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            title:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -120,13 +128,6 @@ display:
               sortable: false
               default_sort_order: asc
               align: views-align-left
-              separator: ''
-              empty_column: false
-              responsive: ''
-            title:
-              sortable: false
-              default_sort_order: asc
-              align: ''
               separator: ''
               empty_column: false
               responsive: ''
@@ -159,6 +160,13 @@ display:
               empty_column: false
               responsive: ''
             par_status:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_authority:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -775,6 +783,20 @@ display:
           entity_type: par_data_enforcement_notice
           entity_field: notice_date
           plugin_id: standard
+        id:
+          id: id
+          table: par_enforcement_notices_field_data
+          field: id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          entity_type: par_data_enforcement_notice
+          entity_field: id
+          plugin_id: standard
       title: 'Enforcement Notifications'
       header: {  }
       footer: {  }
@@ -829,6 +851,7 @@ display:
         filters: false
         filter_groups: false
         title: false
+        access: false
       arguments:
         field_authority_target_id:
           id: field_authority_target_id
@@ -918,6 +941,10 @@ display:
           1: AND
       display_description: ''
       title: 'Enforcement Notifications | Received'
+      access:
+        type: perm
+        options:
+          perm: 'approve enforcement notice'
     cache_metadata:
       max-age: 0
       contexts:
@@ -945,6 +972,7 @@ display:
         fields: true
         arguments: false
         title: false
+        access: false
       arguments:
         field_enforcing_authority_target_id:
           id: field_enforcing_authority_target_id
@@ -982,6 +1010,10 @@ display:
           plugin_id: numeric
       title: 'Enforcement Notifications | Sent'
       display_description: ''
+      access:
+        type: perm
+        options:
+          perm: 'send enforcement notice'
     cache_metadata:
       max-age: 0
       contexts:
