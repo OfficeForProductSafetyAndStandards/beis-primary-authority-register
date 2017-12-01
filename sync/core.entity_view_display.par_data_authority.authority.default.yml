@@ -8,6 +8,9 @@ dependencies:
     - field.field.par_data_authority.authority.field_premises
     - field.field.par_data_authority.authority.field_regulatory_function
     - par_data.par_data_authority_type.authority
+  module:
+    - par_data
+    - text
 _core:
   default_config_hash: snNbBl89HVBgPmkLOdDx64ctPFlUe8BqIk_ShKj0IsY
 id: par_data_authority.authority.default
@@ -24,15 +27,15 @@ content:
       link_to_entity: false
     third_party_settings: {  }
   authority_type:
-    type: string
+    type: par_list_formatter
     weight: 1
     region: content
     label: hidden
     settings:
-      link_to_entity: false
+      display_original_value: false
     third_party_settings: {  }
   comments:
-    type: basic_string
+    type: text_default
     weight: 5
     region: content
     label: hidden

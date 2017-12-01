@@ -45,7 +45,7 @@ Feature: Business User - Manage Addresses
         And I expect that element "#edit-registered-address" contains the text "SE16 4NX"
 
 #        # EDIT ABOUT THE BUSINESS
-#
+
         When I click on the link "edit about the business"
         And I add "Change to the about business details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-save"
