@@ -8,6 +8,8 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Plugin\DefaultPluginManager;
+use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 
@@ -62,12 +64,7 @@ class ParNotifier extends DefaultPluginManager {
   }
 
   /**
-   * Deliver notification.
-   *
-   * @param UserInterface $recipient
-   * @param string $message_id
-   * @param string $plugin_id
-   * @param EntityInterface $entity
+   * {@inheritdoc}
    */
   public function notify($recipient, $message_id, $plugin_id = self::DEFAULT_METHOD, $entity = NULL) {
     $sender = User::load(\Drupal::currentUser()->id());

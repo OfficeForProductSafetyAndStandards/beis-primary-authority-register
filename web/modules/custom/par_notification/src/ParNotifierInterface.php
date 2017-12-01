@@ -12,12 +12,12 @@ use Drupal\user\UserInterface;
 interface ParNotifierInterface {
 
   /**
-   * Create notifications and deliver using the appropriate plugins.
+   * Deliver notification.
    *
-   * @param UserInterface $recipient
+   * @param ParDataPersonInterface $recipient
    * @param string $message_id
    * @param string $plugin_id
-   * @param ParMessageInterface $entity
+   * @param EntityInterface $entity
    */
   public function notify($recipient, $message_id, $plugin_id, $entity);
 

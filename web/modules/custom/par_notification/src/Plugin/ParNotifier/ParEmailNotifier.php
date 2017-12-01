@@ -12,14 +12,26 @@ namespace Drupal\par_notification\Plugin\ParNotifier;
  */
 class ParEmailNotifier implements ParNotifierPluginInterface {
 
+  public function getLanguageManager() {
+    return \Drupal::languageManager();
+  }
+
   public function deliver($recipient, $message) {
     $mailer = \Drupal::service('plugin.manager.mail');
+
+    // Not all users will have accounts.
+    if ($account = $recipient->getUserAccount()){
+      $language = $recipient->getUserAccount()->getPreferredLangcode();
+    }
+    else {
+      $language = $this->getLanguageManager()->getCurrentLanguage()->getId();
+    }
 
     $params = [
       'subject' => $message->getSubject(),
       'body' => [$message->getMessage()],
     ];
-    $sent = $mailer->mail('par_notification', $message->id(), $recipient->getEmail(), $recipient->getPreferredLangcode(), $params);
+    $sent = $mailer->mail('par_notification', $message->id(), $recipient->getEmail(), $language, $params);
 
     if ($sent) {
       return TRUE;

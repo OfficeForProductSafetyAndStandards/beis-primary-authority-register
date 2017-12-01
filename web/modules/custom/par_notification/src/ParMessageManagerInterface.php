@@ -2,6 +2,7 @@
 
 namespace Drupal\par_notification;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_notification\Entity\ParMessageInterface;
 use Drupal\user\UserInterface;
 
@@ -14,7 +15,7 @@ interface ParMessageManagerInterface {
    * Build the notification message.
    *
    * @param string $message_id
-   * @param UserInterface $recipient
+   * @param ParDataPersonInterface $recipient
    * @param UserInterface $sender
    * @param EntityInterface $entity
    *

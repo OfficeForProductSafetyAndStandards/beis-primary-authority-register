@@ -6,10 +6,9 @@ use Drupal\par_data\Entity\ParDataEntityInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * The notification.sent event is dispatched each time a notification is created
- * in the system.
+ * The par data event.
  */
-class ParDataEvent extends Event {
+class ParDataEvent extends Event implements ParDataEventInterface {
 
   /**
    * The name of the event triggered when a new par entity is created.

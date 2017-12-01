@@ -3,11 +3,12 @@
 namespace Drupal\par_notification\EventSubscriber;
 
 use Drupal\par_data\Event\ParDataEvent;
+use Drupal\par_data\Event\ParDataEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class NewEnforcementSubscriber implements EventSubscriberInterface {
 
-  const MESSAGE_ID = 'new_enforcement_notification_to_primary_authority';
+  const MESSAGE_ID = 'enforcement_created_notice';
 
   static function getSubscribedEvents() {
     $events[ParDataEvent::CREATE][] = array('onNewEnforcement', 800);
@@ -16,7 +17,7 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * @param ParDataEvent $event
+   * @param ParDataEventInterface $event
    */
   public function onNewEnforcement(ParDataEvent $event) {
     $enforcement = $event->getData();
@@ -26,12 +27,12 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
       && $enforcement->getRawStatus() === $enforcement->getTypeEntity()->getDefaultStatus()) {
 
       // We need to get the primary authority for this enforcement.
-      $primary_authority = $enforcement->getPrimaryAuthority();
-      $primary_authority->getRelationships('par_people');
-
-      // Notify the user.
-      \Drupal::service('plugin.manager.par_notifier')->deliver($recipient, self::MESSAGE_ID, 'email', $enforcement);
-    };
+      $primary_authority = $enforcement->getPrimaryAuthority(TRUE);
+      foreach ($primary_authority->getPerson() as $person) {
+        // Notify the user.
+        \Drupal::service('plugin.manager.par_notifier')->deliver($person, self::MESSAGE_ID, 'email', $enforcement);
+      }
+    }
   }
 
 }

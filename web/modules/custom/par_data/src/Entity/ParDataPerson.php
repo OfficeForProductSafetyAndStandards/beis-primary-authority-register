@@ -69,7 +69,7 @@ use Drupal\user\UserInterface;
 class ParDataPerson extends ParDataEntity {
 
   /**
-   * Get the User account.
+   * {@inheritdoc}
    */
   public function getUserAccount() {
     $entities = $this->get('field_user_account')->referencedEntities();
@@ -77,22 +77,14 @@ class ParDataPerson extends ParDataEntity {
   }
 
   /**
-   * Set the user account.
-   *
-   * @param mixed $account
-   *   Drupal user account.
+   * {@inheritdoc}
    */
   public function setUserAccount($account) {
     $this->set('field_user_account', $account);
   }
+
   /**
-   * Get the User account.
-   *
-   * @param boolean $link_up
-   *   Whether or not to link up the accounts if any are found that aren't already linked.
-   *
-   * @return array
-   *   Returns any other PAR Person records if found.
+   * {@inheritdoc}
    */
   public function getSimilarPeople($link_up = TRUE) {
     $account = $this->getUserAccount();
@@ -113,10 +105,7 @@ class ParDataPerson extends ParDataEntity {
   }
 
   /**
-   * Get the User accounts that have the same email as this PAR Person.
-   *
-   * @return mixed|null
-   *   Returns a Drupal User account if found.
+   * {@inheritdoc}
    */
   public function lookupUserAccount() {
     $entities = \Drupal::entityTypeManager()
@@ -126,13 +115,7 @@ class ParDataPerson extends ParDataEntity {
   }
 
   /**
-   * Link up the PAR Person to a Drupal User account.
-   *
-   * @param UserInterface $account
-   *   An optional user account to lookup.
-   *
-   * @return bool|int
-   *   If there was an account to link to, that wasn't already linked to.
+   * {@inheritdoc}
    */
   public function linkAccounts(UserInterface $account = NULL) {
     $saved = FALSE;
@@ -190,13 +173,20 @@ class ParDataPerson extends ParDataEntity {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function getEmail() {
+    return $this->get('email')->getString();
+  }
+
+  /**
    * Get PAR Person's email pseudo-field value.
    *
    * @return string
    *   PAR Person's email mailto link including preference text.
    */
   public function getEmailLink() {
-    $email = $this->get('email')->getString();
+    $email = $this->getEmail();
 
     $email_link = Link::fromTextAndUrl($email,
       Url::fromUri("mailto:{$email}"));
