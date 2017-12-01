@@ -3,10 +3,19 @@
  * @param  {Function} done          Function to execute when finished
  */
 
-module.exports = (filename) => {
+const fs = require('fs-extra');
+
+module.exports = () => {
     /**
      * The command to perform on the browser object (addValue or setValue)
      * @type {String}
      */
-    browser.chooseFile('#edit-files-upload', filename)
+    fs.readFile('/emailfile.txt', function (err, data) {
+        if (err) throw err;
+        console.log(data);
+    });
 };
+
+
+
+

@@ -3,10 +3,14 @@
  * @param  {Function} done          Function to execute when finished
  */
 
-module.exports = (filename) => {
+module.exports = () => {
     /**
      * The command to perform on the browser object (addValue or setValue)
      * @type {String}
      */
-    browser.chooseFile('#edit-files-upload', filename)
+
 };
+
+
+
+
