@@ -386,13 +386,6 @@ class ParDataManager implements ParDataManagerInterface {
       }
     }
 
-//    foreach ($memberships['par_data_authority'] as $blah => $nah) {
-//      $auth = ParDataAuthority::load($blah);
-//      kint($auth->get('authority_name')->getString());
-//    }
-//
-//    kint($memberships);
-
     return !empty($memberships) ? $memberships : [];
   }
 
