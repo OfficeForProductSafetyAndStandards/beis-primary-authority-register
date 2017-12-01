@@ -129,7 +129,8 @@
                 "Allow migration lookups against sub-sets of migration map ids": "./patches/migration_id_map_sql_lookup_check.patch",
                 "Migration Lookup plugin does not return multiple values when matched and uses deprecated method": "https://www.drupal.org/files/issues/2890844-14.patch",
                 "PostgreSQL: deal with case insensitivity": "./patches/postgres_case_insensitivity-2464481.patch",
-                "Unclosed conditional comments in html tag result in broken html head": "https://www.drupal.org/files/issues/conditional_comment_broken_with_aggregation-2563069-16.patch"
+                "Unclosed conditional comments in html tag result in broken html head": "https://www.drupal.org/files/issues/conditional_comment_broken_with_aggregation-2563069-16.patch",
+                "Ensure the table alias is no longer than 60 characters long": "https://www.drupal.org/files/issues/drupal-571548-107-d8_0.patch"
             }
         }
     },
