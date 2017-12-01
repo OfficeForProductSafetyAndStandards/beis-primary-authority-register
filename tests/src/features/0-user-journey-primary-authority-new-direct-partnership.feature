@@ -97,7 +97,7 @@ Feature: New Direct Partnership For PA To Approve
 
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
         Then I expect that element "h1.heading-xlarge" contains the text "Review the partnership summary information below"
-        And I click on the checkbox "#edit-partnership-info-agreed-authority"
+        When I click on the checkbox "#edit-partnership-info-agreed-authority"
         And I click on the button "#edit-save"
 
         # INVITATION
@@ -113,7 +113,7 @@ Feature: New Direct Partnership For PA To Approve
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
         Then I expect that element "h1.heading-xlarge" contains the text "Notification sent"
         Then I expect that element "#block-par-theme-content" contains the text "Mr Fozzie Bear will receive an email with a link to register/login to the PAR website."
-        And I click on the button "#edit-done"
+        When I click on the link "Done"
 
         # RETURN TO DASHBOARD
 
