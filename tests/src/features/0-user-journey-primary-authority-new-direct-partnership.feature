@@ -111,5 +111,10 @@ Feature: New Direct Partnership For PA To Approve
         # INVITATION CONFIRMATION
 
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
-        Then I expect that element "h1.heading-xlarge" contains the text "Notify user of partnership invitation"
-        When I click on the button "#edit-next"
+        Then I expect that element "h1.heading-xlarge" contains the text "Notification sent"
+        Then I expect that element "#block-par-theme-content" contains the text "Mr Fozzie Bear will receive an email with a link to register/login to the PAR website."
+        And I click on the button "#edit-done"
+
+        # RETURN TO DASHBOARD
+
+        Then I expect that element "h1.heading-xlarge" contains the text "Primary Authority Register"
