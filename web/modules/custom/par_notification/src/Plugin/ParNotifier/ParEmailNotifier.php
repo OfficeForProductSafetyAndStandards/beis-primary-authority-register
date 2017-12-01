@@ -31,6 +31,7 @@ class ParEmailNotifier implements ParNotifierPluginInterface {
       'subject' => $message->getSubject(),
       'body' => [$message->getMessage()],
     ];
+
     $sent = $mailer->mail('par_notification', $message->id(), $recipient->getEmail(), $language, $params);
 
     if ($sent) {

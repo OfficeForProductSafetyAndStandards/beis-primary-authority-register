@@ -9,9 +9,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class NewEnforcementSubscriber implements EventSubscriberInterface {
 
   const MESSAGE_ID = 'enforcement_created_notice';
+  const DELIVERY_METHOD = 'email';
 
   static function getSubscribedEvents() {
-    $events[ParDataEvent::CREATE][] = array('onNewEnforcement', 800);
+    $events[ParDataEvent::CREATE][] = ['onNewEnforcement', 10];
 
     return $events;
   }
@@ -19,7 +20,7 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
   /**
    * @param ParDataEventInterface $event
    */
-  public function onNewEnforcement(ParDataEvent $event) {
+  public function onNewEnforcement(ParDataEventInterface $event) {
     $enforcement = $event->getData();
 
     // Only act on Enforcement Notices that haven't been reviewed.
@@ -29,8 +30,10 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
       // We need to get the primary authority for this enforcement.
       $primary_authority = $enforcement->getPrimaryAuthority(TRUE);
       foreach ($primary_authority->getPerson() as $person) {
-        // Notify the user.
-        \Drupal::service('plugin.manager.par_notifier')->deliver($person, self::MESSAGE_ID, 'email', $enforcement);
+        if ($account = $person->getUserAccount() && $person->getUserAccount()->hasPermission('approve enforcement notice')) {
+          // Notify the user.
+          \Drupal::service('plugin.manager.par_notifier')->notify($person, self::MESSAGE_ID, self::DELIVERY_METHOD, $enforcement);
+        }
       }
     }
   }

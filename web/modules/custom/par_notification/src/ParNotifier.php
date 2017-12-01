@@ -91,6 +91,5 @@ class ParNotifier extends DefaultPluginManager {
     catch (ParNotificationException $e) {
       $this->getLogger(self::PAR_LOGGER_CHANNEL)->error($e);
     }
-
   }
 }

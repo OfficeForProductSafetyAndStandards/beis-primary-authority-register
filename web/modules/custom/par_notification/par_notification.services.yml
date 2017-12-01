@@ -5,3 +5,7 @@ services:
   par_notification.message_manager:
     class: Drupal\par_notification\ParMessageManager
     arguments: ['@par_data.manager', '@entity_type.manager', '@token']
+  par_notification.new_enforcement_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\NewEnforcementSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
