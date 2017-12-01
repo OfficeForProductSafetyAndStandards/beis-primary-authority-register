@@ -148,7 +148,7 @@ class ParDashboardsDashboardController extends ControllerBase {
         ];
       }
 
-      if ($this->getCurrentUser()->hasPermission('manage my authorities')) {
+      if ($this->getCurrentUser()->hasPermission('approve enforcement notice')) {
         $link = $this->getLinkByRoute('view.par_user_enforcement_list.enforcement_notices_received')
           ->setText('See enforcement notifications received')
           ->toString();
