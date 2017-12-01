@@ -373,7 +373,7 @@ display:
           field: par_flow_link
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: 'PAR Enforcement Notice: Approve Link'
           label: 'Title of Action'
           exclude: false
           alter:
@@ -417,7 +417,60 @@ display:
           hide_alter_empty: true
           title: '{{ title }}'
           link: '/enforcement-notice/{{ id }}/approve'
-          hidden: 0
+          hidden: 1
+          entity_type: par_data_enforcement_notice
+          plugin_id: par_flow_link
+        par_flow_link_1:
+          id: par_flow_link_1
+          table: par_enforcement_notices_field_data
+          field: par_flow_link
+          relationship: none
+          group_type: group
+          admin_label: 'PAR Enforcement Notice: Review Link'
+          label: 'Title of Action'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          title: '{{ title }}'
+          link: '/enforcement-notice/{{ id }}/reviewed'
+          hidden: 1
           entity_type: par_data_enforcement_notice
           plugin_id: par_flow_link
         field_enforcing_authority:
@@ -534,7 +587,7 @@ display:
           click_sort_column: target_id
           type: entity_reference_label
           settings:
-            link: true
+            link: false
           group_column: target_id
           group_columns: {  }
           group_rows: true
@@ -723,18 +776,7 @@ display:
           entity_field: notice_date
           plugin_id: standard
       title: 'Enforcement Notifications'
-      header:
-        area_text_custom:
-          id: area_text_custom
-          table: views
-          field: area_text_custom
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          tokenize: false
-          content: "<a href=\"/enforcement-notices/sent\">Sent</a>\n\n<a href=\"/enforcement-notices/received\">Received</a>"
-          plugin_id: text_custom
+      header: {  }
       footer: {  }
       empty: {  }
       relationships:
@@ -819,7 +861,7 @@ display:
             type: none
             fail: 'not found'
           validate_options: {  }
-          break_phrase: false
+          break_phrase: true
           not: false
           plugin_id: numeric
       filters:
