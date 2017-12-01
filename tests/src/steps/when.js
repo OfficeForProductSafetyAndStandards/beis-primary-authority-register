@@ -54,7 +54,7 @@ defineSupportCode(({ When }) => {
     );
 
     When(
-        /^I upload the file "([^"]*)?"$/,
+        /^I upload the file "([^"]*)?" to field "([^"]*)?"$/,
         uploadTheFile
     );
 

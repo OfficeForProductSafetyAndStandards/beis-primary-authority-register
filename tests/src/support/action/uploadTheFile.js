@@ -1,12 +1,11 @@
 /**
  * Set the value of the given input field to a new value or add a value to the
  * current element value
- * @param  {Function} done    Function to execute when finished
+ * @param  {String} elem    upload field
+ * @param  {String} filename    input file path
  */
-module.exports = (filename) => {
-    /**
-     * The command to perform on the browser object (addValue or setValue)
-     * @type {String}
-     */
-    browser.chooseFile('#edit-files-upload', filename);
-};
+module.exports = (filename, elem) =>
+{
+    browser.chooseFile(elem, __dirname + '/' + filename);
+}
+;

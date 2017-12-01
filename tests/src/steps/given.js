@@ -21,7 +21,6 @@ import openWebsite from '../support/action/openWebsite';
 import storeEOData from '../support/action/storeEOData';
 import checkResponseCode from '../support/action/checkResponseCode';
 import resizeScreenSize from '../support/action/resizeScreenSize';
-import loginAsPARUser from '../support/action/loginAsPARUser';
 import loginAsStoredUser from '../support/action/loginAsStoredUser';
 import selectNextPartnershipAwaitingReview from '../support/action/selectNextPartnershipAwaitingReview';
 import selectNextBusinessAwaitingReview from '../support/action/selectNextPartnershipAwaitingReview';
@@ -90,11 +89,6 @@ defineSupportCode(({ Given }) => {
     Given(
         /^the (element|inputfield) "([^"]*)?"( not)* matches the text "([^"]*)?"$/,
         checkEqualsText
-    );
-
-    Given(
-        /^I am logged in as "([^"]*)?"$/,
-        loginAsPARUser
     );
 
     Given(

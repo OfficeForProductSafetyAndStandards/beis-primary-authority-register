@@ -52,9 +52,9 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I add "Title of enforcement notice Four" to the inputfield "#edit-title-of-action"
         And I click on the radio ".option*=Cookie control"
         And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
-        And I upload the file "./src/features/files/test1.png"
+        And I upload the file "./files/test.png" to field "#edit-files-upload"
         And I click on the button "#edit-next"
-        Then I expect that element ".filename" contains the text "test1.png"
+        Then I expect that element ".filename" contains the text "test.png"
 
         # ADD ENFORCEMENT ACTION
 
