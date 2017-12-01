@@ -67,7 +67,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         # CHECK DETAILS
 
         Then I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Title of enforcement notice Four"
-        And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "last text in a long string"
+#       And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "last text in a long string"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Once the primary authority receives this notification, they have 5 working days to respond to you if they intend to block the action"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "You will be notified by email of the outcome of this notification"
 
