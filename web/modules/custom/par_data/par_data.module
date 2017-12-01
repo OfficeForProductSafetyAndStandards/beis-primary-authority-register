@@ -5,10 +5,12 @@
  * Contains par_data.module.
  */
 
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\par_data\Entity\ParDataPersonType;
 use Drupal\views\ViewExecutable;
 use Drupal\par_data\Event\ParDataEvent;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 
 /**
@@ -139,6 +141,81 @@ function par_data_views_query_alter(ViewExecutable $view, $query) {
         $query->where[$group_key]['conditions'][$key]['field'] = str_replace('LIKE', 'ILIKE', $condition['field']);
       }
 
+    }
+  }
+
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function par_data_entity_extra_field_info() {
+  $extra = [];
+
+  $extra_field_info_defaults = [
+    'visible' => TRUE,
+  ];
+
+  foreach (ParDataPersonType::loadMultiple() as $bundle) {
+    $extra['par_data_person'][$bundle->Id()]['display']['full_name_pseudo_field'] = [
+      'label' => t('Full Name'),
+      'weight' => 0,
+    ] + $extra_field_info_defaults;
+
+    $extra['par_data_person'][$bundle->Id()]['display']['work_phone_pseudo_field'] = [
+      'label' => t('Work phone number displaying contact preferences'),
+      'weight' => 1,
+    ] + $extra_field_info_defaults;
+
+    $extra['par_data_person'][$bundle->Id()]['display']['mobile_phone_pseudo_field'] = [
+      'label' => t('Mobile phone number displaying contact preferences'),
+      'weight' => 2,
+    ] + $extra_field_info_defaults;
+
+    $extra['par_data_person'][$bundle->Id()]['display']['email_pseudo_field'] = [
+      'label' => t('E-mail address displaying contact preferences'),
+      'weight' => 3,
+    ] + $extra_field_info_defaults;
+  }
+
+  return $extra;
+}
+
+
+/**
+ * Implements hook_entity_view().
+ */
+function par_data_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+
+  if ($entity->getEntityTypeId() === 'par_data_person') {
+    $field_defaults = [
+      '#type' => 'markup',
+      '#prefix' => '<div>',
+      '#suffix' => '</div>',
+    ];
+
+    if ($display->getComponent('full_name_pseudo_field')) {
+      $build['full_name_pseudo_field'] = [
+        '#plain_text' => $entity->getFullName(),
+      ] + $field_defaults;
+    }
+
+    if ($display->getComponent('work_phone_pseudo_field')) {
+      $build['work_phone_pseudo_field'] = [
+        '#plain_text' => $entity->getWorkPhone(),
+      ] + $field_defaults;
+    }
+
+    if ($display->getComponent('mobile_phone_pseudo_field')) {
+      $build['mobile_phone_pseudo_field'] = [
+        '#plain_text' => $entity->getMobilePhone(),
+      ] + $field_defaults;
+    }
+
+    if ($display->getComponent('email_pseudo_field')) {
+      $build['email_pseudo_field'] = [
+        '#markup' => $entity->getEmailLink(),
+      ] + $field_defaults;
     }
   }
 
