@@ -18,9 +18,9 @@ import compareText from '../support/check/compareText';
 import isEnabled from '../support/check/isEnabled';
 import isVisible from '../support/check/isVisible';
 import openWebsite from '../support/action/openWebsite';
+import storeEOData from '../support/action/storeEOData';
 import checkResponseCode from '../support/action/checkResponseCode';
 import resizeScreenSize from '../support/action/resizeScreenSize';
-import loginAsPARUser from '../support/action/loginAsPARUser';
 import loginAsStoredUser from '../support/action/loginAsStoredUser';
 import selectNextPartnershipAwaitingReview from '../support/action/selectNextPartnershipAwaitingReview';
 import selectNextBusinessAwaitingReview from '../support/action/selectNextPartnershipAwaitingReview';
@@ -40,6 +40,12 @@ defineSupportCode(({ Given }) => {
         /^I click new partnership if presented with choices$/,
         clickNewPartnership
     );
+
+    Given(
+        /^I store all EO data to use in later step$/,
+        storeEOData
+    );
+
     Given(
         /^I check the homepage response code is 200$/,
         checkResponseCode
@@ -83,11 +89,6 @@ defineSupportCode(({ Given }) => {
     Given(
         /^the (element|inputfield) "([^"]*)?"( not)* matches the text "([^"]*)?"$/,
         checkEqualsText
-    );
-
-    Given(
-        /^I am logged in as "([^"]*)?"$/,
-        loginAsPARUser
     );
 
     Given(

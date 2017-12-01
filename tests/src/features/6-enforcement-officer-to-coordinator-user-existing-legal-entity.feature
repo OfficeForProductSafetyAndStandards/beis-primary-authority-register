@@ -5,10 +5,13 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
 
         # LOGIN SCREEN
 
-#        Given I reset the test data
-        Given I am logged in as "par_enforcement_officer@example.com"
-        And I click on the link "Search for a partnership"
-        When I add "Charlie" to the inputfield "#edit-keywords"
+        Given I open the url "/user/login"
+        And I add "par_enforcement_officer@example.com" to the inputfield "#edit-name"
+        And I add "TestPassword" to the inputfield "#edit-pass"
+        When I click on the button "#edit-submit"
+        Then I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
+        When I click on the link "Search for a partnership"
+        And I add "Charlie" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
         When I click on the button "td.views-field.views-field-authority-name a"
 
