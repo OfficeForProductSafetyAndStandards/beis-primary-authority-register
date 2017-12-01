@@ -43,7 +43,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I add "Legal Entity 1" to the inputfield "#edit-alternative-legal-entity"
         And I click on the button "#edit-next"
 
-      # ENFORCEMENT SUMMARY
+        # ENFORCEMENT SUMMARY
 
         And I add "action summary enforcement notice" to the inputfield "#edit-action-summary"
 #        And I add "600" random chars of text to field "#edit-action-summary"
