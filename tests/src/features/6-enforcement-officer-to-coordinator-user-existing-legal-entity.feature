@@ -5,7 +5,6 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
 
         # LOGIN SCREEN
 
-#        Given I reset the test data
         Given I am logged in as "par_enforcement_officer@example.com"
         And I click on the link "Search for a partnership"
         When I add "Charlie" to the inputfield "#edit-keywords"
@@ -43,9 +42,10 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
         And I click on the button "#edit-next"
 
         # CHOOSE LEGAL ENTITY
+
         And I click on the button "#edit-next"
 
-      # ENFORCEMENT SUMMARY
+        # ENFORCEMENT SUMMARY
 
         And I add "action summary enforcement notice" to the inputfield "#edit-action-summary"
         And I click on the radio "#edit-type-proposed"

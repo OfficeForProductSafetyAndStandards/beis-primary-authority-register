@@ -41,7 +41,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I add "Legal Entity 1" to the inputfield "#edit-alternative-legal-entity"
         And I click on the button "#edit-next"
 
-      # ENFORCEMENT SUMMARY
+        # ENFORCEMENT SUMMARY
 
         And I add "action summary enforcement notice" to the inputfield "#edit-action-summary"
         And I click on the radio "#edit-type-proposed"
@@ -79,4 +79,3 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
         When I click on the button "#edit-save"
         Then I expect that element "h1.heading-xlarge" contains the text "Primary Authority Register"
-
