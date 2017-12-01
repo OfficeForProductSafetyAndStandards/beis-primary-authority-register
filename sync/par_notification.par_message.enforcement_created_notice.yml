@@ -1,7 +1,8 @@
-uuid: be4a6985-bd0b-4695-923b-b93f848e947e
+uuid: 614b1def-c1ca-4f28-8606-b4d05fb1f8aa
 langcode: en
 status: true
+dependencies: {  }
 id: enforcement_created_notice
 label: 'New enforcement notification to primary authority'
-siubject: 'Primary Authority Register | You have a notification'
+subject: 'Primary Authority Register | You have a notification'
 message: 'Send this message to some kinda user please [site:login-url].'
