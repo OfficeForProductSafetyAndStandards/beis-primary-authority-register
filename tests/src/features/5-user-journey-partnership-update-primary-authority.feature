@@ -3,10 +3,13 @@ Feature: Primary Authority - Change Partnership Details
 
     Scenario: Primary Authority - Change Partnership Details
 
-#        Given I reset the test data
-        Given I am logged in as "par_authority@example.com"
-        And I click on the link "See your partnerships"
-        When I add "Charlie" to the inputfield "#edit-keywords"
+        Given I open the url "/user/login"
+        And I add "par_authority@example.com" to the inputfield "#edit-name"
+        And I add "TestPassword" to the inputfield "#edit-pass"
+        When I click on the button "#edit-submit"
+        Then I expect that element "#block-par-theme-content" contains the text "See your partnerships"
+        When I click on the link "See your partnerships"
+        And I add "Charlie" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
         And I click on the button "td.views-field.views-field-par-flow-link a"
 

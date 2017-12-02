@@ -1,5 +1,4 @@
 import { defineSupportCode } from 'cucumber';
-
 import clearInputField from '../support/action/clearInputField';
 import setCheckbox from '../support/action/setCheckbox';
 import clickElement from '../support/action/clickElement';
@@ -17,8 +16,10 @@ import selectOption from '../support/action/selectOption';
 import selectOptionByIndex from '../support/action/selectOptionByIndex';
 import setCookie from '../support/action/setCookie';
 import setInputField from '../support/action/setInputField';
+import enterInRandomText from '../support/action/enterInRandomText';
 import setPromptText from '../support/action/setPromptText';
 import submitForm from '../support/action/submitForm';
+import uploadTheFile from '../support/action/uploadTheFile.js';
 import selectAnAuthorityForPartnership from '../support/action/selectAnAuthorityForPartnership';
 
 
@@ -49,8 +50,18 @@ defineSupportCode(({ When }) => {
     );
 
     When(
+        /^I add "([^"]*)?" random chars of text to field "([^"]*)?"$/,
+        enterInRandomText
+    );
+
+    When(
         /^I clear the inputfield "([^"]*)?"$/,
         clearInputField
+    );
+
+    When(
+        /^I upload the file "([^"]*)?" to field "([^"]*)?"$/,
+        uploadTheFile
     );
 
     When(
