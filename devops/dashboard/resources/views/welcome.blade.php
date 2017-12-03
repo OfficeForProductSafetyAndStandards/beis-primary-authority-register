@@ -183,11 +183,21 @@
 
    <div class="row">
     <div class="col-sm-12">
-    <h3>&nbsp;Open Pull Requests</h3>
-  <table class="table" id="pull_request_list">
+<div class="statcard p-4 statcard-success" id="unit_tests">
+         <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
+         <span class="statcard-desc">Unit Tests</span>
+        </div>
+</div>
+</div>
 
-  </table>
-</div></div>
+   <div class="row">
+    <div class="col-sm-12">
+<div class="statcard p-4 statcard-success" id="acceptance_tests">
+         <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
+         <span class="statcard-desc">Acceptance Tests</span>
+        </div>
+</div>
+</div>
 
   </div>
  </div>
@@ -195,19 +205,14 @@
 
  <div class="row" style="height:200px;margin-bottom:1em">
 
-  <div class="col-sm-4">
+  <div class="col-sm-12">
+    <h3>&nbsp;Open Pull Requests</h3>
+  <table class="table" id="pull_request_list">
+
+  </table>  
+  </div>
   
-  </div>
-  <div class="col-sm-4">
 
-  </div>
-  <div class="col-sm-4">
-     
-    <div class="row">
-
-
-    </div>
-  </div>
  </div>
  <div class="row">
   <div class="col-sm-4">
@@ -334,6 +339,26 @@
         });
       }
 
+      function renderTestResults() {
+        //$.get("/stats/tests", function(data, status) {
+           
+             var status = 'success';
+             var el = $('#unit_tests');
+             $('#unit_tests > .statcard-number').html('389 Passing');
+             el.removeClass('statcard-success');
+             el.removeClass('statcard-warning');
+             el.removeClass('statcard-danger');
+             el.addClass('statcard-' + status);
+             
+             el = $('#acceptance_tests');
+             $('#acceptance_tests > .statcard-number').html('402 Passing');
+             el.removeClass('statcard-success');
+             el.removeClass('statcard-warning');
+             el.removeClass('statcard-danger');
+             el.addClass('statcard-' + status);
+        //});
+      }
+
       function renderBuildVersions() {
         $.get("/stats/build_versions", function(data, status) {
            
@@ -434,6 +459,9 @@
 
         });
       }
+
+      renderTestResults();
+      setInterval(renderTestResults, 90000);
 
       renderGitHubStats();
       setInterval(renderGitHubStats, 120000);
