@@ -41,7 +41,7 @@
        </div>
       </div>
     </div>
-   @for ($i=0; $i<2; $i++)
+   @for ($i=0; $i<$cloudFoundryAppsToDisplay; $i++)
    <div class="row">
     <div class="col-sm-3">
      <div class="statcard p-4" id="state_{{ $i }}">
@@ -106,7 +106,15 @@
      <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
      <span class="statcard-desc">Average Response Time</span>
     </div>
+
    </div>
+
+   <div class="row" style="height:180px;width:100%;margin-bottom:1em">
+      <div class="col-sm-12">
+        <h3>&nbsp;Response Time (24 hours)</h3>
+  <canvas id="response_time_history"></canvas>
+</div>
+    </div>
 
   </div>
   </div>
@@ -172,6 +180,15 @@
         </div>
       </div>
    </div>   
+
+   <div class="row">
+    <div class="col-sm-12">
+    <h3>&nbsp;Open Pull Requests</h3>
+  <table class="table" id="pull_request_list">
+
+  </table>
+</div></div>
+
   </div>
  </div>
  </div>
@@ -182,20 +199,10 @@
   
   </div>
   <div class="col-sm-4">
-  <h3>&nbsp;Response Time (24 hours)</h3>
-  <canvas id="response_time_history"></canvas>
+
   </div>
   <div class="col-sm-4">
-      <h3>&nbsp;Open Pull Requests</h3>
-  <table class="table" id="pull_request_list">
-    @for ($i=0; $i<4; $i++)
-      <tr>
-        <td id="pull_author_{{ $i }}"></td>
-        <td id="pull_title_{{ $i }}"></td>
-        <td nowrap id="pull_time_{{ $i }}"></td>
-      </tr>
-    @endfor
-  </table>
+     
     <div class="row">
 
 
@@ -211,16 +218,7 @@
   
  </div>
  <div class="col-sm-4">
-  <h3>&nbsp;Recent Commits</h3>
- <table class="table" id="commit_list">
-    @for ($i=0; $i<7; $i++)
-      <tr>
-        <td id="commit_author_{{ $i }}"></td>
-        <td id="commit_title_{{ $i }}"></td>
-        <td nowrap id="commit_time_{{ $i }}"></td>
-      </tr>
-    @endfor
-  </table>
+ 
  </div>
 
 
@@ -292,7 +290,7 @@
            $('#last_cloud_foundry_check > .statcard-number').html('Last checked ' + lastChecked.fromNow());
            setUsageColor($('#last_cloud_foundry_check'), minutes, 10);
 
-           for (i=0; i<2; i++) {
+           for (i=0; i<{{ $cloudFoundryAppsToDisplay }}; i++) {
              $('#state_' + i + " > .statcard-number").html(data.message[i].state == "RUNNING" ? "UP" : data[i].state);
              setStateColor($('#state_' + i), data.message[i].state, ['RUNNING'], []);
 
@@ -325,18 +323,10 @@
 
       function renderGitHubStats() {
         $.get("/stats/github", function(data, status) {
-            var commits = data.commits;
-            for (i=0; i<commits.length && i<10; i++) {
-              $('#commit_author_' + i).html(commits[i].commit.author.name)
-              $('#commit_title_' + i).html(commits[i].commit.message)
-              $('#commit_time_' + i).html(moment(commits[i].commit.author.date).fromNow())
-            }
-
+            
             var pulls = data.pull_requests;
             for (i=0; i<pulls.length && i<10; i++) {
-              $('#pull_author_' + i).html(pulls[i].user.login)
-              $('#pull_title_' + i).html(pulls[i].title)
-              $('#pull_time_' + i).html("Updated " + moment(pulls[i].updated_at).fromNow())
+              $('#pull_request_list').append('<tr><td>' + pulls[i].user.login + '</td><td>' + pulls[i].title + '</td><td>' + "Updated " + moment(pulls[i].updated_at).fromNow() + '</td></tr>');
             }
 
             $('#latest_release_tag > .statcard-number').html(data.releases[0].tag_name);

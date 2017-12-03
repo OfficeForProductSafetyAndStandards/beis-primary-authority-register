@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Cache;
 
 class IndexController extends Controller
 {
@@ -33,37 +34,49 @@ class IndexController extends Controller
      */
     public function index()
     {
-        return view('welcome');
+        return view('welcome')->withCloudFoundryAppsToDisplay(4);
     }
 
     public function cloudFoundryStats()
     {
-        return $this->services['pubnub']->stats('cloud_foundry_8');
+        return Cache::remember('cloud_foundry_8', 1, function () {
+            return $this->services['pubnub']->stats('cloud_foundry_8');
+        });
     }
 
     public function testStats()
     {
-        return $this->services['pubnub']->stats('travis_tests');
+        return Cache::remember('travis_tests', 1, function () {
+            return $this->services['pubnub']->stats('travis_tests');
+        });
     }
 
     public function uptimeStats()
     {
-        return $this->services['uptime']->stats();
+        return Cache::remember('uptime', 1, function () {
+            return $this->services['uptime']->stats();
+        });
     }
 
     public function travisStats()
     {
-        return $this->services['travis']->stats();
+        return Cache::remember('travis', 1, function () {
+            return $this->services['travis']->stats();
+        });
     }
 
     public function gitHubStats()
     {
-        return $this->services['github']->stats();
+        return Cache::remember('github', 1, function () {
+            return $this->services['github']->stats();
+        });
     }
 
     public function buildVersionStats()
     {
-        return $this->services['build_versions']->stats();
+        return Cache::remember('build_versions', 1, function () {
+            return $this->services['build_versions']->stats();
+        });
     }
 }
 
