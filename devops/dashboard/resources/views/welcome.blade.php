@@ -18,6 +18,8 @@
 
 <html lang="en">
 <head>
+<meta http-equiv="refresh" content="3600">
+
 <!-- These meta tags come first. -->
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -330,6 +332,7 @@
         $.get("/stats/github", function(data, status) {
             
             var pulls = data.pull_requests;
+            $('#pull_request_list').empty();
             for (i=0; i<pulls.length && i<10; i++) {
               $('#pull_request_list').append('<tr><td>' + pulls[i].user.login + '</td><td>' + pulls[i].title + '</td><td>' + "Updated " + moment(pulls[i].updated_at).fromNow() + '</td></tr>');
             }

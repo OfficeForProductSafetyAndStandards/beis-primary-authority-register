@@ -5,4 +5,5 @@ package.json
 .env
 cf/
 *.tar.gz
+storage/framework/cache/data/*
 
