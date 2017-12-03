@@ -1,0 +1,26 @@
+uuid: 6fec3552-b8fa-45d9-9111-72b0e4606b90
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.new_enforcement_notification.field_enforcement_notice
+    - message.template.new_enforcement_notification
+id: message.new_enforcement_notification.default
+targetEntityType: message
+bundle: new_enforcement_notification
+mode: default
+content:
+  field_enforcement_notice:
+    weight: 1
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }
