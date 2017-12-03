@@ -37,7 +37,7 @@
       <div class="col-sm-12">
         <div class="statcard p-4" id="last_cloud_foundry_check">
         <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
-        <span class="statcard-desc">Last Cloud Foundry Check (First Two App Instances)</span>
+        <span class="statcard-desc">Last Cloud Foundry Check</span>
        </div>
       </div>
     </div>
