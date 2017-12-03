@@ -31,7 +31,8 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
       $primary_authority = $enforcement->getPrimaryAuthority(TRUE);
       foreach ($primary_authority->getPerson() as $person) {
         if ($account = $person->getUserAccount() && $person->getUserAccount()->hasPermission('approve enforcement notice')) {
-          // Notify the user.
+          // Notify all users in this authority with the permission
+          // to approve this enforcement notice.
           \Drupal::service('plugin.manager.par_notifier')->notify($person, self::MESSAGE_ID, self::DELIVERY_METHOD, $enforcement);
         }
       }
