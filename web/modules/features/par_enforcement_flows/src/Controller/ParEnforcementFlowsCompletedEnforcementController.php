@@ -112,12 +112,6 @@ class ParEnforcementFlowsCompletedEnforcementController extends ParBaseControlle
     }
     $build['enforcement_summary'] = $this->renderSection('Summary of enforcement notice', $par_data_enforcement_notice, ['summary' => 'summary'], [], TRUE, TRUE);
 
-    $doc_title =[
-      '#type' => 'markup',
-      '#markup' => $this->t('Attached files'),
-      '#prefix' => '<h3>',
-      '#suffix' => '</h3>',
-    ];
     // Display all enforcement actions assigned to this enforcement action.
     foreach ($enforcement_actions as $enforcement_action) {
       $action_state = $enforcement_action->get('primary_authority_status')->getString();
@@ -135,8 +129,7 @@ class ParEnforcementFlowsCompletedEnforcementController extends ParBaseControlle
       $build[$enforcement_action->id()]['reason'] = $reason ? $reason : NULL;
       $build[$enforcement_action->id()]['action_regulatory_function'] = $this->renderSection('Regulatory function', $enforcement_action, ['field_regulatory_function' => 'summary'], [], TRUE, TRUE);
       $build[$enforcement_action->id()]['action_details'] = $this->renderSection('Details', $enforcement_action, ['details' => 'summary'], [], TRUE, TRUE);
-      $build[$enforcement_action->id()]['action_attach_title'] = $doc_title;
-      $build[$enforcement_action->id()]['action_attach'] = $this->renderMarkupField($enforcement_action->get('document')->view('full'));
+      $build[$enforcement_action->id()]['action_attachments'] =  $this->renderSection('Attachments',$enforcement_action, ['document' => 'par_attachments'], [], TRUE);
     }
     return parent::build($build);
   }

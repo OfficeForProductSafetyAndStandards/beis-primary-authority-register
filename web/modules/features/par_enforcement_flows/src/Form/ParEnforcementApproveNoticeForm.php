@@ -85,10 +85,6 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
 
     if (!$par_data_enforcement_notice->get('field_legal_entity')->isEmpty()) {
       $form['legal_entity'] = $this->renderSection('Regarding', $par_data_enforcement_notice, ['field_legal_entity' => 'title']);
-
-      // @TODO If there is only one organisation for this legal entity
-      // we can potentially display the address, but otherwise we
-      // can only display the name.
     }
     else {
       $form['legal_entity'] = $this->renderSection('Regarding', $par_data_enforcement_notice, ['legal_entity_name' => 'summary']);
@@ -115,17 +111,13 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
 
       $form['actions'][$delta] = [
         '#type' => 'fieldset',
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
-
+         '#attributes' => ['class' => 'form-group'],
+       ];
+      
       $form['actions'][$delta]['title'] = $this->renderSection('Title of action', $action, ['title' => 'title']);
-
       $form['actions'][$delta]['regulatory_function'] = $this->renderSection('Regulatory function', $action, ['field_regulatory_function' => 'title']);
-
       $form['actions'][$delta]['details'] = $this->renderSection('Details', $action, ['details' => 'full']);
-
-      $form['actions'][$delta]['documents'] = $this->renderSection('Attachments', $action, ['document' => 'full']);
+      $form['actions'][$delta]['documents'] = $this->renderSection('Attachments', $action, ['document' => 'par_attachments'], [], TRUE);
 
       $statuses = [
         ParDataEnforcementAction::APPROVED => 'Allow',
@@ -137,7 +129,7 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
       }
       $form['actions'][$delta]['primary_authority_status'] = [
         '#type' => 'radios',
-        '#title' => $this->t('Review this action'),
+        '#title' => $this->t('Decide to allow or block this action, or refer this action to another Primary Authority '),
         '#options' => $statuses,
         '#default_value' => $this->getDefaultValues(['actions', $delta, 'primary_authority_status'], ParDataEnforcementAction::APPROVED),
         '#disabled' => $this->getDefaultValues(['actions', $delta, 'disabled'], FALSE),
