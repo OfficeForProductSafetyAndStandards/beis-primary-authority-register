@@ -139,7 +139,7 @@
     <div class="col-sm-3">
      <div class="statcard p-4" id="last_build_duration">
       <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
-      <span class="statcard-desc">Duration</span>
+      <span class="statcard-desc">Mins</span>
      </div>
     </div>
     <div class="col-sm-3">
@@ -160,19 +160,19 @@
        <div class="col-sm-3">
         <div class="statcard p-4" id="production_version">
          <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
-         <span class="statcard-desc">Production</span>
+         <span class="statcard-desc">Prod</span>
         </div>
        </div>
        <div class="col-sm-3">
         <div class="statcard p-4" id="staging_version">
          <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
-         <span class="statcard-desc">Staging</span>
+         <span class="statcard-desc">Stage</span>
         </div>
        </div>
        <div class="col-sm-3">
         <div class="statcard p-4" id="assessment_version">
          <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
-         <span class="statcard-desc">Assessment</span>
+         <span class="statcard-desc">Assess</span>
         </div>
       </div>
        <div class="col-sm-3">
@@ -323,7 +323,7 @@
             $('#last_build_status > .statcard-number').html(data.last_completed_build_on_master_branch.result == 0 ? 'Passed' : 'Failed');
             setStateColor($('#last_build_status'), data.last_completed_build_on_master_branch.result, [0], [])
 
-            $('#last_build_duration > .statcard-number').html(moment.duration(data.last_completed_build_on_master_branch.duration * 1000).asMinutes().toFixed(2) + " mins");
+            $('#last_build_duration > .statcard-number').html(moment.duration(data.last_completed_build_on_master_branch.duration * 1000).asMinutes().toFixed(2));
             setUsageColor($('#last_build_duration'), data.last_completed_build_on_master_branch.duration, 1800)
         });
       }
@@ -343,23 +343,14 @@
       }
 
       function renderTestResults() {
-        //$.get("/stats/tests", function(data, status) {
+        $.get("/stats/tests", function(data, status) {
            
-             var status = 'success';
-             var el = $('#unit_tests');
-             $('#unit_tests > .statcard-number').html('389 Passing');
-             el.removeClass('statcard-success');
-             el.removeClass('statcard-warning');
-             el.removeClass('statcard-danger');
-             el.addClass('statcard-' + status);
+             $('#unit_tests > .statcard-number').html(data.message.unit.tests + ' tests, ' + data.message.unit.errors + ' errors');
+             setStateColor($('#unit_tests'), data.message.unit.errors, ['0'], []);
              
-             el = $('#acceptance_tests');
-             $('#acceptance_tests > .statcard-number').html('402 Passing');
-             el.removeClass('statcard-success');
-             el.removeClass('statcard-warning');
-             el.removeClass('statcard-danger');
-             el.addClass('statcard-' + status);
-        //});
+             $('#acceptance_tests > .statcard-number').html(data.message.acceptance.passed + ' passed, ' + data.message.acceptance.failed + ' failures');
+             setStateColor($('#acceptance_tests'), data.message.acceptance.failed, [0], []);
+        });
       }
 
       function renderBuildVersions() {

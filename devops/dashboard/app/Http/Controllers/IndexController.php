@@ -46,7 +46,7 @@ class IndexController extends Controller
 
     public function testStats()
     {
-        return Cache::remember('travis_tests', 1, function () {
+        return Cache::remember('travis_tests', 120, function () {
             return $this->services['pubnub']->stats('travis_tests');
         });
     }

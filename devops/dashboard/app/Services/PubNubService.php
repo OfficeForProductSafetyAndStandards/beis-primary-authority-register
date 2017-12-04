@@ -39,6 +39,7 @@ class PubNubService extends SubscribeCallback {
     }
  
     public function presence($pubnub, $presence) {
+        dd(123);
         // handle incoming presence data
     }
 
@@ -54,6 +55,7 @@ class PubNubService extends SubscribeCallback {
 		// Subscribe to a channel, this is not async.
 		$pubnub->subscribe()
 		    ->channels($channel)
+            ->withPresence()
 		    ->execute();
 
 		return $this->result;
