@@ -79,12 +79,11 @@ content:
       link: false
     third_party_settings: {  }
   summary:
-    type: text_trimmed
+    type: text_default
     weight: 2
     region: content
     label: hidden
-    settings:
-      trim_length: 600
+    settings: {  }
     third_party_settings: {  }
 hidden:
   field_enforcement_action: true
