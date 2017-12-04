@@ -92,10 +92,29 @@ Feature: New Direct Partnership For PA To Approve
         And I click on the radio "#edit-preferred-contact-communication-mobile"
         And I add "Some additional notes" to the inputfield "#edit-notes"
         And I click on the button "#edit-next"
-        And I click on the checkbox "#edit-partnership-info-agreed-authority"
+
+        # REVIEW THE APPLICATION
+
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
+        Then I expect that element "h1.heading-xlarge" contains the text "Review the partnership summary information below"
+        When I click on the checkbox "#edit-partnership-info-agreed-authority"
         And I click on the button "#edit-save"
 
-        # EMAIL
+        # INVITATION
 
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
+        Then I expect that element "h1.heading-xlarge" contains the text "Notify user of partnership invitation"
         Then the inputfield "#edit-email-subject" contains the text "Invitation to join the Primary Authority Register"
+        Then the inputfield "#edit-email-body" contains the text "[invite:invite-accept-link]"
         When I click on the button "#edit-next"
+
+        # INVITATION CONFIRMATION
+
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
+        Then I expect that element "h1.heading-xlarge" contains the text "Notification sent"
+        Then I expect that element "#block-par-theme-content" contains the text "Mr Fozzie Bear will receive an email with a link to register/login to the PAR website."
+        When I click on the link "Done"
+
+        # RETURN TO DASHBOARD
+
+        Then I expect that element "h1.heading-xlarge" contains the text "Primary Authority Register"
