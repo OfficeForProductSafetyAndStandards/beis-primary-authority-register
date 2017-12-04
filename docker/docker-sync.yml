@@ -1,0 +1,14 @@
+version: "2"
+
+options:
+  verbose: true
+syncs:
+  #IMPORTANT: ensure this name is unique and does not match your other container names
+  docker-mac-sync:
+    src: '../'
+    sync_strategy: 'unison'
+    sync_args:
+          - "-prefer newer"
+          - "-ignore='Path .git'"
+          - "-ignore='BelowPath .git'"
+    sync_excludes: ['.git*', '.DS_Store', '.docker*', 'docker*yml', 'Dockerfile*', '.idea']

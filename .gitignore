@@ -11,6 +11,9 @@
 node_modules/
 npm-debug.log
 
+# Docker sync.
+docker/.docker-sync/
+
 # Exclude the main drupal scaffold files.
 # If we want to make changes to any of these files
 # we must first remove them from gitignore and
