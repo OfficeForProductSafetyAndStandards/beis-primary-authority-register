@@ -82,7 +82,7 @@ function par_data_entity_update(EntityInterface $entity) {
 }
 
 /**
- * Implements hook_entity_update().
+ * Implements hook_entity_delete().
  *
  * Notifies other par modules that a par entity has been deleted.
  *

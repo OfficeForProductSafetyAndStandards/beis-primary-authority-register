@@ -66,6 +66,9 @@ class ParDataEnforcementNotice extends ParDataEntity {
 
   /**
    * Get the primary authority for this Enforcement Notice.
+   *
+   * @param boolean $single
+   *
    */
   public function getPrimaryAuthority($single = FALSE) {
     // All referred notices should have an authority referenced in
@@ -85,6 +88,9 @@ class ParDataEnforcementNotice extends ParDataEntity {
 
   /**
    * Get the Partnership for this Enforcement Notice.
+   *
+   * @param boolean $single
+   *
    */
   public function getPartnership($single = FALSE) {
     $partnerships = $this->get('field_partnership')->referencedEntities();
