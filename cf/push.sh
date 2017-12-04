@@ -150,7 +150,6 @@ if [[ $1 != "environment-only" ]]; then
     ####################################################################################
     
     BUILD_DIR=build-$ENV
-    
     sudo rm -rf $BUILD_DIR
     mkdir $BUILD_DIR
     
