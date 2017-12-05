@@ -193,7 +193,7 @@ trait ParDisplayTrait {
    * @param string $section
    *   The section title to use for this field-set.
    *
-   * @param Entity $entity
+   * @param EntityInterface $entity
    *   The entity containing the fields to be rendered.
    *
    * @param array $fields
@@ -245,7 +245,8 @@ trait ParDisplayTrait {
 
       $field = $entity->get($field_name);
       if (!$field->isEmpty()) {
-        $single_item = FALSE;
+        // Respect renderSection $single param if only to show one record.
+        $single_item = $single;
         // If there is only one value treat the field as single.
         if ($field->count() <= 1) {
           $single_item = TRUE;

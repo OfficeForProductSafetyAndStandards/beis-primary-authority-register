@@ -140,24 +140,5 @@ class AccessParPartnershipsTest extends ParDataTestBase {
         $this->assertNotFalse($cache, t("Relationships for organisation entity {$organisation->id()} have been correctly cached."));
       }
     }
-    foreach ($this->premises as $i => $premises) {
-      $entityHashKey = $premises->getEntityTypeId() . ':' . $premises->id();
-      $cache = \Drupal::cache('data')->get("par_data_relationships:{$entityHashKey}");
-      if ($i >= 15 && $i % 2 != 0) {
-        $this->assertNotFalse($cache, t("Relationships for premises entity {$premises->id()} have been correctly cached."));
-      }
-    }
-
-    // If we delete a premises it should clear the cache.
-    $entityHashKey = $this->premises[17]->getEntityTypeId() . ':' . $this->premises[17]->id();
-    $premises_id = $this->premises[17]->id();
-    $this->premises[17]->delete();
-    $cache = \Drupal::cache('data')->get("par_data_relationships:{$entityHashKey}");
-    $this->assertEmpty($cache, t("Relationships for premises entity $premises_id has been correctly cache busted."));
-
-    // It should also clear the correct cache for the authority.
-    $entityHashKey = $this->organisations[17]->getEntityTypeId() . ':' . $this->organisations[17]->id();
-    $cache = \Drupal::cache('data')->get("par_data_relationships:{$entityHashKey}");
-    $this->assertEmpty($cache, t("Relationships for organisation entity {$this->organisations[17]->id()} has been correctly cache busted."));
   }
 }

@@ -5,7 +5,6 @@ namespace Drupal\par_enforcement_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 
 /**
@@ -60,7 +59,7 @@ class ParEnforcementReferredAuthorityForm extends ParBaseForm {
             '#collapsed' => FALSE,
           ];
 
-          $form['referred_to'][$delta]['titles'][$action->id()]= $this->renderSection('Title of action', $action, ['title' => 'title'],'', TRUE);
+          $form['referred_to'][$delta]['titles'][$action->id()]= $this->renderSection('Title of action', $action, ['title' => 'title']);
 
           $form['referred_to'][$delta]['referrals'][$action->id()] = [
             '#type' => 'radios',
