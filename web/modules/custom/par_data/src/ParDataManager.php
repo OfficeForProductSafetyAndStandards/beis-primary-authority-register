@@ -291,9 +291,15 @@ class ParDataManager implements ParDataManagerInterface {
       \Drupal::cache('data')->set("par_data_relationships:{$entityHashKey}", $relationships, Cache::PERMANENT, $tags);
     }
 
-    // Loop through all relationships
-    $related_entities = [];
+    // Loop through all relationships.
     foreach ($relationships as $entity_type => $referenced_entities) {
+
+      // @TODO PAR-1025: This is a temporary fix to resolve performance issues
+      // with looking up the large numbers of premises.
+      if ($entity_type === 'par_data_premises') {
+        continue;
+      }
+
       foreach ($referenced_entities as $entity_id => $referenced_entity) {
         // Always skip lookup of relationships for people.
         if ($referenced_entity->getEntityTypeId() === 'par_data_person') {

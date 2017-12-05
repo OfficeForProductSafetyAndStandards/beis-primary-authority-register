@@ -33,6 +33,8 @@
         "drupal/invite": "1.x-dev#a25b6e11580660f2653c36b0c4669b73ef453f7c",
         "drupal/login_destination": "1.x-dev#98892eb84eba6fe69d4fc48dc5b1fdaccb21c8a7",
         "drupal/mailsystem": "~4.1.0",
+        "drupal/message": "~1.0.0@RC",
+        "drupal/message_notify": "~1.0.0@beta",
         "drupal/no_autocomplete": "~1.0.0",
         "drupal/pagerer": "~1.1.0",
         "drupal/password_policy": "~3.0.0",
@@ -99,8 +101,6 @@
                 "Add support for ClamAV via a REST daemon": "./patches/clamav_add_rest_client.patch"
             },
             "drupal/core": {
-                "Allow migration lookups against sub-sets of migration map ids": "./patches/migration_id_map_sql_lookup_check.patch",
-                "Migration Lookup plugin does not return multiple values when matched and uses deprecated method": "https://www.drupal.org/files/issues/2890844-14.patch",
                 "PostgreSQL: deal with case insensitivity": "./patches/postgres_case_insensitivity-2464481.patch",
                 "Unclosed conditional comments in html tag result in broken html head": "https://www.drupal.org/files/issues/conditional_comment_broken_with_aggregation-2563069-16.patch"
             },

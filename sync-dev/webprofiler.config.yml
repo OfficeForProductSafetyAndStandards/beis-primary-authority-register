@@ -5,15 +5,16 @@ ide_link: 'txmt://open?url=file://@file&line=@line'
 ide_link_remote: ''
 ide_link_local: ''
 active_toolbar_items:
-  devel: devel
   assets: assets
   blocks: blocks
   cache: cache
   database: database
+  devel: devel
   drupal_extension: drupal_extension
   forms: forms
-  performance_timing: performance_timing
+  mail: mail
   php_config: php_config
+  performance_timing: performance_timing
   request: request
   time: time
   user: user
@@ -24,6 +25,7 @@ active_toolbar_items:
   routing: '0'
   services: '0'
   state: '0'
+  theme: '0'
 query_sort: source
 query_highlight: 5
 _core:
