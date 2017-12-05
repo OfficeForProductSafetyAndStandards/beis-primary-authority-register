@@ -1,0 +1,21 @@
+uuid: f8cde7b7-ae64-496d-b353-8f0d7149c1cb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_message_subject
+    - message.template.new_enforcement_notification
+id: message.new_enforcement_notification.field_message_subject
+field_name: field_message_subject
+entity_type: message
+bundle: new_enforcement_notification
+label: 'Message Subject'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 'Primary Authority - Notification of Proposed Enforcement'
+default_value_callback: ''
+settings: {  }
+field_type: string

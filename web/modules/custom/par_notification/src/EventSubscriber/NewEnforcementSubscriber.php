@@ -25,6 +25,8 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
    */
   const DELIVERY_METHOD = 'email';
 
+  protected $recipients = [];
+
   /**
    * The events to react to.
    *
@@ -98,7 +100,11 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
       $primary_authority = $enforcement->getPrimaryAuthority(TRUE);
       foreach ($primary_authority->getPerson() as $person) {
         // Notify all users in this authority with the appropriate permissions.
-        if (($account = $person->getUserAccount()) && $person->getUserAccount()->hasPermission('approve enforcement notice')) {
+        if (($account = $person->getUserAccount()) && $person->getUserAccount()->hasPermission('approve enforcement notice')
+          && !isset($this->recipients[$account->id()])) {
+
+          // Record the recipient so that we don't send them the message twice.
+          $this->recipients[$account->id()] = $account->getEmail();
 
           // Create one message per user.
           $message = $message_storage->create([

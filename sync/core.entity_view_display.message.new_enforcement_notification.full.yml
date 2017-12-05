@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.message.full
     - field.field.message.new_enforcement_notification.field_enforcement_notice
+    - field.field.message.new_enforcement_notification.field_message_subject
     - message.template.new_enforcement_notification
 id: message.new_enforcement_notification.full
 targetEntityType: message
@@ -24,4 +25,5 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_message_subject: true

@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.message.new_enforcement_notification.field_enforcement_notice
+    - field.field.message.new_enforcement_notification.field_message_subject
     - message.template.new_enforcement_notification
 id: message.new_enforcement_notification.default
 targetEntityType: message
@@ -18,5 +19,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_message_subject:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
     region: content
 hidden: {  }

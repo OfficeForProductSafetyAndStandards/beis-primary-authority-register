@@ -1,28 +1,25 @@
-uuid: 6fec3552-b8fa-45d9-9111-72b0e4606b90
+uuid: a33ae8da-a852-433b-b12f-486e42fea818
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.message.mail_subject
     - field.field.message.new_enforcement_notification.field_enforcement_notice
     - field.field.message.new_enforcement_notification.field_message_subject
     - message.template.new_enforcement_notification
-id: message.new_enforcement_notification.default
+id: message.new_enforcement_notification.mail_subject
 targetEntityType: message
 bundle: new_enforcement_notification
-mode: default
+mode: mail_subject
 content:
-  field_enforcement_notice:
-    weight: 1
-    label: hidden
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  partial_0:
+  field_message_subject:
+    type: string
     weight: 0
     region: content
-    settings: {  }
+    label: hidden
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
 hidden:
-  field_message_subject: true
+  field_enforcement_notice: true
+  partial_0: true
