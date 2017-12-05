@@ -46,7 +46,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
     $par_data_premises = $this->getRouteParam('par_data_premises');
 
-    if (!empty($par_data_partnership) && !empty($par_data_premises)) {
+    if (!empty($par_data_partnership)) {
 
       $par_data_premises = current($par_data_premises);
 
