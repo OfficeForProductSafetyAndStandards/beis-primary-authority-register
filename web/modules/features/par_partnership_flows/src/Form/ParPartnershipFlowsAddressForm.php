@@ -48,7 +48,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
 
     if (!empty($par_data_partnership) && !empty($par_data_premises)) {
 
-      $par_data_premises = current($this->getRouteParam('par_data_premises'));
+      $par_data_premises = current($par_data_premises);
 
       // Are we editing an existing premises entity?
       $verb = $this->t($par_data_premises ? 'Edit' : 'Add');
