@@ -43,10 +43,13 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    $par_data_partnership = current($this->getRouteParam('par_data_partnership'));
-    $par_data_premises = current($this->getRouteParam('par_data_premises'));
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    $par_data_premises = $this->getRouteParam('par_data_premises');
 
-    if ($par_data_partnership) {
+    if (!empty($par_data_partnership)) {
+
+      $par_data_premises = current($par_data_premises);
+
       // Are we editing an existing premises entity?
       $verb = $this->t($par_data_premises ? 'Edit' : 'Add');
 
