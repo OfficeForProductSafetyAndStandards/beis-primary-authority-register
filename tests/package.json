@@ -44,7 +44,6 @@
     "wdio-chromedriver-service": "latest",
     "wdio-cucumber-framework": "~1.0.2",
     "wdio-json-reporter": "0.2.1",
-    "wdio-screenshot": "^0.6.0",
     "wdio-selenium-standalone-service": "~0.0.9",
     "wdio-spec-reporter": "~0.1.2",
     "webdrivercss": "^1.1.10",
