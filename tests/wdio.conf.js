@@ -204,12 +204,12 @@ exports.config = {
         global.should = chai.should();
     },
      //Hook that gets executed after the suite has ended
-     afterStep: function afterStep(step) {
+    afterStep: function afterStep(step) {
          const chai = require('chai');
          global.expect = chai.expect;
          const nrOfElements = browser.elements('.error-summary').value;
-         expect(nrOfElements).to.have.lengthOf(0, 'Element with selector "${element}" should not exist on the page');     },
-
+         expect(nrOfElements).to.have.lengthOf(0, 'Element with selector "${element}" should not exist on the page');
+    }
     // Hook that gets executed before the suite starts
     // beforeSuite: function beforeSuite(suite) {
     // },
