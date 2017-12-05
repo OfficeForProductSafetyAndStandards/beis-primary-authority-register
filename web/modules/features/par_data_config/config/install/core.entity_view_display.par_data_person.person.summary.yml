@@ -3,43 +3,27 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_person.summary
+    - field.field.par_data_person.person.field_user_account
     - par_data.par_data_person_type.person
 id: par_data_person.person.summary
 targetEntityType: par_data_person
 bundle: person
 mode: summary
 content:
-  email:
-    type: string
-    weight: 2
+  email_pseudo_field:
+    weight: 3
     region: content
-    label: hidden
-    settings:
-      link_to_entity: false
+    settings: {  }
     third_party_settings: {  }
-  first_name:
-    type: string
+  full_name_pseudo_field:
     weight: 0
     region: content
-    label: hidden
-    settings:
-      link_to_entity: false
+    settings: {  }
     third_party_settings: {  }
-  last_name:
-    type: string
-    weight: 1
+  mobile_phone_pseudo_field:
+    weight: 2
     region: content
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  mobile_phone:
-    type: string
-    weight: 4
-    region: content
-    label: hidden
-    settings:
-      link_to_entity: false
+    settings: {  }
     third_party_settings: {  }
   person_name:
     type: string
@@ -49,22 +33,24 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  work_phone:
-    type: string
-    weight: 3
+  work_phone_pseudo_field:
+    weight: 1
     region: content
-    label: hidden
-    settings:
-      link_to_entity: false
+    settings: {  }
     third_party_settings: {  }
 hidden:
   communication_email: true
   communication_mobile: true
   communication_notes: true
   communication_phone: true
+  email: true
   field_user_account: true
+  first_name: true
   job_title: true
+  last_name: true
+  mobile_phone: true
   name: true
   salutation: true
   user_account: true
   user_id: true
+  work_phone: true

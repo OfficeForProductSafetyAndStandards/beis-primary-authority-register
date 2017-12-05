@@ -1,5 +1,6 @@
 import { defineSupportCode } from 'cucumber';
 import clearInputField from '../support/action/clearInputField';
+import setCheckbox from '../support/action/setCheckbox';
 import clickElement from '../support/action/clickElement';
 import clickChildElement from '../support/action/clickElement';
 import closeLastOpenedWindow from '../support/action/closeLastOpenedWindow';
@@ -26,6 +27,11 @@ defineSupportCode(({ When }) => {
     When(
         /^I (click|doubleclick) on the (link|button|radio|checkbox|business|element) "([^"]*)?"$/,
         clickElement
+    );
+
+    When(
+        /^I (check|uncheck) the checkbox "([^"]*)?"$/,
+        setCheckbox
     );
 
     When(

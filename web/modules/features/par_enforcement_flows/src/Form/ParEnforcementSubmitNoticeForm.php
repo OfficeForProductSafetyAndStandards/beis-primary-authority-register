@@ -76,7 +76,7 @@ class ParEnforcementSubmitNoticeForm extends ParBaseEnforcementForm {
     $form['enforcement_officer_telephone'] = $this->renderSection('Enforcing officer telephone number', $enforcing_officer, ['work_phone' => 'summary'], [], TRUE, TRUE);
     $form['enforcement_officer_email'] = $this->renderSection('Enforcing officer email address', $enforcing_officer, ['email' => 'summary'], [], TRUE, TRUE);
 
-    $form['enforcement_summary'] = $this->renderSection('Summary of enforcement notice', $par_data_enforcement_notice, ['summary' => 'summary'], [], TRUE, TRUE);
+    $form['enforcement_summary'] = $this->renderSection('Summary of enforcement notice', $par_data_enforcement_notice, ['summary' => 'full'], [], TRUE, TRUE);
 
     // Display all enforcement actions assigned to this enforcement action.
     foreach ($enforcement_actions as $enforcement_action) {
