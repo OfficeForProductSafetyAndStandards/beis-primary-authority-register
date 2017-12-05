@@ -294,7 +294,8 @@ class ParDataManager implements ParDataManagerInterface {
     // Loop through all relationships.
     foreach ($relationships as $entity_type => $referenced_entities) {
 
-      // Always skip lookup of premises.
+      // @TODO PAR-1025: This is a temporary fix to resolve performance issues
+      // with looking up the large numbers of premises.
       if ($entity_type === 'par_data_premises') {
         continue;
       }
