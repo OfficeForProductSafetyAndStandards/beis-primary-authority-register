@@ -5,6 +5,7 @@ namespace Drupal\par_notification\EventSubscriber;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\message\Entity\Message;
+use Drupal\message\MessageInterface;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -73,11 +74,13 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
 
     $message_storage = $this->getEntityTypeManager()->getStorage('message');
 
+    var_dump('event firing.'); die;
+
     // Get the link to approve this notice.
     $options = ['absolute' => TRUE];
     $enforcement_url = Url::fromRoute('par_enforcement_flows.approve', ['par_data_enforcement_notice' => $enforcement], $options);
 
-    if (!is_object($message_template)) {
+    if (!$message_template instanceof MessageInterface) {
       return;
     }
 
