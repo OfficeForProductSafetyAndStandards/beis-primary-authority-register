@@ -160,6 +160,17 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
   /**
    * {@inheritdoc}
    */
+  public function getDefaultStatus() {
+    // Get the default status (the first configured allowed_status value).
+    $status_field = $this->getConfigurationElementByType('entity', 'status_field');
+    $allowed_statuses = $this->getAllowedValues($status_field);
+
+    return isset($status_field) && !empty($allowed_statuses) ? key($allowed_statuses) : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getBooleanFieldLabel($field_name, bool $value = FALSE) {
     $boolean_values = $this->getConfigurationElementByType($field_name, 'boolean_values');
     $key = $value ? 'on' : 'off';
