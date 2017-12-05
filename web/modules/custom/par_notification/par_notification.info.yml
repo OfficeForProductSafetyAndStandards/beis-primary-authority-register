@@ -4,5 +4,6 @@ description: Adds a centralized notification service for handling interactions t
 core: 8.x
 package: PAR
 dependencies:
-  - token
+  - message
+  - message_notify
   - par_data

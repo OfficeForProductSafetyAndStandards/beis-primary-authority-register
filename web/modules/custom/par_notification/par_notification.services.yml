@@ -1,0 +1,5 @@
+services:
+  par_notification.new_enforcement_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\NewEnforcementSubscriber'
+    tags:
+      - { name: 'event_subscriber' }

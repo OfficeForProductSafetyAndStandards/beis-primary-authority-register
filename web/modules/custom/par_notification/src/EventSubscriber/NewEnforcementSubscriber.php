@@ -6,6 +6,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\message\Entity\Message;
 use Drupal\message\MessageInterface;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -30,7 +31,7 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[ParDataEvent::CREATE][] = ['onNewEnforcement', 10];
+    $events[ParDataEvent::CREATE][] = ['onNewEnforcement', 800];
 
     return $events;
   }
@@ -66,7 +67,13 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
    * @param ParDataEventInterface $event
    */
   public function onNewEnforcement(ParDataEventInterface $event) {
+    /** @var ParDataEntityInterface $enforcement */
     $enforcement = $event->getData();
+
+    if (!$enforcement) {
+      // @TODO Log that the template couldn't be loaded.
+      return;
+    }
 
     // Load the message template.
     $template_storage = $this->getEntityTypeManager()->getStorage('message_template');
@@ -74,13 +81,12 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
 
     $message_storage = $this->getEntityTypeManager()->getStorage('message');
 
-    var_dump('event firing.'); die;
-
     // Get the link to approve this notice.
     $options = ['absolute' => TRUE];
-    $enforcement_url = Url::fromRoute('par_enforcement_flows.approve', ['par_data_enforcement_notice' => $enforcement], $options);
+    $enforcement_url = Url::fromRoute('par_enforcement_flows.approve', ['par_data_enforcement_notice' => $enforcement->id()], $options);
 
-    if (!$message_template instanceof MessageInterface) {
+    if (!$message_template) {
+      // @TODO Log that the template couldn't be loaded.
       return;
     }
 
@@ -92,7 +98,7 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
       $primary_authority = $enforcement->getPrimaryAuthority(TRUE);
       foreach ($primary_authority->getPerson() as $person) {
         // Notify all users in this authority with the appropriate permissions.
-        if ($account = $person->getUserAccount() && $person->getUserAccount()->hasPermission('approve enforcement notice')) {
+        if (($account = $person->getUserAccount()) && $person->getUserAccount()->hasPermission('approve enforcement notice')) {
 
           // Create one message per user.
           $message = $message_storage->create([
@@ -110,7 +116,9 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
           ]);
 
           // The owner is the user who this message belongs to.
-          $message->setOwnerId($account->id());
+          if ($account) {
+            $message->setOwnerId($account->id());
+          }
           $message->save();
 
           // The e-mail address can be overridden if we don't want
