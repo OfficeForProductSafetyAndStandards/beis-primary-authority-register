@@ -98,6 +98,11 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
 
       // We need to get the primary authority for this enforcement.
       $primary_authority = $enforcement->getPrimaryAuthority(TRUE);
+      if (!$primary_authority) {
+        // @TODO Log that the template couldn't be loaded.
+        return;
+      }
+
       foreach ($primary_authority->getPerson() as $person) {
         // Notify all users in this authority with the appropriate permissions.
         if (($account = $person->getUserAccount()) && $person->getUserAccount()->hasPermission('approve enforcement notice')
