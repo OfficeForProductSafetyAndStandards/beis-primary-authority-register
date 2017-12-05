@@ -23,7 +23,7 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
   /**
    * The notication plugin that will deliver these notification messages.
    */
-  const DELIVERY_METHOD = 'email';
+  const DELIVERY_METHOD = 'plain_email';
 
   protected $recipients = [];
 
