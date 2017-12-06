@@ -1,0 +1,20 @@
+par_notification.par_message.*:
+  type: config_entity
+  label: 'PAR Message config'
+  mapping:
+    uuid:
+      type: string
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    subject:
+      type: label
+      label: 'Subject heading'
+      nullable: true
+    message:
+      type: string
+      label: 'Message'
+      nullable: true

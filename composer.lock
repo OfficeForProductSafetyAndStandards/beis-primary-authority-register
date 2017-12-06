@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a5d175d479ab3eae603c32ff9ddfb338",
+    "content-hash": "5f98745be4434d162a982faf9b7c9c78",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
-            "version": "1.1.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alphagov/notifications-php-client.git",
-                "reference": "cae2548d8e1db11fe552c8f4416275baeba1e424"
+                "reference": "ebdda30323fa56b1ffd0469b2b426bba31ec8006"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alphagov/notifications-php-client/zipball/cae2548d8e1db11fe552c8f4416275baeba1e424",
-                "reference": "cae2548d8e1db11fe552c8f4416275baeba1e424",
+                "url": "https://api.github.com/repos/alphagov/notifications-php-client/zipball/ebdda30323fa56b1ffd0469b2b426bba31ec8006",
+                "reference": "ebdda30323fa56b1ffd0469b2b426bba31ec8006",
                 "shasum": ""
             },
             "require": {
@@ -25,12 +25,12 @@
                 "guzzlehttp/psr7": "^1.2",
                 "php": ">=5.4",
                 "php-http/client-implementation": "^1.0",
+                "php-http/guzzle6-adapter": "^1.1",
                 "php-http/httplug": "^1.0",
                 "psr/http-message": "^1.0"
             },
             "require-dev": {
                 "php-http/curl-client": "*",
-                "php-http/guzzle6-adapter": "*",
                 "php-http/message": "^1.1",
                 "php-http/mock-client": "*",
                 "php-http/socket-client": "*",
@@ -56,7 +56,7 @@
                 }
             ],
             "description": "PHP client for GOV.UK Notifications",
-            "time": "2017-05-24T10:02:18+00:00"
+            "time": "2017-12-05T11:10:51+00:00"
         },
         {
             "name": "asm89/stack-cors",
@@ -1747,11 +1747,8 @@
             "type": "drupal-core",
             "extra": {
                 "patches_applied": {
-                    "Allow migration lookups against sub-sets of migration map ids": "./patches/migration_id_map_sql_lookup_check.patch",
-                    "Migration Lookup plugin does not return multiple values when matched and uses deprecated method": "https://www.drupal.org/files/issues/2890844-14.patch",
                     "PostgreSQL: deal with case insensitivity": "./patches/postgres_case_insensitivity-2464481.patch",
-                    "Unclosed conditional comments in html tag result in broken html head": "https://www.drupal.org/files/issues/conditional_comment_broken_with_aggregation-2563069-16.patch",
-                    "Ensure the table alias is no longer than 60 characters long": "https://www.drupal.org/files/issues/drupal-571548-107-d8_0.patch"
+                    "Unclosed conditional comments in html tag result in broken html head": "https://www.drupal.org/files/issues/conditional_comment_broken_with_aggregation-2563069-16.patch"
                 }
             },
             "autoload": {
@@ -2771,6 +2768,131 @@
             "homepage": "https://www.drupal.org/project/mailsystem",
             "support": {
                 "source": "http://cgit.drupalcode.org/mailsystem"
+            }
+        },
+        {
+            "name": "drupal/message",
+            "version": "1.0.0-rc1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/message",
+                "reference": "8.x-1.0-rc1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/message-8.x-1.0-rc1.zip",
+                "reference": "8.x-1.0-rc1",
+                "shasum": "eceb8f05f429ce4e2babf67cafcd5b932b2b3ec1"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "require-dev": {
+                "drupal/coder": "^8.2",
+                "drupal/token": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-rc1",
+                    "datestamp": "1508449444",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "RC releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Grayside",
+                    "homepage": "https://www.drupal.org/user/346868"
+                },
+                {
+                    "name": "RoySegall",
+                    "homepage": "https://www.drupal.org/user/1812910"
+                },
+                {
+                    "name": "amitaibu",
+                    "homepage": "https://www.drupal.org/user/57511"
+                },
+                {
+                    "name": "itamar",
+                    "homepage": "https://www.drupal.org/user/1757910"
+                },
+                {
+                    "name": "jhedstrom",
+                    "homepage": "https://www.drupal.org/user/208732"
+                }
+            ],
+            "description": "Message",
+            "homepage": "https://www.drupal.org/project/message",
+            "support": {
+                "source": "http://cgit.drupalcode.org/message"
+            }
+        },
+        {
+            "name": "drupal/message_notify",
+            "version": "1.0.0-beta1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/message_notify",
+                "reference": "8.x-1.0-beta1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/message_notify-8.x-1.0-beta1.zip",
+                "reference": "8.x-1.0-beta1",
+                "shasum": "085a628bd859b4fb861bb46a8c8a00d668a248ad"
+            },
+            "require": {
+                "drupal/core": "~8.0",
+                "drupal/message": "~1.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-beta1",
+                    "datestamp": "1490992382",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "RoySegall",
+                    "homepage": "https://www.drupal.org/user/1812910"
+                },
+                {
+                    "name": "amitaibu",
+                    "homepage": "https://www.drupal.org/user/57511"
+                },
+                {
+                    "name": "jhedstrom",
+                    "homepage": "https://www.drupal.org/user/208732"
+                }
+            ],
+            "description": "Notification framework for the Message module",
+            "homepage": "https://drupal.org/project/message_notify",
+            "support": {
+                "source": "https://cgit.drupalcode.org/message_notify",
+                "issues": "https://drupal.org/project/issues/message_notify",
+                "irc": "irc://irc.freenode.org/drupal"
             }
         },
         {
@@ -10148,6 +10270,8 @@
         "drupal/govuk_notify": 20,
         "drupal/invite": 20,
         "drupal/login_destination": 20,
+        "drupal/message": 5,
+        "drupal/message_notify": 10,
         "drupal/queue_ui": 20,
         "drupal/ultimate_cron": 15,
         "drupal/config_inspector": 10,

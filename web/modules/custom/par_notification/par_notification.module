@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains par_notification.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function par_notification_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the par_notification module.
+    case 'help.page.par_notification':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Adds notification handling services for any parts of the system that need to alert users to a system interaction.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
