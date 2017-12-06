@@ -10,8 +10,21 @@ weight: 0
 module: google_analytics
 callback: google_analytics_cron
 scheduler:
-  id: simple
+  id: crontab
+  configuration:
+    rules:
+      - '15,30 0 * * *'
+    catch_up: 0
 launcher:
   id: serial
+  configuration:
+    timeouts:
+      lock_timeout: 3600
+    launcher:
+      thread: 0
 logger:
   id: database
+  configuration:
+    method: '3'
+    expire: 1209600
+    retain: 1000

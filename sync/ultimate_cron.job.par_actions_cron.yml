@@ -1,6 +1,6 @@
 uuid: f23269ea-c23a-44e7-9685-547d1bca34f0
 langcode: en
-status: true
+status: false
 dependencies:
   module:
     - par_actions
