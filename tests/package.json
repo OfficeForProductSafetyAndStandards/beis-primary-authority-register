@@ -47,7 +47,9 @@
     "wdio-screenshot": "^0.6.0",
     "wdio-selenium-standalone-service": "~0.0.9",
     "wdio-spec-reporter": "~0.1.2",
-    "webdrivercss": "^1.1.10",
+    "webdrivercss": "latest",
+    "webdriverrtc": "latest",
+    "browserevent": "latest",
     "webdriverio": "4.9.8"
   }
 }
