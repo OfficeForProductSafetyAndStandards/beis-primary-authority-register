@@ -8,6 +8,5 @@ wdioConfig.config.tags = '@ci, ~@Pending, ~@setup, ~@deprecated, ~@Bug, ~@smoket
 wdioConfig.config.services = ['selenium-standalone'];
 wdioConfig.config.specs = './src/features/*.feature';
 wdioConfig.config.bail = 0;
-wdioConfig.config.screenshotPath = './errorShots/';
 exports.config = wdioConfig.config;
 
