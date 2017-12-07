@@ -26,8 +26,6 @@ cd ${ROOT}/web; ../vendor/drush/drush/drush cim -y; ../vendor/drush/drush/drush 
 cd ${ROOT}/web; ../vendor/drush/drush/drush cc drush;
 # Revert all features
 cd ${ROOT}/web; ../vendor/drush/drush/drush fra -y;
-# Run cron to process required functions.
-cd ${ROOT}/web; ../vendor/drush/drush/drush cron;
 
 # Take the site out of maintenance mode.
 cd ${ROOT}/web; ../vendor/drush/drush/drush sset system.maintenance_mode 0;
