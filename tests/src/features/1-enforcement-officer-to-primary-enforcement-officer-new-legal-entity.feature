@@ -38,23 +38,17 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
         # CHOOSE LEGAL ENTITY
 
-        Then I expect that element "h1.heading-xlarge" contains the text "Notification of Enforcement action"
-        When I scroll to element "#edit-legal-entities-select-add-new"
+        And I scroll to element "#edit-legal-entities-select-add-new"
         And I click on the radio "#edit-legal-entities-select-add-new"
         And I add "Legal Entity 1" to the inputfield "#edit-alternative-legal-entity"
         And I click on the button "#edit-next"
 
-      # ENFORCEMENT SUMMARY
+        # ENFORCEMENT SUMMARY
 
-        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Proposed enforcement notification regarding"
-        Then I expect that element "h1.heading-xlarge" contains the text "Legal Entity 1"
         And I add "action summary enforcement notice" to the inputfield "#edit-action-summary"
 #        And I add "600" random chars of text to field "#edit-action-summary"
         And I click on the radio "#edit-type-proposed"
         And I click on the button "#edit-next"
-
-        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Provide details of the proposed enforcement action"
-        Then I expect that element "h1.heading-xlarge" contains the text "Add an action to the enforcement notice"
         And I add "Title of enforcement notice Four" to the inputfield "#edit-title-of-action"
         And I click on the radio ".option*=Cookie control"
         And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
@@ -72,10 +66,10 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
         # CHECK DETAILS
 
-        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Summary of the proposed enforcement action(s) regarding"
-        Then I expect that element "h1.heading-xlarge" contains the text "Legal Entity 1"
-        Then I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Title of enforcement notice Four"
-#       And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "last text in a long string"
+        And I scroll to element "#footer"
+        And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "action summary enforcement notice"
+        And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Title of enforcement notice Four"
+        And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Some details about the enforcement notice"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Once the primary authority receives this notification, they have 5 working days to respond to you if they intend to block the action"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "You will be notified by email of the outcome of this notification"
 
