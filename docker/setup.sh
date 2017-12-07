@@ -8,9 +8,9 @@
 # Install dependencies
 
     docker exec -i par_beta_web bash -c 'su - composer -c "cd ../../var/www/html && php composer.phar install"'
-    docker exec -i par_beta_web bash -c "cd /var/www/html/tests && ../../../../usr/local/n/versions/node/7.2.1/bin/npm install"
-    docker exec -i par_beta_web bash -c "../../../usr/local/n/versions/node/7.2.1/bin/npm install"
-    docker exec -i par_beta_web bash -c "../../../usr/local/n/versions/node/7.2.1/bin/npm run gulp"
+    docker exec -i par_beta_web bash -c "cd /var/www/html/tests && npm install"
+    docker exec -i par_beta_web bash -c "npm install"
+    docker exec -i par_beta_web bash -c "npm run gulp"
 
 # Setup the development settings file:
 
