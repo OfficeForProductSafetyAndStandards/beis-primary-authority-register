@@ -128,7 +128,7 @@ script:
 # Generate tar with test screenshots to tests/reports/errorShots.tar.gz
 #-----------------------------------------------------------------------------
 #  - docker exec -ti par_beta_web bash -c "cd tests/reports && if [ -d ./html ]; then tar -cf reportHTML.tar.gz ./html; fi"
-  - if [[ "$TESTTYPE" == "cucumber" && -d ./errorShots]]; then docker exec -ti par_beta_web bash -c "cd tests && tar -cf reports/errorShots.tar.gz ./errorShots"; fi
+  - if [[ "$TESTTYPE" == "cucumber"]] && [-d ./errorShots]; then docker exec -ti par_beta_web bash -c "cd tests && tar -cf reports/errorShots.tar.gz ./errorShots"; fi
 
 #-----------------------------------------------------------------------------
 # Remove .env file created in previous steps.
