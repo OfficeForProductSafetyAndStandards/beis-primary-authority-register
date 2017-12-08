@@ -11,11 +11,25 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class TranceAddController.
+ * Class ParDataAddController.
  *
  * @package Drupal\par_data\Controller
  */
 class ParDataAddController extends ControllerBase {
+
+  /**
+   * The storage handler for the entity type being added.
+   *
+   * @var EntityStorageInterface
+   */
+  protected $storage;
+
+  /**
+   * The entity type storage hander for the entity type being added.
+   *
+   * @var EntityStorageInterface
+   */
+  protected $typeStorage;
 
   /**
    * Constructor.
@@ -77,7 +91,7 @@ class ParDataAddController extends ControllerBase {
   /**
    * Presents the creation form for trance entities of given bundle/type.
    *
-   * @param EntityInterface $par_data_type
+   * @param EntityInterface $par_data_entity_type
    *   The custom bundle to add.
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The current request object.
