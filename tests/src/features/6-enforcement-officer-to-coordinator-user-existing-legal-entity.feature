@@ -46,10 +46,9 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
         And I click on the button "#edit-next"
 
         # CHOOSE LEGAL ENTITY
-
         And I click on the button "#edit-next"
 
-        # ENFORCEMENT SUMMARY
+      # ENFORCEMENT SUMMARY
 
         And I add "action summary enforcement notice" to the inputfield "#edit-action-summary"
         And I click on the radio "#edit-type-proposed"
