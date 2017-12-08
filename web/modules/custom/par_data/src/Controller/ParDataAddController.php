@@ -59,7 +59,7 @@ class ParDataAddController extends ControllerBase {
     $entity_type = $this->storage->getEntityType()->id();
     $bundle_entity_type = $this->storage->getEntityType()->getBundleEntityType();
     $types = $this->typeStorage->loadMultiple();
-    if ($types && count($types) == 1) {
+    if (count($types) === 1) {
       $type = key($types);
       return $this->addForm($type, $request);
     }
