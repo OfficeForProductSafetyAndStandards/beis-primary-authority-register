@@ -20,15 +20,18 @@ use Drupal\views\Plugin\views\argument_default\ArgumentDefaultPluginBase;
  */
 class ParPersonAuthorities extends ArgumentDefaultPluginBase implements CacheableDependencyInterface {
 
-  protected $par_data_manager;
+  /**
+   * Getter for the PAR Data Manager serice.
+   */
+  public function getParDataManager() {
+    return \Drupal::service('par_data.manager');
+  }
 
   /**
    * {@inheritdoc}
    */ 
   public function __construct(array $configuration, $plugin_id, $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-
-    $this->par_data_manager = \Drupal::service('par_data.manager');
   }
 
   /**
@@ -53,7 +56,7 @@ class ParPersonAuthorities extends ArgumentDefaultPluginBase implements Cacheabl
     }
 
     // Get current user PAR Authorities.
-    $user_authorities = array_keys($this->par_data_manager->hasMembershipsByType($account, 'par_data_authority'));
+    $user_authorities = array_keys($this->getParDataManager()->hasMembershipsByType($account, 'par_data_authority', TRUE));
 
     // Contextual filters expect "+" for OR.
     return implode("+", $user_authorities);
