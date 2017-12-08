@@ -101,6 +101,7 @@
                 "Add support for ClamAV via a REST daemon": "./patches/clamav_add_rest_client.patch"
             },
             "drupal/core": {
+                "file_exists() doesn't work with remote stream wrappers in file_cron()": "https://www.drupal.org/files/issues/file_exists_remote_streams_cron-2928889-2.patch",
                 "PostgreSQL: deal with case insensitivity": "./patches/postgres_case_insensitivity-2464481.patch",
                 "Unclosed conditional comments in html tag result in broken html head": "https://www.drupal.org/files/issues/conditional_comment_broken_with_aggregation-2563069-16.patch",
                 "Ensure the table alias is no longer than 60 characters long": "https://www.drupal.org/files/issues/drupal-571548-107-d8_0.patch"
