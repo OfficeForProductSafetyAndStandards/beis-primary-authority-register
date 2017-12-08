@@ -91,6 +91,14 @@ class ParDataEnforcementAction extends ParDataEntity {
     return $this->get('field_regulatory_function')->referencedEntities();
   }
 
+  /**
+   * Get the notice that the action belongs to.
+   *
+   * @param bool $single
+   *   Whether to return an array or just a single entity
+   *
+   * @return mixed|null
+   */
   public function getEnforcementNotice($single = TRUE) {
     $notices = $this->getParDataManager()->getEntitiesByProperty('par_data_enforcement_notices', 'field_enforcement_action', $this->id());
     $notice = !empty($notices) ? current($notices) : NULL;
