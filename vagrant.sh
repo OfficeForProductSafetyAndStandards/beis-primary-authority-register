@@ -1,5 +1,6 @@
 # Have a copy of your .env file in the directory directly above the cloned repo
 
+vagrant destroy
 cd ..
 rm -rf beis-primary-authority-register
 git clone git@github.com:UKGovernmentBEIS/beis-primary-authority-register
