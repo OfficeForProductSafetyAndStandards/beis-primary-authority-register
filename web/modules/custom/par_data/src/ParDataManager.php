@@ -12,6 +12,7 @@ use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\file\FileInterface;
+use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\user\Entity\User;
@@ -58,7 +59,16 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * The non membership entities from which references should not be followed.
    */
-  protected $nonMembershipEntities = ['par_data_sic_codes', 'par_data_regulatory_function', 'par_data_advice', 'par_data_inspection_plan', 'par_data_premises'];
+  protected $nonMembershipEntities = [
+    'par_data_sic_codes',
+    'par_data_regulatory_function',
+    'par_data_advice',
+    'par_data_inspection_plan',
+    'par_data_premises',
+    'par_data_legal_entity',
+    'par_data_enforcement_notice',
+    'par_data_enforcement_action',
+  ];
 
   /**
    * Iteration limit for recursive membership lookups.
