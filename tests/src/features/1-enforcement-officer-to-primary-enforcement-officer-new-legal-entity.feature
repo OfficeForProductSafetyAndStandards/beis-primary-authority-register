@@ -62,14 +62,6 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I click on the button "#edit-next"
         Then I expect that element ".filename" contains the text "test.png"
 
-        # ADD ENFORCEMENT ACTION
-
-#        When I click on the link "Add another enforcement action"
-#        And I add "Added Enforcement Action" to the inputfield "#edit-title-of-action"
-#        And I click on the radio ".option*=Alphabet learning"
-#        And I add "Added Enforcement Action details" to the inputfield "#edit-details"
-#        And I click on the button "#edit-next"
-
         # CHECK DETAILS
 
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Summary of the proposed enforcement action(s) regarding"

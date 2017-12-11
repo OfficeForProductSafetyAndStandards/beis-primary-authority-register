@@ -13,7 +13,7 @@ Feature: Enforcement notice management
         When I click on the link "See enforcement notifications sent"
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Enforcement Notifications"
         Then I expect that element "h1.heading-xlarge" contains the text "Sent"
-        Then the element "#views-exposed-form-par-user-enforcements-enforcement-notices-page" not contains the text "Title of enforcement notice"
+        Then the element "#views-exposed-form-par-user-enforcement-list-enforcement-notices-sent" not contains the text "Title of enforcement notice"
         And I expect that element "a*=Title of enforcement notice One" does not exist
         And I expect that element "a*=Title of enforcement notice Three" does not exist
         And I expect that element "a*=Title of enforcement notice Four" does not exist
