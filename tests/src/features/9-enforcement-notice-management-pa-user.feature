@@ -18,7 +18,7 @@ Feature: Enforcement notice management
         And I expect that element "a*=Title of enforcement notice Three" does not exist
         And I expect that element "a*=Title of enforcement notice Four" does not exist
         And I expect that element "a*=Added Enforcement Action" does not exist
-        And I select the option with the text "Date Desc" for element "edit-sort-bef-combine"
+        And I select the option with the text "Date Desc" for element "#edit-sort-bef-combine"
         And I click on the button "#edit-submit-par-user-enforcements"
         And I click on the link "Log out"
 
