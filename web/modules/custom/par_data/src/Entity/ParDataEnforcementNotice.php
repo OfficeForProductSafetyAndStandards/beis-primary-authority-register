@@ -65,6 +65,105 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataEnforcementNotice extends ParDataEntity {
 
   /**
+   * {@inheritdoc}
+   */
+  public function getMembers($action = 'view', $account = NULL, $members = []) {
+    // Rule 1 - A notice can be created by anyone with the role 'raise enforcement notice'.
+    if ($action === 'create') {
+      return FALSE;
+    }
+
+    if ($action === 'view' || $action === 'manage') {
+      // Rule 2 - A notice can be viewed and managed by the enforcing authority.
+      foreach ($this->getEnforcingAuthority() as $authority) {
+        $members[$authority->uuid()] = $authority;
+      }
+
+      // Rule 3 - A notice can be viewed and managed by the primary authority,
+      // provided the enforcement notice is not in review.
+      if ($this->isAwaitingApproval()) {
+        foreach ($this->getPrimaryAuthority() as $authority) {
+          $members[$authority->uuid()] = $authority;
+        }
+      }
+      // In cases where the primary authority and enforcing authority are the same, ensure
+      // the primary authority cannot view or manage this notice.
+      else {
+        foreach ($this->getPrimaryAuthority() as $authority) {
+          unset($members[$authority->uuid()]);
+        }
+      }
+    }
+
+    // Rule 4 - A notice that is in review can be reviewed by the primary authority only.
+    if ($action === 'review') {
+      // Allow the primary authority to view, provided
+      // the EN is not in review.
+      if ($this->isReviewed()) {
+        foreach ($this->getPrimaryAuthority() as $authority) {
+          $members[$authority->uuid()] = $authority;
+        }
+      }
+    }
+
+    return $members;
+  }
+
+
+
+  /**
+   * Check if all actions have been reviewed.
+   *
+   * @return bool
+   */
+  public function isReviewed() {
+    $actions = $this->getEnforcementActions();
+
+    if (empty($actions)) {
+      return FALSE;
+    }
+
+    foreach ($actions as $action) {
+      $status_field = $action->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+      $current_status = $status_field ? $this->get($status_field)->getString() : NULL;
+
+      // If any action hasn't been reviewed then return false for the entire notice.
+      if (!in_array($current_status, [$action::APPROVED, $action::BLOCKED, $action::REFERRED])) {
+        return FALSE;
+      }
+    }
+
+    // If all actions have been reviewed.
+    return TRUE;
+  }
+
+  /**
+   * Check if any actions are awaiting approval.
+   *
+   * @return bool
+   */
+  public function isAwaitingApproval() {
+    $actions = $this->getEnforcementActions();
+
+    if (empty($actions)) {
+      return FALSE;
+    }
+
+    foreach ($actions as $action) {
+      $status_field = $action->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+      $current_status = $status_field ? $this->get($status_field)->getString() : NULL;
+
+      // If any actions are awaiting review then return true for the entire notice.
+      if ($current_status === $action::AWAITING) {
+        return TRUE;
+      }
+    }
+
+    // If no actions are awaiting review.
+    return FALSE;
+  }
+
+  /**
    * Get the primary authority for this Enforcement Notice.
    *
    * @param boolean $single
