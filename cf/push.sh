@@ -236,5 +236,6 @@ if [[ $1 != "environment-only" ]]; then
     
     cf scale par-beta-$ENV -i $INSTANCES
 
+    cf ssh par-beta-$ENV -c "cd app/tools && python cron_runner.py"
     cf ssh par-beta-$ENV -c "cd app/tools && python cache_warmer.py"
 fi
