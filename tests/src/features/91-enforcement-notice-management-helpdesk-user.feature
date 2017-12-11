@@ -9,9 +9,9 @@ Feature: Enforcement notice management
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         When I click on the button "a*=Dashboard"
-        And I click on the link "See enforcement notifications"
-        And I select the option with the text "Desc" for element "#edit-sort-order"
-        And I click on the button "#edit-submit-par-user-enforcements"
+        And I click on the link "See enforcement notifications sent"
+        And I select the option with the text "Date Desc" for element "#edit-sort-bef-combine"
+        And I click on the button "#edit-submit-par-user-enforcement-list"
 
 #        # APPROVAL FORM
 
