@@ -10,6 +10,23 @@ namespace Drupal\par_data\Entity;
 interface ParDataEntityInterface {
 
   /**
+   * A method to get all the member authorities and organisations
+   * for this entity.
+   *
+   * @param string $action
+   *   The action being performed on an entity.
+   * @param $account
+   *   An optional account object to be used to determine membership by role.
+   * @param array $members
+   *   An optional array to append to.
+   *
+   * @return array|false
+   *   An array of member entities keyed by uuid
+   *   or false if permissions don't require membership.
+   */
+  public function getMembers($action, $account, $members);
+
+  /**
    * Get the view builder for the entity.
    *
    * @return \Drupal\Core\Entity\EntityViewBuilderInterface

@@ -65,42 +65,29 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataEnforcementNotice extends ParDataEntity {
 
   /**
-   * A method to get all the member authorities and organisations
-   * for this entity.
-   *
-   * @param $account
-   * @param string $action
-   * @param array $members
-   *
-   * @return array|false
-   *   An array of member entities keyed by uuid.
+   * {@inheritdoc}
    */
   public function getMembers($action = 'view', $account = NULL, $members = []) {
-    // Rule 1 - An enforcement notice can be created by any authority member.
+    // Rule 1 - A notice can be created by anyone with the role 'raise enforcement notice'.
     if ($action === 'create') {
-      // @TODO return all authorities and organisations.
-      $par_data_authorities = $this->getParDataManager()->getEntitiesByType('par_data_authority');
-      foreach ($par_data_authorities as $authority) {
-        $members[$authority->uuid()] = $authority;
-      }
+      return FALSE;
     }
 
-    // Rule 2 - An enforcement notice can be 'managed' (viewed in the admin interfaces) by any enforcing
-    // authority member, and any primary authority member (only if the status is not pending).
     if ($action === 'view' || $action === 'manage') {
-      // Always allow the enforcing authority to view/manage.
+      // Rule 2 - A notice can be viewed and managed by the enforcing authority.
       foreach ($this->getEnforcingAuthority() as $authority) {
         $members[$authority->uuid()] = $authority;
       }
 
-      // Allow the primary authority to view/manage, provided
-      // the EN is not in review.
+      // Rule 3 - A notice can be viewed and managed by the primary authority,
+      // provided the enforcement notice is not in review.
       if ($this->isAwaitingApproval()) {
         foreach ($this->getPrimaryAuthority() as $authority) {
           $members[$authority->uuid()] = $authority;
         }
       }
-      // Make sure that the primary authority is not the enforcing authority as well.
+      // In cases where the primary authority and enforcing authority are the same, ensure
+      // the primary authority cannot view or manage this notice.
       else {
         foreach ($this->getPrimaryAuthority() as $authority) {
           unset($members[$authority->uuid()]);
@@ -108,7 +95,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
       }
     }
 
-    // Rule 3 - An enforcement notice that is referred can be viewed by the primary authority member
+    // Rule 4 - A notice that is in review can be reviewed by the primary authority only.
     if ($action === 'review') {
       // Allow the primary authority to view, provided
       // the EN is not in review.
