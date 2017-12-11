@@ -19,7 +19,7 @@ Feature: Enforcement notice management
         And I expect that element "a*=Title of enforcement notice Four" does not exist
         And I expect that element "a*=Added Enforcement Action" does not exist
         And I select the option with the text "Date Desc" for element "#edit-sort-bef-combine"
-        And I click on the button "#edit-submit-par-user-enforcements"
+        And I click on the button "#edit-submit-par-user-enforcement-list"
         And I click on the link "Log out"
 
         # PRIMARY AUTHORITY OFFICER DASHBOARD
@@ -91,7 +91,7 @@ Feature: Enforcement notice management
         And I add "par_enforcement_officer@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
-        
+
         When I click on the link "See enforcement notifications sent"
         Then I expect that element "a*=Title of enforcement notice One" does exist
         And I expect that element "a*=Added Enforcement Action" does exist
