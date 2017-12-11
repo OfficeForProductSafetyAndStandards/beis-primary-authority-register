@@ -1,4 +1,4 @@
-@ci @PAR859 @PAR962
+@ci @PAR859 @PAR962 @PAR1054
 Feature: Enforcement Officer/PA - Enforcement Notice Process
 
     Scenario: Enforcement Officer/PA - Issue enforcement notice
@@ -63,8 +63,8 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I click on the button "#edit-next"
         Then I expect that element ".filename" contains the text "test.png"
 
-        # ADD ENFORCEMENT ACTION
-
+        # ADD ENFORCEMENT ACTION OMITTED DUE TO BUG PAR-1054
+#
 #        When I click on the link "Add another enforcement action"
 #        And I add "Added Enforcement Action" to the inputfield "#edit-title-of-action"
 #        And I click on the radio ".option*=Alphabet learning"

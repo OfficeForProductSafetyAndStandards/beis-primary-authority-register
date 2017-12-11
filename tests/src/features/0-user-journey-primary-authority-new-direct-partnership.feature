@@ -60,14 +60,10 @@ Feature: New Direct Partnership For PA To Approve
 
         And I add "Business For Direct Partnership 1" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
-#        And I click on the radio ".form-radio"
-#        And I click on the button "#edit-next"
 
         # CONFIRM NEW PARTNERSHIP
 
         And I click new partnership if presented with choices
-  #        And I click on the radio "#edit-par-data-organisation-id-new"
-  #        And I click on the button "#edit-next"
 
         # ADD BUSINESS DETAIL
 
