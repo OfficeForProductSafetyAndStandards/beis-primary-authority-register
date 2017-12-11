@@ -94,6 +94,5 @@ Feature: Enforcement notice management
 
         When I click on the link "See enforcement notifications sent"
         Then I expect that element "a*=Title of enforcement notice One" does exist
-        And I expect that element "a*=Added Enforcement Action" does exist
         And I expect that element "a*=Title of enforcement notice Three" does exist
         And I expect that element "a*=Title of enforcement notice Four" does exist
