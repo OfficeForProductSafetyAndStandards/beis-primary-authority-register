@@ -66,7 +66,7 @@ Feature: Coordinator User - Manage Addresses
 
         # EDIT LEGAL ENTITY
 
-        When I click on the link "edit New Legal Entity"
+        When I click on the link "edit legal entity"
         And I clear the inputfield "#edit-registered-name"
         When I add "Changed" to the inputfield "#edit-registered-name"
         And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"

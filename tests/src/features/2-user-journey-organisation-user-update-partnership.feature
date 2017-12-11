@@ -98,7 +98,7 @@ Feature: Business User - Manage Addresses
 
         # EDIT LEGAL ENTITY
 
-        When I click on the link "edit New LLP Company"
+        When I click on the link "edit legal entity"
         And I clear the inputfield "#edit-registered-name"
         When I add "Changed" to the inputfield "#edit-registered-name"
         And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
@@ -130,7 +130,7 @@ Feature: Business User - Manage Addresses
 
         # EDIT TRADING NAME
 
-        When I click on the link "edit trading name"
+        When I click on the link "edit Different Trading Name"
         Then I expect that element "h1.heading-xlarge" contains the text "Edit trading name for your organisation"
         When I add "Different Trading Name (edited)" to the inputfield "#edit-trading-name"
         And I click on the button "#edit-save"
