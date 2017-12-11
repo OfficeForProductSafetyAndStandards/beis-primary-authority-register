@@ -1,4 +1,4 @@
-@Pending
+@ci
 Feature: Helpdesk approve partnership
 
     Scenario: Helpdesk approve partnership
