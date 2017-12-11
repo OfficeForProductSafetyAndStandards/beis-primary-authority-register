@@ -65,6 +65,118 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataEnforcementNotice extends ParDataEntity {
 
   /**
+   * A method to get all the member authorities and organisations
+   * for this entity.
+   *
+   * @param $account
+   * @param string $action
+   * @param array $members
+   *
+   * @return array|false
+   *   An array of member entities keyed by uuid.
+   */
+  public function getMembers($action = 'view', $account = NULL, $members = []) {
+    // Rule 1 - An enforcement notice can be created by any authority member.
+    if ($action === 'create') {
+      // @TODO return all authorities and organisations.
+      $par_data_authorities = $this->getParDataManager()->getEntitiesByType('par_data_authority');
+      foreach ($par_data_authorities as $authority) {
+        $members[$authority->uuid()] = $authority;
+      }
+    }
+
+    // Rule 2 - An enforcement notice can be 'managed' (viewed in the admin interfaces) by any enforcing
+    // authority member, and any primary authority member (only if the status is not pending).
+    if ($action === 'view' || $action === 'manage') {
+      // Always allow the enforcing authority to view/manage.
+      foreach ($this->getEnforcingAuthority() as $authority) {
+        $members[$authority->uuid()] = $authority;
+      }
+
+      // Allow the primary authority to view/manage, provided
+      // the EN is not in review.
+      if ($this->isAwaitingApproval()) {
+        foreach ($this->getPrimaryAuthority() as $authority) {
+          $members[$authority->uuid()] = $authority;
+        }
+      }
+      // Make sure that the primary authority is not the enforcing authority as well.
+      else {
+        foreach ($this->getPrimaryAuthority() as $authority) {
+          unset($members[$authority->uuid()]);
+        }
+      }
+    }
+
+    // Rule 3 - An enforcement notice that is referred can be viewed by the primary authority member
+    if ($action === 'review') {
+      // Allow the primary authority to view, provided
+      // the EN is not in review.
+      if ($this->isReviewed()) {
+        foreach ($this->getPrimaryAuthority() as $authority) {
+          $members[$authority->uuid()] = $authority;
+        }
+      }
+    }
+
+    return $members;
+  }
+
+
+
+  /**
+   * Check if all actions have been reviewed.
+   *
+   * @return bool
+   */
+  public function isReviewed() {
+    $actions = $this->getEnforcementActions();
+
+    if (empty($actions)) {
+      return FALSE;
+    }
+
+    foreach ($actions as $action) {
+      $status_field = $action->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+      $current_status = $status_field ? $this->get($status_field)->getString() : NULL;
+
+      // If any action hasn't been reviewed then return false for the entire notice.
+      if (!in_array($current_status, [$action::APPROVED, $action::BLOCKED, $action::REFERRED])) {
+        return FALSE;
+      }
+    }
+
+    // If all actions have been reviewed.
+    return TRUE;
+  }
+
+  /**
+   * Check if any actions are awaiting approval.
+   *
+   * @return bool
+   */
+  public function isAwaitingApproval() {
+    $actions = $this->getEnforcementActions();
+
+    if (empty($actions)) {
+      return FALSE;
+    }
+
+    foreach ($actions as $action) {
+      $status_field = $action->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+      $current_status = $status_field ? $this->get($status_field)->getString() : NULL;
+
+      // If any actions are awaiting review then return true for the entire notice.
+      if ($current_status === $action::AWAITING) {
+        return TRUE;
+      }
+    }
+
+    // If no actions are awaiting review.
+    return FALSE;
+  }
+
+  /**
    * Get the primary authority for this Enforcement Notice.
    *
    * @param boolean $single
