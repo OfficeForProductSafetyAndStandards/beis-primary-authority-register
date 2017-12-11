@@ -1,4 +1,4 @@
-@ci @Bug
+@ci
 Feature: Enforcement notice management
 
     Scenario: Enforcement notice management
@@ -11,8 +11,8 @@ Feature: Enforcement notice management
         When I click on the button "#edit-submit"
         Then I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
         When I click on the link "See enforcement notifications sent"
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Enforcement Notifications"
         Then I expect that element "h1.heading-xlarge" contains the text "Sent"
-        Then the element ".heading-small" contains the text "Enforcement Notifications"
         Then the element "#views-exposed-form-par-user-enforcements-enforcement-notices-page" not contains the text "Title of enforcement notice"
         And I expect that element "a*=Title of enforcement notice One" does not exist
         And I expect that element "a*=Title of enforcement notice Three" does not exist
@@ -30,8 +30,8 @@ Feature: Enforcement notice management
         When I click on the button "#edit-submit"
         And I click on the button "a*=Dashboard"
         And I click on the link "See enforcement notifications received"
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Enforcement Notifications"
         Then I expect that element "h1.heading-xlarge" contains the text "Received"
-        Then the element ".heading-small" contains the text "Enforcement Notifications"
 
         # APPROVE NOTICE
 
