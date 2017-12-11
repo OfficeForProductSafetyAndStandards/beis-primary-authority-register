@@ -130,11 +130,11 @@ Feature: Business User - Manage Addresses
 
         # EDIT TRADING NAME
 
-        When I click on the link "edit Different Trading Name"
+        When I click on the link "edit trading name"
         Then I expect that element "h1.heading-xlarge" contains the text "Edit trading name for your organisation"
-        When I add "Different Trading Name (edited)" to the inputfield "#edit-trading-name"
+        When I add "Change To Different Trading Name" to the inputfield "#edit-trading-name"
         And I click on the button "#edit-save"
-        Then I expect that element "#edit-trading-names" contains the text "Different Trading Name (edited)"
+        Then I expect that element "#edit-trading-names" contains the text "Change To Different Trading Name"
 
         # EDIT MAIN BUSINESS CONTACT
 
