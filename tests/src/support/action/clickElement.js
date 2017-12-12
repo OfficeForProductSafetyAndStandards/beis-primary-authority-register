@@ -22,4 +22,5 @@ module.exports = (action, type, element) => {
     checkIfElementExists(elem);
 
     browser[method](elem);
+    browser[click](elem)
 };
