@@ -157,7 +157,7 @@ par_enforcement_flows.approve_confirm:
   path: '/enforcement-notice/{par_data_enforcement_notice}/confirm'
   defaults:
     _form: '\Drupal\par_enforcement_flows\Form\ParEnforcementConfirmNoticeForm'
-    _title: 'Confirm Enforcement Notice'
+    _title_callback: '\Drupal\par_enforcement_flows\Form\ParEnforcementConfirmNoticeForm::titleCallback'
   requirements:
     _permission: 'approve enforcement notice'
     _custom_access: '\Drupal\par_enforcement_flows\Form\ParEnforcementConfirmNoticeForm::accessCallback'

@@ -4,10 +4,13 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
     Scenario: Enforcement Officer/PA - Issue enforcement notice
         # LOGIN SCREEN
 
-#       Given I reset the test data
-        Given I am logged in as "par_enforcement_officer@example.com"
-        And I click on the link "Search for a partnership"
-        When I add "Charlie" to the inputfield "#edit-keywords"
+        Given I open the url "/user/login"
+        And I add "par_enforcement_officer@example.com" to the inputfield "#edit-name"
+        And I add "TestPassword" to the inputfield "#edit-pass"
+        When I click on the button "#edit-submit"
+        Then I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
+        When I click on the link "Search for a partnership"
+        And I add "Charlie" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
         When I click on the button "td.views-field.views-field-authority-name a"
 
@@ -27,9 +30,12 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
        # ENTER EO DETAILS
 
-        When I add "Fozzie" to the inputfield "#edit-first-name"
-        When I add "Bear" to the inputfield "#edit-last-name"
-        When I add "fozzie.bear@gmail.com" to the inputfield "#edit-work-phone"
+        And I clear the inputfield "#edit-first-name"
+        And I clear the inputfield "#edit-last-name"
+        And I clear the inputfield "#edit-work-phone"
+        And I add "Fozzie" to the inputfield "#edit-first-name"
+        And I add "Bear" to the inputfield "#edit-last-name"
+        And I add "02075678944" to the inputfield "#edit-work-phone"
         And I click on the button "#edit-next"
 
         # CHOOSE LEGAL ENTITY

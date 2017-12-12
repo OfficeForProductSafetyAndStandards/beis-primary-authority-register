@@ -3,7 +3,9 @@
 # Destroy dependencies
 
     cd /vagrant/docker
-    sudo sh destroy-dependencies.sh
+    if [ -f ../web/sites/default/settings.local.php ]; then
+        sudo rm ../web/sites/default/settings.local.php
+    fi
 
 # Install dependencies
 

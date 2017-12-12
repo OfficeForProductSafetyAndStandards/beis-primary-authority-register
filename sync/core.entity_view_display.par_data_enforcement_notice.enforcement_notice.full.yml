@@ -16,7 +16,7 @@ dependencies:
     - datetime
     - text
 _core:
-  default_config_hash: IqRww6k_4UBSsh3cMbJiVNSX13nKYlZlCHfc4zU4TAI
+  default_config_hash: z82TPNqraW6FBCPM_ZZeu1xGX44KnCLhvbrBY3g-vrE
 id: par_data_enforcement_notice.enforcement_notice.full
 targetEntityType: par_data_enforcement_notice
 bundle: enforcement_notice
@@ -82,12 +82,11 @@ content:
       link: false
     third_party_settings: {  }
   summary:
-    type: text_trimmed
+    type: text_default
     weight: 2
     region: content
     label: hidden
-    settings:
-      trim_length: 600
+    settings: {  }
     third_party_settings: {  }
 hidden:
   field_enforcement_action: true

@@ -75,7 +75,7 @@ display:
           default_row_class: true
           override: true
           sticky: false
-          caption: ''
+          caption: 'Your enforcement notifications'
           summary: ''
           description: ''
           columns:
@@ -1240,6 +1240,8 @@ display:
           plugin_id: par_data_status
       defaults:
         fields: false
+        arguments: false
+      arguments: {  }
     cache_metadata:
       max-age: 0
       contexts:

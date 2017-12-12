@@ -66,21 +66,37 @@ class ParDataEnforcementNotice extends ParDataEntity {
 
   /**
    * Get the primary authority for this Enforcement Notice.
+   *
+   * @param boolean $single
+   *
    */
-  public function getPrimaryAuthority() {
+  public function getPrimaryAuthority($single = FALSE) {
+    // All referred notices should have an authority referenced in
+    // field_primary_authority which is the authority that is now responsible.
+    // If it doesn't have this we should get the original authority
+    // from the partnership.
     if ($this->get('field_primary_authority')->isEmpty()) {
-      $partnership = current($this->getPartnership());
-      $primary_authority = current($partnership->getAuthorityPeople());
-      return $primary_authority;
+      $partnership = $this->getPartnership(TRUE);
+      return $partnership ? $partnership->getAuthority($single) : NULL;
     }
-    return $this->get('field_primary_authority')->referencedEntities();
+
+    $authorities = $this->get('field_primary_authority')->referencedEntities();
+    $authority = !empty($authorities) ? current($authorities) : NULL;
+
+    return $single ? $authority : $authorities;
   }
 
   /**
    * Get the Partnership for this Enforcement Notice.
+   *
+   * @param boolean $single
+   *
    */
-  public function getPartnership() {
-    return $this->get('field_partnership')->referencedEntities();
+  public function getPartnership($single = FALSE) {
+    $partnerships = $this->get('field_partnership')->referencedEntities();
+    $partnership = !empty($partnerships) ? current($partnerships) : NULL;
+
+    return $single ? $partnership : $partnerships;
   }
 
   /**
