@@ -1,4 +1,4 @@
-@ci
+@ci @Bug @PAR1013 @PAR1049
 Feature: Enforcement notice management
 
     Scenario: Enforcement notice management
@@ -47,6 +47,7 @@ Feature: Enforcement notice management
         And I click on the radio "#edit-actions-0-primary-authority-status-blocked"
         When I add "Some notes about why enforcement action blocked" to the inputfield "#edit-actions-0-primary-authority-notes"
         And I click on the button "#edit-actions-next"
+#        Then I expect that element ".heading-xlarge" contains the text "Confirm Enforcement Notice"
         And I click on the button "#edit-actions-next"
         And I click on the button "a*=Dashboard"
         And I click on the link "See enforcement notifications"
@@ -69,14 +70,11 @@ Feature: Enforcement notice management
         And I click on the button "#edit-actions-next"
         And I click on the link "Log out"
 
-       # CHECK PAR ENFORCEMENT OFFICER VIEW
+        # CHECK PAR ENFORCEMENT OFFICER VIEW
 
-        Given I open the url "/user/login"
-        And I add "par_enforcement_officer@example.com" to the inputfield "#edit-name"
-        And I add "TestPassword" to the inputfield "#edit-pass"
-        When I click on the button "#edit-submit"
+        Given I am logged in as "par_enforcement_officer@example.com"
         When I click on the link "See enforcement notifications"
-        Then I expect that element "a*=Title of enforcement notice One" does exist
+        Then I expect that element "a*=Title of enforcement notice One" does not exist
         And I expect that element "a*=Title of enforcement notice Three" does exist
         And I expect that element "a*=Title of enforcement notice Four" does exist
 
