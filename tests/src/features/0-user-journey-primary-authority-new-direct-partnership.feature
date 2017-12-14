@@ -1,10 +1,14 @@
-@ci
 Feature: New Direct Partnership For PA To Approve
 
+    @ci @PAR1055
     Scenario: New Direct Partnership
-
         Given I open the url "/user/login"
-        And I add "par_authority@example.com" to the inputfield "#edit-name"
+        And I run tota11y against the current page
+
+    @ci
+    Scenario: New Direct Partnership
+        Given I open the url "/user/login"
+        And I set "par_authority@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         Then I expect that element "h1.heading-xlarge" contains the text "Primary Authority Register"
@@ -60,14 +64,10 @@ Feature: New Direct Partnership For PA To Approve
 
         And I add "Business For Direct Partnership 1" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
-#        And I click on the radio ".form-radio"
-#        And I click on the button "#edit-next"
 
         # CONFIRM NEW PARTNERSHIP
 
         And I click new partnership if presented with choices
-  #        And I click on the radio "#edit-par-data-organisation-id-new"
-  #        And I click on the button "#edit-next"
 
         # ADD BUSINESS DETAIL
 
