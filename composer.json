@@ -102,8 +102,7 @@
             },
             "drupal/core": {
                 "file_exists() doesn't work with remote stream wrappers in file_cron()": "https://www.drupal.org/files/issues/file_exists_remote_streams_cron-2928889-2.patch",
-                "PostgreSQL: deal with case insensitivity": "./patches/postgres_case_insensitivity-2464481.patch",
-                "Unclosed conditional comments in html tag result in broken html head": "https://www.drupal.org/files/issues/conditional_comment_broken_with_aggregation-2563069-16.patch"
+                "PostgreSQL: deal with case insensitivity": "./patches/postgres_case_insensitivity-2464481.patch"
             },
             "drupal/devel": {
                 "Fatal call to getInstance on MailPluginWrapper": "https://www.drupal.org/files/issues/get_instance_fatal-2927963-2.patch"
