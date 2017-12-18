@@ -7,8 +7,6 @@ language: php
 php:
   - 7.1
 
-group: deprecated-2017Q4
-
 services:
   - docker
 
