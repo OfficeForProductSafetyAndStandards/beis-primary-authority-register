@@ -24,10 +24,7 @@
 <div class="full-width">
 {% for type, messages in message_list %}
   <div role="contentinfo" aria-label="{{ status_headings[type] }}"{{ attributes|without('role', 'aria-label') }}>
-    {% if type == 'error' %}
     <div role="group" class="error-summary" tabindex="-1">
-    {% endif %}
-
       {% if status_headings[type] %}
         <h2 class="visually-hidden">{{ status_headings[type] }}</h2>
       {% endif %}
@@ -48,9 +45,7 @@
         {{ messages|first }}
       {% endif %}
 
-    {% if type == 'error' %}
     </div>
-    {% endif %}
   </div>
 {% endfor %}
 </div>

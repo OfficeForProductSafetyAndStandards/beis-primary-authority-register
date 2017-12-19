@@ -24,6 +24,32 @@ par_help_desks_flows.approve_partnership:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+# PAR RD Help Desk journey - revoke partnership
+par_help_desks_flows.confirm_revoke_partnership:
+  path: '/helpdesk/partnership/{par_data_partnership}/revoke'
+  defaults:
+    _form: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskRevokeConfirmForm'
+    _title_callback: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskRevokeConfirmForm::titleCallback'
+  requirements:
+    _permission: 'approve partnerships via rd help desk'
+    _custom_access: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskRevokeConfirmForm::accessCallback'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_help_desks_flows.revoke_partnership:
+  path: '/helpdesk/partnership/{par_data_partnership}/revoked'
+  defaults:
+    _form: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskRevokeForm'
+    _title_callback: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskRevokeForm::titleCallback'
+  requirements:
+    _permission: 'approve partnerships via rd help desk'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
 # PAR RD Help Desk journey - invite users
 par_help_desks_flows.invite_members:
   path: '/helpdesk/partnership/{par_data_partnership}/invite/{par_data_person}'

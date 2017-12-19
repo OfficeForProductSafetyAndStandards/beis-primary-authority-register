@@ -2,6 +2,7 @@
 
 namespace Drupal\par_partnership_flows\Form;
 
+use Drupal\Core\Datetime\DateFormatter;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
@@ -60,6 +61,19 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
+
+    kint($par_data_partnership->getParStatusHistory());
+
+    kint($par_data_partnership->getParStatusHistory(SORT_DESC));
+
+    kint($par_data_partnership->getParStatusChangedDate());
+
+    if ($par_data_partnership->isRevoked()) {
+
+      $formatter = \Drupal::service('date.formatter');
+      $time = $formatter->format($par_data_partnership->getParStatusChangedDate(), 'gds_date_format');
+      drupal_set_message("This partnership was revoked on {$time}", "notice");
+    }
 
     // Display all the information that can be modified by the organisation.
     $par_data_organisation = current($par_data_partnership->getOrganisation());
