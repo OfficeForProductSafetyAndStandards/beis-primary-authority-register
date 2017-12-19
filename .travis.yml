@@ -85,24 +85,24 @@ install:
 #-----------------------------------------------------------------------------
 
   - sleep 5
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sql-cli @dev < ../docker/fresh_drupal_postgres.sql"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush fsg s3backups $DATAFILE.tar.gz /dump.sql.tar.gz"
-  - docker exec -i par_beta_web bash -c "cd / && tar --no-same-owner -zxvf dump.sql.tar.gz"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sql-cli @dev < /$DATAFILE"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sqlsan @dev -y"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
+  - docker exec par_beta_web bash -c "cd web && ../vendor/bin/drush sql-cli @dev < ../docker/fresh_drupal_postgres.sql"
+  - docker exec par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
+  - docker exec par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
+  - docker exec par_beta_web bash -c "cd web && ../vendor/bin/drush fsg s3backups $DATAFILE.tar.gz /dump.sql.tar.gz"
+  - docker exec par_beta_web bash -c "cd / && tar --no-same-owner -zxvf dump.sql.tar.gz"
+  - docker exec par_beta_web bash -c "cd web && ../vendor/bin/drush sql-cli @dev < /$DATAFILE"
+  - docker exec par_beta_web bash -c "cd web && ../vendor/bin/drush sqlsan @dev -y"
+  - docker exec par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
+  - docker exec par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
 
 #-----------------------------------------------------------------------------
 # Run further Drush commands
 #-----------------------------------------------------------------------------
 
-  - docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cex -n"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush core-requirements --severity=2"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/drush/drush/drush cron"
+  - docker exec par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
+  - docker exec par_beta_web bash -c "cd web && ../vendor/bin/drush cex -n"
+  - docker exec par_beta_web bash -c "cd web && ../vendor/bin/drush core-requirements --severity=2"
+  - docker exec par_beta_web bash -c "cd web && ../vendor/drush/drush/drush cron"
 
 #-----------------------------------------------------------------------------
 # Stamp the code with the build number
