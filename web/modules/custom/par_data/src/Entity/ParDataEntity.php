@@ -24,6 +24,18 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   const ARCHIVE_FIELD = 'archive';
 
   /**
+   * {@inheritDoc}
+   */
+  public function save() {
+    // Create a revision when modifying entity.
+    $this->setNewRevision(TRUE);
+    $this->setRevisionCreationTime(REQUEST_TIME);
+    $this->setRevisionAuthorId(\Drupal::currentUser()->id());
+
+    return parent::save();
+  }
+
+  /**
    * Simple getter to inject the PAR Data Manager service.
    *
    * @return ParDataManagerInterface
@@ -213,6 +225,23 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function revoke() {
     if (!$this->isNew() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, TRUE);
+
+//      $manager = \Drupal::service('workflow.manager');
+//
+//      $field_name = 'field_workflow_status';
+//
+//      $current_sid = $manager->getCurrentStateId($this, $field_name);
+//      $transition = WorkflowTransition::create([$current_sid, 'field_name' => $field_name]);
+//      $transition->setTargetEntity($this);
+//      $transition->setValues('par_workflow_status_revoked', 1, \Drupal::time()->getRequestTime(), 'blah', TRUE);
+//      $transition->force(1);
+//
+////      var_dump($current_sid);
+//
+//      $transition->executeAndUpdateEntity();
+
+      $this->setParStatus('revoked');
+
       return ($this->save() === SAVED_UPDATED);
     }
     return FALSE;
@@ -322,6 +351,53 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     $allowed_values = $this->getTypeEntity()->getAllowedValues($field_name);
     if (isset($allowed_values[$value])) {
       $this->set($field_name, $value);
+    }
+  }
+
+  public function getParStatusHistory($sort = SORT_ASC) {
+    $storage = \Drupal::entityTypeManager()->getStorage($this->getEntityTypeId());
+
+    $vids = $storage->revisionIds($this);
+
+    $revisions = $storage->loadMultipleRevisions($vids);
+
+    // Current status.
+    $status = $this->getRawStatus();
+    var_dump($status);
+
+    foreach($revisions as $rentity) {
+      $statuses[$rentity->getRevisionId()] = [
+        "rid"    => $rentity->getRevisionId(),
+        "status" => $rentity->getRawStatus(),
+        "author" => $rentity->getRevisionAuthor()->id(),
+        "time"   => $rentity->getRevisionCreationTime(),
+      ];
+    }
+
+    // Sort DESC if needed.
+    if ($sort === SORT_DESC) {
+      array_multisort(array_map(function ($element) {
+        return $element['time'];
+      }, $statuses),SORT_DESC, $statuses);
+    }
+
+    return $statuses;
+  }
+
+  public function getParStatusChangedDate() {
+    $statuses = $this->getParStatusHistory();
+
+    // Current status.
+    $current_status = $this->getRawStatus();
+
+    $first_date = array_search($current_status, array_column($statuses, 'status', 'rid'));
+
+    if ($statuses[$first_date]) {
+      var_dump("Yep {$first_date}");
+      return $statuses[$first_date]['time'];
+    }
+    else {
+      return false;
     }
   }
 
@@ -491,7 +567,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       ])
       ->setDisplayConfigurable('view', FALSE);
     $fields['archived'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Revoked'))
+      ->setLabel(t('Archived'))
       ->setDescription(t('Whether the entity has been archived.'))
       ->setRevisionable(TRUE)
       ->setDefaultValue(FALSE)

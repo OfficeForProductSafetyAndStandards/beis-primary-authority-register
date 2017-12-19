@@ -48,4 +48,12 @@ interface ParDataEntityInterface {
    */
   public function getCompletionPercentage();
 
+  /**
+   * Revoke if this entity is revokable and is not new.
+   *
+   * @return boolean
+   *   True if the entity was revoked, false for all other results.
+   */
+  public function revoke();
+
 }

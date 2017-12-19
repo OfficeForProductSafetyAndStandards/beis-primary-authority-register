@@ -107,6 +107,7 @@ display:
             partnership_type: partnership_type
             partnership_status: partnership_status
             par_flow_link: par_flow_link
+            par_flow_link_1: par_flow_link
           info:
             id:
               sortable: false
@@ -144,6 +145,13 @@ display:
               empty_column: false
               responsive: ''
             par_flow_link:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            par_flow_link_1:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -588,66 +596,6 @@ display:
             authority_name: authority_name
             organisation_name: organisation_name
           plugin_id: combine
-        partnership_status:
-          id: partnership_status
-          table: par_partnerships_field_revision
-          field: partnership_status
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: '!='
-          value: yo
-          group: 1
-          exposed: true
-          expose:
-            operator_id: partnership_status_op
-            label: 'Partnership Status'
-            description: ''
-            use_operator: false
-            operator: partnership_status_op
-            identifier: partnership_status
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              par_authority: '0'
-              par_business: '0'
-              par_coordinator: '0'
-              par_helpdesk: '0'
-          is_grouped: true
-          group_info:
-            label: Status
-            description: 'Filter by partnership status'
-            identifier: partnership_status
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: '4'
-            default_group_multiple: {  }
-            group_items:
-              1:
-                title: 'Awaiting Review'
-                operator: '='
-                value: awaiting_review
-              2:
-                title: 'Confirmed by the Authority'
-                operator: '='
-                value: confirmed_authority
-              3:
-                title: 'Confirmed by the Business'
-                operator: '='
-                value: confirmed_business
-              4:
-                title: Active
-                operator: '='
-                value: confirmed_rd
-          entity_type: par_data_partnership
-          entity_field: partnership_status
-          plugin_id: string
         status:
           id: status
           table: par_partnerships_field_data
@@ -686,6 +634,50 @@ display:
           entity_type: par_data_partnership
           entity_field: status
           plugin_id: boolean
+        partnership_status_1:
+          id: partnership_status_1
+          table: par_partnerships_field_data
+          field: partnership_status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: awaiting_review
+          group: 1
+          exposed: true
+          expose:
+            operator_id: ''
+            label: Status
+            description: ''
+            use_operator: false
+            operator: partnership_status_1_op
+            identifier: par_status
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              par_authority: '0'
+              par_enforcement: '0'
+              par_organisation: '0'
+              par_helpdesk: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: par_data_partnership
+          entity_field: partnership_status
+          plugin_id: par_data_status_filter
       sorts: {  }
       title: 'RD Help Desk | Dashboard'
       header: {  }
@@ -1141,7 +1133,7 @@ display:
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
-          empty: N/A
+          empty: ''
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
@@ -1149,6 +1141,59 @@ display:
           link: '/helpdesk/partnership/{{ id }}/confirm'
           hidden: 1
           entity_type: par_data_authority
+          plugin_id: par_flow_link
+        par_flow_link_1:
+          id: par_flow_link_1
+          table: par_partnerships_field_data
+          field: par_flow_link
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'PAR Flow Link'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          title: 'Revoke partnership'
+          link: '/helpdesk/partnership/{{ id }}/revoke'
+          hidden: 1
+          entity_type: par_data_partnership
           plugin_id: par_flow_link
     cache_metadata:
       max-age: 0
