@@ -348,6 +348,11 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * Determine which entities a user is a part of.
    *
+   * @TODO Sorry, couldn't fix this before the support contract was pulled
+   * but this method is inefficient and needs re-writting. There are much
+   * better ways of calculating which entity actions can be performed.
+   * @see https://regulatorydelivery.atlassian.net/wiki/spaces/PA/pages/40894490/Par+Access+Actions
+   *
    * @param UserInterface $account
    *   A user account to check for.
    * @param bool $direct
