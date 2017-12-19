@@ -7,6 +7,10 @@ language: php
 php:
   - 7.1
 
+sudo: required
+dist: trusty
+group: deprecated-2017Q4
+
 services:
   - docker
 
