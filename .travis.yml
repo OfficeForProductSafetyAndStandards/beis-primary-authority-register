@@ -2,14 +2,18 @@
 ### BUILD                                                                  ###
 ##############################################################################
 
+# Fix Travis write errors. These write errors occurred after
+# a Travis update to new Trusty images on Dec. 12th 2017. The reason for these
+# write errors is unknown. Using the deprecated builds did not fix the problem.
+# Setting 'filter_secrets: false' as suggested here
+# https://github.com/travis-ci/travis-ci/issues/4704#issuecomment-321777557
+# fixes the problem.
+filter_secrets: false
+
 language: php
 
 php:
   - 7.1
-
-sudo: required
-dist: trusty
-group: deprecated-2017Q4
 
 services:
   - docker
@@ -28,10 +32,10 @@ before_install:
   - cd docker
   - docker-compose up -d
 # set web server / docker root uid/gid to match Travis uid.
-  - docker exec -t par_beta_web bash -c "usermod --uid=2000 www-data"
-  - docker exec -t par_beta_web bash -c "groupmod --gid=2000 root"
-  - docker exec -t par_beta_web bash -c "adduser root www-data"
-  - docker exec -t par_beta_web bash -c "adduser composer www-data"
+  - docker exec par_beta_web bash -c "usermod --uid=2000 www-data"
+  - docker exec par_beta_web bash -c "groupmod --gid=2000 root"
+  - docker exec par_beta_web bash -c "adduser root www-data"
+  - docker exec par_beta_web bash -c "adduser composer www-data"
 # restart servers after changing uid/gids.
   - docker-compose stop
   - docker-compose up -d
@@ -44,9 +48,9 @@ before_install:
 install:
   - phpenv config-rm xdebug.ini
   - composer install -v
-  - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
-  - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm run gulp"
-  - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
+  - docker exec par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
+  - docker exec par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm run gulp"
+  - docker exec par_beta_web bash -c "cd /var/www/html/tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
 
 #-----------------------------------------------------------------------------
 # Setup local config defaults
@@ -57,8 +61,8 @@ install:
   - chmod -R 777 web/sites/default
   - if [ ! -d web/sites/default/files ]; then mkdir web/sites/default/files; fi
   - chmod -R 777 web/sites/default/files
-  - docker exec -it par_beta_web bash -c "chmod -R 777 /var/www/html/private"
-  - docker exec -it par_beta_web bash -c "chmod -R 777 /var/www/html/web/sites/default/files"
+  - docker exec par_beta_web bash -c "chmod -R 777 /var/www/html/private"
+  - docker exec par_beta_web bash -c "chmod -R 777 /var/www/html/web/sites/default/files"
 
 #-----------------------------------------------------------------------------
 # Create .env file
@@ -118,23 +122,23 @@ before_script:
   - curl --silent http://127.0.0.1:8111 > /dev/null
 
 script:
-  - docker exec -it par_beta_web sh -c "./vendor/bin/paratest --processes=16 --log-junit=./tests/reports/phpunit.latest.xml"
-  - if [[ "$TESTTYPE" == "cucumber" ]]; then travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"; fi
-  - if [[ "$TESTTYPE" == "cucumber" ]]; then docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run test:build"; fi
+  - docker exec par_beta_web sh -c "./vendor/bin/paratest --processes=16 --log-junit=./tests/reports/phpunit.latest.xml"
+  - if [[ "$TESTTYPE" == "cucumber" ]]; then travis_retry docker exec par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"; fi
+  - if [[ "$TESTTYPE" == "cucumber" ]]; then docker exec par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run test:build"; fi
 
 #-----------------------------------------------------------------------------
 # Run Jmeter
 #-----------------------------------------------------------------------------
 
-  - if [[ "$TESTTYPE" == "jmeter" ]]; then docker exec -ti par_beta_web bash -c "cd tests/jmeter && wget http://mirror.reverse.net/pub/apache//jmeter/binaries/apache-jmeter-3.3.tgz && wget https://www.apache.org/dist/jmeter/binaries/apache-jmeter-3.3.tgz.asc && wget -O - https://www.apache.org/dist/jmeter/KEYS |gpg --import && gpg --verify apache-jmeter-3.3.tgz.asc && tar -zxf apache-jmeter-3.3.tgz && rm apache-jmeter-3.3.tgz"; fi
-  - if [[ "$TESTTYPE" == "jmeter" ]]; then docker exec -ti par_beta_web bash -c "cd tests/jmeter && chmod -R 777 ../reports/ && ./apache-jmeter-3.3/bin/jmeter -n -t load-test-plan.jmx -l ../reports/jmeterreport.jtl -e -o ../reports/dashboard"; fi
+  - if [[ "$TESTTYPE" == "jmeter" ]]; then docker exec par_beta_web bash -c "cd tests/jmeter && wget http://mirror.reverse.net/pub/apache//jmeter/binaries/apache-jmeter-3.3.tgz && wget https://www.apache.org/dist/jmeter/binaries/apache-jmeter-3.3.tgz.asc && wget -O - https://www.apache.org/dist/jmeter/KEYS |gpg --import && gpg --verify apache-jmeter-3.3.tgz.asc && tar -zxf apache-jmeter-3.3.tgz && rm apache-jmeter-3.3.tgz"; fi
+  - if [[ "$TESTTYPE" == "jmeter" ]]; then docker exec par_beta_web bash -c "cd tests/jmeter && chmod -R 777 ../reports/ && ./apache-jmeter-3.3/bin/jmeter -n -t load-test-plan.jmx -l ../reports/jmeterreport.jtl -e -o ../reports/dashboard"; fi
 
 #-----------------------------------------------------------------------------
 # Generate tar with test screenshots to tests/reports/errorShots.tar.gz
 #-----------------------------------------------------------------------------
-#  - docker exec -ti par_beta_web bash -c "cd tests/reports && if [ -d ./html ]; then tar -cf reportHTML.tar.gz ./html; fi"
+#  - docker exec par_beta_web bash -c "cd tests/reports && if [ -d ./html ]; then tar -cf reportHTML.tar.gz ./html; fi"
 
-  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && if [ -d ./errorShots ]; then tar -cf reports/errorShots.tar.gz ./errorShots; fi"
+  - travis_retry docker exec par_beta_web bash -c "cd tests && if [ -d ./errorShots ]; then tar -cf reports/errorShots.tar.gz ./errorShots; fi"
 
 #-----------------------------------------------------------------------------
 # Remove .env file created in previous steps.
