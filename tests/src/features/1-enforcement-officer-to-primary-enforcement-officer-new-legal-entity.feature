@@ -24,8 +24,6 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
         Then I expect that element "#par-enforce-organisation" contains the text "Choose the member to enforce"
         And I click on the radio "label*=Hooper"
-
-
         And I click on the button "#edit-next"
 
         # ENTER EO DETAILS

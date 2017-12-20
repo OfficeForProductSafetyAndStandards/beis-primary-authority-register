@@ -44,7 +44,8 @@ Feature: Helpdesk approve partnership
 
         # HELPDESK DASHBOARD
 
-        Given I open the url "/user/login"
+        Given I click on the link "Log out"
+        And I open the url "/user/login"
         And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"

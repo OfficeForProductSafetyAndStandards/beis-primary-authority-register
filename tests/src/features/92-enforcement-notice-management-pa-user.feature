@@ -8,7 +8,7 @@ Feature: Enforcement notice management
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         Then I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
-        When I click on the link "See enforcement notifications"
+        When I click on the link "See enforcement notifications sent"
         Then the element "#views-exposed-form-par-user-enforcements-enforcement-notices-page" not contains the text "Title of enforcement notice"
         And I expect that element "a*=Title of enforcement notice One" does not exist
         And I expect that element "a*=Title of enforcement notice Three" does not exist
@@ -25,7 +25,7 @@ Feature: Enforcement notice management
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         And I click on the button "a*=Dashboard"
-        And I click on the link "See enforcement notifications"
+        And I click on the link "See enforcement notifications sent"
 
         Then I expect that element "h1.heading-xlarge" contains the text "Par User Enforcements"
         Then the element ".heading-small" contains the text "Your enforcement notifications"
