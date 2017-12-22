@@ -1,4 +1,4 @@
-@ci @Bug @PAR1013 @PAR1049
+@Pending @Bug @PAR1013 @PAR1049
 Feature: Enforcement notice management
 
     Scenario: Enforcement notice management
@@ -12,7 +12,7 @@ Feature: Enforcement notice management
         And I expect that element "a*=Title of enforcement notice One" does not exist
         And I expect that element "a*=Title of enforcement notice Three" does not exist
         And I expect that element "a*=Title of enforcement notice Four" does not exist
-        And I expect that element "a*=Title of enforcement notice Two" does exist
+        And I expect that element "a*=Title of enforcement notice Two" does not exist
         And I click on the link "Log out"
 
         # APPROVAL FORM
