@@ -16,7 +16,12 @@ use Drupal\user\Entity\User;
  */
 class ParStatusFilter extends FilterPluginBase {
 
-  protected $par_data_manager;
+  /**
+   * Getter for the PAR Data Manager serice.
+   */
+  public function getParDataManager() {
+    return \Drupal::service('par_data.manager');
+  }
 
   /**
    * @param \Drupal\views\ViewExecutable $view
@@ -25,15 +30,13 @@ class ParStatusFilter extends FilterPluginBase {
    */
   public function init(ViewExecutable $view, DisplayPluginBase $display, array &$options = NULL) {
     parent::init($view, $display, $options);
-
-    $this->par_data_manager = \Drupal::service('par_data.manager');
   }
 
   /**
    * {@inheritdoc}
    */
   protected function valueForm(&$form, FormStateInterface $form_state) {
-    $entity_bundle = $this->par_data_manager->getParBundleEntity($this->getEntityType());
+    $entity_bundle = $this->getParDataManager()->getParBundleEntity($this->getEntityType());
     $allowed_values = $entity_bundle->getAllowedValues($this->realField);
 
     $form['value'] = [
@@ -48,7 +51,7 @@ class ParStatusFilter extends FilterPluginBase {
    */
   public function query() {
     // This filter does not apply if not on a PAR entity.
-    if (!$this->par_data_manager->getParEntityType($this->getEntityType())) {
+    if (!$this->getParDataManager()->getParEntityType($this->getEntityType())) {
       return;
     }
 

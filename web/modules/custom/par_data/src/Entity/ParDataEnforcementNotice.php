@@ -87,6 +87,22 @@ class ParDataEnforcementNotice extends ParDataEntity {
   }
 
   /**
+   * If this is a referred notice get the original notice.
+   *
+   * @return ParDataEntityInterface|bool
+   *   Return false if not referred.
+   */
+  public function getReferringNotice() {
+    foreach ($this->getEnforcementActions() as $action) {
+      if ($action->isReferred() && ($referred_from = $action->getActionReferral())) {
+          return $referred_from->getEnforcementNotice();
+      }
+    }
+
+    return FALSE;
+  }
+
+  /**
    * Get the Partnership for this Enforcement Notice.
    *
    * @param boolean $single
