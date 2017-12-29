@@ -7,27 +7,27 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 
 /**
- * Approving a new partnership.
+ * Revoking a partnership.
  */
-class ParRdHelpDeskApproveForm extends ParBaseForm {
+class ParRdHelpDeskRevokeForm extends ParBaseForm {
 
   /**
    * {@inheritdoc}
    */
-  protected $flow = 'approve_partnership';
+  protected $flow = 'revoke_partnership';
 
   /**
    * {@inheritdoc}
    */
   public function titleCallback() {
-    return "Confirmation | Partnership is approved";
+    return "RD Help Desk | Partnership revoked";
   }
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'par_rd_help_desk_approve';
+    return 'par_rd_help_desk_revoke';
   }
 
   /**
@@ -50,9 +50,9 @@ class ParRdHelpDeskApproveForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
-    $form['partnership_info'] = [
+    $form['partnership_info'] =[
       '#type' => 'fieldset',
-      '#title' => $this->t('The following partnership has been approved'),
+      '#title' => $this->t('The following partnership has been revoked'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
