@@ -55,18 +55,6 @@ Feature: Coordinator User - Manage Addresses
         And I click on the button "#edit-save"
         Then I expect that element "#edit-associations" contains the text "small"
 
-        # EDIT LEGAL ENTITY
-
-#        When I click on the link "edit legal entity"
-#        And I clear the inputfield "#edit-registered-name"
-#        When I add "Changed" to the inputfield "#edit-registered-name"
-#        And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
-#        And I clear the inputfield "#edit-registered-number"
-#        When I add "0123456789" to the inputfield "#edit-registered-number"
-#        And I click on the button "#edit-save"
-#        Then I expect that element "#edit-legal-entities" contains the text "Changed"
-#        Then I expect that element "#edit-legal-entities" contains the text "Limited Company"
-
         # ADD LEGAL ENTITY
 
         When I click on the link "add another legal entity"
@@ -75,6 +63,18 @@ Feature: Coordinator User - Manage Addresses
         And I click on the button "#edit-save"
         Then I expect that element "#edit-legal-entities" contains the text "New Legal Entity"
         Then I expect that element "#edit-legal-entities" contains the text "Partnership"
+
+        # EDIT LEGAL ENTITY
+
+        When I click on the link "edit legal entity"
+        And I clear the inputfield "#edit-registered-name"
+        When I add "Changed" to the inputfield "#edit-registered-name"
+        And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
+        And I clear the inputfield "#edit-registered-number"
+        When I add "0123456789" to the inputfield "#edit-registered-number"
+        And I click on the button "#edit-save"
+        Then I expect that element "#edit-legal-entities" contains the text "Changed"
+        Then I expect that element "#edit-legal-entities" contains the text "Limited Company"
 
         # ADD NEW TRADING NAME
 

@@ -1,6 +1,5 @@
 Cucumberjs/Webdriverio
 ====================
-
 * Install the dependencies (`npm install` or `yarn install`)
 
 # How to run a test

@@ -245,7 +245,7 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
           if (isset($cloned_action)) {
             try {
               // Create a new Enforcement notice for every referred action.
-              $referral_notice = $action->cloneEnforcementNotice($action_id, $cloned_action, $par_data_enforcement_notice);
+              $referral_notice = $action->cloneEnforcementNotice($referral_authority_id, $cloned_action, $par_data_enforcement_notice);
             }
             catch (ParDataException $e) {
               $replacements = [

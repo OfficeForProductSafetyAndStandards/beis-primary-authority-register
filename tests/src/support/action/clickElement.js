@@ -18,8 +18,6 @@ module.exports = (action, type, element) => {
      * @type {String}
      */
     const method = (action === 'click') ? 'click' : 'doubleClick';
-
     checkIfElementExists(elem);
-
     browser[method](elem);
 };
