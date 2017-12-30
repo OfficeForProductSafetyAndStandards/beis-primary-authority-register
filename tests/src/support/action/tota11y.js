@@ -10,9 +10,10 @@ module.exports = () =>
     var list = ['Headings', 'Contrast', 'Link text', 'Labels', 'Image alt-text'];
     for (var i = 0; i < list.length; i++) {
         browser.click('.tota11y-plugin-title*=' + list[i]);
-        const isVisible = browser.isVisible('.tota11y-info-errors');
-        const errors = browser.getText('.tota11y-info-errors');
-        expect(isVisible).to.not.equal(true, errors);
+        if (browser.isVisible('.tota11y-info-errors') === true) {
+            const errors = browser.getText('.tota11y-info-errors');
+            expect(browser.isVisible('.tota11y-info-errors')).to.not.equal(true, errors);
+        }
     }
     browser.click('.tota11y-toolbar-toggle');
 };

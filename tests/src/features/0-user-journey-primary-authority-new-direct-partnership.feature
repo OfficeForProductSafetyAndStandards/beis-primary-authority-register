@@ -5,7 +5,7 @@ Feature: New Direct Partnership For PA To Approve
         Given I open the url "/user/login"
         And I run tota11y against the current page
 
-    @ci
+    @Pending
     Scenario: New Direct Partnership
         Given I open the url "/user/login"
         And I set "par_authority@example.com" to the inputfield "#edit-name"
