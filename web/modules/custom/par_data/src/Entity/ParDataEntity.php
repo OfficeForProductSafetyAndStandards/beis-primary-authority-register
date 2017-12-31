@@ -40,6 +40,18 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
+   * {@inheritDoc}
+   */
+  public function save() {
+    // Create a revision when a PAR entity is saved.
+    $this->setNewRevision(TRUE);
+    $this->setRevisionCreationTime(REQUEST_TIME);
+    $this->setRevisionAuthorId(\Drupal::currentUser()->id());
+
+    return parent::save();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getViewBuilder() {
