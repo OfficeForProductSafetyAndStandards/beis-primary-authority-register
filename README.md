@@ -1,7 +1,5 @@
 # Department of Business Energy and Industrial Strategy - Regulatory Authority
 
-Test
-
 ## Primary Authority Register
 
 [![Build Status](https://travis-ci.org/UKGovernmentBEIS/beis-primary-authority-register.svg?branch=master)](https://travis-ci.org/UKGovernmentBEIS/beis-primary-authority-register)
