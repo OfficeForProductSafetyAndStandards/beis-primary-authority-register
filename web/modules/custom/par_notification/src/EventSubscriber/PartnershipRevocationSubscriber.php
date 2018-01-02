@@ -11,14 +11,14 @@ use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class NewEnforcementSubscriber implements EventSubscriberInterface {
+class PartnershipRevocationSubscriber implements EventSubscriberInterface {
 
   /**
    * The message template ID created for this notification.
    *
    * @see /admin/structure/message/manage/partnership_revocation_notification
    */
-  const MESSAGE_ID = 'partnership_revocation_notification';
+  const MESSAGE_ID = 'partnership_revocation_notificat';
 
   /**
    * The notication plugin that will deliver these notification messages.
@@ -33,7 +33,9 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[ParDataEvent::UPDATE][] = ['onPartnershipRevocation', 800];
+    // Revocation event should fire after most default events to make sure
+    // revocation has not been cancelled.
+    $events[ParDataEvent::UPDATE][] = ['onPartnershipRevocation', -100];
 
     return $events;
   }
@@ -76,8 +78,6 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
     if (!$partnership || $partnership->getEntityTypeId() !== 'par_data_partnership') {
       return;
     }
-
-
 
     // Load the message template.
     $template_storage = $this->getEntityTypeManager()->getStorage('message_template');
