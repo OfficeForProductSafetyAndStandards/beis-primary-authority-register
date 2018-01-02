@@ -122,6 +122,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
     $form['action_summary_title']['action_summary'] = [
       '#type' => 'textarea',
       '#default_value' => $this->getDefaultValues("action_summary"),
+      '#required' => TRUE,
    ];
 
     return parent::buildForm($form, $form_state);
