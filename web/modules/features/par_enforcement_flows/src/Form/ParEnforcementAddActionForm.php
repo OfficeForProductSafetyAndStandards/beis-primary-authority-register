@@ -63,6 +63,7 @@ class ParEnforcementAddActionForm extends ParBaseForm {
     $form['title_of_action_title']['title_of_action'] = [
       '#type' => 'textfield',
       '#default_value' => $this->getDefaultValues('title_of_action'),
+      '#required' => TRUE,
     ];
 
     $form['regulatory_functions'] = [
