@@ -190,7 +190,7 @@ class ParDataEnforcementAction extends ParDataEntity {
   }
 
   /**
-   *  Refer an Action of an Enforcement notification.
+   * Refer an Action of an Enforcement notification.
    *
    * @param string $authority_notes
    *  referral notes indicating the reason for the referral status update in the form.
@@ -222,7 +222,7 @@ class ParDataEnforcementAction extends ParDataEntity {
   }
 
   /**
-   *  Get the referred note data from the current action.
+   * Get the referred note data from the current action.
    *
    * @return String referred_text | NULL
    *   The referred text stored on the current action or null.
@@ -233,7 +233,7 @@ class ParDataEnforcementAction extends ParDataEntity {
   }
 
   /**
-   *  Get the primary authority notes data from the current action.
+   * Get the primary authority notes data from the current action.
    *
    * @return String primary_authority_notes | NULL
    *   The referred text stored on the current action or null.
