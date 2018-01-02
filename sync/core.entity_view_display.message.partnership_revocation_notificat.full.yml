@@ -1,15 +1,16 @@
-uuid: c0bb755c-55b7-46fd-8f6f-f0e959c79403
+uuid: 1219fee3-9664-4547-bcfc-c1fe37b3218c
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.message.full
     - field.field.message.partnership_revocation_notificat.field_message_subject
     - field.field.message.partnership_revocation_notificat.field_partnership
     - message.template.partnership_revocation_notificat
-id: message.partnership_revocation_notificat.default
+id: message.partnership_revocation_notificat.full
 targetEntityType: message
 bundle: partnership_revocation_notificat
-mode: default
+mode: full
 content:
   field_message_subject:
     weight: 1

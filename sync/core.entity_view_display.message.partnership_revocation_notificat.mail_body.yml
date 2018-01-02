@@ -4,14 +4,22 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.message.mail_body
+    - field.field.message.partnership_revocation_notificat.field_message_subject
+    - field.field.message.partnership_revocation_notificat.field_partnership
     - message.template.partnership_revocation_notificat
 id: message.partnership_revocation_notificat.mail_body
 targetEntityType: message
 bundle: partnership_revocation_notificat
 mode: mail_body
 content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   partial_1:
     weight: 0
     region: content
 hidden:
-  partial_0: true
+  field_message_subject: true
+  field_partnership: true
