@@ -1,0 +1,17 @@
+uuid: 4df947f5-7bb0-4b91-90c0-7cc4d36efc42
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.partnership_revocation_notificat
+id: message.partnership_revocation_notificat.mail_subject
+targetEntityType: message
+bundle: partnership_revocation_notificat
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+hidden:
+  partial_1: true

@@ -105,15 +105,15 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Get the organisation for this Partnership.
    */
-  public function getOrganisation() {
-    return $this->get('field_organisation')->referencedEntities();
+  public function getOrganisation($single = FALSE) {
+    $organisations = $this->get('field_organisation')->referencedEntities();
+    $organisation = !empty($organisations) ? current($organisations) : NULL;
+
+    return $single ? $organisation : $organisations;
   }
 
   /**
    * Get the authority for this Partnership.
-   *
-   * @param boolean $single
-   *
    */
   public function getAuthority($single = FALSE) {
     $authorities = $this->get('field_authority')->referencedEntities();

@@ -1,0 +1,17 @@
+uuid: a0310176-fda4-490f-b561-3255002130b7
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.partnership_revocation_notificat
+id: message.partnership_revocation_notificat.mail_body
+targetEntityType: message
+bundle: partnership_revocation_notificat
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+hidden:
+  partial_0: true
