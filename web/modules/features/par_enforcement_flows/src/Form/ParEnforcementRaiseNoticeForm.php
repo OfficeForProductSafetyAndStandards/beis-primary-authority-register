@@ -51,6 +51,7 @@ class ParEnforcementRaiseNoticeForm extends ParBaseEnforcementForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
+    $default_value = NULL;
     $this->retrieveEditableValues($par_data_partnership);
 
     // Ensure we have all the required enforcement data stored in the cache in order to proceed.
@@ -75,9 +76,10 @@ class ParEnforcementRaiseNoticeForm extends ParBaseEnforcementForm {
     // from.
     if (count($legal_entity_reg_names) >= 1 && !$this->getDefaultValues('legal_entities_select', FALSE)) {
       $default = key($legal_entity_reg_names);
+      $default_value = $this->getDefaultValues('legal_entities_select', $default);
     }
     elseif (count($legal_entity_reg_names) < 1 && !$this->getDefaultValues('legal_entities_select', FALSE)) {
-      $default = 'add_new';
+      $default_value = 'add_new';
     }
 
     $form['legal_entities_select'] = [
