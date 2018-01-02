@@ -5,6 +5,7 @@ id: inspection_feedback
 label: 'Inspection Feedback'
 description: ''
 help: ''
+required: true
 isDeletable: null
 isRevokable: null
 isArchivable: null
