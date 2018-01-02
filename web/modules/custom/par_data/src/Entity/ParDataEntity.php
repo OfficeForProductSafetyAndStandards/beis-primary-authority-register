@@ -196,7 +196,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * Delete if this entity is deletable and is not new.
    */
   public function delete() {
-    if (!$this->isNew() && $this->getTypeEntity()->isDeletable() && !$this->isDeleted()) {
+    if (!$this->isNew() && !$this->inProgress() && $this->getTypeEntity()->isDeletable() && !$this->isDeleted()) {
       // Set the status to unpublished to make filtering from display easier.
       $this->set('status', 0);
 
@@ -211,7 +211,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   True if the entity was revoked, false for all other results.
    */
   public function revoke() {
-    if (!$this->isNew() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
+    if (!$this->isNew() && !$this->inProgress() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, TRUE);
       return ($this->save() === SAVED_UPDATED);
     }
@@ -240,7 +240,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   True if the entity was restored, false for all other results.
    */
   public function archive() {
-    if (!$this->isNew() && $this->getTypeEntity()->isArchivable() && !$this->isArchived()) {
+    if (!$this->isNew() && !$this->inProgress() && $this->getTypeEntity()->isArchivable() && !$this->isArchived()) {
       $this->set(ParDataEntity::ARCHIVE_FIELD, TRUE);
       return ($this->save() === SAVED_UPDATED);
     }
@@ -258,6 +258,14 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       $this->set(ParDataEntity::ARCHIVE_FIELD, FALSE);
       return ($this->save() === SAVED_UPDATED);
     }
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function inProgress() {
+    // By default there are no conditions by which an entity is frozen.
     return FALSE;
   }
 
@@ -327,6 +335,9 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
   /**
    * Determine whether this entity can transition
+   *
+   * @return bool
+   *   TRUE if transition is allowed.
    */
   public function canTransition($status) {
     $current_status = $this->getRawStatus();
@@ -411,7 +422,12 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       }
     }
 
-    return $target && isset($entities[$target]) ? array_filter($entities[$target]) : $entities;
+    if ($target) {
+      return isset($entities[$target]) ? array_filter($entities[$target]) : [];
+    }
+    else {
+      return $entities;
+    }
   }
 
   /**
