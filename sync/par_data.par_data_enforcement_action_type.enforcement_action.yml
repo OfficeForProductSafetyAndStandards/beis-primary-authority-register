@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: mUKonWFaFU5DDUWgDJeO1FsG6owS1kNSzBslM_mxLDk
+  default_config_hash: IzpMO5s8FY5gplKUOLL8zcSE_KAijl6kGqe4uWXc1yE
 id: enforcement_action
 label: 'Enforcement Action'
 description: ''
