@@ -68,7 +68,6 @@ class ParDataEnforcementAction extends ParDataEntity {
   const APPROVED = 'approved';
   const BLOCKED = 'blocked';
   const REFERRED = 'referred';
-  const AWAITING = 'awaiting_approval';
 
   /**
    * Get the blocked advice for this Enforcement Action.
@@ -156,7 +155,7 @@ class ParDataEnforcementAction extends ParDataEntity {
   public function isAwaitingApproval() {
     $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
     $current_status = $status_field ? $this->get($status_field)->getString() : NULL;
-    return ($current_status === self::AWAITING);
+    return ($this->getTypeEntity()->getDefaultStatus() === $current_status);
   }
 
   /**
@@ -211,12 +210,24 @@ class ParDataEnforcementAction extends ParDataEntity {
   }
 
   /**
- *  Get the referred note data from the current action.
- *
- * @return String referred_text | NULL
- *   The referred text stored on the current action or null.
- *
- */
+   * {@inheritdoc}
+   */
+  public function inProgress() {
+    // Freeze Enforcement Actions that are awaiting approval.
+    if ($this->getTypeEntity()->getDefaultStatus() === $this->getRawStatus()) {
+      return TRUE;
+    }
+
+    return parent::inProgress();
+  }
+
+  /**
+   *  Get the referred note data from the current action.
+   *
+   * @return String referred_text | NULL
+   *   The referred text stored on the current action or null.
+   *
+   */
   public function getReferralNotes() {
     return $this->get('referral_notes')->getString();
   }
