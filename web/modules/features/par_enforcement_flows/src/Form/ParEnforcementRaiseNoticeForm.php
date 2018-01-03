@@ -86,7 +86,7 @@ class ParEnforcementRaiseNoticeForm extends ParBaseEnforcementForm {
       '#type' => 'radios',
       '#title' => $this->t('Select a legal entity'),
       '#options' => $legal_entity_reg_names,
-      '#default_value' => $this->getDefaultValues('legal_entities_select', $default),
+      '#default_value' => $default_value,
       '#required' => TRUE,
       '#prefix' => '<div>',
       '#suffix' => '</div>',
