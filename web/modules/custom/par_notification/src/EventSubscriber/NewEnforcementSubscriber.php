@@ -72,29 +72,27 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
     /** @var ParDataEntityInterface $enforcement */
     $enforcement = $event->getData();
 
-    if (!$enforcement) {
-      // @TODO Log that the template couldn't be loaded.
-      return;
-    }
-
-    // Load the message template.
-    $template_storage = $this->getEntityTypeManager()->getStorage('message_template');
-    $message_template = $template_storage->load(self::MESSAGE_ID);
-
-    $message_storage = $this->getEntityTypeManager()->getStorage('message');
-
-    // Get the link to approve this notice.
-    $options = ['absolute' => TRUE];
-    $enforcement_url = Url::fromRoute('par_enforcement_flows.approve', ['par_data_enforcement_notice' => $enforcement->id()], $options);
-
-    if (!$message_template) {
+    if (!$enforcement && $enforcement->getEntityTypeId() !== 'par_data_enforcement_notice') {
       // @TODO Log that the template couldn't be loaded.
       return;
     }
 
     // Only act on Enforcement Notices that haven't been reviewed.
-    if ($enforcement->getEntityTypeId() === 'par_data_enforcement_notice'
-      && $enforcement->getRawStatus() === $enforcement->getTypeEntity()->getDefaultStatus()) {
+    if ($enforcement->getRawStatus() === $enforcement->getTypeEntity()->getDefaultStatus()) {
+      // Load the message template.
+      $template_storage = $this->getEntityTypeManager()->getStorage('message_template');
+      $message_template = $template_storage->load(self::MESSAGE_ID);
+
+      $message_storage = $this->getEntityTypeManager()->getStorage('message');
+
+      // Get the link to approve this notice.
+      $options = ['absolute' => TRUE];
+      $enforcement_url = Url::fromRoute('par_enforcement_flows.approve', ['par_data_enforcement_notice' => $enforcement->id()], $options);
+
+      if (!$message_template) {
+        // @TODO Log that the template couldn't be loaded.
+        return;
+      }
 
       // We need to get the primary authority for this enforcement.
       $primary_authority = $enforcement->getPrimaryAuthority(TRUE);
