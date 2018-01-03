@@ -65,9 +65,26 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataEnforcementNotice extends ParDataEntity {
 
   /**
+   * {@inheritdoc}
+   */
+  public function inProgress() {
+    // Freeze Enforcement Notices with actions that are awaiting approval.
+    foreach ($this->getEnforcementActions() as $action) {
+      if ($action->inProgress()) {
+        return TRUE;
+      }
+    }
+
+    return parent::inProgress();
+  }
+
+  /**
    * Get the primary authority for this Enforcement Notice.
    *
    * @param boolean $single
+   *
+   * @return ParDataEntityInterface|bool
+   *   Return false if not referred.
    *
    */
   public function getPrimaryAuthority($single = FALSE) {
