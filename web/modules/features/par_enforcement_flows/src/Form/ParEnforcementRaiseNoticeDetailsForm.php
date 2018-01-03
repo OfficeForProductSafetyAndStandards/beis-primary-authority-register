@@ -20,6 +20,13 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
    */
   protected $flow = 'raise_enforcement';
 
+
+  protected $formItems = [
+    'par_data_enforcement_notice:enforcement_notice' => [
+      'summary' => 'summary'
+    ],
+  ];
+
   /**
    * {@inheritdoc}
    */
@@ -119,7 +126,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       '#collapsible' => FALSE,
       ];
 
-    $form['action_summary_title']['action_summary'] = [
+    $form['summary'] = [
       '#type' => 'textarea',
       '#default_value' => $this->getDefaultValues("action_summary"),
    ];
