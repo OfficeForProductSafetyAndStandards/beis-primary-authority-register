@@ -72,7 +72,7 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
     /** @var ParDataEntityInterface $enforcement */
     $enforcement = $event->getData();
 
-    if (!$enforcement && $enforcement->getEntityTypeId() !== 'par_data_enforcement_notice') {
+    if (!$enforcement || $enforcement->getEntityTypeId() !== 'par_data_enforcement_notice') {
       // @TODO Log that the template couldn't be loaded.
       return;
     }
