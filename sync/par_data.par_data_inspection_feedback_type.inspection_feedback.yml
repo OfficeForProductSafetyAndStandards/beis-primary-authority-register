@@ -3,12 +3,11 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: P74PyyKIic3EJlnvWJAfEQYYZzB9AentMS9mSrgMRwQ
+  default_config_hash: od64rDpg2p4zSxYgrFB9yRU9uXN_crGximiqdt58CUc
 id: inspection_feedback
 label: 'Inspection Feedback'
 description: ''
 help: ''
-revision: true
 isDeletable: null
 isRevokable: null
 isArchivable: null

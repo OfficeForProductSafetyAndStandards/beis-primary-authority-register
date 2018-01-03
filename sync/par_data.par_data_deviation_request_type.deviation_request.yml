@@ -3,12 +3,11 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: qJGOe8vhhJ-iVpVK_S5ZSlMdL97e-1PKD6DAyP4dzEg
+  default_config_hash: oHy7QJCrzsBWuKd6ywmmw1nKVYtSWHzSCnBJmyb84OE
 id: deviation_request
 label: 'Deviation Request'
 description: ''
 help: ''
-revision: true
 isDeletable: null
 isRevokable: null
 isArchivable: null

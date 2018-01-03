@@ -3,12 +3,11 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: IzpMO5s8FY5gplKUOLL8zcSE_KAijl6kGqe4uWXc1yE
+  default_config_hash: 446gZIQPLVN31wWY8e2ChZC55-8XoHJHFtfSn-_wf44
 id: enforcement_action
 label: 'Enforcement Action'
 description: ''
 help: ''
-revision: true
 isDeletable: true
 isRevokable: false
 isArchivable: false

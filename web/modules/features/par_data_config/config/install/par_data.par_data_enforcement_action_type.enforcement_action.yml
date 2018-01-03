@@ -5,7 +5,7 @@ id: enforcement_action
 label: 'Enforcement Action'
 description: ''
 help: ''
-required: true
+revision: true
 isDeletable: true
 isRevokable: false
 isArchivable: false
