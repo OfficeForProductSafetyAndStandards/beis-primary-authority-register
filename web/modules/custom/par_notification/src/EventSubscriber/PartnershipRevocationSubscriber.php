@@ -79,18 +79,17 @@ class PartnershipRevocationSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    // Load the message template.
-    $template_storage = $this->getEntityTypeManager()->getStorage('message_template');
-    $message_template = $template_storage->load(self::MESSAGE_ID);
-
-    $message_storage = $this->getEntityTypeManager()->getStorage('message');
-    if (!$message_template) {
-      // @TODO Log that the template couldn't be loaded.
-      return;
-    }
-
     // Only act on partnerships that have just been revoked.
     if ($partnership->getRawStatus() === 'revoked' && $partnership->original->getRawStatus !== 'revoked') {
+      // Load the message template.
+      $template_storage = $this->getEntityTypeManager()->getStorage('message_template');
+      $message_template = $template_storage->load(self::MESSAGE_ID);
+
+      $message_storage = $this->getEntityTypeManager()->getStorage('message');
+      if (!$message_template) {
+        // @TODO Log that the template couldn't be loaded.
+        return;
+      }
 
       // We need to get all the contacts for this partnership.
       $contacts = array_merge($partnership->getAuthorityPeople(), $partnership->getOrganisationPeople());
