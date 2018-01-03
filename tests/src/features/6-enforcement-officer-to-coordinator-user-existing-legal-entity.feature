@@ -50,7 +50,7 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
 
       # ENFORCEMENT SUMMARY
 
-        And I add "action summary enforcement notice" to the inputfield "#edit-action-summary"
+        And I add "action summary enforcement notice" to the inputfield "#edit-summary"
         And I click on the radio "#edit-type-proposed"
         And I click on the button "#edit-next"
 

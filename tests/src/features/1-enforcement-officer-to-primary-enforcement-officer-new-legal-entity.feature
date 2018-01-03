@@ -48,7 +48,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Proposed enforcement notification regarding"
         Then I expect that element "h1.heading-xlarge" contains the text "Legal Entity 1"
-        And I add "action summary enforcement notice" to the inputfield "#edit-action-summary"
+        And I add "action summary enforcement notice" to the inputfield "#edit-summary"
 #        And I add "600" random chars of text to field "#edit-action-summary"
         And I click on the radio "#edit-type-proposed"
         And I click on the button "#edit-next"
