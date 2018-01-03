@@ -19,6 +19,17 @@ class ParEnforcementAddActionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  protected $formItems = [
+    'par_data_enforcement_action:enforcement_action' => [
+      'title' => 'title',
+      'details' => 'details',
+      'field_regulatory_function' => 'field_regulatory_function'
+    ],
+  ];
+
+  /**
+   * {@inheritdoc}
+   */
   public function getFormId() {
     return 'par_enforcement_notice_add_action';
   }
@@ -60,18 +71,16 @@ class ParEnforcementAddActionForm extends ParBaseForm {
       '#collapsible' => FALSE,
     ];
 
-    $form['title_of_action_title']['title_of_action'] = [
+    $form['title'] = [
       '#type' => 'textfield',
       '#default_value' => $this->getDefaultValues('title_of_action'),
-      '#required' => TRUE,
     ];
 
-    $form['regulatory_functions'] = [
+    $form['field_regulatory_function'] = [
       '#type' => 'radios',
       '#title' => $this->t('Choose a regulatory function to which this action relates'),
       '#options' => $reg_function_names,
       '#default_value' => $this->getDefaultValues('regulatory_functions'),
-      '#required' => TRUE,
     ];
 
     $form['details_title'] = [
@@ -81,7 +90,7 @@ class ParEnforcementAddActionForm extends ParBaseForm {
       '#collapsible' => FALSE,
     ];
 
-    $form['details_title']['details'] = [
+    $form['details'] = [
       '#type' => 'textarea',
       '#default_value' => $this->getDefaultValues('details'),
     ];
