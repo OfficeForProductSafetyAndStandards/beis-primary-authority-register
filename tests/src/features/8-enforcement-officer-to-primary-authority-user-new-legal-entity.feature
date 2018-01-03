@@ -51,7 +51,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I click on the radio "#edit-type-proposed"
         And I click on the button "#edit-next"
 
-        And I add "Title of enforcement notice Two" to the inputfield "#edit-title-of-action"
+        And I add "Title of enforcement notice Two" to the inputfield "#edit-title"
         And I click on the radio ".option*=Cookie control"
         And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
         And I click on the button "#edit-next"

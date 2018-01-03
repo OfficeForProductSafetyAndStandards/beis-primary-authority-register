@@ -55,7 +55,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Provide details of the proposed enforcement action"
         Then I expect that element "h1.heading-xlarge" contains the text "Add an action to the enforcement notice"
-        And I add "Title of enforcement notice Four" to the inputfield "#edit-title-of-action"
+        And I add "Title of enforcement notice Four" to the inputfield "#edit-title"
         And I click on the radio ".option*=Cookie control"
         And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
         And I upload the file "./files/test.png" to field "#edit-files-upload"
