@@ -234,6 +234,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
       ->setLabel(t('Summary'))
       ->setDescription(t('Summary about this enforcement notice.'))
       ->setRevisionable(TRUE)
+      ->addConstraint('par_required')
       ->setSettings([
         'text_processing' => 0,
       ])->setDisplayOptions('form', [
