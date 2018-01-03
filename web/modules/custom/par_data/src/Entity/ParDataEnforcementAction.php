@@ -326,7 +326,6 @@ class ParDataEnforcementAction extends ParDataEntity {
       ->setDescription(t('Details about this enforcement action.'))
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)
-      ->addConstraint('par_required')
       ->setSettings([
         'text_processing' => 0,
       ])
