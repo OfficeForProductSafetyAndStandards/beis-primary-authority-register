@@ -122,7 +122,6 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
     $form['action_summary_title']['action_summary'] = [
       '#type' => 'textarea',
       '#default_value' => $this->getDefaultValues("action_summary"),
-      '#required' => TRUE,
    ];
 
     return parent::buildForm($form, $form_state);
@@ -132,8 +131,13 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    // No validation yet.
+
     parent::validateForm($form, $form_state);
+
+    // Validate required fields.
+    if (empty($form_state->getValue('action_summary'))) {
+      $form_state->setErrorByName('action_summary', $this->t('<a href="#edit-action-summary">The summary of the enforcement notification field is required.</a>'));
+    }
 
     $enforcing_authority_id = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
     $organisation_id = $this->getDefaultValues('par_data_organisation_id', '', 'par_enforce_organisation');
