@@ -22,19 +22,11 @@ class ParEnforcementFlowsCompletedEnforcementController extends ParBaseControlle
    */
   public function accessCallback(ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
 
-    $allowed_actions = [
-      ParDataEnforcementAction::APPROVED,
-      ParDataEnforcementAction::BLOCKED,
-      ParDataEnforcementAction::REFERRED,
-      ParDataEnforcementAction::AWAITING,
-    ];
-
-    foreach ($par_data_enforcement_notice->get('field_enforcement_action')->referencedEntities() as $delta => $action) {
-      // If this enforcement notice has any actions that have not yet been reviewed deny access.
-      if (in_array($action->getRawStatus(), $allowed_actions) && $action->getRawStatus() === ParDataEnforcementAction::AWAITING) {
-        $this->accessResult = AccessResult::forbidden('This enforcement notification has not been fully reviewed yet.');
-      }
+    // If this enforcement notice has not been reviewed.
+    if ($par_data_enforcement_notice->inProgress()) {
+      $this->accessResult = AccessResult::forbidden('This enforcement notification has not been fully reviewed yet.');
     }
+
     return parent::accessCallback();
   }
 
