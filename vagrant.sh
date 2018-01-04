@@ -49,7 +49,7 @@ git clone git@github.com:UKGovernmentBEIS/beis-primary-authority-register $REPO_
 cd $REPO_DIR
 
 # Checkout the required branch, or default to master if none specified
-if [ -z $1 ]; then git checkout $1; fi
+if [ $# -eq 1 ]; then git checkout $1; fi
 
 # Get the .env file we saved earlier
 cp ../.env .
