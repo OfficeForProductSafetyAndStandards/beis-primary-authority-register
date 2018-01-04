@@ -48,14 +48,14 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Proposed enforcement notification regarding"
         Then I expect that element "h1.heading-xlarge" contains the text "Legal Entity 1"
-        And I add "action summary enforcement notice" to the inputfield "#edit-action-summary"
+        And I add "action summary enforcement notice" to the inputfield "#edit-summary"
 #        And I add "600" random chars of text to field "#edit-action-summary"
         And I click on the radio "#edit-type-proposed"
         And I click on the button "#edit-next"
 
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Provide details of the proposed enforcement action"
         Then I expect that element "h1.heading-xlarge" contains the text "Add an action to the enforcement notice"
-        And I add "Title of enforcement notice Four" to the inputfield "#edit-title-of-action"
+        And I add "Title of enforcement notice Four" to the inputfield "#edit-title"
         And I click on the radio ".option*=Cookie control"
         And I add "600" random chars of text to field "#edit-details"
 #        And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
