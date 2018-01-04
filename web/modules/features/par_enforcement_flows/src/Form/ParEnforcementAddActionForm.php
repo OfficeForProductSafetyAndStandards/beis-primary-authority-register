@@ -80,7 +80,7 @@ class ParEnforcementAddActionForm extends ParBaseForm {
       '#type' => 'radios',
       '#title' => $this->t('Choose a regulatory function to which this action relates'),
       '#options' => $reg_function_names,
-      '#default_value' => $this->getDefaultValues('regulatory_functions'),
+      '#default_value' => $this->getDefaultValues('field_regulatory_function'),
     ];
 
     $form['details_title'] = [
@@ -143,7 +143,7 @@ class ParEnforcementAddActionForm extends ParBaseForm {
       'title' => $title,
       'details' => $this->getTempDataValue('details'),
       'document' => $this->getDefaultValues("files"),
-      'field_regulatory_function' => $this->getTempDataValue('regulatory_functions'),
+      'field_regulatory_function' => $this->getTempDataValue('field_regulatory_function'),
     ];
 
     $enforcementAction = \Drupal::entityManager()->getStorage('par_data_enforcement_action')->create($enforcementAction_data);
