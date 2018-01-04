@@ -20,7 +20,6 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
    */
   protected $flow = 'raise_enforcement';
 
-
   protected $formItems = [
     'par_data_enforcement_notice:enforcement_notice' => [
       'summary' => 'summary'
@@ -136,7 +135,6 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-
     parent::validateForm($form, $form_state);
 
     $enforcing_authority_id = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
