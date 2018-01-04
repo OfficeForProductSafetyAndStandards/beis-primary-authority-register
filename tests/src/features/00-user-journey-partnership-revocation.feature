@@ -106,7 +106,7 @@ Feature: New Direct Partnership For PA To Approve
 
         # REVOKE PARTNERSHIP
 
-        When I click on the link "Revoke"
+        When I click on the link "Revoke partnership"
         And I add "Some reasons for revoking partnership" to the inputfield "#partnership-revoke-reason"
         And I click on the button "#edit-next"
         Then I expect that element ".view-par-flow-link-table-column" contains the text "Partnership revoked"
