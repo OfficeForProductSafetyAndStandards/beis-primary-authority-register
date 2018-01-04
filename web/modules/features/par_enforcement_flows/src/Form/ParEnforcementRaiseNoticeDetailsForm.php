@@ -38,7 +38,6 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-
     $enforcementFlowTitle = $this->RaiseEnforcementTitleCallback();
     if ($enforcementFlowTitle) {
       $this->pageTitle = $enforcementFlowTitle;
@@ -61,7 +60,6 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
-
     $this->retrieveEditableValues($par_data_partnership);
     $enforcement_notice_entity = $this->getParDataManager()->getParBundleEntity('par_data_enforcement_notice');
 
@@ -124,7 +122,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       '#title' => $this->t('Provide a summary of the enforcement notification'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
-      ];
+    ];
 
     $form['summary'] = [
       '#type' => 'textarea',
@@ -158,7 +156,6 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-
 
     if ($partnership = $this->getRouteParam('par_data_partnership')) {
       $partnership_id = $partnership->id() ? $partnership->id() : NULL;
