@@ -73,7 +73,7 @@ class ParEnforcementAddActionForm extends ParBaseForm {
 
     $form['title'] = [
       '#type' => 'textfield',
-      '#default_value' => $this->getDefaultValues('title_of_action'),
+      '#default_value' => $this->getDefaultValues('title'),
     ];
 
     $form['field_regulatory_function'] = [
@@ -136,7 +136,7 @@ class ParEnforcementAddActionForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $title = $this->getTempDataValue('title_of_action');
+    $title = $this->getTempDataValue('title');
 
     $enforcementAction_data = [
       'type' => 'enforcement_action',
