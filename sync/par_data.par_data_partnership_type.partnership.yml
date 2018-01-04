@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: j9qZ4ZSZHGhtc162UxXHR5MKcWCHDcJd_Kn4sjJutoY
+  default_config_hash: i3l0tVj0ub7mC2mXtdmzmSCfK5X-_ohUmpfF0EEBDFk
 id: partnership
 label: Partnership
 description: 'A Partnership is a relationship between a Primary Authority and either a Business ("direct partnership") or a Co-ordinator ("co-ordinated partnership").  Note that in the latter case, the Business records may or may not be held in the PAR3 database.'

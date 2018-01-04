@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: 3z1r11qPWlkrjz1tzF56AAL7_eedOX0BzbjJzvT4ydw
+  default_config_hash: J3f-L_5rEyrqsl_ddC-IzxWI0tosdJRpxb9RKZLF2F4
 id: inspection_plan
 label: 'Inspection Plan'
 description: 'An Inspection Plan is a template for carrying out particular types of inspections that has been agreed with the Primary Authority in a partnership; all enforcement officers from all local authorities have to use that plan.'
