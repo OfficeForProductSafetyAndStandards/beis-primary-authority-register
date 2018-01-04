@@ -88,6 +88,17 @@ class ParDataPartnership extends ParDataEntity {
     parent::revoke();
   }
 
+  public function approve() {
+    // Approve.
+    $this->setParStatus('confirmed_rd');
+
+    // Set approved date to today.
+    $time = new \DateTime();
+    $this->set('approved_date', $time->format("Y-m-d"));
+
+//    parent::approve();
+  }
+
   /**
    * {@inheritdoc}
    */

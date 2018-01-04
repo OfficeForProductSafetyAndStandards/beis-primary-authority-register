@@ -67,7 +67,7 @@ class ParListFormatter extends FormatterBase {
       $value = $bundle_entity->getAllowedFieldlabel($field_name, $item->value);
       // Render each element as markup.
       if (!$value && $this->getSetting('display_original_value')) {
-        $value = $item->value;
+        $value = $item->value;w
       }
 
       $element[$delta] = [

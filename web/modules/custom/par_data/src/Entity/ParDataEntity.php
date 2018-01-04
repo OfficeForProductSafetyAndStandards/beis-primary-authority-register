@@ -21,7 +21,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
   const DELETE_FIELD = 'deleted';
   const REVOKE_FIELD = 'revoked';
-  const ARCHIVE_FIELD = 'archive';
+  const ARCHIVE_FIELD = 'archived';
 
   /**
    * Simple getter to inject the PAR Data Manager service.
@@ -273,18 +273,18 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function getRawStatus() {
-    if ($this->isDeleted()) {
-      return 'deleted';
-    }
-    if ($this->isRevoked()) {
-      return 'revoked';
-    }
-    if ($this->isArchived()) {
-      return 'archived';
-    }
-    if (!$this->isTransitioned()) {
-      return 'n/a';
-    }
+//    if ($this->isDeleted()) {
+//      return 'deleted';
+//    }
+//    if ($this->isRevoked()) {
+//      return 'revoked';
+//    }
+//    if ($this->isArchived()) {
+//      return 'archived';
+//    }
+//    if (!$this->isTransitioned()) {
+//      return 'n/a';
+//    }
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
 

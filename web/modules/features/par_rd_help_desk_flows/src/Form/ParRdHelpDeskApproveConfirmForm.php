@@ -35,6 +35,8 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function accessCallback(ParDataPartnership $par_data_partnership = NULL) {
+
+    kint($par_data_partnership->getRawStatus());
     // 403 if the partnership is active/approved by RD.
     if ($par_data_partnership->getRawStatus() === 'confirmed_rd') {
       $this->accessResult = AccessResult::forbidden('The partnership is active.');
@@ -142,12 +144,10 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
     // We only want to update the status of none active partnerships.
     if ($partnership->getRawStatus() !== 'confirmed_rd') {
 
-      $partnership->setParStatus('confirmed_rd');
-      $partnership->set('field_regulatory_function', $selected_regulatory_functions);
+      // @todo This should be a method!
+      $partnership->approve();
 
-      // Set approved date to today.
-      $time = new \DateTime();
-      $partnership->set('approved_date', $time->format("Y-m-d"));
+      $partnership->set('field_regulatory_function', $selected_regulatory_functions);
 
       if (!$partnership->save()) {
 
