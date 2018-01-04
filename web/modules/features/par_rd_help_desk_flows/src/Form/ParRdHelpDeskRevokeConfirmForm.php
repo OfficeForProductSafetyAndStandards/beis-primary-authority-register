@@ -1,0 +1,140 @@
+<?php
+
+namespace Drupal\par_rd_help_desk_flows\Form;
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\Core\Access\AccessResult;
+use Drupal\par_flows\ParDisplayTrait;
+
+/**
+ * The confirming the user is authorised to revoke partnerships.
+ */
+class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
+
+  use ParDisplayTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $flow = 'revoke_partnership';
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFormId() {
+    return 'par_rd_help_desk_revoke_confirm';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function titleCallback() {
+    return 'Confirmation | Revoke a partnership';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function accessCallback(ParDataPartnership $par_data_partnership = NULL) {
+    // 403 if the partnership is in progress it can't be revoked.
+    if ($par_data_partnership->inProgress()) {
+      $this->accessResult = AccessResult::forbidden('The partnership is not active.');
+    }
+
+    return parent::accessCallback();
+  }
+
+  /**
+   * Helper to get all the editable values when editing or
+   * revisiting a previously edited page.
+   */
+  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
+
+    if ($par_data_partnership) {
+      // If we're editing an entity we should set the state
+      // to something other than default to avoid conflicts
+      // with existing versions of the same form.
+      $this->setState("edit:{$par_data_partnership->id()}");
+    }
+
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+    $this->retrieveEditableValues($par_data_partnership);
+
+    if ($par_data_partnership && $par_data_partnership->inProgress()) {
+      $form['partnership_info'] = [
+        '#type' => 'markup',
+        '#title' => $this->t('Revocation denied'),
+        '#markup' => $this->t('This partnership cannot be revoked because it is awaiting approval or there are enforcement notices currently awaiting review. Please try again later.'),
+      ];
+
+      return parent::buildForm($form, $form_state);
+    }
+
+    $form['partnership_info'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Revoke the partnership between'),
+      '#attributes' => ['class' => 'form-group'],
+    ];
+
+    $form['partnership_info']['partnership_text'] = [
+      '#type' => 'markup',
+      '#markup' => $par_data_partnership->label(),
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
+    ];
+
+    // Enter the revokcation reason.
+    $form['revocation_reason'] = [
+      '#title' => $this->t('Enter the reason you are revoking this partnership'),
+      '#type' => 'textarea',
+      '#rows' => 5,
+      '#default_value' => $this->getDefaultValues('revocation_reason', FALSE),
+    ];
+
+    return parent::buildForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    // No validation yet.
+    parent::validateForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    parent::submitForm($form, $form_state);
+
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+
+    // We only want to update the status of active partnerships.
+    if (!$par_data_partnership->isRevoked()) {
+
+      $revoked = $par_data_partnership->revoke($this->getTempDataValue('revocation_reason'));
+
+      if ($revoked) {
+        $this->deleteStore();
+      }
+      else {
+        $message = $this->t('Revocation reason could not be saved for %form_id');
+        $replacements = [
+          '%form_id' => $this->getFormId(),
+        ];
+        $this->getLogger($this->getLoggerChannel())
+          ->error($message, $replacements);
+      }
+
+    }
+  }
+
+}

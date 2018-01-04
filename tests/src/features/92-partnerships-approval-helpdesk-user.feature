@@ -22,7 +22,7 @@ Feature: Helpdesk approve partnership
         And I click on the button "#edit-next"
 
         # APPROVAL CONFIRMATION SCREEN
-        Then I expect that element "#edit-partnership-info" contains the text "Partnership is approved between"
+        Then I expect that element "#edit-partnership-info" contains the text "The following partnership has been approved"
         And I expect that element "#edit-partnership-info" contains the text "Business For Direct Partnership 1"
         And I click on the button "#edit-done"
 

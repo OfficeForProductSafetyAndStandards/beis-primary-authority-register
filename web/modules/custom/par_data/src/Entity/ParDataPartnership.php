@@ -67,6 +67,48 @@ use Drupal\user\UserInterface;
 class ParDataPartnership extends ParDataEntity {
 
   /**
+   * {@inheritdoc}
+   *
+   * @param string $reason
+   *   The reason for revoking this partnership.
+   */
+  public function revoke($reason = '') {
+    // Revoke/archive all dependent entities as well.
+    $inspection_plans = $this->getInspectionPlan();
+    foreach ($inspection_plans as $inspection_plan) {
+      $inspection_plan->revoke();
+    }
+
+    $advice_documents = $this->getAdvice();
+    foreach ($advice_documents as $advice) {
+      $advice->revoke();
+    }
+
+    $this->set('revocation_reason', $reason);
+    parent::revoke();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function inProgress() {
+    // Freeze partnerships that are awaiting approval.
+    if ($this->getTypeEntity()->getDefaultStatus() === $this->getRawStatus()) {
+      return TRUE;
+    }
+
+    // Freeze partnerships that have un un approved enforcement notices
+    $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
+    foreach ($enforcement_notices as $enforcement_notice) {
+      if ($enforcement_notice->inProgress()) {
+        return TRUE;
+      }
+    }
+
+    return parent::inProgress();
+  }
+
+  /**
    * Get the organisation contacts for this Partnership.
    */
   public function getOrganisationPeople() {
@@ -89,9 +131,15 @@ class ParDataPartnership extends ParDataEntity {
 
   /**
    * Get the authority for this Partnership.
+   *
+   * @param boolean $single
+   *
    */
-  public function getAuthority() {
-    return $this->get('field_authority')->referencedEntities();
+  public function getAuthority($single = FALSE) {
+    $authorities = $this->get('field_authority')->referencedEntities();
+    $authority = !empty($authorities) ? current($authorities) : NULL;
+
+    return $single ? $authority : $authorities;
   }
 
   /**

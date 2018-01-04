@@ -2,6 +2,14 @@
 ### BUILD                                                                  ###
 ##############################################################################
 
+# Fix Travis write errors. These write errors occurred after
+# a Travis update to new Trusty images on Dec. 12th 2017. The reason for these
+# write errors is unknown. Using the deprecated builds did not fix the problem.
+# Setting 'filter_secrets: false' as suggested here
+# https://github.com/travis-ci/travis-ci/issues/4704#issuecomment-321777557
+# fixes the problem.
+filter_secrets: false
+
 language: php
 
 php:
@@ -98,6 +106,7 @@ install:
   - docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cex -n"
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush core-requirements --severity=2"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/drush/drush/drush cron"
 
 #-----------------------------------------------------------------------------
 # Stamp the code with the build number
@@ -114,20 +123,21 @@ before_script:
 
 script:
   - docker exec -it par_beta_web sh -c "./vendor/bin/paratest --processes=16 --log-junit=./tests/reports/phpunit.latest.xml"
-  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
-  - docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run test:build"
+  - if [[ "$TESTTYPE" == "cucumber" ]]; then travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"; fi
+  - if [[ "$TESTTYPE" == "cucumber" ]]; then docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run test:build"; fi
 
 #-----------------------------------------------------------------------------
 # Run Jmeter
 #-----------------------------------------------------------------------------
 
-#  - docker exec -ti par_beta_web bash -c "cd tests/jmeter && wget http://mirror.reverse.net/pub/apache//jmeter/binaries/apache-jmeter-3.3.tgz && wget https://www.apache.org/dist/jmeter/binaries/apache-jmeter-3.3.tgz.asc && wget -O - https://www.apache.org/dist/jmeter/KEYS |gpg --import && gpg --verify apache-jmeter-3.3.tgz.asc && tar -zxf apache-jmeter-3.3.tgz && rm apache-jmeter-3.3.tgz"
-#  - docker exec -ti par_beta_web bash -c "cd tests/jmeter && chmod -R 777 ../reports/ && ./apache-jmeter-3.3/bin/jmeter -n -t load-test-plan.jmx -l ../reports/jmeterreport.jtl -e -o ../reports/dashboard"
+  - if [[ "$TESTTYPE" == "jmeter" ]]; then docker exec -ti par_beta_web bash -c "cd tests/jmeter && wget http://mirror.reverse.net/pub/apache//jmeter/binaries/apache-jmeter-3.3.tgz && wget https://www.apache.org/dist/jmeter/binaries/apache-jmeter-3.3.tgz.asc && wget -O - https://www.apache.org/dist/jmeter/KEYS |gpg --import && gpg --verify apache-jmeter-3.3.tgz.asc && tar -zxf apache-jmeter-3.3.tgz && rm apache-jmeter-3.3.tgz"; fi
+  - if [[ "$TESTTYPE" == "jmeter" ]]; then docker exec -ti par_beta_web bash -c "cd tests/jmeter && chmod -R 777 ../reports/ && ./apache-jmeter-3.3/bin/jmeter -n -t load-test-plan.jmx -l ../reports/jmeterreport.jtl -e -o ../reports/dashboard"; fi
 
 #-----------------------------------------------------------------------------
 # Generate tar with test screenshots to tests/reports/errorShots.tar.gz
 #-----------------------------------------------------------------------------
 #  - docker exec -ti par_beta_web bash -c "cd tests/reports && if [ -d ./html ]; then tar -cf reportHTML.tar.gz ./html; fi"
+
   - travis_retry docker exec -ti par_beta_web bash -c "cd tests && if [ -d ./errorShots ]; then tar -cf reports/errorShots.tar.gz ./errorShots; fi"
 
 #-----------------------------------------------------------------------------
@@ -180,6 +190,10 @@ notifications:
   slack:
     secure: oRuAo84heWUp6MVcM22dx/FZUV5HUVvsegEDaiVggQmNo2zYzNQhgAY7P9GpnaPWo53inCoFfwrwn9V+sj2uwUwrtWQg71qCTU3FIZicqYBB44rp+7/YdpuNqCYtbbY50UJpsZtqRIffWB4iS0YZ2bd+SkvsJskzRzbHC9qRjrSq0Hmb1DuxQCiE+M9TM7n4phY1dPTxTm1g1WwShr1zKXTfhDDK2k9r9kQGpJFP5rrE5cch0kBPJP29rgijeJq5uFS99+QyiVRJcqStXYl2JvKXTMS3sVk+OgSHeeRaaY0dbQSPcn4mTgcQKMVpfAUXVD6mUlkj4WYDXjdQSZdbgVvsX5tQg/6kG52wXgB+vDsmwKoBcTZLndNUQc9nCA02A+WVLyru318JmxwtaLo7CqRJArG3vItryMl7SxUA5QM1XB77iOe25m1aXEvJkUa54p6P7T62Gr0qfaEnCAeNRu33nS/16g+Znbp34jIwmmt+f3q2Uo3XV9cQgYj46ixzSjw5OPTHQSEpCHE8jtkXP80/N8jlXYLm7kTJapSWKEdbQf6J5a7Oj8Hv7Jq0QoPZmRpfa9L5PwJHd38p1JmxnVFbZMS4dQGyTwgyehf62cIDVi+5Pl3XPdQJ9FcMSTGOCXSrPGmJRHBt+o8bOuIzWMBHYqgnmHNNQ+oK/SEFhyw=
 env:
+  matrix:
+    - TESTTYPE=cucumber
+    - TESTTYPE=jmeter
   global:
   - secure: Fs3vok73zakpxIio13QqNuGlUoLVGeaE85FbFTTQI3+xdHWzVGausI7HW7GRh32cQP3jgPazcIe4WE/og4FHWwPIJzRzknbkaBN6zsmETS2nhh7H8rNCbw/vXqC1hXhXK3VdaIvuL9t+UBaqeojrgIvF7DVs5G3shtKX6om5NscxYDUmIMPeQL5gaIXVcGGIVlyL7rruQQ8swt1ld9YtNhoGv9zhJjezr5r2qGwrJkx2JkPWJJre6Dy8PaPWaOKQ9vV3NtI+uG2mbctBkBqG05XZ1Rm3V8r8lOyDhpQcWkn8M616QMkd/bWZgcS97RX7MEdKBQIhEGFAo66z76Uc+PwgnTy8hF3pM6oF1adrw9GBfbMD5gsS/KVLjs/GOlHF3blsoFALk99K/6WIt3/5682LmXxvY56lnJOBMWgDOiWk8dlmj5CXLnxEN8GCgMDphV+xkv8luN3H18dtnHQ9dp8p1w4CNwopsUXW/PgOdQput8DRP74Y0D3cpGMjoHEhY1kxuWghwy2q+SHCgrvMzjyZs4EXWJSQiGQmqw5AjUzntR2BsqEsne78L5SBC6rCcMalTcWf+BSHITI75RiEdzUg+wSciV5FMWwD1OBlAqgjeOpocWcoTvUYQW4jl6HnwWyOuIKYPTZnkqsKQjDsrfLsAgxtVZNRh4E6/y3ZJBY=
   - secure: G/sN3FBcz3aBZgZ/rkCHc+Xrv/oVU2VUFtLmYH6A/kKLtYAckgn5Lj9FYrW545TBzr0ZumEp2/N2446xCzG4fKmU7bkFHAsbWrWJXXCF1ZQnEG1uhy33OtW2ubR4jzbUJL1qyF5JvCpers59I7dCVxQLfeZYqt0Tex87w5TZJqZzVKL6nEvnoTtrHrbk8SsaMGhkbtf+OKezO5SemT0FH9Jh4sXzmyByIXudgvfBCHTbIGqO+oFyyEhWQP84pB/fvkuppA6k74P6iscY3CwwJMvSFoQa3m4edMlEyEsgUEhbmP5TFagNl+baTWN3XS/hKOSIOm1HttsOKyfgxUzKQ4IYb9vUOl1d2CIvMWDpAgJOs8plNfHWbmZYw5SVpxp25Y/VtsfcFEFF2zYzF93swpiokchjcLVmDAVagG6repmy/VuwzoxbgaVUbbAU+sndzmdOTYBb8i1VpoGUKTpiHQOcdkDf3MDHi7fJnvgsRu/Mz+xfQ4y0Tm8OejnCzAzfiIuaAo06a0osp6NIbevqW85Z4Ag76XxxFsmfT7x3qSAGiSc9CJ0KUtg3usAi2EbixFtBk3mQMsILPOmwyhEqUMTGSX0zsM6wf+J1I58NSzoiGMo7mkFEK4wg5+aw+DbF3mLCBLRRsW+pyFegGaq2itaIZtOXMDKFsE85z6qHIL0=
+

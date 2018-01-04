@@ -48,14 +48,11 @@ class ParRdHelpDeskApproveForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
-
-    $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $par_data_authority = current($par_data_partnership->getAuthority());
     $this->retrieveEditableValues($par_data_partnership);
 
-    $form['partnership_info'] =[
+    $form['partnership_info'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Partnership is approved between'),
+      '#title' => $this->t('The following partnership has been approved'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,

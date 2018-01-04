@@ -155,6 +155,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
 
     if ($partnership = $this->getRouteParam('par_data_partnership')) {
       $partnership_id = $partnership->id() ? $partnership->id() : NULL;
+      $partnership_primary_authority = $partnership->getAuthority() ? current($partnership->getAuthority()) : NULL;
     }
 
     $time = new \DateTime();
@@ -162,6 +163,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
     $enforcementNotice_data = [
       'notice_type' => $this->getTempDataValue('enforcement_type'),
       'summary' => $this->getTempDataValue('action_summary'),
+      'field_primary_authority' => $partnership_primary_authority,
       'field_enforcing_authority' => $this->getEnforcingAuthorityID(),
       'field_organisation' => $this->getEnforcedOrganisationID(),
       'field_person' =>  $this->getEnforcingPersonID(),

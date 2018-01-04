@@ -65,6 +65,19 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataAdvice extends ParDataEntity {
 
   /**
+   * {@inheritdoc}
+   */
+  public function revoke() {
+    // Only advice of type 'authority_advice' can be revoked.
+    if ($this->getRawStatus() === 'authority_advice') {
+      parent::revoke();
+    }
+    else {
+      $this->archive();
+    }
+  }
+
+  /**
    * Get the regulatory functions for this Advice.
    */
   public function getRegulatoryFunction() {

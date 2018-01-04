@@ -3,7 +3,9 @@
 # Destroy dependencies
 
     cd /vagrant/docker
-    sudo sh destroy-dependencies.sh
+    if [ -f ../web/sites/default/settings.local.php ]; then
+        sudo rm ../web/sites/default/settings.local.php
+    fi
 
 # Install dependencies
 
@@ -23,11 +25,6 @@ fi
 
     # Time for the server to boot
     sleep 5
-
-    # Must load a database before "cr" and "fsg" commands can be bootstrapped
-
-    docker exec -i par_beta_web bash -c "vendor/bin/drush @dev --root=/var/www/html/web sql-drop -y"
-    docker exec -i par_beta_web bash -c "vendor/bin/drush sql-cli @dev --root=/var/www/html/web < docker/fresh_drupal_postgres.sql"
 
     docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
     docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"

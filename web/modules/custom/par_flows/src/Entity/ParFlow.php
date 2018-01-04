@@ -32,10 +32,10 @@ use Drupal\par_flows\ParRedirectTrait;
  *     "uuid" = "uuid"
  *   },
  *   links = {
- *     "canonical" = "/admin/config/par/flow/{par_entity_type}",
- *     "edit-form" = "/admin/config/par/flow/{par_entity_type}/edit",
- *     "delete-form" = "/admin/config/par/flow/{par_entity_type}/delete",
- *     "collection" = "/admin/config/par/flow"
+ *     "canonical" = "/admin/config/par/flows/{par_entity_type}",
+ *     "edit-form" = "/admin/config/par/flows/{par_entity_type}/edit",
+ *     "delete-form" = "/admin/config/par/flows/{par_entity_type}/delete",
+ *     "collection" = "/admin/config/par/flows"
  *   },
  *   config_export = {
  *     "id",
