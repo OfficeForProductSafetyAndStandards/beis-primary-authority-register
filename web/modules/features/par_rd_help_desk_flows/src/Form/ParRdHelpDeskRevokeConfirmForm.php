@@ -38,6 +38,11 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function accessCallback(ParDataPartnership $par_data_partnership = NULL) {
+    // If partnership has been revoked, we should not be able to re-revoke it.
+    if ($par_data_partnership->isRevoked()) {
+      $this->accessResult = AccessResult::forbidden('The partnership is already revoked.');
+    }
+
     // 403 if the partnership is in progress it can't be revoked.
     if ($par_data_partnership->inProgress()) {
       $this->accessResult = AccessResult::forbidden('The partnership is not active.');
