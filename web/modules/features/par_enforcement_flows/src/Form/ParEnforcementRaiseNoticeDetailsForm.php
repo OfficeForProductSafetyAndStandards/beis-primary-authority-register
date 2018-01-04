@@ -128,7 +128,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
 
     $form['summary'] = [
       '#type' => 'textarea',
-      '#default_value' => $this->getDefaultValues("action_summary"),
+      '#default_value' => $this->getDefaultValues("summary"),
    ];
 
     return parent::buildForm($form, $form_state);
@@ -169,7 +169,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
 
     $enforcementNotice_data = [
       'notice_type' => $this->getTempDataValue('enforcement_type'),
-      'summary' => $this->getTempDataValue('action_summary'),
+      'summary' => $this->getTempDataValue('summary'),
       'field_primary_authority' => $partnership_primary_authority,
       'field_enforcing_authority' => $this->getEnforcingAuthorityID(),
       'field_organisation' => $this->getEnforcedOrganisationID(),
