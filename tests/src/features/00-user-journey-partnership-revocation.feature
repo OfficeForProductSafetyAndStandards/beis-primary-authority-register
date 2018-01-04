@@ -1,65 +1,45 @@
-@ci
+@Pending @PAR1055 @PAR1057 @PAR1059 @PAR1060 @PAR1062
 Feature: New Direct Partnership For PA To Approve
 
     Scenario: New Direct Partnership
 
         Given I open the url "/user/login"
-#        And I run tota11y against the current page
-        And I set "par_authority@example.com" to the inputfield "#edit-name"
+        And I add "par_authority@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
-        Then I expect that element "h1.heading-xlarge" contains the text "Primary Authority Register"
-        And I expect that element "#block-par-theme-content" contains the text "See your partnerships"
-        And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
-        And I expect that element "#block-par-theme-content" contains the text "See enforcement notifications"
         When I click on the link "Apply for a new partnership"
-        And I click on the button "#edit-cancel"
-        When I click on the link "Apply for a new partnership"
-
 
         # CHOOSE AUTHORITY REPRESENTED
 
-        Then I expect that element "h1.heading-xlarge" contains the text "Which authority are you acting on behalf of?"
         And I click on the radio "label*=Metropolitan District"
         And I click on the button "#edit-next"
 
         # CHOOSE PARTNERSHIP TYPE
 
-        Then I expect that element "h1.heading-xlarge" contains the text "New partnership application"
         When I click on the radio "#edit-application-type-direct"
         And I click on the button "#edit-next"
 
         # CONFIRMATIONS
 
         When I click on the checkbox "#edit-business-eligible-for-partnership"
-        And I click on the button "#edit-next"
-        Then I expect that element ".error-summary" is visible
         And I click on the checkbox "#edit-local-authority-suitable-for-nomination"
-        And I click on the button "#edit-next"
-        Then I expect that element ".error-summary" is visible
         And I click on the checkbox "#edit-written-summary-agreed"
-        And I click on the button "#edit-next"
-        Then I expect that element ".error-summary" is visible
         And I click on the checkbox "#edit-terms-organisation-agreed"
         And I click on the radio "#edit-business-regulated-by-one-authority-1"
-        When I click on the button "#edit-next"
-        Then I expect that element ".error-summary" is visible
         And I expect that element "#par-partnership-application-authority-checklist" contains the text "Is this your local authority?"
         And I click on the radio "#edit-business-regulated-by-one-authority-1"
         And I click on the radio "#edit-is-local-authority-1"
   #        And I expect that element ".error-summary" contains the text "The business needs to be informed about local authority"
         When I click on the button "#edit-next"
-        Then I expect that element "error-summary" is not visible
 
         # ADD ABOUT THE PARTNERSHIP
 
-        And I expect that element "#par-partnership-about" contains the text "Use this section to give a brief overview of the partnership"
-        When I add "About the partnership detail" to the inputfield "#edit-about-partnership"
+        When I add "About the partnership for revoking detail" to the inputfield "#edit-about-partnership"
         And I click on the button "#edit-next"
 
         # ORGANISATION NAME
 
-        And I add "Business For Direct Partnership 1" to the inputfield "#edit-organisation-name"
+        And I add "Direct Partnership For Revoking" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
 
         # CONFIRM NEW PARTNERSHIP
@@ -111,7 +91,28 @@ Feature: New Direct Partnership For PA To Approve
         Then I expect that element "h1.heading-xlarge" contains the text "Notification sent"
         Then I expect that element "#block-par-theme-content" contains the text "Mr Fozzie Bear will receive an email with a link to register/login to the PAR website."
         When I click on the link "Done"
+        And I click on the link "Log out"
 
-        # RETURN TO DASHBOARD
+        # CHECK HD USER HAS REVOKE LINK
 
-        Then I expect that element "h1.heading-xlarge" contains the text "Primary Authority Register"
+        Given I open the url "/user/login"
+        And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
+        And I add "TestPassword" to the inputfield "#edit-pass"
+        When I click on the button "#edit-submit"
+        When I add "Direct Partnership For Revoking" to the inputfield "#edit-keywords"
+        And I select the option with the text "Confirmed by the Authority" for element "#edit-partnership-status"
+        And I click on the button "#edit-submit-helpdesk-dashboard"
+        Then I expect that element ".view-par-flow-link-table-column" contains the text "Revoke"
+
+        # REVOKE PARTNERSHIP
+
+        When I click on the link "Revoke"
+        And I add "Some reasons for revoking partnership" to the inputfield "#partnership-revoke-reason"
+        And I click on the button "#edit-next"
+        Then I expect that element ".view-par-flow-link-table-column" contains the text "Partnership revoked"
+        When I click on the link "Dashboard"
+        When I add "Direct Partnership For Revoking" to the inputfield "#edit-keywords"
+        And I select the option with the text "Revoked" for element "#edit-partnership-status"
+        And I click on the button "#edit-submit-helpdesk-dashboard"
+        Then I expect that element ".view-par-flow-link-table-column" contains the text "Direct Partnership For Revoking"
+

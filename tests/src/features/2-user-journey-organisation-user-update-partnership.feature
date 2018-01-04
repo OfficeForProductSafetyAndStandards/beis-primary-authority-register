@@ -65,18 +65,6 @@ Feature: Business User - Manage Addresses
         And I click on the button "#edit-save"
         Then I expect that element "#edit-employee-no" contains the text "50 to 249"
 
-        # EDIT LEGAL ENTITY
-
-#        When I click on the link "edit legal entity"
-#        And I clear the inputfield "#edit-registered-name"
-#        When I add "Changed" to the inputfield "#edit-registered-name"
-#        And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
-#        And I clear the inputfield "#edit-company-house-no"
-#        When I add "0123456789" to the inputfield "#edit-company-house-no"
-#        And I click on the button "#edit-save"
-#        Then I expect that element "#edit-legal-entities" contains the text "Changed"
-#        Then I expect that element "#edit-legal-entities" contains the text "Limited Company"
-
         # ADD LEGAL ENTITY - Limited Liability Partnership
 
         When I click on the link "add another legal entity"
@@ -101,14 +89,24 @@ Feature: Business User - Manage Addresses
         Then I expect that element ".form-item-registered-number" is visible
         And I select the option with the text "Limited Liability Partnership" for element "#edit-legal-entity-type"
         Then I expect that element ".form-item-registered-number" is visible
-
         Then I expect that element ".form-item-registered-number label" contains the text "Provide the registration number"
         When I add "1234567890" to the inputfield "#edit-registered-number"
-
         And I click on the button "#edit-save"
         Then I expect that element "#edit-legal-entities" contains the text "New LLP Company"
         Then I expect that element "#edit-legal-entities" contains the text "Limited Liability Partnership"
         Then I expect that element "#edit-legal-entities" contains the text "1234567890"
+
+        # EDIT LEGAL ENTITY
+
+        When I click on the link "edit legal entity"
+        And I clear the inputfield "#edit-registered-name"
+        When I add "Changed" to the inputfield "#edit-registered-name"
+        And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
+        And I clear the inputfield "#edit-registered-number"
+        When I add "0123456789" to the inputfield "#edit-registered-number"
+        And I click on the button "#edit-save"
+        Then I expect that element "#edit-legal-entities" contains the text "Changed"
+        Then I expect that element "#edit-legal-entities" contains the text "Limited Company"
 
         # ADD ANOTHER LEGAL ENTITY - Sole Trader
 
@@ -134,9 +132,9 @@ Feature: Business User - Manage Addresses
 
         When I click on the link "edit trading name"
         Then I expect that element "h1.heading-xlarge" contains the text "Edit trading name for your organisation"
-        When I add "Different Trading Name (edited)" to the inputfield "#edit-trading-name"
+        When I add "Change To Different Trading Name" to the inputfield "#edit-trading-name"
         And I click on the button "#edit-save"
-        Then I expect that element "#edit-trading-names" contains the text "Different Trading Name (edited)"
+        Then I expect that element "#edit-trading-names" contains the text "Change To Different Trading Name"
 
         # EDIT MAIN BUSINESS CONTACT
 

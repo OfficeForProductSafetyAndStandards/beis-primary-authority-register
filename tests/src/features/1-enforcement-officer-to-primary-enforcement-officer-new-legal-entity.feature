@@ -1,4 +1,4 @@
-@ci @PAR859 @PAR962
+@ci @PAR859 @PAR962 @PAR1054
 Feature: Enforcement Officer/PA - Enforcement Notice Process
 
     Scenario: Enforcement Officer/PA - Issue enforcement notice
@@ -57,18 +57,26 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         Then I expect that element "h1.heading-xlarge" contains the text "Add an action to the enforcement notice"
         And I add "Title of enforcement notice Four" to the inputfield "#edit-title-of-action"
         And I click on the radio ".option*=Cookie control"
-        And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
+        And I add "600" random chars of text to field "#edit-details"
+#        And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
         And I upload the file "./files/test.png" to field "#edit-files-upload"
         And I click on the button "#edit-next"
         Then I expect that element ".filename" contains the text "test.png"
 
+        # ADD ENFORCEMENT ACTION OMITTED DUE TO BUG PAR-1054
+#
+#        When I click on the link "Add another enforcement action"
+#        And I add "Added Enforcement Action" to the inputfield "#edit-title-of-action"
+#        And I click on the radio ".option*=Alphabet learning"
+#        And I add "Added Enforcement Action details" to the inputfield "#edit-details"
+#        And I click on the button "#edit-next"
+
         # CHECK DETAILS
 
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Summary of the proposed enforcement action(s) regarding"
-        And I expect that element "h1.heading-xlarge" contains the text "Legal Entity 1"
-        And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "action summary enforcement notice"
-        And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Title of enforcement notice Four"
-        And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Some details about the enforcement notice"
+        Then I expect that element "h1.heading-xlarge" contains the text "Legal Entity 1"
+        Then I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Title of enforcement notice Four"
+#       And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "last text in a long string"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Once the primary authority receives this notification, they have 5 working days to respond to you if they intend to block the action"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "You will be notified by email of the outcome of this notification"
 

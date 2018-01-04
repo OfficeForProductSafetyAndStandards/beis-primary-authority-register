@@ -32,8 +32,6 @@ Feature: New Coordinated Partnership
         And I click on the checkbox "#edit-suitable-nomination"
         And I click on the checkbox "#edit-written-summary-agreed"
         And I click on the checkbox "#edit-terms-local-authority-agreed"
-  #        And I click on the radio "#edit-business-regulated-by-one-authority-1"
-  #        And I click on the radio "#edit-is-local-authority-1"
         And I click on the button "#edit-next"
 
         # ADD ABOUT THE PARTNERSHIP
@@ -50,8 +48,6 @@ Feature: New Coordinated Partnership
         # CONFIRM NEW PARTNERSHIP
 
         And I click new partnership if presented with choices
-  #        And I click on the radio "#edit-par-data-organisation-id-new"
-  #        And I click on the button "#edit-next"
 
         # ADD BUSINESS DETAIL
 
