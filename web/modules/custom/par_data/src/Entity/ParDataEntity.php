@@ -21,7 +21,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
   const DELETE_FIELD = 'deleted';
   const REVOKE_FIELD = 'revoked';
-  const ARCHIVE_FIELD = 'archive';
+  const ARCHIVE_FIELD = 'archived';
 
   /**
    * Simple getter to inject the PAR Data Manager service.

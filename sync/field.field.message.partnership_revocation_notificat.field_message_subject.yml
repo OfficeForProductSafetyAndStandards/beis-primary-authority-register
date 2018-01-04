@@ -1,0 +1,21 @@
+uuid: f6764232-c93e-4b06-9ffa-d7f685540c4d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_message_subject
+    - message.template.partnership_revocation_notificat
+id: message.partnership_revocation_notificat.field_message_subject
+field_name: field_message_subject
+entity_type: message
+bundle: partnership_revocation_notificat
+label: 'Message Subject'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 'Primary Authority - Notification of Partnership Revocation'
+default_value_callback: ''
+settings: {  }
+field_type: string
