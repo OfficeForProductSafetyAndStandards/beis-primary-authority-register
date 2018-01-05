@@ -36,6 +36,7 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
    */
   public function accessCallback(ParDataPartnership $par_data_partnership = NULL) {
     // If partnership has been revoked, we should not be able to approve it.
+    // @todo This needs to be re-addressed as per PAR-1082.
     if ($par_data_partnership->isRevoked()) {
       $this->accessResult = AccessResult::forbidden('The partnership has been revoked.');
     }
