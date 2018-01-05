@@ -49,9 +49,9 @@ Feature: Helpdesk approve partnership
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         And I add "Business For Direct Partnership 1" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit"
-        And I click on the link "Revoke partnership"
-        And I add "Some reasons for revoking partnership" to the inputfield "#partnership-revoke-reason"
+        And I click on the button "#edit-submit-helpdesk-dashboard"
+        And I click on the link "Revoke Partnership"
+        And I add "Some reasons for revoking partnership" to the inputfield "#edit-revocation-reason"
         And I click on the button "#edit-next"
         Then I expect that element "#revocation-denied-message" contains the text "Revocation Denied"
 
