@@ -38,7 +38,7 @@ Feature: Helpdesk approve partnership
 
         # CHECK REVOKING PARTNERSHIP DENIED DUE TO OUTSTANDING ENFORCEMENT NOTICE
 
-    @PAR1043 @Pending
+    @ci @PAR1043
     Scenario: Verify Helpdesk user cannot approve partnerships with EN outstanding
 
         # HELPDESK DASHBOARD
@@ -48,8 +48,9 @@ Feature: Helpdesk approve partnership
         And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
-        When I add "Charlie" to the inputfield "#edit-keywords"
-        When I click on the link "Revoke"
+        And I add "Business For Direct Partnership 1" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit"
+        And I click on the link "Revoke"
         And I add "Some reasons for revoking partnership" to the inputfield "#partnership-revoke-reason"
         And I click on the button "#edit-next"
         Then I expect that element "#revocation-denied-message" contains the text "Revocation Denied"
