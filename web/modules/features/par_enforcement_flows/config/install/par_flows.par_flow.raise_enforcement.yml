@@ -52,7 +52,7 @@ steps:
     route: par_enforcement_flows.add_action
     form_id: par_enforcement_notice_add_action
     redirect:
-      cancel: 7
+      cancel: 1
   10:
     route: par_enforcement_flows.raise_confirm
     form_id: par_enforcement_notice_raise_confirm

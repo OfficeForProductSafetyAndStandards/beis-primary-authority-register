@@ -130,7 +130,7 @@ script:
 # Run Jmeter
 #-----------------------------------------------------------------------------
 
-  - if [[ "$TESTTYPE" == "jmeter" ]]; then docker exec -ti par_beta_web bash -c "cd tests/jmeter && wget http://mirror.reverse.net/pub/apache//jmeter/binaries/apache-jmeter-3.3.tgz && wget https://www.apache.org/dist/jmeter/binaries/apache-jmeter-3.3.tgz.asc && wget -O - https://www.apache.org/dist/jmeter/KEYS |gpg --import && gpg --verify apache-jmeter-3.3.tgz.asc && tar -zxf apache-jmeter-3.3.tgz && rm apache-jmeter-3.3.tgz"; fi
+  - if [[ "$TESTTYPE" == "jmeter" ]]; then docker exec -ti par_beta_web bash -c "cd tests/jmeter && wget http://mirror.reverse.net/pub/apache//jmeter/binaries/apache-jmeter-3.3.tgz && wget https://www.apache.org/dist/jmeter/binaries/apache-jmeter-3.3.tgz.asc && wget -O - https://www.apache.org/dist/jmeter/KEYS |gpg --import && gpg --verify apache-jmeter-3.3.tgz.asc && tar -zxf apache-jmeter-3.3.tgz && rm apache-jmeter-3.3.tgz && cd apache-jmeter-3.3/lib/ext && wget https://jmeter-plugins.org/downloads/file/JMeterPlugins-Standard-1.4.0.zip && unzip JMeterPlugins-Standard-1.4.0.zip"; fi
   - if [[ "$TESTTYPE" == "jmeter" ]]; then docker exec -ti par_beta_web bash -c "cd tests/jmeter && chmod -R 777 ../reports/ && ./apache-jmeter-3.3/bin/jmeter -n -t load-test-plan.jmx -l ../reports/jmeterreport.jtl -e -o ../reports/dashboard"; fi
 
 #-----------------------------------------------------------------------------

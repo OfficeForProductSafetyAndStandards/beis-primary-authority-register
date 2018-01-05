@@ -65,9 +65,26 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataEnforcementNotice extends ParDataEntity {
 
   /**
+   * {@inheritdoc}
+   */
+  public function inProgress() {
+    // Freeze Enforcement Notices with actions that are awaiting approval.
+    foreach ($this->getEnforcementActions() as $action) {
+      if ($action->inProgress()) {
+        return TRUE;
+      }
+    }
+
+    return parent::inProgress();
+  }
+
+  /**
    * Get the primary authority for this Enforcement Notice.
    *
    * @param boolean $single
+   *
+   * @return ParDataEntityInterface|bool
+   *   Return false if not referred.
    *
    */
   public function getPrimaryAuthority($single = FALSE) {
@@ -234,6 +251,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
       ->setLabel(t('Summary'))
       ->setDescription(t('Summary about this enforcement notice.'))
       ->setRevisionable(TRUE)
+      ->addConstraint('par_required')
       ->setSettings([
         'text_processing' => 0,
       ])->setDisplayOptions('form', [
