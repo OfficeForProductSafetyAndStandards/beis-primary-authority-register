@@ -60,6 +60,13 @@ class ParDashboardsDashboardController extends ControllerBase {
   /**
    * {@inheritdoc}
    */
+  public function getCacheMaxAge() {
+    return 0;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function titleCallback() {
     return $this->getDefaultTitle();
   }
@@ -84,7 +91,7 @@ class ParDashboardsDashboardController extends ControllerBase {
       ];
 
       // Manage my partnerships link.
-      if ($partnerships) {
+      if (($partnerships && $can_manage_partnerships)) {
         $manage_my_partnerships = $this->getLinkByRoute('view.par_user_partnerships.partnerships_page');
         $manage_link = $manage_my_partnerships->setText('See your partnerships')->toString();
         $build['partnerships']['see'] = [
