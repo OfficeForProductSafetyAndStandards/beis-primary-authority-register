@@ -200,6 +200,9 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       // Set the status to unpublished to make filtering from display easier.
       $this->set('status', 0);
 
+      // Always revision status changes.
+      $this->setNewRevision(TRUE);
+
       return parent::delete();
     }
   }
@@ -213,6 +216,10 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function revoke() {
     if (!$this->isNew() && !$this->inProgress() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, TRUE);
+
+      // Always revision status changes.
+      $this->setNewRevision(TRUE);
+
       return ($this->save() === SAVED_UPDATED);
     }
     return FALSE;
@@ -242,6 +249,10 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function archive() {
     if (!$this->isNew() && !$this->inProgress() && $this->getTypeEntity()->isArchivable() && !$this->isArchived()) {
       $this->set(ParDataEntity::ARCHIVE_FIELD, TRUE);
+
+      // Always revision status changes.
+      $this->setNewRevision(TRUE);
+
       return ($this->save() === SAVED_UPDATED);
     }
     return FALSE;
@@ -330,6 +341,9 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     $allowed_values = $this->getTypeEntity()->getAllowedValues($field_name);
     if (isset($allowed_values[$value])) {
       $this->set($field_name, $value);
+
+      // Always revision status changes.
+      $this->setNewRevision(TRUE);
     }
   }
 
@@ -465,6 +479,16 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  public function setNewRevision($value = TRUE) {
+    $this->setRevisionCreationTime(REQUEST_TIME);
+    $this->setRevisionAuthorId(\Drupal::currentUser()->id());
+
+    parent::setNewRevision($value);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
@@ -507,7 +531,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       ])
       ->setDisplayConfigurable('view', FALSE);
     $fields['archived'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Revoked'))
+      ->setLabel(t('Archived'))
       ->setDescription(t('Whether the entity has been archived.'))
       ->setRevisionable(TRUE)
       ->setDefaultValue(FALSE)
