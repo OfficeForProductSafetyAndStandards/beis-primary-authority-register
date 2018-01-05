@@ -53,8 +53,8 @@ class ParDashboardsDashboardController extends ControllerBase {
   /**
    * {@inheritdoc}
    */
-  public function getCacheContexts() {
-    return ['user.roles'];
+  public function titleCallback() {
+    return $this->getDefaultTitle();
   }
 
   /**
@@ -62,13 +62,6 @@ class ParDashboardsDashboardController extends ControllerBase {
    */
   public function getCacheMaxAge() {
     return 0;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function titleCallback() {
-    return $this->getDefaultTitle();
   }
 
   /**
@@ -82,6 +75,9 @@ class ParDashboardsDashboardController extends ControllerBase {
     $can_manage_partnerships = $this->getCurrentUser()->hasPermission('manage my organisations') || $this->getCurrentUser()->hasPermission('manage my authorities');
     $can_create_partnerships = $this->getCurrentUser()->hasPermission('apply for partnership');
     if (($partnerships && $can_manage_partnerships) || $can_create_partnerships) {
+      // Cache context needs to be added for users with memberships.
+      $this->addCacheContexts(['user.par_memberships:authority']);
+
       $build['partnerships'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Your partnerships'),
