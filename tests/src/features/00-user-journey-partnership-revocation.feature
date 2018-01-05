@@ -1,4 +1,4 @@
-@Pending @PAR1055 @PAR1057 @PAR1059 @PAR1060 @PAR1062
+@ci @PAR1055 @PAR1057 @PAR1059 @PAR1060 @PAR1062
 Feature: New Direct Partnership For PA To Approve
 
     Scenario: New Direct Partnership
@@ -107,9 +107,10 @@ Feature: New Direct Partnership For PA To Approve
         # REVOKE PARTNERSHIP
 
         When I click on the link "Revoke partnership"
-        And I add "Some reasons for revoking partnership" to the inputfield "#partnership-revoke-reason"
+        And I add "Some reasons for revoking partnership" to the inputfield "#edit-revocation-reason"
         And I click on the button "#edit-next"
-        Then I expect that element ".view-par-flow-link-table-column" contains the text "Partnership revoked"
+        Then I expect that element "#content" contains the text "Partnership revoked"
+        Then I expect that element "#content" contains the text "The following partnership has been revoked"
         When I click on the link "Dashboard"
         When I add "Direct Partnership For Revoking" to the inputfield "#edit-keywords"
         And I select the option with the text "Revoked" for element "#edit-partnership-status"
