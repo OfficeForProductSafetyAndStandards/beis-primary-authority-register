@@ -60,13 +60,6 @@ class ParDashboardsDashboardController extends ControllerBase {
   /**
    * {@inheritdoc}
    */
-  public function getCacheMaxAge() {
-    return 0;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function content() {
     $build = [];
 
@@ -76,14 +69,13 @@ class ParDashboardsDashboardController extends ControllerBase {
     $can_create_partnerships = $this->getCurrentUser()->hasPermission('apply for partnership');
     if (($partnerships && $can_manage_partnerships) || $can_create_partnerships) {
       // Cache context needs to be added for users with memberships.
-      $this->addCacheContexts(['user.par_memberships:authority']);
-
       $build['partnerships'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Your partnerships'),
         '#attributes' => ['class' => 'form-group'],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
+        '#cache' => ['contexts' => ['user.par_memberships:authority']]
       ];
 
       // Manage my partnerships link.
