@@ -37,8 +37,8 @@ configuration:
       confirmed_rd: Active
   partnership_type:
     allowed_values:
-      direct: 'Direct'
-      coordinated: 'Co-ordinated'
+      direct: Direct
+      coordinated: Co-ordinated
   terms_organisation_agreed:
     boolean_values:
       'on': 'Terms agreed by the organisation'

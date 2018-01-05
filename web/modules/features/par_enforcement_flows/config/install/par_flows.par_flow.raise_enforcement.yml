@@ -3,7 +3,7 @@ status: true
 dependencies: {  }
 id: raise_enforcement
 label: 'Raise Enforcement'
-default_title: null
+default_title: 'Notification of Enforcement action'
 default_section_title: null
 description: 'The creation flow of an enforcement notice.'
 save_method: end
@@ -52,13 +52,14 @@ steps:
     route: par_enforcement_flows.add_action
     form_id: par_enforcement_notice_add_action
     redirect:
-      cancel: 7
+      cancel: 1
   10:
     route: par_enforcement_flows.raise_confirm
     form_id: par_enforcement_notice_raise_confirm
     redirect:
       add_enforcement_action: 9
       save: 11
+      cancel: 1
   11:
     route: par_dashboards.dashboard
   12:

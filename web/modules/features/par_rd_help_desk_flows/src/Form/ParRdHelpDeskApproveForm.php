@@ -19,6 +19,13 @@ class ParRdHelpDeskApproveForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  public function titleCallback() {
+    return "Confirmation | Partnership is approved";
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getFormId() {
     return 'par_rd_help_desk_approve';
   }
@@ -41,23 +48,21 @@ class ParRdHelpDeskApproveForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
-
-    $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $par_data_authority = current($par_data_partnership->getAuthority());
     $this->retrieveEditableValues($par_data_partnership);
 
-    $form['partnership_title'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Partnership is approved between'),
-      '#prefix' => '<div><h2>',
-      '#suffix' => '</h2></div>',
+    $form['partnership_info'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('The following partnership has been approved'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
     ];
 
-    $form['partnership_text'] = [
+    $form['partnership_info']['partnership_between'] = [
       '#type' => 'markup',
-      '#markup' => $par_data_organisation->get('organisation_name')->getString() . ' ' . $par_data_authority->get('authority_name')->getString(),
-      '#prefix' => '<div><p>',
-      '#suffix' => '</p></div>',
+      '#markup' => $par_data_partnership->label(),
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
     ];
 
     return parent::buildForm($form, $form_state);

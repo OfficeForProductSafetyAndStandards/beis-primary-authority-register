@@ -17,6 +17,7 @@ echo "Current working directory is ${ROOT}/web"
 cd ${ROOT}/web; ../vendor/drush/drush/drush sset system.maintenance_mode 1;
 # Clear cache
 cd ${ROOT}/web; ../vendor/drush/drush/drush cr;
+
 # Run db updates.
 cd ${ROOT}/web; ../vendor/drush/drush/drush updb -y;
 # Import configuration twice to fix a problem with config import when new modules are added to 'core.extensions.yml'.
@@ -25,6 +26,7 @@ cd ${ROOT}/web; ../vendor/drush/drush/drush cim -y; ../vendor/drush/drush/drush 
 cd ${ROOT}/web; ../vendor/drush/drush/drush cc drush;
 # Revert all features
 cd ${ROOT}/web; ../vendor/drush/drush/drush fra -y;
+
 # Take the site out of maintenance mode.
 cd ${ROOT}/web; ../vendor/drush/drush/drush sset system.maintenance_mode 0;
 # Clear cache.

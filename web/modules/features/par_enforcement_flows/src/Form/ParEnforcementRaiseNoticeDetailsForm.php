@@ -20,11 +20,28 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
    */
   protected $flow = 'raise_enforcement';
 
+  protected $formItems = [
+    'par_data_enforcement_notice:enforcement_notice' => [
+      'summary' => 'summary'
+    ],
+  ];
+
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
     return 'par_enforcement_notice_raise_details';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function titleCallback() {
+    $enforcementFlowTitle = $this->RaiseEnforcementTitleCallback();
+    if ($enforcementFlowTitle) {
+      $this->pageTitle = $enforcementFlowTitle;
+    }
+    return parent::titleCallback();
   }
 
   /**
@@ -42,7 +59,6 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
-
     $this->retrieveEditableValues($par_data_partnership);
     $enforcement_notice_entity = $this->getParDataManager()->getParBundleEntity('par_data_enforcement_notice');
 
@@ -58,9 +74,37 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       return parent::buildForm($form, $form_state);
     }
 
+    $enforcement_notice_entity = $enforcement_notice_entity->getAllowedValues('notice_type');
+
+    $form['enforcement_type'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('This enforcement action is'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    $form['enforcement_type']['type'] = [
+      '#type' => 'radios',
+      '#options' => $enforcement_notice_entity,
+      '#default_value' => key($enforcement_notice_entity),
+      '#required' => TRUE,
+    ];
+
+    $form['summary_title'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Summary of enforcement notification'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
     $form['enforcement_title'] = [
-      '#type' => 'markup',
+      '#type' => 'fieldset',
       '#markup' => $this->t('Include the following information'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
     ];
 
     $enforcement_data = [
@@ -70,25 +114,19 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       'Your reasons for proposing the enforcement action',
     ];
 
-    $form['enforcement_text'] = [ '#theme' => 'item_list', '#items' => $enforcement_data, ];
+    $form['enforcement_text'] = ['#theme' => 'item_list', '#items' => $enforcement_data];
 
-    $form['action_summary'] = [
-      '#type' => 'textarea',
+    $form['action_summary_title'] = [
+      '#type' => 'fieldset',
       '#title' => $this->t('Provide a summary of the enforcement notification'),
-      '#default_value' => $this->getDefaultValues("action_summary"),
-     ];
-
-    $enforcement_notice_entity = $enforcement_notice_entity->getAllowedValues('notice_type');
-
-    $form['enforcement_type'] = [
-      '#type' => 'radios',
-      '#title' => $this->t('Enforcing type'),
-      '#options' => $enforcement_notice_entity,
-      '#default_value' => key($enforcement_notice_entity),
-      '#required' => TRUE,
-      '#prefix' => '<div>',
-      '#suffix' => '</div>',
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
     ];
+
+    $form['summary'] = [
+      '#type' => 'textarea',
+      '#default_value' => $this->getDefaultValues("summary"),
+   ];
 
     return parent::buildForm($form, $form_state);
   }
@@ -97,7 +135,6 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    // No validation yet.
     parent::validateForm($form, $form_state);
 
     $enforcing_authority_id = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
@@ -118,16 +155,17 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-
     if ($partnership = $this->getRouteParam('par_data_partnership')) {
       $partnership_id = $partnership->id() ? $partnership->id() : NULL;
+      $partnership_primary_authority = $partnership->getAuthority() ? current($partnership->getAuthority()) : NULL;
     }
 
     $time = new \DateTime();
 
     $enforcementNotice_data = [
       'notice_type' => $this->getTempDataValue('enforcement_type'),
-      'summary' => $this->getTempDataValue('action_summary'),
+      'summary' => $this->getTempDataValue('summary'),
+      'field_primary_authority' => $partnership_primary_authority,
       'field_enforcing_authority' => $this->getEnforcingAuthorityID(),
       'field_organisation' => $this->getEnforcedOrganisationID(),
       'field_person' =>  $this->getEnforcingPersonID(),

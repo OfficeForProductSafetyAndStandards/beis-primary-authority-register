@@ -27,7 +27,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
       '#attributes' => ['class' => ['form-group']],
       '#title' => 'Advice documentation',
       '#header' => [
-        'Document',
+        'Advice document download link(s)',
         'Type of document and regulatory functions',
       ],
       '#empty' => $this->t("There is no documentation for this partnership."),
@@ -35,7 +35,16 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
 
     // Get each Advice document and add as a table row.
     foreach ($par_data_partnership->getAdvice() as $key => $advice) {
+
+      $file_list = [];
+
       $advice_view_builder = $this->getParDataManager()->getViewBuilder('par_data_advice');
+
+      $advice_files = $advice->get('document')->referencedEntities();
+
+      foreach ($advice_files as $file) {
+        $file_list[] = $file->getFileName();
+      }
 
       // The first column contains a rendered summary of the document.
       $advice_summary = $advice_view_builder->view($advice, 'summary');
@@ -66,12 +75,20 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
 
       // Check permissions before adding the links for all operations.
       if ($this->getFlowName() === 'partnership_authority') {
+
+        // Create custom title element to add context to the edit link.
+        $file_list_title = implode(", ", $file_list);
+
         // We need to create an array of all action links.
         $links = [
           [
             '#type' => 'markup',
             '#markup' => $this->getFlow()
-              ->getNextLink('edit', ['par_data_advice' => $advice->id()])
+              ->getNextLink(
+                'edit',
+                ['par_data_advice' => $advice->id()],
+                ['attributes' => ['title' => "edit {$file_list_title}"]]
+              )
               ->setText('edit')
               ->toString(),
           ],

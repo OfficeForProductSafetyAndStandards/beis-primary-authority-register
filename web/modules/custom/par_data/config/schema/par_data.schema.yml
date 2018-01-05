@@ -27,6 +27,10 @@ par_data.par_data_advice_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -67,6 +71,10 @@ par_data.par_data_authority_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -107,6 +115,98 @@ par_data.par_data_enforcement_notice_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
+    uuid:
+      type: string
+    isDeletable:
+      type: boolean
+      label: 'Whether the entity is deletable.'
+      nullable: true
+    isRevokable:
+      type: boolean
+      label: 'Whether the entity is revokable.'
+      nullable: true
+    isArchivable:
+      type: boolean
+      label: 'Whether the entity is archivable.'
+      nullable: true
+    configuration:
+      type: sequence
+      nullable: true
+      sequence:
+        type: sequence
+        label: 'Element (entity or field name)'
+        nullable: true
+        sequence:
+          type: par_data.configuration_type.[%key]
+          label: 'Configuration rules'
+par_data.par_data_inspection_feedback_type.*:
+  type: config_entity
+  label: 'PAR Data Inspection Feedback entity type config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: string
+      label: 'Description'
+    help:
+      type: string
+      label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
+    uuid:
+      type: string
+    isDeletable:
+      type: boolean
+      label: 'Whether the entity is deletable.'
+      nullable: true
+    isRevokable:
+      type: boolean
+      label: 'Whether the entity is revokable.'
+      nullable: true
+    isArchivable:
+      type: boolean
+      label: 'Whether the entity is archivable.'
+      nullable: true
+    configuration:
+      type: sequence
+      nullable: true
+      sequence:
+        type: sequence
+        label: 'Element (entity or field name)'
+        nullable: true
+        sequence:
+          type: par_data.configuration_type.[%key]
+          label: 'Configuration rules'
+par_data.par_data_deviation_request_type.*:
+  type: config_entity
+  label: 'PAR Data Deviation Request entity type config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: string
+      label: 'Description'
+    help:
+      type: string
+      label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -147,6 +247,10 @@ par_data.par_data_inspection_plan_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -187,6 +291,10 @@ par_data.par_data_legal_entity_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -227,6 +335,10 @@ par_data.par_data_organisation_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -267,6 +379,10 @@ par_data.par_data_coordinated_business_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -307,6 +423,10 @@ par_data.par_data_partnership_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -347,6 +467,10 @@ par_data.par_data_person_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -387,6 +511,10 @@ par_data.par_data_premises_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -427,6 +555,10 @@ par_data.par_data_regulatory_function_t.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -467,6 +599,10 @@ par_data.par_data_sic_code_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -507,6 +643,10 @@ par_data.par_data_enforcement_action_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:

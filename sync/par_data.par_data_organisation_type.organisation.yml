@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: FdLT3_HMpEGAy05frJCkYCnZ7xK7p_mDvHZ9pS-Ll_Y
+  default_config_hash: l40S-QbU0tgIvcQHNQH4_VLVSq9gy_a--K1kIQJ9ko0
 id: organisation
 label: Organisation
 description: 'An organisation - usually a commercial one, but not always as it can include charities and other non-commercial ventures - that is covered (or intends to be covered) by a Primary Authority Partnership.'
@@ -30,10 +30,10 @@ configuration:
       GB-NIR: 'Northern Ireland'
   employees_band:
     allowed_values:
-      10: 0-9
-      50: 10-49
-      250: 50-249
-      1000: 250+
+      10: '1 to 9'
+      50: '10 to 49'
+      250: '50 to 249'
+      1000: '250 or more'
   size:
     allowed_values:
       small: Small

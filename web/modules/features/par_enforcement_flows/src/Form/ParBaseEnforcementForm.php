@@ -112,59 +112,8 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
   public function BuildRaiseEnforcementFormElements() {
 
     // Load required entities for the enforcement flow.
-    $par_data_organisation = $this->getEnforcedOrganisationEntity();
     $par_data_authority = $this->getEnforcingAuthorityEntity();
-
-    // Depending on the form in this process we may not have a legal entity yet.
-    if ($this->getEnforcedLegalEntity()) {
-      $enforced_entity_name = $this->getEnforcedLegalEntityName();
-    }
-    else {
-      $enforced_entity_name = $par_data_organisation->get('organisation_name')->getString();
-    }
-
-
-    $form['authority'] =[
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    $form['authority']['authority_heading']  = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Notification of Enforcement action'),
-    ];
-
-    $form['authority']['authority_name'] = [
-      '#type' => 'markup',
-      '#markup' => $par_data_authority->get('authority_name')->getString(),
-      '#prefix' => '<div><h1>',
-      '#suffix' => '</h1></div>',
-    ];
-
-    $form['organisation'] =[
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    $form['organisation']['organisation_heading'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Regarding'),
-
-    ];
-
-    $form['organisation']['organisation_name'] = [
-      '#type' => 'markup',
-      '#markup' => $enforced_entity_name,
-      '#prefix' => '<h1>',
-      '#suffix' => '</h1>',
-    ];
-
-    // Display the primary address.
-    $form['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
+    $form['authority'] = $this->renderSection('Enforced by', $par_data_authority, ['authority_name' => 'summary']);
 
     return $form;
   }
@@ -238,5 +187,46 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
    */
   public function getEnforcedOrganisationLegalEntities() {
     return $this->getEnforcedOrganisationEntity()->getPartnershipLegalEntities();
+  }
+
+  /**
+   *  Helper function for generating the enforcement flow page title markup.
+   *
+   * * @return string  | FALSE
+   *  The default title to use on the current form or FALSE which will fall back to the
+   *  flow defaults.
+   */
+  public function RaiseEnforcementTitleCallback() {
+
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+
+    if ($par_data_partnership) {
+      $this->setState("edit:{$par_data_partnership->id()}");
+      $enforced_entity_name = $this->getEnforcedEntityName();
+
+      if ($enforced_entity_name) {
+        return  'Proposed enforcement notification regarding | '. $enforced_entity_name;
+      }
+    }
+    return FALSE;
+  }
+
+
+
+  /**
+   *  Helper function to get either the legal entity name or organisation depending on whats available.
+   *
+   * @return string  | FALSE
+   *  The name of the enforced legal entity or False if we don't have one.
+   */
+  function getEnforcedEntityName() {
+
+    // Depending on the form in this process we may not have a legal entity yet.
+    if ($this->getEnforcedLegalEntity()) {
+      return $this->getEnforcedLegalEntityName();
+    }
+    else {
+      return FALSE;
+    }
   }
 }

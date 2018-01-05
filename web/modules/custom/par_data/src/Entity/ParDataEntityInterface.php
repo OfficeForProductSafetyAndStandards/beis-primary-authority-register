@@ -41,6 +41,14 @@ interface ParDataEntityInterface {
   public function setParStatus($value);
 
   /**
+   * Any entity that is in progress can't be revoked, archived or deleted.
+   *
+   * @return bool
+   *   TRUE if entity is in progress.
+   */
+  public function inProgress();
+
+  /**
    * Get the level of completion of this entity.
    *
    * @return NULL|integer

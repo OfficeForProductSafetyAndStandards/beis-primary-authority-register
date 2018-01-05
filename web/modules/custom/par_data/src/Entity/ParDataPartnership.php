@@ -67,6 +67,48 @@ use Drupal\user\UserInterface;
 class ParDataPartnership extends ParDataEntity {
 
   /**
+   * {@inheritdoc}
+   *
+   * @param string $reason
+   *   The reason for revoking this partnership.
+   */
+  public function revoke($reason = '') {
+    // Revoke/archive all dependent entities as well.
+    $inspection_plans = $this->getInspectionPlan();
+    foreach ($inspection_plans as $inspection_plan) {
+      $inspection_plan->revoke();
+    }
+
+    $advice_documents = $this->getAdvice();
+    foreach ($advice_documents as $advice) {
+      $advice->revoke();
+    }
+
+    $this->set('revocation_reason', $reason);
+    parent::revoke();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function inProgress() {
+    // Freeze partnerships that are awaiting approval.
+    if ($this->getTypeEntity()->getDefaultStatus() === $this->getRawStatus()) {
+      return TRUE;
+    }
+
+    // Freeze partnerships that have un un approved enforcement notices
+    $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
+    foreach ($enforcement_notices as $enforcement_notice) {
+      if ($enforcement_notice->inProgress()) {
+        return TRUE;
+      }
+    }
+
+    return parent::inProgress();
+  }
+
+  /**
    * Get the organisation contacts for this Partnership.
    */
   public function getOrganisationPeople() {
@@ -78,6 +120,47 @@ class ParDataPartnership extends ParDataEntity {
    */
   public function getAuthorityPeople() {
     return $this->get('field_authority_person')->referencedEntities();
+  }
+
+  /**
+   * Get the organisation for this Partnership.
+   */
+  public function getOrganisation($single = FALSE) {
+    $organisations = $this->get('field_organisation')->referencedEntities();
+    $organisation = !empty($organisations) ? current($organisations) : NULL;
+
+    return $single ? $organisation : $organisations;
+  }
+
+  /**
+   * Get the authority for this Partnership.
+   */
+  public function getAuthority($single = FALSE) {
+    $authorities = $this->get('field_authority')->referencedEntities();
+    $authority = !empty($authorities) ? current($authorities) : NULL;
+
+    return $single ? $authority : $authorities;
+  }
+
+  /**
+   * Get the advice for this Partnership.
+   */
+  public function getAdvice() {
+    return $this->get('field_advice')->referencedEntities();
+  }
+
+  /**
+   * Get the inspection plans for this Partnership.
+   */
+  public function getInspectionPlan() {
+    return $this->get('field_inspection_plan')->referencedEntities();
+  }
+
+  /**
+   * Get the regulatory functions for this Partnership.
+   */
+  public function getRegulatoryFunction() {
+    return $this->get('field_regulatory_function')->referencedEntities();
   }
 
   /**
@@ -152,41 +235,6 @@ class ParDataPartnership extends ParDataEntity {
     else {
       return FALSE;
     }
-  }
-
-  /**
-   * Get the organisation for this Partnership.
-   */
-  public function getOrganisation() {
-    return $this->get('field_organisation')->referencedEntities();
-  }
-
-  /**
-   * Get the authority for this Partnership.
-   */
-  public function getAuthority() {
-    return $this->get('field_authority')->referencedEntities();
-  }
-
-  /**
-   * Get the advice for this Partnership.
-   */
-  public function getAdvice() {
-    return $this->get('field_advice')->referencedEntities();
-  }
-
-  /**
-   * Get the inspection plans for this Partnership.
-   */
-  public function getInspectionPlan() {
-    return $this->get('field_inspection_plan')->referencedEntities();
-  }
-
-  /**
-   * Get the regulatory functions for this Partnership.
-   */
-  public function getRegulatoryFunction() {
-    return $this->get('field_regulatory_function')->referencedEntities();
   }
 
   /**

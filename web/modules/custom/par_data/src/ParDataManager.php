@@ -12,6 +12,7 @@ use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\file\FileInterface;
+use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\user\Entity\User;
@@ -58,7 +59,16 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * The non membership entities from which references should not be followed.
    */
-  protected $nonMembershipEntities = ['par_data_sic_codes', 'par_data_regulatory_function', 'par_data_advice', 'par_data_inspection_plan', 'par_data_premises'];
+  protected $nonMembershipEntities = [
+    'par_data_sic_codes',
+    'par_data_regulatory_function',
+    'par_data_advice',
+    'par_data_inspection_plan',
+    'par_data_premises',
+    'par_data_legal_entity',
+    'par_data_enforcement_notice',
+    'par_data_enforcement_action',
+  ];
 
   /**
    * Iteration limit for recursive membership lookups.
@@ -291,9 +301,15 @@ class ParDataManager implements ParDataManagerInterface {
       \Drupal::cache('data')->set("par_data_relationships:{$entityHashKey}", $relationships, Cache::PERMANENT, $tags);
     }
 
-    // Loop through all relationships
-    $related_entities = [];
+    // Loop through all relationships.
     foreach ($relationships as $entity_type => $referenced_entities) {
+
+      // @TODO PAR-1025: This is a temporary fix to resolve performance issues
+      // with looking up the large numbers of premises.
+      if ($entity_type === 'par_data_premises') {
+        continue;
+      }
+
       foreach ($referenced_entities as $entity_id => $referenced_entity) {
         // Always skip lookup of relationships for people.
         if ($referenced_entity->getEntityTypeId() === 'par_data_person') {
@@ -341,6 +357,11 @@ class ParDataManager implements ParDataManagerInterface {
 
   /**
    * Determine which entities a user is a part of.
+   *
+   * @TODO Sorry, couldn't fix this before the support contract was pulled
+   * but this method is inefficient and needs re-writting. There are much
+   * better ways of calculating which entity actions can be performed.
+   * @see https://regulatorydelivery.atlassian.net/wiki/spaces/PA/pages/40894490/Par+Access+Actions
    *
    * @param UserInterface $account
    *   A user account to check for.

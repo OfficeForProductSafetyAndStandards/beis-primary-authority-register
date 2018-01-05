@@ -24,6 +24,18 @@ class ParEnforcementRaiseNoticeForm extends ParBaseEnforcementForm {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function titleCallback() {
+
+    $enforcementFlowTitle = $this->RaiseEnforcementTitleCallback();
+    if ($enforcementFlowTitle) {
+      $this->pageTitle = $enforcementFlowTitle;
+    }
+    return parent::titleCallback();
+  }
+
+  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
@@ -39,6 +51,7 @@ class ParEnforcementRaiseNoticeForm extends ParBaseEnforcementForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
+    $default = NULL;
     $this->retrieveEditableValues($par_data_partnership);
 
     // Ensure we have all the required enforcement data stored in the cache in order to proceed.

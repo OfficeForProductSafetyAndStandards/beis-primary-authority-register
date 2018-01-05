@@ -5,7 +5,7 @@
  * @param  {String}   element Element selector
  * @param  {Function} done    Function to execute when finished
  */
-module.exports = (done) =>
+module.exports = () =>
 {
     /**
      * Element to perform the action on
@@ -19,7 +19,6 @@ module.exports = (done) =>
     //if (nrOfElements != 0) {
         browser.element('.form-label*=City Enforcement Squad').click();
         //browser.element('#edit-next').click();
-        done();
     //}
     //else {
     //    done();

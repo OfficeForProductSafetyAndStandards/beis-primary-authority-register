@@ -65,17 +65,71 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataEnforcementNotice extends ParDataEntity {
 
   /**
-   * Get the primary authority for this Enforcement Notice.
+   * {@inheritdoc}
    */
-  public function getPrimaryAuthority() {
-    return $this->get('field_primary_authority')->referencedEntities();
+  public function inProgress() {
+    // Freeze Enforcement Notices with actions that are awaiting approval.
+    foreach ($this->getEnforcementActions() as $action) {
+      if ($action->inProgress()) {
+        return TRUE;
+      }
+    }
+
+    return parent::inProgress();
+  }
+
+  /**
+   * Get the primary authority for this Enforcement Notice.
+   *
+   * @param boolean $single
+   *
+   * @return ParDataEntityInterface|bool
+   *   Return false if not referred.
+   *
+   */
+  public function getPrimaryAuthority($single = FALSE) {
+    // All referred notices should have an authority referenced in
+    // field_primary_authority which is the authority that is now responsible.
+    // If it doesn't have this we should get the original authority
+    // from the partnership.
+    if ($this->get('field_primary_authority')->isEmpty()) {
+      $partnership = $this->getPartnership(TRUE);
+      return $partnership ? $partnership->getAuthority($single) : NULL;
+    }
+
+    $authorities = $this->get('field_primary_authority')->referencedEntities();
+    $authority = !empty($authorities) ? current($authorities) : NULL;
+
+    return $single ? $authority : $authorities;
+  }
+
+  /**
+   * If this is a referred notice get the original notice.
+   *
+   * @return ParDataEntityInterface|bool
+   *   Return false if not referred.
+   */
+  public function getReferringNotice() {
+    foreach ($this->getEnforcementActions() as $action) {
+      if ($action->isReferred() && ($referred_from = $action->getActionReferral())) {
+          return $referred_from->getEnforcementNotice();
+      }
+    }
+
+    return FALSE;
   }
 
   /**
    * Get the Partnership for this Enforcement Notice.
+   *
+   * @param boolean $single
+   *
    */
-  public function getPartnership() {
-    return $this->get('field_partnership')->referencedEntities();
+  public function getPartnership($single = FALSE) {
+    $partnerships = $this->get('field_partnership')->referencedEntities();
+    $partnership = !empty($partnerships) ? current($partnerships) : NULL;
+
+    return $single ? $partnership : $partnerships;
   }
 
   /**
@@ -111,6 +165,15 @@ class ParDataEnforcementNotice extends ParDataEntity {
    */
   public function getEnforcingPerson() {
     return $this->get('field_person')->referencedEntities();
+  }
+
+  /**
+   * Approve all actions of an enforcement notice.
+   */
+  public function approve() {
+    foreach ($this->getEnforcementActions() as $action) {
+      $action->approve();
+    }
   }
 
   /**
@@ -188,6 +251,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
       ->setLabel(t('Summary'))
       ->setDescription(t('Summary about this enforcement notice.'))
       ->setRevisionable(TRUE)
+      ->addConstraint('par_required')
       ->setSettings([
         'text_processing' => 0,
       ])->setDisplayOptions('form', [

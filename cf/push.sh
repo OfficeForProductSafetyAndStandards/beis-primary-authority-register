@@ -150,7 +150,8 @@ if [[ $1 != "environment-only" ]]; then
     ####################################################################################
     
     BUILD_DIR=build-$ENV
-    rm -rf $BUILD_DIR
+    
+    sudo rm -rf $BUILD_DIR
     mkdir $BUILD_DIR
     
     cd $BUILD_DIR
@@ -170,6 +171,7 @@ if [[ $1 != "environment-only" ]]; then
     ####################################################################################
     
     tar -zxvf $VER.tar.gz
+    sudo chmod -R 755 web/sites/default
     rm $VER.tar.gz
     
     ####################################################################################
@@ -234,5 +236,6 @@ if [[ $1 != "environment-only" ]]; then
     
     cf scale par-beta-$ENV -i $INSTANCES
 
+    cf ssh par-beta-$ENV -c "cd app/tools && python cron_runner.py"
     cf ssh par-beta-$ENV -c "cd app/tools && python cache_warmer.py"
 fi

@@ -19,8 +19,33 @@ class ParEnforcementAddActionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  protected $formItems = [
+    'par_data_enforcement_action:enforcement_action' => [
+      'title' => 'title',
+      'details' => 'details',
+      'field_regulatory_function' => 'field_regulatory_function'
+    ],
+  ];
+
+  /**
+   * {@inheritdoc}
+   */
   public function getFormId() {
     return 'par_enforcement_notice_add_action';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function titleCallback() {
+
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+
+    if ($par_data_partnership) {
+      $this->setState("edit:{$par_data_partnership->id()}");
+      $this->pageTitle = 'Provide details of the proposed enforcement action | Add an action to the  enforcement notice';
+    }
+    return parent::titleCallback();
   }
 
   /**
@@ -39,22 +64,33 @@ class ParEnforcementAddActionForm extends ParBaseForm {
 
     $reg_function_names = $par_data_partnership->getPartnershipRegulatoryFunctionNames();
 
-    $form['title_of_action'] = [
-      '#title' => $this->t('Title of action'),
-      '#type' => 'textfield',
-      '#default_value' => $this->getDefaultValues('title_of_action'),
+    $form['title_of_action_title'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Enter the title of action'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
     ];
 
-    $form['regulatory_functions'] = [
+    $form['title'] = [
+      '#type' => 'textfield',
+      '#default_value' => $this->getDefaultValues('title'),
+    ];
+
+    $form['field_regulatory_function'] = [
       '#type' => 'radios',
-      '#title' => $this->t('Regulatory function to which this relates'),
+      '#title' => $this->t('Choose a regulatory function to which this action relates'),
       '#options' => $reg_function_names,
-      '#default_value' => $this->getDefaultValues('regulatory_functions'),
-      '#required' => TRUE,
+      '#default_value' => $this->getDefaultValues('field_regulatory_function'),
+    ];
+
+    $form['details_title'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Provide details about this action'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
     ];
 
     $form['details'] = [
-      '#title' => $this->t('Details'),
       '#type' => 'textarea',
       '#default_value' => $this->getDefaultValues('details'),
     ];
@@ -63,11 +99,16 @@ class ParEnforcementAddActionForm extends ParBaseForm {
     $field_definition = $enforcement_action_fields['document'];
     $file_extensions = $field_definition->getSetting('file_extensions');
 
+    $form['files_title'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Add an attachment'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+    ];
+
     // Multiple file field.
-    $form['files'] = [
+    $form['files_title']['files'] = [
       '#type' => 'managed_file',
-      '#title' => t('Attach file(s)'),
-      '#description' => t('(document or photo)'),
       '#upload_location' => 's3private://documents/enforcement_action/',
       '#multiple' => TRUE,
       '#default_value' => $this->getDefaultValues("files"),
@@ -95,14 +136,14 @@ class ParEnforcementAddActionForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $title = $this->getTempDataValue('title_of_action');
+    $title = $this->getTempDataValue('title');
 
     $enforcementAction_data = [
       'type' => 'enforcement_action',
       'title' => $title,
       'details' => $this->getTempDataValue('details'),
       'document' => $this->getDefaultValues("files"),
-      'field_regulatory_function' => $this->getTempDataValue('regulatory_functions'),
+      'field_regulatory_function' => $this->getTempDataValue('field_regulatory_function'),
     ];
 
     $enforcementAction = \Drupal::entityManager()->getStorage('par_data_enforcement_action')->create($enforcementAction_data);

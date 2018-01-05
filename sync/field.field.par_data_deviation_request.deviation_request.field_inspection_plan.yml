@@ -1,0 +1,30 @@
+uuid: 62420d1e-c2f1-4cca-92ac-b75bcdb28427
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_deviation_request.field_inspection_plan
+    - par_data.par_data_deviation_request_type.deviation_request
+    - par_data.par_data_inspection_plan_type.inspection_plan
+_core:
+  default_config_hash: HaMzyngMwgfkqwagcbLbsXUWq7iL_37XAL65pDZeDtM
+id: par_data_deviation_request.deviation_request.field_inspection_plan
+field_name: field_inspection_plan
+entity_type: par_data_deviation_request
+bundle: deviation_request
+label: 'Inspection Plan'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_inspection_plan'
+  handler_settings:
+    target_bundles:
+      inspection_plan: inspection_plan
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

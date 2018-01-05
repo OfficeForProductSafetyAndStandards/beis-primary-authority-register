@@ -29,6 +29,14 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  public function titleCallback() {
+    $this->pageTitle =  "Make a decision | Proposed enforcement action(s)";
+    return parent::titleCallback();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function accessCallback(ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
 
     // This form should only be accessed if none of the enforcement notice actions have been acted on.
@@ -77,19 +85,17 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
 
     if (!$par_data_enforcement_notice->get('field_legal_entity')->isEmpty()) {
       $form['legal_entity'] = $this->renderSection('Regarding', $par_data_enforcement_notice, ['field_legal_entity' => 'title']);
-
-      // @TODO If there is only one organisation for this legal entity
-      // we can potentially display the address, but otherwise we
-      // can only display the name.
     }
     else {
       $form['legal_entity'] = $this->renderSection('Regarding', $par_data_enforcement_notice, ['legal_entity_name' => 'summary']);
     }
 
-    $form['enforcement_officer_name'] = $this->renderSection('Enforcing officer name', $enforcing_officer, ['first_name' => 'summary','last_name' => 'summary'], [], TRUE, TRUE);
-    $form['enforcement_officer_telephone'] = $this->renderSection('Enforcing officer telephone number', $enforcing_officer, ['work_phone' => 'summary'], [], TRUE, TRUE);
-    $form['enforcement_officer_email'] = $this->renderSection('Enforcing officer email address', $enforcing_officer, ['email' => 'summary'], [], TRUE, TRUE);
-
+    // To account for enforcement notification data created before enforcement officer release.
+    if (!empty($enforcing_officer)) {
+      $form['enforcement_officer_name'] = $this->renderSection('Enforcing officer name', $enforcing_officer, ['first_name' => 'summary', 'last_name' => 'summary'], [], TRUE, TRUE);
+      $form['enforcement_officer_telephone'] = $this->renderSection('Enforcing officer telephone number', $enforcing_officer, ['work_phone' => 'summary'], [], TRUE, TRUE);
+      $form['enforcement_officer_email'] = $this->renderSection('Enforcing officer email address', $enforcing_officer, ['email' => 'summary'], [], TRUE, TRUE);
+    }
 
     // Show details of each action.
     if (!$par_data_enforcement_notice->get('field_enforcement_action')->isEmpty()) {
@@ -105,17 +111,13 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
 
       $form['actions'][$delta] = [
         '#type' => 'fieldset',
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
-
+         '#attributes' => ['class' => 'form-group'],
+       ];
+      
       $form['actions'][$delta]['title'] = $this->renderSection('Title of action', $action, ['title' => 'title']);
-
       $form['actions'][$delta]['regulatory_function'] = $this->renderSection('Regulatory function', $action, ['field_regulatory_function' => 'title']);
-
       $form['actions'][$delta]['details'] = $this->renderSection('Details', $action, ['details' => 'full']);
-
-      $form['actions'][$delta]['documents'] = $this->renderSection('Attachments', $action, ['document' => 'full']);
+      $form['actions'][$delta]['documents'] = $this->renderSection('Attachments', $action, ['document' => 'par_attachments'], [], TRUE);
 
       $statuses = [
         ParDataEnforcementAction::APPROVED => 'Allow',
@@ -127,7 +129,7 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
       }
       $form['actions'][$delta]['primary_authority_status'] = [
         '#type' => 'radios',
-        '#title' => $this->t('Review this action'),
+        '#title' => $this->t('Decide to allow or block this action, or refer this action to another Primary Authority '),
         '#options' => $statuses,
         '#default_value' => $this->getDefaultValues(['actions', $delta, 'primary_authority_status'], ParDataEnforcementAction::APPROVED),
         '#disabled' => $this->getDefaultValues(['actions', $delta, 'disabled'], FALSE),

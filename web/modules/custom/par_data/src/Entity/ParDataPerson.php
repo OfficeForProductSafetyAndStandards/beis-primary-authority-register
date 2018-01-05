@@ -2,8 +2,11 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\user\UserInterface;
 
 /**
@@ -66,7 +69,7 @@ use Drupal\user\UserInterface;
 class ParDataPerson extends ParDataEntity {
 
   /**
-   * Get the User account.
+   * {@inheritdoc}
    */
   public function getUserAccount() {
     $entities = $this->get('field_user_account')->referencedEntities();
@@ -74,22 +77,14 @@ class ParDataPerson extends ParDataEntity {
   }
 
   /**
-   * Set the user account.
-   *
-   * @param mixed $account
-   *   Drupal user account.
+   * {@inheritdoc}
    */
   public function setUserAccount($account) {
     $this->set('field_user_account', $account);
   }
+
   /**
-   * Get the User account.
-   *
-   * @param boolean $link_up
-   *   Whether or not to link up the accounts if any are found that aren't already linked.
-   *
-   * @return array
-   *   Returns any other PAR Person records if found.
+   * {@inheritdoc}
    */
   public function getSimilarPeople($link_up = TRUE) {
     $account = $this->getUserAccount();
@@ -110,10 +105,7 @@ class ParDataPerson extends ParDataEntity {
   }
 
   /**
-   * Get the User accounts that have the same email as this PAR Person.
-   *
-   * @return mixed|null
-   *   Returns a Drupal User account if found.
+   * {@inheritdoc}
    */
   public function lookupUserAccount() {
     $entities = \Drupal::entityTypeManager()
@@ -123,13 +115,7 @@ class ParDataPerson extends ParDataEntity {
   }
 
   /**
-   * Link up the PAR Person to a Drupal User account.
-   *
-   * @param UserInterface $account
-   *   An optional user account to lookup.
-   *
-   * @return bool|int
-   *   If there was an account to link to, that wasn't already linked to.
+   * {@inheritdoc}
    */
   public function linkAccounts(UserInterface $account = NULL) {
     $saved = FALSE;
@@ -146,54 +132,105 @@ class ParDataPerson extends ParDataEntity {
     return $saved ? $account : NULL;
   }
 
+  /**
+   * Get PAR Person's full name.
+   *
+   * @return string
+   *   Their full name including title/salutation field.
+   */
   public function getFullName() {
-    return $this->get('first_name')->getString() . ' ' . $this->get('last_name')->getString();
+    return implode(" ", [
+      $this->get('salutation')->getString(),
+      $this->get('first_name')->getString(),
+      $this->get('last_name')->getString(),
+    ]);
   }
 
   /**
-   * @param string $method_id
-   */
-  public function setPreferredCommunication($method_id) {
-    $methods = $this->getPreferredCommunicationMethods();
-
-    foreach ($methods as $id => $method) {
-      if ($method_id === $id) {
-        $this->set('communication_' . $id, TRUE);
-      }
-      else {
-        $this->set('communication_' . $id, FALSE);
-      }
-    }
-  }
-
-  /**
-   * Get the preferred communication method.
+   * Get PAR Person's work phone pseudo-field value.
    *
+   * @return string
+   *   PAR Person's work phone including preference text.
+   */
+  public function getWorkPhone() {
+    return $this->getCommunicationFieldText(
+      $this->get('work_phone')->getString(),
+      'communication_phone'
+    );
+  }
+
+  /**
+   * Get PAR Person's mobile phone pseudo-field value.
+   *
+   * @return string
+   *   PAR Person's mobile phone including preference text.
+   */
+  public function getMobilePhone() {
+    return $this->getCommunicationFieldText(
+      $this->get('mobile_phone')->getString(),
+      'communication_mobile'
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getEmail() {
+    return $this->get('email')->getString();
+  }
+
+  /**
+   * Get PAR Person's email pseudo-field value.
+   *
+   * @return string
+   *   PAR Person's email mailto link including preference text.
+   */
+  public function getEmailLink() {
+    $email = $this->getEmail();
+
+    $email_link = Link::fromTextAndUrl($email,
+      Url::fromUri("mailto:{$email}"));
+
+    $email_link_safe = Xss::filter($email_link->toString(), ['a']);
+
+    return $this->getCommunicationFieldText(
+      $email_link_safe,
+      'communication_email'
+    );
+  }
+
+  /**
+   * Helper function to format communication pseudo field value.
+   *
+   * @param string $text
+   *   Text to display.
+   * @param string $preference_field
+   *   Preference field machine name.
+   * @return string
+   *   Pseudo field value.
+   */
+  public function getCommunicationFieldText($text, $preference_field) {
+    if ($preference_message = $this->getCommunicationPreferredText($preference_field)) {
+      return "{$text} ({$preference_message})";
+    }
+
+    return $text;
+  }
+
+  /**
+   * Helper function to get preference field boolean "on" value.
+   *
+   * @param string $preference_field
+   *   Preference field id.
    * @return string|null
+   *   Preference field boolean value label text.
    */
-  public function getPreferredCommunicationMethodId() {
-    $methods = $this->getPreferredCommunicationMethods();
-
-    foreach ($methods as $method_id => $method) {
-      if ($this->get('communication_' . $method_id)->getString()) {
-        return $method_id;
-      }
+  public function getCommunicationPreferredText($preference_field) {
+    if ($this->get($preference_field)->getString() == 1) {
+      $preference_message = "preferred";
     }
 
-    return NULL;
-  }
-
-  /**
-   * Get the preferred communication method label.
-   *
-   * @param string $method_id
-   *   The id of the method we want the label for.
-   *
-   * @return int|null
-   */
-  public function getPreferredCommunicationMethodLabel($method_id) {
-    $methods = $this->getPreferredCommunicationMethods();
-    return isset($methods[$method_id]) ? $methods[$method_id] : '';
+    return isset($preference_message) ? $preference_message : null;
   }
 
   /**

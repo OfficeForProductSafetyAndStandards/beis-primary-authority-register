@@ -43,14 +43,25 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    if ($this->getFlowName() === 'partnership_application') {
-      $this->pageTitle = 'New business information';
-    }
-
     $par_data_partnership = $this->getRouteParam('par_data_partnership');
-    if ($par_data_partnership) {
-      $par_data_organisation = current($par_data_partnership->getOrganisation());
-      $this->pageTitle = $par_data_organisation->get('organisation_name')->getString();
+    $par_data_premises = $this->getRouteParam('par_data_premises');
+
+    if (!empty($par_data_partnership)) {
+
+      $par_data_premises = current($par_data_premises);
+
+      // Are we editing an existing premises entity?
+      $verb = $this->t($par_data_premises ? 'Edit' : 'Add');
+
+      if ($this->getFlowName() === 'partnership_direct') {
+        $this->pageTitle = "{$verb} your business address";
+      }
+      else if ($this->getFlowName() === 'partnership_coordinated') {
+        $this->pageTitle = "{$verb} your member business address";
+      }
+    }
+    else {
+      $this->pageTitle = 'New business information';
     }
 
     return parent::titleCallback();
@@ -103,38 +114,38 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
 
     $form['address_line1'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Address Line 1'),
+      '#title' => $this->t('Enter your Address Line 1'),
       '#default_value' => $this->getDefaultValues("address_line1"),
     ];
 
     $form['address_line2'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Address Line 2'),
+      '#title' => $this->t('Enter your Address Line 2'),
       '#default_value' => $this->getDefaultValues("address_line2"),
     ];
 
     $form['town_city'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Town / City'),
+      '#title' => $this->t('Enter your Town / City'),
       '#default_value' => $this->getDefaultValues("town_city"),
     ];
 
     $form['county'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('County'),
+      '#title' => $this->t('Enter your County'),
       '#default_value' => $this->getDefaultValues("county"),
     ];
 
     $form['country'] = [
       '#type' => 'select',
-      '#title' => $this->t('Nation'),
+      '#title' => $this->t('Select your Nation'),
       '#options' => $premises_bundle->getAllowedValues('nation'),
       '#default_value' => $this->getDefaultValues("country"),
     ];
 
     $form['postcode'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Postcode'),
+      '#title' => $this->t('Enter your Postcode'),
       '#default_value' => $this->getDefaultValues("postcode"),
     ];
 

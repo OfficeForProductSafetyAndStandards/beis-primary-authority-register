@@ -4,6 +4,9 @@
  * Installation hooks for par_data module.
  */
 
+use Drupal\par_data\Entity\ParDataEnforcementNotice;
+use Drupal\par_data\Entity\ParDataPartnership;
+
 /**
  * Implements hook_install().
  */
@@ -195,3 +198,24 @@ function par_data_update_8014() {
     ->execute();
 }
 
+/**
+ * Update to physical model v11.
+ */
+function par_data_update_8015() {
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
+
+/**
+ * Resave all enforcement notices to populate the primary authorities field.
+ */
+function par_data_update_8016() {
+  foreach (ParDataEnforcementNotice::loadMultiple() as $entity) {
+    if (!$entity->getPartnership()) {
+      continue;
+    }
+
+    $entity->set('field_primary_authority', $entity->getPrimaryAuthority());
+    // Re-save the entity.
+    $entity->save();
+  }
+}

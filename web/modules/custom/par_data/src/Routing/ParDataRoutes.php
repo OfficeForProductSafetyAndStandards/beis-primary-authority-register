@@ -100,7 +100,7 @@ class ParDataRoutes implements ContainerInjectionInterface {
       $route = new Route(
         "/admin/content/par_data/{$id}/add",
         [
-          '_controller' => 'Drupal\trance\Controller\TranceAddController::add',
+          '_controller' => 'Drupal\par_data\Controller\ParDataAddController::add',
           '_title' => "Add {$singular}",
           'par_data_entity' => $id,
         ],
@@ -115,9 +115,9 @@ class ParDataRoutes implements ContainerInjectionInterface {
 
       // The create route for specific bundles.
       $route = new Route(
-        '/admin/content/par_data/' . $id . '/add/{' . $type . '}',
+        '/admin/content/par_data/' . $id . '/add/{par_data_entity_type}',
         [
-          '_controller' => 'Drupal\trance\Controller\TranceAddController::addForm',
+          '_controller' => 'Drupal\par_data\Controller\ParDataAddController::addForm',
           '_title' => "Add {$singular}",
           'par_data_entity' => $id,
         ],

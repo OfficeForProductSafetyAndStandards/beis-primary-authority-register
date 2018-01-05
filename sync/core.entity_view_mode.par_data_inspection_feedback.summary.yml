@@ -1,0 +1,12 @@
+uuid: 3c0a4440-9b06-45d7-8a5f-421d142e4721
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+_core:
+  default_config_hash: yAmk70L5scg8y1OEPVGkVl4cgUCmSaai2rvIV5dsaHM
+id: par_data_inspection_feedback.summary
+label: Summary
+targetEntityType: par_data_inspection_feedback
+cache: true

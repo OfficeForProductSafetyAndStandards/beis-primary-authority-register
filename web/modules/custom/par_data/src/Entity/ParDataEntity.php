@@ -21,7 +21,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
   const DELETE_FIELD = 'deleted';
   const REVOKE_FIELD = 'revoked';
-  const ARCHIVE_FIELD = 'archive';
+  const ARCHIVE_FIELD = 'archived';
 
   /**
    * Simple getter to inject the PAR Data Manager service.
@@ -196,9 +196,12 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * Delete if this entity is deletable and is not new.
    */
   public function delete() {
-    if (!$this->isNew() && $this->getTypeEntity()->isDeletable() && !$this->isDeleted()) {
+    if (!$this->isNew() && !$this->inProgress() && $this->getTypeEntity()->isDeletable() && !$this->isDeleted()) {
       // Set the status to unpublished to make filtering from display easier.
       $this->set('status', 0);
+
+      // Always revision status changes.
+      $this->setNewRevision(TRUE);
 
       return parent::delete();
     }
@@ -211,8 +214,12 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   True if the entity was revoked, false for all other results.
    */
   public function revoke() {
-    if (!$this->isNew() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
+    if (!$this->isNew() && !$this->inProgress() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, TRUE);
+
+      // Always revision status changes.
+      $this->setNewRevision(TRUE);
+
       return ($this->save() === SAVED_UPDATED);
     }
     return FALSE;
@@ -240,8 +247,12 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   True if the entity was restored, false for all other results.
    */
   public function archive() {
-    if (!$this->isNew() && $this->getTypeEntity()->isArchivable() && !$this->isArchived()) {
+    if (!$this->isNew() && !$this->inProgress() && $this->getTypeEntity()->isArchivable() && !$this->isArchived()) {
       $this->set(ParDataEntity::ARCHIVE_FIELD, TRUE);
+
+      // Always revision status changes.
+      $this->setNewRevision(TRUE);
+
       return ($this->save() === SAVED_UPDATED);
     }
     return FALSE;
@@ -258,6 +269,14 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       $this->set(ParDataEntity::ARCHIVE_FIELD, FALSE);
       return ($this->save() === SAVED_UPDATED);
     }
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function inProgress() {
+    // By default there are no conditions by which an entity is frozen.
     return FALSE;
   }
 
@@ -322,11 +341,17 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     $allowed_values = $this->getTypeEntity()->getAllowedValues($field_name);
     if (isset($allowed_values[$value])) {
       $this->set($field_name, $value);
+
+      // Always revision status changes.
+      $this->setNewRevision(TRUE);
     }
   }
 
   /**
    * Determine whether this entity can transition
+   *
+   * @return bool
+   *   TRUE if transition is allowed.
    */
   public function canTransition($status) {
     $current_status = $this->getRawStatus();
@@ -411,7 +436,12 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       }
     }
 
-    return $target && isset($entities[$target]) ? array_filter($entities[$target]) : $entities;
+    if ($target) {
+      return isset($entities[$target]) ? array_filter($entities[$target]) : [];
+    }
+    else {
+      return $entities;
+    }
   }
 
   /**
@@ -444,6 +474,16 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     }
 
     return $total > 0 ? ($completed / $total) * 100 : 0;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setNewRevision($value = TRUE) {
+    $this->setRevisionCreationTime(REQUEST_TIME);
+    $this->setRevisionAuthorId(\Drupal::currentUser()->id());
+
+    parent::setNewRevision($value);
   }
 
   /**
@@ -491,7 +531,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       ])
       ->setDisplayConfigurable('view', FALSE);
     $fields['archived'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Revoked'))
+      ->setLabel(t('Archived'))
       ->setDescription(t('Whether the entity has been archived.'))
       ->setRevisionable(TRUE)
       ->setDefaultValue(FALSE)

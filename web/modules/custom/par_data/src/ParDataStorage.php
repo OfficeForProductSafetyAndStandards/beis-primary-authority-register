@@ -4,6 +4,7 @@ namespace Drupal\par_data;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\par_data\Entity\ParDataEntity;
+use Drupal\par_data\Event\ParDataEvent;
 use Drupal\trance\TranceStorage;
 use Drupal\Core\Entity\EntityInterface;
 

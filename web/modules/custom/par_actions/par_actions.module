@@ -1,12 +1,10 @@
 <?php
 
-use Drupal\Core\Queue\QueueFactory;
+
 use Drupal\Core\Render\BubbleableMetadata;
-use Drupal\Core\Link;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drush\Queue\QueueInterface;
-use RapidWeb\UkBankHolidays\Factories\UkBankHolidayFactory;
-use Drupal\par_actions\Plugin\Factory\BusinessDaysCalculator;
+use Drupal\par_actions\ParActionsException;
+use Drupal\par_actions\ParScheduleManager;
 
 /**
  * Implements hook_token_info().
@@ -55,11 +53,13 @@ function par_actions_tokens($type, $tokens, array $data, array $options, Bubblea
   return $replacements;
 }
 
+/**
+ * Implements hook_cron().
+ */
 function par_actions_cron() {
   $scheduler = \Drupal::service('plugin.manager.par_scheduler');
 
   foreach ($scheduler->getDefinitions(TRUE) as $definition) {
-    $plugin = $scheduler->createInstance($definition['id'], $definition);
-    $plugin->buildQueue();
+    $scheduler->run($definition);
   }
 }

@@ -46,6 +46,8 @@ module:
   link: 0
   login_destination: 0
   menu_ui: 0
+  message: 0
+  message_notify: 0
   no_autocomplete: 0
   node: 0
   options: 0
@@ -61,17 +63,11 @@ module:
   par_header: 0
   par_invite: 0
   par_login: 0
+  par_notification: 0
   par_partnership_flows: 0
   par_rd_help_desk_flows: 0
   par_roles: 0
   par_validation: 0
-  password_policy: 0
-  password_policy_character_types: 0
-  password_policy_characters: 0
-  password_policy_history: 0
-  password_policy_length: 0
-  password_policy_username: 0
-  password_strength: 0
   path: 0
   raven: 0
   rdf: 0

@@ -148,7 +148,7 @@ trait ParDisplayTrait {
 
     // Reference fields need to be rendered slightly differently.
     if ($field instanceof EntityReferenceFieldItemListInterface && !$single) {
-      $link_name_suffix = strtolower($entity->label());
+      $link_name_suffix = $entity->label();
     }
     else {
       $link_name_suffix = strtolower($field->getFieldDefinition()->getLabel());
@@ -170,7 +170,7 @@ trait ParDisplayTrait {
         $edit_link = $this->getFlow()->getLinkByCurrentOperation('edit_' . $field->getName(), $params)->setText("edit {$link_name_suffix}")->toString();
       }
       catch (ParFlowException $e) {
-        $this->getLogger($this->getLoggerChannel())->error($e);
+        $this->getLogger($this->getLoggerChannel())->notice($e);
       }
       if (isset($edit_link)) {
         $operation_links['edit'] = [
@@ -189,8 +189,36 @@ trait ParDisplayTrait {
    *
    * Display all of the fields on the given legal entity
    * with the relevant operational links.
+   *
+   * @param string $section
+   *   The section title to use for this field-set.
+   *
+   * @param EntityInterface $entity
+   *   The entity containing the fields to be rendered.
+   *
+   * @param array $fields
+   *   An array containing the field names and display modes to be rendered.
+   *
+   * @param array $operations
+   *   An array required operations.
+   *
+   * @param Boolean $title
+   *   Weather or not to display a title for this section.
+   *
+   * @param Boolean $single
+   *
+   * @param Boolean $section_title_only
+   *    An option to only output a title with the correct markup.
+   *
+   * @return mixed
    */
-  public function renderSection($section, $entity, $fields, $operations = [], $title = TRUE, $single = FALSE) {
+  public function renderSection($section, $entity, $fields, $operations = [], $title = TRUE, $single = FALSE, $section_title_only = FALSE) {
+
+    // If rendering logic is called on an NULL object prevent system failures.
+    if (empty($entity)) {
+      return;
+    }
+
     $element = [
       '#type' => 'fieldset',
       '#attributes' => ['class' => 'form-group'],
@@ -199,6 +227,11 @@ trait ParDisplayTrait {
     ];
     if ($title) {
       $element['#title'] = t("$section");
+    }
+
+    // If we are only we only want a section title return the form elements.
+    if ($section_title_only == TRUE) {
+      return $element;
     }
 
     foreach ($fields as $field_name => $view_mode) {
@@ -212,7 +245,8 @@ trait ParDisplayTrait {
 
       $field = $entity->get($field_name);
       if (!$field->isEmpty()) {
-        $single_item = FALSE;
+        // Respect renderSection $single param if only to show one record.
+        $single_item = $single;
         // If there is only one value treat the field as single.
         if ($field->count() <= 1) {
           $single_item = TRUE;
@@ -252,7 +286,7 @@ trait ParDisplayTrait {
         try {
           $add_link = $this->getFlow()->getLinkByCurrentOperation('add_' . $field->getName())->setText("add another {$link_name_suffix}")->toString();
         } catch (ParFlowException $e) {
-          $this->getLogger($this->getLoggerChannel())->error($e);
+          $this->getLogger($this->getLoggerChannel())->notice($e);
         }
         if (isset($add_link)) {
           $element[$field_name]['operations']['add'] = [
@@ -321,5 +355,4 @@ trait ParDisplayTrait {
     return '✔';
 
   }
-
 }

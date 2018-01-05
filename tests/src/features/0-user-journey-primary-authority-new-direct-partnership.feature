@@ -3,8 +3,13 @@ Feature: New Direct Partnership For PA To Approve
 
     Scenario: New Direct Partnership
 
-        Given I am logged in as "par_authority@example.com"
-        And I expect that element "#block-par-theme-content" contains the text "Your partnerships"
+        Given I open the url "/user/login"
+#        And I run tota11y against the current page
+        And I set "par_authority@example.com" to the inputfield "#edit-name"
+        And I add "TestPassword" to the inputfield "#edit-pass"
+        When I click on the button "#edit-submit"
+        Then I expect that element "h1.heading-xlarge" contains the text "Primary Authority Register"
+        And I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
         And I expect that element "#block-par-theme-content" contains the text "See enforcement notifications"
         When I click on the link "Apply for a new partnership"
@@ -12,12 +17,13 @@ Feature: New Direct Partnership For PA To Approve
         When I click on the link "Apply for a new partnership"
 
 
-        # CHOOSE PARTNERSHIP TYPE
+        # CHOOSE AUTHORITY REPRESENTED
 
-        And I click on authority selection if available
+        Then I expect that element "h1.heading-xlarge" contains the text "Which authority are you acting on behalf of?"
+        And I click on the radio "label*=Metropolitan District"
         And I click on the button "#edit-next"
 
-        # CREATE NEW PARTNERSHIP FORM
+        # CHOOSE PARTNERSHIP TYPE
 
         Then I expect that element "h1.heading-xlarge" contains the text "New partnership application"
         When I click on the radio "#edit-application-type-direct"
@@ -25,7 +31,6 @@ Feature: New Direct Partnership For PA To Approve
 
         # CONFIRMATIONS
 
-        Then I expect that element ".error-summary" is visible
         When I click on the checkbox "#edit-business-eligible-for-partnership"
         And I click on the button "#edit-next"
         Then I expect that element ".error-summary" is visible
@@ -56,14 +61,10 @@ Feature: New Direct Partnership For PA To Approve
 
         And I add "Business For Direct Partnership 1" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
-#        And I click on the radio ".form-radio"
-#        And I click on the button "#edit-next"
 
         # CONFIRM NEW PARTNERSHIP
 
         And I click new partnership if presented with choices
-  #        And I click on the radio "#edit-par-data-organisation-id-new"
-  #        And I click on the button "#edit-next"
 
         # ADD BUSINESS DETAIL
 
@@ -88,10 +89,29 @@ Feature: New Direct Partnership For PA To Approve
         And I click on the radio "#edit-preferred-contact-communication-mobile"
         And I add "Some additional notes" to the inputfield "#edit-notes"
         And I click on the button "#edit-next"
-        And I click on the checkbox "#edit-partnership-info-agreed-authority"
+
+        # REVIEW THE APPLICATION
+
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
+        Then I expect that element "h1.heading-xlarge" contains the text "Review the partnership summary information below"
+        When I click on the checkbox "#edit-partnership-info-agreed-authority"
         And I click on the button "#edit-save"
 
-        # EMAIL
+        # INVITATION
 
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
+        Then I expect that element "h1.heading-xlarge" contains the text "Notify user of partnership invitation"
         Then the inputfield "#edit-email-subject" contains the text "Invitation to join the Primary Authority Register"
+        Then the inputfield "#edit-email-body" contains the text "[invite:invite-accept-link]"
         When I click on the button "#edit-next"
+
+        # INVITATION CONFIRMATION
+
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
+        Then I expect that element "h1.heading-xlarge" contains the text "Notification sent"
+        Then I expect that element "#block-par-theme-content" contains the text "Mr Fozzie Bear will receive an email with a link to register/login to the PAR website."
+        When I click on the link "Done"
+
+        # RETURN TO DASHBOARD
+
+        Then I expect that element "h1.heading-xlarge" contains the text "Primary Authority Register"
