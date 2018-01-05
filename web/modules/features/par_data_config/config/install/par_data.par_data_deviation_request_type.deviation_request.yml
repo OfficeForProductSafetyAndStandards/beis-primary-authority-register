@@ -5,7 +5,6 @@ id: deviation_request
 label: 'Deviation Request'
 description: ''
 help: ''
-revision: true
 isDeletable: null
 isRevokable: null
 isArchivable: null

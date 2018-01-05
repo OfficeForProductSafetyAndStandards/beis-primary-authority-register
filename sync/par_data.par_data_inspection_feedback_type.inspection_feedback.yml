@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: od64rDpg2p4zSxYgrFB9yRU9uXN_crGximiqdt58CUc
+  default_config_hash: Le_48wK3rPKsochV4HzpxaY1QJTkdcIuA7bTIRuo-bU
 id: inspection_feedback
 label: 'Inspection Feedback'
 description: ''
