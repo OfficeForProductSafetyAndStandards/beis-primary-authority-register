@@ -38,7 +38,7 @@ Feature: Helpdesk approve partnership
 
         # CHECK REVOKING PARTNERSHIP DENIED DUE TO OUTSTANDING ENFORCEMENT NOTICE
 
-    @ci @PAR1043
+    @Pending @PAR1043
     Scenario: Verify Helpdesk user cannot approve partnerships with EN outstanding
 
         # HELPDESK DASHBOARD
