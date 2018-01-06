@@ -100,6 +100,26 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function inProgress() {
+    // Freeze partnerships that are awaiting approval.
+    if ($this->getTypeEntity()->getDefaultStatus() === $this->getRawStatus()) {
+      return TRUE;
+    }
+
+    // Freeze partnerships that have un un approved enforcement notices
+    $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
+    foreach ($enforcement_notices as $enforcement_notice) {
+      if ($enforcement_notice->inProgress()) {
+        return TRUE;
+      }
+    }
+
+    return parent::inProgress();
+  }
+
+  /**
    * Get the organisation contacts for this Partnership.
    */
   public function getOrganisationPeople() {
@@ -116,15 +136,15 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Get the organisation for this Partnership.
    */
-  public function getOrganisation() {
-    return $this->get('field_organisation')->referencedEntities();
+  public function getOrganisation($single = FALSE) {
+    $organisations = $this->get('field_organisation')->referencedEntities();
+    $organisation = !empty($organisations) ? current($organisations) : NULL;
+
+    return $single ? $organisation : $organisations;
   }
 
   /**
    * Get the authority for this Partnership.
-   *
-   * @param boolean $single
-   *
    */
   public function getAuthority($single = FALSE) {
     $authorities = $this->get('field_authority')->referencedEntities();

@@ -84,9 +84,9 @@ exports.config = {
     // Default request retries count
     connectionRetryCount: 3,
     //
-    plugins: {
-        'wdio-screenshot': {}
-    },
+    //plugins: {
+    //    'wdio-screenshot': {}
+    //},
     // Initialize the browser instance with a WebdriverIO plugin. The object
     // should have the plugin name as key and the desired plugin options as
     // properties. Make sure you have the plugin installed before running any
@@ -101,8 +101,8 @@ exports.config = {
     //         misMatchTolerance: 0.05,
     //         screenWidth: [320,480,640,1024]
     //     },
-    //     webdriverrtc: {},
-    //     browserevent: {}
+    //     //webdriverrtc: {browser: 'chrome'},
+    //     //browserevent: {}
     // },
     //
     // Test runner services
@@ -203,7 +203,14 @@ exports.config = {
         global.assert = chai.assert;
         global.should = chai.should();
     },
-    //
+    //Hook that gets executed after the step has ended
+    //afterStep: function afterStep(stepResult) {
+    //        browser.saveScreenshot();
+    //}
+    //afterStep: function afterStep(stepResult) {
+    //    var value = browser.log('driver');
+    //    console.log(value);
+    //}
     // Hook that gets executed before the suite starts
     // beforeSuite: function beforeSuite(suite) {
     // },

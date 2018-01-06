@@ -38,8 +38,13 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function accessCallback(ParDataPartnership $par_data_partnership = NULL) {
-    // 403 if the partnership is active/approved by RD.
-    if ($par_data_partnership->getRawStatus() !== 'confirmed_rd') {
+    // If partnership has been revoked, we should not be able to re-revoke it.
+    if ($par_data_partnership->isRevoked()) {
+      $this->accessResult = AccessResult::forbidden('The partnership is already revoked.');
+    }
+
+    // 403 if the partnership is in progress it can't be revoked.
+    if ($par_data_partnership->inProgress()) {
       $this->accessResult = AccessResult::forbidden('The partnership is not active.');
     }
 
@@ -67,7 +72,16 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
-    // Present partnership info.
+    if ($par_data_partnership && $par_data_partnership->inProgress()) {
+      $form['partnership_info'] = [
+        '#type' => 'markup',
+        '#title' => $this->t('Revocation denied'),
+        '#markup' => $this->t('This partnership cannot be revoked because it is awaiting approval or there are enforcement notices currently awaiting review. Please try again later.'),
+      ];
+
+      return parent::buildForm($form, $form_state);
+    }
+
     $form['partnership_info'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Revoke the partnership between'),

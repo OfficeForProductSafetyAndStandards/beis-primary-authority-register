@@ -21,6 +21,5 @@ module.exports = (method, value, element) => {
     if (!value) {
         checkValue = '';
     }
-
     browser[command](element, checkValue);
 };

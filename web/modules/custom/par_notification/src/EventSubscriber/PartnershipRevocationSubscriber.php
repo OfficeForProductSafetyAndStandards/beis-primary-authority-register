@@ -11,14 +11,14 @@ use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class NewEnforcementSubscriber implements EventSubscriberInterface {
+class PartnershipRevocationSubscriber implements EventSubscriberInterface {
 
   /**
    * The message template ID created for this notification.
    *
-   * @see /admin/structure/message/manage/new_enforcement_notification
+   * @see /admin/structure/message/manage/partnership_revocation_notification
    */
-  const MESSAGE_ID = 'new_enforcement_notification';
+  const MESSAGE_ID = 'partnership_revocation_notificat';
 
   /**
    * The notication plugin that will deliver these notification messages.
@@ -33,7 +33,9 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[ParDataEvent::CREATE][] = ['onNewEnforcement', 800];
+    // Revocation event should fire after most default events to make sure
+    // revocation has not been cancelled.
+    $events[ParDataEvent::UPDATE][] = ['onPartnershipRevocation', -100];
 
     return $events;
   }
@@ -68,42 +70,36 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
   /**
    * @param ParDataEventInterface $event
    */
-  public function onNewEnforcement(ParDataEventInterface $event) {
+  public function onPartnershipRevocation(ParDataEventInterface $event) {
     /** @var ParDataEntityInterface $enforcement */
-    $enforcement = $event->getData();
+    $partnership = $event->getData();
 
-    if (!$enforcement || $enforcement->getEntityTypeId() !== 'par_data_enforcement_notice') {
-      // @TODO Log that the template couldn't be loaded.
+    // Only act on partnership entities.
+    if (!$partnership || $partnership->getEntityTypeId() !== 'par_data_partnership') {
       return;
     }
 
-    // Only act on Enforcement Notices that haven't been reviewed.
-    if ($enforcement->getRawStatus() === $enforcement->getTypeEntity()->getDefaultStatus()) {
+    // Only act on partnerships that have just been revoked.
+    if ($partnership->getRawStatus() === 'revoked' && $partnership->original->getRawStatus !== 'revoked') {
       // Load the message template.
       $template_storage = $this->getEntityTypeManager()->getStorage('message_template');
       $message_template = $template_storage->load(self::MESSAGE_ID);
 
       $message_storage = $this->getEntityTypeManager()->getStorage('message');
-
-      // Get the link to approve this notice.
-      $options = ['absolute' => TRUE];
-      $enforcement_url = Url::fromRoute('par_enforcement_flows.approve', ['par_data_enforcement_notice' => $enforcement->id()], $options);
-
       if (!$message_template) {
         // @TODO Log that the template couldn't be loaded.
         return;
       }
 
-      // We need to get the primary authority for this enforcement.
-      $primary_authority = $enforcement->getPrimaryAuthority(TRUE);
-      if (!$primary_authority) {
-        // @TODO Log that the template couldn't be loaded.
+      // We need to get all the contacts for this partnership.
+      $contacts = array_merge($partnership->getAuthorityPeople(), $partnership->getOrganisationPeople());
+      if (!$contacts) {
         return;
       }
 
-      foreach ($primary_authority->getPerson() as $person) {
+      foreach ($contacts as $person) {
         // Notify all users in this authority with the appropriate permissions.
-        if (($account = $person->getUserAccount()) && $person->getUserAccount()->hasPermission('approve enforcement notice')
+        if (($account = $person->getUserAccount())
           && !isset($this->recipients[$account->id()])) {
 
           // Record the recipient so that we don't send them the message twice.
@@ -115,13 +111,14 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
           ]);
 
           // Add contextual information to this message.
-          if ($message->hasField('field_enforcement_notice')) {
-            $message->set('field_enforcement_notice', $enforcement);
+          if ($message->hasField('field_partnership')) {
+            $message->set('field_partnership', $partnership);
           }
 
           // Add some custom arguments to this message.
           $message->setArguments([
-            '@enforcement_notice_review' => $enforcement_url->toString(),
+            '@partnership_authority' => $partnership->getAuthority(TRUE)->label(),
+            '@partnership_organisation' => $partnership->getOrganisation(TRUE)->label(),
           ]);
 
           // The owner is the user who this message belongs to.
