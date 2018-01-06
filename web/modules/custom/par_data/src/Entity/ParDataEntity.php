@@ -216,6 +216,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function revoke() {
     if (!$this->isNew() && !$this->inProgress() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, TRUE);
+      $this->setParStatus('revoked');
 
       // Always revision status changes.
       $this->setNewRevision(TRUE);
@@ -235,9 +236,18 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function unrevoke() {
     if (!$this->isNew() && $this->getTypeEntity()->isRevokable() && $this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, FALSE);
+      $this->setParStatusToDefault();
+
       return ($this->save() === SAVED_UPDATED);
     }
     return FALSE;
+  }
+
+  /**
+   * Reset PAR Status to the default/first step.
+   */
+  public function setParStatusToDefault() {
+    $this->setParStatus($this->getTypeEntity()->getDefaultStatus());
   }
 
   /**
@@ -284,18 +294,18 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function getRawStatus() {
-//    if ($this->isDeleted()) {
-//      return 'deleted';
-//    }
-//    if ($this->isRevoked()) {
-//      return 'revoked';
-//    }
-//    if ($this->isArchived()) {
-//      return 'archived';
-//    }
-//    if (!$this->isTransitioned()) {
-//      return 'n/a';
-//    }
+    if ($this->isDeleted()) {
+      return 'deleted';
+    }
+    if ($this->isRevoked()) {
+      return 'revoked';
+    }
+    if ($this->isArchived()) {
+      return 'archived';
+    }
+    if (!$this->isTransitioned()) {
+      return 'n/a';
+    }
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
 

@@ -201,14 +201,12 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
   }
 
   /**
-   * {@inheritdoc}
+   * Provide default allowed status values.
    */
-  public function getDefaultAllowedValues($field_name) {
-
+  public function getDefaultAllowedValues() {
     $status_field = $this->getConfigurationElementByType('entity', 'status_field');
 
-    var_dump($status_field);
-
+    // We only apply defaults to the entities with a status field!
     if (!$status_field) {
       return [];
     }
@@ -224,7 +222,6 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
     }
 
     return $default_actions;
-
   }
 
   /**
