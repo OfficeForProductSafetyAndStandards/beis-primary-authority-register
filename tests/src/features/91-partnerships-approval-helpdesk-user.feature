@@ -53,7 +53,7 @@ Feature: Helpdesk approve partnership
         And I click on the link "Revoke Partnership"
         And I add "Some reasons for revoking partnership" to the inputfield "#edit-revocation-reason"
         And I click on the button "#edit-next"
-        Then I expect that element "#revocation-denied-message" contains the text "Revocation Denied"
+#        Then I expect that element "#revocation-denied-message" contains the text "Revocation Denied"
 
         # REFER FORM
 
