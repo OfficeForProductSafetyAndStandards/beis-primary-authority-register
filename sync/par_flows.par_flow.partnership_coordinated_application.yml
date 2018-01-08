@@ -1,8 +1,11 @@
+uuid: 7eb83bd2-3770-4854-8467-07cee209d4b5
 langcode: en
 status: true
 dependencies: {  }
-id: partnership_direct_application
-label: 'Direct Partnership Application Flow'
+_core:
+  default_config_hash: Sf8GWgYl9XlK11DuIAN5XbqbFjWndJcTKVpd-vks4wU
+id: partnership_coordinated_application
+label: 'Coordinated Partnership Application Flow'
 default_title: null
 default_section_title: 'New partnership application'
 description: ''
@@ -29,8 +32,8 @@ steps:
     redirect:
       cancel: 10
   5:
-    route: par_partnership_flows.confirm_employee_number
-    form_id: par_partnership_employee_number
+    route: par_partnership_flows.confirm_business_size
+    form_id: par_partnership_business_size
     redirect:
       cancel: 10
   6:

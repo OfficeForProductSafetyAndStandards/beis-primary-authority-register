@@ -8,7 +8,7 @@ use Drupal\par_flows\Controller\ParBaseController;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
- * A controller for displaying the application confirmation.
+ * A controller for rendering a list of inspection plan documents.
  */
 class ParPartnershipFlowsInviteSentController extends ParBaseController {
 

@@ -1,8 +1,8 @@
 langcode: en
 status: true
 dependencies: {  }
-id: partnership_direct_application
-label: 'Direct Partnership Application Flow'
+id: partnership_coordinated_application
+label: 'Coordinated Partnership Application Flow'
 default_title: null
 default_section_title: 'New partnership application'
 description: ''
@@ -29,8 +29,8 @@ steps:
     redirect:
       cancel: 10
   5:
-    route: par_partnership_flows.confirm_employee_number
-    form_id: par_partnership_employee_number
+    route: par_partnership_flows.confirm_business_size
+    form_id: par_partnership_business_size
     redirect:
       cancel: 10
   6:

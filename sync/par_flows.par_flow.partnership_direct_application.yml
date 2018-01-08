@@ -1,6 +1,9 @@
+uuid: 53f512ae-698c-4fb4-aa75-243bbc10764b
 langcode: en
 status: true
 dependencies: {  }
+_core:
+  default_config_hash: BTvlvqWn7hoGTv21jGbvZW1iAe-8v7YrzL-nFVBbn6s
 id: partnership_direct_application
 label: 'Direct Partnership Application Flow'
 default_title: null
