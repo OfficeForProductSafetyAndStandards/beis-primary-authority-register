@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: BTvlvqWn7hoGTv21jGbvZW1iAe-8v7YrzL-nFVBbn6s
+  default_config_hash: OsVlGZ__9wAAzERh33siy_UT4Do9GtEC-MAGGcGNwsc
 id: partnership_direct_application
 label: 'Direct Partnership Application Flow'
 default_title: null
@@ -48,7 +48,7 @@ steps:
       cancel: 10
   8:
     route: par_partnership_flows.partnership_confirm_review
-    form_id: par_partnership_application_confirmation
+    form_id: par_partnership_confirmation
     redirect:
       cancel: 10
   9:

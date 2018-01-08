@@ -42,9 +42,30 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     return 'par_partnership_contact';
   }
 
+  /**
+   * Get partnership.
+   */
+  public function getPartnershipParam() {
+    return $this->getRouteParam('par_data_partnership');
+  }
+
+  /**
+   * Get partnership.
+   */
+  public function getPersonParam() {
+    if ($this->getFlowName() === 'partnership_direct_application' || $this->getFlowName() === 'partnership_coordinated_application') {
+      $partnership = $this->getPartnershipParam();
+      $people = $partnership ? $partnership->getOrganisationPeople() : NULL;
+      return !empty($people) ? current($people) : NULL;
+    }
+    else {
+      return $this->getRouteParam('par_data_person');
+    }
+  }
+
   public function titleCallback() {
     // Check if editing an existing entity.
-    $par_data_person = $this->getRouteParam('par_data_person');
+    $par_data_person = $this->getPersonParam();
 
     // Display appropriate title.
     $this->pageTitle = $par_data_person ? 'Edit a contact' : 'Add a contact';
@@ -52,6 +73,10 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     // Override page title for Partnership Application journey.
     if ($this->getFlowName() === 'partnership_application') {
       $this->pageTitle = 'Add a contact for the business';
+    }
+
+    if ($this->getFlowName() === 'partnership_direct_application' || $this->getFlowName() === 'partnership_coordinated_application') {
+      $this->pageTitle = 'Confirm the primary contact details';
     }
 
     return parent::titleCallback();
@@ -67,9 +92,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
-
     if ($par_data_person) {
-
       $this->setState("edit:{$par_data_person->id()}");
 
       // Load person data.
@@ -90,15 +113,14 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
 
       // Checkboxes works nicely with keys, filtering booleans for "1" value.
       $this->loadDataValue('preferred_contact', array_keys($contact_options, 1));
-
     }
-
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
+    $par_data_person = $this->getPersonParam();
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
     $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
 
@@ -218,7 +240,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Save contact.
-    $par_data_person = $this->getRouteParam('par_data_person');
+    $par_data_person = $this->getPersonParam();
 
     // Save person details.
     if ($par_data_person) {

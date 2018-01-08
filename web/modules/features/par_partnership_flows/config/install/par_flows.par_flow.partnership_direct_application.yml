@@ -45,7 +45,7 @@ steps:
       cancel: 10
   8:
     route: par_partnership_flows.partnership_confirm_review
-    form_id: par_partnership_application_confirmation
+    form_id: par_partnership_confirmation
     redirect:
       cancel: 10
   9:

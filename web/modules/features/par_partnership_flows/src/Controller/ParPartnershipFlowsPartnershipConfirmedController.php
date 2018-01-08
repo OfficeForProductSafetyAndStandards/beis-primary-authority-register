@@ -14,27 +14,15 @@ class ParPartnershipFlowsPartnershipConfirmedController extends ParBaseControlle
 
   use ParPartnershipFlowsTrait;
 
-  protected $pageTitle = 'Partnership confirmed';
+  protected $pageTitle = 'New partnership application | Thank you for completing the application';
 
   /**
    * {@inheritdoc}
    */
-  public function content(ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
+  public function content(ParDataPartnership $par_data_partnership = NULL) {
 
-    $build['sent_to'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('Further details sent to %email', ['%email' => $par_data_person->get('email')->getString()]),
-      '#prefix' => '<p><strong>',
-      '#suffix' => '</strong></p>',
-    ];
-
-    $build['help_text'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('%name will receive an email with a link to register/login to the PAR website.',
-        ['%name' => $par_data_person->getFullName()]),
-      '#prefix' => '<p>',
-      '#suffix' => '</p>',
-    ];
+    // Display the help contact fo this partnership.
+    $build['help_text'] = $this->renderSection('If you have any questions you can contact', $par_data_partnership, ['field_authority_person' => 'summary'], [], TRUE, TRUE);
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
