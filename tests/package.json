@@ -39,7 +39,6 @@
     "fs-extra": "latest",
     "http-server": "~0.10.0",
     "jest": "~21.2.0",
-    "pa11y": "latest",
     "wdio-browserstack-service": "0.1.11",
     "wdio-chromedriver-service": "latest",
     "wdio-cucumber-framework": "~1.0.2",
@@ -47,7 +46,7 @@
     "wdio-screenshot": "^0.6.0",
     "wdio-selenium-standalone-service": "~0.0.9",
     "wdio-spec-reporter": "~0.1.2",
-    "webdrivercss": "^1.1.10",
-    "webdriverio": "4.9.8"
+    "webdrivercss": "latest",
+    "webdriverio": "4.9.11"
   }
 }

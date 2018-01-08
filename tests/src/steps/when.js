@@ -18,6 +18,7 @@ import setCookie from '../support/action/setCookie';
 import setInputField from '../support/action/setInputField';
 import enterInRandomText from '../support/action/enterInRandomText';
 import setPromptText from '../support/action/setPromptText';
+import tota11y from '../support/action/tota11y';
 import submitForm from '../support/action/submitForm';
 import uploadTheFile from '../support/action/uploadTheFile.js';
 import selectAnAuthorityForPartnership from '../support/action/selectAnAuthorityForPartnership';
@@ -32,6 +33,11 @@ defineSupportCode(({ When }) => {
     When(
         /^I (check|uncheck) the checkbox "([^"]*)?"$/,
         setCheckbox
+    );
+
+    When(
+        /^I run tota11y against the current page$/,
+        tota11y
     );
 
     When(

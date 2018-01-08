@@ -11,3 +11,8 @@ services:
   par_data.route_subscriber:
       class: Drupal\par_data\Routing\ParDataRoutes
       arguments: ['@par_data.manager']
+  cache_context.user.par_memberships:
+    class: Drupal\par_data\Cache\UserParMembershipsCacheContext
+    arguments: ['@current_user']
+    tags:
+      - { name: cache.context}

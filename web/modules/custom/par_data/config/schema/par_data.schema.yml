@@ -27,6 +27,10 @@ par_data.par_data_advice_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -67,6 +71,10 @@ par_data.par_data_authority_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -107,6 +115,10 @@ par_data.par_data_enforcement_notice_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -147,6 +159,10 @@ par_data.par_data_inspection_feedback_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -187,6 +203,10 @@ par_data.par_data_deviation_request_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -227,6 +247,10 @@ par_data.par_data_inspection_plan_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -267,6 +291,10 @@ par_data.par_data_legal_entity_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -307,6 +335,10 @@ par_data.par_data_organisation_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -347,6 +379,10 @@ par_data.par_data_coordinated_business_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -387,6 +423,10 @@ par_data.par_data_partnership_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -427,6 +467,10 @@ par_data.par_data_person_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -467,6 +511,10 @@ par_data.par_data_premises_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -507,6 +555,10 @@ par_data.par_data_regulatory_function_t.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -547,6 +599,10 @@ par_data.par_data_sic_code_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
@@ -587,6 +643,10 @@ par_data.par_data_enforcement_action_type.*:
     help:
       type: string
       label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
     uuid:
       type: string
     isDeletable:
