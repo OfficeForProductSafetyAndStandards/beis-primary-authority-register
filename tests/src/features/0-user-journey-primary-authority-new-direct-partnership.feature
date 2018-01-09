@@ -1,9 +1,9 @@
 Feature: New Direct Partnership For PA To Approve
 
     @ci @PAR1034
-    Scenario: New Direct Partnership
-        Given I open the url "/user/login"
-        And I run tota11y against the current page
+#    Scenario: New Direct Partnership
+#        Given I open the url "/user/login"
+#        And I run tota11y against the current page
 
     @ci
     Scenario: New Direct Partnership
