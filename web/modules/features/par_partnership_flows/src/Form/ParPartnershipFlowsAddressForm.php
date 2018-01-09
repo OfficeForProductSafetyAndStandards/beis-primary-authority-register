@@ -40,24 +40,48 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
   }
 
   /**
+   * Get partnership.
+   */
+  public function getPartnershipParam() {
+    return $this->getRouteParam('par_data_partnership');
+  }
+
+  /**
+   * Get partnership.
+   */
+  public function getPremisesParam() {
+    if ($this->getFlowName() === 'partnership_direct_application' || $this->getFlowName() === 'partnership_coordinated_application') {
+      $partnership = $this->getPartnershipParam();
+      $organisation = $partnership ? $partnership->getOrganisation(TRUE) : NULL;
+      $premises = $organisation ? $organisation->getPremises() : NULL;
+      return !empty($premises) ? current($premises) : NULL;
+    }
+    else {
+      return $this->getRouteParam('par_data_premises');
+    }
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function titleCallback() {
-    $par_data_partnership = $this->getRouteParam('par_data_partnership');
-    $par_data_premises = $this->getRouteParam('par_data_premises');
+    $par_data_partnership = $this->getPartnershipParam();
+    $par_data_premises = $this->getPremisesParam();
 
     if (!empty($par_data_partnership)) {
-
-      $par_data_premises = current($par_data_premises);
-
       // Are we editing an existing premises entity?
-      $verb = $this->t($par_data_premises ? 'Edit' : 'Add');
-
-      if ($this->getFlowName() === 'partnership_direct') {
-        $this->pageTitle = "{$verb} your business address";
+      if ($this->getFlowName() === 'partnership_direct_application' || $this->getFlowName() === 'partnership_coordinated_application') {
+        $verb = 'Confirm';
       }
-      else if ($this->getFlowName() === 'partnership_coordinated') {
-        $this->pageTitle = "{$verb} your member business address";
+      else {
+        $verb = $par_data_premises ? 'Edit' : 'Add';
+      }
+
+      if ($this->getFlowName() === 'partnership_direct' || $this->getFlowName() === 'partnership_direct_application') {
+        $this->pageTitle = "{$verb} the registered address";
+      }
+      else if ($this->getFlowName() === 'partnership_coordinated' || $this->getFlowName() === 'partnership_coordinated_application') {
+        $this->pageTitle = "{$verb} the member's registered address";
       }
     }
     else {
@@ -104,6 +128,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPremises $par_data_premises = NULL) {
+    $par_data_premises = $this->getPremisesParam();
     $this->retrieveEditableValues($par_data_partnership, $par_data_premises);
     $premises_bundle = $this->getParDataManager()->getParBundleEntity('par_data_premises');
 
@@ -169,7 +194,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Create or update an existing PAR Premises record.
-    $premises = $this->getRouteParam('par_data_premises') ? $this->getRouteParam('par_data_premises') : ParDataPremises::create([
+    $premises = $this->getPremisesParam() ? $this->getPremisesParam() : ParDataPremises::create([
       'type' => 'premises',
       'uid' => $this->getCurrentUser()->id(),
     ]);
@@ -187,7 +212,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       $premises->set('address', $address);
       $premises->set('nation', $this->getTempDataValue('country'));
 
-      $par_data_partnership = $this->getRouteParam('par_data_partnership');
+      $par_data_partnership = $this->getPartnershipParam();
 
       // Check we are updating an existing partnership/organisation.
       if ($par_data_partnership &&
@@ -195,7 +220,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
           $premises->save()) {
 
         // Add premises to organisation if a new PAR Premises record is created.
-        if (!$this->getRouteParam('par_data_premises')) {
+        if (!$this->getPremisesParam()) {
           // Add to field_premises.
           $par_data_organisation->get('field_premises')
             ->appendItem($premises->id());
