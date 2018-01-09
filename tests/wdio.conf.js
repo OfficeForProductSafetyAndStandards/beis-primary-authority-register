@@ -208,8 +208,19 @@ exports.config = {
     //        browser.saveScreenshot();
     //}
     //afterStep: function afterStep(stepResult) {
-    //    var value = browser.log('driver');
-    //    console.log(value);
+    //    const isVisible = browser.isVisible('.tota11y-info-error-count');
+    //    browser.element(".tota11y-toolbar-toggle").click();
+    //    browser.element(".tota11y-plugin-title*=Headings").click();
+    //    expect(isVisible).to.not.equal(true);
+    //    browser.element(".tota11y-plugin-title*=Contrast").click();
+    //    expect(isVisible).to.not.equal(true);
+    //    browser.element(".tota11y-plugin-title*=Link text").click();
+    //    expect(isVisible).to.not.equal(true);
+    //    browser.element(".tota11y-plugin-title*=Labels").click();
+    //    expect(isVisible).to.not.equal(true);
+    //    browser.element(".tota11y-plugin-title*=Image alt-text").click();
+    //    expect(isVisible).to.not.equal(true);
+    //    browser.element(".tota11y-toolbar-toggle").click();
     //}
     // Hook that gets executed before the suite starts
     // beforeSuite: function beforeSuite(suite) {
