@@ -154,9 +154,9 @@ script:
 #-----------------------------------------------------------------------------
 
 after_script:
-  - if [[ $TRAVIS_BRANCH == 'master' ]]; then cd dashboard/tools; fi
-  - if [[ $TRAVIS_BRANCH == 'master' ]]; then composer install; fi
-  - if [[ $TRAVIS_BRANCH == 'master' ]]; then php push-travis.php ../../tests/reports/phpunit.latest.xml; fi
+  - if [[ $TRAVIS_BRANCH == 'PAR-900' ]]; then cd devops/tools/php; fi
+  - if [[ $TRAVIS_BRANCH == 'PAR-900' ]]; then composer install; fi
+  - if [[ $TRAVIS_BRANCH == 'PAR-900' ]]; then php push_test_results.php ../../../tests/reports/phpunit.latest.xml ../../../tests/reports/report.json; fi
 
 #-----------------------------------------------------------------------------
 # For tagged builds, send the packaged build to S3
