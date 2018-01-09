@@ -43,4 +43,4 @@ tota11y:
   version: VERSION
   license: MIT
   js:
-    /libraries/tota11y/tota11y.min.js: {}
+    https://cdn.rawgit.com/Khan/tota11y/master/build/tota11y.min.js: { type: external, minified: true }
