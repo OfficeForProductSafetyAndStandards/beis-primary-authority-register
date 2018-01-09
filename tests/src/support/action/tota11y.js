@@ -4,22 +4,16 @@
  * @param  {String}   type    Type of the element (link or selector)
  * @param  {String}   element Element selector
  */
-module.exports = (done) => {
-    /**
-     * The method to call on the browser object
-     * @type {String}
-     */
-    const isVisible = browser.isVisible('.tota11y-info-error-count');
-    browser[click](".tota11y-toolbar-toggle");
-    browser[click](".tota11y-plugin-title*=Headings");
-    expect(isVisible).to.not.equal(true);
-    browser[click](".tota11y-plugin-title*=Contrast");
-    expect(isVisible).to.not.equal(true);
-    browser[click](".tota11y-plugin-title*=Link text");
-    expect(isVisible).to.not.equal(true);
-    browser[click](".tota11y-plugin-title*=Labels");
-    expect(isVisible).to.not.equal(true);
-    browser[click](".tota11y-plugin-title*=Image alt-text");
-    expect(isVisible).to.not.equal(true);
-    browser[click](".tota11y-toolbar-toggle");
+module.exports = () =>
+{
+    browser.click('.tota11y-toolbar-toggle');
+    var list = ['Headings', 'Contrast', 'Link text', 'Labels', 'Image alt-text'];
+    for (var i = 0; i < list.length; i++) {
+        browser.click('.tota11y-plugin-title*=' + list[i]);
+        if (browser.isVisible('.tota11y-info-errors') === true) {
+            const errors = browser.getText('.tota11y-info-errors');
+            expect(browser.isVisible('.tota11y-info-errors')).to.not.equal(true, errors);
+        }
+    }
+    browser.click('.tota11y-toolbar-toggle');
 };
