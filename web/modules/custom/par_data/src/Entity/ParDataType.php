@@ -11,10 +11,6 @@ use Drupal\trance\TranceType;
  */
 abstract class ParDataType extends TranceType implements ParDataTypeInterface {
 
-  const DELETE_FIELD = 'deleted';
-  const REVOKE_FIELD = 'revoked';
-  const ARCHIVE_FIELD = 'archived';
-
   /**
    * Whether the entity is deletable.
    */
@@ -186,8 +182,6 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
    */
   public function getAllowedValues($field_name) {
     $allowed_values = $this->getConfigurationElementByType($field_name, 'allowed_values');
-    $allowed_values += $this->getDefaultAllowedValues($field_name);
-
     return $allowed_values ? $allowed_values : [];
   }
 
@@ -195,33 +189,8 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
    * {@inheritdoc}
    */
   public function getAllowedFieldlabel($field_name, $value = FALSE) {
-    $allowed_values = $this->getAllowedValues($field_name);
-
+    $allowed_values = $this->getConfigurationElementByType($field_name, 'allowed_values');
     return isset($allowed_values[$value]) ? $allowed_values[$value] : FALSE;
-  }
-
-  /**
-   * Provide default allowed status values.
-   */
-  public function getDefaultAllowedValues() {
-    $status_field = $this->getConfigurationElementByType('entity', 'status_field');
-
-    // We only apply defaults to the entities with a status field!
-    if (!$status_field) {
-      return [];
-    }
-
-    $default_actions = [];
-
-    if ($this->isRevokable()) {
-      $default_actions += ['revoked' => 'Revoked'];
-    }
-
-    if ($this->isArchivable()) {
-      $default_actions += ['archived' => 'Archived'];
-    }
-
-    return $default_actions;
   }
 
   /**
