@@ -96,7 +96,7 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
 
       // We need to get the primary authority users to notify.
       $partnership = $enforcement->getPartnership(TRUE);
-      $primary_authority_people = $partnership ? $partnership->getAuthorityPeople() : NULL;
+      $primary_authority_people = $partnership ? $partnership->getAuthorityPeople() : [];
       if (!$primary_authority_people) {
         // @TODO Log that no contacts could be loaded.
         return;
