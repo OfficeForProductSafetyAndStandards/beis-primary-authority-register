@@ -102,17 +102,18 @@ Feature: New Direct Partnership For PA To Approve
         When I add "Direct Partnership For Revoking" to the inputfield "#edit-keywords"
         And I select the option with the text "Confirmed by the Authority" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-helpdesk-dashboard"
-        Then I expect that element ".view-par-flow-link-table-column" contains the text "Revoke"
+        Then I expect that element ".view-par-flow-link-table-column" contains the text "Revoke Partnership"
 
         # REVOKE PARTNERSHIP
 
-        When I click on the link "Revoke"
-        And I add "Some reasons for revoking partnership" to the inputfield "#partnership-revoke-reason"
+        When I click on the link "Revoke Partnership"
+        And I add "Some reasons for revoking partnership" to the inputfield "#edit-revocation-reason"
         And I click on the button "#edit-next"
-        Then I expect that element ".view-par-flow-link-table-column" contains the text "Partnership revoked"
-        When I click on the link "Dashboard"
-        When I add "Direct Partnership For Revoking" to the inputfield "#edit-keywords"
-        And I select the option with the text "Revoked" for element "#edit-partnership-status"
-        And I click on the button "#edit-submit-helpdesk-dashboard"
-        Then I expect that element ".view-par-flow-link-table-column" contains the text "Direct Partnership For Revoking"
+        Then I expect that element "#content" contains the text "Partnership revoked"
+        Then I expect that element "#content" contains the text "The following partnership has been revoked"
+#        When I click on the link "Dashboard"
+#        When I add "Direct Partnership For Revoking" to the inputfield "#edit-keywords"
+#        And I select the option with the text "Revoked" for element "#edit-partnership-status"
+#        And I click on the button "#edit-submit-helpdesk-dashboard"
+#        Then I expect that element ".view-par-flow-link-table-column" contains the text "Direct Partnership For Revoking"
 
