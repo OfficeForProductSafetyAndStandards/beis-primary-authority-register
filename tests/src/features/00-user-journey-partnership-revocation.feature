@@ -1,7 +1,7 @@
 @ci @PAR1055 @PAR1057 @PAR1059 @PAR1060 @PAR1062
-Feature: New Direct Partnership For PA To Approve
+Feature: New Direct Partnership For HD user To Revoke
 
-    Scenario: New Direct Partnership
+    Scenario: New Direct Partnership For HD user To Revoke
 
         Given I open the url "/user/login"
         And I add "par_authority@example.com" to the inputfield "#edit-name"
