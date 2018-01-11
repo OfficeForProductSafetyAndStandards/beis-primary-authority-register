@@ -120,7 +120,7 @@ class ParDataEnforcementAction extends ParDataEntity {
   }
 
   /**
-   * Check if this entity is revoked.
+   * Check if this entity is blocked.
    *
    * @return bool
    */
