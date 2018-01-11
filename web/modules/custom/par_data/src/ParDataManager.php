@@ -13,11 +13,11 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\file\FileInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
-use Drupal\Core\Access\AccessResult;
 
 /**
 * Manages all functionality universal to Par Data.
