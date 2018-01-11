@@ -99,4 +99,6 @@ Feature: New Direct Partnership For PA To Approve
         And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
+        And I select the option with the text "True" for element "#edit-revoked"
+        And I click on the button "#edit-submit-helpdesk-dashboard"
         Then I expect that element ".table-scroll-wrapper" contains the text "Direct Partnership For Revoking"
