@@ -1,0 +1,6 @@
+{
+      "PHP_VERSION": "{PHP_71_LATEST}",
+      "PHP_EXTENSIONS": ["pdo", "bz2", "openssl", "zlib", "tokenizer", "curl", "mcrypt", "mbstring", "gd", "pdo_mysql", "mysqli"],
+      "PHP_MODULES": ["cli"],
+      "WEBDIR": "public"
+}
