@@ -40,10 +40,9 @@ Feature: Helpdesk approve partnership
 
         When I open the url "/helpdesk"
         When I add "Direct Partnership For Revoking" to the inputfield "#edit-keywords"
-        And I select the option with the text "Confirmed by the Authority" for element "#edit-partnership-status"
         And I select the option with the text "False" for element "#edit-revoked"
         And I click on the button "#edit-submit-helpdesk-dashboard"
-        Then I expect that element ".view-par-flow-link-table-column" contains the text "Revoke Partnership"
+        Then I expect that element ".table-scroll-wrapper" contains the text "Revoke Partnership"
         And I click on the link "Log out"
 
     @ci @PAR1084
@@ -62,7 +61,7 @@ Feature: Helpdesk approve partnership
         # APPROVAL CONFIRMATION SCREEN
 
         Then I expect that element "#edit-partnership-info" contains the text "The following partnership has been approved"
-        And I expect that element "#edit-partnership-info" contains the text "Direct Partnership For Revoking""
+        And I expect that element "#edit-partnership-info" contains the text "Direct Partnership For Revoking"
         And I click on the button "#edit-done"
         When I add "Direct Partnership For Revoking" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-helpdesk-dashboard"
