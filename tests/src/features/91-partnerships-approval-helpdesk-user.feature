@@ -42,7 +42,7 @@ Feature: Helpdesk approve partnership
         When I add "Direct Partnership For Revoking" to the inputfield "#edit-keywords"
 #        And I select the option with the text "False" for element "#edit-revoked"
         And I click on the button "#edit-submit-helpdesk-dashboard"
-        Then I expect that element ".table-scroll-wrapper" contains the text "Revoke Partnership"
+        Then I expect that element ".table-scroll-wrapper" contains the text "Approve Partnership"
         And I click on the link "Log out"
 
     @ci @PAR1084
