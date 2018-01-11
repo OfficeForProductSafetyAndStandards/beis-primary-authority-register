@@ -235,7 +235,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function unrevoke() {
     if (!$this->isNew() && $this->getTypeEntity()->isRevokable() && $this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, FALSE);
-
       return ($this->save() === SAVED_UPDATED);
     }
     return FALSE;
