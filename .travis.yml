@@ -63,7 +63,7 @@ install:
   - chmod -R 777 web/sites/default/files
   - docker exec -it par_beta_web bash -c "chmod -R 777 /var/www/html/private"
   - docker exec -it par_beta_web bash -c "chmod -R 777 /var/www/html/web/sites/default/files"
-w
+
 #-----------------------------------------------------------------------------
 # Create .env file
 #-----------------------------------------------------------------------------

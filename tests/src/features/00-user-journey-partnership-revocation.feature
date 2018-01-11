@@ -1,4 +1,4 @@
-@Pending @PAR1055 @PAR1057 @PAR1059 @PAR1060 @PAR1062
+@ci @PAR1055 @PAR1057 @PAR1059 @PAR1060 @PAR1062
 Feature: New Direct Partnership For PA To Approve
 
     Scenario: New Direct Partnership
