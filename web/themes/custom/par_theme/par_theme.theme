@@ -100,3 +100,12 @@ function par_theme_preprocess_block(&$vars) {
     $vars['#cache']['max-age'] = 0;
   }
 }
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function par_theme_page_attachments_alter(array &$attachments) {
+  if (Settings::get('enable_tota11y', FALSE)) {
+    $attachments['#attached']['library'][] = 'par_theme/tota11y';
+  }
+}

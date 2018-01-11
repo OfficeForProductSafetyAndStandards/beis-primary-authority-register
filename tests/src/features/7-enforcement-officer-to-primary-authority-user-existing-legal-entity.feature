@@ -54,3 +54,5 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "You will be notified by email of the outcome of this notification"
         When I click on the button "#edit-save"
         Then I expect that element "h1.heading-xlarge" contains the text "Primary Authority Register"
+#       When I click on the link "See enforcement notifications sent"
+#       Then I expect that element ".table-scroll-wrapper" contains the text "Title of enforcement notice One"

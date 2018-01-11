@@ -48,8 +48,8 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Proposed enforcement notification regarding"
         Then I expect that element "h1.heading-xlarge" contains the text "Legal Entity 1"
-        And I add "action summary enforcement notice" to the inputfield "#edit-summary"
-#        And I add "600" random chars of text to field "#edit-action-summary"
+#        And I add "action summary enforcement notice" to the inputfield "#edit-summary"
+        And I add "600" random chars of text to field "#edit-summary"
         And I click on the radio "#edit-type-proposed"
         And I click on the button "#edit-next"
 
@@ -76,7 +76,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Summary of the proposed enforcement action(s) regarding"
         Then I expect that element "h1.heading-xlarge" contains the text "Legal Entity 1"
         Then I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Title of enforcement notice Four"
-#       And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "last text in a long string"
+       And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "last text in a long string"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "Once the primary authority receives this notification, they have 5 working days to respond to you if they intend to block the action"
         And I expect that element "#par-enforcement-notice-raise-confirm" contains the text "You will be notified by email of the outcome of this notification"
 
