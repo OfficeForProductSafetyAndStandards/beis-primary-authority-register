@@ -182,7 +182,6 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
    */
   public function getAllowedValues($field_name) {
     $allowed_values = $this->getConfigurationElementByType($field_name, 'allowed_values');
-    $allowed_values += $this->getDefaultAllowedValues($field_name);
 
     return $allowed_values ? $allowed_values : [];
   }
