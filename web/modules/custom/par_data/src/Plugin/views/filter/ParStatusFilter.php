@@ -55,13 +55,6 @@ class ParStatusFilter extends FilterPluginBase {
       return;
     }
 
-    var_dump(current($this->value));
-
-    if ($this->value === 'revoked') {
-      drupal_set_message('revoked');
-      return;
-    }
-
     // The normal use of ensureMyTable() here breaks Views.
     // So instead we trick the filter into using the alias of the base table.
     // @see https://www.drupal.org/node/271833.
