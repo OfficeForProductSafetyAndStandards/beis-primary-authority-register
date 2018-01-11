@@ -686,7 +686,7 @@ display:
           group_type: group
           admin_label: ''
           operator: '='
-          value: All
+          value: '0'
           group: 1
           exposed: true
           expose:
@@ -696,7 +696,7 @@ display:
             use_operator: false
             operator: revoked_op
             identifier: revoked
-            required: false
+            required: true
             remember: false
             multiple: false
             remember_roles:
