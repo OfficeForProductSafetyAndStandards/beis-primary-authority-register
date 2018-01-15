@@ -80,14 +80,12 @@ Feature: Helpdesk approve partnership
 
         And I click on the link "Log out"
         Given I open the url "/user/login"
-        And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
+        And I add "par_authority@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         And I click on the button "#edit-submit"
         When I add "Direct Partnership For Revoking" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-helpdesk-dashboard"
-        When I click on the link "a*=City Enforcement Squad"
-        And I expect that element "a*=Send a notification of a proposed enforcement action" does not exist
-
+        Then I expect that element ".views-element-container" not contains the text "Direct Partnership For Revoking"
 
         # CHECK REVOKING PARTNERSHIP DENIED DUE TO OUTSTANDING ENFORCEMENT NOTICE
 
