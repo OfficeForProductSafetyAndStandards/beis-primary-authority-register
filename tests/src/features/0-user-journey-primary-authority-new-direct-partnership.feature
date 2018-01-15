@@ -1,45 +1,19 @@
+@ci @PAR1034
 Feature: New Direct Partnership For PA To Approve
 
-    @ci @PAR1034
-#    Scenario: New Direct Partnership
-#        Given I open the url "/user/login"
-#        And I run tota11y against the current page
-
-    @ci
     Scenario: New Direct Partnership
         Given I open the url "/user/login"
         And I set "par_authority@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
-        Then I expect that element "h1.heading-xlarge" contains the text "Primary Authority Register"
-        And I expect that element "#block-par-theme-content" contains the text "See your partnerships"
-        And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
-        And I expect that element "#block-par-theme-content" contains the text "See enforcement notifications"
         When I click on the link "Apply for a new partnership"
-        And I click on the button "#edit-cancel"
-        When I click on the link "Apply for a new partnership"
-
-
-        # CHOOSE AUTHORITY REPRESENTED
-
         Then I expect that element "h1.heading-xlarge" contains the text "Which authority are you acting on behalf of?"
         And I click on the radio "label*=Metropolitan District"
         And I click on the button "#edit-next"
-
-        # CHOOSE PARTNERSHIP TYPE
-
-        Then I expect that element "h1.heading-xlarge" contains the text "New partnership application"
         When I click on the radio "#edit-application-type-direct"
         And I click on the button "#edit-next"
-
-        # CONFIRMATIONS
-
         When I click on the checkbox "#edit-business-eligible-for-partnership"
-        And I click on the button "#edit-next"
-        Then I expect that element ".error-summary" is visible
         And I click on the checkbox "#edit-local-authority-suitable-for-nomination"
-        And I click on the button "#edit-next"
-        Then I expect that element ".error-summary" is visible
         And I click on the checkbox "#edit-written-summary-agreed"
         And I click on the button "#edit-next"
         Then I expect that element ".error-summary" is visible
