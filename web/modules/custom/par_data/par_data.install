@@ -219,3 +219,32 @@ function par_data_update_8016() {
     $entity->save();
   }
 }
+
+/**
+ * Populate revoked boolean with default value.
+ */
+function par_data_update_8017() {
+  $db = \Drupal::database();
+  $entity_types = \Drupal::service('par_data.manager')->getParEntityTypes();
+
+  foreach($entity_types as $entity_type) {
+    $table_names = [$entity_type->getDataTable(), $entity_type->getRevisionDataTable()];
+
+    foreach ($table_names as $table) {
+      $query = $db->update($table)
+        ->fields(['revoked' => 0])
+        ->isNull('revoked')
+        ->execute();
+
+      $query = $db->update($table)
+        ->fields(['archived' => 0])
+        ->isNull('archived')
+        ->execute();
+
+      $query = $db->update($table)
+        ->fields(['deleted' => 0])
+        ->isNull('deleted')
+        ->execute();
+    }
+  }
+}
