@@ -83,10 +83,9 @@ Feature: Helpdesk approve partnership
         And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         And I click on the button "#edit-submit"
-        When I click on the link "Search for a partnership"
-        And I add "Direct Partnership For Revoking" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-partnership-search"
-        When I click on the button "td.views-field.views-field-authority-name a"
+        When I add "Direct Partnership For Revoking" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-helpdesk-dashboard"
+        When I click on the link "a*=City Enforcement Squad"
         And I expect that element "a*=Send a notification of a proposed enforcement action" does not exist
 
 
