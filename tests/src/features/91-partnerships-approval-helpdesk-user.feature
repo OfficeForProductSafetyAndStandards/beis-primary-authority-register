@@ -83,8 +83,9 @@ Feature: Helpdesk approve partnership
         And I add "par_authority@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         And I click on the button "#edit-submit"
+        When I click on the link "Search for a partnership"
         When I add "Direct Partnership For Revoking" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-helpdesk-dashboard"
+        And I click on the button "#edit-submit-partnership-search"
         Then I expect that element ".views-element-container" not contains the text "Direct Partnership For Revoking"
 
         # CHECK REVOKING PARTNERSHIP DENIED DUE TO OUTSTANDING ENFORCEMENT NOTICE
