@@ -55,6 +55,6 @@ class ParFormBuilder extends DefaultPluginManager {
    * @return \Drupal\par_forms\ParFormPluginBaseInterface
    */
   public function createInstance($plugin_id, array $configuration = []) {
-    return parent::createInstance($plugin_id, $configuration);
+    $plugin = parent::createInstance($plugin_id, $configuration);
   }
 }

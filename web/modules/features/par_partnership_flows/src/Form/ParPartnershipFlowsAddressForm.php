@@ -193,6 +193,13 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
+    // We don't want to save for Partnership Application journey.
+    // Temporary fix to resolve the saving of addresses when not needed.
+    // @TODO When forms are separated then this can be removed.
+    if ($this->getFlowName() === 'partnership_application') {
+      return;
+    }
+
     // Create or update an existing PAR Premises record.
     $premises = $this->getPremisesParam() ? $this->getPremisesParam() : ParDataPremises::create([
       'type' => 'premises',
@@ -212,12 +219,11 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       $premises->set('address', $address);
       $premises->set('nation', $this->getTempDataValue('country'));
 
-      $par_data_partnership = $this->getPartnershipParam();
+      $par_data_partnership = $this->getRouteParam('par_data_partnership');
+      $par_data_organisation = $par_data_partnership ? $par_data_partnership->getOrganisation(TRUE) : NULL;
 
       // Check we are updating an existing partnership/organisation.
-      if ($par_data_partnership &&
-          $par_data_organisation = current($par_data_partnership->getOrganisation()) &&
-          $premises->save()) {
+      if ($par_data_partnership && $premises->save()) {
 
         // Add premises to organisation if a new PAR Premises record is created.
         if (!$this->getPremisesParam()) {
