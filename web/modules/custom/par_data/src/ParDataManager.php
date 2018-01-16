@@ -14,6 +14,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\file\FileInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
@@ -538,10 +539,15 @@ class ParDataManager implements ParDataManagerInterface {
    *
    * @param string $type
    *   An entity type to query.
+   *
    * @param array $conditions
    *   Query conditions.
+   *
    * @param integer $limit
    *   Limit number of results.
+   *
+   * @param integer $display_revoked_partnerships
+   *   Weather or not to override system checks for removing revoked partnerships from queries.
    *
    * @code
    * $conditions = [
@@ -574,8 +580,24 @@ class ParDataManager implements ParDataManagerInterface {
    * @see \Drupal\Core\Entity\Query\andConditionGroup
    * @see \Drupal\Core\Entity\Query\orConditionGroup
    */
-  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL) {
+  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $display_revoked_partnerships = FALSE) {
     $entities = [];
+
+    $account = \Drupal::currentUser();
+
+    // Remove revoked partnerships from internal system queries.
+  if ($display_revoked_partnerships === FALSE && $type == 'par_data_partnership') {
+
+      $conditions[] = [
+          'revoked' => [
+            'AND' => [
+              [ParDataEntity::REVOKE_FIELD, 0],
+              [ParDataEntity::DELETE_FIELD, 0],
+            ]
+          ],
+      ];
+
+    }
 
     foreach ($conditions as $row) {
       $query = \Drupal::entityQuery($type);
