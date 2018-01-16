@@ -586,7 +586,7 @@ class ParDataManager implements ParDataManagerInterface {
     $account = \Drupal::currentUser();
 
     // Remove revoked partnerships from internal system queries.
-    if ($display_revoked_partnerships === FALSE && $type == 'par_data_partnership' && !$account->hasPermission('VIEW_REVOKED_PARTNERSHIPS') {
+  if ($display_revoked_partnerships === FALSE && $type == 'par_data_partnership') {
 
       $conditions[] = [
           'revoked' => [
@@ -596,6 +596,7 @@ class ParDataManager implements ParDataManagerInterface {
             ]
           ],
       ];
+
     }
 
     foreach ($conditions as $row) {
