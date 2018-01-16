@@ -126,7 +126,7 @@ class ParDashboardsDashboardController extends ControllerBase {
     if ($this->getCurrentUser()->hasPermission('enforce organisation')) {
       $build['messages'] = [
         '#type' => 'fieldset',
-        '#title' => $this->t('Your messages'),
+        '#title' => $this->t('Messages'),
         '#attributes' => ['class' => 'form-group'],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
