@@ -14,7 +14,7 @@ module.exports = () =>
             const errors = browser.getText('.tota11y-info-errors');
             var url = browser.getUrl();
             console.log(url, errors);
-            //expect(browser.isVisible('.tota11y-info-errors')).to.not.equal(true, errors);
+            //expect(browser.isVisible('body')).to.equal(true, errors);
         }
     }
     browser.click('.tota11y-toolbar-toggle');
