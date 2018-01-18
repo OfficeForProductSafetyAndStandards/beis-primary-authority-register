@@ -151,7 +151,7 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
     }
 
     // Load all flows associated with the current route.
-    $flows = $this->flow_storage->loadByRoute($this->getCurrentRoute());
+    $flows = $this->flow_storage->loadByRoute($this->route->getRouteName());
     if (count($flows) === 1) {
       $this->flow_name = key($flows);
     }

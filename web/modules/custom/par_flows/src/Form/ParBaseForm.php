@@ -15,6 +15,7 @@ use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\ParBaseInterface;
 use Drupal\par_flows\ParControllerTrait;
+use Drupal\par_flows\ParFlowDataHandlerInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Drupal\user\PrivateTempStoreFactory;
@@ -103,8 +104,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('par_flow.negotiator'),
-      $container->get('par_flow.data_handler'),
+      $container->get('par_flows.negotiator'),
+      $container->get('par_flows.data_handler'),
       $container->get('par_data.manager')
     );
   }
