@@ -1,5 +1,5 @@
 COPY(
-    SELECT
+SELECT
     par_partnerships_field_data.approved_date,
     par_partnerships_field_data.revocation_date,
     par_partnerships_field_data.partnership_status,
@@ -17,7 +17,8 @@ COPY(
     par_inspection_plans_field_data.deleted,
     par_inspection_plans_field_data.revoked,
     par_legal_entities_field_data.deleted,
-    par_legal_entities_field_data.revoked
+    par_legal_entities_field_data.revoked,
+    par_data_organisation__trading_name.trading_name_value
 FROM
     par_partnerships_field_data
         LEFT OUTER JOIN par_data_partnership__field_advice ON (par_partnerships_field_data.id = par_data_partnership__field_advice.entity_id)
@@ -28,6 +29,7 @@ FROM
         LEFT OUTER JOIN par_data_partnership__field_inspection_plan ON (par_partnerships_field_data.id = par_data_partnership__field_inspection_plan.entity_id)
             LEFT OUTER JOIN par_inspection_plans_field_data ON (par_data_partnership__field_inspection_plan.field_inspection_plan_target_id = par_inspection_plans_field_data.id),
     par_organisations_field_data
+        LEFT OUTER JOIN par_data_organisation__trading_name ON (par_organisations_field_data.id = par_data_organisation__trading_name.entity_id)
         LEFT OUTER JOIN par_data_organisation__field_legal_entity ON (par_organisations_field_data.id = par_data_organisation__field_legal_entity.entity_id)
             LEFT OUTER JOIN par_legal_entities_field_data ON (par_data_organisation__field_legal_entity.field_legal_entity_target_id = par_legal_entities_field_data.id)
         LEFT OUTER JOIN par_data_organisation__field_sic_code ON (par_organisations_field_data.id = par_data_organisation__field_sic_code.entity_id)

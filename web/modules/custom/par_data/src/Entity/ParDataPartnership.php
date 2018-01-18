@@ -93,11 +93,17 @@ class ParDataPartnership extends ParDataEntity {
    */
   public function inProgress() {
     // Freeze partnerships that are awaiting approval.
-    if ($this->getTypeEntity()->getDefaultStatus() === $this->getRawStatus()) {
+    $awaiting_statuses = [
+      $this->getTypeEntity()->getDefaultStatus(),
+      'confirmed_authority',
+      'confirmed_business'
+    ];
+
+    if (in_array($this->getRawStatus(), $awaiting_statuses)) {
       return TRUE;
     }
 
-    // Freeze partnerships that have un un approved enforcement notices
+    // Freeze partnerships that have un approved enforcement notices
     $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
     foreach ($enforcement_notices as $enforcement_notice) {
       if ($enforcement_notice->inProgress()) {
