@@ -86,6 +86,9 @@ Feature: New Direct Partnership For HD user To Revoke
         When I click on the checkbox "#edit-partnership-info-agreed-authority"
         And I click on the button "#edit-save"
 
+        # PAR1106
+        # Option given to send invite or complete business user journey
+
         # INVITATION
 
         And I run tota11y against the current page
@@ -115,3 +118,4 @@ Feature: New Direct Partnership For HD user To Revoke
         And I add "Direct Partnership For Revoking" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-helpdesk-dashboard"
         Then I expect that element ".table-scroll-wrapper" contains the text "Direct Partnership For Revoking"
+
