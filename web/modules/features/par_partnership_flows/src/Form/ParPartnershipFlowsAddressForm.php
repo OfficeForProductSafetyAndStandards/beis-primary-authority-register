@@ -142,7 +142,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       '#type' => 'select',
       '#title' => $this->t('Select your Nation'),
       '#options' => $premises_bundle->getAllowedValues('nation'),
-      '#default_value' => $this->getDefaultValues("country"),
+      '#default_value' => $this->getDefaultValues("nation"),
     ];
 
     // Get addressfield country values.
