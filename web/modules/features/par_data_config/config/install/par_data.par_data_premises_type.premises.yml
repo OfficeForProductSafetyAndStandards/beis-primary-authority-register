@@ -25,3 +25,4 @@ configuration:
       GB-SCT: Scotland
       GB-WLS: Wales
       GB-NIR: 'Northern Ireland'
+      OTHER: Other
