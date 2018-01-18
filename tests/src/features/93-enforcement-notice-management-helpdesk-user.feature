@@ -1,5 +1,5 @@
-@Bug
-Feature: Enforcement notice management
+    @Bug
+    Feature: Enforcement notice management
 
     Scenario: Enforcement notice management
 
