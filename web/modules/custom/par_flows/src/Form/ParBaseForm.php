@@ -446,7 +446,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
         else {
           $arguments = ['@field' => $field_label];
         }
-        $message = $this->t($violation->getMessage()->getUntranslatedString(), ['@field' => $field_label]);
+        $message = $this->t($violation->getMessage()->render(), ['@field' => $field_label]);
 
         $url = Url::fromUri('internal:#', $options);
         $link = Link::fromTextAndUrl($message, $url)->toString();
