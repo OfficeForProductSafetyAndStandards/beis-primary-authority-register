@@ -96,7 +96,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       $this->loadDataValue("town_city", $address->get('locality')->getString());
       $this->loadDataValue("county", $address->get('administrative_area')->getString());
       $this->loadDataValue("country", $par_data_premises->get('nation')->getString());
-      $this->loadDataValue("country_code", $par_data_premises->get('country_code')->getString());
+      $this->loadDataValue("country_code", $address->get('country_code')->getString());
       $this->loadDataValue("uprn", $par_data_premises->get('uprn')->getString());
       $this->loadDataValue('premises_id', $par_data_premises->id());
     }
