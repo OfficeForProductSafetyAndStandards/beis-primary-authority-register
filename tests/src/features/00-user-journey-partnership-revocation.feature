@@ -1,7 +1,7 @@
-@Pending @PAR1055 @PAR1057 @PAR1059 @PAR1060 @PAR1062
-Feature: New Direct Partnership For PA To Approve
+@ci @PAR1055 @PAR1057 @PAR1059 @PAR1060 @PAR1062
+Feature: New Direct Partnership For HD user To Revoke
 
-    Scenario: New Direct Partnership
+    Scenario: New Direct Partnership For HD user To Revoke
 
         Given I open the url "/user/login"
         And I add "par_authority@example.com" to the inputfield "#edit-name"
@@ -99,20 +99,6 @@ Feature: New Direct Partnership For PA To Approve
         And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
-        When I add "Direct Partnership For Revoking" to the inputfield "#edit-keywords"
-        And I select the option with the text "Confirmed by the Authority" for element "#edit-partnership-status"
+        And I add "Direct Partnership For Revoking" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-helpdesk-dashboard"
-        Then I expect that element ".view-par-flow-link-table-column" contains the text "Revoke"
-
-        # REVOKE PARTNERSHIP
-
-        When I click on the link "Revoke"
-        And I add "Some reasons for revoking partnership" to the inputfield "#partnership-revoke-reason"
-        And I click on the button "#edit-next"
-        Then I expect that element ".view-par-flow-link-table-column" contains the text "Partnership revoked"
-        When I click on the link "Dashboard"
-        When I add "Direct Partnership For Revoking" to the inputfield "#edit-keywords"
-        And I select the option with the text "Revoked" for element "#edit-partnership-status"
-        And I click on the button "#edit-submit-helpdesk-dashboard"
-        Then I expect that element ".view-par-flow-link-table-column" contains the text "Direct Partnership For Revoking"
-
+        Then I expect that element ".table-scroll-wrapper" contains the text "Direct Partnership For Revoking"

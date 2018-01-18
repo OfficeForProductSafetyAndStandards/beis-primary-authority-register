@@ -1,4 +1,4 @@
-@Pending @Bug @PAR1013 @PAR1049
+@ci @Bug @PAR1013 @PAR1049
 Feature: Enforcement notice management
 
     Scenario: Enforcement notice management
