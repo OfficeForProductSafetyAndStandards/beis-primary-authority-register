@@ -37,7 +37,7 @@ Feature: Business User - Manage Addresses
         Then I expect that element ".error-summary" does exist
         When I add "London" to the inputfield "#edit-town-city"
         When I add "London" to the inputfield "#edit-county"
-        And I select the option with the text "England" for element "#edit-country"
+        And I select the option with the text "England" for element "#edit-nation"
         When I click on the button "#edit-save"
         Then I expect that element "#edit-registered-address" contains the text "1 Change St"
         And I expect that element "#edit-registered-address" contains the text "New Change"
