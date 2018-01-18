@@ -1,4 +1,7 @@
 services:
   par_flow.negotiator:
     class: Drupal\par_flows\ParFlowNegotiator
-    arguments: ['@entity_type.manager', '@par_data.manager', '@current_route_match']
+    arguments: ['@entity_type.manager', '@par_data.manager', '@current_route_match', '@current_user']
+  par_flow.data_handler:
+    class: Drupal\par_flows\ParFlowDataHandler
+    arguments: ['@par_flow.negotiator', '@par_data.manager', '@session_manager', '@current_user']

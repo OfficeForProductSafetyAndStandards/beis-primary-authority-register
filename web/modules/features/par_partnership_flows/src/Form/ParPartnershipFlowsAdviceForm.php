@@ -195,7 +195,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       }
 
       if ($par_data_advice->save()) {
-        $this->deleteStore();
+        $this->getFlowDataHandler()->deleteStore();
       }
       else {
         $message = $this->t('This %advice could not be saved for %form_id');
@@ -246,7 +246,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
 
       // Save partnership.
       if ($par_data_partnership->save()) {
-        $this->deleteStore();
+        $this->getFlowDataHandler()->deleteStore();
       }
       else {
         $message = $this->t('This %partnership could not be saved for %form_id');

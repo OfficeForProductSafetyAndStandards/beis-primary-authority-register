@@ -132,7 +132,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     $form['inspection_plans']['link'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlow()
+        '@link' => $this->getFlowNegotiator()->getFlow()
           ->getNextLink('inspection_plans')
           ->setText('See all Inspection Plans')
           ->toString(),
@@ -150,7 +150,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     $form['advice']['link'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlow()
+        '@link' => $this->getFlowNegotiator()->getFlow()
           ->getNextLink('advice')
           ->setText('See all Advice')
           ->toString(),
@@ -185,7 +185,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
    * Helper function to get the information checkbox required. False if none required.
    */
   public function getInformationCheckbox() {
-    if ($this->getFlowName() === 'partnership_authority') {
+    if ($this->getFlowNegotiator()->getFlowName() === 'partnership_authority') {
       return 'partnership_info_agreed_authority';
     }
     else {
@@ -229,7 +229,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
       }
 
       if ($checkbox && $par_data_partnership->save()) {
-        $this->deleteStore();
+        $this->getFlowDataHandler()->deleteStore();
       }
       else {
         $message = $this->t('This %confirm could not be saved for %form_id');

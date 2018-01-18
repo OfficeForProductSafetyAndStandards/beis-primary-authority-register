@@ -158,7 +158,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       $legal_entity->set('registered_number', $this->getTempDataValue('registered_number'));
 
       if ($legal_entity->save()) {
-        $this->deleteStore();
+        $this->getFlowDataHandler()->deleteStore();
       }
       else {
         $message = $this->t('This %field could not be saved for %form_id');
@@ -186,7 +186,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       $par_data_organisation->addLegalEntity($legal_entity);
 
       if ($par_data_organisation->save()) {
-        $this->deleteStore();
+        $this->getFlowDataHandler()->deleteStore();
       }
       else {
         $message = $this->t('This %field could not be saved for %form_id');

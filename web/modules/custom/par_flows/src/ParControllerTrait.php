@@ -24,7 +24,21 @@ trait ParControllerTrait {
   protected $currentUser;
 
   /**
-   * The PAR data manager for acting upon PAR Data.
+   * The flow negotiator.
+   *
+   * @var \Drupal\par_flows\ParFlowNegotiatorInterface
+   */
+  protected $negotiator;
+
+  /**
+   * The flow data manager.
+   *
+   * @var \Drupal\par_flows\ParFlowDataHandlerInterface
+   */
+  protected $flowDataHandler;
+
+  /**
+   * The PAR Data Manager.
    *
    * @var \Drupal\par_data\ParDataManagerInterface
    */
@@ -58,10 +72,21 @@ trait ParControllerTrait {
   }
 
   /**
-   * Returns the PAR data manager.
-   *
-   * @return \Drupal\par_data\ParDataManagerInterface
-   *   Get the logger channel to use.
+   * {@inheritdoc}
+   */
+  public function getFlowNegotiator() {
+    return $this->negotiator;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getflowDataHandler() {
+    return $this->flowDataHandler;
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function getParDataManager() {
     return $this->parDataManager;

@@ -86,7 +86,7 @@ class ParPartnershipFlowsEmployeeNoForm extends ParBaseForm {
     $par_data_organisation = current($partnership->getOrganisation());
     $par_data_organisation->set('employees_band', $this->getTempDataValue('employees_band'));
     if ($par_data_organisation->save()) {
-      $this->deleteStore();
+      $this->getFlowDataHandler()->deleteStore();
     }
     else {
       $message = $this->t('The %field field could not be saved for %form_id');

@@ -179,7 +179,7 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
     $par_data_enforcement_notice = $this->getRouteParam('par_data_enforcement_notice');
 
     if ($this->referral_cloning($par_data_enforcement_notice)) {
-      $this->deleteStore();
+      $this->getFlowDataHandler()->deleteStore();
     }
     else {
       $message = $this->t('The enforcement notice %confirm could not be approved for %form_id');

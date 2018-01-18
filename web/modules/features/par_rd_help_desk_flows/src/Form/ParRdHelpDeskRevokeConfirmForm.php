@@ -128,7 +128,7 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
       $revoked = $par_data_partnership->revoke($this->getTempDataValue('revocation_reason'));
 
       if ($revoked) {
-        $this->deleteStore();
+        $this->getFlowDataHandler()->deleteStore();
       }
       else {
         $message = $this->t('Revocation reason could not be saved for %form_id');

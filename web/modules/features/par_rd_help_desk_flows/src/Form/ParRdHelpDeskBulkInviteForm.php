@@ -139,7 +139,7 @@ HEREDOC;
     ];
 
     // Disable the default 'save' action which takes precedence over 'next' action.
-    $this->getFlow()->disableAction('save');
+    $this->getFlowNegotiator()->getFlow()->disableAction('save');
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
@@ -191,7 +191,7 @@ HEREDOC;
     $invite->set('field_invite_email_body', $this->getTempDataValue('email_body'));
     $invite->setPlugin('invite_by_email');
     if ($invite->save()) {
-      $this->deleteStore();
+      $this->getFlowDataHandler()->deleteStore();
     }
     else {
       $message = $this->t('This invite could not be sent for %person on %form_id');

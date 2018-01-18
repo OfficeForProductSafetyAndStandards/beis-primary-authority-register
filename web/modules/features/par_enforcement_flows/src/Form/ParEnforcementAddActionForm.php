@@ -156,7 +156,7 @@ class ParEnforcementAddActionForm extends ParBaseForm {
 
       $enforcement_notice->field_enforcement_action[] = $enforcement_action_ids;
       $enforcement_notice->save();
-      $this->deleteStore();
+      $this->getFlowDataHandler()->deleteStore();
     }
     else {
       $message = $this->t('This %action_entity could not be saved for %form_id');

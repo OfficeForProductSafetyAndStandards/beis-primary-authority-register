@@ -50,7 +50,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
    * Get partnership.
    */
   public function getPremisesParam() {
-    if ($this->getFlowName() === 'partnership_direct_application' || $this->getFlowName() === 'partnership_coordinated_application') {
+    if ($this->getFlowNegotiator()->getFlowName() === 'partnership_direct_application' || $this->getFlowNegotiator()->getFlowName() === 'partnership_coordinated_application') {
       $partnership = $this->getPartnershipParam();
       $organisation = $partnership ? $partnership->getOrganisation(TRUE) : NULL;
       $premises = $organisation ? $organisation->getPremises() : NULL;
@@ -70,17 +70,17 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
 
     if (!empty($par_data_partnership)) {
       // Are we editing an existing premises entity?
-      if ($this->getFlowName() === 'partnership_direct_application' || $this->getFlowName() === 'partnership_coordinated_application') {
+      if ($this->getFlowNegotiator()->getFlowName() === 'partnership_direct_application' || $this->getFlowNegotiator()->getFlowName() === 'partnership_coordinated_application') {
         $verb = 'Confirm';
       }
       else {
         $verb = $par_data_premises ? 'Edit' : 'Add';
       }
 
-      if ($this->getFlowName() === 'partnership_direct' || $this->getFlowName() === 'partnership_direct_application') {
+      if ($this->getFlowNegotiator()->getFlowName() === 'partnership_direct' || $this->getFlowNegotiator()->getFlowName() === 'partnership_direct_application') {
         $this->pageTitle = "{$verb} the registered address";
       }
-      else if ($this->getFlowName() === 'partnership_coordinated' || $this->getFlowName() === 'partnership_coordinated_application') {
+      else if ($this->getFlowNegotiator()->getFlowName() === 'partnership_coordinated' || $this->getFlowNegotiator()->getFlowName() === 'partnership_coordinated_application') {
         $this->pageTitle = "{$verb} the member's registered address";
       }
     }
@@ -196,7 +196,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
     // We don't want to save for Partnership Application journey.
     // Temporary fix to resolve the saving of addresses when not needed.
     // @TODO When forms are separated then this can be removed.
-    if ($this->getFlowName() === 'partnership_application') {
+    if ($this->getFlowNegotiator()->getFlowName() === 'partnership_application') {
       return;
     }
 
@@ -233,7 +233,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
           $par_data_organisation->save();
         }
 
-        $this->deleteStore();
+        $this->getFlowDataHandler()->deleteStore();
 
       }
       else {

@@ -187,9 +187,9 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
     $enforcementNotification = \Drupal::entityManager()->getStorage('par_data_enforcement_notice')->create($enforcementNotice_data);
 
     if ($enforcementNotification->save()) {
-      $this->deleteStore();
+      $this->getFlowDataHandler()->deleteStore();
       // Go directly to the action setup form we cannot use links within forms without losing form data.
-      $form_state->setRedirect($this->getFlow()->getNextRoute('next'), ['par_data_partnership' => $partnership->id(), 'par_data_enforcement_notice' => $enforcementNotification->id()]);
+      $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), ['par_data_partnership' => $partnership->id(), 'par_data_enforcement_notice' => $enforcementNotification->id()]);
     }
     else {
       $message = $this->t('The enforcement entity %entity_id could not be saved for %form_id');

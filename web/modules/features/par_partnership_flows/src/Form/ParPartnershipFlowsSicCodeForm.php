@@ -102,7 +102,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
     $par_data_organisation->set('field_sic_code', $items);
 
     if ($par_data_organisation->save()) {
-      $this->deleteStore();
+      $this->getFlowDataHandler()->deleteStore();
     } else {
       $message = $this->t('This %field could not be saved for %form_id');
       $replacements = [

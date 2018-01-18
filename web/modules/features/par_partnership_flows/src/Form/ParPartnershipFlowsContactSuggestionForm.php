@@ -95,7 +95,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
       $this->submitForm($form, $form_state);
 
       // Pass param PAR Person created in the submit handler to the next step.
-      return $this->redirect($this->getFlow()->getNextRoute('save'), $this->getRouteParams() + ['par_data_person' => $this->par_data_person_id]);
+      return $this->redirect($this->getFlowNegotiator()->getFlow()->getNextRoute('save'), $this->getRouteParams() + ['par_data_person' => $this->par_data_person_id]);
     }
 
     // Make sure to add the person cacheability data to this form.
@@ -167,7 +167,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
 
       // Based on the flow we're in we also need to
       // Update field_person on authority or organisation.
-      if ($this->getFlowName() === 'partnership_authority') {
+      if ($this->getFlowNegotiator()->getFlowName() === 'partnership_authority') {
         // Add to field_authority_person.
         $par_data_partnership->get('field_authority_person')
           ->appendItem($par_data_person->id());
@@ -191,10 +191,10 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
 
     if ($par_data_partnership->save() &&
         $par_data_member_entity->save()) {
-      $this->deleteStore();
+      $this->getFlowDataHandler()->deleteStore();
 
       // Inject PAR Person we just created into the next step.
-      $form_state->setRedirect($this->getFlow()->getNextRoute('save'), $this->getRouteParams() + ['par_data_person' => $this->par_data_person_id]);
+      $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('save'), $this->getRouteParams() + ['par_data_person' => $this->par_data_person_id]);
     }
     else {
       $message = $this->t('This %person could not be saved for %form_id');

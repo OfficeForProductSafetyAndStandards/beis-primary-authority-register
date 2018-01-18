@@ -59,7 +59,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
       '#collapsed' => FALSE,
     ];
 
-    $link = $this->getFlow()->getNextLink('raise')->setText('Send a notification of a proposed enforcement action')->toString();
+    $link = $this->getFlowNegotiator()->getFlow()->getNextLink('raise')->setText('Send a notification of a proposed enforcement action')->toString();
 
     $build['partnership_actions']['link'] = ['#type' => 'markup',
       '#markup' => $link ? $link : '<p>(none)</p>',
@@ -115,7 +115,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     $build['inspection_plans']['link'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('inspection_plans')->setText('See all Inspection Plans')->toString(),
+        '@link' => $this->getFlowNegotiator()->getFlow()->getNextLink('inspection_plans')->setText('See all Inspection Plans')->toString(),
       ]),
     ];
 
@@ -129,7 +129,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     $build['advice']['link'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('advice')->setText('See all Advice')->toString(),
+        '@link' => $this->getFlowNegotiator()->getFlow()->getNextLink('advice')->setText('See all Advice')->toString(),
       ]),
     ];
 

@@ -89,7 +89,7 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
       // Save the value for the about_partnership field.
       $par_data_partnership->set('about_partnership', $this->getTempDataValue('about_partnership'));
       if ($par_data_partnership->save()) {
-        $this->deleteStore();
+        $this->getFlowDataHandler()->deleteStore();
       }
       else {
         $message = $this->t('The %field field could not be saved for %form_id');

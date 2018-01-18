@@ -49,7 +49,7 @@ class ParEnforcementEnforceOrganisationForm extends ParBaseForm {
     if ($par_data_partnership->isDirect()) {
       $organisation = current($par_data_partnership->get('field_organisation')->referencedEntities());
       $this->setTempDataValue('par_data_organisation_id', $organisation->id());
-      return $this->redirect($this->getFlow()->getNextRoute('next'), $this->getRouteParams());
+      return $this->redirect($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
     }
     elseif ($par_data_partnership->isCoordinated()) {
       $members = [];
@@ -69,7 +69,7 @@ class ParEnforcementEnforceOrganisationForm extends ParBaseForm {
           '#suffix' => '</strong><p>',
         ];
 
-        $this->getFlow()->disableAction('next');
+        $this->getFlowNegotiator()->getFlow()->disableAction('next');
       }
       else {
         // Initialize pager and get current page.
@@ -129,11 +129,11 @@ class ParEnforcementEnforceOrganisationForm extends ParBaseForm {
     $organisation_id = $this->getDefaultValues('par_data_organisation_id', '', 'par_partnership_organisation_suggestion');
     if ($par_data_organisation = ParDataOrganisation::load($organisation_id)) {
       if (!$par_data_organisation->get('field_person')->isEmpty()) {
-        $form_state->setRedirect($this->getFlow()->getNextRoute('review'), $this->getRouteParams());
+        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('review'), $this->getRouteParams());
       }
       elseif ($par_data_organisation->get('field_person')->isEmpty()
         && !$par_data_organisation->get('field_premises')->isEmpty()) {
-        $form_state->setRedirect($this->getFlow()->getNextRoute('add_contact'), $this->getRouteParams());
+        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('add_contact'), $this->getRouteParams());
       }
     }
   }

@@ -47,12 +47,12 @@ class ParPartnershipFlowsInviteForm extends ParBaseForm {
     }
 
     // Flows containing the Authority Contact step.
-    if (in_array($this->getFlowName(), ['invite_authority_members', 'partnership_authority'])) {
+    if (in_array($this->getFlowNegotiator()->getFlowName(), ['invite_authority_members', 'partnership_authority'])) {
       $this->invite_type = "invite_authority_member";
     }
 
     // Flows containing the Organisation Contact step.
-    if (in_array($this->getFlowName(), ['partnership_application', 'partnership_direct'])) {
+    if (in_array($this->getFlowNegotiator()->getFlowName(), ['partnership_application', 'partnership_direct'])) {
       $this->invite_type = "invite_organisation_member";
     }
 
@@ -85,7 +85,7 @@ class ParPartnershipFlowsInviteForm extends ParBaseForm {
       $this->loadDataValue("sender_name", $sender_name);
 
       // Get the user accounts related to the business user.
-      if ($this->getFlowName() === 'invite_authority_members' && !$recipient_exists) {
+      if ($this->getFlowNegotiator()->getFlowName() === 'invite_authority_members' && !$recipient_exists) {
         $email_subject = 'New Primary Authority Register';
 
         $message_body = <<<HEREDOC
@@ -103,7 +103,7 @@ Thanks for your help.
 {$sender_name}
 HEREDOC;
       }
-      elseif ($this->getFlowName() === 'invite_authority_members') {
+      elseif ($this->getFlowNegotiator()->getFlowName() === 'invite_authority_members') {
         $email_subject = 'New Primary Authority Register';
 
         $message_body = <<<HEREDOC
@@ -176,7 +176,7 @@ HEREDOC;
     }
 
     // Get Sender.
-    if ($this->getFlowName() === 'invite_authority_members') {
+    if ($this->getFlowNegotiator()->getFlowName() === 'invite_authority_members') {
       $description = 'You cannot change your email here.';
     }
     else {
@@ -264,7 +264,7 @@ HEREDOC;
     }
 
     // Disable the default 'save' action which takes precedence over 'next' action.
-    $this->getFlow()->disableAction('save');
+    $this->getFlowNegotiator()->getFlow()->disableAction('save');
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
@@ -326,7 +326,7 @@ HEREDOC;
     $invite->set('field_invite_email_body', $this->getTempDataValue('email_body'));
     $invite->setPlugin('invite_by_email');
     if ($invite->save()) {
-      $this->deleteStore();
+      $this->getFlowDataHandler()->deleteStore();
     }
     else {
       $message = $this->t('This invite could not be sent for %person on %form_id');

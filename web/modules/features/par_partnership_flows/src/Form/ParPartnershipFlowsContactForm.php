@@ -53,7 +53,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
    * Get partnership.
    */
   public function getPersonParam() {
-    if ($this->getFlowName() === 'partnership_direct_application' || $this->getFlowName() === 'partnership_coordinated_application') {
+    if ($this->getFlowNegotiator()->getFlowName() === 'partnership_direct_application' || $this->getFlowNegotiator()->getFlowName() === 'partnership_coordinated_application') {
       $partnership = $this->getPartnershipParam();
       $people = $partnership ? $partnership->getOrganisationPeople() : NULL;
       return !empty($people) ? current($people) : NULL;
@@ -71,11 +71,11 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     $this->pageTitle = $par_data_person ? 'Edit a contact' : 'Add a contact';
 
     // Override page title for Partnership Application journey.
-    if ($this->getFlowName() === 'partnership_application') {
+    if ($this->getFlowNegotiator()->getFlowName() === 'partnership_application') {
       $this->pageTitle = 'Add a contact for the business';
     }
 
-    if ($this->getFlowName() === 'partnership_direct_application' || $this->getFlowName() === 'partnership_coordinated_application') {
+    if ($this->getFlowNegotiator()->getFlowName() === 'partnership_direct_application' || $this->getFlowNegotiator()->getFlowName() === 'partnership_coordinated_application') {
       $this->pageTitle = 'Confirm the primary contact details';
     }
 
@@ -124,7 +124,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
     $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
 
-    if ($this->getFlowName() == 'partnership_application') {
+    if ($this->getFlowNegotiator()->getFlowName() == 'partnership_application') {
       $form['info'] = [
         '#type' => 'markup',
         '#markup' => $this->t("Providing contact information"),
@@ -267,7 +267,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
 
       if ($par_data_person->save()) {
         // Only delete the form data for the par_partnership_contact form.
-        $this->deleteFormTempData('par_partnership_contact');
+        $this->getFlowDataHandler()->deleteFormTempData('par_partnership_contact');
       }
       else {
         $message = $this->t('This %person could not be saved for %form_id');

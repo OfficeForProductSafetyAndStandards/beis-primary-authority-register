@@ -18,6 +18,22 @@ interface ParBaseInterface {
   /**
    * Returns the PAR data manager.
    *
+   * @return \Drupal\par_flows\ParFlowNegotiatorInterface
+   *   Get the flow negotiator.
+   */
+  public function getFlowNegotiator();
+
+  /**
+   * Returns the PAR data manager.
+   *
+   * @return \Drupal\par_flows\ParFlowDataHandlerInterface
+   *   Get the flow data handler.
+   */
+  public function getflowDataHandler()v;
+
+  /**
+   * Returns the PAR data manager.
+   *
    * @return string
    *   Get the logger channel to use.
    */
