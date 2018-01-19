@@ -18,7 +18,7 @@ Feature: Business User - Manage Addresses
 
         # EDIT REGISTERED ADDRESS
 
-        When  I click on the link "edit address"
+        When I click on the link "edit address"
         And I clear the inputfield "#edit-address-line1"
         And I clear the inputfield "#edit-address-line2"
         And I clear the inputfield "#edit-town-city"
@@ -31,12 +31,10 @@ Feature: Business User - Manage Addresses
         Then I expect that element ".error-summary" does exist
         And I add "1 Change St" to the inputfield "#edit-address-line1"
         And I click on the button "#edit-save"
-        Then I expect that element ".error-summary" does exist
+        When I click on the link "edit address"
         And I add "New Change" to the inputfield "#edit-address-line2"
-        And I click on the button "#edit-save"
-        Then I expect that element ".error-summary" does exist
-        When I add "London" to the inputfield "#edit-town-city"
-        When I add "London" to the inputfield "#edit-county"
+        And I add "London" to the inputfield "#edit-town-city"
+        And I add "London" to the inputfield "#edit-county"
         And I select the option with the text "England" for element "#edit-nation"
         When I click on the button "#edit-save"
         Then I expect that element "#edit-registered-address" contains the text "1 Change St"
