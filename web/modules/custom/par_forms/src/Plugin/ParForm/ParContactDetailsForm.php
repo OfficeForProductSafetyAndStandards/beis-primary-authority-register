@@ -12,7 +12,7 @@ use Drupal\par_forms\ParFormPluginBase;
  *   title = @Translation("Auto-approval of enforcement notices.")
  * )
  */
-class ParEnforcementNoticeApprove extends ParFormPluginBase {
+class ParContactDetailsForm extends ParFormPluginBase {
 
   public function getElements($form = []) {
 
