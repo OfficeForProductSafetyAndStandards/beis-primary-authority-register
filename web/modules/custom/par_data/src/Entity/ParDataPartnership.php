@@ -117,15 +117,21 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Get the organisation contacts for this Partnership.
    */
-  public function getOrganisationPeople() {
-    return $this->get('field_organisation_person')->referencedEntities();
+  public function getOrganisationPeople($primary = FALSE) {
+    $people = $this->get('field_organisation_person')->referencedEntities();
+    $person = !empty($people) ? current($people) : NULL;
+
+    return $primary ? $person : $people;
   }
 
   /**
    * Get the authority contacts for this Partnership.
    */
-  public function getAuthorityPeople() {
-    return $this->get('field_authority_person')->referencedEntities();
+  public function getAuthorityPeople($primary = FALSE) {
+    $people = $this->get('field_authority_person')->referencedEntities();
+    $person = !empty($people) ? current($people) : NULL;
+
+    return $primary ? $person : $people;
   }
 
   /**
