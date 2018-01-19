@@ -47,7 +47,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
     // Go to previous step if search query is not specified.
     if (!$searchQuery) {
       // @TODO Find a way to notify the user they have been redirected.
-      return $this->redirect($this->getFlowNegotiator()->getFlow()->getPrevRoute(), $this->getflowDataHandler()->getParameters());
+      return $this->redirect($this->getFlowNegotiator()->getFlow()->getPrevRoute(), $this->getRouteParams());
     }
 
     $conditions = [
@@ -73,7 +73,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
     if (count($radio_options) <= 0) {
       $this->getFlowDataHandler()->setTempDataValue('par_data_organisation_id', 'new');
       $this->submitForm($form, $form_state);
-      return $this->redirect($this->getFlowNegotiator()->getFlow()->getNextRoute(), $this->getflowDataHandler()->getParameters());
+      return $this->redirect($this->getFlowNegotiator()->getFlow()->getNextRoute(), $this->getRouteParams());
     }
 
     $form['par_data_organisation_id'] = [
@@ -113,11 +113,11 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
     }
     if (isset($par_data_organisation)) {
       if (!$par_data_organisation->get('field_person')->isEmpty()) {
-        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('review'), $this->getflowDataHandler()->getParameters());
+        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('review'), $this->getRouteParams());
       }
       elseif ($par_data_organisation->get('field_person')->isEmpty()
         && !$par_data_organisation->get('field_premises')->isEmpty()) {
-        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('add_contact'), $this->getflowDataHandler()->getParameters());
+        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('add_contact'), $this->getRouteParams());
       }
     }
   }

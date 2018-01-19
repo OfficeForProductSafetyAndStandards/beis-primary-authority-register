@@ -93,6 +93,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $this->flowDataHandler = $data_handler;
     $this->parDataManager = $par_data_manager;
 
+    $this->setCurrentUser();
+
     // If no flow entity exists throw a build error.
     if (!$this->getFlowNegotiator()->getFlow()) {
       $this->getLogger($this->getLoggerChannel())->critical('There is no flow %flow for this form.', ['%flow' => $this->getFlowNegotiator()->getFlowName()]);

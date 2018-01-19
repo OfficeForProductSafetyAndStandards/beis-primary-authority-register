@@ -49,16 +49,13 @@ class ParEnforcementEnforceOrganisationForm extends ParBaseForm {
     if ($par_data_partnership->isDirect()) {
       $organisation = current($par_data_partnership->get('field_organisation')->referencedEntities());
       $this->getFlowDataHandler()->setTempDataValue('par_data_organisation_id', $organisation->id());
-      return $this->redirect($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getflowDataHandler()->getParameters());
+      return $this->redirect($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
     }
     elseif ($par_data_partnership->isCoordinated()) {
       $members = [];
-      foreach ($par_data_partnership->get('field_coordinated_business')
-                 ->referencedEntities() as $coordinated_member) {
-        $coordinated_organisation = $coordinated_member->get('field_organisation')
-          ->referencedEntities();
-        $members = $this->getParDataManager()
-          ->getEntitiesAsOptions($coordinated_organisation, $members);
+      foreach ($par_data_partnership->get('field_coordinated_business')->referencedEntities() as $coordinated_member) {
+        $coordinated_organisation = $coordinated_member->get('field_organisation')->referencedEntities();
+        $members = $this->getParDataManager()->getEntitiesAsOptions($coordinated_organisation, $members);
       }
 
       if (empty($members)) {
@@ -130,11 +127,11 @@ class ParEnforcementEnforceOrganisationForm extends ParBaseForm {
     $organisation_id = $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', '', $cid);
     if ($par_data_organisation = ParDataOrganisation::load($organisation_id)) {
       if (!$par_data_organisation->get('field_person')->isEmpty()) {
-        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('review'), $this->getflowDataHandler()->getParameters());
+        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('review'), $this->getRouteParams());
       }
       elseif ($par_data_organisation->get('field_person')->isEmpty()
         && !$par_data_organisation->get('field_premises')->isEmpty()) {
-        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('add_contact'), $this->getflowDataHandler()->getParameters());
+        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('add_contact'), $this->getRouteParams());
       }
     }
   }

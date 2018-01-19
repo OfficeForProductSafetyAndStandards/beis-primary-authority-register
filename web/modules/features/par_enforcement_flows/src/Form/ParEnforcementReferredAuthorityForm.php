@@ -83,7 +83,7 @@ class ParEnforcementReferredAuthorityForm extends ParBaseForm {
 
     // Redirect to the next page if there are no referrals.
     if (!$referrals) {
-      return $this->redirect($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getflowDataHandler()->getParameters());
+      return $this->redirect($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
     }
 
     return parent::buildForm($form, $form_state);
