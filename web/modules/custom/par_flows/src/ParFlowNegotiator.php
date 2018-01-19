@@ -132,6 +132,9 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
   }
 
   public function getFormKey($form_id, $state = NULL, $flow_name = NULL) {
+    $step_id = !empty($step_id) ? $step_id : $this->getStepId();
+    $flow_name = !empty($flow_name) ? $flow_name : $this->getFlowName();
+
     $flow = $this->getFlow($flow_name);
     $step = $flow->getStepByFormId($form_id);
     $route_name = $flow->getRouteByStep($step);
