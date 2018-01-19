@@ -386,7 +386,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $this->cleanseFormDefaults($form_state->getValues());
-    $this->setFormTempData($values);
+    $this->getflowDataHandler()->setFormTempData($values);
 
     $submit_action = $form_state->getTriggeringElement()['#name'];
     $next = $this->getFlowNegotiator()->getFlow()->getNextRoute($submit_action);
@@ -414,7 +414,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   public function cancelForm(array &$form, FormStateInterface $form_state) {
     // Delete form storage.
-    $this->getFlowDataHandler()->getFlowStore();
+    $this->getFlowDataHandler()->deleteStore();
 
     // Go to cancel step.
     $next = $this->getFlowNegotiator()->getFlow()->getPrevRoute('cancel');

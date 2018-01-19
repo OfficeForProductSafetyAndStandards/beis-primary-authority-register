@@ -31,7 +31,7 @@ class ParEnforcementSubmitNoticeForm extends ParBaseEnforcementForm {
    */
   public function titleCallback() {
 
-    $par_data_enforcement_notice = $this->getRouteParam('par_data_enforcement_notice');
+    $par_data_enforcement_notice = $this->getflowDataHandler()->getParameter('par_data_enforcement_notice');
 
     if (!$par_data_enforcement_notice) {
       return parent::titleCallback();

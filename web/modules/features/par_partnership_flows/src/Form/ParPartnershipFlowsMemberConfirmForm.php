@@ -126,12 +126,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
    *   The advice being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
-    if (isset($par_data_partnership)) {
-      // If we're editing an entity we should set the state
-      // to something other than default to avoid conflicts
-      // with existing versions of the same form.
-      $this->setState("edit:{$par_data_partnership->id()}");
-    }
+
   }
 
   /**
@@ -140,7 +135,8 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
-    $members = $this->getDefaultValues("coordinated_members", [], 'par_partnership_member_upload');
+    $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_member_upload');
+    $members = $this->getFlowDataHandler()->getDefaultValues("coordinated_members", [], $cid);
     if (!empty($members)) {
       $count = count($members);
       $form['member_summary'] = [
@@ -231,12 +227,13 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Get all the members which need attention and extra processing.
-    $attentions = $this->getTempDataValue(["members"]);
+    $attentions = $this->getFlowDataHandler()->getTempDataValue(["members"]);
 
     // Get the *full* partnership entity from the URL.
-    $route_partnership = $this->getRouteParam('par_data_partnership');
+    $route_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
 
-    $members = $this->getTempDataValue("coordinated_members", 'par_partnership_member_upload');
+    $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_member_upload');
+    $members = $this->getFlowDataHandler()->getTempDataValue("coordinated_members", $cid);
     foreach ($members as $i => $member) {
       $requires_attention = isset($attentions[$i]) ? $attentions[$i] : NULL;
 

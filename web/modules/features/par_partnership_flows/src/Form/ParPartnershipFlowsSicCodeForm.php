@@ -33,16 +33,11 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, $field_sic_code_delta = NULL) {
     if (!is_null($field_sic_code_delta)) {
-      // If we're editing an entity we should set the state
-      // to something other than default to avoid conflicts
-      // with existing versions of the same form.
-      $this->setState("edit:{$par_data_partnership->id()}");
-
       // Store the current value of the sic_code if it's being edited.
       $par_data_organisation = current($par_data_partnership->getOrganisation());
       $sic_code = $par_data_organisation ? $par_data_organisation->get('field_sic_code')->referencedEntities()[$field_sic_code_delta] : NULL;
       if ($id = $sic_code->id()) {
-        $this->loadDataValue("sic_code", $id);
+        $this->getFlowDataHandler()->setFormPermValue("sic_code", $id);
       }
     }
 
@@ -56,7 +51,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
     $par_data_organisation = current($par_data_partnership->getOrganisation());
 
     // Display the correct introductory text based on the action that is being performed.
-    $intro_text = $this->getDefaultValues("sic_code", NULL) ?
+    $intro_text = $this->getFlowDataHandler()->getDefaultValues("sic_code", NULL) ?
       'Change the SIC Code of your organisation' :
       'Add a new SIC Code to your organisation';
 
@@ -72,7 +67,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
       '#type' => 'select',
       '#title' => $this->t($intro_text),
       '#options' => $options,
-      '#default_value' => $this->getDefaultValues("sic_code"),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("sic_code"),
     ];
 
     // Make sure to add the person cacheability data to this form.
@@ -88,16 +83,16 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Save the edited value for the organisation's sic code field.
-    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $sic_code_delta = $this->getRouteParam('field_sic_code_delta');
+    $sic_code_delta = $this->getflowDataHandler()->getParameter('field_sic_code_delta');
 
     $items = $par_data_organisation->get('field_sic_code')->getValue();
     if ($par_data_organisation && isset($sic_code_delta)) {
-      $items[$sic_code_delta] = $this->getTempDataValue('sic_code');
+      $items[$sic_code_delta] = $this->getFlowDataHandler()->getTempDataValue('sic_code');
     }
     else {
-      $items[] = $this->getTempDataValue('sic_code');
+      $items[] = $this->getFlowDataHandler()->getTempDataValue('sic_code');
     }
     $par_data_organisation->set('field_sic_code', $items);
 
@@ -106,7 +101,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
     } else {
       $message = $this->t('This %field could not be saved for %form_id');
       $replacements = [
-        '%field' => $this->getTempDataValue('trading_name'),
+        '%field' => $this->getFlowDataHandler()->getTempDataValue('trading_name'),
         '%form_id' => $this->getFormId(),
       ];
       $this->getLogger($this->getLoggerChannel())->error($message, $replacements);

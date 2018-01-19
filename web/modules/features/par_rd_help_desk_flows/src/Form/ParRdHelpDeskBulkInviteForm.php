@@ -37,26 +37,19 @@ class ParPartnershipFlowsInviteForm extends ParBaseForm {
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, $par_data_person = NULL) {
-    if ($par_data_partnership && $par_data_person) {
-      // If we're editing an entity we should set the state
-      // to something other than default to avoid conflicts
-      // with existing versions of the same form.
-      $this->setState("edit:{$par_data_partnership->id()},{$par_data_person->id()}");
-    }
-
     if ($par_data_person) {
       // Set the default subject for the invite email, this can be changed by the user.
-      $this->loadDataValue("email_subject", 'New Partnership on the Primary Authority Register');
+      $this->getFlowDataHandler()->setFormPermValue("email_subject", 'New Partnership on the Primary Authority Register');
 
       // Get the email for the business contact that this email will go to.
-      $this->loadDataValue("business_member", $par_data_person->get('email')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("business_member", $par_data_person->get('email')->getString());
 
       // Get the authority user's email and name.
       $account = User::load($this->currentUser()->id());
       $authority = current($par_data_partnership->get('field_authority')->referencedEntities());
       $authority_person = $this->getParDataManager()->getUserPerson($account, $authority);
 
-      $this->loadDataValue("authority_member", $authority_person->get('email')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("authority_member", $authority_person->get('email')->getString());
       $authority_person_name = $authority_person->getFullName();
 
       // Get the user accounts related to the business user.
@@ -85,7 +78,7 @@ Thanks for your help.
 HEREDOC;
       }
 
-      $this->loadDataValue("email_body", $message_body);
+      $this->getFlowDataHandler()->setFormPermValue("email_body", $message_body);
     }
   }
 
@@ -119,7 +112,7 @@ HEREDOC;
       '#title' => t('Business contact email'),
       '#required' => TRUE,
       '#disabled' => TRUE,
-      '#default_value' => $this->getDefaultValues('business_member'),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('business_member'),
       '#description' => 'This is the businesses primary contact. If you need to send this invite to another person please contact the helpdesk.',
     ];
 
@@ -127,7 +120,7 @@ HEREDOC;
     $form['email_subject'] = [
       '#type' => 'textfield',
       '#title' => t('Message subject'),
-      '#default_value' => $this->getDefaultValues('email_subject'),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('email_subject'),
     ];
 
     // Allow the message body to be changed.
@@ -135,7 +128,7 @@ HEREDOC;
       '#type' => 'textarea',
       '#rows' => 18,
       '#title' => t('Message'),
-      '#default_value' => $this->getDefaultValues('email_body'),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('email_body'),
     ];
 
     // Disable the default 'save' action which takes precedence over 'next' action.
@@ -161,7 +154,7 @@ HEREDOC;
       $form_state->setErrorByName('email_body', $this->t('<a href="#edit-email-body">The Message is required.</a>'));
     }
     // Check that the email body contains an invite accept link.
-    $par_data_person = $this->getRouteParam('par_data_person');
+    $par_data_person = $this->getflowDataHandler()->getParameter('par_data_person');
     if ($business_user = $par_data_person->getUserAccount()) {
       $required_token = '[site:login-url]';
     }
@@ -183,12 +176,12 @@ HEREDOC;
 
     $invite = Invite::create([
       'type' => 'invite_organisation_member',
-      'user_id' => $this->getTempDataValue('inviter'),
-      'invitee' => $this->getTempDataValue('business_member'),
+      'user_id' => $this->getFlowDataHandler()->getTempDataValue('inviter'),
+      'invitee' => $this->getFlowDataHandler()->getTempDataValue('business_member'),
     ]);
-    $invite->set('field_invite_email_address', $this->getTempDataValue('business_member'));
-    $invite->set('field_invite_email_subject', $this->getTempDataValue('email_subject'));
-    $invite->set('field_invite_email_body', $this->getTempDataValue('email_body'));
+    $invite->set('field_invite_email_address', $this->getFlowDataHandler()->getTempDataValue('business_member'));
+    $invite->set('field_invite_email_subject', $this->getFlowDataHandler()->getTempDataValue('email_subject'));
+    $invite->set('field_invite_email_body', $this->getFlowDataHandler()->getTempDataValue('email_body'));
     $invite->setPlugin('invite_by_email');
     if ($invite->save()) {
       $this->getFlowDataHandler()->deleteStore();
@@ -196,8 +189,8 @@ HEREDOC;
     else {
       $message = $this->t('This invite could not be sent for %person on %form_id');
       $replacements = [
-        '%invite' => $this->getTempDataValue('first_name') . ' ' . $this->getTempDataValue('last_name'),
-        '%person' => $this->getTempDataValue('business_member'),
+        '%invite' => $this->getFlowDataHandler()->getTempDataValue('first_name') . ' ' . $this->getFlowDataHandler()->getTempDataValue('last_name'),
+        '%person' => $this->getFlowDataHandler()->getTempDataValue('business_member'),
         '%form_id' => $this->getFormId(),
       ];
       $this->getLogger($this->getLoggerChannel())->error($message, $replacements);

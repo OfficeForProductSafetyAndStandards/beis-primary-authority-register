@@ -52,7 +52,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
-    $this->setState("edit:{$par_data_partnership->id()}");
+
   }
 
   /**
@@ -125,7 +125,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
 
     $form['summary'] = [
       '#type' => 'textarea',
-      '#default_value' => $this->getDefaultValues("summary"),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("summary"),
    ];
 
     return parent::buildForm($form, $form_state);
@@ -137,8 +137,12 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    $enforcing_authority_id = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
-    $organisation_id = $this->getDefaultValues('par_data_organisation_id', '', 'par_enforce_organisation');
+
+    $cid = $this->getFlowNegotiator()->getFormKey('par_authority_selection');
+    $enforcing_authority_id = $this->getFlowDataHandler()->getDefaultValues('par_data_authority_id', '', $cid);
+
+    $cid = $this->getFlowNegotiator()->getFormKey('par_enforce_organisation');
+    $organisation_id = $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', '', $cid);
 
     if (empty($enforcing_authority_id)) {
       $this->setElementError('authority_enforcement_ids', $form_state, 'Please select an authority to enforce on behalf of to proceed.');
@@ -155,7 +159,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    if ($partnership = $this->getRouteParam('par_data_partnership')) {
+    if ($partnership = $this->getflowDataHandler()->getParameter('par_data_partnership')) {
       $partnership_id = $partnership->id() ? $partnership->id() : NULL;
       $partnership_primary_authority = $partnership->getAuthority() ? current($partnership->getAuthority()) : NULL;
     }
@@ -163,8 +167,8 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
     $time = new \DateTime();
 
     $enforcementNotice_data = [
-      'notice_type' => $this->getTempDataValue('enforcement_type'),
-      'summary' => $this->getTempDataValue('summary'),
+      'notice_type' => $this->getFlowDataHandler()->getTempDataValue('enforcement_type'),
+      'summary' => $this->getFlowDataHandler()->getTempDataValue('summary'),
       'field_primary_authority' => $partnership_primary_authority,
       'field_enforcing_authority' => $this->getEnforcingAuthorityID(),
       'field_organisation' => $this->getEnforcedOrganisationID(),
@@ -178,7 +182,8 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
 
     // Check if we are using the legal entity text field instead of the entity ref field.
     if ($legal_entity_value == 'add_new') {
-      $enforcementNotice_data['legal_entity_name'] = $this->getDefaultValues('alternative_legal_entity', '', 'par_enforcement_notice_raise');
+      $cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_notice_raise');
+      $enforcementNotice_data['legal_entity_name'] = $this->getFlowDataHandler()->getDefaultValues('alternative_legal_entity', '', $cid);
     } else {
       // We are dealing with an entity id the storage will be set to an entity ref field.
       $enforcementNotice_data['field_legal_entity'] = $legal_entity_value;

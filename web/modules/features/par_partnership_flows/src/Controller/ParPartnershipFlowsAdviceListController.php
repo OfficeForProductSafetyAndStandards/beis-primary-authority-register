@@ -113,7 +113,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
       $build['actions']['upload'] = [
         '#type' => 'markup',
         '#markup' => t('@link', [
-          '@link' => $this->getFlowNegotiator()->getFlow()->getNextLink('upload', $this->getRouteParams())
+          '@link' => $this->getFlowNegotiator()->getFlow()->getNextLink('upload', $this->getflowDataHandler()->getParameters())
             ->setText('Upload advice')
             ->toString(),
         ]),

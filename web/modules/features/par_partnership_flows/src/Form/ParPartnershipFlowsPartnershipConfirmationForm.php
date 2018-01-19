@@ -29,7 +29,7 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
     if ($par_data_partnership) {
       $par_data_organisation = current($par_data_partnership->getOrganisation());
       $this->pageTitle = $par_data_organisation->get('organisation_name')->getString();
@@ -75,7 +75,7 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
         '#type' => 'checkbox',
         '#title' => $this->t('I confirm I have reviewed the information above'),
         '#disabled' => $par_data_partnership->get('partnership_info_agreed_business')->getString(),
-        '#default_value' => $this->getDefaultValues("partnership_info_agreed_business"),
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues("partnership_info_agreed_business"),
         '#return_value' => 'on',
       ];
     }
@@ -112,14 +112,14 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $par_data_partnership = ParDataPartnership::load($this->getTempDataValue('partnership_id'));
+    $par_data_partnership = ParDataPartnership::load($this->getFlowDataHandler()->getTempDataValue('partnership_id'));
 
     $par_data_organisation = current($par_data_partnership->getOrganisation());
     $par_data_person = current($par_data_organisation->getPerson());
 
     if ($par_data_partnership && !$par_data_partnership->getBoolean('partnership_info_agreed_business')) {
       // Save the value for the confirmation field.
-      $par_data_partnership->set('partnership_info_agreed_business', $this->decideBooleanValue($this->getTempDataValue('partnership_info_agreed_business')));
+      $par_data_partnership->set('partnership_info_agreed_business', $this->decideBooleanValue($this->getFlowDataHandler()->getTempDataValue('partnership_info_agreed_business')));
 
       // Set partnership status.
       $par_data_partnership->set('partnership_status', 'confirmed_business');

@@ -43,7 +43,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
    * Get partnership.
    */
   public function getPartnershipParam() {
-    return $this->getRouteParam('par_data_partnership');
+    return $this->getflowDataHandler()->getParameter('par_data_partnership');
   }
 
   /**
@@ -57,7 +57,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       return !empty($premises) ? current($premises) : NULL;
     }
     else {
-      return $this->getRouteParam('par_data_premises');
+      return $this->getflowDataHandler()->getParameter('par_data_premises');
     }
   }
 
@@ -102,25 +102,18 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
    *   The Premises being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataPremises $par_data_premises = NULL) {
-    if ($par_data_partnership) {
-      // If we're editing an entity we should set the state
-      // to something other than default to avoid conflicts
-      // with existing versions of the same form.
-      $this->setState("edit:{$par_data_partnership->id()}");
-    }
-
     if ($par_data_premises) {
       $address = $par_data_premises->get('address')->first();
 
       // Address.
-      $this->loadDataValue("postcode", $address->get('postal_code')->getString());
-      $this->loadDataValue("address_line1", $address->get('address_line1')->getString());
-      $this->loadDataValue("address_line2", $address->get('address_line2')->getString());
-      $this->loadDataValue("town_city", $address->get('locality')->getString());
-      $this->loadDataValue("county", $address->get('administrative_area')->getString());
-      $this->loadDataValue("country", $par_data_premises->get('nation')->getString());
-      $this->loadDataValue("uprn", $par_data_premises->get('uprn')->getString());
-      $this->loadDataValue('premises_id', $par_data_premises->id());
+      $this->getFlowDataHandler()->setFormPermValue("postcode", $address->get('postal_code')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("address_line1", $address->get('address_line1')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("address_line2", $address->get('address_line2')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("town_city", $address->get('locality')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("county", $address->get('administrative_area')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("country", $par_data_premises->get('nation')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("uprn", $par_data_premises->get('uprn')->getString());
+      $this->getFlowDataHandler()->setFormPermValue('premises_id', $par_data_premises->id());
     }
   }
 
@@ -134,44 +127,44 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
 
     $form['premises_id'] = [
       '#type' => 'hidden',
-      '#value' => $this->getDefaultValues('premises_id', 'new'),
+      '#value' => $this->getFlowDataHandler()->getDefaultValues('premises_id', 'new'),
     ];
 
     $form['address_line1'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter your Address Line 1'),
-      '#default_value' => $this->getDefaultValues("address_line1"),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("address_line1"),
     ];
 
     $form['address_line2'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter your Address Line 2'),
-      '#default_value' => $this->getDefaultValues("address_line2"),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("address_line2"),
     ];
 
     $form['town_city'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter your Town / City'),
-      '#default_value' => $this->getDefaultValues("town_city"),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("town_city"),
     ];
 
     $form['county'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter your County'),
-      '#default_value' => $this->getDefaultValues("county"),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("county"),
     ];
 
     $form['country'] = [
       '#type' => 'select',
       '#title' => $this->t('Select your Nation'),
       '#options' => $premises_bundle->getAllowedValues('nation'),
-      '#default_value' => $this->getDefaultValues("country"),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("country"),
     ];
 
     $form['postcode'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter your Postcode'),
-      '#default_value' => $this->getDefaultValues("postcode"),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("postcode"),
     ];
 
     $form['country_code'] = [
@@ -208,16 +201,16 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
 
     if ($premises) {
       $address = [
-        'country_code' => $this->getTempDataValue('country_code'),
-        'address_line1' => $this->getTempDataValue('address_line1'),
-        'address_line2' => $this->getTempDataValue('address_line2'),
-        'locality' => $this->getTempDataValue('town_city'),
-        'administrative_area' => $this->getTempDataValue('county'),
-        'postal_code' => $this->getTempDataValue('postcode'),
+        'country_code' => $this->getFlowDataHandler()->getTempDataValue('country_code'),
+        'address_line1' => $this->getFlowDataHandler()->getTempDataValue('address_line1'),
+        'address_line2' => $this->getFlowDataHandler()->getTempDataValue('address_line2'),
+        'locality' => $this->getFlowDataHandler()->getTempDataValue('town_city'),
+        'administrative_area' => $this->getFlowDataHandler()->getTempDataValue('county'),
+        'postal_code' => $this->getFlowDataHandler()->getTempDataValue('postcode'),
       ];
 
       $premises->set('address', $address);
-      $premises->set('nation', $this->getTempDataValue('country'));
+      $premises->set('nation', $this->getFlowDataHandler()->getTempDataValue('country'));
 
       $par_data_partnership = $this->getPartnershipParam();
       $par_data_organisation = $par_data_partnership ? $par_data_partnership->getOrganisation(TRUE) : NULL;

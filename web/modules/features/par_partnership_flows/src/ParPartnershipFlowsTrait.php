@@ -24,7 +24,7 @@ trait ParPartnershipFlowsTrait {
     // To proceed we need the current User account
     // and the partnership from the url.
     $account = User::Load($this->currentUser()->id());
-    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
 
     // If the route is in only one flow then we're definately in that flow.
     $flows = \Drupal::entityTypeManager()->getStorage('par_flow')->loadByRoute($this->getCurrentRoute());

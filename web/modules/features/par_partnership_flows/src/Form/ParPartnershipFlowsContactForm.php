@@ -46,7 +46,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
    * Get partnership.
    */
   public function getPartnershipParam() {
-    return $this->getRouteParam('par_data_partnership');
+    return $this->getflowDataHandler()->getParameter('par_data_partnership');
   }
 
   /**
@@ -59,7 +59,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       return !empty($people) ? current($people) : NULL;
     }
     else {
-      return $this->getRouteParam('par_data_person');
+      return $this->getflowDataHandler()->getParameter('par_data_person');
     }
   }
 
@@ -93,16 +93,14 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
     if ($par_data_person) {
-      $this->setState("edit:{$par_data_person->id()}");
-
       // Load person data.
-      $this->loadDataValue("salutation", $par_data_person->get('salutation')->getString());
-      $this->loadDataValue("first_name", $par_data_person->get('first_name')->getString());
-      $this->loadDataValue("last_name", $par_data_person->get('last_name')->getString());
-      $this->loadDataValue("work_phone", $par_data_person->get('work_phone')->getString());
-      $this->loadDataValue("mobile_phone", $par_data_person->get('mobile_phone')->getString());
-      $this->loadDataValue("email", $par_data_person->get('email')->getString());
-      $this->loadDataValue("notes", $par_data_person->get('communication_notes')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("salutation", $par_data_person->get('salutation')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("first_name", $par_data_person->get('first_name')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("last_name", $par_data_person->get('last_name')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("work_phone", $par_data_person->get('work_phone')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("mobile_phone", $par_data_person->get('mobile_phone')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("email", $par_data_person->get('email')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("notes", $par_data_person->get('communication_notes')->getString());
 
       // Get preferred contact methods.
       $contact_options = [
@@ -112,7 +110,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       ];
 
       // Checkboxes works nicely with keys, filtering booleans for "1" value.
-      $this->loadDataValue('preferred_contact', array_keys($contact_options, 1));
+      $this->getFlowDataHandler()->setFormPermValue('preferred_contact', array_keys($contact_options, 1));
     }
   }
 
@@ -144,37 +142,37 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       '#type' => 'textfield',
       '#title' => $this->t('Enter the title (optional)'),
       '#description' => $this->t('For example, Ms Mr Mrs Dr'),
-      '#default_value' => $this->getDefaultValues("salutation"),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("salutation"),
     ];
 
     $form['first_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the first name'),
-      '#default_value' => $this->getDefaultValues("first_name"),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("first_name"),
     ];
 
     $form['last_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the last name'),
-      '#default_value' => $this->getDefaultValues("last_name"),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("last_name"),
     ];
 
     $form['work_phone'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the work phone number'),
-      '#default_value' => $this->getDefaultValues("work_phone"),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("work_phone"),
     ];
 
     $form['mobile_phone'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the mobile phone number (optional)'),
-      '#default_value' => $this->getDefaultValues("mobile_phone"),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("mobile_phone"),
     ];
 
     $form['email'] = [
       '#type' => 'email',
       '#title' => $this->t('Enter the email address'),
-      '#default_value' => $this->getDefaultValues("email"),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("email"),
       // Prevent modifying email if editing an existing user.
       '#disabled' => !empty($par_data_person),
     ];
@@ -190,14 +188,14 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       '#type' => 'checkboxes',
       '#title' => $this->t('Select the preferred methods of contact (optional)'),
       '#options' => $contact_options,
-      '#default_value' => $this->getDefaultValues("preferred_contact", []),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("preferred_contact", []),
       '#return_value' => 'on',
     ];
 
     $form['notes'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Provide contact notes (optional)'),
-      '#default_value' => $this->getDefaultValues('notes'),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('notes'),
       '#description' => 'Add any additional notes about how best to contact this person.',
     ];
 
@@ -244,25 +242,25 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
 
     // Save person details.
     if ($par_data_person) {
-      $par_data_person->set('salutation', $this->getTempDataValue('salutation'));
-      $par_data_person->set('first_name', $this->getTempDataValue('first_name'));
-      $par_data_person->set('last_name', $this->getTempDataValue('last_name'));
-      $par_data_person->set('work_phone', $this->getTempDataValue('work_phone'));
-      $par_data_person->set('mobile_phone', $this->getTempDataValue('mobile_phone'));
-      $par_data_person->set('email', $this->getTempDataValue('email'));
-      $par_data_person->set('communication_notes', $this->getTempDataValue('notes'));
+      $par_data_person->set('salutation', $this->getFlowDataHandler()->getTempDataValue('salutation'));
+      $par_data_person->set('first_name', $this->getFlowDataHandler()->getTempDataValue('first_name'));
+      $par_data_person->set('last_name', $this->getFlowDataHandler()->getTempDataValue('last_name'));
+      $par_data_person->set('work_phone', $this->getFlowDataHandler()->getTempDataValue('work_phone'));
+      $par_data_person->set('mobile_phone', $this->getFlowDataHandler()->getTempDataValue('mobile_phone'));
+      $par_data_person->set('email', $this->getFlowDataHandler()->getTempDataValue('email'));
+      $par_data_person->set('communication_notes', $this->getFlowDataHandler()->getTempDataValue('notes'));
 
       // Save the contact preferences
-      $email_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_email'])
-        && !empty($this->getTempDataValue('preferred_contact')['communication_email']);
+      $email_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact')['communication_email'])
+        && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact')['communication_email']);
       $par_data_person->set('communication_email', $email_preference_value);
       // Save the work phone preference.
-      $work_phone_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_phone'])
-        && !empty($this->getTempDataValue('preferred_contact')['communication_phone']);
+      $work_phone_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact')['communication_phone'])
+        && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact')['communication_phone']);
       $par_data_person->set('communication_phone', $work_phone_preference_value);
       // Save the mobile phone preference.
-      $mobile_phone_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_mobile'])
-        && !empty($this->getTempDataValue('preferred_contact')['communication_mobile']);
+      $mobile_phone_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact')['communication_mobile'])
+        && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact')['communication_mobile']);
       $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
 
       if ($par_data_person->save()) {
@@ -272,7 +270,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       else {
         $message = $this->t('This %person could not be saved for %form_id');
         $replacements = [
-          '%person' => $this->getTempDataValue('name'),
+          '%person' => $this->getFlowDataHandler()->getTempDataValue('name'),
           '%form_id' => $this->getFormId(),
         ];
         $this->getLogger($this->getLoggerChannel())

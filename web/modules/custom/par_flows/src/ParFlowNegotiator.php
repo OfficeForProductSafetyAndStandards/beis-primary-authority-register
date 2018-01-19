@@ -84,7 +84,7 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
     $this->entityTypeManager = $entity_type_manager;
     $this->parDataManager = $par_data_manager;
     $this->route = $current_route;
-    $this->account = $current_user->id();
+    $this->account = $current_user;
 
     $this->flow_storage = $entity_type_manager->getStorage('par_flow');
   }
@@ -126,8 +126,17 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
   /**
    * {@inheritdoc}
    */
-  public function getFlow() {
-    return $this->flow_storage->load($this->getFlowName());
+  public function getFlow($flow_name = NULL) {
+    $flow_name = empty($flow_name) ? $this->getFlowName() : $flow_name;
+    return $this->flow_storage->load($flow_name);
+  }
+
+  public function getFormKey($form_id, $state = NULL, $flow_name = NULL) {
+    $flow = $this->getFlow($flow_name);
+    $step = $flow->getStepByFormId($form_id);
+    $route_name = $flow->getRouteByStep($step);
+
+    return $this->getFlowKey($route_name, $state, $flow_name);
   }
 
   /**
