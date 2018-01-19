@@ -5,6 +5,8 @@ namespace Drupal\par_forms;
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_data\ParDataManagerInterface;
+use Drupal\par_flows\ParFlowDataHandlerInterface;
+use Drupal\par_flows\ParFlowNegotiatorInterface;
 
 /**
  * Provides a base implementation for a ParForm plugin.
@@ -35,6 +37,24 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
    */
   public function getWeight() {
     return $this->pluginDefinition['weight'];
+  }
+
+  /**
+   * Simple getter to inject the flow negotiator service.
+   *
+   * @return ParFlowNegotiatorInterface
+   */
+  public function getFlowNegotiator() {
+    return \Drupal::service('par_flows.negotiator');
+  }
+
+  /**
+   * Simple getter to inject the flow data handler service.
+   *
+   * @return ParFlowDataHandlerInterface
+   */
+  public function getFlowDataHandler() {
+    return \Drupal::service('par_flows.data_handler');
   }
 
   /**

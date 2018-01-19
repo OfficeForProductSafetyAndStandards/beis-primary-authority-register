@@ -120,88 +120,11 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
     $par_data_person = $this->getPersonParam();
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
-    $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
 
-    if ($this->getFlowNegotiator()->getFlowName() == 'partnership_application') {
-      $form['info'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t("Providing contact information"),
-        '#prefix' => '<h2>',
-        '#suffix' => '</h2>',
-      ];
+    $type = \Drupal::service('plugin.manager.par_form_builder');
+    $plugin = $type->createInstance('contact_details_full');
 
-      $form['help_text'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('State who is the main contact for the business. It might be the business owner, or an employee in charge of regulatory compliance.'),
-        '#prefix' => '<p>',
-        '#suffix' => '</p>',
-      ];
-    }
-
-    $form['salutation'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Enter the title (optional)'),
-      '#description' => $this->t('For example, Ms Mr Mrs Dr'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("salutation"),
-    ];
-
-    $form['first_name'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Enter the first name'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("first_name"),
-    ];
-
-    $form['last_name'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Enter the last name'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("last_name"),
-    ];
-
-    $form['work_phone'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Enter the work phone number'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("work_phone"),
-    ];
-
-    $form['mobile_phone'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Enter the mobile phone number (optional)'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("mobile_phone"),
-    ];
-
-    $form['email'] = [
-      '#type' => 'email',
-      '#title' => $this->t('Enter the email address'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("email"),
-      // Prevent modifying email if editing an existing user.
-      '#disabled' => !empty($par_data_person),
-    ];
-
-    // Get preferred contact methods labels.
-    $contact_options = [
-      'communication_email' => $person_bundle->getBooleanFieldLabel('communication_email', 'on'),
-      'communication_phone' => $person_bundle->getBooleanFieldLabel('communication_phone', 'on'),
-      'communication_mobile' => $person_bundle->getBooleanFieldLabel('communication_mobile', 'on'),
-    ];
-
-    $form['preferred_contact'] = [
-      '#type' => 'checkboxes',
-      '#title' => $this->t('Select the preferred methods of contact (optional)'),
-      '#options' => $contact_options,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("preferred_contact", []),
-      '#return_value' => 'on',
-    ];
-
-    $form['notes'] = [
-      '#type' => 'textarea',
-      '#title' => $this->t('Provide contact notes (optional)'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('notes'),
-      '#description' => 'Add any additional notes about how best to contact this person.',
-    ];
-
-    // Make sure to add the person cacheability data to this form.
-    $this->addCacheableDependency($par_data_person);
-    $this->addCacheableDependency($person_bundle);
+    $form = $plugin->getElements($form);
 
     return parent::buildForm($form, $form_state);
   }

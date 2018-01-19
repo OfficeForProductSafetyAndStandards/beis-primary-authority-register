@@ -60,6 +60,7 @@ module:
   par_data_config: 0
   par_enforcement_flows: 0
   par_flows: 0
+  par_forms: 0
   par_header: 0
   par_invite: 0
   par_login: 0
