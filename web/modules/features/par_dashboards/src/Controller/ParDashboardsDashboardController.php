@@ -86,6 +86,13 @@ class ParDashboardsDashboardController extends ControllerBase {
           '#type' => 'markup',
           '#markup' => "<p>{$manage_link}</p>",
         ];
+
+        $manage_my_partnerships_applications = $this->getLinkByRoute('view.par_user_partnerships.par_user_partnership_applications');
+        $manage_my_partnerships_link = $manage_my_partnerships_applications->setText('My Partnership Applications')->toString();
+        $build['partnerships']['my_partnerships'] = [
+          '#type' => 'markup',
+          '#markup' => "<p>{$manage_my_partnerships_link}</p>",
+        ];
       }
 
       // Create partnerships link.
