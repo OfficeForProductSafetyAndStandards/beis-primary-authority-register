@@ -121,7 +121,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
     $value = $this->getTempDataValue($key, $cid);
 
     if (!$value) {
-      //$value = $this->getFormPermValue($key);
+      $value = $this->getFormPermValue($key);
     }
 
     if (!$value) {
@@ -179,7 +179,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
 
     // Start an anonymous session if required.
     $this->startAnonymousSession();
-    return $this->store->set(self::TEMP_PREFIX . $cid, $data);
+    $this->store->set(self::TEMP_PREFIX . $cid, $data);
   }
 
   /**
@@ -191,7 +191,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
     // Start an anonymous session if required.
     $this->startAnonymousSession();
 
-    return $this->store->delete(self::TEMP_PREFIX . $cid);
+    $this->store->delete(self::TEMP_PREFIX . $cid);
   }
 
   /**
@@ -217,7 +217,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
 
     foreach ($this->negotiator->getFlow()->getFlowForms() as $form) {
       $cid = $this->negotiator->getFormKey($form);
-      $data = $this->deleteFormTempData($cid);
+      $this->deleteFormTempData($cid);
     }
 
     return $data;
