@@ -32,7 +32,22 @@ interface ParFlowNegotiatorInterface {
   public function getFlow();
 
   /**
-   * Get the form Key.
+   * Get the key for a given form id.
+   *
+   * @param string $form_id
+   *   An optional form_id to get the key for.
+   * @param string $state
+   *   An optional statestring to get the key for.
+   * @param string $flow_name
+   *   An optional flow_name to get the key for.
+   *
+   * @return string
+   *   The name of the key for the given form.
+   */
+  public function getFormKey($form_id, $state = NULL, $flow_name = NULL);
+
+  /**
+   * Get the key.
    *
    * @param string $step_id
    *   An optional step_id to get the key for.

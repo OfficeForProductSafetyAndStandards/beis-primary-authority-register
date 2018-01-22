@@ -121,7 +121,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
     $value = $this->getTempDataValue($key, $cid);
 
     if (!$value) {
-      $value = $this->getFormPermValue($key);
+      //$value = $this->getFormPermValue($key);
     }
 
     if (!$value) {
@@ -170,13 +170,16 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   public function setFormTempData(array $data, $cid = NULL) {
     $cid = empty($cid) ? $this->negotiator->getFlowKey() : $cid;
 
+    // Start an anonymous session if required.
+    $this->startAnonymousSession();
+
     if (!$data || !is_array($data)) {
       return;
     }
 
     // Start an anonymous session if required.
     $this->startAnonymousSession();
-    $this->store->set(self::TEMP_PREFIX . $cid, $data);
+    return $this->store->set(self::TEMP_PREFIX . $cid, $data);
   }
 
   /**
@@ -185,7 +188,10 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   public function deleteFormTempData($cid = NULL) {
     $cid = empty($cid) ? $this->negotiator->getFlowKey() : $cid;
 
-    $this->store->delete(self::TEMP_PREFIX . $cid);
+    // Start an anonymous session if required.
+    $this->startAnonymousSession();
+
+    return $this->store->delete(self::TEMP_PREFIX . $cid);
   }
 
   /**
@@ -195,7 +201,8 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
     $data = [];
 
     foreach ($this->negotiator->getFlow()->getFlowForms() as $form) {
-      $form_data = $this->getFormTempData($form);
+      $cid = $this->negotiator->getFormKey($form);
+      $form_data = $this->getFormTempData($cid);
       $data = array_merge($data, $form_data);
     }
 
@@ -209,7 +216,8 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
     $data = [];
 
     foreach ($this->negotiator->getFlow()->getFlowForms() as $form) {
-      $form_data = $this->deleteFormTempData($form);
+      $cid = $this->negotiator->getFormKey($form);
+      $data = $this->deleteFormTempData($cid);
     }
 
     return $data;
