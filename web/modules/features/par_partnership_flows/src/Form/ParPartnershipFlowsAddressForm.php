@@ -138,13 +138,6 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       '#default_value' => $this->getDefaultValues("county"),
     ];
 
-    $form['nation'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Select your Nation'),
-      '#options' => $premises_bundle->getAllowedValues('nation'),
-      '#default_value' => $this->getDefaultValues("nation"),
-    ];
-
     // Get addressfield country values.
     $this->countryRepository = new CountryRepository();
 
@@ -153,10 +146,17 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       '#options' => $this->countryRepository->getList(NULL),
       '#title' => $this->t('Country'),
       '#default_value' => $this->getDefaultValues("country_code", "GB"),
+    ];
+
+    $form['nation'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Select your Nation'),
+      '#options' => $premises_bundle->getAllowedValues('nation'),
+      '#default_value' => $this->getDefaultValues("nation"),
       '#states' => [
         'visible' => [
-          'select[name="nation"]' => [
-            ['value' => 'OTHER'],
+          'select[name="country_code"]' => [
+            ['value' => 'GB'],
           ],
         ],
       ],

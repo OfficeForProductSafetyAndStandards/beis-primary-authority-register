@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: fDaGfc4380xcCOnG-eeNCOS7NvGVYc10smXEnQOir8g
+  default_config_hash: Av9ZamwE0E5mRf9CEtsazUvHIBCxL1NAeuvetXtpLc4
 id: premises
 label: Premises
 description: 'Premises are a location used by either an Authority or an Organisation.'
@@ -28,4 +28,3 @@ configuration:
       GB-SCT: Scotland
       GB-WLS: Wales
       GB-NIR: 'Northern Ireland'
-      OTHER: Other
