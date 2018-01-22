@@ -142,7 +142,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
 
     $form['postcode'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Postcode'),
+      '#title' => $this->t('Enter Postcode'),
       '#default_value' => $this->getDefaultValues("postcode"),
     ];
 

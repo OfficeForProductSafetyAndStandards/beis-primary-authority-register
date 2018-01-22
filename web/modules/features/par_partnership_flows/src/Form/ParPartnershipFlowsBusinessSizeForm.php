@@ -52,7 +52,7 @@ class ParPartnershipFlowsBusinessSizeForm extends ParBaseForm {
     $organisation_bundle = $this->getParDataManager()->getParBundleEntity('par_data_organisation');
 
     $form['info'] = [
-      '#markup' => t('Enter the number of associations in your membership list'),
+      '#markup' => t('Enter the number of members in your membership list'),
       '#prefix' => '<h2>',
       '#suffix' => '</h2>',
     ];
