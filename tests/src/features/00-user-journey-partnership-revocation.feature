@@ -21,6 +21,8 @@ Feature: New Direct Partnership For HD user To Revoke
 
         # CONFIRMATIONS
 
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
+        Then I expect that element "h1.heading-xlarge" contains the text "Direct partnership application"
         When I click on the checkbox "#edit-business-eligible-for-partnership"
         And I click on the checkbox "#edit-local-authority-suitable-for-nomination"
         And I click on the checkbox "#edit-written-summary-agreed"
@@ -34,11 +36,15 @@ Feature: New Direct Partnership For HD user To Revoke
 
         # ADD ABOUT THE PARTNERSHIP
 
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
+        Then I expect that element "h1.heading-xlarge" contains the text "Edit the details about the Partnership"
         When I add "About the partnership for revoking detail" to the inputfield "#edit-about-partnership"
         And I click on the button "#edit-next"
 
         # ORGANISATION NAME
 
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
+        Then I expect that element "h1.heading-xlarge" contains the text "Who are you in partnership with?"
         And I add "Direct Partnership For Revoking" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
 
@@ -48,6 +54,8 @@ Feature: New Direct Partnership For HD user To Revoke
 
         # ADD BUSINESS DETAIL
 
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
+        Then I expect that element "h1.heading-xlarge" contains the text "New business information"
         When I add "SE16 4NX" to the inputfield "#edit-postcode"
         And I add "1 Change St" to the inputfield "#edit-address-line1"
         And I add "New Change" to the inputfield "#edit-address-line2"
@@ -58,6 +66,8 @@ Feature: New Direct Partnership For HD user To Revoke
 
         # MAIN CONTACT
 
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
+        Then I expect that element "h1.heading-xlarge" contains the text "Add a contact for the business"
         When I add "Mr" to the inputfield "#edit-salutation"
         And I add "Fozzie" to the inputfield "#edit-first-name"
         And I add "Bear" to the inputfield "#edit-last-name"
