@@ -64,7 +64,7 @@ class ParDashboardsDashboardController extends ControllerBase {
     $build = [];
 
     // Your partnerships.
-    $partnerships =  $this->getParDataManager()->hasMembershipsByType($this->getCurrentUser(), 'par_data_partnership');
+    $partnerships = $this->getParDataManager()->hasMembershipsByType($this->getCurrentUser(), 'par_data_partnership');
     $can_manage_partnerships = $this->getCurrentUser()->hasPermission('manage my organisations') || $this->getCurrentUser()->hasPermission('manage my authorities');
     $can_create_partnerships = $this->getCurrentUser()->hasPermission('apply for partnership');
     if (($partnerships && $can_manage_partnerships) || $can_create_partnerships) {
@@ -80,18 +80,18 @@ class ParDashboardsDashboardController extends ControllerBase {
 
       // Manage my partnerships link.
       if (($partnerships && $can_manage_partnerships)) {
-        $manage_my_partnerships = $this->getLinkByRoute('view.par_user_partnerships.partnerships_page');
-        $manage_link = $manage_my_partnerships->setText('See your partnerships')->toString();
+        $manage_partnerships = $this->getLinkByRoute('view.par_user_partnerships.partnerships_page');
+        $manage_link = $manage_partnerships->setText('See your partnerships')->toString();
         $build['partnerships']['see'] = [
           '#type' => 'markup',
           '#markup' => "<p>{$manage_link}</p>",
         ];
 
-        $manage_my_partnerships_applications = $this->getLinkByRoute('view.par_user_partnerships.par_user_partnership_applications');
-        $manage_my_partnerships_link = $manage_my_partnerships_applications->setText('My Partnership Applications')->toString();
+        $manage_partnership_applications = $this->getLinkByRoute('view.par_user_partnerships.par_user_partnership_applications');
+        $manage_partnership_applications_link = $manage_partnership_applications->setText('Partnership Applications')->toString();
         $build['partnerships']['my_partnerships'] = [
           '#type' => 'markup',
-          '#markup' => "<p>{$manage_my_partnerships_link}</p>",
+          '#markup' => "<p>{$manage_partnership_applications_link}</p>",
         ];
       }
 
