@@ -7,6 +7,8 @@ Feature: New Direct Partnership For PA To Approve
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         When I click on the link "Apply for a new partnership"
+        And I click on the button "#edit-cancel"
+        When I click on the link "Apply for a new partnership"
         Then I expect that element "h1.heading-xlarge" contains the text "Which authority are you acting on behalf of?"
         And I click on the radio "label*=Metropolitan District"
         And I click on the button "#edit-next"

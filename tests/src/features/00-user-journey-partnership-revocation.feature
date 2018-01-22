@@ -10,6 +10,8 @@ Feature: New Direct Partnership For HD user To Revoke
         When I click on the button "#edit-submit"
         And I run tota11y against the current page
         When I click on the link "Apply for a new partnership"
+        And I click on the button "#edit-cancel"
+        When I click on the link "Apply for a new partnership"
         And I run tota11y against the current page
 
         # CHOOSE AUTHORITY REPRESENTED

@@ -15,7 +15,7 @@ Feature: Business User - Manage Addresses
         And I click on the link "See your partnerships"
         And I click on the link "Business For Direct Partnership 1"
         And I run tota11y against the current page
-        And I expect that element "h1" is not empty
+        And I expect that element "h1" is empty
 
         # EDIT REGISTERED ADDRESS
 
