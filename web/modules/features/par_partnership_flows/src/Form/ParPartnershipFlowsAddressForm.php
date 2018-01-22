@@ -206,11 +206,6 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
 
       $nation = $this->getTempDataValue('nation');
 
-      // Override any country code where nation field does not contain Other.
-      if ($nation !== 'OTHER') {
-        $address['country_code'] = 'GB';
-      }
-
       $premises->set('address', $address);
       $premises->set('nation', $nation);
 
