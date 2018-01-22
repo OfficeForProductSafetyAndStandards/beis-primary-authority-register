@@ -1,4 +1,4 @@
-@ci
+@ci @PAR790
 Feature: Coordinator User - Manage Addresses
 
     Scenario: Coordinator User - Manage Addresses
@@ -59,6 +59,10 @@ Feature: Coordinator User - Manage Addresses
 
         When I click on the link "add another legal entity"
         When I add "New Legal Entity" to the inputfield "#edit-registered-name"
+
+        # PAR790
+        # User will have option to choose a memeber to associate the legal entity with
+
         And I select the option with the text "Partnership" for element "#edit-legal-entity-type"
         And I click on the button "#edit-save"
         Then I expect that element "#edit-legal-entities" contains the text "New Legal Entity"

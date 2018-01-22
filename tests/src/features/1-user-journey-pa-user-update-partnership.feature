@@ -1,7 +1,6 @@
 @Pending
 Feature: PA User - Manage Addresses
-
-
+    
     Scenario: PA User - Manage Addresses
 
         # PARTNERSHIPS DASHBOARD
