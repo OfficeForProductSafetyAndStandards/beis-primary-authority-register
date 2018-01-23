@@ -208,7 +208,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
 
       $premises->set('address', $address);
 
-      if ($premises->get('address')->get('country_code') == 'GB') {
+      if ($this->getTempDataValue('country_code') == 'GB') {
         $premises->set('nation', $nation);
       }
 
