@@ -14,8 +14,18 @@ use Drupal\par_forms\ParFormPluginBase;
  */
 class ParContactDetailsForm extends ParFormPluginBase {
 
-  public function getElements($form = []) {
+  protected $formItems = [
+    'par_data_person:person' => [
+      'first_name' => 'first_name',
+      'last_name' => 'last_name',
+      'work_phone' => 'work_phone',
+      'mobile_phone' => 'mobile_phone',
+      'email' => 'email',
+      'communication_notes' => 'notes',
+    ],
+  ];
 
+  public function getElements($form = []) {
     $form['salutation'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the title (optional)'),
@@ -79,5 +89,26 @@ class ParContactDetailsForm extends ParFormPluginBase {
     ];
 
     return $form;
+  }
+
+  public function validate(&$form_state) {
+    // @todo create wrapper for setErrorByName as this is ugly creating a link.
+    if (empty($form_state->getValue('email'))) {
+      $form_state->setErrorByName('email', $this->t('<a href="#edit-email">The email field is required.</a>'));
+    }
+
+    if (empty($form_state->getValue('first_name'))) {
+      $form_state->setErrorByName('first_name', $this->t('<a href="#edit-first-name">The first name field is required.</a>'));
+    }
+
+    if (empty($form_state->getValue('last_name'))) {
+      $form_state->setErrorByName('last_name', $this->t('<a href="#edit-last-name">The last name field is required.</a>'));
+    }
+
+    if (empty($form_state->getValue('work_phone'))) {
+      $form_state->setErrorByName('work_phone', $this->t('<a href="#edit-work-phone">The work phone field is required.</a>'));
+    }
+
+    parent::validate($form_state);
   }
 }

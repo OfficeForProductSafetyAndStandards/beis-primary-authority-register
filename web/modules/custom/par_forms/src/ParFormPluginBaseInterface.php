@@ -12,18 +12,41 @@ use Drupal\Component\Plugin\PluginInspectionInterface;
 interface ParFormPluginBaseInterface extends PluginInspectionInterface {
 
   /**
-   * Returns all the form elements for this form component.
-   */
-  public function getElements();
-
-  /**
-   * Get's the mapping of each element to the entity property it will be eventually saved.
+   * Get's the mapping of each form element to the entity
+   * property it will be eventually saved on.
    */
   public function getMapping();
 
   /**
-   * Validates the form elements.
+   * Returns all the form elements for this form component.
+   *
+   * @param array $form
+   *   An optional form attay to add the component elements to.
    */
-  public function validate();
+  public function getElements($form = []);
+
+  /**
+   * Loads the data associated with these elements.
+   *
+   * @param array $form_state
+   *   The form state object to validate.
+   */
+  public function loadData();
+
+  /**
+   * Validates the form elements.
+   *
+   * @param array $form_state
+   *   The form state object to validate.
+   */
+  public function validate(&$form_state);
+
+  /**
+   * Saves the form elements.
+   *
+   * @param array $form_state
+   *   The form state object to validate.
+   */
+  public function save();
 
 }
