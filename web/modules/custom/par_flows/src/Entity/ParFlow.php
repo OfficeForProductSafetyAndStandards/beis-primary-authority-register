@@ -287,8 +287,23 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  public function getCurrentStepComponents() {
+    return $this->getStepComponents($this->getCurrentStep());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getCurrentStepOperations() {
     return $this->getStepOperations($this->getCurrentStep());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStepComponents($index) {
+    $step = $this->getStep($index);
+    return isset($step['components']) ? $step['components'] : [];
   }
 
   /**

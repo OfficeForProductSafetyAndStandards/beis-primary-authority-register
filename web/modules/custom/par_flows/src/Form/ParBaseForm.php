@@ -2,23 +2,18 @@
 
 namespace Drupal\par_flows\Form;
 
+use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Session\SessionManagerInterface;
-use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\par_data\ParDataManagerInterface;
-use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\ParBaseInterface;
 use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
-use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
-use Drupal\user\PrivateTempStoreFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityConstraintViolationListInterface;
@@ -71,13 +66,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   protected $formItems = [];
 
-  /**
-   * Page title.
-   *
-   * @var string
-   */
-  protected $pageTitle;
-
   /*
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.
    *
@@ -87,11 +75,14 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    *   The flow data handler.
    * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
    *   The par data manager.
+   * @param \Drupal\Component\Plugin\PluginManagerInterface $plugin_manager
+   *   The par form builder.
    */
-  public function __construct(ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler, ParDataManagerInterface $par_data_manager) {
+  public function __construct(ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler, ParDataManagerInterface $par_data_manager, PluginManagerInterface $plugin_manager) {
     $this->negotiator = $negotiator;
     $this->flowDataHandler = $data_handler;
     $this->parDataManager = $par_data_manager;
+    $this->formBuilder = $plugin_manager;
 
     $this->setCurrentUser();
 
@@ -99,6 +90,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     if (!$this->getFlowNegotiator()->getFlow()) {
       $this->getLogger($this->getLoggerChannel())->critical('There is no flow %flow for this form.', ['%flow' => $this->getFlowNegotiator()->getFlowName()]);
     }
+
+    // Load the data associated with this form (if applicable).
+    $this->loadData();
   }
 
   /**
@@ -108,26 +102,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     return new static(
       $container->get('par_flows.negotiator'),
       $container->get('par_flows.data_handler'),
-      $container->get('par_data.manager')
+      $container->get('par_data.manager'),
+      $container->get('plugin.manager.par_form_builder')
     );
-  }
-
-  /**
-   * Title callback default.
-   */
-  public function titleCallback() {
-    if (empty($this->pageTitle) &&
-        $default_title = $this->getFlowNegotiator()->getFlow()->getDefaultTitle()) {
-      return $default_title;
-    }
-
-    // Do we have a form flow subheader?
-    if (!empty($this->getFlowNegotiator()->getFlow()->getDefaultSectionTitle()) &&
-        !empty($this->pageTitle)) {
-      $this->pageTitle = "{$this->getFlowNegotiator()->getFlow()->getDefaultSectionTitle()} | {$this->pageTitle}";
-    }
-
-    return $this->pageTitle;
   }
 
   /**
@@ -187,6 +164,11 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    // Add all the registered components to the form.
+    foreach ($this->getComponents() as $weight => $component) {
+      $form = $component->getElements($form);
+    }
+
     // Only ever place a 'done' action by itself.
     if ($this->getFlowNegotiator()->getFlow()->hasAction('done')) {
       $form['actions']['done'] = [
@@ -262,51 +244,15 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    // Assign all the form values to the relevant entity field values.
-    foreach ($this->getformItems() as $entity_name => $form_items) {
-      list($type, $bundle) = explode(':', $entity_name . ':');
-
-      $entity_class = $this->getParDataManager()->getParEntityType($type)->getClass();
-      $entity = $entity_class::create([
-        'type' => $this->getParDataManager()->getParBundleEntity($type, $bundle)->id(),
-      ]);
-
-      foreach ($form_items as $field_name => $form_item) {
-        $field_definition = $this->getParDataManager()->getFieldDefinition($entity->getEntityTypeId(), $entity->bundle(), $field_name);
-
-        if (is_array($form_item)) {
-          $field_value = [];
-          foreach ($form_item as $field_property => $form_property_item) {
-            // For entity reference fields we need to transform the ids to integers.
-            if ($field_definition->getType() === 'entity_reference' && $field_property === 'target_id') {
-              $field_value[$field_property] = (int) $form_state->getValue($form_property_item);
-            }
-            else {
-              $field_value[$field_property] = $form_state->getValue($form_property_item);
-            }
-          }
-        }
-        else {
-          $field_value = $form_state->getValue($form_item);
-        }
-
-        $entity->set($field_name, $field_value);
-
-        try {
-          $violations = $entity->validate()->filterByFieldAccess()
-            ->getByFields([
-              $field_name,
-            ]);
-
-          $this->setFieldViolations($field_name, $form_state, $violations);
-        }
-        catch(\Exception $e) {
-          $this->getLogger($this->getLoggerChannel())->critical('An error occurred validating form %form_id: @detail.', ['%form_id' => $this->getFormId(), '@details' => $e->getMessage()]);
-          $form_state->setError($form, 'An error occurred while checking your submission, please contact the helpdesk if this problem persists.');
+    // Add all the registered components to the form.
+    foreach ($this->getComponents() as $weight => $component) {
+      $violations = $component->validate($form_state);
+      if ($violations) {
+        foreach ($violations as $form_item => $violation) {
+          $this->setFieldViolations($form_item, $form_state, $violation);
         }
       }
     }
-
   }
 
   /**
@@ -417,30 +363,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   public function cancelForm(array &$form, FormStateInterface $form_state) {
     // Delete form storage.
     $this->getFlowDataHandler()->deleteStore();
-
-    // Go to cancel step.
-    $next = $this->getFlowNegotiator()->getFlow()->getPrevRoute('cancel');
-    $form_state->setRedirect($next, $this->getRouteParams());
-  }
-
-  /**
-   * Cancel submit handler to clear the current temporary form data.
-   *
-   * @code
-   * $form['actions']['previous'] = [
-   *   '#type' => 'submit',
-   *   '#name' => 'previous',
-   *   '#value' => $this->t('Previous'),
-   *   '#submit' => ['::cancelThisForm'],
-   * ];
-   * @endcode
-   *
-   * @param array $form
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   */
-  public function cancelThisForm(array &$form, FormStateInterface $form_state) {
-    // Delete specific form storage.
-    $this->getFlowDataHandler()->getFlowFormTempData($this->getFormId());
 
     // Go to cancel step.
     $next = $this->getFlowNegotiator()->getFlow()->getPrevRoute('cancel');

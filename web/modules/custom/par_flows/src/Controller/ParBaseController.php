@@ -2,6 +2,7 @@
 
 namespace Drupal\par_flows\Controller;
 
+use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Controller\ControllerBase;
@@ -36,13 +37,6 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
    */
   protected $accessResult;
 
-  /**
-   * Page title.
-   *
-   * @var string
-   */
-  protected $pageTitle;
-
   /*
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.
    *
@@ -52,11 +46,14 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
    *   The flow data handler.
    * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
    *   The par data manager.
+   * @param \Drupal\Component\Plugin\PluginManagerInterface $plugin_manager
+   *   The par form builder.
    */
-  public function __construct(ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler, ParDataManagerInterface $par_data_manager) {
+  public function __construct(ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler, ParDataManagerInterface $par_data_manager, PluginManagerInterface $plugin_manager) {
     $this->negotiator = $negotiator;
     $this->flowDataHandler = $data_handler;
     $this->parDataManager = $par_data_manager;
+    $this->formBuilder = $plugin_manager;
 
     $this->setCurrentUser();
 
@@ -64,6 +61,9 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
     if (!$this->getFlowNegotiator()->getFlow()) {
       $this->getLogger($this->getLoggerChannel())->critical('There is no flow %flow for this form.', ['%flow' => $this->getFlowNegotiator()->getFlowName()]);
     }
+
+    // Load the data associated with this form (if applicable).
+    $this->loadData();
   }
 
   /**
@@ -73,26 +73,9 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
     return new static(
       $container->get('par_flows.negotiator'),
       $container->get('par_flows.data_handler'),
-      $container->get('par_data.manager')
+      $container->get('par_data.manager'),
+      $container->get('plugin.manager.par_form_builder')
     );
-  }
-
-  /**
-   * Title callback default.
-   */
-  public function titleCallback() {
-    if (!$this->pageTitle &&
-      $default_title = $this->getFlowNegotiator()->getFlow()->getDefaultTitle()) {
-      return $default_title;
-    }
-
-    // Do we have a form flow subheader?
-    if (!empty($this->getFlowNegotiator()->getFlow()->getDefaultSectionTitle() &&
-      !empty($this->pageTitle))) {
-      $this->pageTitle = "{$this->getFlowNegotiator()->getFlow()->getDefaultSectionTitle()} | {$this->pageTitle}";
-    }
-
-    return $this->pageTitle;
   }
 
   /**
@@ -106,6 +89,12 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function build($build) {
+    // Add all the registered components to the form.
+    foreach ($this->getComponents() as $weight => $component) {
+      $build = $component->getElements($build);
+    }
+
+    // Add all the action links.
     if ($this->getFlowNegotiator()->getFlow()->hasAction('done')) {
       $build['done'] = [
         '#type' => 'markup',

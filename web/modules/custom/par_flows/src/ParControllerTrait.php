@@ -2,8 +2,7 @@
 
 namespace Drupal\par_flows;
 
-use Drupal\Core\Link;
-use Drupal\Core\Routing\RouteProvider;
+use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\user\Entity\User;
 
@@ -17,11 +16,25 @@ trait ParControllerTrait {
   protected $defaultTitle = 'Primary Authority Register';
 
   /**
+   * Page title.
+   *
+   * @var string
+   */
+  protected $pageTitle;
+
+  /**
    * The account for the current logged in user.
    *
    * @var \Drupal\user\Entity\User
    */
   protected $currentUser;
+
+  /**
+   * The form component plugins.
+   *
+   * @var \Drupal\Component\Plugin\PluginInspectionInterface[]
+   */
+  protected $components;
 
   /**
    * The flow negotiator.
@@ -38,11 +51,18 @@ trait ParControllerTrait {
   protected $flowDataHandler;
 
   /**
-   * The PAR Data Manager.
+   * The PAR data manager.
    *
    * @var \Drupal\par_data\ParDataManagerInterface
    */
   protected $parDataManager;
+
+  /**
+   * The PAR form builder.
+   *
+   * @var \Drupal\par_data\ParDataManagerInterface
+   */
+  protected $formBuilder;
 
   /**
    * Get the current user account.
@@ -74,6 +94,24 @@ trait ParControllerTrait {
   /**
    * {@inheritdoc}
    */
+  public function getComponents() {
+    if (!empty($this->components)) {
+      return $this->components;
+    }
+
+    // Load the plugins used to build this form.
+    foreach ($this->getFlowNegotiator()->getFlow()->getCurrentStepComponents() as $weight => $component) {
+      if ($plugin = $this->getFormBuilder()->createInstance($component)) {
+        $this->components[$weight] = $plugin;
+      }
+    }
+
+    return $this->components;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getFlowNegotiator() {
     return $this->negotiator;
   }
@@ -93,6 +131,13 @@ trait ParControllerTrait {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function getFormBuilder() {
+    return $this->formBuilder;
+  }
+
+  /**
    * Returns the default title.
    */
   public function getDefaultTitle() {
@@ -100,10 +145,31 @@ trait ParControllerTrait {
   }
 
   /**
+   * Load the data for this form.
+   */
+  public function loadData() {
+    // Load data for all the registered components of the form.
+    foreach ($this->getComponents() as $weight => $component) {
+      $component->loadData();
+    }
+  }
+
+  /**
    * Title callback default.
    */
   public function titleCallback() {
-    return $this->getDefaultTitle();
+    if (empty($this->pageTitle) &&
+      $default_title = $this->getFlowNegotiator()->getFlow()->getDefaultTitle()) {
+      return $default_title;
+    }
+
+    // Do we have a form flow subheader?
+    if (!empty($this->getFlowNegotiator()->getFlow()->getDefaultSectionTitle()) &&
+      !empty($this->pageTitle)) {
+      $this->pageTitle = "{$this->getFlowNegotiator()->getFlow()->getDefaultSectionTitle()} | {$this->pageTitle}";
+    }
+
+    return $this->pageTitle;
   }
 
 }

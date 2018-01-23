@@ -21,6 +21,8 @@ steps:
   3:
     route: par_partnership_flows.confirm_contact
     form_id: par_partnership_contact
+    components:
+      - contact_details_full
     redirect:
       cancel: 10
   4:
