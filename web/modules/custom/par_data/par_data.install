@@ -250,6 +250,13 @@ function par_data_update_8017() {
 }
 
 /**
+ * Apply updates for country code field in ParDataPremises.
+ */
+function par_data_update_8018() {
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
+
+/**
  * Migrate legal entities from organisation to partnership.
  */
 function par_data_update_8019() {
