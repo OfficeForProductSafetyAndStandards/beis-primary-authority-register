@@ -255,3 +255,29 @@ function par_data_update_8017() {
 function par_data_update_8018() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
+
+/**
+ * Migrate legal entities from organisation to partnership.
+ */
+function par_data_update_8019() {
+  foreach (ParDataPartnership::loadMultiple() as $partnership) {
+    $legal_entity_ids = [];
+
+    // Get partnership organisation entity.
+    $par_data_organisation = $partnership->getOrganisation(TRUE);
+
+    // Get all legal entities on organisation.
+    $legal_entities = $par_data_organisation->get('field_legal_entity')->referencedEntities();
+
+    // Get all legal entity IDs.
+    foreach ($legal_entities as $legal_entity) {
+      $legal_entity_ids[] = $legal_entity->id();
+    }
+
+    // Save legal entities to partnership legal entity reference field.
+    $partnership->set('field_legal_entity', $legal_entity_ids);
+
+    // Commit changes to partnership.
+    $partnership->save();
+  }
+}
