@@ -1,4 +1,4 @@
-uuid: 6bfda7ba-bcea-40f2-b35f-e5c34c419f09
+uuid: 3ca47f95-8c85-4711-acf0-1306e1a83085
 langcode: en
 status: true
 dependencies:
@@ -7,7 +7,7 @@ dependencies:
     - par_data.par_data_legal_entity_type.legal_entity
     - par_data.par_data_partnership_type.partnership
 _core:
-  default_config_hash: FkHOzt9NdA-m6iWUpTfHYQ6fXVqath_TVmFRDZxaZIw
+  default_config_hash: PgbLDRyLbWb_FM3vjquPpb0U2XokxNa-eOxdGSWUkzs
 id: par_data_partnership.partnership.field_legal_entity
 field_name: field_legal_entity
 entity_type: par_data_partnership

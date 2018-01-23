@@ -16,13 +16,15 @@ dependencies:
   module:
     - datetime
     - text
+_core:
+  default_config_hash: hsEFYV4xjPVPeVpfcAM3LMAsx1qnjffieHMjehRj1Bc
 id: par_data_partnership.partnership.default
 targetEntityType: par_data_partnership
 bundle: partnership
 mode: default
 content:
   field_advice:
-    weight: 32
+    weight: 7
     settings:
       match_operator: CONTAINS
       size: 60
@@ -31,7 +33,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_authority:
-    weight: 33
+    weight: 8
     settings:
       match_operator: CONTAINS
       size: 60
@@ -40,7 +42,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_authority_person:
-    weight: 29
+    weight: 3
     settings:
       match_operator: CONTAINS
       size: 60
@@ -49,7 +51,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_coordinated_business:
-    weight: 35
+    weight: 11
     settings:
       match_operator: CONTAINS
       size: 60
@@ -58,7 +60,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_inspection_plan:
-    weight: 31
+    weight: 6
     settings:
       match_operator: CONTAINS
       size: 60
@@ -68,7 +70,7 @@ content:
     region: content
   field_legal_entity:
     type: entity_reference_autocomplete
-    weight: 36
+    weight: 10
     region: content
     settings:
       match_operator: CONTAINS
@@ -76,7 +78,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_organisation:
-    weight: 34
+    weight: 9
     settings:
       match_operator: CONTAINS
       size: 60
@@ -85,7 +87,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_organisation_person:
-    weight: 28
+    weight: 4
     settings:
       match_operator: CONTAINS
       size: 60
@@ -94,7 +96,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_regulatory_function:
-    weight: 30
+    weight: 5
     settings:
       match_operator: CONTAINS
       size: 60
@@ -104,14 +106,14 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 10
+    weight: 2
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   name:
     type: string_textfield
-    weight: -4
+    weight: 0
     region: content
     settings:
       size: 60
@@ -119,7 +121,7 @@ content:
     third_party_settings: {  }
   user_id:
     type: entity_reference_autocomplete
-    weight: 5
+    weight: 1
     settings:
       match_operator: CONTAINS
       size: 60

@@ -1,11 +1,11 @@
-uuid: 53f7d884-b87f-4d7b-b597-11ae3be02cdf
+uuid: cb6d9037-a020-4ca5-9334-a214d7689756
 langcode: en
 status: true
 dependencies:
   module:
     - par_data
 _core:
-  default_config_hash: nC9p0gJ-TUSyczYhe2kgdhbywyMsk6vZWgzL9YjCOw8
+  default_config_hash: JacVZTcDNOgCcnTSm_nUhliNy9_kZp_WwOx0zB_T0Dk
 id: par_data_partnership.field_legal_entity
 field_name: field_legal_entity
 entity_type: par_data_partnership
