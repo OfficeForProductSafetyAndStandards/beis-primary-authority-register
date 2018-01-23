@@ -252,7 +252,7 @@ function par_data_update_8017() {
 /**
  * Migrate legal entities from organisation to partnership.
  */
-function par_data_update_8018() {
+function par_data_update_8019() {
   foreach (ParDataPartnership::loadMultiple() as $partnership) {
     $legal_entity_ids = [];
 
