@@ -78,6 +78,16 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
       ],
     ];
 
+    // PAR Partnership Flow Link.
+    $data[$this->entityType->getDataTable()]['par_partnership_flow_link'] = [
+      'title' => t('PAR Partnership Flow Link'),
+      'field' => [
+        'title' => t('PAR Partnership Flow Link'),
+        'help' => t('Provides a link to the relevant partnership journey determined by the partnership status.'),
+        'id' => 'par_partnership_flow_link',
+      ],
+    ];
+
     // Custom filter for Par Membership checks.
     $data[$this->entityType->getDataTable()]['id_filter'] = [
       'title' => t('Membership Filter'),
