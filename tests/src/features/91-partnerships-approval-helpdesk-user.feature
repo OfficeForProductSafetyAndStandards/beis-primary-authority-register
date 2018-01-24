@@ -45,7 +45,7 @@ Feature: Helpdesk approve partnership
         Then I expect that element ".table-scroll-wrapper" contains the text "Approve partnership"
         And I click on the link "Log out"
 
-    @ci @PAR1084
+    @Pending @PAR1084
     Scenario: Verify Helpdesk user cannot approve partnerships with EN outstanding
         Given I open the url "/user/login"
         And I add "par_helpdesk@example.com" to the inputfield "#edit-name"

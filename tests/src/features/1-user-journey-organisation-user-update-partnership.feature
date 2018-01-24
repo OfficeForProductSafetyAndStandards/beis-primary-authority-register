@@ -1,4 +1,4 @@
-@Pending @PAR990 @PAR991
+@ci @PAR990 @PAR991
 Feature: Business User - Manage Addresses
 
 
