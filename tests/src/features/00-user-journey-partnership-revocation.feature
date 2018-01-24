@@ -58,12 +58,11 @@ Feature: New Direct Partnership For HD user To Revoke
 
         # ADD BUSINESS DETAIL
         And I run tota11y against the current page
-        And I add "Leidseplein 10 to the inputfield "#edit-address-line1"
+        And I add "Leidseplein 10" to the inputfield "#edit-address-line1"
         And I add "Leidseplein" to the inputfield "#edit-address-line2"
         When I add "Amsterdam" to the inputfield "#edit-town-city"
-        And I select the option with the text "Other" for element "#edit-nation"
-        Then I expect that element "#edit-country" is visible
-        And I select the option with the text "Netherlands" for element "#edit-country"
+        Then I expect that element "#edit-country-code" is visible
+        And I select the option with the text "Netherlands" for element "#edit-country-code"
         When I add "1017 PT" to the inputfield "#edit-postcode"
         And I click on the button "#edit-next"
 

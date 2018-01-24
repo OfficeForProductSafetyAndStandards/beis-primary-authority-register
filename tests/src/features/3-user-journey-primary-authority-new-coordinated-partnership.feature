@@ -56,6 +56,7 @@ Feature: New Coordinated Partnership
         And I add "New Change" to the inputfield "#edit-address-line2"
         When I add "London" to the inputfield "#edit-town-city"
         When I add "London" to the inputfield "#edit-county"
+        And I select the option with the text "United Kingdom" for element "#edit-country-code"
         And I select the option with the text "England" for element "#edit-country"
         And I click on the button "#edit-next"
 

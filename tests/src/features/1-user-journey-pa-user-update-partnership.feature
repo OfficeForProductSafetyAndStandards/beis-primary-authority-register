@@ -1,6 +1,6 @@
 @Pending
 Feature: PA User - Manage Addresses
-    
+
     Scenario: PA User - Manage Addresses
 
         # PARTNERSHIPS DASHBOARD
@@ -35,6 +35,7 @@ Feature: PA User - Manage Addresses
         And I add "New Change" to the inputfield "#edit-address-line2"
         And I add "London" to the inputfield "#edit-town-city"
         And I add "London" to the inputfield "#edit-county"
+        And I select the option with the text "United Kingdom" for element "#edit-country-code"
         And I select the option with the text "England" for element "#edit-nation"
         When I click on the button "#edit-save"
         Then I expect that element "#edit-registered-address" contains the text "1 Change St"

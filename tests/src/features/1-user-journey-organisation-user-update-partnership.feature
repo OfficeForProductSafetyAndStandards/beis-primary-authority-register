@@ -1,4 +1,4 @@
-@ci @PAR990 @PAR991
+@Bug @PAR990 @PAR991
 Feature: Business User - Manage Addresses
 
 
@@ -40,7 +40,8 @@ Feature: Business User - Manage Addresses
         Then I expect that element ".error-summary" does exist
         When I add "London" to the inputfield "#edit-town-city"
         When I add "London" to the inputfield "#edit-county"
-        And I select the option with the text "England" for element "#edit-country"
+        And I select the option with the text "United Kingdom" for element "#edit-country-code"
+        And I select the option with the text "England" for element "#edit-nation"
         When I click on the button "#edit-save"
         And I run tota11y against the current page
         Then I expect that element "#edit-registered-address" contains the text "1 Change St"
