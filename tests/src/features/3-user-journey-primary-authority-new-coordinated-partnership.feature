@@ -56,7 +56,7 @@ Feature: New Coordinated Partnership
         And I add "New Change" to the inputfield "#edit-address-line2"
         When I add "London" to the inputfield "#edit-town-city"
         When I add "London" to the inputfield "#edit-county"
-        And I select the option with the text "England" for element "#edit-country"
+        And I select the option with the text "England" for element "#edit-nation"
         And I click on the button "#edit-next"
 
         # MAIN CONTACT
@@ -117,7 +117,7 @@ Feature: New Coordinated Partnership
 #        And I add "New Change" to the inputfield "#edit-address-line2"
 #        When I add "London" to the inputfield "#edit-town-city"
 #        When I add "London" to the inputfield "#edit-county"
-#        And I select the option with the text "England" for element "#edit-country"
+#        And I select the option with the text "England" for element "#edit-nation"
 #        When I click on the button "#edit-next"
 #        Then I expect that element "span.address-line1" contains the text "1 Change St"
 #        And I expect that element "span.address-line2" contains the text "New Change"
