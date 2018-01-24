@@ -8,6 +8,7 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
+use CommerceGuys\Intl\Country\CountryRepository;
 
 /**
  * The partnership form for the premises details.
@@ -15,6 +16,9 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 class ParPartnershipFlowsAddressForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
+
+  /* @var $countryRepository CountryRepository */
+  protected $countryRepository;
 
   /**
    * {@inheritdoc}
@@ -28,7 +32,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
         'locality' => 'town_city',
         'postal_code' => 'postcode',
       ],
-      'nation' => 'country',
+      'nation' => 'nation',
     ],
   ];
 
@@ -112,6 +116,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       $this->getFlowDataHandler()->setFormPermValue("town_city", $address->get('locality')->getString());
       $this->getFlowDataHandler()->setFormPermValue("county", $address->get('administrative_area')->getString());
       $this->getFlowDataHandler()->setFormPermValue("country", $par_data_premises->get('nation')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("country_code", $par_data_premises->get('country_code')->getString());
       $this->getFlowDataHandler()->setFormPermValue("uprn", $par_data_premises->get('uprn')->getString());
       $this->getFlowDataHandler()->setFormPermValue('premises_id', $par_data_premises->id());
     }
@@ -154,23 +159,34 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("county"),
     ];
 
-    $form['country'] = [
+    // Get addressfield country values.
+    $this->countryRepository = new CountryRepository();
+
+    $form['country_code'] = [
+      '#type' => 'select',
+      '#options' => $this->countryRepository->getList(NULL),
+      '#title' => $this->t('Country'),
+      '#default_value' => $this->getDefaultValues("country_code", "GB"),
+    ];
+
+    $form['nation'] = [
       '#type' => 'select',
       '#title' => $this->t('Select your Nation'),
       '#options' => $premises_bundle->getAllowedValues('nation'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("country"),
+      '#states' => [
+        'visible' => [
+          'select[name="country_code"]' => [
+            ['value' => 'GB'],
+          ],
+        ],
+      ],
     ];
 
     $form['postcode'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter your Postcode'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("postcode"),
-    ];
-
-    $form['country_code'] = [
-      '#type' => 'hidden',
-      '#title' => $this->t('Country'),
-      '#default_value' => 'GB',
     ];
 
     // Make sure to add the person cacheability data to this form.
@@ -210,7 +226,10 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       ];
 
       $premises->set('address', $address);
-      $premises->set('nation', $this->getFlowDataHandler()->getTempDataValue('country'));
+
+      $nation = $this->getFlowDataHandler()->getTempDataValue('country_code') === 'GB' ?
+        $this->getFlowDataHandler()->getTempDataValue('nation') : '';
+      $premises->set('nation', $nation);
 
       $par_data_partnership = $this->getPartnershipParam();
       $par_data_organisation = $par_data_partnership ? $par_data_partnership->getOrganisation(TRUE) : NULL;

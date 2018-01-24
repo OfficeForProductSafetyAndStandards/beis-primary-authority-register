@@ -129,7 +129,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     // Save the value for the about_partnership field.
     $legal_entity = $this->getflowDataHandler()->getParameter('par_data_legal_entity');
 
-    // Nullify registration number
+    // Legal entities that accept registered numbers.
     $registered_number_types = [
       'limited_company',
       'public_limited_company',
@@ -145,6 +145,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       $this->getFlowDataHandler()->setTempDataValue('registered_number', NULL);
     }
 
+    // Edit existing legal entity / add new legal entity.
     if (!empty($legal_entity)) {
       $legal_entity->set('registered_name', $this->getFlowDataHandler()->getTempDataValue('registered_name'));
       $legal_entity->set('legal_entity_type', $this->getFlowDataHandler()->getTempDataValue('legal_entity_type'));
@@ -163,7 +164,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       }
     }
     else {
-      // Adding a new legal entity.
+      // Create a new legal entity.
       $legal_entity = ParDataLegalEntity::create([
         'type' => 'legal_entity',
         'name' => $this->getFlowDataHandler()->getTempDataValue('registered_name'),
@@ -173,12 +174,16 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       ]);
       $legal_entity->save();
 
-      // Now add the legal entity to the organisation.
+      // Now add the legal entity to the partnership.
       $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
-      $par_data_organisation = current($par_data_partnership->getOrganisation());
+      $par_data_partnership->addLegalEntity($legal_entity);
+
+      // Add the new legal entity to the organisation.
+      $par_data_organisation = $par_data_partnership->getOrganisation(TRUE);
       $par_data_organisation->addLegalEntity($legal_entity);
 
-      if ($par_data_organisation->save()) {
+      // Commit partnership/organisation changes.
+      if ($legal_entity->id() && $par_data_partnership->save() && $par_data_organisation->save()) {
         $this->getFlowDataHandler()->deleteStore();
       }
       else {
