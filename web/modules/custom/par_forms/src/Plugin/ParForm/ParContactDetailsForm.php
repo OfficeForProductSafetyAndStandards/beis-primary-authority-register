@@ -29,6 +29,19 @@ class ParContactDetailsForm extends ParFormPluginBase {
   ];
 
   /**
+   * Load the data for this form.
+   */
+  public function loadData() {
+    $partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_person = $partnership ? $partnership->getOrganisationPeople(TRUE) : NULL;
+
+    // Override the route parameter so that data loaded will be from this entity.
+    $this->getflowDataHandler()->setParameter('par_data_person', $par_data_person);
+
+    parent::loadData();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getElements($form = []) {

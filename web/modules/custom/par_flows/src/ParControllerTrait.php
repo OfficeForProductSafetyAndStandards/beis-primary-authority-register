@@ -34,7 +34,7 @@ trait ParControllerTrait {
    *
    * @var \Drupal\Component\Plugin\PluginInspectionInterface[]
    */
-  protected $components;
+  protected $components = [];
 
   /**
    * The flow negotiator.

@@ -186,12 +186,12 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
         $this->flow_name = 'partnership_coordinated';
       }
       // If Route is in direct confirmation flow && partnership is direct...
-      elseif (isset($flows['partnership_direct_application']) && $par_data_partnership->isDirect()) {
-        $this->flow_name = 'partnership_direct_application';
+      elseif (isset($flows['partnership_confirmation_direct']) && $par_data_partnership->isDirect()) {
+        $this->flow_name = 'partnership_confirmation_direct';
       }
       // If Route is in coordinated flow && partnership is coordinated...
-      elseif (isset($flows['partnership_coordinated_application']) && $par_data_partnership->isCoordinated()) {
-        $this->flow_name = 'partnership_coordinated_application';
+      elseif (isset($flows['partnership_confirmation_coordinated']) && $par_data_partnership->isCoordinated()) {
+        $this->flow_name = 'partnership_confirmation_coordinated';
       }
       elseif (isset($flows['partnership_application'])) {
         $this->flow_name = 'partnership_application';
