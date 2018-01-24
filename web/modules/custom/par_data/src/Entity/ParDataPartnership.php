@@ -270,6 +270,29 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
+   * Get legal entities for this partnership.
+   */
+  public function getLegalEntity() {
+    return $this->get('field_legal_entity')->referencedEntities();
+  }
+
+  /**
+   * Add a legal entity to partnership.
+   *
+   * @param ParDataLegalEntity $legal_entity
+   *   A PAR Legal Entity to add.
+   */
+  public function addLegalEntity(ParDataLegalEntity $legal_entity) {
+    // Retrieve existing legal entities.
+    $legal_entities = $this->getLegalEntity();
+
+    // Append new legal entity to existing entities.
+    $legal_entities[] = $legal_entity;
+
+    $this->set('field_legal_entity', $legal_entities);
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
