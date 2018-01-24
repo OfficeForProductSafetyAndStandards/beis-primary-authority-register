@@ -31,6 +31,13 @@ class ParAddressForm extends ParFormPluginBase {
   ];
 
   /**
+   * Get the country repository from the address module.
+   */
+  public function getCountryRepository() {
+    return \Drupal::service('address.country_repository');
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getElements($form = []) {
@@ -65,23 +72,31 @@ class ParAddressForm extends ParFormPluginBase {
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("county"),
     ];
 
-    $form['country'] = [
+    $form['country_code'] = [
+      '#type' => 'select',
+      '#options' => $this->getCountryRepository()->getList(NULL),
+      '#title' => $this->t('Country'),
+      '#default_value' => $this->getDefaultValues("country_code", "GB"),
+    ];
+
+    $form['nation'] = [
       '#type' => 'select',
       '#title' => $this->t('Select your Nation'),
       '#options' => $premises_bundle->getAllowedValues('nation'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("country"),
+      '#states' => [
+        'visible' => [
+          'select[name="country_code"]' => [
+            ['value' => 'GB'],
+          ],
+        ],
+      ],
     ];
 
     $form['postcode'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter your Postcode'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("postcode"),
-    ];
-
-    $form['country_code'] = [
-      '#type' => 'hidden',
-      '#title' => $this->t('Country'),
-      '#default_value' => 'GB',
     ];
 
     return $form;

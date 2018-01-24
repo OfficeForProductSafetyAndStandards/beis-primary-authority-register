@@ -40,7 +40,7 @@ steps:
     route: par_partnership_confirmation_flows.business_size
     form_id: par_partnership_confirmation_business_size
     components:
-      - employee_number
+      - business_size
     redirect:
       cancel: 10
   6:
@@ -54,7 +54,7 @@ steps:
     route: par_partnership_confirmation_flows.confirm_legal_entity
     form_id: par_partnership_confirmation_legal_entity
     components:
-      - contact_details_full
+      - legal_entity
     redirect:
       cancel: 10
   8:

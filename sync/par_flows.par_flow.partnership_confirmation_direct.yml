@@ -1,6 +1,9 @@
+uuid: 89e69e73-fe7b-4cc3-ae8b-0b53c6dd5943
 langcode: en
 status: true
 dependencies: {  }
+_core:
+  default_config_hash: LmREizBA-oHq8PHwAR5mzMePF69-aVLbEwRKBjtkfSM
 id: partnership_confirmation_direct
 label: 'Direct Partnership Completion Flow'
 default_title: null
