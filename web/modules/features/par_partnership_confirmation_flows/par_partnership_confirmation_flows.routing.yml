@@ -51,8 +51,8 @@ par_partnership_confirmation_flows.confirm_sic_code:
 par_partnership_confirmation_flows.confirm_employee_number:
   path: '/partnership/confirm/{par_data_partnership}/employee-number'
   defaults:
-    _form: '\Drupal\par_partnership_confirmation_flows\Form\ParEmployeeNoForm'
-    _title_callback: '\Drupal\par_partnership_confirmation_flows\Form\ParEmployeeNoForm::titleCallback'
+    _form: '\Drupal\par_partnership_confirmation_flows\Form\ParEmployeeNumberForm'
+    _title_callback: '\Drupal\par_partnership_confirmation_flows\Form\ParEmployeeNumberForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     par_data_partnership: \d+
@@ -100,8 +100,8 @@ par_partnership_confirmation_flows.confirm_legal_entity:
 par_partnership_confirmation_flows.partnership_confirm_review:
   path: '/partnership/confirm/{par_data_partnership}/review'
   defaults:
-    _form: '\Drupal\par_partnership_confirmation_flows\Form\ParPartnershipConfirmationForm'
-    _title_callback: '\Drupal\par_partnership_confirmation_flows\Form\ParPartnershipConfirmationForm::titleCallback'
+    _form: '\Drupal\par_partnership_confirmation_flows\Form\ParConfirmationReviewForm'
+    _title_callback: '\Drupal\par_partnership_confirmation_flows\Form\ParConfirmationReviewForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     par_data_partnership: \d+

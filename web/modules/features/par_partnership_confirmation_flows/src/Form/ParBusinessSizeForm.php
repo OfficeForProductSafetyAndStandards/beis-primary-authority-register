@@ -21,47 +21,16 @@ class ParBusinessSizeForm extends ParBaseForm {
   }
 
   /**
-   * Helper to get all the editable values when editing or
-   * revisiting a previously edited page.
-   *
-   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
-   *   The Partnership being retrieved.
+   * Load the data for this form.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
-    if ($par_data_partnership) {
-      // If we want to use values already saved we have to tell
-      // the form about them.
-      $par_data_organisation = current($par_data_partnership->getOrganisation());
+  public function loadData() {
+    $partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_organisation = $partnership ? $partnership->getOrganisation(TRUE) : NULL;
 
-      $this->getFlowDataHandler()->setFormPermValue('business_size', $par_data_organisation->get('size')->getString());
-    }
-  }
+    // Override the route parameter so that data loaded will be from this entity.
+    $this->getflowDataHandler()->setParameter('par_data_organisation', $par_data_organisation);
 
-  /**
-   * {@inheritdoc}
-   */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
-    $this->retrieveEditableValues($par_data_partnership);
-    $organisation_bundle = $this->getParDataManager()->getParBundleEntity('par_data_organisation');
-
-    $form['info'] = [
-      '#markup' => t('Enter the number of associations in your membership list'),
-      '#prefix' => '<h2>',
-      '#suffix' => '</h2>',
-    ];
-
-    // Business details.
-    $form['business_size'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Number of members'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('business_size'),
-      '#options' => $organisation_bundle->getAllowedValues('size'),
-    ];
-
-    // Make sure to add the partnership cacheability data to this form.
-    $this->addCacheableDependency($par_data_partnership);
-
-    return parent::buildForm($form, $form_state);
+    parent::loadData();
   }
 
   /**

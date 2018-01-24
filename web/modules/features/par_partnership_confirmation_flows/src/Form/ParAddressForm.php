@@ -54,12 +54,13 @@ class ParAddressForm extends ParBaseForm {
     }
 
     // Create or update an existing PAR Premises record.
-    $premises = $this->getPremisesParam() ? $this->getPremisesParam() : ParDataPremises::create([
+    $premises_param = $this->getflowDataHandler()->getParameter('par_data_premises');
+    $par_data_premises = $premises_param ? $premises_param : ParDataPremises::create([
       'type' => 'premises',
       'uid' => $this->getCurrentUser()->id(),
     ]);
 
-    if ($premises) {
+    if ($par_data_premises) {
       $address = [
         'country_code' => $this->getFlowDataHandler()->getTempDataValue('country_code'),
         'address_line1' => $this->getFlowDataHandler()->getTempDataValue('address_line1'),
@@ -69,20 +70,20 @@ class ParAddressForm extends ParBaseForm {
         'postal_code' => $this->getFlowDataHandler()->getTempDataValue('postcode'),
       ];
 
-      $premises->set('address', $address);
-      $premises->set('nation', $this->getFlowDataHandler()->getTempDataValue('country'));
+      $par_data_premises->set('address', $address);
+      $par_data_premises->set('nation', $this->getFlowDataHandler()->getTempDataValue('country'));
 
-      $par_data_partnership = $this->getPartnershipParam();
+      $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
       $par_data_organisation = $par_data_partnership ? $par_data_partnership->getOrganisation(TRUE) : NULL;
 
       // Check we are updating an existing partnership/organisation.
-      if ($par_data_partnership && $premises->save()) {
+      if ($par_data_partnership && $par_data_premises->save()) {
 
         // Add premises to organisation if a new PAR Premises record is created.
-        if (!$this->getPremisesParam()) {
+        if (!$premises_param) {
           // Add to field_premises.
           $par_data_organisation->get('field_premises')
-            ->appendItem($premises->id());
+            ->appendItem($par_data_premises->id());
           $par_data_organisation->save();
         }
 

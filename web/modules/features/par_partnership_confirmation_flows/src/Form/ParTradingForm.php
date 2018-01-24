@@ -13,6 +13,11 @@ use Drupal\par_partnership_confirmation_flows\ParPartnershipFlowsTrait;
 class ParTradingForm extends ParBaseForm {
 
   /**
+   * Set the page title.
+   */
+  protected $pageTitle = "Confirm the trading name";
+
+  /**
    * {@inheritdoc}
    */
   public function getFormId() {
@@ -20,72 +25,17 @@ class ParTradingForm extends ParBaseForm {
   }
 
   /**
-   * {@inheritdoc}
+   * Load the data for this form.
    */
-  public function titleCallback() {
-    $trading_name_delta = $this->getflowDataHandler()->getParameter('trading_name_delta');
+  public function loadData() {
+    $partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_organisation = $partnership ? $partnership->getOrganisation(TRUE) : NULL;
 
-    // Check from the route if we are editing an existing trading name.
-    $action = isset($trading_name_delta) ? 'Edit' : 'Add a';
+    // For the apply journey we will always edit the first value.
+    $this->getflowDataHandler()->setParameter('par_data_organisation', $par_data_organisation);
+    $this->getflowDataHandler()->setParameter('trading_name_delta', 0);
 
-    $this->pageTitle = "Update partnership information | {$action} trading name for your organisation";
-
-    return $this->pageTitle;
-  }
-
-  /**
-   * Helper to get all the editable values.
-   *
-   * Used for when editing or revisiting a previously edited page.
-   *
-   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
-   *   The Partnership being retrieved.
-   * @param int $trading_name_delta
-   *   The trading name delta.
-   */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, $trading_name_delta = NULL) {
-
-    $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $bundle = $par_data_organisation->bundle();
-
-    $this->formItems = [
-      "par_data_organisation:{$bundle}" => [
-        'trading_name' => 'trading_name',
-      ],
-    ];
-
-    if (!is_null($trading_name_delta)) {
-      // Store the current value of the sic_code if it's being edited.
-      $trading_name = $par_data_organisation ? $par_data_organisation->get('trading_name')->getValue()[$trading_name_delta] : NULL;
-
-      if ($trading_name) {
-        $this->getFlowDataHandler()->setFormPermValue("trading_name", $trading_name);
-      }
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $trading_name_delta = NULL) {
-    $this->retrieveEditableValues($par_data_partnership, $trading_name_delta);
-
-    $form['trading_name_fieldset'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#title' => $this->t('Enter a trading name'),
-    ];
-
-    $form['trading_name_fieldset']['trading_name'] = [
-      '#type' => 'textfield',
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("trading_name"),
-      '#description' => $this->t("<p>Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State any trading names used by the organisation.</p>"),
-    ];
-
-    // Make sure to add the person cacheability data to this form.
-    $this->addCacheableDependency($par_data_partnership);
-
-    return parent::buildForm($form, $form_state);
+    parent::loadData();
   }
 
   /**

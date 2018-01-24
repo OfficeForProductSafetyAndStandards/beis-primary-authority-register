@@ -77,8 +77,11 @@ class ParDataOrganisation extends ParDataEntity {
   /**
    * Get the legal entites for this Organisation.
    */
-  public function getLegalEntity() {
-    return $this->get('field_legal_entity')->referencedEntities();
+  public function getLegalEntity($single = FALSE) {
+    $legal_entities = $this->get('field_legal_entity')->referencedEntities();
+    $legal_entity = !empty($legal_entities) ? current($legal_entities) : NULL;
+
+    return $single ? $legal_entity : $legal_entities;
   }
 
   /**

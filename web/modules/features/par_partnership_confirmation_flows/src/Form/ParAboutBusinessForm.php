@@ -25,6 +25,19 @@ class ParAboutBusinessForm extends ParBaseForm {
   }
 
   /**
+   * Load the data for this form.
+   */
+  public function loadData() {
+    $partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_organisation = $partnership ? $partnership->getOrganisation(TRUE) : NULL;
+
+    // Override the route parameter so that data loaded will be from this entity.
+    $this->getflowDataHandler()->setParameter('par_data_organisation', $par_data_organisation);
+
+    parent::loadData();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {

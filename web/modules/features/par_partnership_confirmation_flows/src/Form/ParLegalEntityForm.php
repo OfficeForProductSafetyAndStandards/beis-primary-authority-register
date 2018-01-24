@@ -15,6 +15,11 @@ use Drupal\par_partnership_confirmation_flows\ParPartnershipFlowsTrait;
 class ParLegalEntityForm extends ParBaseForm {
 
   /**
+   * Set the page title.
+   */
+  protected $pageTitle = 'Confirm the legal entity';
+
+  /**
    * {@inheritdoc}
    */
   public function getFormId() {
@@ -33,89 +38,17 @@ class ParLegalEntityForm extends ParBaseForm {
   ];
 
   /**
-   * {@inheritdoc}
+   * Load the data for this form.
    */
-  public function titleCallback() {
-    $legal_entity = $this->getflowDataHandler()->getParameter('par_data_legal_entity');
+  public function loadData() {
+    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_organisation = $par_data_partnership ? $par_data_partnership->getOrganisation(TRUE) : NULL;
+    $par_data_legal_entity = $par_data_organisation ? $par_data_organisation->getLegalEntity(TRUE) : NULL;
 
-    $form_context = $legal_entity ? 'Change the legal entity for your organisation' : 'Add a legal entity for your organisation';
+    // For the apply journey we will always edit the first value.
+    $this->getflowDataHandler()->setParameter('par_data_legal_entity', $par_data_legal_entity);
 
-    $this->pageTitle = "Update Partnership Information | {$form_context}";
-
-    return parent::titleCallback();
-  }
-
-  /**
-   * Helper to get all the editable values when editing or
-   * revisiting a previously edited page.
-   *
-   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
-   *   The Partnership being retrieved.
-   * @param \Drupal\par_data\Entity\ParDataLegalEntity $par_data_legal_entity
-   *   The Authority being retrieved.
-   */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataLegalEntity $par_data_legal_entity = NULL) {
-    if ($par_data_legal_entity) {
-      $this->getFlowDataHandler()->setFormPermValue("legal_entity_registered_name", $par_data_legal_entity->get('registered_name')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("legal_entity_registered_number", $par_data_legal_entity->get('registered_number')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("legal_entity_legal_entity_type", $par_data_legal_entity->get('legal_entity_type')->getString());
-      $this->getFlowDataHandler()->setFormPermValue('legal_entity_id', $par_data_legal_entity->id());
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataLegalEntity $par_data_legal_entity = NULL) {
-    $this->retrieveEditableValues($par_data_partnership, $par_data_legal_entity);
-    $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
-
-    $form['legal_entity_intro_fieldset'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('What is a legal entity?'),
-    ];
-
-    $form['legal_entity_intro_fieldset']['intro'] = [
-      '#type' => 'markup',
-      '#markup' => "<p>" . $this->t("A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisations such as trusts and charities.") . "</p>",
-    ];
-
-    $form['registered_name'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Enter name of the legal entity'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_registered_name"),
-    ];
-
-    $form['legal_entity_type'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Select type of Legal Entity'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_legal_entity_type"),
-      '#options' => $legal_entity_bundle->getAllowedValues('legal_entity_type'),
-    ];
-
-    $form['registered_number'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Provide the registration number'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_registered_number"),
-      '#states' => [
-        'visible' => [
-          'select[name="legal_entity_type"]' => [
-            ['value' => 'limited_company'],
-            ['value' => 'public_limited_company'],
-            ['value' => 'limited_liability_partnership'],
-            ['value' => 'registered_charity'],
-            ['value' => 'partnership'],
-            ['value' => 'limited_partnership'],
-            ['value' => 'other'],
-          ],
-        ],
-      ],
-    ];
-
-    // Make sure to add the person cacheability data to this form.
-    $this->addCacheableDependency($par_data_partnership);
-
-    return parent::buildForm($form, $form_state);
+    parent::loadData();
   }
 
   /**

@@ -12,7 +12,7 @@ use Drupal\par_forms\ParFormPluginBase;
  *   title = @Translation("Number of Employees form.")
  * )
  */
-class ParAboutBusinessForm extends ParFormPluginBase {
+class ParEmployeeNumberForm extends ParFormPluginBase {
 
   /**
    * Mapping of the data parameters to the form elements.
@@ -22,6 +22,17 @@ class ParAboutBusinessForm extends ParFormPluginBase {
       'employees_band' => 'employees_band',
     ],
   ];
+
+  /**
+   * Load the data for this form.
+   */
+  public function loadData() {
+    if ($par_data_organisation = $this->getflowDataHandler()->getParameter('par_data_organisation')) {
+      $this->getFlowDataHandler()->setFormPermValue('employees_band', $par_data_organisation->get('employees_band')->getString());
+    }
+
+    parent::loadData();
+  }
 
   /**
    * {@inheritdoc}

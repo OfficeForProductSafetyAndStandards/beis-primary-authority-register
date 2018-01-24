@@ -34,19 +34,20 @@ class ParAddressForm extends ParFormPluginBase {
    * Load the data for this form.
    */
   public function loadData() {
-    $par_data_premises = $this->getflowDataHandler()->getParameter('par_data_premises');
-    $address = $par_data_premises->get('address')->first();
+    if ($par_data_premises = $this->getflowDataHandler()->getParameter('par_data_premises')) {
+      $address = $par_data_premises->get('address')->first();
 
-    // Setting the address details..
-    $this->getFlowDataHandler()->setFormPermValue("postcode", $address->get('postal_code')->getString());
-    $this->getFlowDataHandler()->setFormPermValue("address_line1", $address->get('address_line1')->getString());
-    $this->getFlowDataHandler()->setFormPermValue("address_line2", $address->get('address_line2')->getString());
-    $this->getFlowDataHandler()->setFormPermValue("town_city", $address->get('locality')->getString());
-    $this->getFlowDataHandler()->setFormPermValue("county", $address->get('administrative_area')->getString());
-    $this->getFlowDataHandler()->setFormPermValue("nation", $par_data_premises->get('nation')->getString());
-    $this->getFlowDataHandler()->setFormPermValue("country_code", $address->get('country_code')->getString());
-    $this->getFlowDataHandler()->setFormPermValue("uprn", $par_data_premises->get('uprn')->getString());
-    $this->getFlowDataHandler()->setFormPermValue('premises_id', $par_data_premises->id());
+      // Setting the address details..
+      $this->getFlowDataHandler()->setFormPermValue("postcode", $address->get('postal_code')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("address_line1", $address->get('address_line1')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("address_line2", $address->get('address_line2')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("town_city", $address->get('locality')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("county", $address->get('administrative_area')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("nation", $par_data_premises->get('nation')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("country_code", $address->get('country_code')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("uprn", $par_data_premises->get('uprn')->getString());
+      $this->getFlowDataHandler()->setFormPermValue('premises_id', $par_data_premises->id());
+    }
 
     parent::loadData();
   }

@@ -13,6 +13,11 @@ use Drupal\par_partnership_confirmation_flows\ParPartnershipFlowsTrait;
 class ParSicCodeForm extends ParBaseForm {
 
   /**
+   * Set the page title.
+   */
+  protected $pageTitle = "Confirm the SIC code";
+
+  /**
    * {@inheritdoc}
    */
   public function getFormId() {
@@ -24,11 +29,11 @@ class ParSicCodeForm extends ParBaseForm {
    */
   public function loadData() {
     $partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
-    $organisation = $partnership ? $partnership->getOrganisation(TRUE) : NULL;
-    $par_data_sic = $organisation ? $organisation->getSicCode(TRUE) : NULL;
+    $par_data_organisation = $partnership ? $partnership->getOrganisation(TRUE) : NULL;
 
-    // Override the route parameter so that data loaded will be from this entity.
-    $this->getflowDataHandler()->setParameter('par_data_sic_code', $par_data_sic);
+    // For the apply journey we will always edit the first value.
+    $this->getflowDataHandler()->setParameter('par_data_organisation', $par_data_organisation);
+    $this->getflowDataHandler()->setParameter('sic_code_delta', 0);
 
     parent::loadData();
   }

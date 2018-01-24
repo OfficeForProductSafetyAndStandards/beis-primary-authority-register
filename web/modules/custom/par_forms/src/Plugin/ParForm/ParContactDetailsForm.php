@@ -32,11 +32,25 @@ class ParContactDetailsForm extends ParFormPluginBase {
    * Load the data for this form.
    */
   public function loadData() {
-    $partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
-    $par_data_person = $partnership ? $partnership->getOrganisationPeople(TRUE) : NULL;
+    if ($par_data_person = $this->getflowDataHandler()->getParameter('par_data_person')) {
+      $this->getFlowDataHandler()->setFormPermValue("salutation", $par_data_person->get('salutation')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("first_name", $par_data_person->get('first_name')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("last_name", $par_data_person->get('last_name')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("work_phone", $par_data_person->get('work_phone')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("mobile_phone", $par_data_person->get('mobile_phone')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("email", $par_data_person->get('email')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("notes", $par_data_person->get('communication_notes')->getString());
 
-    // Override the route parameter so that data loaded will be from this entity.
-    $this->getflowDataHandler()->setParameter('par_data_person', $par_data_person);
+      // Get preferred contact methods.
+      $contact_options = [
+        'communication_email' => $par_data_person->getBoolean('communication_email'),
+        'communication_phone' => $par_data_person->getBoolean('communication_phone'),
+        'communication_mobile' => $par_data_person->getBoolean('communication_mobile'),
+      ];
+
+      // Checkboxes works nicely with keys, filtering booleans for "1" value.
+      $this->getFlowDataHandler()->setFormPermValue('preferred_contact', array_keys($contact_options, 1));
+    }
 
     parent::loadData();
   }

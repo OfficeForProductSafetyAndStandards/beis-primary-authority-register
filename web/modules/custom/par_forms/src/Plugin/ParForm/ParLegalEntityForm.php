@@ -26,6 +26,20 @@ class ParLegalEntityForm extends ParFormPluginBase {
   ];
 
   /**
+   * Load the data for this form.
+   */
+  public function loadData() {
+    if ($par_data_legal_entity = $this->getflowDataHandler()->getParameter('par_data_legal_entity')) {
+      $this->getFlowDataHandler()->setFormPermValue("legal_entity_registered_name", $par_data_legal_entity->get('registered_name')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("legal_entity_registered_number", $par_data_legal_entity->get('registered_number')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("legal_entity_legal_entity_type", $par_data_legal_entity->get('legal_entity_type')->getString());
+      $this->getFlowDataHandler()->setFormPermValue('legal_entity_id', $par_data_legal_entity->id());
+    }
+
+    parent::loadData();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getElements($form = []) {

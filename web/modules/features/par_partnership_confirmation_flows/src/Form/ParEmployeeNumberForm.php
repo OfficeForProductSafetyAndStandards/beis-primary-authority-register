@@ -13,13 +13,29 @@ use Drupal\par_partnership_confirmation_flows\ParPartnershipFlowsTrait;
  */
 class ParEmployeeNumberForm extends ParBaseForm {
 
-  protected $pageTitle = 'Confirm number of employees';
+  /**
+   * Set the page title.
+   */
+  protected $pageTitle = "Confirm number of employees";
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
     return 'par_partnership_confirmation_employee_number';
+  }
+
+  /**
+   * Load the data for this form.
+   */
+  public function loadData() {
+    $partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_organisation = $partnership ? $partnership->getOrganisation(TRUE) : NULL;
+
+    // For the apply journey we will always edit the first value.
+    $this->getflowDataHandler()->setParameter('par_data_organisation', $par_data_organisation);
+
+    parent::loadData();
   }
 
   /**

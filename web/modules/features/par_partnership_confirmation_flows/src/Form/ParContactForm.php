@@ -50,7 +50,7 @@ class ParContactForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Save contact.
-    $par_data_person = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_person = $this->getflowDataHandler()->getParameter('par_data_person');
 
     // Save person details.
     if ($par_data_person) {

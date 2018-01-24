@@ -9,7 +9,7 @@ use Drupal\par_forms\ParFormPluginBase;
  *
  * @ParForm(
  *   id = "sic_code",
- *   title = @Translation("SIC Code form.")
+ *   title = @Translation("SIC code form.")
  * )
  */
 class ParSicCodeForm extends ParFormPluginBase {
@@ -24,10 +24,29 @@ class ParSicCodeForm extends ParFormPluginBase {
   ];
 
   /**
+   * Load the data for this form.
+   */
+  public function loadData() {
+    $par_data_organisation = $this->getflowDataHandler()->getParameter('par_data_organisation');
+    $sic_code_delta = $this->getflowDataHandler()->getParameter('sic_code_delta');
+    if ($par_data_organisation) {
+      // Store the current value of the trading name if it's being edited.
+      $sic_code = $par_data_organisation ? $par_data_organisation->get('field_sic_code')->get($sic_code_delta) : NULL;
+
+      if ($sic_code) {
+        $this->getFlowDataHandler()->setFormPermValue("sic_code", $sic_code->getString());
+      }
+    }
+
+
+    parent::loadData();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getElements($form = []) {
-    $sic_codes = $this->getParDataManager()->getEntitiesByType();
+    $sic_codes = $this->getParDataManager()->getEntitiesByType('par_data_sic_code');
 
     // Display the correct introductory text based on the action that is being performed.
     $intro_text = $this->getFlowDataHandler()->getDefaultValues("sic_code", NULL) ?
