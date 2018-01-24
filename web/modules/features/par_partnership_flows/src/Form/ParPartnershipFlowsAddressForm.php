@@ -166,7 +166,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       '#type' => 'select',
       '#options' => $this->countryRepository->getList(NULL),
       '#title' => $this->t('Country'),
-      '#default_value' => $this->getDefaultValues("country_code", "GB"),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("country_code", "GB"),
     ];
 
     $form['nation'] = [
