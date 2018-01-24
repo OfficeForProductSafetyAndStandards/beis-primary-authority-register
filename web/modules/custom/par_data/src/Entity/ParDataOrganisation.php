@@ -67,8 +67,11 @@ class ParDataOrganisation extends ParDataEntity {
   /**
    * Get the contacts for this Organisation.
    */
-  public function getPerson() {
-    return $this->get('field_person')->referencedEntities();
+  public function getPerson($primary = FALSE) {
+    $people = $this->get('field_person')->referencedEntities();
+    $person = !empty($people) ? current($people) : NULL;
+
+    return $primary ? $person : $people;
   }
 
   /**
@@ -110,15 +113,21 @@ class ParDataOrganisation extends ParDataEntity {
   /**
    * Get the premises for this Organisation.
    */
-  public function getPremises() {
-    return $this->get('field_premises')->referencedEntities();
+  public function getPremises($single = FALSE) {
+    $premises = $this->get('field_premises')->referencedEntities();
+    $premises_singular = !empty($premises) ? current($premises) : NULL;
+
+    return $single ? $premises_singular : $premises;
   }
 
   /**
    * Get the SIC Code for this Organisation.
    */
-  public function getSicCode() {
-    return $this->get('field_sic_code')->referencedEntities();
+  public function getSicCode($single = FALSE) {
+    $sic_codes = $this->get('field_sic_code')->referencedEntities();
+    $sic_code = !empty($sic_codes) ? current($sic_codes) : NULL;
+
+    return $single ? $sic_code : $sic_codes;
   }
 
   /**

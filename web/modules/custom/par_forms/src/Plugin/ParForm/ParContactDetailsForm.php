@@ -5,15 +5,18 @@ namespace Drupal\par_forms\Plugin\ParForm;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
- * Approve an enforcement notice.
+ * Contact details form plugin.
  *
  * @ParForm(
  *   id = "contact_details_full",
- *   title = @Translation("Auto-approval of enforcement notices.")
+ *   title = @Translation("Contact details form.")
  * )
  */
 class ParContactDetailsForm extends ParFormPluginBase {
 
+  /**
+   * Mapping of the data parameters to the form elements.
+   */
   protected $formItems = [
     'par_data_person:person' => [
       'first_name' => 'first_name',
@@ -25,6 +28,9 @@ class ParContactDetailsForm extends ParFormPluginBase {
     ],
   ];
 
+  /**
+   * {@inheritdoc}
+   */
   public function getElements($form = []) {
     $form['salutation'] = [
       '#type' => 'textfield',
@@ -91,6 +97,9 @@ class ParContactDetailsForm extends ParFormPluginBase {
     return $form;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function validate(&$form_state) {
     // @todo create wrapper for setErrorByName as this is ugly creating a link.
     if (empty($form_state->getValue('email'))) {
