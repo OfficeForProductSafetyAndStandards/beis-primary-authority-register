@@ -62,6 +62,7 @@ Feature: New Direct Partnership For HD user To Revoke
         And I add "Leidseplein" to the inputfield "#edit-address-line2"
         When I add "Amsterdam" to the inputfield "#edit-town-city"
         And I select the option with the text "Other" for element "#edit-nation"
+        Then I expect that element "#edit-country" is visible
         And I select the option with the text "Netherlands" for element "#edit-country"
         When I add "1017 PT" to the inputfield "#edit-postcode"
         And I click on the button "#edit-next"
