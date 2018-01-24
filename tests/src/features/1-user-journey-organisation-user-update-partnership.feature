@@ -1,4 +1,4 @@
-@Bug @PAR990 @PAR991
+@Pending @PAR990 @PAR991
 Feature: Business User - Manage Addresses
 
 
@@ -27,17 +27,10 @@ Feature: Business User - Manage Addresses
         And I clear the inputfield "#edit-postcode"
         And I clear the inputfield "#edit-county"
         And I click on the button "#edit-save"
-        And I run tota11y against the current page
         Then I expect that element ".error-summary" does exist
         When I add "SE16 4NX" to the inputfield "#edit-postcode"
-        And I click on the button "#edit-save"
-        Then I expect that element ".error-summary" does exist
         And I add "1 Change St" to the inputfield "#edit-address-line1"
-        And I click on the button "#edit-save"
-        Then I expect that element ".error-summary" does exist
         And I add "New Change" to the inputfield "#edit-address-line2"
-        And I click on the button "#edit-save"
-        Then I expect that element ".error-summary" does exist
         When I add "London" to the inputfield "#edit-town-city"
         When I add "London" to the inputfield "#edit-county"
         And I select the option with the text "United Kingdom" for element "#edit-country-code"
