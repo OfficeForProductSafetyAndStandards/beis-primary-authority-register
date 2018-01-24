@@ -65,12 +65,10 @@ Feature: New Direct Partnership For PA To Approve
         And I add "Business For Direct Partnership 1" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
 
-        # CONFIRM NEW PARTNERSHIP
-
-        And I click new partnership if presented with choices
-
         # ADD BUSINESS DETAIL
 
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
+        Then I expect that element "h1.heading-xlarge" contains the text "New business information"
         When I add "SE16 4NX" to the inputfield "#edit-postcode"
         And I add "1 Change St" to the inputfield "#edit-address-line1"
         And I add "New Change" to the inputfield "#edit-address-line2"
@@ -81,6 +79,8 @@ Feature: New Direct Partnership For PA To Approve
 
         # MAIN CONTACT
 
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
+        Then I expect that element "h1.heading-xlarge" contains the text "Add a contact for the business"
         When I add "Mr" to the inputfield "#edit-salutation"
         And I add "Fozzie" to the inputfield "#edit-first-name"
         And I add "Bear" to the inputfield "#edit-last-name"
