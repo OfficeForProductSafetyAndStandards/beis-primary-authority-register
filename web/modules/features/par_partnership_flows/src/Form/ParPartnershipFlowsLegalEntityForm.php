@@ -133,10 +133,10 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Save the value for the about_partnership field.
+    // Load existing legal entity from URL.
     $legal_entity = $this->getRouteParam('par_data_legal_entity');
 
-    // Nullify registration number
+    // Legal entities that accept registered numbers.
     $registered_number_types = [
       'limited_company',
       'public_limited_company',
@@ -147,11 +147,12 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       'other',
     ];
 
-    // Nullify registered number if not one of the types specified.
+    // Nullify registered number field if not required/needed.
     if ($legal_entity && !in_array($this->getTempDataValue('legal_entity_type'), $registered_number_types)) {
       $this->setTempDataValue('registered_number', NULL);
     }
 
+    // Edit existing legal entity / add new legal entity.
     if (!empty($legal_entity)) {
       $legal_entity->set('registered_name', $this->getTempDataValue('registered_name'));
       $legal_entity->set('legal_entity_type', $this->getTempDataValue('legal_entity_type'));
@@ -170,7 +171,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       }
     }
     else {
-      // Adding a new legal entity.
+      // Create a new legal entity.
       $legal_entity = ParDataLegalEntity::create([
         'type' => 'legal_entity',
         'name' => $this->getTempDataValue('registered_name'),
@@ -180,12 +181,18 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       ]);
       $legal_entity->save();
 
-      // Now add the legal entity to the organisation.
+      // Now add the legal entity to the partnership.
       $par_data_partnership = $this->getRouteParam('par_data_partnership');
-      $par_data_organisation = current($par_data_partnership->getOrganisation());
+      $par_data_partnership->addLegalEntity($legal_entity);
+
+      // Add the new legal entity to the organisation.
+      $par_data_organisation = $par_data_partnership->getOrganisation(TRUE);
       $par_data_organisation->addLegalEntity($legal_entity);
 
-      if ($par_data_organisation->save()) {
+      // Commit partnership/organisation changes.
+      if ($legal_entity->id() &&
+          $par_data_partnership->save() &&
+          $par_data_organisation->save()) {
         $this->deleteStore();
       }
       else {

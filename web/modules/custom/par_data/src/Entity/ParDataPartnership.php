@@ -117,15 +117,21 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Get the organisation contacts for this Partnership.
    */
-  public function getOrganisationPeople() {
-    return $this->get('field_organisation_person')->referencedEntities();
+  public function getOrganisationPeople($primary = FALSE) {
+    $people = $this->get('field_organisation_person')->referencedEntities();
+    $person = !empty($people) ? current($people) : NULL;
+
+    return $primary ? $person : $people;
   }
 
   /**
    * Get the authority contacts for this Partnership.
    */
-  public function getAuthorityPeople() {
-    return $this->get('field_authority_person')->referencedEntities();
+  public function getAuthorityPeople($primary = FALSE) {
+    $people = $this->get('field_authority_person')->referencedEntities();
+    $person = !empty($people) ? current($people) : NULL;
+
+    return $primary ? $person : $people;
   }
 
   /**
@@ -267,6 +273,29 @@ class ParDataPartnership extends ParDataEntity {
 
   public function isCoordinated() {
     return $this->get('partnership_type')->getString() === 'coordinated';
+  }
+
+  /**
+   * Get legal entities for this partnership.
+   */
+  public function getLegalEntity() {
+    return $this->get('field_legal_entity')->referencedEntities();
+  }
+
+  /**
+   * Add a legal entity to partnership.
+   *
+   * @param ParDataLegalEntity $legal_entity
+   *   A PAR Legal Entity to add.
+   */
+  public function addLegalEntity(ParDataLegalEntity $legal_entity) {
+    // Retrieve existing legal entities.
+    $legal_entities = $this->getLegalEntity();
+
+    // Append new legal entity to existing entities.
+    $legal_entities[] = $legal_entity;
+
+    $this->set('field_legal_entity', $legal_entities);
   }
 
   /**

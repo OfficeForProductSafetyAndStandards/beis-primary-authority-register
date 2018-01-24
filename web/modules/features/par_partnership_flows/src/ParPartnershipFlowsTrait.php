@@ -42,16 +42,24 @@ trait ParPartnershipFlowsTrait {
       return 'partnership_authority';
     }
 
-    // If Route is in direct flow && User is an organisation member
-    // && Partnership is in URL && Partnership is direct...
+    // If Route is in direct flow && partnership is direct...
     if (isset($flows['partnership_direct']) && $par_data_partnership && $par_data_partnership->isDirect()) {
       return 'partnership_direct';
     }
 
-    // If Route is in coordinated flow && User is an organisation member
-    // && Partnership is in URL && Partnership is coordinated...
+    // If Route is in coordinated flow && partnership is coordinated...
     if (isset($flows['partnership_coordinated']) && $par_data_partnership && $par_data_partnership->isCoordinated()) {
       return 'partnership_coordinated';
+    }
+
+    // If Route is in direct confirmation flow && partnership is direct...
+    if (isset($flows['partnership_direct_application']) && $par_data_partnership && $par_data_partnership->isDirect()) {
+      return 'partnership_direct_application';
+    }
+
+    // If Route is in coordinated flow && partnership is coordinated...
+    if (isset($flows['partnership_coordinated_application']) && $par_data_partnership && $par_data_partnership->isCoordinated()) {
+      return 'partnership_coordinated_application';
     }
 
     if (isset($flows['partnership_application'])) {

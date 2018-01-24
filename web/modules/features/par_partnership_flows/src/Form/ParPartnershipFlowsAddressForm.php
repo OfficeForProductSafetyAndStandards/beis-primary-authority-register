@@ -8,6 +8,7 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
+use CommerceGuys\Intl\Country\CountryRepository;
 
 /**
  * The partnership form for the premises details.
@@ -15,6 +16,9 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 class ParPartnershipFlowsAddressForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
+
+  /* @var $countryRepository CountryRepository */
+  protected $countryRepository;
 
   /**
    * {@inheritdoc}
@@ -28,7 +32,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
         'locality' => 'town_city',
         'postal_code' => 'postcode',
       ],
-      'nation' => 'country',
+      'nation' => 'nation',
     ],
   ];
 
@@ -40,21 +44,48 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
   }
 
   /**
+   * Get partnership.
+   */
+  public function getPartnershipParam() {
+    return $this->getRouteParam('par_data_partnership');
+  }
+
+  /**
+   * Get partnership.
+   */
+  public function getPremisesParam() {
+    if ($this->getFlowName() === 'partnership_direct_application' || $this->getFlowName() === 'partnership_coordinated_application') {
+      $partnership = $this->getPartnershipParam();
+      $organisation = $partnership ? $partnership->getOrganisation(TRUE) : NULL;
+      $premises = $organisation ? $organisation->getPremises() : NULL;
+      return !empty($premises) ? current($premises) : NULL;
+    }
+    else {
+      return $this->getRouteParam('par_data_premises');
+    }
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function titleCallback() {
-    $par_data_partnership = $this->getRouteParam('par_data_partnership');
-    $par_data_premises = $this->getRouteParam('par_data_premises');
+    $par_data_partnership = $this->getPartnershipParam();
+    $par_data_premises = $this->getPremisesParam();
 
     if (!empty($par_data_partnership)) {
       // Are we editing an existing premises entity?
-      $verb = $this->t($par_data_premises ? 'Edit' : 'Add');
-
-      if ($this->getFlowName() === 'partnership_direct') {
-        $this->pageTitle = "{$verb} your business address";
+      if ($this->getFlowName() === 'partnership_direct_application' || $this->getFlowName() === 'partnership_coordinated_application') {
+        $verb = 'Confirm';
       }
-      else if ($this->getFlowName() === 'partnership_coordinated') {
-        $this->pageTitle = "{$verb} your member business address";
+      else {
+        $verb = $par_data_premises ? 'Edit' : 'Add';
+      }
+
+      if ($this->getFlowName() === 'partnership_direct' || $this->getFlowName() === 'partnership_direct_application') {
+        $this->pageTitle = "{$verb} the registered address";
+      }
+      else if ($this->getFlowName() === 'partnership_coordinated' || $this->getFlowName() === 'partnership_coordinated_application') {
+        $this->pageTitle = "{$verb} the member's registered address";
       }
     }
     else {
@@ -92,6 +123,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       $this->loadDataValue("town_city", $address->get('locality')->getString());
       $this->loadDataValue("county", $address->get('administrative_area')->getString());
       $this->loadDataValue("country", $par_data_premises->get('nation')->getString());
+      $this->loadDataValue("country_code", $address->get('country_code')->getString());
       $this->loadDataValue("uprn", $par_data_premises->get('uprn')->getString());
       $this->loadDataValue('premises_id', $par_data_premises->id());
     }
@@ -101,6 +133,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPremises $par_data_premises = NULL) {
+    $par_data_premises = $this->getPremisesParam();
     $this->retrieveEditableValues($par_data_partnership, $par_data_premises);
     $premises_bundle = $this->getParDataManager()->getParBundleEntity('par_data_premises');
 
@@ -133,23 +166,34 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       '#default_value' => $this->getDefaultValues("county"),
     ];
 
-    $form['country'] = [
+    // Get addressfield country values.
+    $this->countryRepository = new CountryRepository();
+
+    $form['country_code'] = [
+      '#type' => 'select',
+      '#options' => $this->countryRepository->getList(NULL),
+      '#title' => $this->t('Country'),
+      '#default_value' => $this->getDefaultValues("country_code", "GB"),
+    ];
+
+    $form['nation'] = [
       '#type' => 'select',
       '#title' => $this->t('Select your Nation'),
       '#options' => $premises_bundle->getAllowedValues('nation'),
-      '#default_value' => $this->getDefaultValues("country"),
+      '#default_value' => $this->getDefaultValues("nation"),
+      '#states' => [
+        'visible' => [
+          'select[name="country_code"]' => [
+            ['value' => 'GB'],
+          ],
+        ],
+      ],
     ];
 
     $form['postcode'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter your Postcode'),
       '#default_value' => $this->getDefaultValues("postcode"),
-    ];
-
-    $form['country_code'] = [
-      '#type' => 'hidden',
-      '#title' => $this->t('Country'),
-      '#default_value' => 'GB',
     ];
 
     // Make sure to add the person cacheability data to this form.
@@ -173,7 +217,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
     }
 
     // Create or update an existing PAR Premises record.
-    $premises = $this->getRouteParam('par_data_premises') ? $this->getRouteParam('par_data_premises') : ParDataPremises::create([
+    $premises = $this->getPremisesParam() ? $this->getPremisesParam() : ParDataPremises::create([
       'type' => 'premises',
       'uid' => $this->getCurrentUser()->id(),
     ]);
@@ -189,16 +233,18 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       ];
 
       $premises->set('address', $address);
-      $premises->set('nation', $this->getTempDataValue('country'));
 
-      $par_data_partnership = $this->getRouteParam('par_data_partnership');
+      $nation = $this->getTempDataValue('country_code') === 'GB' ? $this->getTempDataValue('nation') : '';
+      $premises->set('nation', $nation);
+
+      $par_data_partnership = $this->getPartnershipParam();
       $par_data_organisation = $par_data_partnership ? $par_data_partnership->getOrganisation(TRUE) : NULL;
 
       // Check we are updating an existing partnership/organisation.
       if ($par_data_partnership && $premises->save()) {
 
         // Add premises to organisation if a new PAR Premises record is created.
-        if (!$this->getRouteParam('par_data_premises')) {
+        if (!$this->getPremisesParam()) {
           // Add to field_premises.
           $par_data_organisation->get('field_premises')
             ->appendItem($premises->id());
