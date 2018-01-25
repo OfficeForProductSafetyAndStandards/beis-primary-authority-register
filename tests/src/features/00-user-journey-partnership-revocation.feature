@@ -55,7 +55,7 @@ Feature: New Direct Partnership For HD user To Revoke
         # ADD BUSINESS DETAIL
 
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
-        Then I expect that element "h1.heading-xlarge" contains the text "New business information"
+        # Then I expect that element "h1.heading-xlarge" contains the text "New business information"
         When I add "SE16 4NX" to the inputfield "#edit-postcode"
         And I add "1 Change St" to the inputfield "#edit-address-line1"
         And I add "New Change" to the inputfield "#edit-address-line2"
