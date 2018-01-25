@@ -68,15 +68,16 @@ Feature: New Direct Partnership For PA To Approve
         # CONFIRM NEW PARTNERSHIP
 
         And I click new partnership if presented with choices
+        Then I expect that element ".heading-xlarge" contains the text "New business information"
 
         # ADD BUSINESS DETAIL
 
-        When I add "SE16 4NX" to the inputfield "#edit-postcode"
-        And I add "1 Change St" to the inputfield "#edit-address-line1"
+        When I add "1 Change St" to the inputfield "#edit-address-line1"
         And I add "New Change" to the inputfield "#edit-address-line2"
-        When I add "London" to the inputfield "#edit-town-city"
-        When I add "London" to the inputfield "#edit-county"
+        And I add "London" to the inputfield "#edit-town-city"
+        And I add "London" to the inputfield "#edit-county"
         And I select the option with the text "England" for element "#edit-nation"
+        And I add "SE16 4NX" to the inputfield "#edit-postcode"
         And I click on the button "#edit-next"
 
         # MAIN CONTACT
