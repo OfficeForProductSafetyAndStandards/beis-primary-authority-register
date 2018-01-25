@@ -8,7 +8,6 @@ module.exports = () =>
 {
     let isVisible = browser.isVisible('#edit-par-data-organisation-id-new');
     if (isVisible = true) {
-        //browser.click('#edit-par-data-organisation-id-new');
         browser.click('#edit-next');
     } else {
     }
