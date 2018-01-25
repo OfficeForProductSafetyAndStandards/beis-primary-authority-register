@@ -30,62 +30,22 @@ class ParBaseFormTest extends UnitTestCase {
   protected function setUp() {
     parent::setUp();
 
-    // Mock private temp store.
-    $private_temp_store_factory = $this->getMockBuilder('Drupal\user\PrivateTempStoreFactory')
-      ->disableOriginalConstructor()
-      ->getMock();
+    // Mock flow negotiator.
+    $negotiator = $this->getMockBuilder('Drupal\par_flows\ParFlowNegotiatorInterface');
 
-    // Mock entity type manager.
-    $session_manager_interface = $this->getMock('Drupal\Core\Session\SessionManagerInterface');
+    // Mock data handler for flows.
+    $data_handler = $this->getMock('Drupal\par_flows\ParFlowDataHandlerInterface');
 
-    // Mock logger factory.
-    $account_interface = $this->getMock('Drupal\Core\Session\AccountInterface');
+    // Mock par data manager.
+    $par_data_manager = $this->getMock('Drupal\par_data\ParDataManagerInterface');
 
     // Mock entity repository.
-    $entity_repository = $this->getMock('Drupal\Core\Entity\EntityStorageInterface');
+    $component_plugin_manager = $this->getMock('Drupal\Component\Plugin\PluginManagerInterface');
 
     $this->baseForm = $this->getMockBuilder('Drupal\par_flows\Form\ParBaseForm')
-      ->setMethods(['getFlowName', 'getState', 'getIgnoredValues'])
-      ->setConstructorArgs([$private_temp_store_factory, $session_manager_interface, $account_interface, $entity_repository])
+      ->setConstructorArgs([$negotiator, $data_handler, $par_data_manager, $component_plugin_manager])
       ->disableOriginalConstructor()
       ->getMockForAbstractClass();
-
-    $this->baseForm
-      ->method('getFlowName')
-      ->willReturn('test');
-    $this->baseForm
-      ->method('getState')
-      ->willReturn('default');
-    $this->baseForm
-      ->method('getIgnoredValues')
-      ->willReturn(['extra']);
-  }
-
-  function getChildren($elements) {
-    $children = [];
-
-    foreach ($elements as $key => $value) {
-      if (!empty($value) && is_array($value)) {
-        $children[$key] = $value;
-      }
-    }
-
-    return array_keys($children);
-  }
-
-  /**
-   * @covers ::getFormKey
-   * @covers ::normalizeKey
-   */
-  public function testGetFormKey() {
-    $string = "random_string_" . $this->getRandomGenerator()->name(300);
-    $key = $this->baseForm->getFormKey($string);
-    $this->assertLessThan(64, $key, "The key length has been limited.");
-
-    // 40 is the length of an sha1 hash so we should get the
-    // first 24 characters or our original key at a minimum.
-    $starts_with = substr('test_default_random_string_', 0, (64-40));
-    $this->assertEquals($starts_with, substr($key, 0, strlen($starts_with)), "The key has been normalized.");
   }
 
   /**
