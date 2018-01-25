@@ -66,6 +66,7 @@ Feature: New Direct Partnership For HD user To Revoke
         When I add "017 PT" to the inputfield "#edit-postcode"
         And I click on the button "#edit-next"
         Then I expect that element ".error-summary" is visible
+        And I clear the inputfield "#edit-postcode"
         When I add "1017 PT" to the inputfield "#edit-postcode"
         And I click on the button "#edit-next"
 
