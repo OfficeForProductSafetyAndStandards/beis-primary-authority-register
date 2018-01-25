@@ -43,9 +43,14 @@ class ParBaseFormTest extends UnitTestCase {
     $component_plugin_manager = $this->getMock('Drupal\Component\Plugin\PluginManagerInterface');
 
     $this->baseForm = $this->getMockBuilder('Drupal\par_flows\Form\ParBaseForm')
+      ->setMethods(['getIgnoredValues'])
       ->setConstructorArgs([$negotiator, $data_handler, $par_data_manager, $component_plugin_manager])
       ->disableOriginalConstructor()
       ->getMockForAbstractClass();
+
+    $this->baseForm
+      ->method('getIgnoredValues')
+      ->willReturn(['extra']);
   }
 
   /**
