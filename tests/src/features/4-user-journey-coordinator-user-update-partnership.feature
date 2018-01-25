@@ -1,4 +1,4 @@
-@ci
+@ci @PAR790
 Feature: Coordinator User - Manage Addresses
 
     Scenario: Coordinator User - Manage Addresses
@@ -30,6 +30,7 @@ Feature: Coordinator User - Manage Addresses
         And I add "New Change" to the inputfield "#edit-address-line2"
         And I add "London" to the inputfield "#edit-town-city"
         And I add "London" to the inputfield "#edit-county"
+        And I select the option with the text "United Kingdom" for element "#edit-country-code"
         And I select the option with the text "England" for element "#edit-nation"
         When I click on the button "#edit-save"
         Then I expect that element "#edit-registered-address" contains the text "1 Change St"
@@ -55,6 +56,10 @@ Feature: Coordinator User - Manage Addresses
 
         When I click on the link "add another legal entity"
         When I add "New Legal Entity" to the inputfield "#edit-registered-name"
+
+        # PAR790
+        # User will have option to choose a memeber to associate the legal entity with
+
         And I select the option with the text "Partnership" for element "#edit-legal-entity-type"
         And I click on the button "#edit-save"
         Then I expect that element "#edit-legal-entities" contains the text "New Legal Entity"

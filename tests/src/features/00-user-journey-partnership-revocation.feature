@@ -120,3 +120,4 @@ Feature: New Direct Partnership For HD user To Revoke
         And I add "Direct Partnership For Revoking" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-helpdesk-dashboard"
         Then I expect that element ".table-scroll-wrapper" contains the text "Direct Partnership For Revoking"
+

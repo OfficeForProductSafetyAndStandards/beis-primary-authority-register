@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-1"?>
 <jmeterTestPlan version="1.2" properties="3.2" jmeter="3.3 r1808647">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
@@ -18,7 +18,7 @@
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <stringProp name="LoopController.loops">1</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">50</stringProp>
+        <stringProp name="ThreadGroup.num_threads">25</stringProp>
         <stringProp name="ThreadGroup.ramp_time">300</stringProp>
         <longProp name="ThreadGroup.start_time">1480515724000</longProp>
         <longProp name="ThreadGroup.end_time">1480515724000</longProp>
@@ -164,18 +164,6 @@
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
-        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
-          <stringProp name="delimiter">,</stringProp>
-          <stringProp name="fileEncoding"></stringProp>
-          <stringProp name="filename">/Users/jaffamonkey/projects/beis-primary-authority-register/tests/jmeter/par_users.csv</stringProp>
-          <boolProp name="ignoreFirstLine">false</boolProp>
-          <boolProp name="quotedData">false</boolProp>
-          <boolProp name="recycle">true</boolProp>
-          <stringProp name="shareMode">shareMode.group</stringProp>
-          <boolProp name="stopThread">false</boolProp>
-          <stringProp name="variableNames">username,password,role</stringProp>
-        </CSVDataSet>
-        <hashTree/>
       </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Search Partnerships" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
@@ -183,7 +171,7 @@
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <stringProp name="LoopController.loops">1</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">50</stringProp>
+        <stringProp name="ThreadGroup.num_threads">25</stringProp>
         <stringProp name="ThreadGroup.ramp_time">300</stringProp>
         <longProp name="ThreadGroup.start_time">1480515724000</longProp>
         <longProp name="ThreadGroup.end_time">1480515724000</longProp>
@@ -300,7 +288,7 @@
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <stringProp name="LoopController.loops">1</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">50</stringProp>
+        <stringProp name="ThreadGroup.num_threads">25</stringProp>
         <stringProp name="ThreadGroup.ramp_time">300</stringProp>
         <longProp name="ThreadGroup.start_time">1480515724000</longProp>
         <longProp name="ThreadGroup.end_time">1480515724000</longProp>
@@ -409,7 +397,7 @@
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <stringProp name="LoopController.loops">1</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">50</stringProp>
+        <stringProp name="ThreadGroup.num_threads">25</stringProp>
         <stringProp name="ThreadGroup.ramp_time">300</stringProp>
         <longProp name="ThreadGroup.start_time">1480515724000</longProp>
         <longProp name="ThreadGroup.end_time">1480515724000</longProp>
