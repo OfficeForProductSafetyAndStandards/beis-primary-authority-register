@@ -274,6 +274,10 @@ function par_data_update_8019() {
       $legal_entity_ids[] = $legal_entity->id();
     }
 
+    $ids = print_r(array_values($legal_entity_ids), 1);
+
+    echo "adding {$ids} to partnership {$partnership->id()}";
+
     // Save legal entities to partnership legal entity reference field.
     $partnership->set('field_legal_entity', $legal_entity_ids);
 

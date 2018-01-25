@@ -23,7 +23,9 @@ if (file_exists($app_root . '/' . $site_path . '/services.local.yml')) {
 
 // Ensure travis always runs with the same memory that other environments do.
 ini_set('memory_limit', '2048M');
-ini_set('max_execution_time', 300);
+
+// Set 10min execution time as some drush updb commands are CPU time expensive.
+ini_set('max_execution_time', 600);
 
 // Enable tota11y library.
 $settings['enable_tota11y'] = TRUE;
