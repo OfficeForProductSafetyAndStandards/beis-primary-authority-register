@@ -1,11 +1,6 @@
+@ci @PAR1034
 Feature: New Direct Partnership For PA To Approve
 
-    @ci @PAR1034
-#    Scenario: New Direct Partnership
-#        Given I open the url "/user/login"
-#        And I run tota11y against the current page
-
-    @ci
     Scenario: New Direct Partnership
         Given I open the url "/user/login"
         And I set "par_authority@example.com" to the inputfield "#edit-name"
@@ -15,31 +10,20 @@ Feature: New Direct Partnership For PA To Approve
         And I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
         And I expect that element "#block-par-theme-content" contains the text "See enforcement notifications"
+
+        # PARTNERSHIP APPLY
+
         When I click on the link "Apply for a new partnership"
         And I click on the button "#edit-cancel"
         When I click on the link "Apply for a new partnership"
-
-
-        # CHOOSE AUTHORITY REPRESENTED
-
-        Then I expect that element "h1.heading-xlarge" contains the text "Which authority are you acting on behalf of?"
-        And I click on the radio "label*=Metropolitan District"
-        And I click on the button "#edit-next"
-
-        # CHOOSE PARTNERSHIP TYPE
-
         Then I expect that element "h1.heading-xlarge" contains the text "New partnership application"
+        And I expect that element "h1.heading-xlarge" contains the text "Which authority are you acting on behalf of?"
+        When I click on the radio "label*=Metropolitan District"
+        And I click on the button "#edit-next"
         When I click on the radio "#edit-application-type-direct"
         And I click on the button "#edit-next"
-
-        # CONFIRMATIONS
-
         When I click on the checkbox "#edit-business-eligible-for-partnership"
-        And I click on the button "#edit-next"
-        Then I expect that element ".error-summary" is visible
         And I click on the checkbox "#edit-local-authority-suitable-for-nomination"
-        And I click on the button "#edit-next"
-        Then I expect that element ".error-summary" is visible
         And I click on the checkbox "#edit-written-summary-agreed"
         And I click on the button "#edit-next"
         Then I expect that element ".error-summary" is visible
@@ -50,7 +34,6 @@ Feature: New Direct Partnership For PA To Approve
         And I expect that element "#par-partnership-application-authority-checklist" contains the text "Is this your local authority?"
         And I click on the radio "#edit-business-regulated-by-one-authority-1"
         And I click on the radio "#edit-is-local-authority-1"
-  #        And I expect that element ".error-summary" contains the text "The business needs to be informed about local authority"
         When I click on the button "#edit-next"
         Then I expect that element "error-summary" is not visible
 
@@ -76,6 +59,7 @@ Feature: New Direct Partnership For PA To Approve
         And I add "New Change" to the inputfield "#edit-address-line2"
         When I add "London" to the inputfield "#edit-town-city"
         When I add "London" to the inputfield "#edit-county"
+        And I select the option with the text "United Kingdom" for element "#edit-country-code"
         And I select the option with the text "England" for element "#edit-nation"
         And I click on the button "#edit-next"
 
