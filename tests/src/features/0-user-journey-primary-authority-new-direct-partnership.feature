@@ -6,11 +6,19 @@ Feature: New Direct Partnership For PA To Approve
         And I set "par_authority@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
+        Then I expect that element "h1.heading-xlarge" contains the text "Primary Authority Register"
+        And I expect that element "#block-par-theme-content" contains the text "See your partnerships"
+        And I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
+        And I expect that element "#block-par-theme-content" contains the text "See enforcement notifications"
+
+        # PARTNERSHIP APPLY
+
         When I click on the link "Apply for a new partnership"
         And I click on the button "#edit-cancel"
         When I click on the link "Apply for a new partnership"
-        Then I expect that element "h1.heading-xlarge" contains the text "Which authority are you acting on behalf of?"
-        And I click on the radio "label*=Metropolitan District"
+        Then I expect that element "h1.heading-xlarge" contains the text "New partnership application"
+        And I expect that element "h1.heading-xlarge" contains the text "Which authority are you acting on behalf of?"
+        When I click on the radio "label*=Metropolitan District"
         And I click on the button "#edit-next"
         When I click on the radio "#edit-application-type-direct"
         And I click on the button "#edit-next"
@@ -26,7 +34,6 @@ Feature: New Direct Partnership For PA To Approve
         And I expect that element "#par-partnership-application-authority-checklist" contains the text "Is this your local authority?"
         And I click on the radio "#edit-business-regulated-by-one-authority-1"
         And I click on the radio "#edit-is-local-authority-1"
-  #        And I expect that element ".error-summary" contains the text "The business needs to be informed about local authority"
         When I click on the button "#edit-next"
         Then I expect that element "error-summary" is not visible
 

@@ -63,12 +63,15 @@ Feature: New Direct Partnership For HD user To Revoke
         When I add "Amsterdam" to the inputfield "#edit-town-city"
         Then I expect that element "#edit-country-code" is visible
         And I select the option with the text "Netherlands" for element "#edit-country-code"
+        When I add "017 PT" to the inputfield "#edit-postcode"
+        And I click on the button "#edit-next"
+        Then I expect that element ".error-summary" is visible
         When I add "1017 PT" to the inputfield "#edit-postcode"
         And I click on the button "#edit-next"
 
         # MAIN CONTACT
         And I run tota11y against the current page
-        When I add "Mr" to the inputfield "#edit-salutation"
+        And I add "Mr" to the inputfield "#edit-salutation"
         And I add "Fozzie" to the inputfield "#edit-first-name"
         And I add "Bear" to the inputfield "#edit-last-name"
         And I add "999999999" to the inputfield "#edit-work-phone"
@@ -84,7 +87,7 @@ Feature: New Direct Partnership For HD user To Revoke
 
         And I run tota11y against the current page
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
-        Then I expect that element "h1.heading-xlarge" contains the text "Review the partnership summary information below"
+        And I expect that element "h1.heading-xlarge" contains the text "Review the partnership summary information below"
         When I click on the checkbox "#edit-partnership-info-agreed-authority"
         And I click on the button "#edit-save"
 
@@ -95,9 +98,9 @@ Feature: New Direct Partnership For HD user To Revoke
 
         And I run tota11y against the current page
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
-        Then I expect that element "h1.heading-xlarge" contains the text "Notify user of partnership invitation"
-        Then the inputfield "#edit-email-subject" contains the text "Invitation to join the Primary Authority Register"
-        Then the inputfield "#edit-email-body" contains the text "[invite:invite-accept-link]"
+        And I expect that element "h1.heading-xlarge" contains the text "Notify user of partnership invitation"
+        And the inputfield "#edit-email-subject" contains the text "Invitation to join the Primary Authority Register"
+        And the inputfield "#edit-email-body" contains the text "[invite:invite-accept-link]"
         When I click on the button "#edit-next"
 
         # INVITATION CONFIRMATION
