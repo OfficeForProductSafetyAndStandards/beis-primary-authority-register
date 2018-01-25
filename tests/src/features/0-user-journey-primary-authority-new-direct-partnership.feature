@@ -67,7 +67,7 @@ Feature: New Direct Partnership For PA To Approve
 
         # CONFIRM NEW PARTNERSHIP
 
-        And I click new partnership if presented with choices
+        # And I click new partnership if presented with choices
         Then I expect that element ".heading-xlarge" contains the text "New business information"
 
         # ADD BUSINESS DETAIL
