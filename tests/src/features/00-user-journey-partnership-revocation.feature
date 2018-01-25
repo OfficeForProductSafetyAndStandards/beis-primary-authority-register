@@ -48,10 +48,6 @@ Feature: New Direct Partnership For HD user To Revoke
         And I add "Direct Partnership For Revoking" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
 
-        # CONFIRM NEW PARTNERSHIP
-
-        And I click new partnership if presented with choices
-
         # ADD BUSINESS DETAIL
 
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
