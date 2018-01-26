@@ -16,7 +16,7 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
 
   protected $formItems = [];
 
-  protected $pageTitle = 'Information about the new partnership';
+  protected $pageTitle = 'Information about the business';
 
   /**
    * {@inheritdoc}
