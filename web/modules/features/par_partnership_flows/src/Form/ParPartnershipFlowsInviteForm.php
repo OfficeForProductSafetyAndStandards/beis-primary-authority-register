@@ -39,28 +39,35 @@ class ParPartnershipFlowsInviteForm extends ParBaseForm {
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, $par_data_person = NULL) {
+    if ($par_data_partnership && $par_data_person) {
+      // If we're editing an entity we should set the state
+      // to something other than default to avoid conflicts
+      // with existing versions of the same form.
+      $this->setState("edit:{$par_data_partnership->id()},{$par_data_person->id()}");
+    }
+
     // Flows containing the Authority Contact step.
-    if (in_array($this->getFlowNegotiator()->getFlowName(), ['invite_authority_members', 'partnership_authority'])) {
+    if (in_array($this->getFlowName(), ['invite_authority_members', 'partnership_authority'])) {
       $this->invite_type = "invite_authority_member";
     }
 
     // Flows containing the Organisation Contact step.
-    if (in_array($this->getFlowNegotiator()->getFlowName(), ['partnership_application', 'partnership_direct'])) {
+    if (in_array($this->getFlowName(), ['partnership_application', 'partnership_direct'])) {
       $this->invite_type = "invite_organisation_member";
     }
 
     if ($par_data_person) {
       // Get the email for the business contact that this email will go to.
-      $this->getFlowDataHandler()->setFormPermValue("recipient_email", $par_data_person->get('email')->getString());
+      $this->loadDataValue("recipient_email", $par_data_person->get('email')->getString());
       $recipient_exists = $par_data_person->getUserAccount();
-      $this->getFlowDataHandler()->setFormPermValue("recipient_exists", !empty($recipient_exists));
+      $this->loadDataValue("recipient_exists", !empty($recipient_exists));
 
       // Get the sender's email and name.
       // For helpdesk users this is a generic title ,
       // and for all other users with a PAR Person record
       // this is tailored to who is inviting.
       $account = User::load($this->currentUser()->id());
-      $this->getFlowDataHandler()->setFormPermValue("sender_email", $account->getEmail());
+      $this->loadDataValue("sender_email", $account->getEmail());
 
       $authority = current($par_data_partnership->get('field_authority')->referencedEntities());
       $authority_person = $authority ? $this->getParDataManager()->getUserPerson($account, $authority) : NULL;
@@ -75,10 +82,10 @@ class ParPartnershipFlowsInviteForm extends ParBaseForm {
         }
       }
 
-      $this->getFlowDataHandler()->setFormPermValue("sender_name", $sender_name);
+      $this->loadDataValue("sender_name", $sender_name);
 
       // Get the user accounts related to the business user.
-      if ($this->getFlowNegotiator()->getFlowName() === 'invite_authority_members' && !$recipient_exists) {
+      if ($this->getFlowName() === 'invite_authority_members' && !$recipient_exists) {
         $email_subject = 'New Primary Authority Register';
 
         $message_body = <<<HEREDOC
@@ -96,7 +103,7 @@ Thanks for your help.
 {$sender_name}
 HEREDOC;
       }
-      elseif ($this->getFlowNegotiator()->getFlowName() === 'invite_authority_members') {
+      elseif ($this->getFlowName() === 'invite_authority_members') {
         $email_subject = 'New Primary Authority Register';
 
         $message_body = <<<HEREDOC
@@ -144,9 +151,9 @@ HEREDOC;
       }
 
       // Set the default subject for the invite email, this can be changed by the user.
-      $this->getFlowDataHandler()->setFormPermValue("email_subject", $email_subject);
+      $this->loadDataValue("email_subject", $email_subject);
 
-      $this->getFlowDataHandler()->setFormPermValue("email_body", $message_body);
+      $this->loadDataValue("email_body", $message_body);
     }
   }
 
@@ -159,7 +166,7 @@ HEREDOC;
     $invite_type = $this->config("invite.invite_type.{$this->invite_type}");
     $data = unserialize($invite_type->get('data'));
 
-    if ($this->getFlowDataHandler()->getDefaultValues('recipient_exists', FALSE)) {
+    if ($this->getDefaultValues('recipient_exists', FALSE)) {
       $form['recipient_exists'] = [
         '#type' => 'markup',
         '#markup' => $this->t('This person has already accepted an invitation, you do not need to re-invite them.'),
@@ -169,7 +176,7 @@ HEREDOC;
     }
 
     // Get Sender.
-    if ($this->getFlowNegotiator()->getFlowName() === 'invite_authority_members') {
+    if ($this->getFlowName() === 'invite_authority_members') {
       $description = 'You cannot change your email here.';
     }
     else {
@@ -180,7 +187,7 @@ HEREDOC;
       '#title' => t('Your email'),
       '#required' => TRUE,
       '#disabled' => TRUE,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('sender_email'),
+      '#default_value' => $this->getDefaultValues('sender_email'),
       '#description' => $description,
     ];
     $form['inviter'] = [
@@ -204,7 +211,7 @@ HEREDOC;
       '#title' => $title,
       '#required' => TRUE,
       '#disabled' => TRUE,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('recipient_email'),
+      '#default_value' => $this->getDefaultValues('recipient_email'),
       '#description' => $description,
     ];
 
@@ -212,7 +219,7 @@ HEREDOC;
     $form['email_subject'] = [
       '#type' => 'textfield',
       '#title' => t('Message subject'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('email_subject'),
+      '#default_value' => $this->getDefaultValues('email_subject'),
     ];
 
     // Allow the message body to be changed.
@@ -220,14 +227,14 @@ HEREDOC;
       '#type' => 'textarea',
       '#rows' => 18,
       '#title' => t('Message'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('email_body'),
+      '#default_value' => $this->getDefaultValues('email_body'),
     ];
 
     // @todo remove this when PAR User Management is complete.
     // Show option to amend role if not already an existing user.
     // This is actually to prevent somebody stripping a user of the authority
     // role until full user management and contacts are on a partnership basis.
-    if (!$this->getFlowDataHandler()->getDefaultValues('recipient_exists', FALSE)) {
+    if (!$this->getDefaultValues('recipient_exists', FALSE)) {
 
       foreach (user_roles() as $user_role) {
         if (empty($user_role->get('_core'))) {
@@ -257,7 +264,7 @@ HEREDOC;
     }
 
     // Disable the default 'save' action which takes precedence over 'next' action.
-    $this->getFlowNegotiator()->getFlow()->disableAction('save');
+    $this->getFlow()->disableAction('save');
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
@@ -283,7 +290,7 @@ HEREDOC;
       $form_state->setErrorByName('email_body', $this->t('<a href="#edit-email-body">The Message is required.</a>'));
     }
     // Check that the email body contains an invite accept link.
-    $par_data_person = $this->getflowDataHandler()->getParameter('par_data_person');
+    $par_data_person = $this->getRouteParam('par_data_person');
     if ($par_data_person->getUserAccount()) {
       $required_token = '[site:login-url]';
     }
@@ -305,27 +312,27 @@ HEREDOC;
 
     // Override invite type if selected the Enforcement Officer role in form.
     if ($this->invite_type === 'invite_authority_member' &&
-      $this->getFlowDataHandler()->getTempDataValue('target_role') === 'par_enforcement') {
+      $this->getTempDataValue('target_role') === 'par_enforcement') {
       $this->invite_type = 'invite_enforcement_officer';
     }
 
     $invite = Invite::create([
       'type' => $this->invite_type,
-      'user_id' => $this->getFlowDataHandler()->getTempDataValue('inviter'),
-      'invitee' => $this->getFlowDataHandler()->getTempDataValue('recipient_email'),
+      'user_id' => $this->getTempDataValue('inviter'),
+      'invitee' => $this->getTempDataValue('recipient_email'),
     ]);
-    $invite->set('field_invite_email_address', $this->getFlowDataHandler()->getTempDataValue('recipient_email'));
-    $invite->set('field_invite_email_subject', $this->getFlowDataHandler()->getTempDataValue('email_subject'));
-    $invite->set('field_invite_email_body', $this->getFlowDataHandler()->getTempDataValue('email_body'));
+    $invite->set('field_invite_email_address', $this->getTempDataValue('recipient_email'));
+    $invite->set('field_invite_email_subject', $this->getTempDataValue('email_subject'));
+    $invite->set('field_invite_email_body', $this->getTempDataValue('email_body'));
     $invite->setPlugin('invite_by_email');
     if ($invite->save()) {
-      $this->getFlowDataHandler()->deleteStore();
+      $this->deleteStore();
     }
     else {
       $message = $this->t('This invite could not be sent for %person on %form_id');
       $replacements = [
-        '%invite' => $this->getFlowDataHandler()->getTempDataValue('first_name') . ' ' . $this->getFlowDataHandler()->getTempDataValue('last_name'),
-        '%person' => $this->getFlowDataHandler()->getTempDataValue('recipient_email'),
+        '%invite' => $this->getTempDataValue('first_name') . ' ' . $this->getTempDataValue('last_name'),
+        '%person' => $this->getTempDataValue('recipient_email'),
         '%form_id' => $this->getFormId(),
       ];
       $this->getLogger($this->getLoggerChannel())->error($message, $replacements);

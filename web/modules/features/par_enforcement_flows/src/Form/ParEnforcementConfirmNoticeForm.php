@@ -55,7 +55,9 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
    * revisiting a previously edited page.
    */
   public function retrieveEditableValues(ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
-
+    if ($par_data_enforcement_notice) {
+      $this->setState("approve:{$par_data_enforcement_notice->id()}");
+    }
   }
 
   /**
@@ -104,8 +106,7 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
 
       $form['actions'][$delta]['title'] = $this->renderSection('Title of action', $action, ['title' => 'title']);
 
-      $cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_notice_approve');
-      $status_value = $this->getFlowDataHandler()->getTempDataValue(['actions', $delta, 'primary_authority_status'], $cid);
+      $status_value = $this->getTempDataValue(['actions', $delta, 'primary_authority_status'], 'par_enforcement_notice_approve');
 
       $date = \Drupal::service('date.formatter')->format(time(), 'gds_date_format');
       $form['actions'][$delta]['status'] = [
@@ -120,10 +121,10 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
       ];
 
       if ($status_value === ParDataEnforcementAction::BLOCKED) {
-        $reason = $this->getFlowDataHandler()->getTempDataValue(['actions', $delta, 'primary_authority_notes'], $cid);
+        $reason = $this->getTempDataValue(['actions', $delta, 'primary_authority_notes'], 'par_enforcement_notice_approve');
       }
       elseif ($status_value === ParDataEnforcementAction::REFERRED) {
-        $reason = $this->getFlowDataHandler()->getTempDataValue(['actions', $delta, 'referral_notes'], $cid);
+        $reason = $this->getTempDataValue(['actions', $delta, 'referral_notes'], 'par_enforcement_notice_approve');
       }
 
       if (isset($reason)) {
@@ -175,10 +176,10 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $par_data_enforcement_notice = $this->getflowDataHandler()->getParameter('par_data_enforcement_notice');
+    $par_data_enforcement_notice = $this->getRouteParam('par_data_enforcement_notice');
 
     if ($this->referral_cloning($par_data_enforcement_notice)) {
-      $this->getFlowDataHandler()->deleteStore();
+      $this->deleteStore();
     }
     else {
       $message = $this->t('The enforcement notice %confirm could not be approved for %form_id');
@@ -197,8 +198,7 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
 
     foreach ($par_data_enforcement_notice->get('field_enforcement_action')->referencedEntities() as $delta => $action) {
 
-      $cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_notice_approve');
-      $form_data = $this->getFlowDataHandler()->getTempDataValue(['actions', $delta], $cid);
+      $form_data = $this->getTempDataValue(['actions', $delta], 'par_enforcement_notice_approve');
       $action_id = $action->id();
 
       switch ($form_data['primary_authority_status']) {
@@ -229,8 +229,7 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
         case ParDataEnforcementAction::REFERRED:
 
           // The authority to refer the current action to.
-          $cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_referred_authority');
-          $referral_authority_id = $this->getFlowDataHandler()->getTempDataValue([$action_id], $cid);
+          $referral_authority_id = $this->getTempDataValue([$action_id], 'par_enforcement_referred_authority');
 
           try {
             $cloned_action = $action->cloneReferredEnforcementAction($referral_authority_id, $action_id);
@@ -258,7 +257,7 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
             if (isset($referral_notice)) {
               // Persist the information in the temporary store here
               // because the application is not yet complete.
-              $this->getFlowDataHandler()->setTempDataValue('referral_id' . $action_id, $referral_notice->id());
+              $this->setTempDataValue('referral_id' . $action_id, $referral_notice->id());
 
               if (!$action->refer($form_data['referral_notes'])) {
                 $message = $this->t('The enforcement notification action entity %entity_id could not be updated to a referred state within %form_id');

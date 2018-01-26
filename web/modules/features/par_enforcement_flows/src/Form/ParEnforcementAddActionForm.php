@@ -39,9 +39,10 @@ class ParEnforcementAddActionForm extends ParBaseForm {
    */
   public function titleCallback() {
 
-    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
 
     if ($par_data_partnership) {
+      $this->setState("edit:{$par_data_partnership->id()}");
       $this->pageTitle = 'Provide details of the proposed enforcement action | Add an action to the  enforcement notice';
     }
     return parent::titleCallback();
@@ -72,14 +73,14 @@ class ParEnforcementAddActionForm extends ParBaseForm {
 
     $form['title'] = [
       '#type' => 'textfield',
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('title'),
+      '#default_value' => $this->getDefaultValues('title'),
     ];
 
     $form['field_regulatory_function'] = [
       '#type' => 'radios',
       '#title' => $this->t('Choose a regulatory function to which this action relates'),
       '#options' => $reg_function_names,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('field_regulatory_function'),
+      '#default_value' => $this->getDefaultValues('field_regulatory_function'),
     ];
 
     $form['details_title'] = [
@@ -91,7 +92,7 @@ class ParEnforcementAddActionForm extends ParBaseForm {
 
     $form['details'] = [
       '#type' => 'textarea',
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('details'),
+      '#default_value' => $this->getDefaultValues('details'),
     ];
 
     $enforcement_action_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('par_data_enforcement_action', 'document');
@@ -110,7 +111,7 @@ class ParEnforcementAddActionForm extends ParBaseForm {
       '#type' => 'managed_file',
       '#upload_location' => 's3private://documents/enforcement_action/',
       '#multiple' => TRUE,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("files"),
+      '#default_value' => $this->getDefaultValues("files"),
       '#upload_validators' => [
         'file_validate_extensions' => [
           0 => $file_extensions
@@ -135,27 +136,27 @@ class ParEnforcementAddActionForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $title = $this->getFlowDataHandler()->getTempDataValue('title');
+    $title = $this->getTempDataValue('title');
 
     $enforcementAction_data = [
       'type' => 'enforcement_action',
       'title' => $title,
-      'details' => $this->getFlowDataHandler()->getTempDataValue('details'),
-      'document' => $this->getFlowDataHandler()->getDefaultValues("files"),
-      'field_regulatory_function' => $this->getFlowDataHandler()->getTempDataValue('field_regulatory_function'),
+      'details' => $this->getTempDataValue('details'),
+      'document' => $this->getDefaultValues("files"),
+      'field_regulatory_function' => $this->getTempDataValue('field_regulatory_function'),
     ];
 
     $enforcementAction = \Drupal::entityManager()->getStorage('par_data_enforcement_action')->create($enforcementAction_data);
 
     if ($enforcementAction->save()) {
 
-      $enforcement_notice = $this->getflowDataHandler()->getParameter('par_data_enforcement_notice');
+      $enforcement_notice = $this->getRouteParam('par_data_enforcement_notice');
       // Store the created action on the current enforcement entity.
       $enforcement_action_ids = $enforcementAction->id();
 
       $enforcement_notice->field_enforcement_action[] = $enforcement_action_ids;
       $enforcement_notice->save();
-      $this->getFlowDataHandler()->deleteStore();
+      $this->deleteStore();
     }
     else {
       $message = $this->t('This %action_entity could not be saved for %form_id');

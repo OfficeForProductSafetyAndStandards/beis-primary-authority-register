@@ -42,41 +42,16 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     return 'par_partnership_contact';
   }
 
-  /**
-   * Get partnership.
-   */
-  public function getPartnershipParam() {
-    return $this->getflowDataHandler()->getParameter('par_data_partnership');
-  }
-
-  /**
-   * Get partnership.
-   */
-  public function getPersonParam() {
-    if ($this->getFlowNegotiator()->getFlowName() === 'partnership_direct_application' || $this->getFlowNegotiator()->getFlowName() === 'partnership_coordinated_application') {
-      $partnership = $this->getPartnershipParam();
-      $people = $partnership ? $partnership->getOrganisationPeople() : NULL;
-      return !empty($people) ? current($people) : NULL;
-    }
-    else {
-      return $this->getflowDataHandler()->getParameter('par_data_person');
-    }
-  }
-
   public function titleCallback() {
     // Check if editing an existing entity.
-    $par_data_person = $this->getPersonParam();
+    $par_data_person = $this->getRouteParam('par_data_person');
 
     // Display appropriate title.
     $this->pageTitle = $par_data_person ? 'Edit a contact' : 'Add a contact';
 
     // Override page title for Partnership Application journey.
-    if ($this->getFlowNegotiator()->getFlowName() === 'partnership_application') {
+    if ($this->getFlowName() === 'partnership_application') {
       $this->pageTitle = 'Add a contact for the business';
-    }
-
-    if ($this->getFlowNegotiator()->getFlowName() === 'partnership_direct_application' || $this->getFlowNegotiator()->getFlowName() === 'partnership_coordinated_application') {
-      $this->pageTitle = 'Confirm the primary contact details';
     }
 
     return parent::titleCallback();
@@ -92,15 +67,19 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
+
     if ($par_data_person) {
+
+      $this->setState("edit:{$par_data_person->id()}");
+
       // Load person data.
-      $this->getFlowDataHandler()->setFormPermValue("salutation", $par_data_person->get('salutation')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("first_name", $par_data_person->get('first_name')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("last_name", $par_data_person->get('last_name')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("work_phone", $par_data_person->get('work_phone')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("mobile_phone", $par_data_person->get('mobile_phone')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("email", $par_data_person->get('email')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("notes", $par_data_person->get('communication_notes')->getString());
+      $this->loadDataValue("salutation", $par_data_person->get('salutation')->getString());
+      $this->loadDataValue("first_name", $par_data_person->get('first_name')->getString());
+      $this->loadDataValue("last_name", $par_data_person->get('last_name')->getString());
+      $this->loadDataValue("work_phone", $par_data_person->get('work_phone')->getString());
+      $this->loadDataValue("mobile_phone", $par_data_person->get('mobile_phone')->getString());
+      $this->loadDataValue("email", $par_data_person->get('email')->getString());
+      $this->loadDataValue("notes", $par_data_person->get('communication_notes')->getString());
 
       // Get preferred contact methods.
       $contact_options = [
@@ -110,21 +89,99 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       ];
 
       // Checkboxes works nicely with keys, filtering booleans for "1" value.
-      $this->getFlowDataHandler()->setFormPermValue('preferred_contact', array_keys($contact_options, 1));
+      $this->loadDataValue('preferred_contact', array_keys($contact_options, 1));
+
     }
+
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
-    $par_data_person = $this->getPersonParam();
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
+    $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
 
-    $type = \Drupal::service('plugin.manager.par_form_builder');
-    $plugin = $type->createInstance('contact_details_full');
+    if ($this->getFlowName() == 'partnership_application') {
+      $form['info'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t("Providing contact information"),
+        '#prefix' => '<h2>',
+        '#suffix' => '</h2>',
+      ];
 
-    $form = $plugin->getElements($form);
+      $form['help_text'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('State who is the main contact for the business. It might be the business owner, or an employee in charge of regulatory compliance.'),
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+      ];
+    }
+
+    $form['salutation'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Enter the title (optional)'),
+      '#description' => $this->t('For example, Ms Mr Mrs Dr'),
+      '#default_value' => $this->getDefaultValues("salutation"),
+    ];
+
+    $form['first_name'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Enter the first name'),
+      '#default_value' => $this->getDefaultValues("first_name"),
+    ];
+
+    $form['last_name'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Enter the last name'),
+      '#default_value' => $this->getDefaultValues("last_name"),
+    ];
+
+    $form['work_phone'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Enter the work phone number'),
+      '#default_value' => $this->getDefaultValues("work_phone"),
+    ];
+
+    $form['mobile_phone'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Enter the mobile phone number (optional)'),
+      '#default_value' => $this->getDefaultValues("mobile_phone"),
+    ];
+
+    $form['email'] = [
+      '#type' => 'email',
+      '#title' => $this->t('Enter the email address'),
+      '#default_value' => $this->getDefaultValues("email"),
+      // Prevent modifying email if editing an existing user.
+      '#disabled' => !empty($par_data_person),
+    ];
+
+    // Get preferred contact methods labels.
+    $contact_options = [
+      'communication_email' => $person_bundle->getBooleanFieldLabel('communication_email', 'on'),
+      'communication_phone' => $person_bundle->getBooleanFieldLabel('communication_phone', 'on'),
+      'communication_mobile' => $person_bundle->getBooleanFieldLabel('communication_mobile', 'on'),
+    ];
+
+    $form['preferred_contact'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Select the preferred methods of contact (optional)'),
+      '#options' => $contact_options,
+      '#default_value' => $this->getDefaultValues("preferred_contact", []),
+      '#return_value' => 'on',
+    ];
+
+    $form['notes'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Provide contact notes (optional)'),
+      '#default_value' => $this->getDefaultValues('notes'),
+      '#description' => 'Add any additional notes about how best to contact this person.',
+    ];
+
+    // Make sure to add the person cacheability data to this form.
+    $this->addCacheableDependency($par_data_person);
+    $this->addCacheableDependency($person_bundle);
 
     return parent::buildForm($form, $form_state);
   }
@@ -161,39 +218,39 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Save contact.
-    $par_data_person = $this->getPersonParam();
+    $par_data_person = $this->getRouteParam('par_data_person');
 
     // Save person details.
     if ($par_data_person) {
-      $par_data_person->set('salutation', $this->getFlowDataHandler()->getTempDataValue('salutation'));
-      $par_data_person->set('first_name', $this->getFlowDataHandler()->getTempDataValue('first_name'));
-      $par_data_person->set('last_name', $this->getFlowDataHandler()->getTempDataValue('last_name'));
-      $par_data_person->set('work_phone', $this->getFlowDataHandler()->getTempDataValue('work_phone'));
-      $par_data_person->set('mobile_phone', $this->getFlowDataHandler()->getTempDataValue('mobile_phone'));
-      $par_data_person->set('email', $this->getFlowDataHandler()->getTempDataValue('email'));
-      $par_data_person->set('communication_notes', $this->getFlowDataHandler()->getTempDataValue('notes'));
+      $par_data_person->set('salutation', $this->getTempDataValue('salutation'));
+      $par_data_person->set('first_name', $this->getTempDataValue('first_name'));
+      $par_data_person->set('last_name', $this->getTempDataValue('last_name'));
+      $par_data_person->set('work_phone', $this->getTempDataValue('work_phone'));
+      $par_data_person->set('mobile_phone', $this->getTempDataValue('mobile_phone'));
+      $par_data_person->set('email', $this->getTempDataValue('email'));
+      $par_data_person->set('communication_notes', $this->getTempDataValue('notes'));
 
       // Save the contact preferences
-      $email_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact')['communication_email'])
-        && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact')['communication_email']);
+      $email_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_email'])
+        && !empty($this->getTempDataValue('preferred_contact')['communication_email']);
       $par_data_person->set('communication_email', $email_preference_value);
       // Save the work phone preference.
-      $work_phone_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact')['communication_phone'])
-        && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact')['communication_phone']);
+      $work_phone_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_phone'])
+        && !empty($this->getTempDataValue('preferred_contact')['communication_phone']);
       $par_data_person->set('communication_phone', $work_phone_preference_value);
       // Save the mobile phone preference.
-      $mobile_phone_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact')['communication_mobile'])
-        && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact')['communication_mobile']);
+      $mobile_phone_preference_value = isset($this->getTempDataValue('preferred_contact')['communication_mobile'])
+        && !empty($this->getTempDataValue('preferred_contact')['communication_mobile']);
       $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
 
       if ($par_data_person->save()) {
         // Only delete the form data for the par_partnership_contact form.
-        $this->getFlowDataHandler()->deleteFormTempData('par_partnership_contact');
+        $this->deleteFormTempData('par_partnership_contact');
       }
       else {
         $message = $this->t('This %person could not be saved for %form_id');
         $replacements = [
-          '%person' => $this->getFlowDataHandler()->getTempDataValue('name'),
+          '%person' => $this->getTempDataValue('name'),
           '%form_id' => $this->getFormId(),
         ];
         $this->getLogger($this->getLoggerChannel())

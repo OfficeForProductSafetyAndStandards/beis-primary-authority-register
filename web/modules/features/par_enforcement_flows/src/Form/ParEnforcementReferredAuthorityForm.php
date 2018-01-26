@@ -29,7 +29,9 @@ class ParEnforcementReferredAuthorityForm extends ParBaseForm {
    * revisiting a previously edited page.
    */
   public function retrieveEditableValues(ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
-
+    if ($par_data_enforcement_notice) {
+      $this->setState("approve:{$par_data_enforcement_notice->id()}");
+    }
   }
 
   /**
@@ -43,8 +45,7 @@ class ParEnforcementReferredAuthorityForm extends ParBaseForm {
 
     foreach ($par_data_enforcement_notice->get('field_enforcement_action')->referencedEntities() as $delta => $action) {
 
-      $cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_notice_approve');
-      $form_data = $this->getFlowDataHandler()->getTempDataValue(['actions', $delta], $cid);
+      $form_data = $this->getTempDataValue(['actions', $delta], 'par_enforcement_notice_approve');
 
       if ($form_data['primary_authority_status'] === ParDataEnforcementAction::REFERRED) {
         $referrals = TRUE;
@@ -60,12 +61,11 @@ class ParEnforcementReferredAuthorityForm extends ParBaseForm {
 
           $form['referred_to'][$delta]['titles'][$action->id()]= $this->renderSection('Title of action', $action, ['title' => 'title']);
 
-          $cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_referred_authority');
           $form['referred_to'][$delta]['referrals'][$action->id()] = [
             '#type' => 'radios',
             '#title' => $this->t('Choose an authority to refer to'),
             '#options' => $authorities,
-            '#default_value' => $this->getFlowDataHandler()->getDefaultValues(['referred_to', $delta, $action->id()], NULL, $cid),
+            '#default_value' => $this->getDefaultValues(['referred_to', $delta, $action->id()], 'par_enforcement_referred_authority'),
             '#required' => TRUE,
           ];
         }
@@ -83,7 +83,7 @@ class ParEnforcementReferredAuthorityForm extends ParBaseForm {
 
     // Redirect to the next page if there are no referrals.
     if (!$referrals) {
-      return $this->redirect($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
+      return $this->redirect($this->getFlow()->getNextRoute('next'), $this->getRouteParams());
     }
 
     return parent::buildForm($form, $form_state);

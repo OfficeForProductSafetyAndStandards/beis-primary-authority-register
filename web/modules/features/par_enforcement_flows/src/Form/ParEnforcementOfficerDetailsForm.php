@@ -42,12 +42,14 @@ class ParEnforcementOfficerDetailsForm extends ParBaseEnforcementForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership) {
 
+    $this->setState("edit:{$par_data_partnership->id()}");
+
     if ($enforcement_officer = $this->getEnforcingPerson()) {
       // Load person data.
-      $this->getFlowDataHandler()->setFormPermValue("first_name", $enforcement_officer->get('first_name')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("last_name", $enforcement_officer->get('last_name')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("work_phone", $enforcement_officer->get('work_phone')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("enforcement_officer_id", $enforcement_officer->id());
+      $this->loadDataValue("first_name", $enforcement_officer->get('first_name')->getString());
+      $this->loadDataValue("last_name", $enforcement_officer->get('last_name')->getString());
+      $this->loadDataValue("work_phone", $enforcement_officer->get('work_phone')->getString());
+      $this->loadDataValue("enforcement_officer_id", $enforcement_officer->id());
     }
   }
 
@@ -72,24 +74,24 @@ class ParEnforcementOfficerDetailsForm extends ParBaseEnforcementForm {
     $form['first_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Please confirm your first name'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("first_name"),
+      '#default_value' => $this->getDefaultValues("first_name"),
     ];
 
     $form['last_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Please confirm your last name'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("last_name"),
+      '#default_value' => $this->getDefaultValues("last_name"),
     ];
 
     $form['work_phone'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Please confirm your work phone'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("work_phone"),
+      '#default_value' => $this->getDefaultValues("work_phone"),
     ];
 
     $form['enforcement_officer_id'] = [
       '#type' => 'hidden',
-      '#value' => $this->getFlowDataHandler()->getDefaultValues('enforcement_officer_id'),
+      '#value' => $this->getDefaultValues('enforcement_officer_id'),
     ];
 
     return parent::buildForm($form, $form_state);
@@ -142,14 +144,14 @@ class ParEnforcementOfficerDetailsForm extends ParBaseEnforcementForm {
 
     // Save updated par person details.
     if ($enforcement_officer) {
-      $enforcement_officer->set('first_name', $this->getFlowDataHandler()->getTempDataValue('first_name'));
-      $enforcement_officer->set('last_name', $this->getFlowDataHandler()->getTempDataValue('last_name'));
-      $enforcement_officer->set('work_phone', $this->getFlowDataHandler()->getTempDataValue('work_phone'));
+      $enforcement_officer->set('first_name', $this->getTempDataValue('first_name'));
+      $enforcement_officer->set('last_name', $this->getTempDataValue('last_name'));
+      $enforcement_officer->set('work_phone', $this->getTempDataValue('work_phone'));
 
       if (!$enforcement_officer->save()) {
         $message = $this->t('This %person could not be updated/saved for %form_id');
         $replacements = [
-          '%person' => $this->getFlowDataHandler()->getTempDataValue('first_name'),
+          '%person' => $this->getTempDataValue('first_name'),
           '%form_id' => $this->getFormId(),
         ];
         $this->getLogger($this->getLoggerChannel())

@@ -20,8 +20,7 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
    *    Enforcing authority ID stored in te temp cache.
    */
   public function getEnforcingAuthorityID() {
-    $cid = $this->getFlowNegotiator()->getFormKey('par_authority_selection');
-    return $this->getFlowDataHandler()->getDefaultValues('par_data_authority_id', '', $cid);
+    return $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
   }
 
   /**
@@ -31,8 +30,7 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
    *  Enforcing officer ID stored in te temp cache.
    */
   public function getEnforcingPersonID() {
-    $cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_officer_details');
-    return $this->getFlowDataHandler()->getDefaultValues('enforcement_officer_id', '', $cid);
+    return $this->getDefaultValues('enforcement_officer_id', '', 'par_enforcement_officer_details');
   }
 
   /**
@@ -42,8 +40,7 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
    *  Enforced organisation ID stored in te temp cache.
    */
   public function getEnforcedOrganisationID() {
-    $cid = $this->getFlowNegotiator()->getFormKey('par_enforce_organisation');
-    return $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', '', $cid);
+    return $this->getDefaultValues('par_data_organisation_id', '', 'par_enforce_organisation');
   }
 
   /**
@@ -53,8 +50,7 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
    *    Enforced legal entity ID stored in te temp cache.
    */
   public function getEnforcedLegalEntity() {
-    $cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_notice_raise');
-    return $this->getFlowDataHandler()->getDefaultValues('legal_entities_select', '', $cid);
+    return $this->getDefaultValues('legal_entities_select', '', 'par_enforcement_notice_raise');
   }
 
   /**
@@ -64,11 +60,11 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
    *    ParDataLegalEntity entity object or the custom text entered in the form.
    */
   public function getEnforcedLegalEntityName() {
+
     $selected_entity =  $this->getEnforcedLegalEntity();
 
     if ($selected_entity == 'add_new') {
-      $cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_notice_raise');
-      return $this->getFlowDataHandler()->getDefaultValues('alternative_legal_entity', '', $cid);
+      return $this->getDefaultValues('alternative_legal_entity', '', 'par_enforcement_notice_raise');
     }
     else {
       return ParDataLegalEntity::load($selected_entity)->get('registered_name')->getString();
@@ -114,6 +110,7 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
    *
    */
   public function BuildRaiseEnforcementFormElements() {
+
     // Load required entities for the enforcement flow.
     $par_data_authority = $this->getEnforcingAuthorityEntity();
     $form['authority'] = $this->renderSection('Enforced by', $par_data_authority, ['authority_name' => 'summary']);
@@ -126,11 +123,10 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
    *  for the raise enforcement flow.
    *  This validation prevents system failures in later steps.
    *
-   * @return array|bool $form
+   * @return array $form | TRUE
    *  The form array with form elements when validation fails or boolean TRUE if passed.
    */
   public function validateEnforcementCachedData() {
-    $form = [];
 
     // Get the correct authority id / organisation id set within the previous form.
     $enforcing_authority_id = $this->getEnforcingAuthorityID();
@@ -169,21 +165,20 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
     if (empty($enforced_organisation_id) || empty($enforcing_authority_id)) {
       return $form;
     }
-
     return TRUE;
   }
 
   /**
    *  Get the enforcing officer ParDataPerson object.
    *
-   * @return ParDataPerson|bool
+   * @return ParDataPerson object | FALSE
    */
   public function getEnforcingPerson() {
+
     if ($par_data_authority = $this->getEnforcingAuthorityEntity()) {
       // Get logged in user ParDataPerson(s) related to the primary authority.
       return $this->getParDataManager()->getUserPerson($this->getCurrentUser(), $par_data_authority);
     }
-
     return FALSE;
   }
 
@@ -197,14 +192,16 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
   /**
    *  Helper function for generating the enforcement flow page title markup.
    *
-   * @return string|bool
+   * * @return string  | FALSE
    *  The default title to use on the current form or FALSE which will fall back to the
    *  flow defaults.
    */
   public function RaiseEnforcementTitleCallback() {
-    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
 
     if ($par_data_partnership) {
+      $this->setState("edit:{$par_data_partnership->id()}");
       $enforced_entity_name = $this->getEnforcedEntityName();
 
       if ($enforced_entity_name) {
@@ -219,10 +216,11 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
   /**
    *  Helper function to get either the legal entity name or organisation depending on whats available.
    *
-   * @return string|bool
+   * @return string  | FALSE
    *  The name of the enforced legal entity or False if we don't have one.
    */
   function getEnforcedEntityName() {
+
     // Depending on the form in this process we may not have a legal entity yet.
     if ($this->getEnforcedLegalEntity()) {
       return $this->getEnforcedLegalEntityName();

@@ -20,7 +20,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
    */
   public function titleCallback() {
 
-    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
     if ($par_data_partnership) {
       $par_data_organisation = current($par_data_partnership->getOrganisation());
 
@@ -59,7 +59,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
       '#collapsed' => FALSE,
     ];
 
-    $link = $this->getFlowNegotiator()->getFlow()->getNextLink('raise')->setText('Send a notification of a proposed enforcement action')->toString();
+    $link = $this->getFlow()->getNextLink('raise')->setText('Send a notification of a proposed enforcement action')->toString();
 
     $build['partnership_actions']['link'] = ['#type' => 'markup',
       '#markup' => $link ? $link : '<p>(none)</p>',
@@ -83,7 +83,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     }
 
     // Display all the legal entities along with the links for the allowed operations on these.
-    $build['legal_entities'] = $this->renderSection('Legal Entities', $par_data_organisation, ['field_legal_entity' => 'summary']);
+    $build['legal_entities'] = $this->renderSection('Legal Entities', $par_data_partnership, ['field_legal_entity' => 'summary']);
 
     // Display all the trading names along with the links for the allowed operations on these.
     $build['trading_names'] = $this->renderSection('Trading Names', $par_data_organisation, ['trading_name' => 'full']);
@@ -115,7 +115,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     $build['inspection_plans']['link'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlowNegotiator()->getFlow()->getNextLink('inspection_plans')->setText('See all Inspection Plans')->toString(),
+        '@link' => $this->getFlow()->getNextLink('inspection_plans')->setText('See all Inspection Plans')->toString(),
       ]),
     ];
 
@@ -129,7 +129,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     $build['advice']['link'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlowNegotiator()->getFlow()->getNextLink('advice')->setText('See all Advice')->toString(),
+        '@link' => $this->getFlow()->getNextLink('advice')->setText('See all Advice')->toString(),
       ]),
     ];
 

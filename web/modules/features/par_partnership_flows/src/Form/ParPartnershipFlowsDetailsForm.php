@@ -25,7 +25,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
     if ($par_data_partnership) {
       $par_data_organisation = current($par_data_partnership->getOrganisation());
       $this->pageTitle = $par_data_organisation->get('organisation_name')->getString();
@@ -44,8 +44,13 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
     if ($par_data_partnership) {
+      // If we're editing an entity we should set the state
+      // to something other than default to avoid conflicts
+      // with existing versions of the same form.
+      $this->setState("edit:{$par_data_partnership->id()}");
+
       $checkbox = $this->getInformationCheckbox($par_data_partnership);
-      $this->getFlowDataHandler()->setFormPermValue($checkbox, $par_data_partnership->getBoolean($checkbox));
+      $this->loadDataValue($checkbox, $par_data_partnership->getBoolean($checkbox));
     }
 
   }
@@ -92,7 +97,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     if ($checkbox === 'partnership_info_agreed_business' && !$par_data_partnership->getBoolean($checkbox)) {
       $operations = ['edit-entity','add'];
     }
-    $form['legal_entities'] = $this->renderSection('Legal entities', $par_data_organisation, ['field_legal_entity' => 'summary'], $operations);
+    $form['legal_entities'] = $this->renderSection('Legal entities', $par_data_partnership, ['field_legal_entity' => 'summary'], $operations);
 
     // Display all the trading names along with the links for the allowed
     // operations on these.
@@ -127,7 +132,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     $form['inspection_plans']['link'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlowNegotiator()->getFlow()
+        '@link' => $this->getFlow()
           ->getNextLink('inspection_plans')
           ->setText('See all Inspection Plans')
           ->toString(),
@@ -145,7 +150,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     $form['advice']['link'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlowNegotiator()->getFlow()
+        '@link' => $this->getFlow()
           ->getNextLink('advice')
           ->setText('See all Advice')
           ->toString(),
@@ -164,8 +169,8 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
       $form[$checkbox] = [
         '#type' => 'checkbox',
         '#title' => t("I confirm I have reviewed the information above"),
-        '#default_value' => $this->getFlowDataHandler()->getDefaultValues($checkbox, FALSE),
-        '#disabled' => $this->getFlowDataHandler()->getDefaultValues($checkbox, FALSE),
+        '#default_value' => $this->getDefaultValues($checkbox, FALSE),
+        '#disabled' => $this->getDefaultValues($checkbox, FALSE),
         '#return_value' => 'on',
       ];
     }
@@ -180,7 +185,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
    * Helper function to get the information checkbox required. False if none required.
    */
   public function getInformationCheckbox() {
-    if ($this->getFlowNegotiator()->getFlowName() === 'partnership_authority') {
+    if ($this->getFlowName() === 'partnership_authority') {
       return 'partnership_info_agreed_authority';
     }
     else {
@@ -194,7 +199,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
 
     // Make sure the confirm box is ticked.
     $checkbox = $this->getInformationCheckbox();
@@ -209,14 +214,14 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_partnership = $this->getRouteParam('par_data_partnership');
 
     $checkbox = $this->getInformationCheckbox();
     if ($par_data_partnership && !$par_data_partnership->getBoolean($checkbox)) {
 
       // Save the value for the confirmation field.
       if ($checkbox) {
-        $par_data_partnership->set($checkbox, $this->decideBooleanValue($this->getFlowDataHandler()->getTempDataValue($checkbox)));
+        $par_data_partnership->set($checkbox, $this->decideBooleanValue($this->getTempDataValue($checkbox)));
 
         // Set partnership status.
         $par_data_partnership->set('partnership_status',
@@ -224,7 +229,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
       }
 
       if ($checkbox && $par_data_partnership->save()) {
-        $this->getFlowDataHandler()->deleteStore();
+        $this->deleteStore();
       }
       else {
         $message = $this->t('This %confirm could not be saved for %form_id');

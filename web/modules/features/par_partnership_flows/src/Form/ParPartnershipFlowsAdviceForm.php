@@ -52,6 +52,11 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
     if ($par_data_advice) {
+      // If we're editing an entity we should set the state
+      // to something other than default to avoid conflicts
+      // with existing versions of the same form.
+      $this->setState("edit:{$par_data_advice->id()}");
+
       // Partnership Confirmation.
       $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
       if (!$this->currentUser()->hasPermission('update primary authority advice to local authorities')) {
@@ -59,7 +64,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       }
       $advice_type = $par_data_advice->get('advice_type')->getString();
       if (isset($allowed_types[$advice_type])) {
-        $this->getFlowDataHandler()->setFormPermValue('advice_type', $advice_type);
+        $this->loadDataValue('advice_type', $advice_type);
       }
 
       // Get Regulatory Functions.
@@ -68,7 +73,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       foreach ($regulatory_functions as $function) {
         $regulatory_options[$function->id()] = $function->id();
       }
-      $this->getFlowDataHandler()->setFormPermValue('regulatory_functions', $regulatory_options);
+      $this->loadDataValue('regulatory_functions', $regulatory_options);
     }
   }
 
@@ -80,8 +85,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     $advice_bundle = $this->getParDataManager()->getParBundleEntity('par_data_advice');
 
     // Get files from "par_partnership_advice_upload" step.
-    $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_advice_upload');
-    $files = $this->getFlowDataHandler()->getDefaultValues("files", '', $cid);
+    $files = $this->getDefaultValues("files", '', 'par_partnership_advice_upload');
     if ($files) {
       // Show files.
       foreach ($files as $file) {
@@ -109,7 +113,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       ],
       '#title' => $this->t('Type of advice'),
       '#options' => $allowed_types,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('advice_type'),
+      '#default_value' => $this->getDefaultValues('advice_type'),
       '#required' => TRUE,
     ];
 
@@ -129,7 +133,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       '#type' => 'checkboxes',
       '#title' => $this->t('Regulatory functions this advice covers'),
       '#options' => $regulatory_function_options,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('regulatory_functions', []),
+      '#default_value' => $this->getDefaultValues('regulatory_functions', []),
     ];
 
     // Make sure to add the document cacheability data to this form.
@@ -157,11 +161,10 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Get the advice entity from the URL.
-    $par_data_advice = $this->getflowDataHandler()->getParameter('par_data_advice');
+    $par_data_advice = $this->getRouteParam('par_data_advice');
 
     // Get files from "par_partnership_advice_upload" step.
-    $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_advice_upload');
-    $files = $this->getFlowDataHandler()->getDefaultValues('files', [], $cid);
+    $files = $this->getDefaultValues('files', [],'par_partnership_advice_upload');
 
     // Add all the uploaded files from the upload form to the advice and save.
     $files_to_add = [];
@@ -177,13 +180,13 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
 
     if ($par_data_advice) {
       $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
-      $advice_type = $this->getFlowDataHandler()->getTempDataValue('advice_type');
+      $advice_type = $this->getTempDataValue('advice_type');
 
       if (isset($allowed_types[$advice_type])) {
         $par_data_advice->set('advice_type', $advice_type);
       }
 
-      $regulatory_functions_selected = array_keys(array_filter($this->getFlowDataHandler()->getTempDataValue('regulatory_functions')));
+      $regulatory_functions_selected = array_keys(array_filter($this->getTempDataValue('regulatory_functions')));
       $par_data_advice->set('field_regulatory_function', $regulatory_functions_selected);
 
       // Check if there are files to add from the Advice Upload form.
@@ -192,7 +195,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       }
 
       if ($par_data_advice->save()) {
-        $this->getFlowDataHandler()->deleteStore();
+        $this->deleteStore();
       }
       else {
         $message = $this->t('This %advice could not be saved for %form_id');
@@ -218,14 +221,14 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       // Set advice type.
       $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
 
-      $advice_type = $this->getFlowDataHandler()->getTempDataValue('advice_type');
+      $advice_type = $this->getTempDataValue('advice_type');
 
       if (isset($allowed_types[$advice_type])) {
         $par_data_advice->set('advice_type', $advice_type);
       }
 
       // Set regulatory functions.
-      $regulatory_functions_selected = array_keys(array_filter($this->getFlowDataHandler()->getTempDataValue('regulatory_functions')));
+      $regulatory_functions_selected = array_keys(array_filter($this->getTempDataValue('regulatory_functions')));
 
       $par_data_advice->set('field_regulatory_function', $regulatory_functions_selected);
 
@@ -233,7 +236,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       $par_data_advice->save();
 
       // Get partnership entity from URL.
-      $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+      $par_data_partnership = $this->getRouteParam('par_data_partnership');
 
       // Combine current pieces of advice to prevent overwriting field.
       $partnership_advice = array_merge($par_data_partnership->retrieveEntityIds('field_advice'), [$par_data_advice->id()]);
@@ -243,7 +246,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
 
       // Save partnership.
       if ($par_data_partnership->save()) {
-        $this->getFlowDataHandler()->deleteStore();
+        $this->deleteStore();
       }
       else {
         $message = $this->t('This %partnership could not be saved for %form_id');

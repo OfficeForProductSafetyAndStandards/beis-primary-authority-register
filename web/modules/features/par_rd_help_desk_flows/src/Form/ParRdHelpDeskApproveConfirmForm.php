@@ -55,6 +55,13 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
 
+    if ($par_data_partnership) {
+      // If we're editing an entity we should set the state
+      // to something other than default to avoid conflicts
+      // with existing versions of the same form.
+      $this->setState("edit:{$par_data_partnership->id()}");
+    }
+
   }
 
   /**
@@ -100,7 +107,7 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
       '#type' => 'checkboxes',
       '#title' => $this->t('Please choose the regulatory functions of this partnership'),
       '#options' => $regulatory_function_options,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('partnership_regulatory_functions', []),
+      '#default_value' => $this->getDefaultValues('partnership_regulatory_functions', []),
       '#required' => TRUE,
     ];
 
@@ -135,8 +142,8 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
-    $selected_regulatory_functions = $this->getFlowDataHandler()->getTempDataValue('partnership_regulatory_functions');
+    $partnership = $this->getRouteParam('par_data_partnership');
+    $selected_regulatory_functions = $this->getTempDataValue('partnership_regulatory_functions');
 
     // We only want to update the status of none active partnerships.
     if ($partnership->getRawStatus() !== 'confirmed_rd') {

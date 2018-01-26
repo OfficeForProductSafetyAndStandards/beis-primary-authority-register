@@ -33,11 +33,16 @@ class ParPartnershipFlowsEmployeeNoForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
     if ($par_data_partnership) {
+      // If we're editing an entity we should set the state
+      // to something other than default to avoid conflicts
+      // with existing versions of the same form.
+      $this->setState("edit:{$par_data_partnership->id()}");
+
       // If we want to use values already saved we have to tell
       // the form about them.
       $par_data_organisation = current($par_data_partnership->getOrganisation());
 
-      $this->getFlowDataHandler()->setFormPermValue('employees_band', $par_data_organisation->get('employees_band')->getString());
+      $this->loadDataValue('employees_band', $par_data_organisation->get('employees_band')->getString());
     }
   }
 
@@ -52,7 +57,7 @@ class ParPartnershipFlowsEmployeeNoForm extends ParBaseForm {
     $form['employees_band'] = [
       '#type' => 'select',
       '#title' => $this->t('Number of employees'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('employees_band'),
+      '#default_value' => $this->getDefaultValues('employees_band'),
       '#options' => $organisation_bundle->getAllowedValues('employees_band'),
     ];
 
@@ -77,11 +82,11 @@ class ParPartnershipFlowsEmployeeNoForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Save the value for the about_partnership field.
-    $partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $partnership = $this->getRouteParam('par_data_partnership');
     $par_data_organisation = current($partnership->getOrganisation());
-    $par_data_organisation->set('employees_band', $this->getFlowDataHandler()->getTempDataValue('employees_band'));
+    $par_data_organisation->set('employees_band', $this->getTempDataValue('employees_band'));
     if ($par_data_organisation->save()) {
-      $this->getFlowDataHandler()->deleteStore();
+      $this->deleteStore();
     }
     else {
       $message = $this->t('The %field field could not be saved for %form_id');

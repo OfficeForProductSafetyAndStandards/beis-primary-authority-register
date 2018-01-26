@@ -1,4 +1,4 @@
-@ci @PAR859 @PAR962 @PAR1054
+@ci @PAR859 @PAR962 @PAR1054 @tota11y
 Feature: Enforcement Officer/PA - Enforcement Notice Process
 
     Scenario: Enforcement Officer/PA - Issue enforcement notice
@@ -17,6 +17,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         # ENFORCEMENT ACTION FORM
 
         When I click on the link "Send a notification of a proposed enforcement action"
+        And I run tota11y against the current page
         And I click on the button "#edit-cancel"
         And I click on the link "Send a notification of a proposed enforcement action"
 
@@ -25,6 +26,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         Then I expect that element "#par-enforce-organisation" contains the text "Choose the member to enforce"
         And I click on the radio "label*=Hooper"
         And I click on the button "#edit-next"
+        And I run tota11y against the current page
 
         # ENTER EO DETAILS
 
@@ -35,6 +37,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I add "Bear" to the inputfield "#edit-last-name"
         And I add "01234780898" to the inputfield "#edit-work-phone"
         And I click on the button "#edit-next"
+        And I run tota11y against the current page
 
         # CHOOSE LEGAL ENTITY
 
@@ -43,6 +46,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I click on the radio "#edit-legal-entities-select-add-new"
         And I add "Legal Entity 1" to the inputfield "#edit-alternative-legal-entity"
         And I click on the button "#edit-next"
+        And I run tota11y against the current page
 
       # ENFORCEMENT SUMMARY
 
@@ -52,6 +56,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I add "600" random chars of text to field "#edit-summary"
         And I click on the radio "#edit-type-proposed"
         And I click on the button "#edit-next"
+        And I run tota11y against the current page
 
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Provide details of the proposed enforcement action"
         Then I expect that element "h1.heading-xlarge" contains the text "Add an action to the enforcement notice"
@@ -61,6 +66,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 #        And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
         And I upload the file "./files/test.png" to field "#edit-files-upload"
         And I click on the button "#edit-next"
+        And I run tota11y against the current page
         Then I expect that element ".filename" contains the text "test.png"
 
         # ADD ENFORCEMENT ACTION OMITTED DUE TO BUG PAR-1054
@@ -90,6 +96,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 #        When I store all EO data to use in later step
 
         When I click on the button "#edit-save"
+        And I run tota11y against the current page
         Then I expect that element "h1.heading-xlarge" contains the text "Primary Authority Register"
 
 #       # CHECK ALL AUTHORITY MEMBERS NOTIFIED #PAR-859 #PAR-962

@@ -52,7 +52,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
-
+    $this->setState("edit:{$par_data_partnership->id()}");
   }
 
   /**
@@ -125,7 +125,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
 
     $form['summary'] = [
       '#type' => 'textarea',
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("summary"),
+      '#default_value' => $this->getDefaultValues("summary"),
    ];
 
     return parent::buildForm($form, $form_state);
@@ -137,12 +137,8 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-
-    $cid = $this->getFlowNegotiator()->getFormKey('par_authority_selection');
-    $enforcing_authority_id = $this->getFlowDataHandler()->getDefaultValues('par_data_authority_id', '', $cid);
-
-    $cid = $this->getFlowNegotiator()->getFormKey('par_enforce_organisation');
-    $organisation_id = $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', '', $cid);
+    $enforcing_authority_id = $this->getDefaultValues('par_data_authority_id', '', 'par_authority_selection');
+    $organisation_id = $this->getDefaultValues('par_data_organisation_id', '', 'par_enforce_organisation');
 
     if (empty($enforcing_authority_id)) {
       $this->setElementError('authority_enforcement_ids', $form_state, 'Please select an authority to enforce on behalf of to proceed.');
@@ -159,7 +155,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    if ($partnership = $this->getflowDataHandler()->getParameter('par_data_partnership')) {
+    if ($partnership = $this->getRouteParam('par_data_partnership')) {
       $partnership_id = $partnership->id() ? $partnership->id() : NULL;
       $partnership_primary_authority = $partnership->getAuthority() ? current($partnership->getAuthority()) : NULL;
     }
@@ -167,8 +163,8 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
     $time = new \DateTime();
 
     $enforcementNotice_data = [
-      'notice_type' => $this->getFlowDataHandler()->getTempDataValue('enforcement_type'),
-      'summary' => $this->getFlowDataHandler()->getTempDataValue('summary'),
+      'notice_type' => $this->getTempDataValue('enforcement_type'),
+      'summary' => $this->getTempDataValue('summary'),
       'field_primary_authority' => $partnership_primary_authority,
       'field_enforcing_authority' => $this->getEnforcingAuthorityID(),
       'field_organisation' => $this->getEnforcedOrganisationID(),
@@ -182,8 +178,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
 
     // Check if we are using the legal entity text field instead of the entity ref field.
     if ($legal_entity_value == 'add_new') {
-      $cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_notice_raise');
-      $enforcementNotice_data['legal_entity_name'] = $this->getFlowDataHandler()->getDefaultValues('alternative_legal_entity', '', $cid);
+      $enforcementNotice_data['legal_entity_name'] = $this->getDefaultValues('alternative_legal_entity', '', 'par_enforcement_notice_raise');
     } else {
       // We are dealing with an entity id the storage will be set to an entity ref field.
       $enforcementNotice_data['field_legal_entity'] = $legal_entity_value;
@@ -192,9 +187,9 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
     $enforcementNotification = \Drupal::entityManager()->getStorage('par_data_enforcement_notice')->create($enforcementNotice_data);
 
     if ($enforcementNotification->save()) {
-      $this->getFlowDataHandler()->deleteStore();
+      $this->deleteStore();
       // Go directly to the action setup form we cannot use links within forms without losing form data.
-      $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), ['par_data_partnership' => $partnership->id(), 'par_data_enforcement_notice' => $enforcementNotification->id()]);
+      $form_state->setRedirect($this->getFlow()->getNextRoute('next'), ['par_data_partnership' => $partnership->id(), 'par_data_enforcement_notice' => $enforcementNotification->id()]);
     }
     else {
       $message = $this->t('The enforcement entity %entity_id could not be saved for %form_id');

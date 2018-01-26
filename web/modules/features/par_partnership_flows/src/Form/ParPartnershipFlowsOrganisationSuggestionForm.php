@@ -41,13 +41,12 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_application_organisation');
-    $searchQuery = $this->getFlowDataHandler()->getDefaultValues('organisation_name', '', $cid);
+    $searchQuery = $this->getDefaultValues('organisation_name', '', 'par_partnership_application_organisation');
 
     // Go to previous step if search query is not specified.
     if (!$searchQuery) {
       // @TODO Find a way to notify the user they have been redirected.
-      return $this->redirect($this->getFlowNegotiator()->getFlow()->getPrevRoute(), $this->getRouteParams());
+      return $this->redirect($this->getFlow()->getPrevRoute(), $this->getRouteParams());
     }
 
     $conditions = [
@@ -71,16 +70,16 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
 
     // If no suggestions were found we want to automatically submit the form.
     if (count($radio_options) <= 0) {
-      $this->getFlowDataHandler()->setTempDataValue('par_data_organisation_id', 'new');
+      $this->setTempDataValue('par_data_organisation_id', 'new');
       $this->submitForm($form, $form_state);
-      return $this->redirect($this->getFlowNegotiator()->getFlow()->getNextRoute(), $this->getRouteParams());
+      return $this->redirect($this->getFlow()->getNextRoute(), $this->getRouteParams());
     }
 
     $form['par_data_organisation_id'] = [
       '#type' => 'radios',
       '#title' => t('Choose an existing business or create a new business'),
       '#options' => $radio_options + ['new' => "no, the business is not currently in a partnership with any other primary authority"],
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', 'new'),
+      '#default_value' => $this->getDefaultValues('par_data_organisation_id', 'new'),
     ];
 
     // Make sure to add the person cacheability data to this form.
@@ -107,17 +106,17 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
     // and contact, skip to the review step, or skip to the contact
     // step if an existing organisation was selected which has an
     // address but no contact.
-    $organisation_id = $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', NULL);
+    $organisation_id = $this->getDefaultValues('par_data_organisation_id', NULL);
     if (isset($organisation_id) && $organisation_id !== 'new') {
       $par_data_organisation = ParDataOrganisation::load($organisation_id);
     }
     if (isset($par_data_organisation)) {
       if (!$par_data_organisation->get('field_person')->isEmpty()) {
-        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('review'), $this->getRouteParams());
+        $form_state->setRedirect($this->getFlow()->getNextRoute('review'), $this->getRouteParams());
       }
       elseif ($par_data_organisation->get('field_person')->isEmpty()
         && !$par_data_organisation->get('field_premises')->isEmpty()) {
-        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('add_contact'), $this->getRouteParams());
+        $form_state->setRedirect($this->getFlow()->getNextRoute('add_contact'), $this->getRouteParams());
       }
     }
   }

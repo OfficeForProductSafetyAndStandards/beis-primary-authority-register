@@ -42,12 +42,17 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
     if (isset($par_data_advice)) {
+      // If we're editing an entity we should set the state
+      // to something other than default to avoid conflicts
+      // with existing versions of the same form.
+      $this->setState("edit:{$par_data_advice->id()}");
+
       $files = $par_data_advice->get('document')->referencedEntities();
       $ids = [];
       foreach ($files as $file) {
         $ids[] = $file->id();
       }
-      $this->getFlowDataHandler()->setFormPermValue('files', $ids);
+      $this->loadDataValue('files', $ids);
     }
   }
 
@@ -78,7 +83,7 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
       '#upload_location' => 's3private://documents/advice/',
       '#multiple' => TRUE,
       '#required' => TRUE,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("files"),
+      '#default_value' => $this->getDefaultValues("files"),
       '#upload_validators' => [
         'file_validate_extensions' => [
           0 => $file_extensions

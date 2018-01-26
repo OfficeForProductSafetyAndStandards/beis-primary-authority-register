@@ -74,7 +74,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
       }
 
       // Check permissions before adding the links for all operations.
-      if ($this->getFlowNegotiator()->getFlowName() === 'partnership_authority') {
+      if ($this->getFlowName() === 'partnership_authority') {
 
         // Create custom title element to add context to the edit link.
         $file_list_title = implode(", ", $file_list);
@@ -83,7 +83,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
         $links = [
           [
             '#type' => 'markup',
-            '#markup' => $this->getFlowNegotiator()->getFlow()
+            '#markup' => $this->getFlow()
               ->getNextLink(
                 'edit',
                 ['par_data_advice' => $advice->id()],
@@ -102,7 +102,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
     }
 
     // Check permissions before adding the links for all operations.
-    if ($this->getFlowNegotiator()->getFlowName() === 'partnership_authority') {
+    if ($this->getFlowName() === 'partnership_authority') {
       $build['documentation_list']['#header'][] = 'Actions';
 
       $build['actions'] = [
@@ -113,7 +113,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
       $build['actions']['upload'] = [
         '#type' => 'markup',
         '#markup' => t('@link', [
-          '@link' => $this->getFlowNegotiator()->getFlow()->getNextLink('upload', $this->getRouteParams())
+          '@link' => $this->getFlow()->getNextLink('upload', $this->getRouteParams())
             ->setText('Upload advice')
             ->toString(),
         ]),
