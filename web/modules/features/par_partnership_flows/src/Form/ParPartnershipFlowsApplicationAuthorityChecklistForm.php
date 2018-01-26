@@ -57,7 +57,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
     if ($applicationType == 'direct') {
       $form['section_one']['header'] = [
         '#type' => 'markup',
-        '#markup' => $this->t(Please confirm the following),
+        '#markup' => $this->t('Please confirm the following'),
         '#prefix' => '<h3 class="heading-medium">',
         '#suffix' => '</h3>',
       ];

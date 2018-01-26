@@ -45,6 +45,8 @@ Feature: PA User - Manage Addresses
 
 #        # EDIT ABOUT THE BUSINESS
 
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Primary Authority partnership information"
+        And I expect that element "h1.heading-xlarge" contains the text "Information about the partnership"
         When I click on the link "edit about the business"
         And I run tota11y against the current page
         And I add "Change to the about business details section" to the inputfield "#edit-about-business"
