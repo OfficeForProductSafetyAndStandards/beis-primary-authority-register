@@ -116,25 +116,25 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
 
     $form['address_line1'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Enter your Address Line 1'),
+      '#title' => $this->t('Enter Address Line 1'),
       '#default_value' => $this->getDefaultValues("address_line1"),
     ];
 
     $form['address_line2'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Enter your Address Line 2'),
+      '#title' => $this->t('Enter Address Line 2'),
       '#default_value' => $this->getDefaultValues("address_line2"),
     ];
 
     $form['town_city'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Enter your Town / City'),
+      '#title' => $this->t('Enter Town / City'),
       '#default_value' => $this->getDefaultValues("town_city"),
     ];
 
     $form['county'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Enter your County'),
+      '#title' => $this->t('Enter County'),
       '#default_value' => $this->getDefaultValues("county"),
     ];
 
@@ -150,7 +150,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
 
     $form['nation'] = [
       '#type' => 'select',
-      '#title' => $this->t('Select your Nation'),
+      '#title' => $this->t('Select Nation'),
       '#options' => $premises_bundle->getAllowedValues('nation'),
       '#default_value' => $this->getDefaultValues("nation"),
       '#states' => [
@@ -164,7 +164,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
 
     $form['postcode'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Enter your Postcode'),
+      '#title' => $this->t('Enter Postcode'),
       '#default_value' => $this->getDefaultValues("postcode"),
     ];
 
