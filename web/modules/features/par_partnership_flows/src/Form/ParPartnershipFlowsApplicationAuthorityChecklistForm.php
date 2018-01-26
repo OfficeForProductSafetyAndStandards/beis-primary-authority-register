@@ -57,7 +57,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
     if ($applicationType == 'direct') {
       $form['section_one']['header'] = [
         '#type' => 'markup',
-        '#markup' => $this->t('I confirm that'),
+        '#markup' => $this->t(Please confirm the following),
         '#prefix' => '<h3 class="heading-medium">',
         '#suffix' => '</h3>',
       ];
@@ -142,7 +142,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
     elseif ($applicationType == 'coordinated') {
       $form['section_one']['header'] = [
         '#type' => 'markup',
-        '#markup' => $this->t('I confirm that'),
+        '#markup' => $this->t('Please confirm the following'),
         '#prefix' => '<h3 class="heading-medium">',
         '#suffix' => '</h3>',
       ];
