@@ -28,6 +28,8 @@ Feature: New Direct Partnership For HD user To Revoke
 
         # CONFIRMATIONS
 
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
+        Then I expect that element "h1.heading-xlarge" contains the text "Direct partnership application"
         When I click on the checkbox "#edit-business-eligible-for-partnership"
         And I click on the checkbox "#edit-local-authority-suitable-for-nomination"
         And I click on the checkbox "#edit-written-summary-agreed"
@@ -41,6 +43,8 @@ Feature: New Direct Partnership For HD user To Revoke
         When I click on the button "#edit-next"
 
         # ADD ABOUT THE PARTNERSHIP
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
+        Then I expect that element "h1.heading-xlarge" contains the text "Edit the details about the Partnership"
         And I run tota11y against the current page
         When I add "About the partnership for revoking detail" to the inputfield "#edit-about-partnership"
         And I click on the button "#edit-next"
@@ -48,6 +52,8 @@ Feature: New Direct Partnership For HD user To Revoke
 
         # ORGANISATION NAME
 
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
+        Then I expect that element "h1.heading-xlarge" contains the text "Who are you in partnership with?"
         And I add "Direct Partnership For Revoking" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
         And I run tota11y against the current page
@@ -57,6 +63,9 @@ Feature: New Direct Partnership For HD user To Revoke
         And I click new partnership if presented with choices
 
         # ADD BUSINESS DETAIL
+
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
+        And I expect that element "h1.heading-xlarge" contains the text "New business information"
         And I run tota11y against the current page
         And I add "Leidseplein 10" to the inputfield "#edit-address-line1"
         And I add "Leidseplein" to the inputfield "#edit-address-line2"
@@ -71,6 +80,9 @@ Feature: New Direct Partnership For HD user To Revoke
         And I click on the button "#edit-next"
 
         # MAIN CONTACT
+
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "New partnership application"
+        And I expect that element "h1.heading-xlarge" contains the text "Add a contact for the business"
         And I run tota11y against the current page
         And I add "Mr" to the inputfield "#edit-salutation"
         And I add "Fozzie" to the inputfield "#edit-first-name"
