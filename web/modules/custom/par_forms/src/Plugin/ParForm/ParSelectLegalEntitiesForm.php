@@ -6,7 +6,7 @@ use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
- * Select Legal Entities form plugin.
+ * Select Legal Entities form.
  *
  * @ParForm(
  *   id = "select_legal_entities",
@@ -68,6 +68,7 @@ limited company or partnership, as well as other types of organisations such as 
       '#type' => 'checkboxes',
       '#title' => t('Choose which legal entities this partnership relates to'),
       '#options' => $legal_entities_options,
+      // Automatically check all legal entities if no form data is found.
       '#default_value' => $this->getFlowDataHandler()
         ->getDefaultValues("field_legal_entity", array_keys($legal_entities)),
     ];
