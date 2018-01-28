@@ -34,7 +34,6 @@ class ParTradingNameForm extends ParFormPluginBase {
       $trading_name = $par_data_organisation ? $par_data_organisation->get('trading_name')->get($trading_name_delta) : NULL;
 
       if ($trading_name) {
-        var_dump($trading_name->getString());
         $this->getFlowDataHandler()->setFormPermValue("trading_name", $trading_name->getString());
       }
     }
