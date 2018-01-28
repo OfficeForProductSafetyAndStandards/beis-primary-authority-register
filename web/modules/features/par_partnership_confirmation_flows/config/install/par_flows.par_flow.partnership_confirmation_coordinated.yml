@@ -37,7 +37,7 @@ steps:
     redirect:
       cancel: 10
   5:
-    route: par_partnership_confirmation_flows.business_size
+    route: par_partnership_confirmation_flows.confirm_business_size
     form_id: par_partnership_confirmation_business_size
     components:
       - business_size

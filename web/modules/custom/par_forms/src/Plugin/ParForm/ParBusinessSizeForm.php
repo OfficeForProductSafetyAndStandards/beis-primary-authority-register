@@ -19,7 +19,7 @@ class ParBusinessSizeForm extends ParFormPluginBase {
    */
   protected $formItems = [
     'par_data_organisation:organisation' => [
-      'business_size' => 'employees_band',
+      'size' => 'business_size',
     ],
   ];
 
