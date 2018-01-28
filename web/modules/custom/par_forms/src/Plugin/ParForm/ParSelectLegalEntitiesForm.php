@@ -66,6 +66,7 @@ limited company or partnership, as well as other types of organisations such as 
     // Checkboxes for legal entities.
     $form['field_legal_entity'] = [
       '#type' => 'checkboxes',
+      '#attributes' => ['class' => ['form-group']],
       '#title' => t('Choose which legal entities this partnership relates to'),
       '#options' => $legal_entities_options,
       // Automatically check all legal entities if no form data is found.
