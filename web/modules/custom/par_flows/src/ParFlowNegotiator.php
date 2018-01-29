@@ -167,14 +167,15 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
       $this->flow_name = key($flows);
     }
 
+    // If User has helpdesk permissions && the Route is in the helpdesk flow...
+    if (isset($flows['helpdesk']) && $this->getCurrentUser()->hasPermission('bypass par_data access')) {
+      $this->flow_name = 'helpdesk';
+    }
+
     // Logic to determine direct and coordinated routes.
     if ($par_data_partnership = $this->getRoute()->getParameter('par_data_partnership')) {
-      // If User has helpdesk permissions && the Route is in the helpdesk flow...
-      if (isset($flows['helpdesk']) && $this->getCurrentUser()->hasPermission('bypass par_data access')) {
-        $this->flow_name = 'helpdesk';
-      }
       // IF Route is in authority flow && User is an authority member...
-      elseif (isset($flows['partnership_authority']) && $par_data_partnership->isAuthorityMember($this->getCurrentUser())) {
+      if (isset($flows['partnership_authority']) && $par_data_partnership->isAuthorityMember($this->getCurrentUser())) {
         return 'partnership_authority';
       }
       // If Route is in direct flow && partnership is direct...

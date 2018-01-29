@@ -13,6 +13,7 @@ use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParBaseInterface;
 use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
+use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Utility\NestedArray;
@@ -86,13 +87,15 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     $this->setCurrentUser();
 
-    // If no flow entity exists throw a build error.
-    if (!$this->getFlowNegotiator()->getFlow()) {
-      $this->getLogger($this->getLoggerChannel())->critical('There is no flow %flow for this form.', ['%flow' => $this->getFlowNegotiator()->getFlowName()]);
-    }
+    // @TODO Move this to middleware to stop it being loaded when this controller
+    // is contructed outside a request for a route this controller resolves.
+    try {
+      $this->getFlowNegotiator()->getFlow();
 
-    // Load the data associated with this form (if applicable).
-    $this->loadData();
+      $this->loadData();
+    } catch (ParFlowException $e) {
+
+    }
   }
 
   /**
@@ -164,6 +167,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+
+
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $weight => $component) {
       $form = $component->getElements($form);
