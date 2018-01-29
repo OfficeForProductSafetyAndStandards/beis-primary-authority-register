@@ -5,7 +5,8 @@ dependencies: {  }
 id: test_config
 label: 'Test Config'
 folder: ../sync-test
-module: {  }
+module:
+  maillog: 0
 theme: {  }
 blacklist: {  }
 graylist: {  }
