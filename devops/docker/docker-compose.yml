@@ -9,7 +9,7 @@ services:
       ports:
         - "8111:80"
       volumes:
-        - ../:/var/www/html
+        - ../../:/var/www/html
 
     db:
       container_name: par_beta_db
