@@ -1,0 +1,4 @@
+text:
+  -
+    value: "<p>Your partnership has been nominated by the Secretary of State.</p>\r\n\r\n<p>Please log on to the Primary Authority Register to view the partnership details.</p>\r\n\r\n<p>^ @partnership_search_link</p>\r\n\r\n<p><br />\r\nThis is an automated email, please do not reply, as your response will be sent to a mailbox that is not monitored. If you have a query relating to this email, please contact pa@brdo.bis.gsi.gov.uk or Tel. 0121-345-1201</p>\r\n"
+    format: basic_html
