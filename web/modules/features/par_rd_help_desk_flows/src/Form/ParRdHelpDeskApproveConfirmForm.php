@@ -4,6 +4,7 @@ namespace Drupal\par_rd_help_desk_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\Core\Access\AccessResult;
 
@@ -164,6 +165,12 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
         ];
         $this->getLogger($this->getLoggerChannel())
           ->error($message, $replacements);
+      }
+      else {
+        // Dispatch the event for partnership nomination notification.
+        $event = new ParDataEvent($partnership);
+        $dispatcher = \Drupal::service('event_dispatcher');
+        $dispatcher->dispatch(ParDataEvent::APPROVED, $event);
       }
     }
   }
