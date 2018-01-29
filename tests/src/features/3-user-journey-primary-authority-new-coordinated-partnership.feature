@@ -45,10 +45,6 @@ Feature: New Coordinated Partnership
         And I add "Business For Coordinated Partnership 1" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
 
-        # CONFIRM NEW PARTNERSHIP
-
-        And I click new partnership if presented with choices
-
         # ADD BUSINESS DETAIL
 
         When I add "SE16 4NX" to the inputfield "#edit-postcode"
