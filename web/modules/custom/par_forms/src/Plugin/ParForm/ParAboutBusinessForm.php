@@ -27,7 +27,7 @@ class ParAboutBusinessForm extends ParFormPluginBase {
    * Load the data for this form.
    */
   public function loadData() {
-    if ($par_data_organisation = $this->getflowDataHandler()->getParameter('par_data_organisation')) {
+    if ($par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation')) {
       $this->getFlowDataHandler()->setFormPermValue('about_business', $par_data_organisation->get('comments')->getString());
     }
 

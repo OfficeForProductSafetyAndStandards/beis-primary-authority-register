@@ -283,7 +283,7 @@ HEREDOC;
       $form_state->setErrorByName('email_body', $this->t('<a href="#edit-email-body">The Message is required.</a>'));
     }
     // Check that the email body contains an invite accept link.
-    $par_data_person = $this->getflowDataHandler()->getParameter('par_data_person');
+    $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
     if ($par_data_person->getUserAccount()) {
       $required_token = '[site:login-url]';
     }

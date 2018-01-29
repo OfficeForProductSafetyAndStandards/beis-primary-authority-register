@@ -29,7 +29,7 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     if ($par_data_partnership) {
       $par_data_organisation = current($par_data_partnership->getOrganisation());
       $this->pageTitle = $par_data_organisation->get('organisation_name')->getString();

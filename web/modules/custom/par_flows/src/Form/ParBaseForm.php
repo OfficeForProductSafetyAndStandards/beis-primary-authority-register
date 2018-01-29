@@ -397,7 +397,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $this->cleanseFormDefaults($form_state->getValues());
-    $this->getflowDataHandler()->setFormTempData($values);
+    $this->getFlowDataHandler()->setFormTempData($values);
 
     $submit_action = $form_state->getTriggeringElement()['#name'];
     $next = $this->getFlowNegotiator()->getFlow()->getNextRoute($submit_action);

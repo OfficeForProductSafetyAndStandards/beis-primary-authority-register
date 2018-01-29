@@ -41,12 +41,12 @@ class ParLegalEntityForm extends ParBaseForm {
    * Load the data for this form.
    */
   public function loadData() {
-    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $par_data_partnership ? $par_data_partnership->getOrganisation(TRUE) : NULL;
     $par_data_legal_entity = $par_data_organisation ? $par_data_organisation->getLegalEntity(TRUE) : NULL;
 
     // For the apply journey we will always edit the first value.
-    $this->getflowDataHandler()->setParameter('par_data_legal_entity', $par_data_legal_entity);
+    $this->getFlowDataHandler()->setParameter('par_data_legal_entity', $par_data_legal_entity);
 
     parent::loadData();
   }
@@ -58,7 +58,7 @@ class ParLegalEntityForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Save the value for the about_partnership field.
-    $legal_entity = $this->getflowDataHandler()->getParameter('par_data_legal_entity');
+    $legal_entity = $this->getFlowDataHandler()->getParameter('par_data_legal_entity');
 
     // Nullify registration number
     $registered_number_types = [
@@ -105,7 +105,7 @@ class ParLegalEntityForm extends ParBaseForm {
       $legal_entity->save();
 
       // Now add the legal entity to the organisation.
-      $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+      $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
       $par_data_organisation = current($par_data_partnership->getOrganisation());
       $par_data_organisation->addLegalEntity($legal_entity);
 

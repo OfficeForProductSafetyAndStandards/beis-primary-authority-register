@@ -24,11 +24,11 @@ class ParBusinessSizeForm extends ParBaseForm {
    * Load the data for this form.
    */
   public function loadData() {
-    $partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $partnership ? $partnership->getOrganisation(TRUE) : NULL;
 
     // Override the route parameter so that data loaded will be from this entity.
-    $this->getflowDataHandler()->setParameter('par_data_organisation', $par_data_organisation);
+    $this->getFlowDataHandler()->setParameter('par_data_organisation', $par_data_organisation);
 
     parent::loadData();
   }
@@ -40,7 +40,7 @@ class ParBusinessSizeForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Save the value for the about_partnership field.
-    $partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = current($partnership->getOrganisation());
     $par_data_organisation->set('size', $this->getFlowDataHandler()->getTempDataValue('business_size'));
     if ($par_data_organisation->save()) {

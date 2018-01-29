@@ -119,7 +119,7 @@ trait ParControllerTrait {
   /**
    * {@inheritdoc}
    */
-  public function getflowDataHandler() {
+  public function getFlowDataHandler() {
     return $this->flowDataHandler;
   }
 

@@ -81,7 +81,7 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Save the value for the about_partnership field.
-    $partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = current($partnership->getOrganisation());
     $par_data_organisation->set('comments', $this->getFlowDataHandler()->getTempDataValue('about_business'));
     if ($par_data_organisation->save()) {

@@ -135,7 +135,7 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $selected_regulatory_functions = $this->getFlowDataHandler()->getTempDataValue('partnership_regulatory_functions');
 
     // We only want to update the status of none active partnerships.

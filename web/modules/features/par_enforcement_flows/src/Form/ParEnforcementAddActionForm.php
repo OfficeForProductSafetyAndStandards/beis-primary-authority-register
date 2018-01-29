@@ -39,7 +39,7 @@ class ParEnforcementAddActionForm extends ParBaseForm {
    */
   public function titleCallback() {
 
-    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     if ($par_data_partnership) {
       $this->pageTitle = 'Provide details of the proposed enforcement action | Add an action to the  enforcement notice';
@@ -149,7 +149,7 @@ class ParEnforcementAddActionForm extends ParBaseForm {
 
     if ($enforcementAction->save()) {
 
-      $enforcement_notice = $this->getflowDataHandler()->getParameter('par_data_enforcement_notice');
+      $enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
       // Store the created action on the current enforcement entity.
       $enforcement_action_ids = $enforcementAction->id();
 

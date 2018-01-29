@@ -68,7 +68,7 @@ class ParPartnershipFlowsMemberUploadForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Get the advice entity from the URL.
-    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     if ($csv = $this->getFlowDataHandler()->getTempDataValue('csv')) {
       $rows = [];

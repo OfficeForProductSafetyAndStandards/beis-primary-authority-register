@@ -159,7 +159,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    if ($partnership = $this->getflowDataHandler()->getParameter('par_data_partnership')) {
+    if ($partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {
       $partnership_id = $partnership->id() ? $partnership->id() : NULL;
       $partnership_primary_authority = $partnership->getAuthority() ? current($partnership->getAuthority()) : NULL;
     }

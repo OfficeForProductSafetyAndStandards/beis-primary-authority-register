@@ -29,7 +29,7 @@ interface ParBaseInterface {
    * @return \Drupal\par_flows\ParFlowDataHandlerInterface
    *   Get the flow data handler.
    */
-  public function getflowDataHandler();
+  public function getFlowDataHandler();
 
   /**
    * Returns the PAR data manager.

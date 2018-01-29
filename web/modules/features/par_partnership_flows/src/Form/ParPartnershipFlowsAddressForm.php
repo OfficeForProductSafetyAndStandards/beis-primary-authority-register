@@ -47,7 +47,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
    * Get partnership.
    */
   public function getPartnershipParam() {
-    return $this->getflowDataHandler()->getParameter('par_data_partnership');
+    return $this->getFlowDataHandler()->getParameter('par_data_partnership');
   }
 
   /**
@@ -61,7 +61,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       return !empty($premises) ? current($premises) : NULL;
     }
     else {
-      return $this->getflowDataHandler()->getParameter('par_data_premises');
+      return $this->getFlowDataHandler()->getParameter('par_data_premises');
     }
   }
 
