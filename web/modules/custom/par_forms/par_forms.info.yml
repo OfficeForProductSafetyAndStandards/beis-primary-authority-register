@@ -1,0 +1,5 @@
+name: PAR Forms
+type: module
+description: Adds all the necessary form builder components used to construct each form.
+core: 8.x
+package: PAR

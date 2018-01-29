@@ -48,12 +48,7 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
     if ($par_data_partnership) {
-      // If we're editing an entity we should set the state
-      // to something other than default to avoid conflicts
-      // with existing versions of the same form.
-      $this->setState("edit:{$par_data_partnership->id()}");
-
-      $this->loadDataValue('about_partnership', $par_data_partnership->get('about_partnership')->getString());
+      $this->getFlowDataHandler()->setFormPermValue('about_partnership', $par_data_partnership->get('about_partnership')->getString());
     }
   }
 
@@ -67,7 +62,7 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
     $form['about_partnership'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Provide information about the Partnership'),
-      '#default_value' => $this->getDefaultValues('about_partnership'),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('about_partnership'),
       '#description' => '<p>Use this section to give a brief overview of the partnership. Include any information you feel may be useful to enforcing authorities.</p>',
     ];
 
@@ -83,13 +78,13 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     if ($par_data_partnership) {
       // Save the value for the about_partnership field.
-      $par_data_partnership->set('about_partnership', $this->getTempDataValue('about_partnership'));
+      $par_data_partnership->set('about_partnership', $this->getFlowDataHandler()->getTempDataValue('about_partnership'));
       if ($par_data_partnership->save()) {
-        $this->deleteStore();
+        $this->getFlowDataHandler()->deleteStore();
       }
       else {
         $message = $this->t('The %field field could not be saved for %form_id');

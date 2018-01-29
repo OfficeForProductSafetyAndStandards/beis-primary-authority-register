@@ -33,7 +33,7 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
-    $this->setState("edit:{$par_data_partnership->id()}");
+
   }
 
   /**
@@ -68,18 +68,18 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
         '%user' => $account->id(),
       ];
       $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-      return $this->redirect($this->getFlow()->getPrevRoute('cancel'), $this->getRouteParams());
+      return $this->redirect($this->getFlowNegotiator()->getFlow()->getPrevRoute('cancel'), $this->getRouteParams());
     }
     elseif (count($authority_options) === 1) {
-      $this->setTempDataValue('par_data_authority_id', key($authority_options));
-      return $this->redirect($this->getFlow()->getNextRoute('next'), $this->getRouteParams());
+      $this->getFlowDataHandler()->setTempDataValue('par_data_authority_id', key($authority_options));
+      return $this->redirect($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
     }
 
     $form['par_data_authority_id'] = [
       '#type' => 'radios',
       '#title' => t('Choose a Primary Authority'),
       '#options' => $authority_options,
-      '#default_value' => $this->getDefaultValues("par_data_authority_id", NULL),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("par_data_authority_id", NULL),
     ];
 
     // Make sure to add the person cacheability data to this form.
