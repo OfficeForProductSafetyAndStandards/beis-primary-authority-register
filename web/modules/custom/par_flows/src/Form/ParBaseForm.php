@@ -246,13 +246,71 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $weight => $component) {
-      $violations = $component->validate($form_state);
-      if ($violations) {
-        foreach ($violations as $form_item => $violation) {
+      $component_violations = $component->validate($form_state);
+      if ($component_violations) {
+        foreach ($component_violations as $form_item => $violation) {
           $this->setFieldViolations($form_item, $form_state, $violation);
         }
       }
     }
+
+    // @TODO Remove this method once/if all forms use components.
+    if (!empty($this->getFormItems())) {
+      $form_violations = $this->validateElements($form_state);
+      if ($form_violations) {
+        foreach ($form_violations as $form_item => $violation) {
+          $this->setFieldViolations($form_item, $form_state, $violation);
+        }
+      }
+    }
+  }
+
+  public function validateElements($form_state) {
+    $violations = [];
+
+    // Assign all the form values to the relevant entity field values.
+    foreach ($this->getformItems() as $entity_name => $form_items) {
+      list($type, $bundle) = explode(':', $entity_name . ':');
+
+      $entity_class = $this->getParDataManager()->getParEntityType($type)->getClass();
+      $entity = $entity_class::create([
+        'type' => $this->getParDataManager()->getParBundleEntity($type, $bundle)->id(),
+      ]);
+
+      foreach ($form_items as $field_name => $form_item) {
+        $field_definition = $this->getParDataManager()->getFieldDefinition($entity->getEntityTypeId(), $entity->bundle(), $field_name);
+
+        if (is_array($form_item)) {
+          $field_value = [];
+          foreach ($form_item as $field_property => $form_property_item) {
+            // For entity reference fields we need to transform the ids to integers.
+            if ($field_definition->getType() === 'entity_reference' && $field_property === 'target_id') {
+              $field_value[$field_property] = (int) $form_state->getValue($form_property_item);
+            }
+            else {
+              $field_value[$field_property] = $form_state->getValue($form_property_item);
+            }
+          }
+        }
+        else {
+          $field_value = $form_state->getValue($form_item);
+        }
+
+        $entity->set($field_name, $field_value);
+
+        try {
+          $violations[$form_item] = $entity->validate()->filterByFieldAccess()
+            ->getByFields([
+              $field_name,
+            ]);
+        }
+        catch(\Exception $e) {
+          $this->getLogger($this->getLoggerChannel())->critical('An error occurred validating form %entity_id: @detail.', ['%entity_id' => $entity->getEntityTypeId(), '@details' => $e->getMessage()]);
+        }
+      }
+    }
+
+    return $violations;
   }
 
   /**
