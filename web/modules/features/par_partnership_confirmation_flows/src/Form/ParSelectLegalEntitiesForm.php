@@ -54,7 +54,8 @@ class ParSelectLegalEntitiesForm extends ParBaseForm {
 
     // Commit changes to partnership entity.
     if ($par_data_partnership->save()) {
-//      $this->getFlowDataHandler()->deleteStore();
+      // Delete form data in favour for querying the partnership entity.
+      $this->getFlowDataHandler()->deleteFormTempData();
     }
     else {
       $message = $this->t('This %field could not be saved for %form_id');
