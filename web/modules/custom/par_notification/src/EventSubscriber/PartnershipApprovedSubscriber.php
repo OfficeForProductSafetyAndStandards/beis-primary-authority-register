@@ -18,7 +18,7 @@ class PartnershipApprovedSubscriber implements EventSubscriberInterface {
    *
    * @see /admin/structure/message/manage/partnership_revocation_notification
    */
-  const MESSAGE_ID = 'partnership_approved_notificat';
+  const MESSAGE_ID = 'partnership_approved_notificatio';
 
   /**
    * The notification plugin that will deliver these notification messages.
@@ -83,8 +83,12 @@ class PartnershipApprovedSubscriber implements EventSubscriberInterface {
       // Load the message template.
       $template_storage = $this->getEntityTypeManager()->getStorage('message_template');
       $message_template = $template_storage->load(self::MESSAGE_ID);
-
       $message_storage = $this->getEntityTypeManager()->getStorage('message');
+
+      // Get the link to approve this notice.
+      $options = ['absolute' => TRUE];
+      $partnership_url = Url::fromRoute('view.par_user_partnerships.partnerships_page', [], $options);
+
       if (!$message_template) {
         // @TODO Log that the template couldn't be loaded.
         return;
@@ -113,6 +117,11 @@ class PartnershipApprovedSubscriber implements EventSubscriberInterface {
           if ($message->hasField('field_partnership')) {
             $message->set('field_partnership', $partnership);
           }
+
+          // Add some custom arguments to this message.
+          $message->setArguments([
+            '@partnership_search_link' => $partnership_url->toString(),
+          ]);
 
           // The owner is the user who this message belongs to.
           if ($account) {
