@@ -2,9 +2,9 @@
 
 # Destroy dependencies
 
-    cd /vagrant/docker
-    if [ -f ../web/sites/default/settings.local.php ]; then
-        sudo rm ../web/sites/default/settings.local.php
+    cd /vagrant/devops/docker
+    if [ -f ../../web/sites/default/settings.local.php ]; then
+        sudo rm ../../web/sites/default/settings.local.php
     fi
 
 # Install dependencies
@@ -16,8 +16,8 @@
 
 # Setup the development settings file:
 
-if [ ! -f ../web/sites/settings.local.php ]; then
-    cp ../web/sites/example.settings.local.php ../web/sites/default/settings.local.php
+if [ ! -f ../../web/sites/settings.local.php ]; then
+    cp ../../web/sites/example.settings.local.php ../../web/sites/default/settings.local.php
 fi
 
 # Load the test data:

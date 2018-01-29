@@ -29,7 +29,7 @@ before_install:
 #-----------------------------------------------------------------------------
 # Bring up Docker containers
 #-----------------------------------------------------------------------------
-  - cd docker
+  - cd devops/docker
   - docker-compose up -d
 # set web server / docker root uid/gid to match Travis uid.
   - docker exec -t par_beta_web bash -c "usermod --uid=2000 www-data"
@@ -39,7 +39,7 @@ before_install:
 # restart servers after changing uid/gids.
   - docker-compose stop
   - docker-compose up -d
-  - cd ..
+  - cd ../..
 
 #-----------------------------------------------------------------------------
 # Install dependencies
