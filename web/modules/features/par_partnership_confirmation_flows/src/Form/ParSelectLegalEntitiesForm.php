@@ -29,14 +29,6 @@ class ParSelectLegalEntitiesForm extends ParBaseForm {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
-
-    // Retrieve form data.
-    $selected_legal_entities = $form_state->getValue('field_legal_entity');
-
-    // Check if at least one legal entity has been selected.
-    if (!array_filter($selected_legal_entities)) {
-      $this->setElementError('field_legal_entity', $form_state, 'Please select at least one legal entity.');
-    }
   }
 
   /**
