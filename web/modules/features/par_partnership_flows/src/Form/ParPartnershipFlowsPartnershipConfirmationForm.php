@@ -132,6 +132,7 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
         'par_data_partnership' => $par_data_partnership->id(),
         'par_data_person' => $par_data_person->id()
       ];
+      
       $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('save'), $route_params);
     }
     else {
