@@ -248,8 +248,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     foreach ($this->getComponents() as $weight => $component) {
       $component_violations = $component->validate($form_state);
       if ($component_violations) {
-        foreach ($component_violations as $form_item => $violation) {
-          $this->setFieldViolations($form_item, $form_state, $violation);
+        foreach ($component_violations as $field_name => $violation) {
+          $this->setFieldViolations($field_name, $form_state, $violation);
         }
       }
     }
@@ -258,8 +258,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     if (!empty($this->getFormItems())) {
       $form_violations = $this->validateElements($form_state);
       if ($form_violations) {
-        foreach ($form_violations as $form_item => $violation) {
-          $this->setFieldViolations($form_item, $form_state, $violation);
+        foreach ($form_violations as $field_name => $violation) {
+          $this->setFieldViolations($field_name, $form_state, $violation);
         }
       }
     }
@@ -299,7 +299,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
         $entity->set($field_name, $field_value);
 
         try {
-          $violations[$form_item] = $entity->validate()->filterByFieldAccess()
+          $violations[$field_name] = $entity->validate()->filterByFieldAccess()
             ->getByFields([
               $field_name,
             ]);
@@ -337,12 +337,12 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
         $field_label = end($name);
         if (!empty($replacements)) {
-          $arguments = is_string($replacements) ? ['@field' => $replacements] : $replacements;
+          $arguments = is_string($replacements) ? ['@name' => $replacements, '@field' => $replacements] : $replacements;
         }
         else {
-          $arguments = ['@field' => $field_label];
+          $arguments = ['@name' => $field_label, '@field' => $field_label];
         }
-        $message = $this->t($violation->getMessage()->getUntranslatedString(), ['@field' => $field_label]);
+        $message = $this->t($violation->getMessage()->getUntranslatedString(), $arguments);
 
         $url = Url::fromUri('internal:#', $options);
         $link = Link::fromTextAndUrl($message, $url)->toString();
