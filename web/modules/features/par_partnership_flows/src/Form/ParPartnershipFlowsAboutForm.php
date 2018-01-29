@@ -20,7 +20,7 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
     ],
   ];
 
-  protected $pageTitle = 'Edit the details about the Partnership';
+  protected $pageTitle = 'Information about the partnership';
 
   /**
    * {@inheritdoc}
@@ -33,7 +33,7 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    $this->pageTitle = 'Edit the details about the Partnership';
+    $this->pageTitle = 'Information about the new partnership';
 
     return parent::titleCallback();
   }
