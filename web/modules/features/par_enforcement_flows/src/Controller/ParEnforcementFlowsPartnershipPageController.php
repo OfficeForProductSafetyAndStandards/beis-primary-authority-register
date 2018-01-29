@@ -76,14 +76,14 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
 
     // Only show Members list, Sectors and Number of businesses if the partnership is a coordinated partnership.
     if ($par_data_partnership->isCoordinated()) {
-      $build['associations'] = $this->renderSection('Number of Associations', $par_data_organisation, ['size' => 'full']);
+      $build['associations'] = $this->renderSection('Number of Members', $par_data_organisation, ['size' => 'full']);
 
       // Display all the legal entities along with the links for the allowed operations on these.
       $build['members'] = $this->renderSection('Members', $par_data_partnership, ['field_coordinated_business' => 'title']);
     }
 
     // Display all the legal entities along with the links for the allowed operations on these.
-    $build['legal_entities'] = $this->renderSection('Legal Entities', $par_data_organisation, ['field_legal_entity' => 'summary']);
+    $build['legal_entities'] = $this->renderSection('Legal Entities', $par_data_partnership, ['field_legal_entity' => 'summary']);
 
     // Display all the trading names along with the links for the allowed operations on these.
     $build['trading_names'] = $this->renderSection('Trading Names', $par_data_organisation, ['trading_name' => 'full']);

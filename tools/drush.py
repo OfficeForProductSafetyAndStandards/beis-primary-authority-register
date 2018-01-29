@@ -5,10 +5,6 @@
 import json, os
 import sys
 
-if os.environ["APP_ENV"] == "production":
-  print "Please don't run this on production!"
-  sys.exit()
-
 os.environ["PHPRC"] = os.environ["HOME"] + "/app/php/etc"
 os.environ["PATH"]= os.environ["PATH"] + ":" + os.environ["HOME"] + "/app/php/bin:" + os.environ["HOME"] + "/app/php/sbin"
 os.environ["HTTPD_SERVER_ADMIN"] = "admin@localhost"
