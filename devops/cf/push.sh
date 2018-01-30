@@ -45,8 +45,15 @@ command -v cf >/dev/null 2>&1 || {
     exit 1 
 }
 
-echo -n "Enter your Cloud Foundry username: "
-read CF_USER
+if [[ -z "${GOVUK_SCF_USER}" ]]; then
+    echo -n "Enter your Cloud Foundry username: "
+    read CF_USER
+    echo "Note: You can set a default username by setting the GOVUK_CF_USER environment variable"
+else
+    CF_USER=$GOVUK_CF_USER
+    echo "Username: $CF_USER"
+fi
+
 echo -n "Enter your Cloud Foundry password (will be hidden): "
 read -s CF_PASS
 cf login -a api.cloud.service.gov.uk -u $CF_USER -p $CF_PASS
