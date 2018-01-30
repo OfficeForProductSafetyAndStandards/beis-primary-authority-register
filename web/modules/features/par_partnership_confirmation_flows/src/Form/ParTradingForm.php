@@ -3,14 +3,15 @@
 namespace Drupal\par_partnership_confirmation_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_partnership_confirmation_flows\ParPartnershipFlowsTrait;
+use Drupal\par_partnership_confirmation_flows\ParFlowAccessTrait;
 
 /**
  * The partnership form for the trading name details.
  */
 class ParTradingForm extends ParBaseForm {
+
+  use ParFlowAccessTrait;
 
   /**
    * Set the page title.

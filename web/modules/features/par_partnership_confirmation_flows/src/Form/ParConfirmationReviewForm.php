@@ -3,19 +3,18 @@
 namespace Drupal\par_partnership_confirmation_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
-use Drupal\par_data\Entity\ParDataSicCode;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_partnership_confirmation_flows\ParPartnershipFlowsTrait;
+use Drupal\par_partnership_confirmation_flows\ParFlowAccessTrait;
 
 /**
  * The partnership form for the partnership details.
  */
 class ParConfirmationReviewForm extends ParBaseForm {
+
+  use ParFlowAccessTrait;
 
   /**
    * {@inheritdoc}
@@ -38,8 +37,9 @@ class ParConfirmationReviewForm extends ParBaseForm {
       '#value' => $par_data_partnership->id(),
     ];
 
-    // Organisation summary.
-    $par_data_organisation = current($par_data_partnership->getOrganisation());
+    // Set the data values on the entities
+    $entities = $this->createEntities();
+    extract($entities);
 
     // Display details about the organisation for information.
     $form['about_organisation'] = $this->renderSection('About the organisation', $par_data_organisation, ['comments' => 'about']);
@@ -81,12 +81,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
     }
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
-
+  public function createEntities() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $par_data_partnership->getOrganisation(TRUE);
     if (empty($par_data_organisation)) {
@@ -94,7 +89,8 @@ class ParConfirmationReviewForm extends ParBaseForm {
     }
 
     // Set the data for the about form.
-    $par_data_organisation->set('comments', $this->getFlowDataHandler()->getTempDataValue('about_business', 'par_partnership_confirmation_about_business'));
+    $about_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_about_business');
+    $par_data_organisation->set('comments', $this->getFlowDataHandler()->getTempDataValue('about_business', $about_cid));
 
     // Set the data for the address form.
     $par_data_premises = $par_data_organisation->getPremises(TRUE);
@@ -102,16 +98,17 @@ class ParConfirmationReviewForm extends ParBaseForm {
       $par_data_premises = ParDataPremises::create();
     }
 
+    $address_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_address');
     $address = [
-      'country_code' => $this->getFlowDataHandler()->getTempDataValue('country_code', 'par_partnership_confirmation_address'),
-      'address_line1' => $this->getFlowDataHandler()->getTempDataValue('address_line1', 'par_partnership_confirmation_address'),
-      'address_line2' => $this->getFlowDataHandler()->getTempDataValue('address_line2', 'par_partnership_confirmation_address'),
-      'locality' => $this->getFlowDataHandler()->getTempDataValue('town_city', 'par_partnership_confirmation_address'),
-      'administrative_area' => $this->getFlowDataHandler()->getTempDataValue('county', 'par_partnership_confirmation_address'),
-      'postal_code' => $this->getFlowDataHandler()->getTempDataValue('postcode', 'par_partnership_confirmation_address'),
+      'country_code' => $this->getFlowDataHandler()->getTempDataValue('country_code', $address_cid),
+      'address_line1' => $this->getFlowDataHandler()->getTempDataValue('address_line1', $address_cid),
+      'address_line2' => $this->getFlowDataHandler()->getTempDataValue('address_line2', $address_cid),
+      'locality' => $this->getFlowDataHandler()->getTempDataValue('town_city', $address_cid),
+      'administrative_area' => $this->getFlowDataHandler()->getTempDataValue('county', $address_cid),
+      'postal_code' => $this->getFlowDataHandler()->getTempDataValue('postcode', $address_cid),
     ];
     $par_data_premises->set('address', $address);
-    $par_data_premises->set('nation', $this->getFlowDataHandler()->getTempDataValue('country', 'par_partnership_confirmation_address'));
+    $par_data_premises->set('nation', $this->getFlowDataHandler()->getTempDataValue('country', $address_cid));
 
     // Set the data for the contact form.
     $par_data_person = $par_data_partnership->getOrganisationPeople(TRUE);
@@ -119,34 +116,56 @@ class ParConfirmationReviewForm extends ParBaseForm {
       $par_data_person = ParDataPremises::create();
     }
 
-    $par_data_person->set('salutation', $this->getFlowDataHandler()->getTempDataValue('salutation', 'par_partnership_confirmation_contact'));
-    $par_data_person->set('first_name', $this->getFlowDataHandler()->getTempDataValue('first_name', 'par_partnership_confirmation_contact'));
-    $par_data_person->set('last_name', $this->getFlowDataHandler()->getTempDataValue('last_name', 'par_partnership_confirmation_contact'));
-    $par_data_person->set('work_phone', $this->getFlowDataHandler()->getTempDataValue('work_phone', 'par_partnership_confirmation_contact'));
-    $par_data_person->set('mobile_phone', $this->getFlowDataHandler()->getTempDataValue('mobile_phone', 'par_partnership_confirmation_contact'));
-    $par_data_person->set('email', $this->getFlowDataHandler()->getTempDataValue('email', 'par_partnership_confirmation_contact'));
-    $par_data_person->set('communication_notes', $this->getFlowDataHandler()->getTempDataValue('notes', 'par_partnership_confirmation_contact'));
-    $email_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', 'par_partnership_confirmation_contact')['communication_email'])
-      && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact', 'par_partnership_confirmation_contact')['communication_email']);
+    $contact_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_contact');
+    $par_data_person->set('salutation', $this->getFlowDataHandler()->getTempDataValue('salutation', $contact_cid));
+    $par_data_person->set('first_name', $this->getFlowDataHandler()->getTempDataValue('first_name', $contact_cid));
+    $par_data_person->set('last_name', $this->getFlowDataHandler()->getTempDataValue('last_name', $contact_cid));
+    $par_data_person->set('work_phone', $this->getFlowDataHandler()->getTempDataValue('work_phone', $contact_cid));
+    $par_data_person->set('mobile_phone', $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $contact_cid));
+    $par_data_person->set('email', $this->getFlowDataHandler()->getTempDataValue('email', $contact_cid));
+    $par_data_person->set('communication_notes', $this->getFlowDataHandler()->getTempDataValue('notes', $contact_cid));
+    $email_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_cid)['communication_email'])
+      && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_cid)['communication_email']);
     $par_data_person->set('communication_email', $email_preference_value);
-    $work_phone_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', 'par_partnership_confirmation_contact')['communication_phone'])
-      && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact', 'par_partnership_confirmation_contact')['communication_phone']);
+    $work_phone_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_cid)['communication_phone'])
+      && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_cid)['communication_phone']);
     $par_data_person->set('communication_phone', $work_phone_preference_value);
-    $mobile_phone_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', 'par_partnership_confirmation_contact')['communication_mobile'])
-      && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact', 'par_partnership_confirmation_contact')['communication_mobile']);
+    $mobile_phone_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_cid)['communication_mobile'])
+      && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_cid)['communication_mobile']);
     $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
 
     // Save the data for the SIC code form.
-    $par_data_organisation->get('field_sic_code')->set(0, $this->getFlowDataHandler()->getTempDataValue('sic_code', 'par_partnership_confirmation_sic_code'));
+    $sic_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_sic_code');
+    $par_data_organisation->get('field_sic_code')->set(0, $this->getFlowDataHandler()->getTempDataValue('sic_code', $sic_cid));
 
     // Save the data for the business size form.
-    $par_data_organisation->set('employees_band', $this->getFlowDataHandler()->getTempDataValue('employees_band', 'par_partnership_confirmation_business_size'));
+    $business_size_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_business_size');
+    $par_data_organisation->set('employees_band', $this->getFlowDataHandler()->getTempDataValue('employees_band', $business_size_cid));
 
     // Save the data for the trading name form.
-    $par_data_organisation->set('trading_name', $this->getFlowDataHandler()->getTempDataValue('trading_name', 'par_partnership_confirmation_trading_name'));
+    $trading_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_trading_name');
+    $par_data_organisation->set('trading_name', $this->getFlowDataHandler()->getTempDataValue('trading_name', $trading_cid));
+
+    return [
+      'par_data_partnership' => $par_data_partnership,
+      'par_data_organisation' => $par_data_organisation,
+      'par_data_people' => $par_data_person,
+      'par_data_premises' => $par_data_premises,
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    parent::submitForm($form, $form_state);
+
+    // Set the data values on the entities
+    $entities = $this->createEntities();
+    extract($entities);
 
     // Add all references if not already set.
-    if ($par_data_person->save() && !$par_data_partnership->getOrganisation(TRUE)) {
+    if ($par_data_person->save() && !$par_data_partnership->getOrganisationPeople(TRUE)) {
       $par_data_partnership->get('field_organisation_person')->set(0, $par_data_person);
       $par_data_organisation->get('field_person')->appendItem($par_data_person);
     }

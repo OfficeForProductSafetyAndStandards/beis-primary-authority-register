@@ -3,20 +3,16 @@
 namespace Drupal\par_partnership_confirmation_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_partnership_confirmation_flows\ParPartnershipFlowsTrait;
-use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\user\Entity\User;
+use Drupal\par_partnership_confirmation_flows\ParFlowAccessTrait;
 
 /**
  * The primary contact form for the partnership details steps of the
  * 1st Data Validation/Transition User Journey.
  */
 class ParContactForm extends ParBaseForm {
+
+  use ParFlowAccessTrait;
 
   /**
    * Set the page title.
