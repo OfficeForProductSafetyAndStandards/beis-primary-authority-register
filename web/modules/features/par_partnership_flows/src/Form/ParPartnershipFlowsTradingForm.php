@@ -25,7 +25,7 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    $trading_name_delta = $this->getRouteParam('trading_name_delta');
+    $trading_name_delta = $this->getflowDataHandler()->getParameter('trading_name_delta');
 
     // Check from the route if we are editing an existing trading name.
     $action = isset($trading_name_delta) ? 'Edit' : 'Add a';
@@ -56,19 +56,12 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
       ],
     ];
 
-    if ($par_data_partnership) {
-      // If we're editing an entity we should set the state
-      // to something other than default to avoid conflicts
-      // with existing versions of the same form.
-      $this->setState("edit:{$par_data_partnership->id()}");
-    }
-
     if (!is_null($trading_name_delta)) {
       // Store the current value of the sic_code if it's being edited.
       $trading_name = $par_data_organisation ? $par_data_organisation->get('trading_name')->getValue()[$trading_name_delta] : NULL;
 
       if ($trading_name) {
-        $this->loadDataValue("trading_name", $trading_name);
+        $this->getFlowDataHandler()->setFormPermValue("trading_name", $trading_name);
       }
     }
   }
@@ -87,7 +80,7 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
 
     $form['trading_name_fieldset']['trading_name'] = [
       '#type' => 'textfield',
-      '#default_value' => $this->getDefaultValues("trading_name"),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("trading_name"),
       '#description' => $this->t("<p>Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State any trading names used by the organisation.</p>"),
     ];
 
@@ -104,28 +97,28 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Save the value for the trading name field.
-    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $trading_name_delta = $this->getRouteParam('trading_name_delta');
+    $trading_name_delta = $this->getflowDataHandler()->getParameter('trading_name_delta');
 
     $items = $par_data_organisation->get('trading_name')->getValue();
 
     if (!isset($trading_name_delta)) {
-      $items[] = $this->getTempDataValue('trading_name');
+      $items[] = $this->getFlowDataHandler()->getTempDataValue('trading_name');
     }
     else {
-      $items[$trading_name_delta] = $this->getTempDataValue('trading_name');
+      $items[$trading_name_delta] = $this->getFlowDataHandler()->getTempDataValue('trading_name');
     }
 
     $par_data_organisation->set('trading_name', $items);
 
     if ($par_data_organisation->save()) {
-      $this->deleteStore();
+      $this->getFlowDataHandler()->deleteStore();
     }
     else {
       $message = $this->t('This %field could not be saved for %form_id');
       $replacements = [
-        '%field' => $this->getTempDataValue('trading_name'),
+        '%field' => $this->getFlowDataHandler()->getTempDataValue('trading_name'),
         '%form_id' => $this->getFormId(),
       ];
       $this->getLogger($this->getLoggerChannel())->error($message, $replacements);

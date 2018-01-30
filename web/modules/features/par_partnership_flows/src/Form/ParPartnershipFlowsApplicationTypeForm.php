@@ -54,7 +54,7 @@ class ParPartnershipFlowsApplicationTypeForm extends ParBaseForm {
       '#title' => 'Choose a type of partnership',
       '#type' => 'radios',
       '#options' => $partnership_bundle->getAllowedValues('partnership_type'),
-      '#default_value' => $this->getDefaultValues('application_type'),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('application_type'),
     ];
 
     return parent::buildForm($form, $form_state);
