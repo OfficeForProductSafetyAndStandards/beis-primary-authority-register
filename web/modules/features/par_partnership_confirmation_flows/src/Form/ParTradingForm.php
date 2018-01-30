@@ -28,12 +28,12 @@ class ParTradingForm extends ParBaseForm {
    * Load the data for this form.
    */
   public function loadData() {
-    $partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $partnership ? $partnership->getOrganisation(TRUE) : NULL;
 
     // For the apply journey we will always edit the first value.
-    $this->getflowDataHandler()->setParameter('par_data_organisation', $par_data_organisation);
-    $this->getflowDataHandler()->setParameter('trading_name_delta', 0);
+    $this->getFlowDataHandler()->setParameter('par_data_organisation', $par_data_organisation);
+    $this->getFlowDataHandler()->setParameter('trading_name_delta', 0);
 
     parent::loadData();
   }
@@ -45,9 +45,9 @@ class ParTradingForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Save the value for the trading name field.
-    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $trading_name_delta = $this->getflowDataHandler()->getParameter('trading_name_delta');
+    $trading_name_delta = $this->getFlowDataHandler()->getParameter('trading_name_delta');
 
     $items = $par_data_organisation->get('trading_name')->getValue();
 

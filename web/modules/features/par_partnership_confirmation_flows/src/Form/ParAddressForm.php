@@ -30,12 +30,12 @@ class ParAddressForm extends ParBaseForm {
    * Load the data for this form.
    */
   public function loadData() {
-    $partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $organisation = $partnership ? $partnership->getOrganisation(TRUE) : NULL;
     $par_data_premises = $organisation ? $organisation->getPremises(TRUE) : NULL;
 
     // Override the route parameter so that data loaded will be from this entity.
-    $this->getflowDataHandler()->setParameter('par_data_premises', $par_data_premises);
+    $this->getFlowDataHandler()->setParameter('par_data_premises', $par_data_premises);
 
     parent::loadData();
   }
@@ -54,7 +54,7 @@ class ParAddressForm extends ParBaseForm {
     }
 
     // Create or update an existing PAR Premises record.
-    $premises_param = $this->getflowDataHandler()->getParameter('par_data_premises');
+    $premises_param = $this->getFlowDataHandler()->getParameter('par_data_premises');
     $par_data_premises = $premises_param ? $premises_param : ParDataPremises::create([
       'type' => 'premises',
       'uid' => $this->getCurrentUser()->id(),
@@ -73,7 +73,7 @@ class ParAddressForm extends ParBaseForm {
       $par_data_premises->set('address', $address);
       $par_data_premises->set('nation', $this->getFlowDataHandler()->getTempDataValue('country'));
 
-      $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+      $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
       $par_data_organisation = $par_data_partnership ? $par_data_partnership->getOrganisation(TRUE) : NULL;
 
       // Check we are updating an existing partnership/organisation.

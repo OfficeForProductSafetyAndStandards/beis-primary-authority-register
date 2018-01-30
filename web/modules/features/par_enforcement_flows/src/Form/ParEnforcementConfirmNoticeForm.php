@@ -175,7 +175,7 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $par_data_enforcement_notice = $this->getflowDataHandler()->getParameter('par_data_enforcement_notice');
+    $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
 
     if ($this->referral_cloning($par_data_enforcement_notice)) {
       $this->getFlowDataHandler()->deleteStore();

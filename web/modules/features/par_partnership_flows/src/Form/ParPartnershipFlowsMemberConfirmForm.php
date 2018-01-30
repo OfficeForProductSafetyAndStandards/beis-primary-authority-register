@@ -230,7 +230,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
     $attentions = $this->getFlowDataHandler()->getTempDataValue(["members"]);
 
     // Get the *full* partnership entity from the URL.
-    $route_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $route_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_member_upload');
     $members = $this->getFlowDataHandler()->getTempDataValue("coordinated_members", $cid);

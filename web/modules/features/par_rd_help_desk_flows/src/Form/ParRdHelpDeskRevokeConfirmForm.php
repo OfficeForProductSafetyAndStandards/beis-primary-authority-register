@@ -113,7 +113,7 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     // We only want to update the status of active partnerships.
     if (!$par_data_partnership->isRevoked()) {

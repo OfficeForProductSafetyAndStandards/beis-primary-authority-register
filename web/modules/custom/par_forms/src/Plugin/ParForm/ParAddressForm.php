@@ -34,7 +34,7 @@ class ParAddressForm extends ParFormPluginBase {
    * Load the data for this form.
    */
   public function loadData() {
-    if ($par_data_premises = $this->getflowDataHandler()->getParameter('par_data_premises')) {
+    if ($par_data_premises = $this->getFlowDataHandler()->getParameter('par_data_premises')) {
       $address = $par_data_premises->get('address')->first();
 
       // Setting the address details..

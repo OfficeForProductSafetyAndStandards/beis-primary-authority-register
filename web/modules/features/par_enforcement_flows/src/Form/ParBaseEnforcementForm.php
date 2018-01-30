@@ -202,7 +202,7 @@ abstract class ParBaseEnforcementForm extends ParBaseForm {
    *  flow defaults.
    */
   public function RaiseEnforcementTitleCallback() {
-    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     if ($par_data_partnership) {
       $enforced_entity_name = $this->getEnforcedEntityName();

@@ -13,6 +13,7 @@ use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParBaseInterface;
 use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
+use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Utility\NestedArray;
@@ -86,13 +87,15 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     $this->setCurrentUser();
 
-    // If no flow entity exists throw a build error.
-    if (!$this->getFlowNegotiator()->getFlow()) {
-      $this->getLogger($this->getLoggerChannel())->critical('There is no flow %flow for this form.', ['%flow' => $this->getFlowNegotiator()->getFlowName()]);
-    }
+    // @TODO Move this to middleware to stop it being loaded when this controller
+    // is contructed outside a request for a route this controller resolves.
+    try {
+      $this->getFlowNegotiator()->getFlow();
 
-    // Load the data associated with this form (if applicable).
-    $this->loadData();
+      $this->loadData();
+    } catch (ParFlowException $e) {
+
+    }
   }
 
   /**
@@ -164,6 +167,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+
+
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $weight => $component) {
       $form = $component->getElements($form);
@@ -246,13 +251,71 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $weight => $component) {
-      $violations = $component->validate($form_state);
-      if ($violations) {
-        foreach ($violations as $form_item => $violation) {
-          $this->setFieldViolations($form_item, $form_state, $violation);
+      $component_violations = $component->validate($form_state);
+      if ($component_violations) {
+        foreach ($component_violations as $field_name => $violation) {
+          $this->setFieldViolations($field_name, $form_state, $violation);
         }
       }
     }
+
+    // @TODO Remove this method once/if all forms use components.
+    if (!empty($this->getFormItems())) {
+      $form_violations = $this->validateElements($form_state);
+      if ($form_violations) {
+        foreach ($form_violations as $field_name => $violation) {
+          $this->setFieldViolations($field_name, $form_state, $violation);
+        }
+      }
+    }
+  }
+
+  public function validateElements($form_state) {
+    $violations = [];
+
+    // Assign all the form values to the relevant entity field values.
+    foreach ($this->getformItems() as $entity_name => $form_items) {
+      list($type, $bundle) = explode(':', $entity_name . ':');
+
+      $entity_class = $this->getParDataManager()->getParEntityType($type)->getClass();
+      $entity = $entity_class::create([
+        'type' => $this->getParDataManager()->getParBundleEntity($type, $bundle)->id(),
+      ]);
+
+      foreach ($form_items as $field_name => $form_item) {
+        $field_definition = $this->getParDataManager()->getFieldDefinition($entity->getEntityTypeId(), $entity->bundle(), $field_name);
+
+        if (is_array($form_item)) {
+          $field_value = [];
+          foreach ($form_item as $field_property => $form_property_item) {
+            // For entity reference fields we need to transform the ids to integers.
+            if ($field_definition->getType() === 'entity_reference' && $field_property === 'target_id') {
+              $field_value[$field_property] = (int) $form_state->getValue($form_property_item);
+            }
+            else {
+              $field_value[$field_property] = $form_state->getValue($form_property_item);
+            }
+          }
+        }
+        else {
+          $field_value = $form_state->getValue($form_item);
+        }
+
+        $entity->set($field_name, $field_value);
+
+        try {
+          $violations[$field_name] = $entity->validate()->filterByFieldAccess()
+            ->getByFields([
+              $field_name,
+            ]);
+        }
+        catch(\Exception $e) {
+          $this->getLogger($this->getLoggerChannel())->critical('An error occurred validating form %entity_id: @detail.', ['%entity_id' => $entity->getEntityTypeId(), '@details' => $e->getMessage()]);
+        }
+      }
+    }
+
+    return $violations;
   }
 
   /**
@@ -279,12 +342,12 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
         $field_label = end($name);
         if (!empty($replacements)) {
-          $arguments = is_string($replacements) ? ['@field' => $replacements] : $replacements;
+          $arguments = is_string($replacements) ? ['@name' => $replacements, '@field' => $replacements] : $replacements;
         }
         else {
-          $arguments = ['@field' => $field_label];
+          $arguments = ['@name' => $field_label, '@field' => $field_label];
         }
-        $message = $this->t($violation->getMessage()->getUntranslatedString(), ['@field' => $field_label]);
+        $message = $this->t($violation->getMessage()->getUntranslatedString(), $arguments);
 
         $url = Url::fromUri('internal:#', $options);
         $link = Link::fromTextAndUrl($message, $url)->toString();
@@ -334,7 +397,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $this->cleanseFormDefaults($form_state->getValues());
-    $this->getflowDataHandler()->setFormTempData($values);
+    $this->getFlowDataHandler()->setFormTempData($values);
 
     $submit_action = $form_state->getTriggeringElement()['#name'];
     $next = $this->getFlowNegotiator()->getFlow()->getNextRoute($submit_action);

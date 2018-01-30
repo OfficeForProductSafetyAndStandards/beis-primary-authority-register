@@ -27,8 +27,8 @@ class ParSicCodeForm extends ParFormPluginBase {
    * Load the data for this form.
    */
   public function loadData() {
-    $par_data_organisation = $this->getflowDataHandler()->getParameter('par_data_organisation');
-    $sic_code_delta = $this->getflowDataHandler()->getParameter('sic_code_delta');
+    $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
+    $sic_code_delta = $this->getFlowDataHandler()->getParameter('sic_code_delta');
     if ($par_data_organisation) {
       // Store the current value of the trading name if it's being edited.
       $sic_code = $par_data_organisation ? $par_data_organisation->get('field_sic_code')->get($sic_code_delta) : NULL;

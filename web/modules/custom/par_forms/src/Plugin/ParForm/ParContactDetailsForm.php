@@ -32,7 +32,7 @@ class ParContactDetailsForm extends ParFormPluginBase {
    * Load the data for this form.
    */
   public function loadData() {
-    if ($par_data_person = $this->getflowDataHandler()->getParameter('par_data_person')) {
+    if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
       $this->getFlowDataHandler()->setFormPermValue("salutation", $par_data_person->get('salutation')->getString());
       $this->getFlowDataHandler()->setFormPermValue("first_name", $par_data_person->get('first_name')->getString());
       $this->getFlowDataHandler()->setFormPermValue("last_name", $par_data_person->get('last_name')->getString());

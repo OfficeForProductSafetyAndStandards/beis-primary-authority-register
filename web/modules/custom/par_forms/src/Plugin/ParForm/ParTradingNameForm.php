@@ -27,8 +27,8 @@ class ParTradingNameForm extends ParFormPluginBase {
    * Load the data for this form.
    */
   public function loadData() {
-    $par_data_organisation = $this->getflowDataHandler()->getParameter('par_data_organisation');
-    $trading_name_delta = $this->getflowDataHandler()->getParameter('trading_name_delta');
+    $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
+    $trading_name_delta = $this->getFlowDataHandler()->getParameter('trading_name_delta');
     if ($par_data_organisation) {
       // Store the current value of the trading name if it's being edited.
       $trading_name = $par_data_organisation ? $par_data_organisation->get('trading_name')->get($trading_name_delta) : NULL;

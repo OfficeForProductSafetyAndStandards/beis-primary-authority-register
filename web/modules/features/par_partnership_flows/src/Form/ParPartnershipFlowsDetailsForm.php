@@ -25,7 +25,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     if ($par_data_partnership) {
       $par_data_organisation = current($par_data_partnership->getOrganisation());
       $this->pageTitle = $par_data_organisation->get('organisation_name')->getString();
@@ -194,7 +194,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     // Make sure the confirm box is ticked.
     $checkbox = $this->getInformationCheckbox();
@@ -209,7 +209,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     $checkbox = $this->getInformationCheckbox();
     if ($par_data_partnership && !$par_data_partnership->getBoolean($checkbox)) {

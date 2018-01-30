@@ -38,7 +38,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    $legal_entity = $this->getflowDataHandler()->getParameter('par_data_legal_entity');
+    $legal_entity = $this->getFlowDataHandler()->getParameter('par_data_legal_entity');
 
     $form_context = $legal_entity ? 'Change the legal entity for your organisation' : 'Add a legal entity for your organisation';
 
@@ -127,7 +127,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Save the value for the about_partnership field.
-    $legal_entity = $this->getflowDataHandler()->getParameter('par_data_legal_entity');
+    $legal_entity = $this->getFlowDataHandler()->getParameter('par_data_legal_entity');
 
     // Legal entities that accept registered numbers.
     $registered_number_types = [
@@ -175,7 +175,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       $legal_entity->save();
 
       // Now add the legal entity to the partnership.
-      $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+      $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
       $par_data_partnership->addLegalEntity($legal_entity);
 
       // Add the new legal entity to the organisation.

@@ -47,7 +47,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
    * Get partnership.
    */
   public function getPartnershipParam() {
-    return $this->getflowDataHandler()->getParameter('par_data_partnership');
+    return $this->getFlowDataHandler()->getParameter('par_data_partnership');
   }
 
   /**
@@ -61,7 +61,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       return !empty($premises) ? current($premises) : NULL;
     }
     else {
-      return $this->getflowDataHandler()->getParameter('par_data_premises');
+      return $this->getFlowDataHandler()->getParameter('par_data_premises');
     }
   }
 
@@ -115,8 +115,8 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       $this->getFlowDataHandler()->setFormPermValue("address_line2", $address->get('address_line2')->getString());
       $this->getFlowDataHandler()->setFormPermValue("town_city", $address->get('locality')->getString());
       $this->getFlowDataHandler()->setFormPermValue("county", $address->get('administrative_area')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("country", $par_data_premises->get('nation')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("country_code", $par_data_premises->get('country_code')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("country_code", $address->get('country_code')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("nation", $par_data_premises->get('nation')->getString());
       $this->getFlowDataHandler()->setFormPermValue("uprn", $par_data_premises->get('uprn')->getString());
       $this->getFlowDataHandler()->setFormPermValue('premises_id', $par_data_premises->id());
     }
@@ -173,7 +173,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       '#type' => 'select',
       '#title' => $this->t('Select your Nation'),
       '#options' => $premises_bundle->getAllowedValues('nation'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("country"),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("nation"),
       '#states' => [
         'visible' => [
           'select[name="country_code"]' => [

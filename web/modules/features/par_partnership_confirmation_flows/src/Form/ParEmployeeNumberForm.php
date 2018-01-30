@@ -29,11 +29,11 @@ class ParEmployeeNumberForm extends ParBaseForm {
    * Load the data for this form.
    */
   public function loadData() {
-    $partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $partnership ? $partnership->getOrganisation(TRUE) : NULL;
 
     // For the apply journey we will always edit the first value.
-    $this->getflowDataHandler()->setParameter('par_data_organisation', $par_data_organisation);
+    $this->getFlowDataHandler()->setParameter('par_data_organisation', $par_data_organisation);
 
     parent::loadData();
   }
@@ -45,7 +45,7 @@ class ParEmployeeNumberForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Save the value for the about_partnership field.
-    $partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = current($partnership->getOrganisation());
     $par_data_organisation->set('employees_band', $this->getFlowDataHandler()->getTempDataValue('employees_band'));
     if ($par_data_organisation->save()) {

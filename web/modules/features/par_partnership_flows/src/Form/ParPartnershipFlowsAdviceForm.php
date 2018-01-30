@@ -157,7 +157,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Get the advice entity from the URL.
-    $par_data_advice = $this->getflowDataHandler()->getParameter('par_data_advice');
+    $par_data_advice = $this->getFlowDataHandler()->getParameter('par_data_advice');
 
     // Get files from "par_partnership_advice_upload" step.
     $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_advice_upload');
@@ -233,7 +233,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       $par_data_advice->save();
 
       // Get partnership entity from URL.
-      $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+      $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
       // Combine current pieces of advice to prevent overwriting field.
       $partnership_advice = array_merge($par_data_partnership->retrieveEntityIds('field_advice'), [$par_data_advice->id()]);

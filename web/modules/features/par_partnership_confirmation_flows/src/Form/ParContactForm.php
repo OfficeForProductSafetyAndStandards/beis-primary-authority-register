@@ -34,11 +34,11 @@ class ParContactForm extends ParBaseForm {
    * Load the data for this form.
    */
   public function loadData() {
-    $partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_person = $partnership ? $partnership->getOrganisationPeople(TRUE) : NULL;
 
     // Override the route parameter so that data loaded will be from this entity.
-    $this->getflowDataHandler()->setParameter('par_data_person', $par_data_person);
+    $this->getFlowDataHandler()->setParameter('par_data_person', $par_data_person);
 
     parent::loadData();
   }
@@ -50,7 +50,7 @@ class ParContactForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Save contact.
-    $par_data_person = $this->getflowDataHandler()->getParameter('par_data_person');
+    $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
 
     // Save person details.
     if ($par_data_person) {

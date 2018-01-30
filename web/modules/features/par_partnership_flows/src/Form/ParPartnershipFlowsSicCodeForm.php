@@ -83,9 +83,9 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Save the edited value for the organisation's sic code field.
-    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $sic_code_delta = $this->getflowDataHandler()->getParameter('field_sic_code_delta');
+    $sic_code_delta = $this->getFlowDataHandler()->getParameter('field_sic_code_delta');
 
     $items = $par_data_organisation->get('field_sic_code')->getValue();
     if ($par_data_organisation && isset($sic_code_delta)) {

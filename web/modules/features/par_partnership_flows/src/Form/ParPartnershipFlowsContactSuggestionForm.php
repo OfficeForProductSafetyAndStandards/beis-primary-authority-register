@@ -116,7 +116,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Get partnership entity from URL.
-    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_contact_suggestion');
     if ($this->getFlowDataHandler()->getDefaultValues('par_data_person_id', '', $cid) === 'new') {

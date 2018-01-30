@@ -25,7 +25,7 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    $trading_name_delta = $this->getflowDataHandler()->getParameter('trading_name_delta');
+    $trading_name_delta = $this->getFlowDataHandler()->getParameter('trading_name_delta');
 
     // Check from the route if we are editing an existing trading name.
     $action = isset($trading_name_delta) ? 'Edit' : 'Add a';
@@ -97,9 +97,9 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Save the value for the trading name field.
-    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $trading_name_delta = $this->getflowDataHandler()->getParameter('trading_name_delta');
+    $trading_name_delta = $this->getFlowDataHandler()->getParameter('trading_name_delta');
 
     $items = $par_data_organisation->get('trading_name')->getValue();
 

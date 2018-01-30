@@ -57,13 +57,15 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
 
     $this->setCurrentUser();
 
-    // If no flow entity exists throw a build error.
-    if (!$this->getFlowNegotiator()->getFlow()) {
-      $this->getLogger($this->getLoggerChannel())->critical('There is no flow %flow for this form.', ['%flow' => $this->getFlowNegotiator()->getFlowName()]);
-    }
+    // @TODO Move this to middleware to stop it being loaded when this controller
+    // is contructed outside a request for a route this controller resolves.
+    try {
+      $this->getFlowNegotiator()->getFlow();
 
-    // Load the data associated with this form (if applicable).
-    $this->loadData();
+      $this->loadData();
+    } catch (ParFlowException $e) {
+
+    }
   }
 
   /**

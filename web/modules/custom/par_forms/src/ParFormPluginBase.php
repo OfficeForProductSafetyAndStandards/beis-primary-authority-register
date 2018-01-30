@@ -118,7 +118,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
         $entity->set($field_name, $field_value);
 
         try {
-          $violations[$form_item] = $entity->validate()->filterByFieldAccess()
+          $violations[$field_name] = $entity->validate()->filterByFieldAccess()
             ->getByFields([
               $field_name,
             ]);

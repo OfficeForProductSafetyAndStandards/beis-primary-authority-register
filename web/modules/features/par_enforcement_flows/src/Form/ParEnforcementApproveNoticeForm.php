@@ -168,7 +168,7 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    $par_data_enforcement_notice = $this->getflowDataHandler()->getParameter('par_data_enforcement_notice');
+    $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
     foreach ($par_data_enforcement_notice->get('field_enforcement_action')->referencedEntities() as $delta => $action) {
       $form_data = $form_state->getValue(['actions', $delta], 'par_enforcement_notice_approve');
 
