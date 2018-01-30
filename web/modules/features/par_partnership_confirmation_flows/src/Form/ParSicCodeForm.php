@@ -38,37 +38,4 @@ class ParSicCodeForm extends ParBaseForm {
     parent::loadData();
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
-
-    // Save the edited value for the organisation's sic code field.
-    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $sic_code_delta = $this->getFlowDataHandler()->getParameter('field_sic_code_delta');
-
-    $items = $par_data_organisation->get('field_sic_code')->getValue();
-    if ($par_data_organisation && isset($sic_code_delta)) {
-      $items[$sic_code_delta] = $this->getFlowDataHandler()->getTempDataValue('sic_code');
-    }
-    else {
-      $items[] = $this->getFlowDataHandler()->getTempDataValue('sic_code');
-    }
-    $par_data_organisation->set('field_sic_code', $items);
-
-    if ($par_data_organisation->save()) {
-      $this->getFlowDataHandler()->deleteStore();
-    } else {
-      $message = $this->t('This %field could not be saved for %form_id');
-      $replacements = [
-        '%field' => $this->getFlowDataHandler()->getTempDataValue('trading_name'),
-        '%form_id' => $this->getFormId(),
-      ];
-      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-    }
-
-  }
-
 }
