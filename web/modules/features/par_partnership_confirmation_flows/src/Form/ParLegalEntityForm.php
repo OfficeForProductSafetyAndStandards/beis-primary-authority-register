@@ -23,7 +23,7 @@ class ParLegalEntityForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'par_partnership_confirmation_legal_entity';
+    return 'par_partnership_confirmation_add_legal_entity';
   }
 
   /**
@@ -47,6 +47,10 @@ class ParLegalEntityForm extends ParBaseForm {
 
     // For the apply journey we will always edit the first value.
     $this->getFlowDataHandler()->setParameter('par_data_legal_entity', $par_data_legal_entity);
+
+    $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_trading_name');
+    $this->getFlowDataHandler()->setParameter('select_legal_entity_cid', $cid);
+
 
     parent::loadData();
   }

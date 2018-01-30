@@ -37,28 +37,4 @@ class ParAboutBusinessForm extends ParBaseForm {
     parent::loadData();
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
-
-    // Save the value for the about_partnership field.
-    $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $par_data_organisation = current($partnership->getOrganisation());
-    $par_data_organisation->set('comments', $this->getFlowDataHandler()->getTempDataValue('about_business'));
-    if ($par_data_organisation->save()) {
-      $this->getFlowDataHandler()->deleteStore();
-    }
-    else {
-      $message = $this->t('The %field field could not be saved for %form_id');
-      $replacements = [
-        '%field' => 'comments',
-        '%form_id' => $this->getFormId(),
-      ];
-      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-    }
-
-  }
-
 }

@@ -47,6 +47,13 @@ par_flows.par_flow.*:
           sequence:
             type: text
             label: "Component"
+        "form_data":
+          type: sequence
+          label: "Form data keys"
+          nullable: true
+          sequence:
+            type: text
+            label: "Form Id"
         "redirect":
           type: sequence
           label: "Redirects"

@@ -67,10 +67,43 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
   }
 
   /**
+   * A Helper function to get the form data cache id for a given form in the flow.
+   *
+   * @param string $form_data_key
+   *   The form data key that maps to a given form id.
+   * @return null|string
+   */
+  public function getFormCid($form_data_key) {
+    $form_data_keys = $this->getFlowNegotiator()->getFlow()->getCurrentStepFormDataKeys();
+    $form_id = isset($form_data_keys[$form_data_key]) ? $form_data_keys[$form_data_key] : NULL;
+
+    return $form_id ? $this->getFlowNegotiator()->getFormKey($form_id) : NULL;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getMapping() {
     return $this->formItems;
+  }
+
+  public function createMappingEntities() {
+    $entities = [];
+
+    foreach ($this->getMapping() as $entity_name => $form_items) {
+      list($type, $bundle) = explode(':', $entity_name . ':');
+
+      $entity_class = $this->getParDataManager()->getParEntityType($type)->getClass();
+      // If the entity already exists as a data parameter use that.
+      if ($entity = $this->getFlowDataHandler()->getParameter($type)) {
+        $entities[$type] = $entity;
+      }
+      else {
+        $entities[$type] = $entity_class::create([
+          'type' => $this->getParDataManager()->getParBundleEntity($type, $bundle)->id(),
+        ]);
+      }
+    }
   }
 
   /**
@@ -78,6 +111,11 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
    */
   public function loadData() {
     // @TODO Add automatic loading of data based on the mapping (self::getMapping)
+    // between self::getElements() and self::getFlowDataHandler()->getParameters()
+  }
+
+  public function setData(&$params = []) {
+    // @TODO Add automatic setting of data based on the mapping (self::getMapping)
     // between self::getElements() and self::getFlowDataHandler()->getParameters()
   }
 

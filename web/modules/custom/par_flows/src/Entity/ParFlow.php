@@ -294,6 +294,13 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  public function getCurrentStepFormDataKeys() {
+    return $this->getStepFormDataKeys($this->getCurrentStep());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getCurrentStepOperations() {
     return $this->getStepOperations($this->getCurrentStep());
   }
@@ -304,6 +311,14 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   public function getStepComponents($index) {
     $step = $this->getStep($index);
     return isset($step['components']) ? $step['components'] : [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStepFormDataKeys($index) {
+    $step = $this->getStep($index);
+    return isset($step['form_data']) ? $step['form_data'] : [];
   }
 
   /**
