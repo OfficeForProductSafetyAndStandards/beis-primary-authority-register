@@ -18,7 +18,7 @@ CURRENT_DIR=${PWD##*/}
 
 if [ $CURRENT_DIR != "cf" ]; then
     echo "################################################################################################"
-    echo >&2 "Please run this script from the /cf directory of the repository"
+    echo >&2 "Please run this script from the /devops/cf directory of the repository"
     echo "################################################################################################"
     exit 1
 fi
