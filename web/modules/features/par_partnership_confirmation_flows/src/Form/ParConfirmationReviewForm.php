@@ -165,9 +165,9 @@ class ParConfirmationReviewForm extends ParBaseForm {
     extract($entities);
 
     // Add all references if not already set.
-    if ($par_data_person->save() && !$par_data_partnership->getOrganisationPeople(TRUE)) {
-      $par_data_partnership->get('field_organisation_person')->set(0, $par_data_person);
-      $par_data_organisation->get('field_person')->appendItem($par_data_person);
+    if ($par_data_people->save() && !$par_data_partnership->getOrganisationPeople(TRUE)) {
+      $par_data_partnership->get('field_organisation_person')->set(0, $par_data_people);
+      $par_data_organisation->get('field_person')->appendItem($par_data_people);
     }
     if ($par_data_premises->save() && !$par_data_organisation->getPremises(TRUE)) {
       $par_data_organisation->get('field_premises')->set(0, $par_data_premises);
