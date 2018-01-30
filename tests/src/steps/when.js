@@ -21,6 +21,8 @@ import setPromptText from '../support/action/setPromptText';
 import tota11y from '../support/action/tota11y';
 import submitForm from '../support/action/submitForm';
 import uploadTheFile from '../support/action/uploadTheFile.js';
+import extractInvitationUrl from '../support/action/extractInvitationUrl.js';
+import completeInvitationEmail from '../support/action/completeInvitationEmail.js';
 import selectAnAuthorityForPartnership from '../support/action/selectAnAuthorityForPartnership';
 
 
@@ -33,6 +35,16 @@ defineSupportCode(({ When }) => {
     When(
         /^I (check|uncheck) the checkbox "([^"]*)?"$/,
         setCheckbox
+    );
+
+    When(
+        /^I extract the invitation url$/,
+        extractInvitationUrl
+    );
+
+    When(
+        /^I complete the invitation process$/,
+        completeInvitationEmail
     );
 
     When(
