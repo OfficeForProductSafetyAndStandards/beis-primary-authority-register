@@ -225,7 +225,7 @@ cf restage $TARGET_ENV
 
 if [[ $1 != "environment-only" ]]; then
 
-    cf ssh par-beta-$ENV-green -c "cd app/tools && python post_deploy.py"
+    cf ssh par-beta-$ENV-green -c "cd app/devops/tools && python post_deploy.py"
     
     ####################################################################################
     # Blue/Green magic - switch domain routes to newly-deployed app
@@ -246,6 +246,6 @@ if [[ $1 != "environment-only" ]]; then
     
     cf scale par-beta-$ENV -i $INSTANCES
 
-    cf ssh par-beta-$ENV -c "cd app/tools && python cron_runner.py"
-    cf ssh par-beta-$ENV -c "cd app/tools && python cache_warmer.py"
+    cf ssh par-beta-$ENV -c "cd app/devops/tools && python cron_runner.py"
+    cf ssh par-beta-$ENV -c "cd app/devops/tools && python cache_warmer.py"
 fi
