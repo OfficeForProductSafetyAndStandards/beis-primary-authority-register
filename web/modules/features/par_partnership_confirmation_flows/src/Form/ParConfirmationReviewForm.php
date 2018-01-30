@@ -139,6 +139,12 @@ class ParConfirmationReviewForm extends ParBaseForm {
     // Save the data for the SIC code form.
     $par_data_organisation->get('field_sic_code')->set(0, $this->getFlowDataHandler()->getTempDataValue('sic_code', 'par_partnership_confirmation_sic_code'));
 
+    // Save the data for the business size form.
+    $par_data_organisation->set('employees_band', $this->getFlowDataHandler()->getTempDataValue('employees_band', 'par_partnership_confirmation_business_size'));
+
+    // Save the data for the trading name form.
+    $par_data_organisation->set('trading_name', $this->getFlowDataHandler()->getTempDataValue('trading_name', 'par_partnership_confirmation_trading_name'));
+
     // Add all references if not already set.
     if ($par_data_person->save() && !$par_data_partnership->getOrganisation(TRUE)) {
       $par_data_partnership->get('field_organisation_person')->set(0, $par_data_person);
