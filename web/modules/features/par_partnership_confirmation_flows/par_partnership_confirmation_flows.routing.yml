@@ -84,6 +84,18 @@ par_partnership_confirmation_flows.confirm_trading_name:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+par_partnership_confirmation_flows.select_legal_entities:
+  path: '/partnership/confirm/{par_data_partnership}/legal-entity/select'
+  defaults:
+    _form: '\Drupal\par_partnership_confirmation_flows\Form\ParSelectLegalEntitiesForm'
+    _title_callback: '\Drupal\par_partnership_confirmation_flows\Form\ParSelectLegalEntitiesForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
 par_partnership_confirmation_flows.confirm_legal_entity:
   path: '/partnership/confirm/{par_data_partnership}/legal-entity/add'
   defaults:
@@ -96,7 +108,6 @@ par_partnership_confirmation_flows.confirm_legal_entity:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-
 par_partnership_confirmation_flows.partnership_confirm_review:
   path: '/partnership/confirm/{par_data_partnership}/review'
   defaults:
