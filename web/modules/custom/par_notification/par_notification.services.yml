@@ -7,3 +7,7 @@ services:
     class: '\Drupal\par_notification\EventSubscriber\PartnershipRevocationSubscriber'
     tags:
       - { name: 'event_subscriber' }
+  par_notification.partnership_approved_subscriber:
+      class: '\Drupal\par_notification\EventSubscriber\PartnershipApprovedSubscriber'
+      tags:
+        - { name: 'event_subscriber' }
