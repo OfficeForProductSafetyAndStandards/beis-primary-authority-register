@@ -166,12 +166,6 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
         $this->getLogger($this->getLoggerChannel())
           ->error($message, $replacements);
       }
-      else {
-        // Dispatch the event for partnership nomination notification.
-        $event = new ParDataEvent($partnership);
-        $dispatcher = \Drupal::service('event_dispatcher');
-        $dispatcher->dispatch(ParDataEvent::APPROVED, $event);
-      }
     }
   }
 
