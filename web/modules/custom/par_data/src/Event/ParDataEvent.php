@@ -46,6 +46,16 @@ class ParDataEvent extends Event implements ParDataEventInterface {
    */
   const APPROVED = 'par_data.entity.par_data_partnership.confirmed_rd';
 
+  /**
+   * The name of the event triggered when an existing par partnership entity
+   * is confirmed by the business.
+   *
+   * @Event
+   *
+   * @var string
+   */
+  const CONFIRMED = 'par_data.entity.par_data_partnership.confirmed_rd';
+
   protected $data;
 
   public function __construct(ParDataEntityInterface $data) {
