@@ -108,7 +108,6 @@ class ParDataStorage extends TranceStorage {
       }
     }
 
-
     if ($entity->getEntityTypeId() === 'par_data_partnership') {
 
       // Only act on partnerships that have just been nominated (approved by RD).
