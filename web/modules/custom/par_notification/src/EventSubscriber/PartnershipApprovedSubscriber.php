@@ -33,7 +33,7 @@ class PartnershipApprovedSubscriber implements EventSubscriberInterface {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    // Nomination event should fire after a partnership has been revoked.
+    // Nomination event should fire after a partnership has been nominated.
     $events[ParDataEvent::APPROVED][] = ['onPartnershipNomination', -101];
 
     return $events;
@@ -78,8 +78,6 @@ class PartnershipApprovedSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    // Only act on partnerships that have just been nominated (approved by RD).
-    if ($partnership->getRawStatus() === 'confirmed_rd' && $partnership->original->getRawStatus !== 'confirmed_rd') {
       // Load the message template.
       $template_storage = $this->getEntityTypeManager()->getStorage('message_template');
       $message_template = $template_storage->load(self::MESSAGE_ID);
@@ -139,6 +137,4 @@ class PartnershipApprovedSubscriber implements EventSubscriberInterface {
         }
       }
     }
-  }
-
 }
