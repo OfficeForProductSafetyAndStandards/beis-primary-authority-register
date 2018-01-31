@@ -52,10 +52,6 @@ Feature: New Direct Partnership For HD user To Revoke
         And I click on the button "#edit-next"
         And I run tota11y against the current page
 
-        # CONFIRM NEW PARTNERSHIP
-
-        And I click new partnership if presented with choices
-
         # ADD BUSINESS DETAIL
         And I run tota11y against the current page
         And I add "Leidseplein 10" to the inputfield "#edit-address-line1"

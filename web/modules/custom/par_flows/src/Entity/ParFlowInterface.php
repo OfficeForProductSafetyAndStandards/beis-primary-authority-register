@@ -34,6 +34,14 @@ interface ParFlowInterface {
   public function getSaveMethod();
 
   /**
+   * Get all the states parameters.
+   *
+   * @return array
+   *   An array of route parameters that can vary the flow data.
+   */
+  public function getStates();
+
+  /**
    * Get all steps in this flow.
    *
    * @return mixed
