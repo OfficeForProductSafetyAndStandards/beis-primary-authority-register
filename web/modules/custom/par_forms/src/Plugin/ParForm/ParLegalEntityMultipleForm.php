@@ -2,14 +2,15 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
- * About multiple legal entities form.
+ * Add multiple legal entities form.
  *
  * @ParForm(
  *   id = "legal_entity_add_multiple",
- *   title = @Translation("Legal entity form.")
+ *   title = @Translation("Legal entity add form.")
  * )
  */
 class ParLegalEntityMultipleForm extends ParFormPluginBase {
@@ -18,7 +19,7 @@ class ParLegalEntityMultipleForm extends ParFormPluginBase {
     if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {
       $partnership_legal_entities = $par_data_partnership->getLegalEntity();
 
-      kint($partnership_legal_entities);
+//      kint($partnership_legal_entities);
 
       if (!empty($partnership_legal_entities)) {
         foreach ($partnership_legal_entities as $legal_entity) {
@@ -93,6 +94,32 @@ class ParLegalEntityMultipleForm extends ParFormPluginBase {
     $fields_to_display = $this->getFlowDataHandler()
       ->getDefaultValues('fields_to_display', 1);
 
+    // Get selected legal entities from previous step in flow.
+    $select_form_cid = $this->getFlowNegotiator()
+      ->getFormKey('par_partnership_confirmation_select_legal_entities');
+
+    $selected_legal_entities = array_filter($this->getFlowDataHandler()
+      ->getTempDataValue('field_legal_entity', $select_form_cid));
+
+    // Display list of selected legal entities for this partnership.
+    if (!empty($selected_legal_entities)) {
+      $form['existing_legal_entities'] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => 'form-group'],
+        '#title' => $this->t('Existing legal entities on the primary authority register'),
+        '#description' => $this->t('<p>Below is a list of your organisation’s legal entities currently on the primary authority register</p>'),
+      ];
+
+      foreach (array_keys($selected_legal_entities) as $entity_id) {
+        $entity = ParDataLegalEntity::load($entity_id);
+
+        $entity_view_builder = $this->getParDataManager()
+          ->getViewBuilder($entity->getEntityTypeId());
+
+        $form['existing_legal_entities'][$entity->id()] = $entity_view_builder->view($entity, 'title');
+      }
+    }
+
     // Hidden field to persist between reloads.
     $form['fields_to_display'] = [
       '#type' => 'hidden',
@@ -122,7 +149,7 @@ class ParLegalEntityMultipleForm extends ParFormPluginBase {
     $form['actions']['add_another'] = [
       '#type' => 'submit',
       '#name' => 'add_another',
-      '#submit' => ['::addAnotherItemSubmit'],
+      '#submit' => ['::multipleItemActionsSubmit'],
       '#value' => $this->t('Add Another Legal Entity'),
       '#attributes' => [
         'class' => ['btn-link'],
