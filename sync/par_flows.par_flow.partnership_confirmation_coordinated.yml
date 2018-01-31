@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: _jfyTwgTesFKzr6fL3azY5uBlsDhnQ-1TqOtAD7UanI
+  default_config_hash: 6pGPRW7tRbYOrVMEXc7jSML4y_6xxP-57Aa1t0Bi8SY
 id: partnership_confirmation_coordinated
 label: 'Coordinated Partnership Completion Flow'
 default_title: null
@@ -17,57 +17,64 @@ steps:
     components:
       - about_business
     redirect:
-      cancel: 10
+      cancel: 11
   2:
     route: par_partnership_confirmation_flows.confirm_address
     form_id: par_partnership_confirmation_address
     components:
       - address
     redirect:
-      cancel: 10
+      cancel: 11
   3:
     route: par_partnership_confirmation_flows.confirm_contact
     form_id: par_partnership_confirmation_contact
     components:
       - contact_details_full
     redirect:
-      cancel: 10
+      cancel: 11
   4:
     route: par_partnership_confirmation_flows.confirm_sic_code
     form_id: par_partnership_confirmation_sic_code
     components:
       - sic_code
     redirect:
-      cancel: 10
+      cancel: 11
   5:
     route: par_partnership_confirmation_flows.confirm_business_size
     form_id: par_partnership_confirmation_business_size
     components:
       - business_size
     redirect:
-      cancel: 10
+      cancel: 11
   6:
     route: par_partnership_confirmation_flows.confirm_trading_name
     form_id: par_partnership_confirmation_trading_name
     components:
       - trading_name
     redirect:
-      cancel: 10
+      cancel: 11
   7:
+    route: par_partnership_confirmation_flows.select_legal_entities
+    form_id: par_partnership_confirmation_select_legal_entities
+    components:
+      - select_legal_entities
+    redirect:
+      cancel: 11
+  8:
     route: par_partnership_confirmation_flows.add_legal_entity
     form_id: par_partnership_legal_entity_add_multiple
     components:
       - legal_entity_add_multiple
     redirect:
-      cancel: 10
-  8:
+      cancel: 11
+  9:
     route: par_partnership_confirmation_flows.partnership_confirm_review
     form_id: par_partnership_confirmation_review
     redirect:
-      cancel: 10
-  9:
+      cancel: 11
+  10:
     route: par_partnership_confirmation_flows.partnership_confirmation
     redirect:
-      done: 10
-  10:
+      done: 11
+  11:
     route: view.par_user_partnerships.partnerships_page
