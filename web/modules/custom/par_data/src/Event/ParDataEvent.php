@@ -44,7 +44,7 @@ class ParDataEvent extends Event implements ParDataEventInterface {
    *
    * @var string
    */
-  const APPROVED = 'par_data.entity.approve';
+  const APPROVED = 'par_data.entity.par_data_partnership.confirmed_rd';
 
   protected $data;
 
