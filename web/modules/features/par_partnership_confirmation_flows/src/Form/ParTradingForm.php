@@ -3,14 +3,15 @@
 namespace Drupal\par_partnership_confirmation_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_partnership_confirmation_flows\ParPartnershipFlowsTrait;
+use Drupal\par_partnership_confirmation_flows\ParFlowAccessTrait;
 
 /**
  * The partnership form for the trading name details.
  */
 class ParTradingForm extends ParBaseForm {
+
+  use ParFlowAccessTrait;
 
   /**
    * Set the page title.
@@ -36,41 +37,6 @@ class ParTradingForm extends ParBaseForm {
     $this->getFlowDataHandler()->setParameter('trading_name_delta', 0);
 
     parent::loadData();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
-
-    // Save the value for the trading name field.
-    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $trading_name_delta = $this->getFlowDataHandler()->getParameter('trading_name_delta');
-
-    $items = $par_data_organisation->get('trading_name')->getValue();
-
-    if (!isset($trading_name_delta)) {
-      $items[] = $this->getFlowDataHandler()->getTempDataValue('trading_name');
-    }
-    else {
-      $items[$trading_name_delta] = $this->getFlowDataHandler()->getTempDataValue('trading_name');
-    }
-
-    $par_data_organisation->set('trading_name', $items);
-
-    if ($par_data_organisation->save()) {
-      $this->getFlowDataHandler()->deleteStore();
-    }
-    else {
-      $message = $this->t('This %field could not be saved for %form_id');
-      $replacements = [
-        '%field' => $this->getFlowDataHandler()->getTempDataValue('trading_name'),
-        '%form_id' => $this->getFormId(),
-      ];
-      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-    }
   }
 
 }
