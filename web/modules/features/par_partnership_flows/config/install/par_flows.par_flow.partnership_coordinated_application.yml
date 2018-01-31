@@ -1,0 +1,56 @@
+langcode: en
+status: true
+dependencies: {  }
+id: partnership_coordinated_application
+label: 'Coordinated Partnership Application Flow'
+default_title: null
+default_section_title: 'New partnership application'
+description: ''
+save_method: end
+steps:
+  1:
+    route: par_partnership_flows.confirm_about_business
+    form_id: par_partnership_about_business
+    redirect:
+      cancel: 10
+  2:
+    route: par_partnership_flows.confirm_address
+    form_id: par_partnership_address
+    redirect:
+      cancel: 10
+  3:
+    route: par_partnership_flows.confirm_contact
+    form_id: par_partnership_contact
+    redirect:
+      cancel: 10
+  4:
+    route: par_partnership_flows.confirm_sic_code
+    form_id: par_partnership_sic_code
+    redirect:
+      cancel: 10
+  5:
+    route: par_partnership_flows.confirm_business_size
+    form_id: par_partnership_business_size
+    redirect:
+      cancel: 10
+  6:
+    route: par_partnership_flows.confirm_trading_name
+    form_id: par_partnership_trading_name
+    redirect:
+      cancel: 10
+  7:
+    route: par_partnership_flows.confirm_legal_entity
+    form_id: par_partnership_legal
+    redirect:
+      cancel: 10
+  8:
+    route: par_partnership_flows.partnership_confirm_review
+    form_id: par_partnership_confirmation
+    redirect:
+      cancel: 10
+  9:
+    route: par_partnership_flows.partnership_confirmation
+    redirect:
+      done: 10
+  10:
+    route: view.par_user_partnerships.partnerships_page

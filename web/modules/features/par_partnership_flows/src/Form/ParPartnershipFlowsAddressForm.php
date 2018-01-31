@@ -171,7 +171,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
 
     $form['nation'] = [
       '#type' => 'select',
-      '#title' => $this->t('Select your Nation'),
+      '#title' => $this->t('Select Nation'),
       '#options' => $premises_bundle->getAllowedValues('nation'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("nation"),
       '#states' => [
@@ -236,7 +236,6 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
 
       // Check we are updating an existing partnership/organisation.
       if ($par_data_partnership && $premises->save()) {
-
         // Add premises to organisation if a new PAR Premises record is created.
         if (!$this->getPremisesParam()) {
           // Add to field_premises.
@@ -246,7 +245,6 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
         }
 
         $this->getFlowDataHandler()->deleteStore();
-
       }
       else {
         $message = $this->t('Address %premises could not be saved for %form_id');

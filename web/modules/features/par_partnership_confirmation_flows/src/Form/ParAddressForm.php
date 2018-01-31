@@ -71,7 +71,7 @@ class ParAddressForm extends ParBaseForm {
       ];
 
       $par_data_premises->set('address', $address);
-      $par_data_premises->set('nation', $this->getFlowDataHandler()->getTempDataValue('country'));
+      $par_data_premises->set('nation', $this->getFlowDataHandler()->getTempDataValue('nation'));
 
       $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
       $par_data_organisation = $par_data_partnership ? $par_data_partnership->getOrganisation(TRUE) : NULL;

@@ -103,7 +103,7 @@ Feature: Helpdesk approve partnership
         And I expect that element ".views-field views-field-par-flow-link views-field-par-flow-link-1" not contains text "Revoke partnership"
         And I add "Some reasons for revoking partnership" to the inputfield "#edit-revocation-reason"
         And I click on the button "#edit-next"
-        Then I expect that element "#revocation-denied-message" contains the text "Revocation Denied"
+#        Then I expect that element "#revocation-denied-message" contains the text "Revocation Denied"
 
         # REFER FORM
 
