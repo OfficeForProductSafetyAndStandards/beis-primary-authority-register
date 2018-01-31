@@ -93,8 +93,6 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
     if ($par_data_person) {
-      $this->setState("edit:{$par_data_person->id()}");
-      
       // Load person data.
       $this->getFlowDataHandler()->setFormPermValue("salutation", $par_data_person->get('salutation')->getString());
       $this->getFlowDataHandler()->setFormPermValue("first_name", $par_data_person->get('first_name')->getString());
