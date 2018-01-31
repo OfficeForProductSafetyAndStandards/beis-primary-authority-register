@@ -18,7 +18,7 @@ class PartnershipApplicationCompletedSubscriber implements EventSubscriberInterf
    *
    * @see /admin/structure/message/manage/partnership_confirmed_notification
    */
-  const MESSAGE_ID = 'partnership_confirmed_notification';
+  const MESSAGE_ID = 'partnership_confirmed_notificati';
 
   /**
    * The notification plugin that will deliver these notification messages.
@@ -118,7 +118,7 @@ class PartnershipApplicationCompletedSubscriber implements EventSubscriberInterf
           // Add some custom arguments to this message.
           $message->setArguments([
             '@partnership_organisation' => $partnership->getOrganisation(TRUE)->label(),
-            '@partnership_search_link' => $pending_partnerships_url->toString(),
+            '@partnership_pending_partnership_link' => $pending_partnerships_url->toString(),
           ]);
 
           // The owner is the user who this message belongs to.
