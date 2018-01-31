@@ -1,0 +1,4 @@
+text:
+  -
+    value: "<p>@partnership_organisation has confirmed their details and the your application for nomination has been submitted to the Secretary of State.</p>\r\n\r\n<p>You can view the pending partnership on the Primary Authority Register:</p>\r\n\r\n<p>^ @partnership_pending_partnership_link</p>\r\n\r\n<p>You will be notified when the partnership has been nominated.</p>\r\n\r\n<p>This is an automated email, please do not reply, as your response will be sent to a mailbox that is not monitored. If you have a query relating to this email, please contact pa@brdo.bis.gsi.gov.uk or Tel. 0121-345-1201</p>\r\n"
+    format: basic_html

@@ -1,0 +1,17 @@
+uuid: 34d33214-73ba-4189-8843-b7e5bf08e5ca
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.partnership_confirmed_notificati
+id: message.partnership_confirmed_notificati.mail_body
+targetEntityType: message
+bundle: partnership_confirmed_notificati
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+hidden:
+  partial_0: true
