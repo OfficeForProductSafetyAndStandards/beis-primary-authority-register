@@ -12,7 +12,7 @@ update primary authority advice to local authorities:
   title: 'Update Primary Authority advice to Local Authorities'
   description: 'Update primary authority advice to local authorities.'
   restrict access: TRUE
-approve partnerships via Help Desk:
+approve partnerships via help desk:
   title: 'Approve partnerships via Help Desk'
   description: 'Approve a given partnership.'
   restrict access: TRUE
