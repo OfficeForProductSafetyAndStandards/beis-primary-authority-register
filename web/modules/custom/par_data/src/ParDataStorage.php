@@ -108,7 +108,7 @@ class ParDataStorage extends TranceStorage {
       }
     }
 
-    if ($entity->original->getRawStatus() !== NULL && $entity->getRawStatus() !== $entity->original->getRawStatus()) {
+    if ($entity->getRawStatus() !== NULL && $entity->getRawStatus() !== $entity->original->getRawStatus()) {
       // Dispatch the an event for every par entity that has a status update.
       $event = new ParDataEvent($entity);
       $event_to_dispatch = $event->getEntityEventStatusName($entity);
