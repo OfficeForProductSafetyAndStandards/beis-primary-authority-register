@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: VoPXUrWMJR4elz4HtmCNOEpyIJApZjRcUPrPJ8CDZzU
+  default_config_hash: 1TCHiaZNMNICvhafEBEYUa8p-tKYdvKOOObrhF_6v3A
 id: partnership_confirmation_direct
 label: 'Direct Partnership Completion Flow'
 default_title: null
@@ -79,6 +79,7 @@ steps:
       trading_name: par_partnership_confirmation_trading_name
       legal_select: par_partnership_confirmation_legal_entity
     redirect:
+      save: 10
       cancel: 11
   10:
     route: par_partnership_confirmation_flows.partnership_confirmation

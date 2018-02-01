@@ -76,6 +76,7 @@ steps:
       trading_name: par_partnership_confirmation_trading_name
       legal_select: par_partnership_confirmation_legal_entity
     redirect:
+      save: 10
       cancel: 11
   10:
     route: par_partnership_confirmation_flows.partnership_confirmation
