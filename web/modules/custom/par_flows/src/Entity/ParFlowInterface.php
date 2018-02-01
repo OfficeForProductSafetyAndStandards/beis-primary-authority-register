@@ -237,4 +237,19 @@ interface ParFlowInterface {
    */
   public function getPrevLink($operation, array $route_params, array $link_options);
 
+  /**
+   * Get the components for the current step.
+   */
+  public function getCurrentStepComponents();
+
+  /**
+   * Get the form data keys for the current step.
+   */
+  public function getCurrentStepFormDataKeys();
+
+  /**
+   * Get the operations for the current step.
+   */
+  public function getCurrentStepOperations();
+
 }

@@ -3,15 +3,16 @@
 namespace Drupal\par_partnership_confirmation_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_partnership_confirmation_flows\ParPartnershipFlowsTrait;
+use Drupal\par_partnership_confirmation_flows\ParFlowAccessTrait;
 
 /**
  * The about partnership form for the partnership details steps of the
  * 1st Data Validation/Transition User Journey.
  */
 class ParBusinessSizeForm extends ParBaseForm {
+
+  use ParFlowAccessTrait;
 
   /**
    * {@inheritdoc}
@@ -31,30 +32,6 @@ class ParBusinessSizeForm extends ParBaseForm {
     $this->getFlowDataHandler()->setParameter('par_data_organisation', $par_data_organisation);
 
     parent::loadData();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
-
-    // Save the value for the about_partnership field.
-    $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $par_data_organisation = current($partnership->getOrganisation());
-    $par_data_organisation->set('size', $this->getFlowDataHandler()->getTempDataValue('business_size'));
-    if ($par_data_organisation->save()) {
-      $this->getFlowDataHandler()->deleteStore();
-    }
-    else {
-      $message = $this->t('The %field field could not be saved for %form_id');
-      $replacements = [
-        '%field' => 'size',
-        '%form_id' => $this->getFormId(),
-      ];
-      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-    }
-
   }
 
 }
