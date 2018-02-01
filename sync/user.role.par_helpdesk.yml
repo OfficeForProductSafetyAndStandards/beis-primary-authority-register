@@ -42,7 +42,7 @@ permissions:
   - 'administer users'
   - 'apply for partnership'
   - 'approve enforcement notice'
-  - 'approve partnerships via Help Desk'
+  - 'approve partnerships via help desk'
   - 'bypass par_data membership'
   - 'bypass partnership journey'
   - 'create article content'
