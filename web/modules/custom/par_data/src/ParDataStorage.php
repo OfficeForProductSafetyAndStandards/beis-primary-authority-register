@@ -108,22 +108,12 @@ class ParDataStorage extends TranceStorage {
       }
     }
 
-    if ($entity->getEntityTypeId() === 'par_data_partnership') {
-
-      // Only act on partnerships that have just been nominated (approved by RD).
-      if ($entity->getRawStatus() === 'confirmed_rd' && $entity->original->getRawStatus !== 'confirmed_rd') {
-        // Dispatch the event for partnership nomination notification.
-        $event = new ParDataEvent($entity);
-        $dispatcher = \Drupal::service('event_dispatcher');
-        $dispatcher->dispatch(ParDataEvent::APPROVED, $event);
-      }
-
-      if ($entity->getRawStatus() === 'confirmed_business' && $entity->original->getRawStatus !== 'confirmed_business') {
-        // Dispatch the event for confirmed partnerships.
-        $event = new ParDataEvent($entity);
-        $dispatcher = \Drupal::service('event_dispatcher');
-        $dispatcher->dispatch(ParDataEvent::CONFIRMED, $event);
-      }
+    if ($entity->original->getRawStatus() !== NULL && $entity->getRawStatus() !== $entity->original->getRawStatus()) {
+      // Dispatch the an event for every par entity that has a status update.
+      $event = new ParDataEvent($entity);
+      $event_to_dispatch = $event->getEntityEventStatusName($entity);
+      $dispatcher = \Drupal::service('event_dispatcher');
+      $dispatcher->dispatch($event_to_dispatch, $event);
     }
     // Warm caches.
     $this->par_data_manager->getRelatedEntities($entity);
