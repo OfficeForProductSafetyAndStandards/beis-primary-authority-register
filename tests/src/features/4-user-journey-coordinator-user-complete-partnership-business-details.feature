@@ -12,9 +12,9 @@ Feature: PA User - Manage Addresses
         And I open the url "/dashboard"
         Then I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I click on the link "See your partnerships"
-        And I add "Business For Coordinated Partnership 12" to the inputfield "#edit-keywords"
+        And I add "Business For Coordinated Partnership 14" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I click on the link "Business For Coordinated Partnership 12"
+        And I click on the link "Business For Coordinated Partnership 14"
         And I expect that element "h1" is not empty
 
         # EDIT REGISTERED ADDRESS
@@ -82,5 +82,7 @@ Feature: PA User - Manage Addresses
         # Then I expect that element "#edit-legal-entities" contains the text "1234567890"
         And I click on the checkbox "#edit-partnership-info-agreed-business"
         And I click on the button "#edit-save"
-        And I click on the link "See your partnerships"
+        Then I expect that element "h1.heading-xlarge" contains the text "Thank you for completing the application"
+        And I click on the button ".button"
+        And I add "Business For Coordinated Partnership 14" to the inputfield "#edit-keywords"
         Then I expect that element "tbody" contains the text "Confirmed by the Organisation"

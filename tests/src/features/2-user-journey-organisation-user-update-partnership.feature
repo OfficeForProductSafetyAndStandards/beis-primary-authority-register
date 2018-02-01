@@ -14,7 +14,7 @@ Feature: Business User - Manage Addresses
         And I open the url "/dashboard"
         Then I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I click on the link "See your partnerships"
-        And I click on the link "Business For Direct Partnership 18"
+        And I click on the link "Business For Direct Partnership 20"
         And I run tota11y against the current page
         And I expect that element "h1" is empty
 
@@ -178,5 +178,5 @@ Feature: Business User - Manage Addresses
         And I run tota11y against the current page
         And I select the option with the value "3" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I expect that element "#block-par-theme-content" contains the text "Business For Direct Partnership 18"
+        And I expect that element "#block-par-theme-content" contains the text "Business For Direct Partnership 20"
         And I run tota11y against the current pag

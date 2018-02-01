@@ -10,7 +10,7 @@ Feature: Coordinator User - Manage Addresses
         When I click on the button "#edit-submit"
         Then I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I click on the link "See your partnerships"
-        And I click on the link "Business For Coordinated Partnership 12"
+        And I click on the link "Business For Coordinated Partnership 14"
         And I expect that element "h1" is not empty
 
         # EDIT REGISTERED ADDRESS
@@ -117,5 +117,5 @@ Feature: Coordinator User - Manage Addresses
         And I click on the button "#edit-save"
         And I select the option with the value "3" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I expect that element "#block-par-theme-content" contains the text "Business For Coordinated Partnership 12"
+        And I expect that element "#block-par-theme-content" contains the text "Business For Coordinated Partnership 14"
 
