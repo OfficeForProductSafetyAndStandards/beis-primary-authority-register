@@ -14,4 +14,6 @@ content:
     weight: 0
     region: content
 hidden:
+  field_message_subject: true
+  field_partnership: true
   partial_1: true
