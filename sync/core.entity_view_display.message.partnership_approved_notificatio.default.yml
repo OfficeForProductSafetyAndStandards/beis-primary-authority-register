@@ -1,0 +1,33 @@
+uuid: 93006929-d582-495f-9432-6a5fb7691c11
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.partnership_approved_notificatio.field_message_subject
+    - field.field.message.partnership_approved_notificatio.field_partnership
+    - message.template.partnership_approved_notificatio
+id: message.partnership_approved_notificatio.default
+targetEntityType: message
+bundle: partnership_approved_notificatio
+mode: default
+content:
+  field_message_subject:
+    weight: 2
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_partnership:
+    weight: 1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  partial_0:
+    weight: 0
+    region: content
+hidden: {  }
