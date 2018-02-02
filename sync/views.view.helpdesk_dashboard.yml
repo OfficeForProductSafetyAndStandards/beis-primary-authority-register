@@ -723,7 +723,7 @@ display:
           entity_field: revoked
           plugin_id: boolean
       sorts: {  }
-      title: 'RD Help Desk | Dashboard'
+      title: 'Help Desk | Dashboard'
       header: {  }
       footer: {  }
       empty: {  }

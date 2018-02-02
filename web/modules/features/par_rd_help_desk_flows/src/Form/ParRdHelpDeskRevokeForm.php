@@ -20,7 +20,7 @@ class ParRdHelpDeskRevokeForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    return "RD Help Desk | Partnership revoked";
+    return "Help Desk | Partnership revoked";
   }
 
   /**
