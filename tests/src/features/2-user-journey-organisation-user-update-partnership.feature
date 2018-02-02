@@ -1,4 +1,4 @@
-@ci @PAR990 @PAR991
+@Pending @Bug @PAR990 @PAR991
 Feature: Business User - Manage Addresses
 
 
@@ -179,4 +179,4 @@ Feature: Business User - Manage Addresses
         And I select the option with the value "3" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-par-user-partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Business For Direct Partnership 20"
-        And I run tota11y against the current pag
+        And I run tota11y against the current page

@@ -1,4 +1,4 @@
-@Pending @PAR790
+@Pending @Bug @PAR790
 Feature: Coordinator User - Manage Addresses
 
     Scenario: Coordinator User - Manage Addresses
