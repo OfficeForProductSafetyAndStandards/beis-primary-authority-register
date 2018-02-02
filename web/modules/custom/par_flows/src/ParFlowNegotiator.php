@@ -223,11 +223,11 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
 
     foreach ($this->getFlow()->getStates() as $key) {
       if ($value = $this->getRoute()->getRawParameter($key)) {
-        $states[] = $value;
+        $states[] = $key . '_' . $value;
       }
     }
 
-    $this->flow_state = empty($states) ? 'state_default' : 'state_' . implode('_', $states);
+    $this->flow_state = empty($states) ? 'state_default' : 'state__' . implode('__', $states);
 
     return $this->flow_state;
   }

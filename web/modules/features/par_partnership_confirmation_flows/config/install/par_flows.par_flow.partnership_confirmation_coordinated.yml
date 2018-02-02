@@ -7,6 +7,8 @@ default_title: null
 default_section_title: 'New partnership application'
 description: ''
 save_method: end
+states:
+  - par_data_partnership
 steps:
   1:
     route: par_partnership_confirmation_flows.confirm_about_business
