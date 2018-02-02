@@ -60,7 +60,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
     // @TODO This kinda logic shouldn't be in this form. Let's create a method to do this mapping.
     $sic_codes = $this->parDataManager->getEntitiesByType('par_data_sic_code');
     foreach ($sic_codes as $sic_code) {
-      $options[$sic_code->id()] = str_replace('.', '-', $sic_code->get('sic_code')->getString()) . ' ' . $sic_code->get('description')->getString();
+      $options[$sic_code->id()] = $sic_code->label();
     }
 
     $form['sic_code'] = [

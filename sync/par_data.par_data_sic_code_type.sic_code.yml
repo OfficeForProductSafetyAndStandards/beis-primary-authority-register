@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: nZOQPsam3XJao1oR7k8qMkRo1J2A_4Kaj4wyBWa2s5U
+  default_config_hash: Qh-fHLtPgK2fF_DslEo3bDeSNvAiX-P5tAhQVmwBbdM
 id: sic_code
 label: 'SIC Code'
 description: 'An SIC is a Standard Industry Classification, used to describe the major areas that an Organisation does.'
@@ -15,3 +15,5 @@ configuration:
   entity:
     label_fields:
       - sic_code
+      - ' - '
+      - description

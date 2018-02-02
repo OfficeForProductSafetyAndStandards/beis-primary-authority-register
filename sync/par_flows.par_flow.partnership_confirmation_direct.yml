@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: L3Wb7vMbIXVhs8LxdwQRpAlfxJHmGCBgA4R5EudaxpE
+  default_config_hash: 1TCHiaZNMNICvhafEBEYUa8p-tKYdvKOOObrhF_6v3A
 id: partnership_confirmation_direct
 label: 'Direct Partnership Completion Flow'
 default_title: null
@@ -70,7 +70,16 @@ steps:
   9:
     route: par_partnership_confirmation_flows.partnership_confirm_review
     form_id: par_partnership_confirmation_review
+    form_data:
+      about_business: par_partnership_confirmation_about_business
+      address: par_partnership_confirmation_address
+      contact: par_partnership_confirmation_contact
+      sic_code: par_partnership_confirmation_sic_code
+      employee_number: par_partnership_confirmation_business_size
+      trading_name: par_partnership_confirmation_trading_name
+      legal_select: par_partnership_confirmation_legal_entity
     redirect:
+      save: 10
       cancel: 11
   10:
     route: par_partnership_confirmation_flows.partnership_confirmation

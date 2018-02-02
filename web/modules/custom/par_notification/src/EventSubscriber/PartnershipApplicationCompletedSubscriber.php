@@ -11,14 +11,14 @@ use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class PartnershipRevocationSubscriber implements EventSubscriberInterface {
+class PartnershipApplicationCompletedSubscriber implements EventSubscriberInterface {
 
   /**
    * The message template ID created for this notification.
    *
-   * @see /admin/structure/message/manage/partnership_revocation_notification
+   * @see /admin/structure/message/manage/partnership_confirmed_notification
    */
-  const MESSAGE_ID = 'partnership_revocation_notificat';
+  const MESSAGE_ID = 'partnership_confirmed_notificati';
 
   /**
    * The notification plugin that will deliver these notification messages.
@@ -33,9 +33,8 @@ class PartnershipRevocationSubscriber implements EventSubscriberInterface {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    // Revocation event should fire after most default events to make sure
-    // revocation has not been cancelled.
-    $events[ParDataEvent::UPDATE][] = ['onPartnershipRevocation', -100];
+    // Confirmation event should fire after a partnership has been confirmed.
+    $events[ParDataEvent::CONFIRMED][] = ['onPartnershipConfirmation', -101];
 
     return $events;
   }
@@ -70,7 +69,7 @@ class PartnershipRevocationSubscriber implements EventSubscriberInterface {
   /**
    * @param ParDataEventInterface $event
    */
-  public function onPartnershipRevocation(ParDataEventInterface $event) {
+  public function onPartnershipConfirmation(ParDataEventInterface $event) {
     /** @var ParDataEntityInterface $enforcement */
     $partnership = $event->getData();
 
@@ -78,21 +77,22 @@ class PartnershipRevocationSubscriber implements EventSubscriberInterface {
     if (!$partnership || $partnership->getEntityTypeId() !== 'par_data_partnership') {
       return;
     }
-
-    // Only act on partnerships that have just been revoked.
-    if ($partnership->getRawStatus() === 'revoked' && $partnership->original->getRawStatus !== 'revoked') {
       // Load the message template.
       $template_storage = $this->getEntityTypeManager()->getStorage('message_template');
       $message_template = $template_storage->load(self::MESSAGE_ID);
-
       $message_storage = $this->getEntityTypeManager()->getStorage('message');
+
+      // Get the link to approve this notice.
+      $options = ['absolute' => TRUE];
+      $pending_partnerships_url = Url::fromRoute('view.par_user_partnership_applications.pending_applications', [], $options);
+
       if (!$message_template) {
         // @TODO Log that the template couldn't be loaded.
         return;
       }
 
-      // We need to get all the contacts for this partnership.
-      $contacts = array_merge($partnership->getAuthorityPeople(), $partnership->getOrganisationPeople());
+      // We only notify the authority contacts here.
+      $contacts = $partnership->getAuthorityPeople();
       if (!$contacts) {
         return;
       }
@@ -117,8 +117,8 @@ class PartnershipRevocationSubscriber implements EventSubscriberInterface {
 
           // Add some custom arguments to this message.
           $message->setArguments([
-            '@partnership_authority' => $partnership->getAuthority(TRUE)->label(),
             '@partnership_organisation' => $partnership->getOrganisation(TRUE)->label(),
+            '@partnership_pending_partnership_link' => $pending_partnerships_url->toString(),
           ]);
 
           // The owner is the user who this message belongs to.
@@ -137,6 +137,4 @@ class PartnershipRevocationSubscriber implements EventSubscriberInterface {
         }
       }
     }
-  }
-
 }

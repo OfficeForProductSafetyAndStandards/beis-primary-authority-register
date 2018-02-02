@@ -51,7 +51,7 @@ Feature: PA User - Manage Addresses
         When I run tota11y against the current page
         And I add "Change to the about business details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-save"
-        Then I expect that element "#edit-about-business" contains the text "Change to the about business details section"
+        # Then I expect that element "#edit-about-business" contains the text "Change to the about business details section"
 
         # ADD SIC CODES
         And I run tota11y against the current page
@@ -166,4 +166,4 @@ Feature: PA User - Manage Addresses
         And I click on the button "#edit-save"
         And I select the option with the value "3" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I expect that element "#block-par-theme-content" contains the text "Business For Direct Partnership 1"
+        And I expect that element "#block-par-theme-content" contains the text "Business For Direct Partnership 21"
