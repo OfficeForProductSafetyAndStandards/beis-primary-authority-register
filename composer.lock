@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "11ac37064f26756838378d95c325f5e4",
+    "content-hash": "59735aa53e8ea3efab3d03fa9011c1c9",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -2720,6 +2720,60 @@
             "time": "2017-05-10 21:40:34"
         },
         {
+            "name": "drupal/maillog",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/maillog",
+                "reference": "14fd24cd89e299ad271608cd52706c60b753c26d"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1470431939",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Berdir",
+                    "homepage": "https://www.drupal.org/user/214652"
+                },
+                {
+                    "name": "DamienMcKenna",
+                    "homepage": "https://www.drupal.org/user/108450"
+                },
+                {
+                    "name": "miro_dietiker",
+                    "homepage": "https://www.drupal.org/user/227761"
+                },
+                {
+                    "name": "pluess",
+                    "homepage": "https://www.drupal.org/user/84659"
+                }
+            ],
+            "description": "Utility to log all Mails for debugging purposes. It is possible to suppress mail delivery for e.g. dev or staging systems.",
+            "homepage": "https://www.drupal.org/project/maillog",
+            "support": {
+                "source": "http://cgit.drupalcode.org/maillog"
+            },
+            "time": "2016-08-05 21:18:07"
+        },
+        {
             "name": "drupal/mailsystem",
             "version": "4.1.0",
             "source": {
@@ -4034,7 +4088,8 @@
                     "dev-master": "8.0.x-dev"
                 },
                 "patches_applied": {
-                    "Fix SQL dump problem where extra params are passed when trying only to list tables": "./patches/3321-sql-dump-no-extra-fix.patch"
+                    "Fix SQL dump problem where extra params are passed when trying only to list tables": "./patches/3321-sql-dump-no-extra-fix.patch",
+                    "Refs #2079. Do not pass `$this->query_extra` to `pg_dump`.": "./patches/drush-sqldump-postgres95.patch"
                 }
             },
             "autoload": {
@@ -8514,7 +8569,8 @@
                 "source": "http://cgit.drupalcode.org/examples",
                 "issues": "https://www.drupal.org/project/issues/examples",
                 "documentation": "https://api.drupal.org/api/examples"
-            }
+            },
+            "time": "2018-01-18 18:52:24"
         },
         {
             "name": "fabpot/goutte",
@@ -10292,6 +10348,7 @@
         "drupal/govuk_notify": 20,
         "drupal/invite": 20,
         "drupal/login_destination": 20,
+        "drupal/maillog": 20,
         "drupal/message": 5,
         "drupal/message_notify": 10,
         "drupal/queue_ui": 20,
