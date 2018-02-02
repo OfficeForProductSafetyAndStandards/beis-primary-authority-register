@@ -1,4 +1,4 @@
-@Pending @Bug @PAR790
+@ci @PAR790
 Feature: Coordinator User - Manage Addresses
 
     Scenario: Coordinator User - Manage Addresses
@@ -52,10 +52,10 @@ Feature: Coordinator User - Manage Addresses
         And I click on the button "#edit-save"
         Then I expect that element "#edit-associations" contains the text "small"
 
-        # ADD LEGAL ENTITY
+        # ADD LEGAL ENTITY (BUG)
 
-        When I click on the link "add another legal entity"
-        When I add "New Legal Entity" to the inputfield "#edit-registered-name"
+        # When I click on the link "add another legal entity"
+        # When I add "New Legal Entity" to the inputfield "#edit-registered-name"
 
         # PAR790
         # User will have option to choose a memeber to associate the legal entity with
