@@ -61,10 +61,10 @@ steps:
     redirect:
       cancel: 11
   8:
-    route: par_partnership_confirmation_flows.confirm_legal_entity
-    form_id: par_partnership_confirmation_legal_entity
+    route: par_partnership_confirmation_flows.add_legal_entity
+    form_id: par_partnership_legal_entity_add_multiple
     components:
-      - legal_entity
+      - legal_entity_add_multiple
     redirect:
       cancel: 11
   9:
