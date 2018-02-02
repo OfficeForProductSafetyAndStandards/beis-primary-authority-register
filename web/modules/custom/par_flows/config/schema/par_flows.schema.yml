@@ -26,9 +26,11 @@ par_flows.par_flow.*:
       label: 'Save Method'
     states:
       type: sequence
+      label: "States (route parameters)"
+      nullable: true
       sequence:
-        type: string
-        label: 'States (route parameters) that the flow can vary by'
+        type: text
+        label: 'State param'
     steps:
       type: mapping
       label: "Steps"

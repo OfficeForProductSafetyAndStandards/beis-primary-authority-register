@@ -3,13 +3,15 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: 1TCHiaZNMNICvhafEBEYUa8p-tKYdvKOOObrhF_6v3A
+  default_config_hash: fZJVdBuN7XkzptkxbINAnUrdm0PDJMu_oA3b3iUJeWA
 id: partnership_confirmation_direct
 label: 'Direct Partnership Completion Flow'
 default_title: null
 default_section_title: 'New partnership application'
 description: ''
 save_method: end
+states:
+  - par_data_partnership
 steps:
   1:
     route: par_partnership_confirmation_flows.confirm_about_business

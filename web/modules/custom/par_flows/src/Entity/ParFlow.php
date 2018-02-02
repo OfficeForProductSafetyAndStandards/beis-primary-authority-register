@@ -44,6 +44,7 @@ use Drupal\par_flows\ParRedirectTrait;
  *     "default_section_title",
  *     "description",
  *     "save_method",
+ *     "states",
  *     "steps"
  *   }
  * )
@@ -122,7 +123,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    *
    * @var array
    */
-  protected $states = [];
+  protected $states;
 
   /**
    * The steps for this flow.
