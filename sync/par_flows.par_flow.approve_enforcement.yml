@@ -3,13 +3,15 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: s9i71soSw2MRN_NeUNmN0YYjfBsMABpar1TVKtUwD5o
+  default_config_hash: C4_4GnHu70SlSySS4ITQwgnZAhJCOYfLDMv58wREgUQ
 id: approve_enforcement
 label: 'Approve Enforcement'
 default_title: null
 default_section_title: null
 description: 'The approval flow for an enforcement notice.'
 save_method: end
+states:
+  - par_data_enforcement_notice
 steps:
   1:
     route: par_enforcement_flows.approve

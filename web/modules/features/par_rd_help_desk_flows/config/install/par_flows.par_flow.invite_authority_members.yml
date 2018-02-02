@@ -7,6 +7,9 @@ default_title: null
 default_section_title: null
 description: 'Invite PAR Authority Users to register for an account.'
 save_method: end
+states:
+  - par_data_partnership
+  - par_data_person
 steps:
   1:
     route: par_help_desks_flows.invite_members
