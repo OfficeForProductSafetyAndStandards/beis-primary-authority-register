@@ -32,6 +32,7 @@
         "drupal/inline_entity_form": "~1.0.0",
         "drupal/invite": "1.x-dev#a25b6e11580660f2653c36b0c4669b73ef453f7c",
         "drupal/login_destination": "1.x-dev#98892eb84eba6fe69d4fc48dc5b1fdaccb21c8a7",
+        "drupal/maillog": "1.x-dev",
         "drupal/mailsystem": "~4.1.0",
         "drupal/message": "~1.0.0@RC",
         "drupal/message_notify": "~1.0.0@beta",

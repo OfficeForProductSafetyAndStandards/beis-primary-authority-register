@@ -104,11 +104,11 @@ par_partnership_confirmation_flows.select_legal_entities:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-par_partnership_confirmation_flows.confirm_legal_entity:
+par_partnership_confirmation_flows.add_legal_entity:
   path: '/partnership/confirm/{par_data_partnership}/legal-entity/add'
   defaults:
-    _form: '\Drupal\par_partnership_confirmation_flows\Form\ParLegalEntityForm'
-    _title_callback: '\Drupal\par_partnership_confirmation_flows\Form\ParLegalEntityForm::titleCallback'
+    _form: '\Drupal\par_partnership_confirmation_flows\Form\ParLegalEntityMultipleForm'
+    _title_callback: '\Drupal\par_partnership_confirmation_flows\Form\ParLegalEntityMultipleForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
     _custom_access: '\Drupal\par_partnership_confirmation_flows\Form\ParLegalEntityForm::accessCallback'
