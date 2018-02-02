@@ -65,7 +65,7 @@ Feature: PA User - Manage Addresses
         
         # ADD LEGAL ENTITY
 
-        Then I expect that element "h1.heading-xlarge" contains the text "Confirm the legal entity"
+        Then I expect that element "h1.heading-xlarge" contains the text "Add a legal entity for the organisation"
         When I add "New LLP Company" to the inputfield "#edit-registered-name"
         And I select the option with the text "Limited Liability Partnership" for element "#edit-legal-entity-type"
         Then I expect that element ".form-item-registered-number" is visible
