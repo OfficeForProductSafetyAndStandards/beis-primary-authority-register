@@ -184,6 +184,16 @@ trait ParDisplayTrait {
     return ['operations' => $operation_links];
   }
 
+  public function renderEntity($entity, $view_mode) {
+    $view_display = $this->entityTypeManager
+      ->getStorage('entity_view_display')
+      ->load($entity->getEntityTypeId() . '.' . $entity->bundle() . '.' . $view_mode);
+
+    var_dump(get_class($view_display));
+
+    //return $this->renderSection($section, $entity, $fields, $operations, $title, $single, $section_title_only);
+  }
+
   /**
    * Helper function for rendering field sections.
    *
