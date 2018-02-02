@@ -43,7 +43,7 @@ class ParEnforcementRaiseNoticeForm extends ParBaseEnforcementForm {
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
-    $this->setState("edit:{$par_data_partnership->id()}");
+
   }
 
   /**
@@ -74,10 +74,10 @@ class ParEnforcementRaiseNoticeForm extends ParBaseEnforcementForm {
 
     // Choose the defaults based on how many legal entities there are to choose
     // from.
-    if (count($legal_entity_reg_names) >= 1 && !$this->getDefaultValues('legal_entities_select', FALSE)) {
+    if (count($legal_entity_reg_names) >= 1 && !$this->getFlowDataHandler()->getDefaultValues('legal_entities_select', FALSE)) {
       $default = key($legal_entity_reg_names);
     }
-    elseif (count($legal_entity_reg_names) < 1 && !$this->getDefaultValues('legal_entities_select', FALSE)) {
+    elseif (count($legal_entity_reg_names) < 1 && !$this->getFlowDataHandler()->getDefaultValues('legal_entities_select', FALSE)) {
       $default = 'add_new';
     }
 
@@ -85,7 +85,7 @@ class ParEnforcementRaiseNoticeForm extends ParBaseEnforcementForm {
       '#type' => 'radios',
       '#title' => $this->t('Select a legal entity'),
       '#options' => $legal_entity_reg_names,
-      '#default_value' => $this->getDefaultValues('legal_entities_select', $default),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('legal_entities_select', $default),
       '#required' => TRUE,
       '#prefix' => '<div>',
       '#suffix' => '</div>',
@@ -94,7 +94,7 @@ class ParEnforcementRaiseNoticeForm extends ParBaseEnforcementForm {
     $form['alternative_legal_entity'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the name of the legal entity'),
-      '#default_value' => $this->getDefaultValues("alternative_legal_entity"),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("alternative_legal_entity"),
       '#states' => array(
         'visible' => array(
           ':input[name="legal_entities_select"]' => array('value' => 'add_new'),

@@ -255,7 +255,3 @@ function par_data_update_8017() {
 function par_data_update_8018() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
-
-/**
- * Migrate legal entities from organisation to partnership.
- */

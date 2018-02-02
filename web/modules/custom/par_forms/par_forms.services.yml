@@ -1,0 +1,4 @@
+services:
+  plugin.manager.par_form_builder:
+    class: Drupal\par_forms\ParFormBuilder
+    parent: default_plugin_manager

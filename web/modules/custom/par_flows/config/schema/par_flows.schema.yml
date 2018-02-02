@@ -20,10 +20,15 @@ par_flows.par_flow.*:
       nullable: true
     description:
       type: string
-      lavel: 'Description'
+      label: 'Description'
     save_method:
       type: string
-      lavel: 'Save Method'
+      label: 'Save Method'
+    states:
+      type: sequence
+      sequence:
+        type: string
+        label: 'States (route parameters) that the flow can vary by'
     steps:
       type: mapping
       label: "Steps"
@@ -35,6 +40,20 @@ par_flows.par_flow.*:
           type: text
           label: "Form ID"
           nullable: true
+        "components":
+          type: sequence
+          label: "Components"
+          nullable: true
+          sequence:
+            type: text
+            label: "Component"
+        "form_data":
+          type: sequence
+          label: "Form data keys"
+          nullable: true
+          sequence:
+            type: text
+            label: "Form Id"
         "redirect":
           type: sequence
           label: "Redirects"

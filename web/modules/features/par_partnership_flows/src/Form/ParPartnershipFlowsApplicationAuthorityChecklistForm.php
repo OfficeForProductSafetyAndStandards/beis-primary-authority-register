@@ -33,7 +33,8 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
    */
   public function titleCallback() {
     // Load application type from previous step.
-    $applicationType = ucfirst($this->getDefaultValues('application_type', '', 'par_partnership_application_type'));
+    $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_application_type');
+    $applicationType = ucfirst($this->getFlowDataHandler()->getDefaultValues('application_type', '', $cid));
 
     // Set page title.
     $this->pageTitle = "{$applicationType} partnership application";
@@ -48,7 +49,8 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
     $this->retrieveEditableValues();
 
     // Load application type from previous step.
-    $applicationType = $this->getDefaultValues('application_type', '', 'par_partnership_application_type');
+    $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_application_type');
+    $applicationType = $this->getFlowDataHandler()->getDefaultValues('application_type', '', $cid);
 
     // Get Primary Authority Terms and Conditions URL.
     $terms_page = \Drupal::service('path.alias_manager')
@@ -65,28 +67,28 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
       $form['section_one']['business_eligible_for_partnership'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('The business is eligible to enter into a partnership'),
-        '#default_value' => $this->getDefaultValues('business_eligible_for_partnership', FALSE),
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues('business_eligible_for_partnership', FALSE),
         '#return_value' => 'on',
       ];
 
       $form['section_one']['local_authority_suitable_for_nomination'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('My local authority is suitable for nomination as primary authority for the business'),
-        '#default_value' => $this->getDefaultValues('local_authority_suitable_for_nomination', FALSE),
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues('local_authority_suitable_for_nomination', FALSE),
         '#return_value' => 'on',
       ];
 
       $form['section_one']['written_summary_agreed'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('A written summary of partnership arrangements has been agreed with the business'),
-        '#default_value' => $this->getDefaultValues('written_summary_agreed', FALSE),
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues('written_summary_agreed', FALSE),
         '#return_value' => 'on',
       ];
 
       $form['section_one']['terms_organisation_agreed'] = [
         '#type' => 'checkbox',
         '#title' => t("My local authority agrees to the Primary Authority <a href='{$terms_page}' target='_blank'>terms and conditions</a>."),
-        '#default_value' => $this->getDefaultValues("terms_organisation_agreed", FALSE),
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues("terms_organisation_agreed", FALSE),
         '#return_value' => 'on',
       ];
 
@@ -97,7 +99,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
           1 => 'Yes',
           0 => 'No',
         ],
-        '#default_value' => $this->getDefaultValues('business_regulated_by_one_authority', FALSE),
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues('business_regulated_by_one_authority', FALSE),
       ];
 
       $form['section_two']['is_local_authority'] = [
@@ -107,7 +109,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
           1 => 'Yes',
           0 => 'No',
         ],
-        '#default_value' => $this->getDefaultValues('is_local_authority', FALSE),
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues('is_local_authority', FALSE),
         '#states' => [
           'visible' => [
             'input[name="business_regulated_by_one_authority"]' => ['value' => 1],
@@ -125,7 +127,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
           1 => 'Yes',
           0 => 'No',
         ],
-        '#default_value' => $this->getDefaultValues('business_informed_local_authority_still_regulates', FALSE),
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues('business_informed_local_authority_still_regulates', FALSE),
         '#states' => [
           'visible' => [
             'input[name="business_regulated_by_one_authority"]' => ['value' => 1],
@@ -150,28 +152,28 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
       $form['section_one']['coordinator_local_authority_suitable'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('My local authority is suitable for nomination as primary authority partner for the co-ordinator'),
-        '#default_value' => $this->getDefaultValues('coordinator_local_authority_suitable', FALSE),
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues('coordinator_local_authority_suitable', FALSE),
         '#return_value' => 'on',
       ];
 
       $form['section_one']['suitable_nomination'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('My prospective co-ordinator partner is suitable for nomination as a co-ordinator'),
-        '#default_value' => $this->getDefaultValues('suitable_nomination', FALSE),
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues('suitable_nomination', FALSE),
         '#return_value' => 'on',
       ];
 
       $form['section_one']['written_summary_agreed'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('A written summary of partnership arrangements has been agreed with the co-ordinator'),
-        '#default_value' => $this->getDefaultValues('written_summary_agreed', FALSE),
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues('written_summary_agreed', FALSE),
         '#return_value' => 'on',
       ];
 
       $form['section_one']['terms_local_authority_agreed'] = [
         '#type' => 'checkbox',
         '#title' => t("My local authority agrees to the Primary Authority <a href='{$terms_page}' target='_blank'>Terms and Conditions</a>."),
-        '#default_value' => $this->getDefaultValues("terms_local_authority_agreed", FALSE),
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues("terms_local_authority_agreed", FALSE),
         '#return_value' => 'on',
       ];
     }
@@ -186,8 +188,11 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
+
     // Load application type from previous step.
-    $applicationType = $this->getDefaultValues('application_type', '', 'par_partnership_application_type');
+    $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_application_type');
+    $applicationType = $this->getFlowDataHandler()->getDefaultValues('application_type', '', $cid);
+
     if ($applicationType == 'direct') {
       // Section one validation.
       // All items in section needs to be ticked before they can proceed.

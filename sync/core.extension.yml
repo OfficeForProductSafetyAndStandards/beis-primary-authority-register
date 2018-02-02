@@ -60,10 +60,12 @@ module:
   par_data_config: 0
   par_enforcement_flows: 0
   par_flows: 0
+  par_forms: 0
   par_header: 0
   par_invite: 0
   par_login: 0
   par_notification: 0
+  par_partnership_confirmation_flows: 0
   par_partnership_flows: 0
   par_rd_help_desk_flows: 0
   par_roles: 0

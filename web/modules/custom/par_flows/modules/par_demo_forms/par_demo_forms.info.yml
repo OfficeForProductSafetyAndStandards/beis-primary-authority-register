@@ -1,7 +1,0 @@
-name: PAR Demo Forms
-type: module
-description: A set of demo multi-step forms.
-core: 8.x
-package: PAR
-dependencies:
-  - par_flows

@@ -34,6 +34,14 @@ interface ParFlowInterface {
   public function getSaveMethod();
 
   /**
+   * Get all the states parameters.
+   *
+   * @return array
+   *   An array of route parameters that can vary the flow data.
+   */
+  public function getStates();
+
+  /**
    * Get all steps in this flow.
    *
    * @return mixed
@@ -228,5 +236,20 @@ interface ParFlowInterface {
    *   A Drupal link object.
    */
   public function getPrevLink($operation, array $route_params, array $link_options);
+
+  /**
+   * Get the components for the current step.
+   */
+  public function getCurrentStepComponents();
+
+  /**
+   * Get the form data keys for the current step.
+   */
+  public function getCurrentStepFormDataKeys();
+
+  /**
+   * Get the operations for the current step.
+   */
+  public function getCurrentStepOperations();
 
 }
