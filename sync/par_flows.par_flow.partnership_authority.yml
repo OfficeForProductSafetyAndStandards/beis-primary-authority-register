@@ -3,13 +3,15 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: m9pVyBI8e8W0dHHOuQwTm5rqD42Jr9Kp6yXqaGY4RyM
+  default_config_hash: uXPJxsQr34_4zvI2APZp5JegCxoa0kAv-wbhVcwh15o
 id: partnership_authority
 label: 'Authority Partnership Flow'
 default_title: null
 default_section_title: 'Primary Authority partnership information'
 description: ''
 save_method: step
+states:
+  - par_data_partnership
 steps:
   1:
     route: par_partnership_flows.authority_details

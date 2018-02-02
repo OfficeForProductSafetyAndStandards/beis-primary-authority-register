@@ -7,6 +7,8 @@ default_title: null
 default_section_title: null
 description: 'The approval flow for an enforcement notice.'
 save_method: end
+states:
+  - par_data_enforcement_notice
 steps:
   1:
     route: par_enforcement_flows.approve
