@@ -1,7 +1,7 @@
 @ci
-Feature: PA User - Manage Addresses
+Feature: Coordinator User - Complete business details
 
-    Scenario: PA User - Manage Addresses
+    Scenario: Coordinator User - Complete business details
 
         # PARTNERSHIPS DASHBOARD
 
@@ -12,9 +12,9 @@ Feature: PA User - Manage Addresses
         And I open the url "/dashboard"
         Then I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I click on the link "See your partnerships"
-        And I add "Business For Coordinated Partnership 14" to the inputfield "#edit-keywords"
+        And I add "Business For Coordinated Partnership 20" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I click on the link "Business For Coordinated Partnership 14"
+        And I click on the link "Business For Coordinated Partnership 20"
         And I expect that element "h1" is not empty
 
         # EDIT REGISTERED ADDRESS
@@ -65,11 +65,10 @@ Feature: PA User - Manage Addresses
         # ADD LEGAL ENTITY
 
         Then I expect that element "h1.heading-xlarge" contains the text "Add a legal entity for the organisation"
-        When I add "New LLP Company" to the inputfield "#edit-registered-name"
-        And I select the option with the text "Limited Liability Partnership" for element "#edit-legal-entity-type"
-        Then I expect that element ".form-item-registered-number" is visible
-        Then I expect that element ".form-item-registered-number label" contains the text "Provide the registration number"
-        When I add "1234567890" to the inputfield "#edit-registered-number"
+        When I add "New LLP Company" to the inputfield "#edit-legal-entity-1-registered-name"
+        And I select the option with the text "Limited Liability Partnership" for element "#edit-legal-entity-1-legal-entity-type"
+        Then I expect that element ".js-form-item-legal-entity-1-registered-number label" contains the text "Provide the registration number"
+        When I add "1234567890" to the inputfield "#edit-legal-entity-1-registered-number"
         And I click on the button "#edit-next"
         Then I expect that element "#edit-organisation-registered-address" contains the text "1 Change St"
         And I expect that element "#edit-organisation-registered-address" contains the text "New Change"
@@ -84,5 +83,5 @@ Feature: PA User - Manage Addresses
         And I click on the button "#edit-save"
         Then I expect that element "h1.heading-xlarge" contains the text "Thank you for completing the application"
         And I click on the button ".button"
-        And I add "Business For Coordinated Partnership 14" to the inputfield "#edit-keywords"
+        And I add "Business For Coordinated Partnership 20" to the inputfield "#edit-keywords"
         Then I expect that element "tbody" contains the text "Confirmed by the Organisation"

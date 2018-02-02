@@ -45,7 +45,7 @@ Feature: New Direct Partnership For PA To Approve
 
         # ORGANISATION NAME
 
-        And I add "Business For Direct Partnership 21" to the inputfield "#edit-organisation-name"
+        And I add "Business For Direct Partnership 27" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
 
         # CONFIRM NEW PARTNERSHIP

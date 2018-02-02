@@ -1,7 +1,7 @@
 @ci @test
-Feature: PA User - Manage Addresses
+Feature: Organisation User - Complete business details
 
-    Scenario: PA User - Manage Addresses
+    Scenario: Organisation User - Complete business details
 
         # PARTNERSHIPS DASHBOARD
 
@@ -12,9 +12,9 @@ Feature: PA User - Manage Addresses
         And I open the url "/dashboard"
         Then I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I click on the link "See your partnerships"
-        And I add "Business For Direct Partnership 21" to the inputfield "#edit-keywords"
+        And I add "Business For Direct Partnership 27" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I click on the link "Business For Direct Partnership 21"
+        And I click on the link "Business For Direct Partnership 27"
         And I expect that element "h1" is not empty
 
         # EDIT REGISTERED ADDRESS
@@ -66,13 +66,12 @@ Feature: PA User - Manage Addresses
         # ADD LEGAL ENTITY
 
         Then I expect that element "h1.heading-xlarge" contains the text "Add a legal entity for the organisation"
-        When I add "New LLP Company" to the inputfield "#edit-registered-name"
-        And I select the option with the text "Limited Liability Partnership" for element "#edit-legal-entity-type"
-        Then I expect that element ".form-item-registered-number" is visible
-        Then I expect that element ".form-item-registered-number label" contains the text "Provide the registration number"
-        When I add "1234567890" to the inputfield "#edit-registered-number"
+        When I add "New LLP Company" to the inputfield "#edit-legal-entity-1-registered-name"
+        And I select the option with the text "Limited Liability Partnership" for element "#edit-legal-entity-1-legal-entity-type"
+        Then I expect that element ".js-form-item-legal-entity-1-registered-number label" contains the text "Provide the registration number"
+        When I add "1234567890" to the inputfield "#edit-legal-entity-1-registered-number"
         When I click on the button "#edit-next"
-        Then I expect that element "#edit-organisation-name" contains the text "Business For Direct Partnership 21"
+        Then I expect that element "#edit-organisation-name" contains the text "Business For Direct Partnership 27"
         And I expect that element "#edit-organisation-registered-address" contains the text "1 Change St"
         And I expect that element "#edit-organisation-registered-address" contains the text "New Change"
         And I expect that element "#edit-organisation-registered-address" contains the text "London"
@@ -86,5 +85,8 @@ Feature: PA User - Manage Addresses
         And I click on the checkbox "#edit-partnership-info-agreed-business"
         And I click on the button "#edit-save"
         Then I expect that element "h1.heading-xlarge" contains the text "Thank you for completing the application"
-        And I click on the button ".button"
-        Then I expect that element "tbody" contains the text "Confirmed by the Organisation"
+        When I click on the button ".button"
+        And I add "Business For Direct Partnership 27" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-par-user-partnerships"
+        # And I click on the link "Business For Direct Partnership 27"
+        Then I expect that element ".table-scroll-wrapper" contains the text "Confirmed by the Organisation"
