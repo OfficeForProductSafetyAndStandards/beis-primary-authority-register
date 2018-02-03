@@ -113,8 +113,6 @@ Feature: Coordinator User - Manage Addresses
         # COMPLETE CHANGES
 
         When I click on the button "#edit-save"
-        And I click on the checkbox "#edit-partnership-info-agreed-business"
-        And I click on the button "#edit-save"
         And I select the option with the value "3" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-par-user-partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Business For Coordinated Partnership 20"
