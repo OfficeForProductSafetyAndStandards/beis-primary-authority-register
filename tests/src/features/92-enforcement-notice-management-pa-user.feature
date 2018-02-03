@@ -3,20 +3,6 @@ Feature: Enforcement notice management
 
     Scenario: Enforcement notice management
 
-        Given I open the url "/user/login"
-        And I add "par_enforcement_officer@example.com" to the inputfield "#edit-name"
-        And I add "TestPassword" to the inputfield "#edit-pass"
-        When I click on the button "#edit-submit"
-        Then I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
-        When I click on the link "See enforcement notifications sent"
-        And I select the option with the text "Date Asc" for element "#edit-sort-bef-combine"
-        And I click on the button "#edit-submit-par-user-enforcement-list"
-        And I expect that element "a*=Title of enforcement notice One" does exist
-        And I expect that element "a*=Title of enforcement notice Three" does exist
-        And I expect that element "a*=Title of enforcement notice Four" does exist
-        And I expect that element "a*=Title of enforcement notice Five" does not exist
-        And I click on the link "Log out"
-
         # APPROVAL FORM
 
         Given I open the url "/user/login"

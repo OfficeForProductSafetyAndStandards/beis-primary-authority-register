@@ -23,7 +23,7 @@ Feature: Helpdesk approve partnership
         And I click on the button "#edit-next"
 
         # APPROVAL CONFIRMATION SCREEN
-        Then I expect that element "h3.heading-medium fieldset-legend" contains the text "The following partnership has been approved"
+        Then I expect that element "h1.heading-xlarge" contains the text "Partnership is approved"
         And I expect that element "#edit-partnership-info" contains the text "Business For Direct Partnership 27"
         And I click on the button "#edit-done"
 
@@ -60,7 +60,7 @@ Feature: Helpdesk approve partnership
 
         # APPROVAL CONFIRMATION SCREEN
 
-        Then I expect that element "#edit-partnership-info" contains the text "The following partnership has been approved"
+        Then I expect that element "h1.heading-xlarge" contains the text "Partnership is approved"
         And I expect that element "#edit-partnership-info" contains the text "Direct Partnership For Revoking"
         And I click on the button "#edit-done"
         When I add "Direct Partnership For Revoking" to the inputfield "#edit-keywords"
@@ -69,7 +69,6 @@ Feature: Helpdesk approve partnership
         And I add "Some reasons for revoking partnership" to the inputfield "#edit-revocation-reason"
         And I click on the button "#edit-next"
         Then I expect that element "#content" contains the text "Partnership revoked"
-        Then I expect that element "#content" contains the text "The following partnership has been revoked"
         When I click on the link "Helpdesk"
         When I add "Direct Partnership For Revoking" to the inputfield "#edit-keywords"
         And I select the option with the text "True" for element "#edit-revoked"
