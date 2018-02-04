@@ -8,9 +8,13 @@ module.exports = () => {
      * The command to perform on the browser object (addValue or setValue)
      * @type {String}
      */
-    const urlInvite = browser.getText('div.form-group:nth-child(5) > pre:nth-child(2)');
-    const urlToUse = urlInvite.match(/\bhttps?:\/\/\S+/gi);
+    const urlInvite = browser.getText('#block-par-theme-content');
+    const urlToUse = urlInvite
+        .match(/\bhttps?:\/\/\S+\/invite\/accept\/[a-zA-Z0-9]+/g)[0];
     browser.url('/user/logout');
-    console.log(urlToUse[0]);
-    browser.url(urlToUse[0]);
+    // Prevent needing to follow redirect by changing URL.
+    const url = urlToUse.replace('invite', 'par-invite');
+    console.log('invite URL extracted from email', urlToUse);
+    console.log('invite URL to be requested', url);
+    browser.url(url);
 };
