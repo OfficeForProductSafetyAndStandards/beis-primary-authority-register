@@ -60,8 +60,8 @@ Feature: Enforcement notice management
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         When I click on the link "See enforcement notifications sent"
-        And I expect that element "a*=Title of enforcement notice One" does not exist
-        And I expect that element "a*=Title of enforcement notice Three" does not exist
-        And I expect that element "a*=Title of enforcement notice Four" does not exist
-        And I expect that element "a*=Title of enforcement notice Five" does exist
+        And I expect that element "a*=Title of enforcement notice One" does exist
+        And I expect that element "a*=Title of enforcement notice Three" does exist
+        And I expect that element "a*=Title of enforcement notice Four" does exist
+        And I expect that element "a*=Title of enforcement notice Five" does not exist
 
