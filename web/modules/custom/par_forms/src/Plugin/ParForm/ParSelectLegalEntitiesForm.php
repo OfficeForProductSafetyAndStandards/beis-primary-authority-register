@@ -70,16 +70,26 @@ limited company or partnership, as well as other types of organisations such as 
       ],
     ];
 
-    // Checkboxes for legal entities.
-    $form['field_legal_entity'] = [
-      '#type' => 'checkboxes',
-      '#attributes' => ['class' => ['form-group']],
-      '#title' => t('Choose which legal entities this partnership relates to'),
-      '#options' => $legal_entities_options,
-      // Automatically check all legal entities if no form data is found.
-      '#default_value' => $this->getFlowDataHandler()
-        ->getDefaultValues("field_legal_entity", $partnership_legal_entities),
-    ];
+    if (!empty($legal_entities_options)) {
+      // Checkboxes for legal entities.
+      $form['field_legal_entity'] = [
+        '#type' => 'checkboxes',
+        '#attributes' => ['class' => ['form-group']],
+        '#title' => t('Choose which legal entities this partnership relates to'),
+        '#options' => $legal_entities_options,
+        // Automatically check all legal entities if no form data is found.
+        '#default_value' => $this->getFlowDataHandler()
+          ->getDefaultValues("field_legal_entity", $partnership_legal_entities),
+      ];
+    }
+    else {
+      $form['organisation_no_legal_entities_message'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t("No legal entities found on the PAR Organisation"),
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+      ];
+    }
 
     // A note to the user that they can add a new legal entity on the next step.
     $form['legal_entity_add_more_info'] = [

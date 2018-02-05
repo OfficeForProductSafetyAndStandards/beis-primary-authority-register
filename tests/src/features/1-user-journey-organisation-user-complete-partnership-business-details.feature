@@ -18,7 +18,7 @@ Feature: Organisation User - Complete business details
         And I expect that element "h1" is not empty
 
         # EDIT REGISTERED ADDRESS
-        
+
         And I expect that element "h1.heading-xlarge" contains the text "Confirm the details about the business"
         When I run tota11y against the current page
         And I add "Change to the about business details section" to the inputfield "#edit-about-business"
@@ -45,30 +45,31 @@ Feature: Organisation User - Complete business details
         When I click on the button "#edit-next"
 
         # ADD SIC CODES
-        
+
         And I select the option with the text "10.0 - Health and social care" for element "#edit-sic-code"
         And I click on the button "#edit-next"
 
         # ADD EMPLOYEES
-        
+
         And I select the option with the value "250" for element "#edit-employees-band"
         And I click on the button "#edit-next"
-        
+
         # ADD TRADING NAME
-        
+
         Then I expect that element "h1.heading-xlarge" contains the text "Confirm the trading name"
         When I add "Different Trading Name" to the inputfield "#edit-trading-name"
         And I click on the button "#edit-next"
         Then I expect that element ".heading-xlarge" contains the text "Choose the legal entities for the partnership"
         And I click on the button "#edit-next"
 
-        
+
         # ADD LEGAL ENTITY
 
         Then I expect that element "h1.heading-xlarge" contains the text "Add a legal entity for the organisation"
         When I add "New LLP Company" to the inputfield "#edit-legal-entity-1-registered-name"
         And I select the option with the text "Limited Liability Partnership" for element "#edit-legal-entity-1-legal-entity-type"
-        Then I expect that element ".js-form-item-legal-entity-1-registered-number label" contains the text "Provide the registration number"
+        Then I expect that element ".form-item-legal-entity-1-registered-number" is visible
+        Then I expect that element ".form-item-legal-entity-1-registered-number label" contains the text "Provide the registration number"
         When I add "1234567890" to the inputfield "#edit-legal-entity-1-registered-number"
         When I click on the button "#edit-next"
         Then I expect that element "#edit-organisation-name" contains the text "Business For Direct Partnership 27"
