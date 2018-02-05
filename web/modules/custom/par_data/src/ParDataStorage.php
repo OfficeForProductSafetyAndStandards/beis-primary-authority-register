@@ -51,10 +51,10 @@ class ParDataStorage extends TranceStorage {
       }
       else {
         $entity->set(ParDataEntity::DELETE_FIELD, TRUE)->save();
-        $keyed_entities[$entity->id()] = $entity;
-        // Reset the static cache for the deleted entities.
-        $this->resetCache(array_keys($keyed_entities));
       }
+      $keyed_entities[$entity->id()] = $entity;
+      // Reset the static cache for the deleted entities.
+      $this->resetCache(array_keys($keyed_entities));
     }
   }
 
