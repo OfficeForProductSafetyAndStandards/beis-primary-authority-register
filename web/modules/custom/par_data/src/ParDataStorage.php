@@ -47,15 +47,15 @@ class ParDataStorage extends TranceStorage {
     // Perform a standard entity delete operation on partnership entities.
     foreach ($entities as $entity) {
       if ($entity->getEntityTypeId() === 'par_data_partnership') {
-       parent::delete([$entity->id() => $entities[$entity->id()]]);
+        parent::delete([$entity->id() => $entities[$entity->id()]]);
       }
       else {
         $entity->set(ParDataEntity::DELETE_FIELD, TRUE)->save();
       }
       $keyed_entities[$entity->id()] = $entity;
-      // Reset the static cache for the deleted entities.
-      $this->resetCache(array_keys($keyed_entities));
     }
+    // Reset the static cache for the deleted entities.
+    $this->resetCache(array_keys($keyed_entities));
   }
 
   /**
