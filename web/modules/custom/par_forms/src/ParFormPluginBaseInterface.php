@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms;
 
+use Drupal\Component\Plugin\ConfigurablePluginInterface;
 use Drupal\Component\Plugin\PluginInspectionInterface;
 
 /**
@@ -9,7 +10,7 @@ use Drupal\Component\Plugin\PluginInspectionInterface;
  *
  * @see plugin_api
  */
-interface ParFormPluginBaseInterface extends PluginInspectionInterface {
+interface ParFormPluginBaseInterface extends PluginInspectionInterface, ConfigurablePluginInterface {
 
   /**
    * Get's the mapping of each form element to the entity

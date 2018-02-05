@@ -48,4 +48,17 @@ class ParFormBuilder extends DefaultPluginManager {
     $this->setCacheBackend($cache_backend, 'par_form_info_plugins');
     $this->factory = new DefaultFactory($this->getDiscovery());
   }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @return \Drupal\par_forms\ParFormPluginBase
+   */
+  public function createInstance($plugin_id, array $configuration = []) {
+    $plugin = parent::createInstance($plugin_id, $configuration);
+
+    $plugin->setConfiguration($configuration);
+
+    return $plugin;
+  }
 }

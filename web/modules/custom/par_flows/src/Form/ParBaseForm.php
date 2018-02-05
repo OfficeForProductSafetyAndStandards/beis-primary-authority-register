@@ -167,11 +167,14 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-
-
     // Add all the registered components to the form.
-    foreach ($this->getComponents() as $weight => $component) {
-      $form = $component->getElements($form);
+    foreach ($this->getComponents() as $component) {
+      $form[$component->getName()] = [
+        'weight' => $component->getWeight(),
+        'tree' => $component->getCardinality() === 1 ? FALSE : TRUE,
+      ];
+      // @TODO Make it multiple.
+      $form[$component->getName()] = $component->getElements($form);
     }
 
     // Only ever place a 'done' action by itself.
@@ -250,7 +253,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // Add all the registered components to the form.
-    foreach ($this->getComponents() as $weight => $component) {
+    foreach ($this->getComponents() as $component) {
       $component_violations = $component->validate($form_state);
       if ($component_violations) {
         foreach ($component_violations as $field_name => $violation) {

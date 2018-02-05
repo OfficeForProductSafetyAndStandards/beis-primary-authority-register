@@ -36,8 +36,40 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
    * {@inheritdoc}
    */
   public function getWeight() {
-    return $this->pluginDefinition['weight'];
+    return $this->getConfiguration()['weight'] ?: $this->pluginDefinition['weight'];
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCardinality() {
+    return $this->getConfiguration()['cardinality'] ?: $this->pluginDefinition['cardinality'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getConfiguration() {
+    return array_merge($this->defaultConfiguration(), $this->configuration);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setConfiguration(array $configuration = []) {
+    $this->configuration = $configuration;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function defaultConfiguration() {
+    return [
+      'weight' => 0,
+      'cardinality' => 1,
+    ];
+  }
+
 
   /**
    * Simple getter to inject the flow negotiator service.
@@ -64,6 +96,13 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
    */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function calculateDependencies() {
+    return [];
   }
 
   /**
