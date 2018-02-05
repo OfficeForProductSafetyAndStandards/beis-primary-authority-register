@@ -61,6 +61,8 @@ if [ $? != 0 ]; then
     exit
 fi
 
+cf target -o office-for-product-safety-and-standards -s primary-authority-register
+
 echo -n "Enter the environment name (e.g. staging): "
 read ENV
 
