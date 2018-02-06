@@ -1,5 +1,5 @@
 $script = <<SCRIPT
-cd /vagrant/docker
+cd /vagrant/devops/docker
 sudo docker-compose up -d
 
 sh setup.sh

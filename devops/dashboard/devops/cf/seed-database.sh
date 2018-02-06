@@ -52,5 +52,5 @@ cf target -o $CF_ORG -s $CF_SPACE-$ENV
 cf create-service cleardb spark mysql-$APP_NAME
 cf bind-service $APP_NAME mysql-$APP_NAME
 cf restage $APP_NAME
-cf ssh $APP_NAME -c "cd app/tools && python php.py \"artisan lumen-oauth2-server:seed\""
+cf ssh $APP_NAME -c "cd app/devops/tools && python php.py \"artisan lumen-oauth2-server:seed\""
 

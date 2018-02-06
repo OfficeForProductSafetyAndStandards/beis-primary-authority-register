@@ -84,6 +84,6 @@ This will give you the information you need to set up the CNAME for the par-beta
 #### Import the seed data
 
     cf ssh par-beta-ENV_SLUG
-    cd app/tools
+    cd app/devops/tools
     python import_fresh_db.py -f /path/to/sql/file.sql
     

@@ -1,7 +1,7 @@
 composer.json
 composer.lock
 composer.sh
-dashboard/
+devops/dashboard/
 web/sites/default/settings.local.php
 .env
 cf/
