@@ -59,13 +59,10 @@ Feature: Organisation User - Complete business details
         Then I expect that element "h1.heading-xlarge" contains the text "Confirm the trading name"
         When I add "Different Trading Name" to the inputfield "#edit-trading-name"
         And I click on the button "#edit-next"
-        Then I expect that element ".heading-xlarge" contains the text "Choose the legal entities for the partnership"
-        And I click on the button "#edit-next"
-
         
         # ADD LEGAL ENTITY
 
-        Then I expect that element "h1.heading-xlarge" contains the text "Add a legal entity for the organisation"
+        Then I expect that element "h1.heading-xlarge" contains the text "Confirm the legal entity"
         When I add "New LLP Company" to the inputfield "#edit-legal-entity-1-registered-name"
         And I select the option with the text "Limited Liability Partnership" for element "#edit-legal-entity-1-legal-entity-type"
         Then I expect that element ".js-form-item-legal-entity-1-registered-number label" contains the text "Provide the registration number"
