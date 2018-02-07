@@ -64,12 +64,12 @@ Feature: Organisation User - Complete business details
 
         Then I expect that element "h1.heading-xlarge" contains the text "Confirm the legal entity"
         When I add "New LLP Company" to the inputfield "#edit-par-component-legal-entity-0-registered-name"
-        And I select the option with the text "Limited Liability Partnership" for element "#edit-par-component-legal-entity-0-registered-type"
+        And I select the option with the text "Limited Liability Partnership" for element "#edit-par-component-legal-entity-0-legal-entity-type"
         Then I expect that element ".form-item-par-component-legal-entity-0-registered-number label" contains the text "Provide the registration number"
         When I add "1234567890" to the inputfield "#edit-par-component-legal-entity-0-registered-number"
         When I click on the button "#edit-add-another"
         When I add "Second New LLP Company" to the inputfield "#edit-par-component-legal-entity-1-registered-name"
-        And I select the option with the text "Limited Liability Partnership" for element "#edit-par-component-legal-entity-1-registered-type"
+        And I select the option with the text "Limited Liability Partnership" for element "#edit-par-component-legal-entity-1-legal-entity-type"
         When I add "0987654321" to the inputfield "#edit-par-component-legal-entity-1-registered-number"
         When I click on the button "#edit-next"
 
@@ -90,7 +90,7 @@ Feature: Organisation User - Complete business details
          Then I expect that element "#edit-legal-entities" contains the text "0987654321"
         And I click on the checkbox "#edit-partnership-info-agreed-business"
         And I click on the button "#edit-save"
-        
+
         Then I expect that element "h1.heading-xlarge" contains the text "Thank you for completing the application"
         When I click on the button ".button"
         And I add "Business For Direct Partnership 27" to the inputfield "#edit-keywords"
