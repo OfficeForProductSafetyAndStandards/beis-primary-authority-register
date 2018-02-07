@@ -27,17 +27,6 @@ class ParLegalEntityForm extends ParBaseForm {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  protected $formItems = [
-    'par_data_legal_entity:legal_entity' => [
-      'registered_name' => 'registered_name',
-      'legal_entity_type' => 'legal_entity_type',
-      'registered_number' => 'registered_number',
-    ]
-  ];
-
-  /**
    * Load the data for this form.
    */
   public function loadData() {

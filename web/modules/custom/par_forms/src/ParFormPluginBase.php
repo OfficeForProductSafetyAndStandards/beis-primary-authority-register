@@ -278,10 +278,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
         $entity->set($field_name, $field_value);
 
         try {
-          $violations[$field_name] = $entity->validate()->filterByFieldAccess()
-            ->getByFields([
-              $field_name,
-            ]);
+          $violations[$field_name] = $entity->validate()->filterByFieldAccess()->getByFields([$field_name]);
         }
         catch(\Exception $e) {
           $this->getLogger($this->getLoggerChannel())->critical('An error occurred validating form %entity_id: @detail.', ['%entity_id' => $entity->getEntityTypeId(), '@details' => $e->getMessage()]);

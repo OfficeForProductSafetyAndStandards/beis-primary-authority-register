@@ -248,15 +248,31 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+    // We don't want to validate if just removing items.
+    $remove_action = strpos($form_state->getTriggeringElement()['#name'], 'remove:');
+    if ($remove_action !== FALSE) {
+      return;
+    }
+
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
       $component_violations = $this->getFormBuilder()->validatePluginElements($component, $form_state);
       if (!empty($component_violations)) {
         foreach ($component_violations[$component->getPluginId()] as $cardinality => $violations) {
-          foreach ($violations as $field_name => $violation) {
+          foreach ($violations as $field_name => $violation_list) {
             // Do not validate the last item if multiple cardinality is allowed.
-            if ($component->getCardinality() === 1 || $cardinality < $component->countItems($form_state->getValues())) {
-              $this->setFieldViolations($field_name, $form_state, $violation);
+            if ($violation_list->count() >= 1) {
+              $values = $form_state->getValue($component->getPluginId());
+              end($values);
+              $last_index = key($values);
+
+              if ($component->getCardinality() === 1 || $cardinality < $last_index) {
+                $this->setFieldViolations($field_name, $form_state, $violation_list);
+              } // Clear values for any unvalidated items that are not valid.
+              elseif ($component->getCardinality() > 1) {
+                $form_state->unsetValue([$component->getPluginId(), $last_index]);
+                var_dump($last_index); die();
+              }
             }
           }
         }
@@ -267,8 +283,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     if (!empty($this->getFormItems())) {
       $form_violations = $this->validateElements($form_state);
       if ($form_violations) {
-        foreach ($form_violations as $field_name => $violation) {
-          $this->setFieldViolations($field_name, $form_state, $violation);
+        foreach ($form_violations as $field_name => $violation_list) {
+          $this->setFieldViolations($field_name, $form_state, $violation_list);
         }
       }
     }
@@ -428,9 +444,11 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $values = $form_state->getValue($plugin_id);
     end($values);
     $component = $this->getComponent($plugin_id);
-    $violations = $component->validate($form_state, (int) $cardinality);
-    if ($component && !empty($violations)) {
-      $form_state->unsetValue([$plugin_id, key($values)]);
+    $violations = $component->validate($form_state, (int) key($values));
+    foreach ($violations as $field_name => $violation_list) {
+      if ($component && $violation_list->count() >= 1) {
+        $form_state->unsetValue([$plugin_id, key($values)]);
+      }
     }
 
     $this->getFlowDataHandler()->setFormTempData($this->cleanseFormDefaults($form_state->getValues()));
