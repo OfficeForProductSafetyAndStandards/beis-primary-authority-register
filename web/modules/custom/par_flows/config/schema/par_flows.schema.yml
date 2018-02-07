@@ -65,11 +65,11 @@ par_flows.par_flow.*:
 
 par_flows.component:
   type: mapping
-    label: 'Component'
-    mapping:
-      weight:
-        type: integer
-        label: 'Weight'
-      cardinality:
-        type: integer
-        label: 'Number of allowed values'
+  label: 'Component'
+  mapping:
+    weight:
+      type: integer
+      label: 'Weight'
+    cardinality:
+      type: integer
+      label: 'Number of allowed values'
