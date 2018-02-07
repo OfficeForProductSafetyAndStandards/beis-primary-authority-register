@@ -145,6 +145,6 @@ class ParContactDetailsForm extends ParFormPluginBase {
       $form_state->setErrorByName('work_phone', $this->t('<a href="#edit-work-phone">The work phone field is required.</a>'));
     }
 
-    parent::validate($form_state);
+    return parent::validate($form_state, $cardinality);
   }
 }

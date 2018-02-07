@@ -257,21 +257,16 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
       $component_violations = $this->getFormBuilder()->validatePluginElements($component, $form_state);
-      if (!empty($component_violations)) {
+      if (isset($component_violations[$component->getPluginId()])) {
         foreach ($component_violations[$component->getPluginId()] as $cardinality => $violations) {
           foreach ($violations as $field_name => $violation_list) {
             // Do not validate the last item if multiple cardinality is allowed.
             if ($violation_list->count() >= 1) {
-              $values = $form_state->getValue($component->getPluginId());
-              end($values);
-              $last_index = key($values);
-
-              if ($component->getCardinality() === 1 || $cardinality < $last_index) {
+              if ($component->getCardinality() === 1 || $cardinality < $component->countItems($form_state->getValues())) {
                 $this->setFieldViolations($field_name, $form_state, $violation_list);
               } // Clear values for any unvalidated items that are not valid.
-              elseif ($component->getCardinality() > 1) {
-                $form_state->unsetValue([$component->getPluginId(), $last_index]);
-                var_dump($last_index); die();
+              elseif ($component->getCardinality() !== 1) {
+                $form_state->unsetValue([$component->getPluginId(), $cardinality-1]);
               }
             }
           }
@@ -443,11 +438,12 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // If the last item does not validate we must remove this too.
     $values = $form_state->getValue($plugin_id);
     end($values);
+    $last_index = (int) key($values);
     $component = $this->getComponent($plugin_id);
-    $violations = $component->validate($form_state, (int) key($values));
+    $violations = $component->validate($form_state, $last_index);
     foreach ($violations as $field_name => $violation_list) {
       if ($component && $violation_list->count() >= 1) {
-        $form_state->unsetValue([$plugin_id, key($values)]);
+        $form_state->unsetValue([$plugin_id, $last_index]);
       }
     }
 

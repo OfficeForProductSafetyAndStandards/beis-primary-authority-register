@@ -101,7 +101,7 @@ class ParFormBuilder extends DefaultPluginManager {
 
       // Only show remove for plugins with multiple cardinality
       if ($component->getCardinality() !== 1) {
-        $elements[$component->getPluginId()][$i - 1]['remove'] = [
+        $elements[$component->getPluginId()][$i-1]['remove'] = [
           '#type' => 'submit',
           '#name' => "remove:{$component->getPluginId()}:{$i}",
           '#weight' => 100,
