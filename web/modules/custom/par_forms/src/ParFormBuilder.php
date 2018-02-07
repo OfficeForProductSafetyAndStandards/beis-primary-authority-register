@@ -27,6 +27,11 @@ class ParFormBuilder extends DefaultPluginManager {
   const PAR_LOGGER_CHANNEL = 'par';
 
   /**
+   * The logger channel to use.
+   */
+  const PAR_COMPONENT_PREFIX = 'par_component_';
+
+  /**
    * Constructs a ParScheduleManager object.
    *
    * @param \Traversable $namespaces
@@ -87,9 +92,9 @@ class ParFormBuilder extends DefaultPluginManager {
    *
    * @return array
    */
-  public function getPluginElements($component, $elements = []) {
+  public function getPluginElements($component, &$elements = []) {
     // Add all the registered components to the form.
-    $elements[$component->getPluginId()] = [
+    $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()] = [
       '#weight' => $component->getWeight(),
       '#tree' => $component->getCardinality() === 1 ? FALSE : TRUE,
     ];
@@ -97,11 +102,11 @@ class ParFormBuilder extends DefaultPluginManager {
     // Count the current cardinality.
     $count = $component->countItems() + 1 ?: 1;
     for ($i = 1; $i <= $count; $i++) {
-      $elements[$component->getPluginId()][$i-1] = $component->getElements([], $i);
+      $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()] = $component->getElements([], $i);
 
       // Only show remove for plugins with multiple cardinality
       if ($component->getCardinality() !== 1) {
-        $elements[$component->getPluginId()][$i-1]['remove'] = [
+        $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()]['remove'] = [
           '#type' => 'submit',
           '#name' => "remove:{$component->getPluginId()}:{$i}",
           '#weight' => 100,
