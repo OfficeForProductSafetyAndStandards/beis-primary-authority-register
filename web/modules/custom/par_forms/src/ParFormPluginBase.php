@@ -129,7 +129,9 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
    */
   public function countItems($data = NULL) {
     if ($this->getCardinality() !== 1) {
-      return isset($data[$this->getPluginId()]) ? count($data[$this->getPluginId()]) : count($this->getFlowDataHandler()->getTempDataValue($this->getPluginId()));
+      return isset($data[ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginId()]) ?
+        count($data[ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginId()]) :
+        count($this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginId()));
     }
 
     return NULL;
@@ -153,7 +155,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
    */
   public function getElementKey($element, $cardinality = 1) {
     if ($this->getCardinality() !== 1 || $cardinality !== 1) {
-      $key = [$this->getPluginId(), $cardinality-1];
+      $key = [ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginId(), $cardinality-1];
       if (is_array($element)) {
         foreach ($element as $e) {
           array_push($key, $e);

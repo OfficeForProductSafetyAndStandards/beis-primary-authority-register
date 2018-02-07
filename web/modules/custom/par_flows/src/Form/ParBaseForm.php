@@ -16,6 +16,7 @@ use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
+use Drupal\par_forms\ParFormBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityConstraintViolationListInterface;
@@ -265,7 +266,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
               if ($component->getCardinality() === 1 || $cardinality < $component->countItems($form_state->getValues())) {
                 $this->setFieldViolations($field_name, $form_state, $violation_list);
               } // Clear values for any unvalidated items that are not valid.
-              elseif ($component->getCardinality() !== 1) {
+              elseif ($component->getCardinality() !== 1 && $cardinality !== 1) {
                 $form_state->unsetValue([$component->getPluginId(), $cardinality-1]);
               }
             }
@@ -433,17 +434,17 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   public function removeItem(array &$form, FormStateInterface $form_state) {
     list($button, $plugin_id, $cardinality) = explode(':', $form_state->getTriggeringElement()['#name']);
 
-    $form_state->unsetValue([$plugin_id, (int) $cardinality-1]);
+    $form_state->unsetValue([ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_id, (int) $cardinality-1]);
 
     // If the last item does not validate we must remove this too.
-    $values = $form_state->getValue($plugin_id);
+    $values = $form_state->getValue(ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_id);
     end($values);
     $last_index = (int) key($values);
     $component = $this->getComponent($plugin_id);
     $violations = $component->validate($form_state, $last_index);
     foreach ($violations as $field_name => $violation_list) {
       if ($component && $violation_list->count() >= 1) {
-        $form_state->unsetValue([$plugin_id, $last_index]);
+        $form_state->unsetValue([ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_id, $last_index]);
       }
     }
 

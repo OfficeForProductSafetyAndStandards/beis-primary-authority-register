@@ -8,6 +8,7 @@ use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_partnership_confirmation_flows\ParFlowAccessTrait;
 
 /**
@@ -144,7 +145,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
     // Set the data for the legal entities.
     $legal_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_add_legal_entity');
-    $legal_entities = $this->getFlowDataHandler()->getTempDataValue('legal_entity', $legal_cid) ?: [];
+    $legal_entities = $this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $legal_cid) ?: [];
     $par_data_legal_entities = [];
     foreach ($legal_entities as $delta => $legal_entity) {
       // These ones need to be saved fresh.

@@ -102,11 +102,11 @@ class ParFormBuilder extends DefaultPluginManager {
     // Count the current cardinality.
     $count = $component->countItems() + 1 ?: 1;
     for ($i = 1; $i <= $count; $i++) {
-      $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()] = $component->getElements([], $i);
+      $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1] = $component->getElements([], $i);
 
       // Only show remove for plugins with multiple cardinality
       if ($component->getCardinality() !== 1) {
-        $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()]['remove'] = [
+        $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1]['remove'] = [
           '#type' => 'submit',
           '#name' => "remove:{$component->getPluginId()}:{$i}",
           '#weight' => 100,
