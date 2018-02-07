@@ -1,0 +1,4 @@
+text:
+  -
+    value: "Dear Colleague,\r\n\r\nThis email is confirmation that you have received an enforcement notification. \r\n\r\nYou must respond within 5 working days, or this notification will be allowed automatically.\r\n\r\nPlease log on to the PA Register to see the full details of the notification and to respond.\r\n\r\n^ @enforcement_notice_review\r\n\r\nThank you\r\n"
+    format: plain_text
