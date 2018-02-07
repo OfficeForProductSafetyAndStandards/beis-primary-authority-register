@@ -63,12 +63,14 @@ Feature: Organisation User - Complete business details
         # ADD LEGAL ENTITY
 
         Then I expect that element "h1.heading-xlarge" contains the text "Confirm the legal entity"
-        When I add "New LLP Company" to the inputfield "#edit-legal-entity-registered-name"
-        And I select the option with the text "Limited Liability Partnership" for element "#edit-legal-entity-legal-entity-type"
+        When I add "New LLP Company" to the inputfield "#edit-registered-name"
+        And I select the option with the text "Limited Liability Partnership" for element "#edit-legal-entity-type"
         Then I expect that element ".js-form-item-legal-entity-1-registered-number label" contains the text "Provide the registration number"
-        When I add "1234567890" to the inputfield "#edit-legal-entity-registered-number"
-        When I click on the button "#edit-next"
-        Then I expect that element "#edit-organisation-name" contains the text "Business For Direct Partnership 27"
+        When I add "1234567890" to the inputfield "#edit-registered-number"
+        When I click on the button "#edit-next"#edit-legal-entity
+
+        Then I expect that element "h1.heading-xlarge" contains the text "Review the partnership summary information below"
+        And I expect that element "#edit-organisation-name" contains the text "Business For Direct Partnership 27"
         And I expect that element "#edit-organisation-registered-address" contains the text "1 Change St"
         And I expect that element "#edit-organisation-registered-address" contains the text "New Change"
         And I expect that element "#edit-organisation-registered-address" contains the text "London"
