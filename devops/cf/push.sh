@@ -18,7 +18,7 @@ CURRENT_DIR=${PWD##*/}
 
 if [ $CURRENT_DIR != "cf" ]; then
     echo "################################################################################################"
-    echo >&2 "Please run this script from the /cf directory of the repository"
+    echo >&2 "Please run this script from the /devops/cf directory of the repository"
     echo "################################################################################################"
     exit 1
 fi
@@ -45,14 +45,23 @@ command -v cf >/dev/null 2>&1 || {
     exit 1 
 }
 
-echo -n "Enter your Cloud Foundry username: "
-read CF_USER
+if [[ -z "${GOVUK_CF_USER}" ]]; then
+    echo -n "Enter your Cloud Foundry username: "
+    read CF_USER
+    echo "Note: You can set a default username by setting the GOVUK_CF_USER environment variable"
+else
+    CF_USER=$GOVUK_CF_USER
+    echo "Username: $CF_USER"
+fi
+
 echo -n "Enter your Cloud Foundry password (will be hidden): "
 read -s CF_PASS
 cf login -a api.cloud.service.gov.uk -u $CF_USER -p $CF_PASS
 if [ $? != 0 ]; then
     exit
 fi
+
+cf target -o office-for-product-safety-and-standards -s primary-authority-register
 
 echo -n "Enter the environment name (e.g. staging): "
 read ENV
@@ -116,18 +125,27 @@ export AWS_SECRET_ACCESS_KEY=`vault read -field=AWS_SECRET_ACCESS_KEY secret/par
 # Get environment variables that will be set on the target environment
 ####################################################################################
 
-S3_ACCESS_KEY=`vault read -field=S3_ACCESS_KEY secret/par/env/$ENV`
-S3_SECRET_KEY=`vault read -field=S3_SECRET_KEY secret/par/env/$ENV`
-PAR_HASH_SALT=`vault read -field=PAR_HASH_SALT secret/par/env/$ENV`
-S3_BUCKET_PUBLIC=`vault read -field=S3_BUCKET_PUBLIC secret/par/env/$ENV`
-S3_BUCKET_PRIVATE=`vault read -field=S3_BUCKET_PRIVATE secret/par/env/$ENV`
-S3_BUCKET_ARTIFACTS=`vault read -field=S3_BUCKET_ARTIFACTS secret/par/env/$ENV`
-PAR_GOVUK_NOTIFY_KEY=`vault read -field=PAR_GOVUK_NOTIFY_KEY secret/par/env/$ENV`
-PAR_GOVUK_NOTIFY_TEMPLATE=`vault read -field=PAR_GOVUK_NOTIFY_TEMPLATE secret/par/env/$ENV`
-CLAMAV_HTTP_PASS=`vault read -field=CLAMAV_HTTP_PASS secret/par/env/$ENV`
-CLAMAV_HTTP_USER=`vault read -field=CLAMAV_HTTP_USER secret/par/env/$ENV`
-SENTRY_DSN=`vault read -field=SENTRY_DSN secret/par/env/$ENV`
-SENTRY_DSN_PUBLIC=`vault read -field=SENTRY_DSN_PUBLIC secret/par/env/$ENV`
+VAULT_ENV_VARS=( \
+    "S3_ACCESS_KEY" \
+    "S3_SECRET_KEY" \
+    "PAR_HASH_SALT" \
+    "S3_BUCKET_PUBLIC" \
+    "S3_BUCKET_PRIVATE" \
+    "S3_BUCKET_ARTIFACTS" \
+    "PAR_GOVUK_NOTIFY_KEY" \
+    "PAR_GOVUK_NOTIFY_TEMPLATE" \
+    "CLAMAV_HTTP_PASS" \
+    "CLAMAV_HTTP_USER" \
+    "SENTRY_DSN" \
+    "SENTRY_DSN_PUBLIC" \
+)
+
+I=0
+for VAR_NAME in "${VAULT_ENV_VARS[@]}"
+do
+    ENV_VAR_VALUES[$I]=`vault read -field=$VAR_NAME secret/par/env/$ENV`
+    I=$((I+1))
+done
 
 ####################################################################################
 # Reseal the vault
@@ -196,25 +214,20 @@ else
     TARGET_ENV=par-beta-$ENV-green
 fi
 
-cf set-env $TARGET_ENV S3_ACCESS_KEY $S3_ACCESS_KEY
-cf set-env $TARGET_ENV S3_SECRET_KEY $S3_SECRET_KEY
-cf set-env $TARGET_ENV PAR_HASH_SALT $PAR_HASH_SALT
-cf set-env $TARGET_ENV S3_BUCKET_PUBLIC $S3_BUCKET_PUBLIC
-cf set-env $TARGET_ENV S3_BUCKET_PRIVATE $S3_BUCKET_PRIVATE
-cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS $S3_BUCKET_ARTIFACTS
+I=0
+for ENV_VAR_NAME in "${VAULT_ENV_VARS[@]}"
+do
+    cf set-env $TARGET_ENV $ENV_VAR_NAME ${ENV_VAR_VALUES[$I]}
+    I=$((I+1))
+done
+
 cf set-env $TARGET_ENV APP_ENV $ENV
-cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_KEY $PAR_GOVUK_NOTIFY_KEY
-cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_TEMPLATE $PAR_GOVUK_NOTIFY_TEMPLATE
-cf set-env $TARGET_ENV CLAMAV_HTTP_PASS $CLAMAV_HTTP_PASS
-cf set-env $TARGET_ENV CLAMAV_HTTP_USER $CLAMAV_HTTP_USER
-cf set-env $TARGET_ENV SENTRY_DSN $SENTRY_DSN
-cf set-env $TARGET_ENV SENTRY_DSN_PUBLIC $SENTRY_DSN_PUBLIC
 
 cf restage $TARGET_ENV
 
 if [[ $1 != "environment-only" ]]; then
 
-    cf ssh par-beta-$ENV-green -c "cd app/tools && python post_deploy.py"
+    cf ssh par-beta-$ENV-green -c "cd app/devops/tools && python post_deploy.py"
     
     ####################################################################################
     # Blue/Green magic - switch domain routes to newly-deployed app
@@ -235,6 +248,6 @@ if [[ $1 != "environment-only" ]]; then
     
     cf scale par-beta-$ENV -i $INSTANCES
 
-    cf ssh par-beta-$ENV -c "cd app/tools && python cron_runner.py"
-    cf ssh par-beta-$ENV -c "cd app/tools && python cache_warmer.py"
+    cf ssh par-beta-$ENV -c "cd app/devops/tools && python cron_runner.py"
+    cf ssh par-beta-$ENV -c "cd app/devops/tools && python cache_warmer.py"
 fi
