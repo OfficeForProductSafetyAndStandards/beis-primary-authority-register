@@ -128,6 +128,45 @@ trait ParDisplayTrait {
   }
 
   /**
+   * Display an EntityReferenceFieldItemList using the given settings.
+   *
+   * Adds the required operations to each field item that gets rendered.
+   *
+   * @param string $section
+   *   The section name to display on operation links.
+   * @param EntityInterface $entities
+   *   The entities to render.
+   * @param string $view_mode
+   *   The view mode to render the fields from.
+   * @param array $operations
+   *   The array of operations to add for each field item.
+   * @param bool $single
+   *   Whether or not to only return the first item.
+   *
+   * @return array
+   */
+  public function renderEntities($section, $entities, $view_mode = 'summary', $operations = [], $single = FALSE) {
+    $elements = [];
+    foreach ($entities as $delta => $entity) {
+      $entity_view_builder = $this->getParDataManager()->getViewBuilder($entity->getEntityTypeId());
+      $rendered_entity = $entity_view_builder->view($entity, $view_mode);
+      $elements[$delta] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+      $elements[$delta]['entity'] = $this->renderMarkupField($rendered_entity);
+
+      if ($single) {
+        break;
+      }
+    }
+
+    return $elements;
+  }
+
+  /**
    * @param string $section
    *   The section name to display on operation links.
    * @param EntityInterface $entity
@@ -184,16 +223,6 @@ trait ParDisplayTrait {
     return ['operations' => $operation_links];
   }
 
-  public function renderEntity($entity, $view_mode) {
-    $view_display = $this->entityTypeManager
-      ->getStorage('entity_view_display')
-      ->load($entity->getEntityTypeId() . '.' . $entity->bundle() . '.' . $view_mode);
-
-    var_dump(get_class($view_display));
-
-    //return $this->renderSection($section, $entity, $fields, $operations, $title, $single, $section_title_only);
-  }
-
   /**
    * Helper function for rendering field sections.
    *
@@ -222,7 +251,7 @@ trait ParDisplayTrait {
    *
    * @return mixed
    */
-  public function renderSection($section, $entity, $fields, $operations = [], $title = TRUE, $single = FALSE, $section_title_only = FALSE) {
+  public function renderSection($section, $entity, $fields = [], $operations = [], $title = TRUE, $single = FALSE, $section_title_only = FALSE) {
 
     // If rendering logic is called on an NULL object prevent system failures.
     if (empty($entity)) {

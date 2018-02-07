@@ -15,7 +15,7 @@ use Drupal\par_forms\ParFormPluginBase;
 class ParAboutBusinessForm extends ParFormPluginBase {
 
   /**
-   * Mapping of the data parameters to the form elements.
+   * {@inheritdoc}
    */
   protected $formItems = [
     'par_data_organisation:organisation' => [
@@ -24,9 +24,9 @@ class ParAboutBusinessForm extends ParFormPluginBase {
   ];
 
   /**
-   * Load the data for this form.
+   * {@inheritdoc}
    */
-  public function loadData() {
+  public function loadData($cardinality = 1) {
     if ($par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation')) {
       $this->getFlowDataHandler()->setFormPermValue('about_business', $par_data_organisation->get('comments')->getString());
     }
@@ -37,11 +37,12 @@ class ParAboutBusinessForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = []) {
+  public function getElements($form = [], $cardinality = 1) {
+
     $form['about_business'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Provide information about the business'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('about_business'),
+      '#default_value' => $this->getDefaultValuesByKey('about_business', $cardinality),
       '#description' => '<p>Use this section to give a brief overview of the business.</p><p>Include any information you feel may be useful to enforcing authorities.</p>',
     ];
 

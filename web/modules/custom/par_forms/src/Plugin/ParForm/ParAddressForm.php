@@ -33,7 +33,7 @@ class ParAddressForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
-  public function loadData() {
+  public function loadData($cardinality = 1) {
     if ($par_data_premises = $this->getFlowDataHandler()->getParameter('par_data_premises')) {
       $address = $par_data_premises->get('address')->first();
 
@@ -62,7 +62,7 @@ class ParAddressForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = []) {
+  public function getElements($form = [], $cardinality = 1) {
     $premises_bundle = $this->getParDataManager()->getParBundleEntity('par_data_premises');
 
     $form['premises_id'] = [
@@ -73,39 +73,39 @@ class ParAddressForm extends ParFormPluginBase {
     $form['address_line1'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter your Address Line 1'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("address_line1"),
+      '#default_value' => $this->getDefaultValuesByKey('address_line1', $cardinality),
     ];
 
     $form['address_line2'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter your Address Line 2'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("address_line2"),
+      '#default_value' => $this->getDefaultValuesByKey('address_line2', $cardinality),
     ];
 
     $form['town_city'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter your Town / City'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("town_city"),
+      '#default_value' => $this->getDefaultValuesByKey('town_city', $cardinality),
     ];
 
     $form['county'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter your County'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("county"),
+      '#default_value' => $this->getDefaultValuesByKey('county', $cardinality),
     ];
 
     $form['country_code'] = [
       '#type' => 'select',
       '#options' => $this->getCountryRepository()->getList(NULL),
       '#title' => $this->t('Country'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("country_code", "GB"),
+      '#default_value' => $this->getDefaultValuesByKey('country_code', $cardinality, 'GB'),
     ];
 
     $form['nation'] = [
       '#type' => 'select',
       '#title' => $this->t('Select your Nation'),
       '#options' => $premises_bundle->getAllowedValues('nation'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("nation"),
+      '#default_value' => $this->getDefaultValuesByKey('nation', $cardinality),
       '#states' => [
         'visible' => [
           'select[name="country_code"]' => [

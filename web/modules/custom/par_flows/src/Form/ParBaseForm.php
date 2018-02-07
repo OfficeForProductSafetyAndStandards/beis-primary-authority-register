@@ -7,6 +7,7 @@ use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Render\Element;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\par_data\ParDataManagerInterface;
@@ -169,12 +170,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
-      $form[$component->getName()] = [
-        'weight' => $component->getWeight(),
-        'tree' => $component->getCardinality() === 1 ? FALSE : TRUE,
-      ];
-      // @TODO Make it multiple.
-      $form[$component->getName()] = $component->getElements($form);
+      $form = $this->getFormBuilder()->getPluginElements($component);
     }
 
     // Only ever place a 'done' action by itself.
@@ -254,10 +250,15 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
-      $component_violations = $component->validate($form_state);
-      if ($component_violations) {
-        foreach ($component_violations as $field_name => $violation) {
-          $this->setFieldViolations($field_name, $form_state, $violation);
+      $component_violations = $this->getFormBuilder()->validatePluginElements($component, $form_state);
+      if (!empty($component_violations)) {
+        foreach ($component_violations[$component->getPluginId()] as $cardinality => $violations) {
+          foreach ($violations as $field_name => $violation) {
+            // Do not validate the last item if multiple cardinality is allowed.
+            if ($component->getCardinality() === 1 || $cardinality < $component->countItems($form_state->getValues())) {
+              $this->setFieldViolations($field_name, $form_state, $violation);
+            }
+          }
         }
       }
     }
@@ -405,6 +406,34 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $submit_action = $form_state->getTriggeringElement()['#name'];
     $next = $this->getFlowNegotiator()->getFlow()->getNextRoute($submit_action);
     $form_state->setRedirect($next, $this->getRouteParams());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function multipleItemActionsSubmit(array &$form, FormStateInterface $form_state) {
+    $values = $this->cleanseFormDefaults($form_state->getValues());
+    $this->getFlowDataHandler()->setFormTempData($values);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function removeItem(array &$form, FormStateInterface $form_state) {
+    list($button, $plugin_id, $cardinality) = explode(':', $form_state->getTriggeringElement()['#name']);
+
+    $form_state->unsetValue([$plugin_id, (int) $cardinality-1]);
+
+    // If the last item does not validate we must remove this too.
+    $values = $form_state->getValue($plugin_id);
+    end($values);
+    $component = $this->getComponent($plugin_id);
+    $violations = $component->validate($form_state, (int) $cardinality);
+    if ($component && !empty($violations)) {
+      $form_state->unsetValue([$plugin_id, key($values)]);
+    }
+
+    $this->getFlowDataHandler()->setFormTempData($this->cleanseFormDefaults($form_state->getValues()));
   }
 
   /**

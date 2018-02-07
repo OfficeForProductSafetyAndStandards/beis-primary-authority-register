@@ -112,6 +112,19 @@ trait ParControllerTrait {
   /**
    * {@inheritdoc}
    */
+  public function getComponent($component_name) {
+    foreach ($this->getComponents() as $component) {
+      if ($component->getPluginId() === $component_name) {
+        return $component;
+      }
+    }
+
+    return NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getFlowNegotiator() {
     return $this->negotiator;
   }
@@ -149,8 +162,8 @@ trait ParControllerTrait {
    */
   public function loadData() {
     // Load data for all the registered components of the form.
-    foreach ($this->getComponents() as $weight => $component) {
-      $component->loadData();
+    foreach ($this->getComponents() as $component) {
+      $this->getFormBuilder()->loadPluginData($component);
     }
   }
 

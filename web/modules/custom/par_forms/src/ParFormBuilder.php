@@ -7,6 +7,7 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Logger\LoggerChannelTrait;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Provides a PAR Form Builder plugin manager.
@@ -18,6 +19,7 @@ use Drupal\Core\Logger\LoggerChannelTrait;
 class ParFormBuilder extends DefaultPluginManager {
 
   use LoggerChannelTrait;
+  use StringTranslationTrait;
 
   /**
    * The logger channel to use.
@@ -61,4 +63,83 @@ class ParFormBuilder extends DefaultPluginManager {
 
     return $plugin;
   }
+
+  /**
+   * Helper to load the data for this plugin.
+   *
+   * @param $component
+   */
+  public function loadPluginData($component) {
+    // Count the current cardinality.
+    $count = $component->countItems() + 1 ?: 1;
+    for ($i = 1; $i <= $count; $i++) {
+      $component->loadData($i);
+    }
+  }
+
+  /**
+   * Helper to get all the elements from a plugin.
+   *
+   * @param ParFormPluginBaseInterface $component
+   *   The plugin to load elements for.
+   * @param array $elements
+   *   An array to add the elements to.
+   *
+   * @return array
+   */
+  public function getPluginElements($component, $elements = []) {
+    // Add all the registered components to the form.
+    $elements[$component->getPluginId()] = [
+      '#weight' => $component->getWeight(),
+      '#tree' => $component->getCardinality() === 1 ? FALSE : TRUE,
+    ];
+
+    // Count the current cardinality.
+    $count = $component->countItems() + 1 ?: 1;
+    for ($i = 1; $i <= $count; $i++) {
+      $elements[$component->getPluginId()][$i-1] = $component->getElements([], $i);
+
+      // Only show remove for plugins with multiple cardinality
+      if ($component->getCardinality() !== 1) {
+        $elements[$component->getPluginId()][$i - 1]['remove'] = [
+          '#type' => 'submit',
+          '#name' => "remove:{$component->getPluginId()}:{$i}",
+          '#weight' => 100,
+          '#submit' => ['::removeItem'],
+          '#value' => $this->t("Remove"),
+          '#attributes' => [
+            'class' => ['btn-link'],
+          ],
+        ];
+      }
+    }
+
+    if ($component->getCardinality() === -1 || ($component->getCardinality() > 1 && $component->getCardinality() > $count)) {
+      $elements['actions']['add_another'] = [
+        '#type' => 'submit',
+        '#name' => 'add_another',
+        '#validate' => ['::validateForm'],
+        '#submit' => ['::multipleItemActionsSubmit'],
+        '#value' => $this->t('Add another'),
+        '#attributes' => [
+          'class' => ['btn-link'],
+        ],
+      ];
+    }
+
+    return $elements;
+  }
+
+  public function validatePluginElements($component, $form_state) {
+    $violations = [];
+
+    // Count the current cardinality.
+    $count = $component->countItems() + 1 ?: 1;
+    for ($i = 1; $i <= $count; $i++) {
+      $violations[$component->getPluginId()][$i] = $component->validate($form_state, $i);
+    }
+
+    return $violations;
+  }
+
 }

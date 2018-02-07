@@ -31,7 +31,7 @@ class ParContactDetailsForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
-  public function loadData() {
+  public function loadData($cardinality = 1) {
     if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
       $this->getFlowDataHandler()->setFormPermValue("salutation", $par_data_person->get('salutation')->getString());
       $this->getFlowDataHandler()->setFormPermValue("first_name", $par_data_person->get('first_name')->getString());
@@ -58,42 +58,42 @@ class ParContactDetailsForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = []) {
+  public function getElements($form = [], $cardinality = 1) {
     $form['salutation'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the title (optional)'),
       '#description' => $this->t('For example, Ms Mr Mrs Dr'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("salutation"),
+      '#default_value' => $this->getDefaultValuesByKey('salutation', $cardinality),
     ];
 
     $form['first_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the first name'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("first_name"),
+      '#default_value' => $this->getDefaultValuesByKey('first_name', $cardinality),
     ];
 
     $form['last_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the last name'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("last_name"),
+      '#default_value' => $this->getDefaultValuesByKey('work_phone', $cardinality),
     ];
 
     $form['work_phone'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the work phone number'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("work_phone"),
+      '#default_value' => $this->getDefaultValuesByKey('work_phone', $cardinality),
     ];
 
     $form['mobile_phone'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the mobile phone number (optional)'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("mobile_phone"),
+      '#default_value' => $this->getDefaultValuesByKey('mobile_phone', $cardinality),
     ];
 
     $form['email'] = [
       '#type' => 'email',
       '#title' => $this->t('Enter the email address'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("email"),
+      '#default_value' => $this->getDefaultValuesByKey('email', $cardinality),
       // Prevent modifying email if editing an existing user.
       '#disabled' => !empty($par_data_person),
     ];
@@ -110,14 +110,14 @@ class ParContactDetailsForm extends ParFormPluginBase {
       '#type' => 'checkboxes',
       '#title' => $this->t('Select the preferred methods of contact (optional)'),
       '#options' => $contact_options,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("preferred_contact", []),
+      '#default_value' => $this->getDefaultValuesByKey('preferred_contact', $cardinality, []),
       '#return_value' => 'on',
     ];
 
     $form['notes'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Provide contact notes (optional)'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('notes'),
+      '#default_value' => $this->getDefaultValuesByKey('notes', $cardinality),
       '#description' => 'Add any additional notes about how best to contact this person.',
     ];
 
@@ -127,7 +127,7 @@ class ParContactDetailsForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function validate(&$form_state) {
+  public function validate(&$form_state, $cardinality = 1) {
     // @todo create wrapper for setErrorByName as this is ugly creating a link.
     if (empty($form_state->getValue('email'))) {
       $form_state->setErrorByName('email', $this->t('<a href="#edit-email">The email field is required.</a>'));

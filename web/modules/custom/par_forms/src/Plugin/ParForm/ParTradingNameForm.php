@@ -26,7 +26,7 @@ class ParTradingNameForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
-  public function loadData() {
+  public function loadData($cardinality = 1) {
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
     $trading_name_delta = $this->getFlowDataHandler()->getParameter('trading_name_delta');
     if ($par_data_organisation) {
@@ -44,11 +44,11 @@ class ParTradingNameForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = []) {
+  public function getElements($form = [], $cardinality = 1) {
     $form['trading_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter a trading name'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("trading_name"),
+      '#default_value' => $this->getDefaultValuesByKey('trading_name', $cardinality),
       '#description' => $this->t("<p>Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State any trading names used by the organisation.</p>"),
     ];
 

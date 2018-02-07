@@ -120,10 +120,93 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
   }
 
   /**
+   * Count the cardinality of already submitted values.
+   *
+   * @param mixed $data
+   *   If required the data to be counted can be switched to the form_state values.
+   *
+   * @return integer|NULL
+   */
+  public function countItems($data = NULL) {
+    if ($this->getCardinality() !== 1) {
+      return isset($data[$this->getPluginId()]) ? count($data[$this->getPluginId()]) : count($this->getFlowDataHandler()->getTempDataValue($this->getPluginId()));
+    }
+
+    return NULL;
+  }
+
+  public function getDefaultValuesByKey($key, $cardinality, $default = '', $cid = NULL) {
+    $element_key = $this->getElementKey($key, $cardinality);
+    return $this->getFlowDataHandler()->getDefaultValues($this->getElementKey($key, $cardinality), $default, $cid);
+  }
+
+  /**
+   * Get's the element key depending on the cardinality of this plugin.
+   *
+   * @param $element
+   *   The element key.
+   * @param int $cardinality
+   *   The cardinality of this element.
+   *
+   * @return string|array
+   *   The key for this form element.
+   */
+  public function getElementKey($element, $cardinality = 1) {
+    if ($this->getCardinality() !== 1 || $cardinality !== 1) {
+      $key = [$this->getPluginId(), $cardinality-1];
+      if (is_array($element)) {
+        foreach ($element as $e) {
+          array_push($key, $e);
+        }
+        return $key;
+      }
+      else {
+        array_push($key, $element);
+        return $key;
+      }
+    }
+    else {
+      return $element;
+    }
+  }
+
+  /**
+   * Get's the element name depending on the cardinality of this plugin.
+   *
+   * @param $element
+   *   The element key.
+   * @param int $cardinality
+   *   The cardinality of this element.
+   *
+   * @return string|array
+   *   The key for this form element.
+   */
+  public function getElementName($element, $cardinality = 1) {
+    if ($this->getCardinality() !== 1 || $cardinality !== 1) {
+      if (is_array($element)) {
+        return "{$this->getPluginId()}[$cardinality][{implode('][',$element)}]";
+      }
+      else {
+        return "{$this->getPluginId()}[$cardinality][$element]";
+      }
+    }
+    else {
+      return $element;
+    }
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getMapping() {
     return $this->formItems;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDefaults() {
+    return $this->defaults;
   }
 
   public function createMappingEntities() {
@@ -148,7 +231,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
   /**
    * {@inheritdoc}
    */
-  public function loadData() {
+  public function loadData($cardinality = 1) {
     // @TODO Add automatic loading of data based on the mapping (self::getMapping)
     // between self::getElements() and self::getFlowDataHandler()->getParameters()
   }
@@ -161,7 +244,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
   /**
    * {@inheritdoc}
    */
-  public function validate(&$form_state) {
+  public function validate(&$form_state, $cardinality = 1) {
     $violations = [];
 
     // Assign all the form values to the relevant entity field values.
@@ -181,15 +264,15 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
           foreach ($form_item as $field_property => $form_property_item) {
             // For entity reference fields we need to transform the ids to integers.
             if ($field_definition->getType() === 'entity_reference' && $field_property === 'target_id') {
-              $field_value[$field_property] = (int) $form_state->getValue($form_property_item);
+              $field_value[$field_property] = (int) $form_state->getValue($this->getElementKey($form_property_item, $cardinality));
             }
             else {
-              $field_value[$field_property] = $form_state->getValue($form_property_item);
+              $field_value[$field_property] = $form_state->getValue($this->getElementKey($form_property_item, $cardinality));
             }
           }
         }
         else {
-          $field_value = $form_state->getValue($form_item);
+          $field_value = $form_state->getValue($this->getElementKey($form_item, $cardinality));
         }
 
         $entity->set($field_name, $field_value);
@@ -212,7 +295,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
   /**
    * {@inheritdoc}
    */
-  public function save() {
+  public function save($cardinality = 1) {
     // @TODO Add automatic saving of data based on the mapping (self::getMapping)
     // between self::getElements() and self::getFlowDataHandler()->getParameters()
   }
