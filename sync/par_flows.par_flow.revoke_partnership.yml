@@ -3,13 +3,15 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: j-PPsyK85-2IXfj8Wlgf4SZoEwbNfQDOMqgOBWia0nM
+  default_config_hash: v3ywlRNQRX-R0CHX80EP3jcUidTAV9KlkAJtN094QPE
 id: revoke_partnership
 label: 'Revoke Partnership'
 default_title: null
 default_section_title: null
 description: 'The revoke operations for a given partnership.'
 save_method: end
+states:
+  - par_data_partnership
 steps:
   1:
     route: par_help_desks_flows.confirm_revoke_partnership

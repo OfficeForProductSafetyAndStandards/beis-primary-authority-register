@@ -36,12 +36,6 @@ class ParRdHelpDeskApproveForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
 
-    if ($par_data_partnership) {
-      // If we're editing an entity we should set the state
-      // to something other than default to avoid conflicts
-      // with existing versions of the same form.
-      $this->setState("edit:{$par_data_partnership->id()}");
-    }
   }
 
   /**

@@ -7,6 +7,8 @@ default_title: null
 default_section_title: 'Primary Authority partnership information'
 description: ''
 save_method: step
+states:
+  - par_data_partnership
 steps:
   1:
     route: par_partnership_flows.authority_details

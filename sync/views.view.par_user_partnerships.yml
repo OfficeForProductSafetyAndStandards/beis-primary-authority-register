@@ -108,11 +108,20 @@ display:
           description: ''
           columns:
             id: id
+            authority_name: authority_name
             organisation_name: organisation_name
-            field_premises: field_premises
+            par_flow_link: par_flow_link
+            par_partnership_flow_link: par_partnership_flow_link
             partnership_status: partnership_status
           info:
             id:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            authority_name:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -126,7 +135,16 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            field_premises:
+            par_flow_link:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            par_partnership_flow_link:
+              sortable: false
+              default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
@@ -394,9 +412,62 @@ display:
           plugin_id: par_flow_link
         par_flow_link_1:
           id: par_flow_link_1
-          table: par_organisations_field_data
+          table: par_authorities_field_data
           field: par_flow_link
-          relationship: field_organisation
+          relationship: field_authority
+          group_type: group
+          admin_label: ''
+          label: 'PAR Flow Link (Organisation details link)'
+          exclude: true
+          alter:
+            alter_text: true
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          title: '{{ organisation_name }}'
+          link: '/partnership/{{id}}/organisation-details'
+          hidden: 0
+          entity_type: par_data_authority
+          plugin_id: par_flow_link
+        par_flow_link_2:
+          id: par_flow_link_2
+          table: par_authorities_field_data
+          field: par_flow_link
+          relationship: field_authority
           group_type: group
           admin_label: ''
           label: 'Organisation Details Link'
@@ -436,14 +507,14 @@ display:
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
-          empty: ''
+          empty: '{{ par_flow_link_1 }}'
           hide_empty: false
           empty_zero: false
-          hide_alter_empty: true
-          title: '{{organisation_name}}'
-          link: '/partnership/{{id}}/organisation-details'
-          hidden: 0
-          entity_type: par_data_organisation
+          hide_alter_empty: false
+          title: '{{ organisation_name }}'
+          link: '/partnership/confirm/{{id}}/about'
+          hidden: 1
+          entity_type: par_data_authority
           plugin_id: par_flow_link
         partnership_status:
           id: partnership_status
@@ -876,14 +947,345 @@ display:
         - url.query_args
         - user.permissions
       tags: {  }
+  par_user_partnership_applications:
+    display_plugin: page
+    id: par_user_partnership_applications
+    display_title: 'Pending applications'
+    position: 1
+    display_options:
+      display_extenders: {  }
+      path: partnerships/pending
+      display_description: ''
+      title: 'Primary Authority Register | Pending applications'
+      defaults:
+        title: false
+        filters: false
+        filter_groups: false
+        sorts: false
+      filters:
+        type:
+          id: type
+          table: par_partnerships_field_data
+          field: type
+          value:
+            partnership: partnership
+          entity_type: par_data_partnership
+          entity_field: type
+          plugin_id: bundle
+          group: 1
+        combine:
+          id: combine
+          table: views
+          field: combine
+          relationship: none
+          group_type: group
+          admin_label: 'Primary Authority / Business Name Search'
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: combine_op
+            label: 'PA / Organisation Name'
+            description: 'Enter keyword(s)'
+            use_operator: false
+            operator: combine_op
+            identifier: keywords
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              par_authority: '0'
+              par_business: '0'
+              par_coordinator: '0'
+              par_organisation: '0'
+              par_helpdesk: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          fields:
+            authority_name: authority_name
+            organisation_name: organisation_name
+          plugin_id: combine
+        field_organisation_target_id:
+          id: field_organisation_target_id
+          table: par_data_partnership__field_organisation
+          field: field_organisation_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: 'not empty'
+          value:
+            min: ''
+            max: ''
+            value: ''
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: numeric
+        field_authority_target_id:
+          id: field_authority_target_id
+          table: par_data_partnership__field_authority
+          field: field_authority_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: 'not empty'
+          value:
+            min: ''
+            max: ''
+            value: ''
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: numeric
+        id_filter:
+          id: id_filter
+          table: par_partnerships_field_data
+          field: id_filter
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: ''
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: par_data_partnership
+          plugin_id: par_member
+        status:
+          id: status
+          table: par_partnerships_field_data
+          field: status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: '1'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: par_data_partnership
+          entity_field: status
+          plugin_id: boolean
+        revoked:
+          id: revoked
+          table: par_partnerships_field_data
+          field: revoked
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '!='
+          value: '1'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: par_data_partnership
+          entity_field: revoked
+          plugin_id: boolean
+        partnership_status:
+          id: partnership_status
+          table: par_partnerships_field_revision
+          field: partnership_status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '!='
+          value: confirmed_rd
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: par_data_partnership
+          entity_field: partnership_status
+          plugin_id: string
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      sorts:
+        created:
+          id: created
+          table: par_partnerships_field_data
+          field: created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          granularity: second
+          entity_type: par_data_partnership
+          entity_field: created
+          plugin_id: date
+    cache_metadata:
+      max-age: 0
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - user.permissions
+      tags: {  }
   partnerships_page:
     display_plugin: page
     id: partnerships_page
-    display_title: Page
+    display_title: 'Your Partnerships'
     position: 1
     display_options:
       display_extenders: {  }
       path: partnerships
+      display_description: ''
     cache_metadata:
       max-age: 0
       contexts:

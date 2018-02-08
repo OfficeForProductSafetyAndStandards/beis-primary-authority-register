@@ -35,7 +35,7 @@ class ParEnforcementEnforceOrganisationForm extends ParBaseForm {
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership) {
-    $this->setState("edit:{$par_data_partnership->id()}");
+
   }
 
   /**
@@ -48,17 +48,14 @@ class ParEnforcementEnforceOrganisationForm extends ParBaseForm {
     // and move onto the next step.
     if ($par_data_partnership->isDirect()) {
       $organisation = current($par_data_partnership->get('field_organisation')->referencedEntities());
-      $this->setTempDataValue('par_data_organisation_id', $organisation->id());
-      return $this->redirect($this->getFlow()->getNextRoute('next'), $this->getRouteParams());
+      $this->getFlowDataHandler()->setTempDataValue('par_data_organisation_id', $organisation->id());
+      return $this->redirect($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
     }
     elseif ($par_data_partnership->isCoordinated()) {
       $members = [];
-      foreach ($par_data_partnership->get('field_coordinated_business')
-                 ->referencedEntities() as $coordinated_member) {
-        $coordinated_organisation = $coordinated_member->get('field_organisation')
-          ->referencedEntities();
-        $members = $this->getParDataManager()
-          ->getEntitiesAsOptions($coordinated_organisation, $members);
+      foreach ($par_data_partnership->get('field_coordinated_business')->referencedEntities() as $coordinated_member) {
+        $coordinated_organisation = $coordinated_member->get('field_organisation')->referencedEntities();
+        $members = $this->getParDataManager()->getEntitiesAsOptions($coordinated_organisation, $members);
       }
 
       if (empty($members)) {
@@ -69,7 +66,7 @@ class ParEnforcementEnforceOrganisationForm extends ParBaseForm {
           '#suffix' => '</strong><p>',
         ];
 
-        $this->getFlow()->disableAction('next');
+        $this->getFlowNegotiator()->getFlow()->disableAction('next');
       }
       else {
         // Initialize pager and get current page.
@@ -90,7 +87,7 @@ class ParEnforcementEnforceOrganisationForm extends ParBaseForm {
           '#type' => 'radios',
           '#title' => t('Choose the member to enforce'),
           '#options' => $page_options,
-          '#default_value' => $this->getDefaultValues('par_data_organisation_id', []),
+          '#default_value' => $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', []),
         ];
 
         $form['pager'] = [
@@ -126,14 +123,15 @@ class ParEnforcementEnforceOrganisationForm extends ParBaseForm {
     // and contact, skip to the review step, or skip to the contact
     // step if an existing organisation was selected which has an
     // address but no contact.
-    $organisation_id = $this->getDefaultValues('par_data_organisation_id', '', 'par_partnership_organisation_suggestion');
+    $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_organisation_suggestion');
+    $organisation_id = $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', '', $cid);
     if ($par_data_organisation = ParDataOrganisation::load($organisation_id)) {
       if (!$par_data_organisation->get('field_person')->isEmpty()) {
-        $form_state->setRedirect($this->getFlow()->getNextRoute('review'), $this->getRouteParams());
+        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('review'), $this->getRouteParams());
       }
       elseif ($par_data_organisation->get('field_person')->isEmpty()
         && !$par_data_organisation->get('field_premises')->isEmpty()) {
-        $form_state->setRedirect($this->getFlow()->getNextRoute('add_contact'), $this->getRouteParams());
+        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('add_contact'), $this->getRouteParams());
       }
     }
   }

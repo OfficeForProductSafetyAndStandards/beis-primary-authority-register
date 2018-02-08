@@ -128,6 +128,45 @@ trait ParDisplayTrait {
   }
 
   /**
+   * Display an EntityReferenceFieldItemList using the given settings.
+   *
+   * Adds the required operations to each field item that gets rendered.
+   *
+   * @param string $section
+   *   The section name to display on operation links.
+   * @param EntityInterface $entities
+   *   The entities to render.
+   * @param string $view_mode
+   *   The view mode to render the fields from.
+   * @param array $operations
+   *   The array of operations to add for each field item.
+   * @param bool $single
+   *   Whether or not to only return the first item.
+   *
+   * @return array
+   */
+  public function renderEntities($section, $entities, $view_mode = 'summary', $operations = [], $single = FALSE) {
+    $elements = [];
+    foreach ($entities as $delta => $entity) {
+      $entity_view_builder = $this->getParDataManager()->getViewBuilder($entity->getEntityTypeId());
+      $rendered_entity = $entity_view_builder->view($entity, $view_mode);
+      $elements[$delta] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+      $elements[$delta]['entity'] = $this->renderMarkupField($rendered_entity);
+
+      if ($single) {
+        break;
+      }
+    }
+
+    return $elements;
+  }
+
+  /**
    * @param string $section
    *   The section name to display on operation links.
    * @param EntityInterface $entity
@@ -167,7 +206,7 @@ trait ParDisplayTrait {
       }
 
       try {
-        $edit_link = $this->getFlow()->getLinkByCurrentOperation('edit_' . $field->getName(), $params)->setText("edit {$link_name_suffix}")->toString();
+        $edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_' . $field->getName(), $params)->setText("edit {$link_name_suffix}")->toString();
       }
       catch (ParFlowException $e) {
         $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -212,7 +251,7 @@ trait ParDisplayTrait {
    *
    * @return mixed
    */
-  public function renderSection($section, $entity, $fields, $operations = [], $title = TRUE, $single = FALSE, $section_title_only = FALSE) {
+  public function renderSection($section, $entity, $fields = [], $operations = [], $title = TRUE, $single = FALSE, $section_title_only = FALSE) {
 
     // If rendering logic is called on an NULL object prevent system failures.
     if (empty($entity)) {
@@ -284,7 +323,7 @@ trait ParDisplayTrait {
       $link_name_suffix = strtolower($field->getFieldDefinition()->getLabel());
       if (isset($operations) && (in_array('add', $operations)) && !($single && !$field->isEmpty())) {
         try {
-          $add_link = $this->getFlow()->getLinkByCurrentOperation('add_' . $field->getName())->setText("add another {$link_name_suffix}")->toString();
+          $add_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_' . $field->getName())->setText("add another {$link_name_suffix}")->toString();
         } catch (ParFlowException $e) {
           $this->getLogger($this->getLoggerChannel())->notice($e);
         }
