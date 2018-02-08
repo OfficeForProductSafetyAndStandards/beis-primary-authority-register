@@ -71,26 +71,7 @@
     </div>
    </div>
    @endfor
-   <div class="row">
-    <div class="col-sm-4">
-     <div class="statcard p-4" id="queue_scheduled_actions">
-      <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
-      <span class="statcard-desc">Scheduled Actions</span>
-     </div>
-    </div>
-    <div class="col-sm-4">
-     <div class="statcard p-4" id="queue_add_members">
-      <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
-      <span class="statcard-desc">Add Members</span>
-     </div>
-    </div>
-    <div class="col-sm-4">
-     <div class="statcard p-4" id="last_cron_run">
-      <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
-      <span class="statcard-desc">Cron Run</span>
-     </div>
-    </div>
-   </div>
+   
   </div>
 
   <div class="col-sm-4">
@@ -227,9 +208,16 @@
 
  <div class="row" style="height:200px;margin-bottom:1em">
 
-  <div class="col-sm-12">
+  <div class="col-sm-6">
     <h3>&nbsp;Open Pull Requests</h3>
   <table class="table" id="pull_request_list">
+
+  </table>  
+  </div>
+
+  <div class="col-sm-6">
+    <h3>&nbsp;Queues</h3>
+  <table class="table" id="queue_list">
 
   </table>  
   </div>
@@ -374,17 +362,19 @@
 
       function renderQueueAndCronStats() {
            $.get("/stats/queueandcron", function(data, status) {
-           
-             $('#queue_scheduled_actions > .statcard-number').html(data.data.queues.par_scheduled_actions.number_items);
-             setUsageColor($('#queue_scheduled_actions'), data.data.queues.par_scheduled_actions.number_items, 3000);
+            var queues = data.data.queues;
+            $('#queue_list').empty();
 
-             $('#queue_add_members > .statcard-number').html(data.data.queues.par_partnership_add_members.number_items);
-             setUsageColor($('#queue_add_members'), data.data.queues.par_partnership_add_members.number_items, 3000);
-             
-             var lastCronRun = moment(data.data.cron);
-             var minutes = moment.duration(moment().diff(lastCronRun)).asMinutes();
-             $('#last_cron_run > .statcard-number').html(lastCronRun.fromNow());
-             setUsageColor($('#last_cron_run'), minutes, 60);
+            var lastCronRun = moment(data.data.cron);
+            var minutes = moment.duration(moment().diff(lastCronRun)).asMinutes();
+            //$('#last_cron_run > .statcard-number').html(lastCronRun.fromNow());
+            //setUsageColor($('#last_cron_run'), minutes, 60);
+            $('#queue_list').append('<tr><td>Last Cron Run</td><td>' + lastCronRun.fromNow() + '</td><td></tr>');
+
+            for (var key in queues) {
+              $('#queue_list').append('<tr><td>' + queues[key].title + '</td><td>' + queues[key].number_items + '</td><td></tr>');
+            }
+           
         });
       }
 
@@ -491,7 +481,7 @@
 
       renderQueueAndCronStats();
       setInterval(renderQueueAndCronStats, 2000);
-      
+
       renderTestResults();
       setInterval(renderTestResults, 90000);
 
