@@ -1,0 +1,7 @@
+par_actions.queue_check:
+  path: '/par/queue/check.json'
+  defaults:
+    _controller: '\Drupal\par_actions\Controller\ParQueueCheckController::checkQueues'
+  methods:  [GET]
+  requirements:
+    _access: 'TRUE'
