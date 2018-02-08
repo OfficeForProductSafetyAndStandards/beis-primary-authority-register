@@ -1,0 +1,19 @@
+uuid: db762fc6-359a-4012-b58c-8c07d197b968
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.partnership_approved_notificatio
+id: message.partnership_approved_notificatio.mail_subject
+targetEntityType: message
+bundle: partnership_approved_notificatio
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+hidden:
+  field_message_subject: true
+  field_partnership: true
+  partial_1: true

@@ -57,13 +57,6 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
 
-    if ($par_data_partnership) {
-      // If we're editing an entity we should set the state
-      // to something other than default to avoid conflicts
-      // with existing versions of the same form.
-      $this->setState("edit:{$par_data_partnership->id()}");
-    }
-
   }
 
   /**
@@ -100,7 +93,7 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
       '#title' => $this->t('Enter the reason you are revoking this partnership'),
       '#type' => 'textarea',
       '#rows' => 5,
-      '#default_value' => $this->getDefaultValues('revocation_reason', FALSE),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('revocation_reason', FALSE),
     ];
 
     return parent::buildForm($form, $form_state);
@@ -120,15 +113,15 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     // We only want to update the status of active partnerships.
     if (!$par_data_partnership->isRevoked()) {
 
-      $revoked = $par_data_partnership->revoke($this->getTempDataValue('revocation_reason'));
+      $revoked = $par_data_partnership->revoke($this->getFlowDataHandler()->getTempDataValue('revocation_reason'));
 
       if ($revoked) {
-        $this->deleteStore();
+        $this->getFlowDataHandler()->deleteStore();
       }
       else {
         $message = $this->t('Revocation reason could not be saved for %form_id');

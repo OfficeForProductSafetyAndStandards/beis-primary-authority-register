@@ -1,4 +1,4 @@
-@ci
+@Pending
 Feature: Primary Authority - Change Partnership Details
 
     Scenario: Primary Authority - Change Partnership Details

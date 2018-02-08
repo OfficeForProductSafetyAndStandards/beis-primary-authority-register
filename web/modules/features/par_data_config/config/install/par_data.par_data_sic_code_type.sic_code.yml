@@ -12,3 +12,5 @@ configuration:
   entity:
     label_fields:
       - sic_code
+      - ' - '
+      - description

@@ -6,6 +6,7 @@
 
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\Entity\ParDataEntity;
 
 /**
  * Implements hook_install().
@@ -254,4 +255,36 @@ function par_data_update_8017() {
  */
 function par_data_update_8018() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
+
+/**
+ * Apply updates for country code field in ParDataPremises.
+ */
+function par_data_update_8019() {
+  $db = \Drupal::database();
+
+  // The watchdog table exists but the module is uninstalled.
+  $tables_to_remove = ['watchdog'];
+  foreach ($tables_to_remove as $table) {
+    $exists = $db->schema()->tableExists($table);
+    if ($exists) {
+      $db->schema()->dropTable($table);
+    }
+  }
+
+  // Remove deleted fields.
+  field_purge_batch(1000);
+}
+
+/**
+ * Remove all soft deleted par_data_partnership entities from the system.
+ */
+function par_data_update_8020() {
+  $query = \Drupal::entityQuery("par_data_partnership")
+    ->condition(ParDataEntity::DELETE_FIELD, '1');
+  $ids = $query->execute();
+
+  $storage_handler = \Drupal::entityTypeManager()->getStorage("par_data_partnership");
+  $entities = $storage_handler->loadMultiple($ids);
+  $storage_handler->delete($entities);
 }

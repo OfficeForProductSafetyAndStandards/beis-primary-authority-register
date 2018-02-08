@@ -3,13 +3,15 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: 6nrFcHlQQkWAkZFZd39W3NsNACCokl5ai8_kQSYqfDg
+  default_config_hash: kuFHAbkrsdLtd8_YLaw1shP2xwGtg1Ms20D1o4NCno4
 id: approve_partnership
 label: 'Approve Partnership'
 default_title: null
 default_section_title: null
 description: 'The approve operations for a given partnership.'
 save_method: end
+states:
+  - par_data_partnership
 steps:
   1:
     route: par_help_desks_flows.confirm_partnership

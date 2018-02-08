@@ -167,7 +167,7 @@ trait ParDisplayTrait {
       }
 
       try {
-        $edit_link = $this->getFlow()->getLinkByCurrentOperation('edit_' . $field->getName(), $params)->setText("edit {$link_name_suffix}")->toString();
+        $edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_' . $field->getName(), $params)->setText("edit {$link_name_suffix}")->toString();
       }
       catch (ParFlowException $e) {
         $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -182,6 +182,16 @@ trait ParDisplayTrait {
 
     // @TODO We will eventually need to add delete/revoke/archive and various other operations.
     return ['operations' => $operation_links];
+  }
+
+  public function renderEntity($entity, $view_mode) {
+    $view_display = $this->entityTypeManager
+      ->getStorage('entity_view_display')
+      ->load($entity->getEntityTypeId() . '.' . $entity->bundle() . '.' . $view_mode);
+
+    var_dump(get_class($view_display));
+
+    //return $this->renderSection($section, $entity, $fields, $operations, $title, $single, $section_title_only);
   }
 
   /**
@@ -284,7 +294,7 @@ trait ParDisplayTrait {
       $link_name_suffix = strtolower($field->getFieldDefinition()->getLabel());
       if (isset($operations) && (in_array('add', $operations)) && !($single && !$field->isEmpty())) {
         try {
-          $add_link = $this->getFlow()->getLinkByCurrentOperation('add_' . $field->getName())->setText("add another {$link_name_suffix}")->toString();
+          $add_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_' . $field->getName())->setText("add another {$link_name_suffix}")->toString();
         } catch (ParFlowException $e) {
           $this->getLogger($this->getLoggerChannel())->notice($e);
         }

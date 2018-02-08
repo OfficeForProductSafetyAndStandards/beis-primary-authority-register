@@ -1,0 +1,15 @@
+uuid: a873e53c-9377-43b7-a922-48bd9d3b06e6
+langcode: en
+status: true
+dependencies: {  }
+id: test_config
+label: 'Test Config'
+folder: ../sync-test
+module:
+  maillog: 0
+theme: {  }
+blacklist: {  }
+graylist: {  }
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 5

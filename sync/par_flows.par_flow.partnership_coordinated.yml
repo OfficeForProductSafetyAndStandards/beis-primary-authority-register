@@ -3,13 +3,15 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: eOeZktngyEIqJx6Tzq1IaCV-Hdgw_Y0URqSEwlPau7U
+  default_config_hash: 8drYQwD1ArK4INjzo3HrvBfsCqGU5m03byvAap0ZSvs
 id: partnership_coordinated
 label: 'Coordinated Partnership Flow'
 default_title: null
 default_section_title: 'Coordinated partnership'
 description: ''
 save_method: step
+states:
+  - par_data_partnership
 steps:
   1:
     route: par_partnership_flows.organisation_details

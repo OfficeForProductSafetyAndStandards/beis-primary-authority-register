@@ -21,7 +21,7 @@ class PartnershipRevocationSubscriber implements EventSubscriberInterface {
   const MESSAGE_ID = 'partnership_revocation_notificat';
 
   /**
-   * The notication plugin that will deliver these notification messages.
+   * The notification plugin that will deliver these notification messages.
    */
   const DELIVERY_METHOD = 'plain_email';
 
