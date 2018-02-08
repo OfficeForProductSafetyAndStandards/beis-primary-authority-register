@@ -1,0 +1,19 @@
+uuid: a418c476-e5c7-4df1-9459-c250d49f62ce
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_coordinated_business.field_member_status
+    - par_data.par_data_coordinated_business_type.coordinated_business
+id: par_data_coordinated_business.coordinated_business.field_member_status
+field_name: field_member_status
+entity_type: par_data_coordinated_business
+bundle: coordinated_business
+label: Status
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

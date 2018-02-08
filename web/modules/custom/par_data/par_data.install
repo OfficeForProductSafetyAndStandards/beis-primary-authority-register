@@ -295,3 +295,10 @@ function par_data_update_8020() {
     $queue->createItem($item);
   }
 }
+
+/**
+ * Update fields based on enforcement migration.
+ */
+function par_data_update_8021() {
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}

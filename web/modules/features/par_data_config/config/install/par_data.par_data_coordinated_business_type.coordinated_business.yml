@@ -8,4 +8,13 @@ help: ''
 isDeletable: true
 isRevokable: false
 isArchivable: false
-configuration: null
+configuration:
+  entity:
+    label_fields:
+      - title
+    status_field: member_status
+    status_transitions:
+      active:
+        - ceased
+      ceased:
+        - active

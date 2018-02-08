@@ -1,0 +1,21 @@
+uuid: 6ccb6bb0-1c99-42ee-a979-4cd7f4cc2bc6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_coordinated_business.field_date_membership_ceased
+    - par_data.par_data_coordinated_business_type.coordinated_business
+  module:
+    - datetime
+id: par_data_coordinated_business.coordinated_business.field_date_membership_ceased
+field_name: field_date_membership_ceased
+entity_type: par_data_coordinated_business
+bundle: coordinated_business
+label: 'Date Membership Ceased'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime
