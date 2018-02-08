@@ -71,6 +71,26 @@
     </div>
    </div>
    @endfor
+   <div class="row">
+    <div class="col-sm-4">
+     <div class="statcard p-4" id="queue_scheduled_actions">
+      <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
+      <span class="statcard-desc">Scheduled Actions</span>
+     </div>
+    </div>
+    <div class="col-sm-4">
+     <div class="statcard p-4" id="queue_add_members">
+      <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
+      <span class="statcard-desc">Add Members</span>
+     </div>
+    </div>
+    <div class="col-sm-4">
+     <div class="statcard p-4" id="last_cron_run">
+      <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
+      <span class="statcard-desc">Cron Run</span>
+     </div>
+    </div>
+   </div>
   </div>
 
   <div class="col-sm-4">
@@ -185,21 +205,21 @@
 
    <div class="row">
     <div class="col-sm-12">
-<div class="statcard p-4 statcard-success" id="unit_tests">
+      <div class="statcard p-4 statcard-success" id="unit_tests">
          <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
          <span class="statcard-desc">Unit Tests</span>
-        </div>
-</div>
-</div>
+      </div>
+    </div>
+  </div>
 
    <div class="row">
     <div class="col-sm-12">
-<div class="statcard p-4 statcard-success" id="acceptance_tests">
+      <div class="statcard p-4 statcard-success" id="acceptance_tests">
          <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
          <span class="statcard-desc">Acceptance Tests</span>
-        </div>
-</div>
-</div>
+      </div>
+    </div>
+  </div>
 
   </div>
  </div>
@@ -291,7 +311,6 @@
 
       function renderCloudFoundryStats() {
         $.get("/stats/cf", function(data, status) {
-
            var lastChecked = moment.unix(data.received_at);
            var minutes = moment.duration(moment().diff(lastChecked)).asMinutes();
            $('#last_cloud_foundry_check > .statcard-number').html('Last checked ' + lastChecked.fromNow());
@@ -350,6 +369,22 @@
              
              $('#acceptance_tests > .statcard-number').html(data.message.acceptance.passed + ' passed, ' + data.message.acceptance.failed + ' failures');
              setStateColor($('#acceptance_tests'), data.message.acceptance.failed, [0], []);
+        });
+      }
+
+      function renderQueueAndCronStats() {
+           $.get("/stats/queueandcron", function(data, status) {
+           
+             $('#queue_scheduled_actions > .statcard-number').html(data.data.queues.par_scheduled_actions.number_items);
+             setUsageColor($('#queue_scheduled_actions'), data.data.queues.par_scheduled_actions.number_items, 3000);
+
+             $('#queue_add_members > .statcard-number').html(data.data.queues.par_partnership_add_members.number_items);
+             setUsageColor($('#queue_add_members'), data.data.queues.par_partnership_add_members.number_items, 3000);
+             
+             var lastCronRun = moment(data.data.cron);
+             var minutes = moment.duration(moment().diff(lastCronRun)).asMinutes();
+             $('#last_cron_run > .statcard-number').html(lastCronRun.fromNow());
+             setUsageColor($('#last_cron_run'), minutes, 60);
         });
       }
 
@@ -454,23 +489,25 @@
         });
       }
 
-      renderTestResults();
-      setInterval(renderTestResults, 90000);
+      renderQueueAndCronStats();
+      //setInterval(renderQueueAndCronStats, 2000);
+      //renderTestResults();
+      //setInterval(renderTestResults, 90000);
 
-      renderGitHubStats();
-      setInterval(renderGitHubStats, 120000);
+      //renderGitHubStats();
+      //setInterval(renderGitHubStats, 120000);
 
-      renderBuildVersions();
-      setInterval(renderBuildVersions, 18000);
+      //renderBuildVersions();
+      //setInterval(renderBuildVersions, 18000);
 
-      renderTravisStats();
-      setInterval(renderTravisStats, 12000);
+      //renderTravisStats();
+      //setInterval(renderTravisStats, 12000);
 
-      renderCloudFoundryStats();
-      setInterval(renderCloudFoundryStats, 16000);
+      //renderCloudFoundryStats();
+      //setInterval(renderCloudFoundryStats, 16000);
 
-      renderUptimeStats();
-      setInterval(renderUptimeStats, 60000);
+      //renderUptimeStats();
+      //setInterval(renderUptimeStats, 60000);
 
   });
 </script>

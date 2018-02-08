@@ -19,3 +19,4 @@ Route::get('/stats/github', 'IndexController@gitHubStats');
 Route::get('/stats/build_versions', 'IndexController@buildVersionStats');
 Route::get('/stats/uptime', 'IndexController@uptimeStats');
 Route::get('/stats/tests', 'IndexController@testStats');
+Route::get('/stats/queueandcron', 'IndexController@queueAndCronStats');
