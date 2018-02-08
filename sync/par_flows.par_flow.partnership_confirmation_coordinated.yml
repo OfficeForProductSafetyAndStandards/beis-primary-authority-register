@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: Wqj8q-gER3R8VFHMcK-jDoj1Jv9jXOzVcqpoxnIC0lM
+  default_config_hash: GWghOCCiNuILnO7mxKbV2WWYKTLAyru-U9hzJcIty94
 id: partnership_confirmation_coordinated
 label: 'Coordinated Partnership Completion Flow'
 default_title: null
@@ -38,7 +38,7 @@ steps:
     route: par_partnership_confirmation_flows.confirm_sic_code
     form_id: par_partnership_confirmation_sic_code
     components:
-      - sic_code
+      sic_code: {  }
     redirect:
       cancel: 11
   5:

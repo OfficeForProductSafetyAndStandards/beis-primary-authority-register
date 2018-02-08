@@ -2,6 +2,7 @@
 
 namespace Drupal\par_flows;
 
+use Drupal\Component\Plugin\Exception\PluginException;
 use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\user\Entity\User;
@@ -99,11 +100,19 @@ trait ParControllerTrait {
       return $this->components;
     }
 
-    // Load the plugins used to build this form.
-    foreach ($this->getFlowNegotiator()->getFlow()->getCurrentStepComponents() as $component => $settings) {
-      if ($plugin = $this->getFormBuilder()->createInstance($component, $settings)) {
-        $this->components[] = $plugin;
+    try {
+      // Load the plugins used to build this form.
+      foreach ($this->getFlowNegotiator()->getFlow()->getCurrentStepComponents() as $component => $settings) {
+        if ($plugin = $this->getFormBuilder()->createInstance($component, $settings)) {
+          $this->components[] = $plugin;
+        }
       }
+    }
+    catch (PluginException $e) {
+      $this->getLogger($this->getLoggerChannel())->error($e);
+    }
+    catch (\TypeError $e) {
+      $this->getLogger($this->getLoggerChannel())->error($e);
     }
 
     return $this->components;
