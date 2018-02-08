@@ -41,9 +41,9 @@ class IndexController extends Controller
 
     public function queueAndCronStats()
     {
-        //return Cache::remember('queue_and_cron', 2, function () {
+        return Cache::remember('queue_and_cron', 2, function () {
             return $this->services['queue_and_cron']->stats();
-        //});
+        });
     }
 
     public function cloudFoundryStats()
