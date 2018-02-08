@@ -490,24 +490,25 @@
       }
 
       renderQueueAndCronStats();
-      //setInterval(renderQueueAndCronStats, 2000);
-      //renderTestResults();
-      //setInterval(renderTestResults, 90000);
+      setInterval(renderQueueAndCronStats, 2000);
+      
+      renderTestResults();
+      setInterval(renderTestResults, 90000);
 
-      //renderGitHubStats();
-      //setInterval(renderGitHubStats, 120000);
+      renderGitHubStats();
+      setInterval(renderGitHubStats, 120000);
 
-      //renderBuildVersions();
-      //setInterval(renderBuildVersions, 18000);
+      renderBuildVersions();
+      setInterval(renderBuildVersions, 18000);
 
-      //renderTravisStats();
-      //setInterval(renderTravisStats, 12000);
+      renderTravisStats();
+      setInterval(renderTravisStats, 12000);
 
-      //renderCloudFoundryStats();
-      //setInterval(renderCloudFoundryStats, 16000);
+      renderCloudFoundryStats();
+      setInterval(renderCloudFoundryStats, 16000);
 
-      //renderUptimeStats();
-      //setInterval(renderUptimeStats, 60000);
+      renderUptimeStats();
+      setInterval(renderUptimeStats, 60000);
 
   });
 </script>
