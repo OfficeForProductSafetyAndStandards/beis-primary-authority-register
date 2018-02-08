@@ -62,8 +62,6 @@ Feature: Coordinator User - Complete business details
         Then I expect that element "h1.heading-xlarge" contains the text "Confirm the trading name"
         When I add "Different Trading Name" to the inputfield "#edit-trading-name"
         And I click on the button "#edit-next"
-        Then I expect that element ".heading-xlarge" contains the text "Choose the legal entities for the partnership"
-        And I click on the button "#edit-next"
 
         # ADD LEGAL ENTITY
 
