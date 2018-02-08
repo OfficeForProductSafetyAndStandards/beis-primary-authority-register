@@ -41,16 +41,19 @@ Feature: Coordinator User - Complete business details
         And I select the option with the text "United Kingdom" for element "#edit-country-code"
         And I select the option with the text "England" for element "#edit-nation"
         When I click on the button "#edit-next"
+
         Then I expect that element "h1.heading-xlarge" contains the text "Confirm the primary contact details"
         When I click on the button "#edit-next"
 
         # ADD SIC CODES
-        
+
+        Then I expect that element "h1.heading-xlarge" contains the text "Confirm the SIC code"
         And I select the option with the text "10.0 - Health and social care" for element "#edit-sic-code"
         And I click on the button "#edit-next"
 
         # ADD BUSINESS SIZE
-        
+
+        Then I expect that element "h1.heading-xlarge" contains the text "Confirm the size of the membership list"
         And I select the option with the value "small" for element "#edit-business-size"
         And I click on the button "#edit-next"
         
@@ -64,23 +67,28 @@ Feature: Coordinator User - Complete business details
 
         # ADD LEGAL ENTITY
 
-        Then I expect that element "h1.heading-xlarge" contains the text "Add a legal entity for the organisation"
-        When I add "New LLP Company" to the inputfield "#edit-legal-entity-1-registered-name"
-        And I select the option with the text "Limited Liability Partnership" for element "#edit-legal-entity-1-legal-entity-type"
-        Then I expect that element ".js-form-item-legal-entity-1-registered-number label" contains the text "Provide the registration number"
-        When I add "1234567890" to the inputfield "#edit-legal-entity-1-registered-number"
+        Then I expect that element "h1.heading-xlarge" contains the text "Confirm the legal entity"
+        When I add "New LLP Company" to the inputfield "#edit-par-component-legal-entity-0-registered-name"
+        And I select the option with the text "Limited Liability Partnership" for element "#edit-par-component-legal-entity-0-legal-entity-type"
+        Then I expect that element ".form-item-par-component-legal-entity-0-registered-number label" contains the text "Provide the registration number"
+        When I add "1234567890" to the inputfield "#edit-par-component-legal-entity-0-registered-number"
         And I click on the button "#edit-next"
+
+        # REVIEW
+
+        Then I expect that element "h1.heading-xlarge" contains the text "Review the partnership summary information below"
         Then I expect that element "#edit-organisation-registered-address" contains the text "1 Change St"
         And I expect that element "#edit-organisation-registered-address" contains the text "New Change"
         And I expect that element "#edit-organisation-registered-address" contains the text "London"
         And I expect that element "#edit-organisation-registered-address" contains the text "SE16 4NX"
         Then I expect that element "#edit-about-organisation" contains the text "Change to the about business details section"
         Then I expect that element "#edit-sic-code" contains the text "Health and social care"
-        # Then I expect that element "#edit-legal-entities" contains the text "New LLP Company"
-        # Then I expect that element "#edit-legal-entities" contains the text "Limited Liability Partnership"
-        # Then I expect that element "#edit-legal-entities" contains the text "1234567890"
+        Then I expect that element "#edit-legal-entities" contains the text "New LLP Company"
+        Then I expect that element "#edit-legal-entities" contains the text "Limited Liability Partnership"
+        Then I expect that element "#edit-legal-entities" contains the text "1234567890"
         And I click on the checkbox "#edit-partnership-info-agreed-business"
         And I click on the button "#edit-save"
+
         Then I expect that element "h1.heading-xlarge" contains the text "Thank you for completing the application"
         And I click on the button ".button"
         And I add "Business For Coordinated Partnership 20" to the inputfield "#edit-keywords"
