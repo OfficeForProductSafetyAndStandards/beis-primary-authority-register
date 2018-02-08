@@ -118,7 +118,4 @@ steps:
   17:
     route: view.par_user_partnerships.partnerships_page
   18:
-    route: par_partnership_flows.members_list_view
-    redirect:
-      next: 1
-      cancel: 1
+    route: view.partnership_search.enforcment_flow_search_partnerships
