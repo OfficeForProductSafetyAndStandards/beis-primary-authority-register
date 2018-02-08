@@ -27,6 +27,7 @@ steps:
       advice: 15
       inspection_plans: 16
       save: 17
+      members: 19
   2:
     route: par_partnership_flows.about_business
     form_id: par_partnership_about_business
@@ -116,3 +117,8 @@ steps:
       cancel: 1
   17:
     route: view.par_user_partnerships.partnerships_page
+  18:
+    route: par_partnership_flows.members_list_view
+    redirect:
+      next: 1
+      cancel: 1
