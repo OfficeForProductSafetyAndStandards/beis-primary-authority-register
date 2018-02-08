@@ -15,6 +15,11 @@ class ParBusinessSizeForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
+   * Set the page title.
+   */
+  protected $pageTitle = 'Confirm the size of the membership list';
+
+  /**
    * {@inheritdoc}
    */
   public function getFormId() {

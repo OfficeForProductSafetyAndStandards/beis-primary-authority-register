@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: fZJVdBuN7XkzptkxbINAnUrdm0PDJMu_oA3b3iUJeWA
+  default_config_hash: OkbBdaqAyrfBzfcZ97fV7Eli1Guql-NWHD1KAFxjgBM
 id: partnership_confirmation_direct
 label: 'Direct Partnership Completion Flow'
 default_title: null
@@ -17,56 +17,57 @@ steps:
     route: par_partnership_confirmation_flows.confirm_about_business
     form_id: par_partnership_confirmation_about_business
     components:
-      - about_business
+      about_business: {  }
     redirect:
       cancel: 11
   2:
     route: par_partnership_confirmation_flows.confirm_address
     form_id: par_partnership_confirmation_address
     components:
-      - address
+      address: {  }
     redirect:
       cancel: 11
   3:
     route: par_partnership_confirmation_flows.confirm_contact
     form_id: par_partnership_confirmation_contact
     components:
-      - contact_details_full
+      contact_details_full: {  }
     redirect:
       cancel: 11
   4:
     route: par_partnership_confirmation_flows.confirm_sic_code
     form_id: par_partnership_confirmation_sic_code
     components:
-      - sic_code
+      sic_code: {  }
     redirect:
       cancel: 11
   5:
     route: par_partnership_confirmation_flows.confirm_employee_number
     form_id: par_partnership_confirmation_employee_number
     components:
-      - employee_number
+      employee_number: {  }
     redirect:
       cancel: 11
   6:
     route: par_partnership_confirmation_flows.confirm_trading_name
     form_id: par_partnership_confirmation_trading_name
     components:
-      - trading_name
+      trading_name: {  }
     redirect:
       cancel: 11
   7:
     route: par_partnership_confirmation_flows.select_legal_entities
     form_id: par_partnership_confirmation_select_legal_entities
     components:
-      - select_legal_entities
+      select_legal_entities: {  }
     redirect:
       cancel: 11
   8:
     route: par_partnership_confirmation_flows.add_legal_entity
-    form_id: par_partnership_legal_entity_add_multiple
+    form_id: par_partnership_confirmation_add_legal_entity
     components:
-      - legal_entity_add_multiple
+      legal_entity:
+        cardinality: -1
     redirect:
       cancel: 11
   9:

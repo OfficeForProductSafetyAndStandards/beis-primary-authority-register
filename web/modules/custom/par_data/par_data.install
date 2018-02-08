@@ -277,14 +277,22 @@ function par_data_update_8019() {
 }
 
 /**
- * Remove all soft deleted par_data_partnership entities from the system.
+ * Migrate legal entities to partnerships.
  */
 function par_data_update_8020() {
-  $query = \Drupal::entityQuery("par_data_partnership")
-    ->condition(ParDataEntity::DELETE_FIELD, '1');
-  $ids = $query->execute();
+  /** @var \Drupal\Core\Queue\QueueFactory $queue_factory */
+  $queue_factory = \Drupal::service('queue');
+  /** @var \Drupal\Core\Queue\QueueInterface $queue */
+  $queue = $queue_factory->get('par_scheduled_actions');
 
-  $storage_handler = \Drupal::entityTypeManager()->getStorage("par_data_partnership");
-  $entities = $storage_handler->loadMultiple($ids);
-  $storage_handler->delete($entities);
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  $partnerships = $par_data_manager->getEntitiesByProperty('par_data_partnership', 'deleted', 0);
+  foreach ($partnerships as $partnership) {
+    $item = [
+      'entity' => $partnership,
+      'action' => 'par_migrate_legal_entities',
+    ];
+    $queue->createItem($item);
+  }
 }

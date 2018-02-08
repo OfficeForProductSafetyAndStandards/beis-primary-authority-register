@@ -26,7 +26,7 @@ class ParSicCodeForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
-  public function loadData() {
+  public function loadData($cardinality = 1) {
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
     $sic_code_delta = $this->getFlowDataHandler()->getParameter('sic_code_delta');
     if ($par_data_organisation) {
@@ -45,7 +45,7 @@ class ParSicCodeForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = []) {
+  public function getElements($form = [], $cardinality = 1) {
     $sic_codes = $this->getParDataManager()->getEntitiesByType('par_data_sic_code');
 
     // Display the correct introductory text based on the action that is being performed.
@@ -57,7 +57,7 @@ class ParSicCodeForm extends ParFormPluginBase {
       '#type' => 'select',
       '#title' => $this->t($intro_text),
       '#options' => $this->getParDataManager()->getEntitiesAsOptions($sic_codes),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("sic_code", NULL),
+      '#default_value' => $this->getDefaultValuesByKey('sic_code', $cardinality, NULL),
     ];
 
     return $form;

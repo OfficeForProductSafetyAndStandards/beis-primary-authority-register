@@ -2,6 +2,7 @@
 
 namespace Drupal\par_flows;
 
+use Drupal\Component\Plugin\Exception\PluginException;
 use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\user\Entity\User;
@@ -99,14 +100,35 @@ trait ParControllerTrait {
       return $this->components;
     }
 
-    // Load the plugins used to build this form.
-    foreach ($this->getFlowNegotiator()->getFlow()->getCurrentStepComponents() as $weight => $component) {
-      if ($plugin = $this->getFormBuilder()->createInstance($component)) {
-        $this->components[$weight] = $plugin;
+    try {
+      // Load the plugins used to build this form.
+      foreach ($this->getFlowNegotiator()->getFlow()->getCurrentStepComponents() as $component => $settings) {
+        if ($plugin = $this->getFormBuilder()->createInstance($component, $settings)) {
+          $this->components[] = $plugin;
+        }
       }
+    }
+    catch (PluginException $e) {
+      $this->getLogger($this->getLoggerChannel())->error($e);
+    }
+    catch (\TypeError $e) {
+      $this->getLogger($this->getLoggerChannel())->error($e);
     }
 
     return $this->components;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getComponent($component_name) {
+    foreach ($this->getComponents() as $component) {
+      if ($component->getPluginId() === $component_name) {
+        return $component;
+      }
+    }
+
+    return NULL;
   }
 
   /**
@@ -149,8 +171,8 @@ trait ParControllerTrait {
    */
   public function loadData() {
     // Load data for all the registered components of the form.
-    foreach ($this->getComponents() as $weight => $component) {
-      $component->loadData();
+    foreach ($this->getComponents() as $component) {
+      $this->getFormBuilder()->loadPluginData($component);
     }
   }
 

@@ -47,8 +47,7 @@ par_flows.par_flow.*:
           label: "Components"
           nullable: true
           sequence:
-            type: text
-            label: "Component"
+            type: par_flows.component
         "form_data":
           type: sequence
           label: "Form data keys"
@@ -63,3 +62,14 @@ par_flows.par_flow.*:
           sequence:
             type: integer
             label: "Operation Redirect"
+
+par_flows.component:
+  type: mapping
+  label: 'Component'
+  mapping:
+    weight:
+      type: integer
+      label: 'Weight'
+    cardinality:
+      type: integer
+      label: 'Number of allowed values'

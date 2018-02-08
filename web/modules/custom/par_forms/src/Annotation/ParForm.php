@@ -40,4 +40,13 @@ class ParForm extends Plugin {
    */
   public $weight = 0;
 
+  /**
+   * The plugin cardinality.
+   *
+   * The number of times the plugin can be added.
+   *
+   * @var int
+   */
+  public $cardinality = 1;
+
 }

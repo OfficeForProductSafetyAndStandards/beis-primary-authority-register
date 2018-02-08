@@ -27,30 +27,12 @@ class ParLegalEntityForm extends ParBaseForm {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  protected $formItems = [
-    'par_data_legal_entity:legal_entity' => [
-      'registered_name' => 'registered_name',
-      'legal_entity_type' => 'legal_entity_type',
-      'registered_number' => 'registered_number',
-    ]
-  ];
-
-  /**
    * Load the data for this form.
    */
   public function loadData() {
-    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $par_data_organisation = $par_data_partnership ? $par_data_partnership->getOrganisation(TRUE) : NULL;
-    $par_data_legal_entity = $par_data_organisation ? $par_data_organisation->getLegalEntity(TRUE) : NULL;
-
-    // For the apply journey we will always edit the first value.
-    $this->getFlowDataHandler()->setParameter('par_data_legal_entity', $par_data_legal_entity);
-
-    $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_trading_name');
+    // Must tell the component plugin where to get data for the selection screen.
+    $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_select_legal_entities');
     $this->getFlowDataHandler()->setParameter('select_legal_entity_cid', $cid);
-
 
     parent::loadData();
   }

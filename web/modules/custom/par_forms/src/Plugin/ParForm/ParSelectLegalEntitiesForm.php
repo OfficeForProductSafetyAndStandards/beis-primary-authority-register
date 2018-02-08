@@ -20,10 +20,9 @@ class ParSelectLegalEntitiesForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData() {
-    $par_data_partnership = $this->getflowDataHandler()
-      ->getParameter('par_data_partnership');
-    $par_data_organisation = $par_data_partnership->getOrganisation(TRUE);
+  public function loadData($cardinality = 1) {
+    $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
+    $par_data_organisation = $this->getflowDataHandler()->getParameter('par_data_organisation');
 
     // Get legal entities on the PAR Organisation.
     $this->getFlowDataHandler()
@@ -38,7 +37,7 @@ class ParSelectLegalEntitiesForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = []) {
+  public function getElements($form = [], $cardinality = 1) {
     // Retrieve legal entities on the partnership.
     $organisation_legal_entities = $this->getFlowDataHandler()
       ->getTempDataValue('organisation_legal_entities');
@@ -56,6 +55,7 @@ class ParSelectLegalEntitiesForm extends ParFormPluginBase {
       $legal_entity_view = $legal_entities_view_builder->view($legal_entity, 'summary');
       $legal_entities_options[$legal_entity->id()] = $this->renderMarkupField($legal_entity_view)['#markup'];
     }
+
 
     // Intro text.
     $form['legal_entity_intro'] = [
@@ -77,8 +77,7 @@ limited company or partnership, as well as other types of organisations such as 
       '#title' => t('Choose which legal entities this partnership relates to'),
       '#options' => $legal_entities_options,
       // Automatically check all legal entities if no form data is found.
-      '#default_value' => $this->getFlowDataHandler()
-        ->getDefaultValues("field_legal_entity", $partnership_legal_entities),
+      '#default_value' => $this->getDefaultValuesByKey('field_legal_entity', $cardinality, $partnership_legal_entities),
     ];
 
     // A note to the user that they can add a new legal entity on the next step.

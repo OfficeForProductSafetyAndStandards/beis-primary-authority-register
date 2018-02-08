@@ -7,6 +7,7 @@ use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Render\Element;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\par_data\ParDataManagerInterface;
@@ -15,6 +16,7 @@ use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
+use Drupal\par_forms\ParFormBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityConstraintViolationListInterface;
@@ -167,11 +169,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-
-
     // Add all the registered components to the form.
-    foreach ($this->getComponents() as $weight => $component) {
-      $form = $component->getElements($form);
+    foreach ($this->getComponents() as $component) {
+      $form = $this->getFormBuilder()->getPluginElements($component);
     }
 
     // Only ever place a 'done' action by itself.
@@ -249,12 +249,28 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+    // We don't want to validate if just removing items.
+    $remove_action = strpos($form_state->getTriggeringElement()['#name'], 'remove:');
+    if ($remove_action !== FALSE) {
+      return;
+    }
+
     // Add all the registered components to the form.
-    foreach ($this->getComponents() as $weight => $component) {
-      $component_violations = $component->validate($form_state);
-      if ($component_violations) {
-        foreach ($component_violations as $field_name => $violation) {
-          $this->setFieldViolations($field_name, $form_state, $violation);
+    foreach ($this->getComponents() as $component) {
+      $component_violations = $this->getFormBuilder()->validatePluginElements($component, $form_state);
+      if (isset($component_violations[$component->getPluginId()])) {
+        foreach ($component_violations[$component->getPluginId()] as $cardinality => $violations) {
+          foreach ($violations as $field_name => $violation_list) {
+            // Do not validate the last item if multiple cardinality is allowed.
+            if ($violation_list->count() >= 1) {
+              if ($component->getCardinality() === 1 || $cardinality < $component->countItems($form_state->getValues())) {
+                $this->setFieldViolations($field_name, $form_state, $violation_list);
+              } // Clear values for any unvalidated items that are not valid.
+              elseif ($component->getCardinality() !== 1 && $cardinality !== 1) {
+                $form_state->unsetValue([$component->getPluginId(), $cardinality-1]);
+              }
+            }
+          }
         }
       }
     }
@@ -263,8 +279,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     if (!empty($this->getFormItems())) {
       $form_violations = $this->validateElements($form_state);
       if ($form_violations) {
-        foreach ($form_violations as $field_name => $violation) {
-          $this->setFieldViolations($field_name, $form_state, $violation);
+        foreach ($form_violations as $field_name => $violation_list) {
+          $this->setFieldViolations($field_name, $form_state, $violation_list);
         }
       }
     }
@@ -402,6 +418,37 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $submit_action = $form_state->getTriggeringElement()['#name'];
     $next = $this->getFlowNegotiator()->getFlow()->getNextRoute($submit_action);
     $form_state->setRedirect($next, $this->getRouteParams());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function multipleItemActionsSubmit(array &$form, FormStateInterface $form_state) {
+    $values = $this->cleanseFormDefaults($form_state->getValues());
+    $this->getFlowDataHandler()->setFormTempData($values);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function removeItem(array &$form, FormStateInterface $form_state) {
+    list($button, $plugin_id, $cardinality) = explode(':', $form_state->getTriggeringElement()['#name']);
+
+    $form_state->unsetValue([ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_id, (int) $cardinality-1]);
+
+    // If the last item does not validate we must remove this too.
+    $values = $form_state->getValue(ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_id);
+    end($values);
+    $last_index = (int) key($values);
+    $component = $this->getComponent($plugin_id);
+    $violations = $component->validate($form_state, $last_index);
+    foreach ($violations as $field_name => $violation_list) {
+      if ($component && $violation_list->count() >= 1) {
+        $form_state->unsetValue([ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_id, $last_index]);
+      }
+    }
+
+    $this->getFlowDataHandler()->setFormTempData($this->cleanseFormDefaults($form_state->getValues()));
   }
 
   /**

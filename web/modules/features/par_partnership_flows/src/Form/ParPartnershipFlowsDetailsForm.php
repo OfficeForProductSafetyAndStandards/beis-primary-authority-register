@@ -92,7 +92,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     if ($checkbox === 'partnership_info_agreed_business' && !$par_data_partnership->getBoolean($checkbox)) {
       $operations = ['edit-entity','add'];
     }
-    $form['legal_entities'] = $this->renderSection('Legal entities', $par_data_partnership, ['field_legal_entity' => 'summary'], $operations);
+    $form['legal_entities'] = $this->renderSection('Legal entities', $par_data_organisation, ['field_legal_entity' => 'summary'], $operations);
 
     // Display all the trading names along with the links for the allowed
     // operations on these.
