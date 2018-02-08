@@ -49,6 +49,7 @@
         "drupal/twig_field_value": "~1.1.0",
         "drupal/twig_tweak": "~1.8.0",
         "drupal/ultimate_cron": "^2.0@alpha",
+        "drupal/vbo_export": "^2.0",
         "drupal/views_bulk_operations": "~1.0.0",
         "drupal/views_data_export": "~1.0.0",
         "drupal/views_field_view": "~1.0.0",
