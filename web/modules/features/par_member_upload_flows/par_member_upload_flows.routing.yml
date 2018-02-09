@@ -1,0 +1,8 @@
+# A coordinated member journey for importing partnerships via csv file.
+par_member_upload_flows.member_upload:
+  path: '/partnership/{id}/members/upload'
+  defaults:
+    _form: '\Drupal\par_member_upload_flows\Form\ParMemberUploadFlowsForm'
+    _title: 'Uploading Members List - CSV'
+  requirements:
+    _permission: 'manage my organisations'

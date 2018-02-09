@@ -6,5 +6,11 @@ label: 'Member Upload'
 default_title: 'Upload a list of members'
 default_section_title: 'Coordinated partnership'
 description: ''
-save_method: end
-steps: {}
+save_method: step
+steps:
+  1:
+    route: par_member_upload_flows.member_upload
+    form_id: par_member_upload_csv
+    redirect:
+      save: 1
+      cancel: 1
