@@ -90,7 +90,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       '#return_value' => 'on',
     ];
 
-    $url = Url::fromUri('internal:/terms-and-conditions');
+    $url = Url::fromUri('internal:/par-terms-and-conditions');
     $terms_link = Link::fromTextAndUrl(t('Terms & Conditions'), $url);
     $form['terms_organisation_agreed'] = [
       '#type' => 'checkbox',
