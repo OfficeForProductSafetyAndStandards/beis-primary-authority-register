@@ -6,15 +6,19 @@ label: 'Coordinated Business'
 description: 'A coordinated business is a business that is a member of a coordinated partnership.'
 help: ''
 isDeletable: true
-isRevokable: false
+isRevokable: true
 isArchivable: false
 configuration:
   entity:
     label_fields:
-      - title
+      - field_organisation
     status_field: member_status
     status_transitions:
       active:
-        - ceased
-      ceased:
+        - revoked
+      revoked:
         - active
+    member_status:
+      allowed_values:
+        active: 'Active'
+        revoked: 'Ceased'
