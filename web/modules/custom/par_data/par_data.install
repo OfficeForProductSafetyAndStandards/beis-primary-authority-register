@@ -6,6 +6,7 @@
 
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\Entity\ParDataEntity;
 
 /**
  * Implements hook_install().
