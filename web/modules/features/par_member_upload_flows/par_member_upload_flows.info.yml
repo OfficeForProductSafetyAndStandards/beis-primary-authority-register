@@ -1,4 +1,4 @@
-name: PAR CSV Upload
+name: PAR Member Upload Flows
 type: module
 description: Co-ordinated partnership can upload csv file with the members data.
 core: 8.x
