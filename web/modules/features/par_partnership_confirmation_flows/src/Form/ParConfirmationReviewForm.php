@@ -6,6 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\ParFormBuilder;
@@ -42,6 +43,12 @@ class ParConfirmationReviewForm extends ParBaseForm {
     // Set the data values on the entities
     $entities = $this->createEntities();
     extract($entities);
+    /** @var ParDataPartnership $par_data_partnership */
+    /** @var ParDataOrganisation $par_data_organisation */
+    /** @var ParDataPerson $par_data_person */
+    /** @var ParDataPremises $par_data_premises */
+    /** @var ParDataLegalEntity[] $par_data_legal_entities */
+    /** @var ParDataLegalEntity[] $par_data_legal_entities_existing */
 
     // Display details about the organisation for information.
     $form['about_organisation'] = $this->renderSection('About the organisation', $par_data_organisation, ['comments' => 'about']);
@@ -55,7 +62,15 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
     // Display SIC code, number of employees.
     $form['sic_code'] = $this->renderSection('Primary SIC code', $par_data_organisation, ['field_sic_code' => 'detailed'], [], TRUE, TRUE);
-    $form['number_employees'] = $this->renderSection('Number of employees at the organisation', $par_data_organisation, ['employees_band' => 'detailed']);
+
+    if ($par_data_partnership->isDirect()) {
+      // Display the number of employees.
+      $form['number_employees'] = $this->renderSection('Number of employees at the organisation', $par_data_organisation, ['employees_band' => 'detailed']);
+    }
+    if ($par_data_partnership->isCoordinated()) {
+      // Display the size of the coordinator.
+      $form['number_members'] = $this->renderSection('Number of members', $par_data_organisation, ['size' => 'detailed']);
+    }
 
     // Display legal entities.
     $form['legal_entities'] = [
@@ -167,9 +182,15 @@ class ParConfirmationReviewForm extends ParBaseForm {
     $sic_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_sic_code');
     $par_data_organisation->get('field_sic_code')->set(0, $this->getFlowDataHandler()->getTempDataValue('sic_code', $sic_cid));
 
-    // Save the data for the business size form.
-    $business_size_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_business_size');
-    $par_data_organisation->set('employees_band', $this->getFlowDataHandler()->getTempDataValue('employees_band', $business_size_cid));
+    if ($par_data_partnership->isDirect()) {
+      $employee_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_employee_number');
+      $par_data_organisation->set('employees_band', $this->getFlowDataHandler()->getTempDataValue('employees_band', $employee_cid));
+    }
+    if ($par_data_partnership->isCoordinated()) {
+      // Save the data for the business size form.
+      $business_size_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_business_size');
+      $par_data_organisation->set('size', $this->getFlowDataHandler()->getTempDataValue('business_size', $business_size_cid));
+    }
 
     // Save the data for the trading name form.
     $trading_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_trading_name');
@@ -178,7 +199,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
     return [
       'par_data_partnership' => $par_data_partnership,
       'par_data_organisation' => $par_data_organisation,
-      'par_data_people' => $par_data_person,
+      'par_data_person' => $par_data_person,
       'par_data_premises' => $par_data_premises,
       'par_data_legal_entities' => $par_data_legal_entities,
       'par_data_legal_entities_existing' => $par_data_legal_entities_existing,
@@ -194,11 +215,26 @@ class ParConfirmationReviewForm extends ParBaseForm {
     // Set the data values on the entities
     $entities = $this->createEntities();
     extract($entities);
+    /** @var ParDataPartnership $par_data_partnership */
+    /** @var ParDataOrganisation $par_data_organisation */
+    /** @var ParDataPerson $par_data_person */
+    /** @var ParDataPremises $par_data_premises */
+    /** @var ParDataLegalEntity[] $par_data_legal_entities */
+    /** @var ParDataLegalEntity[] $par_data_legal_entities_existing */
 
     // Add all references if not already set.
-    if ($par_data_people->save() && !$par_data_partnership->getOrganisationPeople(TRUE)) {
-      $par_data_partnership->get('field_organisation_person')->set(0, $par_data_people);
-      $par_data_organisation->get('field_person')->appendItem($par_data_people);
+    if ($par_data_person->save() && !$par_data_partnership->getOrganisationPeople(TRUE)) {
+      $par_data_partnership->get('field_organisation_person')->set(0, $par_data_person);
+      $par_data_organisation->get('field_person')->appendItem($par_data_person);
+    }
+    // Save the new legal entities.
+    foreach ($par_data_legal_entities_existing + $par_data_legal_entities as $key => $legal_entity) {
+      // Save the new legal entities and add to the organisation.
+      if ($legal_entity->isNew()) {
+        $legal_entity->save();
+        $par_data_organisation->get('field_legal_entity')->appendItem($legal_entity);
+      }
+      $par_data_partnership->get('field_legal_entity')->appendItem($legal_entity);
     }
     if ($par_data_premises->save() && !$par_data_organisation->getPremises(TRUE)) {
       $par_data_organisation->get('field_premises')->set(0, $par_data_premises);
