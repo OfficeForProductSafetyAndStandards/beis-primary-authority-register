@@ -3,6 +3,8 @@
 namespace Drupal\par_partnership_confirmation_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
@@ -29,6 +31,19 @@ class ParConfirmationReviewForm extends ParBaseForm {
    * {@inheritdoc}
    */
   protected $pageTitle = 'Review the partnership summary information below';
+
+  /**
+   * Load the data for this form.
+   */
+  public function loadData() {
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+
+    // Override the route parameter so that data loaded will be from this entity.
+    $this->getFlowDataHandler()->setParameter('partnership_info_agreed_business', $par_data_partnership->getBoolean('partnership_info_agreed_business'));
+    $this->getFlowDataHandler()->setParameter('terms_organisation_agreed', $par_data_partnership->getBoolean('terms_organisation_agreed'));
+
+    parent::loadData();
+  }
 
   /**
    * {@inheritdoc}
@@ -75,6 +90,16 @@ class ParConfirmationReviewForm extends ParBaseForm {
       '#return_value' => 'on',
     ];
 
+    $url = Url::fromUri('internal:/par-terms-and-conditions');
+    $terms_link = Link::fromTextAndUrl(t('Terms & Conditions'), $url);
+    $form['terms_organisation_agreed'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('I have read and agree to the %terms.', ['%terms' => $terms_link->toString()]),
+      '#disabled' => !$par_data_partnership->get('terms_organisation_agreed')->isEmpty(),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("terms_organisation_agreed"),
+      '#return_value' => 'on',
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -84,9 +109,12 @@ class ParConfirmationReviewForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    // Make sure the confirm box is ticked.
+    // Make sure the confirm box and terms box is ticked.
     if (!$form_state->getValue('partnership_info_agreed_business')) {
       $this->setElementError('partnership_info_agreed_business', $form_state, 'Please confirm you have reviewed the details.');
+    }
+    if (!$form_state->getValue('terms_organisation_agreed')) {
+      $this->setElementError('terms_organisation_agreed', $form_state, 'Please confirm you have read the terms & conditions.');
     }
   }
 
@@ -211,6 +239,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
     if ($par_data_partnership && !$par_data_partnership->getBoolean('partnership_info_agreed_business')) {
       // Save the value for the confirmation field.
       $par_data_partnership->set('partnership_info_agreed_business', $this->decideBooleanValue($this->getFlowDataHandler()->getTempDataValue('partnership_info_agreed_business')));
+      $par_data_partnership->set('terms_organisation_agreed', $this->decideBooleanValue($this->getFlowDataHandler()->getTempDataValue('terms_organisation_agreed')));
 
       // Set partnership status.
       $par_data_partnership->setParStatus('confirmed_business');
