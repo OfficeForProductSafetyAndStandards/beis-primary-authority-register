@@ -1,9 +1,11 @@
-uuid: 4b5594e9-41e4-4fb7-a04c-662ba6c8f54d
+uuid: d8a3d51b-acfe-48e1-aba4-505ee9142c23
 langcode: en
 status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: 9mMYGmv0RnEgOHIwpf548s3hpj3df3R367rBVwZxzqI
 id: par_data_coordinated_business.field_covered_by_inspection
 field_name: field_covered_by_inspection
 entity_type: par_data_coordinated_business

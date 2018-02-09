@@ -1,10 +1,12 @@
-uuid: d12c1258-0c73-416d-beb8-faf1814b3340
+uuid: 6702ee75-3d43-4ba2-a94e-5d7709f274ff
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.par_data_coordinated_business.field_legal_entity
     - par_data.par_data_coordinated_business_type.coordinated_business
+_core:
+  default_config_hash: I-4VlZw_qAARegpzJKHLWIke2NB7gvxArQGdhKCMX98
 id: par_data_coordinated_business.coordinated_business.field_legal_entity
 field_name: field_legal_entity
 entity_type: par_data_coordinated_business

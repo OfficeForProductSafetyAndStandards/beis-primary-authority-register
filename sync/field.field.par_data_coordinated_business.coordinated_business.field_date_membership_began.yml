@@ -1,4 +1,4 @@
-uuid: 30d21281-4eb4-4cb4-810e-596432e20bcc
+uuid: d19c7e21-5811-4884-9431-6760769822a8
 langcode: en
 status: true
 dependencies:
@@ -7,6 +7,8 @@ dependencies:
     - par_data.par_data_coordinated_business_type.coordinated_business
   module:
     - datetime
+_core:
+  default_config_hash: D_jM97stoUFXsZY1DhEWKiou0jGm6glrfZHLF71WuTs
 id: par_data_coordinated_business.coordinated_business.field_date_membership_began
 field_name: field_date_membership_began
 entity_type: par_data_coordinated_business

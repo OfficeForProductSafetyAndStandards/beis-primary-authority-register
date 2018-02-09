@@ -13,7 +13,7 @@ dependencies:
   module:
     - datetime
 _core:
-  default_config_hash: G8x9p2OqUAJfFmAM3CqaSMSo1GDdlE2PipFNyOlEOSc
+  default_config_hash: wGmiSbB4fg6hrZF_tx8-m9nalyPpIWEOCdgfArYMoJQ
 id: par_data_coordinated_business.coordinated_business.default
 targetEntityType: par_data_coordinated_business
 bundle: coordinated_business

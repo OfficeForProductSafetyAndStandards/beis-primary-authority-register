@@ -1,10 +1,12 @@
-uuid: f9ad4b5a-33f6-4560-8b2d-42b9d768758c
+uuid: 9ed34989-3e84-4dd2-800a-9408dc0c1ccc
 langcode: en
 status: true
 dependencies:
   module:
     - node
     - par_data
+_core:
+  default_config_hash: DWelpOOwB-wOo-7Jk2ky37MaUwDqifmnq0PBKC5f0X8
 id: par_data_coordinated_business.field_legal_entity
 field_name: field_legal_entity
 entity_type: par_data_coordinated_business
