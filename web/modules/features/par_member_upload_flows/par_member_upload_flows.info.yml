@@ -1,0 +1,5 @@
+name: PAR CSV Upload
+type: module
+description: Co-ordinated partnership can upload csv file with the members data.
+core: 8.x
+package: PAR

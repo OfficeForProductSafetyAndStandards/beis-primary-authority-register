@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains par_csv_upload.module.
+ */
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function par_csv_upload_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the par_csv_upload module.
+    case 'help.page.par_csv_upload':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Co-ordinated partnership can upload csv file with'
+          . ' the members data.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
