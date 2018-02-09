@@ -144,7 +144,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
           '%count members have been found and are ready to be imported.',
           ['%count' => $count]
         ),
-        '#predix' => '<p>',
+        '#prefix' => '<p>',
         '#suffix' => '</p>',
       ];
 
@@ -238,6 +238,8 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
       // Process the row.
       $this->processRow($route_partnership->id(), $member, $requires_attention);
     }
+
+    $this->getFlowDataHandler()->deleteStore();
 
   }
 
