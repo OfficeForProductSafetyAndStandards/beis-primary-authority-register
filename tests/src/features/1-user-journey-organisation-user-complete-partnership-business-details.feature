@@ -95,10 +95,10 @@ Feature: Organisation User - Complete business details
         Then I expect that element "#edit-legal-entities" contains the text "0987654321"
         Then I expect that element "#edit-legal-entities" not contains the text "Third New LLP Company"
         Then I expect that element "#edit-legal-entities" not contains the text "0000000000"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element ".error-summary" is visible
         And I click on the checkbox "#edit-partnership-info-agreed-business"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then I expect that element ".error-summary" is visible
         And I click on the checkbox "#edit-terms-organisation-agreed"
         And I click on the button "#edit-save"
