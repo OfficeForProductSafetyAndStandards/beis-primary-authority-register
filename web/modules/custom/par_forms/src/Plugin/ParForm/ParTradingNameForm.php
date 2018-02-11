@@ -49,7 +49,7 @@ class ParTradingNameForm extends ParFormPluginBase {
       '#type' => 'textfield',
       '#title' => $this->t('Enter a trading name'),
       '#default_value' => $this->getDefaultValuesByKey('trading_name', $cardinality),
-      '#description' => $this->t("<p>Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State any trading names used by the organisation.</p>"),
+      '#description' => $this->t("<p>Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State the primary trading name used by the organisation. More can be added after confirming the partnership.</p>"),
     ];
 
     return $form;
