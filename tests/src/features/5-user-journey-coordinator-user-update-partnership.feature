@@ -45,7 +45,7 @@ Feature: Coordinator User - Manage Addresses
         And I click on the button "#edit-save"
         Then I expect that element "#edit-about-business" contains the text "Change to the about business details section"
 
-        # ADD MEMBERS - commend this out for now as this needs to be removed for new designs.
+        # ADD MEMBERS - comment this out for now as this needs to be removed for new designs.
 
         #When I click on the link "edit number of members"
         #And I select the option with the text "Small" for element "#edit-business-size"
