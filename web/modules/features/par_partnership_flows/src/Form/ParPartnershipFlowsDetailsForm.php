@@ -78,11 +78,24 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     // Only show Members list, Sectors and Number of businesses if the
     // partnership is a coordinated partnership.
     if ($par_data_partnership->isCoordinated()) {
-      $form['associations'] = $this->renderSection('Number of members', $par_data_organisation, ['size' => 'full'], ['edit-field']);
 
-      // Display all the legal entities along with the links for the allowed
-      // operations on these.
-      $form['members'] = $this->renderSection('Members', $par_data_partnership, ['field_coordinated_business' => 'title']);
+      $form['members_link'] = [
+        '#type' => 'fieldset',
+        '#title' => t('Number of members'),
+        '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+
+      $form['members_link']['link'] = [
+        '#type' => 'markup',
+        '#markup' => t('@link', [
+          '@link' => $this->getFlowNegotiator()->getFlow()
+              ->getNextLink('members')
+              ->setText('Show members list')
+              ->toString(),
+        ]),
+      ];
     }
 
     // Display all the legal entities along with the links for the allowed
