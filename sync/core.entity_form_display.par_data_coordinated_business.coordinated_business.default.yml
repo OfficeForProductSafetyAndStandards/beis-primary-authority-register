@@ -7,13 +7,12 @@ dependencies:
     - field.field.par_data_coordinated_business.coordinated_business.field_date_membership_began
     - field.field.par_data_coordinated_business.coordinated_business.field_date_membership_ceased
     - field.field.par_data_coordinated_business.coordinated_business.field_legal_entity
-    - field.field.par_data_coordinated_business.coordinated_business.field_member_status
     - field.field.par_data_coordinated_business.coordinated_business.field_organisation
     - par_data.par_data_coordinated_business_type.coordinated_business
   module:
     - datetime
 _core:
-  default_config_hash: wGmiSbB4fg6hrZF_tx8-m9nalyPpIWEOCdgfArYMoJQ
+  default_config_hash: joQOS7onw3MKZ3guO8hqDG2fOyROgqPdKRcIP3wpqRw
 id: par_data_coordinated_business.coordinated_business.default
 targetEntityType: par_data_coordinated_business
 bundle: coordinated_business
@@ -47,14 +46,6 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_member_status:
-    weight: 26
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_organisation:
     weight: 1
     settings:

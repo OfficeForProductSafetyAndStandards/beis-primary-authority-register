@@ -276,9 +276,30 @@ function par_data_update_8019() {
 }
 
 /**
- * Update fields for daterange on coordinated businesses.
+ * Migrate legal entities to partnerships.
  */
 function par_data_update_8020() {
+  /** @var \Drupal\Core\Queue\QueueFactory $queue_factory */
+  $queue_factory = \Drupal::service('queue');
+  /** @var \Drupal\Core\Queue\QueueInterface $queue */
+  $queue = $queue_factory->get('par_scheduled_actions');
+
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  $partnerships = $par_data_manager->getEntitiesByProperty('par_data_partnership', 'deleted', 0);
+  foreach ($partnerships as $partnership) {
+    $item = [
+      'entity' => $partnership,
+      'action' => 'par_migrate_legal_entities',
+    ];
+    $queue->createItem($item);
+  }
+}
+
+/**
+ * Update fields for daterange on coordinated businesses.
+ */
+function par_data_update_8021() {
   $db = \Drupal::database();
   $entity_type = \Drupal::service('par_data.manager')->getParEntityType('par_data_coordinated_business');
 
@@ -303,25 +324,4 @@ function par_data_update_8020() {
   }
 
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
-}
-
-/**
- * Migrate legal entities to partnerships.
- */
-function par_data_update_8021() {
-  /** @var \Drupal\Core\Queue\QueueFactory $queue_factory */
-  $queue_factory = \Drupal::service('queue');
-  /** @var \Drupal\Core\Queue\QueueInterface $queue */
-  $queue = $queue_factory->get('par_scheduled_actions');
-
-  $par_data_manager = \Drupal::service('par_data.manager');
-
-  $partnerships = $par_data_manager->getEntitiesByProperty('par_data_partnership', 'deleted', 0);
-  foreach ($partnerships as $partnership) {
-    $item = [
-      'entity' => $partnership,
-      'action' => 'par_migrate_legal_entities',
-    ];
-    $queue->createItem($item);
-  }
 }

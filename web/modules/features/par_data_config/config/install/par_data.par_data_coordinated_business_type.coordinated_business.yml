@@ -12,13 +12,3 @@ configuration:
   entity:
     label_fields:
       - field_organisation
-    status_field: member_status
-    status_transitions:
-      active:
-        - revoked
-      revoked:
-        - active
-    member_status:
-      allowed_values:
-        active: 'Active'
-        revoked: 'Ceased'
