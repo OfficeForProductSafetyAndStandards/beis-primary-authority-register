@@ -1,12 +1,11 @@
-uuid: 6702ee75-3d43-4ba2-a94e-5d7709f274ff
+uuid: 46e8a4b6-1860-45c9-8c06-489439971c1b
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.par_data_coordinated_business.field_legal_entity
     - par_data.par_data_coordinated_business_type.coordinated_business
-_core:
-  default_config_hash: I-4VlZw_qAARegpzJKHLWIke2NB7gvxArQGdhKCMX98
+    - par_data.par_data_legal_entity_type.legal_entity
 id: par_data_coordinated_business.coordinated_business.field_legal_entity
 field_name: field_legal_entity
 entity_type: par_data_coordinated_business
@@ -18,6 +17,12 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:node'
-  handler_settings: {  }
+  handler: 'default:par_data_legal_entity'
+  handler_settings:
+    target_bundles:
+      legal_entity: legal_entity
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
 field_type: entity_reference
