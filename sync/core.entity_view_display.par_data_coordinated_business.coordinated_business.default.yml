@@ -7,7 +7,6 @@ dependencies:
     - field.field.par_data_coordinated_business.coordinated_business.field_date_membership_began
     - field.field.par_data_coordinated_business.coordinated_business.field_date_membership_ceased
     - field.field.par_data_coordinated_business.coordinated_business.field_legal_entity
-    - field.field.par_data_coordinated_business.coordinated_business.field_member_status
     - field.field.par_data_coordinated_business.coordinated_business.field_organisation
     - par_data.par_data_coordinated_business_type.coordinated_business
   module:
@@ -92,16 +91,7 @@ content:
     third_party_settings: {  }
     type: entity_reference_entity_view
     region: content
-  member_status:
-    label: hidden
-    weight: 0
-    region: content
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
 hidden:
   field_legal_entity: true
-  field_member_status: true
   name: true
   user_id: true

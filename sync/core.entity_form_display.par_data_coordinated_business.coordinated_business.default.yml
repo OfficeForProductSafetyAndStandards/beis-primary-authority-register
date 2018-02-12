@@ -80,4 +80,3 @@ content:
     region: content
     third_party_settings: {  }
 hidden:
-  field_member_status: true

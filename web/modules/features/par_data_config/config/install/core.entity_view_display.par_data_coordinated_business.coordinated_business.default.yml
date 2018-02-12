@@ -88,14 +88,6 @@ content:
     third_party_settings: {  }
     type: entity_reference_entity_view
     region: content
-  member_status:
-    label: hidden
-    weight: 0
-    region: content
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
 hidden:
   field_legal_entity: true
   name: true
