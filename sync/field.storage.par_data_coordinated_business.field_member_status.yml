@@ -1,0 +1,23 @@
+uuid: b49d0831-005c-4351-a80e-fb998cc705a5
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+_core:
+  default_config_hash: IN2WSGxyxEzIvDTKn7BTDD3t1KqyRPX4M9jk_fSxi_8
+id: par_data_coordinated_business.field_member_status
+field_name: field_member_status
+entity_type: par_data_coordinated_business
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -276,9 +276,39 @@ function par_data_update_8019() {
 }
 
 /**
- * Migrate legal entities to partnerships.
+ * Update fields for daterange on coordinated businesses.
  */
 function par_data_update_8020() {
+  $db = \Drupal::database();
+  $entity_type = \Drupal::service('par_data.manager')->getParEntityType('par_data_coordinated_business');
+
+  $table_names = [$entity_type->getDataTable(), $entity_type->getRevisionDataTable()];
+
+  foreach ($table_names as $table_name) {
+    if ($db->schema()->fieldExists($table_name, 'membership_date__value')) {
+      $db->update($table_name)
+        ->fields([
+          'membership_date__value' => NULL,
+        ])
+        ->execute();
+    }
+
+    if ($db->schema()->fieldExists($table_name, 'membership_date__end_value')) {
+      $db->update($table_name)
+        ->fields([
+          'membership_date__end_value' => NULL,
+        ])
+        ->execute();
+    }
+  }
+
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
+
+/**
+ * Migrate legal entities to partnerships.
+ */
+function par_data_update_8021() {
   /** @var \Drupal\Core\Queue\QueueFactory $queue_factory */
   $queue_factory = \Drupal::service('queue');
   /** @var \Drupal\Core\Queue\QueueInterface $queue */

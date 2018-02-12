@@ -111,18 +111,74 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    // Membership Date.
-    $fields['membership_date'] = BaseFieldDefinition::create('daterange')
-      ->setLabel(t('Membership Date'))
-      ->setDescription(t('The date range this coordinated business is a member of this partnership for.'))
+    // Coordinator member status.
+    $fields['member_status'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Member Status'))
+      ->setDescription(t('The status of the coordinated member.'))
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'string_textfield',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Partnership info confirmed by business.
+    $fields['covered_by_inspection'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Covered by inspection?'))
+      ->setDescription(t('Is this coordinated business covered by inspection?'))
+      ->setRevisionable(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 2,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Coordinated business membership start date.
+    $fields['date_membership_began'] = BaseFieldDefinition::create('datetime')
+      ->setLabel(t('Membership Start Date'))
+      ->setDescription(t('The date the membership began.'))
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'datetime_type' => 'date',
       ])
       ->setDisplayOptions('form', [
-        'type' => 'daterange_default',
-        'weight' => 1,
+        'type' => 'datetime_default',
+        'weight' => 3,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Coordinated business cease date.
+    $fields['date_membership_ceased'] = BaseFieldDefinition::create('datetime')
+      ->setLabel(t('Membership Ceased Date'))
+      ->setDescription(t('The date this membership was ceased.'))
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'datetime_type' => 'date',
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'datetime_default',
+        'weight' => 4,
       ])
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [

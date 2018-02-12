@@ -1,0 +1,23 @@
+uuid: d19c7e21-5811-4884-9431-6760769822a8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_coordinated_business.field_date_membership_began
+    - par_data.par_data_coordinated_business_type.coordinated_business
+  module:
+    - datetime
+_core:
+  default_config_hash: D_jM97stoUFXsZY1DhEWKiou0jGm6glrfZHLF71WuTs
+id: par_data_coordinated_business.coordinated_business.field_date_membership_began
+field_name: field_date_membership_began
+entity_type: par_data_coordinated_business
+bundle: coordinated_business
+label: 'Date Membership Began'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime
