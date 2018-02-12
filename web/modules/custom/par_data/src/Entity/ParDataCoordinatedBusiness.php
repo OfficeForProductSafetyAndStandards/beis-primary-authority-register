@@ -111,27 +111,6 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    // Coordinator member status.
-    $fields['member_status'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Member Status'))
-      ->setDescription(t('The status of the coordinated member.'))
-      ->setRevisionable(TRUE)
-      ->setSettings([
-        'max_length' => 255,
-        'text_processing' => 0,
-      ])
-      ->setDefaultValue('')
-      ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => 1,
-      ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'string_textfield',
-        'weight' => 0,
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
     // Partnership info confirmed by business.
     $fields['covered_by_inspection'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Covered by inspection?'))

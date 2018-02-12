@@ -13,7 +13,7 @@ dependencies:
   module:
     - datetime
 _core:
-  default_config_hash: wGmiSbB4fg6hrZF_tx8-m9nalyPpIWEOCdgfArYMoJQ
+  default_config_hash: joQOS7onw3MKZ3guO8hqDG2fOyROgqPdKRcIP3wpqRw
 id: par_data_coordinated_business.coordinated_business.default
 targetEntityType: par_data_coordinated_business
 bundle: coordinated_business
@@ -47,14 +47,6 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_member_status:
-    weight: 26
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_organisation:
     weight: 1
     settings:
@@ -88,4 +80,5 @@ content:
       placeholder: ''
     region: content
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_member_status: true

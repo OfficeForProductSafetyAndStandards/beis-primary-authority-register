@@ -13,7 +13,7 @@ dependencies:
   module:
     - datetime
 _core:
-  default_config_hash: UTELAN9t7ka06PUZ4c4fmuFeJytL-EG3za2NwilZiXw
+  default_config_hash: sUUXzGMOhycnzMZcXtJGuyDO6wsAPL-TzhbHzm_Ruuc
 id: par_data_coordinated_business.coordinated_business.default
 targetEntityType: par_data_coordinated_business
 bundle: coordinated_business
@@ -83,14 +83,6 @@ content:
     third_party_settings: {  }
     type: datetime_default
     region: content
-  field_member_status:
-    weight: 2
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
   field_organisation:
     weight: 1
     label: hidden
@@ -110,5 +102,6 @@ content:
     type: string
 hidden:
   field_legal_entity: true
+  field_member_status: true
   name: true
   user_id: true
