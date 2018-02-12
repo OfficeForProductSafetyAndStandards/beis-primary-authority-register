@@ -3,12 +3,15 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.storage.par_data_coordinated_business.field_date_membership_began
+    - field.storage.par_data_coordinated_business.field_date_membership_ceased
     - field.storage.par_data_coordinated_business.field_organisation
     - field.storage.par_data_partnership.field_inspection_plan
     - par_data.par_data_coordinated_business_type.coordinated_business
   module:
     - address
-    - datetime_range
+    - datetime
+    - pagerer
     - par_data
     - user
 id: members_list
@@ -52,22 +55,20 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       pager:
-        type: mini
+        type: pagerer
         options:
+          preset: gds_list_pagination
           items_per_page: 10
           offset: 0
-          id: 0
-          total_pages: null
-          tags:
-            previous: ‹‹
-            next: ››
+          id: '0'
+          total_pages: ''
           expose:
-            items_per_page: false
+            items_per_page: 0
             items_per_page_label: 'Items per page'
             items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
+            items_per_page_options_all: 0
             items_per_page_options_all_label: '- All -'
-            offset: false
+            offset: 0
             offset_label: Offset
       style:
         type: table
@@ -201,14 +202,14 @@ display:
           entity_type: par_data_premises
           entity_field: address
           plugin_id: field
-        membership_date__value_1:
-          id: membership_date__value_1
-          table: par_coordinated_businesses_field_data
-          field: membership_date__value
+        field_date_membership_began:
+          id: field_date_membership_began
+          table: par_data_coordinated_business__field_date_membership_began
+          field: field_date_membership_began
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Member since'
+          label: 'Membership Since'
           exclude: false
           alter:
             alter_text: false
@@ -250,11 +251,10 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: daterange_custom
+          type: datetime_default
           settings:
             timezone_override: ''
-            date_format: d-m-Y
-            separator: ''
+            format_type: gds_date_format
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -265,17 +265,15 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_coordinated_business
-          entity_field: membership_date
           plugin_id: field
-        membership_date__end_value:
-          id: membership_date__end_value
-          table: par_coordinated_businesses_field_data
-          field: membership_date__end_value
+        field_date_membership_ceased:
+          id: field_date_membership_ceased
+          table: par_data_coordinated_business__field_date_membership_ceased
+          field: field_date_membership_ceased
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Member until'
+          label: 'Membership until'
           exclude: false
           alter:
             alter_text: false
@@ -308,7 +306,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: false
+          element_label_colon: true
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -316,12 +314,11 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: end_value
-          type: daterange_custom
+          click_sort_column: value
+          type: datetime_default
           settings:
             timezone_override: ''
-            date_format: d/m/Y
-            separator: ''
+            format_type: gds_date_format
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -332,8 +329,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_coordinated_business
-          entity_field: membership_date
           plugin_id: field
         field_inspection_plan:
           id: field_inspection_plan
@@ -452,6 +447,58 @@ display:
           entity_type: par_data_organisation
           entity_field: organisation_name
           plugin_id: string
+        revoked:
+          id: revoked
+          table: par_coordinated_businesses_field_data
+          field: revoked
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: '0'
+          group: 1
+          exposed: true
+          expose:
+            operator_id: ''
+            label: 'Type of member'
+            description: 'Filter by member status'
+            use_operator: false
+            operator: revoked_op
+            identifier: revoked
+            required: true
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              par_authority: '0'
+              par_enforcement: '0'
+              par_organisation: '0'
+              par_helpdesk: '0'
+          is_grouped: true
+          group_info:
+            label: 'Type of member'
+            description: 'Filter by member statuts'
+            identifier: revoked
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items:
+              1:
+                title: Current
+                operator: '='
+                value: '0'
+              2:
+                title: Ceased
+                operator: '='
+                value: '1'
+          entity_type: par_data_coordinated_business
+          entity_field: revoked
+          plugin_id: boolean
       sorts: {  }
       title: 'Members list'
       header: {  }
@@ -534,6 +581,8 @@ display:
         - url.query_args
         - user.permissions
       tags:
+        - 'config:field.storage.par_data_coordinated_business.field_date_membership_began'
+        - 'config:field.storage.par_data_coordinated_business.field_date_membership_ceased'
         - 'config:field.storage.par_data_coordinated_business.field_organisation'
         - 'config:field.storage.par_data_partnership.field_inspection_plan'
   page_1:
@@ -553,5 +602,7 @@ display:
         - url.query_args
         - user.permissions
       tags:
+        - 'config:field.storage.par_data_coordinated_business.field_date_membership_began'
+        - 'config:field.storage.par_data_coordinated_business.field_date_membership_ceased'
         - 'config:field.storage.par_data_coordinated_business.field_organisation'
         - 'config:field.storage.par_data_partnership.field_inspection_plan'
