@@ -45,7 +45,7 @@ class ParEmployeeNumberForm extends ParFormPluginBase {
       '#type' => 'select',
       '#title' => $this->t('Number of employees'),
       '#default_value' => $this->getDefaultValuesByKey('employees_band', $cardinality),
-      '#options' => $organisation_bundle->getAllowedValues('employees_band'),
+      '#options' => ['' => ''] + $organisation_bundle->getAllowedValues('employees_band'),
     ];
 
     return $form;

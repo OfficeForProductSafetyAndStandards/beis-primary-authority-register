@@ -29,10 +29,14 @@ class ParSelectLegalEntitiesForm extends ParBaseForm {
    */
   public function loadData() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $par_data_organisation = $par_data_partnership ? $par_data_partnership->getOrganisation(TRUE) : NULL;
 
-    // For the apply journey we will always edit the first value.
+    // Set the organisation to get legal entities from.
+    $par_data_organisation = $par_data_partnership ? $par_data_partnership->getOrganisation(TRUE) : NULL;
     $this->getFlowDataHandler()->setParameter('par_data_organisation', $par_data_organisation);
+
+    // Set the legal entities to be used as options for this form.
+    $par_data_legal_entities = $par_data_partnership ? $par_data_organisation->getLegalEntity() : [];
+    $this->getFlowDataHandler()->setParameter('organisation_legal_entities', $par_data_legal_entities);
 
     parent::loadData();
   }

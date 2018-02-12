@@ -49,14 +49,14 @@ class ParSicCodeForm extends ParFormPluginBase {
     $sic_codes = $this->getParDataManager()->getEntitiesByType('par_data_sic_code');
 
     // Display the correct introductory text based on the action that is being performed.
-    $intro_text = $this->getFlowDataHandler()->getDefaultValues("sic_code", NULL) ?
+    $intro_text = $this->getFlowDataHandler()->getFormPermValue("sic_code", NULL) ?
       'Change the SIC Code of your organisation' :
       'Add a new SIC Code to your organisation';
 
     $form['sic_code'] = [
       '#type' => 'select',
       '#title' => $this->t($intro_text),
-      '#options' => $this->getParDataManager()->getEntitiesAsOptions($sic_codes),
+      '#options' => ['' => ''] + $this->getParDataManager()->getEntitiesAsOptions($sic_codes),
       '#default_value' => $this->getDefaultValuesByKey('sic_code', $cardinality, NULL),
     ];
 

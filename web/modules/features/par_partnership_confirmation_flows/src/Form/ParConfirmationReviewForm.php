@@ -97,6 +97,9 @@ class ParConfirmationReviewForm extends ParBaseForm {
       'legal_entities' => $this->renderEntities('Legal entities', $par_data_legal_entities_existing + $par_data_legal_entities),
     ];
 
+    // Display trading names.
+    $form['trading_names'] = $this->renderSection('Trading names', $par_data_organisation, ['trading_name' => 'full']);
+
     $form['partnership_info_agreed_business'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('I confirm I have reviewed the information above'),

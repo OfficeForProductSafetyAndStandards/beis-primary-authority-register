@@ -67,6 +67,7 @@ web/sites/simpletest
 .buildpath
 .project
 .settings/
+/nbproject/
 
 # Exclude VM logs
 ubuntu-xenial-16.04-cloudimg-console.log

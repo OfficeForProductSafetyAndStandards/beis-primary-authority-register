@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies: {  }
+id: member_upload
+label: 'Member Upload'
+default_title: 'Upload a list of members'
+default_section_title: 'Coordinated partnership'
+description: ''
+save_method: end
+steps: {}
