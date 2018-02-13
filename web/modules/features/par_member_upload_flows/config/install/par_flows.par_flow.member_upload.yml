@@ -7,4 +7,10 @@ default_title: 'Upload a list of members'
 default_section_title: 'Coordinated partnership'
 description: ''
 save_method: end
-steps: {}
+steps:
+  1:
+    route: par_member_upload_flows.member_upload
+    form_id: par_member_upload_csv
+    redirect:
+      upload: 1
+      cancel: 1
