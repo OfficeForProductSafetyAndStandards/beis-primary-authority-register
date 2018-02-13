@@ -1,0 +1,14 @@
+uuid: 7aca2508-069b-4d5e-8d2c-b87d42d44ecf
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: lBh1ryalqaIfPnUgc9XwFZ-rnrYc_HkuG6-d5vwzBh4
+id: member_upload
+label: 'Member Upload'
+default_title: 'Upload a list of members'
+default_section_title: 'Coordinated partnership'
+description: ''
+save_method: end
+states: null
+steps: {  }

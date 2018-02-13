@@ -85,6 +85,7 @@ Feature: Coordinator User - Complete business details
         Then I expect that element "#edit-legal-entities" contains the text "Limited Liability Partnership"
         Then I expect that element "#edit-legal-entities" contains the text "1234567890"
         And I click on the checkbox "#edit-partnership-info-agreed-business"
+        And I click on the checkbox "#edit-terms-organisation-agreed"
         And I click on the button "#edit-save"
 
         Then I expect that element "h1.heading-xlarge" contains the text "Thank you for completing the application"
