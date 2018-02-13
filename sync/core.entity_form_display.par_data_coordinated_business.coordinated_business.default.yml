@@ -7,6 +7,8 @@ dependencies:
     - par_data.par_data_coordinated_business_type.coordinated_business
   module:
     - datetime_range
+_core:
+  default_config_hash: UIzcqswtGbGLErpe7fehjCPCeWu-1JNXXMWOcOztivQ
 id: par_data_coordinated_business.coordinated_business.default
 targetEntityType: par_data_coordinated_business
 bundle: coordinated_business
@@ -45,4 +47,8 @@ content:
       placeholder: ''
     region: content
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_covered_by_inspection: true
+  field_date_membership_began: true
+  field_date_membership_ceased: true
+  field_legal_entity: true
