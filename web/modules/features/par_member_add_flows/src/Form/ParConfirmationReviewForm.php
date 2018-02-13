@@ -5,6 +5,7 @@ namespace Drupal\par_member_add_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
@@ -43,36 +44,30 @@ class ParConfirmationReviewForm extends ParBaseForm {
     ];
 
     // Set the data values on the entities
-//    $entities = $this->createEntities();
-//    extract($entities);
+    $entities = $this->createEntities();
+    extract($entities);
     /** @var ParDataPartnership $par_data_partnership */
+    /** @var ParDataCoordinatedBusiness $par_data_coordinated_business */
     /** @var ParDataOrganisation $par_data_organisation */
     /** @var ParDataPerson $par_data_person */
     /** @var ParDataPremises $par_data_premises */
     /** @var ParDataLegalEntity[] $par_data_legal_entities */
-    /** @var ParDataLegalEntity[] $par_data_legal_entities_existing */
 
-    // Display details about the organisation for information.
-    $form['about_organisation'] = $this->renderSection('About the organisation', $par_data_organisation, ['comments' => 'about']);
+    // Display organisation name.
+    $form['organisation_name'] = $this->renderSection('Member business name', $par_data_organisation, ['organisation_name' => 'title']);
 
-    // Display organisation name and organisation primary address.
-    $form['organisation_name'] = $this->renderSection('Business name', $par_data_organisation, ['organisation_name' => 'title'], [], TRUE, TRUE);
-    $form['organisation_registered_address'] = $this->renderSection('Business address', $par_data_organisation, ['field_premises' => 'summary'], [], TRUE, TRUE);
+    // Display the member's address
+    $form['member_registered_address'] = $this->renderSection('Member business address', $par_data_premises, ['address' => 'summary']);
 
     // Display contacts at the organisation.
-    $form['organisation_contacts'] = $this->renderSection('Contacts at the Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed'], [],  TRUE, TRUE);
-
-    // Display SIC code, number of employees.
-    $form['sic_code'] = $this->renderSection('Primary SIC code', $par_data_organisation, ['field_sic_code' => 'detailed'], [], TRUE, TRUE);
-
-    if ($par_data_partnership->isDirect()) {
-      // Display the number of employees.
-      $form['number_employees'] = $this->renderSection('Number of employees at the organisation', $par_data_organisation, ['employees_band' => 'detailed']);
-    }
-    if ($par_data_partnership->isCoordinated()) {
-      // Display the size of the coordinator.
-      $form['number_members'] = $this->renderSection('Number of members', $par_data_organisation, ['size' => 'detailed']);
-    }
+    $form['member_contact'] = [
+      '#type' => 'fieldset',
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+      '#title' => 'Member contact details',
+      'person' => $this->renderEntities('Legal entities', [$par_data_person], 'detailed'),
+    ];
 
     // Display legal entities.
     $form['legal_entities'] = [
@@ -81,63 +76,38 @@ class ParConfirmationReviewForm extends ParBaseForm {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
       '#title' => 'Legal Entities',
-      'legal_entities' => $this->renderEntities('Legal entities', $par_data_legal_entities_existing + $par_data_legal_entities),
+      'legal_entities' => $this->renderEntities('Legal entities', $par_data_legal_entities),
     ];
 
-    $form['partnership_info_agreed_business'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('I confirm I have reviewed the information above'),
-      '#disabled' => $par_data_partnership->get('partnership_info_agreed_business')->getString(),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("partnership_info_agreed_business"),
-      '#return_value' => 'on',
-    ];
-
-    $url = Url::fromUri('internal:/par-terms-and-conditions');
-    $terms_link = Link::fromTextAndUrl(t('Terms & Conditions'), $url);
-    $form['terms_organisation_agreed'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('I have read and agree to the %terms.', ['%terms' => $terms_link->toString()]),
-      '#disabled' => !$par_data_partnership->get('terms_organisation_agreed')->isEmpty(),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("terms_organisation_agreed"),
-      '#return_value' => 'on',
-    ];
+    // Display the trading names.
+    $form['trading_names'] = $this->renderSection('Trading names', $par_data_organisation, ['trading_name' => 'title']);
 
     return parent::buildForm($form, $form_state);
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
-
-    // Make sure the confirm box and terms box is ticked.
-    if (!$form_state->getValue('partnership_info_agreed_business')) {
-      $this->setElementError('partnership_info_agreed_business', $form_state, 'Please confirm you have reviewed the details.');
-    }
-    if (!$form_state->getValue('terms_organisation_agreed')) {
-      $this->setElementError('terms_organisation_agreed', $form_state, 'Please confirm you have read the terms & conditions.');
-    }
-  }
-
   public function createEntities() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $par_data_organisation = $par_data_partnership->getOrganisation(TRUE);
-    if (empty($par_data_organisation)) {
-      $par_data_organisation = ParDataOrganisation::create();
+
+    // Get the organisation name form details.
+    $organisation_name_cid = $this->getFlowNegotiator()->getFormKey('par_member_add_organisation_name');
+    $organisation_name = $this->getFlowDataHandler()->getTempDataValue('organisation_name', $organisation_name_cid);
+
+    // Get the trading name data.
+    $trading_name_cid = $this->getFlowNegotiator()->getFormKey('par_member_add_trading_name');
+    $trading_name_plugins = $this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'trading_name', $trading_name_cid) ?: [];
+    $trading_names = [];
+    foreach ($trading_name_plugins as $delta => $trading_name) {
+      $trading_names[$delta] = $trading_name['trading_name'];
     }
 
-    // Set the data for the about form.
-    $about_cid = $this->getFlowNegotiator()->getFormKey('par_member_about_business');
-    $par_data_organisation->set('comments', $this->getFlowDataHandler()->getTempDataValue('about_business', $about_cid));
+    // Get the covered by inspection plan data.
+    $membership_start_cid = $this->getFlowNegotiator()->getFormKey('par_member_add_begin_date');
 
-    // Set the data for the address form.
-    $par_data_premises = $par_data_organisation->getPremises(TRUE);
-    if (empty($par_data_premises)) {
-      $par_data_premises = ParDataPremises::create();
-    }
+    // Get the covered by inspection plan data.
+    $covered_by_cid = $this->getFlowNegotiator()->getFormKey('par_member_add_inspection_plan_coverage');
 
-    $address_cid = $this->getFlowNegotiator()->getFormKey('par_member_address');
+    // Get the address data.
+    $address_cid = $this->getFlowNegotiator()->getFormKey('par_member_add_address');
     $address = [
       'country_code' => $this->getFlowDataHandler()->getTempDataValue('country_code', $address_cid),
       'address_line1' => $this->getFlowDataHandler()->getTempDataValue('address_line1', $address_cid),
@@ -146,34 +116,20 @@ class ParConfirmationReviewForm extends ParBaseForm {
       'administrative_area' => $this->getFlowDataHandler()->getTempDataValue('county', $address_cid),
       'postal_code' => $this->getFlowDataHandler()->getTempDataValue('postcode', $address_cid),
     ];
-    $par_data_premises->set('address', $address);
-    $par_data_premises->set('nation', $this->getFlowDataHandler()->getTempDataValue('country', $address_cid));
+    $nation = $this->getFlowDataHandler()->getTempDataValue('country', $address_cid);
 
-    // Set the data for the contact form.
-    $par_data_person = $par_data_partnership->getOrganisationPeople(TRUE);
-    if (empty($par_data_person)) {
-      $par_data_person = ParDataPremises::create();
-    }
+    // Get the contact details data.
+    $contact_cid = $this->getFlowNegotiator()->getFormKey('par_member_add_contact');
+    $person = [
+      'salutation' => $this->getFlowDataHandler()->getTempDataValue('salutation', $contact_cid),
+      'first_name' => $this->getFlowDataHandler()->getTempDataValue('first_name', $contact_cid),
+      'last_name' => $this->getFlowDataHandler()->getTempDataValue('last_name', $contact_cid),
+      'work_phone' => $this->getFlowDataHandler()->getTempDataValue('work_phone', $contact_cid),
+      'mobile_phone' => $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $contact_cid),
+      'email' => $this->getFlowDataHandler()->getTempDataValue('email', $contact_cid),
+    ];
 
-    $contact_cid = $this->getFlowNegotiator()->getFormKey('par_member_contact');
-    $par_data_person->set('salutation', $this->getFlowDataHandler()->getTempDataValue('salutation', $contact_cid));
-    $par_data_person->set('first_name', $this->getFlowDataHandler()->getTempDataValue('first_name', $contact_cid));
-    $par_data_person->set('last_name', $this->getFlowDataHandler()->getTempDataValue('last_name', $contact_cid));
-    $par_data_person->set('work_phone', $this->getFlowDataHandler()->getTempDataValue('work_phone', $contact_cid));
-    $par_data_person->set('mobile_phone', $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $contact_cid));
-    $par_data_person->set('email', $this->getFlowDataHandler()->getTempDataValue('email', $contact_cid));
-    $par_data_person->set('communication_notes', $this->getFlowDataHandler()->getTempDataValue('notes', $contact_cid));
-    $email_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_cid)['communication_email'])
-      && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_cid)['communication_email']);
-    $par_data_person->set('communication_email', $email_preference_value);
-    $work_phone_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_cid)['communication_phone'])
-      && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_cid)['communication_phone']);
-    $par_data_person->set('communication_phone', $work_phone_preference_value);
-    $mobile_phone_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_cid)['communication_mobile'])
-      && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_cid)['communication_mobile']);
-    $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
-
-    // Set the data for the legal entities.
+    // Get the legal entity data.
     $legal_cid = $this->getFlowNegotiator()->getFormKey('par_member_add_legal_entity');
     $legal_entities = $this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $legal_cid) ?: [];
     $par_data_legal_entities = [];
@@ -186,38 +142,27 @@ class ParConfirmationReviewForm extends ParBaseForm {
       ]);
     }
 
-    $existing_legal_cid = $this->getFlowNegotiator()->getFormKey('par_member_select_legal_entities');
-    $existing_legal_entities = $this->getFlowDataHandler()->getTempDataValue('field_legal_entity', $existing_legal_cid) ?: [];
-    $par_data_legal_entities_existing = [];
-    foreach ($existing_legal_entities as $delta => $existing_legal_entity) {
-      $par_data_legal_entities_existing[$delta] = ParDataLegalEntity::load($existing_legal_entity);
+    // Create the entities.
+    $par_data_coordinated_business = ParDataOrganisation::create();
+    $par_data_organisation = ParDataOrganisation::create([
+      'organisation_name' => $organisation_name,
+      'trading_name' => $trading_names,
+    ]);
+    $par_data_premises = ParDataPremises::create([
+      'address' => $address,
+    ]);
+    if (!empty($nation)) {
+      $par_data_premises->set('nation', $nation);
     }
-
-    // Save the data for the SIC code form.
-    $sic_cid = $this->getFlowNegotiator()->getFormKey('par_member_sic_code');
-    $par_data_organisation->get('field_sic_code')->set(0, $this->getFlowDataHandler()->getTempDataValue('sic_code', $sic_cid));
-
-    if ($par_data_partnership->isDirect()) {
-      $employee_cid = $this->getFlowNegotiator()->getFormKey('par_member_employee_number');
-      $par_data_organisation->set('employees_band', $this->getFlowDataHandler()->getTempDataValue('employees_band', $employee_cid));
-    }
-    if ($par_data_partnership->isCoordinated()) {
-      // Save the data for the business size form.
-      $business_size_cid = $this->getFlowNegotiator()->getFormKey('par_member_business_size');
-      $par_data_organisation->set('size', $this->getFlowDataHandler()->getTempDataValue('business_size', $business_size_cid));
-    }
-
-    // Save the data for the trading name form.
-    $trading_cid = $this->getFlowNegotiator()->getFormKey('par_member_trading_name');
-    $par_data_organisation->set('trading_name', $this->getFlowDataHandler()->getTempDataValue('trading_name', $trading_cid));
+    $par_data_person = ParDataPerson::create($person);
 
     return [
       'par_data_partnership' => $par_data_partnership,
+      'par_data_coordinated_business' => $par_data_coordinated_business,
       'par_data_organisation' => $par_data_organisation,
       'par_data_person' => $par_data_person,
       'par_data_premises' => $par_data_premises,
       'par_data_legal_entities' => $par_data_legal_entities,
-      'par_data_legal_entities_existing' => $par_data_legal_entities_existing,
     ];
   }
 
@@ -237,55 +182,8 @@ class ParConfirmationReviewForm extends ParBaseForm {
     /** @var ParDataLegalEntity[] $par_data_legal_entities */
     /** @var ParDataLegalEntity[] $par_data_legal_entities_existing */
 
-    // Add all references if not already set.
-    if ($par_data_person->save() && !$par_data_partnership->getOrganisationPeople(TRUE)) {
-      $par_data_partnership->get('field_organisation_person')->set(0, $par_data_person);
-      $par_data_organisation->get('field_person')->appendItem($par_data_person);
-    }
-    // Save the new legal entities.
-    foreach ($par_data_legal_entities_existing + $par_data_legal_entities as $key => $legal_entity) {
-      // Save the new legal entities and add to the organisation.
-      if ($legal_entity->isNew()) {
-        $legal_entity->save();
-        $par_data_organisation->get('field_legal_entity')->appendItem($legal_entity);
-      }
-      $par_data_partnership->get('field_legal_entity')->appendItem($legal_entity);
-    }
-    if ($par_data_premises->save() && !$par_data_organisation->getPremises(TRUE)) {
-      $par_data_organisation->get('field_premises')->set(0, $par_data_premises);
-    }
-    if ($par_data_organisation->save() && !$par_data_partnership->getOrganisation(TRUE)) {
-      $par_data_partnership->get('field_organisation')->set(0, $par_data_organisation);
-    }
 
-    // Set the confirmed by business field.
-    if ($par_data_partnership && !$par_data_partnership->getBoolean('partnership_info_agreed_business')) {
-      // Save the value for the confirmation field.
-      $par_data_partnership->set('partnership_info_agreed_business', $this->decideBooleanValue($this->getFlowDataHandler()->getTempDataValue('partnership_info_agreed_business')));
-      $par_data_partnership->set('terms_organisation_agreed', $this->decideBooleanValue($this->getFlowDataHandler()->getTempDataValue('terms_organisation_agreed')));
-
-      // Set partnership status.
-      $par_data_partnership->setParStatus('confirmed_business');
-    }
-
-    // Save the partnership.
-    if ($par_data_partnership->save()) {
-      $this->getFlowDataHandler()->deleteStore();
-    }
-    else {
-      $message = $this->t('This %confirm could not be saved for %form_id');
-      $replacements = [
-        '%confirm' => $par_data_partnership->get('partnership_info_agreed_business')->toString(),
-        '%form_id' => $this->getFormId(),
-      ];
-      $this->getLogger($this->getLoggerChannel())
-        ->error($message, $replacements);
-
-      // If the partnership could not be saved the application can't be progressed.
-      // @TODO Find a better way to alert the user without redirecting them away from the form.
-      drupal_set_message('There was an error progressing your partnership, please contact the helpdesk for more information.');
-      $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getPrevRoute('cancel'));
-    }
+    // @TODO Save all the new data.
 
   }
 

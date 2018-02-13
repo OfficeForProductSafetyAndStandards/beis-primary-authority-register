@@ -24,7 +24,6 @@ class ParContactDetailsForm extends ParFormPluginBase {
       'work_phone' => 'work_phone',
       'mobile_phone' => 'mobile_phone',
       'email' => 'email',
-      'communication_notes' => 'notes',
     ],
   ];
 

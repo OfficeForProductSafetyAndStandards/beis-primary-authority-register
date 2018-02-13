@@ -1,6 +1,9 @@
+uuid: 2738facc-2329-46e2-a7d1-e94df310aaa2
 langcode: en
 status: true
 dependencies: {  }
+_core:
+  default_config_hash: Mieip540v5IyWL1OhvfbI-GX36rrr1Jwfbtt7YV6SSQ
 id: member_add
 label: 'Member Add Flow'
 default_title: null

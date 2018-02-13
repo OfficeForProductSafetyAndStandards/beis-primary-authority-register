@@ -49,10 +49,10 @@ class ParTradingNameForm extends ParFormPluginBase {
     if ($cardinality === 1) {
       $form['legal_entity_intro_fieldset'] = [
         '#type' => 'fieldset',
-        '#title' => $this->t('What is a legal entity?'),
+        '#title' => $this->t('What is a trading name?'),
         'intro' => [
           '#type' => 'markup',
-          '#markup' => "<p>" . $this->t("A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisations such as trusts and charities.") . "</p>",
+          '#markup' => "<p>" . $this->t("Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State the primary trading name used by the organisation. More can be added after confirming the partnership.") . "</p>",
         ]
       ];
     }
@@ -61,7 +61,6 @@ class ParTradingNameForm extends ParFormPluginBase {
       '#type' => 'textfield',
       '#title' => $this->t('Enter a trading name'),
       '#default_value' => $this->getDefaultValuesByKey('trading_name', $cardinality),
-      '#description' => $this->t("<p>Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State the primary trading name used by the organisation. More can be added after confirming the partnership.</p>"),
     ];
 
     return $form;

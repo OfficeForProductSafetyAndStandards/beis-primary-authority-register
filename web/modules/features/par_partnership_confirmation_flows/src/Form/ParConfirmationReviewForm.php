@@ -168,7 +168,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
     // Set the data for the contact form.
     $par_data_person = $par_data_partnership->getOrganisationPeople(TRUE);
     if (empty($par_data_person)) {
-      $par_data_person = ParDataPremises::create();
+      $par_data_person = ParDataPerson::create();
     }
 
     $contact_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_contact');
