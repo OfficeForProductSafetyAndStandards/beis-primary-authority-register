@@ -54,6 +54,7 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    parent::submitForm($form, $form_state);
 
     // Process uploaded csv file.
     if ($csv = $this->getFlowDataHandler()->getTempDataValue('csv')) {
@@ -73,8 +74,6 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
         $form_state->setValue('coordinated_members', $rows);
       }
     }
-
-    parent::submitForm($form, $form_state);
   }
 
 }
