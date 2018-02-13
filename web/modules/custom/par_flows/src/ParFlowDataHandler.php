@@ -93,7 +93,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
     $this->account = $current_user;
 
     // The data parameters are set based on the current route
-    // but can be overridden when needed.
+    // but can be overridden when needed (such as access callbacks).
     $this->parameters = $this->negotiator->getRoute()->getParameters();
   }
 

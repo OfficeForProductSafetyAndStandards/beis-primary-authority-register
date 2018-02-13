@@ -8,11 +8,11 @@ use Drupal\par_flows\Controller\ParBaseController;
 use Drupal\par_member_add_flows\ParPartnershipFlowsTrait;
 
 /**
- * A controller for displaying the application confirmation.
+ * A controller for displaying the member confirmation.
  */
-class ParPartnershipConfirmedController extends ParBaseController {
+class ParMembershipConfirmedController extends ParBaseController {
 
-  protected $pageTitle = 'New partnership application | Thank you for completing the application';
+  protected $pageTitle = 'Member added';
 
   /**
    * {@inheritdoc}

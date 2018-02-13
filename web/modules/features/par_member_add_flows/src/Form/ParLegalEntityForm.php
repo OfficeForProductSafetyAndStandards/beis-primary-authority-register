@@ -7,8 +7,7 @@ use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_member_add_flows\ParFlowAccessTrait;
 
 /**
- * The primary contact form for the partnership details steps of the
- * 1st Data Validation/Transition User Journey.
+ * Add legal entities to members.
  */
 class ParLegalEntityForm extends ParBaseForm {
 
@@ -17,24 +16,13 @@ class ParLegalEntityForm extends ParBaseForm {
   /**
    * Set the page title.
    */
-  protected $pageTitle = 'Confirm the legal entity';
+  protected $pageTitle = 'Add legal entities';
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'par_partnership_confirmation_add_legal_entity';
-  }
-
-  /**
-   * Load the data for this form.
-   */
-  public function loadData() {
-    // Must tell the component plugin where to get data for the selection screen.
-    $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_select_legal_entities');
-    $this->getFlowDataHandler()->setParameter('select_legal_entity_cid', $cid);
-
-    parent::loadData();
+    return 'par_member_add_legal_entity';
   }
 
 }

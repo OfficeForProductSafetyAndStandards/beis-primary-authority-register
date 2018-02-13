@@ -8,10 +8,12 @@ use Drupal\par_data\Entity\ParDataPartnership;
 trait ParFlowAccessTrait {
 
   /**
-  /**
    * {@inheritdoc}
    */
   public function accessCallback(ParDataPartnership $par_data_partnership = NULL) {
+    // Ensure that access callbacks use the correct parameters.
+    $this->getFlowDataHandler()->setParameter('par_data_partnership', $par_data_partnership);
+
     $locked = FALSE;
 
     // If the member upload is in progress the member list cannot be modified.

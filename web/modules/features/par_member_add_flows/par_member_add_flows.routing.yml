@@ -12,8 +12,8 @@ par_member_add_flows.add_organisation_name:
       par_data_partnership:
         type: entity:par_data_partnership
 
-par_member_add_flows.confirm_address:
-  path: '/partnership/{par_data_partnership}/members/add/primary-address'
+par_member_add_flows.add_address:
+  path: '/partnership/{par_data_partnership}/members/add/address'
   defaults:
     _form: '\Drupal\par_member_add_flows\Form\ParAddressForm'
     _title_callback: '\Drupal\par_member_add_flows\Form\ParAddressForm::titleCallback'
@@ -26,8 +26,8 @@ par_member_add_flows.confirm_address:
       par_data_partnership:
         type: entity:par_data_partnership
 
-par_member_add_flows.confirm_contact:
-  path: '/partnership/{par_data_partnership}/members/add/primary-contact'
+par_member_add_flows.add_contact:
+  path: '/partnership/{par_data_partnership}/members/add/contact'
   defaults:
     _form: '\Drupal\par_member_add_flows\Form\ParContactForm'
     _title_callback: '\Drupal\par_member_add_flows\Form\ParContactForm::titleCallback'
@@ -39,47 +39,23 @@ par_member_add_flows.confirm_contact:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-par_member_add_flows.confirm_sic_code:
-  path: '/partnership/{par_data_partnership}/members/add/primary-sic-code'
+
+par_member_add_flows.add_begin_date:
+  path: '/partnership/{par_data_partnership}/members/add/begin'
   defaults:
-    _form: '\Drupal\par_member_add_flows\Form\ParSicCodeForm'
-    _title_callback: '\Drupal\par_member_add_flows\Form\ParSicCodeForm::titleCallback'
+    _form: '\Drupal\par_member_add_flows\Form\ParStartDateForm'
+    _title_callback: '\Drupal\par_member_add_flows\Form\ParStartDateForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
-    _custom_access: '\Drupal\par_member_add_flows\Form\ParSicCodeForm::accessCallback'
+    _custom_access: '\Drupal\par_member_add_flows\Form\ParStartDateForm::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-par_member_add_flows.confirm_employee_number:
-  path: '/partnership/{par_data_partnership}/members/add/employee-number'
-  defaults:
-    _form: '\Drupal\par_member_add_flows\Form\ParEmployeeNumberForm'
-    _title_callback: '\Drupal\par_member_add_flows\Form\ParEmployeeNumberForm::titleCallback'
-  requirements:
-    _permission: 'manage my organisations'
-    _custom_access: '\Drupal\par_member_add_flows\Form\ParEmployeeNumberForm::accessCallback'
-    par_data_partnership: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-par_member_add_flows.confirm_business_size:
-  path: '/partnership/{par_data_partnership}/members/add/business-size'
-  defaults:
-    _form: '\Drupal\par_member_add_flows\Form\ParBusinessSizeForm'
-    _title_callback: '\Drupal\par_member_add_flows\Form\ParBusinessSizeForm::titleCallback'
-  requirements:
-    _permission: 'manage my organisations'
-    _custom_access: '\Drupal\par_member_add_flows\Form\ParBusinessSizeForm::accessCallback'
-    par_data_partnership: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-par_member_add_flows.confirm_trading_name:
-  path: '/partnership/{par_data_partnership}/members/add/primary-trading-name'
+
+par_member_add_flows.add_trading_name:
+  path: '/partnership/{par_data_partnership}/members/add/trading-name'
   defaults:
     _form: '\Drupal\par_member_add_flows\Form\ParTradingForm'
     _title_callback: '\Drupal\par_member_add_flows\Form\ParTradingForm::titleCallback'
@@ -91,21 +67,9 @@ par_member_add_flows.confirm_trading_name:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-par_member_add_flows.select_legal_entities:
-  path: '/partnership/{par_data_partnership}/members/add/legal-entity/select'
-  defaults:
-    _form: '\Drupal\par_member_add_flows\Form\ParSelectLegalEntitiesForm'
-    _title_callback: '\Drupal\par_member_add_flows\Form\ParSelectLegalEntitiesForm::titleCallback'
-  requirements:
-    _permission: 'manage my organisations'
-    _custom_access: '\Drupal\par_member_add_flows\Form\ParSelectLegalEntitiesForm::accessCallback'
-    par_data_partnership: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-par_member_add_flows.add_legal_entity:
-  path: '/partnership/{par_data_partnership}/members/add/legal-entity/add'
+
+par_member_add_flows.add_legal_entities:
+  path: '/partnership/{par_data_partnership}/members/add/legal-entities'
   defaults:
     _form: '\Drupal\par_member_add_flows\Form\ParLegalEntityForm'
     _title_callback: '\Drupal\par_member_add_flows\Form\ParLegalEntityForm::titleCallback'
@@ -117,7 +81,22 @@ par_member_add_flows.add_legal_entity:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-par_member_add_flows.partnership_confirm_review:
+
+par_member_add_flows.covered_by_plan:
+  path: '/partnership/{par_data_partnership}/members/add/covered'
+  defaults:
+    _form: '\Drupal\par_member_add_flows\Form\ParCoveredByPlanForm'
+    _title_callback: '\Drupal\par_member_add_flows\Form\ParCoveredByPlanForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    _custom_access: '\Drupal\par_member_add_flows\Form\ParCoveredByPlanForm::accessCallback'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+
+par_member_add_flows.member_confirm_review:
   path: '/partnership/{par_data_partnership}/members/add/review'
   defaults:
     _form: '\Drupal\par_member_add_flows\Form\ParConfirmationReviewForm'
@@ -130,14 +109,14 @@ par_member_add_flows.partnership_confirm_review:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-par_member_add_flows.partnership_confirmation:
+par_member_add_flows.member_confirmation:
   path: '/partnership/{par_data_partnership}/members/add/confirmation'
   defaults:
-    _controller: '\Drupal\par_member_add_flows\Controller\ParPartnershipConfirmedController::content'
-    _title_callback: '\Drupal\par_member_add_flows\Controller\ParPartnershipConfirmedController::titleCallback'
+    _controller: '\Drupal\par_member_add_flows\Controller\ParMembershipConfirmedController::content'
+    _title_callback: '\Drupal\par_member_add_flows\Controller\ParMembershipConfirmedController::titleCallback'
   requirements:
     _permission: 'manage my organisations'
-    _custom_access: '\Drupal\par_member_add_flows\Controller\ParPartnershipConfirmedController::accessCallback'
+    _custom_access: '\Drupal\par_member_add_flows\Controller\ParMembershipConfirmedController::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:

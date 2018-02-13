@@ -8,7 +8,7 @@ use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_member_add_flows\ParFlowAccessTrait;
 
 /**
- * The partnership form for the premises details.
+ * The form for the premises details.
  */
 class ParAddressForm extends ParBaseForm {
 
@@ -17,27 +17,13 @@ class ParAddressForm extends ParBaseForm {
   /**
    * Set the page title.
    */
-  protected $pageTitle = 'Confirm the primary contact details';
+  protected $pageTitle = 'Add member organisation address';
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'par_partnership_confirmation_address';
-  }
-
-  /**
-   * Load the data for this form.
-   */
-  public function loadData() {
-    $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $organisation = $partnership ? $partnership->getOrganisation(TRUE) : NULL;
-    $par_data_premises = $organisation ? $organisation->getPremises(TRUE) : NULL;
-
-    // Override the route parameter so that data loaded will be from this entity.
-    $this->getFlowDataHandler()->setParameter('par_data_premises', $par_data_premises);
-
-    parent::loadData();
+    return 'par_member_add_address';
   }
 
 }

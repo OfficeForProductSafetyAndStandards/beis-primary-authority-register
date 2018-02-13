@@ -12,6 +12,9 @@ trait ParFlowAccessTrait {
    * {@inheritdoc}
    */
   public function accessCallback(ParDataPartnership $par_data_partnership = NULL) {
+    // Ensure that access callbacks use the correct parameters.
+    $this->getFlowDataHandler()->setParameter('par_data_partnership', $par_data_partnership);
+
     $allowed_statuses = [
       $par_data_partnership->getTypeEntity()->getDefaultStatus(),
       'confirmed_authority',

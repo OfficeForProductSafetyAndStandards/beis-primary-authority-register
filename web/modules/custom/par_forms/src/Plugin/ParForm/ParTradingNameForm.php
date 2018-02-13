@@ -45,6 +45,18 @@ class ParTradingNameForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
+
+    if ($cardinality === 1) {
+      $form['legal_entity_intro_fieldset'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('What is a legal entity?'),
+        'intro' => [
+          '#type' => 'markup',
+          '#markup' => "<p>" . $this->t("A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisations such as trusts and charities.") . "</p>",
+        ]
+      ];
+    }
+
     $form['trading_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter a trading name'),

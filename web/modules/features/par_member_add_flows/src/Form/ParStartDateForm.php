@@ -3,27 +3,26 @@
 namespace Drupal\par_member_add_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_member_add_flows\ParFlowAccessTrait;
 
 /**
- * Add trading names.
+ * Enter the date the membership began.
  */
-class ParTradingForm extends ParBaseForm {
+class ParStartDateForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
 
   /**
    * Set the page title.
    */
-  protected $pageTitle = "Add trading name";
+  protected $pageTitle = "Enter the date the membership began";
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'par_member_add_trading_name';
+    return 'par_member_add_begin_date';
   }
 
 }

@@ -15,7 +15,7 @@ use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_member_add_flows\ParFlowAccessTrait;
 
 /**
- * The partnership form for the partnership details.
+ * The form for the partnership details.
  */
 class ParConfirmationReviewForm extends ParBaseForm {
 
@@ -25,26 +25,13 @@ class ParConfirmationReviewForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'par_partnership_confirmation_review';
+    return 'par_member_add_review';
   }
 
   /**
    * {@inheritdoc}
    */
-  protected $pageTitle = 'Review the partnership summary information below';
-
-  /**
-   * Load the data for this form.
-   */
-  public function loadData() {
-    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-
-    // Override the route parameter so that data loaded will be from this entity.
-    $this->getFlowDataHandler()->setParameter('partnership_info_agreed_business', $par_data_partnership->getBoolean('partnership_info_agreed_business'));
-    $this->getFlowDataHandler()->setParameter('terms_organisation_agreed', $par_data_partnership->getBoolean('terms_organisation_agreed'));
-
-    parent::loadData();
-  }
+  protected $pageTitle = 'Member summary';
 
   /**
    * {@inheritdoc}
@@ -56,8 +43,8 @@ class ParConfirmationReviewForm extends ParBaseForm {
     ];
 
     // Set the data values on the entities
-    $entities = $this->createEntities();
-    extract($entities);
+//    $entities = $this->createEntities();
+//    extract($entities);
     /** @var ParDataPartnership $par_data_partnership */
     /** @var ParDataOrganisation $par_data_organisation */
     /** @var ParDataPerson $par_data_person */
@@ -141,7 +128,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
     }
 
     // Set the data for the about form.
-    $about_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_about_business');
+    $about_cid = $this->getFlowNegotiator()->getFormKey('par_member_about_business');
     $par_data_organisation->set('comments', $this->getFlowDataHandler()->getTempDataValue('about_business', $about_cid));
 
     // Set the data for the address form.
@@ -150,7 +137,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       $par_data_premises = ParDataPremises::create();
     }
 
-    $address_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_address');
+    $address_cid = $this->getFlowNegotiator()->getFormKey('par_member_address');
     $address = [
       'country_code' => $this->getFlowDataHandler()->getTempDataValue('country_code', $address_cid),
       'address_line1' => $this->getFlowDataHandler()->getTempDataValue('address_line1', $address_cid),
@@ -168,7 +155,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       $par_data_person = ParDataPremises::create();
     }
 
-    $contact_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_contact');
+    $contact_cid = $this->getFlowNegotiator()->getFormKey('par_member_contact');
     $par_data_person->set('salutation', $this->getFlowDataHandler()->getTempDataValue('salutation', $contact_cid));
     $par_data_person->set('first_name', $this->getFlowDataHandler()->getTempDataValue('first_name', $contact_cid));
     $par_data_person->set('last_name', $this->getFlowDataHandler()->getTempDataValue('last_name', $contact_cid));
@@ -187,7 +174,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
     $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
 
     // Set the data for the legal entities.
-    $legal_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_add_legal_entity');
+    $legal_cid = $this->getFlowNegotiator()->getFormKey('par_member_add_legal_entity');
     $legal_entities = $this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $legal_cid) ?: [];
     $par_data_legal_entities = [];
     foreach ($legal_entities as $delta => $legal_entity) {
@@ -199,7 +186,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       ]);
     }
 
-    $existing_legal_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_select_legal_entities');
+    $existing_legal_cid = $this->getFlowNegotiator()->getFormKey('par_member_select_legal_entities');
     $existing_legal_entities = $this->getFlowDataHandler()->getTempDataValue('field_legal_entity', $existing_legal_cid) ?: [];
     $par_data_legal_entities_existing = [];
     foreach ($existing_legal_entities as $delta => $existing_legal_entity) {
@@ -207,21 +194,21 @@ class ParConfirmationReviewForm extends ParBaseForm {
     }
 
     // Save the data for the SIC code form.
-    $sic_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_sic_code');
+    $sic_cid = $this->getFlowNegotiator()->getFormKey('par_member_sic_code');
     $par_data_organisation->get('field_sic_code')->set(0, $this->getFlowDataHandler()->getTempDataValue('sic_code', $sic_cid));
 
     if ($par_data_partnership->isDirect()) {
-      $employee_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_employee_number');
+      $employee_cid = $this->getFlowNegotiator()->getFormKey('par_member_employee_number');
       $par_data_organisation->set('employees_band', $this->getFlowDataHandler()->getTempDataValue('employees_band', $employee_cid));
     }
     if ($par_data_partnership->isCoordinated()) {
       // Save the data for the business size form.
-      $business_size_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_business_size');
+      $business_size_cid = $this->getFlowNegotiator()->getFormKey('par_member_business_size');
       $par_data_organisation->set('size', $this->getFlowDataHandler()->getTempDataValue('business_size', $business_size_cid));
     }
 
     // Save the data for the trading name form.
-    $trading_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_trading_name');
+    $trading_cid = $this->getFlowNegotiator()->getFormKey('par_member_trading_name');
     $par_data_organisation->set('trading_name', $this->getFlowDataHandler()->getTempDataValue('trading_name', $trading_cid));
 
     return [

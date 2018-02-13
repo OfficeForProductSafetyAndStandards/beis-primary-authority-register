@@ -1,16 +1,13 @@
 <?php
 
-namespace Drupal\par_partnership_flows\Form;
+namespace Drupal\par_member_add_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
- * The primary contact form for the partnership details steps of the
- * 1st Data Validation/Transition User Journey.
+ * Enter the member organisation name.
  */
 class ParOrganisationNameForm extends ParBaseForm {
 
@@ -20,7 +17,7 @@ class ParOrganisationNameForm extends ParBaseForm {
     ],
   ];
 
-  protected $pageTitle = 'Who are you in partnership with?';
+  protected $pageTitle = 'Add member organisation name';
 
   /**
    * {@inheritdoc}
@@ -36,18 +33,11 @@ class ParOrganisationNameForm extends ParBaseForm {
 
     $form['organisation_name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Provide the business or organisation name'),
+      '#title' => $this->t('Enter the member organisation name'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('organisation_name'),
     ];
 
     return parent::buildForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
   }
 
 }
