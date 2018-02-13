@@ -111,6 +111,26 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
+    // Membership Date.
+    $fields['membership_date'] = BaseFieldDefinition::create('daterange')
+      ->setLabel(t('Membership Date'))
+      ->setDescription(t('The date range this coordinated business is a member of this partnership for.'))
+      ->addConstraint('par_required')
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'datetime_type' => 'date',
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'daterange_default',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
     // Partnership info confirmed by business.
     $fields['covered_by_inspection'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Covered by inspection?'))
