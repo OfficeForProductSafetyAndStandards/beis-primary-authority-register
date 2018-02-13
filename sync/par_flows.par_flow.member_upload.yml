@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: H4vAwpmv3EOlpjgn586hqRqcWQVeJOJYPRpRE7lTrWk
+  default_config_hash: JhuKbGCImCORbeA_U7uRNnvUCAxFdp0HZAWyKYab4GA
 id: member_upload
 label: 'Member Upload'
 default_title: 'Upload a list of members'
@@ -16,5 +16,11 @@ steps:
     route: par_member_upload_flows.member_upload
     form_id: par_member_upload_csv
     redirect:
-      upload: 1
+      upload: 2
+      cancel: 1
+  2:
+    route: par_member_upload_flows.member_upload_confirm
+    form_id: par_member_upload_csv_confirm
+    redirect:
+      save: 2
       cancel: 1
