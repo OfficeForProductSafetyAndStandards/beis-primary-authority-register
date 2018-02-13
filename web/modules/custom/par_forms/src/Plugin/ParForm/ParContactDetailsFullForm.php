@@ -12,7 +12,7 @@ use Drupal\par_forms\ParFormPluginBase;
  *   title = @Translation("Contact details form.")
  * )
  */
-class ParContactDetailsForm extends ParFormPluginBase {
+class ParContactDetailsFullForm extends ParFormPluginBase {
 
   /**
    * Mapping of the data parameters to the form elements.
