@@ -179,6 +179,7 @@ par_partnership_flows.inspection_plan_list:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+
 # PAR Data Organisation Partnership Journey
 par_partnership_flows.organisation_details:
   path: '/partnership/{par_data_partnership}/organisation-details'

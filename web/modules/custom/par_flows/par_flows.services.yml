@@ -1,0 +1,7 @@
+services:
+  par_flows.negotiator:
+    class: Drupal\par_flows\ParFlowNegotiator
+    arguments: ['@entity_type.manager', '@par_data.manager', '@current_route_match', '@current_user']
+  par_flows.data_handler:
+    class: Drupal\par_flows\ParFlowDataHandler
+    arguments: ['@user.private_tempstore', '@par_flows.negotiator', '@par_data.manager', '@session_manager', '@current_user']
