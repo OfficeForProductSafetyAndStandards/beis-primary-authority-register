@@ -6,3 +6,11 @@ par_member_upload_flows.member_upload:
     _title: 'Uploading Members List - CSV'
   requirements:
     _permission: 'manage my organisations'
+
+par_member_upload_flows.member_upload_confirm:
+  path: '/partnership/{id}/members/upload/confirm'
+  defaults:
+    _form: '\Drupal\par_member_upload_flows\Form\ParMemberConfirmUploadFlowsForm'
+    _title: 'Upload a list of members'
+  requirements:
+    _permission: 'manage my organisations'

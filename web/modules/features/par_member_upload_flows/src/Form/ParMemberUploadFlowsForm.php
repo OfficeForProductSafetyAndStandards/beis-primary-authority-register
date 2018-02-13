@@ -6,14 +6,17 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\file\Entity\File;
+use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
-//use Drupal\file\FileInterface;
-//use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
+//use Drupal\file\Entity\File;
 
 /**
- * The partnership form for the premises details.
+ * The upload CSV form for importing partnerships.
  */
 class ParMemberUploadFlowsForm extends ParBaseForm {
+
+  // The base form controller for all PAR forms.
+  use ParPartnershipFlowsTrait;
 
   /**
    * {@inheritdoc}
@@ -43,6 +46,7 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
       ]
     ];
 
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -54,21 +58,21 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
     // Process uploaded csv file.
     if ($csv = $this->getFlowDataHandler()->getTempDataValue('csv')) {
 
+      // Define array variable.
+      $rows = [];
+
       // Load the submitted file and process the data.
       $files = File::loadMultiple($csv);
       foreach ($files as $file) {
         // Save processed row data in an array.
-        $rows[] = $this->getParDataManager()->processCsvFile($file, $rows);
+        $rows = $this->getParDataManager()->processCsvFile($file, $rows);
       }
 
       // Save the data in the User's temp private store for later processing.
       if (!empty($rows)) {
-        $this->getFlowDataHandler()->setTempDataValue('coordinated_members', $rows);
+        $form_state->setValue('coordinated_members', $rows);
       }
     }
-
-    // Display success message.
-    drupal_set_message('CSV file successfully uploaded.');
 
     parent::submitForm($form, $form_state);
   }
