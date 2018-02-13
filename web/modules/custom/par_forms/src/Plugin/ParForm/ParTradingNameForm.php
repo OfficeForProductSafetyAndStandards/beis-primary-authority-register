@@ -47,7 +47,7 @@ class ParTradingNameForm extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
 
     if ($cardinality === 1) {
-      $form['legal_entity_intro_fieldset'] = [
+      $form['trading_name_intro_fieldset'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('What is a trading name?'),
         'intro' => [
