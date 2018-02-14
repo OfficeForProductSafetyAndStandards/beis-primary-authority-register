@@ -6,6 +6,8 @@ dependencies:
     - field.storage.par_data_authority.field_person
     - par_data.par_data_authority_type.authority
     - par_data.par_data_person_type.person
+_core:
+  default_config_hash: iGaytxEwUMKeu8wvGcKBCL8CfpquZCDHTeqkWmW8KXg
 id: par_data_authority.authority.field_person
 field_name: field_person
 entity_type: par_data_authority
