@@ -1,0 +1,39 @@
+# A coordinated member journey for importing partnerships via csv file.
+par_member_upload_flows.member_upload:
+  path: '/partnership/{par_data_partnership}/members/upload'
+  defaults:
+    _form: '\Drupal\par_member_upload_flows\Form\ParMemberUploadFlowsForm'
+    _title_callback: '\Drupal\par_member_upload_flows\Form\ParMemberUploadFlowsForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    _custom_access: '\Drupal\par_member_upload_flows\Form\ParMemberUploadFlowsForm::accessCallback'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+
+par_member_upload_flows.member_upload_confirm:
+  path: '/partnership/{par_data_partnership}/members/upload/confirm'
+  defaults:
+    _form: '\Drupal\par_member_upload_flows\Form\ParMemberConfirmUploadFlowsForm'
+    _title_callback: '\Drupal\par_member_upload_flows\Form\ParMemberConfirmUploadFlowsForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    _custom_access: '\Drupal\par_member_upload_flows\Form\ParMemberConfirmUploadFlowsForm::accessCallback'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+
+par_member_upload_flows.member_upload_success:
+  path: '/partnership/{par_data_partnership}/members/upload/success'
+  defaults:
+    _form: '\Drupal\par_member_upload_flows\Form\ParMemberSuccessUploadFlowsForm'
+    _title_callback: '\Drupal\par_member_upload_flows\Form\ParMemberSuccessUploadFlowsForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    _custom_access: '\Drupal\par_member_upload_flows\Form\ParMemberSuccessUploadFlowsForm::accessCallback'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership

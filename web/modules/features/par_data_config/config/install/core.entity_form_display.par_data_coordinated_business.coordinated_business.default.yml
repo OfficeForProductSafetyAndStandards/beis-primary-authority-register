@@ -2,9 +2,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.par_data_coordinated_business.coordinated_business.field_covered_by_inspection
-    - field.field.par_data_coordinated_business.coordinated_business.field_date_membership_began
-    - field.field.par_data_coordinated_business.coordinated_business.field_date_membership_ceased
     - field.field.par_data_coordinated_business.coordinated_business.field_legal_entity
     - field.field.par_data_coordinated_business.coordinated_business.field_organisation
     - par_data.par_data_coordinated_business_type.coordinated_business
@@ -15,36 +12,8 @@ targetEntityType: par_data_coordinated_business
 bundle: coordinated_business
 mode: default
 content:
-  field_covered_by_inspection:
-    weight: 27
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
-  field_date_membership_began:
-    weight: 28
-    settings: {  }
-    third_party_settings: {  }
-    type: datetime_default
-    region: content
-  field_date_membership_ceased:
-    weight: 29
-    settings: {  }
-    third_party_settings: {  }
-    type: datetime_default
-    region: content
-  field_legal_entity:
-    weight: 30
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_organisation:
-    weight: 1
+    weight: 26
     settings:
       match_operator: CONTAINS
       size: 60
@@ -54,14 +23,14 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 4
+    weight: 10
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   name:
     type: string_textfield
-    weight: 0
+    weight: -4
     region: content
     settings:
       size: 60
@@ -69,11 +38,12 @@ content:
     third_party_settings: {  }
   user_id:
     type: entity_reference_autocomplete
-    weight: 3
+    weight: 5
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
     region: content
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_legal_entity: true
