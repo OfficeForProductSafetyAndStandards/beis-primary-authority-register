@@ -2,15 +2,23 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.par_data_coordinated_business.coordinated_business.field_legal_entity
     - field.field.par_data_coordinated_business.coordinated_business.field_organisation
     - par_data.par_data_coordinated_business_type.coordinated_business
-  module:
-    - datetime_range
 id: par_data_coordinated_business.coordinated_business.default
 targetEntityType: par_data_coordinated_business
 bundle: coordinated_business
 mode: default
 content:
+  field_legal_entity:
+    type: entity_reference_entity_view
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link: true
+      view_mode: default
+    third_party_settings: {  }
   field_organisation:
     weight: 1
     label: hidden
@@ -31,5 +39,8 @@ content:
     type: daterange_custom
     weight: 2
 hidden:
+  covered_by_inspection: true
+  date_membership_began: true
+  date_membership_ceased: true
   name: true
   user_id: true

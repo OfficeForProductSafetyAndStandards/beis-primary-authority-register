@@ -249,6 +249,11 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+    // Always store the values whenever we submit the form.
+    $values = $this->cleanseFormDefaults($form_state->getValues());
+    $values = $this->cleanseMultipleValues($values);
+    $this->getFlowDataHandler()->setFormTempData($values);
+
     // We don't want to validate if just removing items.
     $remove_action = strpos($form_state->getTriggeringElement()['#name'], 'remove:');
     if ($remove_action !== FALSE) {
@@ -258,16 +263,20 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
       $component_violations = $this->getFormBuilder()->validatePluginElements($component, $form_state);
+
+      // If there are violations for this plugin.
       if (isset($component_violations[$component->getPluginId()])) {
         foreach ($component_violations[$component->getPluginId()] as $cardinality => $violations) {
           foreach ($violations as $field_name => $violation_list) {
             // Do not validate the last item if multiple cardinality is allowed.
             if ($violation_list->count() >= 1) {
-              if ($component->getCardinality() === 1 || $cardinality < $component->countItems($form_state->getValues())) {
+              // Validate the first item, and all but the last items thereafter.
+              // @example 1st item out of 1 should be validated.
+              // @example 1st item out of 3 should be validated.
+              // @example 2nd item out of 3 should be validated.
+              // @example 3rd item out of 3 should _not_ be validated.
+              if ($component->getCardinality() === 1 || $cardinality === 1 || $cardinality < $component->countItems()) {
                 $this->setFieldViolations($field_name, $form_state, $violation_list);
-              } // Clear values for any unvalidated items that are not valid.
-              elseif ($component->getCardinality() !== 1 && $cardinality !== 1) {
-                $form_state->unsetValue([$component->getPluginId(), $cardinality-1]);
               }
             }
           }
@@ -412,9 +421,13 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    // Always store the values whenever we submit the form.
     $values = $this->cleanseFormDefaults($form_state->getValues());
+    $values = $this->cleanseMultipleValues($values);
     $this->getFlowDataHandler()->setFormTempData($values);
 
+    // Set the redirect to the next form based on the flow configuration 'operation'
+    // parameter that matches the submit button's name.
     $submit_action = $form_state->getTriggeringElement()['#name'];
     $next = $this->getFlowNegotiator()->getFlow()->getNextRoute($submit_action);
     $form_state->setRedirect($next, $this->getRouteParams());
@@ -424,7 +437,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function multipleItemActionsSubmit(array &$form, FormStateInterface $form_state) {
+    // Always store the values whenever we submit the form.
     $values = $this->cleanseFormDefaults($form_state->getValues());
+    $values = $this->cleanseMultipleValues($values);
     $this->getFlowDataHandler()->setFormTempData($values);
   }
 
@@ -432,15 +447,20 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function removeItem(array &$form, FormStateInterface $form_state) {
+    // Always store the values whenever we submit the form.
+    $values = $this->cleanseFormDefaults($form_state->getValues());
+    $values = $this->cleanseMultipleValues($values);
+    $this->getFlowDataHandler()->setFormTempData($values);
+
     list($button, $plugin_id, $cardinality) = explode(':', $form_state->getTriggeringElement()['#name']);
-
-    $form_state->unsetValue([ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_id, (int) $cardinality-1]);
-
-    // If the last item does not validate we must remove this too.
     $values = $form_state->getValue(ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_id);
     end($values);
     $last_index = (int) key($values);
     $component = $this->getComponent($plugin_id);
+
+    $form_state->unsetValue([ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_id, (int) $cardinality - 1]);
+
+    // If the last item does not validate we must remove this too.
     $violations = $component->validate($form_state, $last_index);
     foreach ($violations as $field_name => $violation_list) {
       if ($component && $violation_list->count() >= 1) {
@@ -448,7 +468,10 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       }
     }
 
-    $this->getFlowDataHandler()->setFormTempData($this->cleanseFormDefaults($form_state->getValues()));
+    // Resave the values based on the newly removed items.
+    $values = $this->cleanseFormDefaults($form_state->getValues());
+    $values = $this->cleanseMultipleValues($values);
+    $this->getFlowDataHandler()->setFormTempData($values);
   }
 
   /**
@@ -528,6 +551,39 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   public function cleanseFormDefaults(array $data) {
     $defaults = ['form_id', 'form_build_id', 'form_token', 'op'];
     return array_diff_key($data, array_flip(array_merge($defaults, $this->getIgnoredValues())));
+  }
+
+  /**
+   * Helper function to cleanse empty multiple values for a multi value form plugin..
+   *
+   * @param array $data
+   *   The data array to cleanse.
+   *
+   * @return array
+   *   An array of values that represent keys to be removed from the form data.
+   */
+  public function cleanseMultipleValues(array $data) {
+    // Add all the registered components to the form.
+    foreach ($this->getComponents() as $component) {
+      $values = isset($data[ParFormBuilder::PAR_COMPONENT_PREFIX . $component->getPluginId()]) ?
+        $data[ParFormBuilder::PAR_COMPONENT_PREFIX . $component->getPluginId()] :
+        NULL;
+
+      if ($values) {
+        // Always remove the 'remove' link.
+        foreach ($values as $cardinality => $value) {
+          if (isset($value['remove'])) {
+            unset($value['remove']);
+          }
+
+          $values[$cardinality] = NestedArray::filter($value);
+        }
+
+        $data[ParFormBuilder::PAR_COMPONENT_PREFIX . $component->getPluginId()] = NestedArray::filter($values);
+      }
+    }
+
+    return $data;
   }
 
   /**
