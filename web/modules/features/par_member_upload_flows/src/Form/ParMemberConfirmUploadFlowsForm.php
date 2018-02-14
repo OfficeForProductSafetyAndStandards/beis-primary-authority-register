@@ -6,8 +6,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 
-//use Drupal\file\Entity\File;
-
 /**
  * The upload CSV confirmation form for importing partnerships.
  */
