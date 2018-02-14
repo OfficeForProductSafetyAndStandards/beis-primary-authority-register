@@ -5,11 +5,14 @@ namespace Drupal\par_member_upload_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_member_upload_flows\ParFlowAccessTrait;
 
 /**
  * The upload CSV confirmation form for importing partnerships.
  */
 class ParMemberConfirmUploadFlowsForm extends ParBaseForm {
+
+  use ParFlowAccessTrait;
 
   /**
    * {@inheritdoc}
@@ -32,7 +35,7 @@ class ParMemberConfirmUploadFlowsForm extends ParBaseForm {
         '#type' => 'markup',
         '#markup' => '<p><b>' . $this->t('This operation will erase any'
           . ' existing list of members. If you are unsure, please click the'
-          . ' Cancel link (below) and contact the Help Desk.') . '</p></b>',
+          . ' Cancel link (below) and contact the Help Desk.') . '</b></p>',
       ]
     ];
 
