@@ -22,3 +22,15 @@ par_member_upload_flows.member_upload_confirm:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+
+par_member_upload_flows.member_upload_success:
+  path: '/partnership/{par_data_partnership}/members/upload/success'
+  defaults:
+    _form: '\Drupal\par_member_upload_flows\Form\ParMemberSuccessUploadFlowsForm'
+    _title: 'Members list uploaded'
+  requirements:
+    _permission: 'manage my organisations'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
