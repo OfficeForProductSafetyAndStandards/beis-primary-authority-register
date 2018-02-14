@@ -136,6 +136,7 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
       ->setLabel(t('Covered by inspection?'))
       ->setDescription(t('Is this coordinated business covered by inspection?'))
       ->setRevisionable(TRUE)
+      ->setDefaultValue(TRUE)
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => 2,
