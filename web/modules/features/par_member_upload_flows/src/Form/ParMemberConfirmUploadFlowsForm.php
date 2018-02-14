@@ -59,9 +59,7 @@ class ParMemberConfirmUploadFlowsForm extends ParBaseForm {
     // Create CRON queue with a unique name.
     $queue = \Drupal::queue('par_member_upload');
 
-    // Create CRON QUEUE item which is added to the queue and will be
-    // triggered next time when CRON executes.
-    $queue->createItem($csv_data);
+    // @TODO Add each row to queue, or possibly to batch, or some way of saely handling 10,000 rows.
 
     parent::submitForm($form, $form_state);
   }
