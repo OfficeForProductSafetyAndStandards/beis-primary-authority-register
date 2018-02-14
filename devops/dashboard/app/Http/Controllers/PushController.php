@@ -9,7 +9,7 @@ class PushController extends Controller
     public function testResults(Request $request)
     {
         $json = $request->json();
-        dd(1);
-        dd($json->state);
+        $state = $json->get('state');
+        return response()->json($state);
     }
 }
