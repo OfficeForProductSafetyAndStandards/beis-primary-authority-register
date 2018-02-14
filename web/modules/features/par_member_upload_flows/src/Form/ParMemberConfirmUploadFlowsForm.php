@@ -6,15 +6,10 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 
-//use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
-//use Drupal\file\Entity\File;
-
 /**
  * The upload CSV confirmation form for importing partnerships.
  */
 class ParMemberConfirmUploadFlowsForm extends ParBaseForm {
-  // The base form controller for all PAR forms.
-//  use ParPartnershipFlowsTrait;
 
   /**
    * {@inheritdoc}
@@ -48,7 +43,8 @@ class ParMemberConfirmUploadFlowsForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-
+    parent::submitForm($form, $form_state);
+    
     // Form cache id.
     $cid = $this->getFlowNegotiator()->getFormKey('par_member_upload_csv');
 
@@ -58,11 +54,7 @@ class ParMemberConfirmUploadFlowsForm extends ParBaseForm {
     // Create CRON queue with a unique name.
     $queue = \Drupal::queue('par_member_upload');
 
-    // Create CRON QUEUE item which is added to the queue and will be
-    // triggered next time when CRON executes.
-    $queue->createItem($csv_data);
-
-    parent::submitForm($form, $form_state);
+    // @TODO Add each row to queue, or possibly to batch, or some way of saely handling 10,000 rows.
   }
 
 }
