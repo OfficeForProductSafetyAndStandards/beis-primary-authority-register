@@ -7,8 +7,6 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\file\Entity\File;
 
-//use Drupal\file\Entity\File;
-
 /**
  * The upload CSV form for importing partnerships.
  */
