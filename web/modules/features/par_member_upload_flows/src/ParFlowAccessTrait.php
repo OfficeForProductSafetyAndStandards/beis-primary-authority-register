@@ -8,7 +8,6 @@ use Drupal\par_data\Entity\ParDataPartnership;
 trait ParFlowAccessTrait {
 
   /**
-  /**
    * {@inheritdoc}
    */
   public function accessCallback(ParDataPartnership $par_data_partnership = NULL) {

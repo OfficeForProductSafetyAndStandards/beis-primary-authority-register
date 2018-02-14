@@ -7,9 +7,6 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_member_upload_flows\ParFlowAccessTrait;
 
-//use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
-//use Drupal\file\Entity\File;
-
 /**
  * The upload CSV success page for importing partnerships.
  */
@@ -45,27 +42,6 @@ class ParMemberSuccessUploadFlowsForm extends ParBaseForm {
     ];
 
     return parent::buildForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-
-//    // Form cache id.
-//    $cid = $this->getFlowNegotiator()->getFormKey('par_member_upload_csv');
-//
-//    // Load temporary csv data and assign it to a variable.
-//    $csv_data = $this->getFlowDataHandler()->getTempDataValue('coordinated_members', $cid);
-//
-//    // Create CRON queue with a unique name.
-//    $queue = \Drupal::queue('par_member_upload');
-//
-//    // Create CRON QUEUE item which is added to the queue and will be
-//    // triggered next time when CRON executes.
-//    $queue->createItem($csv_data);
-
-    parent::submitForm($form, $form_state);
   }
 
 }
