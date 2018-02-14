@@ -4,9 +4,9 @@ par_member_upload_flows.member_upload:
   defaults:
     _form: '\Drupal\par_member_upload_flows\Form\ParMemberUploadFlowsForm'
     _title_callback: '\Drupal\par_member_upload_flows\Form\ParMemberUploadFlowsForm::titleCallback'
-   requirements:
-     _permission: 'manage my organisations'
-     _custom_access: '\Drupal\par_member_upload_flows\Form\ParMemberUploadFlowsForm::accessCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    _custom_access: '\Drupal\par_member_upload_flows\Form\ParMemberUploadFlowsForm::accessCallback'
   options:
     parameters:
       par_data_partnership:
@@ -17,9 +17,9 @@ par_member_upload_flows.member_upload_confirm:
   defaults:
     _form: '\Drupal\par_member_upload_flows\Form\ParMemberConfirmUploadFlowsForm'
     _title_callback: '\Drupal\par_member_upload_flows\Form\ParMemberConfirmUploadFlowsForm::titleCallback'
-   requirements:
-     _permission: 'manage my organisations'
-     _custom_access: '\Drupal\par_member_upload_flows\Form\ParMemberConfirmUploadFlowsForm::accessCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    _custom_access: '\Drupal\par_member_upload_flows\Form\ParMemberConfirmUploadFlowsForm::accessCallback'
   options:
     parameters:
       par_data_partnership:
@@ -30,9 +30,9 @@ par_member_upload_flows.member_upload_success:
   defaults:
     _form: '\Drupal\par_member_upload_flows\Form\ParMemberSuccessUploadFlowsForm'
     _title_callback: '\Drupal\par_member_upload_flows\Form\ParMemberSuccessUploadFlowsForm::titleCallback'
-   requirements:
-     _permission: 'manage my organisations'
-     _custom_access: '\Drupal\par_member_upload_flows\Form\ParMemberSuccessUploadFlowsForm::accessCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    _custom_access: '\Drupal\par_member_upload_flows\Form\ParMemberSuccessUploadFlowsForm::accessCallback'
   options:
     parameters:
       par_data_partnership:
