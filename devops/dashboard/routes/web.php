@@ -20,3 +20,5 @@ Route::get('/stats/build_versions', 'IndexController@buildVersionStats');
 Route::get('/stats/uptime', 'IndexController@uptimeStats');
 Route::get('/stats/tests', 'IndexController@testStats');
 Route::get('/stats/queueandcron', 'IndexController@queueAndCronStats');
+
+Route::post('/push/test_results', 'PushController@testResults');
