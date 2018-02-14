@@ -5,6 +5,7 @@ namespace Drupal\par_member_upload_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_member_upload_flows\ParFlowAccessTrait;
 
 //use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 //use Drupal\file\Entity\File;
@@ -13,8 +14,8 @@ use Drupal\par_flows\Form\ParBaseForm;
  * The upload CSV success page for importing partnerships.
  */
 class ParMemberSuccessUploadFlowsForm extends ParBaseForm {
-  // The base form controller for all PAR forms.
-//  use ParPartnershipFlowsTrait;
+
+  use ParFlowAccessTrait;
 
   /**
    * {@inheritdoc}

@@ -6,11 +6,14 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\file\Entity\File;
+use Drupal\par_member_upload_flows\ParFlowAccessTrait;
 
 /**
  * The upload CSV form for importing partnerships.
  */
 class ParMemberUploadFlowsForm extends ParBaseForm {
+
+  use ParFlowAccessTrait;
 
   /**
    * {@inheritdoc}

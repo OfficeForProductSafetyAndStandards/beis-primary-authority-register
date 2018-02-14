@@ -5,11 +5,14 @@ namespace Drupal\par_member_upload_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_member_upload_flows\ParFlowAccessTrait;
 
 /**
  * The upload CSV confirmation form for importing partnerships.
  */
 class ParMemberConfirmUploadFlowsForm extends ParBaseForm {
+
+  use ParFlowAccessTrait;
 
   /**
    * {@inheritdoc}
