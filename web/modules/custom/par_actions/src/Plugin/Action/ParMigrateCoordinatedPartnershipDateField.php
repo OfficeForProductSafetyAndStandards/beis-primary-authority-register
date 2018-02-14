@@ -27,10 +27,10 @@ class ParMigrateCoordinatedPartnershipDateField extends ActionBase {
         $entity->get('date_membership_began')->setValue($entity->get('membership_date')->value);
       }
 
-      // Set all current coordinated partnerships inspection plan.
-      $entity->get('covered_by_inspection')->setValue(NULL);
+      // Set all coordinated partnerships to covered by inspection.
+      $entity->get('covered_by_inspection')->setValue(TRUE);
 
-      // Set all ceased values to NULL.
+      // Set all date_membership_ceased values to NULL.
       $entity->get('date_membership_ceased')->setValue(NULL);
 
       $entity->save();
