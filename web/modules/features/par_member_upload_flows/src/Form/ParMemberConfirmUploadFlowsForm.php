@@ -43,7 +43,8 @@ class ParMemberConfirmUploadFlowsForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-
+    parent::submitForm($form, $form_state);
+    
     // Form cache id.
     $cid = $this->getFlowNegotiator()->getFormKey('par_member_upload_csv');
 
@@ -54,8 +55,6 @@ class ParMemberConfirmUploadFlowsForm extends ParBaseForm {
     $queue = \Drupal::queue('par_member_upload');
 
     // @TODO Add each row to queue, or possibly to batch, or some way of saely handling 10,000 rows.
-
-    parent::submitForm($form, $form_state);
   }
 
 }
