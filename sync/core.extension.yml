@@ -72,6 +72,7 @@ module:
   par_roles: 0
   par_validation: 0
   path: 0
+  queue_ui: 0
   raven: 0
   rdf: 0
   rest: 0
