@@ -311,11 +311,6 @@ class ParDataManager implements ParDataManagerInterface {
       }
 
       foreach ($referenced_entities as $entity_id => $referenced_entity) {
-        // Always skip lookup of relationships for people.
-        if ($referenced_entity->getEntityTypeId() === 'par_data_person') {
-          continue;
-        }
-
         // If the current entity is a person only lookup core entity relationships.
         if ($entity->getEntityTypeId() === 'par_data_person') {
           if (in_array($referenced_entity->getEntityTypeId(), $this->coreMembershipEntities)) {
