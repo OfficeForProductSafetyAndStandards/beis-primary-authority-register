@@ -1,26 +1,29 @@
-uuid: db762fc6-359a-4012-b58c-8c07d197b968
+uuid: 4698e763-1f3b-4b2f-8e13-2e61824e97e3
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.message.mail_subject
+    - core.entity_view_mode.message.full
     - field.field.message.partnership_approved_notificatio.field_message_subject
     - field.field.message.partnership_approved_notificatio.field_partnership
     - message.template.partnership_approved_notificatio
-id: message.partnership_approved_notificatio.mail_subject
+id: message.partnership_approved_notificatio.full
 targetEntityType: message
 bundle: partnership_approved_notificatio
-mode: mail_subject
+mode: full
 content:
-  field_message_subject:
-    type: string
-    weight: 0
-    region: content
+  field_partnership:
+    weight: 1
     label: hidden
     settings:
-      link_to_entity: false
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
     third_party_settings: {  }
 hidden:
-  field_partnership: true
-  partial_0: true
-  partial_1: true
+  field_message_subject: true

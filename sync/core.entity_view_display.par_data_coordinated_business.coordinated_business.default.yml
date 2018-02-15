@@ -6,6 +6,10 @@ dependencies:
     - field.field.par_data_coordinated_business.coordinated_business.field_legal_entity
     - field.field.par_data_coordinated_business.coordinated_business.field_organisation
     - par_data.par_data_coordinated_business_type.coordinated_business
+  module:
+    - datetime
+    - datetime_range
+    - par_data
 _core:
   default_config_hash: wrQCLd0nUJy7r_OzKr59VHEfrL0-OPBdzhlsEI65aYs
 id: par_data_coordinated_business.coordinated_business.default
@@ -13,6 +17,31 @@ targetEntityType: par_data_coordinated_business
 bundle: coordinated_business
 mode: default
 content:
+  covered_by_inspection:
+    type: par_boolean_formatter
+    weight: 3
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  date_membership_began:
+    type: datetime_default
+    weight: 4
+    region: content
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+  date_membership_ceased:
+    type: datetime_default
+    weight: 5
+    region: content
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
   field_legal_entity:
     type: entity_reference_entity_view
     weight: 0
@@ -42,8 +71,5 @@ content:
     type: daterange_custom
     weight: 2
 hidden:
-  covered_by_inspection: true
-  date_membership_began: true
-  date_membership_ceased: true
   name: true
   user_id: true
