@@ -1,25 +1,29 @@
-uuid: 34d33214-73ba-4189-8843-b7e5bf08e5ca
+uuid: 476e110e-4dd3-456f-bc4c-d63779e7b580
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.message.mail_body
+    - core.entity_view_mode.message.full
     - field.field.message.partnership_confirmed_notificati.field_message_subject
     - field.field.message.partnership_confirmed_notificati.field_partnership
     - message.template.partnership_confirmed_notificati
-id: message.partnership_confirmed_notificati.mail_body
+id: message.partnership_confirmed_notificati.full
 targetEntityType: message
 bundle: partnership_confirmed_notificati
-mode: mail_body
+mode: full
 content:
+  field_partnership:
+    weight: 1
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
   partial_0:
     weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
-  partial_1:
-    weight: 0
-    region: content
 hidden:
   field_message_subject: true
-  field_partnership: true
