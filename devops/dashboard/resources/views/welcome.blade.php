@@ -71,6 +71,7 @@
     </div>
    </div>
    @endfor
+   
   </div>
 
   <div class="col-sm-4">
@@ -185,21 +186,21 @@
 
    <div class="row">
     <div class="col-sm-12">
-<div class="statcard p-4 statcard-success" id="unit_tests">
+      <div class="statcard p-4 statcard-success" id="unit_tests">
          <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
          <span class="statcard-desc">Unit Tests</span>
-        </div>
-</div>
-</div>
+      </div>
+    </div>
+  </div>
 
    <div class="row">
     <div class="col-sm-12">
-<div class="statcard p-4 statcard-success" id="acceptance_tests">
+      <div class="statcard p-4 statcard-success" id="acceptance_tests">
          <h3 class="statcard-number"><img src="images/ajax-loader.gif"></h3>
          <span class="statcard-desc">Acceptance Tests</span>
-        </div>
-</div>
-</div>
+      </div>
+    </div>
+  </div>
 
   </div>
  </div>
@@ -207,9 +208,16 @@
 
  <div class="row" style="height:200px;margin-bottom:1em">
 
-  <div class="col-sm-12">
+  <div class="col-sm-6">
     <h3>&nbsp;Open Pull Requests</h3>
   <table class="table" id="pull_request_list">
+
+  </table>  
+  </div>
+
+  <div class="col-sm-6">
+    <h3>&nbsp;Queues</h3>
+  <table class="table" id="queue_list">
 
   </table>  
   </div>
@@ -291,7 +299,6 @@
 
       function renderCloudFoundryStats() {
         $.get("/stats/cf", function(data, status) {
-
            var lastChecked = moment.unix(data.received_at);
            var minutes = moment.duration(moment().diff(lastChecked)).asMinutes();
            $('#last_cloud_foundry_check > .statcard-number').html('Last checked ' + lastChecked.fromNow());
@@ -350,6 +357,24 @@
              
              $('#acceptance_tests > .statcard-number').html(data.message.acceptance.passed + ' passed, ' + data.message.acceptance.failed + ' failures');
              setStateColor($('#acceptance_tests'), data.message.acceptance.failed, [0], []);
+        });
+      }
+
+      function renderQueueAndCronStats() {
+           $.get("/stats/queueandcron", function(data, status) {
+            var queues = data.data.queues;
+            $('#queue_list').empty();
+
+            var lastCronRun = moment(data.data.cron);
+            var minutes = moment.duration(moment().diff(lastCronRun)).asMinutes();
+            //$('#last_cron_run > .statcard-number').html(lastCronRun.fromNow());
+            //setUsageColor($('#last_cron_run'), minutes, 60);
+            $('#queue_list').append('<tr><td>Last Cron Run</td><td>' + lastCronRun.fromNow() + '</td><td></tr>');
+
+            for (var key in queues) {
+              $('#queue_list').append('<tr><td>' + queues[key].title + '</td><td>' + queues[key].number_items + '</td><td></tr>');
+            }
+           
         });
       }
 
@@ -453,6 +478,9 @@
 
         });
       }
+
+      renderQueueAndCronStats();
+      setInterval(renderQueueAndCronStats, 2000);
 
       renderTestResults();
       setInterval(renderTestResults, 90000);
