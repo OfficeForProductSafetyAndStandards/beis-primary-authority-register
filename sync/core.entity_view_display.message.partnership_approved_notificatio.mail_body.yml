@@ -4,16 +4,22 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.message.mail_body
+    - field.field.message.partnership_approved_notificatio.field_message_subject
+    - field.field.message.partnership_approved_notificatio.field_partnership
     - message.template.partnership_approved_notificatio
 id: message.partnership_approved_notificatio.mail_body
 targetEntityType: message
 bundle: partnership_approved_notificatio
 mode: mail_body
 content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   partial_1:
     weight: 0
     region: content
 hidden:
   field_message_subject: true
   field_partnership: true
-  partial_0: true
