@@ -22,21 +22,21 @@ steps:
     route: par_member_add_flows.add_address
     form_id: par_member_add_address
     components:
-      address: {}
+      address: {  }
     redirect:
       cancel: 10
   3:
     route: par_member_add_flows.add_contact
     form_id: par_member_add_contact
     components:
-      contact_details: {}
+      contact_details: {  }
     redirect:
       cancel: 10
   4:
     route: par_member_add_flows.add_begin_date
     form_id: par_member_add_begin_date
     components:
-      begin_date: {}
+      begin_date: {  }
     redirect:
       cancel: 10
   5:
@@ -59,7 +59,7 @@ steps:
     route: par_member_add_flows.covered_by_plan
     form_id: par_member_add_inspection_plan_coverage
     components:
-      inspection_plan_coverage: {}
+      covered_by_plan: {  }
     redirect:
       cancel: 10
   8:

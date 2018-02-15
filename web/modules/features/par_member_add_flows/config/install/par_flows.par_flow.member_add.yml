@@ -56,7 +56,7 @@ steps:
     route: par_member_add_flows.covered_by_plan
     form_id: par_member_add_inspection_plan_coverage
     components:
-      inspection_plan_coverage: {}
+      covered_by_plan: {}
     redirect:
       cancel: 10
   8:

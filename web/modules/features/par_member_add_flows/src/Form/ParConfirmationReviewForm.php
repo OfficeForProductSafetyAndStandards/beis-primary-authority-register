@@ -82,6 +82,9 @@ class ParConfirmationReviewForm extends ParBaseForm {
     // Display the trading names.
     $form['trading_names'] = $this->renderSection('Trading names', $par_data_organisation, ['trading_name' => 'title']);
 
+    // Display whether this is covered by an inspeciton plan.
+    $form['covered_by_inspection'] = $this->renderSection('Covered by inspection plan', $par_data_coordinated_business, ['covered_by_inspection' => 'default']);
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -105,6 +108,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
     // Get the covered by inspection plan data.
     $covered_by_cid = $this->getFlowNegotiator()->getFormKey('par_member_add_inspection_plan_coverage');
+    $covered_by_inspection_plan = $this->decideBooleanValue($this->getFlowDataHandler()->getTempDataValue('covered_by_inspection', $covered_by_cid), "1", "0");
 
     // Get the address data.
     $address_cid = $this->getFlowNegotiator()->getFormKey('par_member_add_address');
@@ -143,7 +147,8 @@ class ParConfirmationReviewForm extends ParBaseForm {
     }
 
     // Create the entities.
-    $par_data_coordinated_business = ParDataOrganisation::create();
+    $par_data_coordinated_business = ParDataCoordinatedBusiness::create();
+    $par_data_coordinated_business->get('covered_by_inspection')->setValue($covered_by_inspection_plan);
     $par_data_organisation = ParDataOrganisation::create([
       'organisation_name' => $organisation_name,
       'trading_name' => $trading_names,
