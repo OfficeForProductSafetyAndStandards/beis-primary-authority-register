@@ -21,4 +21,5 @@ Route::get('/stats/uptime', 'IndexController@uptimeStats');
 Route::get('/stats/tests', 'IndexController@testStats');
 Route::get('/stats/queueandcron', 'IndexController@queueAndCronStats');
 
-Route::post('/push/test_results', 'PushController@testResults');
+Route::post('/push/test_results_acceptance', 'PushControllerJson@testResultsAcceptance');
+Route::post('/push/test_results_unit', 'PushControllerXml@testResultsUnit');
