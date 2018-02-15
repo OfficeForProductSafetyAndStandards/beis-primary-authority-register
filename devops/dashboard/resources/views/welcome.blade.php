@@ -352,11 +352,16 @@
       function renderTestResults() {
         $.get("/stats/tests", function(data, status) {
            
-             $('#unit_tests > .statcard-number').html(data.message.unit.tests + ' tests, ' + data.message.unit.errors + ' errors');
-             setStateColor($('#unit_tests'), data.message.unit.errors, ['0'], []);
+             if (data.unit !== null) {
+               $('#unit_tests > .statcard-number').html(data.unit.tests + ' tests, ' + data.unit.failures + ' errors');
+               setStateColor($('#unit_tests'), data.unit.errors, ['0'], []);
+             }
+              
+             if (data.acceptance !== null) { 
+               $('#acceptance_tests > .statcard-number').html(data.acceptance.passed + ' passed, ' + data.acceptance.failed + ' failures');
+               setStateColor($('#acceptance_tests'), data.acceptance.failed, [0], []);
+             }
              
-             $('#acceptance_tests > .statcard-number').html(data.message.acceptance.passed + ' passed, ' + data.message.acceptance.failed + ' failures');
-             setStateColor($('#acceptance_tests'), data.message.acceptance.failed, [0], []);
         });
       }
 
