@@ -27,8 +27,8 @@ class ParCoveredByPlanForm extends ParFormPluginBase {
    * Load the data for this form.
    */
   public function loadData($cardinality = 1) {
-    if ($coordinated_member_bundle = $this->getFlowDataHandler()->getParameter('par_data_coordinated_business')) {
-      $this->getFlowDataHandler()->setFormPermValue('covered_by_inspection', $coordinated_member_bundle->getBoolean('covered_by_inspection'));
+    if ($coordinated_member = $this->getFlowDataHandler()->getParameter('par_data_coordinated_business')) {
+      $this->getFlowDataHandler()->setFormPermValue('covered_by_inspection', $coordinated_member->getBoolean('covered_by_inspection'));
     }
 
     parent::loadData();
@@ -40,7 +40,7 @@ class ParCoveredByPlanForm extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     $coordinated_member_bundle = $this->getParDataManager()->getParBundleEntity('par_data_coordinated_business');
 
-    // Inspection plan coverage
+    // Inspection plan coverage.
     $form['covered_by_inspection'] = [
       '#type' => 'radios',
       '#title' => $this->t('Is this member covered by an inspection plan?'),
