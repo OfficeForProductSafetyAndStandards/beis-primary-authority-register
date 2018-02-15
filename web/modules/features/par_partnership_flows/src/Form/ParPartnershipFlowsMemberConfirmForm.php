@@ -54,10 +54,8 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
       'nation' => 9,
     ],
     'par_data_coordinated_business' => [
-      'membership_date' => [
-        'value' => 15,
-        'end_value' => 16,
-      ],
+      'date_membership_began' => 15,
+      'date_membership_ceased' => 16,
     ]
   ];
 
@@ -146,7 +144,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
           '%count members have been found and are ready to be imported.',
           ['%count' => $count]
         ),
-        '#predix' => '<p>',
+        '#prefix' => '<p>',
         '#suffix' => '</p>',
       ];
 
@@ -241,6 +239,8 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
       $this->processRow($route_partnership->id(), $member, $requires_attention);
     }
 
+    $this->getFlowDataHandler()->deleteStore();
+
   }
 
   /**
@@ -285,7 +285,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
 
   /**
    * Helper to add the member to the queue to process intensive operations in the background.
-   * 
+   *
    * @param $par_data_partnership
    *   The partnership that this member is being attached to.
    * @param $member
