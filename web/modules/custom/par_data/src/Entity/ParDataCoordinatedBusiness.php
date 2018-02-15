@@ -79,6 +79,16 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
   }
 
   /**
+   * Get the legal entites for this Coordinated Business.
+   */
+  public function getOrganisation($single = FALSE) {
+    $organisations = $this->get('field_organisation')->referencedEntities();
+    $organisation = !empty($organisations) ? current($organisations) : NULL;
+
+    return $single ? $organisation : $organisations;
+  }
+
+  /**
    * Add a legal entity for this Coordinated Business.
    *
    * @param ParDataLegalEntity $legal_entity

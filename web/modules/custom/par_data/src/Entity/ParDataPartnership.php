@@ -155,6 +155,16 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
+   * Get the coordianted members for this Partnership.
+   */
+  public function getCoordinatedMember($single = FALSE) {
+    $members = $this->get('field_coordinated_business')->referencedEntities();
+    $member = !empty($members) ? current($members) : NULL;
+
+    return $single ? $member : $members;
+  }
+
+  /**
    * Get the advice for this Partnership.
    */
   public function getAdvice() {
