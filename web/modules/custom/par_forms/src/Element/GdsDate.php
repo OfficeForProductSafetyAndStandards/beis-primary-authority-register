@@ -4,9 +4,7 @@ namespace Drupal\par_forms\Element;
 
 use Drupal\Core\Render\Element\CompositeFormElementTrait;
 use Drupal\Core\Render\Element\FormElement;
-use Drupal\Core\Render\Element\RenderElement;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element;
 
 /**
  * Provides a GDS Date element.
