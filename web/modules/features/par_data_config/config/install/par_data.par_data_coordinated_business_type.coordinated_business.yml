@@ -12,3 +12,8 @@ configuration:
   entity:
     label_fields:
       - field_organisation
+  covered_by_inspection:
+    boolean_values:
+      'on': Yes
+      'off': No
+
