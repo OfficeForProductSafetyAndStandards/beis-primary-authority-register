@@ -2,6 +2,8 @@
 
 namespace Drupal\par_forms\Element;
 
+use Drupal\Core\Render\Element\CompositeFormElementTrait;
+use Drupal\Core\Render\Element\FormElement;
 use Drupal\Core\Render\Element\RenderElement;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
@@ -11,7 +13,9 @@ use Drupal\Core\Render\Element;
  *
  * @FormElement("gds_date")
  */
-class GdsDate extends RenderElement {
+class GdsDate extends FormElement {
+
+  use CompositeFormElementTrait;
 
   /**
    * {@inheritdoc}
@@ -22,11 +26,11 @@ class GdsDate extends RenderElement {
     return [
       '#input' => TRUE,
       '#theme' => 'gds_date',
-      '#label' => 'Enter the date',
-      '#description' => 'The GDS supported date input.',
       '#process' => [[$class, 'processGdsDate']],
-      '#pre_render' => [[$class, 'preRenderGdsDate']],
-      '#theme_wrappers' => ['form_element'],
+      '#pre_render' => [
+        [$class, 'preRenderCompositeFormElement'],
+        [$class, 'preRenderGdsDate'],
+      ],
     ];
   }
 
@@ -34,10 +38,9 @@ class GdsDate extends RenderElement {
    * Prepare the render array for the template.
    */
   public static function preRenderGdsDate($element) {
-    // First name
     $element['day'] = [
       '#type' => 'textfield',
-      '#label' => 'Day',
+      '#title' => 'Day',
       '#attributes' => [
         'name' => $element['#name'] ."_day",
         'pattern' => "[0-9]*",
@@ -47,10 +50,9 @@ class GdsDate extends RenderElement {
       '#required' => $element['#required'],
     ];
 
-    // Last name
     $element['month'] = [
       '#type' => 'textfield',
-      '#label' => 'Month',
+      '#title' => 'Month',
       '#attributes' => [
         'name' => $element['#name'] ."_month",
         'pattern' => "[0-9]*",
@@ -62,7 +64,7 @@ class GdsDate extends RenderElement {
 
     $element['year'] = [
       '#type' => 'textfield',
-      '#label' => 'Year',
+      '#title' => 'Year',
       '#attributes' => [
         'name' => $element['#name'] ."_year",
         'pattern' => "[0-9]*",
