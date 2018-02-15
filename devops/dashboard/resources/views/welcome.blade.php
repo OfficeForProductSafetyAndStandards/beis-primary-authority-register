@@ -361,7 +361,7 @@
                $('#acceptance_tests > .statcard-number').html(data.acceptance.passed + ' passed, ' + data.acceptance.failed + ' failures');
                setStateColor($('#acceptance_tests'), data.acceptance.failed, [0], []);
              }
-             
+
         });
       }
 
@@ -485,7 +485,7 @@
       }
 
       renderQueueAndCronStats();
-      setInterval(renderQueueAndCronStats, 2000);
+      setInterval(renderQueueAndCronStats, 20000);
 
       renderTestResults();
       setInterval(renderTestResults, 90000);
