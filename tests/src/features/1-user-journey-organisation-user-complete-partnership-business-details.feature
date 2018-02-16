@@ -12,7 +12,7 @@ Feature: Organisation User - Complete business details
         And I open the url "/dashboard"
         Then I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I click on the link "See your partnerships"
-        And I select the option with the text "Confirmed by Authority" for element "#edit-partnership-status"
+        # And I select the option with the text "Confirmed by Authority" for element "#edit-partnership-status"
         And I add "Business For Direct Partnership" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
         And I click on the link "Business For Direct Partnership"
