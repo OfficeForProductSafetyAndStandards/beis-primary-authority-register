@@ -130,6 +130,8 @@ script:
   - docker exec -it par_beta_web sh -c "./vendor/bin/paratest --processes=16 --log-junit=./tests/reports/phpunit.latest.xml"
   - if [[ "$TESTTYPE" == "cucumber" ]]; then travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"; fi
   - if [[ "$TESTTYPE" == "cucumber" ]]; then docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run test:build"; fi
+  - if [[ "$TRAVIS_BRANCH" == 'PAR-1085.2' ]]; then curl -X POST https://par-dashboard.cloudapps.digital/push/test_results_unit -H 'Accept: application/json' -H 'Cache-Control: no-cache' -H 'Content-Type: application/xml' -d '@./tests/reports/phpunit.latest.xml'; fi
+  - if [[ "$TRAVIS_BRANCH" == 'PAR-1085.2' ]]; then curl -X POST https://par-dashboard.cloudapps.digital/push/test_results_acceptance -H 'Accept: application/json' -H 'Cache-Control: no-cache' -H 'Content-Type: application/json' -d '@./tests/reports/report.json'; fi
 
 #-----------------------------------------------------------------------------
 # Run Jmeter
