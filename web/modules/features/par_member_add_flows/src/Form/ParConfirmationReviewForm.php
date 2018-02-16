@@ -59,6 +59,9 @@ class ParConfirmationReviewForm extends ParBaseForm {
     // Display the member's address
     $form['member_registered_address'] = $this->renderSection('Member business address', $par_data_premises, ['address' => 'summary']);
 
+    // Display the date the membership began.
+    $form['membership_date'] = $this->renderSection('Date of membership', $par_data_coordinated_business, ['date_membership_began' => 'default']);
+
     // Display contacts at the organisation.
     $form['member_contact'] = [
       '#type' => 'fieldset',
@@ -105,6 +108,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
     // Get the covered by inspection plan data.
     $membership_start_cid = $this->getFlowNegotiator()->getFormKey('par_member_add_begin_date');
+    $membership_start_date = $this->getFlowDataHandler()->getTempDataValue('date_membership_began', $membership_start_cid);
 
     // Get the covered by inspection plan data.
     $covered_by_cid = $this->getFlowNegotiator()->getFormKey('par_member_add_inspection_plan_coverage');
@@ -147,7 +151,9 @@ class ParConfirmationReviewForm extends ParBaseForm {
     }
 
     // Create the entities.
-    $par_data_coordinated_business = ParDataCoordinatedBusiness::create();
+    $par_data_coordinated_business = ParDataCoordinatedBusiness::create([
+      'date_membership_began' => $membership_start_date,
+    ]);
     $par_data_coordinated_business->get('covered_by_inspection')->setValue($covered_by_inspection_plan);
     $par_data_organisation = ParDataOrganisation::create([
       'organisation_name' => $organisation_name,
