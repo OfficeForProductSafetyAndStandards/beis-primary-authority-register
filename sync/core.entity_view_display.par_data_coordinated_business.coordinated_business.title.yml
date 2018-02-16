@@ -1,0 +1,33 @@
+uuid: 99a054c5-d78c-4304-bbe3-a074a5b363da
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_coordinated_business.title
+    - field.field.par_data_coordinated_business.coordinated_business.field_legal_entity
+    - field.field.par_data_coordinated_business.coordinated_business.field_organisation
+    - par_data.par_data_coordinated_business_type.coordinated_business
+_core:
+  default_config_hash: wrQCLd0nUJy7r_OzKr59VHEfrL0-OPBdzhlsEI65aYs
+id: par_data_coordinated_business.coordinated_business.title
+targetEntityType: par_data_coordinated_business
+bundle: coordinated_business
+mode: title
+content:
+  field_organisation:
+    weight: 0
+    label: hidden
+    settings:
+      view_mode: title
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+hidden:
+  covered_by_inspection: true
+  date_membership_began: true
+  date_membership_ceased: true
+  field_legal_entity: true
+  membership_date: true
+  name: true
+  user_id: true
