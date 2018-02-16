@@ -187,15 +187,45 @@ class ParConfirmationReviewForm extends ParBaseForm {
     $entities = $this->createEntities();
     extract($entities);
     /** @var ParDataPartnership $par_data_partnership */
+    /** @var ParDataCoordinatedBusiness $par_data_coordinated_business */
     /** @var ParDataOrganisation $par_data_organisation */
     /** @var ParDataPerson $par_data_person */
     /** @var ParDataPremises $par_data_premises */
     /** @var ParDataLegalEntity[] $par_data_legal_entities */
-    /** @var ParDataLegalEntity[] $par_data_legal_entities_existing */
 
+    // Set all the references.
+    $member_added = FALSE;
+    if ($par_data_person->save()) {
+      $par_data_organisation->get('field_person')->appendItem($par_data_person);
+    }
+    if ($par_data_premises->save()) {
+      $par_data_organisation->get('field_premises')->appendItem($par_data_premises);
+    }
+    foreach ($par_data_legal_entities as $par_data_legal_entity) {
+      if ($par_data_legal_entity->save()) {
+        $par_data_organisation->get('field_legal_entity')->appendItem($par_data_legal_entity);
+        $par_data_coordinated_business->get('field_legal_entity')->appendItem($par_data_legal_entity);
+      }
+    }
+    if ($par_data_organisation->save()) {
+      $par_data_coordinated_business->get('field_organisation')->appendItem($par_data_organisation);
+    }
+    if ($par_data_coordinated_business->save()) {
+      $member_added = TRUE;
+      $par_data_partnership->get('field_coordinated_business')->appendItem($par_data_coordinated_business);
+    }
 
-    // @TODO Save all the new data.
-
+    if ($member_added && $par_data_partnership->save()) {
+      $this->getFlowDataHandler()->deleteStore();
+    }
+    else {
+      $message = $this->t('This %confirm could not be saved for %form_id');
+      $replacements = [
+        '%confirm' => $par_data_partnership->label(),
+        '%form_id' => $this->getFormId(),
+      ];
+      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+    }
   }
 
 }

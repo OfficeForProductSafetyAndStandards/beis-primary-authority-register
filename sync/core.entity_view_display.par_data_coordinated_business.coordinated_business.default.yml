@@ -21,14 +21,14 @@ content:
     type: par_boolean_formatter
     weight: 3
     region: content
-    label: above
+    label: inline
     settings: {  }
     third_party_settings: {  }
   date_membership_began:
     type: datetime_default
     weight: 4
     region: content
-    label: above
+    label: hidden
     settings:
       timezone_override: ''
       format_type: gds_date_format
@@ -37,7 +37,7 @@ content:
     type: datetime_default
     weight: 5
     region: content
-    label: above
+    label: hidden
     settings:
       timezone_override: ''
       format_type: gds_date_format
