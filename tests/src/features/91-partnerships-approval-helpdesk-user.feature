@@ -10,7 +10,7 @@ Feature: Helpdesk approve partnership
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         When I add "Business For Direct Partnership 27" to the inputfield "#edit-keywords"
-        And I select the option with the text "Confirmed by the Organisation" for element "#edit-partnership-status"
+        And I select the option with the text "Confirmed by the Organisation" for element "#edit-partnership-status-1"
         And I click on the button "#edit-submit-helpdesk-dashboard"
         Then I click on the link "Approve partnership"
 
@@ -31,7 +31,7 @@ Feature: Helpdesk approve partnership
 
         When I open the url "/helpdesk"
         When I add "Business For Direct Partnership 27" to the inputfield "#edit-keywords"
-        And I select the option with the text "- Any -" for element "#edit-partnership-status"
+        And I select the option with the text "- Any -" for element "#edit-partnership-status-1"
         And I click on the button "#edit-submit-helpdesk-dashboard"
         And I click on the button "td.views-field.views-field-authority-name a"
         Then the element "div time" contains any text
