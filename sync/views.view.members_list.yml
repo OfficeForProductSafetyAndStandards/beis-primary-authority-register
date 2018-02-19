@@ -3,8 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.par_data_coordinated_business.field_date_membership_began
-    - field.storage.par_data_coordinated_business.field_date_membership_ceased
     - field.storage.par_data_coordinated_business.field_organisation
     - field.storage.par_data_partnership.field_inspection_plan
     - par_data.par_data_coordinated_business_type.coordinated_business
@@ -202,14 +200,14 @@ display:
           entity_type: par_data_premises
           entity_field: address
           plugin_id: field
-        field_date_membership_began:
-          id: field_date_membership_began
-          table: par_data_coordinated_business__field_date_membership_began
-          field: field_date_membership_began
+        date_membership_began:
+          id: date_membership_began
+          table: par_coordinated_businesses_field_data
+          field: date_membership_began
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Membership Since'
+          label: 'Membership since'
           exclude: false
           alter:
             alter_text: false
@@ -265,11 +263,13 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          entity_type: par_data_coordinated_business
+          entity_field: date_membership_began
           plugin_id: field
-        field_date_membership_ceased:
-          id: field_date_membership_ceased
-          table: par_data_coordinated_business__field_date_membership_ceased
-          field: field_date_membership_ceased
+        date_membership_ceased:
+          id: date_membership_ceased
+          table: par_coordinated_businesses_field_data
+          field: date_membership_ceased
           relationship: none
           group_type: group
           admin_label: ''
@@ -306,7 +306,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -329,6 +329,8 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          entity_type: par_data_coordinated_business
+          entity_field: date_membership_ceased
           plugin_id: field
         field_inspection_plan:
           id: field_inspection_plan
@@ -581,8 +583,6 @@ display:
         - url.query_args
         - user.permissions
       tags:
-        - 'config:field.storage.par_data_coordinated_business.field_date_membership_began'
-        - 'config:field.storage.par_data_coordinated_business.field_date_membership_ceased'
         - 'config:field.storage.par_data_coordinated_business.field_organisation'
         - 'config:field.storage.par_data_partnership.field_inspection_plan'
   page_1:
@@ -602,7 +602,5 @@ display:
         - url.query_args
         - user.permissions
       tags:
-        - 'config:field.storage.par_data_coordinated_business.field_date_membership_began'
-        - 'config:field.storage.par_data_coordinated_business.field_date_membership_ceased'
         - 'config:field.storage.par_data_coordinated_business.field_organisation'
         - 'config:field.storage.par_data_partnership.field_inspection_plan'
