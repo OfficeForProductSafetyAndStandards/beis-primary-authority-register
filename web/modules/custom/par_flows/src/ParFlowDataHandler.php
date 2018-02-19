@@ -187,28 +187,6 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
-  public function mergeFormTempData(array $data, $cid = NULL) {
-    $existing = $this->getFormTempData($cid);
-
-    if (empty($data)) {
-      return;
-    }
-    elseif (empty($existing)) {
-      $values = $data;
-    }
-    elseif ($existing === $data) {
-      return;
-    }
-    else {
-      $values = NestedArray::mergeDeep($existing, $data);
-    }
-
-    $this->setFormTempData($values, $cid);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function deleteFormTempData($cid = NULL) {
     $cid = empty($cid) ? $this->negotiator->getFlowKey() : $cid;
 
