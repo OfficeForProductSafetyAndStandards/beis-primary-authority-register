@@ -29,13 +29,6 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_enforcement_notice_raise_details';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function titleCallback() {
     $enforcementFlowTitle = $this->RaiseEnforcementTitleCallback();
     if ($enforcementFlowTitle) {

@@ -24,13 +24,6 @@ class ParRdHelpDeskRevokeForm extends ParBaseForm {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_rd_help_desk_revoke';
-  }
-
-  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    */

@@ -19,13 +19,6 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
   protected $pageTitle = 'Which authority are you acting on behalf of?';
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_authority_selection';
-  }
-
-  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *

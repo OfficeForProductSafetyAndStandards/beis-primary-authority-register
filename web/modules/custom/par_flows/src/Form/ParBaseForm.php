@@ -168,6 +168,15 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   /**
    * {@inheritdoc}
    */
+  public function getFormId() {
+    if ($form_id = $this->getFlowNegotiator()->getFlow()->getFormIdByCurrentStep()) {
+      return $form_id;
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
@@ -424,7 +433,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // Always store the values whenever we submit the form.
     $values = $this->cleanseFormDefaults($form_state->getValues());
     $values = $this->cleanseMultipleValues($values);
-    $this->getFlowDataHandler()->setFormTempData($values);
+    $this->getFlowDataHandler()->mergeFormTempData($values);
 
     // Set the redirect to the next form based on the flow configuration 'operation'
     // parameter that matches the submit button's name.
@@ -440,7 +449,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // Always store the values whenever we submit the form.
     $values = $this->cleanseFormDefaults($form_state->getValues());
     $values = $this->cleanseMultipleValues($values);
-    $this->getFlowDataHandler()->setFormTempData($values);
+    $this->getFlowDataHandler()->mergeFormTempData($values);
   }
 
   /**
@@ -450,7 +459,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // Always store the values whenever we submit the form.
     $values = $this->cleanseFormDefaults($form_state->getValues());
     $values = $this->cleanseMultipleValues($values);
-    $this->getFlowDataHandler()->setFormTempData($values);
+    $this->getFlowDataHandler()->mergeFormTempData($values);
 
     list($button, $plugin_id, $cardinality) = explode(':', $form_state->getTriggeringElement()['#name']);
     $values = $form_state->getValue(ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_id);
@@ -471,7 +480,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // Resave the values based on the newly removed items.
     $values = $this->cleanseFormDefaults($form_state->getValues());
     $values = $this->cleanseMultipleValues($values);
-    $this->getFlowDataHandler()->setFormTempData($values);
+    $this->getFlowDataHandler()->mergeFormTempData($values);
   }
 
   /**

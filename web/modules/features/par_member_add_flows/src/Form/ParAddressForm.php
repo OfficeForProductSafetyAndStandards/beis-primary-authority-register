@@ -19,11 +19,4 @@ class ParAddressForm extends ParBaseForm {
    */
   protected $pageTitle = 'Add member organisation address';
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_member_add_address';
-  }
-
 }

@@ -20,13 +20,6 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_partnership_advice';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected $formItems = [
     'par_data_advice:advice' => [
       'advice_type' => 'advice_type',

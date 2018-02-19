@@ -24,13 +24,6 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
   protected $par_data_person_id;
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_partnership_contact_suggestion';
-  }
-
-  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
@@ -46,7 +39,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
-    $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_contact');
+    $cid = $this->getFlowNegotiator()->getFormKey('contact_form');
     $conditions = [
       'name' => [
         'AND' => [
@@ -117,12 +110,10 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
 
     // Get partnership entity from URL.
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-
-    $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_contact_suggestion');
-    if ($this->getFlowDataHandler()->getDefaultValues('par_data_person_id', '', $cid) === 'new') {
+    if ($this->getFlowDataHandler()->getDefaultValues('par_data_person_id') === 'new') {
 
       // Create new person entity.
-      $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_contact');
+      $cid = $this->getFlowNegotiator()->getFormKey('contact_form');
       $par_data_person = ParDataPerson::create([
         'type' => 'person',
         'salutation' => $this->getFlowDataHandler()->getTempDataValue('salutation', $cid),
@@ -134,7 +125,6 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
         'communication_notes' => $this->getFlowDataHandler()->getTempDataValue('notes', $cid)
       ]);
 
-      // @todo refactor this to use $this->getFlowDataHandler()->getTempDataBooleanValue() or similar.
       // Save the email preference.
       $email_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $cid)['communication_email'])
         && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $cid)['communication_email']);
@@ -152,8 +142,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
 
     }
     else {
-      $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_contact_suggestion');
-      $person_id = $this->getFlowDataHandler()->getDefaultValues('par_data_person_id', '', $cid);
+      $person_id = $this->getFlowDataHandler()->getDefaultValues('par_data_person_id');
       $par_data_person = ParDataPerson::load($person_id);
 
     }

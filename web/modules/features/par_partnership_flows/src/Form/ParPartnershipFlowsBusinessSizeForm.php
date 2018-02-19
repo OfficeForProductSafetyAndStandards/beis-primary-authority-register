@@ -16,13 +16,6 @@ class ParPartnershipFlowsBusinessSizeForm extends ParBaseForm {
   use ParPartnershipFlowsTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_partnership_business_size';
-  }
-
-  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *

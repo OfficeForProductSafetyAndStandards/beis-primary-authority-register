@@ -28,13 +28,15 @@ steps:
       cancel: 1
   3:
     route: par_partnership_flows.authority_contact_add
-    form_id: par_partnership_contact
+    form_id: par_partnership_contact_add
     redirect:
       save: 4
       cancel: 1
   4:
     route: par_partnership_flows.authority_contact_add_confirm
     form_id: par_partnership_contact_suggestion
+    form_data:
+      contact_form: par_partnership_contact_add
     redirect:
       save: 1
       cancel: 1
@@ -50,7 +52,7 @@ steps:
       done: 1
   7:
     route: par_partnership_flows.authority_contact_edit
-    form_id: par_partnership_contact
+    form_id: par_partnership_contact_edit
     redirect:
       save: 1
       cancel: 1
@@ -63,13 +65,13 @@ steps:
       cancel: 1
   9:
     route: par_partnership_flows.advice_upload_documents
-    form_id: par_partnership_upload
+    form_id: par_partnership_advice_upload
     redirect:
       upload: 10
       cancel: 8
   10:
     route: par_partnership_flows.advice_add
-    form_id: par_partnership_advice
+    form_id: par_partnership_advice_add
     redirect:
       save: 8
       cancel: 8
@@ -81,7 +83,7 @@ steps:
       cancel: 8
   12:
     route: par_partnership_flows.advice_edit
-    form_id: par_partnership_advice
+    form_id: par_partnership_advice_edit
     redirect:
       save: 8
       cancel: 8

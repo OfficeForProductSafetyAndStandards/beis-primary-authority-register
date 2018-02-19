@@ -35,55 +35,57 @@ steps:
       cancel: 1
   3:
     route: par_partnership_flows.address_add
-    form_id: par_partnership_address
+    form_id: par_partnership_address_add
     redirect:
       save: 1
       cancel: 1
   4:
     route: par_partnership_flows.address_edit
-    form_id: par_partnership_address
+    form_id: par_partnership_address_edit
     redirect:
       save: 1
       cancel: 1
   5:
     route: par_partnership_flows.organisation_contact_add
-    form_id: par_partnership_contact
+    form_id: par_partnership_contact_add
     redirect:
       next: 6
       cancel: 1
   6:
     route: par_partnership_flows.organisation_contact_add_confirm
     form_id: par_partnership_contact_suggestion
+    form_data:
+      contact_form: par_partnership_contact_add
     redirect:
       save: 1
       cancel: 1
   7:
     route: par_partnership_flows.organisation_contact_edit
-    form_id: par_partnership_contact
+    form_id: par_partnership_contact_edit
     redirect:
       save: 1
       cancel: 1
   8:
     route: par_partnership_flows.legal_entity_add
-    form_id: par_partnership_legal
+    form_id: par_partnership_legal_add
     redirect:
       save: 1
       cancel: 1
   9:
     route: par_partnership_flows.legal_entity_edit
-    form_id: par_partnership_legal
+    form_id: par_partnership_legal_edit
     redirect:
       save: 1
       cancel: 1
   10:
     route: par_partnership_flows.trading_name_add
-    form_id: par_partnership_trading_name
+    form_id: par_partnership_trading_name_add
     redirect:
       save: 1
       cancel: 1
   11:
     route: par_partnership_flows.trading_name_edit
-    form_id: par_partnership_trading_name
+    form_id: par_partnership_trading_name_edit
     redirect:
       save: 1
       cancel: 1

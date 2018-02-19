@@ -18,11 +18,4 @@ class ParLegalEntityForm extends ParBaseForm {
    */
   protected $pageTitle = 'Add legal entities';
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_member_add_legal_entity';
-  }
-
 }

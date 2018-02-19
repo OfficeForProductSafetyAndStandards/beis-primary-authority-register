@@ -20,13 +20,6 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
   protected $pageTitle = 'Are you looking for one of these businesses?';
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_partnership_organisation_suggestion';
-  }
-
-  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *

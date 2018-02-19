@@ -18,11 +18,4 @@ class ParCoveredByPlanForm extends ParBaseForm {
    */
   protected $pageTitle = "Inspection plan coverage";
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_member_add_inspection_plan_coverage';
-  }
-
 }

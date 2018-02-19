@@ -25,13 +25,6 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_partnership_about';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function titleCallback() {
     $this->pageTitle = 'Information about the new partnership';
 

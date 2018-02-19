@@ -21,13 +21,6 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_partnership_confirmation';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function titleCallback() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     if ($par_data_partnership) {

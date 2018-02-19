@@ -19,11 +19,4 @@ class ParTradingForm extends ParBaseForm {
    */
   protected $pageTitle = "Add trading name";
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_member_add_trading_name';
-  }
-
 }

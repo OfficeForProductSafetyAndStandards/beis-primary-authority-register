@@ -135,7 +135,15 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
     $flow_name = !empty($flow_name) ? $flow_name : $this->getFlowName();
 
     $flow = $this->getFlow($flow_name);
-    $step = $flow->getStepByFormId($form_id);
+
+    // If the form_id represents a form_data key get the step based on that key.
+    // This is useful for situations where the form_id is ambiguous (used more than once) in the flow.
+    $step = $flow->getStepByCurrentFormDataKey($form_id);
+    // Otherwise look for the form_id in the flow.
+    if (!$step) {
+      $step = $flow->getStepByFormId($form_id);
+    }
+
     $route_name = $flow->getRouteByStep($step);
 
     return $this->getFlowKey($route_name, $state, $flow_name);

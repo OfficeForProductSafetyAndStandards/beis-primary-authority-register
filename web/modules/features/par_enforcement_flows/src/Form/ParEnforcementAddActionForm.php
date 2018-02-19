@@ -30,13 +30,6 @@ class ParEnforcementAddActionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_enforcement_notice_add_action';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function titleCallback() {
 
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');

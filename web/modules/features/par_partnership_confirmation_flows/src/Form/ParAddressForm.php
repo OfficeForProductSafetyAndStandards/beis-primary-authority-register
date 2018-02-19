@@ -20,13 +20,6 @@ class ParAddressForm extends ParBaseForm {
   protected $pageTitle = 'Confirm the primary contact details';
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_partnership_confirmation_address';
-  }
-
-  /**
    * Load the data for this form.
    */
   public function loadData() {

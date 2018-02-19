@@ -25,13 +25,6 @@ class ParConfirmationReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_member_add_review';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected $pageTitle = 'Member summary';
 
   /**

@@ -27,13 +27,6 @@ class ParPartnershipFlowsApplicationOrganisationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_partnership_application_organisation';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
     $form['organisation_name'] = [
