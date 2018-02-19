@@ -681,7 +681,7 @@ display:
                 operator: '='
                 value: confirmed_authority
               3:
-                title: 'Confirmed by Business'
+                title: 'Confirmed by Organisation'
                 operator: '='
                 value: confirmed_business
               4:
