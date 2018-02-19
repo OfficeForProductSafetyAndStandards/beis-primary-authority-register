@@ -105,7 +105,7 @@ Feature: New Direct Partnership For HD user To Revoke
         And I add "testrevoking@example.com" to the inputfield "#edit-header-to"
         And I click on the button "#edit-submit-maillog-overview"
         When I click on the button "a*=Invitation to join the Primary Authority Register"
-        Then I expect that element "#block-par-theme-content" contains the text "A new partnership has been created for you"
+        # Then I expect that element "#block-par-theme-content" contains the text "A new partnership has been created for you"
         When I extract the invitation url
         And I complete the invitation process
         And I click on the link "See your partnerships"

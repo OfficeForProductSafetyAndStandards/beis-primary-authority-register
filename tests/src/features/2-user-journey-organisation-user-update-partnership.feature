@@ -90,6 +90,21 @@ Feature: Business User - Manage Addresses
         And I run tota11y against the current page
         Then I expect that element "#edit-trading-names" contains the text "Change To Different Trading Name"
 
+        # ADD ORGANISATION CONTACT
+
+        When I click on the link "add another organisation contact"
+        And I add "Mr" to the inputfield "#edit-salutation"
+        And I add "Added" to the inputfield "#edit-first-name"
+        And I add "Contact" to the inputfield "#edit-last-name"
+        And I add "02084445555" to the inputfield "#edit-work-phone"
+        And I add "07865223222" to the inputfield "#edit-mobile-phone"
+        And I add "Some additional notes for newly added contact" to the inputfield "#edit-notes"
+        And I click on the button "#edit-save"
+        And I run tota11y against the current page
+        Then I expect that element "#edit-organisation-contacts" contains the text "Mr Added Contact"
+        And I expect that element "#edit-organisation-contacts" contains the text "02084445555"
+        And I expect that element "#edit-organisation-contacts" contains the text "07865223222"
+
         # EDIT MAIN BUSINESS CONTACT
 
         When I click on the link "edit organisation contact"
