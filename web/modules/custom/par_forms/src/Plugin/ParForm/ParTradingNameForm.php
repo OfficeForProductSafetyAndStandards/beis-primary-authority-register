@@ -45,11 +45,22 @@ class ParTradingNameForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
+
+    if ($cardinality === 1) {
+      $form['trading_name_intro_fieldset'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('What is a trading name?'),
+        'intro' => [
+          '#type' => 'markup',
+          '#markup' => "<p>" . $this->t("Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State the primary trading name used by the organisation. More can be added after confirming the partnership.") . "</p>",
+        ]
+      ];
+    }
+
     $form['trading_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter a trading name'),
       '#default_value' => $this->getDefaultValuesByKey('trading_name', $cardinality),
-      '#description' => $this->t("<p>Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State the primary trading name used by the organisation. More can be added after confirming the partnership.</p>"),
     ];
 
     return $form;

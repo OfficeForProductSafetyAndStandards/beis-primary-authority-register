@@ -8,6 +8,10 @@ services:
     tags:
       - { name: 'event_subscriber' }
   par_notification.partnership_approved_subscriber:
-      class: '\Drupal\par_notification\EventSubscriber\PartnershipApprovedSubscriber'
-      tags:
-        - { name: 'event_subscriber' }
+    class: '\Drupal\par_notification\EventSubscriber\PartnershipApprovedSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  par_notification.partnership_application_completed_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\PartnershipApplicationCompletedSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
