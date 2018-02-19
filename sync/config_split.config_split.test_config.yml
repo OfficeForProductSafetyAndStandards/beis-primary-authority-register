@@ -8,9 +8,9 @@ folder: ../sync-test
 module:
   maillog: 0
 theme: {  }
-blacklist:
+blacklist: {  }
+graylist:
   - system.mail
-graylist: {  }
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 5
