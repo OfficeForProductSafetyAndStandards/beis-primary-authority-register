@@ -634,60 +634,6 @@ display:
             authority_name: authority_name
             organisation_name: organisation_name
           plugin_id: combine
-        partnership_status:
-          id: partnership_status
-          table: par_partnerships_field_data
-          field: partnership_status
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: '='
-          value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: partnership_status_op
-            label: 'Partnership Status'
-            description: null
-            use_operator: false
-            operator: partnership_status_op
-            identifier: partnership_status
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-          is_grouped: true
-          group_info:
-            label: Status
-            description: 'Filter by partnership status'
-            identifier: partnership_status
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items:
-              1:
-                title: 'Awaiting Review'
-                operator: '='
-                value: awaiting_review
-              2:
-                title: 'Confirmed by Authority'
-                operator: '='
-                value: confirmed_authority
-              3:
-                title: 'Confirmed by Organisation'
-                operator: '='
-                value: confirmed_business
-              4:
-                title: Active
-                operator: '='
-                value: confirmed_rd
-          entity_type: par_data_partnership
-          entity_field: partnership_status
-          plugin_id: string
         field_organisation_target_id:
           id: field_organisation_target_id
           table: par_data_partnership__field_organisation
