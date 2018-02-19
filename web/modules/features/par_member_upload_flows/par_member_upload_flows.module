@@ -9,7 +9,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 /**
  * Implements hook_help().
  */
-function par_member_upload_flow_help($route_name, RouteMatchInterface $route_match) {
+function par_member_upload_flows_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     // Main module help for the par_member_upload_flow module.
     case 'help.page.par_member_upload_flow':
@@ -21,4 +21,109 @@ function par_member_upload_flow_help($route_name, RouteMatchInterface $route_mat
 
     default:
   }
+}
+
+/**
+ * Batch callback process item function.
+ *
+ * @return type
+ */
+function par_member_upload_flows_batch_process_item() {
+  // This should search 'Business Name' and 'Legal Entity' from entities
+  // UPDATE record - if a match is found.
+  // INSERT record - if a match is NOT found.
+
+  return;
+}
+
+/**
+ * Batch callback finished function.
+ *
+ * @param array $success
+ * @param array $results
+ * @param array $operations
+ */
+function par_member_upload_flows_batch_finished($success, $results, $operations) {
+  dpm($success);
+  dpm($results);
+  dpm($operations);
+
+  // Delete OLD member's data prior to csv import except
+  // UPDATED data - (Check on today's day may be).
+}
+
+/**
+ * Lock the partnership.
+ *
+ * @return type
+ */
+function par_member_upload_flows_lock_partnership($partnership) {
+
+  $lock = \Drupal::lock();
+//  $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+  if ($lock->acquire("member_list_lock:{$partnership->id()}")) {
+    batch_process('/partnership/4/members/upload/success');
+    dpm('Batch process started.');
+  }
+
+  return;
+}
+
+/**
+ * Process members.
+ * Process csv data and add/update/delete members.
+ *
+ * @return type
+ */
+function par_member_upload_flows_process_members() {
+  // ParDataLegalEntity.
+//  $legal_entity = ParDataLegalEntity::create();
+//  $legal_entity->saveLight();
+//
+//  // ParDataPremises.
+//  $address = ParDataPremises::create();
+//  $address->saveLight();
+//
+//  // ParDataPerson.
+//  $person = ParDataPerson::create();
+//  $person->saveLight();
+//
+//  // ParDataOrganisation.
+//  $organisation = ParDataOrganisation::create([
+//      'field_person' => $person->id(),
+//      'field_premises' => $address->id(),
+//      'field_legal_entity' => $legal_entity->id(),
+//  ]);
+//  $organisation->saveLight();
+//
+//  // ParDataCoordinatedBusiness.
+//  $coordinated_member = ParDataCoordinatedBusiness::create([
+//      'field_legal_entity' => $legal_entity->id(),
+//      'field_organisation' => $organisation->id(),
+//  ]);
+  // ParDataPartnership.
+//  $partnership->get('field_coordinated_business')->appendItem($coordinated_member->id());
+
+  return;
+}
+
+/**
+ * Unlock the partnership.
+ *
+ * @return type
+ */
+function par_member_upload_flows_unlock_partnership($partnership) {
+  $lock = \Drupal::lock();
+  $lock->release("member_list_lock:{$partnership->id()}");
+  dpm('Batch process ended.');
+  return;
+}
+
+/**
+ * Send an e-mail summary on completion.
+ *
+ * @return type
+ */
+function par_member_upload_flows_send_email() {
+  return;
 }

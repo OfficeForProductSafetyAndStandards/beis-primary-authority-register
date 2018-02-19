@@ -7,6 +7,9 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\file\Entity\File;
 use Drupal\par_member_upload_flows\ParFlowAccessTrait;
+use Drupal\user\Entity\User;
+
+//use Drupal\Core\Entity;
 
 /**
  * The upload CSV form for importing partnerships.
@@ -26,6 +29,46 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+
+//    $entity_type = $this->getParDataManager()->getEntitiesByProperty('par_data_coordinated_business', 'field_organisation', 1);
+//    dpm($entity_type);
+//    $user = User::load(\Drupal::currentUser()->id());
+//    $uid = $user->get('uid')->value;
+//    dpm('uid: ' . $uid);
+//    $entity_type = \Drupal::service('par_data.manager')->getParEntityType('par_data_coordinated_business');
+//    $entity_type = $this->getParDataManager()->getEntitiesByProperty('par_data_coordinated_business', 'field_organisation', 1);
+//    dpm($entity_type);
+//
+//    dpm($this->getFlowDataHandler()->getParameter('par_data_partnership')->id());
+//
+//    $csv_row_organisation_name = 'MY ORGANISATION NAME';
+//    $csv_row_legal_entity_name = 'MY LEGAL ENTITY NAME';
+//
+//    $conditions = [
+//      'matched' => [
+//        'AND' => [
+//          ['field_partnership', $this->getFlowDataHandler()->getParameter('par_data_partnership')->id(), 'IN'],
+////          ['organisation_name', $csv_row_organisation_name, '='],
+////          ['legal_entity_name', $csv_row_legal_entity_name, '='],
+//        ],
+//      ],
+//    ];
+//    $member = $this->getParDataManager()
+//      ->getEntitiesByQuery('par_data_coordinated_business', $conditions, 1);
+//    dpm($member->label());
+//
+//    dpm($user = \Drupal::currentUser());
+//    dpm($user['id:protected']);
+//    $user = User::load(\Drupal::currentUser()->id());
+//    $uid = $user->get('uid')->value;
+//    dpm($uid);
+//    if ($entity instanceof \Drupal\Core\Entity\ContentEntityInterface) {
+//      dpm('entity: ' . $entity);
+//    }
+//    dpm('ENTITY: ' . Entity::load($uid));
+//    dpm('ENTITY: ' . Entity::get('field_coordinated_business')->getValue());
+//    dpm(ParDataEntity::retrieveEntityIds('field_coordinated_business'));
+//
     // Multiple file field.
     $form['csv'] = [
       '#type' => 'managed_file',
@@ -42,7 +85,6 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
         ]
       ]
     ];
-
 
     return parent::buildForm($form, $form_state);
   }
@@ -68,6 +110,7 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
 
       // Save the data in the User's temp private store for later processing.
       if (!empty($rows)) {
+
         $form_state->setValue('coordinated_members', $rows);
       }
     }
