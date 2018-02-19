@@ -36,7 +36,7 @@ configuration:
     allowed_values:
       awaiting_review: 'Awaiting Review'
       confirmed_authority: 'Confirmed by the Authority'
-      confirmed_business: 'Confirmed by the Organisation'
+      confirmed_business: 'Confirmed by the Business'
       confirmed_rd: Active
   partnership_type:
     allowed_values:
