@@ -10,7 +10,7 @@ Feature: Helpdesk approve partnership
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         When I add "Business For Direct Partnership 27" to the inputfield "#edit-keywords"
-        And I select the option with the text "Confirmed by the Organisation" for element "#edit-partnership-status-1"
+        And I select the option with the text "Confirmed by the Organisation" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-helpdesk-dashboard"
         Then I click on the link "Approve partnership"
 
