@@ -59,6 +59,9 @@ class ParConfirmationReviewForm extends ParBaseForm {
     // Display the member's address
     $form['member_registered_address'] = $this->renderSection('Member business address', $par_data_premises, ['address' => 'summary']);
 
+    // Display the date the membership began.
+    $form['membership_date'] = $this->renderSection('Date of membership', $par_data_coordinated_business, ['date_membership_began' => 'default']);
+
     // Display contacts at the organisation.
     $form['member_contact'] = [
       '#type' => 'fieldset',
@@ -105,6 +108,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
     // Get the covered by inspection plan data.
     $membership_start_cid = $this->getFlowNegotiator()->getFormKey('par_member_add_begin_date');
+    $membership_start_date = $this->getFlowDataHandler()->getTempDataValue('date_membership_began', $membership_start_cid);
 
     // Get the covered by inspection plan data.
     $covered_by_cid = $this->getFlowNegotiator()->getFormKey('par_member_add_inspection_plan_coverage');
@@ -147,7 +151,9 @@ class ParConfirmationReviewForm extends ParBaseForm {
     }
 
     // Create the entities.
-    $par_data_coordinated_business = ParDataCoordinatedBusiness::create();
+    $par_data_coordinated_business = ParDataCoordinatedBusiness::create([
+      'date_membership_began' => $membership_start_date,
+    ]);
     $par_data_coordinated_business->get('covered_by_inspection')->setValue($covered_by_inspection_plan);
     $par_data_organisation = ParDataOrganisation::create([
       'organisation_name' => $organisation_name,
@@ -181,15 +187,45 @@ class ParConfirmationReviewForm extends ParBaseForm {
     $entities = $this->createEntities();
     extract($entities);
     /** @var ParDataPartnership $par_data_partnership */
+    /** @var ParDataCoordinatedBusiness $par_data_coordinated_business */
     /** @var ParDataOrganisation $par_data_organisation */
     /** @var ParDataPerson $par_data_person */
     /** @var ParDataPremises $par_data_premises */
     /** @var ParDataLegalEntity[] $par_data_legal_entities */
-    /** @var ParDataLegalEntity[] $par_data_legal_entities_existing */
 
+    // Set all the references.
+    $member_added = FALSE;
+    if ($par_data_person->save()) {
+      $par_data_organisation->get('field_person')->appendItem($par_data_person);
+    }
+    if ($par_data_premises->save()) {
+      $par_data_organisation->get('field_premises')->appendItem($par_data_premises);
+    }
+    foreach ($par_data_legal_entities as $par_data_legal_entity) {
+      if ($par_data_legal_entity->save()) {
+        $par_data_organisation->get('field_legal_entity')->appendItem($par_data_legal_entity);
+        $par_data_coordinated_business->get('field_legal_entity')->appendItem($par_data_legal_entity);
+      }
+    }
+    if ($par_data_organisation->save()) {
+      $par_data_coordinated_business->get('field_organisation')->appendItem($par_data_organisation);
+    }
+    if ($par_data_coordinated_business->save()) {
+      $member_added = TRUE;
+      $par_data_partnership->get('field_coordinated_business')->appendItem($par_data_coordinated_business);
+    }
 
-    // @TODO Save all the new data.
-
+    if ($member_added && $par_data_partnership->save()) {
+      $this->getFlowDataHandler()->deleteStore();
+    }
+    else {
+      $message = $this->t('This %confirm could not be saved for %form_id');
+      $replacements = [
+        '%confirm' => $par_data_partnership->label(),
+        '%form_id' => $this->getFormId(),
+      ];
+      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+    }
   }
 
 }
