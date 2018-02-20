@@ -592,7 +592,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: members
+      path: partnership/%par_data_partnership/members
       display_description: ''
     cache_metadata:
       max-age: 0
