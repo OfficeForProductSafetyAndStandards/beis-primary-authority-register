@@ -31,7 +31,7 @@ Feature: Helpdesk approve partnership
 
         When I open the url "/helpdesk"
         When I add "Business For Direct Partnership 27" to the inputfield "#edit-keywords"
-        And I select the option with the text "- Any -" for element "#edit-partnership-status-1"
+        And I select the option with the text "- Any -" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-helpdesk-dashboard"
         And I click on the button "td.views-field.views-field-authority-name a"
         Then the element "div time" contains any text
