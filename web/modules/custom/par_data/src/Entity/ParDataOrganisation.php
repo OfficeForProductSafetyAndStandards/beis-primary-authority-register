@@ -143,13 +143,9 @@ class ParDataOrganisation extends ParDataEntity {
    * @return bool
    */
   public function isCoordinatedMember() {
-    $query = \Drupal::entityQuery('par_data_partnership');
-    $group = $query->andConditionGroup();
+    $query = \Drupal::entityQuery('par_data_coordinated_business');
 
-    $group->condition('partnership_type', 'coordinated', '=');
-    $group->condition('field_coordinated_business', $this->id(), 'IN');
-
-    $query->condition($group);
+    $query->condition('field_organisation', [$this->id()], 'IN');
 
     return $query->count()->execute() >= 1 ? TRUE : FALSE;
   }
