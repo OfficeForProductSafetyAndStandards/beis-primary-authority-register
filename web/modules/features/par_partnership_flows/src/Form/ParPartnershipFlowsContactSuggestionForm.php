@@ -39,6 +39,18 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
+    // Get files from "contact_form" step.
+    // To use this form there must be a "form_data['contact_form']" key in the step configuration:
+    // 1:
+    //   route: example.route_name
+    //   form_id: form_id_where_person_was_added
+    //   form_data:
+    //     upload: par_partnership_advice_upload_edit
+    // 2:
+    //   route: example.route_name_2
+    //   form_id: example_form_id
+    //   form_data:
+    //     upload: form_id_where_person_was_added
     $cid = $this->getFlowNegotiator()->getFormKey('contact_form');
     $conditions = [
       'name' => [
@@ -112,7 +124,18 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     if ($this->getFlowDataHandler()->getDefaultValues('par_data_person_id') === 'new') {
 
-      // Create new person entity.
+      // Get files from "contact_form" step.
+      // To use this form there must be a "form_data['contact_form']" key in the step configuration:
+      // 1:
+      //   route: example.route_name
+      //   form_id: form_id_where_person_was_added
+      //   form_data:
+      //     upload: par_partnership_advice_upload_edit
+      // 2:
+      //   route: example.route_name_2
+      //   form_id: example_form_id
+      //   form_data:
+      //     upload: form_id_where_person_was_added
       $cid = $this->getFlowNegotiator()->getFormKey('contact_form');
       $par_data_person = ParDataPerson::create([
         'type' => 'person',
