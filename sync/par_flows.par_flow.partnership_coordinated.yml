@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: rwllq_t9VG4ML9_xZ3RQaizURq2U6ivqxAwXz0S33H8
+  default_config_hash: 8drYQwD1ArK4INjzo3HrvBfsCqGU5m03byvAap0ZSvs
 id: partnership_coordinated
 label: 'Coordinated Partnership Flow'
 default_title: null
@@ -30,7 +30,6 @@ steps:
       advice: 15
       inspection_plans: 16
       save: 17
-      members: 18
   2:
     route: par_partnership_flows.about_business
     form_id: par_partnership_about_business
@@ -120,5 +119,3 @@ steps:
       cancel: 1
   17:
     route: view.par_user_partnerships.partnerships_page
-  18:
-    route: view.partnership_search.enforcment_flow_search_partnerships
