@@ -1,0 +1,30 @@
+# Routes required for ceasing membership of of coordinated member.
+par_member_cease_flows.member_cease:
+  path: '/partnership/{par_data_partnership}/member/{par_data_coordinated_business}/cease'
+  defaults:
+    _form: '\Drupal\par_member_cease_flows\Form\ParMemberCeaseDateForm'
+    _title_callback: '\Drupal\par_member_cease_flows\Form\ParMemberCeaseDateForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    _custom_access: '\Drupal\par_member_cease_flows\Form\ParMemberCeaseDateForm::accessCallback'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_coordinated_business:
+        type: entity:par_data_coordinated_business
+
+par_member_cease_flows.member_cease_confirm:
+  path: '/partnership/{par_data_partnership}/member/{par_data_coordinated_business}/cease/confirm'
+  defaults:
+    _form: '\Drupal\par_member_cease_flows\Form\ParMemberCeaseConfirmForm'
+    _title_callback: '\Drupal\par_member_cease_flows\Form\ParMemberCeaseConfirmForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    _custom_access: '\Drupal\par_member_cease_flows\Form\ParMemberCeaseConfirmForm::accessCallback'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_coordinated_business:
+        type: entity:par_data_coordinated_business

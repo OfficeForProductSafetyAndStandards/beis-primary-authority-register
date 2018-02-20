@@ -44,7 +44,6 @@ class GdsDate extends FormElement {
         [$class, 'preRenderCompositeFormElement'],
       ],
       '#date_date_format' => 'Y-m-d',
-      '#theme_wrappers' => ['form_element'],
     ];
   }
 
