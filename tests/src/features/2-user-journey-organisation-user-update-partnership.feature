@@ -98,10 +98,11 @@ Feature: Business User - Manage Addresses
         And I add "Contact" to the inputfield "#edit-last-name"
         And I add "02084445555" to the inputfield "#edit-work-phone"
         And I add "07865223222" to the inputfield "#edit-mobile-phone"
+        And I add "added.contact@example.com" to the inputfield "#edit-email"
         And I add "Some additional notes for newly added contact" to the inputfield "#edit-notes"
         And I click on the button "#edit-save"
         And I run tota11y against the current page
-        Then I expect that element "#edit-organisation-contacts" contains the text "Mr Added Contact"
+        Then I expect that element "#edit-organisation-contacts" contains the text "Added Contact"
         And I expect that element "#edit-organisation-contacts" contains the text "02084445555"
         And I expect that element "#edit-organisation-contacts" contains the text "07865223222"
 

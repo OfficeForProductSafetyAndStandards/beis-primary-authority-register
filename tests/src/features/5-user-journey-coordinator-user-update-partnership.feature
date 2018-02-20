@@ -15,7 +15,7 @@ Feature: Coordinator User - Update Partnership
 
         # ADD MEMBERS
 
-        When I open add members page
+        When I open the add members page
         And I add "New Member One" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
         And I add "MK43 7AS" to the inputfield "#edit-postcode"

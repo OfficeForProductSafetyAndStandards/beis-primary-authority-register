@@ -31,13 +31,16 @@ import clickNewPartnership from '../support/action/clickNewPartnership';
 import openMembersAddPage from '../support/action/openMembersAddPage';
 
 
-
 defineSupportCode(({ Given }) => {
     Given(
         /^I open the (url|site) "([^"]*)?"$/,
         openWebsite
     );
 
+    Given(
+        /^I open the add members page$/,
+        openMembersAddPage
+    );
     Given(
         /^I click new partnership if presented with choices$/,
         clickNewPartnership
