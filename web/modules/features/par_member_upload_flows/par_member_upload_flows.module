@@ -9,9 +9,9 @@ use Drupal\Core\Routing\RouteMatchInterface;
 /**
  * Implements hook_help().
  */
-function par_member_upload_flow_help($route_name, RouteMatchInterface $route_match) {
+function par_member_upload_flows_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
-    // Main module help for the par_member_upload_flow module.
+    // Main module help for the par_member_upload_flows module.
     case 'help.page.par_member_upload_flow':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';

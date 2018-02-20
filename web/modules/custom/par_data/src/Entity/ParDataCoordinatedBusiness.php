@@ -65,6 +65,22 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataCoordinatedBusiness extends ParDataEntity {
 
   /**
+   * {@inheritdoc}
+   *
+   * @param string $date
+   *   The date this member was ceased.
+   */
+  public function cease($date = '') {
+    if (!empty($date)) {
+      $this->set('date_membership_ceased', $date);
+    }
+
+    // Ceasing a member has the same purpose as revoking partnerships
+    // so we use the same methods and status.
+    parent::revoke();
+  }
+
+  /**
    * Get the contacts for this Coordinated Business.
    */
   public function getPerson() {

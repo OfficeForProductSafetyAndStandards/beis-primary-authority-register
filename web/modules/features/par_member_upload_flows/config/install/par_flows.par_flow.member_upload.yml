@@ -7,6 +7,8 @@ default_title: 'Upload a list of members'
 default_section_title: 'Coordinated partnership'
 description: ''
 save_method: end
+states:
+  - par_data_partnership
 steps:
   1:
     route: par_member_upload_flows.member_upload

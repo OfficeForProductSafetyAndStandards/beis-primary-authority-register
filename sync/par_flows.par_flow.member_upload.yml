@@ -3,14 +3,15 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: z1xfScdr4V11cQ2RtsBwUx7T8n3RF5RGwm9U77DdzCQ
+  default_config_hash: ptxY3DNYboY9_8V2HV5qqrjVRBLdbuPIuXcQRmbuSWs
 id: member_upload
 label: 'Member Upload'
 default_title: 'Upload a list of members'
 default_section_title: 'Coordinated partnership'
 description: ''
 save_method: end
-states: null
+states:
+  - par_data_partnership
 steps:
   1:
     route: par_member_upload_flows.member_upload
