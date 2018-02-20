@@ -37,13 +37,6 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
   ];
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_partnership_address';
-  }
-
-  /**
    * Get partnership.
    */
   public function getPartnershipParam() {

@@ -19,13 +19,6 @@ class ParAboutBusinessForm extends ParBaseForm {
   protected $pageTitle = 'Confirm the details about the business';
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_partnership_confirmation_about_business';
-  }
-
-  /**
    * Load the data for this form.
    */
   public function loadData() {

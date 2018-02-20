@@ -22,13 +22,6 @@ class ParOrganisationNameForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_member_add_organisation_name';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
     $form['organisation_name'] = [

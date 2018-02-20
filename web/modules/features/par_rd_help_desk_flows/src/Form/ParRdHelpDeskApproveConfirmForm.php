@@ -20,13 +20,6 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_rd_help_desk_confirm';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function titleCallback() {
     return 'Confirmation | Are you authorised to approve this partnership?';
   }

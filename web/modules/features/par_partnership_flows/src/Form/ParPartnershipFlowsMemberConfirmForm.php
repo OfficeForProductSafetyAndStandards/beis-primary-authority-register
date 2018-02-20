@@ -70,13 +70,6 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
     ],
   ];
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_partnership_member_upload_confirm';
-  }
-
   protected function getColumns() {
     return $this->columns;
   }

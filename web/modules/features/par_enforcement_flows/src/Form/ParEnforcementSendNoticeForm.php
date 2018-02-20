@@ -17,13 +17,6 @@ class ParEnforcementSendNoticeForm extends ParBaseForm {
   protected $flow = 'send_enforcement';
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_enforcement_notice_send';
-  }
-
-  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    */

@@ -25,13 +25,6 @@ class ParPartnershipFlowsApplicationTypeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_partnership_application_type';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function retrieveEditableValues() {
 
   }

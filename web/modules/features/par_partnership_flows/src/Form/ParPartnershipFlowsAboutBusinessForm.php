@@ -19,13 +19,6 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
   protected $pageTitle = 'Information about the business';
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_partnership_about_business';
-  }
-
-  /**
    * Helper to get all the editable values.
    *
    * Used for when editing or revisiting a previously edited page.

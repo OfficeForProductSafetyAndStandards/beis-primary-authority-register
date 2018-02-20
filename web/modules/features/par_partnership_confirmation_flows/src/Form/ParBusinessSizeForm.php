@@ -20,13 +20,6 @@ class ParBusinessSizeForm extends ParBaseForm {
   protected $pageTitle = 'Confirm the size of the membership list';
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_partnership_confirmation_business_size';
-  }
-
-  /**
    * Load the data for this form.
    */
   public function loadData() {
