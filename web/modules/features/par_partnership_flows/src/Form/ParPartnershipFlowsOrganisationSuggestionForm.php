@@ -4,11 +4,8 @@ namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
-use Drupal\user\Entity\User;
 
 /**
  * The de-duping form.
@@ -59,14 +56,20 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
       ],
     ];
 
-    $options = $this->getParDataManager()
+    $organisations = $this->getParDataManager()
       ->getEntitiesByQuery('par_data_organisation', $conditions, 10);
 
     $radio_options = [];
 
-    foreach($options as $option) {
-      $label = $this->renderSection('Organisation', $option, ['organisation_name' => 'summary', 'field_premises' => 'summary'], ['edit-entity'], FALSE, TRUE);
-      $radio_options[$option->id()] = render($label);
+    foreach ($organisations as $organisation) {
+      // PAR-1172 Do not display organisations in coordinated partnerships.
+      if (!$this->getParDataManager()->isCoordinatedOrganisation($organisation)) {
+        $label = $this->renderSection('Organisation', $organisation, [
+          'organisation_name' => 'summary',
+          'field_premises' => 'summary',
+        ], ['edit-entity'], FALSE, TRUE);
+        $radio_options[$organisation->id()] = render($label);
+      }
     }
 
     // If no suggestions were found we want to automatically submit the form.
@@ -84,7 +87,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
     ];
 
     // Make sure to add the person cacheability data to this form.
-    $this->addCacheableDependency($options);
+    $this->addCacheableDependency($organisations);
 
     return parent::buildForm($form, $form_state);
   }
