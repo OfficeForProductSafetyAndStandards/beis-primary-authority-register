@@ -134,11 +134,7 @@ class ParDataOrganisation extends ParDataEntity {
   }
 
   /**
-   * Helper fn to check if a PAR Organisation is in a partnership as a
-   * member.
-   *
-   * @param ParDataOrganisation $par_data_organisation
-   *   Organisation to check if in a coordinated partnership.
+   * Helper fn to check if a PAR Organisation is a coordinated member.
    *
    * @return bool
    */
