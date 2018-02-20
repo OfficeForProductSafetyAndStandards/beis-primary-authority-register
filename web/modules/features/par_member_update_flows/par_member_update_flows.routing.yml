@@ -1,0 +1,173 @@
+par_member_update_flows.member_confirm_summary:
+  path: '/partnership/{par_data_partnership}/member/{par_data_coordinated_business}/update'
+  defaults:
+    _form: '\Drupal\par_member_update_flows\Form\ParConfirmationDetailsForm'
+    _title_callback: '\Drupal\par_member_update_flows\Form\ParConfirmationDetailsForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    _custom_access: '\Drupal\par_member_update_flows\Form\ParConfirmationDetailsForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_coordinated_business: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_coordinated_business:
+        type: entity:par_data_coordinated_business
+
+par_member_update_flows.update_organisation_name:
+  path: '/partnership/{par_data_partnership}/member/{par_data_coordinated_business}/update/name'
+  defaults:
+    _form: '\Drupal\par_member_update_flows\Form\ParOrganisationNameForm'
+    _title_callback: '\Drupal\par_member_update_flows\Form\ParOrganisationNameForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    _custom_access: '\Drupal\par_member_update_flows\Form\ParOrganisationNameForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_coordinated_business: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_coordinated_business:
+        type: entity:par_data_coordinated_business
+
+par_member_update_flows.update_address:
+  path: '/partnership/{par_data_partnership}/member/{par_data_coordinated_business}/update/address'
+  defaults:
+    _form: '\Drupal\par_member_update_flows\Form\ParAddressForm'
+    _title_callback: '\Drupal\par_member_update_flows\Form\ParAddressForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    _custom_access: '\Drupal\par_member_update_flows\Form\ParAddressForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_coordinated_business: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_coordinated_business:
+        type: entity:par_data_coordinated_business
+
+par_member_update_flows.update_contact:
+  path: '/partnership/{par_data_partnership}/member/{par_data_coordinated_business}/update/contact'
+  defaults:
+    _form: '\Drupal\par_member_update_flows\Form\ParContactForm'
+    _title_callback: '\Drupal\par_member_update_flows\Form\ParContactForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    _custom_access: '\Drupal\par_member_update_flows\Form\ParContactForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_coordinated_business: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_coordinated_business:
+        type: entity:par_data_coordinated_business
+
+par_member_update_flows.update_begin_date:
+  path: '/partnership/{par_data_partnership}/member/{par_data_coordinated_business}/update/begin'
+  defaults:
+    _form: '\Drupal\par_member_update_flows\Form\ParStartDateForm'
+    _title_callback: '\Drupal\par_member_update_flows\Form\ParStartDateForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    _custom_access: '\Drupal\par_member_update_flows\Form\ParStartDateForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_coordinated_business: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_coordinated_business:
+        type: entity:par_data_coordinated_business
+
+par_member_update_flows.add_trading_name:
+  path: '/partnership/{par_data_partnership}/member/{par_data_coordinated_business}/add/trading-name'
+  defaults:
+    _form: '\Drupal\par_member_update_flows\Form\ParTradingForm'
+    _title_callback: '\Drupal\par_member_update_flows\Form\ParTradingForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    _custom_access: '\Drupal\par_member_update_flows\Form\ParTradingForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_coordinated_business: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_coordinated_business:
+        type: entity:par_data_coordinated_business
+
+par_member_update_flows.update_trading_name:
+  path: '/partnership/{par_data_partnership}/member/{par_data_coordinated_business}/update/trading-name/{trading_name_delta}'
+  defaults:
+    _form: '\Drupal\par_member_update_flows\Form\ParTradingForm'
+    _title_callback: '\Drupal\par_member_update_flows\Form\ParTradingForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    _custom_access: '\Drupal\par_member_update_flows\Form\ParTradingForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_coordinated_business: \d+
+    trading_name_delta: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_coordinated_business:
+        type: entity:par_data_coordinated_business
+
+par_member_update_flows.add_legal_entity:
+  path: '/partnership/{par_data_partnership}/member/{par_data_coordinated_business}/add/legal-entity'
+  defaults:
+    _form: '\Drupal\par_member_update_flows\Form\ParLegalEntityForm'
+    _title_callback: '\Drupal\par_member_update_flows\Form\ParLegalEntityForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    _custom_access: '\Drupal\par_member_update_flows\Form\ParLegalEntityForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_coordinated_business: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_coordinated_business:
+        type: entity:par_data_coordinated_business
+
+par_member_update_flows.update_legal_entities:
+  path: '/partnership/{par_data_partnership}/member/{par_data_coordinated_business}/update/legal-entity/{par_data_legal_entity}'
+  defaults:
+    _form: '\Drupal\par_member_update_flows\Form\ParLegalEntityForm'
+    _title_callback: '\Drupal\par_member_update_flows\Form\ParLegalEntityForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    _custom_access: '\Drupal\par_member_update_flows\Form\ParLegalEntityForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_coordinated_business: \d+
+    par_data_legal_entity: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_coordinated_business:
+        type: entity:par_data_coordinated_business
+      par_data_legal_entity:
+        type: entity:par_data_legal_entity
+
+par_member_update_flows.covered_by_plan:
+  path: '/partnership/{par_data_partnership}/member/{par_data_coordinated_business}/update/covered'
+  defaults:
+    _form: '\Drupal\par_member_update_flows\Form\ParCoveredByPlanForm'
+    _title_callback: '\Drupal\par_member_update_flows\Form\ParCoveredByPlanForm::titleCallback'
+  requirements:
+    _permission: 'manage my organisations'
+    _custom_access: '\Drupal\par_member_update_flows\Form\ParCoveredByPlanForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_coordinated_business: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_coordinated_business:
+        type: entity:par_data_coordinated_business
