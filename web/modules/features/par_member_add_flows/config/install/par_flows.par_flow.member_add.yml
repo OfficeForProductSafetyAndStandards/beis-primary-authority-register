@@ -70,7 +70,7 @@ steps:
       legal_select: par_member_add_legal_entity
       covered_by: par_member_add_inspection_plan_coverage
     redirect:
-      save: 10
+      save: 9
       cancel: 10
   9:
     route: par_member_add_flows.member_confirmation

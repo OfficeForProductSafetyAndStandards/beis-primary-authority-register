@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: Mieip540v5IyWL1OhvfbI-GX36rrr1Jwfbtt7YV6SSQ
+  default_config_hash: xnDekATlye0-oxaNsgEGGXbq0N9KKKQfOzbYsO_JpYA
 id: member_add
 label: 'Member Add Flow'
 default_title: null
@@ -73,7 +73,7 @@ steps:
       legal_select: par_member_add_legal_entity
       covered_by: par_member_add_inspection_plan_coverage
     redirect:
-      save: 10
+      save: 9
       cancel: 10
   9:
     route: par_member_add_flows.member_confirmation
