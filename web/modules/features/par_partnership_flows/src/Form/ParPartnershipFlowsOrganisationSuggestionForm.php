@@ -63,7 +63,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
 
     foreach ($organisations as $organisation) {
       // PAR-1172 Do not display organisations in coordinated partnerships.
-      if (!$this->getParDataManager()->isCoordinatedOrganisation($organisation)) {
+      if (!$organisation->isCoordinatedMember()) {
         $label = $this->renderSection('Organisation', $organisation, [
           'organisation_name' => 'summary',
           'field_premises' => 'summary',

@@ -602,26 +602,6 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
-   * Helper fn to check if a PAR Organisation is in any coordinated partnership.
-   *
-   * @param ParDataOrganisation $par_data_organisation
-   *   Organisation to check if in a coordinated partnership.
-   *
-   * @return bool
-   */
-  public function isCoordinatedOrganisation(ParDataOrganisation $par_data_organisation) {
-    $query = \Drupal::entityQuery('par_data_partnership');
-    $group = $query->andConditionGroup();
-
-    $group->condition('partnership_type', 'coordinated', '=');
-    $group->condition('field_organisation', $par_data_organisation->id(), 'IN');
-
-    $query->condition($group);
-
-    return $query->count()->execute() >= 1 ? TRUE : FALSE;
-  }
-
-  /**
    * Helper function to get all entities as options.
    *
    * @param EntityInterface $entities

@@ -40,14 +40,6 @@ interface ParDataManagerInterface {
   public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL);
 
   /**
-   * @param ParDataOrganisation $organisation
-   *   Organisation to check if in a coordinated partnership.
-   *
-   * @return bool
-   */
-  public function isCoordinatedOrganisation(ParDataOrganisation $organisation);
-
-  /**
    * Gets the entity definition for the class that defines an entities bundles.
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface
