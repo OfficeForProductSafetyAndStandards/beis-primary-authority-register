@@ -3,6 +3,7 @@
 namespace Drupal\par_data;
 
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\par_data\Entity\ParDataOrganisation;
 
 /**
 * Interface for the Par Data Manager.
@@ -37,6 +38,14 @@ interface ParDataManagerInterface {
    * @return \Drupal\Core\Entity\EntityInterface[]
    */
   public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL);
+
+  /**
+   * @param \Drupal\par_data\Entity\ParDataOrganisation $organisation
+   *   Organisation to check if in a coordinated partnership.
+   *
+   * @return bool
+   */
+  public function isCoordinatedOrganisation(ParDataOrganisation $organisation);
 
   /**
    * Gets the entity definition for the class that defines an entities bundles.
