@@ -18,7 +18,7 @@ use Drupal\par_member_update_flows\ParFlowAccessTrait;
 /**
  * The form for the partnership details.
  */
-class ParConfirmationDetailsForm extends ParBaseForm {
+class ParMemberDetailsForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
 
@@ -55,17 +55,17 @@ class ParConfirmationDetailsForm extends ParBaseForm {
     // Display the member's address
     $form['member_registered_address'] = $this->renderSection('Member business address', $par_data_organisation, ['field_premises' => 'summary'], ['edit-entity']);
 
-    // Display the member'sprimary contact details
-    $form['member_primary_contact'] = $this->renderSection('Primary contact', $par_data_organisation, ['field_person' => 'summary'], ['edit-entity']);
-
     // Display the date the membership began.
     $form['membership_date'] = $this->renderSection('Date of membership', $par_data_coordinated_business, ['date_membership_began' => 'default'], ['edit-field']);
+
+    // Display the member'sprimary contact details
+    $form['member_primary_contact'] = $this->renderSection('Primary contact', $par_data_organisation, ['field_person' => 'summary'], ['edit-entity']);
 
     // Display contacts at the organisation.
     $form['legal_entities'] = $this->renderSection('Legal entities', $par_data_organisation, ['field_legal_entity' => 'summary'], ['edit-entity', 'add']);
 
-    // Display the trading names.
-    $form['trading_names'] = $this->renderSection('Trading names', $par_data_organisation, ['trading_name' => 'title'], ['edit-field', 'add']);
+//    // Display the trading names.
+////    $form['trading_names'] = $this->renderSection('Trading names', $par_data_organisation, ['trading_name' => 'title'], ['edit-field', 'add']);
 
     // Display whether this is covered by an inspeciton plan.
     $form['covered_by_inspection'] = $this->renderSection('Covered by inspection plan', $par_data_coordinated_business, ['covered_by_inspection' => 'default'], ['edit-field']);

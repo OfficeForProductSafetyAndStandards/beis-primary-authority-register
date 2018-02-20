@@ -1,11 +1,11 @@
 par_member_update_flows.member_confirm_summary:
   path: '/partnership/{par_data_partnership}/member/{par_data_coordinated_business}/update'
   defaults:
-    _form: '\Drupal\par_member_update_flows\Form\ParConfirmationDetailsForm'
-    _title_callback: '\Drupal\par_member_update_flows\Form\ParConfirmationDetailsForm::titleCallback'
+    _form: '\Drupal\par_member_update_flows\Form\ParMemberDetailsForm'
+    _title_callback: '\Drupal\par_member_update_flows\Form\ParMemberDetailsForm::titleCallback'
   requirements:
     _permission: 'manage my organisations'
-    _custom_access: '\Drupal\par_member_update_flows\Form\ParConfirmationDetailsForm::accessCallback'
+    _custom_access: '\Drupal\par_member_update_flows\Form\ParMemberDetailsForm::accessCallback'
     par_data_partnership: \d+
     par_data_coordinated_business: \d+
   options:
