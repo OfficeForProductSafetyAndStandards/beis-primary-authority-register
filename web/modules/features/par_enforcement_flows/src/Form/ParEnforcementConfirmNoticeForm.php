@@ -44,13 +44,6 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_enforcement_notice_approve_confirm';
-  }
-
-  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    */

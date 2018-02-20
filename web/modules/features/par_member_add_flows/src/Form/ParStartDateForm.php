@@ -18,11 +18,4 @@ class ParStartDateForm extends ParBaseForm {
    */
   protected $pageTitle = "Enter the date the membership began";
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_member_add_begin_date';
-  }
-
 }

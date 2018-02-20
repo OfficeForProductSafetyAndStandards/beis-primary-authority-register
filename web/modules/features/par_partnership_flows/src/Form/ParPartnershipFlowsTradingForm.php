@@ -17,13 +17,6 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_partnership_trading_name';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function titleCallback() {
     $trading_name_delta = $this->getFlowDataHandler()->getParameter('trading_name_delta');
 

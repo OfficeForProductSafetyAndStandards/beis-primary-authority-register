@@ -18,11 +18,4 @@ class ParContactForm extends ParBaseForm {
    */
   protected $pageTitle = 'Add member contact details';
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_member_add_contact';
-  }
-
 }

@@ -19,13 +19,6 @@ class ParSicCodeForm extends ParBaseForm {
   protected $pageTitle = "Confirm the SIC code";
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_partnership_confirmation_sic_code';
-  }
-
-  /**
    * Load the data for this form.
    */
   public function loadData() {

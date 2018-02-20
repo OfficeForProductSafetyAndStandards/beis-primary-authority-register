@@ -15,13 +15,6 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
   use ParPartnershipFlowsTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_partnership_sic_code';
-  }
-
-  /**
    * Helper to get all the editable values.
    *
    * Used for when editing or revisiting a previously edited page.

@@ -20,13 +20,6 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_partnership_advice';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected $formItems = [
     'par_data_advice:advice' => [
       'advice_type' => 'advice_type',
@@ -79,8 +72,19 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $par_data_advice);
     $advice_bundle = $this->getParDataManager()->getParBundleEntity('par_data_advice');
 
-    // Get files from "par_partnership_advice_upload" step.
-    $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_advice_upload');
+    // Get files from "upload" step.
+    // To use this form there must be a "form_data['upload']" key in the step configuration:
+    // 1:
+    //   route: example.route_name
+    //   form_id: form_id_where_file_is_uplaoded
+    //   form_data:
+    //     upload: par_partnership_advice_upload_edit
+    // 2:
+    //   route: example.route_name_2
+    //   form_id: example_form_id
+    //   form_data:
+    //     upload: form_id_where_file_is_uplaoded
+    $cid = $this->getFlowNegotiator()->getFormKey('upload');
     $files = $this->getFlowDataHandler()->getDefaultValues("files", '', $cid);
     if ($files) {
       // Show files.
@@ -159,8 +163,19 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     // Get the advice entity from the URL.
     $par_data_advice = $this->getFlowDataHandler()->getParameter('par_data_advice');
 
-    // Get files from "par_partnership_advice_upload" step.
-    $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_advice_upload');
+    // Get files from "upload" step.
+    // To use this form there must be a "form_data['upload']" key in the step configuration:
+    // 1:
+    //   route: example.route_name
+    //   form_id: form_id_where_file_is_uplaoded
+    //   form_data:
+    //     upload: par_partnership_advice_upload_edit
+    // 2:
+    //   route: example.route_name_2
+    //   form_id: example_form_id
+    //   form_data:
+    //     upload: form_id_where_file_is_uplaoded
+    $cid = $this->getFlowNegotiator()->getFormKey('upload');
     $files = $this->getFlowDataHandler()->getDefaultValues('files', [], $cid);
 
     // Add all the uploaded files from the upload form to the advice and save.

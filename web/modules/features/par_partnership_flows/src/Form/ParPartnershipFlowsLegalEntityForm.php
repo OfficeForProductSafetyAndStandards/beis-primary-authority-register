@@ -19,13 +19,6 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_partnership_legal';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected $formItems = [
     'par_data_legal_entity:legal_entity' => [
       'registered_name' => 'registered_name',

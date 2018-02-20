@@ -24,13 +24,6 @@ class ParConfirmationReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_partnership_confirmation_review';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected $pageTitle = 'Review the partnership summary information below';
 
   /**

@@ -5,8 +5,7 @@
 if [ -n "$1" ]; then
   ROOT=$1
 else
-  echo "Must pass the project root as the first argument";
-  exit 1;
+  ROOT=$PWD
 fi
 
 echo "Current working directory is ${ROOT}/web"

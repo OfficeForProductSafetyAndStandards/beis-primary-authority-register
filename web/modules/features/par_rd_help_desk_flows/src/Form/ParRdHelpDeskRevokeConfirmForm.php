@@ -23,13 +23,6 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_rd_help_desk_revoke_confirm';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function titleCallback() {
     return 'Confirmation | Revoke a partnership';
   }

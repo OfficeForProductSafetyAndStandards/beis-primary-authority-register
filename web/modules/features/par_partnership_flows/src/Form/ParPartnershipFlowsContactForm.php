@@ -36,13 +36,6 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
   ];
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_partnership_contact';
-  }
-
-  /**
    * Get partnership.
    */
   public function getPartnershipParam() {
@@ -187,8 +180,8 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
 
       if ($par_data_person->save()) {
-        // Only delete the form data for the par_partnership_contact form.
-        $this->getFlowDataHandler()->deleteFormTempData('par_partnership_contact');
+        // Only delete the form data for the current form.
+        $this->getFlowDataHandler()->deleteFormTempData();
       }
       else {
         $message = $this->t('This %person could not be saved for %form_id');
