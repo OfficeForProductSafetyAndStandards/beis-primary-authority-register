@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: '-Y_sw389uKnhtnjXf_YobeFF7KuwxnL-s3uEr47D-Os'
+  default_config_hash: z1xfScdr4V11cQ2RtsBwUx7T8n3RF5RGwm9U77DdzCQ
 id: member_upload
 label: 'Member Upload'
 default_title: 'Upload a list of members'
@@ -30,4 +30,4 @@ steps:
     redirect:
       done: 4
   4:
-    route: view.par_user_partnerships.partnerships_page
+    route: view.members_list.member_list_coordinator

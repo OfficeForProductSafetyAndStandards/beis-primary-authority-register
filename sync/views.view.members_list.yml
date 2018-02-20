@@ -30,7 +30,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'view unpublished par_data_coordinated_business entities'
+          perm: 'manage my organisations'
       cache:
         type: tag
         options: {  }
@@ -585,14 +585,15 @@ display:
       tags:
         - 'config:field.storage.par_data_coordinated_business.field_organisation'
         - 'config:field.storage.par_data_partnership.field_inspection_plan'
-  page_1:
+  member_list_coordinator:
     display_plugin: page
-    id: page_1
-    display_title: Page
+    id: member_list_coordinator
+    display_title: 'Member list (coordinator)'
     position: 1
     display_options:
       display_extenders: {  }
       path: members
+      display_description: ''
     cache_metadata:
       max-age: 0
       contexts:

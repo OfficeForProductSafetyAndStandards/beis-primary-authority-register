@@ -77,4 +77,4 @@ steps:
     redirect:
       done: 10
   10:
-    route: view.par_user_partnerships.partnerships_page
+    route: view.members_list.member_list_coordinator
