@@ -3,11 +3,26 @@
 namespace Drupal\par_member_upload_flows;
 
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\file\FileInterface;
 
 /**
  * Interface for the Par Member CSV Handler.
  */
 interface ParMemberCsvHandlerInterface {
+
+  /**
+   * Process a CSV file
+   *
+   * @param FileInterface $file
+   * @param array $rows
+   *   An array to add processed rows to.
+   * @param boolean $skip
+   *   Whether to skip the headers.
+   *
+   * @return array
+   *   An array of row data.
+   */
+  public function loadFile(FileInterface $file, array $rows, bool $skip = TRUE);
 
   /**
    * Get the column headings for this CSV file.

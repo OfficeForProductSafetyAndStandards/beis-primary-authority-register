@@ -1,0 +1,4 @@
+services:
+  par_member_upload_flows.csv_handler:
+    class: Drupal\par_member_upload_flows\ParMemberCsvHandler
+    arguments: ['@serializer', '@par_data.manager']
