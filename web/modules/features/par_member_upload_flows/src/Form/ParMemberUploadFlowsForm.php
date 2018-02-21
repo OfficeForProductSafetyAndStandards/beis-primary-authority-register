@@ -8,7 +8,7 @@ use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\file\FileInterface;
 use Drupal\file\Entity\File;
 use Drupal\par_member_upload_flows\ParFlowAccessTrait;
-use Drupal\par_member_upload_flows\ParMemberCsvHandlerInterace;
+use Drupal\par_member_upload_flows\ParMemberCsvHandlerInterface;
 
 /**
  * The upload CSV form for importing partnerships.
@@ -28,8 +28,6 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
-
-    dpm($this->getCsvHandler()->validateRow(['hello']));
 
     // Multiple file field.
     $form['csv'] = [
@@ -52,7 +50,7 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
   }
 
   /**
-   * @return ParMemberCsvHandlerInterace
+   * @return ParMemberCsvHandlerInterface
    */
   public function getCsvHandler() {
     return \Drupal::service('par_member_upload_flows.csv_handler');
@@ -61,16 +59,38 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
 
     // Process uploaded csv file.
     if ($csv = $this->getFlowDataHandler()->getTempDataValue('csv')) {
       dpm($csv);
-      // Validate csv data.
-      $this->getCsvHandler()->validateRow($csv);
 
-//      $cid = $this->getFlowNegotiator()->getFormKey('par_member_upload_csv');
+      // Load the submitted file and process the data.
+      /** @var $files File[] * */
+      $files = File::loadMultiple($csv);
+      foreach ($files as $file) {
+        // Validate file.
+        $form_state->setError($form, 'The file you have uploaded is not in the right format.');
+
+        $rows = $this->getCsvHandler()->loadFile($file, $rows);
+      }
+
+
+      // Validate csv data.
+      foreach ($rows as $row => $data) {
+        $violations[$row] = $this->getCsvHandler()->validateRow($csv);
+      }
+
+      // Save the data in the User's temp private store for later processing.
+      if ($violations) {
+        $this->getFlowDataHandler()->setTempDataValue('errors', $violations);
+        $this->getFlowDataHandler()->setTempDataValue('coordinated_members', []);
+      }
+      else {
+        $this->getFlowDataHandler()->setTempDataValue('errors', []);
+        $this->getFlowDataHandler()->setTempDataValue('coordinated_members', $rows);
+      }
     }
   }
 

@@ -19,6 +19,12 @@ class ParMemberConfirmUploadFlowsForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
+    // Load csv data from temporary data storage and assign to a variable.
+    $cid = $this->getFlowNegotiator()->getFormKey('par_member_upload_csv');
+    $csv_data = $this->getFlowDataHandler()->getTempDataValue('coordinated_members', $cid);
+
+    var_dump($csv_data);
+
     // Upload csv file confirmation message.
     $form['csv_upload_confirmation_message_fieldset'] = [
       '#type' => 'fieldset',
@@ -41,11 +47,11 @@ class ParMemberConfirmUploadFlowsForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Form cache id.
-    $cid = $this->getFlowNegotiator()->getFormKey('par_member_upload_csv');
-
     // Load csv data from temporary data storage and assign to a variable.
+    $cid = $this->getFlowNegotiator()->getFormKey('par_member_upload_csv');
     $csv_data = $this->getFlowDataHandler()->getTempDataValue('coordinated_members', $cid);
+
+    var_dump($csv_data);
 
     // Initialise default value.
     $row_number = 0;
