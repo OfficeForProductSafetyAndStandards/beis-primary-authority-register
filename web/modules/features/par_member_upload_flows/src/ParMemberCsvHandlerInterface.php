@@ -5,9 +5,9 @@ namespace Drupal\par_member_upload_flows;
 use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
-* Interface for the Par Member CSV Handler.
-*/
-interface ParMemberCsvHandlerInterace {
+ * Interface for the Par Member CSV Handler.
+ */
+interface ParMemberCsvHandlerInterface {
 
   /**
    * Get the column headings for this CSV file.
@@ -60,5 +60,4 @@ interface ParMemberCsvHandlerInterace {
    * @return bool
    */
   public function complete();
-
 }

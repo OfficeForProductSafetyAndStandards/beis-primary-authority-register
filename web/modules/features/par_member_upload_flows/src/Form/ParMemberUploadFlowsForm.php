@@ -8,10 +8,11 @@ use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\file\Entity\File;
 //use Drupal\file\FileInterface;
 use Drupal\par_member_upload_flows\ParFlowAccessTrait;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\CsvEncoder;
-//use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Encoder;
+//use Symfony\Component\Serializer\Serializer;
+//use Symfony\Component\Serializer\Encoder\CsvEncoder;
+////use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+//use Symfony\Component\Serializer\Encoder;
+use Drupal\par_member_upload_flows\ParMemberCsvHandler;
 
 /**
  * The upload CSV form for importing partnerships.
@@ -24,6 +25,8 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+
+    dpm($this->ParMemberCsvHandler->lock());
 
     // Multiple file field.
     $form['csv'] = [

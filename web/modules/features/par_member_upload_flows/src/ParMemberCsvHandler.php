@@ -8,7 +8,7 @@ use Drupal\par_data\ParDataManagerInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\Serializer\Serializer;
 
-class ParMemberCsvHandler implements ParMemberCsvHandlerInterace {
+class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
   /**
    * The symfony serializer.
@@ -59,7 +59,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterace {
    * {@inheritdoc}
    */
   public function lock() {
-
+    return 'LOCKED';
   }
 
   /**
@@ -94,6 +94,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterace {
    * {@inheritdoc}
    */
   public function complete() {
-    
+
   }
+
 }
