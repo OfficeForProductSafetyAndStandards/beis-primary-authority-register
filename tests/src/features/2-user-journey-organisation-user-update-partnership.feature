@@ -108,7 +108,7 @@ Feature: Business User - Manage Addresses
 
         # EDIT MAIN BUSINESS CONTACT
 
-        When I click on the link "edit organisation contact"
+        When I click on the link "a*=edit Added"
         And I clear the inputfield "#edit-salutation"
         And I clear the inputfield "#edit-first-name"
         And I clear the inputfield "#edit-last-name"
