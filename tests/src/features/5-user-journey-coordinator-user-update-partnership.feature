@@ -65,7 +65,7 @@ Feature: Coordinator User - Update Partnership
         And I expect that element "h1.heading-xlarge" contains the text "Members list"
         And I expect that element ".table-scroll-wrapper" contains the text "New Member One"
         And I expect that element ".table-scroll-wrapper" contains the text "14 January 2018"
-        Given I open the url "/dashboard"
+        Given I open the url "/partnerships"
        
         # EDIT REGISTERED ADDRESS
 
