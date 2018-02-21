@@ -8,6 +8,7 @@ use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\file\Entity\File;
 //use Drupal\file\FileInterface;
 use Drupal\par_member_upload_flows\ParFlowAccessTrait;
+use Drupal\par_member_upload_flows\ParMemberCsvHandlerInterace;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 //use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -46,6 +47,13 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
   }
 
   /**
+   * @return ParMemberCsvHandlerInterace
+   */
+  public function getCsvHandler() {
+    return \Drupal::service('par_member_upload_flows.csv_handler');
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
@@ -53,19 +61,18 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
 
     // Process uploaded csv file.
     if ($csv = $this->getFlowDataHandler()->getTempDataValue('csv')) {
-      // Define array variable.
+      // Define rows array.
       $rows = [];
 
       // Load the submitted file and process the data.
       $files = File::loadMultiple($csv);
-//      dpm($files);
-//      dpm($files->getFileUri());
-//      foreach ($files as $file) {
-//        if (($handle = fopen($file->getFileUri(), "r")) !== FALSE) {
-//          dpm($handle);
-//        }
-//      }
-//      $serializer = new Serializer([new ObjectNormalizer()], [new CsvEncoder()]);
+      foreach ($files as $file) {
+        $rows = $this->getCsvHandler()->loadFile($file, $rows);
+      }
+
+
+
+      //      $serializer = new Serializer([new ObjectNormalizer()], [new CsvEncoder()]);
       $serializer = new Serializer([new CsvEncoder()]);
 
       // instantiation, when using it inside the Symfony framework.
