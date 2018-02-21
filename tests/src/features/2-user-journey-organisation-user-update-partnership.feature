@@ -102,13 +102,15 @@ Feature: Business User - Manage Addresses
         And I add "Some additional notes for newly added contact" to the inputfield "#edit-notes"
         And I click on the button "#edit-save"
         And I run tota11y against the current page
+        And I click on the button "#edit-par-data-person-id-new"
+        And I click on the button "#edit-save"
         Then I expect that element "#edit-organisation-contacts" contains the text "Added Contact"
         And I expect that element "#edit-organisation-contacts" contains the text "02084445555"
         And I expect that element "#edit-organisation-contacts" contains the text "07865223222"
 
         # EDIT MAIN BUSINESS CONTACT
 
-        When I click on the link "a*=edit Added"
+        When I click on the link "edit Added Contact"
         And I clear the inputfield "#edit-salutation"
         And I clear the inputfield "#edit-first-name"
         And I clear the inputfield "#edit-last-name"

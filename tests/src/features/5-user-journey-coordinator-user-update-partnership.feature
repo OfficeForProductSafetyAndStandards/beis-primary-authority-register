@@ -61,7 +61,11 @@ Feature: Coordinator User - Update Partnership
         And I expect that element "#block-par-theme-content" contains the text "14 January 2018"
         When I click on the button "#edit-save"
         And I expect that element "h1.heading-xlarge" contains the text "Member added"
-        When I click on the button "a*=Done"    
+        When I click on the button ".button"    
+        And I expect that element "h1.heading-xlarge" contains the text "Members list"
+        And I expect that element ".table-scroll-wrapper" contains the text "New Member One"
+        And I expect that element ".table-scroll-wrapper" contains the text "14 January 2018"
+        Given I open the url "/dashboard"
        
         # EDIT REGISTERED ADDRESS
 
