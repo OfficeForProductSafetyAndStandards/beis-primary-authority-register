@@ -25,7 +25,7 @@ trait ParFlowAccessTrait {
       $this->accessResult = AccessResult::forbidden('This member list is locked because an upload is in progress.');
     }
     // If the membership has been ceased we won't let them re-edit.
-    if (!$par_data_coordinated_business->isRevoked()) {
+    if ($par_data_coordinated_business->isRevoked()) {
       $this->accessResult = AccessResult::forbidden('This member has been ceased you cannot change their details.');
     }
 
