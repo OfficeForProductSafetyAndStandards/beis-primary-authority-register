@@ -8,7 +8,7 @@ module.exports = () => {
      * The command to perform on the browser object (addValue or setValue)
      * @type {String}
      */
-    const urlMemberAdd = browser.getUrl() + '/members/add';
+    const urlMemberAdd = browser.getUrl().replace('organisation-details', 'members/add');
     console.log(urlMemberAdd);
     browser.url(urlMemberAdd);
 };
