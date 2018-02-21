@@ -43,6 +43,20 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   }
 
   /**
+   * Get serializer.
+   */
+  public function getSerializer() {
+    return $this->seriailzer;
+  }
+
+  /**
+   * Get serializer.
+   */
+  public function getParDataManager() {
+    return $this->parDataManager;
+  }
+
+  /**
    * Process a CSV file
    *
    * @param FileInterface $file
@@ -59,17 +73,15 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     // @see http://php.net/manual/en/function.fgetcsv.php
     ini_set('auto_detect_line_endings', TRUE);
 
-    if (($handle = fopen($file->getFileUri(), "r")) !== FALSE) {
-      while (($data = fgetcsv($handle)) !== FALSE) {
-        if ($data !== NULL && !$skip) {
-          $rows[] = $data;
-        }
-        $skip = FALSE;
-      }
-      fclose($handle);
-    }
+    $csv = file_get_contents($file->getFileUri());
+    $data = $this->getSerializer()->decode($csv, 'csv');
 
-    return $rows;
+    // Skip the heading.
+    if ($data[0] !== NULL && $skip) {
+      unset($data[0]);
+    }
+die();
+    return array_merge($rows, $data);
   }
 
   /**

@@ -5,9 +5,9 @@ namespace Drupal\par_member_upload_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\file\FileInterface;
+use Drupal\file\Entity\File;
 use Drupal\par_member_upload_flows\ParFlowAccessTrait;
-use Drupal\par_member_upload_flows\ParMemberCsvHandlerInterace;
+use Drupal\par_member_upload_flows\ParMemberCsvHandlerInterface;
 
 /**
  * The upload CSV form for importing partnerships.
@@ -21,9 +21,7 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
-    dpm($this->ParMemberCsvHandler->lock());
-
-// Multiple file field.
+    // Multiple file field.
     $form['csv'] = [
       '#type' => 'managed_file',
       '#title' => t('Upload a list of members'),
@@ -44,7 +42,7 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
   }
 
   /**
-   * @return ParMemberCsvHandlerInterace
+   * @return ParMemberCsvHandlerInterface
    */
   public function getCsvHandler() {
     return \Drupal::service('par_member_upload_flows.csv_handler');
@@ -62,7 +60,7 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
       $rows = [];
 
       // Load the submitted file and process the data.
-      /** @var $files FileInterface[] * */
+      /** @var $files File[] * */
       $files = File::loadMultiple($csv);
       foreach ($files as $file) {
         $rows = $this->getCsvHandler()->loadFile($file, $rows);
