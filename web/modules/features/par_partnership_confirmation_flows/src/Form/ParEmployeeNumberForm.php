@@ -20,13 +20,6 @@ class ParEmployeeNumberForm extends ParBaseForm {
   protected $pageTitle = "Confirm number of employees";
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_partnership_confirmation_employee_number';
-  }
-
-  /**
    * Load the data for this form.
    */
   public function loadData() {

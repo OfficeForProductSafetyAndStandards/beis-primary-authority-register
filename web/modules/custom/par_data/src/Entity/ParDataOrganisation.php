@@ -134,6 +134,19 @@ class ParDataOrganisation extends ParDataEntity {
   }
 
   /**
+   * Helper fn to check if a PAR Organisation is a coordinated member.
+   *
+   * @return bool
+   */
+  public function isCoordinatedMember() {
+    $query = \Drupal::entityQuery('par_data_coordinated_business');
+
+    $query->condition('field_organisation', [$this->id()], 'IN');
+
+    return $query->count()->execute() >= 1 ? TRUE : FALSE;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {

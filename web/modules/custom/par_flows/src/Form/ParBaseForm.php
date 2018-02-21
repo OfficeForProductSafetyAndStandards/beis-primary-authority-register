@@ -168,6 +168,15 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   /**
    * {@inheritdoc}
    */
+  public function getFormId() {
+    if ($form_id = $this->getFlowNegotiator()->getFlow()->getFormIdByCurrentStep()) {
+      return $form_id;
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {

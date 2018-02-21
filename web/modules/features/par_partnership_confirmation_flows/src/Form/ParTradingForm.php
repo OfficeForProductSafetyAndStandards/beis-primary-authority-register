@@ -19,13 +19,6 @@ class ParTradingForm extends ParBaseForm {
   protected $pageTitle = "Confirm the trading name";
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_partnership_confirmation_trading_name';
-  }
-
-  /**
    * Load the data for this form.
    */
   public function loadData() {

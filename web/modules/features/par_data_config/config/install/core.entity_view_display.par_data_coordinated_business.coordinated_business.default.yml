@@ -2,15 +2,52 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.par_data_coordinated_business.coordinated_business.field_legal_entity
     - field.field.par_data_coordinated_business.coordinated_business.field_organisation
     - par_data.par_data_coordinated_business_type.coordinated_business
   module:
+    - datetime
     - datetime_range
+    - par_data
 id: par_data_coordinated_business.coordinated_business.default
 targetEntityType: par_data_coordinated_business
 bundle: coordinated_business
 mode: default
 content:
+  covered_by_inspection:
+    type: par_boolean_formatter
+    weight: 3
+    region: content
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+  date_membership_began:
+    type: datetime_default
+    weight: 4
+    region: content
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: gds_date_format
+    third_party_settings: {  }
+  date_membership_ceased:
+    type: datetime_default
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: gds_date_format
+    third_party_settings: {  }
+  field_legal_entity:
+    type: entity_reference_entity_view
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
   field_organisation:
     weight: 1
     label: hidden

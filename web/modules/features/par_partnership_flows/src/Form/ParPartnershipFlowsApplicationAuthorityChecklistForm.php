@@ -17,13 +17,6 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_partnership_application_authority_checklist';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function retrieveEditableValues() {
 
   }

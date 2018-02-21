@@ -1,0 +1,80 @@
+langcode: en
+status: true
+dependencies: {  }
+id: member_add
+label: 'Member Add Flow'
+default_title: null
+default_section_title: 'Coordinated partnership'
+description: ''
+save_method: end
+states:
+  - par_data_partnership
+steps:
+  1:
+    route: par_member_add_flows.add_organisation_name
+    form_id: par_member_add_organisation_name
+    redirect:
+      cancel: 10
+  2:
+    route: par_member_add_flows.add_address
+    form_id: par_member_add_address
+    components:
+      address: {}
+    redirect:
+      cancel: 10
+  3:
+    route: par_member_add_flows.add_contact
+    form_id: par_member_add_contact
+    components:
+      contact_details: {}
+    redirect:
+      cancel: 10
+  4:
+    route: par_member_add_flows.add_begin_date
+    form_id: par_member_add_begin_date
+    components:
+      begin_date: {}
+    redirect:
+      cancel: 10
+  5:
+    route: par_member_add_flows.add_trading_name
+    form_id: par_member_add_trading_name
+    components:
+      trading_name:
+        cardinality: -1
+    redirect:
+      cancel: 10
+  6:
+    route: par_member_add_flows.add_legal_entities
+    form_id: par_member_add_legal_entity
+    components:
+      legal_entity:
+        cardinality: -1
+    redirect:
+      cancel: 10
+  7:
+    route: par_member_add_flows.covered_by_plan
+    form_id: par_member_add_inspection_plan_coverage
+    components:
+      covered_by_plan: {}
+    redirect:
+      cancel: 10
+  8:
+    route: par_member_add_flows.member_confirm_review
+    form_id: par_member_add_review
+    form_data:
+      begin_date: par_member_add_begin_date
+      address: par_member_add_address
+      contact: par_member_add_contact
+      trading_name: par_member_add_trading_name
+      legal_select: par_member_add_legal_entity
+      covered_by: par_member_add_inspection_plan_coverage
+    redirect:
+      save: 9
+      cancel: 10
+  9:
+    route: par_member_add_flows.member_confirmation
+    redirect:
+      done: 10
+  10:
+    route: view.members_list.member_list_coordinator

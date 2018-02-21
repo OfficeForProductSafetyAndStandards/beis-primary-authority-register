@@ -1,6 +1,6 @@
 name: PAR Member Upload Flows
 type: module
-description: Co-ordinated partnership can upload csv file with the members data.
+description: 'Allows coordinators to upload csvs with their members data.'
 core: 8.x
 package: PAR
 dependencies:

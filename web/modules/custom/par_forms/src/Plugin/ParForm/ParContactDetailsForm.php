@@ -8,7 +8,7 @@ use Drupal\par_forms\ParFormPluginBase;
  * Contact details form plugin.
  *
  * @ParForm(
- *   id = "contact_details_full",
+ *   id = "contact_details",
  *   title = @Translation("Contact details form.")
  * )
  */
@@ -24,7 +24,6 @@ class ParContactDetailsForm extends ParFormPluginBase {
       'work_phone' => 'work_phone',
       'mobile_phone' => 'mobile_phone',
       'email' => 'email',
-      'communication_notes' => 'notes',
     ],
   ];
 
@@ -39,17 +38,6 @@ class ParContactDetailsForm extends ParFormPluginBase {
       $this->getFlowDataHandler()->setFormPermValue("work_phone", $par_data_person->get('work_phone')->getString());
       $this->getFlowDataHandler()->setFormPermValue("mobile_phone", $par_data_person->get('mobile_phone')->getString());
       $this->getFlowDataHandler()->setFormPermValue("email", $par_data_person->get('email')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("notes", $par_data_person->get('communication_notes')->getString());
-
-      // Get preferred contact methods.
-      $contact_options = [
-        'communication_email' => $par_data_person->getBoolean('communication_email'),
-        'communication_phone' => $par_data_person->getBoolean('communication_phone'),
-        'communication_mobile' => $par_data_person->getBoolean('communication_mobile'),
-      ];
-
-      // Checkboxes works nicely with keys, filtering booleans for "1" value.
-      $this->getFlowDataHandler()->setFormPermValue('preferred_contact', array_keys($contact_options, 1));
     }
 
     parent::loadData();
@@ -96,29 +84,6 @@ class ParContactDetailsForm extends ParFormPluginBase {
       '#default_value' => $this->getDefaultValuesByKey('email', $cardinality),
       // Prevent modifying email if editing an existing user.
       '#disabled' => !empty($par_data_person),
-    ];
-
-    // Get preferred contact methods labels.
-    $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
-    $contact_options = [
-      'communication_email' => $person_bundle->getBooleanFieldLabel('communication_email', 'on'),
-      'communication_phone' => $person_bundle->getBooleanFieldLabel('communication_phone', 'on'),
-      'communication_mobile' => $person_bundle->getBooleanFieldLabel('communication_mobile', 'on'),
-    ];
-
-    $form['preferred_contact'] = [
-      '#type' => 'checkboxes',
-      '#title' => $this->t('Select the preferred methods of contact (optional)'),
-      '#options' => $contact_options,
-      '#default_value' => $this->getDefaultValuesByKey('preferred_contact', $cardinality, []),
-      '#return_value' => 'on',
-    ];
-
-    $form['notes'] = [
-      '#type' => 'textarea',
-      '#title' => $this->t('Provide contact notes (optional)'),
-      '#default_value' => $this->getDefaultValuesByKey('notes', $cardinality),
-      '#description' => 'Add any additional notes about how best to contact this person.',
     ];
 
     return $form;

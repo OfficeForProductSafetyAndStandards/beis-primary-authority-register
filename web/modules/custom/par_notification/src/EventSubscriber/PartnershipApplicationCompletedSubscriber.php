@@ -84,7 +84,7 @@ class PartnershipApplicationCompletedSubscriber implements EventSubscriberInterf
 
       // Get the link to approve this notice.
       $options = ['absolute' => TRUE];
-      $pending_partnerships_url = Url::fromRoute('view.par_user_partnership_applications.pending_applications', [], $options);
+      $pending_partnerships_url = Url::fromRoute('view.par_user_partnerships.par_user_partnership_applications', [], $options);
 
       if (!$message_template) {
         // @TODO Log that the template couldn't be loaded.

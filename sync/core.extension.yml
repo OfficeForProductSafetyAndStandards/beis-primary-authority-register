@@ -64,6 +64,8 @@ module:
   par_header: 0
   par_invite: 0
   par_login: 0
+  par_member_add_flows: 0
+  par_member_cease_flows: 0
   par_member_upload_flows: 0
   par_notification: 0
   par_partnership_confirmation_flows: 0

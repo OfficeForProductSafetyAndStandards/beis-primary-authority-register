@@ -22,3 +22,14 @@ function par_forms_help($route_name, RouteMatchInterface $route_match) {
     default:
   }
 }
+
+function par_forms_theme($existing, $type, $theme, $path) {
+  $variables = [
+    'gds_date' => [
+      'render element' => 'element',
+      'template' => 'gds-date',
+    ],
+  ];
+
+  return $variables;
+}

@@ -24,13 +24,6 @@ class ParRdHelpDeskApproveForm extends ParBaseForm {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_rd_help_desk_approve';
-  }
-
-  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    */

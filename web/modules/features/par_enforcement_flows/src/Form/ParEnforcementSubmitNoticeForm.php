@@ -22,13 +22,6 @@ class ParEnforcementSubmitNoticeForm extends ParBaseEnforcementForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_enforcement_notice_raise_confirm';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function titleCallback() {
 
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');

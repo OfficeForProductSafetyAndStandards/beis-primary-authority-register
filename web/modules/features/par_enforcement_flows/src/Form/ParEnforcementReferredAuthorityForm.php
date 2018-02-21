@@ -18,13 +18,6 @@ class ParEnforcementReferredAuthorityForm extends ParBaseForm {
   protected $flow = 'approve_enforcement';
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_enforcement_referred_authority';
-  }
-
-  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    */

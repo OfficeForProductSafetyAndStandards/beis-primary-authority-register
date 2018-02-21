@@ -21,13 +21,6 @@ class ParEnforcementEnforceOrganisationForm extends ParBaseForm {
   protected $flow = 'raise_enforcement';
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_enforce_organisation';
-  }
-
-  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *

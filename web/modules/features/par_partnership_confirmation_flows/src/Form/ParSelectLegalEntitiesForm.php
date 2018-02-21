@@ -18,13 +18,6 @@ class ParSelectLegalEntitiesForm extends ParBaseForm {
   protected $pageTitle = 'Choose the legal entities for the partnership';
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_partnership_confirmation_select_legal_entities';
-  }
-
-  /**
    * Load the data for this form.
    */
   public function loadData() {

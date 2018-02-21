@@ -18,13 +18,6 @@ class ParPartnershipFlowsEmployeeNoForm extends ParBaseForm {
   protected $pageTitle = 'Edit number of employees';
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_partnership_employee_number';
-  }
-
-  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *

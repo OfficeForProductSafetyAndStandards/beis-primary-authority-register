@@ -22,13 +22,6 @@ class ParLegalEntityForm extends ParBaseForm {
   protected $pageTitle = 'Confirm the legal entity';
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_partnership_confirmation_add_legal_entity';
-  }
-
-  /**
    * Load the data for this form.
    */
   public function loadData() {

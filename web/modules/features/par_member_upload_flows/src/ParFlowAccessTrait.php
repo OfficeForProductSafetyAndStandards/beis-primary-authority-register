@@ -18,7 +18,7 @@ trait ParFlowAccessTrait {
     $lock = $lock->acquire('partnership_lock');
 
     // If the partnership isn't a coordinated one then don't allow update.
-    if (!$lock || !$par_data_partnership->isCoordinated()) {
+    if ($lock || !$par_data_partnership->isCoordinated()) {
       $this->accessResult = AccessResult::forbidden('This is not a coordianted partnership.');
     }
 

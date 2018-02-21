@@ -19,13 +19,6 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_partnership_legal';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected $formItems = [
     'par_data_legal_entity:legal_entity' => [
       'registered_name' => 'registered_name',
@@ -146,7 +139,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     }
 
     // Edit existing legal entity / add new legal entity.
-    if (!empty($legal_entity)) {
+    if ($legal_entity) {
       $legal_entity->set('registered_name', $this->getFlowDataHandler()->getTempDataValue('registered_name'));
       $legal_entity->set('legal_entity_type', $this->getFlowDataHandler()->getTempDataValue('legal_entity_type'));
       $legal_entity->set('registered_number', $this->getFlowDataHandler()->getTempDataValue('registered_number'));
