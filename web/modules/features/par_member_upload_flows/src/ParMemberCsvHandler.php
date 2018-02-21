@@ -97,16 +97,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   }
 
   /**
-   * Process a CSV file
-   *
-   * @param FileInterface $file
-   * @param array $rows
-   *   An array to add processed rows to.
-   * @param boolean $skip
-   *   Whether to skip the headers.
-   *
-   * @return array
-   *   An array of row data.
+   * {@inheritdoc}
    */
   public function loadFile(FileInterface $file, array $rows = []) {
     // Need to set auto_detect_line_endings to deal with Mac line endings.
@@ -117,6 +108,25 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $data = $this->getSerializer()->decode($csv, 'csv');
 
     return array_merge($rows, $data);
+  }
+
+  /**
+   * Save data to a CSV file.
+   *
+   * @param array $rows
+   *   An array to add processed rows to.
+   * @param $name
+   *   The name of the file.
+   *
+   * @return bool
+   */
+  public function saveFile(array $rows = [], $name) {
+    $data = $this->getSerializer()->encode($rows, 'csv');
+
+    // @TODO use drupal private file system.
+    $saved = file_put_contents($name, $data);
+
+    return (bool) $saved;
   }
 
   /**
