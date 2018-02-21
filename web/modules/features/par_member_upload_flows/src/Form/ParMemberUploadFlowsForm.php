@@ -67,11 +67,7 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
       }
 
       // Save the data in the User's temp private store for later processing.
-      if (!empty($rows)) {
-
-        // Set csv data in temporary data storage.
-        $this->getFlowDataHandler()->setTempDataValue('coordinated_members', $rows);
-      }
+      $this->getFlowDataHandler()->setTempDataValue('coordinated_members', $rows);
     }
   }
 

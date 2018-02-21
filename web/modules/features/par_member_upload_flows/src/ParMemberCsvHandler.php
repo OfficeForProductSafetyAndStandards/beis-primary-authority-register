@@ -38,7 +38,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    *   The entity bundle info service.
    */
   public function __construct(Serializer $serializer, ParDataManagerInterface $par_data_manager) {
-    $this->entityTypeManager = $serializer;
+    $this->seriailzer = $serializer;
     $this->parDataManager = $par_data_manager;
   }
 
@@ -68,7 +68,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    * @return array
    *   An array of row data.
    */
-  public function loadFile(FileInterface $file, array $rows = [], bool $skip = TRUE) {
+  public function loadFile(FileInterface $file, array $rows = []) {
     // Need to set auto_detect_line_endings to deal with Mac line endings.
     // @see http://php.net/manual/en/function.fgetcsv.php
     ini_set('auto_detect_line_endings', TRUE);
@@ -76,11 +76,6 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $csv = file_get_contents($file->getFileUri());
     $data = $this->getSerializer()->decode($csv, 'csv');
 
-    // Skip the heading.
-    if ($data[0] !== NULL && $skip) {
-      unset($data[0]);
-    }
-die();
     return array_merge($rows, $data);
   }
 
