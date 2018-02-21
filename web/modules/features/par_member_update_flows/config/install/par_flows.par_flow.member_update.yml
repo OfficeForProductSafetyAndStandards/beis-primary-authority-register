@@ -1,0 +1,104 @@
+langcode: en
+status: true
+dependencies: {  }
+id: member_update
+label: 'Member Update Flow'
+default_title: null
+default_section_title: 'Coordinated partnership'
+description: ''
+save_method: end
+states:
+  - par_data_partnership
+  - par_data_coordinated_business
+steps:
+  1:
+    route: par_member_update_flows.member_confirm_summary
+    form_id: par_member_update_review
+    redirect:
+      edit_organisation_name: 2
+      edit_field_premises: 3
+      edit_field_person: 4
+      date_membership_began: 5
+      add_trading_name: 6
+      edit_trading_name: 7
+      add_field_legal_entity: 8
+      edit_field_legal_entity: 9
+      add_covered_by_inspection: 10
+      save: 11
+      cancel: 11
+  2:
+    route: par_member_update_flows.update_organisation_name
+    form_id: par_member_update_organisation_name
+    redirect:
+      save: 1
+      cancel: 11
+  3:
+    route: par_member_update_flows.update_address
+    form_id: par_member_update_address
+    components:
+      address: {}
+    redirect:
+      save: 1
+      cancel: 11
+  4:
+    route: par_member_update_flows.update_contact
+    form_id: par_member_update_contact
+    components:
+      contact_details: {}
+    redirect:
+      save: 1
+      cancel: 11
+  5:
+    route: par_member_update_flows.update_begin_date
+    form_id: par_member_update_begin_date
+    components:
+      begin_date: {}
+    redirect:
+      save: 1
+      cancel: 11
+  6:
+    route: par_member_update_flows.add_trading_name
+    form_id: par_member_add_trading_name
+    components:
+      trading_name:
+        cardinality: {}
+    redirect:
+      save: 1
+      cancel: 11
+  7:
+    route: par_member_update_flows.update_trading_name
+    form_id: par_member_update_trading_name
+    components:
+      trading_name:
+        cardinality: {}
+    redirect:
+      save: 1
+      cancel: 11
+  8:
+    route: par_member_update_flows.add_legal_entity
+    form_id: par_member_add_legal_entity
+    components:
+      legal_entity:
+        cardinality: {}
+    redirect:
+      save: 1
+      cancel: 11
+  9:
+    route: par_member_update_flows.update_legal_entities
+    form_id: par_member_update_legal_entity
+    components:
+      legal_entity:
+        cardinality: {}
+    redirect:
+      save: 1
+      cancel: 11
+  10:
+    route: par_member_update_flows.covered_by_plan
+    form_id: par_member_update_inspection_plan_coverage
+    components:
+      covered_by_plan: {}
+    redirect:
+      save: 1
+      cancel: 11
+  11:
+    route: view.members_list.member_list_coordinator
