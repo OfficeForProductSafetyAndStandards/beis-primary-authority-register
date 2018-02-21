@@ -6,6 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\file\FileInterface;
+use Drupal\file\Entity\File;
 use Drupal\par_member_upload_flows\ParFlowAccessTrait;
 use Drupal\par_member_upload_flows\ParMemberCsvHandlerInterace;
 
@@ -19,11 +20,18 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  public function getFormId() {
+    return 'par_member_upload_csv';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
-    dpm($this->ParMemberCsvHandler->lock());
+    dpm($this->getCsvHandler()->validateRow(['hello']));
 
-// Multiple file field.
+    // Multiple file field.
     $form['csv'] = [
       '#type' => 'managed_file',
       '#title' => t('Upload a list of members'),
@@ -58,22 +66,11 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
 
     // Process uploaded csv file.
     if ($csv = $this->getFlowDataHandler()->getTempDataValue('csv')) {
-      // Define rows array.
-      $rows = [];
+      dpm($csv);
+      // Validate csv data.
+      $this->getCsvHandler()->validateRow($csv);
 
-      // Load the submitted file and process the data.
-      /** @var $files FileInterface[] * */
-      $files = File::loadMultiple($csv);
-      foreach ($files as $file) {
-        $rows = $this->getCsvHandler()->loadFile($file, $rows);
-      }
-
-      // Save the data in the User's temp private store for later processing.
-      if (!empty($rows)) {
-
-        // Set csv data in temporary data storage.
-        $this->getFlowDataHandler()->setTempDataValue('coordinated_members', $rows);
-      }
+//      $cid = $this->getFlowNegotiator()->getFormKey('par_member_upload_csv');
     }
   }
 
