@@ -16,13 +16,11 @@ interface ParMemberCsvHandlerInterface {
    * @param FileInterface $file
    * @param array $rows
    *   An array to add processed rows to.
-   * @param boolean $skip
-   *   Whether to skip the headers.
    *
    * @return array
    *   An array of row data.
    */
-  public function loadFile(FileInterface $file, array $rows, bool $skip = TRUE);
+  public function loadFile(FileInterface $file, array $rows);
 
   /**
    * Get the column headings for this CSV file.

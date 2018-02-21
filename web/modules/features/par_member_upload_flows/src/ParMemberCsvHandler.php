@@ -6,6 +6,8 @@ use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\file\FileInterface;
 use Drupal\par_data\ParDataManagerInterface;
+use Drupal\par_flows\ParFlowDataHandlerInterface;
+use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\Serializer\Serializer;
 
@@ -26,24 +28,42 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   protected $parDataManager;
 
   /**
+   * The flow negotiator.
+   *
+   * @var \Drupal\par_flows\ParFlowNegotiatorInterface
+   */
+  protected $negotiator;
+
+  /**
+   * The flow data manager.
+   *
+   * @var \Drupal\par_flows\ParFlowDataHandlerInterface
+   */
+  protected $flowDataHandler;
+
+  /**
    * Constructs a ParFlowNegotiator instance.
    *
    * @param \Symfony\Component\Serializer\Serializer $serializer
    *   The entity type manager.
    * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
    *   The par data manager.
-   * @param \Drupal\Core\Routing\CurrentRouteMatch $current_route
-   *   The entity bundle info service.
-   * @param \Drupal\Core\Session\AccountInterface $current_user
-   *   The entity bundle info service.
+     * @param \Drupal\par_flows\ParFlowNegotiatorInterface $negotiation
+     *   The flow negotiator.
+     * @param \Drupal\par_flows\ParFlowDataHandlerInterface $data_handler
+     *   The flow data handler.
    */
-  public function __construct(Serializer $serializer, ParDataManagerInterface $par_data_manager) {
-    $this->entityTypeManager = $serializer;
+  public function __construct(Serializer $serializer, ParDataManagerInterface $par_data_manager, ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler) {
+    $this->seriailzer = $serializer;
     $this->parDataManager = $par_data_manager;
+    $this->negotiator = $negotiator;
+    $this->flowDataHandler = $data_handler;
   }
 
   /**
    * Get serializer.
+   *
+   * @return Serializer
    */
   public function getSerializer() {
     return $this->seriailzer;
@@ -51,9 +71,29 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
   /**
    * Get serializer.
+   *
+   * @return ParDataManagerInterface
    */
   public function getParDataManager() {
     return $this->parDataManager;
+  }
+
+  /**
+   * Get the flow negotiator.
+   *
+   * @return ParFlowNegotiatorInterface
+   */
+  public function getFlowNegotiator() {
+    return $this->negotiator;
+  }
+
+  /**
+   * Get the flow data handler.
+   *
+   * @return ParFlowDataHandlerInterface
+   */
+  public function getFlowDataHandler() {
+    return $this->flowDataHandler;
   }
 
   /**
@@ -68,7 +108,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    * @return array
    *   An array of row data.
    */
-  public function loadFile(FileInterface $file, array $rows = [], bool $skip = TRUE) {
+  public function loadFile(FileInterface $file, array $rows = []) {
     // Need to set auto_detect_line_endings to deal with Mac line endings.
     // @see http://php.net/manual/en/function.fgetcsv.php
     ini_set('auto_detect_line_endings', TRUE);
@@ -76,11 +116,6 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $csv = file_get_contents($file->getFileUri());
     $data = $this->getSerializer()->decode($csv, 'csv');
 
-    // Skip the heading.
-    if ($data[0] !== NULL && $skip) {
-      unset($data[0]);
-    }
-die();
     return array_merge($rows, $data);
   }
 
