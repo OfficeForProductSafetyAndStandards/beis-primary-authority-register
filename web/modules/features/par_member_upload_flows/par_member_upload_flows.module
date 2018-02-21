@@ -24,6 +24,67 @@ function par_member_upload_flows_help($route_name, RouteMatchInterface $route_ma
 }
 
 /**
+ * CSV data validation
+ *
+ * File format OK, all columns present, but missing required field(s).
+ *
+ * @param array $value
+ *  csv row data.
+ * @param int $row_number
+ *  row number.
+ */
+function par_member_upload_flows_required_fields($value, $row_number) {
+
+  // Initialise default values.
+  $error_message = NULL;
+
+  // 'Business name' validation.
+  if (empty($value[0])) {
+    $error_message = 'Line ' . $row_number . ', column 1';
+//    drupal_set_message(t('Business name is missing from row number'
+//        . ' @row_number', ['@row_number' => $row_number]), 'error');
+  }
+
+  // 'Email address' validation.
+  if (empty($value[12])) {
+    $error_message = 'Line ' . $row_number . ', column 13';
+//    drupal_set_message(t('Email address is missing from row number'
+//        . ' @row_number', ['@row_number' => $row_number]), 'error');
+  }
+
+  // 'Membership start date' validation.
+  if (empty($value[13])) {
+    $error_message = 'Line ' . $row_number . ', column 14';
+//    drupal_set_message(t('Membership start date is missing from row'
+//        . ' number @row_number', ['@row_number' => $row_number]), 'error');
+  }
+
+  // 'Legal Entity Name (first)' validation.
+  if (empty($value[15])) {
+    $error_message = 'Line ' . $row_number . ', column 16';
+//    drupal_set_message(t('Legal Entity Name (first) is missing from row'
+//        . ' number @row_number', ['@row_number' => $row_number]), 'error');
+  }
+
+  // 'Legal Entity Type (first)' validation.
+  if (empty($value[16])) {
+    $error_message = 'Line ' . $row_number . ', column 17';
+//    drupal_set_message(t('Legal Entity Type (first) is missing from row'
+//        . ' number @row_number', ['@row_number' => $row_number]), 'error');
+  }
+
+//  if (!$error_message == NULL) {
+//    $error = 'We found the following errors: /n/n';
+//    $error .= $error_message;
+//    $error .= '<br /><br />Please check and try again.';
+//
+//    drupal_set_message(t('@error', ['@error' => $error]), 'error');
+//  }
+
+  return $error_message;
+}
+
+/**
  * Batch callback process item function.
  *
  * @return type
