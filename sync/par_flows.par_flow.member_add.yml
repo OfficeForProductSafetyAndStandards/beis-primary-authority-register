@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: xnDekATlye0-oxaNsgEGGXbq0N9KKKQfOzbYsO_JpYA
+  default_config_hash: ZvP7QYreFDCrVBxiiEH8Sgwra51ZUIZ9pUJAjWbMPFQ
 id: member_add
 label: 'Member Add Flow'
 default_title: null
@@ -80,4 +80,4 @@ steps:
     redirect:
       done: 10
   10:
-    route: view.par_user_partnerships.partnerships_page
+    route: view.members_list.member_list_coordinator

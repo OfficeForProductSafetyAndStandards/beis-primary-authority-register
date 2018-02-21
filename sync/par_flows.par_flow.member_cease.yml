@@ -1,0 +1,31 @@
+uuid: 5a54b450-b3eb-491a-99d0-3fdc216c678f
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 9ZiQhQRTjnCIz03rU3zc_D_BAyg7G-p7PRK5LWE5pgs
+id: member_cease
+label: 'Member Cease'
+default_title: null
+default_section_title: 'Coordinated partnership'
+description: ''
+save_method: end
+states:
+  - par_data_partnership
+  - par_data_coordinated_business
+steps:
+  1:
+    route: par_member_cease_flows.member_cease
+    form_id: par_member_cease_date
+    components:
+      cease_date: {  }
+    redirect:
+      cancel: 3
+  2:
+    route: par_member_cease_flows.member_cease_confirm
+    form_id: par_member_cease_confirmation
+    redirect:
+      save: 3
+      cancel: 3
+  3:
+    route: view.members_list.member_list_coordinator

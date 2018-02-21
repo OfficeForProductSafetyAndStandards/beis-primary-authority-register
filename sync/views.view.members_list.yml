@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.storage.par_data_coordinated_business.field_organisation
-    - field.storage.par_data_partnership.field_inspection_plan
     - par_data.par_data_coordinated_business_type.coordinated_business
   module:
     - address
@@ -30,7 +29,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'view unpublished par_data_coordinated_business entities'
+          perm: 'manage my organisations'
       cache:
         type: tag
         options: {  }
@@ -332,11 +331,11 @@ display:
           entity_type: par_data_coordinated_business
           entity_field: date_membership_ceased
           plugin_id: field
-        field_inspection_plan:
-          id: field_inspection_plan
-          table: par_data_partnership__field_inspection_plan
-          field: field_inspection_plan
-          relationship: reverse__par_data_partnership__field_coordinated_business
+        covered_by_inspection:
+          id: covered_by_inspection
+          table: par_coordinated_businesses_field_data
+          field: covered_by_inspection
+          relationship: none
           group_type: group
           admin_label: ''
           label: 'Inspection Plan'
@@ -372,7 +371,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: false
+          element_label_colon: true
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -380,11 +379,10 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_label
-          settings:
-            link: false
-          group_column: target_id
+          click_sort_column: value
+          type: par_boolean_formatter
+          settings: {  }
+          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -394,6 +392,8 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          entity_type: par_data_coordinated_business
+          entity_field: covered_by_inspection
           plugin_id: field
       filters:
         type:
@@ -584,15 +584,15 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.par_data_coordinated_business.field_organisation'
-        - 'config:field.storage.par_data_partnership.field_inspection_plan'
-  page_1:
+  member_list_coordinator:
     display_plugin: page
-    id: page_1
-    display_title: Page
+    id: member_list_coordinator
+    display_title: 'Member list (coordinator)'
     position: 1
     display_options:
       display_extenders: {  }
-      path: members
+      path: partnership/%par_data_partnership/members
+      display_description: ''
     cache_metadata:
       max-age: 0
       contexts:
@@ -603,4 +603,3 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.par_data_coordinated_business.field_organisation'
-        - 'config:field.storage.par_data_partnership.field_inspection_plan'
