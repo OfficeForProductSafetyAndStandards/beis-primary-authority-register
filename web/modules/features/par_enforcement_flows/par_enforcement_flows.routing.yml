@@ -186,7 +186,7 @@ par_enforcement_flows.completed_enforcement:
     _controller: '\Drupal\par_enforcement_flows\Controller\ParEnforcementFlowsCompletedEnforcementController::content'
     _title_callback: '\Drupal\par_enforcement_flows\Controller\ParEnforcementFlowsCompletedEnforcementController::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'approve enforcement notice'
     _custom_access: '\Drupal\par_enforcement_flows\Controller\ParEnforcementFlowsCompletedEnforcementController::accessCallback'
     par_data_partnership: \d+
   options:
