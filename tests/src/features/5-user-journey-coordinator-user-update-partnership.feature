@@ -65,10 +65,26 @@ Feature: Coordinator User - Update Partnership
         And I expect that element "h1.heading-xlarge" contains the text "Members list"
         And I expect that element ".table-scroll-wrapper" contains the text "New Member One"
         And I expect that element ".table-scroll-wrapper" contains the text "14 January 2018"
-        Given I open the url "/partnerships"
+
+        # SEARCH MEMBERS
+
+        And I add "New Member Two" to the inputfield "#edit-organisation-name"
+        And I click on the button "#edit-submit-members-list"
+        And I expect that element ".table-scroll-wrapper" does not exist
+        And I clear the inputfield "#edit-organisation-name"
+        And I add "New Member One" to the inputfield "#edit-organisation-name"
+        When I click on the button "#edit-submit-members-list"
+        Then I expect that element ".table-scroll-wrapper" contains the text "New Member One"
+        When I select the option with the text "Ceased" for element "#edit-revoked"
+        And I click on the button "#edit-submit-members-list"
+        Then I expect that element ".table-scroll-wrapper" does not exist
+        When I select the option with the text "Current" for element "#edit-revoked"
+        And I click on the button "#edit-submit-members-list"
+        Then I expect that element ".table-scroll-wrapper" contains the text "New Member One"
        
         # EDIT REGISTERED ADDRESS
 
+        Given I open the url "/partnerships"
         And I click on the link "Business For Coordinated Partnership 20"
         When  I click on the link "edit address"
         And I clear the inputfield "#edit-address-line1"
