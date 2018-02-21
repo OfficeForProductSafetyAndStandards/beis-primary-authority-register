@@ -64,8 +64,8 @@ class ParMemberDetailsForm extends ParBaseForm {
     // Display contacts at the organisation.
     $form['legal_entities'] = $this->renderSection('Legal entities', $par_data_organisation, ['field_legal_entity' => 'summary'], ['edit-entity', 'add']);
 
-//    // Display the trading names.
-////    $form['trading_names'] = $this->renderSection('Trading names', $par_data_organisation, ['trading_name' => 'title'], ['edit-field', 'add']);
+    // Display the trading names.
+    $form['trading_names'] = $this->renderSection('Trading names', $par_data_organisation, ['trading_name' => 'full'], ['edit-field', 'add']);
 
     // Display whether this is covered by an inspeciton plan.
     $form['covered_by_inspection'] = $this->renderSection('Covered by inspection plan', $par_data_coordinated_business, ['covered_by_inspection' => 'default'], ['edit-field']);

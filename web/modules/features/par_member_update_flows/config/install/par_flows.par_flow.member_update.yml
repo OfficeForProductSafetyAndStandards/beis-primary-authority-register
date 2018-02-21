@@ -30,6 +30,7 @@ steps:
     route: par_member_update_flows.update_organisation_name
     form_id: par_member_update_organisation_name
     redirect:
+      save: 1
       cancel: 11
   3:
     route: par_member_update_flows.update_address
@@ -37,6 +38,7 @@ steps:
     components:
       address: {}
     redirect:
+      save: 1
       cancel: 11
   4:
     route: par_member_update_flows.update_contact
@@ -44,6 +46,7 @@ steps:
     components:
       contact_details: {}
     redirect:
+      save: 1
       cancel: 11
   5:
     route: par_member_update_flows.update_begin_date
@@ -51,6 +54,7 @@ steps:
     components:
       begin_date: {}
     redirect:
+      save: 1
       cancel: 11
   6:
     route: par_member_update_flows.add_trading_name
@@ -59,6 +63,7 @@ steps:
       trading_name:
         cardinality: {}
     redirect:
+      save: 1
       cancel: 11
   7:
     route: par_member_update_flows.update_trading_name
@@ -67,6 +72,7 @@ steps:
       trading_name:
         cardinality: {}
     redirect:
+      save: 1
       cancel: 11
   8:
     route: par_member_update_flows.add_legal_entity
@@ -75,6 +81,7 @@ steps:
       legal_entity:
         cardinality: {}
     redirect:
+      save: 1
       cancel: 11
   9:
     route: par_member_update_flows.update_legal_entities
@@ -83,6 +90,7 @@ steps:
       legal_entity:
         cardinality: {}
     redirect:
+      save: 1
       cancel: 11
   10:
     route: par_member_update_flows.covered_by_plan
@@ -90,6 +98,7 @@ steps:
     components:
       covered_by_plan: {}
     redirect:
+      save: 1
       cancel: 11
   11:
     route: view.members_list.member_list_coordinator
