@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: j9qZ4ZSZHGhtc162UxXHR5MKcWCHDcJd_Kn4sjJutoY
+  default_config_hash: nPQuyncfUPNpsGJVEgXvHDoLo_JL1drHLzbVT5XCzf4
 id: partnership
 label: Partnership
 description: 'A Partnership is a relationship between a Primary Authority and either a Business ("direct partnership") or a Co-ordinator ("co-ordinated partnership").  Note that in the latter case, the Business records may or may not be held in the PAR3 database.'
@@ -60,9 +60,9 @@ configuration:
       'off': 'Not yet agreed'
   partnership_info_agreed_business:
     boolean_values:
-      'on': 'Partnership information agreed by the business'
+      'on': 'Partnership information agreed by the organisation'
       'off': 'Not yet agreed'
   written_summary_agreed:
     boolean_values:
-      'on': 'Written summary agreed with the business'
+      'on': 'Written summary agreed with the organisation'
       'off': 'Not yet agreed'
