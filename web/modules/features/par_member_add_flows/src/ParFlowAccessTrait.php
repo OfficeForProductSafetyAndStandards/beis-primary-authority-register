@@ -14,6 +14,11 @@ trait ParFlowAccessTrait {
     // Ensure that access callbacks use the correct parameters.
     $this->getFlowDataHandler()->setParameter('par_data_partnership', $par_data_partnership);
 
+    // If the partnership isn't a coordinated one then don't allow update.
+    if (!$par_data_partnership->isCoordinated()) {
+      $this->accessResult = AccessResult::forbidden('This is not a coordinated partnership.');
+    }
+
     $locked = FALSE;
 
     // If the member upload is in progress the member list cannot be modified.
