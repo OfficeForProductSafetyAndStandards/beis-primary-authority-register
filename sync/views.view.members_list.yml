@@ -274,7 +274,7 @@ display:
           field: par_flow_link
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: 'Member update link'
           label: 'Member name'
           exclude: false
           alter:
@@ -587,7 +587,7 @@ display:
           field: par_flow_link
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: 'Member cease link'
           label: Actions
           exclude: false
           alter:
@@ -640,7 +640,7 @@ display:
           field: par_flow_link
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: 'Add a member link'
           label: ''
           exclude: true
           alter:
@@ -684,6 +684,59 @@ display:
           hide_alter_empty: true
           title: 'Add a member'
           link: '/partnership/{{ id_1 }}/members/add'
+          hidden: 1
+          entity_type: par_data_coordinated_business
+          plugin_id: par_flow_link
+        par_flow_link_3:
+          id: par_flow_link_3
+          table: par_coordinated_businesses_field_data
+          field: par_flow_link
+          relationship: none
+          group_type: group
+          admin_label: 'Back to partnership link'
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          title: '&#9664; Back to partnership'
+          link: '/partnership/{{ id_1 }}/organisation-details'
           hidden: 1
           entity_type: par_data_coordinated_business
           plugin_id: par_flow_link
@@ -809,7 +862,20 @@ display:
             value: '{{ par_flow_link_2 }}'
             format: full_html
           plugin_id: text
-      footer: {  }
+      footer:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: true
+          content:
+            value: '{{ par_flow_link_3 }}'
+            format: basic_html
+          plugin_id: text
       empty: {  }
       relationships:
         reverse__par_data_partnership__field_coordinated_business:
