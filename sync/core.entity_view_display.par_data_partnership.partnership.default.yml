@@ -8,6 +8,7 @@ dependencies:
     - field.field.par_data_partnership.partnership.field_authority_person
     - field.field.par_data_partnership.partnership.field_coordinated_business
     - field.field.par_data_partnership.partnership.field_inspection_plan
+    - field.field.par_data_partnership.partnership.field_legal_entity
     - field.field.par_data_partnership.partnership.field_organisation
     - field.field.par_data_partnership.partnership.field_organisation_person
     - field.field.par_data_partnership.partnership.field_regulatory_function
@@ -16,19 +17,18 @@ dependencies:
     - datetime
     - text
 _core:
-  default_config_hash: TZNnap_R1JgDqvEOuH3zkUrpGn1CakR9DTfT7WpJY6Q
+  default_config_hash: 1eMkKEPAgWX1pHODb65SSmW8d7zo9w-xV1BJsuhMgfw
 id: par_data_partnership.partnership.default
 targetEntityType: par_data_partnership
 bundle: partnership
 mode: default
 content:
   about_partnership:
-    type: text_trimmed
+    type: text_default
     weight: 1
     region: content
     label: hidden
-    settings:
-      trim_length: 600
+    settings: {  }
     third_party_settings: {  }
   advice:
     type: entity_reference_entity_view
@@ -197,6 +197,7 @@ hidden:
   communication_phone: true
   coordinator_suitable: true
   cost_recovery: true
+  field_legal_entity: true
   inspection_plan: true
   name: true
   organisation_change_comment: true
