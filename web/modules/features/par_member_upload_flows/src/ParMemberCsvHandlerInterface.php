@@ -23,6 +23,18 @@ interface ParMemberCsvHandlerInterface {
   public function loadFile(FileInterface $file, array $rows);
 
   /**
+   * Save data to a CSV file.
+   *
+   * @param array $rows
+   *   An array to add processed rows to.
+   * @param $name
+   *   The name of the file.
+   *
+   * @return bool
+   */
+  public function saveFile(array $rows, $name);
+
+  /**
    * Get the column headings for this CSV file.
    */
   public function getColumns();
