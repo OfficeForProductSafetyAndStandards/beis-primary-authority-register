@@ -166,4 +166,4 @@ Feature: PA User - Manage Addresses
         And I click on the button "#edit-save"
         And I select the option with the text "Confirmed by the Organisation" for element "#edit-partnership-status-1"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I expect that element "#block-par-theme-content" contains the text "Business For Direct Partnership 27"
+        And I expect that element "#block-par-theme-content" contains the text "Business For Direct Partnership"

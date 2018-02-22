@@ -66,7 +66,7 @@ Feature: New Direct Partnership For HD user To Revoke
         And I add "Revoking" to the inputfield "#edit-last-name"
         And I add "02085678453" to the inputfield "#edit-work-phone"
         And I add "075643334444" to the inputfield "#edit-mobile-phone"
-        And I add "testrevoking88@example.com" to the inputfield "#edit-email"
+        And I add "testrevoking@example.com" to the inputfield "#edit-email"
         And I click on the radio "#edit-preferred-contact-communication-mobile"
         And I add "Some additional notes" to the inputfield "#edit-notes"
         And I click on the button "#edit-next"
@@ -102,10 +102,10 @@ Feature: New Direct Partnership For HD user To Revoke
         # When I click on the button "#edit-submit"
         # And I open the url "/admin/reports/maillog"
         # And I add "Invitation to join the Primary Authority Register" to the inputfield "#edit-subject"
-        # And I add "usertotestrevoking@example.com" to the inputfield "#edit-header-to"
+        # And I add "testrevoking@example.com" to the inputfield "#edit-header-to"
         # And I click on the button "#edit-submit-maillog-overview"
         # When I click on the button "a*=Invitation to join the Primary Authority Register"
-        # Then I expect that element "h1.heading-xlarge" contains the text "Invitation to join the Primary Authority Register"
+        # Then I expect that element "#block-par-theme-content" contains the text "A new partnership has been created for you"
         # When I extract the invitation url
         # And I complete the invitation process
         # And I click on the link "See your partnerships"

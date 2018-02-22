@@ -12,9 +12,10 @@ Feature: Organisation User - Complete business details
         And I open the url "/dashboard"
         Then I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I click on the link "See your partnerships"
-        And I add "Business For Direct Partnership 27" to the inputfield "#edit-keywords"
+        # And I select the option with the text "Confirmed by Authority" for element "#edit-partnership-status"
+        And I add "Business For Direct Partnership" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I click on the link "Business For Direct Partnership 27"
+        And I click on the link "Business For Direct Partnership"
         And I expect that element "h1" is not empty
 
         # EDIT REGISTERED ADDRESS
@@ -79,7 +80,7 @@ Feature: Organisation User - Complete business details
         When I click on the button "#edit-next"
 
         Then I expect that element "h1.heading-xlarge" contains the text "Review the partnership summary information below"
-        And I expect that element "#edit-organisation-name" contains the text "Business For Direct Partnership 27"
+        And I expect that element "#edit-organisation-name" contains the text "Business For Direct Partnership"
         And I expect that element "#edit-organisation-registered-address" contains the text "1 Change St"
         And I expect that element "#edit-organisation-registered-address" contains the text "New Change"
         And I expect that element "#edit-organisation-registered-address" contains the text "London"
@@ -105,7 +106,7 @@ Feature: Organisation User - Complete business details
 
         Then I expect that element "h1.heading-xlarge" contains the text "Thank you for completing the application"
         When I click on the button ".button"
-        And I add "Business For Direct Partnership 27" to the inputfield "#edit-keywords"
+        And I add "Business For Direct Partnership" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
-        # And I click on the link "Business For Direct Partnership 27"
+        # And I click on the link "Business For Direct Partnership"
         Then I expect that element ".table-scroll-wrapper" contains the text "Confirmed by the Organisation"
