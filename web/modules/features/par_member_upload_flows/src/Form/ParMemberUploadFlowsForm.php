@@ -38,7 +38,7 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
       '#upload_location' => 's3private://member-csv/',
       '#multiple' => FALSE,
       '#required' => TRUE,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('csv'),
+//      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('csv'),
       '#upload_validators' => [
         'file_validate_extensions' => [
           0 => 'csv',
@@ -70,22 +70,36 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
       // Load the submitted file and process the data.
       /** @var $files File[] * */
       $files = File::loadMultiple($csv);
+
+      // Define array variable.
+      $rows = [];
+
+      // .
       foreach ($files as $file) {
+//        dpm($file);
         // Validate file.
-        $form_state->setError($form, 'The file you have uploaded is not in the right format.');
-        try {
-          $rows[] = $this->getCsvHandler()->loadFile($file, $rows);
-        }
-        catch (InvalidArgumentException $e) {
-          $rows = [];
-        }
-//        dpm($rows);
+//        $form_state->setError($form, 'The file you have uploaded is not in the right format.');
+        $rows = $this->getCsvHandler()->loadFile($file, $rows);
+//        try {
+//          $rows = $this->getCsvHandler()->loadFile($file, $rows);
+//        }
+//        catch (\Exception $e) {
+//          $rows = [];
+////          var_dump($e->getMessage());
+//        }
+//        var_dump($rows);
+//        die;
       }
-//
-//      // Validate csv data.
-//      foreach ($rows as $row => $data) {
-//        $violations[$row] = $this->getCsvHandler()->validateRow($csv);
-//      }
+
+//      dpm($rows);
+      // Validate csv data.
+      foreach ($rows as $row => $data) {
+        $violations[$row] = $this->getCsvHandler()->validateRow($data);
+//        dpm($row);
+        dpm($data);
+      }
+
+//      dpm($violations);
 //
 //      // Save the data in the User's temp private store for later processing.
 //      if ($violations) {
