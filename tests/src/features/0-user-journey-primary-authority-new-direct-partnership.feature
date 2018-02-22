@@ -16,6 +16,7 @@ Feature: New Direct Partnership For PA To Approve
         When I click on the link "Apply for a new partnership"
         And I click on the button "#edit-cancel"
         When I click on the link "Apply for a new partnership"
+        And I run tota11y against the current page
         Then I expect that element "h1.heading-xlarge" contains the text "New partnership application"
         And I expect that element "h1.heading-xlarge" contains the text "Which authority are you acting on behalf of?"
         When I click on the radio "label*=Metropolitan District"

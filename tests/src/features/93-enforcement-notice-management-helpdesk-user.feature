@@ -1,4 +1,4 @@
-    @ci
+    @Pending
     Feature: Helpdesk Enforcement Notice Management
 
     Scenario: Enforcement notice approval

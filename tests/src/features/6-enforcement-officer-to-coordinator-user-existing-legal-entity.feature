@@ -11,6 +11,7 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
         When I click on the button "#edit-submit"
         Then I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
         When I click on the link "Search for a partnership"
+        And I run tota11y against the current page
         And I add "Charlie" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
         When I click on the button "td.views-field.views-field-authority-name a"
@@ -20,6 +21,7 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
         When I click on the link "Send a notification of a proposed enforcement action"
         And I click on the button "#edit-cancel"
         And I click on the link "Send a notification of a proposed enforcement action"
+        And I run tota11y against the current page
 
         # CHOOSE MEMBER
 
@@ -29,6 +31,7 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
 
         # ENTER EO DETAILS
 
+        And I run tota11y against the current page
         And I clear the inputfield "#edit-first-name"
         And I clear the inputfield "#edit-last-name"
         And I clear the inputfield "#edit-work-phone"
@@ -44,14 +47,15 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
         And I click on the button "#edit-next"
 
         # CHOOSE LEGAL ENTITY
+        
         And I click on the button "#edit-next"
 
-      # ENFORCEMENT SUMMARY
+        # ENFORCEMENT SUMMARY
 
+        And I run tota11y against the current page
         And I add "action summary enforcement notice" to the inputfield "#edit-summary"
         And I click on the radio "#edit-type-proposed"
         And I click on the button "#edit-next"
-
         And I add "Title of enforcement notice Three" to the inputfield "#edit-title"
         And I click on the radio ".option*=Cookie control"
         And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
