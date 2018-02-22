@@ -11,7 +11,7 @@ module.exports = () => {
     const urlInvite = browser.getText('#block-par-theme-content');
     const urlToUse = urlInvite
         .match(/\bhttps?:\/\/\S+\/invite\/accept\/[a-zA-Z0-9]+/g)[0];
-    browser.url('/user/logout');
+    // browser.url('/user/logout');
     // Prevent needing to follow redirect by changing URL.
     const url = urlToUse.replace('invite', 'par-invite');
     console.log('invite URL extracted from email', urlToUse);

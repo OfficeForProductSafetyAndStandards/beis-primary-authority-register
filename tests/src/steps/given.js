@@ -28,6 +28,7 @@ import selectNextHelpdeskPartnershipAwaitingReview from '../support/action/selec
 import selectNextHelpdeskBusinessAwaitingReview from '../support/action/selectNextHelpdeskBusinessAwaitingReview';
 import selectMyNextCoordinatedPartnership from '../support/action/selectMyNextCoordinatedPartnership';
 import clickNewPartnership from '../support/action/clickNewPartnership';
+import openMembersAddPage from '../support/action/openMembersAddPage';
 
 
 defineSupportCode(({ Given }) => {
@@ -36,6 +37,10 @@ defineSupportCode(({ Given }) => {
         openWebsite
     );
 
+    Given(
+        /^I open the add members page$/,
+        openMembersAddPage
+    );
     Given(
         /^I click new partnership if presented with choices$/,
         clickNewPartnership
