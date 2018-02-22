@@ -81,14 +81,26 @@ class ParConfirmationReviewForm extends ParBaseForm {
     }
 
     // Display legal entities.
-    $form['legal_entities'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-      '#title' => 'Legal Entities',
-      'legal_entities' => $this->renderEntities('Legal entities', $par_data_legal_entities_existing + $par_data_legal_entities),
-    ];
+    if (!empty($par_data_legal_entities_existing)) {
+      $form['existing_legal_entities'] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+        '#title' => 'Existing Legal Entities',
+        'legal_entities' => $this->renderEntities('Legal entities', $par_data_legal_entities_existing),
+      ];
+    }
+    if (!empty($par_data_legal_entities)) {
+      $form['legal_entities'] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+        '#title' => 'New Legal Entities',
+        'legal_entities' => $this->renderEntities('Legal entities', $par_data_legal_entities),
+      ];
+    }
 
     // Display trading names.
     $form['trading_names'] = $this->renderSection('Trading names', $par_data_organisation, ['trading_name' => 'full']);
@@ -199,7 +211,9 @@ class ParConfirmationReviewForm extends ParBaseForm {
     $existing_legal_entities = $this->getFlowDataHandler()->getTempDataValue('field_legal_entity', $existing_legal_cid) ?: [];
     $par_data_legal_entities_existing = [];
     foreach ($existing_legal_entities as $delta => $existing_legal_entity) {
-      $par_data_legal_entities_existing[$delta] = ParDataLegalEntity::load($existing_legal_entity);
+      if ($existing = ParDataLegalEntity::load($existing_legal_entity)) {
+        $par_data_legal_entities_existing[$delta] = ParDataLegalEntity::load($existing_legal_entity);
+      }
     }
 
     // Save the data for the SIC code form.
