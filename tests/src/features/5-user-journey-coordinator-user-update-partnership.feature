@@ -81,6 +81,19 @@ Feature: Coordinator User - Update Partnership
         When I select the option with the text "Current" for element "#edit-revoked"
         And I click on the button "#edit-submit-members-list"
         Then I expect that element ".table-scroll-wrapper" contains the text "New Member One"
+
+        # CEASE MEMBER
+
+        When I click on the link "a*=Cease membership"
+        And I clear the inputfield "#edit-day"
+        And I clear the inputfield "#edit-month"
+        And I add "20" to the inputfield "#edit-day"
+        And I add "01" to the inputfield "#edit-month"
+        And I click on the button "#edit-next"
+        Then I expect that element "h1.heading-xlarge" contains the text "Membership Ceased"
+        And I click on the button "#edit-save"
+        Then I expect that element "a*=New Member One" does not exist
+        Then I expect that element "a*=Cease membership" does not exist
        
         # EDIT REGISTERED ADDRESS
 
