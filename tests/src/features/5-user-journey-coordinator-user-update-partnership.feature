@@ -86,7 +86,7 @@ Feature: Coordinator User - Update Partnership
 
         # CEASE MEMBER
 
-        When I click on the link "a*=Cease membership"
+        When I click on the link "Cease membership"
         And I run tota11y against the current page
         And I clear the inputfield "#edit-day"
         And I clear the inputfield "#edit-month"
