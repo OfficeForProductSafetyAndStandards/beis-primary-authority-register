@@ -168,14 +168,14 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   /**
    * {@inheritdoc}
    */
-  public function validateRow(array $data = []) {
+//  public function validateRow(int $row_number, array $data = []) {
+  public function validateRow(array $data = [], int $row_number) {
 
     // Initialise default value.
-    $rows = [];
-    $row_number = 0;
+//    $rows = [];
+//    $row_number = 0;
     $error_message = [];
-    $error = '';
-
+//    $error = '';
     // Load the submitted file and process the data.
     /** @var $files FileInterface[] * */
 //    $files = File::loadMultiple($csv);
@@ -204,8 +204,25 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 //      $row_number = $key + 2;
       // CSV data validation - File format OK, all columns present, but
       // missing required field(s).
-      if (!par_member_upload_flows_required_fields($value, $row_number) == NULL) {
-        $error_message[] = par_member_upload_flows_required_fields($value, $row_number);
+//      if (!par_member_upload_flows_required_fields($key, $value, $row_number) == NULL) {
+//        $error_message[] = par_member_upload_flows_required_fields($key, $value, $row_number);
+//      }
+//      if (empty($value)) {
+//        $error_message = 'Line ' . $row_number . ', column ' . $key;
+//      }
+      // Only check following columns.
+      switch ($key) {
+        case 'Organisation':
+        case 'Email':
+        case 'Membership Start Date':
+        case 'Legal Entity Name (first)':
+        case 'Legal Entity Type (first)':
+          if (empty($value)) {
+            $error_message = 'Line ' . $row_number . ', column ' . $key;
+          }
+          break;
+        default:
+          $error_message = [];
       }
     }
 
@@ -221,7 +238,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 //      dpm($error);
 //    }
 
-    return 'Validation in progress...';
+    return $error_message;
   }
 
   /**

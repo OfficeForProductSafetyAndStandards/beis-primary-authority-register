@@ -63,7 +63,8 @@ interface ParMemberCsvHandlerInterface {
    *
    * @return bool
    */
-  public function validateRow();
+//  public function validateRow(int $row_number, array $data);
+  public function validateRow(array $data, int $row_number);
 
   /**
    * Process the CSV.

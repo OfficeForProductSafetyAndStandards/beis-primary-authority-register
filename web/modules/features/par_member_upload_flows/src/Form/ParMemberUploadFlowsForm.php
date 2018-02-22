@@ -57,6 +57,7 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
 
     // Define array variable.
     $rows = [];
+    $violations = [];
 
     // Process uploaded csv file.
     if ($csv = $this->getFlowDataHandler()->getTempDataValue('csv')) {
@@ -87,12 +88,17 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
 //      dpm($rows);
       // Validate csv data.
       foreach ($rows as $row => $data) {
-        $violations[$row] = $this->getCsvHandler()->validateRow($data);
-//        dpm($row);
-        dpm($data);
+//        if (count($this->getCsvHandler()->validateRow($data)) > 0) {
+//          $violations[$row] = $this->getCsvHandler()->validateRow($data);
+////        $violations[$row] = $this->getCsvHandler()->validateRow($row, $data);
+////        dpm($row);
+////          dpm($data);
+//        }
+//        dpm($data);
+        $violations[$row + 2] = $this->getCsvHandler()->validateRow($data, $row);
       }
 
-//      dpm($violations);
+      dpm($violations);
 //
 //      // Save the data in the User's temp private store for later processing.
 //      if ($violations) {
