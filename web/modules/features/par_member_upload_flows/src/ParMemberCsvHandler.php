@@ -54,10 +54,10 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    *   The entity type manager.
    * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
    *   The par data manager.
-     * @param \Drupal\par_flows\ParFlowNegotiatorInterface $negotiation
-     *   The flow negotiator.
-     * @param \Drupal\par_flows\ParFlowDataHandlerInterface $data_handler
-     *   The flow data handler.
+   * @param \Drupal\par_flows\ParFlowNegotiatorInterface $negotiation
+   *   The flow negotiator.
+   * @param \Drupal\par_flows\ParFlowDataHandlerInterface $data_handler
+   *   The flow data handler.
    */
   public function __construct(Serializer $serializer, ParDataManagerInterface $par_data_manager, ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler) {
     $this->seriailzer = $serializer;

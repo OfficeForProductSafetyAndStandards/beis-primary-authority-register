@@ -55,35 +55,40 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
+    // Define array variable.
+    $rows = [];
+
     // Process uploaded csv file.
     if ($csv = $this->getFlowDataHandler()->getTempDataValue('csv')) {
-      dpm($csv);
-
       // Load the submitted file and process the data.
       /** @var $files File[] * */
       $files = File::loadMultiple($csv);
       foreach ($files as $file) {
         // Validate file.
         $form_state->setError($form, 'The file you have uploaded is not in the right format.');
-
-        $rows = $this->getCsvHandler()->loadFile($file, $rows);
+        try {
+          $rows[] = $this->getCsvHandler()->loadFile($file, $rows);
+        }
+        catch (InvalidArgumentException $e) {
+          $rows = [];
+        }
+//        dpm($rows);
       }
-
-
-      // Validate csv data.
-      foreach ($rows as $row => $data) {
-        $violations[$row] = $this->getCsvHandler()->validateRow($csv);
-      }
-
-      // Save the data in the User's temp private store for later processing.
-      if ($violations) {
-        $this->getFlowDataHandler()->setTempDataValue('errors', $violations);
-        $this->getFlowDataHandler()->setTempDataValue('coordinated_members', []);
-      }
-      else {
-        $this->getFlowDataHandler()->setTempDataValue('errors', []);
-        $this->getFlowDataHandler()->setTempDataValue('coordinated_members', $rows);
-      }
+//
+//      // Validate csv data.
+//      foreach ($rows as $row => $data) {
+//        $violations[$row] = $this->getCsvHandler()->validateRow($csv);
+//      }
+//
+//      // Save the data in the User's temp private store for later processing.
+//      if ($violations) {
+//        $this->getFlowDataHandler()->setTempDataValue('errors', $violations);
+//        $this->getFlowDataHandler()->setTempDataValue('coordinated_members', []);
+//      }
+//      else {
+//        $this->getFlowDataHandler()->setTempDataValue('errors', []);
+//        $this->getFlowDataHandler()->setTempDataValue('coordinated_members', $rows);
+//      }
     }
   }
 
