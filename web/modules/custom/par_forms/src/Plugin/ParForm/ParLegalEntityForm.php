@@ -25,7 +25,9 @@ class ParLegalEntityForm extends ParFormPluginBase {
     ],
   ];
 
-  /* @defaults */
+  /**
+   * @defaults
+   */
   protected $formDefaults = [
     'legal_entity_type' => 'none',
   ];

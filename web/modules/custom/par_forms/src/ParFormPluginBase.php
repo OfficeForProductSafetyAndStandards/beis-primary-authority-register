@@ -70,7 +70,8 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
   }
 
   public function getFormDefaultByKey($key) {
-    return isset($this->formDefaults[$key]) ? $this->formDefaults[$key] : FALSE;
+    $defaults = $this->getFormDefaults();
+    return isset($defaults[$key]) ? $defaults[$key] : FALSE;
   }
 
   /**
