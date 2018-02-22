@@ -11,12 +11,6 @@ use Drupal\par_flows\Form\ParBaseForm;
  */
 class ParOrganisationNameForm extends ParBaseForm {
 
-  protected $formItems = [
-    'par_data_organisation:organisation' => [
-      'organisation_name' => 'organisation_name',
-    ],
-  ];
-
   protected $pageTitle = 'Add member organisation name';
 
   /**
