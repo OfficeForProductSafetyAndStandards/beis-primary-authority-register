@@ -14,7 +14,6 @@ use Drupal\par_member_cease_flows\ParFlowAccessTrait;
  */
 class ParMemberCeaseConfirmForm extends ParBaseForm {
 
-  use ParDisplayTrait;
   use ParFlowAccessTrait;
 
   /**

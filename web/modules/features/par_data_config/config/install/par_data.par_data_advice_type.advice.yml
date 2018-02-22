@@ -20,7 +20,7 @@ configuration:
       regulatory_function: 'The %field is required.'
   advice_type:
     allowed_values:
-      business_advice: 'Primary Authority advice for the business'
+      business_advice: 'Primary Authority advice for the organisation'
       authority_advice: 'Primary Authority advice to Local Authorities'
       background_information: 'Background information'
   visible_authority:
@@ -33,5 +33,5 @@ configuration:
       'off': 'Hidden from Co-ordinator'
   visible_business:
     boolean_values:
-      'on': 'Visible to Business'
-      'off': 'Hidden from Business'
+      'on': 'Visible to Organisation'
+      'off': 'Hidden from Organisation'

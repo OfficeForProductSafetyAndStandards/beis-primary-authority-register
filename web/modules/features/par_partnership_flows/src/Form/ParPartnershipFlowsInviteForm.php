@@ -113,7 +113,7 @@ HEREDOC;
         $message_body = <<<HEREDOC
 Dear {$par_data_person->getFullName()},
 
-A new partnership has been created for you by {$authority->get('authority_name')->getString()}. Please log in to the Primary Authority Register to update your business's details. To do this, please follow this link:
+A new partnership has been created for you by {$authority->get('authority_name')->getString()}. Please log in to the Primary Authority Register to update your organisation's details. To do this, please follow this link:
 
 [site:login-url]
 
@@ -127,7 +127,7 @@ HEREDOC;
         $message_body = <<<HEREDOC
 Dear {$par_data_person->getFullName()},
 
-A new partnership has been created for you by {$authority->get('authority_name')->getString()}. Please create your account with the Primary Authority Register so that you can manage your business's details. To do this, please follow this link:
+A new partnership has been created for you by {$authority->get('authority_name')->getString()}. Please create your account with the Primary Authority Register so that you can manage your organisation's details. To do this, please follow this link:
 
 [invite:invite-accept-link]
 

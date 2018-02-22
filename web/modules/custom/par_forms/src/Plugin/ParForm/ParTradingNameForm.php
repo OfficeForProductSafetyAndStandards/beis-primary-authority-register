@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -13,6 +14,8 @@ use Drupal\par_forms\ParFormPluginBase;
  * )
  */
 class ParTradingNameForm extends ParFormPluginBase {
+
+  use StringTranslationTrait;
 
   /**
    * Mapping of the data parameters to the form elements.
@@ -45,14 +48,20 @@ class ParTradingNameForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
-
     if ($cardinality === 1) {
+      // If this plugin is being added as a single item then we can explain more will be added later.
+      $message = $this->formatPlural($this->getCardinality(),
+        "Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State the primary trading name used by the organisation. More can be added later.",
+        "Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State any trading names used by the organisation.");
+
       $form['trading_name_intro_fieldset'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('What is a trading name?'),
         'intro' => [
           '#type' => 'markup',
-          '#markup' => "<p>" . $this->t("Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State the primary trading name used by the organisation. More can be added after confirming the partnership.") . "</p>",
+          '#markup' => $message,
+          '#prefix' => "<p>",
+          '#suffix' => "</p>",
         ]
       ];
     }

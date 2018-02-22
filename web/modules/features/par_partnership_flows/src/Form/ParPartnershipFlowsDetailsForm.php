@@ -53,10 +53,10 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     $par_data_organisation = current($par_data_partnership->getOrganisation());
 
     // Display the primary address along with the link to edit it.
-    $form['registered_address'] = $this->renderSection('Business address', $par_data_organisation, ['field_premises' => 'summary'], ['edit-entity', 'add'], TRUE, TRUE);
+    $form['registered_address'] = $this->renderSection('Organisation address', $par_data_organisation, ['field_premises' => 'summary'], ['edit-entity', 'add'], TRUE, TRUE);
 
     // View and perform operations on the information about the business.
-    $form['about_business'] = $this->renderSection('About the business', $par_data_organisation, ['comments' => 'about'], ['edit-field']);
+    $form['about_business'] = $this->renderSection('About the organisation', $par_data_organisation, ['comments' => 'about'], ['edit-field']);
 
     // Only show SIC Codes and Employee number if the partnership is a direct
     // partnership.
