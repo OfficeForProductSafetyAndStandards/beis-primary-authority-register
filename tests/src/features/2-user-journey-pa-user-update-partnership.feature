@@ -69,7 +69,7 @@ Feature: PA User - Manage Addresses
 
         # ADD LEGAL ENTITY - Limited Liability Partnership
 
-        When I click on the link "add another legal entity"
+        When I click on the link "add legal entity"
         And I run tota11y against the current page
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Primary Authority partnership information"
         Then I expect that element "h1.heading-xlarge" contains the text "Add a legal entity for your organisation"

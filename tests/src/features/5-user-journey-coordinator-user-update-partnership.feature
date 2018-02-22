@@ -95,8 +95,8 @@ Feature: Coordinator User - Update Partnership
         And I click on the button "#edit-next"
         Then I expect that element "h1.heading-xlarge" contains the text "Membership Ceased"
         And I click on the button "#edit-save"
-        Then I expect that element "a*=New Member One" does not exist
-        Then I expect that element "a*=Cease membership" does not exist
+        Then I expect that element "New Member One" does not exist
+        Then I expect that element "Cease membership" does not exist
        
         # EDIT REGISTERED ADDRESS
 
