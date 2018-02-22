@@ -17,7 +17,7 @@ dependencies:
   module:
     - text
 _core:
-  default_config_hash: bBi-rsXn8EJzzZr6Hx-3QHfRzAaPSQq9kyPwwCo_Ta4
+  default_config_hash: 2j7vc9T1LR_GfXlTXgRgnGu4gFycrq3fIcux20EgEXM
 id: par_data_partnership.partnership.about
 targetEntityType: par_data_partnership
 bundle: partnership

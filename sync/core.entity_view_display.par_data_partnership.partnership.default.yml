@@ -17,7 +17,7 @@ dependencies:
     - datetime
     - text
 _core:
-  default_config_hash: 1eMkKEPAgWX1pHODb65SSmW8d7zo9w-xV1BJsuhMgfw
+  default_config_hash: DwJUK0uaOTVAP3yNOF8mhki4UoPmQs2LX7_OTWNKu4k
 id: par_data_partnership.partnership.default
 targetEntityType: par_data_partnership
 bundle: partnership
