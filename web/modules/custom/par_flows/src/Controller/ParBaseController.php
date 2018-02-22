@@ -6,6 +6,7 @@ use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_data\ParDataManagerInterface;
@@ -18,6 +19,7 @@ use Drupal\par_flows\ParRedirectTrait;
 use Drupal\par_flows\ParDisplayTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Access\AccessResult;
+use Symfony\Component\Routing\Route;
 
 /**
 * A controller for all styleguide page output.
@@ -150,13 +152,20 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
    * Access callback
    * Useful for custom business logic for access.
    *
+   * @param \Symfony\Component\Routing\Route $route
+   *   The route.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+   *   The route match object to be checked.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The account being checked.
+   *
    * @see \Drupal\Core\Access\AccessResult
    *   The options for callback.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result.
    */
-  public function accessCallback() {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
     return $this->accessResult ? $this->accessResult : AccessResult::allowed();
   }
 
