@@ -42,14 +42,14 @@ Feature: New Coordinated Partnership
 
         # ORGANISATION NAME
 
-        And I add "Business For Coordinated Partnership 20" to the inputfield "#edit-organisation-name"
+        And I add "Organisation For Coordinated Partnership 20" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
 
         # CONFIRM NEW PARTNERSHIP
 
         And I click new partnership if presented with choices
 
-        # ADD BUSINESS DETAIL
+        # ADD ORGANISATION DETAIL
 
         When I add "SE16 4NX" to the inputfield "#edit-postcode"
         And I add "1 Change St" to the inputfield "#edit-address-line1"

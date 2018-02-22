@@ -43,15 +43,15 @@ Feature: PA User - Manage Addresses
         And I expect that element "#edit-registered-address" contains the text "London"
         And I expect that element "#edit-registered-address" contains the text "SE16 4NX"
 
-#        # EDIT ABOUT THE BUSINESS
+#        # EDIT ABOUT THE ORGANISATION
 
         When I click on the link "edit about the partnership"
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Primary Authority partnership information"
         And I expect that element "h1.heading-xlarge" contains the text "Information about the partnership"
         When I run tota11y against the current page
-        And I add "Change to the about business details section" to the inputfield "#edit-about-business"
+        And I add "Change to the about organisation details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-save"
-        # Then I expect that element "#edit-about-business" contains the text "Change to the about business details section"
+        # Then I expect that element "#edit-about-business" contains the text "Change to the about organisation details section"
 
         # ADD SIC CODES
         And I run tota11y against the current page
@@ -138,7 +138,7 @@ Feature: PA User - Manage Addresses
         And I click on the button "#edit-save"
         Then I expect that element "#edit-trading-names" contains the text "Change To Different Trading Name"
 
-        # EDIT MAIN BUSINESS CONTACT
+        # EDIT MAIN ORGANISATION CONTACT
 
         When I click on the link "edit organisation contact"
         And I clear the inputfield "#edit-salutation"
@@ -166,4 +166,4 @@ Feature: PA User - Manage Addresses
         And I click on the button "#edit-save"
         And I select the option with the text "Confirmed by the Organisation" for element "#edit-partnership-status-1"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I expect that element "#block-par-theme-content" contains the text "Business For Direct Partnership"
+        And I expect that element "#block-par-theme-content" contains the text "Organisation For Direct Partnership"
