@@ -585,11 +585,20 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
             unset($value['remove']);
           }
 
-          $values[$cardinality] = NestedArray::filter($value);
+          $values[$cardinality] = array_filter($value, function ($v, $key) use ($component) {
+            $default_value = $component->getFormDefaultByKey($key);
+
+            if (!$default_value) {
+              return TRUE;
+            }
+
+            return $default_value !== $v;
+          }, ARRAY_FILTER_USE_BOTH);
         }
 
         $data[ParFormBuilder::PAR_COMPONENT_PREFIX . $component->getPluginId()] = NestedArray::filter($values);
       }
+
     }
 
     return $data;
