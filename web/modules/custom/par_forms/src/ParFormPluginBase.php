@@ -197,15 +197,14 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
    *   The key for this form element.
    */
   public function getElementName($element, $cardinality = 1) {
-
-    $cardinality--;
-
     if ($this->getCardinality() !== 1 || $cardinality !== 1) {
+      $index = $cardinality-1;
       if (is_array($element)) {
-        return ParFormBuilder::PAR_COMPONENT_PREFIX . "{$this->getPluginId()}[$cardinality][{implode('][',$element)}]";
+        $elements = implode('][', $element);
+        return ParFormBuilder::PAR_COMPONENT_PREFIX . "{$this->getPluginId()}[$index][$elements]";
       }
       else {
-        return ParFormBuilder::PAR_COMPONENT_PREFIX . "{$this->getPluginId()}[$cardinality][$element]";
+        return ParFormBuilder::PAR_COMPONENT_PREFIX . "{$this->getPluginId()}[$index][$element]";
       }
     }
     else {

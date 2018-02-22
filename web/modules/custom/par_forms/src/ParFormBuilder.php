@@ -99,8 +99,6 @@ class ParFormBuilder extends DefaultPluginManager {
       '#tree' => $component->getCardinality() === 1 ? FALSE : TRUE,
     ];
 
-    var_dump($component->countItems());
-
     // Count the current cardinality.
     $count = $component->countItems() + 1 ?: 1;
     for ($i = 1; $i <= $count; $i++) {

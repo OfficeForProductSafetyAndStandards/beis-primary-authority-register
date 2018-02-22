@@ -585,14 +585,17 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
             unset($value['remove']);
           }
 
-          $values[$cardinality] = array_filter($value, function ($v, $key) use ($component) {
+          $values[$cardinality] = array_filter($value, function ($value, $key) use ($component) {
             $default_value = $component->getFormDefaultByKey($key);
+            if (empty($value)) {
+              return FALSE;
+            }
 
             if (!$default_value) {
               return TRUE;
             }
 
-            return $default_value !== $v;
+            return $default_value !== $value;
           }, ARRAY_FILTER_USE_BOTH);
         }
 
