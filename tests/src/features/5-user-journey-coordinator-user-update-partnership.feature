@@ -109,7 +109,7 @@ Feature: Coordinator User - Update Partnership
         And I expect that element "#edit-registered-address" contains the text "London"
         And I expect that element "#edit-registered-address" contains the text "SE16 4NX"
 
-        # EDIT ABOUT THE BUSINESS
+        # EDIT ABOUT THE ORGANISATION
 
         When I click on the link "edit about the organisation"
         And I add "Change to the about organisation details section" to the inputfield "#edit-about-business"
@@ -139,7 +139,7 @@ Feature: Coordinator User - Update Partnership
         And I click on the button "#edit-save"
         Then I expect that element "#edit-trading-names" contains the text "Different Trading Name (edited)"
 
-        # EDIT MAIN BUSINESS CONTACT
+        # EDIT MAIN ORGANISATION CONTACT
 
         When I click on the link "edit organisation contact"
         And I add "Harvey" to the inputfield "#edit-first-name"

@@ -22,7 +22,7 @@ Feature: Business User - Complete organisation details
         
         And I expect that element "h1.heading-xlarge" contains the text "Confirm the details about the organisation"
         When I run tota11y against the current page
-        And I add "Change to the about business details section" to the inputfield "#edit-about-business"
+        And I add "Change to the about organisation details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-next"
         And I clear the inputfield "#edit-address-line1"
         And I clear the inputfield "#edit-address-line2"
