@@ -142,6 +142,50 @@ Feature: Coordinator User - Update Partnership
         And I click on the button "#edit-save"
         Then I expect that element "#edit-associations" contains the text "small"
 
+         # # ADD LEGAL ENTITY
+
+        When I click on the link "add another legal entity"
+        And I run tota11y against the current page
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Primary Authority partnership information"
+        Then I expect that element "h1.heading-xlarge" contains the text "Add a legal entity for your organisation"
+        Then I expect that element ".form-item-registered-name label" contains the text "Enter name of the legal entity"
+        When I add "New LLP Company" to the inputfield "#edit-registered-name"
+        And I select the option with the text "Limited Liability Partnership" for element "#edit-legal-entity-type"
+        When I add "1234567890" to the inputfield "#edit-registered-number"
+        And I click on the button "#edit-save"
+        And I run tota11y against the current page
+        Then I expect that element "#edit-legal-entities" contains the text "New LLP Company"
+        Then I expect that element "#edit-legal-entities" contains the text "Limited Liability Partnership"
+        Then I expect that element "#edit-legal-entities" contains the text "1234567890"
+
+        # EDIT LEGAL ENTITY
+
+        When I click on the link "edit legal entity"
+        And I run tota11y against the current page
+        And I clear the inputfield "#edit-registered-name"
+        When I add "Changed" to the inputfield "#edit-registered-name"
+        And I select the option with the text "Limited Company" for element "#edit-legal-entity-type"
+        And I clear the inputfield "#edit-registered-number"
+        When I add "0123456789" to the inputfield "#edit-registered-number"
+        And I click on the button "#edit-save"
+        And I run tota11y against the current page
+        Then I expect that element "#edit-legal-entities" contains the text "Changed"
+        Then I expect that element "#edit-legal-entities" contains the text "Limited Company"
+ 
+        # ADD ANOTHER LEGAL ENTITY - Sole Trader
+ 
+        When I click on the link "add another legal entity"
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Primary Authority partnership information"
+        Then I expect that element "h1.heading-xlarge" contains the text "Add a legal entity for your organisation"
+        When I add "New Sole Trader" to the inputfield "#edit-registered-name"
+        And I select the option with the text "Sole Trader" for element "#edit-legal-entity-type"
+        Then I expect that element ".form-item-registered-number" is not visible
+        And I click on the button "#edit-save"
+        And I run tota11y against the current page
+        Then I expect that element "#edit-legal-entities" contains the text "New Sole Trader"
+        Then I expect that element "#edit-legal-entities" contains the text "Sole Trader"
+
+
         # ADD NEW TRADING NAME
 
         When I click on the link "add another trading name"
