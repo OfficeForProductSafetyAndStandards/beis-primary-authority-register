@@ -41,10 +41,6 @@ class ParLegalEntityForm extends ParBaseForm {
       $par_data_legal_entities_existing[$delta] = ParDataLegalEntity::load($existing_legal_entity);
     }
 
-//    $form_state
-
-    $this->setElementError(['legal_entity', 'blah'], $form_state, 'Please confirm that @field', []);
-
     $existing = NestedArray::filter($par_data_legal_entities_existing);
 
     // Only require new legal entities if the existing ones are empty.
