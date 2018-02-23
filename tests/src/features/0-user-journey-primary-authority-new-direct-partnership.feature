@@ -53,8 +53,7 @@ Feature: New Direct Partnership For PA To Approve
 
         # ORGANISATION NAME
 
-        # And I run tota11y against the current page
-        And I add "Business For Direct Partnership" to the inputfield "#edit-organisation-name"
+        And I add "Organisation For Direct Partnership" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
 
         # CONFIRM NEW PARTNERSHIP
@@ -62,7 +61,7 @@ Feature: New Direct Partnership For PA To Approve
         # And I run tota11y against the current page
         And I click new partnership if presented with choices
 
-        # ADD BUSINESS DETAIL
+        # ADD ORGANISATION DETAIL
 
         # And I run tota11y against the current page
         When I add "SE16 4NX" to the inputfield "#edit-postcode"

@@ -47,10 +47,10 @@ class ParConfirmationReviewForm extends ParBaseForm {
     /** @var ParDataLegalEntity[] $par_data_legal_entities */
 
     // Display organisation name.
-    $form['organisation_name'] = $this->renderSection('Member business name', $par_data_organisation, ['organisation_name' => 'title']);
+    $form['organisation_name'] = $this->renderSection('Member organisation name', $par_data_organisation, ['organisation_name' => 'title']);
 
     // Display the member's address
-    $form['member_registered_address'] = $this->renderSection('Member business address', $par_data_premises, ['address' => 'summary']);
+    $form['member_registered_address'] = $this->renderSection('Member organisation address', $par_data_premises, ['address' => 'summary']);
 
     // Display the date the membership began.
     $form['membership_date'] = $this->renderSection('Date of membership', $par_data_coordinated_business, ['date_membership_began' => 'default']);
@@ -137,9 +137,9 @@ class ParConfirmationReviewForm extends ParBaseForm {
     foreach ($legal_entities as $delta => $legal_entity) {
       // These ones need to be saved fresh.
       $par_data_legal_entities[$delta] = ParDataLegalEntity::create([
-        'registered_name' => $legal_entity['registered_name'],
-        'registered_number' => $legal_entity['registered_number'],
-        'legal_entity_type' => $legal_entity['legal_entity_type'],
+        'registered_name' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'registered_name'], $legal_cid),
+        'registered_number' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'registered_number'], $legal_cid),
+        'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'legal_entity_type'], $legal_cid),
       ]);
     }
 

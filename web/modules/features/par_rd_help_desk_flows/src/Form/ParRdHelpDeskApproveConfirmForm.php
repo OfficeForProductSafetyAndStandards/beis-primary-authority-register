@@ -3,9 +3,13 @@
 namespace Drupal\par_rd_help_desk_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\Core\Access\AccessResult;
+use Drupal\par_flows\ParFlowException;
+use Symfony\Component\Routing\Route;
 
 /**
  * The confirming the user is authorised to approve partnerships.
@@ -27,7 +31,18 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function accessCallback(ParDataPartnership $par_data_partnership = NULL) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
+    try {
+      $this->getFlowNegotiator()->setRoute($route_match);
+      $this->getFlowDataHandler()->reset();
+      $this->loadData();
+    } catch (ParFlowException $e) {
+
+    }
+
+    // Get the parameters for this route.
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+
     // If partnership has been revoked, we should not be able to approve it.
     // @todo This needs to be re-addressed as per PAR-1082.
     if ($par_data_partnership->isRevoked()) {
@@ -39,7 +54,7 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
       $this->accessResult = AccessResult::forbidden('The partnership is active.');
     }
 
-    return parent::accessCallback();
+    return parent::accessCallback($route, $route_match, $account);
   }
 
   /**

@@ -26,7 +26,7 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
         'class' => ['form-group'],
       ],
       '#title' => $this->t('How to upload an Inspection Plan'),
-      '#description' => $this->t('To upload an Inspection Plan, email it to <a href="mailto:pa@beis.gov.uk">pa@beis.gov.uk</a> with details of the business it applies to and we’ll get back to you shortly.'),
+      '#description' => $this->t('To upload an Inspection Plan, email it to <a href="mailto:pa@beis.gov.uk">pa@beis.gov.uk</a> with details of the organisation it applies to and we’ll get back to you shortly.'),
     ];
 
     $build['documentation_list'] = [

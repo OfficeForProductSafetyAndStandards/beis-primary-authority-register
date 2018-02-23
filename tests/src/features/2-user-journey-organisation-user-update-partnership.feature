@@ -15,10 +15,10 @@ Feature: Business User - Manage Addresses
         Then I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I click on the link "See your partnerships"
         # And I select the option with the text "Confirmed by Organisation" for element "#edit-partnership-status"
-        And I add "Business For Direct Partnership" to the inputfield "#edit-keywords"
+        And I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I click on the link "Business For Direct Partnership"
-        # And I run tota11y against the current page
+        And I click on the link "Organisation For Direct Partnership"
+        And I run tota11y against the current page
         And I expect that element "h1" is empty
 
         # EDIT REGISTERED ADDRESS
@@ -46,15 +46,15 @@ Feature: Business User - Manage Addresses
         And I expect that element "#edit-registered-address" contains the text "London"
         And I expect that element "#edit-registered-address" contains the text "SE16 4NX"
 
-        # EDIT ABOUT THE BUSINESS
+#        # EDIT ABOUT THE ORGANISATION
 
-        When I click on the link "edit about the business"
+        When I click on the link "edit about the organisation"
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Primary Authority partnership information"
-        Then I expect that element "h1.heading-xlarge" contains the text "Information about the business"
-        # When I run tota11y against the current page
-        And I add "Change to the about business details section" to the inputfield "#edit-about-business"
+        Then I expect that element "h1.heading-xlarge" contains the text "Information about the organisation"
+        When I run tota11y against the current page
+        And I add "Change to the about organisation details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-save"
-        Then I expect that element "#edit-about-business" contains the text "Change to the about business details section"
+        Then I expect that element "#edit-about-business" contains the text "Change to the about organisation details section"
 
         # ADD SIC CODES
         # And I run tota11y against the current page
@@ -151,7 +151,7 @@ Feature: Business User - Manage Addresses
         And I expect that element "#edit-organisation-contacts" contains the text "02084445555"
         And I expect that element "#edit-organisation-contacts" contains the text "07865223222"
 
-        # EDIT MAIN BUSINESS CONTACT
+        # EDIT MAIN ORGANISATION CONTACT
 
         When I click on the link "edit Added Contact"
         And I clear the inputfield "#edit-salutation"
@@ -179,5 +179,5 @@ Feature: Business User - Manage Addresses
         # And I run tota11y against the current page
         And I select the option with the text "Confirmed by the Organisation" for element "#edit-partnership-status-1"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I expect that element "#block-par-theme-content" contains the text "Business For Direct Partnership"
-        # And I run tota11y against the current page
+        And I expect that element "#block-par-theme-content" contains the text "Organisation For Direct Partnership"
+        And I run tota11y against the current page

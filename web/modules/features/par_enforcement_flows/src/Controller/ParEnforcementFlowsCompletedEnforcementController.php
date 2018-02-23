@@ -2,10 +2,14 @@
 
 namespace Drupal\par_enforcement_flows\Controller;
 
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_flows\Controller\ParBaseController;
 use Drupal\Core\Access\AccessResult;
+use Drupal\par_flows\ParFlowException;
+use Symfony\Component\Routing\Route;
 
 /**
  * A controller for rendering a specific partner page.
@@ -20,14 +24,24 @@ class ParEnforcementFlowsCompletedEnforcementController extends ParBaseControlle
   /**
    * {@inheritdoc}
    */
-  public function accessCallback(ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
+    try {
+      $this->getFlowNegotiator()->setRoute($route_match);
+      $this->getFlowDataHandler()->reset();
+      $this->loadData();
+    } catch (ParFlowException $e) {
+
+    }
+
+    // Get the parameters for this route.
+    $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
 
     // If this enforcement notice has not been reviewed.
     if ($par_data_enforcement_notice->inProgress()) {
       $this->accessResult = AccessResult::forbidden('This enforcement notification has not been fully reviewed yet.');
     }
 
-    return parent::accessCallback();
+    return parent::accessCallback($route, $route_match, $account);
   }
 
   /**

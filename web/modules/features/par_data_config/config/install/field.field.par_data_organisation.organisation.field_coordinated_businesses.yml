@@ -8,7 +8,7 @@ id: par_data_organisation.organisation.field_coordinated_businesses
 field_name: field_coordinated_businesses
 entity_type: par_data_organisation
 bundle: organisation
-label: 'Coordinated Business'
+label: 'Coordinated Member'
 description: ''
 required: false
 translatable: true

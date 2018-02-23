@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: OmW2xox2obkj3_3Ww-47j6F4codTfVTM3xvCs62U6To
+  default_config_hash: 7KFdZ_H2o6VCRpOOZRsmwbhtCV8mbgrdvYx6t75I754
 id: member_update
 label: 'Member Update Flow'
 default_title: null
@@ -21,19 +21,19 @@ steps:
       edit_organisation_name: 2
       edit_field_premises: 3
       edit_field_person: 4
-      date_membership_began: 5
+      edit_date_membership_began: 5
       add_trading_name: 6
       edit_trading_name: 7
       add_field_legal_entity: 8
       edit_field_legal_entity: 9
-      add_covered_by_inspection: 10
+      edit_covered_by_inspection: 10
       save: 11
       cancel: 11
   2:
     route: par_member_update_flows.update_organisation_name
     form_id: par_member_update_organisation_name
     components:
-      organisation_name: {}
+      organisation_name: {  }
     redirect:
       save: 1
       cancel: 11

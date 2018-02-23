@@ -8,6 +8,8 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\par_data\ParDataManagerInterface;
@@ -23,6 +25,7 @@ use Drupal\Core\Entity\EntityConstraintViolationListInterface;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\Core\Access\AccessResult;
+use Symfony\Component\Routing\Route;
 
 /**
  * The base form controller for all PAR forms.
@@ -155,13 +158,20 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * Access callback
    * Useful for custom business logic for access.
    *
+   * @param \Symfony\Component\Routing\Route $route
+   *   The route.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+   *   The route match object to be checked.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The account being checked.
+   *
    * @see \Drupal\Core\Access\AccessResult
    *   The options for callback.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result.
    */
-  public function accessCallback() {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
     return $this->accessResult ? $this->accessResult : AccessResult::allowed();
   }
 
@@ -585,11 +595,23 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
             unset($value['remove']);
           }
 
-          $values[$cardinality] = NestedArray::filter($value);
+          $values[$cardinality] = array_filter($value, function ($value, $key) use ($component) {
+            $default_value = $component->getFormDefaultByKey($key);
+            if (empty($value)) {
+              return FALSE;
+            }
+
+            if (!$default_value) {
+              return TRUE;
+            }
+
+            return $default_value !== $value;
+          }, ARRAY_FILTER_USE_BOTH);
         }
 
         $data[ParFormBuilder::PAR_COMPONENT_PREFIX . $component->getPluginId()] = NestedArray::filter($values);
       }
+
     }
 
     return $data;

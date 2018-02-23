@@ -16,7 +16,7 @@ class ParAboutBusinessForm extends ParBaseForm {
   /**
    * Set the page title.
    */
-  protected $pageTitle = 'Confirm the details about the business';
+  protected $pageTitle = 'Confirm the details about the organisation';
 
   /**
    * Load the data for this form.

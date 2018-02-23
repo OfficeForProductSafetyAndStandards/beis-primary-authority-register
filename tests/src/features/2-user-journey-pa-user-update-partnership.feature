@@ -19,38 +19,53 @@ Feature: PA User - Manage Addresses
 
         # EDIT REGISTERED ADDRESS
 
-        # When I click on the link "edit address"
-        # And I clear the inputfield "#edit-address-line1"
-        # And I clear the inputfield "#edit-address-line2"
-        # And I clear the inputfield "#edit-town-city"
-        # And I clear the inputfield "#edit-postcode"
-        # And I clear the inputfield "#edit-county"
-        # And I click on the button "#edit-save"
-        # # And I run tota11y against the current page
-        # Then I expect that element ".error-summary" does exist
-        # When I add "SE16 4NX" to the inputfield "#edit-postcode"
-        # And I click on the button "#edit-save"
-        # Then I expect that element ".error-summary" does exist
-        # And I add "1 Change St" to the inputfield "#edit-address-line1"
-        # And I click on the button "#edit-save"
-        # When I click on the link "edit address"
-        # And I add "New Change" to the inputfield "#edit-address-line2"
-        # And I add "London" to the inputfield "#edit-town-city"
-        # And I add "London" to the inputfield "#edit-county"
-        # And I select the option with the text "United Kingdom" for element "#edit-country-code"
-        # And I select the option with the text "England" for element "#edit-nation"
-        # When I click on the button "#edit-save"
-        # Then I expect that element "#edit-registered-address" contains the text "1 Change St"
-        # And I expect that element "#edit-registered-address" contains the text "New Change"
-        # And I expect that element "#edit-registered-address" contains the text "London"
-        # And I expect that element "#edit-registered-address" contains the text "SE16 4NX"
+        When I click on the link "edit address"
+        And I clear the inputfield "#edit-address-line1"
+        And I clear the inputfield "#edit-address-line2"
+        And I clear the inputfield "#edit-town-city"
+        And I clear the inputfield "#edit-postcode"
+        And I clear the inputfield "#edit-county"
+        And I click on the button "#edit-save"
+        And I run tota11y against the current page
+        Then I expect that element ".error-summary" does exist
+        When I add "SE16 4NX" to the inputfield "#edit-postcode"
+        And I click on the button "#edit-save"
+        Then I expect that element ".error-summary" does exist
+        And I add "1 Change St" to the inputfield "#edit-address-line1"
+        And I click on the button "#edit-save"
+        When I click on the link "edit address"
+        And I add "New Change" to the inputfield "#edit-address-line2"
+        And I add "London" to the inputfield "#edit-town-city"
+        And I add "London" to the inputfield "#edit-county"
+        And I select the option with the text "United Kingdom" for element "#edit-country-code"
+        And I select the option with the text "England" for element "#edit-nation"
+        When I click on the button "#edit-save"
+        Then I expect that element "#edit-registered-address" contains the text "1 Change St"
+        And I expect that element "#edit-registered-address" contains the text "New Change"
+        And I expect that element "#edit-registered-address" contains the text "London"
+        And I expect that element "#edit-registered-address" contains the text "SE16 4NX"
 
-        # EDIT ABOUT THE PARTNERSHIP
+#        # EDIT ABOUT THE ORGANISATION
 
         When I click on the link "edit about the partnership"
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Primary Authority partnership information"
-        And I expect that element "h1.heading-xlarge" contains the text "Information about the new partnership"
-        And I add "Change to the about business details section" to the inputfield "#edit-about-partnership"
+        And I expect that element "h1.heading-xlarge" contains the text "Information about the partnership"
+        When I run tota11y against the current page
+        And I add "Change to the about organisation details section" to the inputfield "#edit-about-business"
+        And I click on the button "#edit-save"
+        # Then I expect that element "#edit-about-business" contains the text "Change to the about organisation details section"
+
+        # ADD SIC CODES
+        And I run tota11y against the current page
+        When I click on the link "add another sic code"
+        And I select the option with the text "10-0 Health and social care" for element "#edit-sic-code"
+        And I click on the button "#edit-save"
+        Then I expect that element "#edit-sic-codes" contains the text "Health and social care"
+
+        # ADD EMPLOYEES
+
+        When I click on the link "edit number of employees"
+        And I select the option with the value "250" for element "#edit-employees-band"
         And I click on the button "#edit-save"
         Then I expect that element "#edit-about-partnership" contains the text "Change to the about business details section"
 
@@ -138,7 +153,7 @@ Feature: PA User - Manage Addresses
         # And I click on the button "#edit-save"
         # Then I expect that element "#edit-trading-names" contains the text "Change To Different Trading Name"
 
-        # EDIT MAIN BUSINESS CONTACT
+        # EDIT MAIN ORGANISATION CONTACT
 
         When I click on the link "edit authority contact"
         And I clear the inputfield "#edit-salutation"
@@ -164,4 +179,4 @@ Feature: PA User - Manage Addresses
         When I click on the button "#edit-save"
         And I select the option with the text "Confirmed by the Authority" for element "#edit-partnership-status-1"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I expect that element "#block-par-theme-content" contains the text "Direct Partnership For Revoking"
+        And I expect that element "#block-par-theme-content" contains the text "Organisation For Direct Partnership"

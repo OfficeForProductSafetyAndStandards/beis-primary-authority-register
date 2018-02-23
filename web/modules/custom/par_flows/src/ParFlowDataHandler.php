@@ -92,6 +92,13 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
     $this->sessionManager = $session_manager;
     $this->account = $current_user;
 
+    $this->reset();
+  }
+
+  /**
+   * Reset the data handler.
+   */
+  public function reset() {
     // The data parameters are set based on the current route
     // but can be overridden when needed (such as access callbacks).
     $this->parameters = $this->negotiator->getRoute()->getParameters();

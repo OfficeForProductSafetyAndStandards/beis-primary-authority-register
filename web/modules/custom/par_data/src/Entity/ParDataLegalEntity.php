@@ -4,6 +4,7 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\par_validation\Plugin\Validation\Constraint\ParRequired;
 
 /**
  * Defines the par_data_legal_entity entity.
@@ -118,11 +119,11 @@ class ParDataLegalEntity extends ParDataEntity {
       ->setLabel(t('Legal Entity Type'))
       ->setDescription(t('The type of Legal Entity.'))
       ->setRevisionable(TRUE)
+      ->addConstraint('par_required')
       ->setSettings([
         'max_length' => 255,
         'text_processing' => 0,
       ])
-      ->setDefaultValue('')
       ->setDisplayOptions('form', [
         'type' => 'string_textfield',
         'weight' => 2,
