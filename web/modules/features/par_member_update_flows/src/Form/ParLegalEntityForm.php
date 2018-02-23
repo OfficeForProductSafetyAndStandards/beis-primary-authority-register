@@ -35,20 +35,29 @@ class ParLegalEntityForm extends ParBaseForm {
 
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
 
-    $legal_entities = $this->getFlowDataHandler()->getTempDataValue('registered_number') ?: [];
-    kint($legal_entities);
-    die();
+    $legal_entity = $this->getFlowDataHandler()->getParameter('par_data_legal_entity') ?: ParDataLegalEntity::create([
+      'type' => 'legal_entity',
+    ]);
 
-//    $par_data_legal_entity = ParDataLegalEntity::create([
-//      'registered_name' => '123',
-//      'registered_number' => '456',
-//      'legal_entity_type' => 'partnership',
-//    ]);
-//
-//    $par_data_legal_entity->save();
-//
-//    $par_data_organisation->get('field_legal_entity')->appendItem($par_data_legal_entity);
-//    $par_data_organisation->save();
+    $legal_entity->set('name', $this->getFlowDataHandler()->getTempDataValue('registered_name'));
+    $legal_entity->set('registered_name', $this->getFlowDataHandler()->getTempDataValue('registered_name'));
+    $legal_entity->set('registered_number', $this->getFlowDataHandler()->getTempDataValue('registered_number'));
+    $legal_entity->set('legal_entity_type', $this->getFlowDataHandler()->getTempDataValue('legal_entity_type'));
+
+    $legal_entity->save();
+    $par_data_organisation->addLegalEntity($legal_entity);
+
+    if ($par_data_organisation->save()) {
+      $this->getFlowDataHandler()->deleteStore();
+    }
+    else {
+      $message = $this->t('This %field could not be saved for %form_id');
+      $replacements = [
+        '%field' => $this->getFlowDataHandler()->getTempDataValue('registered_name'),
+        '%form_id' => $this->getFormId(),
+      ];
+      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+    }
 
   }
 
