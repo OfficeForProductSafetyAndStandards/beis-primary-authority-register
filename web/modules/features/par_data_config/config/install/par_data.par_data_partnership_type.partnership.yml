@@ -57,9 +57,9 @@ configuration:
       'off': 'Not yet agreed'
   partnership_info_agreed_business:
     boolean_values:
-      'on': 'Partnership information agreed by the business'
+      'on': 'Partnership information agreed by the organisation'
       'off': 'Not yet agreed'
   written_summary_agreed:
     boolean_values:
-      'on': 'Written summary agreed with the business'
+      'on': 'Written summary agreed with the organisation'
       'off': 'Not yet agreed'

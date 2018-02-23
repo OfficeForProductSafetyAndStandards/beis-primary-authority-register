@@ -74,8 +74,8 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
 
     $form['par_data_organisation_id'] = [
       '#type' => 'radios',
-      '#title' => t('Choose an existing business or create a new business'),
-      '#options' => $radio_options + ['new' => "no, the business is not currently in a partnership with any other primary authority"],
+      '#title' => t('Choose an existing organisation or create a new organisation'),
+      '#options' => $radio_options + ['new' => "no, the organisation is not currently in a partnership with any other primary authority"],
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', 'new'),
     ];
 

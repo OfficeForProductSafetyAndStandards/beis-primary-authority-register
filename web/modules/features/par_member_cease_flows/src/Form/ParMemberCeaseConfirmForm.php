@@ -14,7 +14,6 @@ use Drupal\par_member_cease_flows\ParFlowAccessTrait;
  */
 class ParMemberCeaseConfirmForm extends ParBaseForm {
 
-  use ParDisplayTrait;
   use ParFlowAccessTrait;
 
   /**
@@ -28,7 +27,7 @@ class ParMemberCeaseConfirmForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataCoordinatedBusiness $par_data_coordinated_business = NULL) {
     $form['membership_info'] = [
       '#type' => 'markup',
-      '#markup' => "{$par_data_coordinated_business->label()}'s membership has been ceased from your partnership.",
+      '#markup' => "{$par_data_coordinated_business->label()}'s membership of {$par_data_partnership->label()} has been ceased and the 'membership until' date has been updated on the members list.",
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];
@@ -40,7 +39,7 @@ class ParMemberCeaseConfirmForm extends ParBaseForm {
     ];
     $form['next_steps']['info'] = [
       '#type' => 'markup',
-      '#markup' => "{$par_data_coordinated_business->label()} will still be listed on your member list alongside the date their membership ceased. If you want to remove all information about {$par_data_coordinated_business->label()} from the Primary Authority Register please contact the helpdesk.",
+      '#markup' => "If you want to remove all information about {$par_data_coordinated_business->label()} from the Primary Authority Register please contact the helpdesk.",
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];

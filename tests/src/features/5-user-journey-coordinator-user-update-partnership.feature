@@ -10,7 +10,7 @@ Feature: Coordinator User - Update Partnership
         When I click on the button "#edit-submit"
         Then I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I click on the link "See your partnerships"
-        And I click on the link "Business For Coordinated Partnership 20"
+        And I click on the link "Organisation For Coordinated Partnership 20"
         Then I expect that element "h1" is not empty
 
         # ADD MEMBERS
@@ -85,7 +85,7 @@ Feature: Coordinator User - Update Partnership
         # EDIT REGISTERED ADDRESS
 
         Given I open the url "/partnerships"
-        And I click on the link "Business For Coordinated Partnership 20"
+        And I click on the link "Organisation For Coordinated Partnership 20"
         When  I click on the link "edit address"
         And I clear the inputfield "#edit-address-line1"
         And I clear the inputfield "#edit-address-line2"
@@ -109,12 +109,12 @@ Feature: Coordinator User - Update Partnership
         And I expect that element "#edit-registered-address" contains the text "London"
         And I expect that element "#edit-registered-address" contains the text "SE16 4NX"
 
-        # EDIT ABOUT THE BUSINESS
+        # EDIT ABOUT THE ORGANISATION
 
-        When I click on the link "edit about the business"
-        And I add "Change to the about business details section" to the inputfield "#edit-about-business"
+        When I click on the link "edit about the organisation"
+        And I add "Change to the about organisation details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-save"
-        Then I expect that element "#edit-about-business" contains the text "Change to the about business details section"
+        Then I expect that element "#edit-about-business" contains the text "Change to the about organisation details section"
 
         # ADD MEMBERS
 
@@ -139,7 +139,7 @@ Feature: Coordinator User - Update Partnership
         And I click on the button "#edit-save"
         Then I expect that element "#edit-trading-names" contains the text "Different Trading Name (edited)"
 
-        # EDIT MAIN BUSINESS CONTACT
+        # EDIT MAIN ORGANISATION CONTACT
 
         When I click on the link "edit organisation contact"
         And I add "Harvey" to the inputfield "#edit-first-name"
@@ -159,5 +159,5 @@ Feature: Coordinator User - Update Partnership
         When I click on the button "#edit-save"
         And I select the option with the text "Confirmed by the Organisation" for element "#edit-partnership-status-1"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I expect that element "#block-par-theme-content" contains the text "Business For Coordinated Partnership 20"
+        And I expect that element "#block-par-theme-content" contains the text "Organisation For Coordinated Partnership 20"
 

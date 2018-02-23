@@ -59,21 +59,21 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
 
       $form['section_one']['business_eligible_for_partnership'] = [
         '#type' => 'checkbox',
-        '#title' => $this->t('The business is eligible to enter into a partnership'),
+        '#title' => $this->t('The organisation is eligible to enter into a partnership'),
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues('business_eligible_for_partnership', FALSE),
         '#return_value' => 'on',
       ];
 
       $form['section_one']['local_authority_suitable_for_nomination'] = [
         '#type' => 'checkbox',
-        '#title' => $this->t('My local authority is suitable for nomination as primary authority for the business'),
+        '#title' => $this->t('My local authority is suitable for nomination as primary authority for the organisation'),
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues('local_authority_suitable_for_nomination', FALSE),
         '#return_value' => 'on',
       ];
 
       $form['section_one']['written_summary_agreed'] = [
         '#type' => 'checkbox',
-        '#title' => $this->t('A written summary of partnership arrangements has been agreed with the business'),
+        '#title' => $this->t('A written summary of partnership arrangements has been agreed with the organisation'),
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues('written_summary_agreed', FALSE),
         '#return_value' => 'on',
       ];
@@ -87,7 +87,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
 
       $form['section_two']['business_regulated_by_one_authority'] = [
         '#type' => 'radios',
-        '#title' => $this->t('Is the business regulated by only one local authority?'),
+        '#title' => $this->t('Is the organisation regulated by only one local authority?'),
         '#options' => [
           1 => 'Yes',
           0 => 'No',
@@ -115,7 +115,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
 
       $form['section_two']['business_informed_local_authority_still_regulates'] = [
         '#type' => 'radios',
-        '#title' => $this->t('I confirm the business has been informed that the local authority in which it is located will continue to regulate it'),
+        '#title' => $this->t('I confirm the organisation has been informed that the local authority in which it is located will continue to regulate it'),
         '#options' => [
           1 => 'Yes',
           0 => 'No',
@@ -190,7 +190,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
       // Section one validation.
       // All items in section needs to be ticked before they can proceed.
       $section_one_form_items_required = [
-        'business_eligible_for_partnership' => 'the business is eligible',
+        'business_eligible_for_partnership' => 'the organisation is eligible',
         'local_authority_suitable_for_nomination' => 'the local authority is suitable for nomination',
         'written_summary_agreed' => 'a written summary has been agreed',
         'terms_organisation_agreed' => 'the Primary Authority Terms and Conditions have been agreed',
@@ -206,20 +206,20 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
 
       // Check if an empty value is provided.
       if ($form_state->getValue('business_regulated_by_one_authority') === FALSE) {
-        $this->setElementError(['section_two','business_regulated_by_one_authority'], $form_state, 'Please confirm if the business regulated by only one local authority.');
+        $this->setElementError(['section_two','business_regulated_by_one_authority'], $form_state, 'Please confirm the organisation is regulated by only one local authority.');
       }
 
       // Warn that business needs to be informed their local authority still regulates.
       if ($form_state->getValue('business_regulated_by_one_authority') == 1 &&
         $form_state->getValue('is_local_authority') == 0 &&
         $form_state->getValue('business_informed_local_authority_still_regulates') == 0) {
-        $this->setElementError(['section_two','business_informed_local_authority_still_regulates'], $form_state, 'The business needs to be informed about local authority.');
+        $this->setElementError(['section_two','business_informed_local_authority_still_regulates'], $form_state, 'The organisation needs to be informed about local authority.');
       }
     }
     elseif ($applicationType == 'coordinated') {
       // All items in section needs to be ticked before they can proceed.
       $form_items = [
-        'coordinator_local_authority_suitable' => 'the business is eligible',
+        'coordinator_local_authority_suitable' => 'the organisation is eligible',
         'suitable_nomination' => 'the coordinator is suitable for nomination',
         'written_summary_agreed' => 'a written summary has been agreed',
         'terms_local_authority_agreed' => 'the local authority agrees to Primary Authority Terms and Conditions',

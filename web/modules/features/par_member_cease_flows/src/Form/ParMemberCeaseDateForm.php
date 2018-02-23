@@ -6,7 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_member_add_flows\ParFlowAccessTrait;
+use Drupal\par_member_cease_flows\ParFlowAccessTrait;
 
 /**
  * Enter the date the membership began.
