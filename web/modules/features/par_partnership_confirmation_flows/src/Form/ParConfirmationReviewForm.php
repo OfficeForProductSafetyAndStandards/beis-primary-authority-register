@@ -81,24 +81,15 @@ class ParConfirmationReviewForm extends ParBaseForm {
     }
 
     // Display legal entities.
-    if (!empty($par_data_legal_entities_existing)) {
-      $form['existing_legal_entities'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-        '#title' => 'Existing Legal Entities',
-        'legal_entities' => $this->renderEntities('Legal entities', $par_data_legal_entities_existing),
-      ];
-    }
-    if (!empty($par_data_legal_entities)) {
+    $legal_entities = array_filter($par_data_legal_entities_existing + $par_data_legal_entities);
+    if (!empty($legal_entities)) {
       $form['legal_entities'] = [
         '#type' => 'fieldset',
         '#attributes' => ['class' => 'form-group'],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
-        '#title' => 'New Legal Entities',
-        'legal_entities' => $this->renderEntities('Legal entities', $par_data_legal_entities),
+        '#title' => 'Legal Entities',
+        'legal_entities' => $this->renderEntities('Legal entities', $legal_entities),
       ];
     }
 
