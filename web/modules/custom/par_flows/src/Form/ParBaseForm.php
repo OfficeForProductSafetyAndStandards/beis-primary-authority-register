@@ -523,8 +523,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    *   Form element/wrapper anchor ID.
    */
   public function getFormElementPageAnchor($element_key, FormStateInterface &$form_state) {
-    kint ($form_state->getCompleteForm());
-    die();
     $form_element = &NestedArray::getValue($form_state->getCompleteForm(), $element_key);
 
     // Catch some potential FAPI mistakes.
