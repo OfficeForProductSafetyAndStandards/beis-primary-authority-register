@@ -70,9 +70,9 @@ Feature: Organisation User - Complete business details
         Then I expect that element ".form-item-par-component-legal-entity-0-registered-number label" contains the text "Provide the registration number"
         When I add "1234567890" to the inputfield "#edit-par-component-legal-entity-0-registered-number"
         When I click on the button "#edit-add-another"
-        When I add "Second New LLP Company" to the inputfield "#edit-par-component-legal-entity-1-registered-name"
-        And I select the option with the text "Limited Liability Partnership" for element "#edit-par-component-legal-entity-1-legal-entity-type"
-        When I add "0987654321" to the inputfield "#edit-par-component-legal-entity-1-registered-number"
+        When I add "Sole Trader" to the inputfield "#edit-par-component-legal-entity-1-registered-name"
+        And I select the option with the text "Sole Trader" for element "#edit-par-component-legal-entity-1-legal-entity-type"
+        Then I expect that element "#edit-par-component-legal-entity-1-registered-number" does not exist
         When I click on the button "#edit-add-another"
         When I add "Third New LLP Company" to the inputfield "#edit-par-component-legal-entity-2-registered-name"
         And I select the option with the text "Limited Liability Partnership" for element "#edit-par-component-legal-entity-2-legal-entity-type"
