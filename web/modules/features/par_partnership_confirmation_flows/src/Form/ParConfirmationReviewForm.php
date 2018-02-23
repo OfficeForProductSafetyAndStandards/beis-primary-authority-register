@@ -81,14 +81,26 @@ class ParConfirmationReviewForm extends ParBaseForm {
     }
 
     // Display legal entities.
-    $form['legal_entities'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-      '#title' => 'Legal Entities',
-      'legal_entities' => $this->renderEntities('Legal entities', $par_data_legal_entities_existing + $par_data_legal_entities),
-    ];
+    if (!empty($par_data_legal_entities_existing)) {
+      $form['existing_legal_entities'] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+        '#title' => 'Existing Legal Entities',
+        'legal_entities' => $this->renderEntities('Legal entities', $par_data_legal_entities_existing),
+      ];
+    }
+    if (!empty($par_data_legal_entities)) {
+      $form['legal_entities'] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+        '#title' => 'New Legal Entities',
+        'legal_entities' => $this->renderEntities('Legal entities', $par_data_legal_entities),
+      ];
+    }
 
     // Display trading names.
     $form['trading_names'] = $this->renderSection('Trading names', $par_data_organisation, ['trading_name' => 'full']);
@@ -186,12 +198,12 @@ class ParConfirmationReviewForm extends ParBaseForm {
     $legal_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_add_legal_entity');
     $legal_entities = $this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $legal_cid) ?: [];
     $par_data_legal_entities = [];
-    foreach ($legal_entities as $delta => $legal_entity) {
+    foreach ($this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $legal_cid) as $delta => $legal_entity) {
       // These ones need to be saved fresh.
       $par_data_legal_entities[$delta] = ParDataLegalEntity::create([
-        'registered_name' => $legal_entity['registered_name'],
-        'registered_number' => $legal_entity['registered_number'],
-        'legal_entity_type' => $legal_entity['legal_entity_type'],
+        'registered_name' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'registered_name'], $legal_cid),
+        'registered_number' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'registered_number'], $legal_cid),
+        'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'legal_entity_type'], $legal_cid),
       ]);
     }
 
@@ -199,7 +211,9 @@ class ParConfirmationReviewForm extends ParBaseForm {
     $existing_legal_entities = $this->getFlowDataHandler()->getTempDataValue('field_legal_entity', $existing_legal_cid) ?: [];
     $par_data_legal_entities_existing = [];
     foreach ($existing_legal_entities as $delta => $existing_legal_entity) {
-      $par_data_legal_entities_existing[$delta] = ParDataLegalEntity::load($existing_legal_entity);
+      if ($existing = ParDataLegalEntity::load($existing_legal_entity)) {
+        $par_data_legal_entities_existing[$delta] = ParDataLegalEntity::load($existing_legal_entity);
+      }
     }
 
     // Save the data for the SIC code form.

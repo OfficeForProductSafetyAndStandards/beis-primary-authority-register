@@ -137,9 +137,9 @@ class ParConfirmationReviewForm extends ParBaseForm {
     foreach ($legal_entities as $delta => $legal_entity) {
       // These ones need to be saved fresh.
       $par_data_legal_entities[$delta] = ParDataLegalEntity::create([
-        'registered_name' => $legal_entity['registered_name'],
-        'registered_number' => $legal_entity['registered_number'],
-        'legal_entity_type' => $legal_entity['legal_entity_type'],
+        'registered_name' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'registered_name'], $legal_cid),
+        'registered_number' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'registered_number'], $legal_cid),
+        'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'legal_entity_type'], $legal_cid),
       ]);
     }
 

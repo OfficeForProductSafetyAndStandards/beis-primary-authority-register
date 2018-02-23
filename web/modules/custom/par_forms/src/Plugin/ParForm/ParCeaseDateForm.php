@@ -24,6 +24,15 @@ class ParCeaseDateForm extends ParFormPluginBase {
   ];
 
   /**
+   * @defaults
+   */
+  public function getFormDefaults() {
+    return [
+      'date_membership_began' => ['year' => date('Y'), 'month' => date('m'), 'day' => date('d')],
+    ];
+  }
+
+  /**
    * Load the data for this form.
    */
   public function loadData($cardinality = 1) {
@@ -38,14 +47,13 @@ class ParCeaseDateForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
-    $default_date = ['year' => date('Y'), 'month' => date('m'), 'day' => date('d')];
 
     // Membership begin date.
     $form['date_membership_ceased'] = [
       '#type' => 'gds_date',
       '#title' => $this->t('Enter the date the membership ceased'),
       '#description' => $this->t('For example: 29/4/2010'),
-      '#default_value' => $this->getDefaultValuesByKey('date_membership_ceased', $cardinality, $default_date),
+      '#default_value' => $this->getDefaultValuesByKey('date_membership_ceased', $cardinality, $this->getFormDefaultByKey('date_membership_ceased')),
     ];
 
     return $form;
