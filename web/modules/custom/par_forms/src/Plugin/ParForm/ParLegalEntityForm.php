@@ -64,7 +64,7 @@ class ParLegalEntityForm extends ParFormPluginBase {
       '#type' => 'select',
       '#title' => $this->t('Select type of Legal Entity'),
       '#default_value' => $this->getDefaultValuesByKey('legal_entity_type', $cardinality, $this->getFormDefaultByKey('legal_entity_type')),
-      '#options' => ['' => ''] + $legal_entity_bundle->getAllowedValues('legal_entity_type'),
+      '#options' => ['none' => ''] + $legal_entity_bundle->getAllowedValues('legal_entity_type'),
     ];
 
 
