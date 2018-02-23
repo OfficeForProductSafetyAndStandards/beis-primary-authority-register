@@ -26,6 +26,11 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
   protected $formItems = [];
 
   /**
+   * Form defaults
+   */
+  protected $formDefaults = [];
+
+  /**
    * {@inheritdoc}
    */
   public function getTitle() {
@@ -58,6 +63,15 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
    */
   public function setConfiguration(array $configuration = []) {
     $this->configuration = $configuration;
+  }
+
+  public function getFormDefaults() {
+    return $this->formDefaults;
+  }
+
+  public function getFormDefaultByKey($key) {
+    $defaults = $this->getFormDefaults();
+    return isset($defaults[$key]) ? $defaults[$key] : FALSE;
   }
 
   /**
@@ -185,11 +199,13 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
    */
   public function getElementName($element, $cardinality = 1) {
     if ($this->getCardinality() !== 1 || $cardinality !== 1) {
+      $index = $cardinality-1;
       if (is_array($element)) {
-        return "{$this->getPluginId()}[$cardinality][{implode('][',$element)}]";
+        $elements = implode('][', $element);
+        return ParFormBuilder::PAR_COMPONENT_PREFIX . "{$this->getPluginId()}[$index][$elements]";
       }
       else {
-        return "{$this->getPluginId()}[$cardinality][$element]";
+        return ParFormBuilder::PAR_COMPONENT_PREFIX . "{$this->getPluginId()}[$index][$element]";
       }
     }
     else {
