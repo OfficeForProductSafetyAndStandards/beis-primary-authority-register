@@ -110,7 +110,9 @@ class ParFormBuilder extends DefaultPluginManager {
           '#type' => 'submit',
           '#name' => "remove:{$component->getPluginId()}:{$i}",
           '#weight' => 100,
+//          '#validate' => ['::validateForm'],
           '#submit' => ['::removeItem'],
+          '#limit_validation_errors' => [],
           '#value' => $this->t("Remove"),
           '#attributes' => [
             'class' => ['btn-link'],
@@ -123,7 +125,8 @@ class ParFormBuilder extends DefaultPluginManager {
       $elements['actions']['add_another'] = [
         '#type' => 'submit',
         '#name' => 'add_another',
-        '#validate' => ['::validateForm'],
+//        '#validate' => ['::validateForm'],
+//        '#limit_validation_errors' => [],
         '#submit' => ['::multipleItemActionsSubmit'],
         '#value' => $this->t('Add another'),
         '#attributes' => [

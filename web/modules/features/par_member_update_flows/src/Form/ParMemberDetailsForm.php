@@ -53,7 +53,7 @@ class ParMemberDetailsForm extends ParBaseForm {
     $form['organisation_name'] = $this->renderSection('Member business name', $par_data_organisation, ['organisation_name' => 'title'], ['edit-field']);
 
     // Display the member's address
-    $form['member_registered_address'] = $this->renderSection('Member business address', $par_data_organisation, ['field_premises' => 'summary'], ['edit-entity']);
+    $form['member_registered_address'] = $this->renderSection('Member business address', $par_data_organisation, ['field_premises' => 'summary'], ['edit-entity'], TRUE, TRUE);
 
     // Display the date the membership began.
     $form['membership_date'] = $this->renderSection('Date of membership', $par_data_coordinated_business, ['date_membership_began' => 'default'], ['edit-field']);

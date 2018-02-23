@@ -263,11 +263,15 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $values = $this->cleanseMultipleValues($values);
     $this->getFlowDataHandler()->setFormTempData($values);
 
+    drupal_set_message("here " . __LINE__);
+
     // We don't want to validate if just removing items.
     $remove_action = strpos($form_state->getTriggeringElement()['#name'], 'remove:');
     if ($remove_action !== FALSE) {
       return;
     }
+
+    drupal_set_message("here " . __LINE__);
 
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
@@ -285,7 +289,15 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
               // @example 2nd item out of 3 should be validated.
               // @example 3rd item out of 3 should _not_ be validated.
               if ($component->getCardinality() === 1 || $cardinality === 1 || $cardinality < $component->countItems()) {
-                $this->setFieldViolations($field_name, $form_state, $violation_list);
+//                if ($violation_list && is_array($violation_list)) {
+//                  $blah = array_keys($violation_list);
+//                }
+//                else {
+//                  $blah = var_export($violation_list);
+//                }
+//
+//                var_dump("bad {$field_name} with " . print_r($blah, 1));
+//                $this->setFieldViolations($field_name, $form_state, $violation_list);
               }
             }
           }
@@ -523,6 +535,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    *   Form element/wrapper anchor ID.
    */
   public function getFormElementPageAnchor($element_key, FormStateInterface &$form_state) {
+    kint ($form_state->getCompleteForm());
+    die();
     $form_element = &NestedArray::getValue($form_state->getCompleteForm(), $element_key);
 
     // Catch some potential FAPI mistakes.
