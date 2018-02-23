@@ -24,7 +24,7 @@ Feature: PA User - Manage Addresses
         And I clear the inputfield "#edit-postcode"
         And I clear the inputfield "#edit-county"
         And I click on the button "#edit-save"
-        And I run tota11y against the current page
+        # And I run tota11y against the current page
         Then I expect that element ".error-summary" does exist
         When I add "SE16 4NX" to the inputfield "#edit-postcode"
         And I click on the button "#edit-save"
@@ -48,13 +48,13 @@ Feature: PA User - Manage Addresses
         When I click on the link "edit about the partnership"
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Primary Authority partnership information"
         And I expect that element "h1.heading-xlarge" contains the text "Information about the partnership"
-        When I run tota11y against the current page
+        # When I run tota11y against the current page
         And I add "Change to the about business details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-save"
         # Then I expect that element "#edit-about-business" contains the text "Change to the about business details section"
 
         # ADD SIC CODES
-        And I run tota11y against the current page
+        # And I run tota11y against the current page
         When I click on the link "add another sic code"
         And I select the option with the text "10-0 Health and social care" for element "#edit-sic-code"
         And I click on the button "#edit-save"
@@ -70,7 +70,7 @@ Feature: PA User - Manage Addresses
         # ADD LEGAL ENTITY - Limited Liability Partnership
 
         When I click on the link "add legal entity"
-        And I run tota11y against the current page
+        # And I run tota11y against the current page
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Primary Authority partnership information"
         Then I expect that element "h1.heading-xlarge" contains the text "Add a legal entity for your organisation"
         Then I expect that element ".form-item-registered-name label" contains the text "Enter name of the legal entity"

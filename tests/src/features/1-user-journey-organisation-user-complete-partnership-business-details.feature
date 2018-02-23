@@ -16,12 +16,13 @@ Feature: Organisation User - Complete business details
         And I add "Business For Direct Partnership" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
         And I click on the link "Business For Direct Partnership"
+        # And I run tota11y against the current page
         And I expect that element "h1" is not empty
 
         # EDIT REGISTERED ADDRESS
         
         And I expect that element "h1.heading-xlarge" contains the text "Confirm the details about the business"
-        When I run tota11y against the current page
+        # When I run tota11y against the current page
         And I add "Change to the about business details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-next"
         And I clear the inputfield "#edit-address-line1"
@@ -30,7 +31,7 @@ Feature: Organisation User - Complete business details
         And I clear the inputfield "#edit-postcode"
         And I clear the inputfield "#edit-county"
         And I click on the button "#edit-next"
-        And I run tota11y against the current page
+        # And I run tota11y against the current page
         Then I expect that element ".error-summary" does exist
         When I add "SE16 4NX" to the inputfield "#edit-postcode"
         And I click on the button "#edit-next"
@@ -78,7 +79,7 @@ Feature: Organisation User - Complete business details
         When I add "0000000000" to the inputfield "#edit-par-component-legal-entity-2-registered-number"
         When I click on the button "#edit-par-component-legal-entity-2-remove"
         When I click on the button "#edit-next"
-
+        # And I run tota11y against the current page
         Then I expect that element "h1.heading-xlarge" contains the text "Review the partnership summary information below"
         And I expect that element "#edit-organisation-name" contains the text "Business For Direct Partnership"
         And I expect that element "#edit-organisation-registered-address" contains the text "1 Change St"
@@ -103,7 +104,6 @@ Feature: Organisation User - Complete business details
         Then I expect that element ".error-summary" is visible
         And I click on the checkbox "#edit-terms-organisation-agreed"
         And I click on the button "#edit-save"
-
         Then I expect that element "h1.heading-xlarge" contains the text "Thank you for completing the application"
         When I click on the button ".button"
         And I add "Business For Direct Partnership" to the inputfield "#edit-keywords"

@@ -20,7 +20,7 @@ Feature: Coordinator User - Complete business details
         # EDIT REGISTERED ADDRESS
         
         And I expect that element "h1.heading-xlarge" contains the text "Confirm the details about the business"
-        When I run tota11y against the current page
+        # When I run tota11y against the current page
         And I add "Change to the about business details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-next"
         And I clear the inputfield "#edit-address-line1"
@@ -29,7 +29,7 @@ Feature: Coordinator User - Complete business details
         And I clear the inputfield "#edit-postcode"
         And I clear the inputfield "#edit-county"
         And I click on the button "#edit-next"
-        And I run tota11y against the current page
+        # And I run tota11y against the current page
         Then I expect that element ".error-summary" does exist
         When I add "SE16 4NX" to the inputfield "#edit-postcode"
         And I click on the button "#edit-next"

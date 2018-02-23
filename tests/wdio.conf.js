@@ -122,13 +122,17 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: http://webdriver.io/guide/testrunner/reporters.html
-    reporters: ['json', 'spec'],
+    reporters: ['json', 'spec', 'mochawesome'],
     // Save test report to ./tests/reports/report.json
     // see: http://webdriver.io/guide/testrunner/reporters.html
     reporterOptions: {
         outputDir: './reports/',
         filename: 'report',
         combined: true,
+        mochawesomeOpts: {
+            includeScreenshots: true,
+            screenshotUseRelativePath: true,
+        },
     },
     // If you are using Cucumber you need to specify the location of your step
     // definitions.

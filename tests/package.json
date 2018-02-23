@@ -43,6 +43,7 @@
     "wdio-chromedriver-service": "0.1.2",
     "wdio-cucumber-framework": "1.1.0",
     "wdio-json-reporter": "0.2.1",
+    "wdio-mochawesome-reporter": "^1.3.0",
     "wdio-screenshot": "0.6.0",
     "wdio-selenium-standalone-service": "0.0.9",
     "wdio-spec-reporter": "~0.1.2",

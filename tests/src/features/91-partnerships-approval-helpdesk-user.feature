@@ -9,7 +9,7 @@ Feature: Helpdesk approve partnership
         And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
-        And I run tota11y against the current page
+        # And I run tota11y against the current page
         When I add "Business For Direct Partnership" to the inputfield "#edit-keywords"
         And I select the option with the text "Confirmed by the Organisation" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-helpdesk-dashboard"
@@ -31,7 +31,7 @@ Feature: Helpdesk approve partnership
         # GO BACK TO HELPDESK
 
         When I open the url "/helpdesk"
-        And I run tota11y against the current page
+        # And I run tota11y against the current page
         When I add "Business For Direct Partnership" to the inputfield "#edit-keywords"
         And I select the option with the text "- Any -" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-helpdesk-dashboard"
