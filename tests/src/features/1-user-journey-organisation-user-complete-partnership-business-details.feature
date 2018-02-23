@@ -1,7 +1,7 @@
 @ci @test
-Feature: Organisation User - Complete business details
+Feature: Business User - Complete organisation details
 
-    Scenario: Organisation User - Complete business details
+    Scenario: Business User - Complete organisation details
 
         # PARTNERSHIPS DASHBOARD
 
@@ -13,16 +13,16 @@ Feature: Organisation User - Complete business details
         Then I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I click on the link "See your partnerships"
         # And I select the option with the text "Confirmed by Authority" for element "#edit-partnership-status"
-        And I add "Business For Direct Partnership" to the inputfield "#edit-keywords"
+        And I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I click on the link "Business For Direct Partnership"
+        And I click on the link "Organisation For Direct Partnership"
         And I expect that element "h1" is not empty
 
         # EDIT REGISTERED ADDRESS
         
-        And I expect that element "h1.heading-xlarge" contains the text "Confirm the details about the business"
+        And I expect that element "h1.heading-xlarge" contains the text "Confirm the details about the organisation"
         When I run tota11y against the current page
-        And I add "Change to the about business details section" to the inputfield "#edit-about-business"
+        And I add "Change to the about organisation details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-next"
         And I clear the inputfield "#edit-address-line1"
         And I clear the inputfield "#edit-address-line2"
@@ -80,12 +80,12 @@ Feature: Organisation User - Complete business details
         When I click on the button "#edit-next"
 
         Then I expect that element "h1.heading-xlarge" contains the text "Review the partnership summary information below"
-        And I expect that element "#edit-organisation-name" contains the text "Business For Direct Partnership"
+        And I expect that element "#edit-organisation-name" contains the text "Organisation For Direct Partnership"
         And I expect that element "#edit-organisation-registered-address" contains the text "1 Change St"
         And I expect that element "#edit-organisation-registered-address" contains the text "New Change"
         And I expect that element "#edit-organisation-registered-address" contains the text "London"
         And I expect that element "#edit-organisation-registered-address" contains the text "SE16 4NX"
-        And I expect that element "#edit-about-organisation" contains the text "Change to the about business details section"
+        And I expect that element "#edit-about-organisation" contains the text "Change to the about organisation details section"
         And I expect that element "#edit-sic-code" contains the text "Health and social care"
 #        Then I expect that element "#edit-number-employees" contains the text "50 to 249"
         Then I expect that element "#edit-legal-entities" contains the text "New LLP Company"
@@ -106,7 +106,7 @@ Feature: Organisation User - Complete business details
 
         Then I expect that element "h1.heading-xlarge" contains the text "Thank you for completing the application"
         When I click on the button ".button"
-        And I add "Business For Direct Partnership" to the inputfield "#edit-keywords"
+        And I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
-        # And I click on the link "Business For Direct Partnership"
+        # And I click on the link "Organisation For Direct Partnership"
         Then I expect that element ".table-scroll-wrapper" contains the text "Confirmed by the Organisation"

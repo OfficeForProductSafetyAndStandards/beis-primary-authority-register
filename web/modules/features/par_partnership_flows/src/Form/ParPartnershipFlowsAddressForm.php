@@ -82,7 +82,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       }
     }
     else {
-      $this->pageTitle = 'New business information';
+      $this->pageTitle = 'New organisation information';
     }
 
     return parent::titleCallback();

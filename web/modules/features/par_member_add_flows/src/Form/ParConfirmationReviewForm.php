@@ -47,10 +47,10 @@ class ParConfirmationReviewForm extends ParBaseForm {
     /** @var ParDataLegalEntity[] $par_data_legal_entities */
 
     // Display organisation name.
-    $form['organisation_name'] = $this->renderSection('Member business name', $par_data_organisation, ['organisation_name' => 'title']);
+    $form['organisation_name'] = $this->renderSection('Member organisation name', $par_data_organisation, ['organisation_name' => 'title']);
 
     // Display the member's address
-    $form['member_registered_address'] = $this->renderSection('Member business address', $par_data_premises, ['address' => 'summary']);
+    $form['member_registered_address'] = $this->renderSection('Member organisation address', $par_data_premises, ['address' => 'summary']);
 
     // Display the date the membership began.
     $form['membership_date'] = $this->renderSection('Date of membership', $par_data_coordinated_business, ['date_membership_began' => 'default']);

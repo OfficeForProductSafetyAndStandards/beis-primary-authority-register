@@ -48,12 +48,12 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     $build['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
 
     // View and perform operations on the information about the business.
-    $build['about_business'] = $this->renderSection('About the business', $par_data_organisation, ['comments' => 'about']);
+    $build['about_business'] = $this->renderSection('About the organisation', $par_data_organisation, ['comments' => 'about']);
 
     // Create links for the actions that can be performed on this partnership.
     $build['partnership_actions'] = [
       '#type' => 'fieldset',
-      '#title' => t('Send a message about this business'),
+      '#title' => t('Send a message about this organisation'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,

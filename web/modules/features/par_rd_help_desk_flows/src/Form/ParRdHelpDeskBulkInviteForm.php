@@ -50,7 +50,7 @@ class ParPartnershipFlowsInviteForm extends ParBaseForm {
         $message_body = <<<HEREDOC
 Dear {$par_data_person->getFullName()},
 
-A new partnership has been created for you by {$authority->get('authority_name')->getString()}. Please log in to the Primary Authority Register to update your business's details. To do this, please follow this link:
+A new partnership has been created for you by {$authority->get('authority_name')->getString()}. Please log in to the Primary Authority Register to update your organisation's details. To do this, please follow this link:
 
 [site:login-url]
 
@@ -62,7 +62,7 @@ HEREDOC;
         $message_body = <<<HEREDOC
 Dear {$par_data_person->getFullName()},
 
-A new partnership has been created for you by {$authority->get('authority_name')->getString()}. Please create your account with the Primary Authority Register so that you can manage your business's details. To do this, please follow this link:
+A new partnership has been created for you by {$authority->get('authority_name')->getString()}. Please create your account with the Primary Authority Register so that you can manage your organisation's details. To do this, please follow this link:
 
 [invite:invite-accept-link]
 
@@ -102,11 +102,11 @@ HEREDOC;
     // Get Recipient.
     $form['business_member'] = [
       '#type' => 'textfield',
-      '#title' => t('Business contact email'),
+      '#title' => t('Organisation contact email'),
       '#required' => TRUE,
       '#disabled' => TRUE,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('business_member'),
-      '#description' => 'This is the businesses primary contact. If you need to send this invite to another person please contact the helpdesk.',
+      '#description' => 'This is the organisation\'s primary contact. If you need to send this invite to another person please contact the helpdesk.',
     ];
 
     // Allow the message subject to be changed.

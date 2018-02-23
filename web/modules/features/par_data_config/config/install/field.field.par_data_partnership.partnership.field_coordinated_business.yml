@@ -9,7 +9,7 @@ id: par_data_partnership.partnership.field_coordinated_business
 field_name: field_coordinated_business
 entity_type: par_data_partnership
 bundle: partnership
-label: 'Coordinated Business'
+label: 'Coordinated Member'
 description: ''
 required: false
 translatable: false

@@ -31,7 +31,7 @@ Feature: New Direct Partnership For HD user To Revoke
         And I expect that element "#par-partnership-application-authority-checklist" contains the text "Is this your local authority?"
         And I click on the radio "#edit-business-regulated-by-one-authority-1"
         And I click on the radio "#edit-is-local-authority-1"
-  #        And I expect that element ".error-summary" contains the text "The business needs to be informed about local authority"
+  #        And I expect that element ".error-summary" contains the text "The organisation needs to be informed about local authority"
         When I click on the button "#edit-next"
 
         # ADD ABOUT THE PARTNERSHIP
@@ -47,7 +47,7 @@ Feature: New Direct Partnership For HD user To Revoke
 
         And I click new partnership if presented with choices
 
-        # ADD BUSINESS DETAIL
+        # ADD ORGANISATION DETAIL
         And I add "Leidseplein 10" to the inputfield "#edit-address-line1"
         And I add "Leidseplein" to the inputfield "#edit-address-line2"
         When I add "Amsterdam" to the inputfield "#edit-town-city"
@@ -79,7 +79,7 @@ Feature: New Direct Partnership For HD user To Revoke
         And I click on the button "#edit-save"
 
         # PAR1106
-        # Option given to send invite or complete business user journey
+        # Option given to send invite or complete organisation user journey
 
         # INVITATION
 
