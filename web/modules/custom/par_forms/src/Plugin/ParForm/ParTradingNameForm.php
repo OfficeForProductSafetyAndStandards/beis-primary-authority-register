@@ -38,7 +38,9 @@ class ParTradingNameForm extends ParFormPluginBase {
       $index = $trading_name_delta ?: $cardinality-1;
       try {
         $trading_name = $par_data_organisation ? $par_data_organisation->get('trading_name')->get($index) : NULL;
-        $this->getFlowDataHandler()->setFormPermValue("trading_name", $trading_name->getString());
+        if ($trading_name) {
+          $this->getFlowDataHandler()->setFormPermValue("trading_name", $trading_name->getString());
+        }
       }
       catch (MissingDataException $e) {
         $message = $this->t('Trading name could not be loaded due to missing data: %error');
