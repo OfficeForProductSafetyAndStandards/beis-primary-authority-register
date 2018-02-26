@@ -166,6 +166,7 @@ par_enforcement_flows.approve_confirm:
     parameters:
       par_data_enforcement_notice:
         type: entity:par_data_enforcement_notice
+
 # PAR Data Send Enforcement Notice To Organisation
 par_enforcement_flows.send:
   path: '/enforcement-notice/{par_data_enforcement_notice}/send'
@@ -179,6 +180,7 @@ par_enforcement_flows.send:
     parameters:
       par_data_enforcement_notice:
         type: entity:par_data_enforcement_notice
+
 # Review a raised enforcement notice that has been acted on.
 par_enforcement_flows.completed_enforcement:
   path: '/enforcement-notice/{par_data_enforcement_notice}/reviewed'
@@ -186,7 +188,7 @@ par_enforcement_flows.completed_enforcement:
     _controller: '\Drupal\par_enforcement_flows\Controller\ParEnforcementFlowsCompletedEnforcementController::content'
     _title_callback: '\Drupal\par_enforcement_flows\Controller\ParEnforcementFlowsCompletedEnforcementController::titleCallback'
   requirements:
-    _permission: 'approve enforcement notice'
+    _permission: 'raise enforcement notice'
     _custom_access: '\Drupal\par_enforcement_flows\Controller\ParEnforcementFlowsCompletedEnforcementController::accessCallback'
     par_data_partnership: \d+
   options:
