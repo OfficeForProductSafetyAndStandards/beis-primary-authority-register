@@ -176,6 +176,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 //    $row_number = 0;
     $error_message = [];
 //    $error = '';
+    // Increment row number to match the correct row number in csv file.
+    $row_number += 2;
+
     // Load the submitted file and process the data.
     /** @var $files FileInterface[] * */
 //    $files = File::loadMultiple($csv);
@@ -209,6 +212,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 //      }
 //      if (empty($value)) {
 //        $error_message = 'Line ' . $row_number . ', column ' . $key;
+//        dpm($key);
 //      }
       // Only check following columns.
       switch ($key) {
@@ -222,7 +226,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
           }
           break;
         default:
-          $error_message = [];
+//          $error_message = [];
       }
     }
 

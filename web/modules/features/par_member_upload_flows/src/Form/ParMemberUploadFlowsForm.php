@@ -5,7 +5,6 @@ namespace Drupal\par_member_upload_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\file\FileInterface;
 use Drupal\file\Entity\File;
 use Drupal\par_member_upload_flows\ParFlowAccessTrait;
 use Drupal\par_member_upload_flows\ParMemberCsvHandlerInterface;
@@ -16,6 +15,13 @@ use Drupal\par_member_upload_flows\ParMemberCsvHandlerInterface;
 class ParMemberUploadFlowsForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFormId() {
+    return 'par_member_upload_csv';
+  }
 
   /**
    * {@inheritdoc}
@@ -31,7 +37,7 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
       '#upload_location' => 's3private://member-csv/',
       '#multiple' => FALSE,
       '#required' => TRUE,
-//      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('csv'),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('csv'),
       '#upload_validators' => [
         'file_validate_extensions' => [
           0 => 'csv',
@@ -65,50 +71,37 @@ class ParMemberUploadFlowsForm extends ParBaseForm {
       /** @var $files File[] * */
       $files = File::loadMultiple($csv);
 
-      // Define array variable.
-      $rows = [];
-
-      // .
+      // Loop through each csv row from uploaded file and save in $row array.
       foreach ($files as $file) {
-//        dpm($file);
-        // Validate file.
-//        $form_state->setError($form, 'The file you have uploaded is not in the right format.');
         $rows = $this->getCsvHandler()->loadFile($file, $rows);
-//        try {
-//          $rows = $this->getCsvHandler()->loadFile($file, $rows);
-//        }
-//        catch (\Exception $e) {
-//          $rows = [];
-////          var_dump($e->getMessage());
-//        }
-//        var_dump($rows);
-//        die;
       }
 
-//      dpm($rows);
-      // Validate csv data.
-      foreach ($rows as $row => $data) {
-//        if (count($this->getCsvHandler()->validateRow($data)) > 0) {
-//          $violations[$row] = $this->getCsvHandler()->validateRow($data);
-////        $violations[$row] = $this->getCsvHandler()->validateRow($row, $data);
-////        dpm($row);
-////          dpm($data);
-//        }
-//        dpm($data);
-        $violations[$row + 2] = $this->getCsvHandler()->validateRow($data, $row);
+      // Check if uploaded csv file's column numbers are correct.
+      if (count($rows[0]) <> 24) {
+        $violations[] = 'CSV File - Column numbers must be 24.';
       }
 
-      dpm($violations);
-//
-//      // Save the data in the User's temp private store for later processing.
-//      if ($violations) {
-//        $this->getFlowDataHandler()->setTempDataValue('errors', $violations);
-//        $this->getFlowDataHandler()->setTempDataValue('coordinated_members', []);
-//      }
-//      else {
-//        $this->getFlowDataHandler()->setTempDataValue('errors', []);
-//        $this->getFlowDataHandler()->setTempDataValue('coordinated_members', $rows);
-//      }
+      // Loop through each column of csv row and check if any required column
+      // has missing data. If yes then add error message in an array.
+      if (count($rows[0]) == 24) {
+        foreach ($rows as $row => $data) {
+          if (count($this->getCsvHandler()->validateRow($data, $row)) > 0) {
+            $violations[$row + 2] = $this->getCsvHandler()->validateRow($data, $row);
+          }
+        }
+      }
+
+      // If csv has missing data in any of the required fields.
+      if (count($violations) > 0) {
+        $form_state->setValue('errors', $violations);
+        $form_state->setValue('coordinated_members', []);
+      }
+
+      // If csv has no missing data in any of the required fields.
+      else {
+        $form_state->setValue('errors', []);
+        $form_state->setValue('coordinated_members', $rows);
+      }
     }
   }
 

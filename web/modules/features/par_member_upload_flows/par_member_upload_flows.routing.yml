@@ -13,7 +13,7 @@ par_member_upload_flows.member_upload:
         type: entity:par_data_partnership
 
 par_member_upload_flows.member_validate:
-  path: '/partnership/{par_data_partnership}/members/validate'
+  path: '/partnership/{par_data_partnership}/members/upload/validate'
   defaults:
     _form: '\Drupal\par_member_upload_flows\Form\ParMemberDataValidationForm'
     _title_callback: '\Drupal\par_member_upload_flows\Form\ParMemberDataValidationForm::titleCallback'
