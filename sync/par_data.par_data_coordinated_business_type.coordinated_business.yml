@@ -3,10 +3,10 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: K98Xd4BW22J6lqy-bWrmLaQTULOFWY7WfwJZjFwe28s
+  default_config_hash: ZD4PgQwiUb2_qLuKZBnlKb2qkDiRXV1gfPEMNckOAJE
 id: coordinated_business
-label: 'Coordinated Business'
-description: 'A coordinated business is a business that is a member of a coordinated partnership.'
+label: 'Coordinated Member'
+description: 'A coordinated member is an organisation that is a member of a coordinated partnership.'
 help: ''
 isDeletable: true
 isRevokable: true

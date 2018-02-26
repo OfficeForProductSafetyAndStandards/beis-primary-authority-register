@@ -159,8 +159,8 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
 
     // Partnership info confirmed by business.
     $fields['covered_by_inspection'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Covered by inspection?'))
-      ->setDescription(t('Is this coordinated business covered by inspection?'))
+      ->setLabel(t('Covered by inspection plan'))
+      ->setDescription(t('Is this coordinated business covered by inspection plan?'))
       ->setRevisionable(TRUE)
       ->setDefaultValue(TRUE)
       ->setDisplayOptions('form', [

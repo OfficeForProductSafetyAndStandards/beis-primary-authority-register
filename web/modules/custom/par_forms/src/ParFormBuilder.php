@@ -123,7 +123,6 @@ class ParFormBuilder extends DefaultPluginManager {
       $elements['actions']['add_another'] = [
         '#type' => 'submit',
         '#name' => 'add_another',
-        '#validate' => ['::validateForm'],
         '#submit' => ['::multipleItemActionsSubmit'],
         '#value' => $this->t('Add another'),
         '#attributes' => [

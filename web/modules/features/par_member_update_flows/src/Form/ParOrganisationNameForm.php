@@ -11,12 +11,6 @@ use Drupal\par_flows\Form\ParBaseForm;
  */
 class ParOrganisationNameForm extends ParBaseForm {
 
-  protected $formItems = [
-    'par_data_organisation:organisation' => [
-      'organisation_name' => 'organisation_name',
-    ],
-  ];
-
   protected $pageTitle = 'Add member organisation name';
 
   /**
@@ -29,18 +23,26 @@ class ParOrganisationNameForm extends ParBaseForm {
     parent::loadData();
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    parent::submitForm($form, $form_state);
 
-    $form['organisation_name'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Enter the member organisation name'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('organisation_name'),
-    ];
+    $par_data_organisation = $this->getFlowDataHandler()
+      ->getParameter('par_data_organisation');
 
-    return parent::buildForm($form, $form_state);
+    $par_data_organisation->set('organisation_name',
+      $this->getFlowDataHandler()->getTempDataValue('name'));
+
+    if ($par_data_organisation->save()) {
+      $this->getFlowDataHandler()->deleteStore();
+    }
+    else {
+      $message = $this->t('The %field field could not be saved for %form_id');
+      $replacements = [
+        '%field' => 'organisation_name',
+        '%form_id' => $this->getFormId(),
+      ];
+      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+    }
   }
 
 }

@@ -5,7 +5,7 @@ namespace Drupal\par_forms\Plugin\ParForm;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
- * About business form plugin.
+ * Legal Entity form plugin.
  *
  * @ParForm(
  *   id = "legal_entity",
@@ -22,7 +22,14 @@ class ParLegalEntityForm extends ParFormPluginBase {
       'registered_name' => 'registered_name',
       'legal_entity_type' => 'legal_entity_type',
       'registered_number' => 'registered_number',
-    ]
+    ],
+  ];
+
+  /**
+   * @defaults
+   */
+  protected $formDefaults = [
+    'legal_entity_type' => 'none',
   ];
 
   /**
@@ -56,9 +63,10 @@ class ParLegalEntityForm extends ParFormPluginBase {
     $form['legal_entity_type'] = [
       '#type' => 'select',
       '#title' => $this->t('Select type of Legal Entity'),
-      '#default_value' => $this->getDefaultValuesByKey('legal_entity_type', $cardinality, ''),
+      '#default_value' => $this->getDefaultValuesByKey('legal_entity_type', $cardinality, $this->getFormDefaultByKey('legal_entity_type')),
       '#options' => ['' => ''] + $legal_entity_bundle->getAllowedValues('legal_entity_type'),
     ];
+
 
     $form['registered_number'] = [
       '#type' => 'textfield',
