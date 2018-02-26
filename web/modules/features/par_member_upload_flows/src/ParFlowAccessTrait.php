@@ -11,15 +11,13 @@ trait ParFlowAccessTrait {
    * {@inheritdoc}
    */
   public function accessCallback(ParDataPartnership $par_data_partnership = NULL) {
-//    dpm($par_data_partnership);
 
-    $lock = \Drupal::lock();
-//    $lock = $lock->acquire('partnership-members:{ID}');
-    $lock = $lock->acquire('partnership_lock');
-
+//    $lock = \Drupal::lock();
+////    $lock = $lock->acquire('partnership-members:{ID}');
+//    $lock = $lock->acquire('partnership_lock');
     // If the partnership isn't a coordinated one then don't allow update.
     if (!$par_data_partnership->isCoordinated()) {
-      $this->accessResult = AccessResult::forbidden('This is not a coordianted partnership.');
+      $this->accessResult = AccessResult::forbidden('This is not a coordinated partnership.');
     }
 
     return parent::accessCallback();

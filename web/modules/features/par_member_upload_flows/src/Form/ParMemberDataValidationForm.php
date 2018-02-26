@@ -6,7 +6,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_member_upload_flows\ParFlowAccessTrait;
-use Drupal\par_member_upload_flows\ParMemberCsvHandlerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
