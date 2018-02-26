@@ -33,7 +33,7 @@ steps:
       organisation_name: {}
     redirect:
       save: 1
-      cancel: 11
+      cancel: 1
   3:
     route: par_member_update_flows.update_address
     form_id: par_member_update_address
@@ -41,7 +41,7 @@ steps:
       address: {}
     redirect:
       save: 1
-      cancel: 11
+      cancel: 1
   4:
     route: par_member_update_flows.update_contact
     form_id: par_member_update_contact
@@ -49,7 +49,7 @@ steps:
       contact_details: {}
     redirect:
       save: 1
-      cancel: 11
+      cancel: 1
   5:
     route: par_member_update_flows.update_begin_date
     form_id: par_member_update_begin_date
@@ -57,7 +57,7 @@ steps:
       begin_date: {}
     redirect:
       save: 1
-      cancel: 11
+      cancel: 1
   6:
     route: par_member_update_flows.add_trading_name
     form_id: par_member_add_trading_name
@@ -66,7 +66,7 @@ steps:
         cardinality: {}
     redirect:
       save: 1
-      cancel: 11
+      cancel: 1
   7:
     route: par_member_update_flows.update_trading_name
     form_id: par_member_update_trading_name
@@ -75,7 +75,7 @@ steps:
         cardinality: {}
     redirect:
       save: 1
-      cancel: 11
+      cancel: 1
   8:
     route: par_member_update_flows.add_legal_entity
     form_id: par_member_add_legal_entity
@@ -84,7 +84,7 @@ steps:
         cardinality: {}
     redirect:
       save: 1
-      cancel: 11
+      cancel: 1
   9:
     route: par_member_update_flows.update_legal_entities
     form_id: par_member_update_legal_entity
@@ -93,7 +93,7 @@ steps:
         cardinality: {}
     redirect:
       save: 1
-      cancel: 11
+      cancel: 1
   10:
     route: par_member_update_flows.covered_by_plan
     form_id: par_member_update_inspection_plan_coverage
@@ -101,6 +101,6 @@ steps:
       covered_by_plan: {}
     redirect:
       save: 1
-      cancel: 11
+      cancel: 1
   11:
     route: view.members_list.member_list_coordinator
