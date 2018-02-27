@@ -14,6 +14,7 @@ Feature: Business User - Complete organisation details
         And I click on the link "See your partnerships"
         # And I select the option with the text "Confirmed by Authority" for element "#edit-partnership-status"
         And I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
+        And I select the option with the text "Confirmed by the Authority" for element "#edit-partnership-status-1"
         And I click on the button "#edit-submit-par-user-partnerships"
         And I click on the link "Organisation For Direct Partnership"
         And I expect that element "h1" is not empty
