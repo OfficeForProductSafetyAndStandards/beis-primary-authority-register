@@ -93,7 +93,7 @@ Feature: Coordinator User - Update Partnership
         And I clear the inputfield "#edit-year"
         And I add "20" to the inputfield "#edit-day"
         And I add "2" to the inputfield "#edit-month"
-        And I add "2018" to the inputfield "#edit-month"
+        And I add "2018" to the inputfield "#edit-year"
         And I click on the button "#edit-next"
         Then I expect that element "h1.heading-xlarge" contains the text "Membership Ceased"
         And I click on the button "#edit-save"
