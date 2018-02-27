@@ -116,13 +116,6 @@ Feature: Coordinator User - Update Partnership
         And I click on the button "#edit-save"
         Then I expect that element "#edit-about-business" contains the text "Change to the about organisation details section"
 
-        # ADD MEMBERS
-
-        When I click on the link "edit number of members"
-        And I select the option with the text "Small" for element "#edit-business-size"
-        And I click on the button "#edit-save"
-        Then I expect that element "#edit-associations" contains the text "small"
-
         # ADD NEW TRADING NAME
 
         When I click on the link "add another trading name"

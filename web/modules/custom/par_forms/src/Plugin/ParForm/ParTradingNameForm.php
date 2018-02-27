@@ -3,6 +3,7 @@
 namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\TypedData\Exception\MissingDataException;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -31,13 +32,23 @@ class ParTradingNameForm extends ParFormPluginBase {
    */
   public function loadData($cardinality = 1) {
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
-    $trading_name_delta = $this->getFlowDataHandler()->getParameter('trading_name_delta');
+    $trading_name_delta = (int) $this->getFlowDataHandler()->getParameter('trading_name_delta');
     if ($par_data_organisation) {
       // Store the current value of the trading name if it's being edited.
       $index = $trading_name_delta ?: $cardinality-1;
-      $trading_name = $par_data_organisation ? $par_data_organisation->get('trading_name')->get($index) : NULL;
-      if ($trading_name) {
-        $this->getFlowDataHandler()->setFormPermValue("trading_name", $trading_name->getString());
+      try {
+        $trading_name = $par_data_organisation ? $par_data_organisation->get('trading_name')->get($index) : NULL;
+        if ($trading_name) {
+          $this->getFlowDataHandler()->setFormPermValue("trading_name", $trading_name->getString());
+        }
+      }
+      catch (MissingDataException $e) {
+        $message = $this->t('Trading name could not be loaded due to missing data: %error');
+        $replacements = [
+          '%error' => $e->getMessage(),
+        ];
+        $this->getLogger($this->getLoggerChannel())
+          ->error($message, $replacements);
       }
     }
 
