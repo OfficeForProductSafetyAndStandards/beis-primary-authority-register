@@ -99,7 +99,7 @@ Feature: Coordinator User - Update Partnership
         And I click on the button "#edit-save"
         Then I expect that element "a*=New Member One" does not exist
         Then I expect that element "Cease membership" does not exist
-        And I expect that element ".views-field-date-membership-ceased" contains the text "20 February 2018"
+        And I expect that element "td.views-field.views-field-date-membership-ceased" contains the text "20 February 2018"
        
         # EDIT REGISTERED ADDRESS
 
