@@ -8,7 +8,8 @@
     "test:build": "./node_modules/.bin/wdio wdio.BUILD.conf.js",
     "test:smoke": "./node_modules/.bin/wdio wdio.SMOKE.conf.js",
     "test:dev": "./node_modules/.bin/wdio wdio.DEV.conf.js",
-    "test:validate": "eslint 'src/**/*.js'"
+    "test:validate": "eslint 'src/**/*.js'",
+    "generatehtmlreport":"marge reports/report.json --reportTitle 'Test Results'"
   },
   "repository": {
     "type": "git",
