@@ -198,6 +198,7 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
     $fields['date_membership_ceased'] = BaseFieldDefinition::create('datetime')
       ->setLabel(t('Membership Ceased Date'))
       ->setDescription(t('The date this membership was ceased.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'datetime_type' => 'date',
