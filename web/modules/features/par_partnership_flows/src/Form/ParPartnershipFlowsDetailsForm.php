@@ -91,6 +91,8 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
           '#markup' => t('@link', [
             '@link' => Link::createFromRoute('Show members list', 'view.members_list.member_list_coordinator', $this->getRouteParams())->toString(),
           ]),
+          '#prefix' => '<p>',
+          '#suffix' => '</p>',
         ];
       }
       else {
@@ -99,9 +101,11 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
         $form['associations']['add_link'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
-            '@link' => Link::createFromRoute('Show members list', 'view.members_list.member_list_coordinator', $this->getRouteParams())->toString(),
+            '@link' => Link::createFromRoute('Add a member', 'par_member_add_flows.add_organisation_name', $this->getRouteParams())->toString(),
           ]),
           '#weight' => -100,
+          '#prefix' => '<p>',
+          '#suffix' => '</p>',
         ];
       }
     }
