@@ -29,7 +29,7 @@ Feature: Coordinator User - Complete organisation details
         And I clear the inputfield "#edit-postcode"
         And I clear the inputfield "#edit-county"
         And I click on the button "#edit-next"
-        And I run tota11y against the current page
+        # And I run tota11y against the current page
         Then I expect that element ".error-summary" does exist
         When I add "SE16 4NX" to the inputfield "#edit-postcode"
         And I click on the button "#edit-next"
