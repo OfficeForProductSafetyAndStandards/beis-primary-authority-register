@@ -65,7 +65,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
 
     // Override page title for Partnership Application journey.
     if ($this->getFlowNegotiator()->getFlowName() === 'partnership_application') {
-      $this->pageTitle = 'Add a contact for the business';
+      $this->pageTitle = 'Add a contact for the organisation';
     }
 
     if ($this->getFlowNegotiator()->getFlowName() === 'partnership_direct_application' || $this->getFlowNegotiator()->getFlowName() === 'partnership_coordinated_application') {

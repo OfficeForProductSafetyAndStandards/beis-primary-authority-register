@@ -8,7 +8,8 @@
     "test:build": "./node_modules/.bin/wdio wdio.BUILD.conf.js",
     "test:smoke": "./node_modules/.bin/wdio wdio.SMOKE.conf.js",
     "test:dev": "./node_modules/.bin/wdio wdio.DEV.conf.js",
-    "test:validate": "eslint 'src/**/*.js'"
+    "test:validate": "eslint 'src/**/*.js'",
+    "generatehtmlreport":"marge reports/report.json --reportTitle 'Test Results'"
   },
   "repository": {
     "type": "git",
@@ -40,13 +41,14 @@
     "http-server": "~0.10.0",
     "jest": "~21.2.0",
     "wdio-browserstack-service": "0.1.11",
-    "wdio-chromedriver-service": "0.1.1",
-    "wdio-cucumber-framework": "~1.0.2",
+    "wdio-chromedriver-service": "0.1.2",
+    "wdio-cucumber-framework": "1.1.0",
     "wdio-json-reporter": "0.2.1",
-    "wdio-screenshot": "^0.6.0",
-    "wdio-selenium-standalone-service": "~0.0.9",
+    "wdio-mochawesome-reporter": "^1.3.0",
+    "wdio-screenshot": "0.6.0",
+    "wdio-selenium-standalone-service": "0.0.9",
     "wdio-spec-reporter": "~0.1.2",
     "webdrivercss": "latest",
-    "webdriverio": "4.10.0"
+    "webdriverio": "4.10.2"
   }
 }

@@ -9,6 +9,8 @@ use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\Entity\ParFlowInterface;
 use Drupal\user\Entity\User;
 use Drupal\user\Plugin\views\argument_default\CurrentUser;
+use Symfony\Component\Routing\Route;
+use Drupal\Core\Routing\RouteMatchInterface;
 
 class ParFlowNegotiator implements ParFlowNegotiatorInterface {
 
@@ -29,7 +31,7 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
   /**
    * The current route matcher.
    *
-   * @var \Drupal\Core\Routing\CurrentRouteMatch
+   * @var \Drupal\Core\Routing\RouteMatchInterface
    */
   protected $route;
 
@@ -94,6 +96,17 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
    */
   public function getRoute() {
     return $this->route;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setRoute(RouteMatchInterface $route) {
+    $this->route = $route;
+
+    // Because we've changed the route we need to reset the negotiated flow.
+    // and the route parameters
+    $this->getFlowName(TRUE);
   }
 
   /**
@@ -164,8 +177,8 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
   /**
    * {@inheritdoc}
    */
-  public function getFlowName() {
-    if ($this->flow_name) {
+  public function getFlowName($reset = FALSE) {
+    if ($this->flow_name && !$reset) {
       return $this->flow_name;
     }
 

@@ -8,6 +8,7 @@ dependencies:
     - field.field.par_data_partnership.partnership.field_authority_person
     - field.field.par_data_partnership.partnership.field_coordinated_business
     - field.field.par_data_partnership.partnership.field_inspection_plan
+    - field.field.par_data_partnership.partnership.field_legal_entity
     - field.field.par_data_partnership.partnership.field_organisation
     - field.field.par_data_partnership.partnership.field_organisation_person
     - field.field.par_data_partnership.partnership.field_regulatory_function
@@ -20,12 +21,11 @@ bundle: partnership
 mode: about
 content:
   about_partnership:
-    type: text_trimmed
+    type: text_default
     weight: 0
     region: content
     label: hidden
-    settings:
-      trim_length: 600
+    settings: {  }
     third_party_settings: {  }
   advice:
     type: entity_reference_entity_view
@@ -95,6 +95,7 @@ hidden:
   field_authority_person: true
   field_coordinated_business: true
   field_inspection_plan: true
+  field_legal_entity: true
   field_organisation: true
   field_organisation_person: true
   field_regulatory_function: true

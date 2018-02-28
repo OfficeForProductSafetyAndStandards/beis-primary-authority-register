@@ -28,6 +28,10 @@ interface ParFormPluginBaseInterface extends PluginInspectionInterface, Configur
    */
   public function getElements($form = [], $cardinality = 0);
 
+  public function getFormDefaults();
+
+  public function getFormDefaultByKey($key);
+
   /**
    * Loads the data associated with these elements.
    *

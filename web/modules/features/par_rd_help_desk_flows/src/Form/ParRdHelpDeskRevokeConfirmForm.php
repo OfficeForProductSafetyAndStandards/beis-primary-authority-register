@@ -3,10 +3,14 @@
 namespace Drupal\par_rd_help_desk_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\Core\Access\AccessResult;
 use Drupal\par_flows\ParDisplayTrait;
+use Drupal\par_flows\ParFlowException;
+use Symfony\Component\Routing\Route;
 
 /**
  * The confirming the user is authorised to revoke partnerships.
@@ -30,7 +34,18 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function accessCallback(ParDataPartnership $par_data_partnership = NULL) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
+    try {
+      $this->getFlowNegotiator()->setRoute($route_match);
+      $this->getFlowDataHandler()->reset();
+      $this->loadData();
+    } catch (ParFlowException $e) {
+
+    }
+
+    // Get the parameters for this route.
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+
     // If partnership has been revoked, we should not be able to re-revoke it.
     if ($par_data_partnership->isRevoked()) {
       $this->accessResult = AccessResult::forbidden('The partnership is already revoked.');
@@ -41,7 +56,7 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
       $this->accessResult = AccessResult::forbidden('The partnership is not active.');
     }
 
-    return parent::accessCallback();
+    return parent::accessCallback($route, $route_match, $account);
   }
 
   /**

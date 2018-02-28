@@ -1,7 +1,7 @@
 @ci
-Feature: Coordinator User - Complete business details
+Feature: Coordinator User - Complete organisation details
 
-    Scenario: Coordinator User - Complete business details
+    Scenario: Coordinator User - Complete organisation details
 
         # PARTNERSHIPS DASHBOARD
 
@@ -12,16 +12,16 @@ Feature: Coordinator User - Complete business details
         And I open the url "/dashboard"
         Then I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I click on the link "See your partnerships"
-        And I add "Business For Coordinated Partnership 20" to the inputfield "#edit-keywords"
+        And I add "Organisation For Coordinated Partnership 20" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I click on the link "Business For Coordinated Partnership 20"
+        And I click on the link "Organisation For Coordinated Partnership 20"
         And I expect that element "h1" is not empty
 
         # EDIT REGISTERED ADDRESS
         
-        And I expect that element "h1.heading-xlarge" contains the text "Confirm the details about the business"
+        And I expect that element "h1.heading-xlarge" contains the text "Confirm the details about the organisation"
         When I run tota11y against the current page
-        And I add "Change to the about business details section" to the inputfield "#edit-about-business"
+        And I add "Change to the about organisation details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-next"
         And I clear the inputfield "#edit-address-line1"
         And I clear the inputfield "#edit-address-line2"
@@ -29,7 +29,7 @@ Feature: Coordinator User - Complete business details
         And I clear the inputfield "#edit-postcode"
         And I clear the inputfield "#edit-county"
         And I click on the button "#edit-next"
-        And I run tota11y against the current page
+        # And I run tota11y against the current page
         Then I expect that element ".error-summary" does exist
         When I add "SE16 4NX" to the inputfield "#edit-postcode"
         And I click on the button "#edit-next"
@@ -51,7 +51,7 @@ Feature: Coordinator User - Complete business details
         And I select the option with the text "10.0 - Health and social care" for element "#edit-sic-code"
         And I click on the button "#edit-next"
 
-        # ADD BUSINESS SIZE
+        # ADD ORGANISATION SIZE
 
         Then I expect that element "h1.heading-xlarge" contains the text "Confirm the size of the membership list"
         And I select the option with the value "small" for element "#edit-business-size"
@@ -79,7 +79,7 @@ Feature: Coordinator User - Complete business details
         And I expect that element "#edit-organisation-registered-address" contains the text "New Change"
         And I expect that element "#edit-organisation-registered-address" contains the text "London"
         And I expect that element "#edit-organisation-registered-address" contains the text "SE16 4NX"
-        Then I expect that element "#edit-about-organisation" contains the text "Change to the about business details section"
+        Then I expect that element "#edit-about-organisation" contains the text "Change to the about organisation details section"
         Then I expect that element "#edit-sic-code" contains the text "Health and social care"
         Then I expect that element "#edit-legal-entities" contains the text "New LLP Company"
         Then I expect that element "#edit-legal-entities" contains the text "Limited Liability Partnership"
@@ -90,5 +90,5 @@ Feature: Coordinator User - Complete business details
 
         Then I expect that element "h1.heading-xlarge" contains the text "Thank you for completing the application"
         And I click on the button ".button"
-        And I add "Business For Coordinated Partnership 20" to the inputfield "#edit-keywords"
+        And I add "Organisation For Coordinated Partnership 20" to the inputfield "#edit-keywords"
         Then I expect that element "tbody" contains the text "Confirmed by the Organisation"

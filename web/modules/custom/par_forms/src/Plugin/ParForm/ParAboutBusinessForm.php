@@ -41,9 +41,9 @@ class ParAboutBusinessForm extends ParFormPluginBase {
 
     $form['about_business'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('Provide information about the business'),
+      '#title' => $this->t('Provide information about the organisation'),
       '#default_value' => $this->getDefaultValuesByKey('about_business', $cardinality),
-      '#description' => '<p>Use this section to give a brief overview of the business.</p><p>Include any information you feel may be useful to enforcing authorities.</p>',
+      '#description' => '<p>Use this section to give a brief overview of the organisation.</p><p>Include any information you feel may be useful to enforcing authorities.</p>',
     ];
 
     return $form;

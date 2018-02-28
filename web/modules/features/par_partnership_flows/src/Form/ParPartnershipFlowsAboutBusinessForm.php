@@ -16,7 +16,7 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
 
   protected $formItems = [];
 
-  protected $pageTitle = 'Information about the business';
+  protected $pageTitle = 'Information about the organisation';
 
   /**
    * Helper to get all the editable values.
@@ -51,14 +51,14 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
 
     $form['about_business_fieldset'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Provide information about the business'),
+      '#title' => $this->t('Provide information about the organisation'),
     ];
 
     // Business details.
     $form['about_business_fieldset']['about_business'] = [
       '#type' => 'textarea',
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('about_business'),
-      '#description' => '<p>Use this section to give a brief overview of the business.</p><p>Include any information you feel may be useful to enforcing authorities.</p>',
+      '#description' => '<p>Use this section to give a brief overview of the organisation.</p><p>Include any information you feel may be useful to enforcing authorities.</p>',
     ];
 
     // Make sure to add the partnership cacheability data to this form.

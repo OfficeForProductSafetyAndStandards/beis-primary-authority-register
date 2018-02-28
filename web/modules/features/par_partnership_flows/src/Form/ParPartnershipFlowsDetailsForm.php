@@ -3,6 +3,7 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
@@ -50,13 +51,13 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership);
 
     // Display all the information that can be modified by the organisation.
-    $par_data_organisation = current($par_data_partnership->getOrganisation());
+    $par_data_organisation = $par_data_partnership->getOrganisation(TRUE);
 
     // Display the primary address along with the link to edit it.
-    $form['registered_address'] = $this->renderSection('Business address', $par_data_organisation, ['field_premises' => 'summary'], ['edit-entity', 'add'], TRUE, TRUE);
+    $form['registered_address'] = $this->renderSection('Organisation address', $par_data_organisation, ['field_premises' => 'summary'], ['edit-entity', 'add'], TRUE, TRUE);
 
     // View and perform operations on the information about the business.
-    $form['about_business'] = $this->renderSection('About the business', $par_data_organisation, ['comments' => 'about'], ['edit-field']);
+    $form['about_business'] = $this->renderSection('About the organisation', $par_data_organisation, ['comments' => 'about'], ['edit-field']);
 
     // Only show SIC Codes and Employee number if the partnership is a direct
     // partnership.
@@ -71,11 +72,42 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     // Only show Members list, Sectors and Number of businesses if the
     // partnership is a coordinated partnership.
     if ($par_data_partnership->isCoordinated()) {
-      $form['associations'] = $this->renderSection('Number of members', $par_data_organisation, ['size' => 'full'], ['edit-field']);
+      if ($this->getFlowNegotiator()->getFlowName() === 'partnership_coordinated'
+        && $par_data_partnership->get('field_coordinated_business')->count() >= 1) {
 
-      // Display all the legal entities along with the links for the allowed
-      // operations on these.
-      $form['members'] = $this->renderSection('Members', $par_data_partnership, ['field_coordinated_business' => 'title']);
+        $form['members_link'] = [
+          '#type' => 'fieldset',
+          '#title' => t('Number of members'),
+          '#attributes' => ['class' => 'form-group'],
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
+        ];
+        $form['members_link']['count'] = [
+          '#type' => 'markup',
+          '#markup' => "<p>{$par_data_partnership->get('field_coordinated_business')->count()}</p>",
+        ];
+        $form['members_link']['link'] = [
+          '#type' => 'markup',
+          '#markup' => t('@link', [
+            '@link' => Link::createFromRoute('Show members list', 'view.members_list.member_list_coordinator', $this->getRouteParams())->toString(),
+          ]),
+          '#prefix' => '<p>',
+          '#suffix' => '</p>',
+        ];
+      }
+      else {
+        $form['associations'] = $this->renderSection('Number of members', $par_data_organisation, ['size' => 'full'], ['edit-field']);
+
+        $form['associations']['add_link'] = [
+          '#type' => 'markup',
+          '#markup' => t('@link', [
+            '@link' => Link::createFromRoute('Add a member', 'par_member_add_flows.add_organisation_name', $this->getRouteParams())->toString(),
+          ]),
+          '#weight' => -100,
+          '#prefix' => '<p>',
+          '#suffix' => '</p>',
+        ];
+      }
     }
 
     // Display all the legal entities along with the links for the allowed
