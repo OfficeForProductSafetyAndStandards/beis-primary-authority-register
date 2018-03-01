@@ -48,9 +48,9 @@ class IndexController extends Controller
 
     public function cloudFoundryStats()
     {
-        //return Cache::remember('cloud_foundry_stats_service', 1, function () {
+        return Cache::remember('cloud_foundry_stats_service', 1, function () {
             return $this->services['cf']->stats();
-        //});
+        });
     }
 
     public function testStats()
