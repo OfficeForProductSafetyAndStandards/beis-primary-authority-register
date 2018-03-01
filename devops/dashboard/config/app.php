@@ -166,7 +166,7 @@ return [
 
         XmlMiddleware\XmlRequestServiceProvider::class,
         
-        App\Providers\PubNubServiceProvider::class,
+        App\Providers\CloudFoundryServiceProvider::class,
         App\Providers\GitHubStatsServiceProvider::class,
         App\Providers\TravisStatsServiceProvider::class,
         App\Providers\UptimeRobotStatsServiceProvider::class,
