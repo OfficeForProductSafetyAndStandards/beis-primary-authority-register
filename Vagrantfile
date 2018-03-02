@@ -5,6 +5,8 @@ sudo docker-compose up -d
 sh setup.sh
 SCRIPT
 
+Vagrant::DEFAULT_SERVER_URL.replace('https://vagrantcloud.com')
+
 Vagrant.configure("2") do |config|
   config.vm.box = "netsensia/xenial64"
   config.vm.box_version = "1.0.0"
