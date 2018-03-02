@@ -16,6 +16,7 @@ Feature: Coordinator User - Update Partnership
         # ADD MEMBERS
 
         When I open the add members page
+        # And I run tota11y against the current page
         And I add "New Member One" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
         And I clear the inputfield "#edit-postcode"
@@ -62,6 +63,7 @@ Feature: Coordinator User - Update Partnership
         When I click on the button "#edit-save"
         And I expect that element "h1.heading-xlarge" contains the text "Member added"
         When I click on the button ".button"    
+        # And I run tota11y against the current page
         And I expect that element "h1.heading-xlarge" contains the text "Members list"
         And I expect that element ".table-scroll-wrapper" contains the text "New Member One"
         And I expect that element ".table-scroll-wrapper" contains the text "14 January 2018"
@@ -81,12 +83,30 @@ Feature: Coordinator User - Update Partnership
         When I select the option with the text "Current" for element "#edit-revoked"
         And I click on the button "#edit-submit-members-list"
         Then I expect that element ".table-scroll-wrapper" contains the text "New Member One"
+
+        # CEASE MEMBER
+
+        When I click on the link "Cease membership"
+        # And I run tota11y against the current page
+        And I clear the inputfield "#edit-day"
+        And I clear the inputfield "#edit-month"
+        And I clear the inputfield "#edit-year"
+        And I add "20" to the inputfield "#edit-day"
+        And I add "2" to the inputfield "#edit-month"
+        And I add "2018" to the inputfield "#edit-year"
+        And I click on the button "#edit-next"
+        Then I expect that element "h1.heading-xlarge" contains the text "Membership Ceased"
+        And I click on the button "#edit-save"
+        Then I expect that element "a*=New Member One" does not exist
+        Then I expect that element "Cease membership" does not exist
+        And I expect that element "td.views-field.views-field-date-membership-ceased" contains the text "20 February 2018"
        
         # EDIT REGISTERED ADDRESS
 
         Given I open the url "/partnerships"
         And I click on the link "Organisation For Coordinated Partnership 20"
         When  I click on the link "edit address"
+        # And I run tota11y against the current page
         And I clear the inputfield "#edit-address-line1"
         And I clear the inputfield "#edit-address-line2"
         And I clear the inputfield "#edit-town-city"
@@ -119,6 +139,7 @@ Feature: Coordinator User - Update Partnership
         # ADD NEW TRADING NAME
 
         When I click on the link "add another trading name"
+        # And I run tota11y against the current page
         Then I expect that element "h1.heading-xlarge" contains the text "Add a trading name for your organisation"
         When I add "Different Trading Name" to the inputfield "#edit-trading-name"
         And I click on the button "#edit-save"
@@ -127,6 +148,7 @@ Feature: Coordinator User - Update Partnership
         # EDIT TRADING NAME
 
         When I click on the link "edit trading name"
+        # And I run tota11y against the current page
         Then I expect that element "h1.heading-xlarge" contains the text "Edit trading name for your organisation"
         When I add "Different Trading Name (edited)" to the inputfield "#edit-trading-name"
         And I click on the button "#edit-save"
@@ -135,6 +157,7 @@ Feature: Coordinator User - Update Partnership
         # EDIT MAIN ORGANISATION CONTACT
 
         When I click on the link "edit organisation contact"
+        # And I run tota11y against the current page
         And I add "Harvey" to the inputfield "#edit-first-name"
         And I add "Kneeslapper" to the inputfield "#edit-last-name"
         And I add "2079999999" to the inputfield "#edit-work-phone"
@@ -150,6 +173,7 @@ Feature: Coordinator User - Update Partnership
         # COMPLETE CHANGES
 
         When I click on the button "#edit-save"
+        # And I run tota11y against the current page
         And I select the option with the text "Confirmed by the Organisation" for element "#edit-partnership-status-1"
         And I click on the button "#edit-submit-par-user-partnerships"
         And I expect that element "#block-par-theme-content" contains the text "Organisation For Coordinated Partnership 20"

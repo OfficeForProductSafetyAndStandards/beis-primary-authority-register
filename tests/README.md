@@ -22,6 +22,14 @@ Sometimes its useful to only execute a single feature file, to do so use the fol
 $ ./node_modules/.bin/wdio --spec ./test/features/select.feature wdio.DEV.conf.js
 ```
 
+# Reports
+
+Run following command to generate a html report
+
+```sh
+$ npm run generatehtmlreport
+```
+
 ## Maintaining tests (Gherkin)
 
 Most maintenance of tests involves updating things such as the way elements are referenced.  

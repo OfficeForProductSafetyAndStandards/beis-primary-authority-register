@@ -14,6 +14,7 @@ Feature: Business User - Complete organisation details
         And I click on the link "See your partnerships"
         # And I select the option with the text "Confirmed by Authority" for element "#edit-partnership-status"
         And I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
+        And I select the option with the text "Confirmed by the Authority" for element "#edit-partnership-status-1"
         And I click on the button "#edit-submit-par-user-partnerships"
         And I click on the link "Organisation For Direct Partnership"
         And I expect that element "h1" is not empty
@@ -21,7 +22,6 @@ Feature: Business User - Complete organisation details
         # EDIT REGISTERED ADDRESS
         
         And I expect that element "h1.heading-xlarge" contains the text "Confirm the details about the organisation"
-        When I run tota11y against the current page
         And I add "Change to the about organisation details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-next"
         And I clear the inputfield "#edit-address-line1"
@@ -30,7 +30,6 @@ Feature: Business User - Complete organisation details
         And I clear the inputfield "#edit-postcode"
         And I clear the inputfield "#edit-county"
         And I click on the button "#edit-next"
-        And I run tota11y against the current page
         Then I expect that element ".error-summary" does exist
         When I add "SE16 4NX" to the inputfield "#edit-postcode"
         And I click on the button "#edit-next"
@@ -69,16 +68,15 @@ Feature: Business User - Complete organisation details
         Then I expect that element ".form-item-par-component-legal-entity-0-registered-number label" contains the text "Provide the registration number"
         When I add "1234567890" to the inputfield "#edit-par-component-legal-entity-0-registered-number"
         When I click on the button "#edit-add-another"
-        When I add "Second New LLP Company" to the inputfield "#edit-par-component-legal-entity-1-registered-name"
-        And I select the option with the text "Limited Liability Partnership" for element "#edit-par-component-legal-entity-1-legal-entity-type"
-        When I add "0987654321" to the inputfield "#edit-par-component-legal-entity-1-registered-number"
+        When I add "First Sole Trader" to the inputfield "#edit-par-component-legal-entity-0-registered-name"
+        And I select the option with the text "Sole Trader" for element "#edit-par-component-legal-entity-1-legal-entity-type"
+        Then I expect that element "#edit-par-component-legal-entity-1-registered-number" is not visible
         When I click on the button "#edit-add-another"
-        When I add "Third New LLP Company" to the inputfield "#edit-par-component-legal-entity-2-registered-name"
+        When I add "Second New LLP Company" to the inputfield "#edit-par-component-legal-entity-2-registered-name"
         And I select the option with the text "Limited Liability Partnership" for element "#edit-par-component-legal-entity-2-legal-entity-type"
         When I add "0000000000" to the inputfield "#edit-par-component-legal-entity-2-registered-number"
         When I click on the button "#edit-par-component-legal-entity-2-remove"
         When I click on the button "#edit-next"
-
         Then I expect that element "h1.heading-xlarge" contains the text "Review the partnership summary information below"
         And I expect that element "#edit-organisation-name" contains the text "Organisation For Direct Partnership"
         And I expect that element "#edit-organisation-registered-address" contains the text "1 Change St"
@@ -91,10 +89,8 @@ Feature: Business User - Complete organisation details
         Then I expect that element "#edit-legal-entities" contains the text "New LLP Company"
         Then I expect that element "#edit-legal-entities" contains the text "Limited Liability Partnership"
         Then I expect that element "#edit-legal-entities" contains the text "1234567890"
-        Then I expect that element "#edit-legal-entities" contains the text "Second New LLP Company"
-        Then I expect that element "#edit-legal-entities" contains the text "Limited Liability Partnership"
-        Then I expect that element "#edit-legal-entities" contains the text "0987654321"
-        Then I expect that element "#edit-legal-entities" not contains the text "Third New LLP Company"
+        Then I expect that element "#edit-legal-entities" contains the text "First Sole Trader"
+        Then I expect that element "#edit-legal-entities" not contains the text "Second New LLP Company"
         Then I expect that element "#edit-legal-entities" not contains the text "0000000000"
         And I click on the button "#edit-save"
         Then I expect that element ".error-summary" is visible
@@ -103,7 +99,6 @@ Feature: Business User - Complete organisation details
         Then I expect that element ".error-summary" is visible
         And I click on the checkbox "#edit-terms-organisation-agreed"
         And I click on the button "#edit-save"
-
         Then I expect that element "h1.heading-xlarge" contains the text "Thank you for completing the application"
         When I click on the button ".button"
         And I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
