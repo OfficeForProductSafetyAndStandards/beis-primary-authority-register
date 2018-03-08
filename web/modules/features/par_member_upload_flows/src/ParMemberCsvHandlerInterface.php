@@ -4,6 +4,9 @@ namespace Drupal\par_member_upload_flows;
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\file\FileInterface;
+use Drupal\file_entity\FileEntityInterface;
+use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Entity\ParDataPartnership;
 
 /**
  * Interface for the Par Member CSV Handler.
@@ -20,19 +23,19 @@ interface ParMemberCsvHandlerInterface {
    * @return array
    *   An array of row data.
    */
-  public function loadFile(FileInterface $file, array $rows);
+  public function loadFile(FileInterface $file, array &$rows);
 
   /**
    * Save data to a CSV file.
    *
    * @param array $rows
    *   An array to add processed rows to.
-   * @param $name
-   *   The name of the file.
+   * @param ParDataPartnership $par_data_partnership
+   *   The partnership to generate a name for.
    *
    * @return bool
    */
-  public function saveFile(array $rows, $name);
+  public function saveFile(array $rows, $par_data_partnership);
 
   /**
    * Get the column headings for this CSV file.
@@ -61,10 +64,9 @@ interface ParMemberCsvHandlerInterface {
   /**
    * Validates a given CSV row.
    *
-   * @return bool
+   * @return ParCsvViolation[]|NULL
    */
-//  public function validateRow(int $row_number, array $data);
-  public function validateRow(array $data, int $row_number);
+  public function validate(array $rows);
 
   /**
    * Process the CSV.

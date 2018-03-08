@@ -67,6 +67,13 @@ use Drupal\user\UserInterface;
 class ParDataPartnership extends ParDataEntity {
 
   /**
+   * Get time service.
+   */
+  public function getTime() {
+    return \Drupal::time();
+  }
+
+  /**
    * {@inheritdoc}
    *
    * @param string $reason
@@ -112,6 +119,14 @@ class ParDataPartnership extends ParDataEntity {
     }
 
     return parent::inProgress();
+  }
+
+  /**
+   * Generate filename.
+   */
+  public function generateMembershipFilename() {
+    $updated = $this->getMembershipUpdated() ?: $this->getTime()->getRequestTime();
+    return "member_list__{$this->uuid()}__{$updated}";
   }
 
   /**
