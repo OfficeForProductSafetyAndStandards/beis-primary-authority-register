@@ -66,7 +66,6 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
       $form['partnership_info_agreed_authority'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('I confirm I have reviewed the information above'),
-        '#disabled' => $par_data_partnership->get('partnership_info_agreed_authority')->getString(),
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues("partnership_info_agreed_authority"),
         '#return_value' => 'on',
       ];
