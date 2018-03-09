@@ -62,7 +62,7 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
       $form['number_employees'] = $this->renderSection('Number of employees at the organisation', $par_data_organisation, ['employees_band' => 'detailed']);
 
       // Display legal entities.
-      $form['legal_entities'] = $this->renderSection('Legal entities', $par_data_organisation, ['field_legal_entity' => 'detailed']);
+      $form['legal_entities'] = $this->renderSection('Legal entities', $par_data_partnership, ['field_legal_entity' => 'detailed']);
 
       $form['partnership_info_agreed_business'] = [
         '#type' => 'checkbox',
