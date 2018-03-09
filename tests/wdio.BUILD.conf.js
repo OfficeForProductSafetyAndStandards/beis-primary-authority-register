@@ -2,7 +2,7 @@ const wdioConfig = require('./wdio.conf.js');
 wdioConfig.config.capabilities = [{
     browserName: 'chrome',
     chromeOptions: {
-        binary: './node_modules/chromedriver/bin/chromedriver',
+        binary: '/home/vcap/app/tests/node_modules/.bin/chromedriver',
         args: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1200,2000']
     }
 }];
