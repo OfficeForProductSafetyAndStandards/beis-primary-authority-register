@@ -99,7 +99,6 @@ class ParConfirmationReviewForm extends ParBaseForm {
     $form['partnership_info_agreed_business'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('I confirm I have reviewed the information above'),
-      '#disabled' => $par_data_partnership->get('partnership_info_agreed_business')->getString(),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("partnership_info_agreed_business"),
       '#return_value' => 'on',
     ];
@@ -109,7 +108,6 @@ class ParConfirmationReviewForm extends ParBaseForm {
     $form['terms_organisation_agreed'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('I have read and agree to the %terms.', ['%terms' => $terms_link->toString()]),
-      '#disabled' => !$par_data_partnership->get('terms_organisation_agreed')->isEmpty(),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("terms_organisation_agreed"),
       '#return_value' => 'on',
     ];
