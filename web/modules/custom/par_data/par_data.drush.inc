@@ -34,16 +34,16 @@ SQL;
     $par_data_person_query = <<<SQL
 UPDATE {$table} AS p
 SET work_phone=sub.work_phone, mobile_phone=sub.mobile_phone, first_name=sub.first_name, last_name=sub.last_name, email=sub.hashemail
-FROM (SELECT trunc(random() * 99999999 + 1) as work_phone, trunc(random() * 99999999 + 1) as mobile_phone, trunc(random() * 99999 + 1) as first_name, trunc(random() * 99999999 + 1) as last_name, email, md5(email) || '@localhost.localdomain' as hashemail
+FROM (SELECT id, trunc(random() * 99999999 + 1) as work_phone, trunc(random() * 99999999 + 1) as mobile_phone, trunc(random() * 99999 + 1) as first_name, trunc(random() * 99999999 + 1) as last_name, email, md5(email) || '@localhost.localdomain' as hashemail
       FROM {$table}) AS sub
-WHERE p.email=sub.email;
+WHERE p.id=sub.id;
 SQL;
     $par_data_person_revision_query = <<<SQL
 UPDATE {$revisions_table} AS p
 SET work_phone=sub.work_phone, mobile_phone=sub.mobile_phone, first_name=sub.first_name, last_name=sub.last_name, email=sub.hashemail
-FROM (SELECT trunc(random() * 99999999 + 1) as work_phone, trunc(random() * 99999999 + 1) as mobile_phone, trunc(random() * 99999 + 1) as first_name, trunc(random() * 99999999 + 1) as last_name, email, md5(email) || '@localhost.localdomain' as hashemail
+FROM (SELECT id, trunc(random() * 99999999 + 1) as work_phone, trunc(random() * 99999999 + 1) as mobile_phone, trunc(random() * 99999 + 1) as first_name, trunc(random() * 99999999 + 1) as last_name, email, md5(email) || '@localhost.localdomain' as hashemail
       FROM {$revisions_table}) AS sub
-WHERE p.email=sub.email;
+WHERE p.id=sub.id;
 SQL;
 
     drush_sql_register_post_sync_op('sanitise_drupal_users', dt('Sanitise Drupal Users the PAR way'), $user_query);
