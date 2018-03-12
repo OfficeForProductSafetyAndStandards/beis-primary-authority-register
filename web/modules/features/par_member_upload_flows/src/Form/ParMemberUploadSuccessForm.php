@@ -10,7 +10,7 @@ use Drupal\par_member_upload_flows\ParFlowAccessTrait;
 /**
  * The upload CSV success page for importing partnerships.
  */
-class ParMemberSuccessUploadFlowsForm extends ParBaseForm {
+class ParMemberUploadSuccessForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
 

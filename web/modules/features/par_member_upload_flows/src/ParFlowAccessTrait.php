@@ -30,6 +30,9 @@ trait ParFlowAccessTrait {
     // Get the parameters for this route.
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
+//    $lock = \Drupal::lock();
+//    $lock = $lock->acquire('par_data_partnership-lock:{$par_data_partnership->id()}');
+
     // If the partnership isn't a coordinated one then don't allow update.
     if (!$par_data_partnership->isCoordinated()) {
       $this->accessResult = AccessResult::forbidden('This is not a coordinated partnership.');
@@ -37,4 +40,5 @@ trait ParFlowAccessTrait {
 
     return parent::accessCallback($route, $route_match, $account);
   }
+
 }

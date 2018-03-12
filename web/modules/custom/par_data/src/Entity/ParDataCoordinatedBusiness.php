@@ -4,6 +4,7 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\par_data\ParDataException;
 
 /**
  * Defines the par_data_coodinated_business entity.
@@ -85,6 +86,17 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
    */
   public function getPerson() {
     return $this->get('field_person')->referencedEntities();
+  }
+
+  /**
+   * Get the contacts for this Coordinated Business.
+   */
+  public function getPartnership() {
+    $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')
+      ->condition('field_coordinated_business', $this->id)
+      ->execute();
+
+    return $this->getParDataManager()->getEntitiesByType('par_data_partnership', $query);
   }
 
   /**

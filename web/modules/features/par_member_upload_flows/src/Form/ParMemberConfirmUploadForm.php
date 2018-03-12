@@ -10,7 +10,7 @@ use Drupal\par_member_upload_flows\ParFlowAccessTrait;
 /**
  * The upload CSV confirmation form for importing partnerships.
  */
-class ParMemberConfirmUploadFlowsForm extends ParBaseForm {
+class ParMemberConfirmUploadForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
 
@@ -40,17 +40,11 @@ class ParMemberConfirmUploadFlowsForm extends ParBaseForm {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-    
-    // Form cache id.
+
+    // Load csv data from temporary data storage and assign to a variable.
     $cid = $this->getFlowNegotiator()->getFormKey('par_member_upload_csv');
-
-    // Load temporary csv data and assign it to a variable.
     $csv_data = $this->getFlowDataHandler()->getTempDataValue('coordinated_members', $cid);
-
-    // Create CRON queue with a unique name.
-    $queue = \Drupal::queue('par_member_upload');
-
-    // @TODO Add each row to queue, or possibly to batch, or some way of saely handling 10,000 rows.
+    dpm($csv_data);
   }
 
 }
