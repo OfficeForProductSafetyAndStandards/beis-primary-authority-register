@@ -3,7 +3,7 @@
 use Illuminate\Support\ServiceProvider;
 use App\Services\CloudFoundryStatsService;
 
-class PubNubServiceProvider extends ServiceProvider
+class CloudFoundryServiceProvider extends ServiceProvider
 {
 
     /**
@@ -23,8 +23,8 @@ class PubNubServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('pns', function ($app) {
-            return new PubNubService();
+        $this->app->bind('cf', function ($app) {
+            return new CloudFoundryStatsService();
         });
     }
 }
