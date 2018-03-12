@@ -321,3 +321,25 @@ function par_data_update_8021() {
     $queue->createItem($item);
   }
 }
+
+/**
+ * Migrate any legal entities that weren't caught by the previous update 8020.
+ */
+function par_data_update_8022() {
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  $partnerships = $par_data_manager->getEntitiesByProperty('par_data_partnership', 'deleted', 0);
+  foreach ($partnerships as $partnership) {
+    $partnership_legal_entities = $partnership->getLegalEntity();
+    $organisation = $partnership->getOrganisation(TRUE);
+    if ($organisation) {
+      $organisation_legal_entities = $organisation->getLegalEntity();
+    }
+
+    if (isset($organisation_legal_entities) && $organisation_legal_entities !== $partnership_legal_entities
+      && count($partnership_legal_entities) === 0) {
+      $partnership->set('field_legal_entity', $organisation_legal_entities);
+      $partnership->save();
+    }
+  }
+}
