@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f8bc337039894bee8f538ff9137a3e5",
+    "content-hash": "cc2ad3f2c445947e5ca34ee830948718",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -671,6 +671,64 @@
             ],
             "description": "Provides a way to patch Composer packages.",
             "time": "2017-12-07T16:16:31+00:00"
+        },
+        {
+            "name": "deblan/csv",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://gitnet.fr/deblan/csv.git",
+                "reference": "37be0f572fd8cfd4352af4bdcd8fc2be20189d2a"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Deblan\\Csv\\": "src/Deblan/Csv/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Simon Vieille",
+                    "email": "simon@deblan.fr"
+                }
+            ],
+            "description": "A simple PHP library to parse and generate CSV files.",
+            "time": "2017-03-12T17:58:44+00:00"
+        },
+        {
+            "name": "deblan/csv-validator",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://gitnet.fr/kalpaitch/csv-validator.git",
+                "reference": "f9553115ee03606efee4000434fe0988fe0d18e1"
+            },
+            "require": {
+                "deblan/csv": "v2.0.*",
+                "php": ">=5.6.0",
+                "symfony/validator": "3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Deblan\\CsvValidator\\": "src/Deblan/CsvValidator/"
+                }
+            },
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Simon Vieille",
+                    "email": "simon@deblan.fr"
+                }
+            ],
+            "description": "CSV validator library",
+            "time": "2018-03-07 12:43:19"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1767,7 +1825,8 @@
                 "patches_applied": {
                     "file_exists() doesn't work with remote stream wrappers in file_cron()": "https://www.drupal.org/files/issues/file_exists_remote_streams_cron-2928889-2.patch",
                     "PostgreSQL: deal with case insensitivity": "./patches/postgres_case_insensitivity-2464481.patch",
-                    "Ensure the table alias is no longer than 60 characters long": "https://www.drupal.org/files/issues/drupal-571548-107-d8_0.patch"
+                    "Ensure the table alias is no longer than 60 characters long": "https://www.drupal.org/files/issues/drupal-571548-107-d8_0.patch",
+                    "Form API #ajax not working on link element": "https://www.drupal.org/files/issues/2018-03-12/core-allow-form-ajax-for-links-2915954-9.patch"
                 }
             },
             "autoload": {
@@ -10731,6 +10790,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "deblan/csv-validator": 20,
         "drupal/invite": 20,
         "drupal/login_destination": 20,
         "drupal/maillog": 20,
