@@ -1,9 +1,0 @@
-{
-    "name": "drupal/par_member_upload_flows",
-    "type": "drupal-module",
-    "description": "Provides CSV upload functionality for coordinated member lists.",
-    "require": {
-        "deblan/csv-validator": "~2.0"
-    },
-    "minimum-stability": "dev"
-}
