@@ -66,14 +66,20 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
   /**
    * The mappings between columns and entities.
+   *
+   * The headings are defined once here (for validation)
+   * and once on the self::generate() method for compilation.
    */
   protected function getMappings() {
     return [
       'Organisation name' => [
-        new Length(['max' => 500]),
-        new NotBlank(),
+        'entity' => 'par_data_organisation',
+        'field' => 'organisation_name',
       ],
-      'Address Line 1' => NULL,
+      'Address Line 1' => [
+        'entity' => 'par_data_premises',
+        'field' => 'organisation_name',
+      ],
       'Address Line 2' => NULL,
       'Address Line 3' => NULL,
       'Town' => NULL,
@@ -108,6 +114,30 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       'Legal Entity Name (third)' => NULL,
       'Legal Entity Type (third)' => NULL,
       'Legal Entity Number (third)' => NULL,
+    ];
+  }
+
+  protected function getConstraints() {
+    return [
+      'Organisation name' => [
+        new Length(['max' => 500]),
+        new NotBlank(),
+      ],
+      'Email' => [
+        new Length(['max' => 500]),
+        new Email(),
+        new NotBlank(),
+      ],
+      'Membership Start Date' => [
+        new DateTime(['format' => 'd/m/Y']),
+        new NotBlank(),
+      ],
+      'Legal Entity Name (first)' => [
+        new NotBlank(),
+      ],
+      'Legal Entity Type (first)' => [
+        new NotBlank(),
+      ],
     ];
   }
 
@@ -267,7 +297,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       }
 
       $validator = Validation::createValidator();
-      foreach ($this->getMappings() as $column => $constraints) {
+      foreach ($this->getConstraints() as $column => $constraints) {
         if (NULL !== $constraints) {
           $violations = $validator->validate($row[$column], $constraints);
 
@@ -283,6 +313,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * The headings are defined once here (for compilation)
+   * and once on the self::getMappings() method for validation.
    */
   public function generate(array $members) {
     $rows = [];
@@ -291,14 +324,40 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     foreach ($members as $index => $par_data_coordinated_business) {
       $par_data_organisation = $par_data_coordinated_business->getOrganisation(TRUE);
-      $par_data_legal_entity = $par_data_organisation->getLegalEntity(TRUE);
       $par_data_premises = $par_data_organisation->getPremises(TRUE);
-      $rows[] = [
+      $rows[$index] = [
         'Member name' => $par_data_organisation->get('organisation_name')->getString(),
         'Legal entity name (first)' => $par_data_legal_entity ? $par_data_legal_entity->get('registered_name')->getString() : '',
         'Address line 1' => $par_data_premises ? $par_data_premises->get('address')->getString('addressLine1') : '',
         'Address line 2' => $par_data_premises ? $par_data_premises->get('address')->getString('addressLine2') : '',
         'Post Code' => $par_data_premises ? $par_data_premises->get('address')->getString('postalCode') : '',
+
+        'Organisation name' => $par_data_organisation->get('organisation_name')->getString(),
+        'Address Line 1' => NULL,
+        'Address Line 2' => NULL,
+        'Address Line 3' => NULL,
+        'Town' => NULL,
+        'County' => NULL,
+        'Postcode' => NULL,
+        'Nation' => NULL,
+        'First Name' => NULL,
+        'Last Name' => NULL,
+        'Work Phone' => NULL,
+        'Mobile Phone' => NULL,
+        'Email' => null,
+        'Membership Start Date' => null,
+        'Membership End Date' => NULL,
+        'Covered by Inspection Plan' => NULL,
+        'Legal Entity Name (first)' => null,
+        'Legal Entity Type (first)' => null,
+        'Legal Entity Number (first)' => NULL,
+        'Legal Entity Name (second)' => NULL,
+        'Legal Entity Type (second)' => NULL,
+        'Legal Entity Number (second)' => NULL,
+        'Legal Entity Name (third)' => NULL,
+        'Legal Entity Type (third)' => NULL,
+        'Legal Entity Number (third)' => NULL,
+
       ];
     }
 

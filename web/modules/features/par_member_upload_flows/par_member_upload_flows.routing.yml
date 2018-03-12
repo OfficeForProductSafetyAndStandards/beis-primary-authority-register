@@ -13,7 +13,7 @@ par_member_upload_flows.member_download:
 
 # A coordinated member journey for importing partnerships via csv file.
 par_member_upload_flows.member_upload:
-  path: '/partnership/{par_data_partnership}/members/upload/csv'
+  path: '/partnership/{par_data_partnership}/members/upload'
   defaults:
     _form: '\Drupal\par_member_upload_flows\Form\ParMemberUploadForm'
     _title_callback: '\Drupal\par_member_upload_flows\Form\ParMemberUploadForm::titleCallback'
