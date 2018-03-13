@@ -4,6 +4,7 @@ composer.sh
 package.json
 .env
 cf/
+storage/logs/*
 *.tar.gz
 storage/framework/cache/data/*
 
