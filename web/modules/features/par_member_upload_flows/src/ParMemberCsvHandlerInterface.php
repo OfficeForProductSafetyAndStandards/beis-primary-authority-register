@@ -43,23 +43,18 @@ interface ParMemberCsvHandlerInterface {
   public function getColumns();
 
   /**
-   * Get the heading for a given column.
-   */
-  public function getColumnsByIndex(int $index);
-
-  /**
    * Lock the partnership member lock.
    *
    * @return bool
    */
-  public function lock();
+  public function lock(ParDataPartnership $par_data_partnership);
 
   /**
    * Unlock the partnership member lock.
    *
    * @return bool
    */
-  public function unlock();
+  public function unlock(ParDataPartnership $par_data_partnership);
 
   /**
    * Validates a given CSV row.
@@ -67,25 +62,25 @@ interface ParMemberCsvHandlerInterface {
    * @return ParCsvViolation[]|NULL
    */
   public function validate(array $rows);
-
-  /**
-   * Process the CSV.
-   *
-   * @return bool
-   */
-  public function process();
-
-  /**
-   * Cleanup tasks required before the batch completes.
-   *
-   * @return bool
-   */
-  public function cleanup();
-
-  /**
-   * Completion tasks once all data has been imported.
-   *
-   * @return bool
-   */
-  public function complete();
+//
+//  /**
+//   * Process the CSV.
+//   *
+//   * @return bool
+//   */
+//  public function process();
+//
+//  /**
+//   * Cleanup tasks required before the batch completes.
+//   *
+//   * @return bool
+//   */
+//  public function cleanup();
+//
+//  /**
+//   * Completion tasks once all data has been imported.
+//   *
+//   * @return bool
+//   */
+//  public function complete();
 }

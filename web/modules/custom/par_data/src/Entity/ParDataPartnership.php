@@ -67,10 +67,22 @@ use Drupal\user\UserInterface;
 class ParDataPartnership extends ParDataEntity {
 
   /**
-   * Get time service.
+   * The length of time to obtain a lock for.
+   */
+  const LOCK_TIMEOUT = 3600.0;
+
+  /**
+   * Get the time service.
    */
   public function getTime() {
     return \Drupal::time();
+  }
+
+  /**
+   * Get the lock service.
+   */
+  public function getLock() {
+    return \Drupal::service('lock.persistent');
   }
 
   /**
@@ -79,20 +91,20 @@ class ParDataPartnership extends ParDataEntity {
    * @param string $reason
    *   The reason for revoking this partnership.
    */
-  public function revoke($reason = '') {
+  public function revoke($reason = '', $save = TRUE) {
     // Revoke/archive all dependent entities as well.
     $inspection_plans = $this->getInspectionPlan();
     foreach ($inspection_plans as $inspection_plan) {
-      $inspection_plan->revoke();
+      $inspection_plan->revoke($save);
     }
 
     $advice_documents = $this->getAdvice();
     foreach ($advice_documents as $advice) {
-      $advice->revoke();
+      $advice->revoke($save);
     }
 
     $this->set('revocation_reason', $reason);
-    parent::revoke();
+    parent::revoke($save);
   }
 
   /**
@@ -124,9 +136,32 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Generate filename.
    */
-  public function generateMembershipFilename() {
-    $updated = $this->getMembershipUpdated() ?: $this->getTime()->getRequestTime();
-    return "member_list__{$this->uuid()}__{$updated}";
+  public function membershipLockKey() {
+    // The lock key cannot be longer than this.
+    return "par_member_list__{$this->uuid()}";
+  }
+
+  /**
+   * Lock the membership list.
+   *
+   * Don't allow this lock to be reacquired by the same process.
+   */
+  public function lockMembership() {
+    return $this->isMembershipLocked() ? FALSE : $this->getLock()->acquire($this->membershipLockKey(), self::LOCK_TIMEOUT);
+  }
+
+  /**
+   * Unlock the membership list.
+   */
+  public function unlockMembership() {
+    $this->getLock()->release($this->membershipLockKey());
+  }
+
+  /**
+   * Check if the partnership is locked.
+   */
+  public function isMembershipLocked() {
+    return !$this->getLock()->lockMayBeAvailable($this->membershipLockKey());
   }
 
   /**

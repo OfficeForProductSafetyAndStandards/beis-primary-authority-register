@@ -6,6 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_member_upload_flows\ParFlowAccessTrait;
+use Drupal\par_member_upload_flows\ParMemberCsvHandler;
 use Drupal\par_member_upload_flows\ParMemberCsvHandlerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -20,13 +21,6 @@ class ParMemberCsvValidationForm extends ParBaseForm {
    * Set the page title.
    */
   protected $pageTitle = 'CSV validation errors';
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_member_upload_csv_validate';
-  }
 
   /**
    * @return ParMemberCsvHandlerInterface

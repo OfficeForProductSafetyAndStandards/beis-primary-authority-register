@@ -23,13 +23,6 @@ class ParMemberUploadForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_member_upload_csv';
-  }
-
-  /**
    * @return ParMemberCsvHandlerInterface
    */
   public function getCsvHandler() {
@@ -71,7 +64,7 @@ class ParMemberUploadForm extends ParBaseForm {
       '#title' => $this->t('Download link'),
       '#url' => Url::fromRoute('par_member_upload_flows.member_download', $this->getRouteParams()),
       '#ajax' => [
-        'callback' => $csv_handler_class . '::ajaxDownload',
+        'callback' => $csv_handler_class . '::_ajaxDownload',
         'event' => 'click',
         'progress' => [
           'type' => 'throbber',
@@ -118,7 +111,12 @@ class ParMemberUploadForm extends ParBaseForm {
 
       // Loop through each csv row from uploaded file and save in $row array.
       foreach ($files as $file) {
-        $this->getCsvHandler()->loadFile($file, $rows);
+        $error = $this->getCsvHandler()->loadFile($file, $rows);
+      }
+
+      // If there was an error we want to invalidate the form.
+      if (isset($error)) {
+        $form_state->setErrorByName('csv', $error);
       }
 
       if (count($rows) > 0) {

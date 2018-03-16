@@ -210,32 +210,39 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Revoke if this entity is revokable and is not new.
    *
+   * @param boolean $save
+   *   Whether to save the entity after revoking.
+   *
    * @return boolean
    *   True if the entity was revoked, false for all other results.
    */
-  public function revoke() {
+  public function revoke($save = TRUE) {
     if (!$this->isNew() && !$this->inProgress() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, TRUE);
 
       // Always revision status changes.
       $this->setNewRevision(TRUE);
 
-      return ($this->save() === SAVED_UPDATED);
+      return $save ? ($this->save() === SAVED_UPDATED) : TRUE;
     }
     return FALSE;
   }
 
   /**
-   * Unrevoke a revoked entity
+   * Unrevoke a revoked entity.
+   *
+   * @param boolean $save
+   *   Whether to save the entity after revoking.
    *
    * @return boolean
    *   True if the entity was unrevoked, false for all other results.
    *
    */
-  public function unrevoke() {
+  public function unrevoke($save = TRUE) {
     if (!$this->isNew() && $this->getTypeEntity()->isRevokable() && $this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, FALSE);
-      return ($this->save() === SAVED_UPDATED);
+
+      return $save ? ($this->save() === SAVED_UPDATED) : TRUE;
     }
     return FALSE;
   }
@@ -243,17 +250,20 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Archive if the entity is archivable and is not new.
    *
+   * @param boolean $save
+   *   Whether to save the entity after revoking.
+   *
    * @return boolean
    *   True if the entity was restored, false for all other results.
    */
-  public function archive() {
+  public function archive($save = TRUE) {
     if (!$this->isNew() && !$this->inProgress() && $this->getTypeEntity()->isArchivable() && !$this->isArchived()) {
       $this->set(ParDataEntity::ARCHIVE_FIELD, TRUE);
 
       // Always revision status changes.
       $this->setNewRevision(TRUE);
 
-      return ($this->save() === SAVED_UPDATED);
+      return $save ? ($this->save() === SAVED_UPDATED) : TRUE;
     }
     return FALSE;
   }
@@ -261,13 +271,17 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Restore an archived entity.
    *
+   * @param boolean $save
+   *   Whether to save the entity after revoking.
+   *
    * @return boolean
    *   True if the entity was restored, false for all other results.
    */
-  public function restore() {
+  public function restore($save = TRUE) {
     if (!$this->isNew() && $this->getTypeEntity()->isRevokable() && $this->isArchived()) {
       $this->set(ParDataEntity::ARCHIVE_FIELD, FALSE);
-      return ($this->save() === SAVED_UPDATED);
+
+      return $save ? ($this->save() === SAVED_UPDATED) : TRUE;
     }
     return FALSE;
   }

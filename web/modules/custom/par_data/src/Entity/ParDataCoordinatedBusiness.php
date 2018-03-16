@@ -71,14 +71,14 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
    * @param string $date
    *   The date this member was ceased.
    */
-  public function cease($date = '') {
+  public function cease($date = '', $save = TRUE) {
     if (!empty($date)) {
       $this->set('date_membership_ceased', $date);
     }
 
     // Ceasing a member has the same purpose as revoking partnerships
     // so we use the same methods and status.
-    parent::revoke();
+    parent::revoke($save);
   }
 
   /**
@@ -89,11 +89,11 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
   }
 
   /**
-   * Get the contacts for this Coordinated Business.
+   * Get the partnerships for this Coordinated Business.
    */
   public function getPartnership() {
     $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')
-      ->condition('field_coordinated_business', $this->id)
+      ->condition('field_coordinated_business', $this->id())
       ->execute();
 
     return $this->getParDataManager()->getEntitiesByType('par_data_partnership', $query);
