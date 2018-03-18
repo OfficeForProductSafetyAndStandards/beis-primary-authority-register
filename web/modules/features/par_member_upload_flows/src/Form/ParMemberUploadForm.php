@@ -23,6 +23,11 @@ class ParMemberUploadForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
+   * Set the page title.
+   */
+  protected $pageTitle = 'Upload a list of members';
+
+  /**
    * @return ParMemberCsvHandlerInterface
    */
   public function getCsvHandler() {

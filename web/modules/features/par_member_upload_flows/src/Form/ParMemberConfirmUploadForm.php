@@ -16,6 +16,11 @@ class ParMemberConfirmUploadForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
+   * Set the page title.
+   */
+  protected $pageTitle = 'Confirm member upload';
+
+  /**
    * @return ParMemberCsvHandlerInterface
    */
   public function getCsvHandler() {
@@ -42,7 +47,7 @@ class ParMemberConfirmUploadForm extends ParBaseForm {
     ];
 
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $par_data_partnership->unlockMembership();
+    $par_data_partnership->lockMembership();
 
     return parent::buildForm($form, $form_state);
   }
@@ -55,9 +60,10 @@ class ParMemberConfirmUploadForm extends ParBaseForm {
 
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     if ($par_data_partnership->isMembershipLocked()) {
-      $form_state->setError($form, 'The membership is currently locked and cannot be processed right now.');
+      //$form_state->setError($form, 'The membership is currently locked and cannot be processed right now.');
     }
   }
+
   /**
    * {@inheritdoc}
    */
@@ -71,7 +77,17 @@ class ParMemberConfirmUploadForm extends ParBaseForm {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     // Start processing of data.
-    $this->getCsvHandler()->batchProcess($csv_data, $par_data_partnership);
+    if ($this->getCsvHandler()->batchProcess($csv_data, $par_data_partnership)) {
+      $this->getFlowDataHandler()->deleteStore();
+    }
+    else {
+      $message = $this->t('Membership list could not be processed for %form_id');
+      $replacements = [
+        '%form_id' => $this->getFormId(),
+      ];
+      $this->getLogger($this->getLoggerChannel())
+        ->error($message, $replacements);
+    }
   }
 
 }

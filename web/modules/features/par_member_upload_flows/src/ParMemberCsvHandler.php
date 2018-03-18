@@ -415,13 +415,13 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
           // Only use this member if the first legal entity name is the same.
           $organisation = $member->getOrganisation(TRUE);
-//          $legal_entity = $organisation ? $organisation->getLegalEntity(TRUE) : NULL;
-//          if (!$legal_entity
-//            || ($this->getValue($data, 'legal_entity_name_first')
-//              && $legal_entity->get('registered_name')->getString() === $this->getValue($data, 'legal_entity_name_first'))
-//          ) {
-//            continue;
-//          }
+          $legal_entity = $organisation ? $organisation->getLegalEntity(TRUE) : NULL;
+          if (!$legal_entity
+            || ($this->getValue($data, 'legal_entity_name_first')
+              && $legal_entity->get('registered_name')->getString() === $this->getValue($data, 'legal_entity_name_first'))
+          ) {
+            continue;
+          }
 
           $normalized = $this->extract($member);
           break;
@@ -627,7 +627,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $data = $this->getSerializer()->encode($rows, 'csv');
 
     $directory = 's3private://member-csv/';
-    $name = "Member list for " . lcfirst($par_data_partnership->label());
+    $name = str_replace(' ', '_', "Member list for " . lcfirst($par_data_partnership->label()));
     $file = file_save_data($data, $directory . $name . '.' . self::FILE_EXTENSION, FILE_EXISTS_REPLACE);
 
     return $file;
@@ -703,7 +703,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $rows = [];
 
     foreach ($members as $index => $par_data_coordinated_business) {
-      $row[$index] = $this->denormalize($par_data_coordinated_business);
+      $rows[$index] = $this->denormalize($par_data_coordinated_business);
     }
 
     return $rows;
@@ -781,7 +781,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     });
 
     $par_data_partnership->set('field_coordinated_business', array_values($new_members));
-    //return $par_data_partnership->save();
+    return $par_data_partnership->save();
   }
 
   public function clean($old, $new) {
@@ -825,8 +825,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     // Remove all messages in the messenger bag for ajax callbacks.
     // To make sure logged errors can't interfere with the response.
-////    \Drupal::service('messenger')->deleteAll();
-    unset($_SESSION['messages']);
+    \Drupal::service('messenger')->deleteAll();
 
     return $response;
   }
@@ -879,8 +878,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $batch = [
       'title' => t('Process Members List CSV'),
       'operations' => [],
+      'library' => ['par_member_upload_flows/par-batch'],
       'init_message' => t('Processing the new member list'),
-      'progress_message' => t('Processed @current00 out of @total00.'),
+      'progress_message' => t('Processing...  (do not leave this page)'),
       'error_message' => t('There has been an error processing the member list, if this issue persists please contact the helpdesk.'),
     ];
 
@@ -932,8 +932,6 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $csv_handler = \Drupal::service('par_member_upload_flows.csv_handler');
     $context['message'] = 'Processing new members.';
 
-    sleep(2);
-
     $members = $csv_handler->process($data, $par_data_partnership);
 
     if ($members) {
@@ -944,8 +942,6 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   public static function batch__update(ParDataPartnership $par_data_partnership, &$context) {
     $csv_handler = \Drupal::service('par_member_upload_flows.csv_handler');
     $context['message'] = 'Updating the member list.';
-
-    sleep(2);
 
     $members = $context['results'];
     $updated = $csv_handler->update($par_data_partnership, $members);
@@ -958,8 +954,6 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   public static function batch__clean($old_members, &$context) {
     $csv_handler = \Drupal::service('par_member_upload_flows.csv_handler');
     $context['message'] = 'Cleaning up old members.';
-
-    sleep(2);
 
     $new_members = $context['results'];
 

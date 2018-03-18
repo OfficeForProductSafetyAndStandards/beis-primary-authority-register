@@ -1,0 +1,5 @@
+par-batch:
+  version: 1.x
+  css:
+    component:
+      css/batch-styles.css: {}
