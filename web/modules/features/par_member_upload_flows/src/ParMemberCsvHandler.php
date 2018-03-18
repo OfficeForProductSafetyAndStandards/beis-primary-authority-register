@@ -886,7 +886,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     // 1. Lock the member list.
     try {
-//      $locked = $this->lock($par_data_partnership);
+      $locked = $this->lock($par_data_partnership);
     }
     catch (ParCsvProcessingException $exception) {
       $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
