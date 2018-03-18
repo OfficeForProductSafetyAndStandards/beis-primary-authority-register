@@ -60,7 +60,7 @@ class ParMemberConfirmUploadForm extends ParBaseForm {
 
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     if ($par_data_partnership->isMembershipLocked()) {
-      //$form_state->setError($form, 'The membership is currently locked and cannot be processed right now.');
+      $form_state->setError($form, 'The membership is currently locked and cannot be processed right now.');
     }
   }
 
