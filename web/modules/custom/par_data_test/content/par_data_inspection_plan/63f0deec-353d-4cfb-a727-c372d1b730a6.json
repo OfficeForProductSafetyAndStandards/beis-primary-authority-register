@@ -1,0 +1,184 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_inspection_plan\/119?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_inspection_plan\/inspection_plan"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/par_data_inspection_plan\/inspection_plan\/user_id": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_inspection_plan\/inspection_plan\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_inspection_plan\/inspection_plan\/document": [
+            {
+                "href": "http:\/\/default\/file\/6132?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 119
+        }
+    ],
+    "type": [
+        {
+            "target_id": "inspection_plan"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "63f0deec-353d-4cfb-a727-c372d1b730a6"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": 196
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/par_data_inspection_plan\/inspection_plan\/user_id": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "e46146bb-a78d-46ed-8624-3211a970bc38"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_inspection_plan\/inspection_plan\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "e46146bb-a78d-46ed-8624-3211a970bc38"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_inspection_plan\/inspection_plan\/document": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/file\/6132?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/document"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "6fab632b-e25b-4e9e-89f2-7f3da638e688"
+                    }
+                ],
+                "display": null,
+                "description": null,
+                "alt": "",
+                "title": ""
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1521468935
+        }
+    ],
+    "changed": [
+        {
+            "value": 1521468935
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": 1521468935
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "5aafc61f89efc",
+            "lang": "en"
+        }
+    ],
+    "deleted": [
+        {
+            "value": false
+        }
+    ],
+    "revoked": [
+        {
+            "value": false
+        }
+    ],
+    "archived": [
+        {
+            "value": false
+        }
+    ],
+    "valid_date": [
+        {
+            "value": "2016-01-01",
+            "end_value": "2018-01-01"
+        }
+    ],
+    "approved_rd_executive": [
+        {
+            "value": true
+        }
+    ],
+    "consulted_national_regulator": [
+        {
+            "value": true
+        }
+    ],
+    "inspection_status": [
+        {
+            "value": "in_progress"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ]
+}

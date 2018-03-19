@@ -440,7 +440,7 @@ function par_data_test_create_entities() {
       $legal_entity_1->id()
     ],
     'field_sic_code' => [
-      $sic_code_1->save(),
+      $sic_code_1->id(),
     ]
   ]);
   $organisation_1->save();
@@ -470,7 +470,7 @@ function par_data_test_create_entities() {
       $legal_entity_1->id()
     ],
     'field_sic_code' => [
-      $sic_code_2->save(),
+      $sic_code_2->id(),
     ]
   ]);
   $organisation_2->save();

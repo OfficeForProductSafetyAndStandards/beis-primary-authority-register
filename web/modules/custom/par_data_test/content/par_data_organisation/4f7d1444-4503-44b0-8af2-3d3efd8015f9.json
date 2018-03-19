@@ -1,0 +1,273 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_organisation\/101682?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_organisation\/organisation"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/user_id": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/field_legal_entity": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_legal_entity\/20972?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/field_person": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/117460?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/field_premises": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_premises\/213965?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/field_sic_code": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_sic_code\/2?_format=hal_json",
+                "lang": "en"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 101682
+        }
+    ],
+    "type": [
+        {
+            "target_id": "organisation"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "4f7d1444-4503-44b0-8af2-3d3efd8015f9"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": 7078
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/user_id": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "e46146bb-a78d-46ed-8624-3211a970bc38"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "e46146bb-a78d-46ed-8624-3211a970bc38"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/field_legal_entity": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_legal_entity\/20972?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_legal_entity\/legal_entity"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "48866a78-7f49-4ec7-86d9-8bd538079926"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/field_person": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/117460?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "2a81f02e-2859-41f0-99cb-de2e7bcbdd62"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/field_premises": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_premises\/213965?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_premises\/premises"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "3a1f7e39-4254-44d7-affc-70a3a7babda0"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/field_sic_code": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_sic_code\/2?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_sic_code\/sic_code"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "59f0b396-cb0c-40d3-841d-bcf047e51c2b"
+                    }
+                ],
+                "lang": "en"
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1521468935
+        }
+    ],
+    "changed": [
+        {
+            "value": 1521470551
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": 1521468935
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "5aafc62034f70",
+            "lang": "en"
+        }
+    ],
+    "deleted": [
+        {
+            "value": true
+        }
+    ],
+    "revoked": [
+        {
+            "value": false
+        }
+    ],
+    "archived": [
+        {
+            "value": false
+        }
+    ],
+    "organisation_name": [
+        {
+            "value": "Laundromat"
+        }
+    ],
+    "size": [
+        {
+            "value": "Medium"
+        }
+    ],
+    "employees_band": [
+        {
+            "value": "10-50"
+        }
+    ],
+    "nation": [
+        {
+            "value": "USA"
+        }
+    ],
+    "comments": [
+        {
+            "value": "Where residents can do their laundry.",
+            "format": null,
+            "processed": "<p>Where residents can do their laundry.<\/p>\n"
+        }
+    ],
+    "premises_mapped": [
+        {
+            "value": true
+        }
+    ],
+    "trading_name": [
+        {
+            "value": "Laundromat"
+        },
+        {
+            "value": "Sesame Street Laundromat"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ]
+}

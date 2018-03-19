@@ -1,0 +1,190 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_advice\/3267?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_advice\/advice"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/par_data_advice\/advice\/user_id": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_advice\/advice\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_advice\/advice\/document": [
+            {
+                "href": "http:\/\/default\/file\/6132?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 3267
+        }
+    ],
+    "type": [
+        {
+            "target_id": "advice"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "a8e472b0-3853-4437-b987-263c0e054b99"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": 6631
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/par_data_advice\/advice\/user_id": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "e46146bb-a78d-46ed-8624-3211a970bc38"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_advice\/advice\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "e46146bb-a78d-46ed-8624-3211a970bc38"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_advice\/advice\/document": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/file\/6132?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/document"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "6fab632b-e25b-4e9e-89f2-7f3da638e688"
+                    }
+                ],
+                "display": null,
+                "description": null,
+                "alt": "",
+                "title": ""
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1521468935
+        }
+    ],
+    "changed": [
+        {
+            "value": 1521468935
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": 1521468935
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "5aafc61f7f6bd",
+            "lang": "en"
+        }
+    ],
+    "deleted": [
+        {
+            "value": false
+        }
+    ],
+    "revoked": [
+        {
+            "value": false
+        }
+    ],
+    "archived": [
+        {
+            "value": false
+        }
+    ],
+    "advice_type": [
+        {
+            "value": "background_information"
+        }
+    ],
+    "notes": [
+        {
+            "value": "It is very important to count your numbers correctly.",
+            "format": null,
+            "processed": "<p>It is very important to count your numbers correctly.<\/p>\n"
+        }
+    ],
+    "visible_authority": [
+        {
+            "value": true
+        }
+    ],
+    "visible_coordinator": [
+        {
+            "value": true
+        }
+    ],
+    "visible_business": [
+        {
+            "value": true
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ]
+}

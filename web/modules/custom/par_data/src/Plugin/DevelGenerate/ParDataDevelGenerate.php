@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\devel_generate\Plugin\DevelGenerate;
+namespace Drupal\par_data\Plugin\DevelGenerate;
 
 use Drupal\comment\CommentManagerInterface;
 use Drupal\Component\Render\FormattableMarkup;
@@ -19,13 +19,13 @@ use Drush\Utils\StringUtils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides a ContentDevelGenerate plugin.
+ * Provides a ParDataDevelGenerate plugin.
  *
  * @DevelGenerate(
  *   id = "par_data",
  *   label = @Translation("par_data"),
  *   description = @Translation("Generate a given number of par data entities. Optionally delete current par data."),
- *   url = "content",
+ *   url = "par-data",
  *   permission = "administer devel_generate",
  *   settings = {
  *     "num" = 50,
@@ -34,7 +34,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   }
  * )
  */
-class ContentDevelGenerate extends DevelGenerateBase implements ContainerFactoryPluginInterface {
+class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactoryPluginInterface {
 
   /**
    * The node storage.
@@ -92,8 +92,6 @@ class ContentDevelGenerate extends DevelGenerateBase implements ContainerFactory
    *   The module handler.
    * @param \Drupal\comment\CommentManagerInterface $comment_manager
    *   The comment manager service.
-   * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
-   *   The language manager.
    * @param \Drupal\Core\Routing\UrlGeneratorInterface $url_generator
    *   The url generator service.
    * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
@@ -101,13 +99,12 @@ class ContentDevelGenerate extends DevelGenerateBase implements ContainerFactory
    * @param \Drupal\par_data\ParDataManagerInterface
    *   The par data manager service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, EntityStorageInterface $node_storage, EntityStorageInterface $node_type_storage, ModuleHandlerInterface $module_handler, LanguageManagerInterface $language_manager, DateFormatterInterface $date_formatter, ParDataManagerInterface $par_data_manager) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, EntityStorageInterface $node_storage, EntityStorageInterface $node_type_storage, ModuleHandlerInterface $module_handler, DateFormatterInterface $date_formatter, ParDataManagerInterface $par_data_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
 
     $this->moduleHandler = $module_handler;
     $this->nodeStorage = $node_storage;
     $this->nodeTypeStorage = $node_type_storage;
-    $this->languageManager = $language_manager;
     $this->dateFormatter = $date_formatter;
     $this->parDataManager = $par_data_manager;
   }
@@ -122,7 +119,6 @@ class ContentDevelGenerate extends DevelGenerateBase implements ContainerFactory
       $entity_manager->getStorage('node'),
       $entity_manager->getStorage('node_type'),
       $container->get('module_handler'),
-      $container->get('language_manager'),
       $container->get('date.formatter'),
       $container->get('par_data.manager')
     );
@@ -142,52 +138,17 @@ class ContentDevelGenerate extends DevelGenerateBase implements ContainerFactory
     $options = array();
 
     foreach ($types as $type) {
+      /** @var \Drupal\Core\Entity\ContentEntityType $type */
       $options[$type->id()] = array(
-        'type' => array('#markup' => $type->label()),
+        'type' => array('#markup' => $type->getLabel()),
       );
-      if ($this->commentManager) {
-        $comment_fields = $this->commentManager->getFields('node');
-        $map = array($this->t('Hidden'), $this->t('Closed'), $this->t('Open'));
-
-        $fields = array();
-        foreach ($comment_fields as $field_name => $info) {
-          // Find all comment fields for the bundle.
-          if (in_array($type->id(), $info['bundles'])) {
-            $instance = FieldConfig::loadByName('node', $type->id(), $field_name);
-            $default_value = $instance->getDefaultValueLiteral();
-            $default_mode = reset($default_value);
-            $fields[] = new FormattableMarkup('@field: @state', array(
-              '@field' => $instance->label(),
-              '@state' => $map[$default_mode['status']],
-            ));
-          }
-        }
-        // @todo Refactor display of comment fields.
-        if (!empty($fields)) {
-          $options[$type->id()]['comments'] = array(
-            'data' => array(
-              '#theme' => 'item_list',
-              '#items' => $fields,
-            ),
-          );
-        }
-        else {
-          $options[$type->id()]['comments'] = $this->t('No comment fields');
-        }
-      }
     }
 
     $header = array(
-      'type' => $this->t('Content type'),
+      'type' => $this->t('Par Data Type'),
     );
-    if ($this->commentManager) {
-      $header['comments'] = array(
-        'data' => $this->t('Comments'),
-        'class' => array(RESPONSIVE_PRIORITY_MEDIUM),
-      );
-    }
 
-    $form['node_types'] = array(
+    $form['par_data_types'] = array(
       '#type' => 'tableselect',
       '#header' => $header,
       '#options' => $options,
@@ -195,12 +156,12 @@ class ContentDevelGenerate extends DevelGenerateBase implements ContainerFactory
 
     $form['kill'] = array(
       '#type' => 'checkbox',
-      '#title' => $this->t('<strong>Delete all content</strong> in these content types before generating new content.'),
+      '#title' => $this->t('<strong>Delete all par data entities</strong> of these types before generating new entities.'),
       '#default_value' => $this->getSetting('kill'),
     );
     $form['num'] = array(
       '#type' => 'number',
-      '#title' => $this->t('How many nodes would you like to generate?'),
+      '#title' => $this->t('How many entities would you like to generate?'),
       '#default_value' => $this->getSetting('num'),
       '#required' => TRUE,
       '#min' => 0,
@@ -212,20 +173,12 @@ class ContentDevelGenerate extends DevelGenerateBase implements ContainerFactory
     }
     $form['time_range'] = array(
       '#type' => 'select',
-      '#title' => $this->t('How far back in time should the nodes be dated?'),
-      '#description' => $this->t('Node creation dates will be distributed randomly from the current time, back to the selected time.'),
+      '#title' => $this->t('How far back in time should the entities be dated?'),
+      '#description' => $this->t('Entity creation dates will be distributed randomly from the current time, back to the selected time.'),
       '#options' => $options,
       '#default_value' => 604800,
     );
 
-    $form['max_comments'] = array(
-      '#type' => $this->moduleHandler->moduleExists('comment') ? 'number' : 'value',
-      '#title' => $this->t('Maximum number of comments per node.'),
-      '#description' => $this->t('You must also enable comments for the content types you are generating. Note that some nodes will randomly receive zero comments. Some will receive the max.'),
-      '#default_value' => $this->getSetting('max_comments'),
-      '#min' => 0,
-      '#access' => $this->moduleHandler->moduleExists('comment'),
-    );
     $form['title_length'] = array(
       '#type' => 'number',
       '#title' => $this->t('Maximum number of words in titles'),
@@ -233,37 +186,6 @@ class ContentDevelGenerate extends DevelGenerateBase implements ContainerFactory
       '#required' => TRUE,
       '#min' => 1,
       '#max' => 255,
-    );
-    $form['add_alias'] = array(
-      '#type' => 'checkbox',
-      '#disabled' => !$this->moduleHandler->moduleExists('path'),
-      '#description' => $this->t('Requires path.module'),
-      '#title' => $this->t('Add an url alias for each node.'),
-      '#default_value' => FALSE,
-    );
-    $form['add_statistics'] = array(
-      '#type' => 'checkbox',
-      '#title' => $this->t('Add statistics for each node (node_counter table).'),
-      '#default_value' => TRUE,
-      '#access' => $this->moduleHandler->moduleExists('statistics'),
-    );
-
-    $options = array();
-    // We always need a language.
-    $languages = $this->languageManager->getLanguages(LanguageInterface::STATE_ALL);
-    foreach ($languages as $langcode => $language) {
-      $options[$langcode] = $language->getName();
-    }
-
-    $form['add_language'] = array(
-      '#type' => 'select',
-      '#title' => $this->t('Set language on nodes'),
-      '#multiple' => TRUE,
-      '#description' => $this->t('Requires locale.module'),
-      '#options' => $options,
-      '#default_value' => array(
-        $this->languageManager->getDefaultLanguage()->getId(),
-      ),
     );
 
     $form['#redirect'] = FALSE;
@@ -275,8 +197,8 @@ class ContentDevelGenerate extends DevelGenerateBase implements ContainerFactory
    * {@inheritdoc}
    */
   function settingsFormValidate(array $form, FormStateInterface $form_state) {
-    if (!array_filter($form_state->getValue('node_types'))) {
-      $form_state->setErrorByName('node_types', $this->t('Please select at least one content type'));
+    if (!array_filter($form_state->getValue('par_data_types'))) {
+      $form_state->setErrorByName('par_data_types', $this->t('Please select at least one content type'));
     }
   }
 
@@ -284,7 +206,7 @@ class ContentDevelGenerate extends DevelGenerateBase implements ContainerFactory
    * {@inheritdoc}
    */
   protected function generateElements(array $values) {
-    if ($values['num'] <= 50 && $values['max_comments'] <= 10) {
+    if ($values['num'] <= 50) {
       $this->generateContent($values);
     }
     else {
@@ -297,25 +219,25 @@ class ContentDevelGenerate extends DevelGenerateBase implements ContainerFactory
    * the number of elements is less than 50.
    */
   private function generateContent($values) {
-    $values['node_types'] = array_filter($values['node_types']);
-    if (!empty($values['kill']) && $values['node_types']) {
+    $values['par_data_types'] = array_filter($values['par_data_types']);
+    if (!empty($values['kill']) && $values['par_data_types']) {
       $this->contentKill($values);
     }
 
-    if (!empty($values['node_types'])) {
+    if (!empty($values['par_data_types'])) {
       // Generate nodes.
-      $this->develGenerateContentPreNode($values);
+      $this->develGenerateContentPreEntity($values);
       $start = time();
       for ($i = 1; $i <= $values['num']; $i++) {
-        $this->develGenerateContentAddNode($values);
+        $this->develGenerateContentAddEntity($values);
         if ($this->isDrush8() && function_exists('drush_log') && $i % drush_get_option('feedback', 1000) == 0) {
           $now = time();
-          drush_log(dt('Completed @feedback nodes (@rate nodes/min)', array('@feedback' => drush_get_option('feedback', 1000), '@rate' => (drush_get_option('feedback', 1000) * 60) / ($now - $start))), 'ok');
+          drush_log(dt('Completed @feedback entities (@rate nodes/min)', array('@feedback' => drush_get_option('feedback', 1000), '@rate' => (drush_get_option('feedback', 1000) * 60) / ($now - $start))), 'ok');
           $start = $now;
         }
       }
     }
-    $this->setMessage($this->formatPlural($values['num'], '1 node created.', 'Finished creating @count nodes'));
+    $this->setMessage($this->formatPlural($values['num'], '1 entity created.', 'Finished creating @count entities'));
   }
 
   /**
@@ -324,7 +246,7 @@ class ContentDevelGenerate extends DevelGenerateBase implements ContainerFactory
    */
   private function generateBatchContent($values) {
     // Setup the batch operations and save the variables.
-    $operations[] = array('devel_generate_operation', array($this, 'batchContentPreNode', $values));
+    $operations[] = array('devel_generate_operation', array($this, 'batchContentPreEntity', $values));
 
     // Add the kill operation.
     if ($values['kill']) {
@@ -333,7 +255,7 @@ class ContentDevelGenerate extends DevelGenerateBase implements ContainerFactory
 
     // Add the operations to create the nodes.
     for ($num = 0; $num < $values['num']; $num ++) {
-      $operations[] = array('devel_generate_operation', array($this, 'batchContentAddNode', $values));
+      $operations[] = array('devel_generate_operation', array($this, 'batchContentAddEntity', $values));
     }
 
     // Set the batch.
@@ -346,14 +268,14 @@ class ContentDevelGenerate extends DevelGenerateBase implements ContainerFactory
     batch_set($batch);
   }
 
-  public function batchContentPreNode($vars, &$context) {
+  public function batchContentPreEntity($vars, &$context) {
     $context['results'] = $vars;
     $context['results']['num'] = 0;
-    $this->develGenerateContentPreNode($context['results']);
+    $this->develGenerateContentPreEntity($context['results']);
   }
 
-  public function batchContentAddNode($vars, &$context) {
-    $this->develGenerateContentAddNode($context['results']);
+  public function batchContentAddEntity($vars, &$context) {
+    $this->develGenerateContentAddEntity($context['results']);
     $context['results']['num']++;
   }
 
@@ -376,30 +298,28 @@ class ContentDevelGenerate extends DevelGenerateBase implements ContainerFactory
     $values['kill'] = $this->isDrush8() ? drush_get_option('kill') : $options['kill'];
     $values['title_length'] = 6;
     $values['num'] = array_shift($args);
-    $values['max_comments'] = array_shift($args);
-    $all_types = array_keys(node_type_get_names());
-    $default_types = array_intersect(array('page', 'article'), $all_types);
+    $all_types = array_keys(\Drupal::service('par_data.manager')->getParEntityTypes());
     if ($this->isDrush8()) {
-      $selected_types = _convert_csv_to_array(drush_get_option('types', $default_types));
+      $selected_types = _convert_csv_to_array(drush_get_option('types', []));
     }
     else {
-      $selected_types = StringUtils::csvToArray($options['types'] ?: $default_types);
+      $selected_types = StringUtils::csvToArray($options['types'] ?: []);
     }
 
     if (empty($selected_types)) {
       throw new \Exception(dt('No content types available'));
     }
 
-    $values['node_types'] = array_combine($selected_types, $selected_types);
-    $node_types = array_filter($values['node_types']);
+    $values['par_data_types'] = array_combine($selected_types, $selected_types);
+    $par_data_types = array_filter($values['par_data_types']);
 
-    if (!empty($values['kill']) && empty($node_types)) {
-      throw new \Exception(dt('Please provide content type (--types) in which you want to delete the content.'));
+    if (!empty($values['kill']) && empty($par_data_types)) {
+      throw new \Exception(dt('Please provide par data type (--types) in which you want to delete the content.'));
     }
 
     // Checks for any missing content types before generating nodes.
-    if (array_diff($node_types, $all_types)) {
-      throw new \Exception(dt('One or more content types have been entered that don\'t exist on this site'));
+    if (array_diff($par_data_types, $all_types)) {
+      throw new \Exception(dt('One or more par data types have been entered that don\'t exist on this site'));
     }
 
     return $values;
@@ -412,14 +332,11 @@ class ContentDevelGenerate extends DevelGenerateBase implements ContainerFactory
    *   The input values from the settings form.
    */
   protected function contentKill($values) {
-    $nids = $this->nodeStorage->getQuery()
-      ->condition('type', $values['node_types'], 'IN')
-      ->execute();
-
-    if (!empty($nids)) {
-      $nodes = $this->nodeStorage->loadMultiple($nids);
-      $this->nodeStorage->delete($nodes);
-      $this->setMessage($this->t('Deleted %count nodes.', array('%count' => count($nids))));
+    foreach ($values['par_data_types'] as $entity_type_id => $entity_type) {
+      $storage = $this->parDataManager->getEntityTypeStorage($entity_type_id);
+      $entities = $storage->loadMultiple();
+      $storage->delete($entities);
+      $this->setMessage($this->t('Deleted all %type entities.', array('%type' => $entity_type_id)));
     }
   }
 
@@ -427,7 +344,7 @@ class ContentDevelGenerate extends DevelGenerateBase implements ContainerFactory
    * Return the same array passed as parameter
    * but with an array of uids for the key 'users'.
    */
-  protected function develGenerateContentPreNode(&$results) {
+  protected function develGenerateContentPreEntity(&$results) {
     // Get user id.
     $users = $this->getUsers();
     $results['users'] = $users;
@@ -436,16 +353,16 @@ class ContentDevelGenerate extends DevelGenerateBase implements ContainerFactory
   /**
    * Create one node. Used by both batch and non-batch code branches.
    */
-  protected function develGenerateContentAddNode(&$results) {
+  protected function develGenerateContentAddEntity(&$results) {
     if (!isset($results['time_range'])) {
       $results['time_range'] = 0;
     }
     $users = $results['users'];
 
-    $node_type = array_rand(array_filter($results['node_types']));
+    $node_type = array_rand(array_filter($results['par_data_types']));
     $uid = $users[array_rand($users)];
 
-    $node = $this->nodeStorage->create(array(
+    $node = $this->storage->create(array(
       'nid' => NULL,
       'type' => $node_type,
       'title' => $this->getRandom()->sentences(mt_rand(1, $results['title_length']), TRUE),

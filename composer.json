@@ -108,6 +108,10 @@
                 "PostgreSQL: deal with case insensitivity": "./patches/postgres_case_insensitivity-2464481.patch",
                 "Ensure the table alias is no longer than 60 characters long": "https://www.drupal.org/files/issues/drupal-571548-107-d8_0.patch"
             },
+            "drupal/default_content": {
+                "Do not reimport existing entities": "https://www.drupal.org/files/issues/default_content-dont-reimport-existing-entities-2698425-99.patch",
+                "Allow manual imports": "https://www.drupal.org/files/issues/allow_manual_imports-2640734-67.patch"
+            },
             "drupal/devel": {
                 "Fatal call to getInstance on MailPluginWrapper": "https://www.drupal.org/files/issues/get_instance_fatal-2927963-2.patch"
             },

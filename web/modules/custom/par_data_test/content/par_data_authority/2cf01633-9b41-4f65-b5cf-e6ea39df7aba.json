@@ -1,0 +1,223 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_authority\/523?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_authority\/authority"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/user_id": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/0?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/field_person": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/117450?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/field_premises": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_premises\/213961?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/field_regulatory_function": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_regulatory_function\/11?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 523
+        }
+    ],
+    "type": [
+        {
+            "target_id": "authority"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "2cf01633-9b41-4f65-b5cf-e6ea39df7aba"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": 2243
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/user_id": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "e46146bb-a78d-46ed-8624-3211a970bc38"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "e46146bb-a78d-46ed-8624-3211a970bc38"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/field_person": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/117450?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "c78b0352-15c8-42b5-b22d-082b72c51af4"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/field_premises": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_premises\/213961?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_premises\/premises"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "6be6938f-0350-4705-8d41-a8744cfd2053"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/field_regulatory_function": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_regulatory_function\/11?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_regulatory_function\/regulatory_function"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "3a4c6455-7263-4f0b-966a-24b8dd518f49"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1521468935
+        }
+    ],
+    "changed": [
+        {
+            "value": 1521468935
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": 1521468935
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "5aafc62059f87",
+            "lang": "en"
+        }
+    ],
+    "deleted": [
+        {
+            "value": false
+        }
+    ],
+    "revoked": [
+        {
+            "value": false
+        }
+    ],
+    "archived": [
+        {
+            "value": false
+        }
+    ],
+    "authority_name": [
+        {
+            "value": "Lower East Side Borough Council"
+        }
+    ],
+    "authority_type": [
+        {
+            "value": "council"
+        }
+    ],
+    "nation": [
+        {
+            "value": "USA"
+        }
+    ],
+    "ons_code": [
+        {
+            "value": "123456"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ]
+}

@@ -1,0 +1,58 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/user\/9532?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+        }
+    },
+    "uid": [
+        {
+            "value": 9532
+        }
+    ],
+    "uuid": [
+        {
+            "value": "44f38230-a289-4dc9-b3fa-1f0475c8a31e"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "par_helpdesk@example.com"
+        }
+    ],
+    "created": [
+        {
+            "value": 1521468935
+        }
+    ],
+    "changed": [
+        {
+            "value": 1521468935,
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "field_last_password_reset": [
+        {
+            "value": "2018-03-19T14:16:31"
+        }
+    ],
+    "field_password_expiration": [
+        {
+            "value": false
+        }
+    ]
+}
