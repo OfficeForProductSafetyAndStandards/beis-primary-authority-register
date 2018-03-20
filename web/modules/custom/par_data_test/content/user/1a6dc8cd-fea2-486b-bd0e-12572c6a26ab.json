@@ -23,6 +23,11 @@
             "lang": "en"
         }
     ],
+    "mail": [
+        {
+            "value": "par_authority@example.com"
+        }
+    ],
     "name": [
         {
             "value": "par_authority@example.com"
