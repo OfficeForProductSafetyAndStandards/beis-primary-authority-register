@@ -43,6 +43,11 @@
             "value": "1"
         }
     ],
+    "roles": [
+        {
+            "target_id": "par_helpdesk"
+        }
+    ],
     "created": [
         {
             "value": 1521468935

@@ -48,5 +48,4 @@ function par_data_test_uninstall() {
       }
     }
   }
-
 }
