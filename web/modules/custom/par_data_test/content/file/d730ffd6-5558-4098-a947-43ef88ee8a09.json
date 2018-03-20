@@ -8,7 +8,7 @@
         },
         "http:\/\/drupal.org\/rest\/relation\/file\/image\/uid": [
             {
-                "href": "http:\/\/default\/user\/0?_format=hal_json"
+                "href": "http:\/\/default\/user\/1?_format=hal_json"
             }
         ]
     },
@@ -37,7 +37,7 @@
             {
                 "_links": {
                     "self": {
-                        "href": "http:\/\/default\/user\/0?_format=hal_json"
+                        "href": "http:\/\/default\/user\/1?_format=hal_json"
                     },
                     "type": {
                         "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
@@ -45,7 +45,7 @@
                 },
                 "uuid": [
                     {
-                        "value": "e46146bb-a78d-46ed-8624-3211a970bc38"
+                        "value": "3508aee8-7e04-4b5d-a784-3667ea038e49"
                     }
                 ]
             }

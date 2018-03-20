@@ -58,7 +58,6 @@ default_content:
   par_data_authority:
     - '2cf01633-9b41-4f65-b5cf-e6ea39df7aba' # Authority 1
     - '5385e5cf-1b98-43ae-9a3e-e369091a61ef' # Authority 2
-    - '19e05a57-741d-4a78-85b4-6d04349b9b81' # Authority 3
   par_data_partnership:
     - '3185889b-a264-4bfe-97ae-1a481f4902a0' # Partnership Direct 1
     - '7b9f5a2c-d364-4475-a31e-a87db11acad4' # Partnership Direct 2
