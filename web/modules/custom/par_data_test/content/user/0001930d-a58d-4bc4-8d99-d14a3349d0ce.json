@@ -28,6 +28,11 @@
             "value": "par_business@example.com"
         }
     ],
+    "pass": [
+        {
+            "value": "TestPassword"
+        }
+    ],
     "status": [
         {
             "value": "1"
