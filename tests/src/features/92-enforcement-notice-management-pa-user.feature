@@ -60,7 +60,7 @@ Feature: Enforcement notice management
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         Then I expect that element "a*=There is definitely no link with this title" does not exist
-        Then I expect that element "a*=See enforcement notifications received" does not exist
+        Then I expect that element "a:contains('See enforcement notifications received)" does not exist
         When I click on the link "See enforcement notifications sent"
         Then I expect that element "a*=Title of enforcement notice One" does exist
         And I expect that element "a*=Title of enforcement notice Three" does exist
