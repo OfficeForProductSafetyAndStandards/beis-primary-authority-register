@@ -18,4 +18,3 @@ module.exports = (selector, falseCase) => {
             .above(0, `Expected element "${selector}" to exist`);
     }
 };
-
