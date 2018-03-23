@@ -29,7 +29,7 @@
         "drupal/google_analytics": "~2.1.0",
         "drupal/govuk_notify": "~1.1.0",
         "drupal/health_check": "1.0.0",
-        "drupal/http_response_headers": "~2.0.0",
+        "drupal/http_response_headers": "2.x-dev#de12feba1ca817352cafae68e4731344a56341c5",
         "drupal/inline_entity_form": "~1.0.0",
         "drupal/invite": "1.x-dev#a25b6e11580660f2653c36b0c4669b73ef453f7c",
         "drupal/login_destination": "1.x-dev#54be8b89fdc073ca40af6b9b2eeb050e0aeb7908",
@@ -127,9 +127,6 @@
             "drupal/health_check": {
                 "Health Check doesn't check Drupal application": "https://www.drupal.org/files/issues/health_check_doesn_t-2892294-2.patch"
             },
-            "drupal/http_response_headers": {
-                "Logging of header modificaton should be switched off": "https://www.drupal.org/files/issues/remove-logging-2909459-4.patch"
-            },
             "drupal/login_destination": {
                 "One time login link": "./patches/one_time_login_redirection.patch",
                 "SetOptions on null causing error": "https://www.drupal.org/files/issues/2018-03-09/toolbar_alter_error-2947616-11.patch"
@@ -143,6 +140,9 @@
             "drush/drush": {
                 "Fix SQL dump problem where extra params are passed when trying only to list tables": "./patches/3321-sql-dump-no-extra-fix.patch",
                 "Refs #2079. Do not pass `$this->query_extra` to `pg_dump`.": "./patches/drush-sqldump-postgres95.patch"
+            },
+            "league/flysystem": {
+                "Default metadata stored in cache as NULL values": "https://www.drupal.org/files/issues/2018-03-23/metadata-null-values_2955174-6.patch"
             }
         }
     },
