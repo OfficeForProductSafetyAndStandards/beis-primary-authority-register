@@ -36,7 +36,7 @@ Feature: Primary Authority - Change Partnership Details
         # DOCUMENTATION
 
         # When I select next partnership awaiting review
-        And I click on the button "a*=See all Advice"
+        And I click on the button "a=See all Advice"
         When I click on the link "Upload advice"
         Then I expect that element "h3" contains the text "How to upload Primary Authority Advice to Local Authorities"
         When I click on the button "#edit-cancel"

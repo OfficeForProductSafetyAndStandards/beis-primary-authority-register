@@ -9,7 +9,7 @@ Feature: Enforcement notice management
         And I add "par_authority@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
-        And I click on the button "a*=Dashboard"
+        And I click on the button "a=Dashboard"
         And I click on the link "See enforcement notifications sent"
         Then I expect that element ".heading-secondary" contains the text "Enforcement Notifications"
         Then the element ".heading-small" contains the text "Your enforcement notifications"
@@ -20,7 +20,7 @@ Feature: Enforcement notice management
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Confirmation"
         Then I expect that element "h1.heading-xlarge" contains the text "Enforcement action decision"
         And I click on the button "#edit-actions-next"
-        And I click on the button "a*=Dashboard"
+        And I click on the button "a=Dashboard"
         And I click on the link "See enforcement notifications sent"
         Then the element ".cols-6" contains the text "Title of enforcement notice Four"
 
@@ -32,7 +32,7 @@ Feature: Enforcement notice management
         And I click on the button "#edit-actions-next"
 #        Then I expect that element ".heading-xlarge" contains the text "Confirm Enforcement Notice"
         And I click on the button "#edit-actions-next"
-        And I click on the button "a*=Dashboard"
+        And I click on the button "a=Dashboard"
         And I click on the link "See enforcement notifications sent"
         Then the element ".cols-6" contains the text "Title of enforcement notice Three"
 
@@ -46,7 +46,7 @@ Feature: Enforcement notice management
         And I click on the radio "#edit-actions-0-primary-authority-status-referred"
         When I add "Some notes about why enforcement action referred" to the inputfield "#edit-actions-0-referral-notes"
         And I click on the button "#edit-actions-next"
-        And I click on the radio ".option*=Upper West Side Borough Council"
+        And I click on the radio ".option=Upper West Side Borough Council"
         And I click on the button "#edit-next"
         Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Confirmation"
         Then I expect that element "h1.heading-xlarge" contains the text "Enforcement action decision"
@@ -59,11 +59,10 @@ Feature: Enforcement notice management
         And I add "par_enforcement_officer@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
-        Then I expect that element "a*=There is definitely no link with this title" does not exist
-        Then I expect that element "a:contains('See enforcement notifications received)" does not exist
+        Then I expect that element "a=See enforcement notifications received" does not exist
         When I click on the link "See enforcement notifications sent"
-        Then I expect that element "a*=Title of enforcement notice One" does exist
-        And I expect that element "a*=Title of enforcement notice Three" does exist
-        And I expect that element "a*=Title of enforcement notice Four" does exist
-        And I expect that element "a*=Title of enforcement notice Five" does exist
+        Then I expect that element "a=Title of enforcement notice One" does exist
+        And I expect that element "a=Title of enforcement notice Three" does exist
+        And I expect that element "a=Title of enforcement notice Four" does exist
+        And I expect that element "a=Title of enforcement notice Five" does exist
 
