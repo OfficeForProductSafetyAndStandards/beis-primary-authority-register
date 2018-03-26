@@ -81,3 +81,12 @@ par_help_desks_flows.invite_sent:
         type: entity:par_data_partnership
       par_data_person:
         type: entity:par_data_person
+
+# PAR Help Desk journey - manage legal entity migration
+par_help_desks_flows.legal_entity_migration:
+  path: '/helpdesk/manage-legal-entity-migration'
+  defaults:
+    _controller: '\Drupal\par_rd_help_desk_flows\Controller\ParRdHelpDeskPartnershipLegalEntitiesController::content'
+    _title: 'Legal Entity Migration'
+  requirements:
+    _permission: 'approve partnerships via help desk'
