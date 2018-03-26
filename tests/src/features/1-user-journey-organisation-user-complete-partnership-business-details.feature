@@ -22,7 +22,7 @@ Feature: Business User - Complete organisation details
         # EDIT ABOUT THE BUSINESS
         
         And I expect that element "h1.heading-xlarge" contains the text "Confirm the details about the organisation"
-        And I add "Information about organisation details" to the inputfield "#edit-about-business"
+        And I add "Some information about organisation details" to the inputfield "#edit-about-business"
         When I click on the button "#edit-next"
 
         # EDIT REGISTERED ADDRESS
@@ -90,7 +90,7 @@ Feature: Business User - Complete organisation details
         And I expect that element "#edit-organisation-registered-address" contains the text "New Change"
         And I expect that element "#edit-organisation-registered-address" contains the text "London"
         And I expect that element "#edit-organisation-registered-address" contains the text "SE16 4NX"
-        And I expect that element "#edit-about-organisation" contains the text "Information about organisation details"
+        And I expect that element "#edit-about-organisation" contains the text "Some information about organisation details"
         And I expect that element "#edit-sic-code" contains the text "Health and social care"
 #        Then I expect that element "#edit-number-employees" contains the text "50 to 249"
         And I expect that element "#edit-legal-entities" contains the text "New LLP Company"
@@ -105,20 +105,24 @@ Feature: Business User - Complete organisation details
 
         When  I click on the link "Change the details about this partnership"
         Then I expect that element "h1.heading-xlarge" contains the text "Confirm the details about the organisation"
-        When I add "Change to the information about organisation details" to the inputfield "#edit-about-business"
+        When I clear the inputfield "#edit-about-business"
+        And I add "Change to the information about organisation details" to the inputfield "#edit-about-business"
         And I click on the button "#edit-next"
         Then I expect that element "h1.heading-xlarge" contains the text "Review the partnership summary information below"
         And I expect that element "#edit-about-organisation" contains the text "Change to the information about organisation details"
+        And I expect that element "#edit-about-organisation" not contains the text "Some information about organisation details"
 
         # CHANGE LEGAL ENTITIES
 
         When  I click on the link "Change the new legal entities"
         Then I expect that element "h1.heading-xlarge" contains the text "Confirm the legal entity"
         When I click on the button "#edit-par-component-legal-entity-1-remove"
+        And I clear the inputfield "#edit-par-component-legal-entity-0-registered-name"
         And I add "Changed to Public Company" to the inputfield "#edit-par-component-legal-entity-0-registered-name"
         And I select the option with the text "Public Limited Company" for element "#edit-par-component-legal-entity-0-legal-entity-type"
         Then I expect that element ".form-item-par-component-legal-entity-0-registered-number label" contains the text "Provide the registration number"
-        When I add "55555555555" to the inputfield "#edit-par-component-legal-entity-0-registered-number"
+        When I clear the inputfield "#edit-par-component-legal-entity-0-registered-number"
+        And I add "55555555555" to the inputfield "#edit-par-component-legal-entity-0-registered-number"
         And I click on the button "#edit-next"
         Then I expect that element "h1.heading-xlarge" contains the text "Review the partnership summary information below"
         Then I expect that element "#edit-legal-entities" contains the text "Changed to Public Company"
