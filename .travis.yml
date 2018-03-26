@@ -183,7 +183,7 @@ addons:
     debug: false
     paths:
     - "./tests/reports"
-    target_paths: tests/$TRAVIS_BUILD_NUMBER
+    target_paths: tests/$TRAVIS_BUILD_NUMBER/$TESTTYPE
     bucket: transform-par-beta-artifacts
     s3_region: eu-west-1
 notifications:
