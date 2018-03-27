@@ -79,6 +79,14 @@ steps:
       trading_name: par_partnership_confirmation_trading_name
       legal_select: par_partnership_confirmation_legal_entity
     redirect:
+      about_business: 1
+      address: 2
+      contact: 3
+      sic_code: 4
+      employee_number: 5
+      trading_name: 6
+      legal_select: 7
+      legal_add: 8
       save: 10
       cancel: 11
   10:
