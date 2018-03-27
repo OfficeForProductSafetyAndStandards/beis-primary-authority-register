@@ -62,7 +62,8 @@ exports.config = {
     //
     // Level of logging verbosity: silent | verbose | command | data | result |
     // error
-    logLevel: 'error',
+    logLevel: 'verbose',
+    logOutput: './reports/wdio-log.txt',
     //
     // Enables colors for log output.
     coloredLogs: true,
