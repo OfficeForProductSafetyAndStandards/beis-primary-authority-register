@@ -48,9 +48,9 @@ before_install:
 install:
   - phpenv config-rm xdebug.ini
   - composer install -v
-  - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install -q"
+  - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm install"
   - docker exec -it par_beta_web bash -c "/usr/local/n/versions/node/7.2.1/bin/npm run gulp"
-  - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install -s"
+  - docker exec -it par_beta_web bash -c "cd /var/www/html/tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"
 
 #-----------------------------------------------------------------------------
 # Setup local config defaults
@@ -94,7 +94,7 @@ install:
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush fsg s3backups $DATAFILE.tar.gz /dump.sql.tar.gz"
   - docker exec -i par_beta_web bash -c "cd / && tar --no-same-owner -zxvf dump.sql.tar.gz"
-  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sql-cli @dev < /$DATAFILE -q"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sql-cli @dev < /$DATAFILE"
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush sqlsan @dev -y"
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cc drush"
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cr"
@@ -130,6 +130,7 @@ script:
   - docker exec -it par_beta_web sh -c "./vendor/bin/paratest --processes=16 --log-junit=./tests/reports/phpunit.latest.xml"
   - docker exec -it par_beta_web bash -c "apt-get update"
   - docker exec -it par_beta_web bash -c "apt-get install google-chrome-stable"
+  - docker exec -it par_beta_web bash -c "apt-get install graphicsmagick" # For wdio-screenshot stability.
   - if [[ "$TESTTYPE" == "cucumber" ]]; then travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"; fi
   - if [[ "$TESTTYPE" == "cucumber" ]]; then docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run test:build"; fi
   - "if [[ $TRAVIS_BRANCH == 'master' ]]; then curl -X POST https://par-dashboard.cloudapps.digital/push/test_results_unit -H 'Accept: application/json' -H 'Cache-Control: no-cache' -H 'Content-Type: application/xml' -d '@./tests/reports/phpunit.latest.xml'; fi"
@@ -147,7 +148,7 @@ script:
 #-----------------------------------------------------------------------------
 #  - docker exec -ti par_beta_web bash -c "cd tests/reports && if [ -d ./html ]; then tar -cf reportHTML.tar.gz ./html; fi"
 
-  - if [[ "$TESTTYPE" == "cucumber" ]]; then travis_retry docker exec -ti par_beta_web bash -c "cd tests && if [ -d ./errorShots ]; then tar -cf reports/errorShots.tar.gz ./errorShots; fi"; fi
+  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && if [ -d ./errorShots ]; then tar -cf reports/errorShots.tar.gz ./errorShots; fi"
 
 #-----------------------------------------------------------------------------
 # Remove .env file created in previous steps.
@@ -183,7 +184,7 @@ addons:
     debug: false
     paths:
     - "./tests/reports"
-    target_paths: tests/$TRAVIS_BUILD_NUMBER/$TESTTYPE
+    target_paths: tests/$TRAVIS_BUILD_NUMBER
     bucket: transform-par-beta-artifacts
     s3_region: eu-west-1
 notifications:
