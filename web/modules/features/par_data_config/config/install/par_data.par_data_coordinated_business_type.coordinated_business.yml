@@ -5,7 +5,7 @@ id: coordinated_business
 label: 'Coordinated Member'
 description: 'A coordinated member is an organisation that is a member of a coordinated partnership.'
 help: ''
-isDeletable: true
+isDeletable: false
 isRevokable: true
 isArchivable: false
 configuration:

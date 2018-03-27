@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\par_data\ParDataException;
@@ -66,6 +67,13 @@ use Drupal\par_data\ParDataException;
 class ParDataCoordinatedBusiness extends ParDataEntity {
 
   /**
+   * Get the time service.
+   */
+  public function getTime() {
+    return \Drupal::time();
+  }
+
+  /**
    * {@inheritdoc}
    *
    * @param string $date
@@ -78,7 +86,38 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
 
     // Ceasing a member has the same purpose as revoking partnerships
     // so we use the same methods and status.
-    parent::revoke($save);
+    // Coordinated members that are active will also be revoked
+    parent::revoke($save, TRUE);
+  }
+
+  /**
+   * Destroy and entity, and completely remove.
+   */
+  public function destroy() {
+    if (!$this->isNew()) {
+      if (!$this->inProgress()) {
+        $this->entityManager()->getStorage($this->entityTypeId)->destroy([$this->id() => $this]);
+      }
+      else {
+        $date = DateTimePlus::createFromFormat('Y-m-d', 'now');
+        $this->cease($date, TRUE);
+      }
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function inProgress() {
+    // Freeze memberships that have active enforcement notices.
+    $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
+    foreach ($enforcement_notices as $enforcement_notice) {
+      if ($enforcement_notice->inLiving()) {
+        return TRUE;
+      }
+    }
+
+    return parent::inProgress();
   }
 
   /**

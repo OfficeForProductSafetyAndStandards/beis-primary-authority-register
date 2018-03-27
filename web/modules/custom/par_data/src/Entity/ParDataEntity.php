@@ -187,7 +187,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * Destroy and entity, and completely remove.
    */
   public function destroy() {
-    if (!$this->isNew()) {
+    if (!$this->isNew() && !$this->inProgress()) {
       $this->entityManager()->getStorage($this->entityTypeId)->destroy([$this->id() => $this]);
     }
   }
@@ -212,12 +212,14 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *
    * @param boolean $save
    *   Whether to save the entity after revoking.
+   * @param boolean $check_active
+   *   Whether to check if the entity is in progress.
    *
    * @return boolean
    *   True if the entity was revoked, false for all other results.
    */
-  public function revoke($save = TRUE) {
-    if (!$this->isNew() && !$this->inProgress() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
+  public function revoke($save = TRUE, $check_active = TRUE) {
+    if (!$this->isNew() && (!$this->inProgress() || !$check_active) && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, TRUE);
 
       // Always revision status changes.
@@ -252,12 +254,14 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *
    * @param boolean $save
    *   Whether to save the entity after revoking.
+   * @param boolean $check_active
+   *   Whether to check if the entity is in progress.
    *
    * @return boolean
    *   True if the entity was restored, false for all other results.
    */
-  public function archive($save = TRUE) {
-    if (!$this->isNew() && !$this->inProgress() && $this->getTypeEntity()->isArchivable() && !$this->isArchived()) {
+  public function archive($save = TRUE, $check_active = TRUE) {
+    if (!$this->isNew() && (!$this->inProgress() || !$check_active) && $this->getTypeEntity()->isArchivable() && !$this->isArchived()) {
       $this->set(ParDataEntity::ARCHIVE_FIELD, TRUE);
 
       // Always revision status changes.
