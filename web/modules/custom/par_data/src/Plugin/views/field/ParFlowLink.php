@@ -99,6 +99,7 @@ class ParFlowLink extends FieldPluginBase {
 
       $text = !empty($title) ? t($title) : 'Continue';
       $url = !empty($path) ? Url::fromUserInput($path) : NULL;
+      \Drupal::logger('par-test')->warning('How is the url %url being rendered.', ['%url' => $url->toString()]);
       $link = $url ? Link::fromTextAndUrl($text, $url)->toRenderable() : NULL;
 
       // Hide the link
