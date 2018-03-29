@@ -32,13 +32,13 @@ Feature: Coordinator User - Upload Members
         And I click on the button "#edit-upload"
         Then I expect that element "h1.heading-xlarge" contains the text "CSV validation errors"
         And I expect that element "a=Member Guidance Page" does exist
-        Then I expect that element "#edit-error-list tbody" contains the text "Line"
+        Then I expect that element "#edit-error-list thead" contains the text "Line"
         And I expect that element "#edit-error-list thead" contains the text "Column"
         And I expect that element "#edit-error-list thead" contains the text "Error"
-        And I expect that element "#edit-error-list thead" contains the text "Organisation name"
-        And I expect that element "#edit-error-list thead" contains the text "Membership Start Date"
-        And I expect that element "#edit-error-list thead" contains the text "Address Line 1"
-        And I expect that element "#edit-error-list thead" contains the text "Nation"
+        And I expect that element "#edit-error-list tbody" contains the text "Organisation name"
+        And I expect that element "#edit-error-list tbody" contains the text "Membership Start Date"
+        And I expect that element "#edit-error-list tbody" contains the text "Address Line 1"
+        And I expect that element "#edit-error-list tbody" contains the text "Nation"
         When I click on the button "#edit-done"
 
         # CSV PROCESSING
