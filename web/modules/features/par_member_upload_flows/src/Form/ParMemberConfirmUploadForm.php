@@ -46,9 +46,6 @@ class ParMemberConfirmUploadForm extends ParBaseForm {
       ],
     ];
 
-    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $par_data_partnership->lockMembership();
-
     return parent::buildForm($form, $form_state);
   }
 
