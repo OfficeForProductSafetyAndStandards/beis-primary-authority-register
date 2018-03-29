@@ -67,11 +67,12 @@ use Drupal\par_data\ParDataException;
 class ParDataCoordinatedBusiness extends ParDataEntity {
 
   /**
-   * Get the time service.
+   * @var array
+   *   An array of entity relationships that are dependent on this entity.
    */
-  public function getTime() {
-    return \Drupal::time();
-  }
+  protected $dependents = [
+    'par_data_organisation',
+  ];
 
   /**
    * {@inheritdoc}
@@ -86,23 +87,7 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
 
     // Ceasing a member has the same purpose as revoking partnerships
     // so we use the same methods and status.
-    // Coordinated members that are active will also be revoked
-    parent::revoke($save, TRUE);
-  }
-
-  /**
-   * Destroy and entity, and completely remove.
-   */
-  public function destroy() {
-    if (!$this->isNew()) {
-      if (!$this->inProgress()) {
-        $this->entityManager()->getStorage($this->entityTypeId)->destroy([$this->id() => $this]);
-      }
-      else {
-        $date = DateTimePlus::createFromFormat('Y-m-d', 'now');
-        $this->cease($date, TRUE);
-      }
-    }
+    parent::revoke($save);
   }
 
   /**
@@ -110,9 +95,10 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
    */
   public function inProgress() {
     // Freeze memberships that have active enforcement notices.
-    $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
-    foreach ($enforcement_notices as $enforcement_notice) {
-      if ($enforcement_notice->inLiving()) {
+    $par_data_organisations = $this->getRelationships('par_data_organisation');
+    $par_data_partnerships = $this->getRelationships('par_data_partnership');
+    foreach ($par_data_organisations + $par_data_partnerships as $entity) {
+      if ($entity->inLiving()) {
         return TRUE;
       }
     }

@@ -3,6 +3,7 @@
 namespace Drupal\par_member_upload_flows;
 
 use CommerceGuys\Intl\Exception\UnknownCountryException;
+use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\Core\Ajax\AfterCommand;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\RedirectCommand;
@@ -790,9 +791,21 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       }
     );
 
-    foreach ($diff as $members) {
-      // Remove all referenced entities also.
-      $members->destroy();
+    foreach ($diff as $member) {
+      // So long as the member isn't required by another entity then we can permanently remove it.
+      if ($member->inProgress()) {
+        $date = DateTimePlus::createFromFormat('Y-m-d', 'now');
+        $member->cease($date, TRUE);
+      }
+      else {
+        $member->destroy();
+
+        // Remove all referenced entities also.
+        // @TODO Make sure these entities are not removed if they are referenced by something else.
+        foreach ($member->getDependents() as $entity) {
+          $entity-destroy();
+        }
+      }
     }
   }
 
