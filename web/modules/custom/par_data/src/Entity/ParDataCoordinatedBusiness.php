@@ -93,17 +93,16 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
-  public function inProgress() {
+  public function destroy() {
     // Freeze memberships that have active enforcement notices.
-    $par_data_organisations = $this->getRelationships('par_data_organisation');
-    $par_data_partnerships = $this->getRelationships('par_data_partnership');
-    foreach ($par_data_organisations + $par_data_partnerships as $entity) {
-      if ($entity->inLiving()) {
-        return TRUE;
+    $par_data_enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
+    foreach ($par_data_enforcement_notices as $entity) {
+      if ($entity->isLiving()) {
+        return;
       }
     }
 
-    return parent::inProgress();
+    return parent::destroy();
   }
 
   /**

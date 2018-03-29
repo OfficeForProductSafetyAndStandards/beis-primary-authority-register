@@ -785,6 +785,26 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     return $par_data_partnership->save();
   }
 
+  /**
+   * Whether the member can be deleted, only appropriate for CSV upload.
+   *
+   * @param ParDataCoordinatedBusiness $member
+   *
+   * @return bool
+   *   Whether the member can be deleted.
+   */
+  public function canDestroyMember(ParDataCoordinatedBusiness $member) {
+    $par_data_organisations = $member->getRelationships('par_data_organisation');
+    $par_data_partnerships = $member->getRelationships('par_data_partnership');
+    foreach ($par_data_organisations + $par_data_partnerships as $entity) {
+      if ($entity->isLiving()) {
+        return FALSE;
+      }
+    }
+
+    return TRUE;
+  }
+
   public function clean($old, $new) {
     $diff = array_udiff($old, $new, function ($a, $b) {
         return $a->id() - $b->id();
@@ -793,7 +813,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     foreach ($diff as $member) {
       // So long as the member isn't required by another entity then we can permanently remove it.
-      if ($member->inProgress()) {
+      if ($this->canDestroyMember($member)) {
         $date = DateTimePlus::createFromFormat('Y-m-d', 'now');
         $member->cease($date, TRUE);
       }
