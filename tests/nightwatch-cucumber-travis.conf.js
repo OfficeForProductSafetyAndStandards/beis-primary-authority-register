@@ -16,14 +16,14 @@ module.exports = {
         start_process: true,
         server_path: seleniumServer.path,
         log_path: '',
-        host: '127.0.0.1',
+        host: 'localhost',
         port: 4444
     },
     test_settings: {
         default: {
             launch_url: 'http://127.0.0.1:80',
             selenium_port: 4444,
-            selenium_host: '127.0.0.1',
+            selenium_host: 'localhost',
             screenshots : {
                 enabled : true,
                 on_failure : true,
@@ -33,8 +33,8 @@ module.exports = {
                 browserName: 'chrome',
                 chromeOptions : {
                     binary: '/usr/bin/google-chrome',
-                    args: ['--headless', '--disable-gpu', '--window-size=1280,1280'],
-                  },
+                    args: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1200,2000']
+                },
                 javascriptEnabled: true,
                 acceptSslCerts: true
             },
