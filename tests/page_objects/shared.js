@@ -1,7 +1,7 @@
 const { client } = require('nightwatch-cucumber')
 
 module.exports = {
-    url: 'http://localhost:8111',
+    url: 'http://localhost:80',
     elements: {
         googleSearchField: 'input[name="q"]',
         selector: 'input[name="par_data_authority_id"]',

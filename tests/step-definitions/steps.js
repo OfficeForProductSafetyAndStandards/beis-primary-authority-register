@@ -2,12 +2,6 @@ const { client } = require('nightwatch-cucumber')
 const { Given, Then, When } = require('cucumber')
 const shared = client.page.shared();
 
-  Given(/^I open Google's search page$/, () => {
-    return client
-      .url('http://localhost:8111')
-      .waitForElementVisible('body', 1000);
-  });
-
   Given(/^I open the path "([^"]*)"$/, (locpath) => {
     return client
       .url(shared.url+locpath)
