@@ -1,6 +1,5 @@
-node_modules/*
-npm-debug.log
-errorShots/
-allure-results/
-reports/
-jmeter/
+node_modules
+.idea
+*.iml
+reports
+selenium-debug.log

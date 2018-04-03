@@ -25,7 +25,7 @@
                 "guzzlehttp/promises": "~1.0",
                 "guzzlehttp/psr7": "^1.4.1",
                 "mtdowling/jmespath.php": "~2.2",
-                "php": ">=5.5"
+                "php": ">=5.6"
             },
             "require-dev": {
                 "andrewsville/php-token-reflection": "^1.4",
@@ -103,7 +103,7 @@
             "require": {
                 "guzzlehttp/promises": "^1.0",
                 "guzzlehttp/psr7": "^1.4",
-                "php": ">=5.5"
+                "php": ">=5.6"
             },
             "require-dev": {
                 "ext-curl": "*",
@@ -273,12 +273,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "f400aa98912c561ba625ea4065031b7a41e5a155"
+                "reference": "f400aa98912c561ba625ea4065031b7a41e5a156"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/f400aa98912c561ba625ea4065031b7a41e5a155",
-                "reference": "f400aa98912c561ba625ea4065031b7a41e5a155",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/f400aa98912c561ba625ea4065031b7a41e5a156",
+                "reference": "f400aa98912c561ba625ea4065031b7a41e5a156",
                 "shasum": ""
             },
             "require": {
