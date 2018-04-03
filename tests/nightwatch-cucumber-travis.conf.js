@@ -31,10 +31,10 @@ module.exports = {
             },
             desiredCapabilities: {
                 browserName: 'chrome',
-                chromeOptions : {
-                    binary: '/usr/bin/google-chrome',
-                    args: ['--headless', '--disable-gpu', '--window-size=1280,1280'],
-                  },
+                // chromeOptions : {
+                //     binary: '/usr/bin/google-chrome',
+                //     args: ['--headless', '--disable-gpu', '--window-size=1280,1280'],
+                //   },
                 javascriptEnabled: true,
                 acceptSslCerts: true
             },
