@@ -32,7 +32,7 @@ module.exports = {
             desiredCapabilities: {
                 browserName: 'chrome',
                 chromeOptions : {
-                //     // binary: electron,
+                    binary: '/usr/bin/google-chrome',
                     args: ['--headless', '--disable-gpu', '--window-size=1280,1280'],
                   },
                 javascriptEnabled: true,
