@@ -22,4 +22,13 @@
         Then I expect that element ".heading-secondary" contains the text "Confirmation"
         Then I expect that element "h1.heading-xlarge" contains the text "Enforcement action decision"
         And I click on the button "#edit-actions-next"
-        # Then I expect that element "#par-rd-help-desk-approve" contains the text "Enforcement allowed"
+        And I click on the link "Log out"
+
+        # CHECK PAR ENFORCEMENT OFFICER VIEW
+
+        Given I open the url "/user/login"
+        And I add "par_enforcement_officer@example.com" to the inputfield "#edit-name"
+        And I add "TestPassword" to the inputfield "#edit-pass"
+        When I click on the button "#edit-submit"
+        When I click on the link "See enforcement notifications sent"
+        And I expect that element "a=Title of enforcement notice Five" does exist
