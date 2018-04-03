@@ -57,6 +57,11 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   const MAX_ROW_LIMIT = 10000;
 
   /**
+   * The maximum number of rows that can be processed per batch run.
+   */
+  const BATCH_LIMIT = 100;
+
+  /**
    * The symfony serializer.
    *
    * @var \Symfony\Component\Serializer\Serializer
@@ -784,17 +789,29 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
         if ($par_data_person->id()) {
           $par_data_organisation->set('field_person', $par_data_person);
         }
-        if ($par_data_legal_entity->id()) {
+        if (current($par_data_legal_entity)->id()) {
           $par_data_organisation->set('field_legal_entity', $par_data_legal_entity);
         }
 
-        $saved = $par_data_organisation->save();
+        // Try to save the organisation.
+        try {
+          $saved = $par_data_organisation->save();
+        }
+        catch (EntityStorageException $exception) {
+          $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
+        }
 
-        if ($saved) {
+        if (isset($saved) && !empty($saved)) {
           $par_data_coordinated_business->set('field_organisation', $par_data_organisation);
 
-          if ($par_data_coordinated_business->save()) {
-            $new_members[$par_data_coordinated_business->id()] = $par_data_coordinated_business;
+          // Try to save the coordinated member.
+          try {
+            if ($par_data_coordinated_business->save()) {
+              $new_members[$par_data_coordinated_business->id()] = $par_data_coordinated_business;
+            }
+          }
+          catch (EntityStorageException $exception) {
+            $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
           }
         }
       }
@@ -913,7 +930,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     // 1. Generate a list of all members.
     $members = $par_data_partnership->getCoordinatedMember();
-    $chunks = !empty($members) ? array_chunk($members, 100) : [];
+    $chunks = !empty($members) ? array_chunk($members, self::BATCH_LIMIT) : [];
     foreach ($chunks as $chunk) {
       $batch['operations'][] = [
         [$csv_handler_class, 'bactch_generate'],

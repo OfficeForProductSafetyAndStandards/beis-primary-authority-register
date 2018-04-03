@@ -6,6 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_member_upload_flows\ParFlowAccessTrait;
+use Drupal\par_member_upload_flows\ParMemberCsvHandler;
 use Drupal\par_member_upload_flows\ParMemberCsvHandlerInterface;
 
 /**
@@ -73,8 +74,8 @@ class ParMemberConfirmUploadForm extends ParBaseForm {
 
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
-    // Start processing of data.
-    if (count($csv_data) <= 100) {
+    // Process the data in one go if less than half the maximum batch size.
+    if (count($csv_data) <= (ParMemberCsvHandler::BATCH_LIMIT/2)) {
       $this->getCsvHandler()->upload($csv_data, $par_data_partnership);
     }
     else {
