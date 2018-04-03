@@ -8,6 +8,7 @@ use Drupal\Core\Ajax\AfterCommand;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\file\FileInterface;
@@ -313,7 +314,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
             }
             // If the nation is an international country.
             elseif ($country_key !== FALSE) {
-              $data[$this->getMapping('country_code')] = $country_codes[$country_key];
+              $data[$this->getMapping('country_code')] = $country_key;
             }
             break;
 
@@ -471,7 +472,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $address = [
       'country_code' => $this->getValue($data, 'country_code'),
       'address_line1' => $this->getValue($data, 'address_line_1'),
-      'address_line2' => $this->getValue($data, 'address_line_1'),
+      'address_line2' => $this->getValue($data, 'address_line_2'),
       'locality' => $this->getValue($data, 'town'),
       'administrative_area' => $this->getValue($data, 'county'),
       'postal_code' => $this->getValue($data, 'postcode'),
@@ -750,16 +751,42 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
         /** @var ParDataLegalEntity[] $par_data_legal_entity */
         extract($member);
 
-        $par_data_premises->save();
-        $par_data_person->save();
+        // Try to save the address.
+        try {
+          $par_data_premises->save();
+        }
+        catch (EntityStorageException $exception) {
+            $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
+        }
+
+        // Try to save the person.
+        try {
+          $par_data_person->save();
+        }
+        catch (EntityStorageException $exception) {
+          $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
+        }
+
         foreach ($par_data_legal_entity as $e) {
-          $e->save();
+          // Try to save the legal entity.
+          try {
+            $e->save();
+          }
+          catch (EntityStorageException $exception) {
+            $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
+          }
         }
 
         // Add the references to the organisation.
-        $par_data_organisation->set('field_premises', $par_data_premises);
-        $par_data_organisation->set('field_person', $par_data_person);
-        $par_data_organisation->set('field_legal_entity', $par_data_legal_entity);
+        if ($par_data_premises->id()) {
+          $par_data_organisation->set('field_premises', $par_data_premises);
+        }
+        if ($par_data_person->id()) {
+          $par_data_organisation->set('field_person', $par_data_person);
+        }
+        if ($par_data_legal_entity->id()) {
+          $par_data_organisation->set('field_legal_entity', $par_data_legal_entity);
+        }
 
         $saved = $par_data_organisation->save();
 
@@ -823,7 +850,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
         // Remove all referenced entities also.
         // @TODO Make sure these entities are not removed if they are referenced by something else.
         foreach ($member->getDependents() as $entity) {
-          $entity-destroy();
+          $entity->destroy();
         }
       }
     }
@@ -903,7 +930,35 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     batch_set($batch);
   }
 
-  public function batchProcess($data, $par_data_partnership) {
+  public function upload($data, $par_data_partnership) {
+    try {
+      // 1. Lock the member list.
+      //$locked = $this->lock($par_data_partnership);
+
+      // 2. Backup the existing list.
+      $old_members = $this->backup($par_data_partnership);
+
+      // 3. Process the new members self::process().
+      $members = $this->process($data, $par_data_partnership);
+
+      // 4. Replace old members with new members.
+      $updated = $this->update($par_data_partnership, $members);
+
+      // 5. Remove old members that are not in the current list.
+      $cleaned = $this->clean($old_members, $members);
+
+      // 6. Unlock the member list.
+      $this->unlock($par_data_partnership);
+
+      return ($cleaned && $updated);
+    }
+    catch (ParCsvProcessingException $exception) {
+      $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
+      return FALSE;
+    }
+  }
+
+  public function batchUpload($data, $par_data_partnership) {
     $csv_handler = \Drupal::service('par_member_upload_flows.csv_handler');
     $csv_handler_class = (new \ReflectionClass($csv_handler))->getName();
 

@@ -97,5 +97,22 @@ Feature: Coordinator User - Upload Members
         And I add "TestPassword" to the inputfield "#edit-pass"
         And I click on the button "#edit-submit"
 
+        And I click on the link "See your partnerships"
+        And I click on the link "Organisation For Coordinated Partnership 20"
+        Then I expect that element "h1" is not empty
+        When I click on the link "Show members list"
+        Then I expect that element "h1.heading-xlarge" contains the text "Members list"
+
+        And I expect that the element ".table-scroll-wrapper" contains the text "Coordinated Member 1"
+        And I expect that the element ".table-scroll-wrapper" contains the text "Coordinated Member 2"
+        And I expect that the element ".table-scroll-wrapper" contains the text "Coordinated Member 3"
+        And I expect that the element ".table-scroll-wrapper" contains the text "Coordinated Member 4"
+
         # REUPLOAD MEMBERS
 
+        When I click on the link "Upload a Member List (CSV)"
+        Then I expect that element "h1.heading-xlarge" contains the text "Upload a list of members"
+        When I upload the file "./files/csv_test_second.csv" to field "#edit-csv-upload"
+        And I click on the button "#edit-upload"
+        Then I expect that element "h1.heading-xlarge" contains the text "Confirm member upload"
+        When I click on the button "#edit-save"

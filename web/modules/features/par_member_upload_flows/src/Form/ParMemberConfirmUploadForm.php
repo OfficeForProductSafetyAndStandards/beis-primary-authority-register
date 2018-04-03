@@ -74,16 +74,20 @@ class ParMemberConfirmUploadForm extends ParBaseForm {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     // Start processing of data.
-    if ($this->getCsvHandler()->batchProcess($csv_data, $par_data_partnership)) {
-      $this->getFlowDataHandler()->deleteStore();
+    if (count($csv_data) <= 100) {
+      $this->getCsvHandler()->upload($csv_data, $par_data_partnership);
     }
     else {
-      $message = $this->t('Membership list could not be processed for %form_id');
-      $replacements = [
-        '%form_id' => $this->getFormId(),
-      ];
-      $this->getLogger($this->getLoggerChannel())
-        ->error($message, $replacements);
+      if ($this->getCsvHandler()->batchUpload($csv_data, $par_data_partnership)) {
+        $this->getFlowDataHandler()->deleteStore();
+      } else {
+        $message = $this->t('Membership list could not be processed for %form_id');
+        $replacements = [
+          '%form_id' => $this->getFormId(),
+        ];
+        $this->getLogger($this->getLoggerChannel())
+          ->error($message, $replacements);
+      }
     }
   }
 
