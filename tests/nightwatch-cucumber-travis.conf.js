@@ -30,11 +30,7 @@ module.exports = {
                 path: 'reports/screenshots'
             },
             desiredCapabilities: {
-                browserName: 'chrome',
-                // chromeOptions : {
-                //     binary: '/usr/bin/google-chrome',
-                //     args: ['--headless', '--disable-gpu', '--window-size=1280,1280'],
-                //   },
+                browserName: 'firefox',
                 javascriptEnabled: true,
                 acceptSslCerts: true
             },
@@ -42,13 +38,6 @@ module.exports = {
                 cli_args: {
                     'webdriver.chrome.driver': chromedriver.path
                 }
-            }
-        },
-        firefox: {
-            desiredCapabilities: {
-                browserName: 'firefox',
-                javascriptEnabled: true,
-                acceptSslCerts: true
             }
         }
     }
