@@ -12,8 +12,9 @@ Feature: New Coordinated Partnership
 
         # CHOOSE PARTNERSHIP TYPE
 
-        And I click on the radio "#edit-par-data-authority-id-525"
-        And I click on the button "#edit-next"
+        # And I click on the radio "#edit-par-data-authority-id-525"
+        # And I click on the button "#edit-next"
+        And I click on authority selection if available
         
         # CREATE NEW PARTNERSHIP FORM
 

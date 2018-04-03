@@ -7,12 +7,12 @@ Feature: PA User - Manage Addresses
         
         Given I am logged in as "par_authority@example.com"
         When I click the link text "See your partnerships"
-        And I add "Organisation For Direct Partnership 2" to the inputfield "#edit-keywords"
+        And I add "Organisation For Direct Partnership 4" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
 
         # EDIT ABOUT THE ORGANISATION
 
-        When I click the link text "Upper West Side Borough Council"
+        When I click the link text "City Enforcement Squad"
         When I click the link text "edit about the partnership"
         Then the element "h1.heading-xlarge .heading-secondary" contains the text "Primary Authority partnership information"
         And I add "Change to the about organisation details section" to the inputfield "#edit-about-partnership"
@@ -37,4 +37,4 @@ Feature: PA User - Manage Addresses
         # COMPLETE CHANGES
 
         When I click on the button "#edit-save"
-        And the element "#block-par-theme-content" contains the text "Organisation For Direct Partnership 2"
+        And the element "#block-par-theme-content" contains the text "Organisation For Direct Partnership 4"

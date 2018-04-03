@@ -28,8 +28,8 @@ module.exports = {
           });
         },  
         chooseAuthorityIfOptionPresent: function(elem, toclick){ 
-            return this.api.elements('css selector', '@'+elem , function (result) {
-                if (result.length> 0) {
+            return this.api.element('css selector', 'input[name="par_data_authority_id"]' , function (result) {
+                if (result.value.ELEMENT) {
                     return this                   
                     .click(toclick)    
                     .click('#edit-next');
@@ -40,8 +40,8 @@ module.exports = {
               })  
         },
         chooseNewPersonIfOptionPresent: function(elem, toclick){ 
-            return this.api.elements('css selector', '@'+elem, function(result){
-                if (result.length> 0) {
+            return this.api.element('css selector', 'input[name="par_data_person_id"]', function(result){
+                if (result.value.ELEMENT) {
                     return this
                     .click(toclick)  
                     .click('#edit-save');
@@ -52,8 +52,8 @@ module.exports = {
             })   
         },
         chooseNewOrganisationOptionIfPresent: function(elem, toclick){ 
-            return this.api.elements('css selector', '@'+elem, function(result){
-                if (result.length> 0) {
+            return this.api.element('css selector', 'input[name="par_data_organisation_id"]', function(result){
+                if (result.value.ELEMENT) {
                     return this
                     .click(toclick)  
                     .click('#edit-next');

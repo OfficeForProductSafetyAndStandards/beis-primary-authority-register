@@ -9,10 +9,10 @@ Feature: Business User - Complete organisation details
         And I open the path "/dashboard"
         And I click the link text "See your partnerships"
         # And I select the option with the value "Confirmed by Authority" for element "#edit-partnership-status"
-        And I add "Organisation For Direct Partnership 2" to the inputfield "#edit-keywords"
+        And I add "Organisation For Direct Partnership 4" to the inputfield "#edit-keywords"
         And I select the option with the value "confirmed_authority" for element "#edit-partnership-status-1"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I click the link text "Organisation For Direct Partnership 2"
+        And I click the link text "Organisation For Direct Partnership 4"
         And the element "h1" is not empty
 
         # EDIT ABOUT THE BUSINESS
@@ -76,7 +76,7 @@ Feature: Business User - Complete organisation details
         # REVIEW PARTNERSHIP
 
         Then the element "h1.heading-xlarge" contains the text "Review the partnership summary information below"
-        And the element "#edit-organisation-name" contains the text "Organisation For Direct Partnership 2"
+        And the element "#edit-organisation-name" contains the text "Organisation For Direct Partnership 4"
         And the element "#edit-organisation-registered-address" contains the text "1 Change St"
         And the element "#edit-organisation-registered-address" contains the text "New Change"
         And the element "#edit-organisation-registered-address" contains the text "London"
@@ -127,7 +127,7 @@ Feature: Business User - Complete organisation details
         And I click on the button "#edit-save"
         Then the element "h1.heading-xlarge" contains the text "Thank you for completing the application"
         When I click on the button ".button"
-        And I add "Organisation For Direct Partnership 2" to the inputfield "#edit-keywords"
+        And I add "Organisation For Direct Partnership 4" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
-        # And I click the link text "Organisation For Direct Partnership 2"
+        # And I click the link text "Organisation For Direct Partnership 4"
         Then the element ".table-scroll-wrapper" contains the text "Confirmed by the Organisation"
