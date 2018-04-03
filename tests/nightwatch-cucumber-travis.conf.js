@@ -16,14 +16,14 @@ module.exports = {
         start_process: true,
         server_path: seleniumServer.path,
         log_path: '',
-        host: 'localhost',
+        // host: 'localhost',
         port: 4444
     },
     test_settings: {
         default: {
             launch_url: 'http://127.0.0.1:80',
             selenium_port: 4444,
-            selenium_host: 'localhost',
+            // selenium_host: 'localhost',
             screenshots : {
                 enabled : true,
                 on_failure : true,
