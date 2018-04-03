@@ -13,7 +13,7 @@ module.exports = {
     live_output: false,
     disable_colors: false,
     selenium: {
-        start_process: false,
+        start_process: true,
         server_path: seleniumServer.path,
         cli_args : {
             "webdriver.chrome.driver": "node_modules/.bin/chromedriver"
