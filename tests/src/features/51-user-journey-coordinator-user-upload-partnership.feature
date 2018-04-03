@@ -57,6 +57,7 @@ Feature: Coordinator User - Upload Members
         Given I open the url "/user/login"
         When I add "par_enforcement_officer@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
+        And I click on the button "#edit-submit"
         And I click on the link "Search for a partnership"
         And I add "Organisation For Coordinated Partnership 20" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
@@ -94,6 +95,7 @@ Feature: Coordinator User - Upload Members
         Given I open the url "/user/login"
         When I add "par_coordinator@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
+        And I click on the button "#edit-submit"
 
         # REUPLOAD MEMBERS
 
