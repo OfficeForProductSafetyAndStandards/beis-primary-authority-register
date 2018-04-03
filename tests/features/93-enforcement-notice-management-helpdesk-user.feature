@@ -26,4 +26,4 @@
 
         Given I am logged in as "par_enforcement_officer@example.com"
         When I click the link text "See enforcement notifications sent"
-        And the element ".table-scroll-wrapper" does not contain the text "Title of enforcement notice 5"
+        And the element ".table-scroll-wrapper" contains the text "Title of enforcement notice 5"
