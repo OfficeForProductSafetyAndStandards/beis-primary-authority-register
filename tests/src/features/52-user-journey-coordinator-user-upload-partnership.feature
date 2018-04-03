@@ -48,7 +48,8 @@ Feature: Coordinator User - Upload Members
         And I click on the button "#edit-upload"
         Then I expect that element "h1.heading-xlarge" contains the text "Confirm member upload"
         When I click on the button "#edit-save"
-
+        Then I expect that element "h1.heading-xlarge" contains the text "Member list uploaded"
+        When I click on the button "#edit-done"
 
         And I open the url "/user/logout"
 
@@ -136,6 +137,8 @@ Feature: Coordinator User - Upload Members
         And I click on the button "#edit-upload"
         Then I expect that element "h1.heading-xlarge" contains the text "Confirm member upload"
         When I click on the button "#edit-save"
+        Then I expect that element "h1.heading-xlarge" contains the text "Member list uploaded"
+        When I click on the button "#edit-done"
 
         # RE-CHECK MEMBERS (COORDINATOR)
 

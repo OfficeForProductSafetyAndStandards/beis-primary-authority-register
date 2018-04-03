@@ -76,19 +76,22 @@ class ParMemberConfirmUploadForm extends ParBaseForm {
 
     // Process the data in one go if less than half the maximum batch size.
     if (count($csv_data) <= (ParMemberCsvHandler::BATCH_LIMIT/2)) {
-      $this->getCsvHandler()->upload($csv_data, $par_data_partnership);
+      $uploaded = $this->getCsvHandler()->upload($csv_data, $par_data_partnership);
     }
     else {
-      if ($this->getCsvHandler()->batchUpload($csv_data, $par_data_partnership)) {
-        $this->getFlowDataHandler()->deleteStore();
-      } else {
-        $message = $this->t('Membership list could not be processed for %form_id');
-        $replacements = [
-          '%form_id' => $this->getFormId(),
-        ];
-        $this->getLogger($this->getLoggerChannel())
-          ->error($message, $replacements);
-      }
+      $uploaded = $this->getCsvHandler()->batchUpload($csv_data, $par_data_partnership);
+    }
+
+    // Log the result.
+    if ($uploaded) {
+      $this->getFlowDataHandler()->deleteStore();
+    } else {
+      $message = $this->t('Membership list could not be processed for %form_id');
+      $replacements = [
+        '%form_id' => $this->getFormId(),
+      ];
+      $this->getLogger($this->getLoggerChannel())
+        ->error($message, $replacements);
     }
   }
 
