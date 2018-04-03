@@ -140,6 +140,10 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $this->flowDataHandler = $data_handler;
   }
 
+  protected function getDateFormatter() {
+    return \Drupal::service('date.formatter');
+  }
+
   /**
    * Allows non-static methods to be called statically from within the batch.
    *
@@ -838,28 +842,34 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    *   Whether the member can be deleted.
    */
   public function canDestroyMember(ParDataCoordinatedBusiness $member) {
-    $par_data_organisations = $member->getRelationships('par_data_organisation');
-    $par_data_partnerships = $member->getRelationships('par_data_partnership');
-    foreach ($par_data_organisations + $par_data_partnerships as $entity) {
-      if ($entity->isLiving()) {
-        return FALSE;
+    if ($par_data_organisation = $member->getOrganisation(TRUE)) {
+      $par_data_enforcement_notices = $par_data_organisation->getRelationships('par_data_enforcement_notice');
+      foreach ($par_data_enforcement_notices as $entity) {
+        if ($entity->isLiving()) {
+          return FALSE;
+        }
       }
     }
 
     return TRUE;
   }
 
-  public function clean($old, $new) {
+  public function clean($old, $new, $par_data_partnership) {
     $diff = array_udiff($old, $new, function ($a, $b) {
         return $a->id() - $b->id();
       }
     );
 
+    $maintain = [];
+
     foreach ($diff as $member) {
       // So long as the member isn't required by another entity then we can permanently remove it.
-      if ($this->canDestroyMember($member)) {
-        $date = DateTimePlus::createFromFormat('Y-m-d', 'now');
+      if (!$this->canDestroyMember($member)) {
+        $date = $this->getDateFormatter()->format(time(), 'custom', 'Y-m-d');
         $member->cease($date, TRUE);
+
+        // Make sure the member is added back to the partnership.
+        $par_data_partnership->get('field_coordinated_business')->appendItem($member->id());
       }
       else {
         $member->destroy();
@@ -871,6 +881,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
         }
       }
     }
+
+    // Save the partnership with any members that were carried across.
+    $par_data_partnership->save();
   }
 
   /**
@@ -962,12 +975,12 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       $updated = $this->update($par_data_partnership, $members);
 
       // 5. Remove old members that are not in the current list.
-      $cleaned = $this->clean($old_members, $members);
+      $this->clean($old_members, $members, $par_data_partnership);
 
       // 6. Unlock the member list.
       $this->unlock($par_data_partnership);
 
-      return ($cleaned && $updated);
+      return (bool) $updated;
     }
     catch (ParCsvProcessingException $exception) {
       $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
@@ -1019,7 +1032,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     // 5. Remove old members that are not in the current list.
     $batch['operations'][] = [
       [$csv_handler_class, 'batch__clean'],
-      [$old_members]
+      [$old_members, $par_data_partnership]
     ];
 
     // 6. Unlock the member list.
@@ -1056,17 +1069,13 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     }
   }
 
-  public static function batch__clean($old_members, &$context) {
+  public static function batch__clean($old_members, $par_data_partnership, &$context) {
     $csv_handler = \Drupal::service('par_member_upload_flows.csv_handler');
     $context['message'] = 'Cleaning up old members.';
 
     $new_members = $context['results'];
 
-    $cleaned = $csv_handler->clean($old_members, $new_members);
-
-    if ($cleaned) {
-      $context['sandbox']['cleaned'] = TRUE;
-    }
+    $csv_handler->clean($old_members, $new_members, $par_data_partnership);
   }
 
 }
