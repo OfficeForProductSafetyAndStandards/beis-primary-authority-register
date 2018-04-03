@@ -47,4 +47,53 @@ Feature: Coordinator User - Upload Members
         When I upload the file "./files/csv_test_valid.csv" to field "#edit-csv-upload"
         And I click on the button "#edit-upload"
         Then I expect that element "h1.heading-xlarge" contains the text "Confirm member upload"
-        And I click on the button "#edit-save"
+        When I click on the button "#edit-save"
+
+
+        And I open the url "/user/logout"
+
+        # ENFORCE MEMBER
+
+        Given I open the url "/user/login"
+        When I add "par_enforcement_officer@example.com" to the inputfield "#edit-name"
+        And I add "TestPassword" to the inputfield "#edit-pass"
+        And I click on the link "Search for a partnership"
+        And I add "Organisation For Coordinated Partnership 20" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-partnership-search"
+        And I click on the button "td.views-field.views-field-authority-name a"
+        And I click on the link "Send a notification of a proposed enforcement action"
+        Then I expect that element "h1.heading-xlarge" contains the text "Notification of Enforcement action"
+        And I expect that element "#par-enforce-organisation" contains the text "Choose the member to enforce"
+        When I click on the radio "label*=Big Boss Ltd"
+        And I click on the button "#edit-next"
+        And I click on the button "#edit-next"
+        And I scroll to element "#edit-legal-entities-select-add-new"
+        Then I expect that element "h1.heading-xlarge" contains the text "Notification of Enforcement action"
+        When I click on the radio "#edit-legal-entities-select-add-new"
+        And I add "New Legal Entity 4" to the inputfield "#edit-alternative-legal-entity"
+        And I click on the button "#edit-next"
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Proposed enforcement notification regarding"
+        And I expect that element "h1.heading-xlarge" contains the text "Legal Entity 1"
+        When I add "601" random chars of text to field "#edit-summary"
+        And I click on the button "#edit-next"
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Provide details of the proposed enforcement action"
+        And I expect that element "h1.heading-xlarge" contains the text "Add an action to the enforcement notice"
+        When I add "Title of Member Enforcement Action" to the inputfield "#edit-title"
+        And I click on the radio "#edit-field-regulatory-function-1"
+        And I add "601" random chars of text to field "#edit-details"
+        And I click on the button "#edit-next"
+        Then I expect that element "h1.heading-xlarge .heading-secondary" contains the text "Summary of the proposed enforcement action(s) regarding"
+        And I expect that element "h1.heading-xlarge" contains the text "Legal Entity 1"
+        When I click on the button "#edit-save"
+        Then I expect that element "h1.heading-xlarge" contains the text "Primary Authority Register"
+
+        Given I open the url "/user/logout"
+
+        # CHECK MEMBERS
+
+        Given I open the url "/user/login"
+        When I add "par_coordinator@example.com" to the inputfield "#edit-name"
+        And I add "TestPassword" to the inputfield "#edit-pass"
+
+        # REUPLOAD MEMBERS
+
