@@ -4,7 +4,7 @@ const shared = client.page.shared();
 
   Given(/^I open the path "([^"]*)"$/, (locpath) => {
     return client
-      .url(shared.url+locpath)
+      .url(client.launch_url+locpath)
       .waitForElementVisible('body', 1000)
       // .assert.urlContains(locpath);
   });
@@ -93,7 +93,7 @@ const shared = client.page.shared();
 
   Given('I am logged in as {string}', function (string) {
     return client
-        .url(shared.url + '/user/login')
+        .url(client.launch_url + '/user/login')
         .setValue('#edit-name', string)
         .setValue('#edit-pass', 'TestPassword')
         .click('#edit-submit')

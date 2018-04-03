@@ -8,6 +8,7 @@
     "selenium-install": "node_modules/.bin/selenium-standalone install",
     "selenium": "node_modules/.bin/selenium-standalone start",
     "nightwatch-cucumber-chrome": "node_modules/.bin/nightwatch -c ./nightwatch-cucumber.conf.js",
+    "nightwatch-travis": "node_modules/.bin/nightwatch -c ./nightwatch-cucumber-travis.conf.js",
     "nightwatch-cucumber-parallel": "node_modules/.bin/nightwatch -c ./nightwatch-cucumber-parallel.conf.js",
     "nightwatch-cucumber-firefox": "node_modules/.bin/nightwatch -c ./nightwatch-cucumber.conf.js -e firefox",
     "nightwatch-cucumber-chrome-firefox": "node_modules/.bin/nightwatch -c ./nightwatch-cucumber.conf.js -e chrome,firefox",
