@@ -150,7 +150,7 @@ script:
 #-----------------------------------------------------------------------------
 #  - docker exec -ti par_beta_web bash -c "cd tests/reports && if [ -d ./html ]; then tar -cf reportHTML.tar.gz ./html; fi"
 
-  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && if [ -d ./reports/screenshots ]; then tar -cf reports/screenshots.tar.gz ./screenshots; fi"
+  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && if [ -d ./reports/screenshots ]; then tar -cf reports/screenshots.tar.gz ./reports/screenshots; fi"
 
 #-----------------------------------------------------------------------------
 # Remove .env file created in previous steps.
