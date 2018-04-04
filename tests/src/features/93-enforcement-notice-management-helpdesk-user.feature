@@ -16,7 +16,7 @@
 
         # APPROVAL FORM
 
-        And I click on the link "Title of enforcement notice Five"
+        And I click on the link "Title of enforcement notice Two"
         And I click on the radio "#edit-actions-0-primary-authority-status-approved"
         And I click on the button "#edit-actions-next"
         Then I expect that element ".heading-secondary" contains the text "Confirmation"
@@ -31,4 +31,4 @@
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         When I click on the link "See enforcement notifications sent"
-        And I expect that element "a=Title of enforcement notice Five" does exist
+        And I expect that element "a=Title of enforcement notice Two" does exist
