@@ -1118,7 +1118,18 @@ display:
       title: 'Primary Authority Register | Search for a partnership'
       header: {  }
       footer: {  }
-      empty: {  }
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: '<p>Sorry, there are no results for your search.</p>'
+          plugin_id: text_custom
       relationships:
         field_authority:
           id: field_authority
