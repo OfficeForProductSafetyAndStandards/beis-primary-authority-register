@@ -15,9 +15,6 @@ Feature: Coordinator User - Upload Members
 
         # UPLOAD MEMBERS
 
-        When I click on the link "Show members list"
-        Then I expect that element "h1.heading-xlarge" contains the text "Members list"
-        # And I run tota11y against the current page
         When I click on the link "Upload a Member List (CSV)"
         Then I expect that element "h1.heading-xlarge" contains the text "Upload a list of members"
 
