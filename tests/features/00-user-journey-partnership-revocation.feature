@@ -10,7 +10,7 @@ Feature: New Direct Partnership For HD user To Revoke
         When I complete valid direct partnership application details
 
         # ADD ORGANISATION DETAIL
-        When I complete valid organisation details for direct partnership "Direct Partnership For Revoking8"
+        When I complete valid organisation details for direct partnership "Organisation For Direct Partnership Revocation"
 
         # REVIEW THE APPLICATION
         And I complete review of the valid direct partnership application

@@ -10,9 +10,9 @@ Feature: Business User - Manage Addresses
         And I open the path "/dashboard"
         And I click the link text "See your partnerships"
         # And I select the option with the value "Confirmed by Organisation" for element "#edit-partnership-status"
-        And I add "Organisation For Direct Partnership 4" to the inputfield "#edit-keywords"
+        And I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I click the link text "Organisation For Direct Partnership 4"
+        And I click the link text "Organisation For Direct Partnership"
 
         # EDIT REGISTERED ADDRESS
 
@@ -147,4 +147,4 @@ Feature: Business User - Manage Addresses
         When I click on the button "#edit-save"
         And I select the option with the value "confirmed_business" for element "#edit-partnership-status-1"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And the element "#block-par-theme-content" contains the text "Organisation For Direct Partnership 4"
+        And the element "#block-par-theme-content" contains the text "Organisation For Direct Partnership"
