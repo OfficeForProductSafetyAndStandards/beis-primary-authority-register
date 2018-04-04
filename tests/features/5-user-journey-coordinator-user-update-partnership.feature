@@ -6,15 +6,16 @@ Feature: Coordinator User - Update Partnership
         #LOGIN
         
         Given I am logged in as "par_coordinator@example.com"
-        And I click the link text "See your partnerships"
+        When I click the link text "See your partnerships"
+        And I add "Organisation For Coordinated Partnership" to the inputfield "#edit-keywords"
         And I select the option with the value "confirmed_business" for element "#edit-partnership-status-1"
         And I click on the button "#edit-submit-par-user-partnerships"
-        When I click the link text "Organisation For Coordinated Partnership 1"
+        And I click the link text "Organisation For Coordinated Partnership"
         Then the element "h1" is not empty
 
         # ADD MEMBERS
 
-        When I open the add members page
+        When I click the link text "Add a member"
         # And I run tota11y against the current page
         And I add "New Member One" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
@@ -93,7 +94,9 @@ Feature: Coordinator User - Update Partnership
         # EDIT REGISTERED ADDRESS
 
         Given I open the path "/partnerships"
-        And I click the link text "Organisation For Coordinated Partnership 1"
+        And I add "Organisation For Coordinated Partnership" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-par-user-partnerships"
+        And I click the link text "Organisation For Coordinated Partnership"
         When  I click the link text "edit address"
         When I add "SE16 4NX" to the inputfield "#edit-postcode"
         And I add "1 Change St" to the inputfield "#edit-address-line1"
@@ -137,15 +140,15 @@ Feature: Coordinator User - Update Partnership
 
         When I click the link text "edit organisation contact"
         # And I run tota11y against the current page
-        And I add "Harvey" to the inputfield "#edit-first-name"
-        And I add "Kneeslapper" to the inputfield "#edit-last-name"
+        And I add "Tim" to the inputfield "#edit-first-name"
+        And I add "Whistler" to the inputfield "#edit-last-name"
         And I add "2079999999" to the inputfield "#edit-work-phone"
         And I add "78659999999" to the inputfield "#edit-mobile-phone"
         And I click on the radio "#edit-preferred-contact-communication-mobile"
         And I add "Some additional notes" to the inputfield "#edit-notes"
         And I click on the button "#edit-save"
-        Then the element "#edit-organisation-contacts" contains the text "Harvey"
-        And the element "#edit-organisation-contacts" contains the text "Kneeslapper"
+        Then the element "#edit-organisation-contacts" contains the text "Tim"
+        And the element "#edit-organisation-contacts" contains the text "Whistler"
         And the element "#edit-organisation-contacts" contains the text "2079999999"
         And the element "#edit-organisation-contacts" contains the text "78659999999"
 
@@ -155,5 +158,5 @@ Feature: Coordinator User - Update Partnership
         # And I run tota11y against the current page
         And I select the option with the value "confirmed_business" for element "#edit-partnership-status-1"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And the element "#block-par-theme-content" contains the text "Organisation For Coordinated Partnership 1"
+        And the element "#block-par-theme-content" contains the text "Organisation For Coordinated Partnership"
 

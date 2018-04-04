@@ -29,8 +29,8 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
        # ENTER EO DETAILS
 
-       And I add "Fozzie" to the inputfield "#edit-first-name"
-       And I add "Bear" to the inputfield "#edit-last-name"
+       And I add "Colin" to the inputfield "#edit-first-name"
+       And I add "Weatherby" to the inputfield "#edit-last-name"
        And I add "01234780898" to the inputfield "#edit-work-phone"
        And I click on the button "#edit-next"
        # And I run tota11y against the current page
@@ -82,8 +82,8 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
        # CHECK EO DETAILS
 
-       And the element "#edit-enforcement-officer-name" contains the text "Fozzie"
-       And the element "#edit-enforcement-officer-name" contains the text "Bear"
+       And the element "#edit-enforcement-officer-name" contains the text "Colin"
+       And the element "#edit-enforcement-officer-name" contains the text "Weatherby"
        And the element "#edit-enforcement-officer-telephone" contains the text "01234780898"
        And the element "#edit-enforcement-officer-email" contains the text "par_enforcement_officer@example.com"
 

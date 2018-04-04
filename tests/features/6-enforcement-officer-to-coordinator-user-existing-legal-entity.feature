@@ -30,7 +30,7 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
         And I clear the inputfield "#edit-first-name"
         And I click on the button "#edit-next"
         Then the element ".error-summary" is visible
-        When I add "Fozzie" to the inputfield "#edit-first-name"
+        When I add "Colin" to the inputfield "#edit-first-name"
         And I click on the button "#edit-next"
 
         # CHOOSE LEGAL ENTITY

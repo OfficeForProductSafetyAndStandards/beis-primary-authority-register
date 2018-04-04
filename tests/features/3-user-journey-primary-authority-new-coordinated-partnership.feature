@@ -37,7 +37,7 @@ Feature: New Coordinated Partnership
 
         # ORGANISATION NAME
 
-        And I add "Organisation For Coordinated Partnership 1" to the inputfield "#edit-organisation-name"
+        And I add "Organisation For Coordinated Partnership" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
         And I click on new organisation option if available
 
@@ -59,8 +59,8 @@ Feature: New Coordinated Partnership
         # MAIN CONTACT
 
         When I add "Mr" to the inputfield "#edit-salutation"
-        And I add "Fozzie" to the inputfield "#edit-first-name"
-        And I add "Bear" to the inputfield "#edit-last-name"
+        And I add "Colin" to the inputfield "#edit-first-name"
+        And I add "Weatherby" to the inputfield "#edit-last-name"
         And I add "999999999" to the inputfield "#edit-work-phone"
         And I add "1111111111111" to the inputfield "#edit-mobile-phone"
         And I add "02079999999" to the inputfield "#edit-work-phone"

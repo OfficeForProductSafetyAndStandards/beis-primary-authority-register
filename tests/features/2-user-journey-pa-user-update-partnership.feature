@@ -37,4 +37,7 @@ Feature: PA User - Manage Addresses
         # COMPLETE CHANGES
 
         When I click on the button "#edit-save"
+        And I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-par-user-partnerships"
+
         And the element "#block-par-theme-content" contains the text "Organisation For Direct Partnership"

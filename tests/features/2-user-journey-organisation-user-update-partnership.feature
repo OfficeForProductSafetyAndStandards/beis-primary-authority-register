@@ -129,16 +129,16 @@ Feature: Business User - Manage Addresses
         # EDIT MAIN ORGANISATION CONTACT
 
         When I click the link text "edit Added Contact"
-        And I add "Mr" to the inputfield "#edit-salutation"
-        And I add "Colin" to the inputfield "#edit-first-name"
-        And I add "Weatherby" to the inputfield "#edit-last-name"
+        And I add "Ms" to the inputfield "#edit-salutation"
+        And I add "Laura" to the inputfield "#edit-first-name"
+        And I add "Lansing" to the inputfield "#edit-last-name"
         And I add "01234865432" to the inputfield "#edit-work-phone"
         And I add "07877943768" to the inputfield "#edit-mobile-phone"
         And I add "colin.weatherby@example.com" to the inputfield "#edit-email"
         And I click on the checkbox "#edit-preferred-contact-communication-mobile"
         And I add "Some additional notes" to the inputfield "#edit-notes"
         And I click on the button "#edit-save"
-        Then the element "#edit-organisation-contacts" contains the text "Mr Colin Weatherby"
+        Then the element "#edit-organisation-contacts" contains the text "Ms Laura Lansing"
         And the element "#edit-organisation-contacts" contains the text "01234865432"
         And the element "#edit-organisation-contacts" contains the text "07877943768 (preferred)"
 

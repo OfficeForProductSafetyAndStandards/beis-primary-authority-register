@@ -44,6 +44,10 @@ const shared = client.page.shared();
     return client.click(string);
   });
 
+  Then('I upload the file {string} to field {string}', function (filepath, uploadfield) {
+    return client.chooseFile(uploadfield, __dirname + '/' + filepath);
+  });
+
   Then('I click on the radio {string}', function (string) {
     return client.click(string);
   });
@@ -116,10 +120,6 @@ const shared = client.page.shared();
         .setValue(fieldName, text + 'last text in a long string');
   });
 
-  Then('I upload the file {string} to field {string}', function (string, string2) {
-    return client
-      .chooseFile(string2, __dirname + '/' + string);
-  });
 
   Then('the element {string} is not empty', function (string) {
     return client.waitForElementVisible(string, 1000);
