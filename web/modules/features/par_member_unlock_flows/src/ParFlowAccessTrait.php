@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_member_upload_flows;
+namespace Drupal\par_member_unlock_flows;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
@@ -30,15 +30,21 @@ trait ParFlowAccessTrait {
     // Get the parameters for this route.
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
-//    $lock = \Drupal::lock();
-//    $lock = $lock->acquire('par_data_partnership-lock:{$par_data_partnership->id()}');
-
     // If the partnership isn't a coordinated one then don't allow update.
     if (!$par_data_partnership->isCoordinated()) {
       $this->accessResult = AccessResult::forbidden('This is not a coordinated partnership.');
     }
 
+    // If the membership has been ceased we won't let them re-edit.
+    if ($par_data_partnership->isRevoked()) {
+      $this->accessResult = AccessResult::forbidden('This member has been ceased you cannot change their details.');
+    }
+
+    // If the member list is not locked we cannot unlock it.
+    if (!$par_data_partnership->isMembershipLocked()) {
+      $this->accessResult = AccessResult::forbidden('This member list is not locked.');
+    }
+
     return parent::accessCallback($route, $route_match, $account);
   }
-
 }

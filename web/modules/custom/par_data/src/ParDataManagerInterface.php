@@ -27,16 +27,25 @@ interface ParDataManagerInterface {
   public function getParEntityType(string $type);
 
   /**
+   * An entity query builder.
+   *
+   *
    * @param string $type
    *   An entity type to query.
    * @param array $conditions
    *   Array of Conditions.
    * @param integer $limit
    *   Limit number of results.
+   * @param string $sort
+   *   The field to sort by.
+   * @param string $direction
+   *   The direction to sort in.
    *
    * @return \Drupal\Core\Entity\EntityInterface[]
+   *   An array of entity objects indexed by their IDs. Returns an empty array
+   *   if no matching entities are found.
    */
-  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL);
+  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort, $direction = 'ASC');
 
   /**
    * Gets the entity definition for the class that defines an entities bundles.

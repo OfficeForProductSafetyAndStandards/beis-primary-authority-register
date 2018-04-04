@@ -2,8 +2,10 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\par_data\ParDataException;
 
 /**
  * Defines the par_data_coodinated_business entity.
@@ -65,19 +67,42 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataCoordinatedBusiness extends ParDataEntity {
 
   /**
+   * @var array
+   *   An array of entity relationships that are dependent on this entity.
+   */
+  protected $dependents = [
+    'par_data_organisation',
+  ];
+
+  /**
    * {@inheritdoc}
    *
    * @param string $date
    *   The date this member was ceased.
    */
-  public function cease($date = '') {
+  public function cease($date = '', $save = TRUE) {
     if (!empty($date)) {
       $this->set('date_membership_ceased', $date);
     }
 
     // Ceasing a member has the same purpose as revoking partnerships
     // so we use the same methods and status.
-    parent::revoke();
+    parent::revoke($save);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function destroy() {
+    // Freeze memberships that have active enforcement notices.
+    $par_data_enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
+    foreach ($par_data_enforcement_notices as $entity) {
+      if ($entity->isLiving()) {
+        return;
+      }
+    }
+
+    return parent::destroy();
   }
 
   /**
@@ -85,6 +110,17 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
    */
   public function getPerson() {
     return $this->get('field_person')->referencedEntities();
+  }
+
+  /**
+   * Get the partnerships for this Coordinated Business.
+   */
+  public function getPartnership() {
+    $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')
+      ->condition('field_coordinated_business', $this->id())
+      ->execute();
+
+    return $this->getParDataManager()->getEntitiesByType('par_data_partnership', $query);
   }
 
   /**
