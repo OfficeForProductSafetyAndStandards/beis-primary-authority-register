@@ -37,7 +37,7 @@ Feature: New Coordinated Partnership
 
         # ORGANISATION NAME
 
-        And I add "Organisation For Coordinated Partnership" to the inputfield "#edit-organisation-name"
+        And I add "Organisation for Coordinated Partnership" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-next"
         And I click on new organisation option if available
 

@@ -7,7 +7,7 @@ Feature: PA User - Manage Addresses
         
         Given I am logged in as "par_authority@example.com"
         When I click the link text "See your partnerships"
-        And I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
+        And I add "Organisation for Direct Partnership" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
 
         # EDIT ABOUT THE ORGANISATION
@@ -37,7 +37,7 @@ Feature: PA User - Manage Addresses
         # COMPLETE CHANGES
 
         When I click on the button "#edit-save"
-        And I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
+        And I add "Organisation for Direct Partnership" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
 
-        And the element "#block-par-theme-content" contains the text "Organisation For Direct Partnership"
+        And the element "#block-par-theme-content" contains the text "Organisation for Direct Partnership"

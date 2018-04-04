@@ -10,7 +10,7 @@ Background:
         When I complete valid direct partnership application details
 
         # ADD ORGANISATION DETAIL
-        When I complete valid organisation details for direct partnership "Organisation For Direct Partnership"
+        When I complete valid organisation details for direct partnership "Organisation for Direct Partnership"
 
         # REVIEW THE APPLICATION
         And I complete review of the valid direct partnership application
@@ -24,7 +24,7 @@ Background:
         When I complete valid direct partnership application details
 
         # ADD ORGANISATION DETAIL
-        When I complete valid organisation details for direct partnership "Organisation For Direct Partnership Revocation"
+        When I complete valid organisation details for direct partnership "Organisation for Direct Partnership To Revoke"
 
         # REVIEW THE APPLICATION
         And I complete review of the valid direct partnership application
