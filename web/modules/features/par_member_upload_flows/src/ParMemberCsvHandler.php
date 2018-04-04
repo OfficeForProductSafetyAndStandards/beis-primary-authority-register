@@ -462,9 +462,8 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     // Set the coordinated member values.
     $normalized['par_data_coordinated_business']->set('date_membership_began', $this->getValue($data, 'membership_start'));
-    $normalized['par_data_coordinated_business']->set('date_membership_ceased', $this->getValue($data, 'membership_end'));
-    if ($this->getValue($data, 'ceased')) {
-      $normalized['par_data_coordinated_business']->cease(FALSE);
+    if ($this->getValue($data, 'ceased') && $normalized['par_data_coordinated_business'] instanceof ParDataCoordinatedBusiness) {
+      $normalized['par_data_coordinated_business']->cease($this->getValue($data, 'membership_end'), FALSE);
     }
 
     // Set the organisation details.

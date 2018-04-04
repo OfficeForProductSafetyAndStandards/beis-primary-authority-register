@@ -165,6 +165,24 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
+   * Get the number of members for this partnership.
+   *
+   * @param int $i
+   *   The index to start counting from, can be used to add up all members.
+   *
+   * @return int
+   *   The number of active members.
+   */
+  public function countMembers($i = 0) {
+    foreach ($this->getCoordinatedMember() as $member) {
+      if ($member->isLiving() && !$member->isRevoked() && !$member->isDeleted()) {
+        $i++;
+      }
+    }
+    return $i;
+  }
+
+  /**
    * Get the organisation contacts for this Partnership.
    */
   public function getOrganisationPeople($primary = FALSE) {

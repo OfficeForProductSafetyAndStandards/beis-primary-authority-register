@@ -217,7 +217,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   True if the entity was revoked, false for all other results.
    */
   public function revoke($save = TRUE) {
-    if (!$this->isNew() && !$this->inProgress() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
+    if ($this->isNew()) {
+      $save = FALSE;
+    }
+
+    if (!$this->inProgress() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, TRUE);
 
       // Always revision status changes.
@@ -239,7 +243,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *
    */
   public function unrevoke($save = TRUE) {
-    if (!$this->isNew() && $this->getTypeEntity()->isRevokable() && $this->isRevoked()) {
+    if ($this->isNew()) {
+      $save = FALSE;
+    }
+
+    if ($this->getTypeEntity()->isRevokable() && $this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, FALSE);
 
       return $save ? ($this->save() === SAVED_UPDATED) : TRUE;
@@ -257,7 +265,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   True if the entity was restored, false for all other results.
    */
   public function archive($save = TRUE) {
-    if (!$this->isNew() && !$this->inProgress() && $this->getTypeEntity()->isArchivable() && !$this->isArchived()) {
+    if ($this->isNew()) {
+      $save = FALSE;
+    }
+
+    if (!$this->inProgress() && $this->getTypeEntity()->isArchivable() && !$this->isArchived()) {
       $this->set(ParDataEntity::ARCHIVE_FIELD, TRUE);
 
       // Always revision status changes.
@@ -278,7 +290,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   True if the entity was restored, false for all other results.
    */
   public function restore($save = TRUE) {
-    if (!$this->isNew() && $this->getTypeEntity()->isRevokable() && $this->isArchived()) {
+    if ($this->isNew()) {
+      $save = FALSE;
+    }
+
+    if ($this->getTypeEntity()->isRevokable() && $this->isArchived()) {
       $this->set(ParDataEntity::ARCHIVE_FIELD, FALSE);
 
       return $save ? ($this->save() === SAVED_UPDATED) : TRUE;
