@@ -188,7 +188,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    */
   public function destroy() {
     if (!$this->isNew()) {
-      $this->entityManager()->getStorage($this->entityTypeId)->destroy([$this->id() => $this]);
+      return $this->entityManager()->getStorage($this->entityTypeId)->destroy([$this->id() => $this]);
     }
   }
 
@@ -210,32 +210,47 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Revoke if this entity is revokable and is not new.
    *
+   * @param boolean $save
+   *   Whether to save the entity after revoking.
+   *
    * @return boolean
    *   True if the entity was revoked, false for all other results.
    */
-  public function revoke() {
-    if (!$this->isNew() && !$this->inProgress() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
+  public function revoke($save = TRUE) {
+    if ($this->isNew()) {
+      $save = FALSE;
+    }
+
+    if (!$this->inProgress() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, TRUE);
 
       // Always revision status changes.
       $this->setNewRevision(TRUE);
 
-      return ($this->save() === SAVED_UPDATED);
+      return $save ? ($this->save() === SAVED_UPDATED) : TRUE;
     }
     return FALSE;
   }
 
   /**
-   * Unrevoke a revoked entity
+   * Unrevoke a revoked entity.
+   *
+   * @param boolean $save
+   *   Whether to save the entity after revoking.
    *
    * @return boolean
    *   True if the entity was unrevoked, false for all other results.
    *
    */
-  public function unrevoke() {
-    if (!$this->isNew() && $this->getTypeEntity()->isRevokable() && $this->isRevoked()) {
+  public function unrevoke($save = TRUE) {
+    if ($this->isNew()) {
+      $save = FALSE;
+    }
+
+    if ($this->getTypeEntity()->isRevokable() && $this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, FALSE);
-      return ($this->save() === SAVED_UPDATED);
+
+      return $save ? ($this->save() === SAVED_UPDATED) : TRUE;
     }
     return FALSE;
   }
@@ -243,17 +258,24 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Archive if the entity is archivable and is not new.
    *
+   * @param boolean $save
+   *   Whether to save the entity after revoking.
+   *
    * @return boolean
    *   True if the entity was restored, false for all other results.
    */
-  public function archive() {
-    if (!$this->isNew() && !$this->inProgress() && $this->getTypeEntity()->isArchivable() && !$this->isArchived()) {
+  public function archive($save = TRUE) {
+    if ($this->isNew()) {
+      $save = FALSE;
+    }
+
+    if (!$this->inProgress() && $this->getTypeEntity()->isArchivable() && !$this->isArchived()) {
       $this->set(ParDataEntity::ARCHIVE_FIELD, TRUE);
 
       // Always revision status changes.
       $this->setNewRevision(TRUE);
 
-      return ($this->save() === SAVED_UPDATED);
+      return $save ? ($this->save() === SAVED_UPDATED) : TRUE;
     }
     return FALSE;
   }
@@ -261,13 +283,21 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Restore an archived entity.
    *
+   * @param boolean $save
+   *   Whether to save the entity after revoking.
+   *
    * @return boolean
    *   True if the entity was restored, false for all other results.
    */
-  public function restore() {
-    if (!$this->isNew() && $this->getTypeEntity()->isRevokable() && $this->isArchived()) {
+  public function restore($save = TRUE) {
+    if ($this->isNew()) {
+      $save = FALSE;
+    }
+
+    if ($this->getTypeEntity()->isRevokable() && $this->isArchived()) {
       $this->set(ParDataEntity::ARCHIVE_FIELD, FALSE);
-      return ($this->save() === SAVED_UPDATED);
+
+      return $save ? ($this->save() === SAVED_UPDATED) : TRUE;
     }
     return FALSE;
   }
@@ -394,6 +424,33 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     $entities = $this->get($field_name)->referencedEntities();
     return $this->getParDataManager()->getEntitiesAsOptions($entities);
+  }
+
+  /**
+   * Get all the entities that are dependent on this entity.
+   *
+   * @return array
+   *   An array of entities that are dependent on this entity, numerically indexed.
+   */
+  public function getDependents($dependents = []) {
+    if (!isset($this->dependents) || empty($this->dependents)) {
+      return $dependents;
+    }
+
+    foreach ($this->dependents as $entity_type) {
+      $relationships = $this->getRelationships($entity_type);
+      foreach ($relationships as $entity) {
+        // Don't get yer knickers in a twist and go loopy.
+        if ($entity->uuid() === $this->uuid()) {
+          continue;
+        }
+
+        $dependents[] = $entity;
+        $dependents = $entity->getDependents($dependents);
+      }
+    }
+
+    return $dependents;
   }
 
   /**

@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: 9ZiQhQRTjnCIz03rU3zc_D_BAyg7G-p7PRK5LWE5pgs
+  default_config_hash: DCdVVMpJVqe7k-p4GArnPezEgW8NPqaJlh2SP19nITQ
 id: member_cease
 label: 'Member Cease'
 default_title: null
@@ -24,6 +24,8 @@ steps:
   2:
     route: par_member_cease_flows.member_cease_confirm
     form_id: par_member_cease_confirmation
+    form_data:
+      cease_date: par_member_cease_date
     redirect:
       save: 3
       cancel: 3
