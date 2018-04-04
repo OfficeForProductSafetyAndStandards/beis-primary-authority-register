@@ -152,9 +152,9 @@ Feature: Coordinator User - Upload Members
         And I expect that element ".table-scroll-wrapper" not contains the text "Coordinated Member 1"
         And I expect that element ".table-scroll-wrapper" not contains the text "Coordinated Member 2"
         And I expect that element ".table-scroll-wrapper" not contains the text "Coordinated Member 3"
-        And I expect that element ".table-scroll-wrapper" contains the text "Coordinated Member 4"
 
-        And I expect that element ".table-scroll-wrapper" contains the text "New Member 1"
-        And I expect that element ".table-scroll-wrapper" contains the text "New Member 2"
-        And I expect that element ".table-scroll-wrapper" contains the text "New Member 3"
-        And I expect that element ".table-scroll-wrapper" contains the text "New Member 5"
+        And I expect that element "a*=New Member 1" does exist
+        And I expect that element "a*=New Member 2" does not exist
+        And I expect that element "a*=New Member 3" does exist
+        And I expect that element "a*=New Member 5" does exist
+        And I expect that element "a*=Coordinated Member 4" does not exist
