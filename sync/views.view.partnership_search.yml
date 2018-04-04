@@ -453,7 +453,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'PAR Flow Link'
+          label: Partnership
           exclude: false
           alter:
             alter_text: false
