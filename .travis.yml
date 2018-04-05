@@ -128,7 +128,7 @@ before_script:
 
 script:
   - docker exec -it par_beta_web sh -c "./vendor/bin/paratest --processes=16 --log-junit=./tests/reports/phpunit.latest.xml"
-  - docker exec -it par_beta_web bash -c "apt-get update"
+  - docker exec -it par_beta_web bash -c "apt-get update"  
   - docker exec -it par_beta_web bash -c "apt-get install google-chrome-stable -y"
   - docker exec -it par_beta_web bash -c "apt-get install graphicsmagick -y" # For wdio-screenshot stability.
   - if [[ "$TESTTYPE" == "cucumber" ]]; then travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install"; fi
@@ -148,7 +148,7 @@ script:
 #-----------------------------------------------------------------------------
 #  - docker exec -ti par_beta_web bash -c "cd tests/reports && if [ -d ./html ]; then tar -cf reportHTML.tar.gz ./html; fi"
 
-#  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && if [ -d ./errorShots ]; then tar -cf reports/errorShots.tar.gz ./errorShots; fi"
+  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && if [ -d ./errorShots ]; then tar -cf reports/errorShots.tar.gz ./errorShots; fi"
 
 #-----------------------------------------------------------------------------
 # Remove .env file created in previous steps.
@@ -184,7 +184,7 @@ addons:
     debug: false
     paths:
     - "./tests/reports"
-    target_paths: tests/$TRAVIS_BUILD_NUMBER/$TESTTYPE
+    target_paths: tests/$TRAVIS_BUILD_NUMBER
     bucket: transform-par-beta-artifacts
     s3_region: eu-west-1
 notifications:
