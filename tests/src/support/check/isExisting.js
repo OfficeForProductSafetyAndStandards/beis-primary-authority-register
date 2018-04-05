@@ -11,11 +11,7 @@ module.exports = (selector, falseCase) => {
     const elements = browser.elements(selector).value;
 
     // Temporarily save screenshot to identify errors.
-<<<<<<< HEAD
-    browser.saveScreenshot('./reports/selector'+selector+'.png');
-=======
     browser.saveDocumentScreenshot('./last-existing-check.png');
->>>>>>> master
 
     if (falseCase) {
         expect(elements).to.have
