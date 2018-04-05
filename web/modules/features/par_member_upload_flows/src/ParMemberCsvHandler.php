@@ -900,7 +900,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     // Redirect to saved file.
     if ($file) {
-      $url = file_create_url($file->getFileUri());
+      $url = $file->downloadUrl()->toString();
       $response->addCommand(new RedirectCommand($url));
     }
     else {
