@@ -22,7 +22,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         # CHOOSE MEMBER
 
         Then the element "#par-enforce-organisation" contains the text "Choose the member to enforce"
-        And I click on the radio "#edit-par-data-organisation-id-101680"
+        And I click on the radio ".form-radio"        
         And I click on the button "#edit-next"
 
        # ENTER EO DETAILS
