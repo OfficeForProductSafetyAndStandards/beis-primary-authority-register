@@ -1,0 +1,61 @@
+uuid: db8bd3bd-cb0d-4436-a0f6-8970db290552
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.file.csv.field_authority
+    - field.field.file.csv.field_organisation
+    - file_entity.type.csv
+  module:
+    - file_entity
+    - user
+id: file.csv.default
+targetEntityType: file
+bundle: csv
+mode: default
+content:
+  filemime:
+    type: string
+    weight: 3
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  filename:
+    type: string
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  filesize:
+    type: file_size
+    weight: 4
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  uid:
+    type: author
+    weight: 2
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  uri:
+    type: file_image
+    label: hidden
+    weight: 1
+    region: content
+    settings:
+      title: field_image_title_text
+      alt: field_image_alt_text
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+hidden:
+  field_authority: true
+  field_organisation: true
+  langcode: true
