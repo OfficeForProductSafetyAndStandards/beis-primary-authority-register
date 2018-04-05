@@ -9,7 +9,7 @@ Feature: Primary Authority - Change Partnership Details
         When I click on the button "#edit-submit"
         Then I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         When I click on the link "See your partnerships"
-        And I add "Charlie" to the inputfield "#edit-keywords"
+        And I add "Charlie's" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
         And I click on the button "td.views-field.views-field-par-flow-link a"
 

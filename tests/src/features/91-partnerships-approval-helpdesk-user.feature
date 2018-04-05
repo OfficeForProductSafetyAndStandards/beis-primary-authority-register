@@ -97,7 +97,7 @@ Feature: Helpdesk approve partnership
         And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
-        And I add "Charlie" to the inputfield "#edit-keywords"
+        And I add "Charlie's" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-helpdesk-dashboard"
         And I expect that element ".views-field views-field-par-flow-link views-field-par-flow-link-1" not contains text "Revoke partnership"
         And I add "Some reasons for revoking partnership" to the inputfield "#edit-revocation-reason"
