@@ -78,7 +78,7 @@ Feature: Coordinator User - Upload Members
         And I click the link text "Send a notification of a proposed enforcement action"
         Then the element "h1.heading-xlarge" contains the text "Notification of Enforcement action"
         And the element "#par-enforce-organisation" contains the text "Choose the member to enforce"
-        When I click on the radio "input[label=\"Coordinated Member 4\"]"
+        When I click on the radio "input[name=\"par_data_organisation_id\"]"
         And I click on the button "#edit-next"
         And I click on the button "#edit-next"
         Then the element "h1.heading-xlarge" contains the text "Notification of Enforcement action"
@@ -136,12 +136,12 @@ Feature: Coordinator User - Upload Members
         When I click the link text "Show members list"
         Then the element "h1.heading-xlarge" contains the text "Members list"
 
-        And the element ".table-scroll-wrapper" does not contain the text "Coordinated Member 1"
+        And the element "tr:nth-child(1) td.views-field.views-field-par-flow-link a" does exist
+        And the element "tr:nth-child(2) td.views-field.views-field-par-flow-link a" does not exist
+        And the element "tr:nth-child(3) td.views-field.views-field-par-flow-link a" does exist
+        And the element "tr:nth-child(4) td.views-field.views-field-par-flow-link a" does exist
+        And the element "tr:nth-child(5) td.views-field.views-field-par-flow-link a" does not exist
+
         And the element ".table-scroll-wrapper" does not contain the text "Coordinated Member 2"
         And the element ".table-scroll-wrapper" does not contain the text "Coordinated Member 3"
-
-        And the element ".table-scroll-wrapper" does not contain the text "New Member 1"
-        And the element ".table-scroll-wrapper" does not contain the text "New Member 2"
-        And the element ".table-scroll-wrapper" does not contain the text "New Member 3"
-        And the element ".table-scroll-wrapper" does not contain the text "New Member 5"
         And the element ".table-scroll-wrapper" does not contain the text "Coordinated Member 4"
