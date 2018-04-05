@@ -78,7 +78,7 @@ Feature: Coordinator User - Upload Members
         And I click the link text "Send a notification of a proposed enforcement action"
         Then the element "h1.heading-xlarge" contains the text "Notification of Enforcement action"
         And the element "#par-enforce-organisation" contains the text "Choose the member to enforce"
-        When I click on the radio "label*=Coordinated Member 4"
+        When I click on the radio "input[label=\"Coordinated Member 4\"]"
         And I click on the button "#edit-next"
         And I click on the button "#edit-next"
         Then the element "h1.heading-xlarge" contains the text "Notification of Enforcement action"
@@ -103,10 +103,7 @@ Feature: Coordinator User - Upload Members
 
         # CHECK MEMBERS (COORDINATOR)
 
-        Given I open the path "/user/login"
-        When I add "par_coordinator@example.com" to the inputfield "#edit-name"
-        And I add "TestPassword" to the inputfield "#edit-pass"
-        And I click on the button "#edit-submit"
+        Given I am logged in as "par_coordinator@example.com"
 
         And I click the link text "See your partnerships"
         And I click the link text "Organisation For Coordinated Partnership"
