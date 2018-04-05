@@ -72,8 +72,9 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     // Only show Members list, Sectors and Number of businesses if the
     // partnership is a coordinated partnership.
     if ($par_data_partnership->isCoordinated()) {
+      $membership_count = $par_data_partnership->countMembers();
       if ($this->getFlowNegotiator()->getFlowName() === 'partnership_coordinated'
-        && $par_data_partnership->get('field_coordinated_business')->count() >= 1) {
+        && $membership_count >= 1) {
 
         $form['members_link'] = [
           '#type' => 'fieldset',
@@ -84,7 +85,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
         ];
         $form['members_link']['count'] = [
           '#type' => 'markup',
-          '#markup' => "<p>{$par_data_partnership->get('field_coordinated_business')->count()}</p>",
+          '#markup' => "<p>{$membership_count}</p>",
         ];
         $form['members_link']['link'] = [
           '#type' => 'markup',
@@ -102,6 +103,15 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
           '#type' => 'markup',
           '#markup' => t('@link', [
             '@link' => Link::createFromRoute('Add a member', 'par_member_add_flows.add_organisation_name', $this->getRouteParams())->toString(),
+          ]),
+          '#weight' => -100,
+          '#prefix' => '<p>',
+          '#suffix' => '</p>',
+        ];
+        $form['associations']['upload_link'] = [
+          '#type' => 'markup',
+          '#markup' => t('@link', [
+            '@link' => Link::createFromRoute('Upload a Member List (CSV)', 'par_member_upload_flows.member_upload', $this->getRouteParams())->toString(),
           ]),
           '#weight' => -100,
           '#prefix' => '<p>',

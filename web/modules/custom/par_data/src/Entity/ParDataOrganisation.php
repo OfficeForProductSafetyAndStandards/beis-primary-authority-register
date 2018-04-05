@@ -65,6 +65,16 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataOrganisation extends ParDataEntity {
 
   /**
+   * @var array
+   *   An array of entity relationships that are dependent on this entity.
+   */
+  protected $dependents = [
+    'par_data_address',
+    'par_data_person',
+    'par_data_legal_entity',
+  ];
+
+  /**
    * Get the contacts for this Organisation.
    */
   public function getPerson($primary = FALSE) {
