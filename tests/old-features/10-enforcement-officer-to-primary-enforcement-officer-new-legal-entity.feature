@@ -11,7 +11,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
        Then I expect that element "#block-par-theme-content" contains the text "Search for a partnership"
        When I click on the link "Search for a partnership"
        # And I run tota11y against the current page
-       And I add "Charlie's Cafe" to the inputfield "#edit-keywords"
+       And I add "Charlie's Cafe's Cafe" to the inputfield "#edit-keywords"
        And I click on the button "#edit-submit-partnership-search"
        # And I run tota11y against the current page
        When I click on the button "td.views-field.views-field-par-flow-link a"

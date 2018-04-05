@@ -33,7 +33,7 @@ Feature: Helpdesk approve partnership
         When I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
         And I select the option with the text "- Any -" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-helpdesk-dashboard"
-        And I click on the button "td.views-field.views-field-authority-name a"
+        And I click on the button "td.views-field.views-field-par-flow-link a"
         Then the element "div time" contains any text
 
         # REVOKE
@@ -97,7 +97,7 @@ Feature: Helpdesk approve partnership
         And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
-        And I add "Charlie's" to the inputfield "#edit-keywords"
+        And I add "Charlie's Cafe's" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-helpdesk-dashboard"
         And I expect that element ".views-field views-field-par-flow-link views-field-par-flow-link-1" not contains text "Revoke partnership"
         And I add "Some reasons for revoking partnership" to the inputfield "#edit-revocation-reason"

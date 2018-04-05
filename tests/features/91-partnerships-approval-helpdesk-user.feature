@@ -30,7 +30,7 @@ Feature: Helpdesk approve partnership
         When I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
         And I select the option with the value "All" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-helpdesk-dashboard"
-        And I click on the button "td.views-field.views-field-authority-name a"
+        And I click on the button "td.views-field.views-field-par-flow-link a"
         Then the element "div time" does not exist
 
         # # APPROVE PARTNERSHIP FOR REVOKING
