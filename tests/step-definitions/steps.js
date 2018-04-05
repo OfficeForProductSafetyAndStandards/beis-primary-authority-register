@@ -45,7 +45,7 @@ const shared = client.page.shared();
   });
 
   Then('I upload the file {string} to field {string}', function (filepath, uploadfield) {
-    return client.chooseFile(uploadfield, __dirname + '/' + filepath);
+    return client.setValue(uploadfield, __dirname + '/' + filepath);
   });
 
   Then('I click on the radio {string}', function (string) {
@@ -77,7 +77,7 @@ const shared = client.page.shared();
   });
 
   When('the element {string} does exist', function (elName) {
-    return client.assert.waitForElementVisible(elName, 1000);
+    return client.waitForElementVisible(elName, 1000);
   });
 
   When('I select the option with the value {string} for element {string}', function (somevalue, myselectbox) {

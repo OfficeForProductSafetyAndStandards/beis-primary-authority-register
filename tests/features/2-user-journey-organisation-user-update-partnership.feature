@@ -10,9 +10,9 @@ Feature: Business User - Manage Addresses
         And I open the path "/dashboard"
         And I click the link text "See your partnerships"
         # And I select the option with the value "Confirmed by Organisation" for element "#edit-partnership-status"
-        And I add "Organisation for Direct Partnership" to the inputfield "#edit-keywords"
+        And I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I click the link text "Organisation for Direct Partnership"
+        And I click the link text "Organisation For Direct Partnership"
 
         # EDIT REGISTERED ADDRESS
 
@@ -33,7 +33,7 @@ Feature: Business User - Manage Addresses
         And the element "#edit-registered-address" contains the text "London"
         And the element "#edit-registered-address" contains the text "SE16 4NX"
 
-#        # EDIT ABOUT THE ORGANISATION
+        # EDIT ABOUT THE ORGANISATION
 
         When I click the link text "edit about the organisation"
         Then the element "h1.heading-xlarge .heading-secondary" contains the text "Primary Authority partnership information"
@@ -147,4 +147,4 @@ Feature: Business User - Manage Addresses
         When I click on the button "#edit-save"
         And I select the option with the value "confirmed_business" for element "#edit-partnership-status-1"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And the element "#block-par-theme-content" contains the text "Organisation for Direct Partnership"
+        And the element "#block-par-theme-content" contains the text "Organisation For Direct Partnership"
