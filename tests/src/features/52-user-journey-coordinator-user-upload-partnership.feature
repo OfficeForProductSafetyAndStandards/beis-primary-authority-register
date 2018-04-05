@@ -79,7 +79,7 @@ Feature: Coordinator User - Upload Members
         And I click on the link "Search for a partnership"
         And I add "Organisation For Coordinated Partnership 20" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
-        And I click on the button "td.views-field.views-field-authority-name a"
+        And I click on the button "td.views-field.views-field-par-flow-link a"
         And I click on the link "Send a notification of a proposed enforcement action"
         Then I expect that element "h1.heading-xlarge" contains the text "Notification of Enforcement action"
         And I expect that element "#par-enforce-organisation" contains the text "Choose the member to enforce"
