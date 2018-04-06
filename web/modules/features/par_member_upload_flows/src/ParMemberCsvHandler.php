@@ -700,7 +700,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       // Check that all headings are supported.
       $diff_keys = array_diff_key($row, $this->getColumns());
       if (!empty($diff_Keys)) {
-        $errors[] = new ParCsvViolation($index+1, NULL, 'The column headings are incorrect or missing.');
+        $errors[] = new ParCsvViolation($index+2, NULL, 'The column headings are incorrect or missing.');
       }
 
       $validator = Validation::createValidator();
@@ -712,7 +712,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
           $violations = $validator->validate($value, $constraints);
 
           foreach ($violations as $violation) {
-            $errors[] = new ParCsvViolation($index+1, $column, $violation->getMessage());
+            $errors[] = new ParCsvViolation($index+2, $column, $violation->getMessage());
           }
         }
       }
