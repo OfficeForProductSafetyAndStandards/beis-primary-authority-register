@@ -95,17 +95,17 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
 #       CHECK EMAIL LOG
 #
-#        And I open the path "/user/logout"
-        # And I open the path "/user/login"
-        # And I add "dadmin" to the inputfield "#edit-name"
-        # And I add "TestPassword" to the inputfield "#edit-pass"
-        # When I click on the button "#edit-submit"
-        # And I open the path "/admin/reports/maillog"
-        # And I add "Primary Authority - Notification of Proposed Enforcement" to the inputfield "#edit-subject"
-        # And I add "par_authority@example.com" to the inputfield "#edit-header-to"
-        # And I click on the button "#edit-submit-maillog-overview"
-        # When I click the link text "Primary Authority - Notification of Proposed Enforcement"
-        # Then the element "h1.heading-xlarge" contains the text "Primary Authority - Notification of Proposed Enforcement"
+       And I open the path "/user/logout"
+        And I open the path "/user/login"
+        And I add "dadmin" to the inputfield "#edit-name"
+        And I add "TestPassword" to the inputfield "#edit-pass"
+        When I click on the button "#edit-submit"
+        And I open the path "/admin/reports/maillog"
+        And I add "Primary Authority - Notification of Proposed Enforcement" to the inputfield "#edit-subject"
+        And I add "par_authority@example.com" to the inputfield "#edit-header-to"
+        And I click on the button "#edit-submit-maillog-overview"
+        When I click the link text "Primary Authority - Notification of Proposed Enforcement"
+        Then the element "h1.heading-xlarge" contains the text "Primary Authority - Notification of Proposed Enforcement"
 
         #       CHECK RECEIVED ENFORCEMENT NOTIFICATIONS
 
