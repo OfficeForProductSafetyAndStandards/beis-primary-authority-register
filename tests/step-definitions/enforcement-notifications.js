@@ -43,7 +43,8 @@ When('I create new valid enforcement notication {string} for organisation {strin
   
 When('I check that EO can see valid enforcement notification {string}', function (string) {
   // CHECK RECEIVED ENFORCEMENT NOTIFICATIONS
-  shared
+  return shared
+  .url(client.launch_url + '/user/logout')
   .url(client.launch_url + '/user/login')
   .setValue('#edit-name', 'par_authority@example.com')
   .setValue('#edit-pass', 'TestPassword')
