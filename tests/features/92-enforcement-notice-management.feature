@@ -58,7 +58,7 @@ Feature: Enforcement notice management
         And the element ".table-scroll-wrapper" contains the text "Title of enforcement notice 4"
         And the element ".table-scroll-wrapper" contains the text "Title of enforcement notice 1"
         And the element ".table-scroll-wrapper" contains the text "Title of enforcement notice 3"
-        And the element ".table-scroll-wrapper" does not contain the text "Title of enforcement notice 5"
+        And the element ".table-scroll-wrapper" does not contain the text "Title of enforcement notice 2"
 
 
     Scenario: Enforcement notice approval 
@@ -73,7 +73,7 @@ Feature: Enforcement notice management
 
         # APPROVAL FORM
 
-        And I click the link text "Title of enforcement notice 5"
+        And I click the link text "Title of enforcement notice 2"
         And I click on the radio "#edit-actions-0-primary-authority-status-approved"
         And I click on the button "#edit-actions-next"
         Then the element ".heading-secondary" contains the text "Confirmation"
@@ -86,4 +86,4 @@ Feature: Enforcement notice management
 
         Given I am logged in as "par_enforcement_officer@example.com"
         When I click the link text "See enforcement notifications sent"
-        And the element ".table-scroll-wrapper" contains the text "Title of enforcement notice 5"
+        And the element ".table-scroll-wrapper" contains the text "Title of enforcement notice 2"
