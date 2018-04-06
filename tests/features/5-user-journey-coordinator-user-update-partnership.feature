@@ -76,6 +76,15 @@ Feature: Coordinator User - Update Partnership
         And I click on the button "#edit-submit-members-list"
         Then the element ".table-scroll-wrapper" contains the text "New Member One"
 
+        # INSPECTION PLAN STATUS
+        
+        When I click the link text "New Member One"
+        And I click the link text "edit covered by inspection plan"
+        And I click on the radio "#edit-covered-by-inspection-1"
+        And I click on the button "#edit-save"
+        Then the element "#edit-covered-by-inspection" contains the text "Yes"
+        And I click on the button "#edit-save"
+
         # CEASE MEMBER
 
         When I click the link text "Cease membership"
