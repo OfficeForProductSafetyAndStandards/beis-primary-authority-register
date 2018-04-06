@@ -74,10 +74,12 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         return '(none)';
       }
       elseif ($this->get($field_name) instanceof EntityReferenceFieldItemListInterface) {
-        return current($this->get($field_name)->referencedEntities())->label();
+        $entities = $this->get($field_name)->referencedEntities();
+        return !empty($entities) ? current($entities)->label() : '';
       }
       elseif (!empty($property_name)) {
-        return current($this->get($field_name)->getValue())[$property_name];
+        $value = $this->get($field_name)->getValue();
+        return $value && isset($value[$property_name]) ? current($value)[$property_name] : '';
       }
       else {
         return $this->get($field_name)->getString();
