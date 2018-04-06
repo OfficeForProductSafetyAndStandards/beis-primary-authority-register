@@ -3,7 +3,7 @@ const chromedriver = require('chromedriver')
 const electron = require('electron-prebuilt');
 
 require('nightwatch-cucumber')({
-    cucumberArgs: ['--require', 'step-definitions', '-- --tag', '@ci', '--require', 'support', '--require', 'page_objects', '--format', 'node_modules/cucumber-pretty', '--format', 'json:reports/cucumber.json', 'features/6-enforcement-officer-to-coordinator-user-existing-legal-entity.feature']
+    cucumberArgs: ['--require', 'step-definitions', '-- --tag', '@ci', '--require', 'support', '--require', 'page_objects', '--format', 'node_modules/cucumber-pretty', '--format', 'json:reports/cucumber.json', 'features']
 })
 
 module.exports = {
