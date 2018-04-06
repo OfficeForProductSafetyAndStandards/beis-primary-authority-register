@@ -4,6 +4,7 @@ namespace Drupal\par_member_upload_flows;
 
 use CommerceGuys\Intl\Exception\UnknownCountryException;
 use Drupal\Component\Datetime\DateTimePlus;
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Ajax\AfterCommand;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\RedirectCommand;
@@ -592,7 +593,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     try {
       $csv = file_get_contents($file->getFileUri());
-      $data = $this->getSerializer()->decode($csv, 'csv');
+      $data = $this->sanitize($this->getSerializer()->decode($csv, 'csv'));
 
       // We have a limit of that we can process to, this limit
       // is tested with and anything over cannot be supported.
@@ -670,6 +671,23 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    */
   public function unlock(ParDataPartnership $par_data_partnership) {
     $par_data_partnership->unlockMembership();
+  }
+
+  /**
+   * Santizie all csv rows.
+   */
+  protected function sanitize(array $rows) {
+    $data = [];
+
+    foreach ($rows as $index => $row) {
+      $data[$index] = [];
+
+      foreach ($row as $column => $value) {
+        $data[$index][$column] = Xss::filter(trim($value));
+      }
+    }
+
+    return $data;
   }
 
   /**
@@ -968,7 +986,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   public function upload($data, $par_data_partnership) {
     try {
       // 1. Lock the member list.
-      //$locked = $this->lock($par_data_partnership);
+      $locked = $this->lock($par_data_partnership);
 
       // 2. Backup the existing list.
       $old_members = $this->backup($par_data_partnership);
