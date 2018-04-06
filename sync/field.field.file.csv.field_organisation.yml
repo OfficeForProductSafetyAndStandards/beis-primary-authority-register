@@ -1,0 +1,28 @@
+uuid: 21f904e3-c545-4073-bc9d-20d6af64dbd3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.file.field_organisation
+    - file_entity.type.csv
+    - par_data.par_data_organisation_type.organisation
+id: file.csv.field_organisation
+field_name: field_organisation
+entity_type: file
+bundle: csv
+label: Organisation
+description: 'The organisation that this csv belongs to.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_organisation'
+  handler_settings:
+    target_bundles:
+      organisation: organisation
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

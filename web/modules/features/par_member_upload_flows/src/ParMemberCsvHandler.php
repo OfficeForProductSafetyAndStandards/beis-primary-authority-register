@@ -640,6 +640,12 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $name = str_replace(' ', '_', "Member list for " . lcfirst($par_data_partnership->label()));
     $file = file_save_data($data, $directory . $name . '.' . self::FILE_EXTENSION, FILE_EXISTS_REPLACE);
 
+    // Set the reference fields, useful for keeping track of
+    // which authorities and organisations the csv belongs to.
+    $file->set('field_authority', $par_data_partnership->getAuthority(TRUE));
+    $file->set('field_organisation', $par_data_partnership->getOrganisation(TRUE));
+    $file->save();
+    
     return $file;
   }
 
@@ -900,7 +906,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     // Redirect to saved file.
     if ($file) {
-      $url = file_create_url($file->getFileUri());
+      $url = $file->downloadUrl()->toString();
       $response->addCommand(new RedirectCommand($url));
     }
     else {
