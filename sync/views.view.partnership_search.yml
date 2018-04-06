@@ -568,7 +568,7 @@ display:
           field: trading_name_value
           relationship: field_organisation
           group_type: group
-          admin_label: ''
+          admin_label: 'Organisation Trading Name'
           label: 'Trading Name'
           exclude: true
           alter:
@@ -633,7 +633,7 @@ display:
           field: registered_name
           relationship: field_legal_entity
           group_type: group
-          admin_label: ''
+          admin_label: 'Partnership Legal Entity Name'
           label: 'Registered Name'
           exclude: true
           alter:
@@ -698,7 +698,7 @@ display:
           field: registered_number
           relationship: field_legal_entity
           group_type: group
-          admin_label: ''
+          admin_label: 'Partnership Legal Entity Number'
           label: 'Registered Number'
           exclude: true
           alter:
@@ -892,7 +892,7 @@ display:
           field: trading_name_value
           relationship: field_organisation
           group_type: group
-          admin_label: ''
+          admin_label: 'Organisation Name'
           label: 'Trading names'
           exclude: false
           alter:
@@ -951,6 +951,266 @@ display:
           entity_type: par_data_organisation
           entity_field: trading_name
           plugin_id: field
+        organisation_name_1:
+          id: organisation_name_1
+          table: par_organisations_field_data
+          field: organisation_name
+          relationship: field_organisation_1
+          group_type: group
+          admin_label: 'Coordinated Member Name'
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: true
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: par_data_organisation
+          entity_field: organisation_name
+          plugin_id: field
+        trading_name_value_2:
+          id: trading_name_value_2
+          table: par_data_organisation__trading_name
+          field: trading_name_value
+          relationship: field_organisation
+          group_type: group
+          admin_label: 'Coordinated Member Trading Name'
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: true
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: par_data_organisation
+          entity_field: trading_name
+          plugin_id: field
+        registered_name_1:
+          id: registered_name_1
+          table: par_legal_entities_field_data
+          field: registered_name
+          relationship: field_legal_entity_1
+          group_type: group
+          admin_label: 'Coordinated Member Legal Entity Name'
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: true
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: par_data_legal_entity
+          entity_field: registered_name
+          plugin_id: field
+        registered_number_1:
+          id: registered_number_1
+          table: par_legal_entities_field_data
+          field: registered_number
+          relationship: field_legal_entity_1
+          group_type: group
+          admin_label: 'Coordinated Member Legal Entity Number'
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: true
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: par_data_legal_entity
+          entity_field: registered_number
+          plugin_id: field
       filters:
         combine:
           id: combine
@@ -1000,6 +1260,9 @@ display:
             trading_name_value: trading_name_value
             registered_name: registered_name
             registered_number: registered_number
+            organisation_name_1: organisation_name_1
+            registered_name_1: registered_name_1
+            registered_number_1: registered_number_1
           plugin_id: combine
         status:
           id: status
