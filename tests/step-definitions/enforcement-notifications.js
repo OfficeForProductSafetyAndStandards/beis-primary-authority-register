@@ -41,7 +41,7 @@ When('I create new valid enforcement notication {string} for organisation {strin
   .assert.containsText('h1.heading-xlarge','Primary Authority Register')
 })
   
-When('Then I check that EO can see valid enforcement notication {string}', function (string) {
+When('I check that EO can see valid enforcement notification {string}', function (string) {
   // CHECK RECEIVED ENFORCEMENT NOTIFICATIONS
   shared
   .url(client.launch_url + '/user/login')

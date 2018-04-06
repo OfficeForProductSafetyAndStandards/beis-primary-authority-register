@@ -13,4 +13,4 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
 
         # CHECK ENFORCEMENT NOTIFICATION
 
-        Then I check that EO can see valid enforcement notication "3"
+        Then I check that EO can see valid enforcement notification "3"
