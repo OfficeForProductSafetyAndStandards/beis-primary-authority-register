@@ -39,17 +39,19 @@ When('I create new valid enforcement notication {string} for organisation {strin
   .assert.containsText('#par-enforcement-notice-raise-confirm','You will be notified by email of the outcome of this notification')
   .click('#edit-save')
   .assert.containsText('h1.heading-xlarge','Primary Authority Register')
-})
+});
   
 When('I check that EO can see valid enforcement notification {string}', function (string) {
   // CHECK RECEIVED ENFORCEMENT NOTIFICATIONS
-  return shared
+  return client
   .url(client.launch_url + '/user/logout')
   .url(client.launch_url + '/user/login')
   .setValue('#edit-name', 'par_authority@example.com')
   .setValue('#edit-pass', 'TestPassword')
   .click('#edit-submit')
   .assert.containsText('#block-par-theme-account-menu', 'Log out')
+  return shared
   .clickLinkByPureText('See enforcement notifications received')
+  return client
   .assert.containsText('.table-scroll-wrapper', string)
 })
