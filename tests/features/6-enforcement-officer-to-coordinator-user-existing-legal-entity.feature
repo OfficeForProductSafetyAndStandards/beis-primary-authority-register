@@ -19,5 +19,5 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
             | Notification Title        | Organisation      |
             # | Enforcement notication 1  | Charlie's Cafe    |
             # | Enforcement notication 2  | Charlie's Cafe    |
-            | Enforcement notication 3  | Charlie's Cafe    |
+            | Enforcement notification 3  | Charlie's Cafe    |
             # | Enforcement notication 4  | Charlie's Cafe    |
