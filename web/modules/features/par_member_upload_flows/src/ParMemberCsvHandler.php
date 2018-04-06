@@ -463,6 +463,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     // Set the coordinated member values.
     $normalized['par_data_coordinated_business']->set('date_membership_began', $this->getValue($data, 'membership_start'));
+    $normalized['par_data_coordinated_business']->set('covered_by_inspection', $this->getValue($data, 'covered'));
     if ($this->getValue($data, 'ceased') && $normalized['par_data_coordinated_business'] instanceof ParDataCoordinatedBusiness) {
       $normalized['par_data_coordinated_business']->cease($this->getValue($data, 'membership_end'), FALSE);
     }
@@ -885,6 +886,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     $maintain = [];
 
+    // Re-load the partnership to get any updates perforced during batch processes.
+    $par_data_partnership = ParDataPartnership::load($par_data_partnership->id());
+
     foreach ($diff as $member) {
       // So long as the member isn't required by another entity then we can permanently remove it.
       if (!$this->canDestroyMember($member)) {
@@ -986,7 +990,13 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   public function upload($data, $par_data_partnership) {
     try {
       // 1. Lock the member list.
-      $locked = $this->lock($par_data_partnership);
+      try {
+        $locked = $this->lock($par_data_partnership);
+      }
+      catch (ParCsvProcessingException $exception) {
+        $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
+        return FALSE;
+      }
 
       // 2. Backup the existing list.
       $old_members = $this->backup($par_data_partnership);
@@ -1038,11 +1048,11 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $old_members = $this->backup($par_data_partnership);
 
     // 3. Process the new members self::process().
-    $chunks = !empty($data) ? array_chunk($data, 100) : [];
-    foreach ($chunks as $data) {
+    $chunks = !empty($data) ? array_chunk($data, self::BATCH_LIMIT) : [];
+    foreach ($chunks as $d) {
       $batch['operations'][] = [
         [$csv_handler_class, 'batch__process'],
-        [$data, $par_data_partnership]
+        [$d, $par_data_partnership]
       ];
     }
 
@@ -1076,7 +1086,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $members = $csv_handler->process($data, $par_data_partnership);
 
     if ($members) {
-      $context['results'] = $members;
+      $context['results'] = array_merge($context['results'], $members);
     }
   }
 
