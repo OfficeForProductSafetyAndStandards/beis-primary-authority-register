@@ -1,0 +1,68 @@
+langcode: en
+status: true
+dependencies: {  }
+id: raise_enforcement
+label: 'Raise Enforcement'
+default_title: 'Notification of Enforcement action'
+default_section_title: null
+description: 'The creation flow of an enforcement notice.'
+save_method: end
+states:
+  - par_data_partnership
+steps:
+  1:
+    route: par_enforcement_raise_flows.partnership_page
+    redirect:
+      advice: 2
+      inspection_plans: 3
+      raise: 4
+      done: 11
+  2:
+    route: par_enforcement_raise_flows.advice_view
+    redirect:
+      cancel: 1
+  3:
+    route: par_enforcement_raise_flows.inspection_plan_view
+    redirect:
+      done: 1
+  4:
+    route: par_enforcement_raise_flows.authority_select
+    form_id: par_authority_selection
+    redirect:
+      cancel: 1
+  5:
+    route: par_enforcement_raise_flows.enforce_organisation
+    form_id: par_enforce_organisation
+    redirect:
+      cancel: 1
+  6:
+    route: par_enforcement_raise_flows.officer_details
+    form_id: par_enforcement_officer_details
+    redirect:
+      cancel: 1
+  7:
+    route: par_enforcement_raise_flows.raise
+    form_id: par_enforcement_notice_raise
+    redirect:
+      cancel: 1
+  8:
+    route: par_enforcement_raise_flows.raise_details
+    form_id: par_enforcement_notice_raise_details
+    redirect:
+      cancel: 1
+  9:
+    route: par_enforcement_raise_flows.add_action
+    form_id: par_enforcement_notice_add_action
+    redirect:
+      cancel: 1
+  10:
+    route: par_enforcement_raise_flows.raise_confirm
+    form_id: par_enforcement_notice_raise_confirm
+    redirect:
+      add_enforcement_action: 9
+      save: 11
+      cancel: 1
+  11:
+    route: par_dashboards.dashboard
+  12:
+    route: view.partnership_search.enforcment_flow_search_partnerships
