@@ -111,14 +111,14 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       'ceased' => 'Membership ceased',
       'covered' => 'Covered by Inspection Plan',
       'legal_entity_name_first' => 'Legal Entity Name (first)',
-      'legal_entity_number_first' => 'Legal Entity Type (first)',
-      'legal_entity_type_first' => 'Legal Entity Number (first)',
+      'legal_entity_number_first' => 'Legal Entity Number (first)',
+      'legal_entity_type_first' => 'Legal Entity Type (first)',
       'legal_entity_name_second' => 'Legal Entity Name (second)',
-      'legal_entity_number_second' => 'Legal Entity Type (second)',
-      'legal_entity_type_second' => 'Legal Entity Number (second)',
+      'legal_entity_number_second' => 'Legal Entity Number (second)',
+      'legal_entity_type_second' => 'Legal Entity Type (second)',
       'legal_entity_name_third' => 'Legal Entity Name (third)',
-      'legal_entity_number_third' => 'Legal Entity Type (third)',
-      'legal_entity_type_third' => 'Legal Entity Number (third)',
+      'legal_entity_number_third' => 'Legal Entity Number (third)',
+      'legal_entity_type_third' => 'Legal Entity Type (third)',
     ];
   }
 
