@@ -34,7 +34,7 @@ When('I create new valid enforcement notication {string} for organisation {strin
   .click('#edit-next')
   .assert.containsText('#par-enforcement-notice-raise-confirm','action summary enforcement notice')
   .assert.containsText('#par-enforcement-notice-raise-confirm', string)
-  .assert.containsText('#par-enforcement-notice-raise-confirm','Some details about the enforcement notice ' + string)
+  .assert.containsText('#par-enforcement-notice-raise-confirm','Some details about the enforcement notice')
   .assert.containsText('#par-enforcement-notice-raise-confirm','Once the primary authority receives this notification, they have 5 working days to respond to you if they intend to block the action')
   .assert.containsText('#par-enforcement-notice-raise-confirm','You will be notified by email of the outcome of this notification')
   .click('#edit-save')
