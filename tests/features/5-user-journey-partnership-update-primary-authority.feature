@@ -7,7 +7,7 @@ Feature: Primary Authority - Change Partnership Details
         
         Given I am logged in as "par_authority@example.com"
         When I click the link text "See your partnerships"
-        And I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
+        And I add "Organisation For Direct Partnership One" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
         And I click the link text "City Enforcement Squad"
 

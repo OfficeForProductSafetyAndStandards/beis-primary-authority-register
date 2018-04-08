@@ -6,10 +6,10 @@
     "type": "git",
     "url": "https://github.com/UKGovernmentBEIS/beis-primary-authority-register"
   },
-  "engines" : {
-    "node" : ">=7.0.0"
+  "engines": {
+    "node": ">=7.0.0"
   },
-  "engine-trict" : true,
+  "engine-trict": true,
   "dependencies": {
     "govuk-elements-sass": "~3.1.0",
     "govuk_frontend_toolkit": "~6.0.4",

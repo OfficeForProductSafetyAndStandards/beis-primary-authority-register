@@ -2,7 +2,7 @@ const { client } = require('nightwatch-cucumber');
 const { Given, Then, When } = require('cucumber');
 const shared = client.page.shared();
 
-When('I create new valid enforcement notication {string} for organisation {string}', function (string,string2) {
+When('I create new valid enforcement notication {string} for organisation {string}', function (string, string2) {
   return shared
   .clickLinkByPureText('Search for a partnership')
   .setValue('#edit-keywords',string2)
