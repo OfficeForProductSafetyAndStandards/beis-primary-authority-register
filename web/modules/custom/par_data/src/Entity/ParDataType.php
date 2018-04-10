@@ -194,6 +194,17 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function getAllowedValueBylabel($field_name, $label, $fuzzy = FALSE) {
+    $allowed_values = $this->getConfigurationElementByType($field_name, 'allowed_values');
+    $key = $fuzzy ?
+      array_search(strtolower($label), array_map('strtolower', $allowed_values)) :
+      array_search($label, $allowed_values);
+    return $key !== FALSE ? $allowed_values[$key] : FALSE;
+  }
+
+  /**
    * System fields excluded from user input.
    */
   protected function excludedFields() {
