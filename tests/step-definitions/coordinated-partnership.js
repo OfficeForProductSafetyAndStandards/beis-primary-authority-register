@@ -10,33 +10,28 @@ var city = faker.fake("{{address.city}}")
 var streetaddress1 = faker.fake("{{address.streetName}}")
 var county = faker.fake("{{address.county}}")
 
-When('I complete valid direct partnership application details', function () {
+When('I complete valid coordinated partnership application details', function () {
   return shared
   .clickLinkByPureText('Apply for a new partnership')
   .click('#edit-cancel')
   .clickLinkByPureText('Apply for a new partnership')
   .chooseAuthorityIfOptionPresent('selector','#edit-par-data-authority-id-525')
-  .click('#edit-application-type-direct')
+  .click('#edit-application-type-coordinated')
   .click('#edit-next')
-  .click('#edit-business-eligible-for-partnership')
-  .click('#edit-local-authority-suitable-for-nomination')
+  .click('#edit-coordinator-local-authority-suitable')
+  .click('#edit-suitable-nomination')
   .click('#edit-written-summary-agreed')
   .click('#edit-next')
   .waitForElementVisible('.error-summary', 1000)
-  .click('#edit-terms-organisation-agreed')
-  .click('#edit-business-regulated-by-one-authority-1')
+  .assert.containsText('.error-summary', 'Please confirm that the local authority agrees to Primary Authority Terms and Conditions')
+  .click('#edit-terms-local-authority-agreed')
   .click('#edit-next')
-  .waitForElementVisible('.error-summary', 1000)
-  .assert.containsText('#par-partnership-application-authority-checklist', 'Is this your local authority?')
-  .click('#edit-business-regulated-by-one-authority-1')
-  .click('#edit-is-local-authority-1')
-  .click('#edit-next')
-  .assert.containsText('#par-partnership-about','Use this section to give a brief overview of the partnership')
+  .assert.containsText('h1.heading-xlarge','Information about the new partnership')
   .setValue('#edit-about-partnership', 'About the partnership detail')
   .click('#edit-next')
 });
   
-Given('I complete valid organisation details for direct partnership {string}', function (partnershipname) {
+Given('I complete valid organisation details for coordinated partnership {string}', function (partnershipname) {
   console.log(title,' | ' + firstname,' | '+lastname,' | '+postcode,' | '+city,' | '+streetaddress1,' | '+county)
   return client
   .setValue('#edit-organisation-name',partnershipname)
@@ -71,13 +66,13 @@ Given('I complete valid organisation details for direct partnership {string}', f
   .setValue( '#edit-mobile-phone','1111111111111')
   .setValue( '#edit-work-phone','02079999999')
   .setValue( '#edit-mobile-phone','078659999999')
-  .setValue( '#edit-email','par_business@example.com')
+  .setValue( '#edit-email','par_coordinator@example.com')
   .click('#edit-preferred-contact-communication-mobile')
   .setValue( '#edit-notes','Some additional notes')
   .click('#edit-next')
 });
 
-When('I complete review of the valid direct partnership application', function () {
+When('I complete review of the valid coordinated partnership application', function () {
   return client
     .assert.containsText('h1.heading-xlarge .heading-secondary','New partnership application')
     .assert.containsText('h1.heading-xlarge','Review the partnership summary information below')
@@ -85,7 +80,7 @@ When('I complete review of the valid direct partnership application', function (
     .click('#edit-save')
 }); 
 
-When('the direct partnership creation email template is correct', function () {
+When('the coordinated partnership creation email template is correct', function () {
  return shared
   .assert.containsText('h1.heading-xlarge .heading-secondary','New partnership application')
   .assert.containsText('h1.heading-xlarge','Notify user of partnership invitation')
