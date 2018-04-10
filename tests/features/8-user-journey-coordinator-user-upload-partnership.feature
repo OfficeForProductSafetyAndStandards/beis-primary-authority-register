@@ -146,3 +146,16 @@ Feature: Coordinator User - Upload Members
         And the element ".table-scroll-wrapper" does not contain the text "Coordinated Member 2"
         And the element ".table-scroll-wrapper" does not contain the text "Coordinated Member 3"
         And the element ".table-scroll-wrapper" does not contain the text "Coordinated Member 4"
+
+        @coordinatedpartneship
+    Scenario: Test search criteria
+        # CHECK SEARCH PICKS UP ON TRADERS AND MEMBERS
+        Given I am logged in as "par_authority@example.com"
+        And I click the link text "Search for a partnership"
+        When I add "New LLP Company" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-partnership-search"
+        Then the element ".table-scroll-wrapper" contains the text "Organisation For Coordinated Partnership Two"
+        When I add "Coordinated Member 1" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-partnership-search"
+        Then the element ".table-scroll-wrapper" contains the text "Organisation For Coordinated Partnership Two"
+    

@@ -73,21 +73,6 @@ Feature: Coordinator User - Complete organisation details
         And I click on the checkbox "#edit-partnership-info-agreed-business"
         And I click on the checkbox "#edit-terms-organisation-agreed"
         And I click on the button "#edit-save"
-
-        # CHECK SEARCH PICKS UP ON TRADERS AND MEMBERS
-
-
         Then the element "h1.heading-xlarge" contains the text "Thank you for completing the application"
         And I click on the button ".button"
-        And I open the path "/user/logout"
-        And I open the path "/user/login"
-        And I add "par_authority@example.com" to the inputfield "#edit-name"
-        And I add "TestPassword" to the inputfield "#edit-pass"
-        When I click on the button "#edit-submit"
-        And I click the link text "Search for a partnership"
-        When I add "New LLP Company" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-partnership-search"
-        Then the element ".table-scroll-wrapper" contains the text "Organisation For Coordinated Partnership Two"
-        When I add "Coordinated Member 1" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-partnership-search"
-        Then the element ".table-scroll-wrapper" contains the text "Organisation For Coordinated Partnership Two"
+
