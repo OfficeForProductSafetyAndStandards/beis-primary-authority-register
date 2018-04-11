@@ -98,7 +98,7 @@ When('the direct partnership creation email template is correct', function () {
   .assert.containsText('h1.heading-xlarge','Primary Authority Register')
 }); 
 
-When('I complete the organisation details for direct partnership {string}', function (partnershipname) {
+When('I complete the partnership details for direct partnership {string}', function (partnershipname) {
   return shared
   .clickLinkByPureText('Dashboard')
   .clickLinkByPureText('See your partnerships')
@@ -199,3 +199,20 @@ When('I complete the organisation details for direct partnership {string}', func
    .click('#edit-submit-par-user-partnerships')
    .assert.containsText('.table-scroll-wrapper','Confirmed by the Organisation')
  }); 
+
+ When('I successfully revoke a partnership', function (elName) {
+  return shared
+    .clickLinkByPureText('Helpdesk')
+    .setValue('#edit-keywords','Specialist Cheesemakers Association')
+    .click('#edit-revoked option[value="0"]')
+    .click('#edit-submit-helpdesk-dashboard')
+    .clickLinkByPureText('Revoke partnership')
+    .setValue('#edit-revocation-reason','"A reason for revoking')
+    .click('#edit-next')
+    .assert.containsText('#edit-partnership-info','The following partnership has been revoked')
+    .click('#edit-done')
+    .setValue('#edit-keywords','Specialist Cheesemakers Association')
+    .click('#edit-revoked option[value="1"]')
+    .click('#edit-submit-helpdesk-dashboard')
+    .assert.containsText('.table-scroll-wrapper','Specialist Cheesemakers Association')
+});

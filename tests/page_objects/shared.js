@@ -62,6 +62,17 @@ module.exports = {
                     return this
                   }
             })   
+        },
+        clickShowMembersListIfPresent: function(){ 
+            return this.api.element('css selector', 'edit-members-link p:nth-child(2)', function(result){
+                if (result.value.ELEMENT) {
+                    return this
+                    .clickLinkByPureText('Show members list')  
+                  } else
+                  {
+                    return this
+                  }
+            })   
         }
       }]
 }

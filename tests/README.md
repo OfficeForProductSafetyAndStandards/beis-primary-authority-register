@@ -1,6 +1,5 @@
 # e2e-testing
-End-to-End Testing with Nightwatch and Cucumber
-
+End-to-End Testing with Nightwatch and Cucumber.  Nightwatch is a browser automation framework component, supporting many browsers (inlcuding Electron). Tests are coded in Nodejs, and run against a Selenium/WebDriver server. API testing is also supported. Another key component is FakerJS, for test data generation.
 
 ### Step 1
 
