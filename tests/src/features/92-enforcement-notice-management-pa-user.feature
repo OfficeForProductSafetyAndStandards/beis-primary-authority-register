@@ -63,5 +63,5 @@ Feature: Enforcement notice management
         Then I expect that element "a=Title of enforcement notice One" does exist
         And I expect that element "a=Title of enforcement notice Three" does exist
         And I expect that element "a=Title of enforcement notice Four" does exist
-        And I expect that element "a=Title of enforcement notice Two" does not exist
+        And I expect that element "a=Title of enforcement notice 2" does not exist
 
