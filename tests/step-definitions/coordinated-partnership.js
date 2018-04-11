@@ -91,4 +91,4 @@ When('the coordinated partnership creation email template is correct', function 
   .assert.containsText('#block-par-theme-content', title + ' ' + firstname + ' ' + lastname + ' will receive an email with a link to register/login to the PAR website')
   .clickLinkByPureText('Done')
   .assert.containsText('h1.heading-xlarge','Primary Authority Register')
-}); 
+});

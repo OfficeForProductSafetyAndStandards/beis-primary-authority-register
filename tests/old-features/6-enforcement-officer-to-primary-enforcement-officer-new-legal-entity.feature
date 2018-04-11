@@ -54,7 +54,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
        # And I run tota11y against the current page
        Then the element "h1.heading-xlarge .heading-secondary" contains the text "Provide details of the proposed enforcement action"
        Then the element "h1.heading-xlarge" contains the text "Add an action to the enforcement notice"
-       And I add "Enforcement notice four" to the inputfield "#edit-title"
+       And I add "Enforcement notice 4" to the inputfield "#edit-title"
        And I click on the radio ".form-radio"
        And I add "600" random chars of text to field "#edit-details"
 #        And I add "Some details about the enforcement notice" to the inputfield "#edit-details"
@@ -75,7 +75,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
 
        Then the element "h1.heading-xlarge .heading-secondary" contains the text "Summary of the proposed enforcement action(s) regarding"
        Then the element "h1.heading-xlarge" contains the text "Legal Entity 1"
-       Then the element "#par-enforcement-notice-raise-confirm" contains the text "Enforcement notice four"
+       Then the element "#par-enforcement-notice-raise-confirm" contains the text "Enforcement notice 4"
        And the element "#par-enforcement-notice-raise-confirm" contains the text "last text in a long string"
        And the element "#par-enforcement-notice-raise-confirm" contains the text "Once the primary authority receives this notification, they have 5 working days to respond to you if they intend to block the action"
        And the element "#par-enforcement-notice-raise-confirm" contains the text "You will be notified by email of the outcome of this notification"
@@ -115,7 +115,7 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         And I add "TestPassword" to the inputfield "#edit-pass"
         And I click on the button "#edit-submit"
         When I click the link text "See enforcement notifications received"
-        Then the element ".table-scroll-wrapper" contains the text "Enforcement notice four"
+        Then the element ".table-scroll-wrapper" contains the text "Enforcement notice 4"
 
 #       # CHECK ALL AUTHORITY MEMBERS NOTIFIED #PAR-859 #PAR-962
 #

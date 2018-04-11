@@ -8,10 +8,10 @@ Feature: Coordinator User - Complete organisation details
         
         Given I am logged in as "par_coordinator@example.com"
         And I click the link text "See your partnerships"
-        And I add "Organisation For Coordinated Partnership Two" to the inputfield "#edit-keywords"
+        And I add "Organisation For Coordinated Partnership 8" to the inputfield "#edit-keywords"
         And I select the option with the value "confirmed_authority" for element "#edit-partnership-status-1"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I click the link text "Organisation For Coordinated Partnership Two"
+        And I click the link text "Organisation For Coordinated Partnership 8"
         And the element "h1" is not empty
 
         # EDIT REGISTERED ADDRESS

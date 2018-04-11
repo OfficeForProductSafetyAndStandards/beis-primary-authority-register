@@ -10,7 +10,7 @@ Feature: Coordinator User - Upload Members
         When I click on the button "#edit-submit"
         Then I expect that element "#block-par-theme-content" contains the text "See your partnerships"
         And I click on the link "See your partnerships"
-        And I click on the link "Organisation For Coordinated Partnership 20"
+        And I click on the link "Organisation For Coordinated Partnership 80"
         Then I expect that element "h1" is not empty
 
         # UPLOAD MEMBERS
@@ -56,16 +56,16 @@ Feature: Coordinator User - Upload Members
         And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
-        When I add "Organisation For Coordinated Partnership 20" to the inputfield "#edit-keywords"
+        When I add "Organisation For Coordinated Partnership 80" to the inputfield "#edit-keywords"
         And I select the option with the text "Confirmed by the Organisation" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-helpdesk-dashboard"
         Then I click on the link "Approve partnership"
-        And I expect that element "#par-rd-help-desk-confirm" contains the text "Organisation For Coordinated Partnership 20"
+        And I expect that element "#par-rd-help-desk-confirm" contains the text "Organisation For Coordinated Partnership 80"
         And I click on the radio "#edit-confirm-authorisation-select"
         And I click on the radio "#edit-partnership-regulatory-functions-1"
         And I click on the button "#edit-next"
         Then I expect that element "h1.heading-xlarge" contains the text "Partnership is approved"
-        And I expect that element "#edit-partnership-info" contains the text "Organisation For Coordinated Partnership 20"
+        And I expect that element "#edit-partnership-info" contains the text "Organisation For Coordinated Partnership 80"
         And I click on the button "#edit-done"
 
         And I open the url "/user/logout"
@@ -77,7 +77,7 @@ Feature: Coordinator User - Upload Members
         And I add "TestPassword" to the inputfield "#edit-pass"
         And I click on the button "#edit-submit"
         And I click on the link "Search for a partnership"
-        And I add "Organisation For Coordinated Partnership 20" to the inputfield "#edit-keywords"
+        And I add "Organisation For Coordinated Partnership 80" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
         And I click on the button "td.views-field.views-field-par-flow-link a"
         And I click on the link "Send a notification of a proposed enforcement action"
@@ -116,7 +116,7 @@ Feature: Coordinator User - Upload Members
         And I click on the button "#edit-submit"
 
         And I click on the link "See your partnerships"
-        And I click on the link "Organisation For Coordinated Partnership 20"
+        And I click on the link "Organisation For Coordinated Partnership 80"
         Then I expect that element "h1" is not empty
         When I click on the link "Show members list"
         Then I expect that element "h1.heading-xlarge" contains the text "Members list"
@@ -141,7 +141,7 @@ Feature: Coordinator User - Upload Members
 
         When I click on the link "Dashboard"
         And I click on the link "See your partnerships"
-        And I click on the link "Organisation For Coordinated Partnership 20"
+        And I click on the link "Organisation For Coordinated Partnership 80"
         Then I expect that element "h1" is not empty
         When I click on the link "Show members list"
         Then I expect that element "h1.heading-xlarge" contains the text "Members list"

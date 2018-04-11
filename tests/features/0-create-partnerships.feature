@@ -9,7 +9,7 @@ Background:
         # PARTNERSHIP APPLY
         When I complete valid direct partnership application details
         # ADD ORGANISATION DETAIL
-        When I complete valid organisation details for direct partnership "Organisation For Direct Partnership One"
+        When I complete valid organisation details for direct partnership "Organisation For Direct Partnership 8"
         # REVIEW THE APPLICATION
         And I complete review of the valid direct partnership application
         # INVITATION
@@ -20,7 +20,7 @@ Background:
         # PARTNERSHIP APPLY
         When I complete valid direct partnership application details
         # ADD ORGANISATION DETAIL
-        When I complete valid organisation details for direct partnership "Organisation For Direct Partnership Revocation One"
+        When I complete valid organisation details for direct partnership "Organisation For Direct Partnership Revocation 8"
         # REVIEW THE APPLICATION
         And I complete review of the valid direct partnership application
         # INVITATION
@@ -31,7 +31,7 @@ Background:
         # PARTNERSHIP APPLY
         When I complete valid coordinated partnership application details
         # ADD ORGANISATION DETAIL
-        When I complete valid organisation details for coordinated partnership "Organisation For Coordinated Partnership Two"
+        When I complete valid organisation details for coordinated partnership "Organisation For Coordinated Partnership 8"
         # REVIEW THE APPLICATION
         And I complete review of the valid coordinated partnership application
         # INVITATION

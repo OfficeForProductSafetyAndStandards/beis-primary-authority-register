@@ -8,7 +8,7 @@ Feature: Enforcement notice management
         Given I am logged in as "par_authority@example.com"
         And I click the link text "See enforcement notifications sent"
         Then the element ".heading-secondary" contains the text "Enforcement Notifications"
-        And I click the link text "Enforcement notice four"
+        And I click the link text "Enforcement notice 4"
         Then the element "#edit-actions-0-primary-authority-status--wrapper h3.heading-medium" contains the text "Decide to allow or block this action, or refer this action to another Primary Authority"
         And I click on the radio "#edit-actions-0-primary-authority-status-approved"
         And I click on the button "#edit-actions-next"
@@ -17,11 +17,11 @@ Feature: Enforcement notice management
         And I click on the button "#edit-actions-next"
         And I click the link text "Dashboard"
         And I click the link text "See enforcement notifications sent"
-        Then the element ".cols-6" contains the text "Enforcement notice four"
+        Then the element ".cols-6" contains the text "Enforcement notice 4"
 
         # BLOCK FORM
 
-        And I click the link text "Enforcement notice three"
+        And I click the link text "Enforcement notice 3"
         And I click on the radio "#edit-actions-0-primary-authority-status-blocked"
         When I add "Some notes about why enforcement action blocked" to the inputfield "#edit-actions-0-primary-authority-notes"
         And I click on the button "#edit-actions-next"
@@ -29,13 +29,13 @@ Feature: Enforcement notice management
         And I click on the button "#edit-actions-next"
         And I click the link text "Dashboard"
         And I click the link text "See enforcement notifications sent"
-        Then the element ".cols-6" contains the text "Enforcement notice three"
+        Then the element ".cols-6" contains the text "Enforcement notice 3"
 
         # REFER FORM
 
         And I select the option with the value "notice_date DESC" for element "#edit-sort-bef-combine"
         And I click on the button "#edit-submit-par-user-enforcement-list"
-        And I click the link text "Enforcement notice one"
+        And I click the link text "Enforcement notice 1"
         Then the element "h1.heading-xlarge .heading-secondary" contains the text "Make a decision"
         Then the element "h1.heading-xlarge" contains the text "Proposed enforcement action(s)"
         And I click on the radio "#edit-actions-0-primary-authority-status-referred"
@@ -55,10 +55,10 @@ Feature: Enforcement notice management
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         When I click the link text "See enforcement notifications sent"
-        And the element ".table-scroll-wrapper" contains the text "Enforcement notice four"
-        And the element ".table-scroll-wrapper" contains the text "Enforcement notice one"
-        And the element ".table-scroll-wrapper" contains the text "Enforcement notice three"
-        And the element ".table-scroll-wrapper" does not contain the text "Enforcement notice two"
+        And the element ".table-scroll-wrapper" contains the text "Enforcement notice 4"
+        And the element ".table-scroll-wrapper" contains the text "Enforcement notice 1"
+        And the element ".table-scroll-wrapper" contains the text "Enforcement notice 3"
+        And the element ".table-scroll-wrapper" does not contain the text "Enforcement notice 2"
 
 
     Scenario: Enforcement notice approval 
@@ -73,7 +73,7 @@ Feature: Enforcement notice management
 
         # APPROVAL FORM
 
-        And I click the link text "Enforcement notice two"
+        And I click the link text "Enforcement notice 2"
         And I click on the radio "#edit-actions-0-primary-authority-status-approved"
         And I click on the button "#edit-actions-next"
         Then the element ".heading-secondary" contains the text "Confirmation"
@@ -86,4 +86,4 @@ Feature: Enforcement notice management
 
         Given I am logged in as "par_enforcement_officer@example.com"
         When I click the link text "See enforcement notifications sent"
-        And the element ".table-scroll-wrapper" contains the text "Enforcement notice two"
+        And the element ".table-scroll-wrapper" contains the text "Enforcement notice 2"

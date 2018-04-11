@@ -21,7 +21,7 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
 
         Examples:
             | Notification Title        | Organisation   | PARUser                      |
-            | Enforcement notice one    | Charlie's Cafe | par_authority@example.com    |
-            | Enforcement notice two    | Charlie's Cafe | par_authority@example.com    |
-            | Enforcement notice three  | Charlie's Cafe | par_authority@example.com    |
-            | Enforcement notice four   | Charlie's Cafe | par_authority@example.com    |
+            | Enforcement notice 1    | Charlie's Cafe | par_authority@example.com    |
+            | Enforcement notice 2    | Charlie's Cafe | par_authority@example.com    |
+            | Enforcement notice 3  | Charlie's Cafe | par_authority@example.com    |
+            | Enforcement notice 4   | Charlie's Cafe | par_authority@example.com    |

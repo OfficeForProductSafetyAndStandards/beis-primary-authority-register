@@ -8,10 +8,9 @@ Feature: Coordinator User - Update Partnership
         
         Given I am logged in as "par_coordinator@example.com"
         When I click the link text "See your partnerships"
-        And I add "Organisation For Coordinated Partnership Two" to the inputfield "#edit-keywords"
-        And I select the option with the value "confirmed_business" for element "#edit-partnership-status-1"
+        And I add "Organisation For Coordinated Partnership 8" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I click the link text "Organisation For Coordinated Partnership Two"
+        And I click the link text "Organisation For Coordinated Partnership 8"
         Then the element "h1" is not empty
 
         # ADD MEMBERS
@@ -103,9 +102,9 @@ Feature: Coordinator User - Update Partnership
         # EDIT REGISTERED ADDRESS
 
         Given I open the path "/partnerships"
-        And I add "Organisation For Coordinated Partnership Two" to the inputfield "#edit-keywords"
+        And I add "Organisation For Coordinated Partnership 8" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I click the link text "Organisation For Coordinated Partnership Two"
+        And I click the link text "Organisation For Coordinated Partnership 8"
         When  I click the link text "edit address"
         When I add "SE16 4NX" to the inputfield "#edit-postcode"
         And I add "1 Change St" to the inputfield "#edit-address-line1"
@@ -167,5 +166,5 @@ Feature: Coordinator User - Update Partnership
         # And I run tota11y against the current page
         And I select the option with the value "confirmed_business" for element "#edit-partnership-status-1"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And the element "#block-par-theme-content" contains the text "Organisation For Coordinated Partnership Two"
+        And the element "#block-par-theme-content" contains the text "Organisation For Coordinated Partnership 8"
 
