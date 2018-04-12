@@ -18,8 +18,8 @@ Feature: Enforcement Officer/PA - Enforcement Notice Process
         # ENFORCEMENT ACTION FORM
 
         When I click on the link "Send a notification of a proposed enforcement action"
-        And I click on the button "#edit-cancel"
-        And I click on the link "Send a notification of a proposed enforcement action"
+        # And I click on the button "#edit-cancel"
+        # And I click on the link "Send a notification of a proposed enforcement action"
 
 #        # CHOOSE MEMBER
 
