@@ -19,8 +19,8 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
         # ENFORCEMENT ACTION FORM
 
         When I click on the link "Send a notification of a proposed enforcement action"
-        And I click on the button "#edit-cancel"
-        And I click on the link "Send a notification of a proposed enforcement action"
+        # And I click on the button "#edit-cancel"
+        # And I click on the link "Send a notification of a proposed enforcement action"
         # And I run tota11y against the current page
 
         # CHOOSE MEMBER

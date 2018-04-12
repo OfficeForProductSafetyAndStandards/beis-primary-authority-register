@@ -140,10 +140,10 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     $form['trading_names'] = $this->renderSection('Trading names', $par_data_organisation, ['trading_name' => 'full'], ['edit-field', 'add']);
 
     // Everything below is for the authority to edit and add to.
-    $par_data_authority = current($par_data_partnership->getAuthority());
+    $par_data_authority = $par_data_partnership->getAuthority(TRUE);
     $form['authority'] = [
       '#type' => 'markup',
-      '#markup' => $par_data_authority->get('authority_name')->getString(),
+      '#markup' => $par_data_authority ? $par_data_authority->get('authority_name')->getString() : '',
       '#prefix' => '<h1>',
       '#suffix' => '</h1>',
     ];
