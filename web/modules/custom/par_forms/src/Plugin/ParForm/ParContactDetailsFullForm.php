@@ -9,7 +9,7 @@ use Drupal\par_forms\ParFormPluginBase;
  *
  * @ParForm(
  *   id = "contact_details_full",
- *   title = @Translation("Contact details form.")
+ *   title = @Translation("Contact details full form.")
  * )
  */
 class ParContactDetailsFullForm extends ParFormPluginBase {

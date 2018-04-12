@@ -190,7 +190,14 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
-      $form = $this->getFormBuilder()->getPluginElements($component);
+      // Handle instances where FormBuilderInterface should return a redirect response.
+      $plugin = $this->getFormBuilder()->getPluginElements($component);
+      if ($plugin instanceof RedirectResponse) {
+        return $plugin;
+      }
+      elseif (is_array($plugin)) {
+        $form = $plugin;
+      }
     }
 
     // Only ever place a 'done' action by itself.

@@ -4,45 +4,42 @@ dependencies: {  }
 id: raise_enforcement
 label: 'Raise Enforcement'
 default_title: 'Notification of Enforcement action'
-default_section_title: null
+default_section_title: 'Enforcement Action'
 description: 'The creation flow of an enforcement notice.'
 save_method: end
 states:
   - par_data_partnership
 steps:
-  1:
-    route: par_enforcement_raise_flows.partnership_page
-    redirect:
-      advice: 2
-      inspection_plans: 3
-      raise: 4
-      done: 11
-  2:
-    route: par_enforcement_raise_flows.advice_view
-    redirect:
-      cancel: 1
-  3:
-    route: par_enforcement_raise_flows.inspection_plan_view
-    redirect:
-      done: 1
   4:
     route: par_enforcement_raise_flows.authority_select
     form_id: par_authority_selection
+    components:
+      authority_select: {}
     redirect:
       cancel: 1
   5:
     route: par_enforcement_raise_flows.enforce_organisation
     form_id: par_enforce_organisation
+    components:
+      organisation_select: {}
     redirect:
       cancel: 1
   6:
     route: par_enforcement_raise_flows.officer_details
     form_id: par_enforcement_officer_details
+    components:
+      contact_details_basic: {}
+    form_data:
+      authority_selection: par_authority_selection
+      organisation_selection: par_enforce_organisation
     redirect:
       cancel: 1
   7:
     route: par_enforcement_raise_flows.raise
     form_id: par_enforcement_notice_raise
+    form_data:
+      authority_selection: par_authority_selection
+      organisation_selection: par_enforce_organisation
     redirect:
       cancel: 1
   8:

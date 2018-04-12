@@ -611,7 +611,9 @@ class ParDataManager implements ParDataManagerInterface {
    */
   public function getEntitiesAsOptions($entities, $options = []) {
     foreach ($entities as $entity) {
-      $options[$entity->id()] = $entity->label();
+      if ($entity instanceof EntityInterface) {
+        $options[$entity->id()] = $entity->label();
+      }
     }
 
     return $options;

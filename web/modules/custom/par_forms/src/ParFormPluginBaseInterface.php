@@ -4,6 +4,7 @@ namespace Drupal\par_forms;
 
 use Drupal\Component\Plugin\ConfigurablePluginInterface;
 use Drupal\Component\Plugin\PluginInspectionInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Defines a form component for use within a form controller.
@@ -25,6 +26,8 @@ interface ParFormPluginBaseInterface extends PluginInspectionInterface, Configur
    *   An optional form array to add the component elements to.
    * @param integer $cardinality
    *   The cardinality for this plugin.
+   *
+   * @return array|RedirectResponse
    */
   public function getElements($form = [], $cardinality = 0);
 

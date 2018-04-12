@@ -8,6 +8,7 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Provides a PAR Form Builder plugin manager.
@@ -102,7 +103,13 @@ class ParFormBuilder extends DefaultPluginManager {
     // Count the current cardinality.
     $count = $component->countItems() + 1 ?: 1;
     for ($i = 1; $i <= $count; $i++) {
-      $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1] = $component->getElements([], $i);
+      $element = $component->getElements([], $i);
+
+      // Handle instances where FormBuilderInterface should return a redirect response.
+      if ($element instanceof RedirectResponse) {
+        return $element;
+      }
+      $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1] = $element;
 
       // Only show remove for plugins with multiple cardinality
       if ($component->getCardinality() !== 1) {

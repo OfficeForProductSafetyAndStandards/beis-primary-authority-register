@@ -59,7 +59,6 @@ class ParEnforcementRaiseNoticeForm extends ParBaseEnforcementForm {
       return parent::buildForm($form, $form_state);
     }
 
-
     $legal_entity_reg_names = $this->getEnforcedOrganisationLegalEntities();
     // After getting a list of all the associated legal entities add a use
     // custom option.
