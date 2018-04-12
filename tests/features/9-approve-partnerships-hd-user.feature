@@ -49,10 +49,10 @@ Feature: Helpdesk approve partnership
         # And the element "#edit-partnership-info" contains the text "Organisation For Direct Partnership Revocation"
         # And I click on the button "#edit-done"
 
-        # REVOKE PARTNERSHIP
+        # REVOKE DIRECT PARTNERSHIP
 
         When I click the link text "Helpdesk"
-        When I add "Specialist Cheesemakers Association" to the inputfield "#edit-keywords"
+        When I add "TSB Bank PLC" to the inputfield "#edit-keywords"
         And I select the option with the value "0" for element "#edit-revoked"
         And I click on the button "#edit-submit-helpdesk-dashboard"
         Then I click the link text "Revoke partnership"
@@ -60,8 +60,12 @@ Feature: Helpdesk approve partnership
         And I click on the button "#edit-next"
         And the element "#edit-partnership-info" contains the text "The following partnership has been revoked"
         And I click on the button "#edit-done"
-        When I add "Specialist Cheesemakers Association" to the inputfield "#edit-keywords"
+        When I add "TSB Bank PLC" to the inputfield "#edit-keywords"
         And I select the option with the value "1" for element "#edit-revoked"
         And I click on the button "#edit-submit-helpdesk-dashboard"
-        And the element ".table-scroll-wrapper" contains the text "Specialist Cheesemakers Association"
+        And the element ".table-scroll-wrapper" contains the text "TSB Bank PLC"
+
+        # REVOKE PARTNERSHIP (SHORTER STEP VERSION)
+
+        And I successfully revoke a coordinated partnership
         

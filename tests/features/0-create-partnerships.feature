@@ -15,17 +15,6 @@ Background:
         # INVITATIONS
         Then the direct partnership creation email template is correct
 
-    # @directpartneship
-    # Scenario: New Direct Partnership For HD user To Revoke
-    #     # PARTNERSHIP APPLY
-    #     When I complete valid direct partnership application details
-    #     # ADD ORGANISATION DETAIL
-    #     When I complete valid organisation details for direct partnership "Organisation For Direct Partnership Revocation"
-    #     # REVIEW THE APPLICATION
-    #     And I complete review of the valid direct partnership application
-    #     # INVITATION
-    #     Then the direct partnership creation email template is correct
-
     @coordinatedpartneship
     Scenario: New coordinated Partnership
         # PARTNERSHIP APPLY

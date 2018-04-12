@@ -200,7 +200,7 @@ When('I complete the partnership details for direct partnership {string}', funct
    .assert.containsText('.table-scroll-wrapper','Confirmed by the Organisation')
  }); 
 
- When('I successfully revoke a partnership', function (elName) {
+ When('I successfully revoke a coordinated partnership', function () {
   return shared
     .clickLinkByPureText('Helpdesk')
     .setValue('#edit-keywords','Specialist Cheesemakers Association')
@@ -215,4 +215,5 @@ When('I complete the partnership details for direct partnership {string}', funct
     .click('#edit-revoked option[value="1"]')
     .click('#edit-submit-helpdesk-dashboard')
     .assert.containsText('.table-scroll-wrapper','Specialist Cheesemakers Association')
+    .expect.element('#block-par-theme-content > div > div > div > table > tbody > tr:nth-child(2)').to.not.be.present;
 });
