@@ -147,9 +147,6 @@
             "drush/drush": {
                 "Fix SQL dump problem where extra params are passed when trying only to list tables": "./patches/3321-sql-dump-no-extra-fix.patch",
                 "Refs #2079. Do not pass `$this->query_extra` to `pg_dump`.": "./patches/drush-sqldump-postgres95.patch"
-            },
-            "league/flysystem": {
-                "Default metadata stored in cache as NULL values": "https://www.drupal.org/files/issues/2018-03-23/metadata-null-values_2955174-6.patch"
             }
         }
     },
