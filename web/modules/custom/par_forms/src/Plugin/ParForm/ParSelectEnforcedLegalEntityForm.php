@@ -10,8 +10,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  * About business form plugin.
  *
  * @ParForm(
- *   id = "organisation_select",
- *   title = @Translation("Organisation selection.")
+ *   id = "select_enforced_legal_entity",
+ *   title = @Translation("Legal entity selection for enforcement form.")
  * )
  */
 class ParAboutBusinessForm extends ParFormPluginBase {

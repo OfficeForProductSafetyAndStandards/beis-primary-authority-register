@@ -37,6 +37,8 @@ steps:
   7:
     route: par_enforcement_raise_flows.raise
     form_id: par_enforcement_notice_raise
+    components:
+      select_enforced_legal_entity: {}
     form_data:
       authority_selection: par_authority_selection
       organisation_selection: par_enforce_organisation

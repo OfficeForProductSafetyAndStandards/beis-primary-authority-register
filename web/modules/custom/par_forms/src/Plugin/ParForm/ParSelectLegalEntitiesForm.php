@@ -10,7 +10,7 @@ use Drupal\par_forms\ParFormPluginBase;
  *
  * @ParForm(
  *   id = "select_legal_entities",
- *   title = @Translation("Select legal entities form.")
+ *   title = @Translation("Select legal entities for partnership form.")
  * )
  */
 class ParSelectLegalEntitiesForm extends ParFormPluginBase {
