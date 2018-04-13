@@ -39,10 +39,10 @@ module.exports = {
             },
             desiredCapabilities: {
                 browserName: 'chrome',
-                // chromeOptions : {
+                chromeOptions : {
                 //  binary: electron,
-                //     args: ['--headless', '--window-size=1280,1280'],
-                //   },
+                    args: ['--headless', '--window-size=1280,1280'],
+                  },
                 javascriptEnabled: true,
                 acceptSslCerts: true
             },
