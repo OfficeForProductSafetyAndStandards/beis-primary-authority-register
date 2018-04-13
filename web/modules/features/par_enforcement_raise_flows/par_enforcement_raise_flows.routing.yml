@@ -1,9 +1,9 @@
 # PAR Data Raise Enforcement Notice Journey
-par_enforcement_raise_flows.authority_select:
+par_enforcement_raise_flows.select_authority:
   path: '/enforcement-notice/{par_data_partnership}/select-authority'
   defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAuthoritySuggestionForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAuthoritySuggestionForm::titleCallback'
+    _form: '\Drupal\par_enforcement_raise_flows\Form\ParSelectAuthorityForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParSelectAuthorityForm::titleCallback'
   requirements:
     _permission: 'raise enforcement notice'
     par_data_partnership: \d+
@@ -11,11 +11,11 @@ par_enforcement_raise_flows.authority_select:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-par_enforcement_raise_flows.enforce_organisation:
+par_enforcement_raise_flows.select_organisation:
   path: '/enforcement-notice/{par_data_partnership}/enforce-organisation'
   defaults:
-    _form: '\Drupal\par_enforcement_raise_flows\Form\ParEnforcementEnforceOrganisationForm'
-    _title_callback: '\Drupal\par_enforcement_raise_flows\Form\ParEnforcementEnforceOrganisationForm::titleCallback'
+    _form: '\Drupal\par_enforcement_raise_flows\Form\ParSelectOrganisationForm'
+    _title_callback: '\Drupal\par_enforcement_raise_flows\Form\ParSelectOrganisationForm::titleCallback'
   requirements:
     _permission: 'raise enforcement notice'
     par_data_partnership: \d+
@@ -26,8 +26,8 @@ par_enforcement_raise_flows.enforce_organisation:
 par_enforcement_raise_flows.officer_details:
   path: '/enforcement-notice/{par_data_partnership}/enforcing-officer'
   defaults:
-    _form: '\Drupal\par_enforcement_raise_flows\Form\ParEnforcementOfficerDetailsForm'
-    _title_callback: '\Drupal\par_enforcement_raise_flows\Form\ParEnforcementOfficerDetailsForm::titleCallback'
+    _form: '\Drupal\par_enforcement_raise_flows\Form\ParContactForm'
+    _title_callback: '\Drupal\par_enforcement_raise_flows\Form\ParContactForm::titleCallback'
   requirements:
     _permission: 'raise enforcement notice'
     par_data_partnership: \d+
@@ -35,11 +35,11 @@ par_enforcement_raise_flows.officer_details:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-par_enforcement_raise_flows.raise:
+par_enforcement_raise_flows.select_legal_entity:
   path: '/enforcement-notice/{par_data_partnership}/raise'
   defaults:
-    _form: '\Drupal\par_enforcement_raise_flows\Form\ParEnforcementRaiseNoticeForm'
-    _title_callback: '\Drupal\par_enforcement_raise_flows\Form\ParEnforcementRaiseNoticeForm::titleCallback'
+    _form: '\Drupal\par_enforcement_raise_flows\Form\ParSelectLegalEntityForm'
+    _title_callback: '\Drupal\par_enforcement_raise_flows\Form\ParSelectLegalEntityForm::titleCallback'
   requirements:
     _permission: 'raise enforcement notice'
     par_data_partnership: \d+
