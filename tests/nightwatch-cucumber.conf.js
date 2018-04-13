@@ -3,7 +3,15 @@ const chromedriver = require('chromedriver')
 const electron = require('electron-prebuilt');
 
 require('nightwatch-cucumber')({
-    cucumberArgs: ['--require', 'step-definitions', '-- --tag', '@ci', '--require', 'support', '--require', 'page_objects', '--format', 'node_modules/cucumber-pretty', '--format', 'json:reports/cucumber.json', 'features/9-approve-partnerships-hd-user.feature']
+    cucumberArgs: [
+            '--require', 'step-definitions', 
+            '-- --tag', '@ci', 
+            '--require', 'support', 
+            '--require', 'page_objects', 
+            '--format', 'node_modules/cucumber-pretty', 
+            '--format', 'json:reports/cucumber.json', 
+            'features'
+        ]
 })
 
 module.exports = {
@@ -31,10 +39,10 @@ module.exports = {
             },
             desiredCapabilities: {
                 browserName: 'chrome',
-                chromeOptions : {
+                // chromeOptions : {
                 //  binary: electron,
-                    args: ['--headless', '--window-size=1280,1280'],
-                  },
+                //     args: ['--headless', '--window-size=1280,1280'],
+                //   },
                 javascriptEnabled: true,
                 acceptSslCerts: true
             },

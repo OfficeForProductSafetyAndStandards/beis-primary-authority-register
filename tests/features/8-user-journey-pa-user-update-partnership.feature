@@ -34,10 +34,17 @@ Feature: PA User - Manage Addresses
         And the element "#edit-authority-contacts" contains the text "02078886663"
         And the element "#edit-authority-contacts" contains the text "07965465726"
 
+        # DOCUMENTATION
+
+        And I click the link text "See all Advice"
+        When I click the link text "Upload advice"
+        And the element "h3.heading-medium" contains the text "How to upload Primary Authority Advice to Local Authorities"
+        When I click on the button "#edit-cancel"
+        And I click on the button ".button"
+        
         # COMPLETE CHANGES
 
         When I click on the button "#edit-save"
         And I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
-
         And the element "#block-par-theme-content" contains the text "Organisation For Direct Partnership"

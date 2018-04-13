@@ -141,7 +141,7 @@ const shared = client.page.shared();
 
   When('I click on authority selection if available', function () {
     return shared
-            .chooseAuthorityIfOptionPresent('selector','#edit-par-data-authority-id-525')
+      .chooseAuthorityIfOptionPresent('input[name="par_data_authority_id"]','City Enforcement Squad')
   });
 
   When('I click on new organisation option if available', function () {
