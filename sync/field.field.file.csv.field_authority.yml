@@ -1,0 +1,28 @@
+uuid: 46446cd1-2a1f-4852-b152-8e93a6c9564b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.file.field_authority
+    - file_entity.type.csv
+    - par_data.par_data_authority_type.authority
+id: file.csv.field_authority
+field_name: field_authority
+entity_type: file
+bundle: csv
+label: Authority
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_authority'
+  handler_settings:
+    target_bundles:
+      authority: authority
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

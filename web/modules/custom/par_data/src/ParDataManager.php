@@ -495,6 +495,14 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
+   * A query helper.
+   */
+  public function getEntityQuery($type, $conjunction = 'AND', $access_check = FALSE) {
+    return $this->entityTypeManager->getStorage($type)->getQuery($conjunction)
+      ->accessCheck($access_check);
+  }
+
+  /**
    * A helper function to load entity properties.
    *
    * @param string $type
@@ -523,25 +531,22 @@ class ParDataManager implements ParDataManagerInterface {
    *
    * @param string $type
    *   The entity type to load the field for.
+   * @param array $ids
+   *   An optional array of ids to load.
    *
    * @return \Drupal\Core\Entity\EntityInterface[]
    *   An array of entities found with this value.
    */
-  public function getEntitiesByType($type) {
+  public function getEntitiesByType($type, array $ids = NULL) {
     return $this->entityManager
       ->getStorage($type)
-      ->loadMultiple();
+      ->loadMultiple($ids);
   }
 
   /**
    * A helper function to build an entity query and load entities that match.
    *
-   * @param string $type
-   *   An entity type to query.
-   * @param array $conditions
-   *   Query conditions.
-   * @param integer $limit
-   *   Limit number of results.
+   * {@inheritdoc}
    *
    * @code
    * $conditions = [
@@ -566,19 +571,12 @@ class ParDataManager implements ParDataManagerInterface {
    *   ],
    * ];
    * @endcode
-   *
-   * @return \Drupal\Core\Entity\EntityInterface[]
-   *   An array of entity objects indexed by their IDs. Returns an empty array
-   *   if no matching entities are found.
-   *
-   * @see \Drupal\Core\Entity\Query\andConditionGroup
-   * @see \Drupal\Core\Entity\Query\orConditionGroup
    */
-  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL) {
+  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC') {
     $entities = [];
 
     foreach ($conditions as $row) {
-      $query = \Drupal::entityQuery($type);
+      $query = $this->getEntityQuery($type);
 
       foreach ($row as $condition_operator => $condition_row) {
         $group = (strtoupper($condition_operator) === 'OR') ? $query->orConditionGroup() : $query->andConditionGroup();

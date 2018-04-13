@@ -20,6 +20,8 @@ steps:
   2:
     route: par_member_cease_flows.member_cease_confirm
     form_id: par_member_cease_confirmation
+    form_data:
+      cease_date: par_member_cease_date
     redirect:
       save: 3
       cancel: 3

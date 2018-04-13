@@ -17,7 +17,7 @@ class ParAddressForm extends ParBaseForm {
   /**
    * Set the page title.
    */
-  protected $pageTitle = 'Confirm the primary contact details';
+  protected $pageTitle = 'Confirm the primary address details';
 
   /**
    * Load the data for this form.

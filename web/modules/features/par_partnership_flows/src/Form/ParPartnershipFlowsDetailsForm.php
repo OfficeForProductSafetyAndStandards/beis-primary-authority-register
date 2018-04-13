@@ -69,12 +69,13 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
       $form['employee_no'] = $this->renderSection('Number of Employees', $par_data_organisation, ['employees_band' => 'full'], ['edit-field']);
     }
 
-    // Only show Members list, Sectors and Number of businesses if the
-    // partnership is a coordinated partnership.
+    // Only show Members for coordinated partnerships.
     if ($par_data_partnership->isCoordinated()) {
-      if ($this->getFlowNegotiator()->getFlowName() === 'partnership_coordinated'
-        && $par_data_partnership->get('field_coordinated_business')->count() >= 1) {
+      $membership_count = $par_data_partnership->countMembers();
 
+      // If the organisation details, and there are already some members.
+      if ($this->getFlowNegotiator()->getFlowName() === 'partnership_coordinated'
+        && $membership_count >= 1) {
         $form['members_link'] = [
           '#type' => 'fieldset',
           '#title' => t('Number of members'),
@@ -84,7 +85,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
         ];
         $form['members_link']['count'] = [
           '#type' => 'markup',
-          '#markup' => "<p>{$par_data_partnership->get('field_coordinated_business')->count()}</p>",
+          '#markup' => "<p>{$membership_count}</p>",
         ];
         $form['members_link']['link'] = [
           '#type' => 'markup',
@@ -95,7 +96,8 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
           '#suffix' => '</p>',
         ];
       }
-      else {
+      // If the organisation details and there aren't yet any members.
+      elseif ($this->getFlowNegotiator()->getFlowName() === 'partnership_coordinated') {
         $form['associations'] = $this->renderSection('Number of members', $par_data_organisation, ['size' => 'full'], ['edit-field']);
 
         $form['associations']['add_link'] = [
@@ -107,6 +109,20 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
           '#prefix' => '<p>',
           '#suffix' => '</p>',
         ];
+        $form['associations']['upload_link'] = [
+          '#type' => 'markup',
+          '#markup' => t('@link', [
+            '@link' => Link::createFromRoute('Upload a Member List (CSV)', 'par_member_upload_flows.member_upload', $this->getRouteParams())->toString(),
+          ]),
+          '#weight' => -100,
+          '#prefix' => '<p>',
+          '#suffix' => '</p>',
+        ];
+      }
+      // In all other cases show the inline member summary.
+      else {
+        // Display all the members in basic form for authority users.
+        $form['members'] = $this->renderSection('Members', $par_data_partnership, ['field_coordinated_business' => 'title']);
       }
     }
 
