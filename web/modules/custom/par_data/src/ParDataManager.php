@@ -714,4 +714,89 @@ class ParDataManager implements ParDataManagerInterface {
     return $average;
   }
 
+  /**
+   * Generates foreign keys to assist with generation of database diagram.
+   *
+   * SHOULD ONLY BE USED IN DEVELOPMENT ENVIRONMENTS, NEVER ON PROD.
+   *
+   * @see https://regulatorydelivery.atlassian.net/wiki/spaces/PA/pages/324435969/Drupal+Data+Model
+   */
+  public static function generateForeignKeys() {
+    if (getenv('APP_ENV') == 'production') {
+      return;
+    }
+
+    $par_data_manager = \Drupal::service('par_data.manager');
+
+    $queries = [];
+    foreach ($par_data_manager->getParEntityTypes() as $entity_type_id => $entity_type) {
+      $key_prefix = 'fk_';
+      $base_table = $entity_type->getBaseTable();
+      $field_table = $entity_type->getDataTable();
+
+      // Add entity base field relationships.
+      $queries[] = <<<EOT
+ALTER TABLE {$field_table}
+  ADD CONSTRAINT {$key_prefix}{$field_table}___{$base_table}
+FOREIGN KEY (id)
+REFERENCES {$base_table}(id);
+EOT;
+
+      // For reference fields that are not mandatory they use a value for 0
+      // for the target_id which is not a valid foreign key. Insert an arbitary value.
+      $qry = <<<EOT
+      INSERT into {$base_table}
+      VALUES (0, 9999999999, 'bogus', '4b7f74dc-ae10-unkn-own-29207b47797a', 'en');
+EOT;
+      // And make sure it runs first.
+      array_unshift($queries, $qry);
+
+      // Get all reference fields and add their relationships.
+      $bundle = $par_data_manager->getParBundleEntity($entity_type_id);
+      $references = $par_data_manager->getReferences($entity_type_id, $bundle->id());
+      foreach ($references as $field_entity_type_id => $fields) {
+        // If the reference is on the current entity type
+        // we can get the value from the current $entity.
+        if ($entity_type_id === $field_entity_type_id) {
+          foreach ($fields as $field_name => $field) {
+            $storage = $field->getFieldStorageDefinition();
+            $target_type_id = $field->getSetting('target_type');
+            if ($entity_type_id === $target_type_id) {
+              continue;
+            }
+
+            $target_type = $par_data_manager->getParEntityType($target_type_id);
+
+            $table_mapping = new \Drupal\Core\Entity\Sql\DefaultTableMapping($entity_type, [$storage]);
+            $target = $table_mapping->getFieldColumnName($storage, 'target_id');
+            $table_name = $table_mapping->getDedicatedDataTableName($storage);
+
+            $queries[] = <<<EOT
+ALTER TABLE {$table_name}
+  ADD CONSTRAINT {$key_prefix}{$table_name}___{$target}
+FOREIGN KEY ({$target})
+REFERENCES {$target_type->getBaseTable()}(id);
+EOT;
+            $queries[] = <<<EOT
+ALTER TABLE {$table_name}
+  ADD CONSTRAINT {$key_prefix}{$table_name}___entity_id
+FOREIGN KEY (entity_id)
+REFERENCES {$base_table}(id);
+EOT;
+          }
+        }
+      }
+    }
+
+    $connection = \Drupal::database();
+    foreach ($queries as $i => $query) {
+      try {
+        $executed = $connection->query($query);
+      }
+      catch (Exception $e) {
+        var_dump($e->getMessage());
+      }
+    }
+  }
+
 }
