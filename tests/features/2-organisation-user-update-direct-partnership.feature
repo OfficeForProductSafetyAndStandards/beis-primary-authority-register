@@ -6,13 +6,11 @@ Feature: Business User - Update Partnership
         #LOGIN
 
         Given I am logged in as "par_business@example.com"
-        And I open the path "/dashboard"
-        And I click the link text "See your partnerships"
-        # And I select the option with the value "Confirmed by Organisation" for element "#edit-partnership-status"
-        And I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-par-user-partnerships"
-        And I click the link text "Organisation For Direct Partnership"
 
+        # GO TO A PARTNERSHIP PAGE
+
+        And I go to partnership detail page for my partnership "Organisation For Direct Partnership"
+       
         # EDIT REGISTERED ADDRESS
 
         When I edit registered address for organisation

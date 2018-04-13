@@ -20,8 +20,8 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
         Then the EN emails confirmations for "<PARUser>" are processed for enforcement notication "<Notification Title>"
 
         Examples:
-            | Notification Title        | Organisation   | PARUser                      |
-            | Enforcement notice 1    | Charlie's Cafe | par_authority@example.com    |
-            | Enforcement notice 2    | Charlie's Cafe | par_authority@example.com    |
-            | Enforcement notice 3  | Charlie's Cafe | par_authority@example.com    |
-            | Enforcement notice 4   | Charlie's Cafe | par_authority@example.com    |
+            | Notification Title   | Organisation   | PARUser                   |
+            | Enforcement notice 1 | Charlie's Cafe | par_authority@example.com |
+            | Enforcement notice 2 | Charlie's Cafe | par_authority@example.com |
+            | Enforcement notice 3 | Charlie's Cafe | par_authority@example.com |
+            | Enforcement notice 4 | Charlie's Cafe | par_authority@example.com |

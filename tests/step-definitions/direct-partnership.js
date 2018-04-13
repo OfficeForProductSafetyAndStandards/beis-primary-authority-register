@@ -98,6 +98,34 @@ When('the direct partnership creation email template is correct', function () {
   .assert.containsText('h1.heading-xlarge','Primary Authority Register')
 }); 
 
+When('I go to partnership detail page for my partnership {string}', function (partnershipname) {
+  return shared
+  .clickLinkByPureText('Dashboard')
+  .clickLinkByPureText('See your partnerships')
+  .click('#edit-partnership-status-1 option[value="confirmed_business"]')
+  .setValue('#edit-keywords','Organisation For Direct Partnership')
+  .click('#edit-submit-par-user-partnerships')
+  .clickLinkByPureText('Organisation For Direct Partnership')
+ }); 
+
+ When('I successfully revoke a coordinated partnership', function () {
+  return shared
+    .clickLinkByPureText('Helpdesk')
+    .setValue('#edit-keywords','Specialist Cheesemakers Association')
+    .click('#edit-revoked option[value="0"]')
+    .click('#edit-submit-helpdesk-dashboard')
+    .clickLinkByPureText('Revoke partnership')
+    .setValue('#edit-revocation-reason','"A reason for revoking')
+    .click('#edit-next')
+    .assert.containsText('#edit-partnership-info','The following partnership has been revoked')
+    .click('#edit-done')
+    .setValue('#edit-keywords','Specialist Cheesemakers Association')
+    .click('#edit-revoked option[value="1"]')
+    .click('#edit-submit-helpdesk-dashboard')
+    .assert.containsText('.table-scroll-wrapper','Specialist Cheesemakers Association')
+    .expect.element('#block-par-theme-content > div > div > div > table > tbody > tr:nth-child(2)').to.not.be.present;
+});
+
 When('I complete the partnership details for direct partnership {string}', function (partnershipname) {
   return shared
   .clickLinkByPureText('Dashboard')
@@ -199,21 +227,3 @@ When('I complete the partnership details for direct partnership {string}', funct
    .click('#edit-submit-par-user-partnerships')
    .assert.containsText('.table-scroll-wrapper','Confirmed by the Organisation')
  }); 
-
- When('I successfully revoke a coordinated partnership', function () {
-  return shared
-    .clickLinkByPureText('Helpdesk')
-    .setValue('#edit-keywords','Specialist Cheesemakers Association')
-    .click('#edit-revoked option[value="0"]')
-    .click('#edit-submit-helpdesk-dashboard')
-    .clickLinkByPureText('Revoke partnership')
-    .setValue('#edit-revocation-reason','"A reason for revoking')
-    .click('#edit-next')
-    .assert.containsText('#edit-partnership-info','The following partnership has been revoked')
-    .click('#edit-done')
-    .setValue('#edit-keywords','Specialist Cheesemakers Association')
-    .click('#edit-revoked option[value="1"]')
-    .click('#edit-submit-helpdesk-dashboard')
-    .assert.containsText('.table-scroll-wrapper','Specialist Cheesemakers Association')
-    .expect.element('#block-par-theme-content > div > div > div > table > tbody > tr:nth-child(2)').to.not.be.present;
-});
