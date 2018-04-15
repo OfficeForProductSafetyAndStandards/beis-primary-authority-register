@@ -9,6 +9,7 @@ dependencies:
     - field.field.par_data_enforcement_action.enforcement_action.field_regulatory_function
     - par_data.par_data_enforcement_action_type.enforcement_action
   module:
+    - file
     - text
 _core:
   default_config_hash: AoxjcNDoY048wgcDNHUYUmnWnqelzhxVpENJ3-taYb0
@@ -18,13 +19,20 @@ bundle: enforcement_action
 mode: full
 content:
   details:
-    type: text_trimmed
+    type: text_default
     weight: 5
     region: content
     label: hidden
-    settings:
-      trim_length: 600
+    settings: {  }
     third_party_settings: {  }
+  document:
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
   enforcement_action_notes:
     label: hidden
     type: text_default

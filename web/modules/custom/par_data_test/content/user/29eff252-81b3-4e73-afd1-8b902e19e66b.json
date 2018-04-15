@@ -1,0 +1,78 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/user\/9543?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+        }
+    },
+    "uid": [
+        {
+            "value": 9543
+        }
+    ],
+    "uuid": [
+        {
+            "value": "29eff252-81b3-4e73-afd1-8b902e19e66b"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "mail": [
+        {
+            "value": "par_coordinator@example.com"
+        }
+    ],
+    "name": [
+        {
+            "value": "par_coordinator@example.com"
+        }
+    ],
+    "pass": [
+        {
+            "value": "TestPassword"
+        }
+    ],
+    "status": [
+        {
+            "value": "1"
+        }
+    ],
+    "roles": [
+        {
+            "target_id": "par_authority"
+        }
+    ],
+    "created": [
+        {
+            "value": 1521559594
+        }
+    ],
+    "changed": [
+        {
+            "value": 1521559594,
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "field_last_password_reset": [
+        {
+            "value": "2018-03-20T15:26:38"
+        }
+    ],
+    "field_password_expiration": [
+        {
+            "value": false
+        }
+    ]
+}

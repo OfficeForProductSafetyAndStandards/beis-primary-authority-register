@@ -17,12 +17,11 @@ bundle: enforcement_action
 mode: summary
 content:
   details:
-    type: text_trimmed
+    type: text_default
     weight: 3
     region: content
     label: hidden
-    settings:
-      trim_length: 600
+    settings: {  }
     third_party_settings: {  }
   document:
     label: hidden
@@ -47,7 +46,8 @@ content:
     weight: 1
     region: content
     label: hidden
-    settings: {  }
+    settings:
+      display_original_value: false
     third_party_settings: {  }
   title:
     type: string
