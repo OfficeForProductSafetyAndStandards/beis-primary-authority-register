@@ -61,7 +61,5 @@ steps:
       add_enforcement_action: 9
       save: 11
       cancel: 1
-  11:
+  8:
     route: par_dashboards.dashboard
-  12:
-    route: view.partnership_search.enforcment_flow_search_partnerships

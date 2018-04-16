@@ -3,10 +3,12 @@
 namespace Drupal\par_forms;
 
 use Drupal\Component\Plugin\PluginBase;
+use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
+use Drupal\par_flows\ParRedirectTrait;
 
 /**
  * Provides a base implementation for a ParForm plugin.
@@ -19,6 +21,7 @@ use Drupal\par_flows\ParFlowNegotiatorInterface;
 abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBaseInterface {
 
   use StringTranslationTrait;
+  use ParRedirectTrait;
 
   /**
    * A mapping definition of form elements to entity properties.
@@ -110,6 +113,15 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
    */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
+  }
+
+  /**
+   * Dynamically get url generator service.
+   *
+   * @return UrlGeneratorInterface
+   */
+  public function getUrlGenerator() {
+    return \Drupal::service('url_generator');
   }
 
   /**

@@ -2,7 +2,6 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Url;
 use Drupal\par_forms\ParFormPluginBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -14,7 +13,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *   title = @Translation("Organisation selection.")
  * )
  */
-class ParAboutBusinessForm extends ParFormPluginBase {
+class ParSelectOrganisationForm extends ParFormPluginBase {
 
   /**
    * {@inheritdoc}
@@ -44,54 +43,41 @@ class ParAboutBusinessForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
-
     // Get all the allowed authorities.
     $user_organisations = $this->getFlowDataHandler()->getParameter('user_organisations');
 
-    // If the partnership is direct or there is only one member go to the next step.
-    if (count($user_organisations) === 1) {
-      $organisation = current($user_organisations);
-      $this->getFlowDataHandler()->setTempDataValue('par_data_organisation_id', $organisation->id());
-      $url = Url::fromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getFlowDataHandler()->getParameters());
+    // If the partnership is direct or there are not multiple members proceed to the next step.
+    if (count($user_organisations) <= 1) {
+      if (!empty($user_organisations)) {
+        $organisation = current($user_organisations);
+        $this->getFlowDataHandler()->setTempDataValue('par_data_organisation_id', $organisation->id());
+      }
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getFlowDataHandler()->getParameters());
       return new RedirectResponse($url);
     }
 
-    // All remaining partnerships must be coordinated.
-    // @TODO Allow this to be optional for partnerships with no listed members.
-    if (empty($user_organisations)) {
-      $form['no_members'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('Sorry but there are no members for this organisation.'),
-        '#prefix' => '<p><strong>',
-        '#suffix' => '</strong><p>',
-      ];
+    // Initialize pager and get current page.
+    $number_of_items = 10;
+    $current_page = pager_default_initialize(count($user_organisations), $number_of_items);
 
-      $this->getFlowNegotiator()->getFlow()->disableAction('next');
-    }
-    else {
-      // Initialize pager and get current page.
-      $number_of_items = 10;
-      $current_page = pager_default_initialize(count($user_organisations), $number_of_items);
+    // Split the items up into chunks:
+    $chunks = array_chunk($user_organisations, $number_of_items, TRUE);
 
-      // Split the items up into chunks:
-      $chunks = array_chunk($user_organisations, $number_of_items, TRUE);
+    $form['par_data_organisation_id'] = [
+      '#type' => 'radios',
+      '#title' => t('Choose the member to enforce'),
+      '#options' => $chunks[$current_page],
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValuesByKey('par_data_organisation_id', $cardinality, []),
+    ];
 
-      $form['par_data_organisation_id'] = [
-        '#type' => 'radios',
-        '#title' => t('Choose the member to enforce'),
-        '#options' => $chunks[$current_page],
-        '#default_value' => $this->getFlowDataHandler()->getDefaultValuesByKey('par_data_organisation_id', $cardinality, []),
-      ];
-
-      $form['pager'] = [
-        '#type' => 'pager',
-        '#theme' => 'pagerer',
-        '#element' => $cardinality,
-        '#config' => [
-          'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
-        ],
-      ];
-    }
+    $form['pager'] = [
+      '#type' => 'pager',
+      '#theme' => 'pagerer',
+      '#element' => $cardinality,
+      '#config' => [
+        'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
+      ],
+    ];
 
     return $form;
   }

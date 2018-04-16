@@ -1,6 +1,6 @@
-name: PAR Member Cease Flows
+name: PAR Enforcement Notice Raise Flows
 type: module
-description: Creates the flows required to cease a coordinated member's participation in a partnership.
+description: Creates the flows required to raise and enforcement notice.
 core: 8.x
 package: PAR
 dependencies:

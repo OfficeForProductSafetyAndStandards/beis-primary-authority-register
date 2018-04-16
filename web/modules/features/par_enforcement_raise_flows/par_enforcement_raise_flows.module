@@ -15,7 +15,7 @@ function par_enforcement_raise_flows_help($route_name, RouteMatchInterface $rout
     case 'help.page.par_enforcement_raise_flows':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('Allows coordinators to cease the membership of any member on their partnerships.') . '</p>';
+      $output .= '<p>' . t('Allows enforcement officers to raise an enforcement against an organisation.') . '</p>';
       return $output;
 
     default:

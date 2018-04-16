@@ -25,6 +25,7 @@ use Drupal\Core\Entity\EntityConstraintViolationListInterface;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\Core\Access\AccessResult;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -193,6 +194,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       // Handle instances where FormBuilderInterface should return a redirect response.
       $plugin = $this->getFormBuilder()->getPluginElements($component);
       if ($plugin instanceof RedirectResponse) {
+        var_dump('redirect instance should return', $plugin->getTargetUrl()); die();
         return $plugin;
       }
       elseif (is_array($plugin)) {

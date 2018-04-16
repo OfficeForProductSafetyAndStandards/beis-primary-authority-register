@@ -1,0 +1,9 @@
+name: PAR Partnership Search Flows
+type: module
+description: Creates the flows necessary to search for a partnership.
+core: 8.x
+package: PAR
+dependencies:
+  - par_data
+  - par_flows
+  - par_forms

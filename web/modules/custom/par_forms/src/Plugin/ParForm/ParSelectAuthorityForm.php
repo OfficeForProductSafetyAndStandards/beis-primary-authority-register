@@ -2,8 +2,8 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Url;
 use Drupal\par_forms\ParFormPluginBase;
+use Drupal\user\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *   title = @Translation("Authority selection.")
  * )
  */
-class ParAboutBusinessForm extends ParFormPluginBase {
+class ParSelectAuthorityForm extends ParFormPluginBase {
 
   /**
    * {@inheritdoc}
@@ -23,8 +23,8 @@ class ParAboutBusinessForm extends ParFormPluginBase {
     $user_authorities = [];
 
     // Get the authorities that the current user belongs to.
-    if ($this->getFlowDataHandler()->currentUser()->isAuthenticated()) {
-      $account = User::Load($this->getFlowDataHandler()->currentUser()->id());
+    if ($this->getFlowDataHandler()->getCurrentUser()->isAuthenticated()) {
+      $account = User::Load($this->getFlowDataHandler()->getCurrentUser()->id());
       $authorities = $this->getParDataManager()->hasMembershipsByType($account, 'par_data_authority', TRUE);
       $user_authorities = $this->getParDataManager()->getEntitiesAsOptions($authorities, $user_authorities);
     }
@@ -38,28 +38,26 @@ class ParAboutBusinessForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
-
     // Get all the allowed authorities.
-    $user_authorities = $this->getFlowDataHandler()->getParameter('user_authorities');
+    $user_authorities = $this->getFlowDataHandler()->getFormPermValue('user_authorities');
 
     // If no suggestions were found cancel out of the journey.
     // @TODO Provide a selection mechanism for admin/helpdesk users acting on behalf of authority users.
     if (count($user_authorities) <= 0) {
-      $message = $this->t('No authority count be found for user %user');
-      $replacements = [
-        '%user' => $this->getFlowDataHandler()->currentUser()->getDisplayName(),
-      ];
-      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('cancel'), $this->getRouteParams());
 
-      $url = Url::fromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('cancel'), $this->getFlowDataHandler()->getParameters());
+      var_dump($this->getFlowNegotiator()->getFlow()->getNextRoute('cancel'), $url);
       return new RedirectResponse($url);
     }
+
     // If only one authority submit the form automatically and go to the next step.
     elseif (count($user_authorities) === 1) {
       $this->getFlowDataHandler()->setTempDataValue('par_data_authority_id', key($authority_options));
-      $url = Url::fromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getFlowDataHandler()->getParameters());
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
       return new RedirectResponse($url);
     }
+
+    var_dump(array_keys($user_authorities));
 
     $form['par_data_authority_id'] = [
       '#type' => 'radios',

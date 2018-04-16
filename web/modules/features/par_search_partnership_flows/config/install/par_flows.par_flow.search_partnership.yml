@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies: {  }
+id: search_partnership
+label: 'Search Partnerships'
+default_title: null
+default_section_title: 'Partnership Search'
+description: 'The ability to search for and view a partnership.'
+save_method: end
+states:
+  - par_data_partnership
+steps:
+  1:
+    route: par_search_partnership_flows.partnership_page
+    redirect:
+      advice: 2
+      inspection_plans: 3
+      done: 4
+  2:
+    route: par_search_partnership_flows.advice_view
+    redirect:
+      cancel: 1
+  3:
+    route: par_search_partnership_flows.inspection_plan_view
+    redirect:
+      done: 1
+  4:
+    route: view.partnership_search.enforcment_flow_search_partnerships
