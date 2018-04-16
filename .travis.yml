@@ -147,13 +147,6 @@ script:
   - if [[ "$TESTTYPE" == "jmeter" ]]; then docker exec -ti par_beta_web bash -c "cd tests/nfr/jmeter && chmod -R 777 ../../reports/ && ./apache-jmeter-4.0/bin/jmeter -n -t load-test-plan-travis.jmx -l ../../reports/jmeterreport.jtl -e -o ../../reports/dashboard"; fi
 
 #-----------------------------------------------------------------------------
-# Generate tar with test screenshots to tests/reports/errorShots.tar.gz
-#-----------------------------------------------------------------------------
-#  - docker exec -ti par_beta_web bash -c "cd tests/reports && if [ -d ./html ]; then tar -cf reportHTML.tar.gz ./html; fi"
-
-  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && if [ -d ./reports/screenshots ]; then tar -cf reports/screenshots.tar.gz ./reports/screenshots; fi"
-
-#-----------------------------------------------------------------------------
 # Remove .env file created in previous steps.
 # If tagged build, tar up the files ready for S3.
 #-----------------------------------------------------------------------------
