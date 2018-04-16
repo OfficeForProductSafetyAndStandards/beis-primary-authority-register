@@ -10,6 +10,9 @@ module.exports = (selector, falseCase) => {
      */
     const elements = browser.elements(selector).value;
 
+    // Temporarily save screenshot to identify errors.
+    browser.saveDocumentScreenshot('./last-existing-check.png');
+
     if (falseCase) {
         expect(elements).to.have
             .lengthOf(0, `Expected element "${selector}" not to exist`);

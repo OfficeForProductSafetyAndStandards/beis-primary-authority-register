@@ -75,10 +75,18 @@ steps:
       address: par_partnership_confirmation_address
       contact: par_partnership_confirmation_contact
       sic_code: par_partnership_confirmation_sic_code
-      employee_number: par_partnership_confirmation_business_size
+      business_size: par_partnership_confirmation_business_size
       trading_name: par_partnership_confirmation_trading_name
       legal_select: par_partnership_confirmation_legal_entity
     redirect:
+      about_business: 1
+      address: 2
+      contact: 3
+      sic_code: 4
+      business_size: 5
+      trading_name: 6
+      legal_select: 7
+      legal_add: 8
       save: 10
       cancel: 11
   10:

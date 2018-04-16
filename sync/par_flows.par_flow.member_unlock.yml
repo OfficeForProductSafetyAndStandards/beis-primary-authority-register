@@ -1,0 +1,23 @@
+uuid: 58b408ba-5b08-4104-bd6e-908f1fc4830f
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: HQGvsl45yCu-No9ER6C3gLlEHNjPXzzfYH6lMxVggtU
+id: member_unlock
+label: 'Member Unlock'
+default_title: null
+default_section_title: 'Coordinated partnership'
+description: ''
+save_method: end
+states:
+  - par_data_partnership
+  - par_data_coordinated_business
+steps:
+  1:
+    route: par_member_unlock_flows.member_unlock
+    form_id: par_member_unlock
+    redirect:
+      cancel: 2
+  2:
+    route: view.members_list.member_list_coordinator

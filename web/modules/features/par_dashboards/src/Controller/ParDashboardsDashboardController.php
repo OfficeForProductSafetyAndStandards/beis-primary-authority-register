@@ -5,6 +5,7 @@ namespace Drupal\par_dashboards\Controller;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParControllerTrait;
@@ -23,6 +24,11 @@ class ParDashboardsDashboardController extends ControllerBase {
   use ParControllerTrait;
 
   /**
+   * The response cache kill switch.
+   */
+  protected $killSwitch;
+
+  /**
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.
    *
    * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $flow_storage
@@ -31,10 +37,13 @@ class ParDashboardsDashboardController extends ControllerBase {
    *   The current user object.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user object.
+   * @param \Drupal\Core\PageCache\ResponsePolicy\KillSwitch $kill_switch
+   *   The page cache kill switch.
    */
-  public function __construct(ConfigEntityStorageInterface $flow_storage, ParDataManagerInterface $par_data_manager, AccountInterface $current_user) {
+  public function __construct(ConfigEntityStorageInterface $flow_storage, ParDataManagerInterface $par_data_manager, AccountInterface $current_user, KillSwitch $kill_switch) {
     $this->flowStorage = $flow_storage;
     $this->parDataManager = $par_data_manager;
+    $this->killSwitch = $kill_switch;
     $this->setCurrentUser($current_user);
   }
 
@@ -46,7 +55,8 @@ class ParDashboardsDashboardController extends ControllerBase {
     return new static(
       $entity_manager->getStorage('par_flow'),
       $container->get('par_data.manager'),
-      $container->get('current_user')
+      $container->get('current_user'),
+      $container->get('page_cache_kill_switch')
     );
   }
 
@@ -61,6 +71,8 @@ class ParDashboardsDashboardController extends ControllerBase {
    * {@inheritdoc}
    */
   public function content() {
+    // The dashboard is to0 complex and too important a page to cache.
+    $this->killSwitch->trigger();
     $build = [];
 
     // Your partnerships.
