@@ -10,6 +10,8 @@ dependencies:
   module:
     - file
     - text
+_core:
+  default_config_hash: MOIjOeVWdPFYJNHn5SChQrSfLL8PKiyaw8_7LknpDEo
 id: par_data_enforcement_action.enforcement_action.default
 targetEntityType: par_data_enforcement_action
 bundle: enforcement_action
