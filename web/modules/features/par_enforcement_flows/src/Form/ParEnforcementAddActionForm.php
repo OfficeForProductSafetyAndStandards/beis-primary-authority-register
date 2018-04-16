@@ -93,7 +93,8 @@ class ParEnforcementAddActionForm extends ParBaseForm {
 
     $form['files_title'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Add an attachment'),
+      '#title' => t('Add attachment(s)'),
+            '#description' => t('Use Ctrl or cmd to select multiple files'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
     ];
