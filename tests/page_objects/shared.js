@@ -28,10 +28,12 @@ module.exports = {
           });
         },  
         chooseAuthorityIfOptionPresent: function(elem, toclick){ 
-            return this.api.element('css selector', 'input[name="par_data_authority_id"]' , function (result) {
+            return this.api.element('css selector', elem , function (result) {
                 if (result.value.ELEMENT) {
-                    return this                   
-                    .click(toclick)    
+                    return this  
+                    .useXpath()
+                    .click('//div[text()="City Enforcement Squad"]')   
+                    .useCss()                 
                     .click('#edit-next');
                 }
                 else{ 
@@ -43,7 +45,7 @@ module.exports = {
             return this.api.element('css selector', 'input[name="par_data_person_id"]', function(result){
                 if (result.value.ELEMENT) {
                     return this
-                    .click(toclick)  
+                    .click('#edit-par-data-person-id-new')  
                     .click('#edit-save');
                   } else
                   {
@@ -57,6 +59,17 @@ module.exports = {
                     return this
                     .click(toclick)  
                     .click('#edit-next');
+                  } else
+                  {
+                    return this
+                  }
+            })   
+        },
+        clickShowMembersListIfPresent: function(){ 
+            return this.api.element('css selector', 'edit-members-link p:nth-child(2)', function(result){
+                if (result.value.ELEMENT) {
+                    return this
+                    .clickLinkByPureText('Show members list')  
                   } else
                   {
                     return this

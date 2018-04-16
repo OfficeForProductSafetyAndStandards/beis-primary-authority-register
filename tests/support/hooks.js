@@ -3,25 +3,18 @@ const reporter = require('cucumber-html-reporter');
 var path = require('path');
 var {After, AfterAll, Before, BeforeAll} = require('cucumber');
 
-// Before({tags: "@api"}, function () {
-//     this.apickli = new apickli.Apickli('http', 'httpbin.org');
-//     this.apickli.addRequestHeader('Cache-Control', 'no-cache');
-// });
-
-// AfterAll(function () {
-//     const options = {
-//         theme: 'bootstrap',
-//         jsonFile: 'reports/cucumber.json',
-//         output: 'reports/index.html',
-//         reportSuiteAsScenarios: true,
-//         launchReport: false,
-//     };
-//     reporter.generate(options);
-// });
+BeforeAll(function () {
+    return client
+        .url(client.launch_url + '/user/login')
+        .setValue('#edit-name', 'dadmin')
+        .setValue('#edit-pass', 'TestPassword')
+        .click('#edit-submit')
+        .url(client.launch_url + '/admin/par-data-test-reset')
+        .url(client.launch_url + '/user/logout')
+});
 
 After(function () {
     return client
         .deleteCookies(function() {
             client.end();
-          });
-});
+          });});

@@ -43,15 +43,14 @@ When('I create new valid enforcement notication {string} for organisation {strin
   
 When('I check that EO can see valid enforcement notification {string}', function (string) {
   // CHECK RECEIVED ENFORCEMENT NOTIFICATIONS
-  return client
-  .url(client.launch_url + '/user/logout')
-  .url(client.launch_url + '/user/login')
+  return shared
+  .clickLinkByPureText('Log out')
+  .waitForElementVisible('.button-start', 2000)
+  .clickLinkByPureText('Log in')
   .setValue('#edit-name', 'par_authority@example.com')
   .setValue('#edit-pass', 'TestPassword')
   .click('#edit-submit')
   .assert.containsText('#block-par-theme-account-menu', 'Log out')
-  return shared
   .clickLinkByPureText('See enforcement notifications received')
-  return client
   .assert.containsText('.table-scroll-wrapper', string)
 })

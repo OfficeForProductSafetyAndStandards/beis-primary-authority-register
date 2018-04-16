@@ -26,6 +26,7 @@
         "drupal/config_update": "~1.3.0",
         "drupal/core": "~8.5.0",
         "drupal/csv_serialization": "~1.0.0",
+        "drupal/default_content": "~1.0.0",
         "drupal/email_registration": "~1.0.0",
         "drupal/features": "~3.5.0",
         "drupal/file_entity": "~2.0.0",
@@ -114,6 +115,10 @@
                 "Ensure the table alias is no longer than 60 characters long": "https://www.drupal.org/files/issues/drupal-571548-107-d8_0.patch",
                 "Form API #ajax not working on link element": "https://www.drupal.org/files/issues/2018-03-12/core-allow-form-ajax-for-links-2915954-9.patch"
             },
+            "drupal/default_content": {
+                "Do not reimport existing entities": "https://www.drupal.org/files/issues/default_content-dont-reimport-existing-entities-2698425-99.patch",
+                "Allow manual imports": "https://www.drupal.org/files/issues/allow_manual_imports-2640734-67.patch"
+            },
             "drupal/devel": {
                 "Fatal call to getInstance on MailPluginWrapper": "https://www.drupal.org/files/issues/get_instance_fatal-2927963-2.patch"
             },
@@ -142,9 +147,6 @@
             "drush/drush": {
                 "Fix SQL dump problem where extra params are passed when trying only to list tables": "./patches/3321-sql-dump-no-extra-fix.patch",
                 "Refs #2079. Do not pass `$this->query_extra` to `pg_dump`.": "./patches/drush-sqldump-postgres95.patch"
-            },
-            "league/flysystem": {
-                "Default metadata stored in cache as NULL values": "https://www.drupal.org/files/issues/2018-03-23/metadata-null-values_2955174-6.patch"
             }
         }
     },
