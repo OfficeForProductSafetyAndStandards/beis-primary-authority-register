@@ -15,7 +15,7 @@ required: false
 translatable: true
 default_value:
   -
-    value: 'Primary Authority - Notification of Partnership Revocation'
+    value: 'Primary Authority: Notification of Partnership Revocation'
 default_value_callback: ''
 settings: {  }
 field_type: string
