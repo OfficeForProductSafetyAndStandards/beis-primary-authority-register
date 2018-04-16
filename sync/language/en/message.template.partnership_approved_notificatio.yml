@@ -1,0 +1,4 @@
+text:
+  -
+    value: "<p>Your partnership has been nominated by the Secretary of State.</p>\r\n\r\n<p>Please log on to the Primary Authority Register to view the partnership details.</p>\r\n\r\n<p>^ @partnership_search_link</p>\r\n"
+    format: basic_html
