@@ -10,7 +10,7 @@ require('nightwatch-cucumber')({
             '--require', 'page_objects', 
             '--format', 'node_modules/cucumber-pretty', 
             '--format', 'json:reports/cucumber.json', 
-            'features/8-user-journey-pa-user-update-partnership.feature'
+            'features'
         ]
 })
 

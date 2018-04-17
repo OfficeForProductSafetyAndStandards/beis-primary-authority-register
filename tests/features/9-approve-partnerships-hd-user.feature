@@ -20,6 +20,7 @@ Feature: Helpdesk approve partnership
         And I click on the button "#edit-next"
 
         # APPROVAL CONFIRMATION SCREEN
+        
         Then the element "h1.heading-xlarge" contains the text "Partnership is approved"
         And the element "#edit-partnership-info" contains the text "Organisation For Direct Partnership"
         And I click on the button "#edit-done"
