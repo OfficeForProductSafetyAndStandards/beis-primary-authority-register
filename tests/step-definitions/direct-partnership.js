@@ -98,15 +98,24 @@ When('the direct partnership creation email template is correct', function () {
   .assert.containsText('h1.heading-xlarge','Primary Authority Register')
 }); 
 
-When('I go to partnership detail page for my partnership {string}', function (partnershipname) {
+When('I go to partnership detail page for my partnership {string}', function (orgname) {
   return shared
   .clickLinkByPureText('Dashboard')
   .clickLinkByPureText('See your partnerships')
   .click('#edit-partnership-status-1 option[value="confirmed_business"]')
+  .setValue('#edit-keywords', orgname)
+  .click('#edit-submit-par-user-partnerships')
+  .clickLinkByPureText(orgname)
+ }); 
+
+ When('I go to detail page for partnership with authority {string}', function (authority) {
+  return shared
+  .clickLinkByPureText('Dashboard')
+  .clickLinkByPureText('See your partnerships')
   .setValue('#edit-keywords','Organisation For Direct Partnership')
   .click('#edit-submit-par-user-partnerships')
-  .clickLinkByPureText('Organisation For Direct Partnership')
- }); 
+  .clickLinkByPureText(authority)
+ });
 
  When('I successfully revoke a coordinated partnership', function () {
   return shared
@@ -115,7 +124,7 @@ When('I go to partnership detail page for my partnership {string}', function (pa
     .click('#edit-revoked option[value="0"]')
     .click('#edit-submit-helpdesk-dashboard')
     .clickLinkByPureText('Revoke partnership')
-    .setValue('#edit-revocation-reason','"A reason for revoking')
+    .setValue('#edit-revocation-reason','A reason for revoking')
     .click('#edit-next')
     .assert.containsText('#edit-partnership-info','The following partnership has been revoked')
     .click('#edit-done')

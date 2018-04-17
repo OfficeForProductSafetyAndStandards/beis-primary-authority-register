@@ -36,6 +36,17 @@ When('I edit about the organisation', function () {
     .click('#edit-save')
     .assert.containsText('#edit-about-business', 'Change to the about organisation details section')
 });
+
+When('I edit about the partnership', function () {
+  return shared
+    .clickLinkByPureText('edit about the partnership')
+    .clearValue('#edit-about-partnership')
+    .assert.containsText('h1.heading-xlarge .heading-secondary', 'Primary Authority partnership information')
+    .assert.containsText('h1.heading-xlarge', 'Information about the new partnership')
+    .setValue('#edit-about-partnership','Change to the about partnership details section')
+    .click('#edit-save')
+    .assert.containsText('#edit-about-partnership', 'Change to the about partnership details section')
+});
   
 When('I change the SIC code', function () {
   return shared
@@ -69,6 +80,44 @@ When('I add and subsequently edit a trading name', function () {
       .assert.containsText('#edit-trading-names', 'Change To Different Trading Name')
   });
 
+  When('I edit the main authority contact', function () {
+    return shared
+      .clickLinkByPureText('edit authority contact')
+      .clearValue('#edit-salutation')
+      .clearValue('#edit-first-name')
+      .clearValue('#edit-last-name')
+      .clearValue('#edit-work-phone')
+      .clearValue('#edit-mobile-phone')
+      .clearValue('#edit-notes')
+      .setValue('#edit-salutation','Mrs')
+      .setValue('#edit-first-name','Helen')
+      .setValue('#edit-last-name','Brittas')
+      .setValue('#edit-work-phone','02078886663')
+      .setValue('#edit-mobile-phone','07965465726')
+      .click('#edit-preferred-contact-communication-mobile')
+      .setValue('#edit-notes','Some additional notes')
+      .click('#edit-save')
+      .assert.containsText('#edit-authority-contacts', 'Mrs Helen Brittas')
+      .assert.containsText('#edit-authority-contacts', '02078886663')
+      .assert.containsText('#edit-authority-contacts', '07965465726')
+});
+
+When('I upload a file to the partnership advice section', function () {
+  return shared
+    .clickLinkByPureText('See all Advice')
+    .clickLinkByPureText('Upload advice')
+    .assert.containsText('h3.heading-medium', 'How to upload Primary Authority Advice to Local Authorities')
+    .setValue('input[name=\"files[files][]\"]', __dirname + '/files/test.png') 
+    .click('#edit-upload')
+    .click('#edit-advice-type-business-advice')
+    .click('.form-checkbox')
+    .getText('#edit-regulatory-functions--wrapper > div > div > label',function(result){
+      shared.click('#edit-save')
+      shared.assert.containsText('.table-scroll-wrapper', 'Download test.png')
+      shared.assert.containsText('.table-scroll-wrapper', 'Primary Authority advice for the organisation covering: ' + result.value)
+    })
+    .click('.button')
+});
 
 When('I add and subsequently edit a organisation contact', function () {
 return shared

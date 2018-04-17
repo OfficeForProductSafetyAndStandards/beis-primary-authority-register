@@ -1,7 +1,7 @@
 @ci
-Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
+Feature: Enforcement Officer - Enforcement Notice Process
 
-    Scenario Outline: Enforcement Officer/Coordinator - Issue enforcement notice
+    Scenario Outline: Enforcement Officer - Issue enforcement notice
 
         #LOGIN
         
@@ -17,7 +17,7 @@ Feature: Enforcement Officer/Coordinator - Enforcement Notice Process
 
         # CHECK ENFORCEMENT NOTIFICATION EMAILS
 
-        Then the EN emails confirmations for "<PARUser>" are processed for enforcement notication "<Notification Title>"
+        Then the enforcement notification emails confirmations for "<PARUser>" are processed for enforcement notication "<Notification Title>"
 
         Examples:
             | Notification Title   | Organisation   | PARUser                   |
