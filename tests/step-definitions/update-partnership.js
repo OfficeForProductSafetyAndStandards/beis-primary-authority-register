@@ -110,7 +110,7 @@ When('I upload a file to the partnership advice section', function () {
     .setValue('input[name=\"files[files][]\"]', __dirname + '/files/test.png') 
     .click('#edit-upload')
     .click('#edit-advice-type-business-advice')
-    .click('.form-checkbox')
+    .click('#edit-regulatory-functions-2')
     .getText('#edit-regulatory-functions--wrapper > div > div > label',function(result){
       shared.click('#edit-save')
       shared.assert.containsText('.table-scroll-wrapper', 'Download test.png')
