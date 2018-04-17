@@ -115,8 +115,8 @@ When('I upload a file to the partnership advice section', function () {
       shared.click('#edit-save')
       shared.assert.containsText('.table-scroll-wrapper', 'Download test.png')
       shared.assert.containsText('.table-scroll-wrapper', 'Primary Authority advice for the organisation covering: ' + result.value)
+      shared.click('.button')
     })
-    .click('.button')
 });
 
 When('I add and subsequently edit a organisation contact', function () {
