@@ -2,7 +2,7 @@ const { client } = require('nightwatch-cucumber');
 const { Given, Then, When } = require('cucumber');
 const shared = client.page.shared();
 
-When('I create new valid enforcement notication {string} for organisation {string}', function (string, string2) {
+When('I create new valid enforcement notification {string} for organisation {string}', function (string, string2) {
   return shared
   .clickLinkByPureText('Search for a partnership')
   .setValue('#edit-keywords',string2)
@@ -47,10 +47,10 @@ When('I check that EO can see valid enforcement notification {string}', function
   .clickLinkByPureText('Log out')
   .waitForElementVisible('.button-start', 2000)
   .clickLinkByPureText('Log in')
-  .setValue('#edit-name', 'par_authority@example.com')
+  .setValue('#edit-name', 'par_enforcement_officer@example.com')
   .setValue('#edit-pass', 'TestPassword')
   .click('#edit-submit')
   .assert.containsText('#block-par-theme-account-menu', 'Log out')
-  .clickLinkByPureText('See enforcement notifications received')
+  .clickLinkByPureText('See enforcement notifications sent')
   .assert.containsText('.table-scroll-wrapper', string)
 })
