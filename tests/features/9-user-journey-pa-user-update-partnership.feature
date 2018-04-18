@@ -1,7 +1,7 @@
 @ci
-Feature: PA User - Manage Addresses
+Feature: PA User - Update a partnership
 
-    Scenario: PA User - Manage Addresses
+    Scenario: PA User - Update a partnership
 
         #LOGIN
         

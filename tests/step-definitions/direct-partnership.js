@@ -15,7 +15,7 @@ When('I complete valid direct partnership application details', function () {
   .clickLinkByPureText('Apply for a new partnership')
   .click('#edit-cancel')
   .clickLinkByPureText('Apply for a new partnership')
-  .chooseAuthorityIfOptionPresent('input[name="par_data_authority_id"]','City Enforcement Squad')
+  .chooseAuthorityIfOptionPresent('input[name="par_data_authority_id"]', '//div[text()="City Enforcement Squad"]')
   .click('#edit-application-type-direct')
   .click('#edit-next')
   .click('#edit-business-eligible-for-partnership')

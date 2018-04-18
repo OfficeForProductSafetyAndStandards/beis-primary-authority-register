@@ -27,12 +27,12 @@ module.exports = {
                 browser.setValue(input1, text);
           });
         },  
-        chooseAuthorityIfOptionPresent: function(elem, toclick){ 
+        chooseAuthorityIfOptionPresent: function(elem, toClick){ 
             return this.api.element('css selector', elem , function (result) {
                 if (result.value.ELEMENT) {
                     return this  
                     .useXpath()
-                    .click('//div[text()="City Enforcement Squad"]')   
+                    .click(toClick)   
                     .useCss()                 
                     .click('#edit-next');
                 }

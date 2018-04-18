@@ -5,9 +5,9 @@ const electron = require('electron-prebuilt');
 require('nightwatch-cucumber')({
     cucumberArgs: [
             '--require', 'step-definitions', 
-            '-- --tag', '@ci', 
             '--require', 'support', 
             '--require', 'page_objects', 
+            '-- --tag', 'ci',
             '--format', 'node_modules/cucumber-pretty', 
             '--format', 'json:reports/cucumber.json', 
             'features'
