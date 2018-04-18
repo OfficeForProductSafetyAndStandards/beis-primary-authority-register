@@ -10,7 +10,7 @@ require('nightwatch-cucumber')({
             '-- --tag', 'ci',
             '--format', 'node_modules/cucumber-pretty', 
             '--format', 'json:reports/cucumber.json', 
-            'features/6-create-enforcement-notices.feature'
+            'features'
         ]
 })
 

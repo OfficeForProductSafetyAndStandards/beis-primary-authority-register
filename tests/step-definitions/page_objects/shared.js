@@ -90,7 +90,7 @@ module.exports = {
             return this
             .click('#block-par-theme-account-menu > ul > li:nth-child(3) > a')
             .click('#block-par-theme-account-menu > ul > li > a')
-            .setValue('#edit-name','dadmin')
+            .setValue('#edit-name','par_admin@example.com')
             .setValue('#edit-pass','TestPassword')
             .click('#edit-submit')
             .clickLinkByPureText('Reports')
