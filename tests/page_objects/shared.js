@@ -75,6 +75,27 @@ module.exports = {
                     return this
                   }
             })   
+        },
+        checkEmails: function(string, string2){ 
+            var emailSubject;
+            switch (string) 
+            {
+                case 'enforcement creation': emailSubject = 'Primary Authority - Notification of Proposed Enforcement';
+                case 'partnership approval': emailSubject = 'Primary Authority: Partnerships Nominated';
+                case 'partnership revocation': emailSubject = 'Primary Authority: Notification of Partnership Revocation';
+                case 'partnership completed': emailSubject = 'Primary Authority: Partnership Application Completed';
+                case 'partnership invitation': emailSubject = 'Primary Authority - Invitation to join the Primary Authority Register';
+            }
+            return this
+                .url(client.launch_url + '/user/logout')
+                .url(client.launch_url + '/user/login')
+                .setValue('#edit-name','dadmin')
+                .setValue('#edit-pass','TestPassword')
+                .click('#edit-submit')
+                .url(client.launch_url + '/admin/reports/maillog')
+                .click('//*[@id="block-seven-content"]/div/div/div[3]/table/tbody/tr[1]/td[3]/a')
+                .contains('h1.heading-xlarge',emailSubject)
+                .contains('block-par-theme-content',string2)
         }
       }]
 }

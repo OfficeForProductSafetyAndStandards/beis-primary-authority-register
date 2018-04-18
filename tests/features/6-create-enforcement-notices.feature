@@ -13,7 +13,7 @@ Feature: Enforcement Officer - Enforcement Notice Process
 
         # CHECK ENFORCEMENT NOTIFICATION EMAILS
 
-        Then the enforcement notification emails confirmations for "<PARUser>" are processed for enforcement notification "<Notification Title>"
+        Then the "enforcement creation" emails confirmations for "<PARUser>" are processed
 
         Examples:
             | Notification Title   | Organisation   | PARUser                   |
