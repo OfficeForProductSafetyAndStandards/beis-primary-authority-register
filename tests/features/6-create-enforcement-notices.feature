@@ -68,3 +68,4 @@ Feature: Enforcement Officer - Enforcement Notice Process
         Given I am logged in as "eo_one_authority@example.com"
         # When I enforce a direct partnership
         # Then I should get the 'Choose Legal Entity to enforce' screen (after entering EO's contact details)
+        

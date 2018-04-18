@@ -102,7 +102,6 @@ When('I go to partnership detail page for my partnership {string}', function (or
   return shared
   .clickLinkByPureText('Dashboard')
   .clickLinkByPureText('See your partnerships')
-  .click('#edit-partnership-status-1 option[value="confirmed_business"]')
   .setValue('#edit-keywords', orgname)
   .click('#edit-submit-par-user-partnerships')
   .clickLinkByPureText(orgname)
