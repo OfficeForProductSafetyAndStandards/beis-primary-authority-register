@@ -93,6 +93,7 @@ module.exports = {
                 .setValue('#edit-name','dadmin')
                 .setValue('#edit-pass','TestPassword')
                 .click('#edit-submit')
+                .waitForElementVisible('#toolbar-link-system-admin_reports', 3000)
                 .click('#toolbar-link-system-admin_reports')
                 .click('#block-seven-content > ul > li:nth-child(3) > a')
                 .setValue('#edit-header-to',string2)
