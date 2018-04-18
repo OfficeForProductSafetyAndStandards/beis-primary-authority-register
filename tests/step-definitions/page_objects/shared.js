@@ -93,7 +93,7 @@ module.exports = {
             .setValue('#edit-name','dadmin')
             .setValue('#edit-pass','TestPassword')
             .click('#edit-submit')
-            .click('#toolbar-link-system-admin_reports')
+            .clickLinkByPureText('Reports')
             .clickLinkByPureText('Maillog')
             .setValue('#edit-header-to',string2)
             .click('#edit-submit-maillog-overview')
