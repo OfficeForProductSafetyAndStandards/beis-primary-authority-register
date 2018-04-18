@@ -97,8 +97,8 @@ module.exports = {
             .clickLinkByPureText('Maillog')
             .setValue('#edit-header-to',string2)
             .click('#edit-submit-maillog-overview')
-            // .clickLinkByPureText(emailSubject)
-            .click('#block-seven-content > div > div > div.view-content > table > tbody > tr:nth-child(1) > td.views-field.views-field-subject > a')
+            .clickLinkByPureText(emailSubject)
+            // .click('#block-seven-content > div > div > div.view-content > table > tbody > tr:nth-child(1) > td.views-field.views-field-subject > a')
             .assert.containsText('h1.heading-xlarge', emailSubject)
             .assert.containsText('#block-par-theme-content',string2)
         }
