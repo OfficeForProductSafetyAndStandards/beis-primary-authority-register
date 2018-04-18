@@ -16,8 +16,8 @@ require('nightwatch-cucumber')({
 
 module.exports = {
     output_folder: 'reports',
-    custom_assertions_path: 'assertions',
-    page_objects_path: 'page_objects',
+    custom_assertions_path: 'step-definitions/assertions',
+    page_objects_path: 'step-definitions/page_objects',
     live_output: false,
     disable_colors: false,
     selenium: {

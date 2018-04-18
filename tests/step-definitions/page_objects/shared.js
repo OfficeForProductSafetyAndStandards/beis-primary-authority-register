@@ -77,25 +77,30 @@ module.exports = {
             })   
         },
         checkEmails: function(string, string2){ 
-            var emailSubject;
+            var emailSubject = ''
             switch (string) 
             {
-                case 'enforcement creation': emailSubject = 'Primary Authority - Notification of Proposed Enforcement';
-                case 'partnership approval': emailSubject = 'Primary Authority: Partnerships Nominated';
-                case 'partnership revocation': emailSubject = 'Primary Authority: Notification of Partnership Revocation';
-                case 'partnership completed': emailSubject = 'Primary Authority: Partnership Application Completed';
-                case 'partnership invitation': emailSubject = 'Primary Authority - Invitation to join the Primary Authority Register';
+                case 'enforcement creation': emailSubject = 'Primary Authority: Notification of Proposed Enforcement'; break;
+                case 'partnership approval': emailSubject = 'Primary Authority: Partnerships Nominated'; break;
+                case 'partnership revocation': emailSubject = 'Primary Authority: Notification of Partnership Revocation'; break;
+                case 'partnership completed': emailSubject = 'Primary Authority: Partnership Application Completed'; break;
+                case 'partnership invitation': emailSubject = 'Primary Authority: Invitation to join the Primary Authority Register'; break;
             }
+            console.log(emailSubject)
             return this
-                .url(client.launch_url + '/user/logout')
-                .url(client.launch_url + '/user/login')
+                .click('#block-par-theme-account-menu > ul > li:nth-child(3) > a')
+                .click('#block-par-theme-account-menu > ul > li > a')
                 .setValue('#edit-name','dadmin')
                 .setValue('#edit-pass','TestPassword')
                 .click('#edit-submit')
-                .url(client.launch_url + '/admin/reports/maillog')
-                .click('//*[@id="block-seven-content"]/div/div/div[3]/table/tbody/tr[1]/td[3]/a')
-                .contains('h1.heading-xlarge',emailSubject)
-                .contains('block-par-theme-content',string2)
+                .click('#toolbar-link-system-admin_reports')
+                .click('#block-seven-content > ul > li:nth-child(3) > a')
+                .setValue('#edit-header-to',string2)
+                .click('#edit-submit-maillog-overview')
+                // .clickLinkByPureText(emailSubject)
+                .click('#block-seven-content > div > div > div.view-content > table > tbody > tr:nth-child(1) > td.views-field.views-field-subject > a')
+                .assert.containsText('h1.heading-xlarge', emailSubject)
+                .assert.containsText('#block-par-theme-content',string2)
         }
-      }]
+    }]
 }

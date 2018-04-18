@@ -9,28 +9,6 @@ const shared = client.page.shared();
       // .assert.urlContains(locpath);
   });
 
-  Then(/^the title is "([^"]*)"$/, (title) => {
-    return client.assert.title(title);
-  });
-
-  Then(/^the Google search form exists$/, () => {
-    return shared.assert.visible('@googleSearchField');
-  });
-
-  Then(/^I click on the logout button$/, () => {
-    // Debug breakpoint
-    // debugger;
-    return shared
-        .click('@Logout')
-        .assert.containsText('#flash','You logged out of the secure area!')
-  });
-
-  Then(/^I log out of website$/, () => {
-    return shared
-        .clickLinkByText('Log out')
-        .assert.containsText('#flash','You logged out of the secure area!')
-  });
-
   Then(/^I click the link text "([^"]*)"$/, (linkText) => {
     return shared
         .clickLinkByPureText(linkText)
@@ -40,16 +18,16 @@ const shared = client.page.shared();
     return client.click(string);
   });
 
+  Then('I click on the radio {string}', function (string) {
+    return client.click(string);
+  });
+
   Then('I click on the checkbox {string}', function (string) {
     return client.click(string);
   });
 
   Then('I upload the file {string} to field {string}', function (filepath, uploadfield) {
     return client.setValue(uploadfield, __dirname + '/' + filepath);
-  });
-
-  Then('I click on the radio {string}', function (string) {
-    return client.click(string);
   });
 
   Then('the element {string} contains the text {string}', function (elName, elText) {
@@ -82,11 +60,6 @@ const shared = client.page.shared();
 
   When('I select the option with the value {string} for element {string}', function (somevalue, myselectbox) {
     return client.click(myselectbox + ' option[value="'+ somevalue +'"]');
-  });
-
-  When('I select the option with the value {string} for element "#edit-par-component-legal-entit  does not exist', function (string, callback) {
-    // Write code here that turns the phrase above into concrete actions
-    callback(null, 'pending');
   });
 
   Given('I add {string} to the inputfield {string}', function (string, string2) {
@@ -129,16 +102,6 @@ const shared = client.page.shared();
     return client.waitForElementVisible(string, 1000);
   });
 
-  When('I open the add members page', function () {
-    return client
-      .url(function(result) {
-        console.log(result)
-        var urlMemberAdd = result.value.replace('organisation-details', 'members/add');
-        console.log(urlMemberAdd);
-        return client.url(urlMemberAdd);    
-      })
-  });
-
   When('I click on authority selection if available', function () {
     return shared
     .chooseAuthorityIfOptionPresent('input[name="par_data_authority_id"]', '//div[text()="City Enforcement Squad"]')
@@ -153,6 +116,11 @@ const shared = client.page.shared();
     return shared
             .chooseNewPersonIfOptionPresent('newperson','#edit-par-data-person-id-new') 
    });
+
+   When('the {string} email confirmations for {string} are processed', function (emailSubject, user) {
+    return shared
+        .checkEmails(emailSubject, user)
+  });
 
   When('I run tota11y against the current page', function () {
     client.click('.tota11y-toolbar-toggle');

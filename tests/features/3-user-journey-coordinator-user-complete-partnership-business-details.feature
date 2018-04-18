@@ -32,7 +32,7 @@ Feature: Coordinator User - Complete organisation details
         When I click on the button "#edit-next"
 
         # ADD SIC CODES
-
+        
         Then the element "h1.heading-xlarge" contains the text "Confirm the SIC code"
         And I select the option with the value "38" for element "#edit-sic-code"
         And I click on the button "#edit-next"
