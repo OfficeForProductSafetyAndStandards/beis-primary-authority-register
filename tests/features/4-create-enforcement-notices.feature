@@ -11,12 +11,6 @@ Feature: Enforcement Officer - Enforcement Notice Process
 
         When I create new valid enforcement notification "<Notification Title>" for organisation "<Organisation>"
 
-        # CHECK ENFORCEMENT NOTIFICATION
-
-        And I check that EO can see valid enforcement notification "<Notification Title>"
-
-        And the element ".table-scroll-wrapper" does not contain the text "Organisation For Direct Partnership"
-
         # CHECK ENFORCEMENT NOTIFICATION EMAILS
 
         Then the enforcement notification emails confirmations for "<PARUser>" are processed for enforcement notification "<Notification Title>"

@@ -112,7 +112,7 @@ When('I go to partnership detail page for my partnership {string}', function (or
   return shared
   .clickLinkByPureText('Dashboard')
   .clickLinkByPureText('See your partnerships')
-  .setValue('#edit-keywords','Organisation For Direct Partnership')
+  .setValue('#edit-keywords', 'Organisation For Direct Partnership')
   .click('#edit-submit-par-user-partnerships')
   .clickLinkByPureText(authority)
  });

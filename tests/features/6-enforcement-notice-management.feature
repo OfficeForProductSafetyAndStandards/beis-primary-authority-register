@@ -24,10 +24,10 @@ Feature: Enforcement notice management
 
         And I click the link text "Log out"
         Given I open the path "/user/login"
-        And I add "par_enforcement_officer@example.com" to the inputfield "#edit-name"
+        And I add "par_authority@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
-        When I click the link text "See enforcement notifications sent"
+        When I click the link text "See enforcement notifications received"
         And the element ".table-scroll-wrapper" contains the text "Enforcement notice 4"
         And the element ".table-scroll-wrapper" contains the text "Enforcement notice 1"
         And the element ".table-scroll-wrapper" contains the text "Enforcement notice 3"

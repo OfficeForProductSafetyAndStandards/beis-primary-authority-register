@@ -2,7 +2,7 @@ const { client } = require('nightwatch-cucumber')
 const { Given, Then, When } = require('cucumber')
 const shared = client.page.shared();
 
-When('the enforcement notification emails confirmations for {string} are processed for enforcement notication {string}', function (string, string2) {
+When('the enforcement notification emails confirmations for {string} are processed for enforcement notification {string}', function (string, string2) {
     return shared
         .clickLinkByPureText('Log out')
         .clickLinkByPureText('Log in')
