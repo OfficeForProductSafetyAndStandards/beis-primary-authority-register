@@ -47,6 +47,7 @@ Feature: Enforcement Officer - Enforcement Notice Process
         #LOGIN
         
         Given I am logged in as "eo_one_authority@example.com"
+        And I go to partnership detail page for my partnership "Organisation For Coordinated Partnership"
         # When I enforce a coordinated partnership that has at least two members
         # Then I should get the 'Choose the member to enforce' screen
 
