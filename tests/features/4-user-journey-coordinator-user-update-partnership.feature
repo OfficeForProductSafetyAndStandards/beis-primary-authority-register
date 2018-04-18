@@ -167,4 +167,3 @@ Feature: Coordinator User - Update Partnership
         And I select the option with the value "confirmed_business" for element "#edit-partnership-status-1"
         And I click on the button "#edit-submit-par-user-partnerships"
         And the element "#block-par-theme-content" contains the text "Organisation For Coordinated Partnership"
-

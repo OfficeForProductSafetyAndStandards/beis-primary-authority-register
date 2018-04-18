@@ -88,20 +88,19 @@ module.exports = {
             }
             console.log(emailSubject)
             return this
-                .click('#block-par-theme-account-menu > ul > li:nth-child(3) > a')
-                .click('#block-par-theme-account-menu > ul > li > a')
-                .setValue('#edit-name','dadmin')
-                .setValue('#edit-pass','TestPassword')
-                .click('#edit-submit')
-                .waitForElementVisible('#toolbar-link-system-admin_reports', 3000)
-                .click('#toolbar-link-system-admin_reports')
-                .click('#block-seven-content > ul > li:nth-child(3) > a')
-                .setValue('#edit-header-to',string2)
-                .click('#edit-submit-maillog-overview')
-                // .clickLinkByPureText(emailSubject)
-                .click('#block-seven-content > div > div > div.view-content > table > tbody > tr:nth-child(1) > td.views-field.views-field-subject > a')
-                .assert.containsText('h1.heading-xlarge', emailSubject)
-                .assert.containsText('#block-par-theme-content',string2)
+            .click('#block-par-theme-account-menu > ul > li:nth-child(3) > a')
+            .click('#block-par-theme-account-menu > ul > li > a')
+            .setValue('#edit-name','dadmin')
+            .setValue('#edit-pass','TestPassword')
+            .click('#edit-submit')
+            .click('#toolbar-link-system-admin_reports')
+            .clickLinkByPureText('Maillog')
+            .setValue('#edit-header-to',string2)
+            .click('#edit-submit-maillog-overview')
+            // .clickLinkByPureText(emailSubject)
+            .click('#block-seven-content > div > div > div.view-content > table > tbody > tr:nth-child(1) > td.views-field.views-field-subject > a')
+            .assert.containsText('h1.heading-xlarge', emailSubject)
+            .assert.containsText('#block-par-theme-content',string2)
         }
     }]
 }
