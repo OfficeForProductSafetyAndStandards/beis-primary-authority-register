@@ -3,6 +3,7 @@
 namespace Drupal\par_forms;
 
 use Drupal\Component\Plugin\PluginBase;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_data\ParDataManagerInterface;
@@ -122,6 +123,15 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
    */
   public function getUrlGenerator() {
     return \Drupal::service('url_generator');
+  }
+
+  /**
+   * Dynamically get the entity field manager service.
+   *
+   * @return EntityFieldManagerInterface
+   */
+  public function getEntityFieldManager() {
+    return \Drupal::service('entity_field.manager');
   }
 
   /**

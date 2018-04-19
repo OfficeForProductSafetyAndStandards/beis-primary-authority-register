@@ -27,79 +27,15 @@ class ParAddActionForm extends ParBaseForm {
   protected $pageTitle = 'Add an action to the  enforcement notice';
 
   /**
-   * {@inheritdoc}
+   * Load the data for this form.
    */
-  protected $formItems = [
-    'par_data_enforcement_action:enforcement_action' => [
-      'title' => 'title',
-      'details' => 'details',
-      'field_regulatory_function' => 'field_regulatory_function'
-    ],
-  ];
+  public function loadData() {
+    $cardinality = $this->getFlowDataHandler()->getParameter('cardinality');
 
-  /**
-   * {@inheritdoc}
-   */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+    // Needs to load the plugin with this cardinality,
+    // or save the data to this cardinality.
 
-    $reg_function_names = $par_data_partnership->getPartnershipRegulatoryFunctionNames();
-
-    $form['title_of_action_title'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Enter the title of action'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-    ];
-
-    $form['title'] = [
-      '#type' => 'textfield',
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('title'),
-    ];
-
-    $form['field_regulatory_function'] = [
-      '#type' => 'radios',
-      '#title' => $this->t('Choose a regulatory function to which this action relates'),
-      '#options' => $reg_function_names,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('field_regulatory_function'),
-    ];
-
-    $form['details_title'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Provide details about this action'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-    ];
-
-    $form['details'] = [
-      '#type' => 'textarea',
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('details'),
-    ];
-
-    $enforcement_action_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('par_data_enforcement_action', 'document');
-    $field_definition = $enforcement_action_fields['document'];
-    $file_extensions = $field_definition->getSetting('file_extensions');
-
-    $form['files_title'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Add an attachment'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-    ];
-
-    // Multiple file field.
-    $form['files_title']['files'] = [
-      '#type' => 'managed_file',
-      '#upload_location' => 's3private://documents/enforcement_action/',
-      '#multiple' => TRUE,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("files"),
-      '#upload_validators' => [
-        'file_validate_extensions' => [
-          0 => $file_extensions
-        ]
-      ]
-    ];
-
-    return parent::buildForm($form, $form_state);
+    parent::loadData();
   }
 
   /**

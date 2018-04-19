@@ -42,6 +42,8 @@ steps:
   6:
     route: par_enforcement_raise_flows.add_action
     form_id: par_enforcement_notice_add_action
+    components:
+      enforcement_action: {}
   7:
     route: par_enforcement_raise_flows.raise_confirm
     form_id: par_enforcement_notice_raise_confirm
