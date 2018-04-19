@@ -76,7 +76,8 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
-    $enforcement_notice_entity = $enforcement_notice_entity->getAllowedValues('notice_type');
+    $enforcement_notice_entity_type = $this->getParDataManager()->getParBundleEntity('par_data_enforcement_notice');
+    $notice_type = $enforcement_notice_entity_type->getAllowedValues('notice_type');
 
     $form['enforcement_type'] = [
       '#type' => 'fieldset',
@@ -86,10 +87,10 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
       '#collapsed' => FALSE,
     ];
 
-    $form['enforcement_type']['type'] = [
+    $form['enforcement_type']['notice_type'] = [
       '#type' => 'radios',
-      '#options' => $enforcement_notice_entity,
-      '#default_value' => key($enforcement_notice_entity),
+      '#options' => $notice_type,
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('notice_type', key($notice_type)),
       '#required' => TRUE,
     ];
 
@@ -127,7 +128,7 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
 
     $form['summary'] = [
       '#type' => 'textarea',
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("summary"),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('summary'),
     ];
 
     return parent::buildForm($form, $form_state);
@@ -138,20 +139,6 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
-
-    $cid = $this->getFlowNegotiator()->getFormKey('par_authority_selection');
-    $enforcing_authority_id = $this->getFlowDataHandler()->getDefaultValues('par_data_authority_id', '', $cid);
-
-    $cid = $this->getFlowNegotiator()->getFormKey('par_enforce_organisation');
-    $organisation_id = $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', '', $cid);
-
-    if (empty($enforcing_authority_id)) {
-      $this->setElementError('authority_enforcement_ids', $form_state, 'Please select an authority to enforce on behalf of to proceed.');
-    }
-
-    if (empty($organisation_id)) {
-      $this->setElementError('organisation_enforcement_ids', $form_state, 'Please select an organisation to enforce on behalf of to proceed.');
-    }
   }
 
 }
