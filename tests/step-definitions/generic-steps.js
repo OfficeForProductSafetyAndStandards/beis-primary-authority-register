@@ -122,8 +122,12 @@ const shared = client.page.shared();
         .checkEmails(emailSubject, user)
   });
 
+  When('only messages of type {string} are displayed', function (messageType) {
+    return shared.checkMessageTypeDisplay(messageType);
+  });
+
   When('I run tota11y against the current page', function () {
-    client.click('.tota11y-toolbar-toggle');
+    return client.click('.tota11y-toolbar-toggle');
     var list = ['Headings', 'Contrast', 'Link text', 'Labels', 'Image alt-text'];
     for (var i = 0; i < list.length; i++) {
         browser.click('.tota11y-plugin-title*=' + list[i]);

@@ -76,6 +76,20 @@ module.exports = {
                   }
             })   
         },
+        checkMessageTypeDisplay: function(messageType){ 
+            let element = null;
+            this.api.elements('css selector', 'td.views-field.views-field-par-status', function (elements) {
+              let success = false;
+              for (let i = 0; (i < elements.value.length) && (success === false); i++) {
+                this.elementIdText(elements.value[i].ELEMENT, function (result) {
+                    this.assert.equal(result.value, messageType)
+                  if (result.value == messageType) {
+                    console.log(result.value);
+                  }
+                });
+              }
+            });
+        },
         checkEmails: function(string, string2){ 
             var emailSubject = ''
             switch (string) 

@@ -42,3 +42,22 @@ Background:
         
         Then the coordinated partnership creation email template is correct
     
+
+        @coordinatedpartneship
+    Scenario: New coordinated Partnership
+
+        # PARTNERSHIP APPLY
+
+        When I complete valid coordinated partnership application details
+
+        # ADD ORGANISATION DETAIL
+
+        When I complete valid organisation details for coordinated partnership "Organisation For Coordinated Partnership With No Members"
+        
+        # REVIEW THE APPLICATION
+        
+        And I complete review of the valid coordinated partnership application
+        
+        # INVITATION
+        
+        Then the coordinated partnership creation email template is correct
