@@ -3,69 +3,48 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: 7o4MtIcYbDT4oBCvLIV31nI8YSlTyJSRP5SXfgDsZ_Y
+  default_config_hash: Mkw5_t4T8s8heYjKZjOS6oZktCLZwmfNIZNqXa04l08
 id: raise_enforcement
 label: 'Raise Enforcement'
 default_title: 'Notification of Enforcement action'
-default_section_title: null
+default_section_title: 'Enforcement Action'
 description: 'The creation flow of an enforcement notice.'
 save_method: end
 states:
   - par_data_partnership
 steps:
   1:
-    route: par_enforcement_flows.partnership_page
-    redirect:
-      advice: 2
-      inspection_plans: 3
-      raise: 4
-      done: 11
-  2:
-    route: par_enforcement_flows.advice_view
-    redirect:
-      cancel: 1
-  3:
-    route: par_enforcement_flows.inspection_plan_view
-    redirect:
-      done: 1
-  4:
-    route: par_enforcement_flows.authority_select
+    route: par_enforcement_raise_flows.select_authority
     form_id: par_authority_selection
-    redirect:
-      cancel: 1
-  5:
-    route: par_enforcement_flows.enforce_organisation
+    components:
+      authority_select: {  }
+  2:
+    route: par_enforcement_raise_flows.select_organisation
     form_id: par_enforce_organisation
-    redirect:
-      cancel: 1
-  6:
-    route: par_enforcement_flows.officer_details
+    components:
+      organisation_select: {  }
+  3:
+    route: par_enforcement_raise_flows.officer_details
     form_id: par_enforcement_officer_details
-    redirect:
-      cancel: 1
-  7:
-    route: par_enforcement_flows.raise
+    components:
+      contact_details_basic: {  }
+    form_data:
+      authority_selection: par_authority_selection
+      organisation_selection: par_enforce_organisation
+  4:
+    route: par_enforcement_raise_flows.select_legal_entity
     form_id: par_enforcement_notice_raise
-    redirect:
-      cancel: 1
-  8:
-    route: par_enforcement_flows.raise_details
+    components:
+      select_enforced_legal_entity: {  }
+    form_data:
+      authority_selection: par_authority_selection
+      organisation_selection: par_enforce_organisation
+  5:
+    route: par_enforcement_raise_flows.raise_details
     form_id: par_enforcement_notice_raise_details
-    redirect:
-      cancel: 1
-  9:
-    route: par_enforcement_flows.add_action
+  6:
+    route: par_enforcement_raise_flows.add_action
     form_id: par_enforcement_notice_add_action
-    redirect:
-      cancel: 1
-  10:
-    route: par_enforcement_flows.raise_confirm
+  7:
+    route: par_enforcement_raise_flows.raise_confirm
     form_id: par_enforcement_notice_raise_confirm
-    redirect:
-      add_enforcement_action: 9
-      save: 11
-      cancel: 1
-  11:
-    route: par_dashboards.dashboard
-  12:
-    route: view.partnership_search.enforcment_flow_search_partnerships

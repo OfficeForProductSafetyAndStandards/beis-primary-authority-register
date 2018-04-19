@@ -6,6 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_enforcement_raise_flows\ParFormCancelTrait;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_enforcement_raise_flows\ParFlowAccessTrait;
 use Drupal\user\Entity\User;
@@ -16,6 +17,7 @@ use Drupal\user\Entity\User;
 class ParEnforcementNoticeDetailsForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
+  use ParFormCancelTrait;
 
   protected $formItems = [
     'par_data_enforcement_notice:enforcement_notice' => [
@@ -56,7 +58,7 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
     $cid = $this->getFlowNegotiator()->getFormKey('par_authority_selection');
     $authority_id = $this->getFlowDataHandler()->getDefaultValues('par_data_authority_id', NULL, $cid);
     if ($par_data_authority = ParDataAuthority::load($authority_id)) {
-      $account_id = $this->getFlowDataHandler()->currentUser()->id();
+      $account_id = $this->getFlowDataHandler()->getCurrentUser()->id();
       $account = User::load($account_id);
 
       // Get logged in user ParDataPerson(s) related to the primary authority.

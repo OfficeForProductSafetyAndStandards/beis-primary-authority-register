@@ -12,7 +12,7 @@ use Drupal\par_forms\ParFormPluginBase;
  *   title = @Translation("Legal entity selection for enforcement form.")
  * )
  */
-class ParAboutBusinessForm extends ParFormPluginBase {
+class ParSelectEnforcedLegalEntityForm extends ParFormPluginBase {
 
   /**
    * {@inheritdoc}

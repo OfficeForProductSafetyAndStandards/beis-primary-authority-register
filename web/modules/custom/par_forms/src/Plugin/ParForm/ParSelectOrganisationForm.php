@@ -52,7 +52,7 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
         $organisation = current($user_organisations);
         $this->getFlowDataHandler()->setTempDataValue('par_data_organisation_id', $organisation->id());
       }
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getFlowDataHandler()->getParameters());
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
       return new RedirectResponse($url);
     }
 

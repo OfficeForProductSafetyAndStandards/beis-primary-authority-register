@@ -61,7 +61,7 @@ module:
   par_dashboards: 0
   par_data: 0
   par_data_config: 0
-  par_enforcement_flows: 0
+  par_enforcement_raise_flows: 0
   par_flows: 0
   par_forms: 0
   par_header: 0
@@ -77,6 +77,7 @@ module:
   par_partnership_flows: 0
   par_rd_help_desk_flows: 0
   par_roles: 0
+  par_search_partnership_flows: 0
   par_validation: 0
   path: 0
   queue_ui: 0

@@ -45,19 +45,15 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
     // @TODO Provide a selection mechanism for admin/helpdesk users acting on behalf of authority users.
     if (count($user_authorities) <= 0) {
       $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('cancel'), $this->getRouteParams());
-
-      var_dump($this->getFlowNegotiator()->getFlow()->getNextRoute('cancel'), $url);
       return new RedirectResponse($url);
     }
 
     // If only one authority submit the form automatically and go to the next step.
     elseif (count($user_authorities) === 1) {
-      $this->getFlowDataHandler()->setTempDataValue('par_data_authority_id', key($authority_options));
+      $this->getFlowDataHandler()->setTempDataValue('par_data_authority_id', key($user_authorities));
       $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
       return new RedirectResponse($url);
     }
-
-    var_dump(array_keys($user_authorities));
 
     $form['par_data_authority_id'] = [
       '#type' => 'radios',
