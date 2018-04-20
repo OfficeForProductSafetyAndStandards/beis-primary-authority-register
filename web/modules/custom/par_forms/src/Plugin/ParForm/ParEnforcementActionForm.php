@@ -61,7 +61,7 @@ class ParEnforcementActionForm extends ParFormPluginBase {
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('title'),
     ];
 
-    $form['field_regulatory_function'] = [
+    $form['regulatory_function'] = [
       '#type' => 'radios',
       '#title' => $this->t('Choose a regulatory function to which this action relates'),
       '#options' => $reg_function_names,

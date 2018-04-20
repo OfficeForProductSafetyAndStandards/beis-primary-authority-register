@@ -79,16 +79,9 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
     $enforcement_notice_entity_type = $this->getParDataManager()->getParBundleEntity('par_data_enforcement_notice');
     $notice_type = $enforcement_notice_entity_type->getAllowedValues('notice_type');
 
-    $form['enforcement_type'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('This enforcement action is'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    $form['enforcement_type']['notice_type'] = [
+    $form['notice_type'] = [
       '#type' => 'radios',
+      '#title' => $this->t('This enforcement action is'),
       '#options' => $notice_type,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('notice_type', key($notice_type)),
       '#required' => TRUE,

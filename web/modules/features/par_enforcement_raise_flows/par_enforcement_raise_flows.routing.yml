@@ -76,8 +76,8 @@ par_enforcement_raise_flows.add_action:
 par_enforcement_raise_flows.raise_review:
   path: '/enforcement-notice/{par_data_partnership}/raise/review'
   defaults:
-    _form: '\Drupal\par_enforcement_raise_flows\Form\ParReviewEnforcementForm'
-    _title_callback: '\Drupal\par_enforcement_raise_flows\Form\ParReviewEnforcementForm::titleCallback'
+    _form: '\Drupal\par_enforcement_raise_flows\Form\ParEnforcementReviewForm'
+    _title_callback: '\Drupal\par_enforcement_raise_flows\Form\ParEnforcementReviewForm::titleCallback'
   requirements:
     _permission: 'raise enforcement notice'
     par_data_partnership: \d+
