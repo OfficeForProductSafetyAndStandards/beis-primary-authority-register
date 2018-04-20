@@ -118,7 +118,6 @@ class ParFormBuilder extends DefaultPluginManager {
       $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1] += $element;
       // Handle instances where only a specific cardinality should be returned.
       if ($cardinality && $i !== $cardinality) {
-        $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1]['#disabled'] = TRUE;
         $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1]['#attributes']['class'] = ['visually-hidden'];
       }
 

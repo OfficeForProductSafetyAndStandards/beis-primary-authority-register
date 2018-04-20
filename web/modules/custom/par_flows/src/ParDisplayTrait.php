@@ -134,7 +134,7 @@ trait ParDisplayTrait {
    *
    * @param string $section
    *   The section name to display on operation links.
-   * @param EntityInterface $entities
+   * @param EntityInterface[] $entities
    *   The entities to render.
    * @param string $view_mode
    *   The view mode to render the fields from.
@@ -146,7 +146,10 @@ trait ParDisplayTrait {
    * @return array
    */
   public function renderEntities($section, $entities, $view_mode = 'summary', $operations = [], $single = FALSE) {
-    $elements = [];
+    $elements = [
+      '#type' => 'fieldset',
+      '#title' => t("$section"),
+    ];
     foreach ($entities as $delta => $entity) {
       $entity_view_builder = $this->getParDataManager()->getViewBuilder($entity->getEntityTypeId());
       $rendered_entity = $entity_view_builder->view($entity, $view_mode);

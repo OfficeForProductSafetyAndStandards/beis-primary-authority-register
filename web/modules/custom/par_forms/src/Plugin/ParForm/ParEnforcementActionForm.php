@@ -58,14 +58,14 @@ class ParEnforcementActionForm extends ParFormPluginBase {
 
     $form['title'] = [
       '#type' => 'textfield',
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('title'),
+      '#default_value' => $this->getDefaultValuesByKey('title', $cardinality),
     ];
 
     $form['regulatory_function'] = [
       '#type' => 'radios',
       '#title' => $this->t('Choose a regulatory function to which this action relates'),
       '#options' => $reg_function_names,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('field_regulatory_function'),
+      '#default_value' => $this->getDefaultValuesByKey('field_regulatory_function', $cardinality),
     ];
 
     $form['details_title'] = [
@@ -77,7 +77,7 @@ class ParEnforcementActionForm extends ParFormPluginBase {
 
     $form['details'] = [
       '#type' => 'textarea',
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('details'),
+      '#default_value' => $this->getDefaultValuesByKey('details', $cardinality),
     ];
 
     $enforcement_action_fields = $this->getEntityFieldManager()->getFieldDefinitions('par_data_enforcement_action', 'document');

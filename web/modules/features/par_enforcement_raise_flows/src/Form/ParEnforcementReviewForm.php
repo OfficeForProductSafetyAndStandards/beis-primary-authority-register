@@ -40,10 +40,14 @@ class ParEnforcementReviewForm extends ParBaseForm {
     extract($entities);
     /** @var ParDataPartnership $par_data_partnership */
     /** @var ParDataEnforcementNotice $par_data_enforcement_notice */
-    /** @var ParDataEnforcementAction $par_data_enforcement_action */
+    /** @var ParDataEnforcementAction[] $par_data_enforcement_actions */
 
+    // Display the Enforcement Notice details.
     $form['enforcement_type'] = $this->renderSection('Type of enforcement notice', $par_data_enforcement_notice, ['notice_type' => 'full'], [], TRUE, TRUE);
     $form['enforcement_summary'] = $this->renderSection('Summary of enforcement notice', $par_data_enforcement_notice, ['summary' => 'summary'], [], TRUE, TRUE);
+
+    // Display the details for each Enforcement Action.
+    $form['enforcement_actions'] = $this->renderEntities('Enforcement Actions', $par_data_enforcement_actions, 'summary');
 
     return parent::buildForm($form, $form_state);
   }
@@ -98,6 +102,8 @@ class ParEnforcementReviewForm extends ParBaseForm {
         'document' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action', $delta, 'files'], $enforcement_actions_cid),
         'field_regulatory_function' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action', $delta, 'regulatory_function'], $enforcement_actions_cid),
       ]);
+
+      var_dump($par_data_enforcement_actions[$delta]->get('title')->getString());
     }
 
     return [
@@ -118,11 +124,11 @@ class ParEnforcementReviewForm extends ParBaseForm {
     extract($entities);
     /** @var ParDataPartnership $par_data_partnership */
     /** @var ParDataEnforcementNotice $par_data_enforcement_notice */
-    /** @var ParDataEnforcementAction $par_data_enforcement_action */
+    /** @var ParDataEnforcementAction[] $par_data_enforcement_actions */
 
-    foreach ($par_data_enforcement_action as $enforcement_action) {
-      if ($par_data_enforcement_action->save()) {
-        $par_data_enforcement_notice->get('field_enforcement_action')->appendItem($par_data_enforcement_action);
+    foreach ($par_data_enforcement_actions as $enforcement_action) {
+      if ($enforcement_action->save()) {
+        $par_data_enforcement_notice->get('field_enforcement_action')->appendItem($enforcement_action);
       }
     }
 
