@@ -191,13 +191,13 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
+      // If there's is a cardinality parameter present display only this item.
+      $cardinality = $this->getFlowDataHandler()->getParameter('cardinality');
+
       // Handle instances where FormBuilderInterface should return a redirect response.
-      $plugin = $this->getFormBuilder()->getPluginElements($component);
+      $plugin = $this->getFormBuilder()->getPluginElements($component, $form, (int) $cardinality);
       if ($plugin instanceof RedirectResponse) {
         return $plugin;
-      }
-      elseif (is_array($plugin)) {
-        $form = $plugin;
       }
     }
 
@@ -287,13 +287,16 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       return;
     }
 
+    // If there's is a cardinality parameter present display only this item.
+    $cardinality = $this->getFlowDataHandler()->getParameter('cardinality');
+
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
-      $component_violations = $this->getFormBuilder()->validatePluginElements($component, $form_state);
+      $component_violations = $this->getFormBuilder()->validatePluginElements($component, $form_state, $cardinality);
 
       // If there are violations for this plugin.
       if (isset($component_violations[$component->getPluginId()])) {
-        foreach ($component_violations[$component->getPluginId()] as $cardinality => $violations) {
+        foreach ($component_violations[$component->getPluginId()] as $i => $violations) {
           foreach ($violations as $field_name => $violation_list) {
             // Do not validate the last item if multiple cardinality is allowed.
             if ($violation_list->count() >= 1) {
@@ -302,7 +305,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
               // @example 1st item out of 3 should be validated.
               // @example 2nd item out of 3 should be validated.
               // @example 3rd item out of 3 should _not_ be validated.
-              if ($component->getCardinality() === 1 || $cardinality === 1 || $cardinality < $component->countItems()) {
+              if ($component->getCardinality() === 1 || $i === 1 || $i < $component->countItems()) {
                 $this->setFieldViolations($field_name, $form_state, $violation_list);
               }
             }

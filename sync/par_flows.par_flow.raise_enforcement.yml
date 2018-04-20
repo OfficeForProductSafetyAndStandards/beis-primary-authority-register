@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: Mkw5_t4T8s8heYjKZjOS6oZktCLZwmfNIZNqXa04l08
+  default_config_hash: cc1ZPMmjMwzjzqBhOeV8BgyofDuLFn-DudFBEA8Dgdc
 id: raise_enforcement
 label: 'Raise Enforcement'
 default_title: 'Notification of Enforcement action'
@@ -45,6 +45,11 @@ steps:
   6:
     route: par_enforcement_raise_flows.add_action
     form_id: par_enforcement_notice_add_action
+    components:
+      enforcement_action:
+        cardinality: -1
   7:
+    route: par_enforcement_raise_flows.raise_review
+    form_id: par_enforcement_notice_raise_review
+  8:
     route: par_enforcement_raise_flows.raise_confirm
-    form_id: par_enforcement_notice_raise_confirm

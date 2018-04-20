@@ -90,10 +90,12 @@ class ParFormBuilder extends DefaultPluginManager {
    *   The plugin to load elements for.
    * @param array $elements
    *   An array to add the elements to.
+   * @param mixed $cardinality
+   *   If chosen only the specified cardinality will be displayed.
    *
    * @return array
    */
-  public function getPluginElements($component, &$elements = []) {
+  public function getPluginElements($component, &$elements = [], $cardinality = NULL) {
     // Add all the registered components to the form.
     $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()] = [
       '#weight' => $component->getWeight(),
@@ -101,7 +103,7 @@ class ParFormBuilder extends DefaultPluginManager {
     ];
 
     // Count the current cardinality.
-    $count = $component->countItems() + 1 ?: 1;
+    $count = $component->getNewCardinality();
     for ($i = 1; $i <= $count; $i++) {
       $element = $component->getElements([], $i);
 
@@ -109,10 +111,19 @@ class ParFormBuilder extends DefaultPluginManager {
       if ($element instanceof RedirectResponse) {
         return $element;
       }
-      $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1] = $element;
+
+      $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1] = [
+        '#type' => 'fieldset',
+      ];
+      $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1] += $element;
+      // Handle instances where only a specific cardinality should be returned.
+      if ($cardinality && $i !== $cardinality) {
+        $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1]['#disabled'] = TRUE;
+        $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1]['#attributes']['class'] = ['visually-hidden'];
+      }
 
       // Only show remove for plugins with multiple cardinality
-      if ($component->getCardinality() !== 1) {
+      if ($component->getCardinality() !== 1 && $i !== $count) {
         $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1]['remove'] = [
           '#type' => 'submit',
           '#name' => "remove:{$component->getPluginId()}:{$i}",
@@ -126,7 +137,8 @@ class ParFormBuilder extends DefaultPluginManager {
       }
     }
 
-    if ($component->getCardinality() === -1 || ($component->getCardinality() > 1 && $component->getCardinality() > $count)) {
+    if ($component->getCardinality() === -1
+      || ($component->getCardinality() > 1 && $component->getCardinality() > $count)) {
       $elements['actions']['add_another'] = [
         '#type' => 'submit',
         '#name' => 'add_another',
@@ -141,12 +153,17 @@ class ParFormBuilder extends DefaultPluginManager {
     return $elements;
   }
 
-  public function validatePluginElements($component, $form_state) {
+  public function validatePluginElements($component, $form_state, $cardinality = NULL) {
     $violations = [];
 
     // Count the current cardinality.
     $count = $component->countItems() + 1 ?: 1;
     for ($i = 1; $i <= $count; $i++) {
+      // Handle instances where only a specific cardinality should be validated.
+      if ($cardinality && $i !== $cardinality) {
+        continue;
+      }
+
       $violations[$component->getPluginId()][$i] = $component->validate($form_state, $i);
     }
 

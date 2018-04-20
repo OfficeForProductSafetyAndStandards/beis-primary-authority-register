@@ -30,10 +30,16 @@ class ParAddActionForm extends ParBaseForm {
    * Load the data for this form.
    */
   public function loadData() {
-    $cardinality = $this->getFlowDataHandler()->getParameter('cardinality');
-
-    // Needs to load the plugin with this cardinality,
-    // or save the data to this cardinality.
+    // Load the plugin with a given cardinality, either the value being edited
+    // or the next available new cardinality to add to.
+    if (!$cardinality = $this->getFlowDataHandler()->getParameter('cardinality')) {
+      foreach ($this->getComponents() as $component) {
+        // Only need to get the new cardinality of the first plugin,
+        // as all plugins on the page share the same value.
+        $this->getFlowDataHandler()->setParameter('cardinality', $component->getNewCardinality());
+        break;
+      }
+    }
 
     parent::loadData();
   }

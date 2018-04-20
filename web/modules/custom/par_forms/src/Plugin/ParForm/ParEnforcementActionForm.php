@@ -12,7 +12,7 @@ use Drupal\par_forms\ParFormPluginBase;
  *   title = @Translation("Enforcement action form.")
  * )
  */
-class ParAddressForm extends ParFormPluginBase {
+class ParEnforcementActionForm extends ParFormPluginBase {
 
   /**
    * Mapping of the data parameters to the form elements.
@@ -51,7 +51,7 @@ class ParAddressForm extends ParFormPluginBase {
 
     $form['title_of_action_title'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Enter the title of action'),
+      '#title' => $this->t('Enter the title of action ' . $cardinality),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
     ];

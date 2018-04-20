@@ -173,6 +173,32 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
     return NULL;
   }
 
+  /**
+   * Get the next available cardinality for adding a new item.
+   *
+   * @param mixed $data
+   *   If required the data to be counted can be switched to the form_state values.
+   *
+   * @return integer
+   */
+  public function getNewCardinality($data = NULL) {
+    return $this->countItems($data) + 1 ?: 1;
+  }
+
+  /**
+   * Get the defaults by a replacement form data key.
+   *
+   * @param $key
+   *   The form data key.
+   * @param $cardinality
+   *   The cardinality to get the value for.
+   * @param string $default
+   *   The default value if none found.
+   * @param null $cid
+   *   The cache id.
+   *
+   * @return mixed|null
+   */
   public function getDefaultValuesByKey($key, $cardinality, $default = '', $cid = NULL) {
     $element_key = $this->getElementKey($key, $cardinality);
     return $this->getFlowDataHandler()->getDefaultValues($this->getElementKey($key, $cardinality), $default, $cid);
