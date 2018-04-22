@@ -1,10 +1,9 @@
-@ci
 Feature: New Direct Partnership For PA To Approve
 
-Background: 
+    Background: 
         Given I am logged in as "par_authority@example.com"
     
-    @directpartneship
+    @directpartneship @ci
     Scenario: New Direct Partnership   
 
         # PARTNERSHIP APPLY
@@ -23,7 +22,7 @@ Background:
 
         Then the direct partnership creation email template is correct
 
-    @coordinatedpartneship
+    @coordinatedpartneship @ci
     Scenario: New coordinated Partnership
 
         # PARTNERSHIP APPLY
@@ -52,7 +51,7 @@ Background:
 
         # ADD ORGANISATION DETAIL
 
-        When I complete valid organisation details for coordinated partnership "Organisation For Coordinated Partnership With No Members"
+        When I complete valid organisation details for coordinated partnership "Organisation For No Members Coordinated Partnership"
         
         # REVIEW THE APPLICATION
         

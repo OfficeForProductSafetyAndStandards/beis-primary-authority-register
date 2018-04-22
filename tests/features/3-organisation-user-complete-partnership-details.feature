@@ -1,6 +1,6 @@
-@ci @test
 Feature: Business User - Complete organisation details
 
+    @ci
     Scenario: Business User - Complete organisation details
 
         # LOGIN

@@ -3,14 +3,12 @@ const chromedriver = require('chromedriver')
 
 require('nightwatch-cucumber')({
     cucumberArgs: [
-            '--require', 'step-definitions', 
-            '--require', 'support', 
-            '--require', 'page_objects', 
-            '-- --tag', 'ci',
-            '--format', 'node_modules/cucumber-pretty', 
-            '--format', 'json:reports/cucumber.json', 
-            'features'
-        ]
+        '--require', 'step-definitions', 
+        '--require', 'support', 
+        '--format', 'node_modules/cucumber-pretty', 
+        '--format', 'json:reports/cucumber.json', 
+        'features'
+    ]
 })
 
 module.exports = {
@@ -21,7 +19,7 @@ module.exports = {
     disable_colors: false,
     test_workers: {
         enabled: true,
-        workers: 'auto'
+        workers: 3
     },
     selenium: {
         start_process: true,
@@ -32,7 +30,7 @@ module.exports = {
     },
     test_settings: {
         default: {
-            launch_url: 'http://localhost:80',
+            launch_url: 'http://localhost:8111',
             selenium_port: 4444,
             selenium_host: '127.0.0.1',
             screenshots : {
@@ -42,6 +40,10 @@ module.exports = {
             },
             desiredCapabilities: {
                 browserName: 'chrome',
+                chromeOptions : {
+                    //  binary: electron,
+                        args: ['--headless', '--window-size=1280,1280'],
+                      },
                 javascriptEnabled: true,
                 acceptSslCerts: true
             },

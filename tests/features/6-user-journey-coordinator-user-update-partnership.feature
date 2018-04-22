@@ -1,7 +1,6 @@
-@ci @PAR790
 Feature: Coordinator User - Update Partnership
 
-    @coordinatedpartneship
+    @coordinatedpartneship @ci @PAR790
     Scenario: Coordinator User - Update Partnership
 
         #LOGIN
@@ -82,8 +81,9 @@ Feature: Coordinator User - Update Partnership
         And I click the link text "edit covered by inspection plan"
         And I click on the radio "#edit-covered-by-inspection-1"
         And I click on the button "#edit-save"
-        Then the element "#edit-covered-by-inspection" contains the text "Yes"
+        And the element "#edit-covered-by-inspection" contains the text "Yes"
         And I click on the button "#edit-save"
+        Then the element "h1.heading-xlarge" contains the text "Members list"
 
         # CEASE MEMBER
 
@@ -98,15 +98,12 @@ Feature: Coordinator User - Update Partnership
         Then the element "a*=New Member One" does not exist
         Then the element "Cease membership" does not exist
         And the element "td.views-field.views-field-date-membership-ceased" contains the text "20 February 2018"
+        And I click the link text "◀ Back to partnership"
        
         # EDIT REGISTERED ADDRESS
 
-        Given I open the path "/partnerships"
-        And I add "Organisation For Coordinated Partnership" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-par-user-partnerships"
-        And I click the link text "Organisation For Coordinated Partnership"
         When  I click the link text "edit address"
-        When I add "SE16 4NX" to the inputfield "#edit-postcode"
+        And I add "SE16 4NX" to the inputfield "#edit-postcode"
         And I add "1 Change St" to the inputfield "#edit-address-line1"
         And I add "New Change" to the inputfield "#edit-address-line2"
         And I add "London" to the inputfield "#edit-town-city"
@@ -164,6 +161,6 @@ Feature: Coordinator User - Update Partnership
 
         When I click on the button "#edit-save"
         # And I run tota11y against the current page
-        And I select the option with the value "confirmed_business" for element "#edit-partnership-status-1"
+        And I add "Organisation For Coordinated Partnership" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
         And the element "#block-par-theme-content" contains the text "Organisation For Coordinated Partnership"

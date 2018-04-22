@@ -1,6 +1,6 @@
 Feature: Further EN tests
 
-@pending
+    @pending
     Scenario Outline: Enforcement Officer With More Than One Authority - Issue enforcement notice
 
         #LOGIN

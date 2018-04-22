@@ -33,6 +33,12 @@ To run tests in parallel:
 $ node_modules/.bin/nightwatch -c ./nightwatch-cucumber-parallel.conf.js
 ```
 
+To run by tag
+
+```
+$ node_modules/.bin/nightwatch -c ./nightwatch-cucumber-parallel.conf.js -- --tag tagname
+```
+
 ### Step 4
 
 Generate HTML report (with screenshots)
@@ -41,3 +47,11 @@ Generate HTML report (with screenshots)
 $ node generate-report.js
 ```
 
+
+# iOS testing
+
+Using Appium - in order to run tests against, you will need Xcode installed, to use the simulators.
+
+To run
+$ node_modules/.bin/appium
+$ node_modules/.bin/nightwatch -c ./nightwatch-cucumber-ios.conf.js

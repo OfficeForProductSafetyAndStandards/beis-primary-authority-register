@@ -1,17 +1,16 @@
-@ci
 Feature: Coordinator User - Complete organisation details
 
-    @coordinatedpartneship
-    Scenario: Coordinator User - Complete organisation details
+@coordinatedpartneship @ci
+    Scenario Outline: Coordinator User - Complete organisation details
 
         #LOGIN
         
         Given I am logged in as "par_coordinator@example.com"
         And I click the link text "See your partnerships"
-        And I add "Organisation For Coordinated Partnership" to the inputfield "#edit-keywords"
+        And I add "<partnership>" to the inputfield "#edit-keywords"
         And I select the option with the value "confirmed_authority" for element "#edit-partnership-status-1"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I click the link text "Organisation For Coordinated Partnership"
+        And I click the link text "<partnership>"
         And the element "h1" is not empty
 
         # EDIT REGISTERED ADDRESS
@@ -76,3 +75,7 @@ Feature: Coordinator User - Complete organisation details
         Then the element "h1.heading-xlarge" contains the text "Thank you for completing the application"
         And I click on the button ".button"
 
+    Examples:
+        | partnership                                               |
+        | Organisation For Coordinated Partnership                  |
+        # | Organisation For No Members Coordinated Partnership       |

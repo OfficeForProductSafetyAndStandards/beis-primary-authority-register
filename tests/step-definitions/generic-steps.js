@@ -74,7 +74,8 @@ const shared = client.page.shared();
         .setValue('#edit-name', string)
         .setValue('#edit-pass', 'TestPassword')
         .click('#edit-submit')
-        .assert.containsText('#block-par-theme-account-menu', 'Log out')
+        .waitForElementVisible('#footer', 15000)
+        .assert.containsText('body', 'Log out')
   });
 
   Then('I clear the inputfield {string}', function (elem) {

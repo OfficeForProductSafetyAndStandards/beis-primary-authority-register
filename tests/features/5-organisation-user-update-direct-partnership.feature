@@ -1,6 +1,6 @@
-@ci @Bug @PAR990 @PAR991
 Feature: Business User - Update Partnership
 
+    @ci @PAR990 @PAR991
     Scenario: Business User - Update Partnership
 
         #LOGIN

@@ -15,9 +15,9 @@ Feature: Enforcement Officer - Enforcement Notice Process
 
         Then the "enforcement creation" email confirmations for "<PARUser>" are processed
 
-        Examples:
-            | Notification Title   | Organisation   | PARUser                   |
-            | Enforcement notice 1 | Charlie's Cafe | par_authority@example.com |
-            | Enforcement notice 2 | Charlie's Cafe | par_authority@example.com |
-            | Enforcement notice 3 | Charlie's Cafe | par_authority@example.com |
-            | Enforcement notice 4 | Charlie's Cafe | par_authority@example.com |
+    Examples:
+        | Notification Title   | Organisation   | PARUser                   |
+        | Enforcement notice 1 | Charlie's Cafe | par_authority@example.com |
+        | Enforcement notice 2 | Charlie's Cafe | par_authority@example.com |
+        | Enforcement notice 3 | Charlie's Cafe | par_authority@example.com |
+        | Enforcement notice 4 | Charlie's Cafe | par_authority@example.com |
