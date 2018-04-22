@@ -34,21 +34,6 @@ Feature: Helpdesk approve partnership
         And I click on the button "td.views-field.views-field-par-flow-link a"
         Then the element "div time" does not exist
 
-       # APPROVE COORDINATED PARTNERSHIP
-
-        When I open the path "/helpdesk"
-        When I add "Organisation For Coordinated Partnership" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-helpdesk-dashboard"
-        Then I click the link text "Approve partnership"
-        Then the element "#par-rd-help-desk-confirm" contains the text "Partnership between"
-        And the element "#par-rd-help-desk-confirm" contains the text "Organisation For Coordinated Partnership"
-        And I click on the radio "#edit-confirm-authorisation-select"
-        And I click on the radio "#edit-partnership-regulatory-functions-2"
-        And I click on the button "#edit-next"
-        Then the element "h1.heading-xlarge" contains the text "Partnership is approved"
-        And the element "#edit-partnership-info" contains the text "Organisation For Coordinated Partnership"
-        And I click on the button "#edit-done"
-
         # REVOKE DIRECT PARTNERSHIP
 
         When I click the link text "Helpdesk"

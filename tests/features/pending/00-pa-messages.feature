@@ -2,7 +2,7 @@
 Feature: PA User - Messaging
 
         @1253 @1254 @pending
-        Scenario: Enquiry Messages View
+        Scenario Outline: Enquiry Messages View
                 Given I am logged on as "par_authority@example.com"
                 And I click on the link text "Enquiries recieved"
                 Then the element "h3" contains the text "Your recieved enquiries"
