@@ -102,8 +102,6 @@ class ParEnforcementReviewForm extends ParBaseForm {
         'document' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action', $delta, 'files'], $enforcement_actions_cid),
         'field_regulatory_function' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action', $delta, 'regulatory_function'], $enforcement_actions_cid),
       ]);
-
-      var_dump($par_data_enforcement_actions[$delta]->get('title')->getString());
     }
 
     return [

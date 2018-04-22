@@ -15,8 +15,6 @@ use Drupal\par_forms\ParFormPluginBase;
  */
 class ParSelectLegalEntitiesForm extends ParFormPluginBase {
 
-  use ParDisplayTrait;
-
   /**
    * {@inheritdoc}
    */

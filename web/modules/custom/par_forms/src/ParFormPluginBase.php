@@ -7,6 +7,7 @@ use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_data\ParDataManagerInterface;
+use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Drupal\par_flows\ParRedirectTrait;
@@ -23,6 +24,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
 
   use StringTranslationTrait;
   use ParRedirectTrait;
+  use ParDisplayTrait;
 
   /**
    * A mapping definition of form elements to entity properties.
