@@ -201,6 +201,10 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       }
     }
 
+    $form['actions'] = [
+      '#weight' => 999,
+    ];
+
     // Only ever place a 'done' action by itself.
     if ($this->getFlowNegotiator()->getFlow()->hasAction('done')) {
       $form['actions']['done'] = [
