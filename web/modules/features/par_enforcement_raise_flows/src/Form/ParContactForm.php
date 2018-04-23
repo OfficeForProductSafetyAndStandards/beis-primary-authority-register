@@ -42,4 +42,17 @@ class ParContactForm extends ParBaseForm {
     parent::loadData();
   }
 
+  /**
+   *
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    parent::submitForm($form, $form_state);
+
+    // Extract and save the enforcing officer id.
+    $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
+
+    // Set the enforcing officer id for use later.
+    $this->getFlowDataHandler()->setTempDataValue('enforcement_officer_id', $par_data_person->id());
+  }
+
 }
