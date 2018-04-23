@@ -16,7 +16,7 @@ Feature: New Direct Partnership For PA To Approve
 
         # REVIEW THE APPLICATION
 
-        And I complete review of the valid direct partnership application
+        And I complete review and submit valid direct partnership application
 
         # INVITATIONS
 
@@ -35,7 +35,7 @@ Feature: New Direct Partnership For PA To Approve
         
         # REVIEW THE APPLICATION
         
-        And I complete review of the valid coordinated partnership application
+        And I complete review and submit valid direct partnership application
         
         # INVITATION
         
@@ -54,7 +54,7 @@ Feature: New Direct Partnership For PA To Approve
         
         # REVIEW THE APPLICATION
         
-        And I complete review of the valid coordinated partnership application
+        And I complete review and submit valid coordinated partnership application
         
         # INVITATION
         

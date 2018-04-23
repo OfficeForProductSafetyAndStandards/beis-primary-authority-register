@@ -13,6 +13,11 @@ var {After, AfterAll, Before, BeforeAll} = require('cucumber');
 //         .url(client.launch_url + '/user/logout')
 // });
 
+Before(function () {
+    return client
+    .url(client.launch_url)
+});
+
 After(function () {
     return client
         .deleteCookies(function() {

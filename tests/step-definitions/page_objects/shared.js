@@ -102,19 +102,50 @@ module.exports = {
             }
             console.log(emailSubject)
             return this
-            .click('#block-par-theme-account-menu > ul > li:nth-child(3) > a')
-            .click('#block-par-theme-account-menu > ul > li > a')
-            .setValue('#edit-name','par_admin@example.com')
-            .setValue('#edit-pass','TestPassword')
-            .click('#edit-submit')
-            .clickLinkByPureText('Reports')
-            .clickLinkByPureText('Maillog')
-            .setValue('#edit-header-to',string2)
-            .click('#edit-submit-maillog-overview')
-            .clickLinkByPureText(emailSubject)
-            // .click('#block-seven-content > div > div > div.view-content > table > tbody > tr:nth-child(1) > td.views-field.views-field-subject > a')
-            .assert.containsText('h1.heading-xlarge', emailSubject)
-            .assert.containsText('#block-par-theme-content',string2)
-        }
+                .click('#block-par-theme-account-menu > ul > li:nth-child(3) > a')
+                .click('#block-par-theme-account-menu > ul > li > a')
+                .setValue('#edit-name','par_admin@example.com')
+                .setValue('#edit-pass','TestPassword')
+                .click('#edit-submit')
+                .clickLinkByPureText('Reports')
+                .clickLinkByPureText('Maillog')
+                .setValue('#edit-header-to',string2)
+                .click('#edit-submit-maillog-overview')
+                .clickLinkByPureText(emailSubject)
+                // .click('#block-seven-content > div > div > div.view-content > table > tbody > tr:nth-child(1) > td.views-field.views-field-subject > a')
+                .assert.containsText('h1.heading-xlarge', emailSubject)
+                .assert.containsText('#block-par-theme-content',string2)
+        },
+        loggedInAs:function(string){ 
+            return this
+                .clickLinkByPureText('Log in')
+                .setValue('#edit-name', string)
+                .setValue('#edit-pass', 'TestPassword')
+                .click('#edit-submit')
+                .waitForElementVisible('#footer', 15000)
+                .assert.containsText('body', 'Log out')
+        },
+        goToPartnershipDetailPage: function(orgName){ 
+        return this
+            .clickLinkByPureText('Dashboard')
+            .clickLinkByPureText('See your partnerships')
+            .setValue('#edit-keywords', orgName)
+            .click('#edit-submit-par-user-partnerships')
+            .clickLinkByPureText(orgName)
+        },
+        runTota11yAgainstCurrentPage: function(){ 
+            return this.click('.tota11y-toolbar-toggle')
+            var list = ['Headings', 'Contrast', 'Link text', 'Labels', 'Image alt-text'];
+            for (var i = 0; i < list.length; i++) {
+                this.click('.tota11y-plugin-title*=' + list[i]);
+                if (client.isVisible('.tota11y-info-errors') === true) {
+                    const errors = browser.getText('.tota11y-info-errors');
+                    var url = browser.getUrl();
+                    console.log(url, errors);
+                    //expect(browser.isVisible('body')).to.equal(true, errors);
+                }
+            }
+            return this.click('.tota11y-toolbar-toggle');
+            },
     }]
 }

@@ -72,7 +72,7 @@ Given('I complete valid organisation details for coordinated partnership {string
   .click('#edit-next')
 });
 
-When('I complete review of the valid coordinated partnership application', function () {
+When('I complete review and submit valid coordinated partnership application', function () {
   return client
     .assert.containsText('h1.heading-xlarge .heading-secondary','New partnership application')
     .assert.containsText('h1.heading-xlarge','Review the partnership summary information below')

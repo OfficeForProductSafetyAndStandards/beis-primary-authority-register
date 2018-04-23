@@ -19,6 +19,7 @@ var county = faker.fake("{{address.county}}")
   .clickLinkByPureText(authority)
  });
 
+ // Starting point: logged in as HD user
  When('I successfully revoke a coordinated partnership', function () {
   return shared
     .clickLinkByPureText('Helpdesk')
@@ -37,6 +38,7 @@ var county = faker.fake("{{address.county}}")
     .expect.element('#block-par-theme-content > div > div > div > table > tbody > tr:nth-child(2)').to.not.be.present;
 });
 
+// Starting point: at beginning of this application step
 When('I complete about the business', function () {
   return shared
   .assert.containsText('h1.heading-xlarge','Confirm the details about the organisation')
@@ -44,6 +46,7 @@ When('I complete about the business', function () {
   .click('#edit-next')
 });
 
+// Starting point: at beginning of this application step
 When('I complete the organisation registered address for direct partnership', function () {
   return shared
   .clearValue('#edit-postcode')
@@ -64,18 +67,21 @@ When('I complete the organisation registered address for direct partnership', fu
   .click('#edit-next')   
 });
 
+// Starting point: at beginning of this application step
 When('I complete the SIC codes', function () {
   return shared
   .click('#edit-sic-code option[value="38"]')
    .click('#edit-next')
 });
 
+// Starting point: at beginning of this application step
 When('I complete the employees', function () {
   return shared
   .click('#edit-employees-band option[value="250"]')
   .click('#edit-next')  
 });
 
+// Starting point: at beginning of this application step
 When('I complete the trading names', function () {
   return shared
   .assert.containsText('h1.heading-xlarge','Confirm the trading name')
@@ -83,6 +89,7 @@ When('I complete the trading names', function () {
   .click('#edit-next')
 });
 
+// Starting point: at beginning of this application step
 When('I complete the legal entities', function () {
   return shared
   .assert.containsText('h1.heading-xlarge','Confirm the legal entity')
@@ -101,6 +108,7 @@ When('I complete the legal entities', function () {
   .click('#edit-next')
 });
 
+// Starting point: at beginning of this application step
 When('I review the completions for direct partnership {string}', function (partnershipname) {
   return shared
   .assert.containsText('h1.heading-xlarge','Review the partnership summary information below')
@@ -117,6 +125,7 @@ When('I review the completions for direct partnership {string}', function (partn
    .assert.containsText('#edit-legal-entities','First Sole Trader')
 });
 
+// Starting point: at beginning of this application step
 When('I change the completed legal entities', function () {
   return shared
   .clickLinkByPureText('Change the new legal entities')
@@ -132,6 +141,7 @@ When('I change the completed legal entities', function () {
    .assert.containsText('#edit-legal-entities','55555555558')
 });
 
+// Starting point: at beginning of this application step
 When('I change the completed about the organisation', function () {
   return shared
   .clickLinkByPureText('Change the details about this partnership')
@@ -142,6 +152,7 @@ When('I change the completed about the organisation', function () {
   .assert.containsText('#edit-about-organisation','Change to the information about organisation details')
 });
 
+// Starting point: at beginning of this application step
 When('I submit final confirmation of completion by organisation {string}', function (partnershipname) {
   return shared
    .click('#edit-save')

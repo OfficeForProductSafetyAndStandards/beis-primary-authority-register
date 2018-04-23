@@ -2,6 +2,7 @@ const { client } = require('nightwatch-cucumber')
 const { Given, Then, When } = require('cucumber')
 const shared = client.page.shared();
 
+// Starting point: enforcement notifications received dashboard
 When('I successfully approve enforcement notice {string}', function (string) {
 return shared
     .clickLinkByPureText(string)
@@ -16,6 +17,7 @@ return shared
     .assert.containsText('.cols-6', 'Approved')
 });
 
+// Starting point: enforcement notifications received dashboard
 When('I successfully block enforcement notice {string}', function (string) {
     return shared
     .clickLinkByPureText(string)
@@ -30,6 +32,7 @@ When('I successfully block enforcement notice {string}', function (string) {
     .assert.containsText('.cols-6', 'Blocked')
 });
 
+// Starting point: enforcement notifications received dashboard
 When('I successfully refer enforcement notice {string}', function (string) {
     return shared
     .click('#edit-sort-bef-combine option[value="notice_date DESC"]')

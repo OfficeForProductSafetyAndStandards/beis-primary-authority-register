@@ -10,6 +10,7 @@ var city = faker.fake("{{address.city}}")
 var streetaddress1 = faker.fake("{{address.streetName}}")
 var county = faker.fake("{{address.county}}")
 
+// Starting point: After logging in a PA user
 When('I complete valid direct partnership application details', function () {
   return shared
   .clickLinkByPureText('Apply for a new partnership')
@@ -35,7 +36,8 @@ When('I complete valid direct partnership application details', function () {
   .setValue('#edit-about-partnership', 'About the partnership detail')
   .click('#edit-next')
 });
-  
+
+// Starting point: After entering in about partnership details
 Given('I complete valid organisation details for direct partnership {string}', function (partnershipname) {
   console.log(title,' | ' + firstname,' | '+lastname,' | '+postcode,' | '+city,' | '+streetaddress1,' | '+county)
   return client
@@ -77,7 +79,8 @@ Given('I complete valid organisation details for direct partnership {string}', f
   .click('#edit-next')
 });
 
-When('I complete review of the valid direct partnership application', function () {
+// Starting point: After comopleting and submitting the organisation details
+When('I complete review and submit valid direct partnership application', function () {
   return client
     .assert.containsText('h1.heading-xlarge .heading-secondary','New partnership application')
     .assert.containsText('h1.heading-xlarge','Review the partnership summary information below')
@@ -85,6 +88,7 @@ When('I complete review of the valid direct partnership application', function (
     .click('#edit-save')
 }); 
 
+// Starting point: After review and submission complete
 When('the direct partnership creation email template is correct', function () {
  return shared
   .assert.containsText('h1.heading-xlarge .heading-secondary','New partnership application')

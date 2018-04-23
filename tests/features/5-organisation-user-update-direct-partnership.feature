@@ -15,10 +15,6 @@ Feature: Business User - Update Partnership
 
         When I update the registered address for organisation
 
-        # EDIT ABOUT THE ORGANISATION
-
-        And I update about the organisation
-
         # ADD SIC CODES
 
         And I update the SIC code

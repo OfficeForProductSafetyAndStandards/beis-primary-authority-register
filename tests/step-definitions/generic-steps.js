@@ -69,13 +69,8 @@ const shared = client.page.shared();
   });
 
   Given('I am logged in as {string}', function (string) {
-    return client
-        .url(client.launch_url + '/user/login')
-        .setValue('#edit-name', string)
-        .setValue('#edit-pass', 'TestPassword')
-        .click('#edit-submit')
-        .waitForElementVisible('#footer', 15000)
-        .assert.containsText('body', 'Log out')
+    return shared
+      .loggedInAs(string)
   });
 
   Then('I clear the inputfield {string}', function (elem) {
@@ -91,16 +86,18 @@ const shared = client.page.shared();
         text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return client
-        .setValue(fieldName, text + 'last text in a long string');
+      .setValue(fieldName, text + 'last text in a long string');
   });
 
 
   Then('the element {string} is not empty', function (string) {
-    return client.waitForElementVisible(string, 1000);
+    return client
+      .waitForElementVisible(string, 1000);
   });
 
   Then('the element {string} is empty', function (string) {
-    return client.waitForElementVisible(string, 1000);
+    return client
+      .waitForElementVisible(string, 1000);
   });
 
   When('I click on authority selection if available', function () {
@@ -110,12 +107,12 @@ const shared = client.page.shared();
 
   When('I click on new organisation option if available', function () {
     return shared
-            .chooseNewOrganisationOptionIfPresent('neworg','#edit-par-data-organisation-id-new')
+      .chooseNewOrganisationOptionIfPresent('neworg','#edit-par-data-organisation-id-new')
   });
 
   When('I click new person if suggestions displayed', function () {
     return shared
-            .chooseNewPersonIfOptionPresent('newperson','#edit-par-data-person-id-new') 
+      .chooseNewPersonIfOptionPresent('newperson','#edit-par-data-person-id-new') 
    });
 
    When('the {string} email confirmations for {string} are processed', function (emailSubject, user) {
@@ -128,26 +125,12 @@ const shared = client.page.shared();
   });
 
   When('I run tota11y against the current page', function () {
-    return client.click('.tota11y-toolbar-toggle');
-    var list = ['Headings', 'Contrast', 'Link text', 'Labels', 'Image alt-text'];
-    for (var i = 0; i < list.length; i++) {
-        browser.click('.tota11y-plugin-title*=' + list[i]);
-        if (client.isVisible('.tota11y-info-errors') === true) {
-            const errors = browser.getText('.tota11y-info-errors');
-            var url = browser.getUrl();
-            console.log(url, errors);
-            //expect(browser.isVisible('body')).to.equal(true, errors);
-        }
-    }
-    browser.click('.tota11y-toolbar-toggle');
+    return shared
+      .runTota11yAgainstCurrentPage()
   });
   
   When('I go to partnership detail page for my partnership {string}', function (orgname) {
     return shared
-    .clickLinkByPureText('Dashboard')
-    .clickLinkByPureText('See your partnerships')
-    .setValue('#edit-keywords', orgname)
-    .click('#edit-submit-par-user-partnerships')
-    .clickLinkByPureText(orgname)
+    .goToPartnershipDetailPage(orgname)
    }); 
    
