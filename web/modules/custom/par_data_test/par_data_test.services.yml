@@ -1,0 +1,5 @@
+services:
+  par_data_test.import_subscriber:
+    class: '\Drupal\par_data_test\EventSubscriber\ImportSubscriber'
+    tags:
+      - { name: 'event_subscriber' }

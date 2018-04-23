@@ -67,13 +67,13 @@ class ParDataAdvice extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
-  public function revoke() {
+  public function revoke($save = TRUE) {
     // Only advice of type 'authority_advice' can be revoked.
     if ($this->getRawStatus() === 'authority_advice') {
-      parent::revoke();
+      parent::revoke($save);
     }
     else {
-      $this->archive();
+      $this->archive($save);
     }
   }
 

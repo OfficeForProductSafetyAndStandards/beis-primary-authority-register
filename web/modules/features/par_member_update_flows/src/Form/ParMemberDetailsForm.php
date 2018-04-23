@@ -32,8 +32,10 @@ class ParMemberDetailsForm extends ParBaseForm {
    */
   public function loadData() {
     $par_data_coordinated_business = $this->getFlowDataHandler()->getParameter('par_data_coordinated_business');
-    $this->getFlowDataHandler()->setParameter('par_data_organisation', $par_data_coordinated_business->getOrganisation(TRUE));
-//    parent::loadData();
+    if ($par_data_coordinated_business) {
+      $this->getFlowDataHandler()->setParameter('par_data_organisation', $par_data_coordinated_business->getOrganisation(TRUE));
+    }
+    parent::loadData();
   }
 
   /**

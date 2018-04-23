@@ -2,6 +2,7 @@
 
 namespace Drupal\par_partnership_confirmation_flows\Form;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
@@ -58,26 +59,87 @@ class ParConfirmationReviewForm extends ParBaseForm {
     /** @var ParDataLegalEntity[] $par_data_legal_entities */
     /** @var ParDataLegalEntity[] $par_data_legal_entities_existing */
 
+    // Return path for all redirect links.
+    $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
+
     // Display details about the organisation for information.
     $form['about_organisation'] = $this->renderSection('About the organisation', $par_data_organisation, ['comments' => 'about']);
+    $form['about_organisation']['comments']['operations']['edit'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlowNegotiator()->getFlow()
+          ->getLinkByCurrentOperation('about_business', [], ['query' => ['destination' => $return_path]])
+          ->setText('Change the details about this partnership')
+          ->toString(),
+      ]),
+    ];
 
-    // Display organisation name and organisation primary address.
+    // Display organisation name.
     $form['organisation_name'] = $this->renderSection('Organisation name', $par_data_organisation, ['organisation_name' => 'title'], [], TRUE, TRUE);
+
+    // Display the organisation's primary address.
     $form['organisation_registered_address'] = $this->renderSection('Organisation address', $par_data_organisation, ['field_premises' => 'summary'], [], TRUE, TRUE);
+    $form['organisation_registered_address']['field_premises']['operations']['edit'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlowNegotiator()->getFlow()
+          ->getLinkByCurrentOperation('address', [], ['query' => ['destination' => $return_path]])
+          ->setText('Change the primary address')
+          ->toString(),
+      ]),
+    ];
 
     // Display contacts at the organisation.
     $form['organisation_contacts'] = $this->renderSection('Contacts at the Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed'], [],  TRUE, TRUE);
+    $form['organisation_contacts']['field_organisation_person']['operations']['edit'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlowNegotiator()->getFlow()
+          ->getLinkByCurrentOperation('contact', [], ['query' => ['destination' => $return_path]])
+          ->setText('Change the main contact')
+          ->toString(),
+      ]),
+    ];
 
     // Display SIC code, number of employees.
     $form['sic_code'] = $this->renderSection('Primary SIC code', $par_data_organisation, ['field_sic_code' => 'detailed'], [], TRUE, TRUE);
+    $form['sic_code']['field_sic_code']['operations']['edit'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlowNegotiator()->getFlow()
+          ->getLinkByCurrentOperation('sic_code', [], ['query' => ['destination' => $return_path]])
+          ->setText('Change the SIC code')
+          ->toString(),
+      ]),
+    ];
 
     if ($par_data_partnership->isDirect()) {
       // Display the number of employees.
       $form['number_employees'] = $this->renderSection('Number of employees at the organisation', $par_data_organisation, ['employees_band' => 'detailed']);
+      $form['number_employees']['employees_band']['operations']['edit'] = [
+        '#type' => 'markup',
+        '#markup' => t('@link', [
+          '@link' => $this->getFlowNegotiator()->getFlow()
+            ->getLinkByCurrentOperation('employee_number', [], ['query' => ['destination' => $return_path]])
+            ->setText('Change the number of employees')
+            ->toString(),
+        ]),
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+      ];
     }
     if ($par_data_partnership->isCoordinated()) {
       // Display the size of the coordinator.
       $form['number_members'] = $this->renderSection('Number of members', $par_data_organisation, ['size' => 'detailed']);
+      $form['number_members']['size']['operations']['edit'] = [
+        '#type' => 'markup',
+        '#markup' => t('@link', [
+          '@link' => $this->getFlowNegotiator()->getFlow()
+            ->getLinkByCurrentOperation('business_size', [], ['query' => ['destination' => $return_path]])
+            ->setText('Change the size of the business')
+            ->toString(),
+        ]),
+      ];
     }
 
     // Display legal entities.
@@ -91,10 +153,41 @@ class ParConfirmationReviewForm extends ParBaseForm {
         '#title' => 'Legal Entities',
         'legal_entities' => $this->renderEntities('Legal entities', $legal_entities),
       ];
+      if (!empty($par_data_organisation->getLegalEntity())) {
+        $form['legal_entities_select_link'] = [
+          '#type' => 'markup',
+          '#markup' => t('@link', [
+            '@link' => $this->getFlowNegotiator()->getFlow()
+              ->getLinkByCurrentOperation('legal_select', [], ['query' => ['destination' => $return_path]])
+              ->setText('Select legal entities from the organisation')
+              ->toString(),
+          ]),
+        ];
+      }
+      $form['legal_entities_new_link'] = [
+        '#type' => 'markup',
+        '#markup' => t('@link', [
+          '@link' => $this->getFlowNegotiator()->getFlow()
+            ->getLinkByCurrentOperation('legal_add', [], ['query' => ['destination' => $return_path]])
+            ->setText('Change the new legal entities')
+            ->toString(),
+        ]),
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+      ];
     }
 
     // Display trading names.
     $form['trading_names'] = $this->renderSection('Trading names', $par_data_organisation, ['trading_name' => 'full']);
+    $form['trading_names']['trading_name']['operations']['edit'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlowNegotiator()->getFlow()
+          ->getLinkByCurrentOperation('trading_name', [], ['query' => ['destination' => $return_path]])
+          ->setText('Change the trading name')
+          ->toString(),
+      ]),
+    ];
 
     $form['partnership_info_agreed_business'] = [
       '#type' => 'checkbox',

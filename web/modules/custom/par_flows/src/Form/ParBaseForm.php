@@ -456,6 +456,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function multipleItemActionsSubmit(array &$form, FormStateInterface $form_state) {
+    // Ensure that destination query params don't redirect.
+    $this->selfRedirect($form_state);
+
     // Always store the values whenever we submit the form.
     $values = $this->cleanseFormDefaults($form_state->getValues());
     $values = $this->cleanseMultipleValues($values);
@@ -466,6 +469,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function removeItem(array &$form, FormStateInterface $form_state) {
+    // Ensure that destination query params don't redirect.
+    $this->selfRedirect($form_state);
+
     // Always store the values whenever we submit the form.
     $values = $this->cleanseFormDefaults($form_state->getValues());
     $values = $this->cleanseMultipleValues($values);
@@ -519,6 +525,21 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // Go to cancel step.
     $next = $this->getFlowNegotiator()->getFlow()->getPrevRoute('cancel');
     $form_state->setRedirect($next, $this->getRouteParams());
+  }
+
+  /**
+   * A helper function to ensure in form buttons don't redirect away.
+   *
+   * @param $form_state
+   */
+  public function selfRedirect(&$form_state) {
+    $options = [];
+    $query = $this->getRequest()->query;
+    if ($query->has('destination')) {
+      $options['query']['destination'] = $query->get('destination');
+      $query->remove('destination');
+    }
+    $form_state->setRedirect('<current>', $this->getRouteParams(), $options);
   }
 
   /**

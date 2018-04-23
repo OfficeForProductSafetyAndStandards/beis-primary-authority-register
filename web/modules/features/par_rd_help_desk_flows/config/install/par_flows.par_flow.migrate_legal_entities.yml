@@ -1,0 +1,12 @@
+langcode: en
+status: true
+dependencies: {  }
+id: migrate_legal_entities
+label: 'Migrate Legal Entities'
+default_title: null
+default_section_title: null
+description: 'Migrate Legal Entities from the organisation to the partnership.'
+save_method: end
+steps:
+  1:
+    route: par_help_desks_flows.legal_entity_migration
