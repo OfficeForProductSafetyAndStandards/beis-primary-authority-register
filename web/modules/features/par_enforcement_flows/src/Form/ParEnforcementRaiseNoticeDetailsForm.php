@@ -75,6 +75,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
+      '#weight' => 100,
     ];
 
     $form['enforcement_type']['type'] = [
@@ -82,6 +83,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       '#options' => $enforcement_notice_entity,
       '#default_value' => key($enforcement_notice_entity),
       '#required' => TRUE,
+      '#weight' => 100,
     ];
 
     $form['summary_title'] = [
@@ -90,6 +92,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
+      '#weight' => 100,
     ];
 
     $form['enforcement_title'] = [
@@ -98,6 +101,7 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
+      '#weight' => 100,
     ];
 
     $enforcement_data = [
@@ -107,18 +111,24 @@ class ParEnforcementRaiseNoticeDetailsForm extends ParBaseEnforcementForm {
       'Your reasons for proposing the enforcement action',
     ];
 
-    $form['enforcement_text'] = ['#theme' => 'item_list', '#items' => $enforcement_data];
+    $form['enforcement_text'] = [
+      '#theme' => 'item_list',
+      '#items' => $enforcement_data,
+      '#weight' => 100,
+    ];
 
     $form['action_summary_title'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Provide a summary of the enforcement notification'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
+      '#weight' => 100,
     ];
 
     $form['summary'] = [
       '#type' => 'textarea',
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("summary"),
+      '#weight' => 100,
    ];
 
     return parent::buildForm($form, $form_state);

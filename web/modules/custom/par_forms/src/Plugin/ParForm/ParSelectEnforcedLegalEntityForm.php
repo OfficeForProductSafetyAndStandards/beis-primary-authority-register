@@ -14,6 +14,8 @@ use Drupal\par_forms\ParFormPluginBase;
  */
 class ParSelectEnforcedLegalEntityForm extends ParFormPluginBase {
 
+  const ADD_NEW = 'add_new';
+
   /**
    * {@inheritdoc}
    */
@@ -48,7 +50,7 @@ class ParSelectEnforcedLegalEntityForm extends ParFormPluginBase {
     // If the partnership is direct or there is only one member go to the next step.
     if (count($select_legal_entities) >= 1) {
       // Add the ability to add a non-associated legal entity name.
-      $select_legal_entities['add_new'] = 'Add a legal entity';
+      $select_legal_entities[self::ADD_NEW] = 'Add a legal entity';
 
       $form['legal_entities_select'] = [
         '#type' => 'radios',
@@ -66,6 +68,12 @@ class ParSelectEnforcedLegalEntityForm extends ParFormPluginBase {
         'visible' => [
           ':input[name="legal_entities_select"]' => ['value' => 'add_new'],
         ],
+      ];
+    }
+    else {
+      $form['legal_entities_select'] = [
+        '#type' => 'hidden',
+        '#value' => self::ADD_NEW,
       ];
     }
 

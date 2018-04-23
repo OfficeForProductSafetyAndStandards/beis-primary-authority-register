@@ -36,6 +36,7 @@ steps:
       select_enforced_legal_entity: {}
     form_data:
       enforcing_officer: par_enforcement_officer_details
+      select_legal: par_enforcement_notice_raise
       authority_selection: par_authority_selection
       organisation_selection: par_enforce_organisation
   5:
@@ -45,6 +46,7 @@ steps:
       enforcement_summary: {}
     form_data:
       enforcing_officer: par_enforcement_officer_details
+      select_legal: par_enforcement_notice_raise
       authority_selection: par_authority_selection
       organisation_selection: par_enforce_organisation
   6:
@@ -56,6 +58,7 @@ steps:
         cardinality: -1
     form_data:
       enforcing_officer: par_enforcement_officer_details
+      select_legal: par_enforcement_notice_raise
       authority_selection: par_authority_selection
       organisation_selection: par_enforce_organisation
   7:
