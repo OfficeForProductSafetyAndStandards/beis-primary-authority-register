@@ -2,7 +2,7 @@ const { client } = require('nightwatch-cucumber')
 const { Given, Then, When } = require('cucumber')
 const shared = client.page.shared();
 
-When('I edit registered address for organisation', function () {
+When('I update the registered address for organisation', function () {
   return shared
   .clickLinkByPureText('edit address')
   .clearValue('#edit-county')
@@ -26,7 +26,7 @@ When('I edit registered address for organisation', function () {
   .assert.containsText('#edit-registered-address', 'SE16 4NX')
 });
 
-When('I edit about the organisation', function () {
+When('I update about the organisation', function () {
   return shared
     .clickLinkByPureText('edit about the organisation')
     .clearValue('#edit-about-business')
@@ -48,7 +48,7 @@ When('I edit about the partnership', function () {
     .assert.containsText('#edit-about-partnership', 'Change to the about partnership details section')
 });
   
-When('I change the SIC code', function () {
+When('I update the SIC code', function () {
   return shared
       .clickLinkByPureText('add another sic code')
       .click('#edit-sic-code option[value="38"]')
@@ -56,7 +56,7 @@ When('I change the SIC code', function () {
       .assert.containsText('#edit-sic-codes', 'Social care activities without accommodation')
     });
 
-When('I change the number of employees', function () {
+When('I update the number of employees', function () {
   return shared
     .clickLinkByPureText('edit number of employees')
     .click('#edit-employees-band option[value="250"]')

@@ -13,19 +13,19 @@ Feature: Business User - Update Partnership
        
         # EDIT REGISTERED ADDRESS
 
-        When I edit registered address for organisation
+        When I update the registered address for organisation
 
         # EDIT ABOUT THE ORGANISATION
 
-        And I edit about the organisation
+        And I update about the organisation
 
         # ADD SIC CODES
 
-        And I change the SIC code
+        And I update the SIC code
 
         # ADD EMPLOYEES
 
-        And I change the number of employees
+        And I update the number of employees
 
         # ADD NEW TRADING NAME
 

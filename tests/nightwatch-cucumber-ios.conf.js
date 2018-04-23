@@ -21,11 +21,14 @@ module.exports = {
     live_output: false,
     disable_colors: false,
     selenium: {
-        start_process: true,
+        start_process: fails,
         server_path: seleniumServer.path,
         log_path: '',
         host: '127.0.0.1',
         port: 4444
+    },
+    appium: {
+        start_process: true
     },
     test_settings: {
         default: {
@@ -34,13 +37,13 @@ module.exports = {
             selenium_port: 4723,
             selenium_host: '127.0.0.1',
             silent: true,
-            automationName: 'XCUITest',
             desiredCapabilities : {
               browserName : 'Safari',
+              automationName: 'XCUITest',
               platformName : 'iOS',
               platformVersion : '11.2',
               deviceName : 'iPad Air 2',
-              noReset: false
+            //   noReset: true
               // "app": APP_PATH + "ios/PieDrive.app", // path for the ios app you want to test
             },
             screenshots : {

@@ -142,3 +142,12 @@ const shared = client.page.shared();
     browser.click('.tota11y-toolbar-toggle');
   });
   
+  When('I go to partnership detail page for my partnership {string}', function (orgname) {
+    return shared
+    .clickLinkByPureText('Dashboard')
+    .clickLinkByPureText('See your partnerships')
+    .setValue('#edit-keywords', orgname)
+    .click('#edit-submit-par-user-partnerships')
+    .clickLinkByPureText(orgname)
+   }); 
+   
