@@ -11,27 +11,27 @@ Feature: Business User - Complete organisation details
 
         And I go to partnership detail page for my partnership "Organisation For Direct Partnership"
 
-        # EDIT ABOUT THE BUSINESS
+        # COMPLETE ABOUT THE BUSINESS
 
         And I complete about the business
 
-        # EDIT REGISTERED ADDRESS
+        # COMPLETE REGISTERED ADDRESS
 
-        And I complete the organisation registered address
+        And I complete the organisation registered address for direct partnership
         
-        # ADD SIC CODES
+        # COMPLETE SIC CODES
 
         And I complete the SIC codes
 
-        # ADD EMPLOYEES
+        # COMPLETE EMPLOYEES
 
         And I complete the employees
         
-        # ADD TRADING NAME
+        # COMPLETE TRADING NAME
 
         And I complete the trading names
 
-        # ADD LEGAL ENTITY
+        # COMPLETE LEGAL ENTITY
 
         And I complete the legal entities
 

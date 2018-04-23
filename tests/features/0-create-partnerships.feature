@@ -3,7 +3,7 @@ Feature: New Direct Partnership For PA To Approve
     Background: 
         Given I am logged in as "par_authority@example.com"
     
-    @directpartneship @ci
+    @directpartneship  @ci
     Scenario: New Direct Partnership   
 
         # PARTNERSHIP APPLY

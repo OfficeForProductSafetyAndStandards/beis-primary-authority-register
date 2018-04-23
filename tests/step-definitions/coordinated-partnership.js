@@ -80,6 +80,29 @@ When('I complete review of the valid coordinated partnership application', funct
     .click('#edit-save')
 }); 
 
+When('I complete the business contact details', function () {
+  return client
+  .clearValue( '#edit-salutation')
+  .clearValue( '#edit-first-name')
+  .clearValue( '#edit-last-name')
+  .clearValue( '#edit-work-phone')
+  .clearValue( '#edit-mobile-phone')
+  .clearValue( '#edit-work-phone')
+  .clearValue( '#edit-mobile-phone')
+  .clearValue( '#edit-email')
+  .setValue( '#edit-salutation',title)
+  .setValue( '#edit-first-name',firstname)
+  .setValue( '#edit-last-name',lastname)
+  .setValue( '#edit-work-phone','999999999')
+  .setValue( '#edit-mobile-phone','1111111111111')
+  .setValue( '#edit-work-phone','02079999999')
+  .setValue( '#edit-mobile-phone','078659999999')
+  .setValue( '#edit-email','par_coordinator@example.com')
+  .click('#edit-preferred-contact-communication-mobile')
+  .setValue( '#edit-notes','Some additional notes')
+  .click('#edit-next')
+}); 
+
 When('the coordinated partnership creation email template is correct', function () {
  return shared
   .assert.containsText('h1.heading-xlarge .heading-secondary','New partnership application')
@@ -91,4 +114,23 @@ When('the coordinated partnership creation email template is correct', function 
   .assert.containsText('#block-par-theme-content', title + ' ' + firstname + ' ' + lastname + ' will receive an email with a link to register/login to the PAR website')
   .clickLinkByPureText('Done')
   .assert.containsText('h1.heading-xlarge','Primary Authority Register')
+});
+
+When('I complete the organisation registered address for coordinated partnership', function () {
+  return shared
+  .clearValue('#edit-postcode')
+  .clearValue('#edit-address-line1')
+  .clearValue('#edit-address-line2')
+  .clearValue('#edit-town-city')
+  .clearValue('#edit-county')
+  .click('#edit-next')
+  .assert.containsText('h1.heading-xlarge','Confirm the primary address details')
+  .setValue('#edit-postcode','SE16 4NX')
+  .setValue('#edit-address-line1','1 High St')
+  .setValue('#edit-address-line2','Southwark')
+  .setValue('#edit-town-city','London')
+  .setValue('#edit-county','London')
+  .click('#edit-country-code option[value="GB"]')
+  .click('#edit-nation option[value="GB-ENG"]')
+  .click('#edit-next')
 });

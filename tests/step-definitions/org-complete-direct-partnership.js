@@ -44,7 +44,7 @@ When('I complete about the business', function () {
   .click('#edit-next')
 });
 
-When('I complete the organisation registered address', function () {
+When('I complete the organisation registered address for direct partnership', function () {
   return shared
   .clearValue('#edit-postcode')
   .clearValue('#edit-address-line1')
