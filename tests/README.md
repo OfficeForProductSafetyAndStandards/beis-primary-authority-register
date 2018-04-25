@@ -39,6 +39,21 @@ To run by tag
 $ node_modules/.bin/nightwatch -c ./nightwatch-cucumber-parallel.conf.js -- --tag tagname
 ```
 
+#### Examples
+
+Direct partnership related tests
+```
+$ node_modules/.bin/nightwatch -c ./nightwatch-cucumber-parallel.conf.js -- --tag directpartnership
+```
+Coordinated partnership related tests
+```
+$ node_modules/.bin/nightwatch -c ./nightwatch-cucumber-parallel.conf.js -- --tag coordinatedpartnership
+```
+Enforcement Notice related tests
+```
+$ node_modules/.bin/nightwatch -c ./nightwatch-cucumber-parallel.conf.js -- --tag enforcementnotice
+```
+
 ### Step 4
 
 Generate HTML report (with screenshots)

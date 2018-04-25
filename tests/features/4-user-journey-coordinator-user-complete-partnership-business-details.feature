@@ -39,21 +39,23 @@ Feature: Coordinator User - Complete organisation details
 
         # REVIEW
 
-        Then the element "h1.heading-xlarge" contains the text "Review the partnership summary information below"
-        Then the element "#edit-organisation-registered-address" contains the text "1 High St"
-        And the element "#edit-organisation-registered-address" contains the text "Southwark"
-        And the element "#edit-organisation-registered-address" contains the text "London"
-        And the element "#edit-organisation-registered-address" contains the text "SE16 4NX"
-        Then the element "#edit-about-organisation" contains the text "Some information about organisation details"
-        Then the element "#edit-sic-code" contains the text "Social care activities without accommodation"
-        Then the element "#edit-legal-entities" contains the text "New LLP Company"
-        Then the element "#edit-legal-entities" contains the text "Limited Liability Partnership"
-        Then the element "#edit-legal-entities" contains the text "1234567890"
-        And I click on the checkbox "#edit-partnership-info-agreed-business"
-        And I click on the checkbox "#edit-terms-organisation-agreed"
-        And I click on the button "#edit-save"
-        Then the element "h1.heading-xlarge" contains the text "Thank you for completing the application"
-        And I click on the button ".button"
+        And I submit final confirmation of completion by organisation "Organisation For Coordinated Partnership"
+
+        # Then the element "h1.heading-xlarge" contains the text "Review the partnership summary information below"
+        # Then the element "#edit-organisation-registered-address" contains the text "1 High St"
+        # And the element "#edit-organisation-registered-address" contains the text "Southwark"
+        # And the element "#edit-organisation-registered-address" contains the text "London"
+        # And the element "#edit-organisation-registered-address" contains the text "SE16 4NX"
+        # Then the element "#edit-about-organisation" contains the text "Some information about organisation details"
+        # Then the element "#edit-sic-code" contains the text "Social care activities without accommodation"
+        # Then the element "#edit-legal-entities" contains the text "New LLP Company"
+        # Then the element "#edit-legal-entities" contains the text "Limited Liability Partnership"
+        # Then the element "#edit-legal-entities" contains the text "1234567890"
+        # And I click on the checkbox "#edit-partnership-info-agreed-business"
+        # And I click on the checkbox "#edit-terms-organisation-agreed"
+        # And I click on the button "#edit-save"
+        # Then the element "h1.heading-xlarge" contains the text "Thank you for completing the application"
+        # And I click on the button ".button"
 
     @coordinatedpartneship @ci
     Examples:

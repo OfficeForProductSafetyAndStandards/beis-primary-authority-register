@@ -1,7 +1,8 @@
 // assert.elementCount('element', 1)
 exports.assertion = function (selector, count) {
-    this.message = 'Testing if element <' + selector + '> has count: ' + count;
-    this.expected = count;
+    var countEl = parseInt(count, 10);
+    this.message = 'Testing if element <' + selector + '> has count: ' + countEl;
+    this.expected = countEl;
     this.pass = function (val) {
       return val === this.expected;
     }
@@ -17,3 +18,5 @@ exports.assertion = function (selector, count) {
       });
     }
   }
+
+  

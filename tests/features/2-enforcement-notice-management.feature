@@ -6,7 +6,7 @@ Feature: Enforcement notice management
         And I click the link text "See enforcement notifications sent"
         Then the element ".heading-secondary" contains the text "Enforcement Notifications"
     
-    @ci @PAR1013 @PAR1049
+    @ci @PAR1013 @PAR1049 @enforcementnotices
     Scenario: Enforcement notice management
 
         # APPROVE FORM
@@ -34,7 +34,7 @@ Feature: Enforcement notice management
         And the element ".table-scroll-wrapper" contains the text "Enforcement notice 3"
         # And the element ".table-scroll-wrapper" does not contain the text "Enforcement notice 2"
 
-    @ci
+    @ci @enforcementnotices
     Scenario: Check view of an unapproved enforcement notice approval 
 
         # APPROVAL FORM

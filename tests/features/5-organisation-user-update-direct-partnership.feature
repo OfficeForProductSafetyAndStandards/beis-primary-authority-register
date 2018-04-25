@@ -1,6 +1,6 @@
 Feature: Business User - Update Partnership
 
-    @ci @PAR990 @PAR991
+    @ci @PAR990 @PAR991 @directpartnership
     Scenario: Business User - Update Partnership
 
         #LOGIN

@@ -1,6 +1,6 @@
 Feature: Enforcement Officer - Enforcement Notice Process
 
-    @ci
+    @ci @enforcementnotices
     Scenario Outline: Enforcement Officer - Issue enforcement notice
 
         #LOGIN

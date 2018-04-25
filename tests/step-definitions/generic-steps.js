@@ -9,14 +9,26 @@ const shared = client.page.shared();
       // .assert.urlContains(locpath);
   });
 
+  When('there is {string} occurences of element {string}', function (string, string2) {
+    // Write code here that turns the phrase above into concrete actions
+    return client.assert.elementCount(string2, string)
+  });
+
   Then('I click the link text {string}', function (string) {
     return shared
-        .clickLinkByPureText(string)
+        .clickLinkByPureText(string).then(function (){
+          return client
+            .waitForElementVisible('h1', 3000)
+      })
   });
 
   Then('I click on the button {string}', function (string) {
     return client
-        .click(string)
+        .click(string).then(function (){
+          return client
+            .waitForElementNotVisible('h1', 3000)
+            .waitForElementVisible('h1', 3000)
+      })
   });
 
   Then('I click on the radio {string}', function (string) {
@@ -34,7 +46,7 @@ const shared = client.page.shared();
   });
 
   Then('the element {string} contains the text {string}', function (elName, elText) {
-    return client.assert.containsText(elName,elText);
+    return client.expect.element(elName).text.to.contain(elText)
   });
 
   Then('the element {string} does not contain the text {string}', function (string, string2) {
@@ -67,8 +79,11 @@ const shared = client.page.shared();
 
   Given('I add {string} to the inputfield {string}', function (string, string2) {
     return client
-        .clearValue(string2)
-        .setValue(string2, string);
+        .expect.element(string2).to.be.present.then(function (){
+          return client
+            .clearValue(string2)
+            .setValue(string2, string);
+      })
   });
 
   Given('I am logged in as {string}', function (string) {

@@ -1,6 +1,6 @@
 Feature: Business User - Complete organisation details
 
-    @ci
+    @ci @directpartnership
     Scenario: Business User - Complete organisation details
 
         # LOGIN

@@ -1,6 +1,6 @@
 Feature: Coordinator User - Upload Members
 
-    @ci @PAR790
+    @ci @PAR790 @coordinatedpartneship
     Scenario: Coordinator User - Upload Members
 
         # PARTNERSHIPS DASHBOARD
