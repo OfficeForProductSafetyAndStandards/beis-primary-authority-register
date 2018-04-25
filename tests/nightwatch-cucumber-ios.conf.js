@@ -9,7 +9,7 @@ require('nightwatch-cucumber')({
             '-- --tag', 'ci',
             '--format', 'node_modules/cucumber-pretty', 
             '--format', 'json:reports/cucumber.json', 
-            'features/0-create-partnerships.feature'
+            'features'
         ]
 })
 
@@ -28,18 +28,16 @@ module.exports = {
         port: 4444
     },
     appium: {
-        start_process: true
+        start_process: false
     },
     test_settings: {
         default: {
             launch_url: 'http://localhost:8111',
-            selenium_start_process: true,
             selenium_port: 4723,
             selenium_host: '127.0.0.1',
             silent: true,
             desiredCapabilities : {
               browserName : 'Safari',
-              automationName: 'XCUITest',
               platformName : 'iOS',
               platformVersion : '11.2',
               deviceName : 'iPad Air 2',

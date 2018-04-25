@@ -5,25 +5,28 @@ const shared = client.page.shared();
   Given(/^I open the path "([^"]*)"$/, (locpath) => {
     return client
       .url(client.launch_url+locpath)
-      .waitForElementVisible('body', 1000)
+      .waitForElementVisible('.button', 10000)
       // .assert.urlContains(locpath);
   });
 
-  Then(/^I click the link text "([^"]*)"$/, (linkText) => {
+  Then('I click the link text {string}', function (string) {
     return shared
-        .clickLinkByPureText(linkText)
+        .clickLinkByPureText(string)
   });
 
   Then('I click on the button {string}', function (string) {
-    return client.click(string);
+    return client
+        .click(string)
   });
 
   Then('I click on the radio {string}', function (string) {
-    return client.click(string);
+    return client
+        .click(string)
   });
 
   Then('I click on the checkbox {string}', function (string) {
-    return client.click(string);
+    return client
+        .click(string)
   });
 
   Then('I upload the file {string} to field {string}', function (filepath, uploadfield) {
@@ -39,7 +42,7 @@ const shared = client.page.shared();
   });
 
   When('the element {string} is visible', function (string) {
-    return client.waitForElementVisible(string, 1000);
+    return client.waitForElementVisible(string, 10000);
   });
  
   Then('the inputfield {string} contains the text {string}', function (string, string2) {

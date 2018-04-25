@@ -2,11 +2,11 @@ module.exports = {
 
     // this will overwrite the default polling interval (currently 500ms) for waitFor commands
     // and expect assertions that use retry
-    waitForConditionPollInterval : 3000,
+    waitForConditionPollInterval : 10000,
   
     // default timeout value in milliseconds for waitFor commands and implicit waitFor value for
     // expect assertions
-    waitForConditionTimeout : 30000,
+    waitForConditionTimeout : 20000,
   
     // this will cause waitFor commands on elements to throw an error if multiple
     // elements are found using the given locate strategy and selector
@@ -16,3 +16,5 @@ module.exports = {
     // or an error is thrown
     asyncHookTimeout : 20000
   };
+
+  

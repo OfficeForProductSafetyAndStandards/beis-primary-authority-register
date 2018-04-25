@@ -52,6 +52,18 @@ $ node generate-report.js
 
 Using Appium - in order to run tests against, you will need Xcode installed, to use the simulators.
 
-To run
+Prequisistes:
+XCode 9.2+
+
+There are neough emulators that come with XCode package, but to install, you will need to open from Xmcode app:
+
+* Xcode > Open Developer Tool > Simulator
+* In Simulator go to: Hardware > Device > Manage Devices
+* In devices window at the bottom of the left column, click the Add button (+)
+* Now follow the dialog.
+
+To run:
+
+(XCode app must be open)
 $ node_modules/.bin/appium
 $ node_modules/.bin/nightwatch -c ./nightwatch-cucumber-ios.conf.js

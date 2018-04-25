@@ -14,7 +14,7 @@ var county = faker.fake("{{address.county}}")
   return shared
   .clickLinkByPureText('Dashboard')
   .clickLinkByPureText('See your partnerships')
-  .setValue('#edit-keywords', 'Organisation For Direct Partnership')
+  .setValue('#edit-keywords', authority)
   .click('#edit-submit-par-user-partnerships')
   .clickLinkByPureText(authority)
  });

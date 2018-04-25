@@ -1,11 +1,14 @@
 Feature: Helpdesk approve partnership
 
-    @ci
+    @ci @partnershipapproval
     Scenario: Helpdesk approve partnership
 
         #LOGIN
         
-        Given I am logged in as "par_helpdesk@example.com"
+        Given I open the path "/user/login"
+        And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
+        When I add "TestPassword" to the inputfield "#edit-pass"
+        And I click on the button "#edit-submit"
         When I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
         # And I select the option with the value "confirmed_business" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-helpdesk-dashboard"
@@ -37,20 +40,24 @@ Feature: Helpdesk approve partnership
         # REVOKE DIRECT PARTNERSHIP
 
         When I click the link text "Helpdesk"
-        When I add "TSB Bank PLC" to the inputfield "#edit-keywords"
+        When I add "Organisation For Coordinated Partnership" to the inputfield "#edit-keywords"
         And I select the option with the value "0" for element "#edit-revoked"
         And I click on the button "#edit-submit-helpdesk-dashboard"
         Then I click the link text "Revoke partnership"
+        And the element "#edit-revocation-reason" is visible
         And I add "A reason for revoking" to the inputfield "#edit-revocation-reason"
-        And I click on the button "#edit-next"
+        And I click on the button "input[name=\"next\"]"
+         And the element "#edit-done" is visible
         And the element "#edit-partnership-info" contains the text "The following partnership has been revoked"
-        And I click on the button "#edit-done"
-        When I add "TSB Bank PLC" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-done"       
+        And the element "#edit-keywords" is visible
+        When I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
         And I select the option with the value "1" for element "#edit-revoked"
         And I click on the button "#edit-submit-helpdesk-dashboard"
-        And the element ".table-scroll-wrapper" contains the text "TSB Bank PLC"
+        And the element ".table-scroll-wrapper" is visible
+        And the element ".table-scroll-wrapper" contains the text "Organisation For Direct Partnership"
 
         # REVOKE PARTNERSHIP (SHORTER STEP VERSION)
 
-        And I successfully revoke a coordinated partnership
+        # And I successfully revoke a coordinated partnership
         
