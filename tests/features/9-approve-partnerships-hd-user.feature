@@ -40,7 +40,7 @@ Feature: Helpdesk approve partnership
         # REVOKE DIRECT PARTNERSHIP
 
         When I click the link text "Helpdesk"
-        When I add "Organisation For Coordinated Partnership" to the inputfield "#edit-keywords"
+        When I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
         And I select the option with the value "0" for element "#edit-revoked"
         And I click on the button "#edit-submit-helpdesk-dashboard"
         Then I click the link text "Revoke partnership"
