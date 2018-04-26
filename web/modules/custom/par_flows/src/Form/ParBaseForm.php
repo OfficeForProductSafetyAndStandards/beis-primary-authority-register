@@ -201,9 +201,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       }
     }
 
-    $form['actions'] = [
-      '#weight' => 999,
-    ];
+    // The components have weights around the 100 mark,
+    // so the actions must always come last.
+    $form['actions']['#weight'] = 999;
 
     // Only ever place a 'done' action by itself.
     if ($this->getFlowNegotiator()->getFlow()->hasAction('done')) {
@@ -630,6 +630,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           if (isset($value['remove'])) {
             unset($value['remove']);
           }
+
+          $value = NestedArray::filter($value);
 
           $values[$cardinality] = array_filter($value, function ($value, $key) use ($component) {
             $default_value = $component->getFormDefaultByKey($key);

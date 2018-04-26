@@ -30,14 +30,20 @@ class ParAddActionForm extends ParBaseForm {
    * Load the data for this form.
    */
   public function loadData() {
+
     // Load the plugin with a given cardinality, either the value being edited
     // or the next available new cardinality to add to.
     if (!$cardinality = $this->getFlowDataHandler()->getParameter('cardinality')) {
       foreach ($this->getComponents() as $component) {
-        // Only need to get the new cardinality of the first plugin,
-        // as all plugins on the page share the same value.
-        $this->getFlowDataHandler()->setParameter('cardinality', $component->getNewCardinality());
-        break;
+
+        // The cardinality we're loading for is the enforcement action plugin.
+        if ($component->getPluginId() === 'enforcement_action') {
+
+          // Only need to get the new cardinality of the first plugin,
+          // as all plugins on the page share the same value.
+          $this->getFlowDataHandler()->setParameter('cardinality', $component->getNewCardinality());
+          break;
+        }
       }
     }
 
