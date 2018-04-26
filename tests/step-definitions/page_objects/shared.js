@@ -125,11 +125,12 @@ module.exports = {
                 .waitForElementVisible('#footer', 15000)
                 .assert.containsText('body', 'Log out')
         },
-        goToPartnershipDetailPage: function(orgName){ 
+        goToPartnershipDetailPage: function(orgName, status){ 
         return this
             .clickLinkByPureText('Dashboard')
             .clickLinkByPureText('See your partnerships')
             .setValue('#edit-keywords', orgName)
+            .click('#edit-partnership-status-1 option[value="'+status+'"]')
             .click('#edit-submit-par-user-partnerships')
             .clickLinkByPureText(orgName)
         },
@@ -146,6 +147,15 @@ module.exports = {
                 }
             }
             return this.click('.tota11y-toolbar-toggle');
-            },
+        },
+        clickCheckboxIfUnselected: function(string) {
+            return this.element('id', string, (response) => {
+                    this.elementIdSelected(response.value.ELEMENT, (result) => {
+                      if(result.value == false) {
+                        this.click(string)
+                      };
+                    });
+            });
+        }
     }]
 }

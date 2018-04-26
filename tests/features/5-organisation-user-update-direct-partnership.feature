@@ -9,7 +9,7 @@ Feature: Business User - Update Partnership
 
         # GO TO A PARTNERSHIP PAGE
 
-        And I go to partnership detail page for my partnership "Organisation For Direct Partnership"
+        And I go to partnership detail page for my partnership "Organisation For Direct Partnership" with status "confirmed_business"
        
         # EDIT REGISTERED ADDRESS
 

@@ -9,7 +9,7 @@ Feature: Business User - Complete organisation details
 
         # COMPLETE PARTNERSHIP ORGANISATION DETAIL
 
-        And I go to partnership detail page for my partnership "Organisation For Direct Partnership"
+        And I go to partnership detail page for my partnership "Organisation For Direct Partnership" with status "confirmed_authority"
 
         # COMPLETE ABOUT THE BUSINESS
 

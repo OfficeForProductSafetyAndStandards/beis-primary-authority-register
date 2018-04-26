@@ -38,7 +38,7 @@ const shared = client.page.shared();
 
   Then('I click on the checkbox {string}', function (string) {
     return client
-        .click(string)
+        .clickCheckboxIfUnselected(string)
   });
 
   Then('I upload the file {string} to field {string}', function (filepath, uploadfield) {
@@ -147,8 +147,8 @@ const shared = client.page.shared();
       .runTota11yAgainstCurrentPage()
   });
   
-  When('I go to partnership detail page for my partnership {string}', function (orgname) {
+  When('I go to partnership detail page for my partnership {string} with status {string}', function (orgname, status) {
     return shared
-    .goToPartnershipDetailPage(orgname)
+    .goToPartnershipDetailPage(orgname,status)
    }); 
    

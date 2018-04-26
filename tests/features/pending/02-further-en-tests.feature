@@ -24,7 +24,7 @@ Feature: Further EN tests
         #LOGIN
         
         Given I am logged in as "eo_one_authority@example.com"
-        And I go to partnership detail page for my partnership "Organisation For Coordinated Partnership"
+        And I go to partnership detail page for my partnership "Organisation For Coordinated Partnership" with status "confirmed_authority"
         # When I enforce a coordinated partnership that has at least two members
         # Then I should get the 'Choose the member to enforce' screen
 

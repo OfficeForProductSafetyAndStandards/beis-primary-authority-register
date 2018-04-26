@@ -5,7 +5,7 @@ Feature: Coordinator User - Complete organisation details
         #LOGIN
         
         Given I am logged in as "par_coordinator@example.com"
-        And I go to partnership detail page for my partnership "<partnership>"
+        And I go to partnership detail page for my partnership "<partnership>" with status "confirmed_authority"
 
         # COMPLETE ABOUT THE BUSINESS
 
