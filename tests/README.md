@@ -79,6 +79,5 @@ There are neough emulators that come with XCode package, but to install, you wil
 
 To run:
 
-(XCode app must be open)
 $ node_modules/.bin/appium
 $ node_modules/.bin/nightwatch -c ./nightwatch-cucumber-ios.conf.js
