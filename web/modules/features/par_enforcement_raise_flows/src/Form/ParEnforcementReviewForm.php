@@ -2,6 +2,7 @@
 
 namespace Drupal\par_enforcement_raise_flows\Form;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -42,12 +43,57 @@ class ParEnforcementReviewForm extends ParBaseForm {
     /** @var ParDataEnforcementNotice $par_data_enforcement_notice */
     /** @var ParDataEnforcementAction[] $par_data_enforcement_actions */
 
+    // Return path for all redirect links.
+    $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
+
+    // Display a link to change the enforced entity.
+    $form['enforced_organisation'] = [
+      '#type' => 'fieldset',
+      '#weight' => 101,
+      '#attributes' => ['class' => 'form-group'],
+    ];
+    $form['enforced_organisation']['edit'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlowNegotiator()->getFlow()
+          ->getLinkByCurrentOperation('select_legal', [], ['query' => ['destination' => $return_path]])
+          ->setText('Change the enforced legal entity')
+          ->toString(),
+      ]),
+    ];
+
     // Display the Enforcement Notice details.
     $form['enforcement_type'] = $this->renderSection('Type of enforcement notice', $par_data_enforcement_notice, ['notice_type' => 'full'], [], TRUE, TRUE);
+    $form['enforcement_type']['#weight'] = 200;
     $form['enforcement_summary'] = $this->renderSection('Summary of enforcement notice', $par_data_enforcement_notice, ['summary' => 'summary'], [], TRUE, TRUE);
+    $form['enforcement_summary']['#weight'] = 201;
+    $form['enforcement_summary']['summary']['operations']['edit'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlowNegotiator()->getFlow()
+          ->getLinkByCurrentOperation('enforcement_details', [], ['query' => ['destination' => $return_path]])
+          ->setText('Change the summary of this enforcement')
+          ->toString(),
+      ]),
+    ];
 
     // Display the details for each Enforcement Action.
     $form['enforcement_actions'] = $this->renderEntities('Enforcement Actions', $par_data_enforcement_actions, 'summary');
+    $form['enforcement_actions']['#weight'] = 202;
+    foreach ($par_data_enforcement_actions as $delta => $entity) {
+      $index = $delta + 1;
+      $params = $this->getRouteParams() + ['cardinality' => $index];
+      $form['enforcement_actions'][$delta]['operations']['edit'] = [
+        '#type' => 'markup',
+        '#markup' => t('@link', [
+          '@link' => $this->getFlowNegotiator()->getFlow()
+            ->getLinkByCurrentOperation('enforcement_action', $params, ['query' => ['destination' => $return_path]])
+            ->setText("Change action $index")
+            ->toString(),
+        ]),
+      ];
+    }
+
 
     return parent::buildForm($form, $form_state);
   }
