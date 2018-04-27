@@ -16,7 +16,6 @@
     "generate-report": "node generate-report.js"
   },
   "dependencies": {
-    "appium": "latest",
     "chromedriver": "2.37.0",
     "cucumber": "4.2.1",
     "cucumber-html-reporter": "4.0.2",
