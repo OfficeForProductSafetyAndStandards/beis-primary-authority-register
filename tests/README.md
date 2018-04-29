@@ -71,7 +71,8 @@ Prequisistes:
 XCode 9.2+
 Android Studio SDK
 
-There are neough emulators that come with XCode package, but to install, you will need to open from Xmcode app:
+
+There are enough emulators that come with XCode package, but to install, you will need to open from Xmcode app:
 
 * Xcode > Open Developer Tool > Simulator
 * In Simulator go to: Hardware > Device > Manage Devices
@@ -80,5 +81,7 @@ There are neough emulators that come with XCode package, but to install, you wil
 
 To run:
 
-$ node_modules/.bin/appium
-$ node_modules/.bin/nightwatch -c ./nightwatch-cucumber-ios.conf.js
+$ npm install -g 
+$ appium
+[NEW CONSOLE TAB]
+$ npm run nightwatch-cucumber-ios -- --tag iostest
