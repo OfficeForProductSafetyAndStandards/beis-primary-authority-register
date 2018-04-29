@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies: {  }
+id: approve_enforcement
+label: 'Review Enforcement'
+default_title: null
+default_section_title: 'Review Enforcement'
+description: 'The approval flow for an enforcement notice.'
+save_method: end
+states:
+  - par_data_enforcement_notice
+steps:
+  1:
+    route: par_enforcement_flows.approve
+    form_id: par_enforcement_notice_approve
+    redirect:
+      cancel: 5
+  2:
+    route: par_enforcement_flows.referred_authority
+    form_id: par_enforcement_referred_authority
+    redirect:
+      cancel: 5
+  3:
+    route: par_enforcement_flows.approve_confirm
+    form_id: par_enforcement_notice_approve_confirm
+    redirect:
+      cancel: 5
+  4:
+    route: par_enforcement_flows.completed_enforcement
+    redirect:
+      done: 5
+  5:
+    route: par_dashboards.dashboard

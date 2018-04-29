@@ -8,14 +8,14 @@ use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
- * Enforcement summary form plugin.
+ * Enforcement review summary form plugin.
  *
  * @ParForm(
- *   id = "enforcement_summary",
- *   title = @Translation("Enforcement summary.")
+ *   id = "enforcement_review_summary",
+ *   title = @Translation("Enforcement review summary.")
  * )
  */
-class ParEnforcementSummary extends ParFormPluginBase {
+class ParEnforcementReviewSummary extends ParFormPluginBase {
 
   /**
    * {@inheritdoc}

@@ -68,7 +68,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
    * {@inheritdoc}
    */
   public function inProgress() {
-    // Freeze Enforcement Notices with actions that are awaiting approval.
+    // Any Enforcement Notices with actions that are awaiting approval are marked as 'in progress'.
     foreach ($this->getEnforcementActions() as $action) {
       if ($action->inProgress()) {
         return TRUE;
