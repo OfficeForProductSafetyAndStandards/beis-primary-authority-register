@@ -21,37 +21,21 @@ class ParEnforcementReviewSummary extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function loadData($cardinality = 1) {
-    $enforcing_officer_cid = $this->getFormCid('enforcing_officer');
-    $enforced_organisation_cid = $this->getFormCid('organisation_selection');
-    $enforced_legal_entity_cid = $this->getFormCid('select_legal');
+    $enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
 
-    if ($enforcing_officer_id = $this->getFlowDataHandler()->getTempDataValue('enforcement_officer_id', $enforcing_officer_cid)) {
-      $enforcing_officer = ParDataPerson::load($enforcing_officer_id);
-      if ($enforcing_officer) {
-        $this->getFlowDataHandler()->setFormPermValue("enforcing_officer", $enforcing_officer->label());
-      }
+    if ($enforcement_notice && $enforcing_officer = $enforcement_notice->getEnforcingPerson(TRUE)) {
+      $this->getFlowDataHandler()->setFormPermValue("enforcing_officer_name", $enforcing_officer->label());
+      $this->getFlowDataHandler()->setFormPermValue("enforcing_officer_work_phone", $enforcing_officer->get('work_phone')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("enforcing_officer_email", $enforcing_officer->get('email')->getString());
     }
 
-    if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {
-      // @TODO if we use this component on any referred enforcements this will need to change.
-      $authority = $par_data_partnership->getAuthority(TRUE);
-      $this->getFlowDataHandler()->setFormPermValue("enforced_authority", $authority->label());
+    $enforcing_authority = $enforcement_notice->getEnforcingAuthority(TRUE);
+    if ($enforcement_notice && $enforcing_authority = $enforcement_notice->getEnforcingAuthority(TRUE)) {
+      $this->getFlowDataHandler()->setFormPermValue("enforcing_authority", $enforcing_authority->label());
     }
 
-    $enforced_legal_entity_id = $this->getFlowDataHandler()->getDefaultValues('legal_entities_select', NULL, $enforced_legal_entity_cid);
-    $enforced_organisation_id = $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', NULL, $enforced_organisation_cid);
-    $alternate_legal_entity = $this->getFlowDataHandler()->getDefaultValues('alternative_legal_entity', NULL, $enforced_legal_entity_cid);
-    // Get the alternate legal entity if there is one.
-    if ($enforced_legal_entity_id && $enforced_legal_entity_id === ParSelectEnforcedLegalEntityForm::ADD_NEW) {
-      $this->getFlowDataHandler()->setFormPermValue("enforced_organisation", $alternate_legal_entity);
-    }
-    // Or get the legal entity chosen if there is one.
-    elseif ($enforced_legal_entity_id && $enforced_legal_entity = ParDataLegalEntity::load($enforced_legal_entity_id)) {
-      $this->getFlowDataHandler()->setFormPermValue("enforced_organisation", $enforced_legal_entity->label());
-    }
-    // Or get the organisation selected if there is one.
-    elseif ($enforced_organisation_id && $enforced_organisation = ParDataOrganisation::load($enforced_organisation_id)) {
-      $this->getFlowDataHandler()->setFormPermValue("enforced_organisation", $enforced_organisation->label());
+    if ($enforcement_notice && $enforced_organisation_name = $enforcement_notice->getEnforcedEntityName()) {
+      $this->getFlowDataHandler()->setFormPermValue("enforced_organisation", $enforced_organisation_name);
     }
 
     parent::loadData();
@@ -62,26 +46,38 @@ class ParEnforcementReviewSummary extends ParFormPluginBase {
    */
   public function getElements($form = [], $cardinality = 1) {
 
-    if ($enforcing_officer = $this->getDefaultValuesByKey('enforcing_officer', $cardinality, NULL)) {
+    if ($enforcing_officer_name = $this->getDefaultValuesByKey('enforcing_officer_name', $cardinality, NULL)) {
       $form['enforcement_officer'] = [
         '#type' => 'fieldset',
         '#title' => t('Enforcement officer'),
         '#attributes' => ['class' => 'form-group'],
-        'enforcing_officer' => [
+        'name' => [
           '#type' => 'markup',
-          '#markup' => $enforcing_officer,
-        ]
+          '#markup' => $enforcing_officer_name,
+        ],
       ];
+      if ($work_phone = $this->getDefaultValuesByKey('enforcing_officer_work_phone', $cardinality, NULL)) {
+        $form['enforcement_officer']['work_phone'] = [
+          '#type' => 'markup',
+          '#markup' => $work_phone,
+        ];
+      }
+      if ($email = $this->getDefaultValuesByKey('enforcing_officer_email', $cardinality, NULL)) {
+        $form['enforcement_officer']['email'] = [
+          '#type' => 'markup',
+          '#markup' => $email,
+        ];
+      }
     }
 
-    if ($enforced_authority = $this->getDefaultValuesByKey('enforced_authority', $cardinality, NULL)) {
+    if ($enforcing_authority = $this->getDefaultValuesByKey('enforcing_authority', $cardinality, NULL)) {
       $form['enforced_authority'] = [
         '#type' => 'fieldset',
-        '#title' => t('Enforced authority'),
+        '#title' => t('Enforcing authority'),
         '#attributes' => ['class' => 'form-group'],
         'enforcing_officer' => [
           '#type' => 'markup',
-          '#markup' => $enforced_authority,
+          '#markup' => $enforcing_authority,
         ]
       ];
     }

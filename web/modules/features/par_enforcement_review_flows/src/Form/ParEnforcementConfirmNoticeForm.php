@@ -29,19 +29,10 @@ class ParEnforcementConfirmNoticeForm extends ParBaseForm {
   protected $pageTitle = "Confirmation | Enforcement action decision";
 
   /**
-   * Helper to get all the editable values when editing or
-   * revisiting a previously edited page.
-   */
-  public function retrieveEditableValues(ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
-
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
 
-    $this->retrieveEditableValues($par_data_enforcement_notice);
     $enforcing_officer = current($par_data_enforcement_notice->getEnforcingPerson());
 
     $form['authority'] = $this->renderSection('Notification of Enforcement action from', $par_data_enforcement_notice, ['field_enforcing_authority' => 'title']);

@@ -4,6 +4,7 @@ namespace Drupal\par_enforcement_review_flows;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_flows\ParFlowException;
 use Symfony\Component\Routing\Route;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -18,10 +19,11 @@ trait ParFlowAccessTrait {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
     try {
       $this->getFlowNegotiator()->setRoute($route_match);
       $this->getFlowDataHandler()->reset();
+      $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice', $par_data_enforcement_notice);
       $this->loadData();
     } catch (ParFlowException $e) {
 

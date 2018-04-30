@@ -203,7 +203,24 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
    */
   public function getDefaultValuesByKey($key, $cardinality, $default = '', $cid = NULL) {
     $element_key = $this->getElementKey($key, $cardinality);
-    return $this->getFlowDataHandler()->getDefaultValues($this->getElementKey($key, $cardinality), $default, $cid);
+    return $this->getFlowDataHandler()->getDefaultValues($element_key, $default, $cid);
+  }
+
+  /**
+   * Get the defaults by a replacement form data key.
+   *
+   * @param $key
+   *   The form data key.
+   * @param $cardinality
+   *   The cardinality to get the value for.
+   * @param string $value
+   *   The value to be set.
+   *
+   * @return mixed|null
+   */
+  public function setDefaultValuesByKey($key, $cardinality, $value = '') {
+    $element_key = $this->getElementKey($key, $cardinality);
+    return $this->getFlowDataHandler()->setFormPermValue($element_key, $value);
   }
 
   /**
@@ -244,7 +261,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
    * @param int $cardinality
    *   The cardinality of this element.
    *
-   * @return string|array
+   * @return string
    *   The key for this form element.
    */
   public function getElementName($element, $cardinality = 1) {
@@ -259,7 +276,12 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
       }
     }
     else {
-      return $element;
+      if (is_array($element)) {
+        return implode('][', $element) . ']';
+      }
+      else {
+        return $element;
+      }
     }
   }
 

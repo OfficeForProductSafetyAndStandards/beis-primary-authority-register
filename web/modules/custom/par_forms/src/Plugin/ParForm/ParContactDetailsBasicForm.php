@@ -30,9 +30,9 @@ class ParContactDetailsBasicForm extends ParFormPluginBase {
    */
   public function loadData($cardinality = 1) {
     if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
-      $this->getFlowDataHandler()->setFormPermValue("first_name", $par_data_person->get('first_name')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("last_name", $par_data_person->get('last_name')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("work_phone", $par_data_person->get('work_phone')->getString());
+      $this->setDefaultValuesByKey("first_name", $cardinality, $par_data_person->get('first_name')->getString());
+      $this->setDefaultValuesByKey("last_name", $cardinality, $par_data_person->get('last_name')->getString());
+      $this->setDefaultValuesByKey("work_phone", $cardinality, $par_data_person->get('work_phone')->getString());
     }
 
     parent::loadData();

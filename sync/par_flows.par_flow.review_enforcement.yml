@@ -1,6 +1,9 @@
+uuid: 580c7709-20c0-4777-9330-fb961d239114
 langcode: en
 status: true
 dependencies: {  }
+_core:
+  default_config_hash: JiXuRsDVnbHs_zGjIPNusn6jX0FBD1N9yis3Hu_SfwQ
 id: review_enforcement
 label: 'Review Enforcement'
 default_title: null
@@ -14,7 +17,7 @@ steps:
     route: par_enforcement_review_flows.approve
     form_id: par_enforcement_notice_approve
     components:
-      enforcement_review_summary: {}
+      enforcement_review_summary: {  }
       enforcement_action_review:
         cardinality: -1
     redirect:
@@ -23,14 +26,14 @@ steps:
     route: par_enforcement_review_flows.referred_authority
     form_id: par_enforcement_referred_authority
     components:
-      enforcement_review_summary: {}
+      enforcement_review_summary: {  }
     redirect:
       cancel: 5
   3:
     route: par_enforcement_review_flows.approve_confirm
     form_id: par_enforcement_notice_approve_confirm
     components:
-      enforcement_review_summary: {}
+      enforcement_review_summary: {  }
     redirect:
       cancel: 5
   4:

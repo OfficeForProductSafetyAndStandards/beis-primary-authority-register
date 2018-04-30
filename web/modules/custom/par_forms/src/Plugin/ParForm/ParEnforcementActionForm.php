@@ -26,23 +26,6 @@ class ParEnforcementActionForm extends ParFormPluginBase {
   ];
 
   /**
-   * Load the data for this form.
-   */
-  public function loadData($cardinality = 1) {
-
-
-
-    parent::loadData();
-  }
-
-  /**
-   * Get the country repository from the address module.
-   */
-  public function getCountryRepository() {
-    return \Drupal::service('address.country_repository');
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {

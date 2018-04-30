@@ -135,15 +135,38 @@ class ParDataEnforcementNotice extends ParDataEntity {
   /**
    * Get the enforcing authority for this Enforcement Notice.
    */
-  public function getEnforcingAuthority() {
-    return $this->get('field_enforcing_authority')->referencedEntities();
+  public function getEnforcingAuthority($single = FALSE) {
+    $authorities = $this->get('field_enforcing_authority')->referencedEntities();
+    $authority = !empty($authorities) ? current($authorities) : NULL;
+
+    return $single ? $authority : $authorities;
   }
 
   /**
    * Get the legal entity for this Enforcement Notice.
    */
-  public function getLegalEntity() {
-    return $this->get('field_legal_entity')->referencedEntities();
+  public function getEnforcedEntityName() {
+    if ($legal_entity = $this->getLegalEntity(TRUE)) {
+      return $legal_entity->label();
+    }
+    elseif (!$this->get('legal_entity_name')->isEmpty()) {
+      return $this->get('legal_entity_name')->getString();
+    }
+    elseif ($organisation = $this->getEnforcedOrganisation(TRUE)) {
+      return $organisation->label();
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Get the legal entity for this Enforcement Notice.
+   */
+  public function getLegalEntity($single = FALSE) {
+    $legal_entities = $this->get('field_legal_entity')->referencedEntities();
+    $legal_entity = !empty($legal_entities) ? current($legal_entities) : NULL;
+
+    return $single ? $legal_entity : $legal_entities;
   }
 
   /**
@@ -156,15 +179,65 @@ class ParDataEnforcementNotice extends ParDataEntity {
   /**
    * Get the enforced organisation for this Enforcement Notice.
    */
-  public function getEnforcedOrganisation() {
-    return $this->get('field_organisation')->referencedEntities();
+  public function getEnforcedOrganisation($single = FALSE) {
+    $organisations = $this->get('field_organisation')->referencedEntities();
+    $organisation = !empty($organisations) ? current($organisations) : NULL;
+
+    return $single ? $organisation : $organisations;
   }
 
   /**
    * Get the enforcing officer person for the current Enforcement notice.
    */
-  public function getEnforcingPerson() {
-    return $this->get('field_person')->referencedEntities();
+  public function getEnforcingPerson($single = FALSE) {
+    $people = $this->get('field_person')->referencedEntities();
+    $person = !empty($people) ? current($people): NULL;
+
+    return $single ? $person : $people;
+  }
+
+  /**
+   * Get all authorities to which this notice can be referred.
+   *
+   * @param array $authorities
+   *   An array of authorities that can be appended to.
+   *
+   * @return array
+   *   An array of authorities that actions of this notice can be referred to.
+   */
+  public function getReferrableAuthorities($authorities = []) {
+    $par_data_organisation = $this->getEnforcedOrganisation(TRUE);
+
+    // If no organisation is found this notice cannot be referred.
+    if (!$par_data_organisation) {
+      return $authorities;
+    }
+
+    $primary_authority = $this->getPrimaryAuthority(TRUE);
+
+    // Get all partnerships with the same organisation,
+    // that aren't deleted and were transitioned.
+    $conditions = [
+      'name' => [
+        'AND' => [
+          ['field_organisation', $par_data_organisation->id()],
+        ]
+      ],
+    ];
+
+    $par_data_partnerships = $this->getParDataManager()
+      ->getEntitiesByQuery('par_data_partnership', $conditions, 10);
+
+    // Load all the authorities belonging to these partnerships.
+    foreach ($par_data_partnerships as $partnership) {
+      $authority = $partnership->getAuthority(TRUE);
+
+      if ($partnership->isLiving() && $authority->isLiving() && $authority->id() != $primary_authority->id()) {
+        $authorities[$authority->id()] = $authority->label();
+      }
+    }
+
+    return $authorities;
   }
 
   /**

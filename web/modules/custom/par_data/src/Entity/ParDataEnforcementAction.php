@@ -99,7 +99,7 @@ class ParDataEnforcementAction extends ParDataEntity {
    * @return mixed|null
    */
   public function getEnforcementNotice($single = TRUE) {
-    $notices = $this->getParDataManager()->getEntitiesByProperty('par_data_enforcement_notices', 'field_enforcement_action', $this->id());
+    $notices = $this->getParDataManager()->getEntitiesByProperty('par_data_enforcement_notice', 'field_enforcement_action', $this->id());
     $notice = !empty($notices) ? current($notices) : NULL;
 
     return $single ? $notice : $notices;
@@ -219,6 +219,28 @@ class ParDataEnforcementAction extends ParDataEntity {
     }
 
     return parent::inProgress();
+  }
+
+  /**
+   * Check if the action can be referred.
+   */
+  public function isReferrable() {
+    $notice = $this->getEnforcementNotice(TRUE);
+    $organisation = $notice->getEnforcedOrganisation(TRUE);
+
+    // If there is no organisation it is not possible to get
+    // a list of authorities that this can be referred to.
+    if (!$organisation) {
+      return FALSE;
+    }
+
+    // If there are no referrable authorities this action cannot be referred.
+    if (empty($notice->getReferrableAuthorities())) {
+      return FALSE;
+    }
+
+    // Actions can only be referred once.
+    return $this->get('field_action_referral')->isEmpty();
   }
 
   /**
