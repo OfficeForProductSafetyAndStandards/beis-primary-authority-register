@@ -50,6 +50,7 @@ permissions:
   - invite_type_invite_organisation_member
   - 'manage my authorities'
   - 'raise enforcement notice'
+  - 'view authority enquiries'
   - 'search partnership'
   - 'send enforcement notice'
   - 'use text format basic_html'
