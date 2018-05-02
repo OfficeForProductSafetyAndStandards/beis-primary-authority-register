@@ -144,13 +144,8 @@ script:
 #-----------------------------------------------------------------------------
 
   - if [[ "$TESTTYPE" == "jmeter" ]]; then docker exec -ti par_beta_web bash -c "cd tests/nfr/jmeter && wget http://mirror.reverse.net/pub/apache/jmeter/binaries/apache-jmeter-4.0.tgz && wget https://www.apache.org/dist/jmeter/binaries/apache-jmeter-4.0.tgz.asc && wget -O - https://www.apache.org/dist/jmeter/KEYS |gpg --import && gpg --verify apache-jmeter-4.0.tgz.asc && tar -zxf apache-jmeter-4.0.tgz && rm apache-jmeter-4.0.tgz && cd apache-jmeter-4.0/lib/ext && wget https://jmeter-plugins.org/downloads/file/JMeterPlugins-Standard-1.4.0.zip && unzip JMeterPlugins-Standard-1.4.0.zip"; fi
-  - if [[ "$TESTTYPE" == "jmeter" ]]; then docker exec -ti par_beta_web bash -c "cd tests/nfr/jmeter/apache-jmeter-4.0/lib/ext && wget https://jmeter-plugins.org/files/packages/jpgc-plugins-manage-0.20.zip && unzip jpgc-plugins-manage-0.20.zip"; fi
-  - if [[ "$TESTTYPE" == "jmeter" ]]; then docker exec -ti par_beta_web bash -c "cd tests/nfr/jmeter/apache-jmeter-4.0/lib/ext && wget https://jmeter-plugins.org/files/packages/jpgc-casutg-2.5.zip && unzip jpgc-casutg-2.5.zip"; fi
   - if [[ "$TESTTYPE" == "jmeter" ]]; then docker exec -ti par_beta_web bash -c "cd tests/nfr/jmeter && chmod -R 777 ../../reports/ && ./apache-jmeter-4.0/bin/jmeter -n -t load-test-plan-travis.jmx -l ../../reports/jmeterreport.jtl -e -o ../../reports/dashboard"; fi
-  Uninstall plugin: r 0.16
-Uninstall plugin: jpgc-casutg 2.4
-Install plugin: jpgc-plugins-manager 0.20
-Install plugin: jpgc-casutg 2.5
+
 #-----------------------------------------------------------------------------
 # Generate tar with test screenshots to tests/reports/errorShots.tar.gz
 #-----------------------------------------------------------------------------
