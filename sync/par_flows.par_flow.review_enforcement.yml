@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: JiXuRsDVnbHs_zGjIPNusn6jX0FBD1N9yis3Hu_SfwQ
+  default_config_hash: P517_bOaMTSumiT8uA52gzMoA7Q7cSK9ZcL4y5ydqCI
 id: review_enforcement
 label: 'Review Enforcement'
 default_title: null
@@ -27,6 +27,8 @@ steps:
     form_id: par_enforcement_referred_authority
     components:
       enforcement_review_summary: {  }
+      enforcement_action_refer:
+        cardinality: -1
     redirect:
       cancel: 5
   3:

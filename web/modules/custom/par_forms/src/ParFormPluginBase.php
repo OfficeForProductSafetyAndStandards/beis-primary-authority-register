@@ -334,9 +334,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
   /**
    * {@inheritdoc}
    */
-  public function validate(&$form_state, $cardinality = 1) {
-    $violations = [];
-
+  public function validate(&$form_state, $cardinality = 1, array $violations = []) {
     // Assign all the form values to the relevant entity field values.
     foreach ($this->getMapping() as $entity_name => $form_items) {
       list($type, $bundle) = explode(':', $entity_name . ':');

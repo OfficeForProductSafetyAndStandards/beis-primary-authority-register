@@ -24,6 +24,8 @@ steps:
     form_id: par_enforcement_referred_authority
     components:
       enforcement_review_summary: {}
+      enforcement_action_refer:
+        cardinality: -1
     redirect:
       cancel: 5
   3:

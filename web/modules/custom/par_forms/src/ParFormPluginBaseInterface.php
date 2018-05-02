@@ -52,8 +52,10 @@ interface ParFormPluginBaseInterface extends PluginInspectionInterface, Configur
    *   The form state object to validate.
    * @param integer $cardinality
    *   The cardinality for this plugin.
+   * @param array $violations
+   *   An array of violations to add to.
    */
-  public function validate(&$form_state, $cardinality = 0);
+  public function validate(&$form_state, $cardinality = 0, array $violations);
 
   /**
    * Saves the form elements.

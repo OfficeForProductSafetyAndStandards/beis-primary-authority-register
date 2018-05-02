@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\TypedData\DataDefinition;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_forms\ParFormPluginBase;
 
@@ -93,5 +94,56 @@ class ParEnforcementActionReviewForm extends ParFormPluginBase {
     ];
 
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validate(&$form_state, $cardinality = 1, array $violations = []) {
+//    $legal_entity = $this->getElementKey('legal_entities_select');
+//    $alternative_legal_entity = $this->getElementKey('alternative_legal_entity');
+//    if (empty($form_state->getValue($legal_entity)) && empty($form_state->getValue($alternative_legal_entity))) {
+//      $form_state->setErrorByName($legal_entity, $this->t('<a href="#edit-legal_entities_select">You must choose a legal entity.</a>'));
+//    }
+
+    $status_key = $this->getElementKey(['action', 'primary_authority_status']);
+    $status = $this->getFlowDataHandler()->getTempDataValue($status_key);
+
+    // Set an error if an action is not reviewed.
+    $allowed_statuses = [ParDataEnforcementAction::APPROVED, ParDataEnforcementAction::BLOCKED, ParDataEnforcementAction::REFERRED];
+    $definition = DataDefinition::create('string')
+      ->addConstraint('AllowedValues', ['choices' => $allowed_statuses]);
+    $typed_data = \Drupal::typedDataManager()->create($definition, $status);
+    $violations['primary_authority_status'] = $typed_data->validate();
+
+    $blocked_reason_key = $this->getElementKey(['action', 'primary_authority_notes']);
+    $blocked_reason = $this->getFlowDataHandler()->getTempDataValue($blocked_reason_key);
+    $definition = DataDefinition::create('string')
+      ->addConstraint('NotNull');
+    $typed_data = \Drupal::typedDataManager()->create($definition, $blocked_reason);
+    if ($status == ParDataEnforcementAction::BLOCKED && empty($blocked_reason)) {
+      $violations['primary_authority_notes'] = $typed_data->validate();
+    }
+
+    $referred_reason_key = $this->getElementKey(['action', 'referral_notes']);
+    $referred_reason = $this->getFlowDataHandler()->getTempDataValue($referred_reason_key);
+    $definition = DataDefinition::create('string')
+      ->addConstraint('NotNull');
+    $typed_data = \Drupal::typedDataManager()->create($definition, $referred_reason);
+    if ($status == ParDataEnforcementAction::REFERRED && empty($referred_reason)) {
+      $violations['referral_notes'] = $typed_data->validate();
+    }
+
+    // Set an error if this action has already been reviewed.
+//    if ($action->isApproved() || $action->isBlocked() || $action->isReferred()) {
+//      $this->setElementError(['actions', $delta, 'primary_authority_status'], $form_state, 'This action has already been reviewed.');
+//    }
+
+    // Set an error if it is not possible to change to this status.
+//    if (!isset($form_data['primary_authority_status']) || !$action->canTransition($form_data['primary_authority_status'])) {
+//      $this->setElementError(['actions', $delta, 'primary_authority_status'], $form_state, 'This action cannot be changed because it has already been reviewed.');
+//    }
+
+    return parent::validate($form_state, $cardinality, $violations);
   }
 }

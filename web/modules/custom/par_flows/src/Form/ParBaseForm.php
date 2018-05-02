@@ -27,6 +27,7 @@ use Drupal\par_flows\ParDisplayTrait;
 use Drupal\Core\Access\AccessResult;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Route;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * The base form controller for all PAR forms.
@@ -384,12 +385,12 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    *   The name of the form element to set the error for.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state to set the error on.
-   * @param \Drupal\Core\Entity\EntityConstraintViolationListInterface $violations
+   * @param \Symfony\Component\Validator\ConstraintViolationListInterface $violations
    *   The violations to set.
    * @param array $replacements
    *   An optional array of message replacement arguments.
    */
-  public function setFieldViolations($name, FormStateInterface &$form_state, EntityConstraintViolationListInterface $violations, $replacements = NULL) {
+  public function setFieldViolations($name, FormStateInterface &$form_state, ConstraintViolationListInterface $violations, $replacements = NULL) {
     $name = (array) $name;
 
     if ($violations) {
