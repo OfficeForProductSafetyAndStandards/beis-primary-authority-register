@@ -22,7 +22,7 @@ Feature: New Direct Partnership For PA To Approve
 
         Then the direct partnership creation email template is correct
 
-    @coordinatedpartneship @ci
+    @coordinatedpartnership @ci
     Scenario: New coordinated Partnership
 
         # PARTNERSHIP APPLY
@@ -41,7 +41,7 @@ Feature: New Direct Partnership For PA To Approve
         
         Then the coordinated partnership creation email template is correct
     
-        @coordinatedpartneship
+        @coordinatedpartnership
     Scenario: New coordinated Partnership
 
         # PARTNERSHIP APPLY
