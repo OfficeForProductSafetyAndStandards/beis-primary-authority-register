@@ -59,7 +59,24 @@ class ParEnforcementEnforceOrganisationForm extends ParBaseForm {
           '#suffix' => '</strong><p>',
         ];
 
-        $this->getFlowNegotiator()->getFlow()->disableAction('next');
+        $form['select_alternative_organisation'] = [
+          '#type' => 'checkbox',
+          '#title' => $this->t('Add organisation member'),
+          '#default_value' => $this->getFlowDataHandler()->getDefaultValues("select_alternative_organisation", FALSE),
+          '#required' => TRUE,
+        ];
+
+        $form['alternative_organisation_member'] = [
+          '#type' => 'textfield',
+          '#title' => $this->t('Enter the name of an organisation member'),
+          '#default_value' => $this->getFlowDataHandler()->getDefaultValues("alternative_organisation_member"),
+          '#states' => array(
+            'visible' => array(
+              ':input[name="select_alternative_organisation"]' => array('checked' => TRUE),
+            ),
+          ),
+          '#required' => TRUE,
+        ];
       }
       else {
         // Initialize pager and get current page.
@@ -69,7 +86,7 @@ class ParEnforcementEnforceOrganisationForm extends ParBaseForm {
         // Split the items up into chunks:
         $chunks = array_chunk($members, $number_of_items, TRUE);
 
-        // Add the items for our current page to the fieldset.
+        // Add the items for our current page to the field set.
         $page_options = [];
 
         foreach ($chunks[$current_page] as $delta => $item) {
