@@ -5,7 +5,7 @@ const shared = client.page.shared();
   Given(/^I open the path "([^"]*)"$/, (locpath) => {
     return client
       .url(client.launch_url+locpath)
-      .waitForElementVisible('.button', 10000)
+      .waitForElementVisible('h1', 10000)
       // .assert.urlContains(locpath);
   });
 
