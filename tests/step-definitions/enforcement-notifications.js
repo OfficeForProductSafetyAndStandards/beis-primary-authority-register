@@ -39,8 +39,8 @@ When('I create new valid enforcement notification {string} for organisation {str
   .assert.containsText('#par-enforcement-notice-raise-confirm','You will be notified by email of the outcome of this notification')
   .click('#edit-save')
   .clickLinkByPureText('See enforcement notifications sent')
-  .assert.containsText('.table-scroll-wrapper', string)
-  .assert.containsText('h1.heading-xlarge','Primary Authority Register')
+  // .assert.containsText('.table-scroll-wrapper', string)
+  .assert.containsText('h1.heading-xlarge','Enforcement Notifications')
 });
   
 When('I check that EO can see valid enforcement notification {string}', function (string) {

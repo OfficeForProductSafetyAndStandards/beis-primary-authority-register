@@ -14,7 +14,7 @@ Feature: Further EN tests
 
         #LOGIN
         
-        Given I am logged in as "eo_one_authority@example.com"
+        Given I am logged in as "enforcement_officer@example.com"
         # When I enforce a direct partnership
         # Then I should NOT get the 'Choose which authority to act on behalf of' screen
 
@@ -23,7 +23,7 @@ Feature: Further EN tests
 
         #LOGIN
         
-        Given I am logged in as "eo_one_authority@example.com"
+        Given I am logged in as "enforcement_officer@example.com"
         And I go to partnership detail page for my partnership "Organisation For Coordinated Partnership" with status "confirmed_authority"
         # When I enforce a coordinated partnership that has at least two members
         # Then I should get the 'Choose the member to enforce' screen
@@ -33,7 +33,7 @@ Feature: Further EN tests
 
         #LOGIN
         
-        Given I am logged in as "eo_one_authority@example.com"
+        Given I am logged in as "enforcement_officer@example.com"
         # When I enforce a coordinated partnership that has no members
         # Then I should get the 'Choose Legal Entity to enforce' screen (after entering EO's contact details)
 
