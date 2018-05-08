@@ -9,6 +9,7 @@ return shared
     .assert.containsText('#edit-actions-0-primary-authority-status--wrapper h3.heading-medium', 'Decide to allow or block this action, or refer this action to another Primary Authority')
     .click('#edit-actions-0-primary-authority-status-approved')
     .click('#edit-actions-next')
+    .assert.containsText('#edit-enforcement-summary', 'Summary of enforcement notice')
     .assert.containsText('h1.heading-xlarge', 'Enforcement action decision')
     .click('#edit-actions-next')
     .clickLinkByPureText('Dashboard')
