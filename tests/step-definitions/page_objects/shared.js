@@ -10,12 +10,12 @@ module.exports = {
         Logout: '.button'
     },
     commands: [{
-        clickLinkByText: function(linkText){      
-           linkText = linkText.replace(/\s/g, '');  
-           console.log(linkText);  
-           return this
-            .waitForElementVisible('@'+linkText, 1000)
-            .click('@'+linkText);
+        clickLinkByXpath: function(xpathValue){      
+           return client
+           .useXpath()
+           .click(xpathValue)   
+           .useCss()                 
+           .click('#edit-next')
         },
         clickLinkByPureText: function(linkText){      
             return this.click('link text', linkText);
@@ -40,6 +40,18 @@ module.exports = {
                     return this
                     }
               })  
+        },
+        chooseMemberIfOptionPresent: function(){ 
+            return this.api.element('css selector', 'input[name="par_data_organisation_id"]', function(result){
+                if (result.value.ELEMENT) {
+                    return this
+                    .click('.form-radio')  
+                    .click('#edit-next');
+                  } else
+                  {
+                    return this
+                  }
+            })   
         },
         chooseNewPersonIfOptionPresent: function(elem, toclick){ 
             return this.api.element('css selector', 'input[name="par_data_person_id"]', function(result){

@@ -12,10 +12,10 @@ When('I create new valid enforcement notification {string} for organisation {str
   .clickLinkByPureText('Send a notification of a proposed enforcement action')
   .click('#edit-cancel')
   .clickLinkByPureText('Send a notification of a proposed enforcement action')
-  // CHOOSE MEMBER
-  .assert.containsText('#par-enforce-organisation','Choose the member to enforce')
-  .click('.form-radio')
-  .click('#edit-next')
+  // .click('.form-radio')
+  // .click('#edit-next')
+    // CHOOSE MEMBER
+  .chooseMemberIfOptionPresent()
   // ENTER EO DETAILS
   .clearValue('#edit-first-name')
   .click('#edit-next')
@@ -38,9 +38,7 @@ When('I create new valid enforcement notification {string} for organisation {str
   .assert.containsText('#par-enforcement-notice-raise-confirm','Once the primary authority receives this notification, they have 5 working days to respond to you if they intend to block the action')
   .assert.containsText('#par-enforcement-notice-raise-confirm','You will be notified by email of the outcome of this notification')
   .click('#edit-save')
-  .clickLinkByPureText('See enforcement notifications sent')
-  // .assert.containsText('.table-scroll-wrapper', string)
-  .assert.containsText('h1.heading-xlarge','Enforcement Notifications')
+  .assert.containsText('h1.heading-xlarge','Primary Authority Register')
 });
   
 When('I check that EO can see valid enforcement notification {string}', function (string) {
@@ -49,10 +47,10 @@ When('I check that EO can see valid enforcement notification {string}', function
   .clickLinkByPureText('Log out')
   .waitForElementVisible('.button-start', 2000)
   .clickLinkByPureText('Log in')
-  .setValue('#edit-name', 'par_enforcement_officer@example.com')
+  .setValue('#edit-name', 'par_authority@example.com')
   .setValue('#edit-pass', 'TestPassword')
   .click('#edit-submit')
   .assert.containsText('#block-par-theme-account-menu', 'Log out')
-  .clickLinkByPureText('See enforcement notifications sent')
+  .clickLinkByPureText('See enforcement notifications received')
   .assert.containsText('.table-scroll-wrapper', string)
 })

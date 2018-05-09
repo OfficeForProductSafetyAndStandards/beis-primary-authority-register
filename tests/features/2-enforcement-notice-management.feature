@@ -47,3 +47,10 @@ Feature: Enforcement notice management
         Given I am logged in as "par_enforcement_officer@example.com"
         When I click the link text "See enforcement notifications sent"
         And the element ".table-scroll-wrapper" contains the text "Enforcement notice 2"
+
+     @enforcementnotices
+    Scenario: Enforcement notice management
+
+        # APPROVE FORM
+
+        And I successfully approve enforcement notice "Enforcement notice For No Members Coord Partnership"

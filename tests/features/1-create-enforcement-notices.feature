@@ -21,4 +21,4 @@ Feature: Enforcement Officer - Enforcement Notice Process
         | Enforcement notice 2    | Charlie's Cafe | par_authority@example.com |
         | Enforcement notice 3    | Charlie's Cafe | par_authority@example.com |
         | Enforcement notice 4    | Charlie's Cafe | par_authority@example.com |
-        # | Enforcement notice 1071 | No Members     | par_authority@example.com |
+        # | Enforcement notice For No Members Coord Partnership | Charity Retail Association | par_authority@example.com |
