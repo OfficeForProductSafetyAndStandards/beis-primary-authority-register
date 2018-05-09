@@ -37,6 +37,10 @@ apply for partnership:
   title: 'Apply for a partnership'
   description: 'A permission to allow members of an authority to apply for new partnerships.'
   restrict access: TRUE
+view authority enquiries:
+  title: 'View Authority Enquiries'
+  description: 'Allow a user to access all the enquiries relating to an authority.'
+  restrict access: TRUE
 # Permissions related to enforcement actions.
 search partnership:
   title: 'Search partnerships'
