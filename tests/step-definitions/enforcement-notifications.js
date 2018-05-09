@@ -32,6 +32,7 @@ When('I create new valid enforcement notification {string} for organisation {str
   .click('.form-radio')
   .setValue('#edit-details', 'Some details about the enforcement notice' + string)
   .click('#edit-next')
+  .assert.containsText('#edit-action-add','Multiple actions')
   .assert.containsText('#par-enforcement-notice-raise-confirm','action summary enforcement notice')
   .assert.containsText('#par-enforcement-notice-raise-confirm', string)
   .assert.containsText('#par-enforcement-notice-raise-confirm','Some details about the enforcement notice')
