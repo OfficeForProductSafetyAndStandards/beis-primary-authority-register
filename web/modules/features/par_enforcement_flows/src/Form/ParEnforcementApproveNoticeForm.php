@@ -95,6 +95,10 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
       $form['legal_entity'] = $this->renderSection('Regarding', $par_data_enforcement_notice, ['legal_entity_name' => 'summary']);
     }
 
+    if (!$par_data_enforcement_notice->get('summary')->isEmpty()) {
+      $form['enforcement_summary'] = $this->renderSection('Summary of enforcement notice', $par_data_enforcement_notice, ['summary' => 'full']);
+    }
+
     // To account for enforcement notification data created before enforcement officer release.
     if (!empty($enforcing_officer)) {
       $form['enforcement_officer_name'] = $this->renderSection('Enforcing officer name', $enforcing_officer, ['first_name' => 'summary', 'last_name' => 'summary'], [], TRUE, TRUE);
@@ -118,7 +122,7 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
         '#type' => 'fieldset',
          '#attributes' => ['class' => 'form-group'],
        ];
-      
+
       $form['actions'][$delta]['title'] = $this->renderSection('Title of action', $action, ['title' => 'title']);
       $form['actions'][$delta]['regulatory_function'] = $this->renderSection('Regulatory function', $action, ['field_regulatory_function' => 'title']);
       $form['actions'][$delta]['details'] = $this->renderSection('Details', $action, ['details' => 'full']);
