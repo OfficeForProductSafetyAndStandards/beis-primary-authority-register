@@ -54,7 +54,7 @@ class ParEnforcementEnforceOrganisationForm extends ParBaseForm {
       if (empty($members)) {
         $form['no_members'] = [
           '#type' => 'markup',
-          '#markup' => $this->t('Sorry but there are no members for this organisation.'),
+          '#markup' => $this->t('Enforcement notification cannot be created because no member organisation exists in the partnership. Please contact the help desk.'),
           '#prefix' => '<p><strong>',
           '#suffix' => '</strong><p>',
         ];
