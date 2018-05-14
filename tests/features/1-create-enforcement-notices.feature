@@ -35,4 +35,6 @@ Feature: Enforcement Officer - Enforcement Notice Process
         When I click the link text "Send a notification of a proposed enforcement action"
         And I click on authority selection if available
         When I click on the button "#edit-next"
+        And the element "#par-enforce-organisation" contains the text "Sorry but there are no members for this organisation."
+        When I click on the button "#edit-next"
         And the element "#par-enforce-organisation" contains the text "Enforcement notification cannot be created because no member organisation exists in the partnership. Please contact the help desk."
