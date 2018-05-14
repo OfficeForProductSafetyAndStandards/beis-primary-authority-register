@@ -1,6 +1,6 @@
-@ci @Bug @PAR990 @PAR991
 Feature: Business User - Update Partnership
 
+    @ci @PAR990 @PAR991 @directpartnership
     Scenario: Business User - Update Partnership
 
         #LOGIN
@@ -9,23 +9,19 @@ Feature: Business User - Update Partnership
 
         # GO TO A PARTNERSHIP PAGE
 
-        And I go to partnership detail page for my partnership "Organisation For Direct Partnership"
+        And I go to partnership detail page for my partnership "Organisation For Direct Partnership" with status "confirmed_business"
        
         # EDIT REGISTERED ADDRESS
 
-        When I edit registered address for organisation
-
-        # EDIT ABOUT THE ORGANISATION
-
-        And I edit about the organisation
+        When I update the registered address for organisation
 
         # ADD SIC CODES
 
-        And I change the SIC code
+        And I update the SIC code
 
         # ADD EMPLOYEES
 
-        And I change the number of employees
+        And I update the number of employees
 
         # ADD NEW TRADING NAME
 
@@ -38,6 +34,5 @@ Feature: Business User - Update Partnership
         # COMPLETE CHANGES
 
         When I click on the button "#edit-save"
-        And I select the option with the value "confirmed_business" for element "#edit-partnership-status-1"
         And I click on the button "#edit-submit-par-user-partnerships"
         And the element "#block-par-theme-content" contains the text "Organisation For Direct Partnership"

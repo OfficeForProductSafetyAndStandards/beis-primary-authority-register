@@ -2,7 +2,7 @@ const { client } = require('nightwatch-cucumber');
 const { Given, Then, When } = require('cucumber');
 const shared = client.page.shared();
 
-When('I create new valid enforcement notication {string} for organisation {string}', function (string, string2) {
+When('I create new valid enforcement notification {string} for organisation {string}', function (string, string2) {
   return shared
   .clickLinkByPureText('Search for a partnership')
   .setValue('#edit-keywords',string2)
@@ -12,10 +12,10 @@ When('I create new valid enforcement notication {string} for organisation {strin
   .clickLinkByPureText('Send a notification of a proposed enforcement action')
   .click('#edit-cancel')
   .clickLinkByPureText('Send a notification of a proposed enforcement action')
-  // CHOOSE MEMBER
-  .assert.containsText('#par-enforce-organisation','Choose the member to enforce')
-  .click('.form-radio')
-  .click('#edit-next')
+  // .click('.form-radio')
+  // .click('#edit-next')
+    // CHOOSE MEMBER
+  .chooseMemberIfOptionPresent()
   // ENTER EO DETAILS
   .clearValue('#edit-first-name')
   .click('#edit-next')
@@ -32,6 +32,7 @@ When('I create new valid enforcement notication {string} for organisation {strin
   .click('.form-radio')
   .setValue('#edit-details', 'Some details about the enforcement notice' + string)
   .click('#edit-next')
+  .assert.containsText('#edit-action-add','Multiple actions')
   .assert.containsText('#par-enforcement-notice-raise-confirm','action summary enforcement notice')
   .assert.containsText('#par-enforcement-notice-raise-confirm', string)
   .assert.containsText('#par-enforcement-notice-raise-confirm','Some details about the enforcement notice')
