@@ -56,7 +56,7 @@ class ParSelectEnforcedLegalEntityForm extends ParFormPluginBase {
         '#type' => 'radios',
         '#title' => $this->t('Select a legal entity'),
         '#options' => $select_legal_entities,
-        '#default_value' => $this->getFlowDataHandler()->getDefaultValues('legal_entities_select', key($legal_entity_reg_names)),
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues('legal_entities_select', key($select_legal_entities)),
         '#weight' => 100,
         '#required' => TRUE,
         '#prefix' => '<div>',

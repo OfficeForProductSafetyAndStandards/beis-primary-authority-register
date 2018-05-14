@@ -34,7 +34,7 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
       }
     }
 
-    $this->getFlowDataHandler()->setFormPermValue('user_organisations', $organisations);
+    $this->getFlowDataHandler()->setFormPermValue('partnership_organisations', $organisations);
 
     parent::loadData();
   }
@@ -44,12 +44,12 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
    */
   public function getElements($form = [], $cardinality = 1) {
     // Get all the allowed authorities.
-    $user_organisations = $this->getFlowDataHandler()->getParameter('user_organisations');
+    $partnership_organisations = $this->getFlowDataHandler()->getFormPermValue('partnership_organisations');
 
     // If the partnership is direct or there are not multiple members proceed to the next step.
-    if (count($user_organisations) <= 1) {
-      if (!empty($user_organisations)) {
-        $organisation = current($user_organisations);
+    if (count($partnership_organisations) <= 1) {
+      if (!empty($partnership_organisations)) {
+        $organisation = current($partnership_organisations);
         $this->getFlowDataHandler()->setTempDataValue('par_data_organisation_id', $organisation->id());
       }
       $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
@@ -58,10 +58,10 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
 
     // Initialize pager and get current page.
     $number_of_items = 10;
-    $current_page = pager_default_initialize(count($user_organisations), $number_of_items);
+    $current_page = pager_default_initialize(count($partnership_organisations), $number_of_items);
 
     // Split the items up into chunks:
-    $chunks = array_chunk($user_organisations, $number_of_items, TRUE);
+    $chunks = array_chunk($partnership_organisations, $number_of_items, TRUE);
 
     $form['par_data_organisation_id'] = [
       '#type' => 'radios',
@@ -86,9 +86,9 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
    * Validate date field.
    */
   public function validateForm(&$form_state, $cardinality = 1) {
-    $authority_id_key = $this->getElementKey('par_data_organisation_id');
-    if (empty($form_state->getValue($authority_id_key))) {
-      $form_state->setErrorByName($authority_id_key, $this->t('<a href="#edit-par_data_organisation_id">You must select an organisation.</a>'));
+    $organisation_id_key = $this->getElementKey('par_data_organisation_id');
+    if (empty($form_state->getValue($organisation_id_key))) {
+      $form_state->setErrorByName($organisation_id_key, $this->t('<a href="#edit-par_data_organisation_id">You must select an organisation.</a>'));
     }
 
     parent::validate($form_state, $cardinality);

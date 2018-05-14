@@ -66,7 +66,7 @@ class ParContactDetailsBasicForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function validate(&$form_state, $cardinality = 1) {
+  public function validate(&$form_state, $cardinality = 1, array $violations = []) {
     // @todo create wrapper for setErrorByName as this is ugly creating a link.
     if (empty($form_state->getValue('first_name'))) {
       $form_state->setErrorByName('first_name', $this->t('<a href="#edit-first-name">The first name field is required.</a>'));

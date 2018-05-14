@@ -127,7 +127,7 @@ class ParContactDetailsFullForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function validate(&$form_state, $cardinality = 1) {
+  public function validate(&$form_state, $cardinality = 1, array $violations = []) {
     // @todo create wrapper for setErrorByName as this is ugly creating a link.
     if (empty($form_state->getValue('email'))) {
       $form_state->setErrorByName('email', $this->t('<a href="#edit-email">The email field is required.</a>'));

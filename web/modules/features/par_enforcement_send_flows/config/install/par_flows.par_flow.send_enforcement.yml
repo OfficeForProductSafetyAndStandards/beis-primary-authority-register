@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies: {  }
+id: send_enforcement
+label: 'Send Enforcement'
+default_title: null
+default_section_title: null
+description: 'The send operations for an enforcement notice.'
+save_method: end
+states:
+  - par_data_enforcement_notice
+steps:
+  1:
+    route: par_enforcement_send_flows.send_enforcement
+    form_id: par_enforcement_notice_send
+  2:
+    route: par_dashboards.dashboard

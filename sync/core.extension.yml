@@ -63,6 +63,7 @@ module:
   par_data_config: 0
   par_enforcement_raise_flows: 0
   par_enforcement_review_flows: 0
+  par_enforcement_send_flows: 0
   par_flows: 0
   par_forms: 0
   par_header: 0
