@@ -48,8 +48,3 @@ Feature: Enforcement notice management
         When I click the link text "See enforcement notifications sent"
         And the element ".table-scroll-wrapper" contains the text "Enforcement notice 2"
 
-     @ci @enforcementnotices
-    Scenario: Enforcement notice management on coordinated partnership with no members
-
-        When I click the link text "See enforcement notifications received"
-        Then the element ".table-scroll-wrapper" does not contain the text "Enforcement notice For No Members Coord Partnership"
