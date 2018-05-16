@@ -67,7 +67,7 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
       '#type' => 'radios',
       '#title' => t('Choose the member to enforce'),
       '#options' => $chunks[$current_page],
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValuesByKey('par_data_organisation_id', $cardinality, []),
+      '#default_value' => $this->getDefaultValuesByKey('par_data_organisation_id', $cardinality, []),
     ];
 
     $form['pager'] = [

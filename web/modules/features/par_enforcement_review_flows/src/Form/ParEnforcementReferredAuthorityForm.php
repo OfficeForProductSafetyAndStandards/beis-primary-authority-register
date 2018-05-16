@@ -2,12 +2,8 @@
 
 namespace Drupal\par_enforcement_review_flows\Form;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataEnforcementAction;
-use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_enforcement_review_flows\ParFlowAccessTrait;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_forms\ParFormBuilder;
 
 /**
  * The confirmation for creating a new enforcement notice.
@@ -19,7 +15,7 @@ class ParEnforcementReferredAuthorityForm extends ParBaseForm {
   /**
    * Set the page title.
    */
-  protected $pageTitle = "Make a decision | Proposed enforcement action(s)";
+  protected $pageTitle = "Respond to notice of enforcement actions | Refer enforcement action(s)";
 
   /**
    * Load the data for this form.

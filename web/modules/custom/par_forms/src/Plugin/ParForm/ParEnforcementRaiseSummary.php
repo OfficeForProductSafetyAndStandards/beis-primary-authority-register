@@ -11,11 +11,11 @@ use Drupal\par_forms\ParFormPluginBase;
  * Enforcement summary form plugin.
  *
  * @ParForm(
- *   id = "enforcement_summary",
- *   title = @Translation("Enforcement summary.")
+ *   id = "enforcement_raise_summary",
+ *   title = @Translation("The enforcement summary when raising an enforcement.")
  * )
  */
-class ParEnforcementSummary extends ParFormPluginBase {
+class ParEnforcementRaiseSummary extends ParFormPluginBase {
 
   /**
    * {@inheritdoc}

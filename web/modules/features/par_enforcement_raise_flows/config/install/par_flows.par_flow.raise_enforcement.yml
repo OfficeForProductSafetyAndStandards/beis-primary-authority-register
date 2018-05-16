@@ -3,8 +3,8 @@ status: true
 dependencies: {  }
 id: raise_enforcement
 label: 'Raise Enforcement'
-default_title: 'Notification of Enforcement action'
-default_section_title: 'Enforcement Action'
+default_title: null
+default_section_title: 'Raise notice of enforcement action'
 description: 'The creation flow of an enforcement notice.'
 save_method: end
 states:
@@ -32,7 +32,7 @@ steps:
     route: par_enforcement_raise_flows.select_legal_entity
     form_id: par_enforcement_notice_raise
     components:
-      enforcement_summary: {}
+      enforcement_full_summary: {}
       select_enforced_legal_entity: {}
     form_data:
       enforcing_officer: par_enforcement_officer_details
@@ -43,7 +43,7 @@ steps:
     route: par_enforcement_raise_flows.raise_details
     form_id: par_enforcement_notice_raise_details
     components:
-      enforcement_summary: {}
+      enforcement_full_summary: {}
     form_data:
       enforcing_officer: par_enforcement_officer_details
       select_legal: par_enforcement_notice_raise
@@ -53,7 +53,7 @@ steps:
     route: par_enforcement_raise_flows.add_action
     form_id: par_enforcement_notice_add_action
     components:
-      enforcement_summary: {}
+      enforcement_full_summary: {}
       enforcement_action:
         cardinality: -1
     form_data:
@@ -65,7 +65,7 @@ steps:
     route: par_enforcement_raise_flows.raise_review
     form_id: par_enforcement_notice_raise_review
     components:
-      enforcement_summary: {}
+      enforcement_full_summary: {}
     form_data:
       enforcing_officer: par_enforcement_officer_details
       select_legal: par_enforcement_notice_raise

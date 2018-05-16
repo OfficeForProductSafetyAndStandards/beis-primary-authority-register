@@ -104,6 +104,27 @@ class ParDataEnforcementNotice extends ParDataEntity {
   }
 
   /**
+   * Get the primary authority contact for this notice.
+   *
+   * If there is a partnership this will be the primary contact for the partnership.
+   * Otherwise it will be the primary contact for the authority as a whole.
+   *
+   * @return ParDataEntityInterface|bool
+   *   Return false if none found.
+   *
+   */
+  public function getPrimaryAuthorityContact() {
+    if ($partnership = $this->getPartnership(TRUE)) {
+      $pa_contact = $partnership->getAuthorityPeople(TRUE);
+    }
+    elseif ($authority = $this->getPrimaryAuthority(TRUE)) {
+      $pa_contact = $authority->getPerson(TRUE);
+    }
+
+    return isset($pa_contact) ? $pa_contact : NULL;
+  }
+
+  /**
    * If this is a referred notice get the original notice.
    *
    * @return ParDataEntityInterface|bool

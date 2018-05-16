@@ -2,131 +2,87 @@
 
 namespace Drupal\par_enforcement_review_flows\Form;
 
+use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataException;
 use Drupal\par_enforcement_review_flows\ParFlowAccessTrait;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\Core\Access\AccessResult;
-use Drupal\par_flows\ParFlowException;
-use Symfony\Component\Routing\Route;
+use Drupal\par_forms\ParFormBuilder;
 
 /**
  * The confirmation for creating a new enforcement notice.
  */
-class ParEnforcementConfirmNoticeForm extends ParBaseForm {
+class ParEnforcementReviewActionsForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
 
   /**
    * Set the page title.
    */
-  protected $pageTitle = "Confirmation | Enforcement action decision";
+  protected $pageTitle = "Respond to notice of enforcement actions | Review";
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
-    $enforcing_officer = current($par_data_enforcement_notice->getEnforcingPerson());
+    // Set the data values on the entities
+    $entities = $this->createEntities();
+    extract($entities);
+    /** @var ParDataEnforcementNotice $par_data_enforcement_notice */
+    /** @var ParDataEnforcementAction[] $par_data_enforcement_actions */
 
-    $form['authority'] = $this->renderSection('Notification of Enforcement action from', $par_data_enforcement_notice, ['field_enforcing_authority' => 'title']);
+    // Return path for all redirect links.
+    $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
 
-    if (!$par_data_enforcement_notice->get('field_legal_entity')->isEmpty()) {
-      $form['legal_entity'] = $this->renderSection('Regarding', $par_data_enforcement_notice, ['field_legal_entity' => 'title']);
+    // Display the Enforcement Notice details.
+    $form['enforcement_type'] = $this->renderSection('Type of enforcement notice', $par_data_enforcement_notice, ['notice_type' => 'full'], [], TRUE, TRUE);
 
-      // @TODO If there is only one organisation for this legal entity
-      // we can potentially display the address, but otherwise we
-      // can only display the name.
-    }
-    else {
-      $form['legal_entity'] = $this->renderSection('Regarding', $par_data_enforcement_notice, ['legal_entity_name' => 'summary']);
-    }
+    $form['enforcement_summary'] = $this->renderSection('Summary of enforcement notice', $par_data_enforcement_notice, ['summary' => 'summary'], [], TRUE, TRUE);
 
-    $form['enforcement_officer_name'] = $this->renderSection('Enforcing officer name', $enforcing_officer, ['first_name' => 'summary','last_name' => 'summary'], [], TRUE, TRUE);
-    $form['enforcement_officer_telephone'] = $this->renderSection('Enforcing officer telephone number', $enforcing_officer, ['work_phone' => 'summary'], [], TRUE, TRUE);
-    $form['enforcement_officer_email'] = $this->renderSection('Enforcing officer email address', $enforcing_officer, ['email' => 'summary'], [], TRUE, TRUE);
-
-    // Show details of each action.
-    if (!$par_data_enforcement_notice->get('field_enforcement_action')->isEmpty()) {
-      $form['actions'] = [
-        '#type' => 'fieldset',
-        '#tree' => TRUE,
-        '#attributes' => ['class' => 'form-group'],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
-    }
-
-    foreach ($par_data_enforcement_notice->get('field_enforcement_action')->referencedEntities() as $delta => $action) {
-
-      $form['actions'][$delta] = [
-        '#type' => 'fieldset',
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
-
-      $form['actions'][$delta]['title'] = $this->renderSection('Title of action', $action, ['title' => 'title']);
-
-      $cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_notice_approve');
-      $status_value = $this->getFlowDataHandler()->getTempDataValue(['actions', $delta, 'primary_authority_status'], $cid);
-
-      $date = \Drupal::service('date.formatter')->format(time(), 'gds_date_format');
-      $form['actions'][$delta]['status'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-        'value' => [
-          '#type' => 'markup',
-          '#markup' => $this->t('You %status this action on @date', ['%status' => $status_value, '@date' => $date]),
-        ],
-      ];
-
-      if ($status_value === ParDataEnforcementAction::BLOCKED) {
-        $reason = $this->getFlowDataHandler()->getTempDataValue(['actions', $delta, 'primary_authority_notes'], $cid);
-      }
-      elseif ($status_value === ParDataEnforcementAction::REFERRED) {
-        $reason = $this->getFlowDataHandler()->getTempDataValue(['actions', $delta, 'referral_notes'], $cid);
-      }
-
-      if (isset($reason)) {
-        $form['actions'][$delta]['reason'] = [
-          '#type' => 'fieldset',
-          '#title' => 'Reason',
-          '#attributes' => ['class' => 'form-group'],
-          '#collapsible' => FALSE,
-          '#collapsed' => FALSE,
-          'value' => [
-            '#type' => 'markup',
-            '#markup' => $reason,
-          ],
-        ];
-      }
-
-      $elements[$delta] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
-
-      $form['actions'][$delta]['regulatory_function'] = $this->renderSection('Regulatory function', $action, ['field_regulatory_function' => 'title']);
-
-      $form['actions'][$delta]['details'] = $this->renderSection('Details', $action, ['details' => 'full']);
-
-      $form['actions'][$delta]['action_id'] = [
-        '#type' => 'hidden',
-        '#value' => $action->id()
-      ];
-    }
+    // Display the details for each Enforcement Action.
+    $form['enforcement_actions'] = $this->renderEntities('Enforcement Actions', $par_data_enforcement_actions, 'summary');
 
     return parent::buildForm($form, $form_state);
+  }
+
+  public function createEntities() {
+    $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
+    $par_data_enforcement_actions = $par_data_enforcement_notice->getEnforcementActions();
+
+    // Get the cache IDs for the various forms that needs needs to be extracted from.
+    $enforcement_actions_cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_notice_approve');
+    $enforcement_referral_cid = $this->getFlowNegotiator()->getFormKey('referrals');
+
+    // Create the enforcement actions.
+    foreach ($par_data_enforcement_actions as $par_data_enforcement_action) {
+      $status = $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action_review', $delta, 'action', 'primary_authority_status'], $enforcement_actions_cid);
+var_dump($status);
+      switch ($status) {
+        case ParDataEnforcementAction::APPROVED:
+          $par_data_enforcement_action->approve(FALSE);
+          break;
+
+        case ParDataEnforcementAction::BLOCKED:
+          $notes = $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action_review', $delta, 'action', 'primary_authority_notes'], $enforcement_actions_cid);
+          $par_data_enforcement_action->block($notes, FALSE);
+          break;
+
+        case ParDataEnforcementAction::REFERRED:
+          $notes = $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action_review', $delta, 'action', 'referral_notes'], $enforcement_actions_cid);
+          $par_data_enforcement_action->refer($notes, FALSE);
+          break;
+      }
+    }
+
+    return [
+      'par_data_enforcement_notice' => $par_data_enforcement_notice,
+      'par_data_enforcement_actions' => $par_data_enforcement_actions,
+    ];
   }
 
   /**

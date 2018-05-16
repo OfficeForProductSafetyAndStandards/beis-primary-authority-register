@@ -161,12 +161,17 @@ class ParDataEnforcementAction extends ParDataEntity {
   /**
    * Approve an enforcement action.
    */
-  public function approve() {
-    if (!$this->isNew() && !$this->isApproved()) {
+  public function approve($save = TRUE) {
+    if ($this->isNew()) {
+      $save = FALSE;
+    }
+
+    if (!$this->isApproved()) {
       $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
       $this->set($status_field, self::APPROVED);
-      return ($this->save() === SAVED_UPDATED);
+      return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
+
     return FALSE;
   }
 
@@ -179,13 +184,18 @@ class ParDataEnforcementAction extends ParDataEntity {
    * @return boolean
    *   True if the entity was revoked, false for all other results.
    */
-  public function block($authority_notes) {
-    if (!$this->isNew() && !$this->isBlocked()) {
+  public function block($authority_notes, $save = TRUE) {
+    if ($this->isNew()) {
+      $save = FALSE;
+    }
+
+    if (!$this->isBlocked()) {
       $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
       $this->set($status_field, self::BLOCKED);
       $this->set('primary_authority_notes', $authority_notes);
-      return ($this->save() === SAVED_UPDATED);
+      return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
+
     return FALSE;
   }
 
@@ -199,13 +209,18 @@ class ParDataEnforcementAction extends ParDataEntity {
    *   True if the entity has been set to a referred state, false for all other results.
    *
    */
-  public function refer($refer_notes) {
-    if (!$this->isNew() && !$this->isReferred()) {
+  public function refer($refer_notes, $save = TRUE) {
+    if ($this->isNew()) {
+      $save = FALSE;
+    }
+
+    if (!$this->isReferred()) {
       $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
       $this->set($status_field, self::REFERRED);
       $this->set('referral_notes', $refer_notes);
-      return ($this->save() === SAVED_UPDATED);
+      return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
+
     return FALSE;
   }
 

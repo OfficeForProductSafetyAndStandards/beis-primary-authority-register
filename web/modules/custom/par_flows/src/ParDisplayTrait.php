@@ -14,6 +14,13 @@ trait ParDisplayTrait {
   protected $numberPerPage = 5;
 
   /**
+   * Overrides the config getter if it doesn't exist.
+   */
+  protected function config($name) {
+    return \Drupal::configFactory()->get($name);
+  }
+
+  /**
    * Get renderer service.
    *
    * @return mixed

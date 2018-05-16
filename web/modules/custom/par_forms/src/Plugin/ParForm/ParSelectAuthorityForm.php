@@ -59,7 +59,7 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
       '#type' => 'radios',
       '#title' => t('Choose a Primary Authority'),
       '#options' => $user_authorities,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValuesByKey("par_data_authority_id", $cardinality, NULL),
+      '#default_value' => $this->getDefaultValuesByKey("par_data_authority_id", $cardinality, NULL),
     ];
 
     return $form;

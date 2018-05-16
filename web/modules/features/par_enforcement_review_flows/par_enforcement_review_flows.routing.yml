@@ -1,4 +1,4 @@
-par_enforcement_review_flows.approve:
+par_enforcement_review_flows.respond:
   path: '/enforcement-notice/{par_data_enforcement_notice}/approve'
   defaults:
     _form: '\Drupal\par_enforcement_review_flows\Form\ParEnforcementApproveNoticeForm'
@@ -25,14 +25,14 @@ par_enforcement_review_flows.referred_authority:
       par_data_enforcement_notice:
         type: entity:par_data_enforcement_notice
 
-par_enforcement_review_flows.approve_confirm:
-  path: '/enforcement-notice/{par_data_enforcement_notice}/confirm'
+par_enforcement_review_flows.review:
+  path: '/enforcement-notice/{par_data_enforcement_notice}/review'
   defaults:
-    _form: '\Drupal\par_enforcement_review_flows\Form\ParEnforcementConfirmNoticeForm'
-    _title_callback: '\Drupal\par_enforcement_review_flows\Form\ParEnforcementConfirmNoticeForm::titleCallback'
+    _form: '\Drupal\par_enforcement_review_flows\Form\ParEnforcementReviewActionsForm'
+    _title_callback: '\Drupal\par_enforcement_review_flows\Form\ParEnforcementReviewActionsForm::titleCallback'
   requirements:
     _permission: 'approve enforcement notice'
-    _custom_access: '\Drupal\par_enforcement_review_flows\Form\ParEnforcementConfirmNoticeForm::accessCallback'
+    _custom_access: '\Drupal\par_enforcement_review_flows\Form\ParEnforcementReviewActionsForm::accessCallback'
     par_data_enforcement_notice: \d+
   options:
     parameters:
@@ -40,13 +40,13 @@ par_enforcement_review_flows.approve_confirm:
         type: entity:par_data_enforcement_notice
 
 par_enforcement_review_flows.completed_enforcement:
-  path: '/enforcement-notice/{par_data_enforcement_notice}/reviewed'
+  path: '/enforcement-notice/{par_data_enforcement_notice}/confirmed'
   defaults:
-    _controller: '\Drupal\par_enforcement_review_flows\Controller\ParEnforcementReviewedController::build'
-    _title_callback: '\Drupal\par_enforcement_review_flows\Controller\ParEnforcementReviewedController::titleCallback'
+    _controller: '\Drupal\par_enforcement_review_flows\Controller\ParEnforcementConfirmController::build'
+    _title_callback: '\Drupal\par_enforcement_review_flows\Controller\ParEnforcementConfirmController::titleCallback'
   requirements:
     _permission: 'raise enforcement notice'
-    _custom_access: '\Drupal\par_enforcement_review_flows\Controller\ParEnforcementReviewedController::accessCallback'
+    _custom_access: '\Drupal\par_enforcement_review_flows\Controller\ParEnforcementConfirmController::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
