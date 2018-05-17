@@ -283,59 +283,27 @@ class ParDataEnforcementAction extends ParDataEntity {
   /**
    * Clone an enforcement notice action entity to support the referral process.
    *
-   * @return ParDataEnforcementAction $action
+   * @return ParDataEnforcementAction|boolean
    *  cloned action entity if a referral exists or NULL.
    */
-  public function cloneReferredEnforcementAction($referral_authority_id, $action_id) {
-
+  public function cloneAction($referral_authority_id) {
     if ($referral_authority_id) {
       // Duplicate this action before changing the status.
       $cloned_action = $this->createDuplicate();
       // As we are referring an action by cloning the original we need to set the original
       // action id on the copied (referred action) this indicates that the action in question
       // has been referred once and can no longer be referred.
-      $cloned_action->set('field_action_referral', $action_id);
+      $cloned_action->set('field_action_referral', $this->id());
       // If a new duplicate enforcement action has been saved to the system return it.
       if ($cloned_action->save()) {
         return $cloned_action;
       }
       else {
         throw new ParDataException("The referral action for the %action (action) cannot be created, please contact the helpdesk.");
-        return FALSE;
       }
     }
     else {
-    throw new ParDataException("The referral Action for %action (action) could not be created referral id missing, please contact the helpdesk.");
-    return FALSE;
-  }
-  }
-
-  /**
-   * Clone an enforcement notice entity to support the referral process.
-   *
-   * @return ParDataEnforcementAction $action
-   *  cloned action entity if a referral exists or NULL.
-   */
-  public function cloneEnforcementNotice($referral_authority_id, ParDataEnforcementAction $cloned_action, ParDataEnforcementNotice $par_data_enforcement_notice) {
-
-    if ($referral_authority_id) {
-      // Duplicate this enforcement notification and assign it the cloned action.
-      $referral_notice = $par_data_enforcement_notice->createDuplicate();
-      $referral_notice->set('field_primary_authority', $referral_authority_id);
-      $referral_notice->set('field_enforcement_action', $cloned_action->id());
-
-      if ($referral_notice->save()) {
-        return $referral_notice;
-      }
-      else {
-        throw new ParDataException("The referral Enforcement notice for the %action (action) cannot be created, please contact the helpdesk.");
-        return FALSE;
-      }
-
-    }
-    else {
-      throw new ParDataException("The referral Enforcement Notice for the %action action could not be created referral id missing, please contact the helpdesk.");
-      return FALSE;
+      throw new ParDataException("The referral Action for %action (action) could not be created referral id missing, please contact the helpdesk.");
     }
   }
 
