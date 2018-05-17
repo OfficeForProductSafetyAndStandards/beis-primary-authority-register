@@ -2,10 +2,12 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -104,7 +106,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
       }
     }
 
-    parent::loadData();
+    parent::loadData($cardinality);
   }
 
   /**
@@ -113,6 +115,10 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     $enforcing_officer_name = $this->getDefaultValuesByKey('enforcing_officer_name', $cardinality, NULL);
     $enforcing_authority = $this->getDefaultValuesByKey('enforcing_authority', $cardinality, NULL);
+
+    // Return path for all redirect links.
+    $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
+    $params = $this->getRouteParams() + ['destination' => $return_path];
 
     // Add the details about the enforcer.
     if ($enforcing_authority || $enforcing_officer_name) {
@@ -184,6 +190,21 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
             '#suffix' => '</p>',
           ],
         ];
+        try {
+          $form['partnership']['enforced_organisation']['select_legal'] = [
+            '#type' => 'markup',
+            '#weight' => 99,
+            '#markup' => t('@link', [
+              '@link' => $this->getFlowNegotiator()->getFlow()
+                ->getLinkByCurrentOperation('select_legal', $params, [])
+                ->setText('Change the enforced organisation')
+                ->toString(),
+            ]),
+          ];
+        }
+        catch (ParFlowException $e) {
+
+        }
       }
 
       if ($primary_authority) {

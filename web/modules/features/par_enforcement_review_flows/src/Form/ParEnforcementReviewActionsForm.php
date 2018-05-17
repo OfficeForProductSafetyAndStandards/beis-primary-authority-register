@@ -36,17 +36,6 @@ class ParEnforcementReviewActionsForm extends ParBaseForm {
     /** @var ParDataEnforcementNotice $par_data_enforcement_notice */
     /** @var ParDataEnforcementAction[] $par_data_enforcement_actions */
 
-    // Return path for all redirect links.
-    $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
-
-    // Display the Enforcement Notice details.
-    $form['enforcement_type'] = $this->renderSection('Type of enforcement notice', $par_data_enforcement_notice, ['notice_type' => 'full'], [], TRUE, TRUE);
-
-    $form['enforcement_summary'] = $this->renderSection('Summary of enforcement notice', $par_data_enforcement_notice, ['summary' => 'summary'], [], TRUE, TRUE);
-
-    // Display the details for each Enforcement Action.
-    $form['enforcement_actions'] = $this->renderEntities('Enforcement Actions', $par_data_enforcement_actions, 'summary');
-
     return parent::buildForm($form, $form_state);
   }
 
@@ -59,7 +48,7 @@ class ParEnforcementReviewActionsForm extends ParBaseForm {
     $enforcement_referral_cid = $this->getFlowNegotiator()->getFormKey('referrals');
 
     // Create the enforcement actions.
-    foreach ($par_data_enforcement_actions as $par_data_enforcement_action) {
+    foreach ($par_data_enforcement_actions as $delta => $par_data_enforcement_action) {
       $status = $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action_review', $delta, 'action', 'primary_authority_status'], $enforcement_actions_cid);
 
       switch ($status) {

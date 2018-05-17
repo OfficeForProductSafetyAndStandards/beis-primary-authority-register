@@ -37,9 +37,10 @@ steps:
     redirect:
       cancel: 5
       save: 4
+      action_decision: 1
     form_data:
       response: par_enforcement_notice_approve
-      reerrals: par_enforcement_referred_authority
+      referrals: par_enforcement_referred_authority
   4:
     route: par_enforcement_review_flows.completed_enforcement
     redirect:

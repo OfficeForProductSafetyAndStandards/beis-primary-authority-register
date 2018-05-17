@@ -2,9 +2,11 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -21,19 +23,15 @@ class ParEnforcementDetail extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function loadData($cardinality = 1) {
-    if ($par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice')) {
-      if ($enforcing_officer = $par_data_enforcement_notice->getEnforcingPerson(TRUE)) {
-        $this->getFlowDataHandler()->setFormPermValue("enforcing_officer_name", $enforcing_officer->label());
-        $this->getFlowDataHandler()->setFormPermValue("enforcing_officer_work_phone", $enforcing_officer->get('work_phone')->getString());
-        $this->getFlowDataHandler()->setFormPermValue("enforcing_officer_email", $enforcing_officer->get('email')->getString());
-      }
+    $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
 
-      if ($enforcing_authority = $par_data_enforcement_notice->getEnforcingAuthority(TRUE)) {
-        $this->getFlowDataHandler()->setFormPermValue("enforcing_authority", $enforcing_authority->label());
+    // If an enforcement notice parameter is set use this.
+    if ($par_data_enforcement_notice) {
+      if ($par_data_enforcement_notice->hasField('notice_type')) {
+        $this->getFlowDataHandler()->setFormPermValue("notice_type", $par_data_enforcement_notice->get('notice_type')->getString());
       }
-
-      if ($enforced_organisation_name = $par_data_enforcement_notice->getEnforcedEntityName()) {
-        $this->getFlowDataHandler()->setFormPermValue("enforced_organisation", $enforced_organisation_name);
+      if ($par_data_enforcement_notice->hasField('summary')) {
+        $this->getFlowDataHandler()->setFormPermValue("notice_summary", $par_data_enforcement_notice->summary->view('full'));
       }
 
       if ($par_data_organisation = $par_data_enforcement_notice->getEnforcedOrganisation(TRUE)) {
@@ -45,7 +43,7 @@ class ParEnforcementDetail extends ParFormPluginBase {
       }
     }
 
-    parent::loadData();
+    parent::loadData($cardinality);
   }
 
   /**
@@ -54,13 +52,109 @@ class ParEnforcementDetail extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
 
-    $form['enforcement_type'] = $this->renderSection('Type of enforcement notice', $par_data_enforcement_notice, ['notice_type' => 'full'], [], TRUE, TRUE);
+    // Return path for all redirect links.
+    $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
+    $params = $this->getRouteParams() + ['destination' => $return_path];
 
-    $form['enforcement_summary'] = $this->renderSection('Summary of enforcement notice', $par_data_enforcement_notice, ['summary' => 'summary'], [], TRUE, TRUE);
+    $form['enforcement_notice'] = [
+      '#type' => 'fieldset',
+      'title' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('Summary of notice'),
+        '#attributes' => ['class' => 'heading-large'],
+      ],
+      'type' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => 'Type of notice: ' . $this->getDefaultValuesByKey('notice_type', $cardinality, NULL),
+      ],
+      'summary' => $this->getDefaultValuesByKey('notice_summary', $cardinality, NULL),
+    ];
+
+    // Add operation link for updating notice details.
+    try {
+      $form['enforcement_notice']['change_summary'] = [
+        '#type' => 'markup',
+        '#weight' => 99,
+        '#markup' => t('@link', [
+          '@link' => $this->getFlowNegotiator()->getFlow()
+            ->getLinkByCurrentOperation('enforcement_details', $params, [])
+            ->setText('Change the summary of this enforcement')
+            ->toString(),
+        ]),
+      ];
+    }
+    catch (ParFlowException $e) {
+
+    }
+
 
     // Display the details for each Enforcement Action.
     if ($par_data_enforcement_actions = $this->getFlowDataHandler()->getParameter('par_data_enforcement_actions')) {
-      $form['enforcement_actions'] = $this->renderEntities('Enforcement Actions', $par_data_enforcement_actions, 'summary');
+      $form['enforcement_actions'] = [
+        '#type' => 'fieldset',
+        'title' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h2',
+          '#value' => $this->t('Enforcement Actions'),
+          '#attributes' => ['class' => 'heading-large'],
+        ]
+      ];
+
+      foreach ($par_data_enforcement_actions as $delta => $par_data_enforcement_action) {
+        $form['enforcement_actions'][$delta] = [
+          '#type' => 'fieldset',
+          '#attributes' => ['class' => ['form-group', 'panel panel-border-wide']],
+          'title' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h3',
+            '#value' => $par_data_enforcement_action->label(),
+            '#attributes' => ['class' => 'heading-medium'],
+          ],
+          'status' => [
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => 'Status: ' . $par_data_enforcement_action->getParStatus(),
+          ],
+          'regulatory_functions' => $par_data_enforcement_action->field_regulatory_function->view('full'),
+          'details' => $par_data_enforcement_action->details->view('full'),
+        ];
+
+        // Add operation link for updating action details.
+        try {
+          $form['enforcement_actions'][$delta]['change_action'] = [
+            '#type' => 'markup',
+            '#weight' => 99,
+            '#markup' => t('@link', [
+              '@link' => $this->getFlowNegotiator()->getFlow()
+                ->getLinkByCurrentOperation('enforcement_action', $params + ['cardinality' => $delta], [])
+                ->setText('Change the details for ' . $par_data_enforcement_action->label())
+                ->toString(),
+            ]),
+          ];
+        }
+        catch (ParFlowException $e) {
+
+        }
+
+        // Add operation link for updating action decision.
+        try {
+          $form['enforcement_actions'][$delta]['change_decision'] = [
+            '#type' => 'markup',
+            '#weight' => 99,
+            '#markup' => t('@link', [
+              '@link' => $this->getFlowNegotiator()->getFlow()
+                ->getLinkByCurrentOperation('action_decision', $params, [])
+                ->setText('Change response for ' . $par_data_enforcement_action->label())
+                ->toString(),
+            ]),
+          ];
+        }
+        catch (ParFlowException $e) {
+
+        }
+      }
     }
 
     return $form;
