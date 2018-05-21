@@ -14,7 +14,7 @@ use Drupal\par_forms\ParFormPluginBase;
  *   title = @Translation("Form for reviewing enforcement actions.")
  * )
  */
-class ParEnforcementActionReviewForm extends ParFormPluginBase {
+class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
 
   /**
    * Load the data for this form.
