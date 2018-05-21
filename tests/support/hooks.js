@@ -3,14 +3,19 @@ const reporter = require('cucumber-html-reporter');
 var path = require('path');
 var {After, AfterAll, Before, BeforeAll} = require('cucumber');
 
-BeforeAll(function () {
+// BeforeAll(function () {
+//     return client
+//         .url(client.launch_url + '/user/login')
+//         .setValue('#edit-name', 'dadmin')
+//         .setValue('#edit-pass', 'TestPassword')
+//         .click('#edit-submit')
+//         .url(client.launch_url + '/admin/par-data-test-reset')
+//         .url(client.launch_url + '/user/logout')
+// });
+
+Before(function () {
     return client
-        .url(client.launch_url + '/user/login')
-        .setValue('#edit-name', 'dadmin')
-        .setValue('#edit-pass', 'TestPassword')
-        .click('#edit-submit')
-        .url(client.launch_url + '/admin/par-data-test-reset')
-        .url(client.launch_url + '/user/logout')
+    .url(client.launch_url)
 });
 
 After(function () {
