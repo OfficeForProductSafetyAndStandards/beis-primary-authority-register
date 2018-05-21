@@ -450,10 +450,12 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getLinkByStep($index, array $route_params = [], array $link_options = []) {
     $step = $this->getStep($index);
-    $route = $step['route'];
     if (empty($step)) {
       throw new ParFlowException("The specified route does not exist for step {$index}.");
     }
+
+    $route = $step['route'];
+
     return $route ? $this->getLinkByRoute($route, $route_params, $link_options) : NULL;
   }
 

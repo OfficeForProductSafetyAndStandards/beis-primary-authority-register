@@ -4,6 +4,7 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\par_data\ParDataException;
 
 /**
  * Defines the par_data_enforcement_notice entity.
@@ -267,6 +268,32 @@ class ParDataEnforcementNotice extends ParDataEntity {
   public function approve() {
     foreach ($this->getEnforcementActions() as $action) {
       $action->approve();
+    }
+  }
+
+  /**
+   * Clone an enforcement notice entity to support the referral process.
+   *
+   * @return ParDataEnforcementNotice
+   *   Cloned notice entity if a referral exists or NULL.
+   */
+  public function cloneNotice($referral_authority_id, ParDataEnforcementAction $cloned_action) {
+    if ($referral_authority_id) {
+      // Duplicate this enforcement notification and assign it the cloned action.
+      $referral_notice = $this->createDuplicate();
+      $referral_notice->set('field_primary_authority', $referral_authority_id);
+      $referral_notice->set('field_enforcement_action', $cloned_action->id());
+
+      if ($referral_notice->save()) {
+        return $referral_notice;
+      }
+      else {
+        throw new ParDataException("The referral Enforcement notice for the %action (action) cannot be created, please contact the helpdesk.");
+      }
+
+    }
+    else {
+      throw new ParDataException("The referral Enforcement Notice for the %action action could not be created referral id missing, please contact the helpdesk.");
     }
   }
 

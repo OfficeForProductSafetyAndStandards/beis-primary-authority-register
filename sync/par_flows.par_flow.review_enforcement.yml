@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: ev_uZ-L_Eq1ythki6FQhq11hPuI3ass560JdealFxbE
+  default_config_hash: NcT_wKbVv6PpbIjJ5ODzmJ4xuk6CPj61iFtES8aRlEg
 id: review_enforcement
 label: 'Review Enforcement'
 default_title: null
@@ -40,9 +40,10 @@ steps:
     redirect:
       cancel: 5
       save: 4
+      action_decision: 1
     form_data:
       response: par_enforcement_notice_approve
-      reerrals: par_enforcement_referred_authority
+      referrals: par_enforcement_referred_authority
   4:
     route: par_enforcement_review_flows.completed_enforcement
     redirect:

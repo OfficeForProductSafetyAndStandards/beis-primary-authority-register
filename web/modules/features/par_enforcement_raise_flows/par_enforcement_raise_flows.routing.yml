@@ -60,15 +60,13 @@ par_enforcement_raise_flows.raise_details:
       par_data_partnership:
         type: entity:par_data_partnership
 par_enforcement_raise_flows.add_action:
-  path: '/enforcement-notice/{par_data_partnership}/raise/add-action/{cardinality}'
+  path: '/enforcement-notice/{par_data_partnership}/raise/add-action'
   defaults:
     _form: '\Drupal\par_enforcement_raise_flows\Form\ParAddActionForm'
     _title_callback: '\Drupal\par_enforcement_raise_flows\Form\ParAddActionForm::titleCallback'
-    cardinality: null
   requirements:
     _permission: 'raise enforcement notice'
     par_data_partnership: \d+
-    cardinality: \d+
   options:
     parameters:
       par_data_partnership:

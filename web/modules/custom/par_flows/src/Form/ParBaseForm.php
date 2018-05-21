@@ -194,9 +194,10 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     foreach ($this->getComponents() as $component) {
       // If there's is a cardinality parameter present display only this item.
       $cardinality = $this->getFlowDataHandler()->getParameter('cardinality');
+      $index = isset($cardinality) ? (int) $cardinality : NULL;
 
       // Handle instances where FormBuilderInterface should return a redirect response.
-      $plugin = $this->getFormBuilder()->getPluginElements($component, $form, (int) $cardinality);
+      $plugin = $this->getFormBuilder()->getPluginElements($component, $form, $index);
       if ($plugin instanceof RedirectResponse) {
         return $plugin;
       }
