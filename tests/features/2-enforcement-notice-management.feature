@@ -6,7 +6,7 @@ Feature: Enforcement notice management
         And I click the link text "See enforcement notices"
         Then the element "h1.heading-xlarge" contains the text "Par User Enforcements"
     
-    @ci @PAR1013 @PAR1049 @enforcementnotices2
+    @ci @PAR1013 @PAR1049 @enforcementnotices
     Scenario: Enforcement notice management
 
         # APPROVE FORM

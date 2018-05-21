@@ -76,7 +76,7 @@ Feature: Coordinator User - Upload Members
         And I click on the button "#edit-submit-partnership-search"
         And I click on the button "td.views-field.views-field-par-flow-link a"
         And I click the link text "Send a notification of a proposed enforcement action"
-        Then the element "h1.heading-xlarge" contains the text "Notification of Enforcement action"
+        Then the element "h1.heading-xlarge" contains the text "Raise notice of enforcement action"
         And the element "#par-enforce-organisation" contains the text "Choose the member to enforce"
         When I click on the radio "input[name=\"par_data_organisation_id\"]"
         And I click on the button "#edit-next"
