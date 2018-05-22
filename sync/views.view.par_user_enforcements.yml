@@ -395,7 +395,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           title: '{{ title }}'
-          link: '/enforcement-notice/{{ id }}/view'
+          link: '/enforcement-notice/{{ id }}/send'
           hidden: 0
           entity_type: par_data_enforcement_notice
           plugin_id: par_flow_link

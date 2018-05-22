@@ -29,7 +29,7 @@ class ParEnforcementReviewForm extends ParBaseForm {
   /**
    * Set the page title.
    */
-  protected $pageTitle = 'Review the enforement notice';
+  protected $pageTitle = 'Review the enforcement notice';
 
   public function loadData() {
     // Set the data values on the entities

@@ -24,7 +24,7 @@ class ParAddActionForm extends ParBaseForm {
   /**
    * Set the page title.
    */
-  protected $pageTitle = 'Add an action to the  enforcement notice';
+  protected $pageTitle = 'Add an action to the enforcement notice';
 
   /**
    * Load the data for this form.

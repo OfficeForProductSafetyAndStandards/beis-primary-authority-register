@@ -162,16 +162,17 @@ class ParDashboardsDashboardController extends ControllerBase {
         ];
       }
 
-      if ($this->getCurrentUser()->hasPermission('view authority enquiries')) {
-        $enquiry_link = $this->getLinkByRoute('view.par_user_enforcement_list.enforcement_notices_received') //@todo update to -> view.par_user_enquires_received
-          ->setText('See enquiries')
-          ->toString();
-
-        $build['messages'][] = [
-          '#type' => 'markup',
-          '#markup' => "<p>{$enquiry_link}</p>",
-        ];
-      }
+      // @TODO Add when enquiry journeys are completed.
+//      if ($this->getCurrentUser()->hasPermission('view authority enquiries')) {
+//        $enquiry_link = $this->getLinkByRoute('xxx')
+//          ->setText('See enquiries')
+//          ->toString();
+//
+//        $build['messages'][] = [
+//          '#type' => 'markup',
+//          '#markup' => "<p>{$enquiry_link}</p>",
+//        ];
+//      }
     }
 
     return $build;
