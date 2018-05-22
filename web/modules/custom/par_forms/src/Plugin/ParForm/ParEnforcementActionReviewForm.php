@@ -25,33 +25,22 @@ class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
     $par_data_enforcement_action = isset($par_data_enforcement_actions[$cardinality-1]) ? $par_data_enforcement_actions[$cardinality-1] : NULL;
 
     if ($par_data_enforcement_action) {
-      $entity_view_builder = $this->getParDataManager()->getViewBuilder($par_data_enforcement_action->getEntityTypeId());
-
-      $this->setDefaultValuesByKey("summary", $cardinality, $entity_view_builder->view($par_data_enforcement_action, 'full'));
-
       $this->setDefaultValuesByKey("is_referrable", $cardinality, $par_data_enforcement_action->isReferrable());
       $this->setDefaultValuesByKey("is_approvable", $cardinality, TRUE);
     }
 
-    parent::loadData();
+    parent::loadData($cardinality);
   }
 
   /**
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
+    // Inherit the base plugin.
+    $form = parent::getElements($form, $cardinality);
+
     if (!$this->getDefaultValuesByKey('is_approvable', $cardinality, FALSE)) {
       return $form;
-    }
-
-    $form['action'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => ['form-group', 'panel', 'panel-box']],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-    if ($summary = $this->getDefaultValuesByKey('summary', $cardinality, NULL)) {
-      $form['action']['summary'] = $this->renderMarkupField($summary);
     }
 
     $statuses = [
@@ -63,32 +52,35 @@ class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
       $statuses[ParDataEnforcementAction::REFERRED] = 'Refer';
     }
 
-    $form['action']['primary_authority_status'] = [
+    $form['primary_authority_status'] = [
       '#type' => 'radios',
+      '#weight' => 10,
       '#title' => $this->t('Decide to allow or block this action, or refer this action to another Primary Authority '),
       '#options' => $statuses,
-      '#default_value' => $this->getDefaultValuesByKey(['action', 'primary_authority_status'], $cardinality, ParDataEnforcementAction::APPROVED),
+      '#default_value' => $this->getDefaultValuesByKey('primary_authority_status', $cardinality, ParDataEnforcementAction::APPROVED),
       '#required' => TRUE,
     ];
 
 
-    $form['action']['primary_authority_notes'] = [
+    $form['primary_authority_notes'] = [
       '#type' => 'textarea',
+      '#weight' => 11,
       '#title' => $this->t('If you plan to block this action you must provide the enforcing authority with a valid reason.'),
       '#default_value' => $this->getDefaultValuesByKey(['action', 'primary_authority_notes'], $cardinality, ''),
       '#states' => [
         'visible' => [
-          ':input[name="' . $this->getElementName(['action', 'primary_authority_status'], $cardinality) . '"]' => ['value' => ParDataEnforcementAction::BLOCKED],
+          ':input[name="' . $this->getElementName('primary_authority_status', $cardinality) . '"]' => ['value' => ParDataEnforcementAction::BLOCKED],
         ]
       ],
     ];
-    $form['action']['referral_notes'] = [
+    $form['referral_notes'] = [
       '#type' => 'textarea',
+      '#weight' => 11,
       '#title' => $this->t('If you plan to refer this action you must provide the enforcing authority with a valid reason.'),
       '#default_value' => $this->getDefaultValuesByKey(['action', 'referral_notes'], $cardinality, ''),
       '#states' => [
         'visible' => [
-          ':input[name="' . $this->getElementName(['action', 'primary_authority_status'], $cardinality) . '"]' => ['value' => ParDataEnforcementAction::REFERRED],
+          ':input[name="' . $this->getElementName('primary_authority_status', $cardinality) . '"]' => ['value' => ParDataEnforcementAction::REFERRED],
         ]
       ],
     ];

@@ -52,6 +52,7 @@ class ParEnforcementReviewForm extends ParBaseForm {
 
     if ($par_data_enforcement_actions) {
       $this->getFlowDataHandler()->setParameter('par_data_enforcement_actions', $par_data_enforcement_actions);
+      $this->getFlowDataHandler()->setTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action_detail', $par_data_enforcement_actions);
     }
 
     parent::loadData();
@@ -98,6 +99,7 @@ class ParEnforcementReviewForm extends ParBaseForm {
 
     // Create the enforcement actions.
     $enforcement_actions = $this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action', $enforcement_actions_cid) ?: [];
+
     $par_data_enforcement_actions = [];
     foreach ($enforcement_actions as $delta => $enforcement_action) {
       // These ones need to be saved fresh.
