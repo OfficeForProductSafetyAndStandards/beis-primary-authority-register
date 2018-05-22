@@ -1,49 +1,49 @@
 {
     "_links": {
         "self": {
-            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_premises\/213969?_format=hal_json"
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/117473?_format=hal_json"
         },
         "type": {
-            "href": "http:\/\/drupal.org\/rest\/type\/par_data_premises\/premises"
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
         },
-        "http:\/\/drupal.org\/rest\/relation\/par_data_premises\/premises\/user_id": [
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/user_id": [
             {
-                "href": "http:\/\/default\/user\/1?_format=hal_json",
+                "href": "http:\/\/default\/user\/9541?_format=hal_json",
                 "lang": "en"
             }
         ],
-        "http:\/\/drupal.org\/rest\/relation\/par_data_premises\/premises\/revision_uid": [
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/revision_uid": [
             {
-                "href": "http:\/\/default\/user\/1?_format=hal_json"
+                "href": "http:\/\/default\/user\/9541?_format=hal_json"
             }
         ]
     },
     "id": [
         {
-            "value": 213969
+            "value": 117473
         }
     ],
     "type": [
         {
-            "target_id": "premises"
+            "target_id": "person"
         }
     ],
     "uuid": [
         {
-            "value": "c42727fb-e6c2-4241-9da7-a0074477f7a7"
+            "value": "9798a6c5-2978-496f-b1ee-b1fb31802f9f"
         }
     ],
     "revision_id": [
         {
-            "value": 64279
+            "value": 31694
         }
     ],
     "_embedded": {
-        "http:\/\/drupal.org\/rest\/relation\/par_data_premises\/premises\/user_id": [
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/user_id": [
             {
                 "_links": {
                     "self": {
-                        "href": "http:\/\/default\/user\/1?_format=hal_json"
+                        "href": "http:\/\/default\/user\/9541?_format=hal_json"
                     },
                     "type": {
                         "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
@@ -51,17 +51,17 @@
                 },
                 "uuid": [
                     {
-                        "value": "3508aee8-7e04-4b5d-a784-3667ea038e49"
+                        "value": "1a6dc8cd-fea2-486b-bd0e-12572c6a26ab"
                     }
                 ],
                 "lang": "en"
             }
         ],
-        "http:\/\/drupal.org\/rest\/relation\/par_data_premises\/premises\/revision_uid": [
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/revision_uid": [
             {
                 "_links": {
                     "self": {
-                        "href": "http:\/\/default\/user\/1?_format=hal_json"
+                        "href": "http:\/\/default\/user\/9541?_format=hal_json"
                     },
                     "type": {
                         "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
@@ -69,7 +69,7 @@
                 },
                 "uuid": [
                     {
-                        "value": "3508aee8-7e04-4b5d-a784-3667ea038e49"
+                        "value": "1a6dc8cd-fea2-486b-bd0e-12572c6a26ab"
                     }
                 ]
             }
@@ -88,17 +88,17 @@
     ],
     "created": [
         {
-            "value": 1521559594
+            "value": 1527001844
         }
     ],
     "changed": [
         {
-            "value": 1521559594
+            "value": 1527001844
         }
     ],
     "revision_timestamp": [
         {
-            "value": 1527001075
+            "value": 1527001844
         }
     ],
     "revision_translation_affected": [
@@ -109,7 +109,7 @@
     ],
     "name": [
         {
-            "value": "5ab1282ce0f26",
+            "value": "5b0432f561d94",
             "lang": "en"
         }
     ],
@@ -128,26 +128,46 @@
             "value": false
         }
     ],
-    "address": [
+    "salutation": [
         {
-            "langcode": null,
-            "country_code": "GB",
-            "administrative_area": "US-NY",
-            "locality": "New York State",
-            "dependent_locality": null,
-            "postal_code": "SG19 3HZ",
-            "sorting_code": null,
-            "address_line1": "4 sesame St",
-            "address_line2": "Newcastle",
-            "organization": null,
-            "given_name": null,
-            "additional_name": null,
-            "family_name": null
+            "value": "Mrs."
         }
     ],
-    "nation": [
+    "first_name": [
         {
-            "value": "GB-ENG"
+            "value": "Dolly"
+        }
+    ],
+    "last_name": [
+        {
+            "value": "Luettgen"
+        }
+    ],
+    "work_phone": [
+        {
+            "value": "99999999902079999999"
+        }
+    ],
+    "mobile_phone": [
+        {
+            "value": "1111111111111078659999999"
+        }
+    ],
+    "email": [
+        {
+            "value": "par_coordinator@example.com"
+        }
+    ],
+    "communication_mobile": [
+        {
+            "value": true
+        }
+    ],
+    "communication_notes": [
+        {
+            "value": "Some additional notes",
+            "format": null,
+            "processed": "<p>Some additional notes<\/p>\n"
         }
     ],
     "default_langcode": [
