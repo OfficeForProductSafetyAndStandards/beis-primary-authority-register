@@ -23,29 +23,9 @@
             "lang": "en"
         }
     ],
-    "mail": [
-        {
-            "value": "par_enforcement_officer@example.com"
-        }
-    ],
     "name": [
         {
             "value": "par_enforcement_officer@example.com"
-        }
-    ],
-    "pass": [
-        {
-            "value": "TestPassword"
-        }
-    ],
-    "status": [
-        {
-            "value": "1"
-        }
-    ],
-    "roles": [
-        {
-            "target_id": "par_enforcement"
         }
     ],
     "created": [

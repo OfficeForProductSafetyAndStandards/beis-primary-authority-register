@@ -5,14 +5,14 @@ Feature: PA User - Messaging
         Scenario Outline: Enquiry Messages View
                 Given I am logged on as "par_authority@example.com"
                 And I click on the link text "See enquiries"
-                Then the element "span.heading-secondary" contains the text "Enforcement Notifications"
+                Then the element "span.heading-secondary" contains the text "Par User Enforcements"
 
 
         @1253 @1254 @pending
         Scenario Outline: Enquiry Messages Filtering
                 Given I am logged on as "par_authority@example.com"
                 And I click on the link text "See enquiries"
-                Then the element "span.heading-secondary" contains the text "Enforcement Notifications"
+                Then the element "span.heading-secondary" contains the text "Par User Enforcements"
                 And I select the option with the value "<MessageType>" for element "#message-types"
                 Then only messages of type "<MessageType>" are displayed
 
