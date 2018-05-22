@@ -33,7 +33,7 @@ When('I create new valid enforcement notification {string} for organisation {str
     .assert.containsText('#par-enforcement-notice-raise-review','action summary enforcement notice')
     .assert.containsText('#par-enforcement-notice-raise-review', string)
     .assert.containsText('#par-enforcement-notice-raise-review','action summary enforcement notice')
-    .click('#edit-next')
+    .click('#edit-save')
     .assert.containsText('h1.heading-xlarge','Enforcement notice sent')
     .click('.button')
     .assert.containsText('h1.heading-xlarge','Partnership Search')
