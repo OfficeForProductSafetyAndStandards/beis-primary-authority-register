@@ -67,6 +67,8 @@ steps:
     components:
       enforcement_full_summary: {}
       enforcement_detail: {}
+      enforcement_action_detail:
+        cardinality: -1
     form_data:
       enforcing_officer: par_enforcement_officer_details
       select_legal: par_enforcement_notice_raise

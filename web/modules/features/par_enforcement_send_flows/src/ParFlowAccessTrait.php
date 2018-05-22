@@ -23,7 +23,7 @@ trait ParFlowAccessTrait {
     try {
       $this->getFlowNegotiator()->setRoute($route_match);
       $this->getFlowDataHandler()->reset();
-      $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice', $par_data_enforcement_notice);
+      $this->getFlowDataHandler()->setParameter('par_data_enforcement_notice', $par_data_enforcement_notice);
       $this->loadData();
     } catch (ParFlowException $e) {
 

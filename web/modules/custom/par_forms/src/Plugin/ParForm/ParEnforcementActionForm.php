@@ -9,7 +9,7 @@ use Drupal\par_forms\ParFormPluginBase;
  *
  * @ParForm(
  *   id = "enforcement_action",
- *   title = @Translation("Enforcement action form.")
+ *   title = @Translation("Form for adding new enforcement actions.")
  * )
  */
 class ParEnforcementActionForm extends ParFormPluginBase {

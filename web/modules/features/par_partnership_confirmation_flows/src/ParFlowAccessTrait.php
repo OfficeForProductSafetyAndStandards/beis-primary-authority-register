@@ -14,10 +14,11 @@ trait ParFlowAccessTrait {
   /**
    * {@inheritdoc}
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
     try {
       $this->getFlowNegotiator()->setRoute($route_match);
       $this->getFlowDataHandler()->reset();
+      $this->getFlowDataHandler()->setParameter('par_data_partnership', $par_data_partnership);
       $this->loadData();
     } catch (ParFlowException $e) {
 

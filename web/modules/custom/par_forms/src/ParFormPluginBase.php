@@ -163,7 +163,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
    * @param mixed $data
    *   If required the data to be counted can be switched to the form_state values.
    *
-   * @return integer|NULL
+   * @return integer
    */
   public function countItems($data = NULL) {
     if ($this->getCardinality() !== 1) {
@@ -172,7 +172,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
         count($this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginId()));
     }
 
-    return NULL;
+    return 0;
   }
 
   /**
@@ -184,7 +184,14 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
    * @return integer
    */
   public function getNewCardinality($data = NULL) {
-    return $this->countItems($data) + 1 ?: 1;
+    $count = $this->countItems($data);
+
+    // If there is no add another button don't display an empty item.
+    if ($actions = $this->getComponentActions([], $count) && isset($actions['add_another'])) {
+      $count ++;
+    }
+
+    return $count ?: 1;
   }
 
   /**
@@ -383,5 +390,59 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
   public function save($cardinality = 1) {
     // @TODO Add automatic saving of data based on the mapping (self::getMapping)
     // between self::getElements() and self::getFlowDataHandler()->getParameters()
+  }
+
+  /**
+   * Get the fieldset wrapper for this component.
+   */
+  public function getWrapper() {
+    return [
+      '#weight' => $this->getWeight(),
+      '#tree' => $this->getCardinality() === 1 ? FALSE : TRUE,
+    ];
+  }
+
+  /**
+   * Get the fieldset wrapper for this component.
+   */
+  public function getElementActions($cardinality = 1, $actions = []) {
+    $count = $this->getNewCardinality();
+
+    if ($this->getCardinality() !== 1 && $cardinality !== $count) {
+      $actions['remove'] = [
+          '#type' => 'submit',
+          '#name' => "remove:{$this->getPluginId()}:{$cardinality}",
+          '#weight' => 100,
+          '#submit' => ['::removeItem'],
+          '#value' => $this->t("Remove"),
+          '#attributes' => [
+            'class' => ['btn-link'],
+          ],
+      ];
+    }
+
+    return $actions;
+  }
+
+  /**
+   * Get the fieldset wrapper for this component.
+   */
+  public function getComponentActions($actions = [], $count = NULL) {
+    $count = isset($count) ? $count : $this->getNewCardinality();
+
+    if ($this->getCardinality() === -1
+      || ($this->getCardinality() > 1 && $this->getCardinality() > $count)) {
+      $actions['add_another'] = [
+        '#type' => 'submit',
+        '#name' => 'add_another',
+        '#submit' => ['::multipleItemActionsSubmit'],
+        '#value' => $this->t('Add another'),
+        '#attributes' => [
+          'class' => ['btn-link'],
+        ],
+      ];
+    }
+
+    return $actions;
   }
 }

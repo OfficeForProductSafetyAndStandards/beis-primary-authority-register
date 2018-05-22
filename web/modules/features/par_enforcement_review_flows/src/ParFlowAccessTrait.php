@@ -23,7 +23,7 @@ trait ParFlowAccessTrait {
     try {
       $this->getFlowNegotiator()->setRoute($route_match);
       $this->getFlowDataHandler()->reset();
-      $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice', $par_data_enforcement_notice);
+      $this->getFlowDataHandler()->setParameter('par_data_enforcement_notice', $par_data_enforcement_notice);
       $this->loadData();
     } catch (ParFlowException $e) {
 
@@ -32,8 +32,8 @@ trait ParFlowAccessTrait {
     // Get the parameters for this route.
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
 
-    // This form shouldn't be accessed if the enforcement notice isn't in progress.
-    if (!$par_data_enforcement_notice->inProgress()) {
+    // Steps 1 & 2 shouldn't be accessed if the enforcement notice has already been approved.
+    if (!$par_data_enforcement_notice->inProgress() && $this->getFlowNegotiator()->getFlow()->getCurrentStep() <= 2) {
       // Set an error if this action has already been reviewed.
       $this->accessResult = AccessResult::forbidden('This action has already been reviewed.');
     }

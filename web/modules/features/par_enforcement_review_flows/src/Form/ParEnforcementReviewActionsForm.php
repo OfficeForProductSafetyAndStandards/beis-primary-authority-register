@@ -25,18 +25,19 @@ class ParEnforcementReviewActionsForm extends ParBaseForm {
    */
   protected $pageTitle = "Respond to notice of enforcement actions | Review";
 
-  /**
-   * {@inheritdoc}
-   */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
-
+  public function loadData() {
     // Set the data values on the entities
     $entities = $this->createEntities();
     extract($entities);
     /** @var ParDataEnforcementNotice $par_data_enforcement_notice */
     /** @var ParDataEnforcementAction[] $par_data_enforcement_actions */
 
-    return parent::buildForm($form, $form_state);
+    if ($par_data_enforcement_actions) {
+      $this->getFlowDataHandler()->setParameter('par_data_enforcement_actions', $par_data_enforcement_actions);
+      $this->getFlowDataHandler()->setTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action_detail', $par_data_enforcement_actions);
+    }
+
+    parent::loadData();
   }
 
   public function createEntities() {
@@ -49,7 +50,7 @@ class ParEnforcementReviewActionsForm extends ParBaseForm {
 
     // Create the enforcement actions.
     foreach ($par_data_enforcement_actions as $delta => $par_data_enforcement_action) {
-      $status = $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action_review', $delta, 'action', 'primary_authority_status'], $enforcement_actions_cid);
+      $status = $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action_review', $delta, 'primary_authority_status'], $enforcement_actions_cid);
 
       switch ($status) {
         case ParDataEnforcementAction::APPROVED:
@@ -57,12 +58,12 @@ class ParEnforcementReviewActionsForm extends ParBaseForm {
           break;
 
         case ParDataEnforcementAction::BLOCKED:
-          $notes = $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action_review', $delta, 'action', 'primary_authority_notes'], $enforcement_actions_cid);
+          $notes = $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action_review', $delta, 'primary_authority_notes'], $enforcement_actions_cid);
           $par_data_enforcement_action->block($notes, FALSE);
           break;
 
         case ParDataEnforcementAction::REFERRED:
-          $notes = $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action_review', $delta, 'action', 'referral_notes'], $enforcement_actions_cid);
+          $notes = $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action_review', $delta, 'referral_notes'], $enforcement_actions_cid);
           $par_data_enforcement_action->refer($notes, FALSE);
           break;
       }

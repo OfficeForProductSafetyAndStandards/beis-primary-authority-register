@@ -3,6 +3,7 @@
 namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPerson;
@@ -13,8 +14,8 @@ use Drupal\par_forms\ParFormPluginBase;
  * Enforcement summary form plugin.
  *
  * @ParForm(
- *   id = "enforcement_actions",
- *   title = @Translation("The shows all of the enforcement action.")
+ *   id = "enforcement_action_detail",
+ *   title = @Translation("Shows all of the enforcement action details.")
  * )
  */
 class ParEnforcementActionDetail extends ParFormPluginBase {
@@ -28,9 +29,17 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
 
     // If an enforcement notice parameter is set use this.
     if ($par_data_enforcement_notice && !$par_data_enforcement_actions) {
-      if ($par_data_enforcement_actions = $par_data_enforcement_notice->getEnforcementActions()) {
-        $this->getFlowDataHandler()->setParameter('par_data_enforcement_actions', $par_data_enforcement_actions);
-      }
+      $par_data_enforcement_actions = $par_data_enforcement_notice->getEnforcementActions();
+    }
+
+    // Cardinality is not a zero-based index like the stored fields deltas.
+    $par_data_enforcement_action = isset($par_data_enforcement_actions[$cardinality-1]) ? $par_data_enforcement_actions[$cardinality-1] : NULL;
+
+    if ($par_data_enforcement_action && $par_data_enforcement_action instanceof ParDataEnforcementAction) {
+      $this->setDefaultValuesByKey("action_title", $cardinality, $par_data_enforcement_action->label());
+      $this->setDefaultValuesByKey("action_status", $cardinality, $par_data_enforcement_action->getParStatus());
+      $this->setDefaultValuesByKey("action_regulatory_functions", $cardinality, $par_data_enforcement_action->field_regulatory_function->view('full'));
+      $this->setDefaultValuesByKey("action_details", $cardinality, $par_data_enforcement_action->details->view('full'));
     }
 
     parent::loadData($cardinality);
@@ -46,71 +55,89 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
 
     // Display the details for each Enforcement Action.
     if ($par_data_enforcement_actions = $this->getFlowDataHandler()->getParameter('par_data_enforcement_actions')) {
-      $form['enforcement_actions'] = [
+      $form = [
         '#type' => 'fieldset',
+        '#attributes' => ['class' => ['form-group', 'panel panel-border-wide']],
         'title' => [
           '#type' => 'html_tag',
-          '#tag' => 'h2',
-          '#value' => $this->t('Enforcement Actions'),
-          '#attributes' => ['class' => 'heading-large'],
-        ]
+          '#tag' => 'h3',
+          '#value' => $this->getDefaultValuesByKey('action_title', $cardinality),
+          '#attributes' => ['class' => 'heading-medium'],
+        ],
+        'status' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => 'Status: ' . $this->getDefaultValuesByKey('action_status', $cardinality),
+        ],
+        'regulatory_functions' => $this->getDefaultValuesByKey('action_regulatory_functions', $cardinality, []),
+        'details' => $this->getDefaultValuesByKey('action_details', $cardinality, []),
       ];
 
-      foreach ($par_data_enforcement_actions as $delta => $par_data_enforcement_action) {
-        $form['enforcement_actions'][$delta] = [
-          '#type' => 'fieldset',
-          '#attributes' => ['class' => ['form-group', 'panel panel-border-wide']],
-          'title' => [
-            '#type' => 'html_tag',
-            '#tag' => 'h3',
-            '#value' => $par_data_enforcement_action->label(),
-            '#attributes' => ['class' => 'heading-medium'],
-          ],
-          'status' => [
-            '#type' => 'html_tag',
-            '#tag' => 'p',
-            '#value' => 'Status: ' . $par_data_enforcement_action->getParStatus(),
-          ],
-          'regulatory_functions' => $par_data_enforcement_action->field_regulatory_function->view('full'),
-          'details' => $par_data_enforcement_action->details->view('full'),
+      // Add operation link for updating action details.
+      try {
+        $form['change_action'] = [
+          '#type' => 'markup',
+          '#weight' => 99,
+          '#markup' => t('@link', [
+            '@link' => $this->getFlowNegotiator()->getFlow()
+              ->getLinkByCurrentOperation('enforcement_action', $params, [])
+              ->setText('Change the details for ' . $this->getDefaultValuesByKey('action_title', $cardinality))
+              ->toString(),
+          ]),
         ];
+      }
+      catch (ParFlowException $e) {
 
-        // Add operation link for updating action details.
-        try {
-          $form['enforcement_actions'][$delta]['change_action'] = [
-            '#type' => 'markup',
-            '#weight' => 99,
-            '#markup' => t('@link', [
-              '@link' => $this->getFlowNegotiator()->getFlow()
-                ->getLinkByCurrentOperation('enforcement_action', $params + ['cardinality' => $delta], [])
-                ->setText('Change the details for ' . $par_data_enforcement_action->label())
-                ->toString(),
-            ]),
-          ];
-        }
-        catch (ParFlowException $e) {
+      }
 
-        }
+      // Add operation link for updating action decision.
+      try {
+        $form['change_decision'] = [
+          '#type' => 'markup',
+          '#weight' => 99,
+          '#markup' => t('@link', [
+            '@link' => $this->getFlowNegotiator()->getFlow()
+              ->getLinkByCurrentOperation('action_decision', $params, [])
+              ->setText('Change response for ' . $this->getDefaultValuesByKey('action_title', $cardinality))
+              ->toString(),
+          ]),
+        ];
+      }
+      catch (ParFlowException $e) {
 
-        // Add operation link for updating action decision.
-        try {
-          $form['enforcement_actions'][$delta]['change_decision'] = [
-            '#type' => 'markup',
-            '#weight' => 99,
-            '#markup' => t('@link', [
-              '@link' => $this->getFlowNegotiator()->getFlow()
-                ->getLinkByCurrentOperation('action_decision', $params, [])
-                ->setText('Change response for ' . $par_data_enforcement_action->label())
-                ->toString(),
-            ]),
-          ];
-        }
-        catch (ParFlowException $e) {
-
-        }
       }
     }
 
     return $form;
+  }
+
+  /**
+   * Get the fieldset wrapper for this component.
+   */
+  public function getWrapper() {
+    $fieldset = parent::getWrapper();
+
+    $fieldset['title'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => $this->t('Enforcement Actions'),
+      '#attributes' => ['class' => 'heading-large'],
+    ];
+
+    return $fieldset;
+  }
+
+  /**
+   * Return no actions for this plugin.
+   */
+  public function getElementActions($cardinality = 1, $actions = []) {
+    return $actions;
+  }
+
+  /**
+   * Return no actions for this plugin.
+   */
+  public function getComponentActions($actions = [], $count = NULL) {
+    return $actions;
   }
 }
