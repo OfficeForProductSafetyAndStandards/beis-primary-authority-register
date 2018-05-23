@@ -26,30 +26,9 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
   ];
 
   /**
-   * {@inheritdoc}
+   * Set the page title.
    */
-  public function titleCallback() {
-    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-
-    if ($par_data_partnership) {
-      $cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_notice_raise');
-      $choosen_legal_entity = $this->getFlowDataHandler()->getDefaultValues('legal_entities_select', '', $cid);
-
-      if ($choosen_legal_entity == 'add_new') {
-        $enforced_entity_name = $this->getFlowDataHandler()->getDefaultValues('alternative_legal_entity', '', $cid);
-      }
-      else {
-        $legal_entity = ParDataLegalEntity::load($choosen_legal_entity);
-        $enforced_entity_name = $legal_entity ? $legal_entity->label() : '';
-      }
-
-      if (!empty($enforced_entity_name)) {
-        $this->pageTitle = 'Proposed enforcement notification regarding | '. $enforced_entity_name;
-      }
-    }
-
-    return parent::titleCallback();
-  }
+  protected $pageTitle = 'Enforcement details';
 
   /**
    * Load the data for this form.
@@ -84,38 +63,8 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
       '#title' => $this->t('This enforcement action is'),
       '#options' => $notice_type,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('notice_type', key($notice_type)),
+      '#attributes' => ['class' => ['form-group']],
       '#required' => TRUE,
-      '#weight' => 100,
-    ];
-
-    $form['summary_title'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Summary of enforcement notification'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-      '#weight' => 100,
-    ];
-
-    $form['enforcement_title'] = [
-      '#type' => 'fieldset',
-      '#markup' => $this->t('Include the following information'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-      '#weight' => 100,
-    ];
-
-    $enforcement_data = [
-      'Full details of the contravention',
-      'Which products or services are affected',
-      'Your proposed text for any statutory notice or draft changes etc',
-      'Your reasons for proposing the enforcement action',
-    ];
-
-    $form['enforcement_text'] = [
-      '#theme' => 'item_list',
-      '#items' => $enforcement_data,
       '#weight' => 100,
     ];
 
@@ -129,6 +78,18 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
 
     $form['summary'] = [
       '#type' => 'textarea',
+      '#title' => $this->t('Include the following information'),
+      '#description' => [
+        '#theme' => 'item_list',
+        '#items' => [
+          'full details of the contravention',
+          'which products or services are affected',
+          'your proposed text for any statutory notice or draft changes etc',
+          'your reasons for proposing the enforcement action',
+        ],
+        '#attributes' => ['class' => ['list', 'list-bullet']],
+        '#weight' => 100,
+      ],
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('summary'),
       '#weight' => 100,
     ];

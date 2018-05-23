@@ -101,6 +101,7 @@ class ParFormBuilder extends DefaultPluginManager {
 
     // Count the current cardinality.
     $count = $component->getNewCardinality();
+
     for ($i = 1; $i <= $count; $i++) {
       $element = $component->getElements([], $i);
 

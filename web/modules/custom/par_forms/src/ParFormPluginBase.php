@@ -187,8 +187,9 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
     $count = $this->countItems($data);
 
     // If there is no add another button don't display an empty item.
-    if ($actions = $this->getComponentActions([], $count) && isset($actions['add_another'])) {
-      $count ++;
+    $actions = $this->getComponentActions([], $count);
+    if ($actions && isset($actions['add_another'])) {
+      $count++;
     }
 
     return $count ?: 1;
