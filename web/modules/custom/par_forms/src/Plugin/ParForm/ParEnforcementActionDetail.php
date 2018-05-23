@@ -40,10 +40,10 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
       $this->setDefaultValuesByKey("action_status", $cardinality, $par_data_enforcement_action->getParStatus());
 
       if ($par_data_enforcement_action->getRawStatus() === ParDataEnforcementAction::BLOCKED) {
-        $this->setDefaultValuesByKey("action_status_notes", $cardinality, $par_data_enforcement_action->getParStatus());
+        $this->setDefaultValuesByKey("action_status_notes", $cardinality, $par_data_enforcement_action->getPrimaryAuthorityNotes());
       }
       elseif ($par_data_enforcement_action->getRawStatus() === ParDataEnforcementAction::REFERRED) {
-        $this->setDefaultValuesByKey("action_status_notes", $cardinality, $par_data_enforcement_action->getParStatus());
+        $this->setDefaultValuesByKey("action_status_notes", $cardinality, $par_data_enforcement_action->getReferralNotes());
       }
 
       $this->setDefaultValuesByKey("action_regulatory_functions", $cardinality, $par_data_enforcement_action->field_regulatory_function->view('full'));
@@ -75,15 +75,11 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
         'status' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => 'Status: ' . $this->getDefaultValuesByKey('action_status', $cardinality),
+          '#value' => $this->getDefaultValuesByKey('action_status', $cardinality) . ' (' . $this->getDefaultValuesByKey('action_status_notes', $cardinality, 'This action can be enforced') . ')',
         ],
         'regulatory_functions' => $this->getDefaultValuesByKey('action_regulatory_functions', $cardinality, []),
         'details' => $this->getDefaultValuesByKey('action_details', $cardinality, []),
       ];
-
-      if ($status_reason = $this->getDefaultValuesByKey('action_status_notes', $cardinality)) {
-        $form['status']['#value'] .= "($status_reason)";
-      }
 
       // Add operation link for updating action details.
       try {

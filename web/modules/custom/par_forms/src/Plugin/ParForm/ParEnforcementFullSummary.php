@@ -230,16 +230,16 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
             '#markup' => $enforcing_officer_name,
           ],
         ];
-        if ($work_phone = $this->getDefaultValuesByKey('pa_officer_work_phone', $cardinality, NULL)) {
+        if ($pa_officer_work_phone = $this->getDefaultValuesByKey('pa_officer_work_phone', $cardinality, NULL)) {
           $form['partnership']['primary_authority']['pa_officer']['work_phone'] = [
             '#type' => 'markup',
-            '#markup' => ', ' . $work_phone,
+            '#markup' => ', ' . $pa_officer_work_phone,
           ];
         }
-        if ($email = $this->getDefaultValuesByKey('pa_officer_email', $cardinality, NULL)) {
+        if ($pa_officer_email = $this->getDefaultValuesByKey('pa_officer_email', $cardinality, NULL)) {
           $form['partnership']['primary_authority']['pa_officer']['email'] = [
             '#type' => 'markup',
-            '#markup' => ', ' . $email,
+            '#markup' => ', ' . $pa_officer_email,
           ];
         }
       }
