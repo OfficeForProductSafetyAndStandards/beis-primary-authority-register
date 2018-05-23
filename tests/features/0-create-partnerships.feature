@@ -3,7 +3,7 @@ Feature: New Direct Partnership For PA To Approve
     Background: 
         Given I am logged in as "par_authority@example.com"
     
-    @directpartneship  @ci2
+    @directpartneship
     Scenario: New Direct Partnership   
 
         # PARTNERSHIP APPLY
@@ -22,7 +22,7 @@ Feature: New Direct Partnership For PA To Approve
 
         Then the direct partnership creation email template is correct
 
-    @coordinatedpartnership @ci2
+    @coordinatedpartnership
     Scenario: New coordinated Partnership
 
         # PARTNERSHIP APPLY
