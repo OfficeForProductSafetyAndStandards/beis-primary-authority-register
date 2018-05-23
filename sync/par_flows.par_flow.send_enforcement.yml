@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: Pctq9LcRjKscrLNTHAbmJeL-oPJqhOtE5XrLd1B3Fd4
+  default_config_hash: VtfJfQLh5q2fiHbyhVvNens8_UOe-hodZJePYWzdkfg
 id: send_enforcement
 label: 'Send Enforcement'
 default_title: null
@@ -19,6 +19,8 @@ steps:
     components:
       enforcement_full_summary: {  }
       enforcement_detail: {  }
+      enforcement_action_detail:
+        cardinality: -1
     redirect:
       done: 2
   2:
