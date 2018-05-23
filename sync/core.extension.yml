@@ -101,6 +101,7 @@ module:
   user: 0
   vbo_export: 0
   views_bulk_operations: 0
+  views_contextual_filters_or: 0
   views_data_export: 0
   views_ui: 0
   menu_link_content: 1
