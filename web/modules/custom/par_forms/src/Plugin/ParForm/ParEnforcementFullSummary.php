@@ -227,7 +227,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
           '#suffix' => '</p>',
           'name' => [
             '#type' => 'markup',
-            '#markup' => $enforcing_officer_name,
+            '#markup' => $pa_officer_name,
           ],
         ];
         if ($pa_officer_work_phone = $this->getDefaultValuesByKey('pa_officer_work_phone', $cardinality, NULL)) {
