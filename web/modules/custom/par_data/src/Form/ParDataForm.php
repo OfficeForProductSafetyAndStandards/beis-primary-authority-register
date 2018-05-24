@@ -133,6 +133,13 @@ class ParDataForm extends ContentEntityForm {
       '#group' => 'revision_information',
     );
 
+    $form['status'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Published'),
+      '#default_value' => $this->entity->status->value,
+      '#weight' => 49,
+    ];
+
     return $form;
   }
 

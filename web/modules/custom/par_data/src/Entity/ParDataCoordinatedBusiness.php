@@ -2,8 +2,10 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\par_data\ParDataException;
 
 /**
  * Defines the par_data_coodinated_business entity.
@@ -65,6 +67,45 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataCoordinatedBusiness extends ParDataEntity {
 
   /**
+   * @var array
+   *   An array of entity relationships that are dependent on this entity.
+   */
+  protected $dependents = [
+    'par_data_organisation',
+  ];
+
+  /**
+   * {@inheritdoc}
+   *
+   * @param string $date
+   *   The date this member was ceased.
+   */
+  public function cease($date = '', $save = TRUE) {
+    if (!empty($date)) {
+      $this->set('date_membership_ceased', $date);
+    }
+
+    // Ceasing a member has the same purpose as revoking partnerships
+    // so we use the same methods and status.
+    parent::revoke($save);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function destroy() {
+    // Freeze memberships that have active enforcement notices.
+    $par_data_enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
+    foreach ($par_data_enforcement_notices as $entity) {
+      if ($entity->isLiving()) {
+        return;
+      }
+    }
+
+    return parent::destroy();
+  }
+
+  /**
    * Get the contacts for this Coordinated Business.
    */
   public function getPerson() {
@@ -72,10 +113,31 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
   }
 
   /**
+   * Get the partnerships for this Coordinated Business.
+   */
+  public function getPartnership() {
+    $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')
+      ->condition('field_coordinated_business', $this->id())
+      ->execute();
+
+    return $this->getParDataManager()->getEntitiesByType('par_data_partnership', $query);
+  }
+
+  /**
    * Get the legal entites for this Coordinated Business.
    */
   public function getLegalEntity() {
     return $this->get('field_legal_entity')->referencedEntities();
+  }
+
+  /**
+   * Get the legal entites for this Coordinated Business.
+   */
+  public function getOrganisation($single = FALSE) {
+    $organisations = $this->get('field_organisation')->referencedEntities();
+    $organisation = !empty($organisations) ? current($organisations) : NULL;
+
+    return $single ? $organisation : $organisations;
   }
 
   /**
@@ -123,6 +185,63 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
       ->setDisplayOptions('form', [
         'type' => 'daterange_default',
         'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Partnership info confirmed by business.
+    $fields['covered_by_inspection'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Covered by inspection plan'))
+      ->setDescription(t('Is this coordinated business covered by inspection plan?'))
+      ->setRevisionable(TRUE)
+      ->setDefaultValue(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 2,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Coordinated business membership start date.
+    $fields['date_membership_began'] = BaseFieldDefinition::create('datetime')
+      ->setLabel(t('Membership Start Date'))
+      ->setDescription(t('The date the membership began.'))
+      ->addConstraint('par_required')
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'datetime_type' => 'date',
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'datetime_default',
+        'weight' => 3,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Coordinated business cease date.
+    $fields['date_membership_ceased'] = BaseFieldDefinition::create('datetime')
+      ->setLabel(t('Membership Ceased Date'))
+      ->setDescription(t('The date this membership was ceased.'))
+      ->addConstraint('par_required')
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'datetime_type' => 'date',
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'datetime_default',
+        'weight' => 4,
       ])
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [

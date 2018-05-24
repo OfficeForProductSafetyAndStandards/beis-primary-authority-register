@@ -5,6 +5,7 @@ namespace Drupal\par_dashboards\Controller;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParControllerTrait;
@@ -23,6 +24,11 @@ class ParDashboardsDashboardController extends ControllerBase {
   use ParControllerTrait;
 
   /**
+   * The response cache kill switch.
+   */
+  protected $killSwitch;
+
+  /**
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.
    *
    * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $flow_storage
@@ -31,10 +37,13 @@ class ParDashboardsDashboardController extends ControllerBase {
    *   The current user object.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user object.
+   * @param \Drupal\Core\PageCache\ResponsePolicy\KillSwitch $kill_switch
+   *   The page cache kill switch.
    */
-  public function __construct(ConfigEntityStorageInterface $flow_storage, ParDataManagerInterface $par_data_manager, AccountInterface $current_user) {
+  public function __construct(ConfigEntityStorageInterface $flow_storage, ParDataManagerInterface $par_data_manager, AccountInterface $current_user, KillSwitch $kill_switch) {
     $this->flowStorage = $flow_storage;
     $this->parDataManager = $par_data_manager;
+    $this->killSwitch = $kill_switch;
     $this->setCurrentUser($current_user);
   }
 
@@ -46,15 +55,9 @@ class ParDashboardsDashboardController extends ControllerBase {
     return new static(
       $entity_manager->getStorage('par_flow'),
       $container->get('par_data.manager'),
-      $container->get('current_user')
+      $container->get('current_user'),
+      $container->get('page_cache_kill_switch')
     );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getCacheContexts() {
-    return ['user.roles'];
   }
 
   /**
@@ -68,32 +71,43 @@ class ParDashboardsDashboardController extends ControllerBase {
    * {@inheritdoc}
    */
   public function content() {
+    // The dashboard is to0 complex and too important a page to cache.
+    $this->killSwitch->trigger();
     $build = [];
 
     // Your partnerships.
-    $partnerships =  $this->getParDataManager()->hasMembershipsByType($this->getCurrentUser(), 'par_data_partnership');
+    $partnerships = $this->getParDataManager()->hasMembershipsByType($this->getCurrentUser(), 'par_data_partnership');
     $can_manage_partnerships = $this->getCurrentUser()->hasPermission('manage my organisations') || $this->getCurrentUser()->hasPermission('manage my authorities');
     $can_create_partnerships = $this->getCurrentUser()->hasPermission('apply for partnership');
     if (($partnerships && $can_manage_partnerships) || $can_create_partnerships) {
+      // Cache context needs to be added for users with memberships.
       $build['partnerships'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Your partnerships'),
         '#attributes' => ['class' => 'form-group'],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
+        '#cache' => ['contexts' => ['user.par_memberships:authority']]
       ];
 
-      // Manage my partnerships link.
-      if ($partnerships) {
-        $manage_my_partnerships = $this->getLinkByRoute('view.par_user_partnerships.partnerships_page');
-        $manage_link = $manage_my_partnerships->setText('See your partnerships')->toString();
+      // List of partnerships and pending applications links.
+      if (($partnerships && $can_manage_partnerships)) {
+        $manage_partnerships = $this->getLinkByRoute('view.par_user_partnerships.partnerships_page');
+        $manage_link = $manage_partnerships->setText('See your partnerships')->toString();
         $build['partnerships']['see'] = [
           '#type' => 'markup',
           '#markup' => "<p>{$manage_link}</p>",
         ];
+
+        $manage_partnership_applications = $this->getLinkByRoute('view.par_user_partnerships.par_user_partnership_applications');
+        $manage_partnership_applications_link = $manage_partnership_applications->setText('See pending applications')->toString();
+        $build['partnerships']['my_partnerships'] = [
+          '#type' => 'markup',
+          '#markup' => "<p>{$manage_partnership_applications_link}</p>",
+        ];
       }
 
-      // Create partnerships link.
+      // Partnership application link.
       if ($can_create_partnerships) {
         $create_partnerships = $this->getLinkByRoute('par_partnership_flows.partnership_application_start');
         $apply_link = $create_partnerships->setText('Apply for a new partnership')->toString();
@@ -127,7 +141,7 @@ class ParDashboardsDashboardController extends ControllerBase {
       ];
     }
 
-    // Enforcement notices that need attention.
+    // Enforcement Notice links.
     if ($this->getCurrentUser()->hasPermission('enforce organisation')) {
       $build['messages'] = [
         '#type' => 'fieldset',
@@ -137,13 +151,37 @@ class ParDashboardsDashboardController extends ControllerBase {
         '#collapsed' => FALSE,
       ];
 
+      if ($this->getCurrentUser()->hasPermission('send enforcement notice')) {
+        $link = $this->getLinkByRoute('view.par_user_enforcement_list.enforcement_notices_sent')
+          ->setText('See enforcement notifications sent')
+          ->toString();
 
-      $search_partnerships = $this->getLinkByRoute('view.par_user_enforcements.enforcement_notices_page');
-      $enforcement_notices_link = $search_partnerships ? $search_partnerships->setText('See enforcement notifications')->toString() : '(none)';
-      $build['messages']['link'] = [
-        '#type' => 'markup',
-        '#markup' => "<p>{$enforcement_notices_link}</p>",
-      ];
+        $build['messages'][] = [
+          '#type' => 'markup',
+          '#markup' => "<p>{$link}</p>",
+        ];
+      }
+
+      if ($this->getCurrentUser()->hasPermission('approve enforcement notice')) {
+        $link = $this->getLinkByRoute('view.par_user_enforcement_list.enforcement_notices_received')
+          ->setText('See enforcement notifications received')
+          ->toString();
+
+        $build['messages'][] = [
+          '#type' => 'markup',
+          '#markup' => "<p>{$link}</p>",
+        ];
+      }
+      if ($this->getCurrentUser()->hasPermission('view authority enquiries')) {
+        $enquiry_link = $this->getLinkByRoute('view.par_user_enforcement_list.enforcement_notices_received') //@todo update to -> view.par_user_enquires_received
+          ->setText('See enquiries')
+          ->toString();
+
+        $build['messages'][] = [
+          '#type' => 'markup',
+          '#markup' => "<p>{$enquiry_link}</p>",
+        ];
+      }
     }
 
     return $build;

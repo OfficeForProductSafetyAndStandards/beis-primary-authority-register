@@ -16,14 +16,7 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
 
   protected $formItems = [];
 
-  protected $pageTitle = 'Edit the details about the business';
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_partnership_about_business';
-  }
+  protected $pageTitle = 'Information about the organisation';
 
   /**
    * Helper to get all the editable values.
@@ -35,15 +28,10 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
     if ($par_data_partnership) {
-      // If we're editing an entity we should set the state
-      // to something other than default to avoid conflicts
-      // with existing versions of the same form.
-      $this->setState("edit:{$par_data_partnership->id()}");
-
       // If we want to use values already saved we have to tell
       // the form about them.
       $par_data_organisation = current($par_data_partnership->getOrganisation());
-      $this->loadDataValue('about_business', $par_data_organisation->get('comments')->getString());
+      $this->getFlowDataHandler()->setFormPermValue('about_business', $par_data_organisation->get('comments')->getString());
     }
   }
 
@@ -63,14 +51,14 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
 
     $form['about_business_fieldset'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Provide information about the business'),
+      '#title' => $this->t('Provide information about the organisation'),
     ];
 
     // Business details.
     $form['about_business_fieldset']['about_business'] = [
       '#type' => 'textarea',
-      '#default_value' => $this->getDefaultValues('about_business'),
-      '#description' => '<p>Use this section to give a brief overview of the business.</p><p>Include any information you feel may be useful to enforcing authorities.</p>',
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('about_business'),
+      '#description' => '<p>Use this section to give a brief overview of the organisation.</p><p>Include any information you feel may be useful to enforcing authorities.</p>',
     ];
 
     // Make sure to add the partnership cacheability data to this form.
@@ -86,11 +74,11 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Save the value for the about_partnership field.
-    $partnership = $this->getRouteParam('par_data_partnership');
+    $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = current($partnership->getOrganisation());
-    $par_data_organisation->set('comments', $this->getTempDataValue('about_business'));
+    $par_data_organisation->set('comments', $this->getFlowDataHandler()->getTempDataValue('about_business'));
     if ($par_data_organisation->save()) {
-      $this->deleteStore();
+      $this->getFlowDataHandler()->deleteStore();
     }
     else {
       $message = $this->t('The %field field could not be saved for %form_id');

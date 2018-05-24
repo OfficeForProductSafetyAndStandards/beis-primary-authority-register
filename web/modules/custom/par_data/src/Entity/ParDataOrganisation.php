@@ -65,17 +65,33 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataOrganisation extends ParDataEntity {
 
   /**
+   * @var array
+   *   An array of entity relationships that are dependent on this entity.
+   */
+  protected $dependents = [
+    'par_data_address',
+    'par_data_person',
+    'par_data_legal_entity',
+  ];
+
+  /**
    * Get the contacts for this Organisation.
    */
-  public function getPerson() {
-    return $this->get('field_person')->referencedEntities();
+  public function getPerson($primary = FALSE) {
+    $people = $this->get('field_person')->referencedEntities();
+    $person = !empty($people) ? current($people) : NULL;
+
+    return $primary ? $person : $people;
   }
 
   /**
    * Get the legal entites for this Organisation.
    */
-  public function getLegalEntity() {
-    return $this->get('field_legal_entity')->referencedEntities();
+  public function getLegalEntity($single = FALSE) {
+    $legal_entities = $this->get('field_legal_entity')->referencedEntities();
+    $legal_entity = !empty($legal_entities) ? current($legal_entities) : NULL;
+
+    return $single ? $legal_entity : $legal_entities;
   }
 
   /**
@@ -110,15 +126,34 @@ class ParDataOrganisation extends ParDataEntity {
   /**
    * Get the premises for this Organisation.
    */
-  public function getPremises() {
-    return $this->get('field_premises')->referencedEntities();
+  public function getPremises($single = FALSE) {
+    $premises = $this->get('field_premises')->referencedEntities();
+    $premises_singular = !empty($premises) ? current($premises) : NULL;
+
+    return $single ? $premises_singular : $premises;
   }
 
   /**
    * Get the SIC Code for this Organisation.
    */
-  public function getSicCode() {
-    return $this->get('field_sic_code')->referencedEntities();
+  public function getSicCode($single = FALSE) {
+    $sic_codes = $this->get('field_sic_code')->referencedEntities();
+    $sic_code = !empty($sic_codes) ? current($sic_codes) : NULL;
+
+    return $single ? $sic_code : $sic_codes;
+  }
+
+  /**
+   * Helper fn to check if a PAR Organisation is a coordinated member.
+   *
+   * @return bool
+   */
+  public function isCoordinatedMember() {
+    $query = \Drupal::entityQuery('par_data_coordinated_business');
+
+    $query->condition('field_organisation', [$this->id()], 'IN');
+
+    return $query->count()->execute() >= 1 ? TRUE : FALSE;
   }
 
   /**
@@ -217,8 +252,8 @@ class ParDataOrganisation extends ParDataEntity {
 
     // Comments.
     $fields['comments'] = BaseFieldDefinition::create('text_long')
-      ->setLabel(t('About the business'))
-      ->setDescription(t('Comment about the business.'))
+      ->setLabel(t('About the organisation'))
+      ->setDescription(t('Comment about the organisation.'))
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([

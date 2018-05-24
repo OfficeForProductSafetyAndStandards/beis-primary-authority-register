@@ -78,22 +78,20 @@ class ParDataPremises extends ParDataEntity {
       ->setRevisionable(TRUE)
       ->setCardinality(1)
       ->setSettings([
-        'available_countries' => [
-          'GB' => 'GB',
-        ],
         'fields' => [
           "organization" => "0",
           "dependentLocality" => "0",
           "sortingCode" => "0",
           "familyName" => "0",
-          "langcode_override" => "",
-          "administrativeArea" => "administrativeArea",
+          "langcode_override" => "0",
+          "administrativeArea" => "0",
           "additionalName" => "0",
-          "locality" => "locality",
+          "locality" => "0",
           "addressLine1" => "addressLine1",
           "postalCode" => "postalCode",
           "addressLine2" => "addressLine2",
           "givenName" => "0",
+          "country_code" => "0",
         ],
       ])
       ->setDisplayOptions('form', array(

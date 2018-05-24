@@ -3,6 +3,7 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
@@ -17,15 +18,8 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_partnership_details';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function titleCallback() {
-    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     if ($par_data_partnership) {
       $par_data_organisation = current($par_data_partnership->getOrganisation());
       $this->pageTitle = $par_data_organisation->get('organisation_name')->getString();
@@ -44,13 +38,8 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
     if ($par_data_partnership) {
-      // If we're editing an entity we should set the state
-      // to something other than default to avoid conflicts
-      // with existing versions of the same form.
-      $this->setState("edit:{$par_data_partnership->id()}");
-
       $checkbox = $this->getInformationCheckbox($par_data_partnership);
-      $this->loadDataValue($checkbox, $par_data_partnership->getBoolean($checkbox));
+      $this->getFlowDataHandler()->setFormPermValue($checkbox, $par_data_partnership->getBoolean($checkbox));
     }
 
   }
@@ -62,13 +51,13 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership);
 
     // Display all the information that can be modified by the organisation.
-    $par_data_organisation = current($par_data_partnership->getOrganisation());
+    $par_data_organisation = $par_data_partnership->getOrganisation(TRUE);
 
     // Display the primary address along with the link to edit it.
-    $form['registered_address'] = $this->renderSection('Business address', $par_data_organisation, ['field_premises' => 'summary'], ['edit-entity', 'add'], TRUE, TRUE);
+    $form['registered_address'] = $this->renderSection('Organisation address', $par_data_organisation, ['field_premises' => 'summary'], ['edit-entity', 'add'], TRUE, TRUE);
 
     // View and perform operations on the information about the business.
-    $form['about_business'] = $this->renderSection('About the business', $par_data_organisation, ['comments' => 'about'], ['edit-field']);
+    $form['about_business'] = $this->renderSection('About the organisation', $par_data_organisation, ['comments' => 'about'], ['edit-field']);
 
     // Only show SIC Codes and Employee number if the partnership is a direct
     // partnership.
@@ -80,14 +69,61 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
       $form['employee_no'] = $this->renderSection('Number of Employees', $par_data_organisation, ['employees_band' => 'full'], ['edit-field']);
     }
 
-    // Only show Members list, Sectors and Number of businesses if the
-    // partnership is a coordinated partnership.
+    // Only show Members for coordinated partnerships.
     if ($par_data_partnership->isCoordinated()) {
-      $form['associations'] = $this->renderSection('Number of members', $par_data_organisation, ['size' => 'full'], ['edit-field']);
+      $membership_count = $par_data_partnership->countMembers();
 
-      // Display all the legal entities along with the links for the allowed
-      // operations on these.
-      $form['members'] = $this->renderSection('Members', $par_data_partnership, ['field_coordinated_business' => 'title']);
+      // If the organisation details, and there are already some members.
+      if ($this->getFlowNegotiator()->getFlowName() === 'partnership_coordinated'
+        && $membership_count >= 1) {
+        $form['members_link'] = [
+          '#type' => 'fieldset',
+          '#title' => t('Number of members'),
+          '#attributes' => ['class' => 'form-group'],
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
+        ];
+        $form['members_link']['count'] = [
+          '#type' => 'markup',
+          '#markup' => "<p>{$membership_count}</p>",
+        ];
+        $form['members_link']['link'] = [
+          '#type' => 'markup',
+          '#markup' => t('@link', [
+            '@link' => Link::createFromRoute('Show members list', 'view.members_list.member_list_coordinator', $this->getRouteParams())->toString(),
+          ]),
+          '#prefix' => '<p>',
+          '#suffix' => '</p>',
+        ];
+      }
+      // If the organisation details and there aren't yet any members.
+      elseif ($this->getFlowNegotiator()->getFlowName() === 'partnership_coordinated') {
+        $form['associations'] = $this->renderSection('Number of members', $par_data_organisation, ['size' => 'full'], ['edit-field']);
+
+        $form['associations']['add_link'] = [
+          '#type' => 'markup',
+          '#markup' => t('@link', [
+            '@link' => Link::createFromRoute('Add a member', 'par_member_add_flows.add_organisation_name', $this->getRouteParams())->toString(),
+          ]),
+          '#weight' => -100,
+          '#prefix' => '<p>',
+          '#suffix' => '</p>',
+        ];
+        $form['associations']['upload_link'] = [
+          '#type' => 'markup',
+          '#markup' => t('@link', [
+            '@link' => Link::createFromRoute('Upload a Member List (CSV)', 'par_member_upload_flows.member_upload', $this->getRouteParams())->toString(),
+          ]),
+          '#weight' => -100,
+          '#prefix' => '<p>',
+          '#suffix' => '</p>',
+        ];
+      }
+      // In all other cases show the inline member summary.
+      else {
+        // Display all the members in basic form for authority users.
+        $form['members'] = $this->renderSection('Members', $par_data_partnership, ['field_coordinated_business' => 'title']);
+      }
     }
 
     // Display all the legal entities along with the links for the allowed
@@ -97,17 +133,17 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     if ($checkbox === 'partnership_info_agreed_business' && !$par_data_partnership->getBoolean($checkbox)) {
       $operations = ['edit-entity','add'];
     }
-    $form['legal_entities'] = $this->renderSection('Legal entities', $par_data_organisation, ['field_legal_entity' => 'summary'], $operations);
+    $form['legal_entities'] = $this->renderSection('Legal entities', $par_data_partnership, ['field_legal_entity' => 'summary'], $operations);
 
     // Display all the trading names along with the links for the allowed
     // operations on these.
     $form['trading_names'] = $this->renderSection('Trading names', $par_data_organisation, ['trading_name' => 'full'], ['edit-field', 'add']);
 
     // Everything below is for the authority to edit and add to.
-    $par_data_authority = current($par_data_partnership->getAuthority());
+    $par_data_authority = $par_data_partnership->getAuthority(TRUE);
     $form['authority'] = [
       '#type' => 'markup',
-      '#markup' => $par_data_authority->get('authority_name')->getString(),
+      '#markup' => $par_data_authority ? $par_data_authority->get('authority_name')->getString() : '',
       '#prefix' => '<h1>',
       '#suffix' => '</h1>',
     ];
@@ -132,7 +168,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     $form['inspection_plans']['link'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlow()
+        '@link' => $this->getFlowNegotiator()->getFlow()
           ->getNextLink('inspection_plans')
           ->setText('See all Inspection Plans')
           ->toString(),
@@ -150,7 +186,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     $form['advice']['link'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlow()
+        '@link' => $this->getFlowNegotiator()->getFlow()
           ->getNextLink('advice')
           ->setText('See all Advice')
           ->toString(),
@@ -169,8 +205,8 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
       $form[$checkbox] = [
         '#type' => 'checkbox',
         '#title' => t("I confirm I have reviewed the information above"),
-        '#default_value' => $this->getDefaultValues($checkbox, FALSE),
-        '#disabled' => $this->getDefaultValues($checkbox, FALSE),
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues($checkbox, FALSE),
+        '#disabled' => $this->getFlowDataHandler()->getDefaultValues($checkbox, FALSE),
         '#return_value' => 'on',
       ];
     }
@@ -185,7 +221,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
    * Helper function to get the information checkbox required. False if none required.
    */
   public function getInformationCheckbox() {
-    if ($this->getFlowName() === 'partnership_authority') {
+    if ($this->getFlowNegotiator()->getFlowName() === 'partnership_authority') {
       return 'partnership_info_agreed_authority';
     }
     else {
@@ -199,7 +235,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     // Make sure the confirm box is ticked.
     $checkbox = $this->getInformationCheckbox();
@@ -214,14 +250,14 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     $checkbox = $this->getInformationCheckbox();
     if ($par_data_partnership && !$par_data_partnership->getBoolean($checkbox)) {
 
       // Save the value for the confirmation field.
       if ($checkbox) {
-        $par_data_partnership->set($checkbox, $this->decideBooleanValue($this->getTempDataValue($checkbox)));
+        $par_data_partnership->set($checkbox, $this->decideBooleanValue($this->getFlowDataHandler()->getTempDataValue($checkbox)));
 
         // Set partnership status.
         $par_data_partnership->set('partnership_status',
@@ -229,7 +265,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
       }
 
       if ($checkbox && $par_data_partnership->save()) {
-        $this->deleteStore();
+        $this->getFlowDataHandler()->deleteStore();
       }
       else {
         $message = $this->t('This %confirm could not be saved for %form_id');

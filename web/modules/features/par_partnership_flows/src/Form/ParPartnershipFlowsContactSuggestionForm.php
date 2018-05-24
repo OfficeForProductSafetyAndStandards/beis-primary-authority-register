@@ -24,13 +24,6 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
   protected $par_data_person_id;
 
   /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_partnership_contact_suggestion';
-  }
-
-  /**
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
@@ -38,12 +31,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
-    if ($par_data_partnership) {
-    // If we're editing an entity we should set the state
-    // to something other than default to avoid conflicts
-    // with existing versions of the same form.
-      $this->setState("edit:{$par_data_partnership->id()}");
-    }
+
   }
 
   /**
@@ -51,22 +39,35 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
+    // Get files from "contact_form" step.
+    // To use this form there must be a "form_data['contact_form']" key in the step configuration:
+    // 1:
+    //   route: example.route_name
+    //   form_id: form_id_where_person_was_added
+    //   form_data:
+    //     upload: par_partnership_advice_upload_edit
+    // 2:
+    //   route: example.route_name_2
+    //   form_id: example_form_id
+    //   form_data:
+    //     upload: form_id_where_person_was_added
+    $cid = $this->getFlowNegotiator()->getFormKey('contact_form');
     $conditions = [
       'name' => [
         'AND' => [
-          ['first_name', $this->getDefaultValues('first_name', '', 'par_partnership_contact'), '='],
-          ['last_name', $this->getDefaultValues('last_name', '', 'par_partnership_contact'), '='],
+          ['first_name', $this->getFlowDataHandler()->getDefaultValues('first_name', '', $cid), '='],
+          ['last_name', $this->getFlowDataHandler()->getDefaultValues('last_name', '', $cid), '='],
         ],
       ],
       'email' => [
         'AND' => [
-          ['email', $this->getDefaultValues('email', '', 'par_partnership_contact'), '='],
+          ['email', $this->getFlowDataHandler()->getDefaultValues('email', '', $cid), '='],
         ],
       ],
       'mobile_phone' => [
         'OR' => [
-          ['mobile_phone', $this->getDefaultValues('mobile_phone', '', 'par_partnership_contact'), '='],
-          ['work_phone', $this->getDefaultValues('work_phone', '', 'par_partnership_contact'), '='],
+          ['mobile_phone', $this->getFlowDataHandler()->getDefaultValues('mobile_phone', '', $cid), '='],
+          ['work_phone', $this->getFlowDataHandler()->getDefaultValues('work_phone', '', $cid), '='],
         ],
       ],
     ];
@@ -91,11 +92,11 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
 
     // If no suggestions were found we want to automatically submit the form.
     if (count($people_options) === 0) {
-      $this->setTempDataValue('par_data_person_id', 'new');
+      $this->getFlowDataHandler()->setTempDataValue('par_data_person_id', 'new');
       $this->submitForm($form, $form_state);
 
       // Pass param PAR Person created in the submit handler to the next step.
-      return $this->redirect($this->getFlow()->getNextRoute('save'), $this->getRouteParams() + ['par_data_person' => $this->par_data_person_id]);
+      return $this->redirect($this->getFlowNegotiator()->getFlow()->getNextRoute('save'), $this->getRouteParams() + ['par_data_person' => $this->par_data_person_id]);
     }
 
     // Make sure to add the person cacheability data to this form.
@@ -120,42 +121,51 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Get partnership entity from URL.
-    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+    if ($this->getFlowDataHandler()->getDefaultValues('par_data_person_id') === 'new') {
 
-    if ($this->getDefaultValues('par_data_person_id', '', 'par_partnership_contact_suggestion') === 'new') {
-
-      // Create new person entity.
-       $par_data_person = ParDataPerson::create([
+      // Get files from "contact_form" step.
+      // To use this form there must be a "form_data['contact_form']" key in the step configuration:
+      // 1:
+      //   route: example.route_name
+      //   form_id: form_id_where_person_was_added
+      //   form_data:
+      //     upload: par_partnership_advice_upload_edit
+      // 2:
+      //   route: example.route_name_2
+      //   form_id: example_form_id
+      //   form_data:
+      //     upload: form_id_where_person_was_added
+      $cid = $this->getFlowNegotiator()->getFormKey('contact_form');
+      $par_data_person = ParDataPerson::create([
         'type' => 'person',
-        'salutation' => $this->getTempDataValue('salutation', 'par_partnership_contact'),
-        'first_name' => $this->getTempDataValue('first_name', 'par_partnership_contact'),
-        'last_name' => $this->getTempDataValue('last_name', 'par_partnership_contact'),
-        'work_phone' => $this->getTempDataValue('work_phone', 'par_partnership_contact'),
-        'mobile_phone' => $this->getTempDataValue('mobile_phone', 'par_partnership_contact'),
-        'email' => $this->getTempDataValue('email', 'par_partnership_contact'),
-        'communication_notes' => $this->getTempDataValue('notes', 'par_partnership_contact')
+        'salutation' => $this->getFlowDataHandler()->getTempDataValue('salutation', $cid),
+        'first_name' => $this->getFlowDataHandler()->getTempDataValue('first_name', $cid),
+        'last_name' => $this->getFlowDataHandler()->getTempDataValue('last_name', $cid),
+        'work_phone' => $this->getFlowDataHandler()->getTempDataValue('work_phone', $cid),
+        'mobile_phone' => $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $cid),
+        'email' => $this->getFlowDataHandler()->getTempDataValue('email', $cid),
+        'communication_notes' => $this->getFlowDataHandler()->getTempDataValue('notes', $cid)
       ]);
 
-      // @todo refactor this to use $this->getTempDataBooleanValue() or similar.
       // Save the email preference.
-      $email_preference_value = isset($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_email'])
-        && !empty($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_email']);
+      $email_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $cid)['communication_email'])
+        && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $cid)['communication_email']);
       $par_data_person->set('communication_email', $email_preference_value);
       // Save the work phone preference.
-      $work_phone_preference_value = isset($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_phone'])
-        && !empty($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_phone']);
+      $work_phone_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $cid)['communication_phone'])
+        && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $cid)['communication_phone']);
       $par_data_person->set('communication_phone', $work_phone_preference_value);
       // Save the mobile phone preference.
-      $mobile_phone_preference_value = isset($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_mobile'])
-        && !empty($this->getTempDataValue('preferred_contact', 'par_partnership_contact')['communication_mobile']);
+      $mobile_phone_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $cid)['communication_mobile'])
+        && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $cid)['communication_mobile']);
       $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
 
       $par_data_person->save();
 
     }
     else {
-
-      $person_id = $this->getDefaultValues('par_data_person_id', '', 'par_partnership_contact_suggestion');
+      $person_id = $this->getFlowDataHandler()->getDefaultValues('par_data_person_id');
       $par_data_person = ParDataPerson::load($person_id);
 
     }
@@ -167,7 +177,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
 
       // Based on the flow we're in we also need to
       // Update field_person on authority or organisation.
-      if ($this->getFlowName() === 'partnership_authority') {
+      if ($this->getFlowNegotiator()->getFlowName() === 'partnership_authority') {
         // Add to field_authority_person.
         $par_data_partnership->get('field_authority_person')
           ->appendItem($par_data_person->id());
@@ -191,15 +201,15 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
 
     if ($par_data_partnership->save() &&
         $par_data_member_entity->save()) {
-      $this->deleteStore();
+      $this->getFlowDataHandler()->deleteStore();
 
       // Inject PAR Person we just created into the next step.
-      $form_state->setRedirect($this->getFlow()->getNextRoute('save'), $this->getRouteParams() + ['par_data_person' => $this->par_data_person_id]);
+      $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('save'), $this->getRouteParams() + ['par_data_person' => $this->par_data_person_id]);
     }
     else {
       $message = $this->t('This %person could not be saved for %form_id');
       $replacements = [
-        '%person' => $this->getTempDataValue('last_name'),
+        '%person' => $this->getFlowDataHandler()->getTempDataValue('last_name'),
         '%form_id' => $this->getFormId(),
       ];
       $this->getLogger($this->getLoggerChannel())

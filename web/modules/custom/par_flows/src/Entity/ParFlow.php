@@ -44,6 +44,7 @@ use Drupal\par_flows\ParRedirectTrait;
  *     "default_section_title",
  *     "description",
  *     "save_method",
+ *     "states",
  *     "steps"
  *   }
  * )
@@ -109,6 +110,22 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   protected $save_method;
 
   /**
+   * The route parameters by which this flow can vary.
+   *
+   * Typically used to distinguish individual instances of
+   * flows such as when completing this flow with different data.
+   *
+   * The state should be the same for all steps in this flow.
+   *
+   * e.g. When updating a partnership the data should be stored
+   * in a separate temporary storage cache to the data entered
+   * when updating other partnerships.
+   *
+   * @var array
+   */
+  protected $states;
+
+  /**
    * The steps for this flow.
    *
    * @var array
@@ -156,6 +173,13 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getSaveMethod() {
     return $this->save_method === self::SAVE_STEP ? self::SAVE_STEP : self::SAVE_END;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStates() {
+    return !empty($this->states) ? $this->states : [];
   }
 
   /**
@@ -264,8 +288,38 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  public function getCurrentStepComponents() {
+    return $this->getStepComponents($this->getCurrentStep());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCurrentStepFormDataKeys() {
+    return $this->getStepFormDataKeys($this->getCurrentStep());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getCurrentStepOperations() {
     return $this->getStepOperations($this->getCurrentStep());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStepComponents($index) {
+    $step = $this->getStep($index);
+    return isset($step['components']) ? $step['components'] : [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStepFormDataKeys($index) {
+    $step = $this->getStep($index);
+    return isset($step['form_data']) ? $step['form_data'] : [];
   }
 
   /**
@@ -329,6 +383,15 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  public function getStepByFormDataKey($form_data_key, $step = NULL) {
+    $form_data_keys = $this->getStepFormDataKeys($step);
+    return isset($form_data_keys[$form_data_key]) ? $this->getStepByFormId($form_data_keys[$form_data_key]) : NULL;
+  }
+
+
+  /**
+   * {@inheritdoc}
+   */
   public function getStepByOperation($index, $operation) {
     $step = $this->getStep($index);
     $redirects = isset($step['redirect']) ? $step['redirect'] : [];
@@ -356,6 +419,20 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  public function getFormIdByCurrentStep() {
+    return $this->getFormIdByStep($this->getCurrentStep());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStepByCurrentFormDataKey($form_data_key) {
+    return $this->getStepByFormDataKey($form_data_key, $this->getCurrentStep());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getFlowForms() {
     $forms = [];
 
@@ -375,7 +452,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     $step = $this->getStep($index);
     $route = $step['route'];
     if (empty($step)) {
-      throw new ParFlowException('The specified route does not exist.');
+      throw new ParFlowException("The specified route does not exist for step {$index}.");
     }
     return $route ? $this->getLinkByRoute($route, $route_params, $link_options) : NULL;
   }

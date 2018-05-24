@@ -15,7 +15,12 @@ use Drupal\user\Entity\User;
 */
 class ParMember extends FilterPluginBase {
 
-  protected $par_data_manager;
+  /**
+   * Getter for the PAR Data Manager serice.
+   */
+  public function getParDataManager() {
+    return \Drupal::service('par_data.manager');
+  }
 
   /**
    * @param \Drupal\views\ViewExecutable $view
@@ -24,8 +29,6 @@ class ParMember extends FilterPluginBase {
    */
   public function init(ViewExecutable $view, DisplayPluginBase $display, array &$options = NULL) {
     parent::init($view, $display, $options);
-
-    $this->par_data_manager = \Drupal::service('par_data.manager');
   }
 
   /**
@@ -33,7 +36,7 @@ class ParMember extends FilterPluginBase {
    */
   public function query() {
     // This filter does not apply if not on a PAR entity.
-    if (!$this->par_data_manager->getParEntityType($this->getEntityType())) {
+    if (!$this->getParDataManager()->getParEntityType($this->getEntityType())) {
       return;
     }
 
@@ -44,12 +47,12 @@ class ParMember extends FilterPluginBase {
     }
 
     // Find memberships.
-    $membership_filter = array_keys($this->par_data_manager->hasMembershipsByType($account, $this->getEntityType()));
+    $membership_filter = array_keys($this->getParDataManager()->hasMembershipsByType($account, $this->getEntityType()));
 
     // Add 0 to prevent an invalid IN query.
     array_push($membership_filter, 0);
 
-    $par_entity_type = $this->par_data_manager->getParEntityType($this->getEntityType());
+    $par_entity_type = $this->getParDataManager()->getParEntityType($this->getEntityType());
 
     // The normal use of ensureMyTable() here breaks Views.
     // So instead we trick the filter into using the alias of the base table.

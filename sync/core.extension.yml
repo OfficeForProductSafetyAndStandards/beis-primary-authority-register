@@ -20,6 +20,8 @@ module:
   ctools: 0
   datetime: 0
   datetime_range: 0
+  default_content: 0
+  devel_generate: 0
   dynamic_page_cache: 0
   editor: 0
   email_registration: 0
@@ -34,6 +36,7 @@ module:
   flysystem_s3: 0
   google_analytics: 0
   govuk_notify: 0
+  hal: 0
   health_check: 0
   help: 0
   http_response_headers: 0
@@ -60,15 +63,23 @@ module:
   par_data_config: 0
   par_enforcement_flows: 0
   par_flows: 0
+  par_forms: 0
   par_header: 0
   par_invite: 0
   par_login: 0
+  par_member_add_flows: 0
+  par_member_cease_flows: 0
+  par_member_unlock_flows: 0
+  par_member_update_flows: 0
+  par_member_upload_flows: 0
   par_notification: 0
+  par_partnership_confirmation_flows: 0
   par_partnership_flows: 0
   par_rd_help_desk_flows: 0
   par_roles: 0
   par_validation: 0
   path: 0
+  queue_ui: 0
   raven: 0
   rdf: 0
   rest: 0
@@ -85,6 +96,7 @@ module:
   trance: 0
   ultimate_cron: 0
   user: 0
+  vbo_export: 0
   views_bulk_operations: 0
   views_data_export: 0
   views_ui: 0

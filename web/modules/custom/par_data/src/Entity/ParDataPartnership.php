@@ -67,37 +67,169 @@ use Drupal\user\UserInterface;
 class ParDataPartnership extends ParDataEntity {
 
   /**
+   * The length of time to obtain a lock for.
+   */
+  const LOCK_TIMEOUT = 3600.0;
+
+  /**
+   * Get the time service.
+   */
+  public function getTime() {
+    return \Drupal::time();
+  }
+
+  /**
+   * Get the lock service.
+   */
+  public function getLock() {
+    return \Drupal::service('lock.persistent');
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @param string $reason
+   *   The reason for revoking this partnership.
+   */
+  public function revoke($reason = '', $save = TRUE) {
+    // Revoke/archive all dependent entities as well.
+    $inspection_plans = $this->getInspectionPlan();
+    foreach ($inspection_plans as $inspection_plan) {
+      $inspection_plan->revoke($save);
+    }
+
+    $advice_documents = $this->getAdvice();
+    foreach ($advice_documents as $advice) {
+      $advice->revoke($save);
+    }
+
+    $this->set('revocation_reason', $reason);
+    parent::revoke($save);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function inProgress() {
+    // Freeze partnerships that are awaiting approval.
+    $awaiting_statuses = [
+      $this->getTypeEntity()->getDefaultStatus(),
+      'confirmed_authority',
+      'confirmed_business'
+    ];
+
+    if (in_array($this->getRawStatus(), $awaiting_statuses)) {
+      return TRUE;
+    }
+
+    // Freeze partnerships that have un approved enforcement notices
+    $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
+    foreach ($enforcement_notices as $enforcement_notice) {
+      if ($enforcement_notice->inProgress()) {
+        return TRUE;
+      }
+    }
+
+    return parent::inProgress();
+  }
+
+  /**
+   * Generate filename.
+   */
+  public function membershipLockKey() {
+    // The lock key cannot be longer than this.
+    return "par_member_list__{$this->uuid()}";
+  }
+
+  /**
+   * Lock the membership list.
+   *
+   * Don't allow this lock to be reacquired by the same process.
+   */
+  public function lockMembership() {
+    return $this->isMembershipLocked() ? FALSE : $this->getLock()->acquire($this->membershipLockKey(), self::LOCK_TIMEOUT);
+  }
+
+  /**
+   * Unlock the membership list.
+   */
+  public function unlockMembership() {
+    $this->getLock()->release($this->membershipLockKey());
+  }
+
+  /**
+   * Check if the partnership is locked.
+   */
+  public function isMembershipLocked() {
+    return !$this->getLock()->lockMayBeAvailable($this->membershipLockKey());
+  }
+
+  /**
+   * Get the number of members for this partnership.
+   *
+   * @param int $i
+   *   The index to start counting from, can be used to add up all members.
+   *
+   * @return int
+   *   The number of active members.
+   */
+  public function countMembers($i = 0) {
+    foreach ($this->getCoordinatedMember() as $member) {
+      if ($member->isLiving() && !$member->isRevoked() && !$member->isDeleted()) {
+        $i++;
+      }
+    }
+    return $i;
+  }
+
+  /**
    * Get the organisation contacts for this Partnership.
    */
-  public function getOrganisationPeople() {
-    return $this->get('field_organisation_person')->referencedEntities();
+  public function getOrganisationPeople($primary = FALSE) {
+    $people = $this->get('field_organisation_person')->referencedEntities();
+    $person = !empty($people) ? current($people) : NULL;
+
+    return $primary ? $person : $people;
   }
 
   /**
    * Get the authority contacts for this Partnership.
    */
-  public function getAuthorityPeople() {
-    return $this->get('field_authority_person')->referencedEntities();
+  public function getAuthorityPeople($primary = FALSE) {
+    $people = $this->get('field_authority_person')->referencedEntities();
+    $person = !empty($people) ? current($people) : NULL;
+
+    return $primary ? $person : $people;
   }
 
   /**
    * Get the organisation for this Partnership.
    */
-  public function getOrganisation() {
-    return $this->get('field_organisation')->referencedEntities();
+  public function getOrganisation($single = FALSE) {
+    $organisations = $this->get('field_organisation')->referencedEntities();
+    $organisation = !empty($organisations) ? current($organisations) : NULL;
+
+    return $single ? $organisation : $organisations;
   }
 
   /**
    * Get the authority for this Partnership.
-   *
-   * @param boolean $single
-   *
    */
   public function getAuthority($single = FALSE) {
     $authorities = $this->get('field_authority')->referencedEntities();
     $authority = !empty($authorities) ? current($authorities) : NULL;
 
     return $single ? $authority : $authorities;
+  }
+
+  /**
+   * Get the coordinated members for this Partnership.
+   */
+  public function getCoordinatedMember($single = FALSE) {
+    $members = $this->get('field_coordinated_business')->referencedEntities();
+    $member = !empty($members) ? current($members) : NULL;
+
+    return $single ? $member : $members;
   }
 
   /**
@@ -219,6 +351,29 @@ class ParDataPartnership extends ParDataEntity {
 
   public function isCoordinated() {
     return $this->get('partnership_type')->getString() === 'coordinated';
+  }
+
+  /**
+   * Get legal entities for this partnership.
+   */
+  public function getLegalEntity() {
+    return $this->get('field_legal_entity')->referencedEntities();
+  }
+
+  /**
+   * Add a legal entity to partnership.
+   *
+   * @param ParDataLegalEntity $legal_entity
+   *   A PAR Legal Entity to add.
+   */
+  public function addLegalEntity(ParDataLegalEntity $legal_entity) {
+    // Retrieve existing legal entities.
+    $legal_entities = $this->getLegalEntity();
+
+    // Append new legal entity to existing entities.
+    $legal_entities[] = $legal_entity;
+
+    $this->set('field_legal_entity', $legal_entities);
   }
 
   /**

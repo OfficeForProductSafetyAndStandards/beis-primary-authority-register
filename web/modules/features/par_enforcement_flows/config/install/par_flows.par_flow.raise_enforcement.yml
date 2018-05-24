@@ -7,6 +7,8 @@ default_title: 'Notification of Enforcement action'
 default_section_title: null
 description: 'The creation flow of an enforcement notice.'
 save_method: end
+states:
+  - par_data_partnership
 steps:
   1:
     route: par_enforcement_flows.partnership_page
@@ -52,7 +54,7 @@ steps:
     route: par_enforcement_flows.add_action
     form_id: par_enforcement_notice_add_action
     redirect:
-      cancel: 7
+      cancel: 1
   10:
     route: par_enforcement_flows.raise_confirm
     form_id: par_enforcement_notice_raise_confirm

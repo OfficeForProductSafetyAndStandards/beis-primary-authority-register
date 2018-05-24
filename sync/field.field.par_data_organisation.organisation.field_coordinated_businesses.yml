@@ -5,11 +5,13 @@ dependencies:
   config:
     - field.storage.par_data_organisation.field_coordinated_businesses
     - par_data.par_data_organisation_type.organisation
+_core:
+  default_config_hash: gWCAkcshYaebYFP5dIzprcQDoRVv1EafMFV_Tn6QNoU
 id: par_data_organisation.organisation.field_coordinated_businesses
 field_name: field_coordinated_businesses
 entity_type: par_data_organisation
 bundle: organisation
-label: 'Coordinated Business'
+label: 'Coordinated Member'
 description: ''
 required: false
 translatable: true

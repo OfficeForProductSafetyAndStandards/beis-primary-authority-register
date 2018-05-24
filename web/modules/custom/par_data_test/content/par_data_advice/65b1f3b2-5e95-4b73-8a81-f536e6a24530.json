@@ -1,0 +1,190 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_advice\/3269?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_advice\/advice"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/par_data_advice\/advice\/user_id": [
+            {
+                "href": "http:\/\/default\/user\/1?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_advice\/advice\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/1?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_advice\/advice\/document": [
+            {
+                "href": "http:\/\/default\/file\/6161?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 3269
+        }
+    ],
+    "type": [
+        {
+            "target_id": "advice"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "65b1f3b2-5e95-4b73-8a81-f536e6a24530"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": 6683
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/par_data_advice\/advice\/user_id": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/1?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "3508aee8-7e04-4b5d-a784-3667ea038e49"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_advice\/advice\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/1?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "3508aee8-7e04-4b5d-a784-3667ea038e49"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_advice\/advice\/document": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/file\/6161?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/file\/document"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "efb8c61a-3df6-439d-a1d8-a05c337157d3"
+                    }
+                ],
+                "display": null,
+                "description": null,
+                "alt": "",
+                "title": ""
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1521559594
+        }
+    ],
+    "changed": [
+        {
+            "value": 1521559594
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": 1521559594
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "5ab1282c89f14",
+            "lang": "en"
+        }
+    ],
+    "deleted": [
+        {
+            "value": false
+        }
+    ],
+    "revoked": [
+        {
+            "value": false
+        }
+    ],
+    "archived": [
+        {
+            "value": false
+        }
+    ],
+    "advice_type": [
+        {
+            "value": "background_information"
+        }
+    ],
+    "notes": [
+        {
+            "value": "Cookie Monster Is The Life Coach You Never Knew You Needed. See http:\/\/bzfd.it\/2tD0DlO for more information.",
+            "format": null,
+            "processed": "<p>Cookie Monster Is The Life Coach You Never Knew You Needed. See <a href=\"http:\/\/bzfd.it\/2tD0DlO\">http:\/\/bzfd.it\/2tD0DlO<\/a> for more information.<\/p>\n"
+        }
+    ],
+    "visible_authority": [
+        {
+            "value": true
+        }
+    ],
+    "visible_coordinator": [
+        {
+            "value": true
+        }
+    ],
+    "visible_business": [
+        {
+            "value": true
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ]
+}

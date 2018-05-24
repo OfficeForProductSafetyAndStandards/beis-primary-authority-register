@@ -3,11 +3,15 @@
 namespace Drupal\par_enforcement_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\Core\Access\AccessResult;
+use Drupal\par_flows\ParFlowException;
+use Symfony\Component\Routing\Route;
 
 /**
  * The confirmation for creating a new enforcement notice.
@@ -22,13 +26,6 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_enforcement_notice_approve';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function titleCallback() {
     $this->pageTitle =  "Make a decision | Proposed enforcement action(s)";
     return parent::titleCallback();
@@ -37,7 +34,17 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function accessCallback(ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
+    try {
+      $this->getFlowNegotiator()->setRoute($route_match);
+      $this->getFlowDataHandler()->reset();
+      $this->loadData();
+    } catch (ParFlowException $e) {
+
+    }
+
+    // Get the parameters for this route.
+    $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
 
     // This form should only be accessed if none of the enforcement notice actions have been acted on.
     foreach ($par_data_enforcement_notice->get('field_enforcement_action')->referencedEntities() as $delta => $action) {
@@ -46,7 +53,7 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
         $this->accessResult = AccessResult::forbidden('This action has already been reviewed.');
       }
     }
-    return parent::accessCallback();
+    return parent::accessCallback($route, $route_match, $account);
   }
 
   /**
@@ -55,8 +62,6 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
     if ($par_data_enforcement_notice) {
-      $this->setState("approve:{$par_data_enforcement_notice->id()}");
-
       $allowed_actions = [
         ParDataEnforcementAction::APPROVED,
         ParDataEnforcementAction::BLOCKED,
@@ -64,10 +69,10 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
       ];
       foreach ($par_data_enforcement_notice->get('field_enforcement_action')->referencedEntities() as $delta => $action) {
         if (in_array($action->getRawStatus(), $allowed_actions)) {
-          $this->loadDataValue(['actions', $delta, 'disabled'], TRUE);
-          $this->loadDataValue(['actions', $delta, 'primary_authority_status'], $action->getRawStatus());
-          $this->loadDataValue(['actions', $delta, 'referral_notes'], $action->getReferralNotes());
-          $this->loadDataValue(['actions', $delta, 'primary_authority_notes'], $action->getPrimaryAuthorityNotes());
+          $this->getFlowDataHandler()->setFormPermValue(['actions', $delta, 'disabled'], TRUE);
+          $this->getFlowDataHandler()->setFormPermValue(['actions', $delta, 'primary_authority_status'], $action->getRawStatus());
+          $this->getFlowDataHandler()->setFormPermValue(['actions', $delta, 'referral_notes'], $action->getReferralNotes());
+          $this->getFlowDataHandler()->setFormPermValue(['actions', $delta, 'primary_authority_notes'], $action->getPrimaryAuthorityNotes());
         }
       }
     }
@@ -88,6 +93,10 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
     }
     else {
       $form['legal_entity'] = $this->renderSection('Regarding', $par_data_enforcement_notice, ['legal_entity_name' => 'summary']);
+    }
+
+    if (!$par_data_enforcement_notice->get('summary')->isEmpty()) {
+      $form['enforcement_summary'] = $this->renderSection('Summary of enforcement notice', $par_data_enforcement_notice, ['summary' => 'full']);
     }
 
     // To account for enforcement notification data created before enforcement officer release.
@@ -113,7 +122,7 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
         '#type' => 'fieldset',
          '#attributes' => ['class' => 'form-group'],
        ];
-      
+
       $form['actions'][$delta]['title'] = $this->renderSection('Title of action', $action, ['title' => 'title']);
       $form['actions'][$delta]['regulatory_function'] = $this->renderSection('Regulatory function', $action, ['field_regulatory_function' => 'title']);
       $form['actions'][$delta]['details'] = $this->renderSection('Details', $action, ['details' => 'full']);
@@ -131,16 +140,16 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
         '#type' => 'radios',
         '#title' => $this->t('Decide to allow or block this action, or refer this action to another Primary Authority '),
         '#options' => $statuses,
-        '#default_value' => $this->getDefaultValues(['actions', $delta, 'primary_authority_status'], ParDataEnforcementAction::APPROVED),
-        '#disabled' => $this->getDefaultValues(['actions', $delta, 'disabled'], FALSE),
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues(['actions', $delta, 'primary_authority_status'], ParDataEnforcementAction::APPROVED),
+        '#disabled' => $this->getFlowDataHandler()->getDefaultValues(['actions', $delta, 'disabled'], FALSE),
         '#required' => TRUE,
       ];
 
       $form['actions'][$delta]['primary_authority_notes'] = [
         '#type' => 'textarea',
         '#title' => $this->t('If you plan to block this action you must provide the enforcing authority with a valid reason.'),
-        '#default_value' => $this->getDefaultValues(['actions', $delta, 'primary_authority_notes'], NULL),
-        '#disabled' => $this->getDefaultValues(['actions', $delta, 'disabled'], FALSE),
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues(['actions', $delta, 'primary_authority_notes'], NULL),
+        '#disabled' => $this->getFlowDataHandler()->getDefaultValues(['actions', $delta, 'disabled'], FALSE),
         '#states' => [
           'visible' => [
             ':input[name="actions[' . $delta . '][primary_authority_status]"]' => ['value' => ParDataEnforcementAction::BLOCKED],
@@ -151,8 +160,8 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
       $form['actions'][$delta]['referral_notes'] = [
         '#type' => 'textarea',
         '#title' => $this->t('If you plan to refer this action you must provide the enforcing authority with a valid reason.'),
-        '#default_value' => $this->getDefaultValues(['actions', $delta, 'referral_notes'], NULL),
-        '#disabled' => $this->getDefaultValues(['actions', $delta, 'disabled'], FALSE),
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues(['actions', $delta, 'referral_notes'], NULL),
+        '#disabled' => $this->getFlowDataHandler()->getDefaultValues(['actions', $delta, 'disabled'], FALSE),
         '#states' => [
           'visible' => [
             ':input[name="actions[' . $delta . '][primary_authority_status]"]' => ['value' => ParDataEnforcementAction::REFERRED],
@@ -170,7 +179,7 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    $par_data_enforcement_notice = $this->getRouteParam('par_data_enforcement_notice');
+    $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
     foreach ($par_data_enforcement_notice->get('field_enforcement_action')->referencedEntities() as $delta => $action) {
       $form_data = $form_state->getValue(['actions', $delta], 'par_enforcement_notice_approve');
 

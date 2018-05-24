@@ -1,0 +1,16 @@
+uuid: 4066d939-00f8-4aac-a565-1ddb82e68fbc
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: V2_vOsIhUowbbNUCu1GPiCau0Jmmy8v9hcJ69Vh7_Zw
+id: migrate_legal_entities
+label: 'Migrate Legal Entities'
+default_title: null
+default_section_title: null
+description: 'Migrate Legal Entities from the organisation to the partnership.'
+save_method: end
+states: null
+steps:
+  1:
+    route: par_help_desks_flows.legal_entity_migration

@@ -25,13 +25,6 @@ class ParPartnershipFlowsApplicationTypeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_partnership_application_type';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function retrieveEditableValues() {
 
   }
@@ -54,7 +47,7 @@ class ParPartnershipFlowsApplicationTypeForm extends ParBaseForm {
       '#title' => 'Choose a type of partnership',
       '#type' => 'radios',
       '#options' => $partnership_bundle->getAllowedValues('partnership_type'),
-      '#default_value' => $this->getDefaultValues('application_type'),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('application_type'),
     ];
 
     return parent::buildForm($form, $form_state);

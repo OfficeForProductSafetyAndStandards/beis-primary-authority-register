@@ -1,0 +1,21 @@
+uuid: f7f63656-4384-4e43-b73d-ae733e7c8699
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_message_subject
+    - message.template.partnership_confirmed_notificati
+id: message.partnership_confirmed_notificati.field_message_subject
+field_name: field_message_subject
+entity_type: message
+bundle: partnership_confirmed_notificati
+label: 'Message Subject'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 'Primary Authority: Partnership Application Completed'
+default_value_callback: ''
+settings: {  }
+field_type: string

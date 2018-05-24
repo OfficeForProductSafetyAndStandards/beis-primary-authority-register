@@ -6,11 +6,13 @@ dependencies:
     - field.storage.par_data_partnership.field_coordinated_business
     - par_data.par_data_coordinated_business_type.coordinated_business
     - par_data.par_data_partnership_type.partnership
+_core:
+  default_config_hash: L7FUolYmuL3ZaVTfzxaPM768KirCYqAyXpYJEMs2y1Q
 id: par_data_partnership.partnership.field_coordinated_business
 field_name: field_coordinated_business
 entity_type: par_data_partnership
 bundle: partnership
-label: 'Coordinated Business'
+label: 'Coordinated Member'
 description: ''
 required: false
 translatable: false

@@ -99,6 +99,7 @@ class ParFlowLink extends FieldPluginBase {
 
       $text = !empty($title) ? t($title) : 'Continue';
       $url = !empty($path) ? Url::fromUserInput($path) : NULL;
+
       $link = $url ? Link::fromTextAndUrl($text, $url)->toRenderable() : NULL;
 
       // Hide the link

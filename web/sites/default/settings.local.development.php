@@ -19,6 +19,7 @@ $settings['trusted_host_patterns'] = [''];
 $settings['config_readonly'] = FALSE;
 
 $config['config_split.config_split.dev_config']['status'] = TRUE;
+$config['config_split.config_split.test_config']['status'] = TRUE;
 
 if (file_exists($app_root . '/' . $site_path . '/services.local.yml')) {
   $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.local.yml';
@@ -56,3 +57,6 @@ $settings['cache']['bins']['render'] = 'cache.backend.null';
 $settings['cache']['bins']['dynamic_page_cache'] = 'cache.backend.null';
 
 ini_set('memory_limit', '512M');
+
+// Enable tota11y library.
+$settings['enable_tota11y'] = TRUE;

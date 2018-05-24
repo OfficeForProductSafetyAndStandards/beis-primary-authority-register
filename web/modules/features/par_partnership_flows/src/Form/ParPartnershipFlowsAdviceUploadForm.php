@@ -20,13 +20,6 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_partnership_advice_upload';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function titleCallback() {
     return "Primary Authority Advice | Edit document type and regulatory functions";
   }
@@ -42,17 +35,12 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
     if (isset($par_data_advice)) {
-      // If we're editing an entity we should set the state
-      // to something other than default to avoid conflicts
-      // with existing versions of the same form.
-      $this->setState("edit:{$par_data_advice->id()}");
-
       $files = $par_data_advice->get('document')->referencedEntities();
       $ids = [];
       foreach ($files as $file) {
         $ids[] = $file->id();
       }
-      $this->loadDataValue('files', $ids);
+      $this->getFlowDataHandler()->setFormPermValue('files', $ids);
     }
   }
 
@@ -72,7 +60,7 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
         'class' => ['form-group'],
       ],
       '#title' => $this->t('How to upload Primary Authority Advice to Local Authorities'),
-      '#description' => $this->t('To upload Primary Authority Advice to a Local Authority, email it to <a href="mailto:pa@beis.gov.uk">pa@beis.gov.uk</a> with details of the business it applies to and we’ll get back to you shortly.'),
+      '#description' => $this->t('To upload Primary Authority Advice to a Local Authority, email it to <a href="mailto:pa@beis.gov.uk">pa@beis.gov.uk</a> with details of the organisation it applies to and we’ll get back to you shortly.'),
     ];
 
     // Multiple file field.
@@ -83,7 +71,7 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
       '#upload_location' => 's3private://documents/advice/',
       '#multiple' => TRUE,
       '#required' => TRUE,
-      '#default_value' => $this->getDefaultValues("files"),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("files"),
       '#upload_validators' => [
         'file_validate_extensions' => [
           0 => $file_extensions

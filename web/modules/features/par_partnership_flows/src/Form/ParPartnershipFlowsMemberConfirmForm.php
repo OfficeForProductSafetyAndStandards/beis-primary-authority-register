@@ -54,10 +54,8 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
       'nation' => 9,
     ],
     'par_data_coordinated_business' => [
-      'membership_date' => [
-        'value' => 15,
-        'end_value' => 16,
-      ],
+      'date_membership_began' => 15,
+      'date_membership_ceased' => 16,
     ]
   ];
 
@@ -71,13 +69,6 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
       ],
     ],
   ];
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getFormId() {
-    return 'par_partnership_member_upload_confirm';
-  }
 
   protected function getColumns() {
     return $this->columns;
@@ -126,12 +117,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
    *   The advice being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
-    if (isset($par_data_partnership)) {
-      // If we're editing an entity we should set the state
-      // to something other than default to avoid conflicts
-      // with existing versions of the same form.
-      $this->setState("edit:{$par_data_partnership->id()}");
-    }
+
   }
 
   /**
@@ -140,7 +126,8 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
-    $members = $this->getDefaultValues("coordinated_members", [], 'par_partnership_member_upload');
+    $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_member_upload');
+    $members = $this->getFlowDataHandler()->getDefaultValues("coordinated_members", [], $cid);
     if (!empty($members)) {
       $count = count($members);
       $form['member_summary'] = [
@@ -150,7 +137,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
           '%count members have been found and are ready to be imported.',
           ['%count' => $count]
         ),
-        '#predix' => '<p>',
+        '#prefix' => '<p>',
         '#suffix' => '</p>',
       ];
 
@@ -231,18 +218,21 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Get all the members which need attention and extra processing.
-    $attentions = $this->getTempDataValue(["members"]);
+    $attentions = $this->getFlowDataHandler()->getTempDataValue(["members"]);
 
     // Get the *full* partnership entity from the URL.
-    $route_partnership = $this->getRouteParam('par_data_partnership');
+    $route_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
-    $members = $this->getTempDataValue("coordinated_members", 'par_partnership_member_upload');
+    $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_member_upload');
+    $members = $this->getFlowDataHandler()->getTempDataValue("coordinated_members", $cid);
     foreach ($members as $i => $member) {
       $requires_attention = isset($attentions[$i]) ? $attentions[$i] : NULL;
 
       // Process the row.
       $this->processRow($route_partnership->id(), $member, $requires_attention);
     }
+
+    $this->getFlowDataHandler()->deleteStore();
 
   }
 
@@ -288,7 +278,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
 
   /**
    * Helper to add the member to the queue to process intensive operations in the background.
-   * 
+   *
    * @param $par_data_partnership
    *   The partnership that this member is being attached to.
    * @param $member

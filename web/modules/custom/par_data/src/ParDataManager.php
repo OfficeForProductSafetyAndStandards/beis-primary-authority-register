@@ -12,6 +12,7 @@ use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\file\FileInterface;
+use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\user\Entity\User;
@@ -58,7 +59,16 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * The non membership entities from which references should not be followed.
    */
-  protected $nonMembershipEntities = ['par_data_sic_codes', 'par_data_regulatory_function', 'par_data_advice', 'par_data_inspection_plan', 'par_data_premises'];
+  protected $nonMembershipEntities = [
+    'par_data_sic_codes',
+    'par_data_regulatory_function',
+    'par_data_advice',
+    'par_data_inspection_plan',
+    'par_data_premises',
+    'par_data_legal_entity',
+    'par_data_enforcement_notice',
+    'par_data_enforcement_action',
+  ];
 
   /**
    * Iteration limit for recursive membership lookups.
@@ -348,6 +358,11 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * Determine which entities a user is a part of.
    *
+   * @TODO Sorry, couldn't fix this before the support contract was pulled
+   * but this method is inefficient and needs re-writting. There are much
+   * better ways of calculating which entity actions can be performed.
+   * @see https://regulatorydelivery.atlassian.net/wiki/spaces/PA/pages/40894490/Par+Access+Actions
+   *
    * @param UserInterface $account
    *   A user account to check for.
    * @param bool $direct
@@ -480,6 +495,14 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
+   * A query helper.
+   */
+  public function getEntityQuery($type, $conjunction = 'AND', $access_check = FALSE) {
+    return $this->entityTypeManager->getStorage($type)->getQuery($conjunction)
+      ->accessCheck($access_check);
+  }
+
+  /**
    * A helper function to load entity properties.
    *
    * @param string $type
@@ -508,25 +531,22 @@ class ParDataManager implements ParDataManagerInterface {
    *
    * @param string $type
    *   The entity type to load the field for.
+   * @param array $ids
+   *   An optional array of ids to load.
    *
    * @return \Drupal\Core\Entity\EntityInterface[]
    *   An array of entities found with this value.
    */
-  public function getEntitiesByType($type) {
+  public function getEntitiesByType($type, array $ids = NULL) {
     return $this->entityManager
       ->getStorage($type)
-      ->loadMultiple();
+      ->loadMultiple($ids);
   }
 
   /**
    * A helper function to build an entity query and load entities that match.
    *
-   * @param string $type
-   *   An entity type to query.
-   * @param array $conditions
-   *   Query conditions.
-   * @param integer $limit
-   *   Limit number of results.
+   * {@inheritdoc}
    *
    * @code
    * $conditions = [
@@ -551,19 +571,12 @@ class ParDataManager implements ParDataManagerInterface {
    *   ],
    * ];
    * @endcode
-   *
-   * @return \Drupal\Core\Entity\EntityInterface[]
-   *   An array of entity objects indexed by their IDs. Returns an empty array
-   *   if no matching entities are found.
-   *
-   * @see \Drupal\Core\Entity\Query\andConditionGroup
-   * @see \Drupal\Core\Entity\Query\orConditionGroup
    */
-  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL) {
+  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC') {
     $entities = [];
 
     foreach ($conditions as $row) {
-      $query = \Drupal::entityQuery($type);
+      $query = $this->getEntityQuery($type);
 
       foreach ($row as $condition_operator => $condition_row) {
         $group = (strtoupper($condition_operator) === 'OR') ? $query->orConditionGroup() : $query->andConditionGroup();
@@ -662,6 +675,10 @@ class ParDataManager implements ParDataManagerInterface {
    *   An array of row data.
    */
   public function processCsvFile(FileInterface $file, $rows = [], $skip = TRUE) {
+    // Need to set auto_detect_line_endings to deal with Mac line endings.
+    // @see http://php.net/manual/en/function.fgetcsv.php
+    ini_set('auto_detect_line_endings', TRUE);
+
     if (($handle = fopen($file->getFileUri(), "r")) !== FALSE) {
       while (($data = fgetcsv($handle)) !== FALSE) {
         if ($data !== NULL && !$skip) {
@@ -695,6 +712,91 @@ class ParDataManager implements ParDataManagerInterface {
     $average = ceil($median);
 
     return $average;
+  }
+
+  /**
+   * Generates foreign keys to assist with generation of database diagram.
+   *
+   * SHOULD ONLY BE USED IN DEVELOPMENT ENVIRONMENTS, NEVER ON PROD.
+   *
+   * @see https://regulatorydelivery.atlassian.net/wiki/spaces/PA/pages/324435969/Drupal+Data+Model
+   */
+  public static function generateForeignKeys() {
+    if (getenv('APP_ENV') == 'production') {
+      return;
+    }
+
+    $par_data_manager = \Drupal::service('par_data.manager');
+
+    $queries = [];
+    foreach ($par_data_manager->getParEntityTypes() as $entity_type_id => $entity_type) {
+      $key_prefix = 'fk_';
+      $base_table = $entity_type->getBaseTable();
+      $field_table = $entity_type->getDataTable();
+
+      // Add entity base field relationships.
+      $queries[] = <<<EOT
+ALTER TABLE {$field_table}
+  ADD CONSTRAINT {$key_prefix}{$field_table}___{$base_table}
+FOREIGN KEY (id)
+REFERENCES {$base_table}(id);
+EOT;
+
+      // For reference fields that are not mandatory they use a value for 0
+      // for the target_id which is not a valid foreign key. Insert an arbitary value.
+      $qry = <<<EOT
+      INSERT into {$base_table}
+      VALUES (0, 9999999999, 'bogus', '4b7f74dc-ae10-unkn-own-29207b47797a', 'en');
+EOT;
+      // And make sure it runs first.
+      array_unshift($queries, $qry);
+
+      // Get all reference fields and add their relationships.
+      $bundle = $par_data_manager->getParBundleEntity($entity_type_id);
+      $references = $par_data_manager->getReferences($entity_type_id, $bundle->id());
+      foreach ($references as $field_entity_type_id => $fields) {
+        // If the reference is on the current entity type
+        // we can get the value from the current $entity.
+        if ($entity_type_id === $field_entity_type_id) {
+          foreach ($fields as $field_name => $field) {
+            $storage = $field->getFieldStorageDefinition();
+            $target_type_id = $field->getSetting('target_type');
+            if ($entity_type_id === $target_type_id) {
+              continue;
+            }
+
+            $target_type = $par_data_manager->getParEntityType($target_type_id);
+
+            $table_mapping = new \Drupal\Core\Entity\Sql\DefaultTableMapping($entity_type, [$storage]);
+            $target = $table_mapping->getFieldColumnName($storage, 'target_id');
+            $table_name = $table_mapping->getDedicatedDataTableName($storage);
+
+            $queries[] = <<<EOT
+ALTER TABLE {$table_name}
+  ADD CONSTRAINT {$key_prefix}{$table_name}___{$target}
+FOREIGN KEY ({$target})
+REFERENCES {$target_type->getBaseTable()}(id);
+EOT;
+            $queries[] = <<<EOT
+ALTER TABLE {$table_name}
+  ADD CONSTRAINT {$key_prefix}{$table_name}___entity_id
+FOREIGN KEY (entity_id)
+REFERENCES {$base_table}(id);
+EOT;
+          }
+        }
+      }
+    }
+
+    $connection = \Drupal::database();
+    foreach ($queries as $i => $query) {
+      try {
+        $executed = $connection->query($query);
+      }
+      catch (Exception $e) {
+        var_dump($e->getMessage());
+      }
+    }
   }
 
 }

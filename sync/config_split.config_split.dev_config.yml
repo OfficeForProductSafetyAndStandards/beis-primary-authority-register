@@ -10,7 +10,6 @@ module:
   dblog: 0
   devel: 0
   par_data_test: 0
-  queue_ui: 0
   webprofiler: 0
 theme: {  }
 blacklist:

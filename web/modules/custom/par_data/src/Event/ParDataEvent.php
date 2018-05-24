@@ -37,6 +37,25 @@ class ParDataEvent extends Event implements ParDataEventInterface {
    */
   const DELETE = 'par_data.entity.delete';
 
+  /**
+   * The name of the event triggered when an existing par entity is approved.
+   *
+   * @Event
+   *
+   * @var string
+   */
+  const APPROVED = 'entity.status.par_data_partnership.confirmed_rd';
+
+  /**
+   * The name of the event triggered when an existing par partnership entity
+   * is confirmed by the business.
+   *
+   * @Event
+   *
+   * @var string
+   */
+  const CONFIRMED = 'entity.status.par_data_partnership.confirmed_business';
+
   protected $data;
 
   public function __construct(ParDataEntityInterface $data) {
@@ -50,4 +69,17 @@ class ParDataEvent extends Event implements ParDataEventInterface {
     return $this->data;
   }
 
+  /**
+   * Generate the entity status event name for the currently saved entity.
+   *
+   * @param $entity
+   *   The par entity being stored.
+   *
+   * @return string
+   */
+  Public function getEntityEventStatusName(ParDataEntityInterface $entity) {
+    return 'entity.status.' . $entity->getEntityTypeId() . '.' . $entity->getRawStatus();
+  }
+
 }
+

@@ -44,11 +44,11 @@ class ParDataStorage extends TranceStorage {
 
     // Perform the delete and key the entities correctly.
     $keyed_entities = [];
+    // Perform a standard entity delete operation on partnership entities.
     foreach ($entities as $entity) {
       $entity->set(ParDataEntity::DELETE_FIELD, TRUE)->save();
       $keyed_entities[$entity->id()] = $entity;
     }
-
     // Reset the static cache for the deleted entities.
     $this->resetCache(array_keys($keyed_entities));
   }
@@ -108,6 +108,13 @@ class ParDataStorage extends TranceStorage {
       }
     }
 
+    if ($entity->getRawStatus() && !$entity->isNew() && $entity->getRawStatus() !== $entity->original->getRawStatus()) {
+      // Dispatch the an event for every par entity that has a status update.
+      $event = new ParDataEvent($entity);
+      $event_to_dispatch = $event->getEntityEventStatusName($entity);
+      $dispatcher = \Drupal::service('event_dispatcher');
+      $dispatcher->dispatch($event_to_dispatch, $event);
+    }
     // Warm caches.
     $this->par_data_manager->getRelatedEntities($entity);
 

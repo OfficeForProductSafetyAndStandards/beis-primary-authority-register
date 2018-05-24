@@ -3,9 +3,13 @@
 namespace Drupal\par_rd_help_desk_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\Core\Access\AccessResult;
+use Drupal\par_flows\ParFlowException;
+use Symfony\Component\Routing\Route;
 
 /**
  * The confirming the user is authorised to approve partnerships.
@@ -20,13 +24,6 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_rd_help_desk_confirm';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function titleCallback() {
     return 'Confirmation | Are you authorised to approve this partnership?';
   }
@@ -34,13 +31,30 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function accessCallback(ParDataPartnership $par_data_partnership = NULL) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
+    try {
+      $this->getFlowNegotiator()->setRoute($route_match);
+      $this->getFlowDataHandler()->reset();
+      $this->loadData();
+    } catch (ParFlowException $e) {
+
+    }
+
+    // Get the parameters for this route.
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+
+    // If partnership has been revoked, we should not be able to approve it.
+    // @todo This needs to be re-addressed as per PAR-1082.
+    if ($par_data_partnership->isRevoked()) {
+      $this->accessResult = AccessResult::forbidden('The partnership has been revoked.');
+    }
+
     // 403 if the partnership is active/approved by RD.
     if ($par_data_partnership->getRawStatus() === 'confirmed_rd') {
       $this->accessResult = AccessResult::forbidden('The partnership is active.');
     }
 
-    return parent::accessCallback();
+    return parent::accessCallback($route, $route_match, $account);
   }
 
   /**
@@ -48,13 +62,6 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
    * revisiting a previously edited page.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
-
-    if ($par_data_partnership) {
-      // If we're editing an entity we should set the state
-      // to something other than default to avoid conflicts
-      // with existing versions of the same form.
-      $this->setState("edit:{$par_data_partnership->id()}");
-    }
 
   }
 
@@ -101,7 +108,7 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
       '#type' => 'checkboxes',
       '#title' => $this->t('Please choose the regulatory functions of this partnership'),
       '#options' => $regulatory_function_options,
-      '#default_value' => $this->getDefaultValues('partnership_regulatory_functions', []),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('partnership_regulatory_functions', []),
       '#required' => TRUE,
     ];
 
@@ -136,8 +143,8 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $partnership = $this->getRouteParam('par_data_partnership');
-    $selected_regulatory_functions = $this->getTempDataValue('partnership_regulatory_functions');
+    $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+    $selected_regulatory_functions = $this->getFlowDataHandler()->getTempDataValue('partnership_regulatory_functions');
 
     // We only want to update the status of none active partnerships.
     if ($partnership->getRawStatus() !== 'confirmed_rd') {

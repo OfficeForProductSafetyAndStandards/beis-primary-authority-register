@@ -20,7 +20,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
    */
   public function titleCallback() {
 
-    $par_data_partnership = $this->getRouteParam('par_data_partnership');
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     if ($par_data_partnership) {
       $par_data_organisation = current($par_data_partnership->getOrganisation());
 
@@ -48,18 +48,18 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     $build['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
 
     // View and perform operations on the information about the business.
-    $build['about_business'] = $this->renderSection('About the business', $par_data_organisation, ['comments' => 'about']);
+    $build['about_business'] = $this->renderSection('About the organisation', $par_data_organisation, ['comments' => 'about']);
 
     // Create links for the actions that can be performed on this partnership.
     $build['partnership_actions'] = [
       '#type' => 'fieldset',
-      '#title' => t('Send a message about this business'),
+      '#title' => t('Send a message about this organisation'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
 
-    $link = $this->getFlow()->getNextLink('raise')->setText('Send a notification of a proposed enforcement action')->toString();
+    $link = $this->getFlowNegotiator()->getFlow()->getNextLink('raise')->setText('Send a notification of a proposed enforcement action')->toString();
 
     $build['partnership_actions']['link'] = ['#type' => 'markup',
       '#markup' => $link ? $link : '<p>(none)</p>',
@@ -76,14 +76,14 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
 
     // Only show Members list, Sectors and Number of businesses if the partnership is a coordinated partnership.
     if ($par_data_partnership->isCoordinated()) {
-      $build['associations'] = $this->renderSection('Number of Associations', $par_data_organisation, ['size' => 'full']);
+      $build['associations'] = $this->renderSection('Number of Members', $par_data_organisation, ['size' => 'full']);
 
       // Display all the legal entities along with the links for the allowed operations on these.
       $build['members'] = $this->renderSection('Members', $par_data_partnership, ['field_coordinated_business' => 'title']);
     }
 
     // Display all the legal entities along with the links for the allowed operations on these.
-    $build['legal_entities'] = $this->renderSection('Legal Entities', $par_data_organisation, ['field_legal_entity' => 'summary']);
+    $build['legal_entities'] = $this->renderSection('Legal Entities', $par_data_partnership, ['field_legal_entity' => 'summary']);
 
     // Display all the trading names along with the links for the allowed operations on these.
     $build['trading_names'] = $this->renderSection('Trading Names', $par_data_organisation, ['trading_name' => 'full']);
@@ -115,7 +115,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     $build['inspection_plans']['link'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('inspection_plans')->setText('See all Inspection Plans')->toString(),
+        '@link' => $this->getFlowNegotiator()->getFlow()->getNextLink('inspection_plans')->setText('See all Inspection Plans')->toString(),
       ]),
     ];
 
@@ -129,7 +129,7 @@ class ParEnforcementFlowsPartnershipPageController extends ParBaseController {
     $build['advice']['link'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
-        '@link' => $this->getFlow()->getNextLink('advice')->setText('See all Advice')->toString(),
+        '@link' => $this->getFlowNegotiator()->getFlow()->getNextLink('advice')->setText('See all Advice')->toString(),
       ]),
     ];
 

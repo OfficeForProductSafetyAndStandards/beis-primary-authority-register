@@ -72,38 +72,37 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
     /** @var ParDataEntityInterface $enforcement */
     $enforcement = $event->getData();
 
-    if (!$enforcement) {
-      // @TODO Log that the template couldn't be loaded.
-      return;
-    }
-
-    // Load the message template.
-    $template_storage = $this->getEntityTypeManager()->getStorage('message_template');
-    $message_template = $template_storage->load(self::MESSAGE_ID);
-
-    $message_storage = $this->getEntityTypeManager()->getStorage('message');
-
-    // Get the link to approve this notice.
-    $options = ['absolute' => TRUE];
-    $enforcement_url = Url::fromRoute('par_enforcement_flows.approve', ['par_data_enforcement_notice' => $enforcement->id()], $options);
-
-    if (!$message_template) {
-      // @TODO Log that the template couldn't be loaded.
+    if (!$enforcement || $enforcement->getEntityTypeId() !== 'par_data_enforcement_notice') {
+      // @TODO Log that the Enforcement Notice couldn't be loaded.
       return;
     }
 
     // Only act on Enforcement Notices that haven't been reviewed.
-    if ($enforcement->getEntityTypeId() === 'par_data_enforcement_notice'
-      && $enforcement->getRawStatus() === $enforcement->getTypeEntity()->getDefaultStatus()) {
+    if ($enforcement->getRawStatus() === $enforcement->getTypeEntity()->getDefaultStatus()) {
+      // Load the message template.
+      $template_storage = $this->getEntityTypeManager()->getStorage('message_template');
+      $message_template = $template_storage->load(self::MESSAGE_ID);
 
-      // We need to get the primary authority for this enforcement.
-      $primary_authority = $enforcement->getPrimaryAuthority(TRUE);
-      if (!$primary_authority) {
+      $message_storage = $this->getEntityTypeManager()->getStorage('message');
+
+      // Get the link to approve this notice.
+      $options = ['absolute' => TRUE];
+      $enforcement_url = Url::fromRoute('view.par_user_enforcements.enforcement_notices_page', [], $options);
+
+      if (!$message_template) {
         // @TODO Log that the template couldn't be loaded.
         return;
       }
 
-      foreach ($primary_authority->getPerson() as $person) {
+      // We need to get the primary authority users to notify.
+      $partnership = $enforcement->getPartnership(TRUE);
+      $primary_authority_people = $partnership ? $partnership->getAuthorityPeople() : [];
+      if (!$primary_authority_people) {
+        // @TODO Log that no contacts could be loaded.
+        return;
+      }
+
+      foreach ($primary_authority_people as $person) {
         // Notify all users in this authority with the appropriate permissions.
         if (($account = $person->getUserAccount()) && $person->getUserAccount()->hasPermission('approve enforcement notice')
           && !isset($this->recipients[$account->id()])) {

@@ -1,0 +1,12 @@
+uuid: 9f81edd8-a315-46cf-b9b3-c55496b87e0a
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+_core:
+  default_config_hash: snt2ckla7pp5ysIdHJH1K4JLZCHfSV65mR576FMHV7o
+id: par_data_coordinated_business.title
+label: Title
+targetEntityType: par_data_coordinated_business
+cache: true

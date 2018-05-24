@@ -12,8 +12,8 @@ update primary authority advice to local authorities:
   title: 'Update Primary Authority advice to Local Authorities'
   description: 'Update primary authority advice to local authorities.'
   restrict access: TRUE
-approve partnerships via rd help desk:
-  title: 'Approve partnerships via rd help desk'
+approve partnerships via help desk:
+  title: 'Approve partnerships via Help Desk'
   description: 'Approve a given partnership.'
   restrict access: TRUE
 invite authority members:
@@ -36,6 +36,10 @@ manage my authorities:
 apply for partnership:
   title: 'Apply for a partnership'
   description: 'A permission to allow members of an authority to apply for new partnerships.'
+  restrict access: TRUE
+view authority enquiries:
+  title: 'View Authority Enquiries'
+  description: 'Allow a user to access all the enquiries relating to an authority.'
   restrict access: TRUE
 # Permissions related to enforcement actions.
 search partnership:

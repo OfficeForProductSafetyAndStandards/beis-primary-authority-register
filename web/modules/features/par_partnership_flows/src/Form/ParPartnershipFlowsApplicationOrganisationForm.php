@@ -27,19 +27,12 @@ class ParPartnershipFlowsApplicationOrganisationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function getFormId() {
-    return 'par_partnership_application_organisation';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
     $form['organisation_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Provide the business or organisation name'),
-      '#default_value' => $this->getDefaultValues('organisation_name'),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('organisation_name'),
     ];
 
     return parent::buildForm($form, $form_state);
