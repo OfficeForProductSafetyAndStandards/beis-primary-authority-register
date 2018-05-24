@@ -229,7 +229,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       // Always revision status changes.
       $this->setNewRevision(TRUE);
 
-      return $save ? ($this->save() === SAVED_UPDATED) : TRUE;
+      return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
     return FALSE;
   }
@@ -252,7 +252,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     if ($this->getTypeEntity()->isRevokable() && $this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, FALSE);
 
-      return $save ? ($this->save() === SAVED_UPDATED) : TRUE;
+      return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
     return FALSE;
   }
@@ -277,7 +277,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       // Always revision status changes.
       $this->setNewRevision(TRUE);
 
-      return $save ? ($this->save() === SAVED_UPDATED) : TRUE;
+      return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
     return FALSE;
   }
@@ -299,7 +299,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     if ($this->getTypeEntity()->isRevokable() && $this->isArchived()) {
       $this->set(ParDataEntity::ARCHIVE_FIELD, FALSE);
 
-      return $save ? ($this->save() === SAVED_UPDATED) : TRUE;
+      return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
     return FALSE;
   }

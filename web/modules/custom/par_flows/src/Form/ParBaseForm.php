@@ -25,7 +25,9 @@ use Drupal\Core\Entity\EntityConstraintViolationListInterface;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\Core\Access\AccessResult;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Route;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * The base form controller for all PAR forms.
@@ -190,8 +192,20 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
-      $form = $this->getFormBuilder()->getPluginElements($component);
+      // If there's is a cardinality parameter present display only this item.
+      $cardinality = $this->getFlowDataHandler()->getParameter('cardinality');
+      $index = isset($cardinality) ? (int) $cardinality : NULL;
+
+      // Handle instances where FormBuilderInterface should return a redirect response.
+      $plugin = $this->getFormBuilder()->getPluginElements($component, $form, $index);
+      if ($plugin instanceof RedirectResponse) {
+        return $plugin;
+      }
     }
+
+    // The components have weights around the 100 mark,
+    // so the actions must always come last.
+    $form['actions']['#weight'] = 999;
 
     // Only ever place a 'done' action by itself.
     if ($this->getFlowNegotiator()->getFlow()->hasAction('done')) {
@@ -279,13 +293,16 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       return;
     }
 
+    // If there's is a cardinality parameter present display only this item.
+    $cardinality = $this->getFlowDataHandler()->getParameter('cardinality');
+
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
-      $component_violations = $this->getFormBuilder()->validatePluginElements($component, $form_state);
+      $component_violations = $this->getFormBuilder()->validatePluginElements($component, $form_state, $cardinality);
 
       // If there are violations for this plugin.
       if (isset($component_violations[$component->getPluginId()])) {
-        foreach ($component_violations[$component->getPluginId()] as $cardinality => $violations) {
+        foreach ($component_violations[$component->getPluginId()] as $i => $violations) {
           foreach ($violations as $field_name => $violation_list) {
             // Do not validate the last item if multiple cardinality is allowed.
             if ($violation_list->count() >= 1) {
@@ -294,7 +311,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
               // @example 1st item out of 3 should be validated.
               // @example 2nd item out of 3 should be validated.
               // @example 3rd item out of 3 should _not_ be validated.
-              if ($component->getCardinality() === 1 || $cardinality === 1 || $cardinality < $component->countItems()) {
+              if ($component->getCardinality() === 1 || $i === 1 || $i < $component->countItems()) {
                 $this->setFieldViolations($field_name, $form_state, $violation_list);
               }
             }
@@ -369,12 +386,12 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    *   The name of the form element to set the error for.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state to set the error on.
-   * @param \Drupal\Core\Entity\EntityConstraintViolationListInterface $violations
+   * @param \Symfony\Component\Validator\ConstraintViolationListInterface $violations
    *   The violations to set.
    * @param array $replacements
    *   An optional array of message replacement arguments.
    */
-  public function setFieldViolations($name, FormStateInterface &$form_state, EntityConstraintViolationListInterface $violations, $replacements = NULL) {
+  public function setFieldViolations($name, FormStateInterface &$form_state, ConstraintViolationListInterface $violations, $replacements = NULL) {
     $name = (array) $name;
 
     if ($violations) {
@@ -615,6 +632,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           if (isset($value['remove'])) {
             unset($value['remove']);
           }
+
+          $value = NestedArray::filter($value);
 
           $values[$cardinality] = array_filter($value, function ($value, $key) use ($component) {
             $default_value = $component->getFormDefaultByKey($key);

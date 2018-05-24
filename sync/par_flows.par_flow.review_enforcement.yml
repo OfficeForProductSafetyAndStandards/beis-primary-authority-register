@@ -1,0 +1,54 @@
+uuid: 580c7709-20c0-4777-9330-fb961d239114
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: JqXSp5QkR1C4y_e6LC9-J0cHeNVJlHIoX-gGOTyjcyI
+id: review_enforcement
+label: 'Review Enforcement'
+default_title: null
+default_section_title: 'Respond to notice of enforcement action'
+description: 'The approval flow for an enforcement notice.'
+save_method: end
+states:
+  - par_data_enforcement_notice
+steps:
+  1:
+    route: par_enforcement_review_flows.respond
+    form_id: par_enforcement_notice_approve
+    components:
+      enforcement_full_summary: {  }
+      enforcement_action_review:
+        cardinality: -1
+    redirect:
+      cancel: 5
+  2:
+    route: par_enforcement_review_flows.referred_authority
+    form_id: par_enforcement_referred_authority
+    components:
+      enforcement_full_summary: {  }
+      enforcement_action_refer:
+        cardinality: -1
+    redirect:
+      cancel: 5
+  3:
+    route: par_enforcement_review_flows.review
+    form_id: par_enforcement_notice_approve_confirm
+    components:
+      enforcement_full_summary: {  }
+      enforcement_detail: {  }
+      enforcement_action_detail:
+        cardinality: -1
+    redirect:
+      cancel: 5
+      save: 4
+      action_decision: 1
+    form_data:
+      response: par_enforcement_notice_approve
+      referrals: par_enforcement_referred_authority
+  4:
+    route: par_enforcement_review_flows.completed_enforcement
+    redirect:
+      done: 5
+  5:
+    route: view.par_user_enforcements.enforcement_notices_page

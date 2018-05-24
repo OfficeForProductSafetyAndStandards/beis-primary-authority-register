@@ -151,9 +151,9 @@ class ParDashboardsDashboardController extends ControllerBase {
         '#collapsed' => FALSE,
       ];
 
-      if ($this->getCurrentUser()->hasPermission('send enforcement notice')) {
-        $link = $this->getLinkByRoute('view.par_user_enforcement_list.enforcement_notices_sent')
-          ->setText('See enforcement notifications sent')
+      if ($this->getCurrentUser()->hasPermission('send enforcement notice') || $this->getCurrentUser()->hasPermission('approve enforcement notice')) {
+        $link = $this->getLinkByRoute('view.par_user_enforcements.enforcement_notices_page')
+          ->setText('See enforcement notices')
           ->toString();
 
         $build['messages'][] = [
@@ -162,26 +162,17 @@ class ParDashboardsDashboardController extends ControllerBase {
         ];
       }
 
-      if ($this->getCurrentUser()->hasPermission('approve enforcement notice')) {
-        $link = $this->getLinkByRoute('view.par_user_enforcement_list.enforcement_notices_received')
-          ->setText('See enforcement notifications received')
-          ->toString();
-
-        $build['messages'][] = [
-          '#type' => 'markup',
-          '#markup' => "<p>{$link}</p>",
-        ];
-      }
-      if ($this->getCurrentUser()->hasPermission('view authority enquiries')) {
-        $enquiry_link = $this->getLinkByRoute('view.par_user_enforcement_list.enforcement_notices_received') //@todo update to -> view.par_user_enquires_received
-          ->setText('See enquiries')
-          ->toString();
-
-        $build['messages'][] = [
-          '#type' => 'markup',
-          '#markup' => "<p>{$enquiry_link}</p>",
-        ];
-      }
+      // @TODO Add when enquiry journeys are completed.
+//      if ($this->getCurrentUser()->hasPermission('view authority enquiries')) {
+//        $enquiry_link = $this->getLinkByRoute('xxx')
+//          ->setText('See enquiries')
+//          ->toString();
+//
+//        $build['messages'][] = [
+//          '#type' => 'markup',
+//          '#markup' => "<p>{$enquiry_link}</p>",
+//        ];
+//      }
     }
 
     return $build;

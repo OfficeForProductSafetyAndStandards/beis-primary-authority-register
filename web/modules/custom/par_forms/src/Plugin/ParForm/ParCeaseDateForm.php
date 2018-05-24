@@ -58,11 +58,4 @@ class ParCeaseDateForm extends ParFormPluginBase {
 
     return $form;
   }
-
-  /**
-   * Validate date field.
-   */
-  public function validateForm(&$form_state, $cardinality = 1) {
-    parent::validate($form_state, $cardinality);
-  }
 }
