@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies: {  }
+id: send_enforcement
+label: 'Send Enforcement'
+default_title: null
+default_section_title: 'View notification of enforcement action received from'
+description: 'The send operations for an enforcement notice.'
+save_method: end
+states:
+  - par_data_enforcement_notice
+steps:
+  1:
+    route: par_enforcement_send_flows.send_enforcement
+    form_id: par_enforcement_notice_send
+    components:
+      enforcement_full_summary: {}
+      enforcement_detail: {}
+      enforcement_action_detail:
+        cardinality: -1
+    redirect:
+      done: 2
+  2:
+    route: view.par_user_enforcements.enforcement_notices_page

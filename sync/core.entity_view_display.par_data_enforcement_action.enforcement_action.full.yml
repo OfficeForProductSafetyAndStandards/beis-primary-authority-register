@@ -12,7 +12,7 @@ dependencies:
     - file
     - text
 _core:
-  default_config_hash: AoxjcNDoY048wgcDNHUYUmnWnqelzhxVpENJ3-taYb0
+  default_config_hash: n2ajtF8FogCJddqkjNEVWW7gmb-N0k-BZFBw8EGd8mw
 id: par_data_enforcement_action.enforcement_action.full
 targetEntityType: par_data_enforcement_action
 bundle: enforcement_action

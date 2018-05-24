@@ -104,6 +104,7 @@ When('I complete the legal entities', function () {
   .setValue('#edit-par-component-legal-entity-2-registered-name', 'Second New LLP Company')
   .click('#edit-par-component-legal-entity-2-legal-entity-type option[value="limited_liability_partnership"]')
   .setValue('#edit-par-component-legal-entity-2-registered-number', '0000000000')
+  .click('#edit-add-another')
   .click('#edit-par-component-legal-entity-2-remove')
   .click('#edit-next')
 });

@@ -140,8 +140,14 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
    * {@inheritdoc}
    */
   public function getFlow($flow_name = NULL) {
-    $flow_name = empty($flow_name) ? $this->getFlowName() : $flow_name;
-    return $this->flow_storage->load($flow_name);
+    $flow = &drupal_static(__FUNCTION__ . $flow_name);
+
+    if (!isset($flow)) {
+      $flow_name = empty($flow_name) ? $this->getFlowName() : $flow_name;
+      $flow = $this->flow_storage->load($flow_name);
+    }
+
+    return $flow;
   }
 
   public function getFormKey($form_id, $state = NULL, $flow_name = NULL) {

@@ -38,15 +38,15 @@ class ParAddressForm extends ParFormPluginBase {
       $address = $par_data_premises->get('address')->first();
 
       // Setting the address details..
-      $this->getFlowDataHandler()->setFormPermValue("postcode", $address->get('postal_code')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("address_line1", $address->get('address_line1')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("address_line2", $address->get('address_line2')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("town_city", $address->get('locality')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("county", $address->get('administrative_area')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("nation", $par_data_premises->get('nation')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("country_code", $address->get('country_code')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("uprn", $par_data_premises->get('uprn')->getString());
-      $this->getFlowDataHandler()->setFormPermValue('premises_id', $par_data_premises->id());
+      $this->setDefaultValuesByKey("postcode", $cardinality, $address->get('postal_code')->getString());
+      $this->setDefaultValuesByKey("address_line1", $cardinality, $address->get('address_line1')->getString());
+      $this->setDefaultValuesByKey("address_line2", $cardinality, $address->get('address_line2')->getString());
+      $this->setDefaultValuesByKey("town_city", $cardinality, $address->get('locality')->getString());
+      $this->setDefaultValuesByKey("county", $cardinality, $address->get('administrative_area')->getString());
+      $this->setDefaultValuesByKey("nation", $cardinality, $par_data_premises->get('nation')->getString());
+      $this->setDefaultValuesByKey("country_code", $cardinality, $address->get('country_code')->getString());
+      $this->setDefaultValuesByKey("uprn", $cardinality, $par_data_premises->get('uprn')->getString());
+      $this->setDefaultValuesByKey('premises_id', $cardinality, $par_data_premises->id());
     }
 
     parent::loadData();

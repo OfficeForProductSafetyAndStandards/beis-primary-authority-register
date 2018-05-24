@@ -13,6 +13,7 @@ dependencies:
     - par_data.par_data_enforcement_notice_type.enforcement_notice
   module:
     - datetime
+    - par_data
 id: par_data_enforcement_notice.enforcement_notice.title
 targetEntityType: par_data_enforcement_notice
 bundle: enforcement_notice
@@ -43,12 +44,12 @@ content:
       format_type: gds_date_format
     third_party_settings: {  }
   notice_type:
-    type: string
+    type: par_list_formatter
     weight: 0
     region: content
     label: hidden
     settings:
-      link_to_entity: false
+      display_original_value: false
     third_party_settings: {  }
 hidden:
   enforcing_authority: true

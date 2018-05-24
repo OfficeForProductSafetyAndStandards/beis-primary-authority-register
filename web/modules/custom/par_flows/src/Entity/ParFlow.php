@@ -148,6 +148,29 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   }
 
   /**
+   * Get the current route.
+   */
+  public function getCurrentRoute() {
+    // Submit the route with all the same parameters.
+    return $route_params = \Drupal::service('par_flows.negotiator')->getRoute()->getRouteName();
+  }
+
+  /**
+   * Get the params for a dynamic route.
+   */
+  public function getRouteParams() {
+    // Submit the route with all the same parameters.
+    return $route_params = \Drupal::service('par_flows.negotiator')->getRoute()->getRawParameters()->all();
+  }
+
+  /**
+   * Get a specific route parameter.
+   */
+  public function getRouteParam($key) {
+    return $route_params = \Drupal::service('par_flows.negotiator')->getRoute()->getParameter($key);
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getDescription() {
@@ -450,10 +473,12 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getLinkByStep($index, array $route_params = [], array $link_options = []) {
     $step = $this->getStep($index);
-    $route = $step['route'];
     if (empty($step)) {
       throw new ParFlowException("The specified route does not exist for step {$index}.");
     }
+
+    $route = $step['route'];
+
     return $route ? $this->getLinkByRoute($route, $route_params, $link_options) : NULL;
   }
 
