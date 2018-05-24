@@ -95,7 +95,7 @@ Feature: Coordinator User - Upload Members
         And I click on the button "#edit-par-component-enforcement-action-0-regulatory-function-1"
         And I add "601" random chars of text to field "#edit-par-component-enforcement-action-0-details"
         And I click on the button "#edit-next"
-        Then the element "h1.heading-xlarge .heading-secondary" contains the text "Review the enforcement notice"
+        Then the element "h1.heading-xlarge" contains the text "Review the enforcement notice"
         And the element "#edit-enforced-organisation" contains the text "Legal Entity 4"
         When I click on the button "#edit-save"
         Then the element "h1.heading-xlarge" contains the text "Enforcement notice sent"
