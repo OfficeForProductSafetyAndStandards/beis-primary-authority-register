@@ -50,7 +50,12 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function label() {
-    $label_fields = $this->getTypeEntity()->getConfigurationElementByType('entity', 'label_fields');
+
+    //PAR-988 prevent the page crashing when NULL is returned by getTypeEntity() on the current entity.
+    if (is_object($this->getTypeEntity())) {
+      $label_fields = $this->getTypeEntity()->getConfigurationElementByType('entity', 'label_fields');
+    }
+
     $labels = [];
     if (isset($label_fields) && is_string($label_fields)) {
       $labels[] = $this->getLabelValue($label_fields);
