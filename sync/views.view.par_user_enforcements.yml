@@ -822,7 +822,18 @@ display:
       title: 'Par User Enforcements'
       header: {  }
       footer: {  }
-      empty: {  }
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: '<p>Sorry, there are no sent or received notices of enforcement action for your authorities.</p>'
+          plugin_id: text_custom
       relationships:
         field_partnership:
           id: field_partnership
