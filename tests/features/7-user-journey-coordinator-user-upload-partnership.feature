@@ -1,6 +1,6 @@
 Feature: Coordinator User - Upload Members
 
-    @ci2 @PAR790 @coordinatedpartnership
+    @ci @PAR790 @coordinatedpartnership
     Scenario: Coordinator User - Upload Members
 
         # PARTNERSHIPS DASHBOARD
@@ -93,10 +93,9 @@ Feature: Coordinator User - Upload Members
         And the element "h1.heading-xlarge" contains the text "Add an action to the enforcement notice"
         When I add "Title of Member Enforcement Action" to the inputfield "#edit-par-component-enforcement-action-0-title"
         And I click on the button "#edit-par-component-enforcement-action-0-regulatory-function-1"
-        And I click on the radio "#edit-field-regulatory-function-1"
         And I add "601" random chars of text to field "#edit-par-component-enforcement-action-0-details"
         And I click on the button "#edit-next"
-        Then the element "h1.heading-xlarge .heading-secondary" contains the text "Review the enforcement notice"
+        Then the element "h1.heading-xlarge" contains the text "Review the enforcement notice"
         And the element "#edit-enforced-organisation" contains the text "Legal Entity 4"
         When I click on the button "#edit-save"
         Then the element "h1.heading-xlarge" contains the text "Enforcement notice sent"
