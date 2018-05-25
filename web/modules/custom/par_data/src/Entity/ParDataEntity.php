@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityStorageInterface;
@@ -376,6 +377,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
       // Always revision status changes.
       $this->setNewRevision(TRUE);
+
+      // Dispatch a par event.
+      $event = new EntityEvent($this);
+      $dispatcher = \Drupal::service('event_dispatcher');
+      $dispatcher->dispatch(ParDataEvent::CREATE, $event);
     }
   }
 

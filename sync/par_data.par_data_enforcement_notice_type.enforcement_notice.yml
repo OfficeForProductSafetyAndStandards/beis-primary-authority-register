@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: FkCJxIRW3jXCYxinIiBfwVoNLET0TGnt5LbiSvHuSkU
+  default_config_hash: VNaGjSSUgesKbgNV6XOVcvKPte7AQEE_zHuGBIOZwbg
 id: enforcement_notice
 label: 'Enforcement Notice'
 description: 'An Enforcement Notice is a legal document that contains one or more Enforcement Actions.'
@@ -16,6 +16,12 @@ configuration:
     label_fields:
       - notice_type
       - notice_date
+    status_field: enforcement_notice_status
+  enforcement_notice_status:
+    allowed_values:
+      unknown: 'Under Review'
+      reviewed: Reviewed
+      sent: Sent
   notice_type:
     allowed_values:
       proposed: Proposed

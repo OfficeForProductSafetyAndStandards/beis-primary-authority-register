@@ -16,3 +16,7 @@ services:
     arguments: ['@current_user']
     tags:
       - { name: cache.context}
+  par_data.enforcement_status_subscriber:
+    class: '\Drupal\par_data\EventSubscriber\EnforcementNoticeStatusChange'
+    tags:
+      - { name: 'event_subscriber' }

@@ -16,12 +16,12 @@ use Drupal\Core\Entity\EntityInterface;
  */
 class ParDataStorage extends TranceStorage {
 
-  protected $par_data_manager;
+  protected $parDataManager;
 
   public function __construct(\Drupal\Core\Entity\EntityTypeInterface $entity_type, \Drupal\Core\Database\Connection $database, \Drupal\Core\Entity\EntityManagerInterface $entity_manager, \Drupal\Core\Cache\CacheBackendInterface $cache, \Drupal\Core\Language\LanguageManagerInterface $language_manager) {
     parent::__construct($entity_type, $database, $entity_manager, $cache, $language_manager);
 
-    $this->par_data_manager = \Drupal::service('par_data.manager');
+    $this->parDataManager = \Drupal::service('par_data.manager');
   }
 
   /**
@@ -111,12 +111,13 @@ class ParDataStorage extends TranceStorage {
     if ($entity->getRawStatus() && !$entity->isNew() && $entity->getRawStatus() !== $entity->original->getRawStatus()) {
       // Dispatch the an event for every par entity that has a status update.
       $event = new ParDataEvent($entity);
-      $event_to_dispatch = $event->getEntityEventStatusName($entity);
+      $event_to_dispatch = ParDataEvent::statusChange($entity->getEntityTypeId(), $entity->getRawStatus());
       $dispatcher = \Drupal::service('event_dispatcher');
       $dispatcher->dispatch($event_to_dispatch, $event);
     }
+
     // Warm caches.
-    $this->par_data_manager->getRelatedEntities($entity);
+    $this->parDataManager->getRelatedEntities($entity);
 
     return parent::save($entity);
   }

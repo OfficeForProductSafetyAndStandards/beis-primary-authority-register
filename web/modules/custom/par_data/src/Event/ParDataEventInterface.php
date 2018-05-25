@@ -12,6 +12,6 @@ interface ParDataEventInterface {
   /**
    * @return ParDataEntityInterface
    */
-  public function getData();
+  public function getEntity();
 
 }

@@ -34,7 +34,7 @@ class PartnershipApplicationCompletedSubscriber implements EventSubscriberInterf
    */
   static function getSubscribedEvents() {
     // Confirmation event should fire after a partnership has been confirmed.
-    $events[ParDataEvent::CONFIRMED][] = ['onPartnershipConfirmation', -101];
+    $events[ParDataEvent::statusChange('par_data_partnership', 'confirmed_business')][] = ['onPartnershipConfirmation', -101];
 
     return $events;
   }
@@ -69,72 +69,70 @@ class PartnershipApplicationCompletedSubscriber implements EventSubscriberInterf
   /**
    * @param ParDataEventInterface $event
    */
-  public function onPartnershipConfirmation(ParDataEventInterface $event) {
-    /** @var ParDataEntityInterface $enforcement */
-    $partnership = $event->getData();
+  public function onPartnershipConfirmation(ParDataEventInterface $event)
+  {
+    /** @var ParDataEntityInterface $par_data_partnership */
+    $par_data_partnership = $event->getEntity();
 
-    // Only act on partnership entities.
-    if (!$partnership || $partnership->getEntityTypeId() !== 'par_data_partnership') {
+    // Load the message template.
+    $template_storage = $this->getEntityTypeManager()->getStorage('message_template');
+    $message_template = $template_storage->load(self::MESSAGE_ID);
+    $message_storage = $this->getEntityTypeManager()->getStorage('message');
+
+    // Get the link to approve this notice.
+    $options = ['absolute' => TRUE];
+    $pending_partnerships_url = Url::fromRoute('view.par_user_partnerships.par_user_partnership_applications', [], $options);
+
+    if (!$message_template) {
+      // @TODO Log that the template couldn't be loaded.
       return;
     }
-      // Load the message template.
-      $template_storage = $this->getEntityTypeManager()->getStorage('message_template');
-      $message_template = $template_storage->load(self::MESSAGE_ID);
-      $message_storage = $this->getEntityTypeManager()->getStorage('message');
 
-      // Get the link to approve this notice.
-      $options = ['absolute' => TRUE];
-      $pending_partnerships_url = Url::fromRoute('view.par_user_partnerships.par_user_partnership_applications', [], $options);
+    // We only notify the authority contacts here.
+    $contacts = $par_data_partnership->getAuthorityPeople();
+    if (!$contacts) {
+      return;
+    }
 
-      if (!$message_template) {
-        // @TODO Log that the template couldn't be loaded.
-        return;
-      }
+    foreach ($contacts as $person) {
+      // Notify all users in this authority with the appropriate permissions.
+      if (($account = $person->getUserAccount())
+        && !isset($this->recipients[$account->id()])
+      ) {
 
-      // We only notify the authority contacts here.
-      $contacts = $partnership->getAuthorityPeople();
-      if (!$contacts) {
-        return;
-      }
+        // Record the recipient so that we don't send them the message twice.
+        $this->recipients[$account->id()] = $account->getEmail();
 
-      foreach ($contacts as $person) {
-        // Notify all users in this authority with the appropriate permissions.
-        if (($account = $person->getUserAccount())
-          && !isset($this->recipients[$account->id()])) {
+        // Create one message per user.
+        $message = $message_storage->create([
+          'template' => $message_template->id()
+        ]);
 
-          // Record the recipient so that we don't send them the message twice.
-          $this->recipients[$account->id()] = $account->getEmail();
-
-          // Create one message per user.
-          $message = $message_storage->create([
-            'template' => $message_template->id()
-          ]);
-
-          // Add contextual information to this message.
-          if ($message->hasField('field_partnership')) {
-            $message->set('field_partnership', $partnership);
-          }
-
-          // Add some custom arguments to this message.
-          $message->setArguments([
-            '@partnership_organisation' => $partnership->getOrganisation(TRUE)->label(),
-            '@partnership_pending_partnership_link' => $pending_partnerships_url->toString(),
-          ]);
-
-          // The owner is the user who this message belongs to.
-          if ($account) {
-            $message->setOwnerId($account->id());
-          }
-          $message->save();
-
-          // The e-mail address can be overridden if we don't want
-          // to send to the message owner set above.
-          $options = [
-            'mail' => $account->getEmail(),
-          ];
-
-          $this->getNotifier()->send($message, $options, self::DELIVERY_METHOD);
+        // Add contextual information to this message.
+        if ($message->hasField('field_partnership')) {
+          $message->set('field_partnership', $par_data_partnership);
         }
+
+        // Add some custom arguments to this message.
+        $message->setArguments([
+          '@partnership_organisation' => $par_data_partnership->getOrganisation(TRUE)->label(),
+          '@partnership_pending_partnership_link' => $pending_partnerships_url->toString(),
+        ]);
+
+        // The owner is the user who this message belongs to.
+        if ($account) {
+          $message->setOwnerId($account->id());
+        }
+        $message->save();
+
+        // The e-mail address can be overridden if we don't want
+        // to send to the message owner set above.
+        $options = [
+          'mail' => $account->getEmail(),
+        ];
+
+        $this->getNotifier()->send($message, $options, self::DELIVERY_METHOD);
       }
     }
+  }
 }

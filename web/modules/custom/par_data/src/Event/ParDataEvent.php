@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Event;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -11,74 +12,44 @@ use Symfony\Component\EventDispatcher\Event;
 class ParDataEvent extends Event implements ParDataEventInterface {
 
   /**
-   * The name of the event triggered when a new par entity is created.
-   *
-   * @Event
-   *
-   * @var string
-   */
-  const CREATE = 'par_data.entity.create';
-
-  /**
-   * The name of the event triggered when an existing par entity is updated.
-   *
-   * @Event
-   *
-   * @var string
-   */
-  const UPDATE = 'par_data.entity.update';
-
-  /**
    * The name of the event triggered when an existing par entity is deleted.
    *
    * @Event
    *
    * @var string
    */
-  const DELETE = 'par_data.entity.delete';
+  const STATUS_CHANGE = 'par_data.entity.status';
 
   /**
-   * The name of the event triggered when an existing par entity is approved.
+   * The entity being enacted upon.
    *
-   * @Event
-   *
-   * @var string
+   * @var ParDataEntityInterface
    */
-  const APPROVED = 'entity.status.par_data_partnership.confirmed_rd';
+  protected $entity;
 
-  /**
-   * The name of the event triggered when an existing par partnership entity
-   * is confirmed by the business.
-   *
-   * @Event
-   *
-   * @var string
-   */
-  const CONFIRMED = 'entity.status.par_data_partnership.confirmed_business';
-
-  protected $data;
-
-  public function __construct(ParDataEntityInterface $data) {
-    $this->data = $data;
+  public function __construct(EntityInterface $entity) {
+    $this->entity = $entity;
   }
 
   /**
    * @return ParDataEntityInterface
    */
-  public function getData() {
-    return $this->data;
+  public function getEntity() {
+    return $this->entity;
   }
 
   /**
    * Generate the entity status event name for the currently saved entity.
    *
-   * @param $entity
-   *   The par entity being stored.
+   * @param string $entity_type_id
+   *   The entity type for the event.
+   * @param string $status
+   *   The status changed to.
    *
    * @return string
    */
-  Public function getEntityEventStatusName(ParDataEntityInterface $entity) {
-    return 'entity.status.' . $entity->getEntityTypeId() . '.' . $entity->getRawStatus();
+  public static function statusChange($entity_type_id, $status) {
+    return self::STATUS_CHANGE . '.' . $entity_type_id . '.' . $status;
   }
 
 }

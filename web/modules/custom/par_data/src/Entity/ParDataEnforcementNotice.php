@@ -271,6 +271,68 @@ class ParDataEnforcementNotice extends ParDataEntity {
     }
   }
 
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRawStatus() {
+    if ($this->isDeleted()) {
+      return 'deleted';
+    }
+    if ($this->isRevoked()) {
+      return 'revoked';
+    }
+    if ($this->isArchived()) {
+      return 'archived';
+    }
+    if (!$this->isTransitioned()) {
+      return 'n/a';
+    }
+
+    // Loop through all actions to determine status.
+    foreach ($this->getEnforcementActions() as $action) {
+      if ($action->isAwaitingApproval()) {
+        return 'unknown';
+      }
+      if ($action->isReviewed()) {
+        $status = 'reviewed';
+      }
+    }
+
+    return isset($status) ? $status : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getParStatus() {
+    if ($this->isDeleted()) {
+      return 'Deleted';
+    }
+    if ($this->isRevoked()) {
+      return 'Revoked';
+    }
+    if ($this->isArchived()) {
+      return 'Archived';
+    }
+    if (!$this->isTransitioned()) {
+      return 'Not transitioned from PAR2';
+    }
+
+    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+    $raw_status = $this->getRawStatus();
+    return $field_name && $raw_status ? $this->getTypeEntity()->getAllowedFieldlabel($field_name, $raw_status) : '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setParStatus($value) {
+    // This status is generated dynamically and cannot be saved.
+    return;
+  }
+
   /**
    * Clone an enforcement notice entity to support the referral process.
    *

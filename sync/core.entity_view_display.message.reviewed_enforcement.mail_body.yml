@@ -1,0 +1,17 @@
+uuid: 3c87a185-85cc-4d88-b1aa-035bdb5654f6
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - message.template.reviewed_enforcement
+id: message.reviewed_enforcement.mail_body
+targetEntityType: message
+bundle: reviewed_enforcement
+mode: mail_body
+content:
+  partial_1:
+    weight: 0
+    region: content
+hidden:
+  partial_0: true

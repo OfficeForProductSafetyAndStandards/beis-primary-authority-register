@@ -2,6 +2,7 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
+use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityEvents;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
@@ -12,17 +13,17 @@ use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class PartnershipRevocationSubscriber implements EventSubscriberInterface {
+class ReviewedEnforcementSubscriber implements EventSubscriberInterface {
 
   /**
    * The message template ID created for this notification.
    *
-   * @see /admin/structure/message/manage/partnership_revocation_notification
+   * @see /admin/structure/message/manage/new_enforcement_notification
    */
-  const MESSAGE_ID = 'partnership_revocation_notificat';
+  const MESSAGE_ID = 'reviewed_enforcement';
 
   /**
-   * The notification plugin that will deliver these notification messages.
+   * The notication plugin that will deliver these notification messages.
    */
   const DELIVERY_METHOD = 'plain_email';
 
@@ -34,9 +35,7 @@ class PartnershipRevocationSubscriber implements EventSubscriberInterface {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    // Revocation event should fire after most default events to make sure
-    // revocation has not been cancelled.
-    $events[ParDataEvent::statusChange('par_data_partnership', 'revoked')][] = ['onPartnershipRevocation', -100];
+    $events[ParDataEvent::statusChange('par_data_enforcement_notice', 'reviewed')][] = ['onEnforcementReview', 800];
 
     return $events;
   }
@@ -71,29 +70,31 @@ class PartnershipRevocationSubscriber implements EventSubscriberInterface {
   /**
    * @param ParDataEventInterface $event
    */
-  public function onPartnershipRevocation(ParDataEventInterface $event) {
-    /** @var ParDataEntityInterface $par_data_partnership */
-    $par_data_partnership = $event->getEntity();
+  public function onEnforcementReview(ParDataEvent $event) {
+    /** @var ParDataEntityInterface $par_data_enforcement_notice */
+    $par_data_enforcement_notice = $event->getEntity();
 
     // Load the message template.
     $template_storage = $this->getEntityTypeManager()->getStorage('message_template');
     $message_template = $template_storage->load(self::MESSAGE_ID);
 
     $message_storage = $this->getEntityTypeManager()->getStorage('message');
-    if (!$message_template) {
+
+    if (!$message_template || !$par_data_enforcement_notice) {
       // @TODO Log that the template couldn't be loaded.
       return;
     }
 
-    // We need to get all the contacts for this partnership.
-    $contacts = array_merge($par_data_partnership->getAuthorityPeople(), $par_data_partnership->getOrganisationPeople());
-    if (!$contacts) {
-      return;
-    }
+    // Get the link to approve this notice.
+    $options = ['absolute' => TRUE];
+    $enforcement_url = Url::fromRoute('par_enforcement_send_flows.send_enforcement', ['par_data_enforcement_notice' => $par_data_enforcement_notice->id()], $options);
 
-    foreach ($contacts as $person) {
+    // Notify all relevant users at the primary authority.
+    $primary_authority = $par_data_enforcement_notice->getPrimaryAuthority(TRUE);
+
+    foreach ($primary_authority->getPerson() as $person) {
       // Notify all users in this authority with the appropriate permissions.
-      if (($account = $person->getUserAccount())
+      if (($account = $person->getUserAccount()) && $person->getUserAccount()->hasPermission('approve enforcement notice')
         && !isset($this->recipients[$account->id()])) {
 
         // Record the recipient so that we don't send them the message twice.
@@ -105,14 +106,13 @@ class PartnershipRevocationSubscriber implements EventSubscriberInterface {
         ]);
 
         // Add contextual information to this message.
-        if ($message->hasField('field_partnership')) {
-          $message->set('field_partnership', $par_data_partnership);
+        if ($message->hasField('field_enforcement_notice')) {
+          $message->set('field_enforcement_notice', $par_data_enforcement_notice);
         }
 
         // Add some custom arguments to this message.
         $message->setArguments([
-          '@partnership_authority' => $par_data_partnership->getAuthority(TRUE)->label(),
-          '@partnership_organisation' => $par_data_partnership->getOrganisation(TRUE)->label(),
+          '@enforcement_notice_view' => $enforcement_url->toString(),
         ]);
 
         // The owner is the user who this message belongs to.
