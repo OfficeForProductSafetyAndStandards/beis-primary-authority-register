@@ -1,0 +1,37 @@
+# PAR Search for a partnership journey
+par_search_partnership_flows.partnership_page:
+  path: '/partnership/{par_data_partnership}'
+  defaults:
+    _controller: '\Drupal\par_search_partnership_flows\Controller\ParPartnershipPageController::build'
+    _title_callback: '\Drupal\par_search_partnership_flows\Controller\ParPartnershipPageController::titleCallback'
+  requirements:
+    _permission: 'enforce organisation'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_search_partnership_flows.advice_view:
+  path: '/partnership/{par_data_partnership}/advice/search'
+  defaults:
+    _controller: '\Drupal\par_search_partnership_flows\Controller\ParPartnershipAdviceController::build'
+    _title_callback: '\Drupal\par_search_partnership_flows\Controller\ParPartnershipAdviceController::titleCallback'
+  requirements:
+    _permission: 'enforce organisation'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_search_partnership_flows.inspection_plan_view:
+  path: '/partnership/{par_data_partnership}/inspection/search'
+  defaults:
+    _controller: '\Drupal\par_search_partnership_flows\Controller\ParPartnershipAdviceController::build'
+    _title_callback: '\Drupal\par_search_partnership_flows\Controller\ParPartnershipAdviceController::titleCallback'
+  requirements:
+    _permission: 'enforce organisation'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership

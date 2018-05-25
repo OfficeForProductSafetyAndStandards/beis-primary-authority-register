@@ -9,7 +9,7 @@ use Drupal\par_forms\ParFormPluginBase;
  *
  * @ParForm(
  *   id = "contact_details_full",
- *   title = @Translation("Contact details form.")
+ *   title = @Translation("Contact details full form.")
  * )
  */
 class ParContactDetailsFullForm extends ParFormPluginBase {
@@ -33,13 +33,13 @@ class ParContactDetailsFullForm extends ParFormPluginBase {
    */
   public function loadData($cardinality = 1) {
     if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
-      $this->getFlowDataHandler()->setFormPermValue("salutation", $par_data_person->get('salutation')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("first_name", $par_data_person->get('first_name')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("last_name", $par_data_person->get('last_name')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("work_phone", $par_data_person->get('work_phone')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("mobile_phone", $par_data_person->get('mobile_phone')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("email", $par_data_person->get('email')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("notes", $par_data_person->get('communication_notes')->getString());
+      $this->setDefaultValuesByKey("salutation", $cardinality, $par_data_person->get('salutation')->getString());
+      $this->setDefaultValuesByKey("first_name", $cardinality, $par_data_person->get('first_name')->getString());
+      $this->setDefaultValuesByKey("last_name", $cardinality, $par_data_person->get('last_name')->getString());
+      $this->setDefaultValuesByKey("work_phone", $cardinality, $par_data_person->get('work_phone')->getString());
+      $this->setDefaultValuesByKey("mobile_phone", $cardinality, $par_data_person->get('mobile_phone')->getString());
+      $this->setDefaultValuesByKey("email", $cardinality, $par_data_person->get('email')->getString());
+      $this->setDefaultValuesByKey("notes", $cardinality, $par_data_person->get('communication_notes')->getString());
 
       // Get preferred contact methods.
       $contact_options = [
@@ -49,7 +49,7 @@ class ParContactDetailsFullForm extends ParFormPluginBase {
       ];
 
       // Checkboxes works nicely with keys, filtering booleans for "1" value.
-      $this->getFlowDataHandler()->setFormPermValue('preferred_contact', array_keys($contact_options, 1));
+      $this->setDefaultValuesByKey('preferred_contact', $cardinality, array_keys($contact_options, 1));
     }
 
     parent::loadData();
@@ -127,7 +127,7 @@ class ParContactDetailsFullForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function validate(&$form_state, $cardinality = 1) {
+  public function validate(&$form_state, $cardinality = 1, array $violations = []) {
     // @todo create wrapper for setErrorByName as this is ugly creating a link.
     if (empty($form_state->getValue('email'))) {
       $form_state->setErrorByName('email', $this->t('<a href="#edit-email">The email field is required.</a>'));

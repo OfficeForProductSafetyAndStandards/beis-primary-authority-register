@@ -1,0 +1,97 @@
+# PAR Data Raise Enforcement Notice Journey
+par_enforcement_raise_flows.select_authority:
+  path: '/enforcement-notice/{par_data_partnership}/select-authority'
+  defaults:
+    _form: '\Drupal\par_enforcement_raise_flows\Form\ParSelectAuthorityForm'
+    _title_callback: '\Drupal\par_enforcement_raise_flows\Form\ParSelectAuthorityForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_enforcement_raise_flows.select_organisation:
+  path: '/enforcement-notice/{par_data_partnership}/enforce-organisation'
+  defaults:
+    _form: '\Drupal\par_enforcement_raise_flows\Form\ParSelectOrganisationForm'
+    _title_callback: '\Drupal\par_enforcement_raise_flows\Form\ParSelectOrganisationForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_enforcement_raise_flows.officer_details:
+  path: '/enforcement-notice/{par_data_partnership}/enforcing-officer'
+  defaults:
+    _form: '\Drupal\par_enforcement_raise_flows\Form\ParContactForm'
+    _title_callback: '\Drupal\par_enforcement_raise_flows\Form\ParContactForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_enforcement_raise_flows.select_legal_entity:
+  path: '/enforcement-notice/{par_data_partnership}/raise'
+  defaults:
+    _form: '\Drupal\par_enforcement_raise_flows\Form\ParSelectLegalEntityForm'
+    _title_callback: '\Drupal\par_enforcement_raise_flows\Form\ParSelectLegalEntityForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_enforcement_raise_flows.raise_details:
+  path: '/enforcement-notice/{par_data_partnership}/raise/details'
+  defaults:
+    _form: '\Drupal\par_enforcement_raise_flows\Form\ParEnforcementNoticeDetailsForm'
+    _title_callback: '\Drupal\par_enforcement_raise_flows\Form\ParEnforcementNoticeDetailsForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_enforcement_raise_flows.add_action:
+  path: '/enforcement-notice/{par_data_partnership}/raise/add-action'
+  defaults:
+    _form: '\Drupal\par_enforcement_raise_flows\Form\ParAddActionForm'
+    _title_callback: '\Drupal\par_enforcement_raise_flows\Form\ParAddActionForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_enforcement_raise_flows.raise_review:
+  path: '/enforcement-notice/{par_data_partnership}/raise/review'
+  defaults:
+    _form: '\Drupal\par_enforcement_raise_flows\Form\ParEnforcementReviewForm'
+    _title_callback: '\Drupal\par_enforcement_raise_flows\Form\ParEnforcementReviewForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_enforcement_raise_flows.raise_confirm:
+  path: '/enforcement-notice/{par_data_partnership}/raise/confirm'
+  defaults:
+    _controller: '\Drupal\par_enforcement_raise_flows\Controller\ParEnforcementConfirmController:build'
+    _title_callback: '\Drupal\par_enforcement_raise_flows\Controller\ParEnforcementConfirmController::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership

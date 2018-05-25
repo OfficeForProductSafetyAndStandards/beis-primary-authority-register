@@ -19,6 +19,7 @@ use Drupal\par_flows\ParRedirectTrait;
 use Drupal\par_flows\ParDisplayTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Access\AccessResult;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -92,10 +93,18 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   /**
    * {@inheritdoc}
    */
-  public function build($build) {
+  public function build($build = []) {
     // Add all the registered components to the form.
-    foreach ($this->getComponents() as $weight => $component) {
-      $build = $component->getElements($build);
+    foreach ($this->getComponents() as $component) {
+      // If there's is a cardinality parameter present display only this item.
+      $cardinality = $this->getFlowDataHandler()->getParameter('cardinality');
+      $index = isset($cardinality) ? (int) $cardinality : NULL;
+
+      // Handle instances where FormBuilderInterface should return a redirect response.
+      $plugin = $this->getFormBuilder()->getPluginElements($component, $build, $index);
+      if ($plugin instanceof RedirectResponse) {
+        return $plugin;
+      }
     }
 
     // Add all the action links.
@@ -170,3 +179,6 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   }
 
 }
+
+
+

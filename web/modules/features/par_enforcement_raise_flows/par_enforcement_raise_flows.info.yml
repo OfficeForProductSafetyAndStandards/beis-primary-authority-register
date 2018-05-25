@@ -1,0 +1,9 @@
+name: PAR Enforcement Notice Raise Flows
+type: module
+description: Creates the flows required to raise and enforcement notice.
+core: 8.x
+package: PAR
+dependencies:
+  - par_data
+  - par_flows
+  - par_forms

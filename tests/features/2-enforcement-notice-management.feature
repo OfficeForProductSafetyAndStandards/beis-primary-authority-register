@@ -3,8 +3,8 @@ Feature: Enforcement notice management
 
     Background:
         Given I am logged in as "par_authority@example.com"
-        And I click the link text "See enforcement notifications sent"
-        Then the element ".heading-secondary" contains the text "Enforcement Notifications"
+        And I click the link text "See enforcement notices"
+        Then the element "h1.heading-xlarge" contains the text "Par User Enforcements"
     
     @ci @PAR1013 @PAR1049 @enforcementnotices
     Scenario: Enforcement notice management
@@ -19,7 +19,7 @@ Feature: Enforcement notice management
 
         # REFER FORM
 
-        And I successfully refer enforcement notice "Enforcement notice 1"
+        # And I successfully refer enforcement notice "Enforcement notice 1"
 
         # CHECK PAR ENFORCEMENT OFFICER VIEW
 
@@ -28,13 +28,17 @@ Feature: Enforcement notice management
         And I add "par_authority@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
-        When I click the link text "See enforcement notifications received"
+        When I click the link text "See enforcement notices"
         And the element ".table-scroll-wrapper" contains the text "Enforcement notice 4"
         And the element ".table-scroll-wrapper" contains the text "Enforcement notice 1"
         And the element ".table-scroll-wrapper" contains the text "Enforcement notice 3"
         # And the element ".table-scroll-wrapper" does not contain the text "Enforcement notice 2"
 
-    @ci @enforcementnotices
+
+    # @ci @enforcementnotices
+    # Scenario: Edit EN Before Submission
+ 
+@enforcementnotices
     Scenario: Check view of an unapproved enforcement notice approval 
 
         # APPROVAL FORM
@@ -45,6 +49,5 @@ Feature: Enforcement notice management
 
         When I click the link text "Log out"
         Given I am logged in as "par_enforcement_officer@example.com"
-        When I click the link text "See enforcement notifications sent"
+        When I click the link text "See enforcement notices"
         And the element ".table-scroll-wrapper" contains the text "Enforcement notice 2"
-

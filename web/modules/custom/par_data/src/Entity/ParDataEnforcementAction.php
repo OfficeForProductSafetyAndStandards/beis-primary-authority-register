@@ -99,7 +99,7 @@ class ParDataEnforcementAction extends ParDataEntity {
    * @return mixed|null
    */
   public function getEnforcementNotice($single = TRUE) {
-    $notices = $this->getParDataManager()->getEntitiesByProperty('par_data_enforcement_notices', 'field_enforcement_action', $this->id());
+    $notices = $this->getParDataManager()->getEntitiesByProperty('par_data_enforcement_notice', 'field_enforcement_action', $this->id());
     $notice = !empty($notices) ? current($notices) : NULL;
 
     return $single ? $notice : $notices;
@@ -161,12 +161,17 @@ class ParDataEnforcementAction extends ParDataEntity {
   /**
    * Approve an enforcement action.
    */
-  public function approve() {
-    if (!$this->isNew() && !$this->isApproved()) {
+  public function approve($save = TRUE) {
+    if ($this->isNew()) {
+      $save = FALSE;
+    }
+
+    if (!$this->isApproved()) {
       $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
       $this->set($status_field, self::APPROVED);
-      return ($this->save() === SAVED_UPDATED);
+      return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
+
     return FALSE;
   }
 
@@ -179,13 +184,18 @@ class ParDataEnforcementAction extends ParDataEntity {
    * @return boolean
    *   True if the entity was revoked, false for all other results.
    */
-  public function block($authority_notes) {
-    if (!$this->isNew() && !$this->isBlocked()) {
+  public function block($authority_notes, $save = TRUE) {
+    if ($this->isNew()) {
+      $save = FALSE;
+    }
+
+    if (!$this->isBlocked()) {
       $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
       $this->set($status_field, self::BLOCKED);
       $this->set('primary_authority_notes', $authority_notes);
-      return ($this->save() === SAVED_UPDATED);
+      return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
+
     return FALSE;
   }
 
@@ -199,13 +209,18 @@ class ParDataEnforcementAction extends ParDataEntity {
    *   True if the entity has been set to a referred state, false for all other results.
    *
    */
-  public function refer($refer_notes) {
-    if (!$this->isNew() && !$this->isReferred()) {
+  public function refer($refer_notes, $save = TRUE) {
+    if ($this->isNew()) {
+      $save = FALSE;
+    }
+
+    if (!$this->isReferred()) {
       $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
       $this->set($status_field, self::REFERRED);
       $this->set('referral_notes', $refer_notes);
-      return ($this->save() === SAVED_UPDATED);
+      return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
+
     return FALSE;
   }
 
@@ -219,6 +234,28 @@ class ParDataEnforcementAction extends ParDataEntity {
     }
 
     return parent::inProgress();
+  }
+
+  /**
+   * Check if the action can be referred.
+   */
+  public function isReferrable() {
+    $notice = $this->getEnforcementNotice(TRUE);
+    $organisation = $notice->getEnforcedOrganisation(TRUE);
+
+    // If there is no organisation it is not possible to get
+    // a list of authorities that this can be referred to.
+    if (!$organisation) {
+      return FALSE;
+    }
+
+    // If there are no referrable authorities this action cannot be referred.
+    if (empty($notice->getReferrableAuthorities())) {
+      return FALSE;
+    }
+
+    // Actions can only be referred once.
+    return $this->get('field_action_referral')->isEmpty();
   }
 
   /**
@@ -246,59 +283,27 @@ class ParDataEnforcementAction extends ParDataEntity {
   /**
    * Clone an enforcement notice action entity to support the referral process.
    *
-   * @return ParDataEnforcementAction $action
+   * @return ParDataEnforcementAction|boolean
    *  cloned action entity if a referral exists or NULL.
    */
-  public function cloneReferredEnforcementAction($referral_authority_id, $action_id) {
-
+  public function cloneAction($referral_authority_id) {
     if ($referral_authority_id) {
       // Duplicate this action before changing the status.
       $cloned_action = $this->createDuplicate();
       // As we are referring an action by cloning the original we need to set the original
       // action id on the copied (referred action) this indicates that the action in question
       // has been referred once and can no longer be referred.
-      $cloned_action->set('field_action_referral', $action_id);
+      $cloned_action->set('field_action_referral', $this->id());
       // If a new duplicate enforcement action has been saved to the system return it.
       if ($cloned_action->save()) {
         return $cloned_action;
       }
       else {
         throw new ParDataException("The referral action for the %action (action) cannot be created, please contact the helpdesk.");
-        return FALSE;
       }
     }
     else {
-    throw new ParDataException("The referral Action for %action (action) could not be created referral id missing, please contact the helpdesk.");
-    return FALSE;
-  }
-  }
-
-  /**
-   * Clone an enforcement notice entity to support the referral process.
-   *
-   * @return ParDataEnforcementAction $action
-   *  cloned action entity if a referral exists or NULL.
-   */
-  public function cloneEnforcementNotice($referral_authority_id, ParDataEnforcementAction $cloned_action, ParDataEnforcementNotice $par_data_enforcement_notice) {
-
-    if ($referral_authority_id) {
-      // Duplicate this enforcement notification and assign it the cloned action.
-      $referral_notice = $par_data_enforcement_notice->createDuplicate();
-      $referral_notice->set('field_primary_authority', $referral_authority_id);
-      $referral_notice->set('field_enforcement_action', $cloned_action->id());
-
-      if ($referral_notice->save()) {
-        return $referral_notice;
-      }
-      else {
-        throw new ParDataException("The referral Enforcement notice for the %action (action) cannot be created, please contact the helpdesk.");
-        return FALSE;
-      }
-
-    }
-    else {
-      throw new ParDataException("The referral Enforcement Notice for the %action action could not be created referral id missing, please contact the helpdesk.");
-      return FALSE;
+      throw new ParDataException("The referral Action for %action (action) could not be created referral id missing, please contact the helpdesk.");
     }
   }
 

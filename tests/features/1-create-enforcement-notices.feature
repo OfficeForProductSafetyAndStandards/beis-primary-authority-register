@@ -1,7 +1,7 @@
 Feature: Enforcement Officer - Enforcement Notice Process
 
     @ci @enforcementnotices
-    Scenario Outline: Enforcement Officer - Issue enforcement notice
+    Scenario Outline: Enforcement Officer - Issue enforcement notice (direct and coordinated)
 
         #LOGIN
         
@@ -22,7 +22,7 @@ Feature: Enforcement Officer - Enforcement Notice Process
         | Enforcement notice 3    | Charlie's Cafe | par_authority@example.com |
         | Enforcement notice 4    | Charlie's Cafe | par_authority@example.com |
 
-    @enforcementnotice
+    
     Scenario: Issue enforcement notice on Coordinated Partnership with no members
 
         #LOGIN

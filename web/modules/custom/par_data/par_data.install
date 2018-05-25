@@ -343,3 +343,15 @@ function par_data_update_8022() {
     }
   }
 }
+
+/**
+ * There are a whole bunch of incorrect people entities.
+ */
+function par_data_update_8023() {
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  $people = $par_data_manager->getEntitiesByProperty('par_data_person', 'type', 'business');
+  foreach ($people as $person) {
+    $person->destroy();
+  }
+}

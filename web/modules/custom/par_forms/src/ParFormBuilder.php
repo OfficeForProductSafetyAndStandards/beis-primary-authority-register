@@ -8,6 +8,7 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Provides a PAR Form Builder plugin manager.
@@ -89,57 +90,53 @@ class ParFormBuilder extends DefaultPluginManager {
    *   The plugin to load elements for.
    * @param array $elements
    *   An array to add the elements to.
+   * @param mixed $cardinality
+   *   If chosen only the specified cardinality will be displayed.
    *
    * @return array
    */
-  public function getPluginElements($component, &$elements = []) {
+  public function getPluginElements($component, &$elements = [], $cardinality = NULL) {
     // Add all the registered components to the form.
-    $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()] = [
-      '#weight' => $component->getWeight(),
-      '#tree' => $component->getCardinality() === 1 ? FALSE : TRUE,
-    ];
+    $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()] = $component->getWrapper();
 
     // Count the current cardinality.
-    $count = $component->countItems() + 1 ?: 1;
-    for ($i = 1; $i <= $count; $i++) {
-      $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1] = $component->getElements([], $i);
+    $count = $component->getNewCardinality();
 
-      // Only show remove for plugins with multiple cardinality
-      if ($component->getCardinality() !== 1) {
-        $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1]['remove'] = [
-          '#type' => 'submit',
-          '#name' => "remove:{$component->getPluginId()}:{$i}",
-          '#weight' => 100,
-          '#submit' => ['::removeItem'],
-          '#value' => $this->t("Remove"),
-          '#attributes' => [
-            'class' => ['btn-link'],
-          ],
-        ];
+    for ($i = 1; $i <= $count; $i++) {
+      $element = $component->getElements([], $i);
+
+      // Handle instances where FormBuilderInterface should return a redirect response.
+      if ($element instanceof RedirectResponse) {
+        return $element;
+      }
+
+      $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1] = $element;
+
+      // Only show element actions for plugins with multiple cardinality
+      if ($element_actions = $component->getElementActions($i)) {
+        $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1] += $element_actions;
       }
     }
 
-    if ($component->getCardinality() === -1 || ($component->getCardinality() > 1 && $component->getCardinality() > $count)) {
-      $elements['actions']['add_another'] = [
-        '#type' => 'submit',
-        '#name' => 'add_another',
-        '#submit' => ['::multipleItemActionsSubmit'],
-        '#value' => $this->t('Add another'),
-        '#attributes' => [
-          'class' => ['btn-link'],
-        ],
-      ];
+    // Only show component actions for plugins with multiple cardinality
+    if ($component_actions = $component->getComponentActions()) {
+      $elements['actions'] = $component_actions;
     }
 
     return $elements;
   }
 
-  public function validatePluginElements($component, $form_state) {
+  public function validatePluginElements($component, $form_state, $cardinality = NULL) {
     $violations = [];
 
     // Count the current cardinality.
     $count = $component->countItems() + 1 ?: 1;
     for ($i = 1; $i <= $count; $i++) {
+      // Handle instances where only a specific cardinality should be validated.
+      if ($cardinality && $i !== $cardinality) {
+        continue;
+      }
+
       $violations[$component->getPluginId()][$i] = $component->validate($form_state, $i);
     }
 
