@@ -118,11 +118,11 @@ When('the coordinated partnership creation email template is correct', function 
 
 When('I complete the organisation registered address for coordinated partnership', function () {
   return shared
-  .setValue('#edit-county','')
-  .setValue('#edit-town-city','')
-  .setValue('#edit-address-line1','')
-  .setValue('#edit-address-line2','')
-  .setValue('#edit-postcode','')
+  .clearValue('#edit-county')
+  .clearValue('#edit-town-city')
+  .clearValue('#edit-address-line1')
+  .clearValue('#edit-address-line2')
+  .clearValue('#edit-postcode')
   .click('#edit-next')
   .waitForElementVisible('.error-summary', 1000)
   .assert.containsText('h1.heading-xlarge','Confirm the primary address details')
