@@ -14,7 +14,7 @@ When('I create new valid enforcement notification {string} for organisation {str
     .clickLinkByPureText('Send a notification of a proposed enforcement action')
       // CHOOSE MEMBER
     .chooseMemberIfOptionPresent()
-    // ENTER EO DETAILS
+    // ENTER EO DETAILS 
     .clearValue('#edit-first-name')
     .click('#edit-next')
     .waitForElementVisible('.error-summary', 1000)

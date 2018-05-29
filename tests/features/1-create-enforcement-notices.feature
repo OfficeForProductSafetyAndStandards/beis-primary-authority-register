@@ -1,6 +1,7 @@
 Feature: Enforcement Officer - Enforcement Notice Process
 
-    @ci @enforcementnotices
+    @ci
+     @enforcementnotices
     Scenario Outline: Enforcement Officer - Issue enforcement notice (direct and coordinated)
 
         #LOGIN
@@ -18,9 +19,9 @@ Feature: Enforcement Officer - Enforcement Notice Process
     Examples:
         | Notification Title      | Organisation   | PARUser                   |
         | Enforcement notice 1    | Charlie's Cafe | par_authority@example.com |
-        | Enforcement notice 2    | Charlie's Cafe | par_authority@example.com |
-        | Enforcement notice 3    | Charlie's Cafe | par_authority@example.com |
-        | Enforcement notice 4    | Charlie's Cafe | par_authority@example.com |
+        # | Enforcement notice 2    | Charlie's Cafe | par_authority@example.com |
+        # | Enforcement notice 3    | Charlie's Cafe | par_authority@example.com |
+        # | Enforcement notice 4    | Charlie's Cafe | par_authority@example.com |
 
     @ci @enforcementnotices
     Scenario Outline: Enforcement Officer - Issue enforcement notice with multiple actions
