@@ -3,6 +3,7 @@
 namespace Drupal\par_data\Entity;
 
 use Drupal\Core\Entity\EntityEvent;
+use Drupal\Core\Entity\EntityEvents;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityStorageInterface;
@@ -10,6 +11,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\trance\Trance;
 
@@ -386,7 +388,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       // Dispatch a par event.
       $event = new EntityEvent($this);
       $dispatcher = \Drupal::service('event_dispatcher');
-      $dispatcher->dispatch(ParDataEvent::CREATE, $event);
+      $dispatcher->dispatch(ParDataEvent::statusChange($this->getTypeEntityId(), $value), $event);
     }
   }
 
