@@ -1,6 +1,7 @@
 Feature: Enforcement Officer - Enforcement Notice Process
 
-    @ci @enforcementnotices
+    @ci
+     @enforcementnotices
     Scenario Outline: Enforcement Officer - Issue enforcement notice (direct and coordinated)
 
         #LOGIN
