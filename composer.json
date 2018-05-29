@@ -14,11 +14,12 @@
     ],
     "require": {
         "php": ">=7.0.0",
+        "commerceguys/intl": "^1.0",
         "composer/installers": "^1.2",
         "cweagans/composer-patches": "^1.6",
         "deblan/csv-validator": "dev-master",
         "drupal-composer/drupal-scaffold": "~2.3.0",
-        "drupal/address": "~1.2.0",
+        "drupal/address": "~1.4.0",
         "drupal/better_exposed_filters": "~3.0.0",
         "drupal/clamav": "~1.0.0",
         "drupal/config_readonly": "~1.0.0",
