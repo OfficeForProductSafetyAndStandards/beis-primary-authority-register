@@ -93,15 +93,17 @@ class ParDataEnforcementNotice extends ParDataEntity {
     // field_primary_authority which is the authority that is now responsible.
     // If it doesn't have this we should get the original authority
     // from the partnership.
-    if ($this->get('field_primary_authority')->isEmpty()) {
-      $partnership = $this->getPartnership(TRUE);
+    if (!$this->get('field_primary_authority')->isEmpty()) {
+      $authorities = $this->get('field_primary_authority')->referencedEntities();
+      $authority = !empty($authorities) ? current($authorities) : NULL;
+
+      return $single ? $authority : $authorities;
+    }
+    elseif ($partnership = $this->getPartnership(TRUE)){
       return $partnership ? $partnership->getAuthority($single) : NULL;
     }
 
-    $authorities = $this->get('field_primary_authority')->referencedEntities();
-    $authority = !empty($authorities) ? current($authorities) : NULL;
-
-    return $single ? $authority : $authorities;
+    return NULL;
   }
 
   /**

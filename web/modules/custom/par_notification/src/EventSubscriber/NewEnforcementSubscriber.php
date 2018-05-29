@@ -91,6 +91,9 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
 
     // Notify all relevant users at the primary authority.
     $primary_authority = $par_data_enforcement_notice->getPrimaryAuthority(TRUE);
+    if (!$primary_authority) {
+      return;
+    }
 
     foreach ($primary_authority->getPerson() as $person) {
       // Notify all users in this authority with the appropriate permissions.

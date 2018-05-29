@@ -4,6 +4,7 @@ namespace Drupal\par_forms;
 
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_data\ParDataManagerInterface;
@@ -25,6 +26,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
   use StringTranslationTrait;
   use ParRedirectTrait;
   use ParDisplayTrait;
+  use LoggerChannelTrait;
 
   /**
    * A mapping definition of form elements to entity properties.
@@ -134,6 +136,16 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
    */
   public function getEntityFieldManager() {
     return \Drupal::service('entity_field.manager');
+  }
+
+  /**
+   * Returns the logger channel specific to errors logged by PAR Forms.
+   *
+   * @return string
+   *   Get the logger channel to use.
+   */
+  public function getLoggerChannel() {
+    return 'par';
   }
 
   /**
