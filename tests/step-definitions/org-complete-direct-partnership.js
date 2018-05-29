@@ -59,6 +59,8 @@ When('I complete the organisation registered address for direct partnership', fu
   .clearValue('#edit-address-line2')
   .clearValue('#edit-town-city')
   .clearValue('#edit-county')
+  .click('#edit-next')
+  .waitForElementVisible('.error-summary', 2000)
   .assert.containsText('h1.heading-xlarge','Confirm the primary address details')
   .setValue('#edit-postcode','SE16 4NX')
   .setValue('#edit-address-line1','1 High St')
