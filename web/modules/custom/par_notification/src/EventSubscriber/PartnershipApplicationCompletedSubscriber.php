@@ -69,8 +69,7 @@ class PartnershipApplicationCompletedSubscriber implements EventSubscriberInterf
   /**
    * @param ParDataEventInterface $event
    */
-  public function onPartnershipConfirmation(ParDataEventInterface $event)
-  {
+  public function onPartnershipConfirmation(ParDataEventInterface $event) {
     /** @var ParDataEntityInterface $par_data_partnership */
     $par_data_partnership = $event->getEntity();
 
