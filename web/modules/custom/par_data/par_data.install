@@ -355,3 +355,13 @@ function par_data_update_8023() {
     $person->destroy();
   }
 }
+
+/**
+ * Uninstall par_enorcement_flows module (now removed from filesystem).
+ */
+function par_data_update_8024() {
+  $query = \Drupal::database()->delete('key_value')
+    ->condition('collection', 'system.schema')
+    ->condition('name', 'par_enforcement_flows')
+    ->execute();
+}
