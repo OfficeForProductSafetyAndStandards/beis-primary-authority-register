@@ -17,8 +17,12 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
-  /* @var $countryRepository CountryRepository */
-  protected $countryRepository;
+  /**
+   * @return \Drupal\address\Repository\CountryRepository
+   */
+  protected function getCountryRepository() {
+    return \Drupal::service('address.country_repository');
+  }
 
   /**
    * {@inheritdoc}
@@ -152,12 +156,9 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("county"),
     ];
 
-    // Get addressfield country values.
-    $this->countryRepository = new CountryRepository();
-
     $form['country_code'] = [
       '#type' => 'select',
-      '#options' => $this->countryRepository->getList(NULL),
+      '#options' => $this->getCountryRepository()->getList(NULL),
       '#title' => $this->t('Country'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("country_code", "GB"),
     ];
