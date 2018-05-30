@@ -106,6 +106,15 @@ class ParDataEnforcementAction extends ParDataEntity {
   }
 
   /**
+   * Check if an action has been reviewed.
+   *
+   * @return bool
+   */
+  public function isReviewed() {
+    return ($this->isApproved() || $this->isBlocked() || $this->isReferred());
+  }
+
+  /**
    * Check if this entity is approved.
    *
    * @return bool

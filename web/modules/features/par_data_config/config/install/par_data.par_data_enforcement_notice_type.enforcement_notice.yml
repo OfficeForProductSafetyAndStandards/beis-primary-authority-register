@@ -13,6 +13,12 @@ configuration:
     label_fields:
       - notice_type
       - notice_date
+    status_field: enforcement_notice_status
+  enforcement_notice_status:
+    allowed_values:
+      unknown: 'Under Review'
+      reviewed: Reviewed
+      sent: Sent
   notice_type:
     allowed_values:
       proposed: Proposed

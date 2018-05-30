@@ -93,15 +93,17 @@ class ParDataEnforcementNotice extends ParDataEntity {
     // field_primary_authority which is the authority that is now responsible.
     // If it doesn't have this we should get the original authority
     // from the partnership.
-    if ($this->get('field_primary_authority')->isEmpty()) {
-      $partnership = $this->getPartnership(TRUE);
+    if (!$this->get('field_primary_authority')->isEmpty()) {
+      $authorities = $this->get('field_primary_authority')->referencedEntities();
+      $authority = !empty($authorities) ? current($authorities) : NULL;
+
+      return $single ? $authority : $authorities;
+    }
+    elseif ($partnership = $this->getPartnership(TRUE)){
       return $partnership ? $partnership->getAuthority($single) : NULL;
     }
 
-    $authorities = $this->get('field_primary_authority')->referencedEntities();
-    $authority = !empty($authorities) ? current($authorities) : NULL;
-
-    return $single ? $authority : $authorities;
+    return NULL;
   }
 
   /**
@@ -269,6 +271,60 @@ class ParDataEnforcementNotice extends ParDataEntity {
     foreach ($this->getEnforcementActions() as $action) {
       $action->approve();
     }
+  }
+
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRawStatus() {
+    if ($this->isDeleted()) {
+      return 'deleted';
+    }
+    if ($this->isRevoked()) {
+      return 'revoked';
+    }
+    if ($this->isArchived()) {
+      return 'archived';
+    }
+    if (!$this->isTransitioned()) {
+      return 'n/a';
+    }
+
+    // Loop through all actions to determine status.
+    foreach ($this->getEnforcementActions() as $action) {
+      if ($action->isAwaitingApproval()) {
+        return 'unknown';
+      }
+      if ($action->isReviewed()) {
+        $status = 'reviewed';
+      }
+    }
+
+    return isset($status) ? $status : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getParStatus() {
+    if ($this->isDeleted()) {
+      return 'Deleted';
+    }
+    if ($this->isRevoked()) {
+      return 'Revoked';
+    }
+    if ($this->isArchived()) {
+      return 'Archived';
+    }
+    if (!$this->isTransitioned()) {
+      return 'Not transitioned from PAR2';
+    }
+
+    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+    $raw_status = $this->getRawStatus();
+    return $field_name && $raw_status ? $this->getTypeEntity()->getAllowedFieldlabel($field_name, $raw_status) : '';
   }
 
   /**

@@ -49,57 +49,6 @@ function par_data_theme() {
 }
 
 /**
- * Implements hook_entity_insert().
- *
- * Notifies other par modules that a par entity has been created.
- *
- * We need to use hooks to capture these events because
- * at this stage the entity has the original property,
- * containing the entity before it was operated on.
- */
-function par_data_entity_insert(EntityInterface $entity) {
-  if ($entity instanceof ParDataEntityInterface) {
-    $event = new ParDataEvent($entity);
-    $dispatcher = \Drupal::service('event_dispatcher');
-    $dispatcher->dispatch(ParDataEvent::CREATE, $event);
-  }
-}
-
-/**
- * Implements hook_entity_update().
- *
- * Notifies other par modules that a par entity has been updated.
- *
- * We need to use hooks to capture these events because
- * at this stage the entity has the original property,
- * containing the entity before it was operated on.
- */
-function par_data_entity_update(EntityInterface $entity) {
-  if ($entity instanceof ParDataEntityInterface) {
-    $event = new ParDataEvent($entity);
-    $dispatcher = \Drupal::service('event_dispatcher');
-    $dispatcher->dispatch(ParDataEvent::UPDATE, $event);
-  }
-}
-
-/**
- * Implements hook_entity_delete().
- *
- * Notifies other par modules that a par entity has been deleted.
- *
- * We need to use hooks to capture these events because
- * at this stage the entity has the original property,
- * containing the entity before it was operated on.
- */
-function par_data_entity_delete(EntityInterface $entity) {
-  if ($entity instanceof ParDataEntityInterface) {
-    $event = new ParDataEvent($entity);
-    $dispatcher = \Drupal::service('event_dispatcher');
-    $dispatcher->dispatch(ParDataEvent::DELETE, $event);
-  }
-}
-
-/**
  * Implements hook_entity_bundle_field_info_alter().
  *
  * Adds the par_required constraint to all bundle fields.

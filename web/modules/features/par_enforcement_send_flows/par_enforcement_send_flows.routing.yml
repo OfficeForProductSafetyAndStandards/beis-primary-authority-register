@@ -6,7 +6,7 @@ par_enforcement_send_flows.send_enforcement:
   requirements:
     _permission: 'raise enforcement notice'
     _custom_access: '\Drupal\par_enforcement_send_flows\Controller\ParEnforcementSendController::accessCallback'
-    par_data_partnership: \d+
+    par_data_enforcement_notice: \d+
   options:
     parameters:
       par_data_enforcement_notice:
