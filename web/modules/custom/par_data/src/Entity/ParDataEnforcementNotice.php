@@ -328,14 +328,6 @@ class ParDataEnforcementNotice extends ParDataEntity {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function setParStatus($value) {
-    // This status is generated dynamically and cannot be saved.
-    return;
-  }
-
-  /**
    * Clone an enforcement notice entity to support the referral process.
    *
    * @return ParDataEnforcementNotice
