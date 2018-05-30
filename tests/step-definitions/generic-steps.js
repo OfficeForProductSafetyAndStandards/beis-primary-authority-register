@@ -81,7 +81,7 @@ const shared = client.page.shared();
     return client
         .expect.element(string2).to.be.present.then(function (){
           return client
-            .setValue(string2, '')
+            .clearValue(string2)
             .setValue(string2, string);
       })
   });
@@ -93,7 +93,7 @@ const shared = client.page.shared();
 
   Then('I clear the inputfield {string}', function (elem) {
     return client
-      .setValue(elem, '')
+      .clearValue(elem)
   });
 
   Then('I add {string} random chars of text to field {string}', function (numChars, fieldName) {
