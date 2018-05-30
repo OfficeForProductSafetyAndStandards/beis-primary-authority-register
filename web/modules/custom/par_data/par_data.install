@@ -365,3 +365,11 @@ function par_data_update_8024() {
     ->condition('name', 'par_enforcement_flows')
     ->execute();
 }
+
+/**
+ * Stoopid invite module didn't update it's entities properly.
+ */
+function par_data_update_8025() {
+  // Ensure the invite.created field is created in the database.
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
