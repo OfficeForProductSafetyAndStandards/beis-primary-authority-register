@@ -78,7 +78,22 @@ class ParDataPremises extends ParDataEntity {
       ->setRevisionable(TRUE)
       ->setCardinality(1)
       ->setSettings([
-        'fields' => [],
+        'available_countries' => [],
+        'fields' => [
+          "organization" => "0",
+          "dependentLocality" => "0",
+          "sortingCode" => "0",
+          "familyName" => "0",
+          "langcode_override" => "0",
+          "administrativeArea" => "administrativeArea",
+          "additionalName" => "0",
+          "locality" => "locality",
+          "addressLine1" => "addressLine1",
+          "postalCode" => "postalCode",
+          "addressLine2" => "addressLine2",
+          "givenName" => "0",
+          "country_code" => "countryCode",
+        ],
         'field_overrides' => [
           "organization" => ['override' => 'hidden'],
           "dependentLocality" => ['override' => 'hidden'],
@@ -93,7 +108,8 @@ class ParDataPremises extends ParDataEntity {
           "addressLine2" => ['override' => 'optional'],
           "givenName" => ['override' => 'hidden'],
           "country_code" => ['override' => 'optional'],
-        ]
+        ],
+        'langcode_override' => '',
       ])
       ->setDisplayOptions('form', array(
         'type' => 'address_default',
