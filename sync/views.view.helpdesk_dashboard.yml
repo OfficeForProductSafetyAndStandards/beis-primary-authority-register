@@ -78,7 +78,7 @@ display:
         type: pagerer
         options:
           preset: gds_list_pagination
-          items_per_page: 100
+          items_per_page: 20
           offset: 0
           id: '0'
           total_pages: ''
@@ -217,7 +217,7 @@ display:
           settings:
             thousand_separator: ''
             prefix_suffix: true
-          group_column: entity_id
+          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -748,6 +748,76 @@ display:
           field_api_classes: false
           entity_type: par_data_partnership
           entity_field: partnership_type
+          plugin_id: field
+        field_coordinated_business:
+          id: field_coordinated_business
+          table: par_data_partnership__field_coordinated_business
+          field: field_coordinated_business
+          relationship: none
+          group_type: count_distinct
+          admin_label: ''
+          label: 'Listed Members'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: n/a
+          hide_empty: false
+          empty_zero: true
+          hide_alter_empty: false
+          set_precision: false
+          precision: 0
+          decimal: .
+          separator: ', '
+          format_plural: 0
+          format_plural_string: !!binary MQNAY291bnQ=
+          prefix: ''
+          suffix: ''
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: true
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          field_api_classes: false
           plugin_id: field
         partnership_status:
           id: partnership_status
@@ -1523,10 +1593,10 @@ display:
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
-          empty: ''
+          empty: n/a
           hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
+          empty_zero: true
+          hide_alter_empty: false
           click_sort_column: target_id
           type: entity_reference_label
           settings:
@@ -1840,6 +1910,15 @@ display:
       display_extenders: {  }
       path: helpdesk/csv
       display_description: ''
+      menu:
+        type: tab
+        title: 'CSV Report Download'
+        description: ''
+        expanded: false
+        parent: 'menu_link_content:8b076218-3b80-4fd2-a177-085974bf7daa'
+        weight: 0
+        context: '0'
+        menu_name: account
     cache_metadata:
       max-age: 0
       contexts:
@@ -1871,7 +1950,7 @@ display:
           admin_label: ''
           empty: true
           tokenize: false
-          content: '<a href="https://par-beta-csv.cloudapps.digital/">CSV Download (requires user/pass)</a>'
+          content: '<a href="/helpdesk/csv">CSV Report Download</a>'
           plugin_id: text_custom
       defaults:
         footer: false
