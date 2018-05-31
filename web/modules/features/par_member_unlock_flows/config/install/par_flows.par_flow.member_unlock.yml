@@ -4,6 +4,7 @@ dependencies: {  }
 id: member_unlock
 label: 'Member Unlock'
 default_section_title: 'Coordinated partnership'
+default_title: null
 description: ''
 save_method: end
 states:
