@@ -206,7 +206,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * Delete if this entity is deletable and is not new.
    */
   public function delete() {
-    if (!$this->isNew() && !$this->inProgress() && $this->getTypeEntity()->isDeletable() && !$this->isDeleted()) {
+    if ($this->getTypeEntity()->isDeletable() && !$this->isDeleted()) {
       // Set the status to unpublished to make filtering from display easier.
       $this->set('status', 0);
 
@@ -386,9 +386,9 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       $this->setNewRevision(TRUE);
 
       // Dispatch a par event.
-      $event = new ParDataEvent($this);
+      $event = new EntityEvent($this);
       $dispatcher = \Drupal::service('event_dispatcher');
-      $dispatcher->dispatch(ParDataEvent::statusChange($this->getEntityTypeId(), $value), $event);
+      $dispatcher->dispatch(ParDataEvent::statusChange($this->getTypeEntityId()), $event);
     }
   }
 
