@@ -1,15 +1,16 @@
-uuid: 538dcb6f-999b-4939-a953-5a326e08da2c
+uuid: c17d869d-9dba-4c7f-8550-0a6348dbb144
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.message.full
     - field.field.message.reviewed_enforcement.field_enforcement_notice
     - field.field.message.reviewed_enforcement.field_message_subject
     - message.template.reviewed_enforcement
-id: message.reviewed_enforcement.default
+id: message.reviewed_enforcement.full
 targetEntityType: message
 bundle: reviewed_enforcement
-mode: default
+mode: full
 content:
   field_enforcement_notice:
     weight: 1
@@ -30,6 +31,4 @@ content:
   partial_0:
     weight: 0
     region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden: {  }
