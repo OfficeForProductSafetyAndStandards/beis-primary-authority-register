@@ -1,5 +1,7 @@
-name: PAR Dashboards
+name: 'PAR Dashboards'
 type: module
-description: Provides utilities and customisations to PAR dashboards.
+description: 'Provides utilities and customisations to PAR dashboards.'
 core: 8.x
 package: PAR
+dependencies:
+  - login_destination

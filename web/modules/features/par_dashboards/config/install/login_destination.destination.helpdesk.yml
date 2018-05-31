@@ -1,4 +1,3 @@
-uuid: 52e62349-8f7e-44cf-a6a2-37e249666010
 langcode: en
 status: true
 dependencies: {  }
@@ -11,6 +10,7 @@ destination_path: 'internal:/helpdesk'
 pages_type: 0
 pages: ''
 roles:
+  administrator: administrator
   par_helpdesk: par_helpdesk
-weight: 0
+weight: -10
 enabled: true
