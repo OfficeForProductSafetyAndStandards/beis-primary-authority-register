@@ -15,7 +15,7 @@ index 0000000..ad665de
 + */
 +function flysystem_s3_file_download($uri) {
 +
-+  flysystem_s3_file_transfer($uri);
++  flysystem_s3_file_transfer_s3_storage($uri);
 +}
 +
 +/**
