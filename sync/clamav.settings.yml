@@ -14,6 +14,6 @@ mode_daemon_tcpip:
 mode_daemon_unixsocket:
   unixsocket: /var/clamav/clamd
 mode_daemon_rest_client:
-  endpoint: 'https://clamav.par-beta.co.uk/scan'
+  endpoint: 'https://par-clamav-rest-proxy.cloudapps.digital/scan'
 _core:
   default_config_hash: g2Hvti1W114hw0zwTzitzMHlfIXf97QY57aEVOtEWEE
