@@ -6,6 +6,7 @@ label: 'Migrate Legal Entities'
 default_title: null
 default_section_title: null
 description: 'Migrate Legal Entities from the organisation to the partnership.'
+default_title: null
 save_method: end
 steps:
   1:
