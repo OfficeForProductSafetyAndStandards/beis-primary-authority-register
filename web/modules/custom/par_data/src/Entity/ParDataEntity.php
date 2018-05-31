@@ -206,7 +206,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * Delete if this entity is deletable and is not new.
    */
   public function delete() {
-    if (!$this->isNew() && !$this->inProgress() && $this->getTypeEntity()->isDeletable() && !$this->isDeleted()) {
+    if ($this->getTypeEntity()->isDeletable() && !$this->isDeleted()) {
       // Set the status to unpublished to make filtering from display easier.
       $this->set('status', 0);
 
