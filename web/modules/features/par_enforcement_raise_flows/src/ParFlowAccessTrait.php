@@ -29,6 +29,13 @@ trait ParFlowAccessTrait {
 
     }
 
+    // Helpdesk and admin users shouldn't be able to complete this flow,
+    // new screens need to be added for these users to select the user
+    // and authority they're acting on behalf of.
+    if ($account->hasPermission('access helpdesk')) {
+      $this->accessResult = AccessResult::forbidden('Admin users cannot submit Enforcement notifications.');
+    }
+
     return parent::accessCallback($route, $route_match, $account);
   }
 }

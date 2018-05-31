@@ -28,7 +28,7 @@ class ParContactForm extends ParBaseForm {
   public function loadData() {
     $cid = $this->getFlowNegotiator()->getFormKey('par_authority_selection');
     $authority_id = $this->getFlowDataHandler()->getDefaultValues('par_data_authority_id', NULL, $cid);
-    if ($par_data_authority = ParDataAuthority::load($authority_id)) {
+    if ($authority_id && $par_data_authority = ParDataAuthority::load($authority_id)) {
       $account_id = $this->getFlowDataHandler()->getCurrentUser()->id();
       $account = User::load($account_id);
 
@@ -49,10 +49,10 @@ class ParContactForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     // Extract and save the enforcing officer id.
-    $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
-
-    // Set the enforcing officer id for use later.
-    $this->getFlowDataHandler()->setTempDataValue('enforcement_officer_id', $par_data_person->id());
+    if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
+      // Set the enforcing officer id for use later.
+      $this->getFlowDataHandler()->setTempDataValue('enforcement_officer_id', $par_data_person->id());
+    }
   }
 
 }
