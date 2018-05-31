@@ -13,6 +13,7 @@ destination_path: 'internal:/helpdesk'
 pages_type: 0
 pages: ''
 roles:
+  administrator: administrator
   par_helpdesk: par_helpdesk
-weight: 0
+weight: -10
 enabled: true
