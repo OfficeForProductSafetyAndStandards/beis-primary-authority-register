@@ -388,7 +388,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       // Dispatch a par event.
       $event = new EntityEvent($this);
       $dispatcher = \Drupal::service('event_dispatcher');
-      $dispatcher->dispatch(ParDataEvent::statusChange($this->getTypeEntityId()), $event);
+      $dispatcher->dispatch(ParDataEvent::statusChange($this->getEntityTypeId(), $value), $event);
     }
   }
 
