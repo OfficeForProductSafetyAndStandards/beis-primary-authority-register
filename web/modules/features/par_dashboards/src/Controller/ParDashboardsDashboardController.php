@@ -175,6 +175,21 @@ class ParDashboardsDashboardController extends ControllerBase {
 //      }
     }
 
+    // If there is nothing to display on the dashboard let the user know.
+    if (empty($build)) {
+      $build['welcome'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('Welcome'),
+        '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+        [
+          '#type' => 'markup',
+          '#markup' => "<p>Hello! Welcome to the Primary Authority Register, there is nothing for you to see yet. To get started please contact the helpdesk who will be able to give you access to the correct partnerships.</p>",
+        ],
+      ];
+    }
+
     return $build;
   }
 
