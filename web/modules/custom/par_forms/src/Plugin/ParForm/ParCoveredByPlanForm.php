@@ -28,7 +28,8 @@ class ParCoveredByPlanForm extends ParFormPluginBase {
    */
   public function loadData($cardinality = 1) {
     if ($coordinated_member = $this->getFlowDataHandler()->getParameter('par_data_coordinated_business')) {
-      $this->getFlowDataHandler()->setFormPermValue('covered_by_inspection', $coordinated_member->getBoolean('covered_by_inspection'));
+      $covered_by = $coordinated_member->getBoolean('covered_by_inspection') ? 1 : 0;
+      $this->getFlowDataHandler()->setFormPermValue('covered_by_inspection', $covered_by);
     }
 
     parent::loadData();

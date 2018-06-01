@@ -129,11 +129,11 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   public function getDefaultValues($key, $default = '', $cid = NULL) {
     $value = $this->getTempDataValue($key, $cid);
 
-    if (!$value) {
+    if (!isset($value)) {
       $value = $this->getFormPermValue($key);
     }
 
-    if (!$value) {
+    if (!isset($value)) {
       $value = $default;
     }
 
