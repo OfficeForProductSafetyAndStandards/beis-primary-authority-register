@@ -31,12 +31,9 @@ class ParCoveredByPlanForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $par_data_coordinated_business = $this->getFlowDataHandler()
-      ->getParameter('par_data_coordinated_business');
+    $par_data_coordinated_business = $this->getFlowDataHandler()->getParameter('par_data_coordinated_business');
 
-    $par_data_coordinated_business->set('covered_by_inspection',
-      $this->getFlowDataHandler()
-        ->getTempDataValue('covered_by_inspection'));
+    $par_data_coordinated_business->set('covered_by_inspection', $this->getFlowDataHandler()->getTempDataValue('covered_by_inspection'));
 
     // Commit changes.
     if ($par_data_coordinated_business->save()) {
