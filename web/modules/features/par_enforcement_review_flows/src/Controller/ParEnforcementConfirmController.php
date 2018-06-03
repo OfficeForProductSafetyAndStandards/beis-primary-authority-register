@@ -3,7 +3,7 @@
 namespace Drupal\par_enforcement_review_flows\Controller;
 
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
-use Drupal\par_enforcement_raise_flows\ParFlowAccessTrait;
+use Drupal\par_enforcement_review_flows\ParFlowAccessTrait;
 use Drupal\par_flows\Controller\ParBaseController;
 
 /**
