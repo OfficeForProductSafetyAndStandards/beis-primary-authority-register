@@ -11,6 +11,7 @@ is_admin: false
 permissions:
   - 'access comments'
   - 'access content'
+  - 'access partnerships dashboard'
   - 'access shortcuts'
   - 'access site-wide contact form'
   - 'post comments'
