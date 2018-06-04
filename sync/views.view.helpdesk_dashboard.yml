@@ -17,7 +17,7 @@ dependencies:
 _core:
   default_config_hash: SY11evCZNodUP24CXAHlPlJ1xihSq8HJlr6mdZOzAk0
 id: helpdesk_dashboard
-label: 'Helpdesk Dashboard'
+label: 'Helpdesk Partnerships Dashboard'
 module: views
 description: ''
 tag: ''
@@ -1908,7 +1908,7 @@ display:
     position: 3
     display_options:
       display_extenders: {  }
-      path: helpdesk/csv
+      path: helpdesk/partnerships/report
       display_description: ''
       menu:
         type: tab
@@ -1939,7 +1939,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: helpdesk
+      path: helpdesk/partnerships
       footer:
         area_text_custom:
           id: area_text_custom
