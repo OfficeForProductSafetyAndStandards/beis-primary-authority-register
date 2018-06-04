@@ -32,15 +32,14 @@ class ParEnforcementActionForm extends ParFormPluginBase {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $reg_function_names = $par_data_partnership ? $par_data_partnership->getPartnershipRegulatoryFunctionNames() : [];
 
-    $form['title_of_action_title'] = [
+    $form['action'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Enter the title of action ' . $cardinality),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
+      '#title' => $this->formatPlural($this->getCardinality(), 'Details of Enforcement Action', 'Details of Enforcement Action @index', ['@index' => $cardinality]),
     ];
 
     $form['title'] = [
       '#type' => 'textfield',
+      '#title' => $this->t('Enter the title'),
       '#default_value' => $this->getDefaultValuesByKey('title', $cardinality),
     ];
 
@@ -48,18 +47,13 @@ class ParEnforcementActionForm extends ParFormPluginBase {
       '#type' => 'radios',
       '#title' => $this->t('Choose a regulatory function to which this action relates'),
       '#options' => $reg_function_names,
+      '#attributes' => ['class' => ['form-group']],
       '#default_value' => $this->getDefaultValuesByKey('field_regulatory_function', $cardinality),
-    ];
-
-    $form['details_title'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Provide details about this action'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
     ];
 
     $form['details'] = [
       '#type' => 'textarea',
+      '#title' => $this->t('Provide details about this action'),
       '#default_value' => $this->getDefaultValuesByKey('details', $cardinality),
     ];
 
@@ -67,16 +61,10 @@ class ParEnforcementActionForm extends ParFormPluginBase {
     $field_definition = $enforcement_action_fields['document'];
     $file_extensions = $field_definition->getSetting('file_extensions');
 
-    $form['files_title'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Add an attachment'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-    ];
-
     // Multiple file field.
     $form['files_title']['files'] = [
       '#type' => 'managed_file',
+      '#title' => $this->t('Add an attachment'),
       '#upload_location' => 's3private://documents/enforcement_action/',
       '#multiple' => TRUE,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("files"),
