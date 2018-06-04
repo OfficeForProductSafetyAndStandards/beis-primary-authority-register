@@ -19,11 +19,7 @@ Feature: Enforcement notice management
 
         And I successfully block enforcement notice "Enforcement notice 3"
 
-        # REFER FORM
-
-        # And I successfully refer enforcement notice "Enforcement notice 1"
-
-        # CHECK PAR ENFORCEMENT OFFICER VIEW
+    # CHECK PAR ENFORCEMENT OFFICER VIEW
 
         And I click the link text "Log out"
         Given I open the path "/user/login"
@@ -37,11 +33,22 @@ Feature: Enforcement notice management
         # And the element ".table-scroll-wrapper" does not contain the text "Enforcement notice 2"
 
 
+    @enforcementnotices @ci
+    Scenario: Enforcement notice management
+
+        Given I am logged in as "par_helpdesk@example.com"
+        And I click the link text "Dashboard"
+        And I click the link text "See enforcement notices"
+        Then the element "h1.heading-xlarge" contains the text "Par User Enforcements"
+
+        # REFER FORM
+
+        And I successfully refer enforcement notice "assistance requested"
 
     # @ci @enforcementnotices
     # Scenario: Edit EN Before Submission
  
-@enforcementnotices
+    @enforcementnotices
     Scenario: Check view of an unapproved enforcement notice approval for HD User
 
         Given I am logged in as "par_helpdesk@example.com"
@@ -55,7 +62,7 @@ Feature: Enforcement notice management
 
         # CHECK PAR AUTHORITY VIEW
 
-@enforcementnotices @ci
+                @enforcementnotices @ci
     Scenario: Check view of approved and unapproved EN records
 
         Given I am logged in as "par_authority@example.com"
@@ -68,7 +75,7 @@ Feature: Enforcement notice management
         Then the element "h1.heading-xlarge" contains the text "View notification of enforcement action received from"
 
 
-@enforcementnotices @ci
+    @enforcementnotices @ci
     Scenario: Check view of EN's for Enforcement Officer User
 
         Given I am logged in as "par_enforcement_officer@example.com"

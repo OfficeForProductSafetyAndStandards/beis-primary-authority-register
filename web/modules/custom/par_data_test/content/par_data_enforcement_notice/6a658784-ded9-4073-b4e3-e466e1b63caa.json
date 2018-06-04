@@ -1,0 +1,286 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_enforcement_notice\/1670?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_enforcement_notice\/enforcement_notice"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_notice\/enforcement_notice\/user_id": [
+            {
+                "href": "http:\/\/default\/user\/10160?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_notice\/enforcement_notice\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/10160?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_notice\/enforcement_notice\/field_enforcement_action": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_enforcement_action\/1450?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_notice\/enforcement_notice\/field_enforcing_authority": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_authority\/530?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_notice\/enforcement_notice\/field_organisation": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_organisation\/101794?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_notice\/enforcement_notice\/field_partnership": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_partnership\/33747?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_notice\/enforcement_notice\/field_person": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/117821?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_notice\/enforcement_notice\/field_primary_authority": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_authority\/529?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 1670
+        }
+    ],
+    "type": [
+        {
+            "target_id": "enforcement_notice"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "6a658784-ded9-4073-b4e3-e466e1b63caa"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": 798
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_notice\/enforcement_notice\/user_id": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/10160?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "091031a0-6f43-4632-ac3d-67d635a6fa5a"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_notice\/enforcement_notice\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/10160?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "091031a0-6f43-4632-ac3d-67d635a6fa5a"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_notice\/enforcement_notice\/field_enforcement_action": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_enforcement_action\/1450?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_enforcement_action\/enforcement_action"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "7a05e5b5-3ce7-48ed-9a66-a4f3bfc41714"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_notice\/enforcement_notice\/field_enforcing_authority": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_authority\/530?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_authority\/authority"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "19e05a57-741d-4a78-85b4-6d04349b9b81"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_notice\/enforcement_notice\/field_organisation": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_organisation\/101794?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_organisation\/organisation"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "18532baf-c4a5-4e3d-9f39-7ba7e2e4db9f"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_notice\/enforcement_notice\/field_partnership": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_partnership\/33747?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_partnership\/partnership"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "7b9f5a2c-d364-4475-a31e-a87db11acad4"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_notice\/enforcement_notice\/field_person": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/117821?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "2705c28a-8ee6-4b4d-be80-93b11be48937"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_notice\/enforcement_notice\/field_primary_authority": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_authority\/529?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_authority\/authority"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "5385e5cf-1b98-43ae-9a3e-e369091a61ef"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1528149048
+        }
+    ],
+    "changed": [
+        {
+            "value": 1528149048
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": 1528149048
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "5b15b438edd4a",
+            "lang": "en"
+        }
+    ],
+    "deleted": [
+        {
+            "value": false
+        }
+    ],
+    "revoked": [
+        {
+            "value": false
+        }
+    ],
+    "archived": [
+        {
+            "value": false
+        }
+    ],
+    "notice_type": [
+        {
+            "value": "proposed"
+        }
+    ],
+    "notice_date": [
+        {
+            "value": "2018-06-04"
+        }
+    ],
+    "summary": [
+        {
+            "value": "action summary enforcement notice",
+            "format": null,
+            "processed": "<p>action summary enforcement notice<\/p>\n"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ]
+}
