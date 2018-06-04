@@ -862,7 +862,7 @@ display:
           plugin_id: date
           entity_type: user
           entity_field: created
-      title: People
+      title: 'Helpdesk | Manage People'
       empty:
         area_text_custom:
           id: area_text_custom
