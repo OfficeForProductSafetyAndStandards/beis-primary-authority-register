@@ -68,17 +68,9 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
       '#weight' => 100,
     ];
 
-    $form['action_summary_title'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Provide a summary of the enforcement notification'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#weight' => 100,
-    ];
-
     $form['summary'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('Include the following information'),
+      '#title' => $this->t('Provide a summary of the enforcement notification'),
       '#description' => [
         '#theme' => 'item_list',
         '#items' => [
