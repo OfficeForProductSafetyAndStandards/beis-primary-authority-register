@@ -5,5 +5,29 @@ definitions:
     parent: ''
     weight: 0
     expanded: false
+  user__page:
+    weight: -50
+    enabled: false
+    menu_name: account
+    parent: ''
+    expanded: false
+  par_dashboards__user_dashboard:
+    weight: -48
+    menu_name: account
+    parent: ''
+    expanded: false
+    enabled: true
+  par_login__user_account:
+    weight: -49
+    menu_name: account
+    parent: ''
+    expanded: false
+    enabled: true
+  user__logout:
+    weight: -46
+    menu_name: account
+    parent: ''
+    expanded: false
+    enabled: true
 _core:
   default_config_hash: jdY7AU0tU-QsjmiOw3W8vwpYMb-By--_MSFgbqKUTYM
