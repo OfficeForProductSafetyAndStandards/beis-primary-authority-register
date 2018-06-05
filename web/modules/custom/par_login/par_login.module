@@ -59,3 +59,20 @@ function par_login_validate_pass(&$form, FormStateInterface $form_state) {
     $form_state->setErrorByName('name', t('<a href="#edit-name">The %field is required.</a>', ['%field' => $title]));
   }
 }
+
+/**
+ * Implements hook_toolbar_alter().
+ */
+function par_login_toolbar_alter(&$items) {
+  // Disable the user profile link.
+  if (isset($items['user']['tab']['#url'])) {
+    $items['user']['tab']['#url'] = '<none>';
+  }
+  unset($items['user']);
+}
+
+function par_login_menu_links_discovered_alter(&$links) {
+  if (isset($links['user.page'])) {
+    //$links['user.page']['route_name'] = 'par_dashboards.dashboard';
+  }
+}
