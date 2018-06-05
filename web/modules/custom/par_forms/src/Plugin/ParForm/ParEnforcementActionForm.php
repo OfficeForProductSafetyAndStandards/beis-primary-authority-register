@@ -48,7 +48,7 @@ class ParEnforcementActionForm extends ParFormPluginBase {
       '#title' => $this->t('Choose a regulatory function to which this action relates'),
       '#options' => $reg_function_names,
       '#attributes' => ['class' => ['form-group']],
-      '#default_value' => $this->getDefaultValuesByKey('field_regulatory_function', $cardinality),
+      '#default_value' => $this->getDefaultValuesByKey('regulatory_function', $cardinality),
     ];
 
     $form['details'] = [
