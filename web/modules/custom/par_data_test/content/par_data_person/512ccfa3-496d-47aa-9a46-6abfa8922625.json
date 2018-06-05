@@ -1,7 +1,7 @@
 {
     "_links": {
         "self": {
-            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/117462?_format=hal_json"
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/117820?_format=hal_json"
         },
         "type": {
             "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
@@ -25,7 +25,7 @@
     },
     "id": [
         {
-            "value": 117462
+            "value": 117820
         }
     ],
     "type": [
@@ -40,7 +40,7 @@
     ],
     "revision_id": [
         {
-            "value": 31682
+            "value": 32147
         }
     ],
     "_embedded": {
@@ -120,7 +120,7 @@
     ],
     "revision_timestamp": [
         {
-            "value": 1527001075
+            "value": 1528148774
         }
     ],
     "revision_translation_affected": [

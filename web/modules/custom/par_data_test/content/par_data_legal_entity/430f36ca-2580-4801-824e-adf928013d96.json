@@ -1,0 +1,152 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_legal_entity\/21191?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_legal_entity\/legal_entity"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/par_data_legal_entity\/legal_entity\/user_id": [
+            {
+                "href": "http:\/\/default\/user\/10161?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_legal_entity\/legal_entity\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/10161?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 21191
+        }
+    ],
+    "type": [
+        {
+            "target_id": "legal_entity"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "430f36ca-2580-4801-824e-adf928013d96"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": 6403
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/par_data_legal_entity\/legal_entity\/user_id": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/10161?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "0001930d-a58d-4bc4-8d99-d14a3349d0ce"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_legal_entity\/legal_entity\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/10161?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "0001930d-a58d-4bc4-8d99-d14a3349d0ce"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1528149229
+        }
+    ],
+    "changed": [
+        {
+            "value": 1528149229
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": 1528149229
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "5b15b4ee1aa73",
+            "lang": "en"
+        }
+    ],
+    "deleted": [
+        {
+            "value": false
+        }
+    ],
+    "revoked": [
+        {
+            "value": false
+        }
+    ],
+    "archived": [
+        {
+            "value": false
+        }
+    ],
+    "registered_name": [
+        {
+            "value": "New LLP CompanyChanged to Public Company"
+        }
+    ],
+    "registered_number": [
+        {
+            "value": "123456789055555555558"
+        }
+    ],
+    "legal_entity_type": [
+        {
+            "value": "limited_liability_partnership"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ]
+}

@@ -37,6 +37,7 @@ module.exports = {
                 path: 'reports/screenshots'
             },
             desiredCapabilities: {
+
                 browserName: 'chrome',
                 chromeOptions : {
                     binary: '/usr/bin/google-chrome',

@@ -1,31 +1,10 @@
 Feature: Enforcement Officer - Enforcement Notice Process
 
-    @ci @enforcementnotices
-    Scenario Outline: Enforcement Officer - Issue enforcement notice (direct and coordinated)
-
-        #LOGIN
-        
-        Given I am logged in as "par_enforcement_officer@example.com"
-
-        # CREATE ENFORCEMENT NOTIFICATION
-
-        When I create new valid enforcement notification "<Notification Title>" for organisation "<Organisation>"
-
-        # CHECK ENFORCEMENT NOTIFICATION EMAILS
-
-        Then the "enforcement creation" email confirmations for "<PARUser>" are processed
-
-    Examples:
-        | Notification Title      | Organisation   | PARUser                   |
-        | Enforcement notice 1    | Charlie's Cafe | par_authority@example.com |
-        | Enforcement notice 2    | Charlie's Cafe | par_authority@example.com |
-        | Enforcement notice 3    | Charlie's Cafe | par_authority@example.com |
-        | Enforcement notice 4    | Charlie's Cafe | par_authority@example.com |
-
-    @ci @enforcementnotices
-    Scenario Outline: Enforcement Officer - Issue enforcement notice with multiple actions
+    @ci @enforcementnotices @1277
+    Scenario: Enforcement Officer - Issue enforcement notice with multiple actions
 
         Given I open the path "/user/login"
+        And I run tota11y against the current page
         When I add "par_enforcement_officer@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         And I click on the button "#edit-submit"
@@ -50,7 +29,7 @@ Feature: Enforcement Officer - Enforcement Notice Process
         Then the element "h1.heading-xlarge .heading-secondary" contains the text "Raise notice of enforcement action"
         And the element "h1.heading-xlarge" contains the text "Add an action to the enforcement notice"
         When I add "Multiple Action 1" to the inputfield "#edit-par-component-enforcement-action-0-title"
-        And I click on the button "#edit-par-component-enforcement-action-0-regulatory-function-1"
+        And I click on the button "#edit-par-component-enforcement-action-1-regulatory-function--wrapper > div:nth-child(2)"
         And I add "601" random chars of text to field "#edit-par-component-enforcement-action-0-details"
         
         # ADD ANOTHER ACTION
@@ -58,7 +37,7 @@ Feature: Enforcement Officer - Enforcement Notice Process
         And I click the link text "Add another" 
         Then the element "h1.heading-xlarge .heading-secondary" contains the text "Raise notice of enforcement action"
         When I add "Multiple Action 2" to the inputfield "#edit-par-component-enforcement-action-1-title"
-        And I click on the button "#edit-par-component-enforcement-action-1-regulatory-function-1"
+        And I click on the button "#edit-par-component-enforcement-action-1-regulatory-function--wrapper > div:nth-child(2)"
         And I add "601" random chars of text to field "#edit-par-component-enforcement-action-1-details"
         And I click on the button "#edit-next"
 

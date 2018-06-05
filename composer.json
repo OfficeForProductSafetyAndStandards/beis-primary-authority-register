@@ -138,7 +138,8 @@
                 "Health Check doesn't check Drupal application": "https://www.drupal.org/files/issues/health_check_doesn_t-2892294-2.patch"
             },
             "drupal/invite": {
-                "Invite email is not being sent": "https://www.drupal.org/files/issues/2018-05-30/incorrect_body_format-2975515-2.patch"
+                "Invite email is not being sent": "https://www.drupal.org/files/issues/2018-05-30/incorrect_body_format-2975515-2.patch",
+		"Plugin not plugin": "https://www.drupal.org/files/issues/2018-06-01/plugin_not_plugin-2976921-2.patch"
             },
             "drupal/login_destination": {
                 "One time login link": "./patches/one_time_login_redirection.patch",
