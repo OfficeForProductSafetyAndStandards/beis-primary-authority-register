@@ -12,12 +12,6 @@ class ParOrganisationNameForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
 
-  protected $formItems = [
-    'par_data_organisation:organisation' => [
-      'organisation_name' => 'organisation_name',
-    ],
-  ];
-
   protected $pageTitle = 'Who are you in partnership with?';
 
 }

@@ -12,12 +12,6 @@ class ParAboutPartnershipForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
 
-  protected $formItems = [
-    'par_data_partnership:partnership' => [
-      'about_partnership' => 'about_partnership',
-    ],
-  ];
-
   protected $pageTitle = 'Information about the new partnership';
 
 }

@@ -18,8 +18,8 @@ class ParAboutPartnershipForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   protected $formItems = [
-    'par_data_partnership:organisation' => [
-      'comments' => 'about_business',
+    'par_data_partnership:partnership' => [
+      'about_partnership' => 'about_partnership',
     ],
   ];
 
@@ -28,7 +28,7 @@ class ParAboutPartnershipForm extends ParFormPluginBase {
    */
   public function loadData($cardinality = 1) {
     if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_organisation')) {
-      $this->getFlowDataHandler()->setFormPermValue('about_partnership', $par_data_partnership->get('comments')->getString());
+      $this->getFlowDataHandler()->setFormPermValue('about_partnership', $par_data_partnership->get('about_partnership')->getString());
     }
 
     parent::loadData();

@@ -1,72 +1,104 @@
-uuid: 96dadded-aab6-44da-8c36-613e99e26998
+uuid: 40dc7d00-ab76-45a4-9946-1c18d04de59b
 langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: 1xdDhK8JCyKPoZCSFoadQ2dnGk3_cMOEz2tVqPA6Wh0
+  default_config_hash: czSdRUN5HFGXVVzkSkGD9lulfIDP2bku96I5rKcHhB8
 id: partnership_application
 label: 'Partnership Application Flow'
 default_title: 'New Partnership Application'
 default_section_title: 'New partnership application'
 description: ''
 save_method: end
+states: null
 steps:
   1:
-    route: par_partnership_flows.partnership_application_start
+    route: par_partnership_application_flows.partnership_application_start
     form_id: par_authority_selection
+    components:
+      authority_select: {  }
     redirect:
       cancel: 12
   2:
-    route: par_partnership_flows.partnership_application_type
+    route: par_partnership_application_flows.partnership_application_type
     form_id: par_partnership_application_type
     redirect:
       cancel: 12
   3:
-    route: par_partnership_flows.partnership_application_authority_checklist
+    route: par_partnership_application_flows.partnership_application_authority_checklist
     form_id: par_partnership_application_authority_checklist
     redirect:
       cancel: 12
   4:
-    route: par_partnership_flows.partnership_application_partnership_about
+    route: par_partnership_application_flows.partnership_application_partnership_about
     form_id: par_partnership_about
+    components:
+      about_partnership: {  }
     redirect:
       cancel: 12
   5:
-    route: par_partnership_flows.partnership_application_organisation_name
+    route: par_partnership_application_flows.partnership_application_organisation_name
     form_id: par_partnership_application_organisation
+    components:
+      organisation_name: {  }
     redirect:
       cancel: 12
   6:
-    route: par_partnership_flows.partnership_application_organisation_confirm
+    route: par_partnership_application_flows.partnership_application_organisation_confirm
     form_id: par_partnership_organisation_suggestion
+    components:
+      organisation_select: {  }
+    form_data:
+      organisation_select: par_partnership_application_organisation
     redirect:
       review: 9
       add_contact: 8
       cancel: 12
   7:
-    route: par_partnership_flows.partnership_application_organisation_address
+    route: par_partnership_application_flows.partnership_application_organisation_address
     form_id: par_partnership_address
+    components:
+      address: {  }
     redirect:
       cancel: 12
   8:
-    route: par_partnership_flows.partnership_application_organisation_contact
+    route: par_partnership_application_flows.partnership_application_organisation_contact
     form_id: par_partnership_contact
+    components:
+      contact_details: {  }
     redirect:
       cancel: 12
   9:
-    route: par_partnership_flows.partnership_application_review
+    route: par_partnership_application_flows.partnership_application_review
     form_id: par_partnership_application_confirmation
+    form_data:
+      authority_select: par_authority_selection
+      application_type: par_partnership_application_type
+      application_checklist: par_partnership_application_authority_checklist
+      about: par_partnership_about
+      organisation_name: par_partnership_application_organisation
+      organisation_select: par_partnership_organisation_suggestion
+      organisation_address: par_partnership_address
+      organisation_contact: par_partnership_contact
     redirect:
+      authority_select: 1
+      application_type: 2
+      application_checklist: 3
+      about: 4
+      organisation_name: 5
+      organisation_select: 6
+      organisation_address: 7
+      organisation_contact: 8
       save: 10
       cancel: 12
   10:
-    route: par_partnership_flows.partnership_application_invite
+    route: par_partnership_application_flows.partnership_application_invite
     form_id: par_partnership_invite
     redirect:
       next: 11
       cancel: 12
   11:
-    route: par_partnership_flows.partnership_application_invite_sent
+    route: par_partnership_application_flows.partnership_application_invite_sent
     redirect:
       done: 12
   12:

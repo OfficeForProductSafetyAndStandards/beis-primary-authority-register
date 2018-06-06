@@ -11,6 +11,8 @@ steps:
   1:
     route: par_partnership_application_flows.partnership_application_start
     form_id: par_authority_selection
+    components:
+      authority_select: {}
     redirect:
       cancel: 12
   2:
@@ -65,7 +67,24 @@ steps:
   9:
     route: par_partnership_application_flows.partnership_application_review
     form_id: par_partnership_application_confirmation
+    form_data:
+      authority_select: par_authority_selection
+      application_type: par_partnership_application_type
+      application_checklist: par_partnership_application_authority_checklist
+      about: par_partnership_about
+      organisation_name: par_partnership_application_organisation
+      organisation_select: par_partnership_organisation_suggestion
+      organisation_address: par_partnership_address
+      organisation_contact: par_partnership_contact
     redirect:
+      authority_select: 1
+      application_type: 2
+      application_checklist: 3
+      about: 4
+      organisation_name: 5
+      organisation_select: 6
+      organisation_address: 7
+      organisation_contact: 8
       save: 10
       cancel: 12
   10:

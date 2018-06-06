@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *   title = @Translation("De-dupe organisation form.")
  * )
  */
-class ParAboutPartnershipForm extends ParFormPluginBase {
+class ParOrganisationSuggestionForm extends ParFormPluginBase {
 
   /**
    * {@inheritdoc}
@@ -29,7 +29,7 @@ class ParAboutPartnershipForm extends ParFormPluginBase {
    */
   public function loadData($cardinality = 1) {
     $cid = $this->getFlowNegotiator()->getFormKey('organisation_select');
-    $search_query = $this->getFlowDataHandler()->getDefaultValues('organisation_name', '', $cid);
+    $search_query = $this->getFlowDataHandler()->getDefaultValues('name', '', $cid);
     $this->getFlowDataHandler()->setFormPermValue('organisation_select_search_query', $search_query);
 
     // Go to previous step if search query is not specified.
@@ -80,7 +80,7 @@ class ParAboutPartnershipForm extends ParFormPluginBase {
       return new RedirectResponse($url);
     }
 
-    if ($organisation_selection_options = $this->getFlowDataHandler()->getFormPermValue('organisation_select_search_query')) {
+    if ($organisation_selection_options = $this->getFlowDataHandler()->getFormPermValue('organisation_select_options')) {
       $form['par_data_organisation_id'] = [
         '#type' => 'radios',
         '#title' => t('Choose an existing organisation or create a new organisation'),
