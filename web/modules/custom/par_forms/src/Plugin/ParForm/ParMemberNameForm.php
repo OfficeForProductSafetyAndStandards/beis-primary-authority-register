@@ -8,11 +8,11 @@ use Drupal\par_forms\ParFormPluginBase;
  * About business form plugin.
  *
  * @ParForm(
- *   id = "organisation_name",
- *   title = @Translation("Organisation name form.")
+ *   id = "member_name",
+ *   title = @Translation("Member organisation name form.")
  * )
  */
-class ParOrganisationNameForm extends ParFormPluginBase {
+class ParMemberNameForm extends ParFormPluginBase {
 
   /**
    * Mapping of the data parameters to the form elements.
@@ -41,7 +41,7 @@ class ParOrganisationNameForm extends ParFormPluginBase {
 
     $form['name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Provide the business or organisation name'),
+      '#title' => $this->t('Enter the member organisation name'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('name'),
     ];
 

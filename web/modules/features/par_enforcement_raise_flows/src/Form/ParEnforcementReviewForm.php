@@ -66,7 +66,7 @@ class ParEnforcementReviewForm extends ParBaseForm {
     $enforcement_actions_cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_notice_add_action');
     $enforcement_officer_cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_officer_details');
     $enforcing_authority_cid = $this->getFlowNegotiator()->getFormKey('par_authority_selection');
-    $organisation_select_cid = $this->getFlowNegotiator()->getFormKey('par_enforce_organisation');
+    $member_select_cid = $this->getFlowNegotiator()->getFormKey('par_enforce_organisation');
     $legal_entity_select_cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_notice_raise');
 
     $date = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
@@ -83,7 +83,7 @@ class ParEnforcementReviewForm extends ParBaseForm {
     ]);
 
     // Save any reference to an enforced organisation.
-    if ($organisation_id = $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', NULL, $organisation_select_cid)) {
+    if ($organisation_id = $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', NULL, $member_select_cid)) {
       $par_data_enforcement_notice->set('field_organisation', $organisation_id);
     }
 

@@ -27,10 +27,10 @@ class ParSelectLegalEntityForm extends ParBaseForm {
    * Load the data for this form.
    */
   public function loadData() {
-    $organisation_select_cid = $this->getFlowNegotiator()->getFormKey('organisation_selection');
+    $member_select_cid = $this->getFlowNegotiator()->getFormKey('member_selection');
 
     // Load the organisation to select legal entities for.
-    if ($organisation_id = $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', NULL, $organisation_select_cid)) {
+    if ($organisation_id = $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', NULL, $member_select_cid)) {
       if ($par_data_organisation = ParDataOrganisation::load($organisation_id)) {
         $this->getFlowDataHandler()->setParameter('par_data_organisation', $par_data_organisation);
       }

@@ -1,15 +1,16 @@
 <?php
 
-namespace Drupal\par_member_add_flows\Form;
+namespace Drupal\par_partnership_application_flows\Form;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_partnership_application_flows\ParFlowAccessTrait;
 
 /**
- * Enter the member organisation name.
+ * The organisation name form.
  */
 class ParOrganisationNameForm extends ParBaseForm {
+
+  use ParFlowAccessTrait;
 
   protected $formItems = [
     'par_data_organisation:organisation' => [
@@ -17,6 +18,6 @@ class ParOrganisationNameForm extends ParBaseForm {
     ],
   ];
 
-  protected $pageTitle = 'Add member organisation name';
+  protected $pageTitle = 'Who are you in partnership with?';
 
 }
