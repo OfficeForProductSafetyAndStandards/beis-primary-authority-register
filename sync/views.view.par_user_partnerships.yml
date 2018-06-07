@@ -914,13 +914,13 @@ display:
           plugin_id: standard
       arguments: {  }
       display_extenders: {  }
-      css_class: view_dv_journey_1_step_1
+      css_class: par-user-partnership-list
       filter_groups:
         operator: AND
         groups:
           1: AND
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
@@ -1288,7 +1288,7 @@ display:
           entity_field: created
           plugin_id: date
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
@@ -1643,7 +1643,7 @@ display:
         groups:
           1: AND
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'

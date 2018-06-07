@@ -17,7 +17,7 @@ steps:
     route: par_member_add_flows.add_organisation_name
     form_id: par_member_add_organisation_name
     components:
-      member_name: {}
+      member_name: {  }
     redirect:
       cancel: 10
   2:

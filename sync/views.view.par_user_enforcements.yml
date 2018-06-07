@@ -988,6 +988,7 @@ display:
           plugin_id: numeric
       display_extenders: {  }
       group_by: false
+      css_class: par-user-enforcement-list
     cache_metadata:
       max-age: 0
       contexts:
