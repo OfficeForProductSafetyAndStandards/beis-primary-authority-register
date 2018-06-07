@@ -89,46 +89,44 @@ class ReviewedEnforcementSubscriber implements EventSubscriberInterface {
     $options = ['absolute' => TRUE];
     $enforcement_url = Url::fromRoute('par_enforcement_send_flows.send_enforcement', ['par_data_enforcement_notice' => $par_data_enforcement_notice->id()], $options);
 
-    // Notify all relevant users at the primary authority.
-    $primary_authority = $par_data_enforcement_notice->getPrimaryAuthority(TRUE);
+    // Notify the enforcing officer.
+    $enforcing_officer = $par_data_enforcement_notice->getEnforcingPerson(TRUE);
 
-    foreach ($primary_authority->getPerson() as $person) {
-      // Notify all users in this authority with the appropriate permissions.
-      if (($account = $person->getUserAccount()) && $person->getUserAccount()->hasPermission('approve enforcement notice')
-        && !isset($this->recipients[$account->id()])) {
+    // Notify all users in this authority with the appropriate permissions.
+    if (($account = $enforcing_officer->getUserAccount()) && $enforcing_officer->getUserAccount()->hasPermission('approve enforcement notice')
+      && !isset($this->recipients[$account->id()])) {
 
-        // Record the recipient so that we don't send them the message twice.
-        $this->recipients[$account->id()] = $account->getEmail();
+      // Record the recipient so that we don't send them the message twice.
+      $this->recipients[$account->id()] = $account->getEmail();
 
-        // Create one message per user.
-        $message = $message_storage->create([
-          'template' => $message_template->id()
-        ]);
+      // Create one message per user.
+      $message = $message_storage->create([
+        'template' => $message_template->id()
+      ]);
 
-        // Add contextual information to this message.
-        if ($message->hasField('field_enforcement_notice')) {
-          $message->set('field_enforcement_notice', $par_data_enforcement_notice);
-        }
-
-        // Add some custom arguments to this message.
-        $message->setArguments([
-          '@enforcement_notice_view' => $enforcement_url->toString(),
-        ]);
-
-        // The owner is the user who this message belongs to.
-        if ($account) {
-          $message->setOwnerId($account->id());
-        }
-        $message->save();
-
-        // The e-mail address can be overridden if we don't want
-        // to send to the message owner set above.
-        $options = [
-          'mail' => $account->getEmail(),
-        ];
-
-        $this->getNotifier()->send($message, $options, self::DELIVERY_METHOD);
+      // Add contextual information to this message.
+      if ($message->hasField('field_enforcement_notice')) {
+        $message->set('field_enforcement_notice', $par_data_enforcement_notice);
       }
+
+      // Add some custom arguments to this message.
+      $message->setArguments([
+        '@enforcement_notice_view' => $enforcement_url->toString(),
+      ]);
+
+      // The owner is the user who this message belongs to.
+      if ($account) {
+        $message->setOwnerId($account->id());
+      }
+      $message->save();
+
+      // The e-mail address can be overridden if we don't want
+      // to send to the message owner set above.
+      $options = [
+        'mail' => $account->getEmail(),
+      ];
+
+      $this->getNotifier()->send($message, $options, self::DELIVERY_METHOD);
     }
   }
 
