@@ -136,7 +136,7 @@ When('I review the completions for direct partnership {string}', function (partn
 // Starting point: at beginning of this application step
 When('I change the completed legal entities', function () {
   return shared
-  .clickLinkByPureText('Change the new legal entities')
+  .clickLinkByPureText('Change the legal entities')
   .assert.containsText('h1.heading-xlarge','Confirm the legal entity')
    .click('#edit-par-component-legal-entity-1-remove')
    .setValue('#edit-par-component-legal-entity-0-registered-name','Changed to Public Company')
