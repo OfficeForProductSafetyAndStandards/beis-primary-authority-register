@@ -144,16 +144,8 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
     // Display legal entities.
     $legal_entities = array_filter($par_data_legal_entities_existing + $par_data_legal_entities);
-    if (!empty($legal_entities)) {
-      $form['legal_entities'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-        '#title' => 'Legal Entities',
-        'legal_entities' => $this->renderEntities('Legal entities', $legal_entities),
-      ];
-    }
+    $form['legal_entities'] = $this->renderEntities('Legal entities', $legal_entities);
+
     // Display the links to change legal entities
     if (!empty($par_data_organisation->getLegalEntity())) {
       $form['legal_entities_select_link'] = [
@@ -161,7 +153,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
         '#markup' => t('@link', [
           '@link' => $this->getFlowNegotiator()->getFlow()
             ->getLinkByCurrentOperation('legal_select', [], ['query' => ['destination' => $return_path]])
-            ->setText('Select legal entities from the organisation')
+            ->setText('Change existing legal entities added to the organisation')
             ->toString(),
         ]),
       ];
@@ -171,7 +163,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       '#markup' => t('@link', [
         '@link' => $this->getFlowNegotiator()->getFlow()
           ->getLinkByCurrentOperation('legal_add', [], ['query' => ['destination' => $return_path]])
-          ->setText('Change the new legal entities')
+          ->setText('Change the legal entities')
           ->toString(),
       ]),
       '#prefix' => '<p>',
@@ -221,6 +213,17 @@ class ParConfirmationReviewForm extends ParBaseForm {
     }
     if (!$form_state->getValue('terms_organisation_agreed')) {
       $this->setElementError('terms_organisation_agreed', $form_state, 'Please confirm you have read the terms & conditions.');
+    }
+
+    // Validate that there are actually some legal entities set.
+    $legal_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_add_legal_entity');
+    $existing_legal_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_select_legal_entities');
+
+    $legal_entities = $this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $legal_cid) ?: [];
+    $existing_legal_entities = $this->getFlowDataHandler()->getTempDataValue('field_legal_entity', $existing_legal_cid) ?: [];
+
+    if (empty($legal_entities) && empty($existing_legal_entities)) {
+      $this->setElementError('legal_entities_new_link', $form_state, 'You must add at least one legal entity to complete this partnership.');
     }
   }
 
