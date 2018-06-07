@@ -30,7 +30,7 @@ display:
         options:
           perm: 'access partnerships dashboard'
       cache:
-        type: tag
+        type: none
         options: {  }
       query:
         type: views_query
