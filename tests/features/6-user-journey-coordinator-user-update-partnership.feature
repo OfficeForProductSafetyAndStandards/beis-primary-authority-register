@@ -15,7 +15,7 @@ Feature: Coordinator User - Update Partnership
         # ADD MEMBERS
 
         When I click the link text "Add a member"
-        And I add "New Member One" to the inputfield "#edit-organisation-name"
+        And I add "New Member One" to the inputfield "#edit-name"
         And I click on the button "#edit-next"
         And I add "MK43 7AS" to the inputfield "#edit-postcode"
         And I add "1 High St" to the inputfield "#edit-address-line1"
@@ -62,10 +62,10 @@ Feature: Coordinator User - Update Partnership
 
         # SEARCH MEMBERS
 
-        And I add "New Member Two" to the inputfield "#edit-organisation-name"
+        And I add "New Member Two" to the inputfield "#edit-name"
         And I click on the button "#edit-submit-members-list"
         And the element "body" does not contain the text "New Member Two"
-        And I add "New Member One" to the inputfield "#edit-organisation-name"
+        And I add "New Member One" to the inputfield "#edit-name"
         When I click on the button "#edit-submit-members-list"
         Then the element ".table-scroll-wrapper" contains the text "New Member One"
         When I select the option with the value "2" for element "#edit-revoked"
