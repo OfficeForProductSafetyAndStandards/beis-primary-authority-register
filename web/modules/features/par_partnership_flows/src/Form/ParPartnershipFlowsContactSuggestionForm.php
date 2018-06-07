@@ -170,7 +170,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
 
     }
 
-    if ($par_data_person->id()) {
+    if ($par_data_person && $par_data_person->id()) {
 
       // Set route param for invite form.
       $this->par_data_person_id = $par_data_person->id();
@@ -199,7 +199,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
       }
     }
 
-    if ($par_data_partnership->save() &&
+    if ($par_data_person && $par_data_partnership->save() &&
         $par_data_member_entity->save()) {
       $this->getFlowDataHandler()->deleteStore();
 

@@ -135,12 +135,15 @@
             "drupal/flysystem_s3": {
                 "Allow downloading of private files from remote S3 wrappers": "./patches/private_s3_file_download.patch"
             },
+            "drupal/govuk_notify": {
+                "Mail body formatting": "./patches/mail_body-govuk_notify.patch"
+            },
             "drupal/health_check": {
                 "Health Check doesn't check Drupal application": "https://www.drupal.org/files/issues/health_check_doesn_t-2892294-2.patch"
             },
             "drupal/invite": {
                 "Warning: current() expects parameter 1 to be array": "https://www.drupal.org/files/issues/2018-06-01/warning-2976929.2.patch",
-		        "Plugin not plugin": "https://www.drupal.org/files/issues/2018-06-01/plugin_not_plugin-2976921-2.patch"
+		        "Plugin not plugin": "https://www.drupal.org/files/issues/2018-06-07/plugin_not_plugin-2976921-2.patch"
             },
             "drupal/login_destination": {
                 "One time login link": "./patches/one_time_login_redirection.patch",
