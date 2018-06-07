@@ -28,8 +28,8 @@ return shared
     .assert.containsText('h1.heading-xlarge', 'Response to notification of enforcement action sent')
     .clickLinkByPureText('Dashboard')
     .clickLinkByPureText('See enforcement notices')
-    .assert.containsText('.cols-5', string)
-    .assert.containsText('.cols-5', 'Approved')
+    .assert.containsText('.par-user-enforcement-list', string)
+    .assert.containsText('.par-user-enforcement-list', 'Approved')
 });
 
 // Starting point: enforcement notifications received dashboard
@@ -50,8 +50,8 @@ When('I successfully block enforcement notice {string}', function (string) {
     .assert.containsText('h1.heading-xlarge', 'Response to notification of enforcement action sent')
     .clickLinkByPureText('Dashboard')
     .clickLinkByPureText('See enforcement notices')
-    .assert.containsText('.cols-5', string)
-    .assert.containsText('.cols-5', 'Approved')
+    .assert.containsText('.par-user-enforcement-list', string)
+    .assert.containsText('.par-user-enforcement-list', 'Approved')
 });
 
 // Starting point: enforcement notifications received dashboard
@@ -71,6 +71,6 @@ When('I successfully refer enforcement notice {string}', function (string) {
     .click('#edit-actions-next')
     .clickLinkByPureText('Dashboard')
     .clickLinkByPureText('See enforcement notices')
-    .assert.containsText('.cols-6', string)
-    .assert.containsText('.cols-6', 'Referred')
+    .assert.containsText('.par-user-enforcement-list', string)
+    .assert.containsText('.par-user-enforcement-list', 'Referred')
     });

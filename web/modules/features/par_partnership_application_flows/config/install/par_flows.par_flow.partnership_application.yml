@@ -1,22 +1,18 @@
-uuid: 40dc7d00-ab76-45a4-9946-1c18d04de59b
 langcode: en
 status: true
 dependencies: {  }
-_core:
-  default_config_hash: czSdRUN5HFGXVVzkSkGD9lulfIDP2bku96I5rKcHhB8
 id: partnership_application
 label: 'Partnership Application Flow'
 default_title: 'New Partnership Application'
 default_section_title: 'New partnership application'
 description: ''
 save_method: end
-states: null
 steps:
   1:
     route: par_partnership_application_flows.partnership_application_start
     form_id: par_authority_selection
     components:
-      authority_select: {  }
+      authority_select: {}
     redirect:
       cancel: 12
   2:
@@ -33,21 +29,21 @@ steps:
     route: par_partnership_application_flows.partnership_application_partnership_about
     form_id: par_partnership_about
     components:
-      about_partnership: {  }
+      about_partnership: {}
     redirect:
       cancel: 12
   5:
     route: par_partnership_application_flows.partnership_application_organisation_name
     form_id: par_partnership_application_organisation
     components:
-      organisation_name: {  }
+      organisation_name: {}
     redirect:
       cancel: 12
   6:
     route: par_partnership_application_flows.partnership_application_organisation_confirm
     form_id: par_partnership_organisation_suggestion
     components:
-      organisation_select: {  }
+      organisation_select: {}
     form_data:
       organisation_select: par_partnership_application_organisation
     redirect:
@@ -58,14 +54,14 @@ steps:
     route: par_partnership_application_flows.partnership_application_organisation_address
     form_id: par_partnership_address
     components:
-      address: {  }
+      address: {}
     redirect:
       cancel: 12
   8:
     route: par_partnership_application_flows.partnership_application_organisation_contact
     form_id: par_partnership_contact
     components:
-      contact_details: {  }
+      contact_details: {}
     redirect:
       cancel: 12
   9:

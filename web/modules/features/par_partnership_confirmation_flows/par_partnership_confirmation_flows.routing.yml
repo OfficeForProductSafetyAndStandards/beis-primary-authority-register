@@ -4,7 +4,7 @@ par_partnership_confirmation_flows.confirm_about_business:
     _form: '\Drupal\par_partnership_confirmation_flows\Form\ParAboutBusinessForm'
     _title_callback: '\Drupal\par_partnership_confirmation_flows\Form\ParAboutBusinessForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'manage my organisations+manage my authorities'
     _custom_access: '\Drupal\par_partnership_confirmation_flows\Form\ParAboutBusinessForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -18,7 +18,7 @@ par_partnership_confirmation_flows.confirm_address:
     _form: '\Drupal\par_partnership_confirmation_flows\Form\ParAddressForm'
     _title_callback: '\Drupal\par_partnership_confirmation_flows\Form\ParAddressForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'manage my organisations+manage my authorities'
     _custom_access: '\Drupal\par_partnership_confirmation_flows\Form\ParAddressForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -32,7 +32,7 @@ par_partnership_confirmation_flows.confirm_contact:
     _form: '\Drupal\par_partnership_confirmation_flows\Form\ParContactForm'
     _title_callback: '\Drupal\par_partnership_confirmation_flows\Form\ParContactForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'manage my organisations+manage my authorities'
     _custom_access: '\Drupal\par_partnership_confirmation_flows\Form\ParContactForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -45,7 +45,7 @@ par_partnership_confirmation_flows.confirm_sic_code:
     _form: '\Drupal\par_partnership_confirmation_flows\Form\ParSicCodeForm'
     _title_callback: '\Drupal\par_partnership_confirmation_flows\Form\ParSicCodeForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'manage my organisations+manage my authorities'
     _custom_access: '\Drupal\par_partnership_confirmation_flows\Form\ParSicCodeForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -58,7 +58,7 @@ par_partnership_confirmation_flows.confirm_employee_number:
     _form: '\Drupal\par_partnership_confirmation_flows\Form\ParEmployeeNumberForm'
     _title_callback: '\Drupal\par_partnership_confirmation_flows\Form\ParEmployeeNumberForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'manage my organisations+manage my authorities'
     _custom_access: '\Drupal\par_partnership_confirmation_flows\Form\ParEmployeeNumberForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -71,7 +71,7 @@ par_partnership_confirmation_flows.confirm_business_size:
     _form: '\Drupal\par_partnership_confirmation_flows\Form\ParBusinessSizeForm'
     _title_callback: '\Drupal\par_partnership_confirmation_flows\Form\ParBusinessSizeForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'manage my organisations+manage my authorities'
     _custom_access: '\Drupal\par_partnership_confirmation_flows\Form\ParBusinessSizeForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -84,7 +84,7 @@ par_partnership_confirmation_flows.confirm_trading_name:
     _form: '\Drupal\par_partnership_confirmation_flows\Form\ParTradingForm'
     _title_callback: '\Drupal\par_partnership_confirmation_flows\Form\ParTradingForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'manage my organisations+manage my authorities'
     _custom_access: '\Drupal\par_partnership_confirmation_flows\Form\ParTradingForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -97,7 +97,7 @@ par_partnership_confirmation_flows.select_legal_entities:
     _form: '\Drupal\par_partnership_confirmation_flows\Form\ParSelectLegalEntitiesForm'
     _title_callback: '\Drupal\par_partnership_confirmation_flows\Form\ParSelectLegalEntitiesForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'manage my organisations+manage my authorities'
     _custom_access: '\Drupal\par_partnership_confirmation_flows\Form\ParSelectLegalEntitiesForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -110,7 +110,7 @@ par_partnership_confirmation_flows.add_legal_entity:
     _form: '\Drupal\par_partnership_confirmation_flows\Form\ParLegalEntityForm'
     _title_callback: '\Drupal\par_partnership_confirmation_flows\Form\ParLegalEntityForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'manage my organisations+manage my authorities'
     _custom_access: '\Drupal\par_partnership_confirmation_flows\Form\ParLegalEntityForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -123,7 +123,7 @@ par_partnership_confirmation_flows.partnership_confirm_review:
     _form: '\Drupal\par_partnership_confirmation_flows\Form\ParConfirmationReviewForm'
     _title_callback: '\Drupal\par_partnership_confirmation_flows\Form\ParConfirmationReviewForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'manage my organisations+manage my authorities'
     _custom_access: '\Drupal\par_partnership_confirmation_flows\Form\ParConfirmationReviewForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -136,7 +136,7 @@ par_partnership_confirmation_flows.partnership_confirmation:
     _controller: '\Drupal\par_partnership_confirmation_flows\Controller\ParPartnershipConfirmedController::content'
     _title_callback: '\Drupal\par_partnership_confirmation_flows\Controller\ParPartnershipConfirmedController::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'manage my organisations+manage my authorities'
     _custom_access: '\Drupal\par_partnership_confirmation_flows\Controller\ParPartnershipConfirmedController::accessCallback'
     par_data_partnership: \d+
   options:
