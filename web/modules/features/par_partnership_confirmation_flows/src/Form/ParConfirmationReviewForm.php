@@ -153,29 +153,30 @@ class ParConfirmationReviewForm extends ParBaseForm {
         '#title' => 'Legal Entities',
         'legal_entities' => $this->renderEntities('Legal entities', $legal_entities),
       ];
-      if (!empty($par_data_organisation->getLegalEntity())) {
-        $form['legal_entities_select_link'] = [
-          '#type' => 'markup',
-          '#markup' => t('@link', [
-            '@link' => $this->getFlowNegotiator()->getFlow()
-              ->getLinkByCurrentOperation('legal_select', [], ['query' => ['destination' => $return_path]])
-              ->setText('Select legal entities from the organisation')
-              ->toString(),
-          ]),
-        ];
-      }
-      $form['legal_entities_new_link'] = [
+    }
+    // Display the links to change legal entities
+    if (!empty($par_data_organisation->getLegalEntity())) {
+      $form['legal_entities_select_link'] = [
         '#type' => 'markup',
         '#markup' => t('@link', [
           '@link' => $this->getFlowNegotiator()->getFlow()
-            ->getLinkByCurrentOperation('legal_add', [], ['query' => ['destination' => $return_path]])
-            ->setText('Change the new legal entities')
+            ->getLinkByCurrentOperation('legal_select', [], ['query' => ['destination' => $return_path]])
+            ->setText('Select legal entities from the organisation')
             ->toString(),
         ]),
-        '#prefix' => '<p>',
-        '#suffix' => '</p>',
       ];
     }
+    $form['legal_entities_new_link'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlowNegotiator()->getFlow()
+          ->getLinkByCurrentOperation('legal_add', [], ['query' => ['destination' => $return_path]])
+          ->setText('Change the new legal entities')
+          ->toString(),
+      ]),
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
+    ];
 
     // Display trading names.
     $form['trading_names'] = $this->renderSection('Trading names', $par_data_organisation, ['trading_name' => 'full']);

@@ -18,15 +18,6 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  protected $formItems = [
-    'par_data_partnership:organisation' => [
-      'comments' => 'about_business',
-    ],
-  ];
-
-  /**
-   * {@inheritdoc}
-   */
   public function loadData($cardinality = 1) {
     $cid = $this->getFlowNegotiator()->getFormKey('organisation_select');
     $search_query = $this->getFlowDataHandler()->getDefaultValues('name', '', $cid);
@@ -45,24 +36,11 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
 
       $organisations = $this->getParDataManager()->getEntitiesByQuery('par_data_organisation', $conditions, 10);
 
-      $radio_options = [];
-
-      foreach ($organisations as $organisation) {
-        // PAR-1172 Do not display organisations in coordinated partnerships.
-        if (!$organisation->isCoordinatedMember()) {
-          $label = $this->renderSection('Organisation', $organisation, [
-            'organisation_name' => 'summary',
-            'field_premises' => 'summary',
-          ], ['edit-entity'], FALSE, TRUE);
-          $radio_options[$organisation->id()] = render($label);
-        }
-      }
-
-      if (count($radio_options) <= 0) {
+      if (count($organisations) <= 0) {
         $this->getFlowDataHandler()->setTempDataValue('par_data_organisation_id', 'new');
       }
       else {
-        $this->getFlowDataHandler()->setFormPermValue('organisation_select_options', $radio_options);
+        $this->getFlowDataHandler()->setFormPermValue('organisation_options', $organisations);
       }
     }
 
@@ -80,11 +58,23 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
       return new RedirectResponse($url);
     }
 
-    if ($organisation_selection_options = $this->getFlowDataHandler()->getFormPermValue('organisation_select_options')) {
+    if ($organisation_options = $this->getFlowDataHandler()->getFormPermValue('organisation_options')) {
+      $radio_options = [];
+      foreach ($organisation_options as $organisation) {
+        // PAR-1172 Do not display organisations in coordinated partnerships.
+        if (!$organisation->isCoordinatedMember()) {
+          $label = $this->renderSection('Organisation', $organisation, [
+            'organisation_name' => 'summary',
+            'field_premises' => 'summary',
+          ], ['edit-entity'], FALSE, TRUE);
+          $radio_options[$organisation->id()] = render($label);
+        }
+      }
+
       $form['par_data_organisation_id'] = [
         '#type' => 'radios',
         '#title' => t('Choose an existing organisation or create a new organisation'),
-        '#options' => $organisation_selection_options + ['new' => "no, the organisation is not currently in a partnership with any other primary authority"],
+        '#options' => $radio_options + ['new' => "no, the organisation is not currently in a partnership with any other primary authority"],
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', 'new'),
       ];
     }

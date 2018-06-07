@@ -56,15 +56,84 @@ class ParConfirmationReviewForm extends ParBaseForm {
             ->toString(),
         ]),
       ];
-      // Display the authority contacts for information.
-      $form['authority_contacts'] = $this->renderSection('Contacts at the Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed']);
 
-      // Display organisation name and organisation primary address.
-      $form['organisation_name'] = $this->renderSection('Organisation name', $par_data_organisation, ['organisation_name' => 'title'], [], TRUE, TRUE);
-      $form['organisation_registered_address'] = $this->renderSection('Organisation address', $par_data_organisation, ['field_premises' => 'summary'], [], TRUE, TRUE);
+      $form['partnership'] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => ['grid-row', 'form-group']],
+      ];
 
-      // Display contacts at the organisation.
-      $form['organisation_contacts'] = $this->renderSection('Contacts at the Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed']);
+      // Show the organisation name.
+      if ($par_data_organisation) {
+        $form['partnership']['organisation'] = [
+          '#type' => 'fieldset',
+          '#attributes' => ['class' => 'column-one-half'],
+        ];
+
+        // Display organisation name and organisation primary address.
+        $form['partnership']['organisation']['organisation_name'] = [
+          '#type' => 'fieldset',
+          '#attributes' => ['class' => 'form-group'],
+          'title' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h3',
+            '#value' => 'Organisation name',
+            '#attributes' => ['class' => 'heading-medium'],
+          ],
+          'name' => [
+            '#type' => 'markup',
+            '#markup' => $par_data_organisation->label(),
+            '#prefix' => '<div>',
+            '#suffix' => '</div>',
+          ],
+        ];
+        // This link cannot come straight back to the review screen, because
+        // changing the organisation requires address and contact to be updated too.
+        $form['partnership']['organisation']['organisation_name']['operations'] = [
+          'edit' => [
+            '#type' => 'markup',
+            '#markup' => t('@link', [
+              '@link' => $this->getFlowNegotiator()->getFlow()
+                ->getLinkByCurrentOperation('organisation_name', [], [])
+                ->setText('Change this organisation')
+                ->toString(),
+            ]),
+          ]
+        ];
+        $form['partnership']['organisation']['organisation_registered_address'] = $this->renderEntities('Organisation address', [$par_data_premises], 'summary', [], TRUE);
+
+        // Display contacts at the organisation.
+        $form['partnership']['organisation']['organisation_contact'] =  $this->renderEntities('Contact at the organisation', [$organisation_contact]);
+
+      }
+
+      // Show the primary authority name.
+      if ($par_data_authority) {
+        $form['partnership']['authority'] = [
+          '#type' => 'fieldset',
+          '#attributes' => ['class' => 'column-one-half'],
+        ];
+        $form['partnership']['authority']['authority_name'] = [
+          '#type' => 'fieldset',
+          '#attributes' => ['class' => 'form-group'],
+          'title' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h3',
+            '#value' => 'Primary authority name',
+            '#attributes' => ['class' => 'heading-medium'],
+          ],
+          'name' => [
+            '#type' => 'markup',
+            '#markup' => $par_data_authority->label(),
+            '#prefix' => '<div>',
+            '#suffix' => '</div>',
+          ]
+        ];
+
+        // Display the authority contacts for information.
+        if ($primary_authority_contact) {
+          $form['partnership']['authority']['primary_authority_contact'] = $this->renderEntities('Primary Contact', [$primary_authority_contact]);
+        }
+      }
 
       $form['partnership_info_agreed_authority'] = [
         '#type' => 'checkbox',
@@ -172,8 +241,8 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
   public function createEntities() {
     // Load the Authority.
-    $cid = $this->getFlowNegotiator()->getFormKey('par_authority_selection');
-    $acting_authority = $this->getFlowDataHandler()->getDefaultValues('par_data_authority_id', '', $cid);
+    $cid_authority_select = $this->getFlowNegotiator()->getFormKey('authority_select');
+    $acting_authority = $this->getFlowDataHandler()->getDefaultValues('par_data_authority_id', '', $cid_authority_select);
     if ($par_data_authority = ParDataAuthority::load($acting_authority)) {
       // Get logged in user ParDataPerson(s) related to the primary authority.
       $primary_authority_contact = $this->getParDataManager()->getUserPerson($this->getCurrentUser(), $par_data_authority);
@@ -191,10 +260,10 @@ class ParConfirmationReviewForm extends ParBaseForm {
     }
     // Create a new organisation but do not save yet.
     else {
-      $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_application_organisation');
+      $cid_organisation_name = $this->getFlowNegotiator()->getFormKey('organisation_name');
       $par_data_organisation = ParDataOrganisation::create([
         'type' => 'organisation',
-        'organisation_name' => $this->getFlowDataHandler()->getDefaultValues('organisation_name','', $cid),
+        'organisation_name' => $this->getFlowDataHandler()->getDefaultValues('name','', $cid_organisation_name),
       ]);
     }
 
@@ -217,11 +286,11 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
     if (!isset($organisation_contact)) {
       $cid_organisation_contact = $this->getFlowNegotiator()->getFormKey('organisation_contact');
-      $email_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $cid)['communication_email'])
+      $email_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $cid_organisation_contact)['communication_email'])
         && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $cid_organisation_contact)['communication_email']);
-      $work_phone_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $cid)['communication_phone'])
+      $work_phone_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $cid_organisation_contact)['communication_phone'])
         && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $cid_organisation_contact)['communication_phone']);
-      $mobile_phone_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $cid)['communication_mobile'])
+      $mobile_phone_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $cid_organisation_contact)['communication_mobile'])
         && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $cid_organisation_contact)['communication_mobile']);
 
       $organisation_contact = ParDataPerson::create([

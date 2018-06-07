@@ -93,7 +93,7 @@ par_partnership_application_flows.partnership_application_invite_sent:
     _title_callback: '\Drupal\par_partnership_application_flows\Controller\ParInviteSentController::titleCallback'
   requirements:
     _permission: 'manage my authorities'
-    _custom_access: '\Drupal\par_partnership_application_flows\Form\ParInviteSentController::accessCallback'
+    _custom_access: '\Drupal\par_partnership_application_flows\Controller\ParInviteSentController::accessCallback'
     par_data_partnership: \d+
     par_data_person: \d+
   options:
