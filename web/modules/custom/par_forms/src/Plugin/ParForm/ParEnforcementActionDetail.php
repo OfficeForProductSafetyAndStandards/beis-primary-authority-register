@@ -148,4 +148,5 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
   public function getComponentActions($actions = [], $count = NULL) {
     return $actions;
   }
+  
 }

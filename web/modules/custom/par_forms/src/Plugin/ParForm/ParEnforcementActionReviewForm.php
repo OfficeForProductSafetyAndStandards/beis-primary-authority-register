@@ -138,19 +138,4 @@ class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
 
     return parent::validate($form_state, $cardinality, $violations);
   }
-  
-  /**
-   * Return no actions for this plugin.
-   */
-  public function getElementActions($cardinality = 1, $actions = []) {
-    return $actions;
-  }
-
-  /**
-   * Return no actions for this plugin.
-   */
-  public function getComponentActions($actions = [], $count = NULL) {
-    return $actions;
-  }
-
 }

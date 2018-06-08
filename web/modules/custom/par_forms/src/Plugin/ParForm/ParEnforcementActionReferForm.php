@@ -77,4 +77,19 @@ class ParEnforcementActionReferForm extends ParFormPluginBase {
 
     return $form;
   }
+
+  /**
+   * Return no actions for this plugin.
+   */
+  public function getElementActions($cardinality = 1, $actions = []) {
+    return $actions;
+  }
+
+  /**
+   * Return no actions for this plugin.
+   */
+  public function getComponentActions($actions = [], $count = NULL) {
+    return $actions;
+  }
+
 }
