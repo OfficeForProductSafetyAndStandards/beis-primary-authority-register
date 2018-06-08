@@ -4,6 +4,7 @@ namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
+use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -24,13 +25,19 @@ class ParEnforcementActionReferForm extends ParFormPluginBase {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
     $par_data_enforcement_actions = $this->getFlowDataHandler()->getParameter('par_data_enforcement_actions');
 
+    // Get the cache IDs for the various forms that needs needs to be extracted from.
+    $enforcement_actions_cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_notice_approve');
+
     // Check whether there are any referrable actions.
-    foreach ($par_data_enforcement_actions as $action) {
+    foreach ($par_data_enforcement_actions as $delta => $action) {
       if (!$action->isReferrable()) {
         continue;
       }
 
-      $this->setDefaultValuesByKey("notice_is_referrable", $cardinality, TRUE);
+      $status = $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action_review', $delta, 'primary_authority_status'], $enforcement_actions_cid);
+      if ($status === ParDataEnforcementAction::REFERRED) {
+        $this->setDefaultValuesByKey("notice_is_referrable", $cardinality, TRUE);
+      }
     }
 
     // Cardinality is not a zero-based index like the stored fields deltas.
@@ -70,4 +77,19 @@ class ParEnforcementActionReferForm extends ParFormPluginBase {
 
     return $form;
   }
+
+  /**
+   * Return no actions for this plugin.
+   */
+  public function getElementActions($cardinality = 1, $actions = []) {
+    return $actions;
+  }
+
+  /**
+   * Return no actions for this plugin.
+   */
+  public function getComponentActions($actions = [], $count = NULL) {
+    return $actions;
+  }
+
 }

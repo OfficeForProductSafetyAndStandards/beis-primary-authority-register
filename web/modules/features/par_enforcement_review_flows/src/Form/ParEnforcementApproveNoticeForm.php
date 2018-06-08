@@ -10,6 +10,7 @@ use Drupal\par_forms\ParFormBuilder;
  * The confirmation for creating a new enforcement notice.
  */
 class ParEnforcementApproveNoticeForm extends ParBaseForm {
+
   use ParFlowAccessTrait;
 
   /**
