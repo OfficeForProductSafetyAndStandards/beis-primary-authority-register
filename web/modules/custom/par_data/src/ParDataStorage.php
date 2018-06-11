@@ -93,18 +93,12 @@ class ParDataStorage extends TranceStorage {
     // Get relationships for the entity being saved.
     $relationships = $entity->getRelationships();
 
-    // Loop through relationships and delete appropriate cache records.
+    // Loop through relationships and delete appropriate relationship cache records.
     foreach ($relationships as $entity_type => $referenced_entities) {
-      foreach ($referenced_entities as $referenced_entity_id => $referenced_entity) {
-        // Skip existing references - they will already be in the cache.
-        if (!empty($entity->original) &&
-            !empty($entity->original->getRelationships()[$referenced_entity_id][$referenced_entity->id()])) {
-          continue;
-        }
-
+      foreach ($referenced_entities as $referenced_entity) {
         // Delete cache record for new/updated references.
-        \Drupal::cache('data')
-          ->delete("par_data_relationships:{$entity_type}:{$referenced_entity->id()}");
+        $hash_key = "par_data_relationships:{$referenced_entity->getEntityTypeId()}:{$referenced_entity->id()}";
+        \Drupal::cache('data')->delete($hash_key);
       }
     }
 
@@ -115,9 +109,6 @@ class ParDataStorage extends TranceStorage {
       $dispatcher = \Drupal::service('event_dispatcher');
       $dispatcher->dispatch($event_to_dispatch, $event);
     }
-
-    // Warm caches.
-    $this->parDataManager->getRelatedEntities($entity);
 
     return parent::save($entity);
   }
