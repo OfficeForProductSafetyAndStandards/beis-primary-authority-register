@@ -85,3 +85,4 @@ $ npm install -g
 $ appium
 [NEW CONSOLE TAB]
 $ npm run nightwatch-cucumber-ios -- --tag iostest
+
