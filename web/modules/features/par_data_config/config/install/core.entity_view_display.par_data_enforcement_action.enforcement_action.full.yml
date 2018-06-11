@@ -8,7 +8,7 @@ dependencies:
     - field.field.par_data_enforcement_action.enforcement_action.field_regulatory_function
     - par_data.par_data_enforcement_action_type.enforcement_action
   module:
-    - file
+    - file_entity
     - text
 id: par_data_enforcement_action.enforcement_action.full
 targetEntityType: par_data_enforcement_action
@@ -24,12 +24,13 @@ content:
     third_party_settings: {  }
   document:
     label: hidden
-    weight: 0
+    weight: 6
     region: content
     settings:
-      use_description_as_link_text: true
+      access_message: 'You don''t have access to download this file.'
+      text: 'Download [file:name]'
     third_party_settings: {  }
-    type: file_default
+    type: file_download_link
   enforcement_action_notes:
     label: hidden
     type: text_default
