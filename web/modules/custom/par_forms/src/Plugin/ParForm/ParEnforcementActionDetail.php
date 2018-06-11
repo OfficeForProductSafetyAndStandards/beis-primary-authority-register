@@ -48,6 +48,7 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
 
       $this->setDefaultValuesByKey("action_regulatory_functions", $cardinality, $par_data_enforcement_action->field_regulatory_function->view('full'));
       $this->setDefaultValuesByKey("action_details", $cardinality, $par_data_enforcement_action->details->view('full'));
+      $this->setDefaultValuesByKey("action_attachments", $cardinality, $par_data_enforcement_action->document->view('full'));
     }
 
     parent::loadData($cardinality);
@@ -79,6 +80,9 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
         ],
         'regulatory_functions' => $this->getDefaultValuesByKey('action_regulatory_functions', $cardinality, []),
         'details' => $this->getDefaultValuesByKey('action_details', $cardinality, []),
+        'attachments' => $this->getDefaultValuesByKey('action_attachments', $cardinality, []) + [
+          '#attributes' => ['class' => ['form-group']]
+        ],
       ];
 
       // Add operation link for updating action details.
