@@ -212,7 +212,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       $par_data_partnership->set('field_authority', $par_data_authority->id());
     }
 
-    if (isset($par_data_partnership) && $par_data_partnership->save()) {
+    if ($par_data_partnership && $par_data_authority && $par_data_organisation && $par_data_partnership->save()) {
       $this->getFlowDataHandler()->deleteStore();
 
       $route_params = [
