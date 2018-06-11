@@ -7,9 +7,7 @@ Feature: Coordinator User - Update Partnership
         
         Given I am logged in as "par_coordinator@example.com"
         When I click the link text "See your partnerships"
-        And I add "Organisation For Coordinated Partnership" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-par-user-partnerships"
-        And I click the link text "Organisation For Coordinated Partnership"
+        And I click the link text "Organisation For Updating Coordinated Partnership"
         Then the element "h1" is not empty
 
         # ADD MEMBERS
@@ -161,6 +159,6 @@ Feature: Coordinator User - Update Partnership
 
         When I click on the button "#edit-save"
         # And I run tota11y against the current page
-        And I add "Organisation For Coordinated Partnership" to the inputfield "#edit-keywords"
+        And I add "Organisation For Updating Coordinated Partnership" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And the element "#block-par-theme-content" contains the text "Organisation For Coordinated Partnership"
+        And the element "#block-par-theme-content" contains the text "Organisation For Updating Coordinated Partnership"

@@ -6,7 +6,7 @@ Feature: Coordinator User - Upload Members
         # PARTNERSHIPS DASHBOARD
         Given I am logged in as "par_coordinator@example.com"
         And I click the link text "See your partnerships"
-        When I click the link text "Organisation For Coordinated Partnership"
+        When I click the link text "Organisation For Uploading To Coordinated Partnership"
         Then the element "h1" is not empty
 
         # UPLOAD MEMBERS
@@ -51,16 +51,16 @@ Feature: Coordinator User - Upload Members
         And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
-        When I add "Organisation For Coordinated Partnership" to the inputfield "#edit-keywords"
+        When I add "Organisation For Uploading To Coordinated Partnership" to the inputfield "#edit-keywords"
         And I select the option with the value "confirmed_business" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-helpdesk-dashboard"
         Then I click the link text "Approve partnership"
-        And the element "#par-rd-help-desk-confirm" contains the text "Organisation For Coordinated Partnership"
+        And the element "#par-rd-help-desk-confirm" contains the text "Organisation For Uploading To Coordinated Partnership"
         And I click on the radio "#edit-confirm-authorisation-select"
         And I click on the radio "#edit-partnership-regulatory-functions-1"
         And I click on the button "#edit-next"
         Then the element "h1.heading-xlarge" contains the text "Partnership is approved"
-        And the element "#edit-partnership-info" contains the text "Organisation For Coordinated Partnership"
+        And the element "#edit-partnership-info" contains the text "Organisation For Uploading To Coordinated Partnership"
         And I click on the button "#edit-done"
 
         And I open the path "/user/logout"
@@ -72,7 +72,7 @@ Feature: Coordinator User - Upload Members
         And I add "TestPassword" to the inputfield "#edit-pass"
         And I click on the button "#edit-submit"
         And I click the link text "Search for a partnership"
-        And I add "Organisation For Coordinated Partnership" to the inputfield "#edit-keywords"
+        And I add "Organisation For Uploading To Coordinated Partnership" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
         And I click on the button "td.views-field.views-field-par-flow-link a"
         And I click the link text "Send a notification of a proposed enforcement action"
@@ -107,7 +107,7 @@ Feature: Coordinator User - Upload Members
         Given I am logged in as "par_coordinator@example.com"
 
         And I click the link text "See your partnerships"
-        And I click the link text "Organisation For Coordinated Partnership"
+        And I click the link text "Organisation For Uploading To Coordinated Partnership"
         Then the element "h1" is not empty
         When I click the link text "Show members list"
         Then the element "h1.heading-xlarge" contains the text "Members list"
@@ -133,7 +133,7 @@ Feature: Coordinator User - Upload Members
 
         When I click the link text "Dashboard"
         And I click the link text "See your partnerships"
-        And I click the link text "Organisation For Coordinated Partnership"
+        And I click the link text "Organisation For Uploading To Coordinated Partnership"
         Then the element "h1" is not empty
         When I click the link text "Show members list"
         Then the element "h1.heading-xlarge" contains the text "Members list"
@@ -155,8 +155,8 @@ Feature: Coordinator User - Upload Members
         And I click the link text "Search for a partnership"
         When I add "New LLP Company" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
-        Then the element ".table-scroll-wrapper" contains the text "Organisation For Coordinated Partnership"
+        Then the element ".table-scroll-wrapper" contains the text "Organisation For Uploading To Coordinated Partnership"
         When I add "Coordinated Member 1" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
-        Then the element ".table-scroll-wrapper" contains the text "Organisation For Coordinated Partnership"
+        Then the element ".table-scroll-wrapper" contains the text "Organisation For Uploading To Coordinated Partnership"
     
