@@ -190,10 +190,17 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * Get all references for a given entity.
    *
+   * @param string $type
+   *   The entity type to search for.
+   * @param string $bundle
+   *   The entity bundle to search for.
+   * @param bool $include_reverse
+   *   Whether to include reverse references.
+   *
    * @return \Drupal\Core\Field\FieldDefinitionInterface[]
    *   An array of field definitions keyed by the entity type they are attached to.
    */
-  public function getReferences($type, $bundle) {
+  public function getReferences($type, $bundle, $include_reverse = TRUE) {
     $reference_fields = [];
 
     // First get all the entities referenced by this entity type.
