@@ -9,11 +9,14 @@ Feature: PA User - Update a partnership
             
         # GO TO A PARTNERSHIP PAGE
         
-        And I go to detail page for partnership with authority "Upper West Side Borough Council"
-
+        When I click the link text "See your partnerships"
+        And I add "Organisation For Updating Direct Partnership" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-partnership-search"
+        And I click the link text "Upper West Side Borough Council"
+       
         # EDIT ABOUT THE ORGANISATION
 
-        When I edit about the partnership
+        And I edit about the partnership
 
         # EDIT MAIN AUTHORITY CONTACT
 

@@ -172,7 +172,5 @@ When('I submit final confirmation of completion by organisation {string}', funct
    .click('#edit-save')
    .assert.containsText('h1.heading-xlarge','Thank you for completing the application')
    .click('.button')
-   .setValue('#edit-keywords',partnershipname)
-   .click('#edit-submit-par-user-partnerships')
    .assert.containsText('.table-scroll-wrapper','Confirmed by the Organisation')
  }); 
