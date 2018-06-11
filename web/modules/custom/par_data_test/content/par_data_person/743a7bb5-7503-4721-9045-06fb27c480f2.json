@@ -1,0 +1,182 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/117835?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/user_id": [
+            {
+                "href": "http:\/\/default\/user\/9541?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/9541?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 117835
+        }
+    ],
+    "type": [
+        {
+            "target_id": "person"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "743a7bb5-7503-4721-9045-06fb27c480f2"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": 32162
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/user_id": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/9541?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "1a6dc8cd-fea2-486b-bd0e-12572c6a26ab"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/9541?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "1a6dc8cd-fea2-486b-bd0e-12572c6a26ab"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1528717494
+        }
+    ],
+    "changed": [
+        {
+            "value": 1528717894
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": 1528717494
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "5b1e60b72a57e",
+            "lang": "en"
+        }
+    ],
+    "deleted": [
+        {
+            "value": false
+        }
+    ],
+    "revoked": [
+        {
+            "value": false
+        }
+    ],
+    "archived": [
+        {
+            "value": false
+        }
+    ],
+    "salutation": [
+        {
+            "value": "Ms."
+        }
+    ],
+    "first_name": [
+        {
+            "value": "Hardy"
+        }
+    ],
+    "last_name": [
+        {
+            "value": "Harris"
+        }
+    ],
+    "work_phone": [
+        {
+            "value": "02079999999"
+        }
+    ],
+    "mobile_phone": [
+        {
+            "value": "078659999999"
+        }
+    ],
+    "email": [
+        {
+            "value": "par_coordinator@example.com"
+        }
+    ],
+    "communication_email": [
+        {
+            "value": false
+        }
+    ],
+    "communication_phone": [
+        {
+            "value": false
+        }
+    ],
+    "communication_mobile": [
+        {
+            "value": false
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ]
+}

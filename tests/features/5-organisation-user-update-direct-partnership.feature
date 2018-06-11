@@ -9,7 +9,8 @@ Feature: Business User - Update Partnership
 
         # GO TO A PARTNERSHIP PAGE
 
-        And I go to partnership detail page for my partnership "Organisation For Direct Partnership" with status "confirmed_business"
+        When I click the link text "See your partnerships"
+        And I click the link text "Organisation For Updating Direct Partnership"
        
         # EDIT REGISTERED ADDRESS
 
@@ -35,4 +36,4 @@ Feature: Business User - Update Partnership
 
         When I click on the button "#edit-save"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And the element "#block-par-theme-content" contains the text "Organisation For Direct Partnership"
+        And the element "#block-par-theme-content" contains the text "Organisation For Updating Direct Partnership"

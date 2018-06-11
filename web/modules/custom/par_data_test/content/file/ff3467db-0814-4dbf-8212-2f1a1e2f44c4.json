@@ -1,7 +1,7 @@
 {
     "_links": {
         "self": {
-            "href": "http:\/\/default\/file\/6162?_format=hal_json"
+            "href": "http:\/\/default\/file\/6393?_format=hal_json"
         },
         "type": {
             "href": "http:\/\/drupal.org\/rest\/type\/file\/document"
@@ -14,7 +14,7 @@
     },
     "fid": [
         {
-            "value": 6162
+            "value": 6393
         }
     ],
     "uuid": [
@@ -58,8 +58,8 @@
     ],
     "uri": [
         {
-            "value": "s3private:\/\/par-data-test\/SS46_Press_Release_Final_33.pdf",
-            "url": "\/_flysystem\/s3private\/par-data-test\/SS46_Press_Release_Final_33.pdf"
+            "value": "s3private:\/\/par-data-test\/SS46_Press_Release_Final_33_38.pdf",
+            "url": "\/_flysystem\/s3private\/par-data-test\/SS46_Press_Release_Final_33_38.pdf"
         }
     ],
     "filemime": [

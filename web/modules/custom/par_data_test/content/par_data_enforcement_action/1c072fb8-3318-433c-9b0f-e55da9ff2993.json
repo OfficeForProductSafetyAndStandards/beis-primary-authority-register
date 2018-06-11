@@ -1,0 +1,176 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_enforcement_action\/1448?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_enforcement_action\/enforcement_action"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_action\/enforcement_action\/user_id": [
+            {
+                "href": "http:\/\/default\/user\/10160?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_action\/enforcement_action\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/10160?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_action\/enforcement_action\/field_regulatory_function": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_regulatory_function\/13?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 1448
+        }
+    ],
+    "type": [
+        {
+            "target_id": "enforcement_action"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "1c072fb8-3318-433c-9b0f-e55da9ff2993"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": 799
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_action\/enforcement_action\/user_id": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/10160?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "091031a0-6f43-4632-ac3d-67d635a6fa5a"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_action\/enforcement_action\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/10160?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "091031a0-6f43-4632-ac3d-67d635a6fa5a"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_enforcement_action\/enforcement_action\/field_regulatory_function": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_regulatory_function\/13?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_regulatory_function\/regulatory_function"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "3a4c6455-7263-4f0b-966a-24b8dd518f49"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1528717238
+        }
+    ],
+    "changed": [
+        {
+            "value": 1528717238
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": 1528717238
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "5b1e5fb767a0e",
+            "lang": "en"
+        }
+    ],
+    "deleted": [
+        {
+            "value": false
+        }
+    ],
+    "revoked": [
+        {
+            "value": false
+        }
+    ],
+    "archived": [
+        {
+            "value": false
+        }
+    ],
+    "title": [
+        {
+            "value": "Enforcement notice 1"
+        }
+    ],
+    "details": [
+        {
+            "value": "Some details about the enforcement noticeEnforcement notice 1",
+            "format": null,
+            "processed": "<p>Some details about the enforcement noticeEnforcement notice 1<\/p>\n"
+        }
+    ],
+    "primary_authority_status": [
+        {
+            "value": "awaiting_approval"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ]
+}
