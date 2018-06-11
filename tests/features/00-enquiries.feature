@@ -3,8 +3,8 @@ Feature: PA User - Messaging
 
        @1254 @ci
         Scenario Outline: Enquiry Messages View
-                Given I am logged on as "par_authority@example.com"
-                And I click on the link text "See enquiries"
+                Given I am logged in as "par_authority@example.com"
+                And I click the link text "See enquiries"
                 Then the element "span.heading-secondary" contains the text "Par User Enforcements"
 
 
