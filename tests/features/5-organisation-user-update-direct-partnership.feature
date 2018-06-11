@@ -9,7 +9,7 @@ Feature: Business User - Update Partnership
 
         # GO TO A PARTNERSHIP PAGE
 
-        And I click the text link "Organisation For Updating Direct Partnership"
+        And I click the link text "Organisation For Updating Direct Partnership"
        
         # EDIT REGISTERED ADDRESS
 
