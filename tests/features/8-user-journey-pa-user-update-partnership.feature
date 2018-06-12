@@ -28,6 +28,6 @@ Feature: PA User - Update a partnership
 
         # COMPLETE CHANGES
 
-        And I click on the checkbox "#edit-partnership-info-agreed-authority"
+        And I click on the button "#edit-partnership-info-agreed-authority"
         And I click on the button "#edit-save"
         Then the element "h1.heading-xlarge" contains the text "Your partnerships"

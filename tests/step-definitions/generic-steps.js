@@ -37,7 +37,7 @@ const shared = client.page.shared();
   });
 
   Then('I click on the checkbox {string}', function (string) {
-    return client
+    return shared
         .clickCheckboxIfUnselected(string)
   });
 
