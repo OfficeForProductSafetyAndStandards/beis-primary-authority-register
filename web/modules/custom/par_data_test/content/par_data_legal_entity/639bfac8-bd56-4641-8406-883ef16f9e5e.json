@@ -1,49 +1,49 @@
 {
     "_links": {
         "self": {
-            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_premises\/214085?_format=hal_json"
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_legal_entity\/21203?_format=hal_json"
         },
         "type": {
-            "href": "http:\/\/drupal.org\/rest\/type\/par_data_premises\/premises"
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_legal_entity\/legal_entity"
         },
-        "http:\/\/drupal.org\/rest\/relation\/par_data_premises\/premises\/user_id": [
+        "http:\/\/drupal.org\/rest\/relation\/par_data_legal_entity\/legal_entity\/user_id": [
             {
-                "href": "http:\/\/default\/user\/1?_format=hal_json",
+                "href": "http:\/\/default\/user\/10161?_format=hal_json",
                 "lang": "en"
             }
         ],
-        "http:\/\/drupal.org\/rest\/relation\/par_data_premises\/premises\/revision_uid": [
+        "http:\/\/drupal.org\/rest\/relation\/par_data_legal_entity\/legal_entity\/revision_uid": [
             {
-                "href": "http:\/\/default\/user\/1?_format=hal_json"
+                "href": "http:\/\/default\/user\/10161?_format=hal_json"
             }
         ]
     },
     "id": [
         {
-            "value": 214085
+            "value": 21203
         }
     ],
     "type": [
         {
-            "target_id": "premises"
+            "target_id": "legal_entity"
         }
     ],
     "uuid": [
         {
-            "value": "c42727fb-e6c2-4241-9da7-a0074477f7a7"
+            "value": "639bfac8-bd56-4641-8406-883ef16f9e5e"
         }
     ],
     "revision_id": [
         {
-            "value": 64405
+            "value": 6415
         }
     ],
     "_embedded": {
-        "http:\/\/drupal.org\/rest\/relation\/par_data_premises\/premises\/user_id": [
+        "http:\/\/drupal.org\/rest\/relation\/par_data_legal_entity\/legal_entity\/user_id": [
             {
                 "_links": {
                     "self": {
-                        "href": "http:\/\/default\/user\/1?_format=hal_json"
+                        "href": "http:\/\/default\/user\/10161?_format=hal_json"
                     },
                     "type": {
                         "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
@@ -51,17 +51,17 @@
                 },
                 "uuid": [
                     {
-                        "value": "3508aee8-7e04-4b5d-a784-3667ea038e49"
+                        "value": "29eff252-81b3-4e73-afd1-8b902e19e66b"
                     }
                 ],
                 "lang": "en"
             }
         ],
-        "http:\/\/drupal.org\/rest\/relation\/par_data_premises\/premises\/revision_uid": [
+        "http:\/\/drupal.org\/rest\/relation\/par_data_legal_entity\/legal_entity\/revision_uid": [
             {
                 "_links": {
                     "self": {
-                        "href": "http:\/\/default\/user\/1?_format=hal_json"
+                        "href": "http:\/\/default\/user\/10161?_format=hal_json"
                     },
                     "type": {
                         "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
@@ -69,7 +69,7 @@
                 },
                 "uuid": [
                     {
-                        "value": "3508aee8-7e04-4b5d-a784-3667ea038e49"
+                        "value": "29eff252-81b3-4e73-afd1-8b902e19e66b"
                     }
                 ]
             }
@@ -88,17 +88,17 @@
     ],
     "created": [
         {
-            "value": 1521559594
+            "value": 1528818472
         }
     ],
     "changed": [
         {
-            "value": 1521559594
+            "value": 1528818472
         }
     ],
     "revision_timestamp": [
         {
-            "value": 1528818283
+            "value": 1528818472
         }
     ],
     "revision_translation_affected": [
@@ -109,7 +109,7 @@
     ],
     "name": [
         {
-            "value": "5ab1282ce0f26",
+            "value": "5b1feb2a9540f",
             "lang": "en"
         }
     ],
@@ -128,26 +128,19 @@
             "value": false
         }
     ],
-    "address": [
+    "registered_name": [
         {
-            "langcode": null,
-            "country_code": "GB",
-            "administrative_area": "US-NY",
-            "locality": "New York State",
-            "dependent_locality": null,
-            "postal_code": "SG19 3HZ",
-            "sorting_code": null,
-            "address_line1": "4 sesame St",
-            "address_line2": "Newcastle",
-            "organization": null,
-            "given_name": null,
-            "additional_name": null,
-            "family_name": null
+            "value": "New LLP Company"
         }
     ],
-    "nation": [
+    "registered_number": [
         {
-            "value": "GB-ENG"
+            "value": "1234567890"
+        }
+    ],
+    "legal_entity_type": [
+        {
+            "value": "limited_liability_partnership"
         }
     ],
     "default_langcode": [

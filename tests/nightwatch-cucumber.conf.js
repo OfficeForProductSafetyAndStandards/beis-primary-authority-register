@@ -8,7 +8,7 @@ require('nightwatch-cucumber')({
             '--require', 'support', 
             '--format', 'node_modules/cucumber-pretty', 
             '--format', 'json:reports/cucumber.json', 
-            '--tags', '@ci',
+            '--tags', '@ci2',
             'features'
         ]
 })
