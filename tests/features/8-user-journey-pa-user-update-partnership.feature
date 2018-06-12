@@ -10,9 +10,9 @@ Feature: PA User - Update a partnership
         # GO TO A PARTNERSHIP PAGE
         
         When I click the link text "See your partnerships"
-        And I add "Charlie" to the inputfield "#edit-keywords"
+        And I add "ABCD Mart" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
-        And I click the link text "Upper West Side Borough Council"
+        And I click the link text "Lower East Side Borough Council"
        
         # EDIT ABOUT THE ORGANISATION
 

@@ -82,7 +82,7 @@ When('I add and subsequently edit a trading name', function () {
 
   When('I edit the main authority contact', function () {
     return shared
-      .clickLinkByPureText('edit Big Bird')
+      .clickLinkByPureText('edit authority contact')
       .clearValue('#edit-salutation')
       .clearValue('#edit-first-name')
       .clearValue('#edit-last-name')
