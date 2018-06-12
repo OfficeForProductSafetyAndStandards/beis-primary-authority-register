@@ -139,7 +139,6 @@ module.exports = {
         },
         goToPartnershipDetailPage: function(orgName, status){ 
         return this
-            .clickLinkByPureText('Dashboard')
             .clickLinkByPureText('See your partnerships')
             .setValue('#edit-keywords', orgName)
             .click('#edit-partnership-status-1 option[value="'+status+'"]')
