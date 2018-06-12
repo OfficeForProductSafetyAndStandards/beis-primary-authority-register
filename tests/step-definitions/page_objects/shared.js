@@ -134,7 +134,7 @@ module.exports = {
                 .setValue('#edit-name', string)
                 .setValue('#edit-pass', 'TestPassword')
                 .click('#edit-submit')
-                .waitForElementVisible('#footer', 15000)
+                .waitForElementVisible('#footer', 30000)
                 .assert.containsText('body', 'Log out')
         },
         goToPartnershipDetailPage: function(orgName, status){ 
