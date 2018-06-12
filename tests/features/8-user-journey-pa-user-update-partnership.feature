@@ -1,6 +1,6 @@
 Feature: PA User - Update a partnership
 
-    @ci2 @directpartnership
+    @ci @directpartnership
     Scenario: PA User - Update a partnership
 
         #LOGIN
@@ -14,13 +14,13 @@ Feature: PA User - Update a partnership
         And I click on the button "#edit-submit-par-user-partnerships"
         And I click the link text "Upper West Side Borough Council"
        
-        # # EDIT ABOUT THE ORGANISATION
+        # EDIT ABOUT THE ORGANISATION
 
-        # And I edit about the partnership
+        And I edit about the partnership
 
-        # # EDIT MAIN AUTHORITY CONTACT
+        # EDIT MAIN AUTHORITY CONTACT
 
-        # And I edit the main authority contact
+        And I edit the main authority contact
 
         # ADVICE DOCUMENTATION
 
