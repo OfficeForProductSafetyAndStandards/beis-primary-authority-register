@@ -20,20 +20,20 @@ module.exports = {
     disable_colors: false,
     test_workers: {
         enabled: true,
-        workers: 'auto'
+        workers: 9
     },
     selenium: {
         start_process: true,
         server_path: seleniumServer.path,
         log_path: '',
-        // host: '127.0.0.1',
+        host: '127.0.0.1',
         port: 4444
     },
     test_settings: {
         default: {
-            launch_url: 'http://127.0.0.1:80',
+            launch_url: 'http://localhost:8111',
             selenium_port: 4444,
-            // selenium_host: '127.0.0.1',
+            selenium_host: '127.0.0.1',
             screenshots : {
                 enabled : true,
                 on_failure : true,
