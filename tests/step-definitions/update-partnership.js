@@ -82,7 +82,7 @@ When('I add and subsequently edit a trading name', function () {
 
   When('I edit the main authority contact', function () {
     return shared
-      .clickLinkByPureText('edit authority contact')
+      .clickLinkByPureText('edit Big Bird')
       .clearValue('#edit-salutation')
       .clearValue('#edit-first-name')
       .clearValue('#edit-last-name')
@@ -111,11 +111,11 @@ When('I upload a file to the partnership advice section', function () {
     .click('#edit-upload')
     .waitForElementVisible('#par-partnership-advice-add', 5000)
     .click('#edit-advice-type-background-information')
-    .click('#edit-regulatory-functions-1')
+    .click('.form-checkbox')
     .click('#edit-save')
     .assert.containsText('.table-scroll-wrapper', 'Download test.png')
-    // shared.assert.containsText('.table-scroll-wrapper', 'Primary Authority advice for the organisation covering: ' + result.value)
     .click('.button')
+    // shared.assert.containsText('.table-scroll-wrapper', 'Primary Authority advice for the organisation covering: ' + result.value)
 });
 
 When('I add and subsequently edit a organisation contact', function () {
