@@ -116,6 +116,27 @@ When('I complete the legal entities', function () {
   .click('#edit-next')
 });
 
+When('I complete the legal entities for coordinated partnership', function () {
+  return shared
+  .click('.form-checkbox')
+  .click('#edit-next')
+  .assert.containsText('h1.heading-xlarge','Confirm the legal entity')
+  .setValue('#edit-par-component-legal-entity-0-registered-name', 'New LLP Company')
+  .click('#edit-par-component-legal-entity-0-legal-entity-type option[value="limited_liability_partnership"]')
+  .assert.containsText('.form-item-par-component-legal-entity-0-registered-number label','Provide the registration number')
+  .setValue('#edit-par-component-legal-entity-0-registered-number', '1234567890')
+  .click('#edit-add-another')
+  .setValue('#edit-par-component-legal-entity-1-registered-name', 'First Sole Trader')
+  .click('#edit-par-component-legal-entity-1-legal-entity-type option[value="sole_trader"]')
+  .click('#edit-add-another')
+  .setValue('#edit-par-component-legal-entity-2-registered-name', 'Second New LLP Company')
+  .click('#edit-par-component-legal-entity-2-legal-entity-type option[value="limited_liability_partnership"]')
+  .setValue('#edit-par-component-legal-entity-2-registered-number', '0000000000')
+  .click('#edit-add-another')
+  .click('#edit-par-component-legal-entity-2-remove')
+  .click('#edit-next')
+});
+
 // Starting point: at beginning of this application step
 When('I review the completions for direct partnership {string}', function (partnershipname) {
   return shared
