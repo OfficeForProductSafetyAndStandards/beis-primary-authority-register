@@ -5,7 +5,7 @@ Feature: Coordinator User - Upload Members
 
         # PARTNERSHIPS DASHBOARD
         Given I am logged in as "par_coordinator@example.com"
-        And I click the link text "See your partnerships"
+        And I open the path "/partnerships"
         When I click the link text "Organisation For Uploading To Coordinated Partnership"
         Then the element "h1" is not empty
 

@@ -6,7 +6,7 @@ Feature: Coordinator User - Update Partnership
         #LOGIN
         
         Given I am logged in as "par_coordinator@example.com"
-        When I click the link text "See your partnerships"
+        And I open the path "/partnerships"
         And I click the link text "Organisation For Updating Coordinated Partnership"
         Then the element "h1" is not empty
 

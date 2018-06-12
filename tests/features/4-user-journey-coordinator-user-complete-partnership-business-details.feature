@@ -6,7 +6,8 @@ Feature: Coordinator User - Complete organisation details
         #LOGIN
         
         Given I am logged in as "par_coordinator@example.com"
-        And I go to partnership detail page for my partnership "Organisation For Coordinated Partnership" with status "confirmed_authority"
+        And I open the path "/partnerships"
+        And I click the link text "Organisation For Coordinated Partnership"
 
         # COMPLETE ABOUT THE BUSINESS
 

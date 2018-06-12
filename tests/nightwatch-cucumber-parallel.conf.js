@@ -7,6 +7,7 @@ require('nightwatch-cucumber')({
         '--require', 'support', 
         '--format', 'node_modules/cucumber-pretty', 
         '--format', 'json:reports/cucumber.json', 
+        '--tags', '@ci',
         'features'
     ]
 })
@@ -19,7 +20,7 @@ module.exports = {
     disable_colors: false,
     test_workers: {
         enabled: true,
-        workers: 3
+        workers: 11
     },
     selenium: {
         start_process: true,
