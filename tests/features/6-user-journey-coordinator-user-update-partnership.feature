@@ -7,7 +7,7 @@ Feature: Coordinator User - Update Partnership
         
         Given I am logged in as "par_coordinator@example.com"
         And I open the path "/partnerships"
-        And I click the link text "Organisation For Updating Coordinated Partnership"
+        And I click the link text "Organisation For Uploading To Coordinated Partnership"
         Then the element "h1" is not empty
 
         # ADD MEMBERS
@@ -158,4 +158,4 @@ Feature: Coordinator User - Update Partnership
         # COMPLETE CHANGES
 
         When I click on the button "#edit-save"
-        # Then the element "#block-par-theme-content" contains the text "Organisation For Updating Coordinated Partnership"
+        Then the element "#block-par-theme-content" contains the text "Organisation For Uploading To Coordinated Partnership"
