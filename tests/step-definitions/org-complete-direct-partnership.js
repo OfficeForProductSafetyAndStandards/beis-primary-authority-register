@@ -118,6 +118,8 @@ When('I complete the legal entities', function () {
 
 When('I complete the legal entities for coordinated partnership', function () {
   return shared
+  .click('.form-checkbox')
+  .click('#edit-next')
   .assert.containsText('h1.heading-xlarge','Confirm the legal entity')
   .setValue('#edit-par-component-legal-entity-0-registered-name', 'New LLP Company')
   .click('#edit-par-component-legal-entity-0-legal-entity-type option[value="limited_liability_partnership"]')
