@@ -5,7 +5,7 @@ Feature: Coordinator User - Complete organisation details
 
         #LOGIN
         
-        Given I am logged in as "par_coordinator@example.com"
+        Given I am logged in as "par_authority@example.com"
         And I open the path "/partnerships"
 
         And I click the link text "Organisation For Coordinated Partnership One"
