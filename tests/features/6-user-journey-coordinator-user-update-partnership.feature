@@ -158,7 +158,4 @@ Feature: Coordinator User - Update Partnership
         # COMPLETE CHANGES
 
         When I click on the button "#edit-save"
-        # And I run tota11y against the current page
-        # And I add "Organisation For Updating Coordinated Partnership" to the inputfield "#edit-keywords"
-        # And I click on the button "#edit-submit-par-user-partnerships"
-        # And the element "#block-par-theme-content" contains the text "Organisation For Updating Coordinated Partnership"
+        Then the element "#block-par-theme-content" contains the text "Organisation For Updating Coordinated Partnership"
