@@ -20,22 +20,18 @@ module.exports = {
     page_objects_path: 'step-definitions/page_objects',
     live_output: false,
     disable_colors: false,
-    test_workers: {
-        enabled: true,
-        workers: 9
-    },
     selenium: {
         start_process: true,
         server_path: seleniumServer.path,
         log_path: '',
-        // host: 'localhost',
+        // host: '127.0.0.1',
         port: 4444
     },
     test_settings: {
         default: {
             launch_url: 'http://127.0.0.1:80',
             selenium_port: 4444,
-            // selenium_host: 'localhost',
+            // host: '127.0.0.1',
             screenshots : {
                 enabled : true,
                 on_failure : true,
@@ -45,7 +41,7 @@ module.exports = {
                 browserName: 'chrome',
                 chromeOptions : {
                     binary: '/usr/bin/google-chrome',
-                    args: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1280,1280'],
+                    args: ['--headless', '--no-sandbox', '--window-size=1280,1280'],
                 },
                 javascriptEnabled: true,
                 acceptSslCerts: true
@@ -54,13 +50,6 @@ module.exports = {
                 cli_args: {
                     'webdriver.chrome.driver': chromedriver.path
                 }
-            }
-        },
-        firefox: {
-            desiredCapabilities: {
-                browserName: 'firefox',
-                javascriptEnabled: true,
-                acceptSslCerts: true
             }
         }
     }
