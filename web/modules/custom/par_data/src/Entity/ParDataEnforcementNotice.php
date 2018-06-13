@@ -334,10 +334,11 @@ class ParDataEnforcementNotice extends ParDataEntity {
    *   Cloned notice entity if a referral exists or NULL.
    */
   public function cloneNotice($referral_authority_id, ParDataEnforcementAction $cloned_action) {
-    if ($referral_authority_id) {
+    if ($referral_authority_id && $primary_authority = ParDataAuthority::load($referral_authority_id)) {
       // Duplicate this enforcement notification and assign it the cloned action.
       $referral_notice = $this->createDuplicate();
-      $referral_notice->set('field_primary_authority', $referral_authority_id);
+      $referral_notice->set('field_primary_authority', $primary_authority->id());
+      $referral_notice->set('field_person', $primary_authority->getPerson(TRUE));
       $referral_notice->set('field_enforcement_action', $cloned_action->id());
 
       if ($referral_notice->save()) {
