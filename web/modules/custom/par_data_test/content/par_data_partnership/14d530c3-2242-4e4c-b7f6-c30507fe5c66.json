@@ -1,0 +1,252 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_partnership\/33755?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_partnership\/partnership"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/par_data_partnership\/partnership\/user_id": [
+            {
+                "href": "http:\/\/default\/user\/9541?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_partnership\/partnership\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/9541?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_partnership\/partnership\/field_authority": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_authority\/530?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_partnership\/partnership\/field_authority_person": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/117820?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_partnership\/partnership\/field_organisation": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_organisation\/101815?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_partnership\/partnership\/field_organisation_person": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/117849?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 33755
+        }
+    ],
+    "type": [
+        {
+            "target_id": "partnership"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "14d530c3-2242-4e4c-b7f6-c30507fe5c66"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": 10295
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/par_data_partnership\/partnership\/user_id": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/9541?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "1a6dc8cd-fea2-486b-bd0e-12572c6a26ab"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_partnership\/partnership\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/9541?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "1a6dc8cd-fea2-486b-bd0e-12572c6a26ab"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_partnership\/partnership\/field_authority": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_authority\/530?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_authority\/authority"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "19e05a57-741d-4a78-85b4-6d04349b9b81"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_partnership\/partnership\/field_authority_person": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/117820?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "512ccfa3-496d-47aa-9a46-6abfa8922625"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_partnership\/partnership\/field_organisation": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_organisation\/101815?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_organisation\/organisation"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "05feeea7-4683-475c-b320-395208fc95c2"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_partnership\/partnership\/field_organisation_person": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/117849?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "1abddc28-47e8-4629-bd85-6eddd98c666a"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1528877179
+        }
+    ],
+    "changed": [
+        {
+            "value": 1528877179
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": 1528877179
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "5b20d07d7ef15",
+            "lang": "en"
+        }
+    ],
+    "deleted": [
+        {
+            "value": false
+        }
+    ],
+    "revoked": [
+        {
+            "value": false
+        }
+    ],
+    "archived": [
+        {
+            "value": false
+        }
+    ],
+    "partnership_type": [
+        {
+            "value": "coordinated"
+        }
+    ],
+    "partnership_status": [
+        {
+            "value": "awaiting_review"
+        }
+    ],
+    "about_partnership": [
+        {
+            "value": "Some information about the partnership",
+            "format": null,
+            "processed": "<p>Some information about the partnership<\/p>\n"
+        }
+    ],
+    "terms_authority_agreed": [
+        {
+            "value": false
+        }
+    ],
+    "partnership_info_agreed_authority": [
+        {
+            "value": false
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ]
+}

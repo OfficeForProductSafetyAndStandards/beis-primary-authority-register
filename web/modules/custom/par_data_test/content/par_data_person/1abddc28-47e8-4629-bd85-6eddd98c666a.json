@@ -1,49 +1,49 @@
 {
     "_links": {
         "self": {
-            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_regulatory_function\/14?_format=hal_json"
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/117849?_format=hal_json"
         },
         "type": {
-            "href": "http:\/\/drupal.org\/rest\/type\/par_data_regulatory_function\/regulatory_function"
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
         },
-        "http:\/\/drupal.org\/rest\/relation\/par_data_regulatory_function\/regulatory_function\/user_id": [
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/user_id": [
             {
-                "href": "http:\/\/default\/user\/1?_format=hal_json",
+                "href": "http:\/\/default\/user\/9541?_format=hal_json",
                 "lang": "en"
             }
         ],
-        "http:\/\/drupal.org\/rest\/relation\/par_data_regulatory_function\/regulatory_function\/revision_uid": [
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/revision_uid": [
             {
-                "href": "http:\/\/default\/user\/1?_format=hal_json"
+                "href": "http:\/\/default\/user\/9541?_format=hal_json"
             }
         ]
     },
     "id": [
         {
-            "value": 14
+            "value": 117849
         }
     ],
     "type": [
         {
-            "target_id": "regulatory_function"
+            "target_id": "person"
         }
     ],
     "uuid": [
         {
-            "value": "15660610-03e4-47f4-b26e-159d0cd4d86a"
+            "value": "1abddc28-47e8-4629-bd85-6eddd98c666a"
         }
     ],
     "revision_id": [
         {
-            "value": 12
+            "value": 32174
         }
     ],
     "_embedded": {
-        "http:\/\/drupal.org\/rest\/relation\/par_data_regulatory_function\/regulatory_function\/user_id": [
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/user_id": [
             {
                 "_links": {
                     "self": {
-                        "href": "http:\/\/default\/user\/1?_format=hal_json"
+                        "href": "http:\/\/default\/user\/9541?_format=hal_json"
                     },
                     "type": {
                         "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
@@ -51,17 +51,17 @@
                 },
                 "uuid": [
                     {
-                        "value": "3508aee8-7e04-4b5d-a784-3667ea038e49"
+                        "value": "1a6dc8cd-fea2-486b-bd0e-12572c6a26ab"
                     }
                 ],
                 "lang": "en"
             }
         ],
-        "http:\/\/drupal.org\/rest\/relation\/par_data_regulatory_function\/regulatory_function\/revision_uid": [
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/revision_uid": [
             {
                 "_links": {
                     "self": {
-                        "href": "http:\/\/default\/user\/1?_format=hal_json"
+                        "href": "http:\/\/default\/user\/9541?_format=hal_json"
                     },
                     "type": {
                         "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
@@ -69,7 +69,7 @@
                 },
                 "uuid": [
                     {
-                        "value": "3508aee8-7e04-4b5d-a784-3667ea038e49"
+                        "value": "1a6dc8cd-fea2-486b-bd0e-12572c6a26ab"
                     }
                 ]
             }
@@ -88,17 +88,17 @@
     ],
     "created": [
         {
-            "value": 1521559594
+            "value": 1528877179
         }
     ],
     "changed": [
         {
-            "value": 1521559594
+            "value": 1528877179
         }
     ],
     "revision_timestamp": [
         {
-            "value": 1528857226
+            "value": 1528877179
         }
     ],
     "revision_translation_affected": [
@@ -109,7 +109,7 @@
     ],
     "name": [
         {
-            "value": "5ab1282da8fce",
+            "value": "5b20d07d7bfbb",
             "lang": "en"
         }
     ],
@@ -128,9 +128,29 @@
             "value": false
         }
     ],
-    "function_name": [
+    "salutation": [
         {
-            "value": "Alphabet learning"
+            "value": "Mrs"
+        }
+    ],
+    "first_name": [
+        {
+            "value": "Helen"
+        }
+    ],
+    "last_name": [
+        {
+            "value": "Brittas"
+        }
+    ],
+    "work_phone": [
+        {
+            "value": "07739670315"
+        }
+    ],
+    "email": [
+        {
+            "value": "par_coordinator@example.com"
         }
     ],
     "default_langcode": [
