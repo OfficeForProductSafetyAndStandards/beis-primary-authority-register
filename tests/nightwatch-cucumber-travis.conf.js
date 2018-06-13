@@ -20,10 +20,10 @@ module.exports = {
     page_objects_path: 'step-definitions/page_objects',
     live_output: false,
     disable_colors: false,
-    test_workers: {
-        enabled: true,
-        workers: 9
-    },
+//     test_workers: {
+//         enabled: true,
+//         workers: 9
+//     },
     selenium: {
         start_process: true,
         server_path: seleniumServer.path,
