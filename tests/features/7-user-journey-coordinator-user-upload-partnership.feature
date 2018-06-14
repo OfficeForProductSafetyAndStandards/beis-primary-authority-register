@@ -116,7 +116,6 @@ Feature: Coordinator User - Upload Members
         And the element ".table-scroll-wrapper" contains the text "Coordinated Member 2"
         And the element ".table-scroll-wrapper" contains the text "Coordinated Member 3"
         And the element ".table-scroll-wrapper" contains the text "Coordinated Member 4"
-        And the element ".table-scroll-wrapper" does not contain the text "New Member One"
 
         # REUPLOAD MEMBERS
 

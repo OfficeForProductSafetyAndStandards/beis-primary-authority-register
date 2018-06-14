@@ -22,7 +22,7 @@ module.exports = {
     disable_colors: false,
     test_workers: {
         enabled: true,
-        workers: 9
+        workers: 'auto'
     },
     selenium: {
         start_process: true,

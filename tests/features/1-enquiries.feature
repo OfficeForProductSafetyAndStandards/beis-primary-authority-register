@@ -1,7 +1,7 @@
 
 Feature: PA User - Messaging
 
-    @1254 @ci
+    @ci @1254
     Scenario Outline: Enquiry Messages View
         Given I am logged in as "par_authority@example.com"
         And I click the text link "See enquiries"
