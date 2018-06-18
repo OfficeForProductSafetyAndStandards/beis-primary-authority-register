@@ -14,7 +14,7 @@
         ],
         "http:\/\/drupal.org\/rest\/relation\/par_data_partnership\/partnership\/revision_uid": [
             {
-                "href": "http:\/\/default\/user\/9541?_format=hal_json"
+                "href": "http:\/\/default\/user\/1?_format=hal_json"
             }
         ],
         "http:\/\/drupal.org\/rest\/relation\/par_data_partnership\/partnership\/field_authority": [
@@ -55,7 +55,7 @@
     ],
     "revision_id": [
         {
-            "value": 10295
+            "value": 10282
         }
     ],
     "_embedded": {
@@ -81,7 +81,7 @@
             {
                 "_links": {
                     "self": {
-                        "href": "http:\/\/default\/user\/9541?_format=hal_json"
+                        "href": "http:\/\/default\/user\/1?_format=hal_json"
                     },
                     "type": {
                         "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
@@ -89,7 +89,7 @@
                 },
                 "uuid": [
                     {
-                        "value": "1a6dc8cd-fea2-486b-bd0e-12572c6a26ab"
+                        "value": "3508aee8-7e04-4b5d-a784-3667ea038e49"
                     }
                 ]
             }
@@ -181,12 +181,12 @@
     ],
     "changed": [
         {
-            "value": 1528877179
+            "value": 1529340104
         }
     ],
     "revision_timestamp": [
         {
-            "value": 1528877179
+            "value": 1529327987
         }
     ],
     "revision_translation_affected": [
@@ -223,7 +223,7 @@
     ],
     "partnership_status": [
         {
-            "value": "awaiting_review"
+            "value": "confirmed_authority"
         }
     ],
     "about_partnership": [
@@ -240,7 +240,7 @@
     ],
     "partnership_info_agreed_authority": [
         {
-            "value": false
+            "value": true
         }
     ],
     "default_langcode": [

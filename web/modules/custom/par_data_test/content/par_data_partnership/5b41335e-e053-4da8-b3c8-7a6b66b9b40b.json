@@ -181,7 +181,7 @@
     ],
     "changed": [
         {
-            "value": 1529329040
+            "value": 1529340084
         }
     ],
     "revision_timestamp": [
@@ -223,7 +223,7 @@
     ],
     "partnership_status": [
         {
-            "value": "awaiting_review"
+            "value": "confirmed_authority"
         }
     ],
     "about_partnership": [
@@ -240,7 +240,7 @@
     ],
     "partnership_info_agreed_authority": [
         {
-            "value": false
+            "value": true
         }
     ],
     "default_langcode": [
