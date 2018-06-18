@@ -22,7 +22,7 @@ const shared = client.page.shared();
       })
   });
 
-  Then('I refresh the page', function (string) {
+  Then('I refresh the page', function () {
     return client
         .refresh()
   });
