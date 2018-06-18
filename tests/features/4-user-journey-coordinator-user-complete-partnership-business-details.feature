@@ -9,7 +9,7 @@ Feature: Coordinator User - Complete organisation details
         And I open the path "/partnerships"
         And I refresh the page
 
-        And I click the link text "Organisation For Coordinated Partnership"
+        And I click the link text "Organisation For A Coordinated Partnership"
 
         # COMPLETE ABOUT THE BUSINESS
 
@@ -43,7 +43,7 @@ Feature: Coordinator User - Complete organisation details
 
         # REVIEW
 
-        And I submit final confirmation of completion by organisation "Organisation For Coordinated Partnership"
+        And I submit final confirmation of completion by organisation "Organisation For A Coordinated Partnership"
 
         # Then the element "h1.heading-xlarge" contains the text "Review the partnership summary information below"
         # Then the element "#edit-organisation-registered-address" contains the text "1 High St"
