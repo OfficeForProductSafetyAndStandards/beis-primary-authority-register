@@ -1,0 +1,101 @@
+langcode: en
+status: true
+dependencies: {  }
+id: partnership_application
+label: 'Partnership Application Flow'
+default_title: 'New Partnership Application'
+default_section_title: 'New partnership application'
+description: ''
+save_method: end
+steps:
+  1:
+    route: par_partnership_application_flows.partnership_application_start
+    form_id: par_authority_selection
+    components:
+      authority_select: {}
+    redirect:
+      cancel: 12
+  2:
+    route: par_partnership_application_flows.partnership_application_type
+    form_id: par_partnership_application_type
+    redirect:
+      cancel: 12
+  3:
+    route: par_partnership_application_flows.partnership_application_authority_checklist
+    form_id: par_partnership_application_authority_checklist
+    redirect:
+      cancel: 12
+  4:
+    route: par_partnership_application_flows.partnership_application_partnership_about
+    form_id: par_partnership_about
+    components:
+      about_partnership: {}
+    redirect:
+      cancel: 12
+  5:
+    route: par_partnership_application_flows.partnership_application_organisation_name
+    form_id: par_partnership_application_organisation
+    components:
+      organisation_name: {}
+    redirect:
+      cancel: 12
+  6:
+    route: par_partnership_application_flows.partnership_application_organisation_confirm
+    form_id: par_partnership_organisation_suggestion
+    components:
+      organisation_select: {}
+    form_data:
+      organisation_select: par_partnership_application_organisation
+    redirect:
+      review: 9
+      add_contact: 8
+      cancel: 12
+  7:
+    route: par_partnership_application_flows.partnership_application_organisation_address
+    form_id: par_partnership_address
+    components:
+      address: {}
+    redirect:
+      cancel: 12
+  8:
+    route: par_partnership_application_flows.partnership_application_organisation_contact
+    form_id: par_partnership_contact
+    components:
+      contact_details: {}
+    redirect:
+      cancel: 12
+  9:
+    route: par_partnership_application_flows.partnership_application_review
+    form_id: par_partnership_application_confirmation
+    form_data:
+      authority_select: par_authority_selection
+      application_type: par_partnership_application_type
+      application_checklist: par_partnership_application_authority_checklist
+      about: par_partnership_about
+      organisation_name: par_partnership_application_organisation
+      organisation_select: par_partnership_organisation_suggestion
+      organisation_address: par_partnership_address
+      organisation_contact: par_partnership_contact
+    redirect:
+      authority_select: 1
+      application_type: 2
+      application_checklist: 3
+      about: 4
+      organisation_name: 5
+      organisation_select: 6
+      organisation_address: 7
+      organisation_contact: 8
+      save: 10
+      cancel: 12
+  10:
+    route: par_partnership_application_flows.partnership_application_invite
+    form_id: par_partnership_invite
+    redirect:
+      next: 11
+      cancel: 12
+  11:
+    route: par_partnership_application_flows.partnership_application_invite_sent
+    redirect:
+      done: 12
+  12:
+    route: par_dashboards.dashboard

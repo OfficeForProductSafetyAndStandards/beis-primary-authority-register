@@ -303,6 +303,9 @@ class ParDataEnforcementAction extends ParDataEntity {
       // action id on the copied (referred action) this indicates that the action in question
       // has been referred once and can no longer be referred.
       $cloned_action->set('field_action_referral', $this->id());
+      // Set the status back to it's default value.
+      $default_status = $this->getTypeEntity()->getDefaultStatus();
+      $cloned_action->setParStatus($default_status);
       // If a new duplicate enforcement action has been saved to the system return it.
       if ($cloned_action->save()) {
         return $cloned_action;

@@ -1,0 +1,13 @@
+diff --git a/src/Plugin/Mail/GovUKNotifyMail.php b/src/Plugin/Mail/GovUKNotifyMail.php
+index 27cb23a..469260e 100644
+--- a/src/Plugin/Mail/GovUKNotifyMail.php
++++ b/src/Plugin/Mail/GovUKNotifyMail.php
+@@ -96,7 +96,7 @@ class GovUKNotifyMail implements MailInterface, ContainerFactoryPluginInterface
+     // If we don't have a body set, get the default drupal body param.
+     if (empty($message['params']['message']) && !empty($message['body']) && isset($template['body'])
+       && $this->notifyService->checkReplacement($template['body'], 'message')) {
+-      $message['params']['message'] = current($message['body']);
++      $message['params']['message'] = is_array($message['body']) ? current($message['body']) : $message['body'];
+     }
+ 
+     // If we're using the default GovUK template then we should ensure that our

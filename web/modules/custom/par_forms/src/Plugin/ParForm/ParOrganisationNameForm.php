@@ -41,7 +41,7 @@ class ParOrganisationNameForm extends ParFormPluginBase {
 
     $form['name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Enter the member organisation name'),
+      '#title' => $this->t('Provide the business or organisation name'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('name'),
     ];
 

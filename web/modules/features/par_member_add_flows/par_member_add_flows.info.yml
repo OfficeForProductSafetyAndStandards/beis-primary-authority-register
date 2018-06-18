@@ -1,4 +1,4 @@
-name: 'PAR Partnership Confirmation Flows'
+name: 'PAR Member Add Flows'
 type: module
 description: 'Creates the flows required for the organisation to confirm the partnership.'
 core: 8.x

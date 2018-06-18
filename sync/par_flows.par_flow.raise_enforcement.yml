@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: EOXYJA-VHevT5axSARJcNOIdAYdJoc0yWGBOOOnSD3A
+  default_config_hash: 4iQtjiS7d65gu7o8KczACuahBNANwFmo8uecJ5BIyXU
 id: raise_enforcement
 label: 'Raise Enforcement'
 default_title: null
@@ -22,7 +22,7 @@ steps:
     route: par_enforcement_raise_flows.select_organisation
     form_id: par_enforce_organisation
     components:
-      organisation_select: {  }
+      member_select: {  }
   3:
     route: par_enforcement_raise_flows.officer_details
     form_id: par_enforcement_officer_details
@@ -30,7 +30,7 @@ steps:
       contact_details_basic: {  }
     form_data:
       authority_selection: par_authority_selection
-      organisation_selection: par_enforce_organisation
+      member_selection: par_enforce_organisation
   4:
     route: par_enforcement_raise_flows.select_legal_entity
     form_id: par_enforcement_notice_raise
@@ -41,7 +41,7 @@ steps:
       enforcing_officer: par_enforcement_officer_details
       select_legal: par_enforcement_notice_raise
       authority_selection: par_authority_selection
-      organisation_selection: par_enforce_organisation
+      member_selection: par_enforce_organisation
   5:
     route: par_enforcement_raise_flows.raise_details
     form_id: par_enforcement_notice_raise_details
@@ -51,7 +51,7 @@ steps:
       enforcing_officer: par_enforcement_officer_details
       select_legal: par_enforcement_notice_raise
       authority_selection: par_authority_selection
-      organisation_selection: par_enforce_organisation
+      member_selection: par_enforce_organisation
   6:
     route: par_enforcement_raise_flows.add_action
     form_id: par_enforcement_notice_add_action
@@ -63,7 +63,7 @@ steps:
       enforcing_officer: par_enforcement_officer_details
       select_legal: par_enforcement_notice_raise
       authority_selection: par_authority_selection
-      organisation_selection: par_enforce_organisation
+      member_selection: par_enforce_organisation
   7:
     route: par_enforcement_raise_flows.raise_review
     form_id: par_enforcement_notice_raise_review
@@ -76,7 +76,7 @@ steps:
       enforcing_officer: par_enforcement_officer_details
       select_legal: par_enforcement_notice_raise
       authority_selection: par_authority_selection
-      organisation_selection: par_enforce_organisation
+      member_selection: par_enforce_organisation
     redirect:
       select_legal: 4
       enforcement_details: 5

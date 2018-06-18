@@ -33,7 +33,7 @@ steps:
     route: par_member_update_flows.update_organisation_name
     form_id: par_member_update_organisation_name
     components:
-      organisation_name: {  }
+      member_name: {  }
     redirect:
       save: 1
       cancel: 1

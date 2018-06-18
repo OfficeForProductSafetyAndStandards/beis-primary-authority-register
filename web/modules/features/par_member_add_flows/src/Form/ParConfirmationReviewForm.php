@@ -89,7 +89,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
     // Get the organisation name form details.
     $organisation_name_cid = $this->getFlowNegotiator()->getFormKey('par_member_add_organisation_name');
-    $organisation_name = $this->getFlowDataHandler()->getTempDataValue('organisation_name', $organisation_name_cid);
+    $organisation_name = $this->getFlowDataHandler()->getTempDataValue('name', $organisation_name_cid);
 
     // Get the trading name data.
     $trading_name_cid = $this->getFlowNegotiator()->getFormKey('par_member_add_trading_name');

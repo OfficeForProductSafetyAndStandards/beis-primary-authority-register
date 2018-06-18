@@ -30,6 +30,7 @@ trait ParFlowAccessTrait {
     $allowed_statuses = [
       $par_data_partnership->getTypeEntity()->getDefaultStatus(),
       'confirmed_authority',
+      'active',
     ];
 
     // If this enforcement notice has not been reviewed.

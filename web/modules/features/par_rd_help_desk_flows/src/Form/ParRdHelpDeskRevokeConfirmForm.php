@@ -126,7 +126,6 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
 
     // We only want to update the status of active partnerships.
     if (!$par_data_partnership->isRevoked()) {
-
       $revoked = $par_data_partnership->revoke($this->getFlowDataHandler()->getTempDataValue('revocation_reason'));
 
       if ($revoked) {
