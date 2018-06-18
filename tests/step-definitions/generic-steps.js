@@ -22,6 +22,11 @@ const shared = client.page.shared();
       })
   });
 
+  Then('I refresh the page', function (string) {
+    return client
+        .refresh()
+  });
+
   Then('I click on the button {string}', function (string) {
     return client
         .click(string).then(function (){
