@@ -23,9 +23,29 @@
             "lang": "en"
         }
     ],
+    "mail": [
+        {
+            "value": "par_authority@example.com"
+        }
+    ],
     "name": [
         {
             "value": "par_authority@example.com"
+        }
+    ],
+    "pass": [
+        {
+            "value": "TestPassword"
+        }
+    ],
+    "status": [
+        {
+            "value": "1"
+        }
+    ],
+    "roles": [
+        {
+            "target_id": "par_authority"
         }
     ],
     "created": [
