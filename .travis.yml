@@ -132,8 +132,7 @@ before_script:
 script:
   - docker exec -it par_beta_web sh -c "./vendor/bin/paratest --processes=16 --log-junit=./tests/reports/phpunit.latest.xml"
   - docker exec -it par_beta_web bash -c "apt-get update -y"  
-  - docker exec -it par_beta_web bash -c "apt-get install -y google-chrome-stable"
-  - docker exec -it par_beta_web bash -c "apt-get autoremove -y"
+  - docker exec -it par_beta_web bash -c "apt-get install -y google-chrome-beta"
   - if [[ "$TESTTYPE" == "nightwatch" ]]; then travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install && npm run selenium-install"; fi
   - if [[ "$TESTTYPE" == "nightwatch" ]]; then docker exec -ti par_beta_web bash -c "cd tests && ./node_modules/.bin/nightwatch -c ./nightwatch-cucumber-travis.conf.js"; fi
   - if [[ "$TESTTYPE" == "nightwatch" ]]; then docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run generate-report"; fi
