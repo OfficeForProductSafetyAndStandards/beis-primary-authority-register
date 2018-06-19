@@ -51,6 +51,18 @@ module.exports = {
                     'webdriver.chrome.driver': chromedriver.path
                 }
             }
-        }
+        },
+        firefox: {
+            desiredCapabilities: {
+                browserName: 'firefox',
+                javascriptEnabled: true,
+                acceptSslCerts: true
+            },
+            selenium: {
+                cli_args: {
+                    'webdriver.gecko.driver': './node_modules/.bin/geckodriver'
+                }
+            }
+        },
     }
 }
