@@ -1,7 +1,5 @@
 const seleniumServer = require('selenium-server')
 const chromedriver = require('chromedriver')
-const geckodriver = require('geckodriver')
-
 const electron = require('electron-prebuilt');
 
 require('nightwatch-cucumber')({
@@ -40,15 +38,19 @@ module.exports = {
                 path: 'reports/screenshots'
             },
             desiredCapabilities: {
-                browserName: 'firefox',
+                browserName: 'chrome',
+                chromeOptions : {
+                    binary: '/usr/bin/google-chrome',
+                    args: ['--headless', '--no-sandbox', '--window-size=1280,1280'],
+                },
                 javascriptEnabled: true,
                 acceptSslCerts: true
-                },
             },
             selenium: {
                 cli_args: {
-                    'webdriver.gecko.driver': geckodriver.path
+                    'webdriver.chrome.driver': chromedriver.path
                 }
             }
+        }
     }
 }
