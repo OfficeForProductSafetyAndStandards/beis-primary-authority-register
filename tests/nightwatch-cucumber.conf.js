@@ -54,6 +54,7 @@ module.exports = {
         firefox: {
             desiredCapabilities: {
                 browserName: 'firefox',
+                marionette: true,
                 javascriptEnabled: true,
                 acceptSslCerts: true
             }
