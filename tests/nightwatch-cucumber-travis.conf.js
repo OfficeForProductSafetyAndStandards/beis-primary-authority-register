@@ -1,5 +1,7 @@
 const seleniumServer = require('selenium-server')
 const chromedriver = require('chromedriver')
+const geckodriver = require('geckodriver')
+
 const electron = require('electron-prebuilt');
 
 require('nightwatch-cucumber')({
@@ -43,10 +45,10 @@ module.exports = {
                 acceptSslCerts: true
                 },
             },
-            // selenium: {
-            //     cli_args: {
-            //         'webdriver.chrome.driver': chromedriver.path
-            //     }
-            // }
+            selenium: {
+                cli_args: {
+                    'webdriver.gecko.driver': geckodriver.path
+                }
+            }
     }
 }
