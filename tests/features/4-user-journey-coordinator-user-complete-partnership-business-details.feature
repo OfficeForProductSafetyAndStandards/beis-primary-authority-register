@@ -7,8 +7,6 @@ Feature: Coordinator User - Complete organisation details
         
         Given I am logged in as "par_coordinator@example.com"
         And I open the path "/partnerships"
-        And I refresh the page
-
         And I click the link text "Organisation For A Coordinated Partnership"
 
         # COMPLETE ABOUT THE BUSINESS
