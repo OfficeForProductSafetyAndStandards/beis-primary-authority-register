@@ -9,7 +9,8 @@ Feature: Business User - Update Partnership
 
         # GO TO A PARTNERSHIP PAGE
 
-        When I click the link text "See your partnerships"
+        And I click the link text "Dashboard"
+        And I click the link text "See your partnerships"
         And I click the link text "Organisation For Updating Direct Partnership"
        
         # EDIT REGISTERED ADDRESS
