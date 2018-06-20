@@ -71,7 +71,7 @@ class ParMember extends FilterPluginBase {
     $revision_table = "{$this->tableAlias}.{$id}";
 
     // Where filter on partnership id to those the user is allowed to update.
-    $this->query->addWhere(0, $revision_table, $membership_filter, 'in');
+    $this->query->addWhere(0, $revision_table, $membership_filter, 'IN');
   }
 
 }

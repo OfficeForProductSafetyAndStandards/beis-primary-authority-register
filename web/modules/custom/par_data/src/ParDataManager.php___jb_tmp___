@@ -303,21 +303,10 @@ class ParDataManager implements ParDataManagerInterface {
     else {
       // Now we've decided if it's worth processing this entity let's cache it.
       $relationships = $entity->getRelationships();
-
-      // Set cache tags for all these relationships.
-      $tags[] = $entityHashKey;
-      foreach ($relationships as $entity_type => $referenced_entities) {
-        foreach ($referenced_entities as $referenced_entity_id => $referenced_entity) {
-          $tags[] = $entity_type . ':' . $referenced_entity->id();
-        }
-      }
-
-      \Drupal::cache('data')->set("par_data_relationships:{$entityHashKey}", $relationships, Cache::PERMANENT, $tags);
     }
 
     // Loop through all relationships.
     foreach ($relationships as $entity_type => $referenced_entities) {
-
       // @TODO PAR-1025: This is a temporary fix to resolve performance issues
       // with looking up the large numbers of premises.
       if ($entity_type === 'par_data_premises') {

@@ -26,6 +26,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   const REVOKE_FIELD = 'revoked';
   const ARCHIVE_FIELD = 'archived';
 
+  const DEFAULT_RELATIONSHIP = 'default';
+
   /**
    * Simple getter to inject the PAR Data Manager service.
    *
@@ -473,11 +475,13 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *
    * @param string $target
    *   The target type to return entities for.
+   * @param string $action
+   *   The action type to return relationships for.
    *
    * @return EntityInterface[]
    *   An array of entities keyed by type.
    */
-  public function getRelationships($target = NULL) {
+  public function getRelationships($target = NULL, $action = NULL) {
     $entities = [];
 
     // Get all referenced entities.
@@ -487,6 +491,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       // we can get the value from the current $entity.
       if ($this->getEntityTypeId() === $entity_type) {
         foreach ($fields as $field_name => $field) {
+          // Determine whether to get the entities for this relationship.
+          if (!$this->followRelationship($this, $field, $action)) {
+            continue;
+          }
+
           foreach ($this->get($field_name)->referencedEntities() as $referenced_entity) {
             $entities[$referenced_entity->getEntityTypeId()][$referenced_entity->id()] = $referenced_entity;
           }
@@ -497,6 +506,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       // that reference the current entity.
       else {
         foreach ($fields as $field_name => $field) {
+          // Determine whether to get the entities for this relationship.
+          if (!$this->followRelationship($this, $field, $action)) {
+            continue;
+          }
+
           $referencing_entities = $this->getParDataManager()->getEntitiesByProperty($entity_type, $field_name, $this->id());
           if ($referencing_entities) {
             if (!isset($entities[$entity_type])) {
@@ -514,6 +528,12 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     else {
       return $entities;
     }
+  }
+
+  // This method can be overridden by each entity to restrict the type of
+  // relationships that are followed, based on certain action types.
+  public function followRelationship($entity, $field, $action = NULL) {
+    return TRUE;
   }
 
   /**
