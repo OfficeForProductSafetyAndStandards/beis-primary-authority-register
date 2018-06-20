@@ -21,7 +21,7 @@ Feature: Helpdesk approve partnership
         # APPROVAL REVIEW SCREEN
 
         Then the element "#par-rd-help-desk-confirm" contains the text "Partnership between"
-        And the element "#par-rd-help-desk-confirm" contains the text "Beko PLC""
+        And the element "#par-rd-help-desk-confirm" contains the text "Beko PLC"
         And I click on the radio "#edit-confirm-authorisation-select"
         And I click on the radio "#edit-partnership-regulatory-functions-2"
         And I click on the button "#edit-next"
