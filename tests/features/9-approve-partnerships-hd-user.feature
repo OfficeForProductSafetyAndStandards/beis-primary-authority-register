@@ -15,7 +15,7 @@ Feature: Helpdesk approve partnership
         Given I add "Beko PLC" to the inputfield "#edit-keywords"
         # And I select the option with the value "confirmed_business" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-helpdesk-dashboard"
-        And there is "2" occurences of element "td.views-field.views-field-par-flow-link.views-field-par-flow-link-1"
+        And there is "1" occurences of element "td.views-field.views-field-par-flow-link.views-field-par-flow-link-1"
         Then I click the link text "Approve partnership"
 
         # APPROVAL REVIEW SCREEN

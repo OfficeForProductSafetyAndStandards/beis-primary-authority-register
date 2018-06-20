@@ -42,7 +42,6 @@ module.exports = {
             desiredCapabilities: {
                 browserName: 'chrome',
                 chromeOptions : {
-                    //  binary: electron,
                         args: ['--headless', '--window-size=1280,1280'],
                       },
                 javascriptEnabled: true,
