@@ -21,7 +21,7 @@ Feature: Helpdesk approve partnership
         # APPROVAL REVIEW SCREEN
 
         Then the element "#par-rd-help-desk-confirm" contains the text "Partnership between"
-        And the element "#par-rd-help-desk-confirm" contains the text "Out of Eden Limited"
+        And the element "#par-rd-help-desk-confirm" contains the text "Beko PLC""
         And I click on the radio "#edit-confirm-authorisation-select"
         And I click on the radio "#edit-partnership-regulatory-functions-2"
         And I click on the button "#edit-next"
@@ -29,7 +29,7 @@ Feature: Helpdesk approve partnership
         # APPROVAL CONFIRMATION SCREEN
         
         Then the element "h1.heading-xlarge" contains the text "Partnership is approved"
-        And the element "#edit-partnership-info" contains the text "Out of Eden Limited"
+        And the element "#edit-partnership-info" contains the text "Beko PLC"
         And I click on the button "#edit-done"
 
         # GO BACK TO HELPDESK
