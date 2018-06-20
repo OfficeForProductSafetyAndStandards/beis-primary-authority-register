@@ -109,6 +109,28 @@ class ParDataPartnership extends ParDataEntity {
 
   /**
    * {@inheritdoc}
+   *
+   * @param string $reason
+   *   The reason for revoking this partnership.
+   */
+  public function unrevoke($reason = '', $save = TRUE) {
+    // Revoke/archive all dependent entities as well.
+    $inspection_plans = $this->getInspectionPlan();
+    foreach ($inspection_plans as $inspection_plan) {
+      $inspection_plan->unrevoke($save);
+    }
+
+    $advice_documents = $this->getAdvice();
+    foreach ($advice_documents as $advice) {
+      $advice->unrevoke($save);
+    }
+
+    $this->set('revocation_reason', NULL);
+    parent::unrevoke($save);
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function inProgress() {
     // Freeze partnerships that are awaiting approval.
