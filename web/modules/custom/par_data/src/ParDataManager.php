@@ -10,7 +10,9 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\file\FileInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataEntityInterface;
@@ -22,6 +24,8 @@ use Drupal\user\UserInterface;
 * Manages all functionality universal to Par Data.
 */
 class ParDataManager implements ParDataManagerInterface {
+
+  use StringTranslationTrait;
 
   /**
    * The entity manager.
@@ -76,11 +80,11 @@ class ParDataManager implements ParDataManagerInterface {
   protected $membershipIterations = 5;
 
   /**
-   * Membership entity tree.
+   * Debugging for the membership lookup.
    *
-   * Used for debugging.
+   * Change to TRUE to get an onscreen output.
    */
-  protected $membershipTree = [];
+  protected $debug = TRUE;
 
   /**
    * Constructs a ParDataPermissions instance.
@@ -99,6 +103,15 @@ class ParDataManager implements ParDataManagerInterface {
     $this->entityTypeManager = $entity_type_manager;
     $this->entityFieldManager = $entity_field_manager;
     $this->entityTypeBundleInfo = $entity_type_bundle_info;
+  }
+
+  /**
+   * Dynamic getter for the messenger service.
+   *
+   * @return \Drupal\Core\Messenger\MessengerInterface
+   */
+  public function getMessenger() {
+    return \Drupal::messenger();
   }
 
   /**
@@ -266,9 +279,20 @@ class ParDataManager implements ParDataManagerInterface {
    *   An array of entities keyed by entity type.
    */
 
-  public function getRelatedEntities($entity, $entities = [], &$processedEntities = [], $iteration = 0, $force_lookup = FALSE) {
+  public function getRelatedEntities($entity, $entities = [], $iteration = 0, $action = NULL, &$debug_tree = '') {
     if (!$entity instanceof ParDataEntityInterface) {
       return $entities;
+    }
+
+    // Make sure not to count the same entity again.
+    if (isset($entities[$entity->uuid()])) {
+      return $entities;
+    }
+    $entities[$entity->uuid()] = $entity;
+
+    // Allow a debug tree to be built.
+    if ($this->debug) {
+      $debug_tree .= str_repeat('&mdash;', $iteration) . $entity->uuid() . ':' . $entity->getEntityTypeId() . ':' . $entity->label() . PHP_EOL;
     }
 
     // Make sure the entity isn't too distantly related
@@ -280,75 +304,38 @@ class ParDataManager implements ParDataManagerInterface {
       $iteration++;
     }
 
-    // Make sure not to count the same entity again.
-    $entityHashKey = $entity->getEntityTypeId() . ':' . $entity->id();
-    if (isset($processedEntities[$entityHashKey])) {
-      return $entities;
-    }
+    // Get all the relationships based on the given action
+    $relationships = $entity->getRelationships(NULL, $action);
 
-    // Add hash key to show this node has been processed, whether or not it is used or ignored
-    $processedEntities[$entityHashKey] = true;
-
-    // Add this entity to the related entities.
-    if (!isset($entities[$entity->getEntityTypeId()])) {
-      $entities[$entity->getEntityTypeId()] = [];
-    }
-    $entities[$entity->getEntityTypeId()][$entity->id()] = $entity;
-
-    // Everything after this point is costly and we can cache.
-    $cache = \Drupal::cache('data')->get("par_data_relationships:{$entityHashKey}");
-    if ($cache) {
-      $relationships = $cache->data;
-    }
-    else {
-      // Now we've decided if it's worth processing this entity let's cache it.
-      $relationships = $entity->getRelationships();
-
-      // Set cache tags for all these relationships.
-      $tags[] = $entityHashKey;
-      foreach ($relationships as $entity_type => $referenced_entities) {
-        foreach ($referenced_entities as $referenced_entity_id => $referenced_entity) {
-          $tags[] = $entity_type . ':' . $referenced_entity->id();
-        }
+    // Remove any universally banned relationships.
+    $relationships = array_filter($relationships, function ($relationship) use ($iteration) {
+      // Do not follow relationships from secondary people.
+      if ($iteration > 1 && $relationship->getBaseEntity()->getEntityTypeId() === 'par_data_person') {
+        return FALSE;
       }
-
-      \Drupal::cache('data')->set("par_data_relationships:{$entityHashKey}", $relationships, Cache::PERMANENT, $tags);
-    }
-
-    // Loop through all relationships.
-    foreach ($relationships as $entity_type => $referenced_entities) {
-
       // @TODO PAR-1025: This is a temporary fix to resolve performance issues
       // with looking up the large numbers of premises.
-      if ($entity_type === 'par_data_premises') {
-        continue;
+      if ($relationship->getBaseEntity()->getEntityTypeId() === 'par_data_premises') {
+        return FALSE;
       }
-
-      foreach ($referenced_entities as $entity_id => $referenced_entity) {
-        // Always skip lookup of relationships for people.
-        if ($referenced_entity->getEntityTypeId() === 'par_data_person') {
-          continue;
-        }
-
-        // If the current entity is a person only lookup core entity relationships.
-        if ($entity->getEntityTypeId() === 'par_data_person') {
-          if (in_array($referenced_entity->getEntityTypeId(), $this->coreMembershipEntities)) {
-            $entities = $this->getRelatedEntities($referenced_entity, $entities, $processedEntities, $iteration, TRUE);
-          }
-        }
-        // If the current entity is a core entity only lookup entity relationships
-        // if forced to do so, by the person lookup.
-        else if (in_array($entity->getEntityTypeId(), $this->coreMembershipEntities)) {
-          if ($force_lookup) {
-            $entities = $this->getRelatedEntities($referenced_entity, $entities, $processedEntities, $iteration);
-          };
-        }
-        // For all other entities follow your hearts content and find all
-        // entity relationships..
-        else if (!in_array($entity->getEntityTypeId(), $this->nonMembershipEntities)) {
-          $entities = $this->getRelatedEntities($referenced_entity, $entities, $processedEntities, $iteration);
-        }
+      // @TODO PAR-1025: This is a temporary fix to resolve performance issues
+      // with looking up the large numbers of premises.
+      if ($relationship->getBaseEntity()->getEntityTypeId() === 'par_data_regulatory_function') {
+        return FALSE;
       }
+      return TRUE;
+    });
+
+    // Loop through all relationships.
+    foreach ($relationships as $uuid => $relationship) {
+      // Lookup any further relationships.
+      $entities = $this->getRelatedEntities($relationship->getEntity(), $entities, $iteration, $action, $debug_tree);
+    }
+
+    // Output debugging.
+    if ($iteration === 1 && $this->debug) {
+      $tree = \Drupal\Core\Render\Markup::create(nl2br("<br>" . $debug_tree));
+      $this->getMessenger()->addMessage(t('New relationship tree: @tree', ['@tree' => $tree]));
     }
 
     return $entities;
@@ -400,15 +387,8 @@ class ParDataManager implements ParDataManagerInterface {
     $object = $direct ? $this->getReducedIterator(2) : $this;
 
     $memberships = [];
-    $hash_tree = [];
     foreach ($account_people as $person) {
-      $relationships = $object->getRelatedEntities($person, $memberships, $hash_tree);
-      foreach ($relationships as $entity_type => $entities) {
-        if (!isset($memberships[$entity_type])) {
-          $memberships[$entity_type] = [];
-        }
-        $memberships[$entity_type] += $entities;
-      }
+      $memberships = $object->getRelatedEntities($person, $memberships, 0, 'manage');
     }
 
     return !empty($memberships) ? $memberships : [];
@@ -430,7 +410,13 @@ class ParDataManager implements ParDataManagerInterface {
   public function hasMembershipsByType(UserInterface $account, $type, $direct = FALSE) {
     $memberships = $this->hasMemberships($account, $direct);
 
-    return $memberships && isset($memberships[$type]) ? $memberships[$type] : [];
+    $memberships = array_filter($memberships, function ($membership) use ($type) {
+      return ($type === $membership->getEntityTypeId());
+    });
+
+    var_dump(count($memberships));
+
+    return $memberships;
   }
 
   /**

@@ -47,7 +47,11 @@ class ParMember extends FilterPluginBase {
     }
 
     // Find memberships.
-    $membership_filter = array_keys($this->getParDataManager()->hasMembershipsByType($account, $this->getEntityType()));
+    $membership_filter = [];
+    $memberships = $this->getParDataManager()->hasMembershipsByType($account, $this->getEntityType());
+    foreach ($memberships as $membership) {
+      $membership_filter[] = $membership->id();
+    }
 
     // Add 0 to prevent an invalid IN query.
     array_push($membership_filter, 0);

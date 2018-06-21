@@ -70,17 +70,16 @@ function par_data_drush_command() {
 function drush_par_data_par_cache_warm() {
   $par_data_manager = \Drupal::service('par_data.manager');
   $existing = [];
-  $processed = [];
 
   $authorities = $par_data_manager->getEntitiesByType('par_data_authority');
   foreach ($authorities as $authority) {
-    $par_data_manager->getRelatedEntities($authority, $existing, $processed);
+    $par_data_manager->getRelatedEntities($authority, $existing);
     drush_print("Warmed authority: {$authority->label()}");
   }
 
   $organisations = $par_data_manager->getEntitiesByType('par_data_organisation');
   foreach ($organisations as $organisation) {
-    $par_data_manager->getRelatedEntities($organisation, $existing, $processed);
+    $par_data_manager->getRelatedEntities($organisation, $existing);
     drush_print("Warmed organisation: {$organisation->label()}");
   }
 
