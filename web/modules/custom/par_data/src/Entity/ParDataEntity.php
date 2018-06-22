@@ -484,6 +484,13 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   An array of entities keyed by type.
    */
   public function getRelationships($target = NULL, $action = NULL) {
+    // Enable in memory caching for repeated entity lookups.
+    $unique_function_id = __FUNCTION__ . ':' . $this->uuid() . ':' . (isset($target) ? $target : 'null') . ':' . (isset($action) ? $action : 'null');
+    $relationships = &drupal_static($unique_function_id);
+    if (isset($relationships)) {
+      return $relationships;
+    }
+
     // Loading the relationships is costly so caching is necessary.
     $cache = \Drupal::cache('data')->get("par_data_relationships:{$this->uuid()}");
     if ($cache) {
@@ -557,9 +564,22 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function filterRelationshipsByAction($relationship, $action) {
     // By default all relationships are included, this
     // can be overridden on an entity by entity basis.
-    if ($action === 'manage') {
-      //return FALSE;
+    switch ($action) {
+      case 'manage':
+        // The golden rule is that only people should relate to an authority or organisation.
+        if (in_array($relationship->getEntity()->getEntityTypeId(), ['par_data_authority', 'par_data_organisation'])
+          && $relationship->getBaseEntity()->getEntityTypeId() !== 'par_data_person') {
+          return FALSE;
+        }
+
+        // @TODO PAR-1025: This is a temporary fix to resolve performance issues
+        // with looking up the large numbers of premises.
+        if ($relationship->getEntity()->getEntityTypeId() === 'par_data_premises') {
+          return FALSE;
+        }
+
     }
+
     return TRUE;
   }
 

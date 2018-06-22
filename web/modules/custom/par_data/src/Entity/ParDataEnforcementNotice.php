@@ -68,6 +68,23 @@ class ParDataEnforcementNotice extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  public function filterRelationshipsByAction($relationship, $action) {
+    switch ($action) {
+      case 'manage':
+      // Exclude any references to partnerships, this is a one-way relationship.
+      // Partnerships relate to enforcement notices but not the other way round.
+      if ($relationship->getEntity()->getEntityTypeId() === 'par_data_partnership') {
+        return FALSE;
+      }
+
+    }
+
+    return parent::filterRelationshipsByAction($relationship, $action);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function inProgress() {
     // Any Enforcement Notices with actions that are awaiting approval are marked as 'in progress'.
     foreach ($this->getEnforcementActions() as $action) {

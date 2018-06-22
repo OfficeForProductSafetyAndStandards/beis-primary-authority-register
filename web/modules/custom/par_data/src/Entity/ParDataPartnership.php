@@ -87,6 +87,15 @@ class ParDataPartnership extends ParDataEntity {
 
   /**
    * {@inheritdoc}
+   */
+  public function filterRelationshipsByAction($relationship, $action) {
+    // No relationships to be excluded yet.
+
+    return parent::filterRelationshipsByAction($relationship, $action);
+  }
+
+  /**
+   * {@inheritdoc}
    *
    * @param string $reason
    *   The reason for revoking this partnership.

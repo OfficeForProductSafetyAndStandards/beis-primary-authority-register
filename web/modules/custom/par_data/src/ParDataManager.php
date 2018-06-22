@@ -56,25 +56,6 @@ class ParDataManager implements ParDataManagerInterface {
   protected $entityTypeBundleInfo;
 
   /**
-   * The core entity types through which all membership is calculated.
-   */
-  protected $coreMembershipEntities = ['par_data_authority', 'par_data_organisation'];
-
-  /**
-   * The non membership entities from which references should not be followed.
-   */
-  protected $nonMembershipEntities = [
-    'par_data_sic_codes',
-    'par_data_regulatory_function',
-    'par_data_advice',
-    'par_data_inspection_plan',
-    'par_data_premises',
-    'par_data_legal_entity',
-    'par_data_enforcement_notice',
-    'par_data_enforcement_action',
-  ];
-
-  /**
    * Iteration limit for recursive membership lookups.
    */
   protected $membershipIterations = 5;
@@ -284,11 +265,10 @@ class ParDataManager implements ParDataManagerInterface {
       return $entities;
     }
 
-    // Make sure not to count the same entity again.
-    if (isset($entities[$entity->uuid()])) {
-      return $entities;
+    // Set the entity.
+    if (!isset($entities[$entity->uuid()])) {
+      $entities[$entity->uuid()] = $entity;
     }
-    $entities[$entity->uuid()] = $entity;
 
     // Allow a debug tree to be built.
     if ($this->debug) {
@@ -313,16 +293,7 @@ class ParDataManager implements ParDataManagerInterface {
       if ($iteration > 1 && $relationship->getBaseEntity()->getEntityTypeId() === 'par_data_person') {
         return FALSE;
       }
-      // @TODO PAR-1025: This is a temporary fix to resolve performance issues
-      // with looking up the large numbers of premises.
-      if ($relationship->getBaseEntity()->getEntityTypeId() === 'par_data_premises') {
-        return FALSE;
-      }
-      // @TODO PAR-1025: This is a temporary fix to resolve performance issues
-      // with looking up the large numbers of premises.
-      if ($relationship->getBaseEntity()->getEntityTypeId() === 'par_data_regulatory_function') {
-        return FALSE;
-      }
+
       return TRUE;
     });
 
@@ -413,8 +384,6 @@ class ParDataManager implements ParDataManagerInterface {
     $memberships = array_filter($memberships, function ($membership) use ($type) {
       return ($type === $membership->getEntityTypeId());
     });
-
-    var_dump(count($memberships));
 
     return $memberships;
   }

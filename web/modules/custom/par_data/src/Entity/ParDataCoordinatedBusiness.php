@@ -67,6 +67,22 @@ use Drupal\par_data\ParDataException;
 class ParDataCoordinatedBusiness extends ParDataEntity {
 
   /**
+   * {@inheritdoc}
+   */
+  public function filterRelationshipsByAction($relationship, $action) {
+    switch ($action) {
+      case 'manage':
+        // Partnerships should not be followed, this is a one-way relationship.
+        if ($relationship->getEntity()->getEntityTypeId() === 'par_data_partnership') {
+          return FALSE;
+        }
+
+    }
+
+    return parent::filterRelationshipsByAction($relationship, $action);
+  }
+
+  /**
    * @var array
    *   An array of entity relationships that are dependent on this entity.
    */

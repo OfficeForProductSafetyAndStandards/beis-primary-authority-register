@@ -70,6 +70,20 @@ class ParDataEnforcementAction extends ParDataEntity {
   const REFERRED = 'referred';
 
   /**
+   * {@inheritdoc}
+   */
+  public function filterRelationshipsByAction($relationship, $action) {
+    switch ($action) {
+      case 'manage':
+        // No relationships should be followed, this is one of the lowest tier entities.
+        return FALSE;
+
+    }
+
+    return parent::filterRelationshipsByAction($relationship, $action);
+  }
+
+  /**
    * Get the blocked advice for this Enforcement Action.
    */
   public function getBlockedAdvice() {
