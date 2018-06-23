@@ -75,8 +75,11 @@ class ParDataEnforcementAction extends ParDataEntity {
   public function filterRelationshipsByAction($relationship, $action) {
     switch ($action) {
       case 'manage':
-        // No relationships should be followed, this is one of the lowest tier entities.
-        return FALSE;
+        // Don't follow links to referral actions, these are
+        // references only and do not indicate membership.
+        if ($relationship->getEntity()->getEntityTypeId() === $this->getEntityTypeId()) {
+          return FALSE;
+        }
 
     }
 

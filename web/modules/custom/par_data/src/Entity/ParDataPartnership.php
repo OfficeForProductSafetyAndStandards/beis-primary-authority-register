@@ -89,7 +89,16 @@ class ParDataPartnership extends ParDataEntity {
    * {@inheritdoc}
    */
   public function filterRelationshipsByAction($relationship, $action) {
-    // No relationships to be excluded yet.
+    switch ($action) {
+      case 'manage':
+        // Exclude any references to partnerships, this is a one-way relationship.
+        // Partnerships relate to enforcement notices but not the other way round.
+        if ($relationship->getEntity()->getEntityTypeId() === 'par_data_enforcement_notice'
+          && $primary_authority = $relationship->getEntity()->getPrimaryAuthority(TRUE)) {
+          return $primary_authority->uuid() === $relationship->getEntity()->uuid();
+        }
+
+    }
 
     return parent::filterRelationshipsByAction($relationship, $action);
   }
