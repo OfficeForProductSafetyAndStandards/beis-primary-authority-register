@@ -119,7 +119,7 @@ class ParDataStorage extends TranceStorage {
     parent::doPostSave($entity, $update);
 
     // Warm caches.
-    $this->parDataManager->getRelatedEntities($entity);
+    $entity->getRelationships();
   }
 
 }

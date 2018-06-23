@@ -274,6 +274,12 @@ class ParDataManager implements ParDataManagerInterface {
     if ($this->debug) {
       $debug_tree .= str_repeat('&mdash;', $iteration) . $entity->uuid() . ':' . $entity->getEntityTypeId() . ':' . $entity->label() . PHP_EOL;
     }
+    else {
+      // Don't repeat entities when not building a debugging tree.
+      if (isset($entities[$entity->uuid()])) {
+        return $entities;
+      }
+    }
 
     // Make sure the entity isn't too distantly related
     // to limit recursive relationships.
