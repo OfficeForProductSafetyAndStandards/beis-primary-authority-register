@@ -94,8 +94,9 @@ class ParDataPartnership extends ParDataEntity {
         // Exclude any references to partnerships, this is a one-way relationship.
         // Partnerships relate to enforcement notices but not the other way round.
         if ($relationship->getEntity()->getEntityTypeId() === 'par_data_enforcement_notice'
-          && $primary_authority = $relationship->getEntity()->getPrimaryAuthority(TRUE)) {
-          return $primary_authority->uuid() === $relationship->getEntity()->uuid();
+          && $enforcement_primary_authority = $relationship->getEntity()->getPrimaryAuthority(TRUE)) {
+          $partnership_primary_authority = $relationship->getBaseEntity()->getAuthority(TRUE);
+          return ($enforcement_primary_authority->uuid() === $partnership_primary_authority->uuid());
         }
 
     }

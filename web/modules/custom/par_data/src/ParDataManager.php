@@ -65,7 +65,7 @@ class ParDataManager implements ParDataManagerInterface {
    *
    * Change to TRUE to get an onscreen output.
    */
-  protected $debug = FALSE;
+  protected $debug = TRUE;
 
   /**
    * Constructs a ParDataPermissions instance.
@@ -265,11 +265,6 @@ class ParDataManager implements ParDataManagerInterface {
       return $entities;
     }
 
-    // Set the entity.
-    if (!isset($entities[$entity->uuid()])) {
-      $entities[$entity->uuid()] = $entity;
-    }
-
     // Allow a debug tree to be built.
     if ($this->debug) {
       $debug_tree .= str_repeat('&mdash;', $iteration) . $entity->uuid() . ':' . $entity->getEntityTypeId() . ':' . $entity->label() . PHP_EOL;
@@ -279,6 +274,11 @@ class ParDataManager implements ParDataManagerInterface {
       if (isset($entities[$entity->uuid()])) {
         return $entities;
       }
+    }
+
+    // Set the entity.
+    if (!isset($entities[$entity->uuid()])) {
+      $entities[$entity->uuid()] = $entity;
     }
 
     // Make sure the entity isn't too distantly related

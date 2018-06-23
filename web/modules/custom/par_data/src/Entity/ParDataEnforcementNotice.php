@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\par_data\ParDataException;
@@ -354,9 +355,13 @@ class ParDataEnforcementNotice extends ParDataEntity {
     if ($referral_authority_id && $primary_authority = ParDataAuthority::load($referral_authority_id)) {
       // Duplicate this enforcement notification and assign it the cloned action.
       $referral_notice = $this->createDuplicate();
+
       $referral_notice->set('field_primary_authority', $primary_authority->id());
       $referral_notice->set('field_person', $primary_authority->getPerson(TRUE));
       $referral_notice->set('field_enforcement_action', $cloned_action->id());
+
+      $date = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
+      $referral_notice->set('notice_date', $date->format('Y-m-d'));
 
       if ($referral_notice->save()) {
         return $referral_notice;

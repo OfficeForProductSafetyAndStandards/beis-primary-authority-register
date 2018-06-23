@@ -77,7 +77,12 @@ class ParDataEnforcementAction extends ParDataEntity {
       case 'manage':
         // Don't follow links to referral actions, these are
         // references only and do not indicate membership.
-        if ($relationship->getEntity()->getEntityTypeId() === $this->getEntityTypeId()) {
+        if ($relationship->getEntity()->getEntityTypeId() === $relationship->getBaseEntity()->getEntityTypeId()) {
+          return FALSE;
+        }
+
+        // The relationship to enforcement notices is a one-way relationship.
+        if ($relationship->getEntity()->getEntityTypeId() === 'par_data_enforcement_notice') {
           return FALSE;
         }
 
