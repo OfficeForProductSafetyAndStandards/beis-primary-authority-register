@@ -117,16 +117,14 @@ class AccessParPartnershipsTest extends ParDataTestBase {
 
     // Check that the correct caches have been created.
     foreach ($this->authorities as $i => $authority) {
-      $entityHashKey = $authority->getEntityTypeId() . ':' . $authority->id();
-      $cache = \Drupal::cache('data')->get("par_data_relationships:{$entityHashKey}");
+      $cache = \Drupal::cache('data')->get("par_data_relationships:{$authority->uuid()}");
       // Only a select number of authorities have member people.
       if ($i >= 10 && $i % 2 == 0) {
         $this->assertNotFalse($cache, t("Relationships for authority entity {$authority->id()} have been correctly cached."));
       }
     }
     foreach ($this->organisations as $i => $organisation) {
-      $entityHashKey = $organisation->getEntityTypeId() . ':' . $organisation->id();
-      $cache = \Drupal::cache('data')->get("par_data_relationships:{$entityHashKey}");
+      $cache = \Drupal::cache('data')->get("par_data_relationships:{$organisation->uuid()}");
       // Only a select number of authorities have member people.
       if ($i >= 10 && $i % 2 != 0) {
         $this->assertNotFalse($cache, t("Relationships for organisation entity {$organisation->id()} have been correctly cached."));
