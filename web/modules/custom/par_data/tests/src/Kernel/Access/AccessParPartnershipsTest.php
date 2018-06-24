@@ -109,18 +109,10 @@ class AccessParPartnershipsTest extends ParDataTestBase {
     $partnership_memberships = $this->parDataManager->hasMembershipsByType($this->membershipUser, 'par_data_partnership');
     $this->assertCount(10, $partnership_memberships, t('Partnership memberships are all correct.'));
 
-    // The user has membership to 10 authorities through it's 10 partnerships.
-    $authority_memberships = $this->parDataManager->hasMembershipsByType($this->membershipUser, 'par_data_authority');
-    $this->assertCount(10, $authority_memberships, t('Authority memberships are all correct.'));
-
-    // However only half of these are direct memberships.
-    $direct_authority_memberships = $this->parDataManager->hasMembershipsByType($this->membershipUser, 'par_data_authority', TRUE);
+    $direct_authority_memberships = $this->parDataManager->hasMembershipsByType($this->membershipUser, 'par_data_authority');
     $this->assertCount(5, $direct_authority_memberships, t('Direct Authority memberships are all correct.'));
 
-    $organisation_memberships = $this->parDataManager->hasMembershipsByType($this->membershipUser, 'par_data_organisation');
-    $this->assertCount(10, $organisation_memberships, t('Organisation memberships are all correct.'));
-
-    $direct_organisation_memberships = $this->parDataManager->hasMembershipsByType($this->membershipUser, 'par_data_organisation', TRUE);
+    $direct_organisation_memberships = $this->parDataManager->hasMembershipsByType($this->membershipUser, 'par_data_organisation');
     $this->assertCount(5, $direct_organisation_memberships, t('Direct Organisation memberships are all correct.'));
 
     // Check that the correct caches have been created.
