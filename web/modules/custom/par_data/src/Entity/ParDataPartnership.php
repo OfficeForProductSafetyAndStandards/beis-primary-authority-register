@@ -123,7 +123,7 @@ class ParDataPartnership extends ParDataEntity {
     }
 
     $this->set('revocation_reason', $reason);
-    parent::revoke($save);
+    return parent::revoke($save);
   }
 
   /**
