@@ -64,15 +64,5 @@
             "value": true,
             "lang": "en"
         }
-    ],
-    "field_last_password_reset": [
-        {
-            "value": "2018-03-20T15:26:39"
-        }
-    ],
-    "field_password_expiration": [
-        {
-            "value": false
-        }
     ]
 }

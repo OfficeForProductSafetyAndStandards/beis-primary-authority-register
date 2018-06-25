@@ -373,3 +373,20 @@ function par_data_update_8025() {
   // Ensure the invite.created field is created in the database.
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
+
+/**
+ * There is a corrupt deleted field that needs to be removed.
+ */
+function par_data_update_8026() {
+  // We need to trash the deleted field_uprn because it is causing issues.
+  $deleted_field_definitions = \Drupal::state()->get('field.field.deleted', []);
+
+  foreach($deleted_field_definitions as $definition) {
+    if ($definition->getName() === 'field_uprn') {
+      field_purge_field($definition);
+    }
+  }
+
+  // Then run purge to make sure all other fields are gone.
+  field_purge_batch(500);
+}
