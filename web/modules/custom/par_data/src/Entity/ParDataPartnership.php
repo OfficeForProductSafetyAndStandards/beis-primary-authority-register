@@ -87,6 +87,25 @@ class ParDataPartnership extends ParDataEntity {
 
   /**
    * {@inheritdoc}
+   */
+  public function filterRelationshipsByAction($relationship, $action) {
+    switch ($action) {
+      case 'manage':
+        // Exclude any references to partnerships, this is a one-way relationship.
+        // Partnerships relate to enforcement notices but not the other way round.
+        if ($relationship->getEntity()->getEntityTypeId() === 'par_data_enforcement_notice'
+          && $enforcement_primary_authority = $relationship->getEntity()->getPrimaryAuthority(TRUE)) {
+          $partnership_primary_authority = $relationship->getBaseEntity()->getAuthority(TRUE);
+          return ($enforcement_primary_authority->uuid() === $partnership_primary_authority->uuid());
+        }
+
+    }
+
+    return parent::filterRelationshipsByAction($relationship, $action);
+  }
+
+  /**
+   * {@inheritdoc}
    *
    * @param string $reason
    *   The reason for revoking this partnership.
@@ -104,7 +123,7 @@ class ParDataPartnership extends ParDataEntity {
     }
 
     $this->set('revocation_reason', $reason);
-    parent::revoke($save);
+    return parent::revoke($save);
   }
 
   /**
@@ -146,8 +165,8 @@ class ParDataPartnership extends ParDataEntity {
 
     // Freeze partnerships that have un approved enforcement notices
     $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
-    foreach ($enforcement_notices as $enforcement_notice) {
-      if ($enforcement_notice->inProgress()) {
+    foreach ($enforcement_notices as $uuid => $relationship) {
+      if ($relationship->getEntity()->inProgress()) {
         return TRUE;
       }
     }
