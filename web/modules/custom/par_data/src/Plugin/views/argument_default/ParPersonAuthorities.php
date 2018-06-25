@@ -56,7 +56,11 @@ class ParPersonAuthorities extends ArgumentDefaultPluginBase implements Cacheabl
     }
 
     // Get current user PAR Authorities.
-    $user_authorities = array_keys($this->getParDataManager()->hasMembershipsByType($account, 'par_data_authority', TRUE));
+    $user_authorities = [];
+    $memberships = $this->getParDataManager()->hasMembershipsByType($account, 'par_data_authority', TRUE);
+    foreach ($memberships as $membership) {
+      $user_authorities[] = $membership->id();
+    }
     // Contextual filters expect "+" for OR.
     $defaults = $user_authorities ? implode("+", $user_authorities) : NULL;
 

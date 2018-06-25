@@ -67,6 +67,20 @@ class ParDataAdvice extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  public function filterRelationshipsByAction($relationship, $action) {
+    switch ($action) {
+      case 'manage':
+        // No relationships should be followed, this is one of the lowest tier entities.
+        return FALSE;
+
+    }
+
+    return TRUE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function revoke($save = TRUE) {
     // Only advice of type 'authority_advice' can be revoked.
     if ($this->getRawStatus() === 'authority_advice') {

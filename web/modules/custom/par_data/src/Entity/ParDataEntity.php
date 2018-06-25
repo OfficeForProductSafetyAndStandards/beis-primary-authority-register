@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityEvents;
 use Drupal\Core\Entity\EntityInterface;
@@ -13,6 +14,7 @@ use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\ParDataManagerInterface;
+use Drupal\par_data\ParDataRelationship;
 use Drupal\trance\Trance;
 
 /**
@@ -25,6 +27,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   const DELETE_FIELD = 'deleted';
   const REVOKE_FIELD = 'revoked';
   const ARCHIVE_FIELD = 'archived';
+
+  const DEFAULT_RELATIONSHIP = 'default';
 
   /**
    * Simple getter to inject the PAR Data Manager service.
@@ -454,14 +458,14 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     foreach ($this->dependents as $entity_type) {
       $relationships = $this->getRelationships($entity_type);
-      foreach ($relationships as $entity) {
+      foreach ($relationships as $uuid => $relationship) {
         // Don't get yer knickers in a twist and go loopy.
-        if ($entity->uuid() === $this->uuid()) {
+        if ($relationship->getEntity()->uuid() === $this->uuid()) {
           continue;
         }
 
-        $dependents[] = $entity;
-        $dependents = $entity->getDependents($dependents);
+        $dependents[] = $relationship->getEntity();
+        $dependents = $relationship->getEntity()->getDependents($dependents);
       }
     }
 
@@ -473,47 +477,110 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *
    * @param string $target
    *   The target type to return entities for.
+   * @param string $action
+   *   The action type to return relationships for.
    *
    * @return EntityInterface[]
    *   An array of entities keyed by type.
    */
-  public function getRelationships($target = NULL) {
-    $entities = [];
-
-    // Get all referenced entities.
-    $references = $this->getParDataManager()->getReferences($this->getEntityTypeId(), $this->bundle());
-    foreach ($references as $entity_type => $fields) {
-      // If the reference is on the current entity type
-      // we can get the value from the current $entity.
-      if ($this->getEntityTypeId() === $entity_type) {
-        foreach ($fields as $field_name => $field) {
-          foreach ($this->get($field_name)->referencedEntities() as $referenced_entity) {
-            $entities[$referenced_entity->getEntityTypeId()][$referenced_entity->id()] = $referenced_entity;
-          }
-        }
-      }
-      // If the reference is on another entity type
-      // we must use an entity lookup to find all entities
-      // that reference the current entity.
-      else {
-        foreach ($fields as $field_name => $field) {
-          $referencing_entities = $this->getParDataManager()->getEntitiesByProperty($entity_type, $field_name, $this->id());
-          if ($referencing_entities) {
-            if (!isset($entities[$entity_type])) {
-              $entities[$entity_type] = [];
-            }
-            $entities[$entity_type] += $referencing_entities;
-          }
-        }
-      }
+  public function getRelationships($target = NULL, $action = NULL) {
+    // Enable in memory caching for repeated entity lookups.
+    $unique_function_id = __FUNCTION__ . ':' . $this->uuid() . ':' . (isset($target) ? $target : 'null') . ':' . (isset($action) ? $action : 'null');
+    $relationships = &drupal_static($unique_function_id);
+    if (isset($relationships)) {
+      return $relationships;
     }
 
-    if ($target) {
-      return isset($entities[$target]) ? array_filter($entities[$target]) : [];
+    // Loading the relationships is costly so caching is necessary.
+    $cache = \Drupal::cache('data')->get("par_data_relationships:{$this->uuid()}");
+    if ($cache) {
+      $relationships = $cache->data;
     }
     else {
-      return $entities;
+      $relationships = [];
+
+      // Get all referenced entities.
+      $references = $this->getParDataManager()->getReferences($this->getEntityTypeId(), $this->bundle());
+      foreach ($references as $entity_type => $fields) {
+        // If the reference is on the current entity type
+        // we can get the value from the current $entity.
+        if ($this->getEntityTypeId() === $entity_type) {
+          foreach ($fields as $field_name => $field) {
+            foreach ($this->get($field_name)->referencedEntities() as $referenced_entity) {
+              $relationships[$referenced_entity->uuid()] = new ParDataRelationship($this, $referenced_entity, $field);
+            }
+          }
+        }
+        // If the reference is on another entity type
+        // we must use an entity lookup to find all entities
+        // that reference the current entity.
+        else {
+          foreach ($fields as $field_name => $field) {
+            $referencing_entities = $this->getParDataManager()->getEntitiesByProperty($entity_type, $field_name, $this->id());
+            foreach ($referencing_entities as $referenced_entity) {
+              $relationships[$referenced_entity->uuid()] = new ParDataRelationship($this, $referenced_entity, $field);
+            }
+          }
+        }
+      }
+
+      // Set cache tags for all these relationships.
+      $tags[] = $this->getEntityTypeId() . ':' . $this->id();
+      foreach ($relationships as $uuid => $relationship) {
+        $tags[] = $relationship->getEntity()->getEntityTypeId() . ':' . $relationship->getEntity()->id();
+      }
+
+      \Drupal::cache('data')->set("par_data_relationships:{$this->uuid()}", $relationships, Cache::PERMANENT, $tags);
     }
+
+    // Return only relationships of a specific entity type.
+    if ($target) {
+      $relationships = array_filter($relationships, function ($relationship) use ($target) {
+        return ($target === $relationship->getEntity()->getEntityTypeId());
+      });
+    }
+
+    // Return only permitted relationships for a given action
+    if ($action) {
+      $relationships = array_filter($relationships, function ($relationship) use ($action) {
+        return $this->filterRelationshipsByAction($relationship, $action);
+      });
+    }
+
+    return $relationships;
+  }
+
+  /**
+   * Allows relationships to be excluded based on the action performed.
+   *
+   * @param $relationship
+   *   The relationship to check.
+   * @param $action
+   *   The action being performed.
+   *
+   * @return bool
+   *   Whether not to include a given relationship.
+   */
+  public function filterRelationshipsByAction($relationship, $action) {
+    // By default all relationships are included, this
+    // can be overridden on an entity by entity basis.
+    switch ($action) {
+      case 'manage':
+        // The golden rule is that only people should relate to an authority or organisation.
+        if (in_array($relationship->getEntity()->getEntityTypeId(), ['par_data_authority', 'par_data_organisation'])
+          && $relationship->getBaseEntity()->getEntityTypeId() !== 'par_data_person') {
+          return FALSE;
+        }
+
+        // @TODO PAR-1025: This is a temporary fix to resolve performance issues
+        // with looking up the large numbers of premises.
+        if ($relationship->getEntity()->getEntityTypeId() === 'par_data_premises') {
+          return FALSE;
+        }
+
+    }
+
+    return TRUE;
   }
 
   /**

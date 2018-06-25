@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\par_data\ParDataException;
@@ -64,6 +65,23 @@ use Drupal\par_data\ParDataException;
  * )
  */
 class ParDataEnforcementNotice extends ParDataEntity {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function filterRelationshipsByAction($relationship, $action) {
+    switch ($action) {
+      case 'manage':
+      // Exclude any references to partnerships, this is a one-way relationship.
+      // Partnerships relate to enforcement notices but not the other way round.
+      if ($relationship->getEntity()->getEntityTypeId() === 'par_data_partnership') {
+        return FALSE;
+      }
+
+    }
+
+    return parent::filterRelationshipsByAction($relationship, $action);
+  }
 
   /**
    * {@inheritdoc}
@@ -334,11 +352,16 @@ class ParDataEnforcementNotice extends ParDataEntity {
    *   Cloned notice entity if a referral exists or NULL.
    */
   public function cloneNotice($referral_authority_id, ParDataEnforcementAction $cloned_action) {
-    if ($referral_authority_id) {
+    if ($referral_authority_id && $primary_authority = ParDataAuthority::load($referral_authority_id)) {
       // Duplicate this enforcement notification and assign it the cloned action.
       $referral_notice = $this->createDuplicate();
-      $referral_notice->set('field_primary_authority', $referral_authority_id);
+
+      $referral_notice->set('field_primary_authority', $primary_authority->id());
+      $referral_notice->set('field_person', $primary_authority->getPerson(TRUE));
       $referral_notice->set('field_enforcement_action', $cloned_action->id());
+
+      $date = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
+      $referral_notice->set('notice_date', $date->format('Y-m-d'));
 
       if ($referral_notice->save()) {
         return $referral_notice;

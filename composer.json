@@ -46,7 +46,7 @@
         "drupal/message_notify": "~1.0.0@beta",
         "drupal/no_autocomplete": "~1.0.0",
         "drupal/pagerer": "~1.1.0",
-        "drupal/password_policy": "~3.0.0",
+        "drupal/password_policy": "~3.0.0-alpha4",
         "drupal/password_strength": "2.0.0-alpha2",
         "drupal/queue_ui": "dev-2.x",
         "drupal/range": "~1.1.0",
