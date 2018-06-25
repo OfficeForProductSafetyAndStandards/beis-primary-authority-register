@@ -12,7 +12,10 @@ configuration:
   entity:
     label_fields:
       - notice_type
-      - notice_date
+      - 'enforcement between'
+      - field_primary_authority
+      - 'and'
+      - field_organisation
     status_field: enforcement_notice_status
   enforcement_notice_status:
     allowed_values:

@@ -85,6 +85,7 @@ class ParDataStorage extends TranceStorage {
    * {@inheritdoc}
    */
   public function save(EntityInterface $entity) {
+
     // Load the original entity if it already exists.
     if ($this->has($entity->id(), $entity) && !isset($entity->original)) {
       $entity->original = $this->loadUnchanged($entity->id());
@@ -94,12 +95,10 @@ class ParDataStorage extends TranceStorage {
     $relationships = $entity->getRelationships();
 
     // Loop through relationships and delete appropriate relationship cache records.
-    foreach ($relationships as $entity_type => $referenced_entities) {
-      foreach ($referenced_entities as $referenced_entity) {
-        // Delete cache record for new/updated references.
-        $hash_key = "par_data_relationships:{$referenced_entity->getEntityTypeId()}:{$referenced_entity->id()}";
-        \Drupal::cache('data')->delete($hash_key);
-      }
+    foreach ($relationships as $uuid => $relationship) {
+      // Delete cache record for new/updated references.
+      $hash_key = "par_data_relationships:{$relationship->getEntity()->uuid()}";
+      \Drupal::cache('data')->delete($hash_key);
     }
 
     if ($entity->getRawStatus() && !$entity->isNew() && $entity->getRawStatus() !== $entity->original->getRawStatus()) {
@@ -120,7 +119,7 @@ class ParDataStorage extends TranceStorage {
     parent::doPostSave($entity, $update);
 
     // Warm caches.
-    $this->parDataManager->getRelatedEntities($entity);
+    $entity->getRelationships();
   }
 
 }
