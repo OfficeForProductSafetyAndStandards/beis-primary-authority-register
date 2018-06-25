@@ -15,7 +15,7 @@ Feature: Helpdesk approve partnership
         Given I add "Out of Eden Limited" to the inputfield "#edit-keywords"
         # And I select the option with the value "confirmed_business" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-helpdesk-dashboard"
-        And there is "2" occurences of element ".par-rd-helpdesk-dashboard tr"
+        And there is "2" occurences of element ".par-rd-helpdesk-dashboard tbody tr"
         Then I click the link text "Approve partnership"
 
         # APPROVAL REVIEW SCREEN
