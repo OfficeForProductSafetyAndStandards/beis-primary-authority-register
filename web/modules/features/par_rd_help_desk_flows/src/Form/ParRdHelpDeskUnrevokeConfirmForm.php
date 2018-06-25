@@ -15,20 +15,15 @@ use Symfony\Component\Routing\Route;
 /**
  * The confirming the user is authorised to revoke partnerships.
  */
-class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
+class ParRdHelpDeskUnrevokeConfirmForm extends ParBaseForm {
 
   use ParDisplayTrait;
 
   /**
    * {@inheritdoc}
    */
-  protected $flow = 'revoke_partnership';
-
-  /**
-   * {@inheritdoc}
-   */
   public function titleCallback() {
-    return 'Confirmation | Revoke a partnership';
+    return 'Confirmation | Restore a partnership';
   }
 
   /**
@@ -48,45 +43,20 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     // If partnership has been revoked, we should not be able to re-revoke it.
-    if ($par_data_partnership->isRevoked()) {
-      $this->accessResult = AccessResult::forbidden('The partnership is already revoked.');
-    }
-
-    // 403 if the partnership is in progress it can't be revoked.
-    if ($par_data_partnership->inProgress()) {
-      $this->accessResult = AccessResult::forbidden('The partnership is not active.');
+    if (!$par_data_partnership->isRevoked()) {
+      $this->accessResult = AccessResult::forbidden('The partnership needs to be revoked to be restorable.');
     }
 
     return parent::accessCallback($route, $route_match, $account);
   }
 
   /**
-   * Helper to get all the editable values when editing or
-   * revisiting a previously edited page.
-   */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
-
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
-    $this->retrieveEditableValues($par_data_partnership);
-
-    if ($par_data_partnership && $par_data_partnership->inProgress()) {
-      $form['partnership_info'] = [
-        '#type' => 'markup',
-        '#title' => $this->t('Revocation denied'),
-        '#markup' => $this->t('This partnership cannot be revoked because it is awaiting approval or there are enforcement notices currently awaiting review. Please try again later.'),
-      ];
-
-      return parent::buildForm($form, $form_state);
-    }
-
     $form['partnership_info'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Revoke the partnership'),
+      '#title' => $this->t('Restore the partnership'),
       '#attributes' => ['class' => 'form-group'],
     ];
 
@@ -95,14 +65,6 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
       '#markup' => $par_data_partnership->label(),
       '#prefix' => '<p>',
       '#suffix' => '</p>',
-    ];
-
-    // Enter the revokcation reason.
-    $form['revocation_reason'] = [
-      '#title' => $this->t('Enter the reason you are revoking this partnership'),
-      '#type' => 'textarea',
-      '#rows' => 5,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('revocation_reason', FALSE),
     ];
 
     return parent::buildForm($form, $form_state);
@@ -125,19 +87,18 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     // We only want to update the status of active partnerships.
-    if (!$par_data_partnership->isRevoked()) {
-      $revoked = $par_data_partnership->revoke($this->getFlowDataHandler()->getTempDataValue('revocation_reason'));
+    if ($par_data_partnership->isRevoked()) {
+      $restored = $par_data_partnership->unrevoke();
 
-      if ($revoked) {
+      if ($restored) {
         $this->getFlowDataHandler()->deleteStore();
       }
       else {
-        $message = $this->t('Revocation reason could not be saved for %form_id');
+        $message = $this->t('Partnership restored: %partnership');
         $replacements = [
-          '%form_id' => $this->getFormId(),
+          '%partnership' => $par_data_partnership->label(),
         ];
-        $this->getLogger($this->getLoggerChannel())
-          ->error($message, $replacements);
+        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
       }
 
     }

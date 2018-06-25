@@ -1,0 +1,28 @@
+uuid: 813949d6-3b53-4b7f-9d99-165d21c1e297
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: ejS72O6ww2t2BPY51eFtnGc6suaGrl9QdlNedmXbQeg
+id: unrevoke_partnership
+label: 'Unrevoke Partnership'
+default_title: null
+default_section_title: null
+description: 'The unrevoke operations for a given partnership.'
+save_method: end
+states:
+  - par_data_partnership
+steps:
+  1:
+    route: par_help_desks_flows.confirm_unrevoke_partnership
+    form_id: par_rd_help_desk_unrevoke_confirm
+    redirect:
+      next: 2
+      cancel: 3
+  2:
+    route: par_help_desks_flows.unrevoke_partnership
+    form_id: par_rd_help_desk_unrevoke
+    redirect:
+      done: 3
+  3:
+    route: view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page
