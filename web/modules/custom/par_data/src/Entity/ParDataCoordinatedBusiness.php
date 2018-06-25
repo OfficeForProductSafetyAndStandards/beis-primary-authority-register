@@ -103,7 +103,7 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
 
     // Ceasing a member has the same purpose as revoking partnerships
     // so we use the same methods and status.
-    parent::revoke($save);
+    return parent::revoke($save);
   }
 
   /**
