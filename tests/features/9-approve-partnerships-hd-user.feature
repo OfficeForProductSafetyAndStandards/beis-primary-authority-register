@@ -58,4 +58,5 @@ Feature: Helpdesk approve partnership
         When I click on the button "#edit-done"
         And I add "Andrew Brownsword Hotels" to the inputfield "#edit-keywords"
         And I select the option with the value "0" for element "#edit-revoked"
+        And I click on the button "#edit-submit-helpdesk-dashboard"
         Then the element ".table-scroll-wrapper" contains the text "Andrew Brownsword Hotels"
