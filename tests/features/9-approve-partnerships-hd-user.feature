@@ -35,7 +35,7 @@ Feature: Helpdesk approve partnership
         # GO BACK TO HELPDESK
 
     @ci @directpartnership @iostest
-    Scenario: Helpdesk revoke partnership
+    Scenario: Helpdesk revoke and restore partnership
 
         # REVOKE DIRECT PARTNERSHIP
 
@@ -43,18 +43,19 @@ Feature: Helpdesk approve partnership
         And I select the option with the value "0" for element "#edit-revoked"
         And I click on the button "#edit-submit-helpdesk-dashboard"
         Then I click the link text "Revoke partnership"
-        And the element "#edit-revocation-reason" is visible
         And I add "A reason for revoking" to the inputfield "#edit-revocation-reason"
         And I click on the button "input[name=\"next\"]"
         And the element "#edit-partnership-info" contains the text "The following partnership has been revoked"
         And I open the path "/helpdesk"
-        And the element "#edit-keywords" is visible
         When I add "Andrew Brownsword Hotels" to the inputfield "#edit-keywords"
         And I select the option with the value "1" for element "#edit-revoked"
         And I click on the button "#edit-submit-helpdesk-dashboard"
-        And the element ".table-scroll-wrapper" is visible
         And the element ".table-scroll-wrapper" contains the text "Andrew Brownsword Hotels"
-
-        # REVOKE PARTNERSHIP (SHORTER STEP VERSION)
-
-        # And I successfully revoke a coordinated partnership
+        And I click the link text "Restore partnership"
+        Then the element "h1.heading-xlarge" contains the text "Restore a partnership"
+        When I click on the button "#edit-next"
+        Then the element "h1.heading-xlarge" contains the text "Partnership restored"
+        When I click on the button "#edit-done"
+        And I add "Andrew Brownsword Hotels" to the inputfield "#edit-keywords"
+        And I select the option with the value "0" for element "#edit-revoked"
+        Then the element ".table-scroll-wrapper" contains the text "Andrew Brownsword Hotels"
