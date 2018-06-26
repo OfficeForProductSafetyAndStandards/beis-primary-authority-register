@@ -394,7 +394,7 @@ function par_data_update_8026() {
 /**
  * Correct missing addresses.
  */
-function par_data_update_8027() {
+function par_data_update_8028() {
   $par_data_manager = \Drupal::service('par_data.manager');
 
   $allowed = [
@@ -406,29 +406,46 @@ function par_data_update_8027() {
 
   $types = ['par_data_premises', 'par_data_organisation'];
 
-  foreach ($types as $type) {
-    $query = $par_data_manager->getEntityQuery($type);
-    $query->condition('nation', array_keys($allowed), 'NOT IN');
-    $ids = $query->execute();
+  // Premises query.
+  $query = $par_data_manager->getEntityQuery('par_data_premises');
+  $premises_ids = $query->condition('nation', array_keys($allowed), 'NOT IN')
+    ->execute();
 
-    $entities = \Drupal::entityTypeManager()->getStorage($type)->loadMultiple(array_unique($ids));
+  // Organisation query.
+  $query = $par_data_manager->getEntityQuery('par_data_organisation');
+  $group = $query
+    ->orConditionGroup()
+    ->condition('nation', array_keys($allowed), 'NOT IN')
+    ->condition('nation', NULL, 'IS NULL');
+  $organisation_ids = $query->condition($group)
+    ->execute();
 
-    foreach ($entities as $entity) {
-      // See if we can convert the entity.
-      $nation = $entity->get('nation')->getString();
-      if (!empty($nation) && $key = array_search(trim($nation), $allowed)) {
-        $entity->setNation($key, TRUE);
+
+  $premises_entities = \Drupal::entityTypeManager()->getStorage('par_data_premises')->loadMultiple(array_unique($premises_ids));
+  $organisation_entities = \Drupal::entityTypeManager()->getStorage('par_data_organisation')->loadMultiple(array_unique($organisation_ids));
+
+  foreach ($premises_entities as $entity) {
+    // See if we can convert the entity.
+    $nation = $entity->get('nation')->getString();
+    if (!empty($nation) && $key = array_search(trim($nation), $allowed)) {
+      $entity->setNation($key, TRUE);
+      $entity->save();
+    }
+  }
+
+  foreach ($organisation_entities as $entity) {
+    // See if we can convert the entity.
+    $nation = $entity->get('nation')->getString();
+    if (!empty($nation) && $key = array_search(trim($nation), $allowed)) {
+      $entity->setNation($key, TRUE);
+      $entity->save();
+    }
+
+    if ($entity->get('nation')->isEmpty()) {
+      $premises = $entity->getPremises(TRUE);
+      if ($premises && !$premises->get('nation')->isEmpty()) {
+        $entity->setNation($premises->get('nation')->getString(), TRUE);
         $entity->save();
-        continue;
-      }
-
-      // Organisations can lookup and use premises data too
-      if ($entity->getEntityTypeId() === 'par_data_organisation' && $entity->get('nation')->isEmpty()) {
-        $premises = $entity->getPremises(TRUE);
-        if ($premises && !$premises->get('nation')->isEmpty()) {
-          $entity->setNation($premises->get('nation')->getString(), TRUE);
-          $entity->save();
-        }
       }
     }
   }
