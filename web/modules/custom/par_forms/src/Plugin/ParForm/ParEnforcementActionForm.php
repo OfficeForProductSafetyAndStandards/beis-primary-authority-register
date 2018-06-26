@@ -62,7 +62,7 @@ class ParEnforcementActionForm extends ParFormPluginBase {
     $file_extensions = $field_definition->getSetting('file_extensions');
 
     // Multiple file field.
-    $form['files_title']['files'] = [
+    $form['files'] = [
       '#type' => 'managed_file',
       '#title' => $this->t('Add an attachment'),
       '#upload_location' => 's3private://documents/enforcement_action/',
