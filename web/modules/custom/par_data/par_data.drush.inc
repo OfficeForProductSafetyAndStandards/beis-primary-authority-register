@@ -69,20 +69,30 @@ function par_data_drush_command() {
 
 function drush_par_data_par_cache_warm() {
   $par_data_manager = \Drupal::service('par_data.manager');
-  $existing = [];
-  $processed = [];
 
   $authorities = $par_data_manager->getEntitiesByType('par_data_authority');
+  $i = 0;
+  $authority_count = count($authorities);
   foreach ($authorities as $authority) {
-    $par_data_manager->getRelatedEntities($authority, $existing, $processed);
-    drush_print("Warmed authority: {$authority->label()}");
+    $authority->getRelationships();
+    if ($i % 100 == 0 && $i > 0) {
+      drush_print("Warmed $i out of $authority_count authorities");
+    }
+    $i++;
   }
+  drush_print("Completed warming par authorities");
 
   $organisations = $par_data_manager->getEntitiesByType('par_data_organisation');
+  $i=0;
+  $organisation_count = count($organisations);
   foreach ($organisations as $organisation) {
-    $par_data_manager->getRelatedEntities($organisation, $existing, $processed);
-    drush_print("Warmed organisation: {$organisation->label()}");
+    $organisation->getRelationships();
+    if ($i % 100 == 0 && $i > 0) {
+      drush_print("Warmed $i out of $organisation_count organisations");
+    }
+    $i++;
   }
+  drush_print("Completed warming par organisations");
 
   return 'Cache warmed for authorities and organisations.';
 }

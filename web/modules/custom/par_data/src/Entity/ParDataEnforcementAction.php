@@ -70,6 +70,28 @@ class ParDataEnforcementAction extends ParDataEntity {
   const REFERRED = 'referred';
 
   /**
+   * {@inheritdoc}
+   */
+  public function filterRelationshipsByAction($relationship, $action) {
+    switch ($action) {
+      case 'manage':
+        // Don't follow links to referral actions, these are
+        // references only and do not indicate membership.
+        if ($relationship->getEntity()->getEntityTypeId() === $relationship->getBaseEntity()->getEntityTypeId()) {
+          return FALSE;
+        }
+
+        // The relationship to enforcement notices is a one-way relationship.
+        if ($relationship->getEntity()->getEntityTypeId() === 'par_data_enforcement_notice') {
+          return FALSE;
+        }
+
+    }
+
+    return parent::filterRelationshipsByAction($relationship, $action);
+  }
+
+  /**
    * Get the blocked advice for this Enforcement Action.
    */
   public function getBlockedAdvice() {
