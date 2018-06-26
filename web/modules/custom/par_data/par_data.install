@@ -390,3 +390,46 @@ function par_data_update_8026() {
   // Then run purge to make sure all other fields are gone.
   field_purge_batch(500);
 }
+
+/**
+ * Correct missing addresses.
+ */
+function par_data_update_8027() {
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  $allowed = [
+    'GB-ENG' => 'England',
+    'GB-SCT' => 'Scotland',
+    'GB-WLS' => 'Wales',
+    'GB-NIR' => 'Northern Ireland',
+  ];
+
+  $types = ['par_data_premises', 'par_data_organisation'];
+
+  foreach ($types as $type) {
+    $query = $par_data_manager->getEntityQuery($type);
+    $query->condition('nation', array_keys($allowed), 'NOT IN');
+    $ids = $query->execute();
+
+    $entities = \Drupal::entityTypeManager()->getStorage($type)->loadMultiple(array_unique($ids));
+
+    foreach ($entities as $entity) {
+      // See if we can convert the entity.
+      $nation = $entity->get('nation')->getString();
+      if (!empty($nation) && $key = array_search(trim($nation), $allowed)) {
+        $entity->setNation($key, TRUE);
+        $entity->save();
+        continue;
+      }
+
+      // Organisations can lookup and use premises data too
+      if ($entity->getEntityTypeId() === 'par_data_organisation' && $entity->get('nation')->isEmpty()) {
+        $premises = $entity->getPremises(TRUE);
+        if ($premises && !$premises->get('nation')->isEmpty()) {
+          $entity->setNation($premises->get('nation')->getString(), TRUE);
+          $entity->save();
+        }
+      }
+    }
+  }
+}

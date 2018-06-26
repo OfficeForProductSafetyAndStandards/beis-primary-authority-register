@@ -157,6 +157,40 @@ class ParDataOrganisation extends ParDataEntity {
   }
 
   /**
+   * Get the primary nation for this organisation.
+   *
+   * @return bool
+   */
+  public function getNation() {
+    if (!$this->get('nation')->isEmpty()) {
+      $nation = $this->get('nation')->getString();
+    }
+    else {
+      $premises = $this->getPremises(TRUE);
+      $nation = $premises->getNation(TRUE);
+    }
+
+    return $nation;
+  }
+
+  /**
+   * Get the primary nation for this organisation.
+   *
+   * @param string $nation
+   *   The nation we want to add, this should be one of the allowed sub-country types.
+   *
+   * @return bool
+   */
+  public function setNation($nation, $force = FALSE) {
+    $entity_type = $this->getParDataManager()->getParBundleEntity($this->getEntityTypeId());
+    $allowed_types = $entity_type->getAllowedValues('nation');
+    if (isset($allowed_types[$nation])
+      && ($this->get('nation')->isEmpty() || $force)) {
+      $this->set('nation', $nation);
+    }
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
