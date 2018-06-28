@@ -1,0 +1,61 @@
+uuid: 5ce987d3-9dc8-4201-88e0-313ea815026c
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: AzxBcvg5kuei7SS1Prr4oITGQOoXyCcIEtQXA-Jen4A
+id: profile_update
+label: 'Profile Update Flow'
+default_title: null
+default_section_title: 'User Profile'
+description: ''
+save_method: end
+states:
+  - user
+steps:
+  1:
+    route: par_profile_update_flows.gdpr
+    form_id: par_gdpr_review
+    components:
+      data_policy: {  }
+    redirect:
+      cancel: 7
+  2:
+    route: par_profile_update_flows.select_person
+    form_id: par_choose_person
+    components:
+      person_select: {  }
+    redirect:
+      cancel: 7
+  3:
+    route: par_profile_update_flows.update_contact
+    form_id: par_profile_update
+    form_data:
+      select_person: par_choose_person
+    redirect:
+      cancel: 7
+  4:
+    route: par_profile_update_flows.contact_preferences
+    form_id: par_preferences_update
+    form_data:
+      select_person: par_choose_person
+      contact_details: par_profile_update
+    redirect:
+      cancel: 7
+  5:
+    route: par_profile_update_flows.review
+    form_id: par_profile_review
+    form_data:
+      data_policy: par_gdpr_review
+      select_person: par_choose_person
+      contact_details: par_profile_update
+      contact_preferences: par_preferences_update
+    redirect:
+      save: 6
+      cancel: 7
+  6:
+    route: par_profile_update_flows.completed
+    redirect:
+      done: 7
+  7:
+    route: par_dashboards.dashboard

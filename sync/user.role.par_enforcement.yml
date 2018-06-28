@@ -46,6 +46,7 @@ permissions:
   - 'edit par_data_sic_code entities'
   - 'enforce organisation'
   - invite_type_invite_organisation_member
+  - 'manage par profile'
   - 'raise enforcement notice'
   - 'search partnership'
   - 'send enforcement notice'

@@ -3,9 +3,9 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.user.user.field_gdpr
     - field.field.user.user.user_picture
   module:
-    - datetime
     - user
 _core:
   default_config_hash: K-1rBM8mTIkFp9RqOC2tMRUukOQ1xbRCfSKK8dEddnA
@@ -19,6 +19,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_gdpr:
+    weight: 4
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
   field_last_password_reset:
     type: datetime_default
     weight: 3

@@ -1,0 +1,18 @@
+uuid: 05893f3c-521c-4a6f-aa5e-b77c68a472e4
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user.field_gdpr
+field_name: field_gdpr
+entity_type: user
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
