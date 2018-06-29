@@ -387,6 +387,19 @@ function par_data_update_8026() {
     }
   }
 
+  // Remove tables for test modules.
+  $db = \Drupal::database();
+  $tables_to_remove = ['watchdog', 'maillog', 'webprofiler'];
+  foreach ($tables_to_remove as $table) {
+    $exists = $db->schema()->tableExists($table);
+    if ($exists) {
+      $db->schema()->dropTable($table);
+    }
+  }
+
+  // Ensure all file fields are up to date.
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+
   // Then run purge to make sure all other fields are gone.
   field_purge_batch(500);
 }
