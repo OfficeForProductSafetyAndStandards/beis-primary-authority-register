@@ -1,3 +1,9 @@
+par_profile_update_flows.current_user_gdpr:
+  path: '/profile-update/data-policy'
+  defaults:
+    _controller: '\Drupal\par_profile_update_flows\Form\ParGdprForm::redirectCurrentUser'
+  requirements:
+    _permission: 'access content'
 par_profile_update_flows.gdpr:
   path: '/person/{user}/profile-update/data-policy'
   defaults:
