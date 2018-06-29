@@ -5,6 +5,7 @@ namespace Drupal\par_forms\Plugin\ParForm;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\Url;
 use Drupal\par_forms\ParFormPluginBase;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * About business form plugin.
@@ -20,6 +21,10 @@ class ParGdprForm extends ParFormPluginBase {
    * Load the data for this form.
    */
   public function loadData($cardinality = 1) {
+    $account = $this->getFlowDataHandler()->getParameter('user');
+    if ($account && ('1' === $account->get('field_gdpr')->getString() || $account->get('field_gdpr')->getString() === TRUE)) {
+      $this->setDefaultValuesByKey("gdpr_agreement", $cardinality, TRUE);
+    }
 
     parent::loadData();
   }
@@ -28,6 +33,11 @@ class ParGdprForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
+    // If this notice has already been reviewed then skip this form.
+    if ($this->getDefaultValuesByKey('gdpr_agreement', $cardinality, FALSE)) {
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
+      return new RedirectResponse($url);
+    }
 
     $form['notice'] = [
       '#type' => 'markup',

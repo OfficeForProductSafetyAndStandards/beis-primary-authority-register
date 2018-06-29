@@ -28,6 +28,11 @@ class ParSelectPersonForm extends ParFormPluginBase {
     /** @var \Drupal\user\Entity\User $account */
     $account = $this->getFlowDataHandler()->getParameter('user');
     if ($account && $account->isAuthenticated() && $people = $this->getParDataManager()->getUserPeople($account)) {
+      // Ignore deleted person accounts.
+      $people = array_filter($people, function ($person) {
+        return !$person->isDeleted();
+      });
+
       $user_people = $this->getParDataManager()->getEntitiesAsOptions($people, $user_people, 'summary');
     }
 
@@ -43,18 +48,17 @@ class ParSelectPersonForm extends ParFormPluginBase {
     // Get all the allowed authorities.
     $user_people = $this->getFlowDataHandler()->getFormPermValue('user_people');
 
-//    // If there are no people we should create a new record.
-//    if (count($user_people) <= 0) {
-//      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('cancel'), $this->getRouteParams());
-//      return new RedirectResponse($url);
-//    }
-//
-//    // If only one authority submit the form automatically and go to the next step.
-//    elseif (count($user_people) === 1) {
-//      $this->getFlowDataHandler()->setTempDataValue('par_data_authority_id', key($user_authorities));
-//      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
-//      return new RedirectResponse($url);
-//    }
+    // If there are no people we should create a new record.
+    if (count($user_people) <= 0) {
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('cancel'), $this->getRouteParams());
+      return new RedirectResponse($url);
+    }
+    // If only one authority submit the form automatically and go to the next step.
+    elseif (count($user_people) === 1) {
+      $this->getFlowDataHandler()->setTempDataValue('user_person', key($user_people));
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
+      return new RedirectResponse($url);
+    }
 
     $form['intro'] = [
       '#type' => 'markup',
@@ -67,15 +71,8 @@ class ParSelectPersonForm extends ParFormPluginBase {
       '#type' => 'radios',
       '#title' => t('Choose which contact record you would like to update'),
       '#options' => $user_people,
-      '#default_value' => $this->getDefaultValuesByKey("par_data_authority_id", $cardinality, NULL),
+      '#default_value' => $this->getDefaultValuesByKey("user_person", $cardinality, NULL),
       '#attributes' => ['class' => ['form-group']],
-    ];
-
-    $form['update_all'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Would you like to update all contact records?'),
-      '#default_value' => TRUE,
-      '#return_value' => 'on',
     ];
 
     return $form;

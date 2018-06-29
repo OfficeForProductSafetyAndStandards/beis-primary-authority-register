@@ -36,6 +36,27 @@ class ParReviewForm extends ParBaseForm {
     $person = $this->getFlowDataHandler()->getDefaultValues('user_person', '', $cid_person_select);
     if ($par_data_person = ParDataPerson::load($person)) {
       $this->getFlowDataHandler()->setParameter('par_data_person', $par_data_person);
+
+      // Set the data values on the entities
+      $entities = $this->createEntities();
+      extract($entities);
+      /** @var ParDataPerson $par_data_person */
+      /** @var User $account */
+
+      $this->getFlowDataHandler()->setFormPermValue("full_name", $par_data_person->getFullName());
+      $this->getFlowDataHandler()->setFormPermValue("work_phone", $par_data_person->getWorkPhone());
+      $this->getFlowDataHandler()->setFormPermValue("mobile_phone", $par_data_person->getMobilePhone());
+      $this->getFlowDataHandler()->setFormPermValue("email", $par_data_person->getEmailWithPreferences());
+      if (!$par_data_person->get('communication_notes')->isEmpty()) {
+        $communication_nodes = $par_data_person->communication_notes->view('full');
+        $this->getFlowDataHandler()->setFormPermValue("communication_notes", $communication_nodes);
+      }
+
+      if ($account && $account->isAuthenticated() && $people = $this->getParDataManager()->getUserPeople($account)) {
+        if (count($people) > 1) {
+          $this->getFlowDataHandler()->setFormPermValue("multiple_people", TRUE);
+        }
+      }
     }
 
     parent::loadData();
@@ -45,11 +66,6 @@ class ParReviewForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
-    // Set the data values on the entities
-    $entities = $this->createEntities();
-    extract($entities);
-    /** @var ParDataPerson $par_data_person */
-
     $form['personal'] = [
       '#type' => 'fieldset',
       'name' => [
@@ -57,7 +73,7 @@ class ParReviewForm extends ParBaseForm {
         '#attributes' => ['class' => 'form-group'],
         '#title' => 'Name',
         [
-          '#markup' => $par_data_person->getFullName()
+          '#markup' => $this->getFlowDataHandler()->getDefaultValues('full_name', ''),
         ]
       ],
     ];
@@ -69,7 +85,7 @@ class ParReviewForm extends ParBaseForm {
         '#title' => 'Email',
         '#attributes' => ['class' => 'form-group'],
         [
-          '#markup' => $par_data_person->getEmail()
+          '#markup' => $this->getFlowDataHandler()->getDefaultValues('email', ''),
         ]
       ],
       'work_phone' => [
@@ -77,36 +93,33 @@ class ParReviewForm extends ParBaseForm {
         '#attributes' => ['class' => 'form-group'],
         '#title' => 'Work phone',
         [
-          '#markup' => $par_data_person->getWorkPhone()
+          '#markup' => $this->getFlowDataHandler()->getDefaultValues('work_phone', ''),
         ]
       ],
       'mobile_phone' => [
         '#type' => 'fieldset',
         '#attributes' => ['class' => 'form-group'],
-        '#title' => 'Work phone',
+        '#title' => 'Mobile phone',
         [
-          '#markup' => $par_data_person->getMobilePhone()
+          '#markup' => $this->getFlowDataHandler()->getDefaultValues('mobile_phone', ''),
         ]
       ],
       'communication_noes' => [
         '#type' => 'fieldset',
         '#attributes' => ['class' => 'form-group'],
         '#title' => 'Communication notes',
-        0 => $par_data_person->get('communication_notes')->isEmpty() ? ['#markup' => '(none)'] : $par_data_person->communication_notes->view('full'),
+        0 => $this->getFlowDataHandler()->getDefaultValues('communication_noes', ['#markup' => '(none)']),
       ],
 
     ];
 
-    $account = $this->getFlowDataHandler()->getParameter('user');
-    if ($account && $account->isAuthenticated() && $people = $this->getParDataManager()->getUserPeople($account)) {
-      if (count($people) > 1) {
-        $form['update_all_contacts'] = [
-          '#type' => 'checkbox',
-          '#title' => $this->t('Would you like to update all contact records with this information?'),
-          '#default_value' => TRUE,
-          '#return_value' => 'on',
-        ];
-      }
+    if ($this->getFlowDataHandler()->getFormPermValue("multiple_people")) {
+      $form['update_all_contacts'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Would you like to update all contact records with this information?'),
+        '#default_value' => TRUE,
+        '#return_value' => 'on',
+      ];
     }
 
     return parent::buildForm($form, $form_state);
@@ -114,18 +127,23 @@ class ParReviewForm extends ParBaseForm {
 
   public function createEntities() {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
+    $account = $this->getFlowDataHandler()->getParameter('user');
 
     // Get the cache IDs for the various forms that needs needs to be extracted from.
     $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_profile_update');
     $contact_preferences_cid = $this->getFlowNegotiator()->getFormKey('par_preferences_update');
 
     if ($par_data_person) {
+      // Store the original email to check if it changes.
+      $this->getFlowDataHandler()->setFormPermValue('orginal_email', $par_data_person->getEmail());
+
+      // Update the person record with the new values.
       $par_data_person->set('salutation', $this->getFlowDataHandler()->getTempDataValue('salutation', $contact_details_cid));
       $par_data_person->set('first_name', $this->getFlowDataHandler()->getTempDataValue('first_name', $contact_details_cid));
       $par_data_person->set('last_name', $this->getFlowDataHandler()->getTempDataValue('last_name', $contact_details_cid));
       $par_data_person->set('work_phone', $this->getFlowDataHandler()->getTempDataValue('work_phone', $contact_details_cid));
       $par_data_person->set('mobile_phone', $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $contact_details_cid));
-      $par_data_person->set('email', $this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid));
+      $par_data_person->updateEmail($this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid), $account);
 
       $par_data_person->set('communication_notes', $this->getFlowDataHandler()->getTempDataValue('notes', $contact_preferences_cid));
 
@@ -144,6 +162,7 @@ class ParReviewForm extends ParBaseForm {
 
     return [
       'par_data_person' => $par_data_person,
+      'account' => $account,
     ];
   }
 
@@ -157,8 +176,17 @@ class ParReviewForm extends ParBaseForm {
     $entities = $this->createEntities();
     extract($entities);
     /** @var ParDataPerson $par_data_person */
+    /** @var User $account */
 
-    if ($par_data_person->save()) {
+    // Merge all accounts or just save the person straight up.
+    if (($this->getFlowDataHandler()->getTempDataValue('update_all_contacts') === 'on' && $par_data_person->mergePeople())
+        || $par_data_person->save()) {
+      // Also save the user if the email has been updated.
+      if ($account->getEmail() !== $this->getFlowDataHandler()->getFormPermValue('orginal_email')) {
+        $account->save();
+        $this->getParDataManager()->getMessenger()->addMessage(t('The email address you use to login has been updated to @email', ['@email' => $account->getEmail()]));
+      }
+
       $this->getFlowDataHandler()->deleteStore();
     }
     else {
