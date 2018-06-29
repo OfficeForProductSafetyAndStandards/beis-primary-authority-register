@@ -1,4 +1,4 @@
-uuid: 2c916801-d5ba-4420-82f7-a2a810c202ad
+uuid: d8b87567-c6c8-4b5c-a474-4c87493958a2
 langcode: en
 status: true
 dependencies:
@@ -10,8 +10,8 @@ id: user.user.field_gdpr
 field_name: field_gdpr
 entity_type: user
 bundle: user
-label: gdpr
-description: 'Whether or not a user has agreed to GDPR.'
+label: GDPR
+description: ''
 required: false
 translatable: false
 default_value:
@@ -19,6 +19,6 @@ default_value:
     value: 0
 default_value_callback: ''
 settings:
-  on_label: 'On'
-  off_label: 'Off'
+  on_label: Accepted
+  off_label: 'Not Reviewed'
 field_type: boolean
