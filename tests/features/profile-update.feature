@@ -61,7 +61,7 @@ Feature: New Direct Partnership For PA To Approve
         When I click on the button "#edit-next"
 
         Then the element "h1.heading-xlarge" contains the text "Choose which contact to update"
-        Then I click on the radio "Mrs  Smith"
+        Then I click on the radio ".form-item-user-person .form-radio"
         When I click on the button "#edit-next"
 
         Then the element "h1.heading-xlarge" contains the text "Update contact details"
