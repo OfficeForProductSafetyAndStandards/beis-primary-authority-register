@@ -82,7 +82,7 @@ class ParGdprForm extends ParFormPluginBase {
 
     $form['data_policy'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('I have read the Privacy Notice and understand how the Office intend to use your personal data'),
+      '#title' => $this->t('Please confirm you have read the Privacy Notice and understand how the Office intend to use your personal data'),
       '#return_value' => 'on',
     ];
 
