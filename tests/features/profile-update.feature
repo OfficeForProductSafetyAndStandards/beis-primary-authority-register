@@ -1,6 +1,6 @@
 Feature: New Direct Partnership For PA To Approve
 
-    @profileupdate
+    @profileupdate @ci
     Scenario: Update profile with one contact record
 
         Given I am logged in as "par_authority_profile@example.com"
@@ -48,7 +48,7 @@ Feature: New Direct Partnership For PA To Approve
         And the inputfield "#edit-last-name" contains the text "Bloggs"
         And the inputfield "#edit-work-phone" contains the text "01865999000"
 
-    @profileupdate
+    @profileupdate @ci
     Scenario: Update and merge profile with multiple contact records
 
         Given I am logged in as "par_authority_multiple_contacts_profile@example.com"
