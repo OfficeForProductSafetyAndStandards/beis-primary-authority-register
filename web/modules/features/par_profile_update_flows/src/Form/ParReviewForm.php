@@ -48,8 +48,8 @@ class ParReviewForm extends ParBaseForm {
       $this->getFlowDataHandler()->setFormPermValue("mobile_phone", $par_data_person->getMobilePhone());
       $this->getFlowDataHandler()->setFormPermValue("email", $par_data_person->getEmailWithPreferences());
       if (!$par_data_person->get('communication_notes')->isEmpty()) {
-        $communication_nodes = $par_data_person->communication_notes->view('full');
-        $this->getFlowDataHandler()->setFormPermValue("communication_notes", $communication_nodes);
+        $communication_notes = $par_data_person->communication_notes->view('full');
+        $this->getFlowDataHandler()->setFormPermValue("communication_notes", $communication_notes);
       }
 
       if ($account && $account->isAuthenticated() && $people = $this->getParDataManager()->getUserPeople($account)) {
@@ -108,7 +108,7 @@ class ParReviewForm extends ParBaseForm {
         '#type' => 'fieldset',
         '#attributes' => ['class' => 'form-group'],
         '#title' => 'Communication notes',
-        0 => $this->getFlowDataHandler()->getDefaultValues('communication_noes', ['#markup' => '(none)']),
+        0 => $this->getFlowDataHandler()->getDefaultValues('communication_notes', ['#markup' => '(none)']),
       ],
 
     ];

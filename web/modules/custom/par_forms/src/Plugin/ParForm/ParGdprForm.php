@@ -35,8 +35,8 @@ class ParGdprForm extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     // If this notice has already been reviewed then skip this form.
     if ($this->getDefaultValuesByKey('gdpr_agreement', $cardinality, FALSE)) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
-      return new RedirectResponse($url);
+//      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
+//      return new RedirectResponse($url);
     }
 
     $form['notice'] = [
@@ -73,11 +73,17 @@ class ParGdprForm extends ParFormPluginBase {
       '#attributes' => ['class' => ['list', 'form-group', 'list-bullet']],
     ];
 
-    $form['data_policy'] = [
+    $form['opt_out'] = [
       '#type' => 'markup',
-      '#markup' => 'I have read the Privacy Notice and understand how the Office intend to use my personal data, if you would like to opt-out please <a href="mailto:pa@beis.gov.uk" target="_blank">contact the helpdesk</a>.',
+      '#markup' => 'If you would like to opt-out please <a href="mailto:pa@beis.gov.uk" target="_blank">contact the helpdesk</a>.',
       '#prefix' => '<p>',
       '#suffix' => '</p>',
+    ];
+
+    $form['data_policy'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('I have read the Privacy Notice and understand how the Office intend to use my personal data'),
+      '#return_value' => 'on',
     ];
 
     return $form;
