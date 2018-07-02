@@ -62,7 +62,7 @@
     ],
     "field_gdpr": [
         {
-            "value": true
+            "value": false
         }
     ]
 }
