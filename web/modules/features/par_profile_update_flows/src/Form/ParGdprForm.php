@@ -30,6 +30,15 @@ class ParGdprForm extends ParBaseForm {
     return new RedirectResponse($url);
   }
 
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    $data_policy = $form_state->getValue('data_policy');
+    if ($data_policy !== 'on') {
+      $this->setElementError('data_policy', $form_state, 'Please confirm you have read the Privacy Notice and understand how the Office intend to use your personal data. If you would like to opt-out please contact the helpdesk');
+    }
+
+    return parent::validateForm($form, $form_state);
+  }
+
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
