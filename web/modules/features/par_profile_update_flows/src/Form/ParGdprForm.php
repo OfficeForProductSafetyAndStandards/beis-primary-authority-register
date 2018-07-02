@@ -30,6 +30,18 @@ class ParGdprForm extends ParBaseForm {
     return new RedirectResponse($url);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function buildForm(array $form, FormStateInterface $form_state) {
+    // Disabling cancelling out of this form.
+    $this->getFlowNegotiator()->getFlow()->disableAction('cancel');
+    return parent::buildForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $data_policy = $form_state->getValue('data_policy');
     if ($data_policy !== 'on') {
@@ -39,6 +51,9 @@ class ParGdprForm extends ParBaseForm {
     return parent::validateForm($form, $form_state);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
