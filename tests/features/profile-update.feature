@@ -9,7 +9,7 @@ Feature: New Direct Partnership For PA To Approve
         And I click the link text "Manage your profile details"
 
         Then the element "h1.heading-xlarge" contains the text "Confirm acceptance of data policy"
-        And the element "#content" contains the text "I have read the Privacy Notice and understand how the Office intend to use your personal data"
+        And the element "#content" contains the text "Please confirm you have read the Privacy Notice and understand how the Office intend to use your personal data"
         When I click on the button "#edit-next"
 
         # Confirm form can't be submitted without agreeing to terms.
@@ -74,6 +74,7 @@ Feature: New Direct Partnership For PA To Approve
         And I click on the button "#edit-next"
         When the element ".error-summary" does exist
         Then I add "Joe" to the inputfield "#edit-first-name"
+        Then I add "Smith" to the inputfield "#edit-last-name"
         And I add "01870119991" to the inputfield "#edit-work-phone"
         And I click on the button "#edit-next"
 
