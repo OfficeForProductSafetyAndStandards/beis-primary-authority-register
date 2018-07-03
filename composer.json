@@ -150,7 +150,7 @@
                 "SetOptions on null causing error": "https://www.drupal.org/files/issues/2018-03-09/toolbar_alter_error-2947616-11.patch"
             },
             "drupal/password_policy": {
-                "Remove setting of field_last_password_reset on install": "https://www.drupal.org/files/issues/2018-07-03/Do-not-set-user-fields-on-install_2983448_3.patch"
+                "Remove setting of field_last_password_reset on install": "https://www.drupal.org/files/issues/2018-07-03/Do-not-set-user-fields-on-install_2983448_4.patch"
             },
             "drupal/password_strength": {
                 "Change user notifications to explain reason for password rejection more clearly": "./patches/password_strength_dictionary.patch"
