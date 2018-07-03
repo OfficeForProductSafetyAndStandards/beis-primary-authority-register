@@ -43,16 +43,6 @@ Feature: New Direct Partnership For PA To Approve
         Then the element "h1.heading-xlarge" contains the text "Thank you for updating your profile"
         And I click the link text "Done"
 
-        # Check the values have been properly saved.
-        Then the element "h1.heading-xlarge" contains the text "Primary Authority Register"
-        And I click the link text "Manage your profile details"
-
-        Then the element "h1.heading-xlarge" contains the text "Update contact details"
-        And the inputfield "#edit-salutation" contains the text "Dr"
-        And the inputfield "#edit-first-name" contains the text "Harry"
-        And the inputfield "#edit-last-name" contains the text "Bloggs"
-        And the inputfield "#edit-work-phone" contains the text "01865999000"
-
     @profileupdate @ci
     Scenario: Update and merge profile with multiple contact records
 
@@ -91,14 +81,3 @@ Feature: New Direct Partnership For PA To Approve
 
         Then the element "h1.heading-xlarge" contains the text "Thank you for updating your profile"
         And I click the link text "Done"
-
-        # Once the profile is saved and merged the contact
-        # selection screen shouldn't be shown again.
-        Then the element "h1.heading-xlarge" contains the text "Primary Authority Register"
-        And I click the link text "Manage your profile details"
-
-        Then the element "h1.heading-xlarge" contains the text "Update contact details"
-        And the inputfield "#edit-salutation" contains the text "Mrs"
-        And the inputfield "#edit-first-name" contains the text "Joe"
-        And the inputfield "#edit-last-name" contains the text "Smith"
-        And the inputfield "#edit-work-phone" contains the text "01870119991"
