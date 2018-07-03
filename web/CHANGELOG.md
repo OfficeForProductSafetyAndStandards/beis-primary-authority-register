@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [19.0.0] - 2019-07-03
+## [20.0.0] - 2019-07-03
 ### Added
 - GDPR agreement required after registration.
 - Profile update capabilities allows review of user's.
