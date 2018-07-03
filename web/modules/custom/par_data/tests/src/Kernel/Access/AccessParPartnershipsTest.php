@@ -109,32 +109,22 @@ class AccessParPartnershipsTest extends ParDataTestBase {
     $partnership_memberships = $this->parDataManager->hasMembershipsByType($this->membershipUser, 'par_data_partnership');
     $this->assertCount(10, $partnership_memberships, t('Partnership memberships are all correct.'));
 
-    // The user has membership to 10 authorities through it's 10 partnerships.
-    $authority_memberships = $this->parDataManager->hasMembershipsByType($this->membershipUser, 'par_data_authority');
-    $this->assertCount(10, $authority_memberships, t('Authority memberships are all correct.'));
-
-    // However only half of these are direct memberships.
-    $direct_authority_memberships = $this->parDataManager->hasMembershipsByType($this->membershipUser, 'par_data_authority', TRUE);
+    $direct_authority_memberships = $this->parDataManager->hasMembershipsByType($this->membershipUser, 'par_data_authority');
     $this->assertCount(5, $direct_authority_memberships, t('Direct Authority memberships are all correct.'));
 
-    $organisation_memberships = $this->parDataManager->hasMembershipsByType($this->membershipUser, 'par_data_organisation');
-    $this->assertCount(10, $organisation_memberships, t('Organisation memberships are all correct.'));
-
-    $direct_organisation_memberships = $this->parDataManager->hasMembershipsByType($this->membershipUser, 'par_data_organisation', TRUE);
+    $direct_organisation_memberships = $this->parDataManager->hasMembershipsByType($this->membershipUser, 'par_data_organisation');
     $this->assertCount(5, $direct_organisation_memberships, t('Direct Organisation memberships are all correct.'));
 
     // Check that the correct caches have been created.
     foreach ($this->authorities as $i => $authority) {
-      $entityHashKey = $authority->getEntityTypeId() . ':' . $authority->id();
-      $cache = \Drupal::cache('data')->get("par_data_relationships:{$entityHashKey}");
+      $cache = \Drupal::cache('data')->get("par_data_relationships:{$authority->uuid()}");
       // Only a select number of authorities have member people.
       if ($i >= 10 && $i % 2 == 0) {
         $this->assertNotFalse($cache, t("Relationships for authority entity {$authority->id()} have been correctly cached."));
       }
     }
     foreach ($this->organisations as $i => $organisation) {
-      $entityHashKey = $organisation->getEntityTypeId() . ':' . $organisation->id();
-      $cache = \Drupal::cache('data')->get("par_data_relationships:{$entityHashKey}");
+      $cache = \Drupal::cache('data')->get("par_data_relationships:{$organisation->uuid()}");
       // Only a select number of authorities have member people.
       if ($i >= 10 && $i % 2 != 0) {
         $this->assertNotFalse($cache, t("Relationships for organisation entity {$organisation->id()} have been correctly cached."));

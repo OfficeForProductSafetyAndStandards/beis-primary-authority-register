@@ -16,7 +16,7 @@ Feature: Helpdesk approve partnership
         And I add "Out of Eden Limited" to the inputfield "#edit-keywords"
         # And I select the option with the value "confirmed_business" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-helpdesk-dashboard"
-        And there is "2" occurences of element "td.views-field.views-field-par-flow-link.views-field-par-flow-link-1"
+        And there is "2" occurences of element ".par-rd-helpdesk-dashboard tbody tr"
         Then I click the link text "Approve partnership"
 
         # APPROVAL REVIEW SCREEN
@@ -60,4 +60,3 @@ Feature: Helpdesk approve partnership
         # REVOKE PARTNERSHIP (SHORTER STEP VERSION)
 
         # And I successfully revoke a coordinated partnership
-        

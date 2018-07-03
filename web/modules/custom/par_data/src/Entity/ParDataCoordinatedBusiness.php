@@ -67,6 +67,22 @@ use Drupal\par_data\ParDataException;
 class ParDataCoordinatedBusiness extends ParDataEntity {
 
   /**
+   * {@inheritdoc}
+   */
+  public function filterRelationshipsByAction($relationship, $action) {
+    switch ($action) {
+      case 'manage':
+        // Partnerships should not be followed, this is a one-way relationship.
+        if ($relationship->getEntity()->getEntityTypeId() === 'par_data_partnership') {
+          return FALSE;
+        }
+
+    }
+
+    return parent::filterRelationshipsByAction($relationship, $action);
+  }
+
+  /**
    * @var array
    *   An array of entity relationships that are dependent on this entity.
    */
@@ -87,7 +103,7 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
 
     // Ceasing a member has the same purpose as revoking partnerships
     // so we use the same methods and status.
-    parent::revoke($save);
+    return parent::revoke($save);
   }
 
   /**
@@ -95,9 +111,9 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
    */
   public function destroy() {
     // Freeze memberships that have active enforcement notices.
-    $par_data_enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
-    foreach ($par_data_enforcement_notices as $entity) {
-      if ($entity->isLiving()) {
+    $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
+    foreach ($enforcement_notices as $uuid => $relationship) {
+      if ($relationship->getEntity()->isLiving()) {
         return;
       }
     }
