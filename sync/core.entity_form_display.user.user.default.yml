@@ -3,9 +3,9 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.user.user.field_gdpr
     - field.field.user.user.user_picture
   module:
-    - datetime
     - user
 _core:
   default_config_hash: K-1rBM8mTIkFp9RqOC2tMRUukOQ1xbRCfSKK8dEddnA
@@ -33,12 +33,13 @@ content:
     third_party_settings: {  }
     region: content
   google_analytics:
-    weight: 3
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   contact: true
+  field_gdpr: true
   langcode: true
   language: true
   timezone: true

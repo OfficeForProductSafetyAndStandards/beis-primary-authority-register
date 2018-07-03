@@ -1,0 +1,9 @@
+name: 'PAR Profile Update Flows'
+type: module
+description: 'Creates the flows required for a user to update their profile information.'
+core: 8.x
+package: PAR
+dependencies:
+  - par_data
+  - par_flows
+  - par_forms

@@ -63,7 +63,7 @@ class ParContactDetailsForm extends ParFormPluginBase {
     $form['last_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the last name'),
-      '#default_value' => $this->getDefaultValuesByKey('work_phone', $cardinality),
+      '#default_value' => $this->getDefaultValuesByKey('last_name', $cardinality),
     ];
 
     $form['work_phone'] = [

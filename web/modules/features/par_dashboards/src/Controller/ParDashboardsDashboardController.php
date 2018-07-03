@@ -75,6 +75,26 @@ class ParDashboardsDashboardController extends ControllerBase {
     $this->killSwitch->trigger();
     $build = [];
 
+    // User controls.
+    $account = $this->getCurrentUser();
+    if ($account && $people = $this->getParDataManager()->getUserPeople($account)) {
+      $build['user'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('Your account'),
+        '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+
+      // Profile management link.
+      $manage_profile = $this->getLinkByRoute('par_profile_update_flows.gdpr', ['user' => $account->id()]);
+      $profile_link = $manage_profile->setText('Manage your profile details')->toString();
+      $build['user']['profile'] = [
+        '#type' => 'markup',
+        '#markup' => "<p>{$profile_link}</p>",
+      ];
+    }
+
     // Your partnerships.
     $partnerships = $this->getParDataManager()->hasMembershipsByType($this->getCurrentUser(), 'par_data_partnership');
     $can_manage_partnerships = $this->getCurrentUser()->hasPermission('manage my organisations') || $this->getCurrentUser()->hasPermission('manage my authorities');

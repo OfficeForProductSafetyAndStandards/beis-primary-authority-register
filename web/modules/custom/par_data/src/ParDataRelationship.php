@@ -10,6 +10,9 @@ use Drupal\Core\Field\FieldDefinitionInterface;
  */
 class ParDataRelationship {
 
+  const DIRECTION_DEFAULT = 'default';
+  const DIRECTION_REVERSE = 'reverse';
+
   /**
    * The entity that the relationship is based on.
    */
@@ -69,7 +72,7 @@ class ParDataRelationship {
   }
 
   public function getRelationshipDirection() {
-    return $this->getField()->getTargetEntityTypeId() === $this->getEntity()->getEntityTypeId() ? 'reverse' : 'direct';
+    return $this->getField()->getTargetEntityTypeId() === $this->getEntity()->getEntityTypeId() ? self::DIRECTION_REVERSE : self::DIRECTION_DEFAULT;
   }
 
   public function sortByType($a, $b) {
