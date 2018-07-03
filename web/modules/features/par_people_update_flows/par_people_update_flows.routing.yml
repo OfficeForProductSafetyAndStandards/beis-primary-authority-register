@@ -33,7 +33,6 @@ par_help_desks_flows.approve_partnership:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-
 # PAR Help Desk journey - revoke partnership
 par_help_desks_flows.confirm_revoke_partnership:
   path: '/helpdesk/partnerships/{par_data_partnership}/revoke'
@@ -60,34 +59,6 @@ par_help_desks_flows.revoke_partnership:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-
-# PAR Help Desk journey - unrevoke partnership
-par_help_desks_flows.confirm_unrevoke_partnership:
-  path: '/helpdesk/partnership/{par_data_partnership}/restore'
-  defaults:
-    _form: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskUnrevokeConfirmForm'
-    _title_callback: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskUnrevokeConfirmForm::titleCallback'
-  requirements:
-    _permission: 'approve partnerships via help desk'
-    _custom_access: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskUnrevokeConfirmForm::accessCallback'
-    par_data_partnership: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-par_help_desks_flows.unrevoke_partnership:
-  path: '/helpdesk/partnership/{par_data_partnership}/restored'
-  defaults:
-    _form: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskUnrevokeForm'
-    _title_callback: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskUnrevokeForm::titleCallback'
-  requirements:
-    _permission: 'approve partnerships via help desk'
-    par_data_partnership: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-
 # PAR Help Desk journey - invite users
 par_help_desks_flows.invite_members:
   path: '/helpdesk/partnerships/{par_data_partnership}/invite/{par_data_person}'
