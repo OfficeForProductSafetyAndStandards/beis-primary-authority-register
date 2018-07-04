@@ -82,6 +82,3 @@ Feature: New Direct Partnership For PA To Approve
         Given I am logged in as "par_authority_gdpr_old_login@example.com"
 
         Then the element "h1.heading-xlarge" contains the text "Primary Authority Register"
-        And I click the link text "Manage your profile details"
-
-        Then the element "h1.heading-xlarge" contains the text "Confirm acceptance of data policy"
