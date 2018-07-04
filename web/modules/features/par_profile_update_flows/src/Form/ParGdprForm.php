@@ -17,16 +17,38 @@ class ParGdprForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
+   * The timestamp when GDPR came into effect.
+   */
+  const GDPR_START_TIME = 1527206400;
+
+  /**
    * Set the page title.
    */
   protected $pageTitle = 'Confirm acceptance of data policy';
 
   /**
-   * Redirect current user.
+   * Redirect current user on registration.
    */
-  public function redirectCurrentUser() {
+  public function registrationRedirectCurrentUser() {
     $account = $this->getCurrentUser();
     $url = $this->getUrlGenerator()->generateFromRoute('par_profile_update_flows.gdpr', $this->getRouteParams() + ['user' => $account->id()]);
+    return new RedirectResponse($url);
+  }
+
+  /**
+   * Redirect current user on login.
+   */
+  public function loginRedirectCurrentUser() {
+    $account = $this->getCurrentUser();
+
+    // All users after the GDPR start time should confirm acceptance
+    // of data policy if they haven't done so already.
+    if ($account->getCreatedTime() >= self::GDPR_START_TIME && $account->get('field_gdpr')->getString() !== '1') {
+      $url = $this->getUrlGenerator()->generateFromRoute('par_profile_update_flows.gdpr', $this->getRouteParams() + ['user' => $account->id()]);
+    }
+    else {
+      $url = $this->getUrlGenerator()->generateFromRoute('par_dashboards.dashboard', $this->getRouteParams());
+    }
     return new RedirectResponse($url);
   }
 

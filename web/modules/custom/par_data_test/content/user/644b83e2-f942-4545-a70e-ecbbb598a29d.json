@@ -1,7 +1,7 @@
 {
     "_links": {
         "self": {
-            "href": "http:\/\/default\/user\/9533?_format=hal_json"
+            "href": "http:\/\/default\/user\/10480?_format=hal_json"
         },
         "type": {
             "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
@@ -9,7 +9,7 @@
     },
     "uuid": [
         {
-            "value": "46e65664-bf34-4713-ab14-740cbe581538"
+            "value": "644b83e2-f942-4545-a70e-ecbbb598a29d"
         }
     ],
     "langcode": [
@@ -20,12 +20,12 @@
     ],
     "mail": [
         {
-            "value": "par_admin@example.com"
+            "value": "par_authority_gdpr_old_login@example.com"
         }
     ],
     "name": [
         {
-            "value": "par_admin@example.com"
+            "value": "par_authority_gdpr_old_login@example.com"
         }
     ],
     "pass": [
@@ -38,19 +38,14 @@
             "value": "1"
         }
     ],
-    "roles": [
-        {
-            "target_id": "administrator"
-        }
-    ],
     "created": [
         {
-            "value": 1521468935
+            "value": 1509494400
         }
     ],
     "changed": [
         {
-            "value": 1521538310,
+            "value": 1509494400,
             "lang": "en"
         }
     ],
@@ -62,7 +57,7 @@
     ],
     "field_gdpr": [
         {
-            "value": true
+            "value": false
         }
     ]
 }

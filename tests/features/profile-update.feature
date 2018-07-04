@@ -5,9 +5,6 @@ Feature: New Direct Partnership For PA To Approve
 
         Given I am logged in as "par_authority_profile@example.com"
 
-        Then the element "h1.heading-xlarge" contains the text "Primary Authority Register"
-        And I click the link text "Manage your profile details"
-
         Then the element "h1.heading-xlarge" contains the text "Confirm acceptance of data policy"
         And the element "#content" contains the text "Please confirm you have read the Privacy Notice and understand how the Office intend to use your personal data"
         When I click on the button "#edit-next"
@@ -48,9 +45,6 @@ Feature: New Direct Partnership For PA To Approve
 
         Given I am logged in as "par_authority_multiple_contacts_profile@example.com"
 
-        Then the element "h1.heading-xlarge" contains the text "Primary Authority Register"
-        And I click the link text "Manage your profile details"
-
         Then the element "h1.heading-xlarge" contains the text "Confirm acceptance of data policy"
         And the element "#content" contains the text "Please confirm you have read the Privacy Notice and understand how the Office intend to use your personal data"
         And I click on the checkbox "#edit-data-policy"
@@ -81,3 +75,13 @@ Feature: New Direct Partnership For PA To Approve
 
         Then the element "h1.heading-xlarge" contains the text "Thank you for updating your profile"
         And I click the link text "Done"
+
+    @profileupdate @ci
+    Scenario: Login with old user for the first time
+
+        Given I am logged in as "par_authority_gdpr_old_login@example.com"
+
+        Then the element "h1.heading-xlarge" contains the text "Primary Authority Register"
+        And I click the link text "Manage your profile details"
+
+        Then the element "h1.heading-xlarge" contains the text "Confirm acceptance of data policy"
