@@ -96,6 +96,15 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
+   * Get renderer service.
+   *
+   * @return mixed
+   */
+  public static function getRenderer() {
+    return \Drupal::service('renderer');
+  }
+
+  /**
    * Getter the Par Data Manager with a reduced iterator.
    */
   public function getReducedIterator($iterations = 0) {
@@ -578,14 +587,30 @@ class ParDataManager implements ParDataManagerInterface {
    * @return []
    *   An array of options keyed by entity id.
    */
-  public function getEntitiesAsOptions($entities, $options = []) {
+  public function getEntitiesAsOptions($entities, $options = [], $view_mode = NULL) {
     foreach ($entities as $entity) {
       if ($entity instanceof EntityInterface) {
-        $options[$entity->id()] = $entity->label();
+        if ($view_mode) {
+          $view_builder = $this->getViewBuilder($entity->getEntityTypeId());
+          $view = $view_builder->view($entity, $view_mode);
+          $options[$entity->id()] = $this->getRenderer()->renderPlain($view);
+        }
+        else {
+          $options[$entity->id()] = $entity->label();
+        }
       }
     }
 
     return $options;
+  }
+
+  public function renderEntityCallback($entiy_type, $entity_id, $view_mode) {
+    $view_builder = $this->getViewBuilder($entiy_type);
+    $entities = $this->getEntitiesByType($entiy_type, [$entity_id]);
+
+    foreach ($entities as $entity) {
+      return $view_builder->view($entity, $view_mode);
+    }
   }
 
   /**
