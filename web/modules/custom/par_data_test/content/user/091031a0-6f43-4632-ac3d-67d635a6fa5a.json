@@ -7,6 +7,11 @@
             "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
         }
     },
+    "uid": [
+        {
+            "value": 9542
+        }
+    ],
     "uuid": [
         {
             "value": "091031a0-6f43-4632-ac3d-67d635a6fa5a"
