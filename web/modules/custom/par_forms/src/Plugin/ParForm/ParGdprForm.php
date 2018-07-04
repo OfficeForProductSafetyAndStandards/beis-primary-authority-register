@@ -75,14 +75,14 @@ class ParGdprForm extends ParFormPluginBase {
 
     $form['opt_out'] = [
       '#type' => 'markup',
-      '#markup' => 'If you would like to opt-out please <a href="mailto:pa@beis.gov.uk" target="_blank">contact the helpdesk</a>.',
+      '#markup' => 'If you would like to discuss how the Office use personal data then please <a href="mailto:pa@beis.gov.uk" target="_blank">contact the helpdesk</a>.',
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];
 
     $form['data_policy'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Please confirm you have read the Privacy Notice and understand how the Office intend to use your personal data'),
+      '#title' => $this->t('Please confirm you have read the Privacy Notice and understand how the Office intends to use your personal data'),
       '#return_value' => 'on',
     ];
 

@@ -5,7 +5,7 @@ name: registration_gdpr_review
 label: 'Registration GDPR review'
 triggers:
   registration: registration
-destination_path: 'internal:/profile-update/data-policy'
+destination_path: 'internal:/profile-registration/data-policy'
 pages_type: 0
 pages: ''
 roles:
