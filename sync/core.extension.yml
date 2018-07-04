@@ -83,6 +83,7 @@ module:
   par_roles: 0
   par_search_partnership_flows: 0
   par_validation: 0
+  password_policy: 0
   path: 0
   queue_ui: 0
   raven: 0
