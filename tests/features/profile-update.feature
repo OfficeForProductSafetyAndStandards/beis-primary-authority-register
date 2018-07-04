@@ -6,7 +6,7 @@ Feature: New Direct Partnership For PA To Approve
         Given I am logged in as "par_authority_profile@example.com"
 
         Then the element "h1.heading-xlarge" contains the text "Confirm acceptance of data policy"
-        And the element "#content" contains the text "Please confirm you have read the Privacy Notice and understand how the Office intend to use your personal data"
+        And the element "#content" contains the text "Please confirm you have read the Privacy Notice and understand how the Office intends to use your personal data"
         When I click on the button "#edit-next"
 
         # Confirm form can't be submitted without agreeing to terms.
@@ -46,7 +46,7 @@ Feature: New Direct Partnership For PA To Approve
         Given I am logged in as "par_authority_multiple_contacts_profile@example.com"
 
         Then the element "h1.heading-xlarge" contains the text "Confirm acceptance of data policy"
-        And the element "#content" contains the text "Please confirm you have read the Privacy Notice and understand how the Office intend to use your personal data"
+        And the element "#content" contains the text "Please confirm you have read the Privacy Notice and understand how the Office intends to use your personal data"
         And I click on the checkbox "#edit-data-policy"
         When I click on the button "#edit-next"
 
