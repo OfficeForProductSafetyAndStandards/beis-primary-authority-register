@@ -4,7 +4,6 @@ dependencies: {  }
 name: dashboard
 label: Dashboard
 triggers:
-  registration: registration
   login: login
   one-time-login: one-time-login
 destination_path: 'internal:/dashboard'
@@ -15,5 +14,5 @@ roles:
   par_authority: par_authority
   par_enforcement: par_enforcement
   par_organisation: par_organisation
-weight: -9
+weight: -8
 enabled: true

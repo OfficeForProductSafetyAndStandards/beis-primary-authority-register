@@ -98,6 +98,7 @@ permissions:
   - invite_type_invite_organisation_member
   - 'manage my authorities'
   - 'manage my organisations'
+  - 'manage par profile'
   - 'update primary authority advice to local authorities'
   - 'use text format basic_html'
   - 'view own private files'

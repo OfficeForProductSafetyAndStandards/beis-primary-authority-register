@@ -479,11 +479,13 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   The target type to return entities for.
    * @param string $action
    *   The action type to return relationships for.
+   * @param boolean $reset
+   *   Whether to reset the cache.
    *
    * @return EntityInterface[]
    *   An array of entities keyed by type.
    */
-  public function getRelationships($target = NULL, $action = NULL) {
+  public function getRelationships($target = NULL, $action = NULL, $reset = FALSE) {
     // Enable in memory caching for repeated entity lookups.
     $unique_function_id = __FUNCTION__ . ':' . $this->uuid() . ':' . (isset($target) ? $target : 'null') . ':' . (isset($action) ? $action : 'null');
     $relationships = &drupal_static($unique_function_id);
@@ -507,7 +509,9 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         if ($this->getEntityTypeId() === $entity_type) {
           foreach ($fields as $field_name => $field) {
             foreach ($this->get($field_name)->referencedEntities() as $referenced_entity) {
-              $relationships[$referenced_entity->uuid()] = new ParDataRelationship($this, $referenced_entity, $field);
+              if (!$referenced_entity->isDeleted()) {
+                $relationships[$referenced_entity->uuid()] = new ParDataRelationship($this, $referenced_entity, $field);
+              }
             }
           }
         }
@@ -518,7 +522,9 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
           foreach ($fields as $field_name => $field) {
             $referencing_entities = $this->getParDataManager()->getEntitiesByProperty($entity_type, $field_name, $this->id());
             foreach ($referencing_entities as $referenced_entity) {
-              $relationships[$referenced_entity->uuid()] = new ParDataRelationship($this, $referenced_entity, $field);
+              if (!$referenced_entity->isDeleted()) {
+                $relationships[$referenced_entity->uuid()] = new ParDataRelationship($this, $referenced_entity, $field);
+              }
             }
           }
         }
