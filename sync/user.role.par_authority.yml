@@ -49,6 +49,7 @@ permissions:
   - 'enforce organisation'
   - invite_type_invite_organisation_member
   - 'manage my authorities'
+  - 'manage par profile'
   - 'raise enforcement notice'
   - 'search partnership'
   - 'send enforcement notice'

@@ -38,7 +38,7 @@ const shared = client.page.shared();
 
   Then('I click on the checkbox {string}', function (string) {
     return client
-        .clickCheckboxIfUnselected(string)
+        .click(string)
   });
 
   Then('I upload the file {string} to field {string}', function (filepath, uploadfield) {
@@ -151,4 +151,3 @@ const shared = client.page.shared();
     return shared
     .goToPartnershipDetailPage(orgname,status)
    }); 
-   
