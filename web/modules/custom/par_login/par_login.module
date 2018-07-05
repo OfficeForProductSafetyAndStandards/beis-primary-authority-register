@@ -23,6 +23,19 @@ function par_login_form_user_pass_alter(&$form, FormStateInterface $form_state, 
   array_unshift($form['#validate'], 'par_login_validate_pass');
 }
 
+/**
+ * Implements hook_form_FORM_ID_alter() for user_form().
+ */
+function par_login_form_user_form_alter(&$form, &$form_state) {
+  // Check for specific conditions.
+  $show_password_policy_status = _password_policy_show_policy();
+
+  // Load form if relevant.
+  if ($show_password_policy_status) {
+    $form['account']['password_policy_status']['#attributes'] = ['class' => ['form-group']];
+  }
+}
+
 
 /**
  * Validates the user login form.
