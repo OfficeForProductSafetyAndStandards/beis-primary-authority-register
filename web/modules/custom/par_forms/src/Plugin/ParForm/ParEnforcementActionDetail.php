@@ -46,10 +46,10 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
         $this->setDefaultValuesByKey("action_status_notes", $cardinality, ' (' . $par_data_enforcement_action->getPrimaryAuthorityNotes() . ')');
       }
       elseif ($par_data_enforcement_action->getRawStatus() === ParDataEnforcementAction::REFERRED) {
-        $this->setDefaultValuesByKey("action_status_notes", $cardinality, $par_data_enforcement_action->getReferralNotes());
+        $this->setDefaultValuesByKey("action_status_notes", $cardinality, ' (' . $par_data_enforcement_action->getReferralNotes() . ')');
       }
 
-      $this->setDefaultValuesByKey("action_regulatory_functions", $cardinality, ' (' . $par_data_enforcement_action->field_regulatory_function->view('full') . ')');
+      $this->setDefaultValuesByKey("action_regulatory_functions", $cardinality, $par_data_enforcement_action->field_regulatory_function->view('full'));
       $this->setDefaultValuesByKey("action_details", $cardinality, $par_data_enforcement_action->details->view('full'));
       $this->setDefaultValuesByKey("action_attachments", $cardinality, $par_data_enforcement_action->document->view('full'));
     }
