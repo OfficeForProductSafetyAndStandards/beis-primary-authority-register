@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Updated the public primary authority search with partnership type column and better search.
+
+### Fixed
+- Added the correct completion text at the end of the partnership confirmation process.
 
 ## [20.0.1] - 2019-07-05
 ### Added
