@@ -1,4 +1,4 @@
-uuid: fc0c1dfa-7048-4ab1-8c15-b41ba81459f2
+uuid: d443f876-ce46-4d93-8d87-64a98f830760
 langcode: en
 status: true
 dependencies:
@@ -7,12 +7,11 @@ dependencies:
     - field.storage.par_data_partnership.field_regulatory_function
   module:
     - better_exposed_filters
-    - datetime
     - pagerer
     - par_data
     - user
-id: partnership_search
-label: 'Search for a partnership'
+id: primary_authority_register
+label: 'Primary Authority Register'
 module: views
 description: ''
 tag: ''
@@ -29,7 +28,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'search partnership'
+          perm: 'search public register'
       cache:
         type: tag
         options: {  }
@@ -389,10 +388,10 @@ display:
           group_type: group
           admin_label: 'Organisation Name'
           label: Business
-          exclude: true
+          exclude: false
           alter:
-            alter_text: false
-            text: ''
+            alter_text: true
+            text: 'Partnership between {{ authority_name }} and {{ organisation_name }}'
             make_link: false
             path: ''
             absolute: false
@@ -446,59 +445,6 @@ display:
           entity_type: par_data_organisation
           entity_field: organisation_name
           plugin_id: field
-        par_flow_link:
-          id: par_flow_link
-          table: par_partnerships_field_data
-          field: par_flow_link
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: Partnership
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          title: 'Partnership between {{ authority_name }} and {{ organisation_name }}'
-          link: '/partnership/{{ id_1 }}'
-          hidden: 0
-          entity_type: par_data_partnership
-          plugin_id: par_flow_link
         partnership_type:
           id: partnership_type
           table: par_partnerships_field_data
@@ -563,71 +509,6 @@ display:
           field_api_classes: false
           entity_type: par_data_partnership
           entity_field: partnership_type
-          plugin_id: field
-        trading_name_value_2:
-          id: trading_name_value_2
-          table: par_data_organisation__trading_name
-          field: trading_name_value
-          relationship: field_organisation
-          group_type: group
-          admin_label: 'Coordinated Member Trading Name'
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: true
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: entity_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          entity_type: par_data_organisation
-          entity_field: trading_name
           plugin_id: field
         field_authority_person:
           id: field_authority_person
@@ -822,71 +703,6 @@ display:
           entity_type: par_data_legal_entity
           entity_field: registered_name
           plugin_id: field
-        registered_number:
-          id: registered_number
-          table: par_legal_entities_field_data
-          field: registered_number
-          relationship: field_legal_entity
-          group_type: group
-          admin_label: 'Partnership Legal Entity Number'
-          label: 'Registered Number'
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: entity_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          entity_type: par_data_legal_entity
-          entity_field: registered_number
-          plugin_id: field
         field_regulatory_function:
           id: field_regulatory_function
           table: par_data_partnership__field_regulatory_function
@@ -949,72 +765,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
-        approved_date:
-          id: approved_date
-          table: par_partnerships_field_data
-          field: approved_date
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 'Approved on'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: datetime_default
-          settings:
-            timezone_override: ''
-            format_type: gds_date_format
-          group_column: entity_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          entity_type: par_data_partnership
-          entity_field: approved_date
           plugin_id: field
         trading_name_value_1:
           id: trading_name_value_1
@@ -1146,6 +896,71 @@ display:
           entity_type: par_data_organisation
           entity_field: organisation_name
           plugin_id: field
+        trading_name_value_2:
+          id: trading_name_value_2
+          table: par_data_organisation__trading_name
+          field: trading_name_value
+          relationship: field_organisation
+          group_type: group
+          admin_label: 'Coordinated Member Trading Name'
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: true
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: par_data_organisation
+          entity_field: trading_name
+          plugin_id: field
         registered_name_1:
           id: registered_name_1
           table: par_legal_entities_field_data
@@ -1211,71 +1026,6 @@ display:
           entity_type: par_data_legal_entity
           entity_field: registered_name
           plugin_id: field
-        registered_number_1:
-          id: registered_number_1
-          table: par_legal_entities_field_data
-          field: registered_number
-          relationship: field_legal_entity_1
-          group_type: group
-          admin_label: 'Coordinated Member Legal Entity Number'
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: true
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: entity_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          entity_type: par_data_legal_entity
-          entity_field: registered_number
-          plugin_id: field
       filters:
         combine:
           id: combine
@@ -1324,10 +1074,8 @@ display:
             organisation_name: organisation_name
             trading_name_value: trading_name_value
             registered_name: registered_name
-            registered_number: registered_number
             organisation_name_1: organisation_name_1
             registered_name_1: registered_name_1
-            registered_number_1: registered_number_1
           plugin_id: combine
         status:
           id: status
@@ -1532,14 +1280,14 @@ display:
       tags:
         - 'config:field.storage.par_data_partnership.field_authority_person'
         - 'config:field.storage.par_data_partnership.field_regulatory_function'
-  enforcment_flow_search_partnerships:
+  public_register:
     display_plugin: page
-    id: enforcment_flow_search_partnerships
+    id: public_register
     display_title: 'Search Partnerships'
     position: 3
     display_options:
       display_extenders: {  }
-      path: search/partnerships
+      path: par
       display_description: ''
       defaults:
         fields: true
