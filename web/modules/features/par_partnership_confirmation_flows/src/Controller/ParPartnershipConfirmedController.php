@@ -26,7 +26,7 @@ class ParPartnershipConfirmedController extends ParBaseController {
     ];
     $build['next_steps']['info'] = [
       '#type' => 'markup',
-      '#markup' => "Your notice of enforcement action has been sent to the primary authority and will be reviewed no latter than 5 working days.",
+      '#markup' => "The partnership has been updated, this information will now be presented to the Office for Product Safety & Standards. Once this partnership has been reviewed the Office will either nominate this partnership or contact you with more information.",
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];
