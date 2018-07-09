@@ -42,16 +42,16 @@
     'pager',
     'pagerer-pager-' ~ style,
     embedded ? 'pagerer-scrollpane-embedded',
-  ],
+  ]
 %}
-{% set nav_label = {{ random() }} %}
+{% set nav_label =  'pagination-heading-' ~ random(1000) %}
 
 {% if items %}
-    <nav {{ attributes.addClass(classes) }} role="navigation" aria-labelledby="pagination-heading-{{ nav_label }}"
+    <nav {{ attributes.addClass(classes) }} role="navigation" aria-labelledby="{{ nav_label }}"
 {%- if id %}
  id="{{ id }}"
 {% endif -%}>
-      <h4 id="pagination-heading-{{ nav_label }}" class="pagination-heading visually-hidden">{{ 'Pagination'|t }}</h4>
+      <h4 id="{{ nav_label }}" class="pagination-heading visually-hidden">{{ 'Pagination'|t }}</h4>
       {% if embedded %}
         {{ attach_library('pagerer/scrollpane') }}
         <div class="pagerer-viewport">
