@@ -50,8 +50,8 @@ class ParSicCodeForm extends ParFormPluginBase {
 
     // Display the correct introductory text based on the action that is being performed.
     $intro_text = $this->getFlowDataHandler()->getFormPermValue("sic_code", NULL) ?
-      'Change the SIC Code of your organisation' :
-      'Add a new SIC Code to your organisation';
+      $this->formatPlural($cardinality, 'Change the SIC Code of your organisation', 'Change the SIC Code of your organisation (optional)') :
+      $this->formatPlural($cardinality, 'Add a new SIC Code to your organisation', 'Add a new SIC Code to your organisation (optional)');
 
     $form['sic_code'] = [
       '#type' => 'select',

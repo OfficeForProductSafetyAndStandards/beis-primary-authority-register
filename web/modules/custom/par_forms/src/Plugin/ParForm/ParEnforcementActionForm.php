@@ -32,9 +32,13 @@ class ParEnforcementActionForm extends ParFormPluginBase {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $reg_function_names = $par_data_partnership ? $par_data_partnership->getPartnershipRegulatoryFunctionNames() : [];
 
+    $action_label = $this->getCardinality() > 1 ?
+      $this->formatPlural($cardinality, 'Details of Enforcement Action @index', 'Details of Enforcement Action @index (Optional)', ['@index' => $cardinality]) :
+      $this->t('Details of Enforcement Action');
+
     $form['action'] = [
       '#type' => 'fieldset',
-      '#title' => $this->formatPlural($this->getCardinality(), 'Details of Enforcement Action', 'Details of Enforcement Action @index', ['@index' => $cardinality]),
+      '#title' => $action_label,
     ];
 
     $form['title'] = [
