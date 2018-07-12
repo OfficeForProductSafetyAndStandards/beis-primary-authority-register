@@ -23,8 +23,10 @@ class ParSelectLegalEntitiesForm extends ParFormPluginBase {
     $par_data_organisation = $this->getflowDataHandler()->getParameter('par_data_organisation');
 
     // Get legal entities on the PAR Organisation.
-    $this->getFlowDataHandler()
-      ->setTempDataValue('organisation_legal_entities', $par_data_organisation->getLegalEntity());
+    $organisation_legal_entities = $par_data_organisation->getLegalEntity();
+    // Build options for legal entities forms.
+    $radio_options = $this->getParDataManager()->getEntitiesAsOptions($organisation_legal_entities, [], 'summary');
+    $this->getFlowDataHandler()->setFormPermValue('legal_entity_options', $radio_options);
 
     $this->getFlowDataHandler()
       ->setTempDataValue('partnership_legal_entities', $par_data_partnership->retrieveEntityIds('field_legal_entity'));
@@ -36,24 +38,12 @@ class ParSelectLegalEntitiesForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
-    // Retrieve legal entities on the partnership.
-    $organisation_legal_entities = $this->getFlowDataHandler()
-      ->getTempDataValue('organisation_legal_entities');
+    // Get all the allowed authorities.
+    $radio_options = $this->getFlowDataHandler()->getFormPermValue('legal_entity_options');
 
     // Retrieve legal entities on the partnership.
     $partnership_legal_entities = $this->getFlowDataHandler()
       ->getTempDataValue('partnership_legal_entities');
-
-    // Get view builder dependency to render legal entities.
-    $legal_entities_view_builder = $this->getParDataManager()
-      ->getViewBuilder('par_data_legal_entity');
-
-    // Build options for legal entities forms.
-    foreach ($organisation_legal_entities as $id => $legal_entity) {
-      $legal_entity_view = $legal_entities_view_builder->view($legal_entity, 'summary');
-      $legal_entities_options[$legal_entity->id()] = $this->renderMarkupField($legal_entity_view)['#markup'];
-    }
-
 
     // Intro text.
     $form['legal_entity_intro'] = [
@@ -73,7 +63,7 @@ limited company or partnership, as well as other types of organisations such as 
       '#type' => 'checkboxes',
       '#attributes' => ['class' => ['form-group']],
       '#title' => t('Choose which legal entities this partnership relates to'),
-      '#options' => $legal_entities_options,
+      '#options' => $radio_options,
       // Automatically check all legal entities if no form data is found.
       '#default_value' => $this->getDefaultValuesByKey('field_legal_entity', $cardinality, $partnership_legal_entities),
     ];
