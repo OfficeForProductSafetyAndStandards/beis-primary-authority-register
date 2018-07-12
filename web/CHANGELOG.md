@@ -5,11 +5,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Updated the public primary authority search with partnership type column and better search.
 
-## [20.0.0] - 2019-07-03
+### Fixed
+- Added the correct completion text at the end of the partnership confirmation process.
+
+## [20.0.1] - 2019-07-05
 ### Added
 - GDPR agreement required after registration.
 - Profile update capabilities allows review of user's.
+- A password policy for all users that requires new passwords to be a minimum of 8 characters long, not contain all lowercase or all uppercase characters, and not use commonly used words or sequences of characters.
+
 ### Changed
 - Performance improvements made by removing relationships to deleted data.
 

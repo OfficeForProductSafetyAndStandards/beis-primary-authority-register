@@ -79,7 +79,7 @@ class ParTradingNameForm extends ParFormPluginBase {
 
     $form['trading_name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Enter a trading name'),
+      '#title' => $this->formatPlural($cardinality, 'Enter a trading name', 'Enter an additional trading name (optional)'),
       '#default_value' => $this->getDefaultValuesByKey('trading_name', $cardinality),
     ];
 
