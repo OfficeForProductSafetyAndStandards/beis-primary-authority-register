@@ -62,7 +62,7 @@ class ParLegalEntityForm extends ParFormPluginBase {
       ];
     }
 
-    $legal_entity_label = $this->getCardinality() > 1 ?
+    $legal_entity_label = $this->getCardinality() !== 1 ?
       $this->formatPlural($cardinality, 'Legal Entity @index', 'Legal Entity @index (Optional)', ['@index' => $cardinality]) :
       $this->t('Legal Entity');
 
