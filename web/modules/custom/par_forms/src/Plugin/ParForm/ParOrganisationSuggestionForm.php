@@ -40,7 +40,14 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
         $this->getFlowDataHandler()->setTempDataValue('par_data_organisation_id', 'new');
       }
       else {
-        $this->getFlowDataHandler()->setFormPermValue('organisation_options', $organisations);
+        $radio_options = [];
+        foreach ($organisations as $organisation) {
+          // PAR-1172 Do not display organisations in coordinated partnerships.
+          if (!$organisation->isCoordinatedMember()) {
+            $radio_options = $this->getParDataManager()->getEntitiesAsOptions([$organisation], $radio_options, 'summary');
+          }
+        }
+        $this->getFlowDataHandler()->setFormPermValue('organisation_options', $radio_options);
       }
     }
 
@@ -51,22 +58,13 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
-
     // Go back to the previous page if there's no search term.
     if (!$this->getFlowDataHandler()->getFormPermValue('organisation_select_search_query')) {
       $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getPrevRoute(), $this->getRouteParams());
       return new RedirectResponse($url);
     }
 
-    if ($organisation_options = $this->getFlowDataHandler()->getFormPermValue('organisation_options')) {
-      $radio_options = [];
-      foreach ($organisation_options as $organisation) {
-        // PAR-1172 Do not display organisations in coordinated partnerships.
-        if (!$organisation->isCoordinatedMember()) {
-          $radio_options = $this->getParDataManager()->getEntitiesAsOptions([$organisation], $radio_options, 'summary');
-        }
-      }
-
+    if ($radio_options = $this->getFlowDataHandler()->getFormPermValue('organisation_options')) {
       $form['par_data_organisation_id'] = [
         '#type' => 'radios',
         '#title' => t('Choose an existing organisation or create a new organisation'),
