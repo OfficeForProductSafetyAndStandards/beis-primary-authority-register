@@ -55,7 +55,7 @@ class ParSicCodeForm extends ParFormPluginBase {
 
     $form['sic_code'] = [
       '#type' => 'select',
-      '#title' => $this->t($intro_text),
+      '#title' => $intro_text,
       '#options' => ['' => ''] + $this->getParDataManager()->getEntitiesAsOptions($sic_codes),
       '#default_value' => $this->getDefaultValuesByKey('sic_code', $cardinality, NULL),
     ];
