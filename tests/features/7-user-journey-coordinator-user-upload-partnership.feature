@@ -1,6 +1,6 @@
 Feature: Coordinator User - Upload Members
 
-    @PAR790 @coordinatedpartnership
+    @PAR790 @coordinatedpartnership @pending
     Scenario: Coordinator User - Upload Members
 
         # PARTNERSHIPS DASHBOARD
@@ -148,7 +148,7 @@ Feature: Coordinator User - Upload Members
         And the element ".table-scroll-wrapper" does not contain the text "Coordinated Member 3"
         And the element ".table-scroll-wrapper" does not contain the text "Coordinated Member 4"
 
-        @coordinatedpartnership @ci
+    @coordinatedpartnership @pending
     Scenario: Test search criteria
         # CHECK SEARCH PICKS UP ON TRADERS AND MEMBERS
         Given I am logged in as "par_authority@example.com"
