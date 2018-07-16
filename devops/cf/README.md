@@ -74,7 +74,7 @@ Once complete, type
 
     cf service par-cdn-ENV_SLUG
     
-This will give you the information you need to set up the CNAME for the par-beta.co.uk domain
+This will give you the information you need to set up the CNAME for the par-beta.net domain
 
 #### Set the environment variables
 
