@@ -965,7 +965,7 @@ display:
           empty: false
           tokenize: true
           content:
-            value: "{{ par_flow_link_2 }}\n{{ par_flow_link_4 }}\n{{ par_flow_link_5 }}"
+            value: "{{ par_flow_link_2 }}\n{{ par_flow_link_4 }}"
             format: full_html
           plugin_id: text
       footer:
