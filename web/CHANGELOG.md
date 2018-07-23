@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [20.1.1]
+### Added
+- Role assignment so that the administrator role can only be assigned by administrators.
+
 ## [20.1.0]
 ### Changed
 - Updated the public primary authority search with partnership type column and better search.

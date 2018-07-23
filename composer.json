@@ -52,7 +52,7 @@
         "drupal/range": "~1.1.0",
         "drupal/raven": "~2.4.0",
         "drupal/robotstxt": "~1.1.0",
-        "drupal/role_delegation": "^1.0@alpha",
+        "drupal/role_delegation": "~1.0.0@alpha",
         "drupal/swiftmailer": "~1.0.0-beta1",
         "drupal/trance": "~1.1.0",
         "drupal/twig_field_value": "~1.1.0",
