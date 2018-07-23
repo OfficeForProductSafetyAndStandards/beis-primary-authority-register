@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6ebbff21e9ba12a379c50e1586517512",
+    "content-hash": "f4b55e6b7fad75b373a3530f86b6a84b",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -116,16 +116,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.62.8",
+            "version": "3.63.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "7f35cc8bdf5afec650300c5633277be279833e0a"
+                "reference": "e12a6fb9045720fd96bd75e801b23e2877aa1245"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/7f35cc8bdf5afec650300c5633277be279833e0a",
-                "reference": "7f35cc8bdf5afec650300c5633277be279833e0a",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/e12a6fb9045720fd96bd75e801b23e2877aa1245",
+                "reference": "e12a6fb9045720fd96bd75e801b23e2877aa1245",
                 "shasum": ""
             },
             "require": {
@@ -192,24 +192,24 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-07-03T20:00:01+00:00"
+            "time": "2018-07-20T21:01:32+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
-            "version": "0.3.0",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bjeavons/zxcvbn-php.git",
-                "reference": "331a88932d1a399c989967d3399a4a40eb182fd5"
+                "reference": "7a7e1130c74c715e84c60c27384f657e9574a933"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bjeavons/zxcvbn-php/zipball/331a88932d1a399c989967d3399a4a40eb182fd5",
-                "reference": "331a88932d1a399c989967d3399a4a40eb182fd5",
+                "url": "https://api.github.com/repos/bjeavons/zxcvbn-php/zipball/7a7e1130c74c715e84c60c27384f657e9574a933",
+                "reference": "7a7e1130c74c715e84c60c27384f657e9574a933",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.3 || ^7.0"
+                "php": "^5.6 || ^7.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "*",
@@ -237,7 +237,7 @@
                 "password",
                 "zxcvbn"
             ],
-            "time": "2017-01-06T15:43:33+00:00"
+            "time": "2018-07-23T05:05:36+00:00"
         },
         {
             "name": "commerceguys/addressing",
@@ -1634,16 +1634,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.5.4",
+            "version": "8.5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "6b4dc1cf3347761f63152a31786b4680b8ac7781"
+                "reference": "900c28f19d4b5643f43c1cf046684046402eaac4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/6b4dc1cf3347761f63152a31786b4680b8ac7781",
-                "reference": "6b4dc1cf3347761f63152a31786b4680b8ac7781",
+                "url": "https://api.github.com/repos/drupal/core/zipball/900c28f19d4b5643f43c1cf046684046402eaac4",
+                "reference": "900c28f19d4b5643f43c1cf046684046402eaac4",
                 "shasum": ""
             },
             "require": {
@@ -1873,7 +1873,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2018-06-06T21:02:51+00:00"
+            "time": "2018-07-04T21:08:11+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -3389,7 +3389,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/queue_ui",
-                "reference": "d1db970651bd1d2f2f0b9eed63815cac365107b1"
+                "reference": "20057d60af30991c1968e6cf105f23fead75e9c8"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -3401,10 +3401,10 @@
                 },
                 "drupal": {
                     "version": "8.x-2.x-dev",
-                    "datestamp": "1512393187",
+                    "datestamp": "1530805421",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -3439,7 +3439,7 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/queue_ui"
             },
-            "time": "2018-07-03 14:53:39"
+            "time": "2018-07-07 11:21:03"
         },
         {
             "name": "drupal/range",
@@ -3588,6 +3588,61 @@
             "support": {
                 "source": "http://git.drupal.org/project/robotstxt.git",
                 "issues": "https://www.drupal.org/project/issues/robotstxt"
+            }
+        },
+        {
+            "name": "drupal/role_delegation",
+            "version": "1.0.0-alpha1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/role_delegation",
+                "reference": "8.x-1.0-alpha1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/role_delegation-8.x-1.0-alpha1.zip",
+                "reference": "8.x-1.0-alpha1",
+                "shasum": "f49edc6cfe2270358f58e3a72519e501dd0423e2"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-alpha1",
+                    "datestamp": "1459597139",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Andrew Schulman",
+                    "homepage": "https://www.drupal.org/user/279446"
+                },
+                {
+                    "name": "David Lesieur",
+                    "homepage": "https://www.drupal.org/user/17157"
+                },
+                {
+                    "name": "benjy",
+                    "homepage": "https://www.drupal.org/user/1852732"
+                }
+            ],
+            "description": "Allows site administrators to grant some roles the authority to assign selected roles to users.",
+            "homepage": "https://www.drupal.org/project/role_delegation",
+            "support": {
+                "source": "http://cgit.drupalcode.org/role_delegation"
             }
         },
         {
@@ -5264,16 +5319,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.0.2",
+            "version": "v4.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "35b8caf75e791ba1b2d24fec1552168d72692b12"
+                "reference": "bd088dc940a418f09cda079a9b5c7c478890fb8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/35b8caf75e791ba1b2d24fec1552168d72692b12",
-                "reference": "35b8caf75e791ba1b2d24fec1552168d72692b12",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/bd088dc940a418f09cda079a9b5c7c478890fb8d",
+                "reference": "bd088dc940a418f09cda079a9b5c7c478890fb8d",
                 "shasum": ""
             },
             "require": {
@@ -5311,20 +5366,20 @@
                 "parser",
                 "php"
             ],
-            "time": "2018-06-03T11:33:10+00:00"
+            "time": "2018-07-15T17:25:16+00:00"
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.15",
+            "version": "v2.0.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "10bcb46e8f3d365170f6de9d05245aa066b81f09"
+                "reference": "29af24f25bab834fcbb38ad2a69fa93b867e070d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/10bcb46e8f3d365170f6de9d05245aa066b81f09",
-                "reference": "10bcb46e8f3d365170f6de9d05245aa066b81f09",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/29af24f25bab834fcbb38ad2a69fa93b867e070d",
+                "reference": "29af24f25bab834fcbb38ad2a69fa93b867e070d",
                 "shasum": ""
             },
             "require": {
@@ -5360,7 +5415,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2018-06-08T15:26:40+00:00"
+            "time": "2018-07-04T16:31:37+00:00"
         },
         {
             "name": "pear/console_table",
@@ -7460,20 +7515,21 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.35.3",
+            "version": "v1.35.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "b48680b6eb7d16b5025b9bfc4108d86f6b8af86f"
+                "reference": "7e081e98378a1e78c29cc9eba4aefa5d78a05d2a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/b48680b6eb7d16b5025b9bfc4108d86f6b8af86f",
-                "reference": "b48680b6eb7d16b5025b9bfc4108d86f6b8af86f",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/7e081e98378a1e78c29cc9eba4aefa5d78a05d2a",
+                "reference": "7e081e98378a1e78c29cc9eba4aefa5d78a05d2a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.3.3",
+                "symfony/polyfill-ctype": "^1.8"
             },
             "require-dev": {
                 "psr/container": "^1.0",
@@ -7512,16 +7568,16 @@
                 },
                 {
                     "name": "Twig Team",
-                    "homepage": "http://twig.sensiolabs.org/contributors",
+                    "homepage": "https://twig.symfony.com/contributors",
                     "role": "Contributors"
                 }
             ],
             "description": "Twig, the flexible, fast, and secure template language for PHP",
-            "homepage": "http://twig.sensiolabs.org",
+            "homepage": "https://twig.symfony.com",
             "keywords": [
                 "templating"
             ],
-            "time": "2018-03-20T04:25:58+00:00"
+            "time": "2018-07-13T07:12:17+00:00"
         },
         {
             "name": "twistor/flysystem-stream-wrapper",
@@ -7752,16 +7808,16 @@
         },
         {
             "name": "zendframework/zend-diactoros",
-            "version": "1.8.0",
+            "version": "1.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "11c9c1835e60eef6f9234377a480fcec096ebd9e"
+                "reference": "273c18bf6aaab20be9667a3aa4e7702e1e4e7ced"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/11c9c1835e60eef6f9234377a480fcec096ebd9e",
-                "reference": "11c9c1835e60eef6f9234377a480fcec096ebd9e",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/273c18bf6aaab20be9667a3aa4e7702e1e4e7ced",
+                "reference": "273c18bf6aaab20be9667a3aa4e7702e1e4e7ced",
                 "shasum": ""
             },
             "require": {
@@ -7811,7 +7867,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2018-06-27T18:52:43+00:00"
+            "time": "2018-07-19T18:38:31+00:00"
         },
         {
             "name": "zendframework/zend-escaper",
@@ -9002,7 +9058,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupal.org/project/examples",
-                "reference": "34d1f69bd8c508cd9ac3ae787376a7912f4429cb"
+                "reference": "a321645b53b1e7adaabc6dbad710269e99436dc2"
             },
             "require": {
                 "drupal/core": "*"
@@ -9011,6 +9067,9 @@
                 "drupal/simpletest_example": "*",
                 "drupal/stream_wrapper_example": "*"
             },
+            "suggest": {
+                "drupal/devel": "Some modules will be able to pretty-print PHP with this module."
+            },
             "type": "drupal-module",
             "extra": {
                 "branch-alias": {
@@ -9018,7 +9077,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x-dev",
-                    "datestamp": "1529038724",
+                    "datestamp": "1532222581",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -9101,8 +9160,7 @@
                 "source": "http://cgit.drupalcode.org/examples",
                 "issues": "https://www.drupal.org/project/issues/examples",
                 "documentation": "https://api.drupal.org/api/examples"
-            },
-            "time": "2018-06-16 00:48:08"
+            }
         },
         {
             "name": "fabpot/goutte",
@@ -10734,7 +10792,7 @@
         },
         {
             "name": "symfony/css-selector",
-            "version": "v2.8.42",
+            "version": "v2.8.43",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/css-selector.git",
@@ -11048,6 +11106,7 @@
         "drupal/message_notify": 10,
         "drupal/password_policy": 20,
         "drupal/queue_ui": 20,
+        "drupal/role_delegation": 15,
         "drupal/ultimate_cron": 15,
         "drupal/config_inspector": 10,
         "drupal/examples": 20

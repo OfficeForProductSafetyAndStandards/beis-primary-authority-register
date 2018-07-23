@@ -43,6 +43,8 @@ permissions:
   - 'apply for partnership'
   - 'approve enforcement notice'
   - 'approve partnerships via help desk'
+  - 'assign par_enforcement role'
+  - 'assign par_helpdesk role'
   - 'bypass par_data membership'
   - 'bypass partnership journey'
   - 'create article content'

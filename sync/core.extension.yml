@@ -94,6 +94,7 @@ module:
   rdf: 0
   rest: 0
   robotstxt: 0
+  role_delegation: 0
   serialization: 0
   shortcut: 0
   syslog: 0
