@@ -236,7 +236,7 @@ if [[ $1 != "environment-only" ]]; then
     if [[ $ENV == "production" ]]; then
         CDN_DOMAIN="primary-authority.beis.gov.uk"
     else
-        CDN_DOMAIN=$ENV-cdn.par-beta.co.uk
+        CDN_DOMAIN=$ENV-cdn.par-beta.net
     fi
     
     cf map-route par-beta-$ENV-green cloudapps.digital -n par-beta-$ENV

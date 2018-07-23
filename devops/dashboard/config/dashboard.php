@@ -7,10 +7,10 @@ return [
     ],
     'environments' => [
         ['name' => 'production', 'build_version_url' => 'https://primary-authority.beis.gov.uk/build_version.txt'],
-        ['name' => 'staging', 'build_version_url' => 'https://staging-cdn.par-beta.co.uk/build_version.txt'],
-        ['name' => 'assessment', 'build_version_url' => 'https://assessment-cdn.par-beta.co.uk/build_version.txt'],
-        ['name' => 'branch', 'build_version_url' => 'https://branch-cdn.par-beta.co.uk/build_version.txt'],
-        ['name' => 'demo', 'build_version_url' => 'https://demo-cdn.par-beta.co.uk/build_version.txt'],
+        ['name' => 'staging', 'build_version_url' => 'https://staging-cdn.par-beta.net/build_version.txt'],
+        ['name' => 'assessment', 'build_version_url' => 'https://assessment-cdn.par-beta.net/build_version.txt'],
+        ['name' => 'branch', 'build_version_url' => 'https://branch-cdn.par-beta.net/build_version.txt'],
+        ['name' => 'demo', 'build_version_url' => 'https://demo-cdn.par-beta.net/build_version.txt'],
     ],
     'uptime_robot' => [
         'api_key' => env('UPTIME_ROBOT_API_KEY'),
