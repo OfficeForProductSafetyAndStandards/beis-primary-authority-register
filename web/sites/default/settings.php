@@ -822,6 +822,15 @@ $settings['file_scan_ignore_directories'] = [
 if (PHP_SAPI !== 'cli') {
   $settings['config_readonly'] = TRUE;
 }
+/**
+ * The XML Sitemap module contains config that isn't really config.
+ *
+ * It's updated every time the sitemap is regenerated (on cron)
+ * @see https://www.drupal.org/project/xmlsitemap/issues/2972043
+ */
+$settings['config_readonly_whitelist_patterns'] = [
+  'xmlsitemap.xmlsitemap.*',
+];
 
 /**
  * Extract the database credentials from the VCAP_SERVICES environment variable
