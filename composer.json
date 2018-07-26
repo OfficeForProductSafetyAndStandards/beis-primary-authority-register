@@ -157,7 +157,7 @@
                 "Change user notifications to explain reason for password rejection more clearly": "./patches/password_strength_dictionary.patch"
             },
             "drupal/vbo_export": {
-                "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2018-07-26/allow_conigurable_scheme-2988257-3.patch"
+                "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2018-07-26/allow_conigurable_scheme-2988257-4.patch"
             },
             "drupal/xmlsitemap": {
                 "xmlsitemap_file_transfer coincides with hook name provided by file_entity": "https://www.drupal.org/files/issues/xmlsitemap_hook_file_transfer-2831733-6.patch"
