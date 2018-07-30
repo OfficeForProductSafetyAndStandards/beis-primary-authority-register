@@ -1,0 +1,19 @@
+{#
+/**
+ * @file
+ * Default theme implementation to present data in the gds format.
+ *
+ * Available variables:
+ * - value: A collection of all the available custom entity types.
+ * - label: A human readable name for this entity type.
+ *
+ * @see template_preprocess_gds_data()
+ *
+ * @ingroup themeable
+ */
+#}
+
+<div{{ attributes.addClass('data') }}>
+  <span class="data-item bold-xxlarge">{{ value }}</span>
+  <span class="data-item bold-xsmall">{{ label }}</span>
+</div>

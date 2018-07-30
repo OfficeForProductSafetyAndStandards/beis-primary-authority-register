@@ -553,9 +553,9 @@ class ParDataManager implements ParDataManagerInterface {
   public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC') {
     $entities = [];
 
-    foreach ($conditions as $row) {
-      $query = $this->getEntityQuery($type);
+    $query = $this->getEntityQuery($type);
 
+    foreach ($conditions as $row) {
       foreach ($row as $condition_operator => $condition_row) {
         $group = (strtoupper($condition_operator) === 'OR') ? $query->orConditionGroup() : $query->andConditionGroup();
 
@@ -564,14 +564,14 @@ class ParDataManager implements ParDataManagerInterface {
         }
 
         $query->condition($group);
-
-        if ($limit) {
-          $query->range(0, $limit);
-        }
-
-        $entities += $query->execute();
       }
     }
+
+    if ($limit) {
+      $query->range(0, $limit);
+    }
+
+    $entities = $query->execute();
 
     return $this->entityManager->getStorage($type)->loadMultiple(array_unique($entities));
   }

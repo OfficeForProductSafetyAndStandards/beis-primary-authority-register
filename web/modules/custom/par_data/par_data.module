@@ -45,6 +45,14 @@ function par_data_theme() {
       ],
       'template' => 'par-data-entity-list',
     ],
+    'gds_data' => [
+      'variables' => [
+        'value' => '',
+        'label' => '',
+        'attributes' => [],
+      ],
+      'template' => 'gds-data',
+    ],
   ];
 }
 
