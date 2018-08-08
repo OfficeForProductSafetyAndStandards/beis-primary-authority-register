@@ -15,12 +15,12 @@ use Drupal\par_forms\ParFormPluginBase;
 class ParSicCodeForm extends ParFormPluginBase {
 
   /**
-   * Mapping of the data parameters to the form elements.
+   * {@inheritdoc}
    */
-  protected $formItems = [
-    'par_data_organisation:organisation' => [
-      'field_sic_code' => 'sic_code',
-    ],
+  protected $entityMapping = [
+    ['sic_code', 'par_data_organisation', 'field_sic_code', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must choose the most relevant SIC code for the organisation.'
+    ]],
   ];
 
   /**

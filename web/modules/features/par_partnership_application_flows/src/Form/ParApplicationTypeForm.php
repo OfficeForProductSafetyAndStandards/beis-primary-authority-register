@@ -42,10 +42,12 @@ class ParApplicationTypeForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
     if (!$form_state->getValue('application_type')) {
-      $this->setElementError('application_type', $form_state, 'Please select the type of application.');
+      $id = $this->getElementId(['application_type_fieldset'], $form);
+      $form_state->setErrorByName($this->getElementName('application_type'), $this->wrapErrorMessage('Please select the type of application.', $id));
     }
+
+    parent::validateForm($form, $form_state);
   }
 
 }

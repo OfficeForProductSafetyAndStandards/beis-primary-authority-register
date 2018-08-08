@@ -97,9 +97,34 @@ trait ParEntityValidationMappingTrait {
     return !empty($matched) ? current($matched) : NULL;
   }
 
-
+  /**
+   * Get the error message from a violation and wrap it accordingly.
+   *
+   * @param ConstraintViolationInterface $violation
+   *   The violation to display.
+   * @param ParEntityMapping $mapping
+   *   The mapping that handles the display of this error.
+   * @param $id
+   *   The form element id to link to.
+   *
+   * @return \Drupal\Core\GeneratedLink
+   */
   public function getViolationMessage(ConstraintViolationInterface $violation, ParEntityMapping $mapping, $id) {
     $message = $mapping->getErrorMessage($violation->getMessage());
+    return $this->wrapErrorMessage($message, $id);
+  }
+
+  /**
+   * This function isn't exclusive to entity validation but we can keep it here for now.
+   *
+   * @param $message
+   *   The message to wrap.
+   * @param $id
+   *   The form id to link it to.
+   *
+   * @return \Drupal\Core\GeneratedLink
+   */
+  public function wrapErrorMessage($message, $id) {
     $url = Url::fromUri('internal:#', ['fragment' => $id]);
     $link = Link::fromTextAndUrl($message, $url)->toString();
     return $link;
@@ -195,6 +220,7 @@ trait ParEntityValidationMappingTrait {
    *   The key for this form element.
    */
   public function getElementId($element, $form) {
+    $element = (array) $element;
     array_push($element, '#id');
     $id = NestedArray::getValue($form, $element);
 

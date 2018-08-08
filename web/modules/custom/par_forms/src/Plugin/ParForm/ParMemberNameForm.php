@@ -15,12 +15,12 @@ use Drupal\par_forms\ParFormPluginBase;
 class ParMemberNameForm extends ParFormPluginBase {
 
   /**
-   * Mapping of the data parameters to the form elements.
+   * {@inheritdoc}
    */
-  protected $formItems = [
-    'par_data_organisation:organisation' => [
-      'organisation_name' => 'name',
-    ],
+  protected $entityMapping = [
+    ['name', 'par_data_organisation', 'organisation_name', NULL, NULL, 0, [
+      'You must fill in the missing information.' => "You must enter the member's name."
+    ]],
   ];
 
   /**

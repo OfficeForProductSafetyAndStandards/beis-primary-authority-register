@@ -70,9 +70,10 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
    * Validate date field.
    */
   public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
-    $authority_id_key = $this->getElementKey('par_data_authority_id');
-    if (empty($form_state->getValue($authority_id_key))) {
-      $form_state->setErrorByName($authority_id_key, $this->t('<a href="#edit-par_data_authority_id">You must select an authority.</a>'));
+    $authority_element_key = $this->getElementKey('par_data_authority_id', $cardinality);
+    if (empty($form_state->getValue($authority_element_key))) {
+      $id_key = $this->getElementKey('par_data_authority_id', $cardinality, TRUE);
+      $form_state->setErrorByName($this->getElementName($authority_element_key), $this->wrapErrorMessage('You must select an authority.', $this->getElementId($id_key, $form)));
     }
 
     return parent::validate($form, $form_state, $cardinality, $action);

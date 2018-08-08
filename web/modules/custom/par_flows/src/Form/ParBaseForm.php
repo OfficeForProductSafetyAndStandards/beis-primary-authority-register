@@ -18,6 +18,7 @@ use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
+use Drupal\par_forms\ParEntityValidationMappingTrait;
 use Drupal\par_forms\ParFormBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Utility\NestedArray;
@@ -38,7 +39,10 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   use RefinableCacheableDependencyTrait;
   use ParDisplayTrait;
   use StringTranslationTrait;
-  use ParControllerTrait;
+  use ParControllerTrait {
+    ParControllerTrait::getParDataManager insteadof ParEntityValidationMappingTrait;
+  }
+  use ParEntityValidationMappingTrait;
 
   /**
    * The access result

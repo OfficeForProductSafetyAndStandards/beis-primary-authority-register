@@ -15,12 +15,12 @@ use Drupal\par_forms\ParFormPluginBase;
 class ParBusinessSizeForm extends ParFormPluginBase {
 
   /**
-   * Mapping of the data parameters to the form elements.
+   * {@inheritdoc}
    */
-  protected $formItems = [
-    'par_data_organisation:organisation' => [
-      'size' => 'business_size',
-    ],
+  protected $entityMapping = [
+    ['business_size', 'par_data_organisation', 'size', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter how many members are coordinated by this business.'
+    ]],
   ];
 
   /**

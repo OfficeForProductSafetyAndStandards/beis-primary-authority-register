@@ -15,13 +15,14 @@ use Drupal\par_forms\ParFormPluginBase;
 class ParEmployeeNumberForm extends ParFormPluginBase {
 
   /**
-   * Mapping of the data parameters to the form elements.
+   * {@inheritdoc}
    */
-  protected $formItems = [
-    'par_data_organisation:organisation' => [
-      'employees_band' => 'employees_band',
-    ],
+  protected $entityMapping = [
+    ['employees_band', 'par_data_organisation', 'employees_band', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must select how many employees this business has.'
+    ]],
   ];
+
 
   /**
    * Load the data for this form.

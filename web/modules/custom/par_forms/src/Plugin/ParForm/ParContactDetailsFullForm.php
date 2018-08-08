@@ -16,17 +16,27 @@ use Drupal\par_forms\ParFormPluginBase;
 class ParContactDetailsFullForm extends ParFormPluginBase {
 
   /**
-   * Mapping of the data parameters to the form elements.
+   * {@inheritdoc}
    */
-  protected $formItems = [
-    'par_data_person:person' => [
-      'first_name' => 'first_name',
-      'last_name' => 'last_name',
-      'work_phone' => 'work_phone',
-      'mobile_phone' => 'mobile_phone',
-      'email' => 'email',
-      'communication_notes' => 'notes',
-    ],
+  protected $entityMapping = [
+    ['first_name', 'par_data_person', 'first_name', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter the first name for this contact.'
+    ]],
+    ['last_name', 'par_data_person', 'last_name', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter the last name for this contact.'
+    ]],
+    ['work_phone', 'par_data_person', 'work_phone', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter the work phone number for this contact.'
+    ]],
+    ['mobile_phone', 'par_data_person', 'mobile_phone', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter the mobile phone number for this contact.'
+    ]],
+    ['email', 'par_data_person', 'email', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter the email address for this contact.'
+    ]],
+    ['notes', 'par_data_person', 'communication_notes', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter any communication notes that are relevant to this contact.'
+    ]],
   ];
 
   /**
@@ -123,29 +133,5 @@ class ParContactDetailsFullForm extends ParFormPluginBase {
     ];
 
     return $form;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
-    // @todo create wrapper for setErrorByName as this is ugly creating a link.
-    if (empty($form_state->getValue('email'))) {
-      $form_state->setErrorByName('email', $this->t('<a href="#edit-email">The email field is required.</a>'));
-    }
-
-    if (empty($form_state->getValue('first_name'))) {
-      $form_state->setErrorByName('first_name', $this->t('<a href="#edit-first-name">The first name field is required.</a>'));
-    }
-
-    if (empty($form_state->getValue('last_name'))) {
-      $form_state->setErrorByName('last_name', $this->t('<a href="#edit-last-name">The last name field is required.</a>'));
-    }
-
-    if (empty($form_state->getValue('work_phone'))) {
-      $form_state->setErrorByName('work_phone', $this->t('<a href="#edit-work-phone">The work phone field is required.</a>'));
-    }
-
-    return parent::validate($form, $form_state, $cardinality, $action);
   }
 }
