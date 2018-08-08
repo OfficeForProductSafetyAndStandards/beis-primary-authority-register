@@ -298,12 +298,16 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
-      $component_violations = $this->getFormBuilder()->validatePluginElements($component, $form_state, $cardinality);
+      $component_violations = $this->getFormBuilder()->validatePluginElements($component, $form, $form_state, $cardinality);
 
       // If there are violations for this plugin.
       if (isset($component_violations[$component->getPluginId()])) {
         foreach ($component_violations[$component->getPluginId()] as $i => $violations) {
           foreach ($violations as $field_name => $violation_list) {
+            foreach ($violation_list as $v) {
+              var_dump($v->getRoot()->getName(), $v->getPropertyPath());
+            }
+            var_dump('hello');
             // Do not validate the last item if multiple cardinality is allowed.
             if ($violation_list->count() >= 1) {
               // Validate the first item, and all but the last items thereafter.

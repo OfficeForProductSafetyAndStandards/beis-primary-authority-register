@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -66,7 +67,7 @@ class ParContactDetailsBasicForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function validate(&$form_state, $cardinality = 1, array $violations = []) {
+  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     // @todo create wrapper for setErrorByName as this is ugly creating a link.
     if (empty($form_state->getValue('first_name'))) {
       $form_state->setErrorByName('first_name', $this->t('<a href="#edit-first-name">The first name field is required.</a>'));
@@ -80,6 +81,6 @@ class ParContactDetailsBasicForm extends ParFormPluginBase {
       $form_state->setErrorByName('work_phone', $this->t('<a href="#edit-work-phone">The work phone field is required.</a>'));
     }
 
-    return parent::validate($form_state, $cardinality);
+    return parent::validate($form, $form_state, $cardinality, $action);
   }
 }

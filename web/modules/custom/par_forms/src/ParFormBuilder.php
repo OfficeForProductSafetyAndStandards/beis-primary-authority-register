@@ -33,6 +33,13 @@ class ParFormBuilder extends DefaultPluginManager {
   const PAR_COMPONENT_PREFIX = 'par_component_';
 
   /**
+   * Actions to perform on detecting an error.
+   */
+  const PAR_ERROR_IGNORE = '0';
+  const PAR_ERROR_DISPLAY = '1';
+  const PAR_ERROR_CLEAR = '2';
+
+  /**
    * Constructs a ParScheduleManager object.
    *
    * @param \Traversable $namespaces
@@ -86,7 +93,7 @@ class ParFormBuilder extends DefaultPluginManager {
   /**
    * Helper to get all the elements from a plugin.
    *
-   * @param ParFormPluginBaseInterface $component
+   * @param ParFormPluginInterface $component
    *   The plugin to load elements for.
    * @param array $elements
    *   An array to add the elements to.
@@ -126,9 +133,7 @@ class ParFormBuilder extends DefaultPluginManager {
     return $elements;
   }
 
-  public function validatePluginElements($component, $form_state, $cardinality = NULL) {
-    $violations = [];
-
+  public function validatePluginElements(ParFormPluginInterface $component, $form, &$form_state, $cardinality = NULL) {
     // Count the current cardinality.
     $count = $component->countItems() + 1 ?: 1;
     for ($i = 1; $i <= $count; $i++) {
@@ -137,10 +142,9 @@ class ParFormBuilder extends DefaultPluginManager {
         continue;
       }
 
-      $violations[$component->getPluginId()][$i] = $component->validate($form_state, $i);
+      $action = ($component->getCardinality() === 1 || $i === 1 || $i < $count) ? self::PAR_ERROR_DISPLAY : self::PAR_ERROR_IGNORE;
+      $component->validate($form, $form_state, $i, $action);
     }
-
-    return $violations;
   }
 
 }

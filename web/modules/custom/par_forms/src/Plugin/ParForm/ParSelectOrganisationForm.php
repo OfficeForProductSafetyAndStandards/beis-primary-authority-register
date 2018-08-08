@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -85,12 +86,12 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
-  public function validateForm(&$form_state, $cardinality = 1) {
+  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $organisation_id_key = $this->getElementKey('par_data_organisation_id');
     if (empty($form_state->getValue($organisation_id_key))) {
       $form_state->setErrorByName($organisation_id_key, $this->t('<a href="#edit-par_data_organisation_id">You must select an organisation.</a>'));
     }
 
-    parent::validate($form_state, $cardinality);
+    return parent::validate($form, $form_state, $cardinality, $action);
   }
 }

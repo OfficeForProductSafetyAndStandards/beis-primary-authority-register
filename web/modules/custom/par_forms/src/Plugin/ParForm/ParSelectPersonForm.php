@@ -4,6 +4,7 @@ namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 use Drupal\user\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -81,12 +82,12 @@ class ParSelectPersonForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
-  public function validateForm(&$form_state, $cardinality = 1) {
+  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $authority_id_key = $this->getElementKey('par_data_authority_id');
     if (empty($form_state->getValue($authority_id_key))) {
       $form_state->setErrorByName($authority_id_key, $this->t('<a href="#edit-par_data_authority_id">You must select an authority.</a>'));
     }
 
-    parent::validate($form_state, $cardinality);
+    return parent::validate($form, $form_state, $cardinality, $action);
   }
 }

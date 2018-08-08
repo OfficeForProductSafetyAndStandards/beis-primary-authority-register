@@ -4,6 +4,7 @@ namespace Drupal\par_forms;
 
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -12,6 +13,7 @@ use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Drupal\par_flows\ParRedirectTrait;
+use Drupal\par_forms\Annotation\ParForm;
 
 /**
  * Provides a base implementation for a ParForm plugin.
@@ -21,17 +23,22 @@ use Drupal\par_flows\ParRedirectTrait;
  * @see \Drupal\par_forms\Annotation\ParSchedulerRule
  * @see plugin_api
  */
-abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBaseInterface {
+abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInterface {
 
   use StringTranslationTrait;
   use ParRedirectTrait;
   use ParDisplayTrait;
   use LoggerChannelTrait;
+  use ParEntityValidationMappingTrait;
 
   /**
-   * A mapping definition of form elements to entity properties.
+   * The mapping definitions to validate against.
+   *
+   * A list of arguments passed to the ParEntityMapping constructor
+   *
+   * @see ParEntityMapping
    */
-  protected $formItems = [];
+  protected $entityMapping = [];
 
   /**
    * Form defaults
@@ -244,6 +251,17 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
   }
 
   /**
+   * Get's the element key prefix for multiple cardinality forms.
+   */
+  public function getPrefix($cardinality = 1, $force = FALSE) {
+    if ($this->getCardinality() !== 1 || $cardinality !== 1 || $force) {
+      return [ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginId(), $cardinality - 1];
+    }
+
+    return NULL;
+  }
+
+  /**
    * Get's the element key depending on the cardinality of this plugin.
    *
    * @param $element
@@ -254,54 +272,15 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
    * @return string|array
    *   The key for this form element.
    */
-  public function getElementKey($element, $cardinality = 1) {
-    if ($this->getCardinality() !== 1 || $cardinality !== 1) {
-      $key = [ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginId(), $cardinality-1];
-      if (is_array($element)) {
-        foreach ($element as $e) {
-          array_push($key, $e);
-        }
-        return $key;
+  public function getElementKey($element, $cardinality = 1, $force = FALSE) {
+    if ($key = $this->getPrefix($cardinality, $force)) {
+      foreach ((array) $element as $e) {
+        array_push($key, $e);
       }
-      else {
-        array_push($key, $element);
-        return $key;
-      }
+      return $key;
     }
     else {
-      return $element;
-    }
-  }
-
-  /**
-   * Get's the element name depending on the cardinality of this plugin.
-   *
-   * @param $element
-   *   The element key.
-   * @param int $cardinality
-   *   The cardinality of this element.
-   *
-   * @return string
-   *   The key for this form element.
-   */
-  public function getElementName($element, $cardinality = 1) {
-    if ($this->getCardinality() !== 1 || $cardinality !== 1) {
-      $index = $cardinality-1;
-      if (is_array($element)) {
-        $elements = implode('][', $element);
-        return ParFormBuilder::PAR_COMPONENT_PREFIX . "{$this->getPluginId()}[$index][$elements]";
-      }
-      else {
-        return ParFormBuilder::PAR_COMPONENT_PREFIX . "{$this->getPluginId()}[$index][$element]";
-      }
-    }
-    else {
-      if (is_array($element)) {
-        return implode('][', $element) . ']';
-      }
-      else {
-        return $element;
-      }
+      return (array) $element;
     }
   }
 
@@ -354,55 +333,54 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginBase
   /**
    * {@inheritdoc}
    */
-  public function validate(&$form_state, $cardinality = 1, array $violations = []) {
-    // Assign all the form values to the relevant entity field values.
-    foreach ($this->getMapping() as $entity_name => $form_items) {
-      list($type, $bundle) = explode(':', $entity_name . ':');
+  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+    foreach ($this->createEntities() as $entity) {
+      if ($prefix = $this->getPrefix()) {
+        $values = $form_state->getValue($prefix);
+      }
+      else {
+        $values = $form_state->getValues();
+      }
+      $this->buildEntity($entity, $values);
 
-      $entity_class = $this->getParDataManager()->getParEntityType($type)->getClass();
-      $entity = $entity_class::create([
-        'type' => $this->getParDataManager()->getParBundleEntity($type, $bundle)->id(),
-      ]);
+      $violations = [];
+      try {
+        $field_names = $this->getFieldNamesByEntityType($entity->getEntityTypeId());
+        $violations = $entity->validate()->filterByFieldAccess()->getByFields($field_names);
+      }
+      catch(\Exception $e) {
+        $this->getLogger($this->getLoggerChannel())->critical('An error occurred validating form %entity_id: @details.', ['%entity_id' => $entity->getEntityTypeId(), '@details' => $e->getMessage()]);
+      }
 
-      foreach ($form_items as $field_name => $form_item) {
-        $field_definition = $this->getParDataManager()->getFieldDefinition($entity->getEntityTypeId(), $entity->bundle(), $field_name);
+      foreach ($violations as $violation) {
+        if ($mapping = $this->getElementByViolation($violation)) {
+          switch ($action) {
+            case ParFormBuilder::PAR_ERROR_DISPLAY:
+              $key = $this->getElementKey($mapping->getElement(), $cardinality);
+              $element = $this->getElementKey($mapping->getElement(), $cardinality, TRUE);
+              $name = $this->getElementName($key);
+              $id = $this->getElementId($element, $form);
 
-        if (is_array($form_item)) {
-          $field_value = [];
-          foreach ($form_item as $field_property => $form_property_item) {
-            // For entity reference fields we need to transform the ids to integers.
-            if ($field_definition->getType() === 'entity_reference' && $field_property === 'target_id') {
-              $field_value[$field_property] = (int) $form_state->getValue($this->getElementKey($form_property_item, $cardinality));
-            }
-            else {
-              $field_value[$field_property] = $form_state->getValue($this->getElementKey($form_property_item, $cardinality));
-            }
+              $message = $this->getViolationMessage($violation, $mapping, $id);
+              $form_state->setErrorByName($name, $message);
+
+              break;
+
+            case ParFormBuilder::PAR_ERROR_CLEAR:
+
+              break;
+
           }
-        }
-        else {
-          $field_value = $form_state->getValue($this->getElementKey($form_item, $cardinality));
-        }
-
-        $entity->set($field_name, $field_value);
-
-        try {
-          $violations[$field_name] = $entity->validate()->filterByFieldAccess()->getByFields([$field_name]);
-        }
-        catch(\Exception $e) {
-          $this->getLogger($this->getLoggerChannel())->critical('An error occurred validating form %entity_id: @details.', ['%entity_id' => $entity->getEntityTypeId(), '@details' => $e->getMessage()]);
         }
       }
     }
-
-    return $violations;
   }
 
   /**
    * {@inheritdoc}
    */
   public function save($cardinality = 1) {
-    // @TODO Add automatic saving of data based on the mapping (self::getMapping)
-    // between self::getElements() and self::getFlowDataHandler()->getParameters()
+    // @see ParEntityValidationMappingTrait::buildEntity to build and save the values to an entity.
   }
 
   /**
