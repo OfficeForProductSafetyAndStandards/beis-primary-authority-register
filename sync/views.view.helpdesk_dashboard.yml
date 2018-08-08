@@ -288,9 +288,11 @@ display:
             vbo_export_generate_xlsx_action: 0
             vbo_export_generate_csv_action: vbo_export_generate_csv_action
             views_bulk_operations_delete_entity: 0
+            'entity:save_action:par_data_partnership': 0
           preconfiguration:
             vbo_export_generate_csv_action:
               label_override: 'CSV Download'
+              file_scheme: s3private
               strip_tags: 1
               separator: ','
           plugin_id: views_bulk_operations_bulk_form

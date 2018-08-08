@@ -22,3 +22,13 @@ par_data.structure_page:
     _permission: 'administer site configuration'
   options:
     _admin_route: TRUE
+
+par_data.reports_page:
+  path: '/admin/reports/par'
+  defaults:
+    _controller: '\Drupal\par_data\Controller\ParDataReportController::general'
+    _title: 'PAR Reporting'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: FALSE
