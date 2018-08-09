@@ -335,14 +335,20 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
    */
   public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     foreach ($this->createMappedEntities() as $entity) {
-      if ($prefix = $this->getPrefix()) {
+      if ($prefix = $this->getPrefix($cardinality)) {
         $values = $form_state->getValue($prefix);
       }
       else {
         $values = $form_state->getValues();
       }
+      // If there are no values don't validate this cardinality.
+      // This can happen for newly added cardinality blocks.
+      if (empty($values)) {
+        continue;
+      }
       $this->buildEntity($entity, $values);
 
+      // Validate the built entities by field only.
       $violations = [];
       try {
         $field_names = $this->getFieldNamesByEntityType($entity->getEntityTypeId());
@@ -352,6 +358,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
         $this->getLogger($this->getLoggerChannel())->critical('An error occurred validating form %entity_id: @details.', ['%entity_id' => $entity->getEntityTypeId(), '@details' => $e->getMessage()]);
       }
 
+      // For each violation set the correct error message.
       foreach ($violations as $violation) {
         if ($mapping = $this->getElementByViolation($violation)) {
           switch ($action) {
@@ -374,6 +381,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
         }
       }
     }
+
   }
 
   /**

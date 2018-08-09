@@ -136,7 +136,11 @@ trait ParEntityValidationMappingTrait {
   public function buildEntity(&$entity, $values) {
     $fields = [];
     foreach ($this->getMappingByEntityType($entity->getEntityTypeId()) as $mapping) {
-      $value = NestedArray::getValue($values, $this->getElementKey($mapping->getElement()));
+      if (empty($values)) {
+        var_dump('wtf', $values);
+        die;
+      }
+      $value = NestedArray::getValue($values, (array) $mapping->getElement());
 
       if ($mapping->getFieldProperty()) {
         if (!isset($fields[$mapping->getFieldName()])) {
@@ -203,9 +207,6 @@ trait ParEntityValidationMappingTrait {
    */
   public function getElementName($element) {
     $name = implode('][', (array) $element);
-    if (count((array) $element) > 1) {
-      $name .= ']';
-    }
 
     return $name;
   }

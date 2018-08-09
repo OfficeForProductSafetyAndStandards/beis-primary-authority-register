@@ -4,6 +4,7 @@ namespace Drupal\par_forms;
 
 use Drupal\Component\Plugin\ConfigurablePluginInterface;
 use Drupal\Component\Plugin\PluginInspectionInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -48,7 +49,9 @@ interface ParFormPluginInterface extends PluginInspectionInterface, Configurable
   /**
    * Validates the form elements.
    *
-   * @param array $form_state
+   * @param array $form
+   *   The build form.
+   * @param FormStateInterface $form_state
    *   The form state object to validate.
    * @param integer $cardinality
    *   The cardinality for this plugin.

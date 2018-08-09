@@ -19,7 +19,7 @@ class ParEnforcementActionForm extends ParFormPluginBase {
    */
   protected $entityMapping = [
     ['title', 'par_data_enforcement_action', 'title', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter a title for this enforcement action.'
+      'This value should not be null.' => 'You must enter a title for this enforcement action.'
     ]],
     ['details', 'par_data_enforcement_action', 'details', NULL, NULL, 0, [
       'You must fill in the missing information.' => 'You must enter the details of this enforcement action.'
@@ -28,7 +28,6 @@ class ParEnforcementActionForm extends ParFormPluginBase {
       'You must fill in the missing information.' => 'You must choose which regulatory functions this enforcement action relates to.'
     ]],
   ];
-
 
   /**
    * {@inheritdoc}

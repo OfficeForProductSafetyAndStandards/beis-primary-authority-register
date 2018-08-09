@@ -5,6 +5,7 @@ namespace Drupal\par_forms;
 use Drupal\Component\Plugin\Factory\DefaultFactory;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -133,7 +134,7 @@ class ParFormBuilder extends DefaultPluginManager {
     return $elements;
   }
 
-  public function validatePluginElements(ParFormPluginInterface $component, $form, &$form_state, $cardinality = NULL) {
+  public function validatePluginElements(ParFormPluginInterface $component, $form, FormStateInterface &$form_state, $cardinality = NULL) {
     // Count the current cardinality.
     $count = $component->countItems() + 1 ?: 1;
     for ($i = 1; $i <= $count; $i++) {
@@ -141,7 +142,6 @@ class ParFormBuilder extends DefaultPluginManager {
       if ($cardinality && $i !== $cardinality) {
         continue;
       }
-
       $action = ($component->getCardinality() === 1 || $i === 1 || $i < $count) ? self::PAR_ERROR_DISPLAY : self::PAR_ERROR_IGNORE;
       $component->validate($form, $form_state, $i, $action);
     }
