@@ -381,7 +381,6 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
         }
       }
     }
-
   }
 
   /**
