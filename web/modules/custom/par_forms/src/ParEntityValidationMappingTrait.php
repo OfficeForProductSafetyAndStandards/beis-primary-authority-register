@@ -157,20 +157,20 @@ trait ParEntityValidationMappingTrait {
     }
   }
 
-  public function createEntities() {
+  public function createMappedEntities() {
     $entities = [];
 
     // Remove any universally banned relationships.
     foreach ($this->getEntityMappings() as $mapping) {
       if ($mapping instanceof ParEntityMapping && !isset($entities[$mapping->getEntityTypeId() . ':' . $mapping->getEntityBundle()])) {
-        $entities[$mapping->getEntityTypeId() . ':' . $mapping->getEntityBundle()] = $this->createEntity($mapping->getEntityTypeId(), $mapping->getEntityBundle());
+        $entities[$mapping->getEntityTypeId() . ':' . $mapping->getEntityBundle()] = $this->createMappedEntity($mapping->getEntityTypeId(), $mapping->getEntityBundle());
       }
     }
 
     return $entities;
   }
 
-  public function createEntity($type, $bundle) {
+  public function createMappedEntity($type, $bundle) {
     $entity_class = $this->getParDataManager()->getParEntityType($type)->getClass();
     return $entity_class::create([
       'type' => $bundle,

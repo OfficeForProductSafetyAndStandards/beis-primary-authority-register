@@ -38,7 +38,12 @@ class ParEntityMapping {
    *   entity violation message and the value is the replacement.
    */
   public function __construct($elementKey, string $entityType, string $field, string $property = NULL, string $bundle = NULL, int $delta = NULL, array $messageOverrides = []) {
-    $this->fieldDefinition = $this->getParDataManager()->getFieldDefinition($entityType, $bundle, $field);
+    if ($fieldDefinition = $this->getParDataManager()->getFieldDefinition($entityType, $bundle, $field)) {
+      $this->fieldDefinition = $fieldDefinition;
+    }
+    else {
+      throw new ParFormException("The mapping cannot be created because the field {$field} does not exist for entity {$entityType}.");
+    }
 
     $this->delta = $delta ?: 0;
     $this->property = $property;

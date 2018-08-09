@@ -50,12 +50,4 @@ class ParAddActionForm extends ParBaseForm {
     parent::loadData();
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    // No validation yet.
-    parent::validateForm($form, $form_state);
-  }
-
 }

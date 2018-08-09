@@ -334,7 +334,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
    * {@inheritdoc}
    */
   public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
-    foreach ($this->createEntities() as $entity) {
+    foreach ($this->createMappedEntities() as $entity) {
       if ($prefix = $this->getPrefix()) {
         $values = $form_state->getValue($prefix);
       }
