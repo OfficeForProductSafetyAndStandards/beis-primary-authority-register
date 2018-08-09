@@ -89,7 +89,8 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
   public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $organisation_id_key = $this->getElementKey('par_data_organisation_id');
     if (empty($form_state->getValue($organisation_id_key))) {
-      $form_state->setErrorByName($organisation_id_key, $this->t('<a href="#edit-par_data_organisation_id">You must select an organisation.</a>'));
+      $id_key = $this->getElementKey('par_data_organisation_id', $cardinality, TRUE);
+      $form_state->setErrorByName($this->getElementName($organisation_id_key), $this->wrapErrorMessage('You must select an organisation.', $this->getElementId($id_key, $form)));
     }
 
     return parent::validate($form, $form_state, $cardinality, $action);

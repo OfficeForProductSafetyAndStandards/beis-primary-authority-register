@@ -81,4 +81,18 @@ class ParGdprForm extends ParFormPluginBase {
 
     return $form;
   }
+
+  /**
+   * Validate date field.
+   */
+  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+    $data_policy_key = $this->getElementKey('data_policy');
+    if ($form_state->getValue($data_policy_key) !== 'on') {
+      $id_key = $this->getElementKey('data_policy', $cardinality, TRUE);
+      $message = $this->wrapErrorMessage('Please confirm you have read the Privacy Notice and understand how the Office intend to use your personal data.', $this->getElementId($id_key, $form));
+      $form_state->setErrorByName($this->getElementName($data_policy_key), $message);
+    }
+
+    return parent::validate($form, $form_state, $cardinality, $action);
+  }
 }

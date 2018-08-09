@@ -209,10 +209,13 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
     // Make sure the confirm box and terms box is ticked.
     if (!$form_state->getValue('partnership_info_agreed_business')) {
-      $this->setElementError('partnership_info_agreed_business', $form_state, 'Please confirm you have reviewed the details.');
+      $message = $this->wrapErrorMessage('Please confirm you have reviewed the details.', $this->getElementId('partnership_info_agreed_business', $form));
+      $form_state->setErrorByName($this->getElementName('partnership_info_agreed_business'), $message);
+
     }
     if (!$form_state->getValue('terms_organisation_agreed')) {
-      $this->setElementError('terms_organisation_agreed', $form_state, 'Please confirm you have read the terms & conditions.');
+      $message = $this->wrapErrorMessage('Please confirm you have read the terms & conditions.', $this->getElementId('terms_organisation_agreed', $form));
+      $form_state->setErrorByName($this->getElementName('terms_organisation_agreed'), $message);
     }
 
     // Validate that there are actually some legal entities set.

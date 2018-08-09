@@ -88,7 +88,8 @@ class ParSelectEnforcedLegalEntityForm extends ParFormPluginBase {
     $legal_entity = $this->getElementKey('legal_entities_select');
     $alternative_legal_entity = $this->getElementKey('alternative_legal_entity');
     if (empty($form_state->getValue($legal_entity)) && empty($form_state->getValue($alternative_legal_entity))) {
-      $form_state->setErrorByName($legal_entity, $this->t('<a href="#edit-legal_entities_select">You must choose a legal entity.</a>'));
+      $id_key = $this->getElementKey('legal_entities_select', $cardinality, TRUE);
+      $form_state->setErrorByName($this->getElementName($legal_entity), $this->wrapErrorMessage('You must choose a legal entity.', $this->getElementId($id_key, $form)));
     }
 
     return parent::validate($form, $form_state, $cardinality, $action);
