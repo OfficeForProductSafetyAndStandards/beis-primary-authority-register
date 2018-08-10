@@ -19,12 +19,16 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  protected $formItems = [
-    'par_data_legal_entity:legal_entity' => [
-      'registered_name' => 'registered_name',
-      'legal_entity_type' => 'legal_entity_type',
-      'registered_number' => 'registered_number',
-    ]
+  protected $entityMapping = [
+    ['registered_name', 'par_data_legal_entity', 'registered_name', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter the name of this legal entity.'
+    ]],
+    ['legal_entity_type', 'par_data_legal_entity', 'legal_entity_type', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must choose which type of legal entity this is.'
+    ]],
+    ['registered_number', 'par_data_legal_entity', 'registered_number', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter the registered number for this legal entity.'
+    ]],
   ];
 
   /**

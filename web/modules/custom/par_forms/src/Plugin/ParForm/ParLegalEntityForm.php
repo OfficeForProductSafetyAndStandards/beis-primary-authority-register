@@ -29,7 +29,6 @@ class ParLegalEntityForm extends ParFormPluginBase {
     ]],
   ];
 
-
   /**
    * Load the data for this form.
    */

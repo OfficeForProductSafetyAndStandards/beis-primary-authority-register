@@ -286,6 +286,27 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+    // Always store the values whenever we submit the form.
+    $values = $this->cleanseFormDefaults($form_state->getValues());
+    $values = $this->cleanseMultipleValues($values);
+    $this->getFlowDataHandler()->setFormTempData($values);
+
+    // We don't want to validate if just removing items.
+    $remove_action = strpos($form_state->getTriggeringElement()['#name'], 'remove:');
+    if ($remove_action !== FALSE) {
+      return;
+    }
+
+    // If there's is a cardinality parameter present display only this item.
+    // @TODO Consider re-using this pattern, but not needed now.
+    $cardinality = $this->getFlowDataHandler()->getParameter('cardinality');
+
+    // Validate all the plugins first.
+    foreach ($this->getComponents() as $component) {
+      $this->getFormBuilder()->validatePluginElements($component, $form, $form_state, $cardinality);
+    }
+
+    // Validate all the form elements.
     foreach ($this->createMappedEntities() as $entity) {
       $values = $form_state->getValues();
       $this->buildEntity($entity, $values);
