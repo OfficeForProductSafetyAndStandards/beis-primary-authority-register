@@ -24,8 +24,8 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     ['advice_type', 'par_data_advice', 'advice_type', NULL, NULL, 0, [
       'You must fill in the missing information.' => 'You must choose what type of advice this is.'
     ]],
-    ['field_regulatory_function', 'par_data_advice', 'field_regulatory_function', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must choose which regulatory functions this advice applies to.'
+    ['regulatory_functions', 'par_data_advice', 'field_regulatory_function', NULL, NULL, 0, [
+      'This value should not be null.' => 'You must choose which regulatory functions this advice applies to.'
     ]],
   ];
 
