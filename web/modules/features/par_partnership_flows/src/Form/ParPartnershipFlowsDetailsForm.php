@@ -109,15 +109,15 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
           '#prefix' => '<p>',
           '#suffix' => '</p>',
         ];
-//        $form['associations']['upload_link'] = [
-//          '#type' => 'markup',
-//          '#markup' => t('@link', [
-//            '@link' => Link::createFromRoute('Upload a Member List (CSV)', 'par_member_upload_flows.member_upload', $this->getRouteParams())->toString(),
-//          ]),
-//          '#weight' => -100,
-//          '#prefix' => '<p>',
-//          '#suffix' => '</p>',
-//        ];
+        $form['associations']['upload_link'] = [
+          '#type' => 'markup',
+          '#markup' => t('@link', [
+            '@link' => Link::createFromRoute('Upload a Member List (CSV)', 'par_member_upload_flows.member_upload', $this->getRouteParams())->toString(),
+          ]),
+          '#weight' => -100,
+          '#prefix' => '<p>',
+          '#suffix' => '</p>',
+        ];
       }
       // In all other cases show the inline member summary.
       else {
