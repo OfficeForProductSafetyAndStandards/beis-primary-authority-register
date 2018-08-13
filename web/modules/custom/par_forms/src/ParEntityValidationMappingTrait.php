@@ -199,14 +199,41 @@ trait ParEntityValidationMappingTrait {
   /**
    * Get's the element name depending on the cardinality of this plugin.
    *
+   * E.g. par_component_name][0][element_name
+   *
    * @param $element
    *   The element key.
    *
    * @return string
-   *   The key for this form element.
+   *   The name for this form element.
    */
   public function getElementName($element) {
     $name = implode('][', (array) $element);
+
+    return $name;
+  }
+
+  /**
+   * Get's the element target depending on the cardinality of this plugin.
+   *
+   * E.g. par_component_name[0][element_name]
+   *
+   * @param $element
+   *   The element key.
+   *
+   * @return string
+   *   The target for this form element.
+   */
+  public function getTargetName($element) {
+    $element = (array) $element;
+    for ($i=0; $i < count($element); $i++) {
+      if ($i === 0) {
+        $name = $element[$i];
+      }
+      else {
+        $name .= "[{$element[$i]}]";
+      }
+    }
 
     return $name;
   }

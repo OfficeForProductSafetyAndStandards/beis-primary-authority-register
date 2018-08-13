@@ -384,13 +384,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     $form_state->unsetValue([ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_id, (int) $cardinality - 1]);
 
-    // If the last item does not validate we must remove this too.
-    $violations = $component->validate($form, $form_state, $last_index, ParFormBuilder::PAR_ERROR_CLEAR);
-    foreach ($violations as $field_name => $violation_list) {
-      if ($component && $violation_list->count() >= 1) {
-        $form_state->unsetValue([ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_id, $last_index]);
-      }
-    }
+    // Validate the components and remove any unvalidated last item.
+    $component->validate($form, $form_state, $last_index, ParFormBuilder::PAR_ERROR_CLEAR);
 
     // Resave the values based on the newly removed items.
     $values = $this->cleanseFormDefaults($form_state->getValues());

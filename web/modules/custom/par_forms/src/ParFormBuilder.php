@@ -142,7 +142,8 @@ class ParFormBuilder extends DefaultPluginManager {
       if ($cardinality && $i !== $cardinality) {
         continue;
       }
-      $action = ($component->getCardinality() === 1 || $i === 1 || $i < $count) ? self::PAR_ERROR_DISPLAY : self::PAR_ERROR_IGNORE;
+
+      $action = ($component->getCardinality() === 1 || $i === 1 || $i < $count) ? self::PAR_ERROR_DISPLAY : self::PAR_ERROR_CLEAR;
       $component->validate($form, $form_state, $i, $action);
     }
   }

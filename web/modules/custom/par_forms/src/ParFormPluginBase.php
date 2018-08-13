@@ -358,7 +358,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
         $this->getLogger($this->getLoggerChannel())->critical('An error occurred validating form %entity_id: @details.', ['%entity_id' => $entity->getEntityTypeId(), '@details' => $e->getMessage()]);
       }
 
-      // For each violation set the correct error message.
+      // For each violation set the correct error message, clear the values or ignore validation.
       foreach ($violations as $violation) {
         if ($mapping = $this->getElementByViolation($violation)) {
           switch ($action) {
@@ -374,6 +374,14 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
               break;
 
             case ParFormBuilder::PAR_ERROR_CLEAR:
+              if ($prefix = $this->getPrefix($cardinality)) {
+                $form_state->unsetValue($prefix);
+              }
+              else {
+                foreach ($form_state->getValues() as $key => $value) {
+                  $form_state->unsetValue($key);
+                }
+              }
 
               break;
 
