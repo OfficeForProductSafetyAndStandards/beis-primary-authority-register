@@ -15,14 +15,18 @@ use Drupal\par_forms\ParFormPluginBase;
 class ParEnforcementActionForm extends ParFormPluginBase {
 
   /**
-   * Mapping of the data parameters to the form elements.
+   * {@inheritdoc}
    */
-  protected $formItems = [
-    'par_data_enforcement_action:enforcement_action' => [
-      'title' => 'title',
-      'details' => 'details',
-      'field_regulatory_function' => 'field_regulatory_function'
-    ],
+  protected $entityMapping = [
+    ['title', 'par_data_enforcement_action', 'title', NULL, NULL, 0, [
+      'This value should not be null.' => 'You must enter a title for this enforcement action.'
+    ]],
+    ['details', 'par_data_enforcement_action', 'details', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter the details of this enforcement action.'
+    ]],
+    ['field_regulatory_function', 'par_data_enforcement_action', 'field_regulatory_function', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must choose which regulatory functions this enforcement action relates to.'
+    ]],
   ];
 
   /**

@@ -82,7 +82,7 @@
 
   {% if errors and type not in ['radio', 'checkbox'] %}
     <span class="error-message">
-      {{ errors | striptags('<p>') }}
+      {{ errors | striptags('<p>') | raw }}
     </span>
   {% endif %}
 

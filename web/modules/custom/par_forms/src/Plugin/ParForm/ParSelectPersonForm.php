@@ -4,12 +4,13 @@ namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 use Drupal\user\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * About business form plugin.
+ * Contact selection form plugin.
  *
  * @ParForm(
  *   id = "person_select",
@@ -81,12 +82,13 @@ class ParSelectPersonForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
-  public function validateForm(&$form_state, $cardinality = 1) {
-    $authority_id_key = $this->getElementKey('par_data_authority_id');
-    if (empty($form_state->getValue($authority_id_key))) {
-      $form_state->setErrorByName($authority_id_key, $this->t('<a href="#edit-par_data_authority_id">You must select an authority.</a>'));
+  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+    $person_id_key = $this->getElementKey('user_person');
+    if (empty($form_state->getValue($person_id_key))) {
+      $id_key = $this->getElementKey('user_person', $cardinality, TRUE);
+      $form_state->setErrorByName($this->getElementName($person_id_key), $this->wrapErrorMessage('You must select a contact record.', $this->getElementId($id_key, $form)));
     }
 
-    parent::validate($form_state, $cardinality);
+    return parent::validate($form, $form_state, $cardinality, $action);
   }
 }

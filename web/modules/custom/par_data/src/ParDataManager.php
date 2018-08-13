@@ -171,9 +171,14 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
-   * Get a field definition.
+   * {@inheritdoc}
    */
-  public function getFieldDefinition($entity_type, $bundle, $field) {
+  public function getFieldDefinition(string $entity_type, $bundle = NULL, string $field) {
+    if (!$bundle) {
+      $bundle_definition = $this->getParBundleEntity($entity_type, $bundle);
+      $bundle = $bundle_definition ? $bundle_definition->id() : NULL;
+    }
+
     $entity_fields = $this->entityFieldManager->getFieldDefinitions($entity_type, $bundle);
     return isset($entity_fields[$field]) ? $entity_fields[$field] : NULL;
   }

@@ -15,14 +15,18 @@ use Drupal\par_forms\ParFormPluginBase;
 class ParLegalEntityForm extends ParFormPluginBase {
 
   /**
-   * Mapping of the data parameters to the form elements.
+   * {@inheritdoc}
    */
-  protected $formItems = [
-    'par_data_legal_entity:legal_entity' => [
-      'registered_name' => 'registered_name',
-      'legal_entity_type' => 'legal_entity_type',
-      'registered_number' => 'registered_number',
-    ],
+  protected $entityMapping = [
+    ['registered_name', 'par_data_legal_entity', 'registered_name', NULL, NULL, 0, [
+      'This value should not be null.' => 'You must enter the name of this legal entity.'
+    ]],
+    ['legal_entity_type', 'par_data_legal_entity', 'legal_entity_type', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must choose what type of legal entity this is.'
+    ]],
+    ['registered_number', 'par_data_legal_entity', 'registered_number', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter the registered number for this legal entity.'
+    ]],
   ];
 
   /**
@@ -84,14 +88,13 @@ class ParLegalEntityForm extends ParFormPluginBase {
       '#options' => ['' => ''] + $legal_entity_bundle->getAllowedValues('legal_entity_type'),
     ];
 
-
     $form['registered_number'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Provide the registration number'),
       '#default_value' => $this->getDefaultValuesByKey('registered_number', $cardinality),
       '#states' => [
         'visible' => [
-          'select[name="' . $this->getElementName('legal_entity_type', $cardinality) . '"]' => [
+          'select[name="' . $this->getTargetName($this->getElementKey('legal_entity_type', $cardinality)) . '"]' => [
             ['value' => 'limited_company'],
             ['value' => 'public_limited_company'],
             ['value' => 'limited_liability_partnership'],

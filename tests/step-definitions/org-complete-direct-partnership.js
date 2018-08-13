@@ -140,7 +140,7 @@ When('I change the completed legal entities', function () {
   .assert.containsText('h1.heading-xlarge','Confirm the legal entity')
    .click('#edit-par-component-legal-entity-1-remove')
    .setValue('#edit-par-component-legal-entity-0-registered-name','Changed to Public Company')
-   .click('#edit-par-component-legal-entity-1-legal-entity-type option[value="public_limited_company"]')
+   .click('#edit-par-component-legal-entity-0-legal-entity-type option[value="public_limited_company"]')
    .assert.containsText('.form-item-par-component-legal-entity-0-registered-number label','Provide the registration number')
    .setValue('#edit-par-component-legal-entity-0-registered-number','55555555558')
    .click('#edit-next')

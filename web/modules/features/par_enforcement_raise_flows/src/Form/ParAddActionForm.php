@@ -41,21 +41,14 @@ class ParAddActionForm extends ParBaseForm {
 
           // Only need to get the new cardinality of the first plugin,
           // as all plugins on the page share the same value.
-          $this->getFlowDataHandler()->setParameter('cardinality', $component->getNewCardinality());
+          // @TODO Consider re-instigating this pattern of one action per page, but not needed now.
+          // $this->getFlowDataHandler()->setParameter('cardinality', $component->getNewCardinality());
           break;
         }
       }
     }
 
     parent::loadData();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    // No validation yet.
-    parent::validateForm($form, $form_state);
   }
 
 }

@@ -19,10 +19,13 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
   use ParFlowAccessTrait;
   use ParFormCancelTrait;
 
-  protected $formItems = [
-    'par_data_enforcement_notice:enforcement_notice' => [
-      'summary' => 'summary'
-    ],
+  /**
+   * {@inheritdoc}
+   */
+  protected $entityMapping = [
+    ['summary', 'par_data_enforcement_notice', 'summary', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter a summary description for this notice of enforcement action.'
+    ]],
   ];
 
   /**
@@ -87,13 +90,6 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
     ];
 
     return parent::buildForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
   }
 
 }

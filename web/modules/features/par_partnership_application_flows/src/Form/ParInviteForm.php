@@ -253,15 +253,19 @@ HEREDOC;
   public function validateForm(array &$form, FormStateInterface $form_state) {
 
     if (empty($form_state->getValue('recipient_email'))) {
-      $form_state->setErrorByName('recipient_email', $this->t('<a href="#edit-recipient-email">The Recipient email is required.</a>'));
+      $message = $this->wrapErrorMessage('Please enter the recipient\' e-mail address.', $this->getElementId('recipient_email', $form));
+      $form_state->setErrorByName($this->getElementName('recipient_email'), $message);
     }
 
     if (empty($form_state->getValue('email_subject'))) {
-      $form_state->setErrorByName('email_subject', $this->t('<a href="#edit-email-subject">The Message subject is required.</a>'));
+      $message = $this->wrapErrorMessage('Please enter the subject for this invitation.', $this->getElementId('email_subject', $form));
+      $form_state->setErrorByName($this->getElementName('email_subject'), $message);
     }
 
     if (empty($form_state->getValue('email_body'))) {
-      $form_state->setErrorByName('email_body', $this->t('<a href="#edit-email-body">The Message is required.</a>'));
+      $message = $this->wrapErrorMessage('Please enter a message.', $this->getElementId('email_body', $form));
+      $form_state->setErrorByName($this->getElementName('email_body'), $message);
+
     }
     // Check that the email body contains an invite accept link.
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
@@ -272,7 +276,8 @@ HEREDOC;
       $required_token = '[invite:invite-accept-link]';
     }
     if (!strpos($form_state->getValue('email_body'), $required_token)) {
-      $form_state->setErrorByName('email_body', $this->t("<a href=\"#edit-email-body\">Please make sure you have the invite token '@invite_token' somewhere in your message.</a>", ['@invite_token' => $required_token]));
+      $message = $this->wrapErrorMessage($this->t("Please make sure you have the invite token '@invite_token' somewhere in your message.", ['@invite_token' => $required_token]), $this->getElementId('email_body', $form));
+      $form_state->setErrorByName($this->getElementName('email_body'), $message);
     }
 
     parent::validateForm($form, $form_state);

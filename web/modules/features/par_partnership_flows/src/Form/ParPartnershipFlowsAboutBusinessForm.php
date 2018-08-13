@@ -14,8 +14,6 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
-  protected $formItems = [];
-
   protected $pageTitle = 'Information about the organisation';
 
   /**

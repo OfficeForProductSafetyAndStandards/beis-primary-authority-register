@@ -142,6 +142,12 @@ class ParDataReportController extends ControllerBase {
       '#value' => $this->getPrimaryAuthorityPercentage() . '%',
       '#label' => 'Authorities acting as a primary authority',
     ];
+    $build['authorities']['authorities_with_users'] = [
+      '#theme' => 'gds_data',
+      '#attributes' => ['class' => 'column-one-third'],
+      '#value' => $this->getAuthoritiesWithUser(),
+      '#label' => 'Authorities with at least one user',
+    ];
 
     // Statistics related to users.
     $build['users'] = [
@@ -366,6 +372,34 @@ class ParDataReportController extends ControllerBase {
     }
 
     return count($authorities);
+  }
+
+  public function getAuthoritiesWithUser() {
+    $query = $this->parDataManager->getEntityQuery('par_data_authority');
+
+    $revoked = $query
+      ->orConditionGroup()
+      ->condition('revoked', 0)
+      ->condition('revoked', NULL, 'IS NULL');
+    $deleted = $query
+      ->orConditionGroup()
+      ->condition('deleted', 0)
+      ->condition('deleted', NULL, 'IS NULL');
+
+    $query->condition($revoked);
+    $query->condition($deleted);
+
+    $entities = $query->execute();
+
+    $authorities_with_users = 0;
+    $authorities = $this->entityTypeManager->getStorage('par_data_authority')->loadMultiple(array_unique($entities));
+    foreach ($authorities as $authority) {
+      if ($authority->getPerson(TRUE)) {
+        $authorities_with_users++;
+      }
+    }
+
+    return $authorities_with_users;
   }
 
   public function getPrimaryAuthorityPercentage() {

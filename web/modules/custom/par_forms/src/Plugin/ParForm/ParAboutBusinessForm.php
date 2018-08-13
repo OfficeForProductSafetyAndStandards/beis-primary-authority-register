@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -17,10 +18,10 @@ class ParAboutBusinessForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  protected $formItems = [
-    'par_data_organisation:organisation' => [
-      'comments' => 'about_business',
-    ],
+  protected $entityMapping = [
+    ['about_business', 'par_data_organisation', 'comments', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter a description for the business.'
+    ]],
   ];
 
   /**

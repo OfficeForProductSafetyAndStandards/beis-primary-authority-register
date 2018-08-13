@@ -142,7 +142,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
         '#return_value' => 'on',
       ];
 
-      $url = Url::fromUri('internal:/par-terms-and-conditions');
+      $url = Url::fromUri('internal:/par-terms-and-conditions', ['attributes' => ['target' => '_blank']]);
       $terms_link = Link::fromTextAndUrl(t('Terms & Conditions'), $url);
       $form['terms_authority_agreed'] = [
         '#type' => 'checkbox',
@@ -171,10 +171,13 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
     // Make sure the confirm box and terms box is ticked.
     if (!$form_state->getValue('partnership_info_agreed_authority')) {
-      $this->setElementError('partnership_info_agreed_authority', $form_state, 'Please confirm you have reviewed the details.');
+      $message = $this->wrapErrorMessage('Please select the type of application.', $this->getElementId('partnership_info_agreed_authority', $form));
+      $form_state->setErrorByName($this->getElementName('partnership_info_agreed_authority'), $message);
     }
     if (!$form_state->getValue('terms_authority_agreed')) {
-      $this->setElementError('terms_authority_agreed', $form_state, 'Please confirm you have read the terms & conditions.');
+      $message = $this->wrapErrorMessage('Please confirm you have read the terms & conditions.', $this->getElementId('terms_authority_agreed', $form));
+      $form_state->setErrorByName($this->getElementName('terms_authority_agreed'), $message);
+
     }
   }
 

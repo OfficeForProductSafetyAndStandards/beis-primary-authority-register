@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -83,13 +84,16 @@ class ParSelectEnforcedLegalEntityForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
-  public function validateForm(&$form_state, $cardinality = 1) {
+  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $legal_entity = $this->getElementKey('legal_entities_select');
     $alternative_legal_entity = $this->getElementKey('alternative_legal_entity');
-    if (empty($form_state->getValue($legal_entity)) && empty($form_state->getValue($alternative_legal_entity))) {
-      $form_state->setErrorByName($legal_entity, $this->t('<a href="#edit-legal_entities_select">You must choose a legal entity.</a>'));
+    if ((empty($form_state->getValue($legal_entity)) || $form_state->getValue($legal_entity) === self::ADD_NEW)
+      && empty($form_state->getValue($alternative_legal_entity))) {
+
+      $id_key = $this->getElementKey('alternative_legal_entity', $cardinality, TRUE);
+      $form_state->setErrorByName($this->getElementName($alternative_legal_entity), $this->wrapErrorMessage('You must choose a legal entity.', $this->getElementId($id_key, $form)));
     }
 
-    parent::validate($form_state, $cardinality);
+    return parent::validate($form, $form_state, $cardinality, $action);
   }
 }

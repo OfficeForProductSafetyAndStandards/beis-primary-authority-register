@@ -181,15 +181,16 @@ class ParChecklistForm extends ParBaseForm {
       // Section one validation.
       // All items in section needs to be ticked before they can proceed.
       $section_one_form_items_required = [
-        'business_eligible_for_partnership' => 'the organisation is eligible',
-        'local_authority_suitable_for_nomination' => 'the local authority is suitable for nomination',
-        'written_summary_agreed' => 'a written summary has been agreed',
-        'terms_organisation_agreed' => 'the Primary Authority Terms and Conditions have been agreed',
+        'business_eligible_for_partnership' => 'Please confirm that the organisation is eligible',
+        'local_authority_suitable_for_nomination' => 'Please confirm that the local authority is suitable for nomination',
+        'written_summary_agreed' => 'Please confirm that a written summary has been agreed',
+        'terms_organisation_agreed' => 'Please confirm that the Primary Authority Terms and Conditions have been agreed',
       ];
 
-      foreach ($section_one_form_items_required as $form_item => $replacement) {
+      foreach ($section_one_form_items_required as $form_item => $message) {
         if (!$form_state->getValue($form_item)) {
-          $this->setElementError(['section_one', $form_item], $form_state, 'Please confirm that @field', $replacement);
+          $id = $this->getElementId(['section_one', $form_item], $form);
+          $form_state->setErrorByName($this->getElementName([$form_item]), $this->wrapErrorMessage($message, $id));
         }
       }
 
@@ -197,28 +198,32 @@ class ParChecklistForm extends ParBaseForm {
 
       // Check if an empty value is provided.
       if ($form_state->getValue('business_regulated_by_one_authority') === FALSE) {
-        $this->setElementError(['section_two','business_regulated_by_one_authority'], $form_state, 'Please confirm the organisation is regulated by only one local authority.');
+        $id = $this->getElementId(['section_two','business_regulated_by_one_authority'], $form);
+        $form_state->setErrorByName($this->getElementName(['business_regulated_by_one_authority']), $this->wrapErrorMessage('Please confirm the organisation is regulated by only one local authority.', $id));
       }
 
       // Warn that business needs to be informed their local authority still regulates.
       if ($form_state->getValue('business_regulated_by_one_authority') == 1 &&
         $form_state->getValue('is_local_authority') == 0 &&
         $form_state->getValue('business_informed_local_authority_still_regulates') == 0) {
-        $this->setElementError(['section_two','business_informed_local_authority_still_regulates'], $form_state, 'The organisation needs to be informed about local authority.');
+        $id = $this->getElementId(['section_two','business_informed_local_authority_still_regulates'], $form);
+        $form_state->setErrorByName($this->getElementName(['business_informed_local_authority_still_regulates']), $this->wrapErrorMessage('The organisation needs to be informed about local authority.', $id));
       }
     }
     elseif ($applicationType == 'coordinated') {
       // All items in section needs to be ticked before they can proceed.
       $form_items = [
-        'coordinator_local_authority_suitable' => 'the organisation is eligible',
-        'suitable_nomination' => 'the coordinator is suitable for nomination',
-        'written_summary_agreed' => 'a written summary has been agreed',
-        'terms_local_authority_agreed' => 'the local authority agrees to Primary Authority Terms and Conditions',
+        'coordinator_local_authority_suitable' => 'Please confirm that the organisation is eligible',
+        'suitable_nomination' => 'Please confirm that the coordinator is suitable for nomination',
+        'written_summary_agreed' => 'Please confirm that a written summary has been agreed',
+        'terms_local_authority_agreed' => 'Please confirm that the local authority agrees to Primary Authority Terms and Conditions',
       ];
 
-      foreach ($form_items as $form_item => $replacement) {
+      foreach ($form_items as $form_item => $message) {
         if (!$form_state->getValue($form_item)) {
-          $this->setElementError(['section_one', $form_item], $form_state, 'Please confirm that @field', $replacement);
+          $id = $this->getElementId(['section_one', $form_item], $form);
+          $form_state->setErrorByName($this->getElementName($form_item), $this->wrapErrorMessage($message, $id));
+
         }
       }
     }

@@ -15,12 +15,12 @@ use Drupal\par_forms\ParFormPluginBase;
 class ParCoveredByPlanForm extends ParFormPluginBase {
 
   /**
-   * Mapping of the data parameters to the form elements.
+   * {@inheritdoc}
    */
-  protected $formItems = [
-    'par_data_coordinated_business:coordinated_business' => [
-      'covered_by_inspection' => 'covered_by_inspection',
-    ],
+  protected $entityMapping = [
+    ['covered_by_inspection', 'par_data_coordinated_business', 'covered_by_inspection', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must choose whether this member is covered by any of the inspection plans.'
+    ]],
   ];
 
   /**
