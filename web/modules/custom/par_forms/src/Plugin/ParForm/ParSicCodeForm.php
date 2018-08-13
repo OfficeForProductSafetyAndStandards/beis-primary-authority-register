@@ -19,7 +19,7 @@ class ParSicCodeForm extends ParFormPluginBase {
    */
   protected $entityMapping = [
     ['sic_code', 'par_data_organisation', 'field_sic_code', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must choose the most relevant SIC code for the organisation.'
+      'This value should be of the correct primitive type.' => 'You must choose the most relevant SIC code for the organisation.'
     ]],
   ];
 

@@ -226,7 +226,8 @@ class ParConfirmationReviewForm extends ParBaseForm {
     $existing_legal_entities = $this->getFlowDataHandler()->getTempDataValue('field_legal_entity', $existing_legal_cid) ?: [];
 
     if (empty($legal_entities) && empty($existing_legal_entities)) {
-      $this->setElementError('legal_entities_new_link', $form_state, 'You must add at least one legal entity to complete this partnership.');
+      $message = $this->wrapErrorMessage('You must add at least one legal entity to complete this partnership.', $this->getElementId('legal_entities_new_link', $form));
+      $form_state->setErrorByName($this->getElementName('legal_entities_new_link'), $message);
     }
   }
 
