@@ -12,7 +12,10 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Logger\LoggerChannelTrait;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_data\Event\ParDataEvent;
+use Drupal\par_data\ParDataException;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_data\ParDataRelationship;
 use Drupal\trance\Trance;
@@ -24,11 +27,24 @@ use Drupal\trance\Trance;
  */
 class ParDataEntity extends Trance implements ParDataEntityInterface {
 
+  use LoggerChannelTrait;
+  use StringTranslationTrait;
+
   const DELETE_FIELD = 'deleted';
   const REVOKE_FIELD = 'revoked';
   const ARCHIVE_FIELD = 'archived';
 
   const DEFAULT_RELATIONSHIP = 'default';
+
+  /**
+   * Returns the logger channel specific to errors logged by PAR Forms.
+   *
+   * @return string
+   *   Get the logger channel to use.
+   */
+  public function getLoggerChannel() {
+    return 'par';
+  }
 
   /**
    * Simple getter to inject the PAR Data Manager service.
@@ -375,10 +391,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
-  public function setParStatus($value) {
+  public function setParStatus($value, $ignore_transition_check = FALSE) {
     // Determine whether we can change the value based on the current status.
-    if (!$this->canTransition($value)) {
+    if (!$this->canTransition($value) && !$ignore_transition_check) {
       // Throw exception.
+      throw new ParDataException("This status transition is not allowed.");
     }
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
