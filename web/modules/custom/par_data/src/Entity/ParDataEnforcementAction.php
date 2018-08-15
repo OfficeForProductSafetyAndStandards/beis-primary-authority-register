@@ -198,8 +198,22 @@ class ParDataEnforcementAction extends ParDataEntity {
     }
 
     if (!$this->isApproved()) {
-      $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
-      $this->set($status_field, self::APPROVED);
+      try {
+        $this->setParStatus(self::APPROVED);
+      }
+      catch (ParDataException $e) {
+        // If the status could not be updated we want to log this but continue.
+        $message = $this->t("This status could not be updated to '%status' for %label");
+        $replacements = [
+          '%label' => $this->label(),
+          '%status' => self::APPROVED,
+        ];
+        $this->getLogger($this->getLoggerChannel())
+          ->error($message, $replacements);
+
+        return FALSE;
+      }
+
       return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
 
@@ -221,9 +235,23 @@ class ParDataEnforcementAction extends ParDataEntity {
     }
 
     if (!$this->isBlocked()) {
-      $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
-      $this->set($status_field, self::BLOCKED);
-      $this->set('primary_authority_notes', $authority_notes);
+      try {
+        $this->setParStatus(self::BLOCKED);
+        $this->set('primary_authority_notes', $authority_notes);
+      }
+      catch (ParDataException $e) {
+        // If the status could not be updated we want to log this but continue.
+        $message = $this->t("This status could not be updated to '%status' for %label");
+        $replacements = [
+          '%label' => $this->label(),
+          '%status' => self::BLOCKED,
+        ];
+        $this->getLogger($this->getLoggerChannel())
+          ->error($message, $replacements);
+
+        return FALSE;
+      }
+
       return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
 
@@ -246,9 +274,23 @@ class ParDataEnforcementAction extends ParDataEntity {
     }
 
     if (!$this->isReferred()) {
-      $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
-      $this->set($status_field, self::REFERRED);
-      $this->set('referral_notes', $refer_notes);
+      try {
+        $this->setParStatus(self::REFERRED);
+        $this->set('referral_notes', $refer_notes);
+      }
+      catch (ParDataException $e) {
+        // If the status could not be updated we want to log this but continue.
+        $message = $this->t("This status could not be updated to '%status' for %label");
+        $replacements = [
+          '%label' => $this->label(),
+          '%status' => self::REFERRED,
+        ];
+        $this->getLogger($this->getLoggerChannel())
+          ->error($message, $replacements);
+
+        return FALSE;
+      }
+
       return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
 
@@ -327,7 +369,7 @@ class ParDataEnforcementAction extends ParDataEntity {
       $cloned_action->set('field_action_referral', $this->id());
       // Set the status back to it's default value.
       $default_status = $this->getTypeEntity()->getDefaultStatus();
-      $cloned_action->setParStatus($default_status);
+      $cloned_action->setParStatus($default_status, TRUE);
       // If a new duplicate enforcement action has been saved to the system return it.
       if ($cloned_action->save()) {
         return $cloned_action;
