@@ -51,7 +51,7 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
         $build['documentation_list']['#rows'][] = [
           'data' => [
             'document' => $this->getRenderer()->render($inspection_plan_summary),
-            'status' => $inspection_plan->get('inspection_status')->getString(),
+            'status' => $inspection_plan->getParStatus(),
           ],
         ];
       }

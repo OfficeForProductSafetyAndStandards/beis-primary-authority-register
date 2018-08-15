@@ -11,6 +11,7 @@ use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
+use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_application_flows\ParFlowAccessTrait;
 
@@ -216,7 +217,18 @@ class ParConfirmationReviewForm extends ParBaseForm {
     }
 
     // We need to update the status just before the entity is saved.
-    $par_data_partnership->setParStatus('confirmed_authority');
+    try {
+      $par_data_partnership->setParStatus('confirmed_authority');
+    }
+    catch (ParDataException $e) {
+      // If the status could not be updated we want to log this but continue.
+      $message = $this->t("This status could not be updated to 'Approved by the Authority' for the %label");
+      $replacements = [
+        '%label' => $par_data_partnership->label(),
+      ];
+      $this->getLogger($this->getLoggerChannel())
+        ->error($message, $replacements);
+    }
 
     if ($par_data_partnership && $par_data_authority && $par_data_organisation && $par_data_partnership->save()) {
       $this->getFlowDataHandler()->deleteStore();

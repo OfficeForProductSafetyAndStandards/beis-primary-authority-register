@@ -70,7 +70,7 @@ class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
       '#default_value' => $this->getDefaultValuesByKey(['action', 'primary_authority_notes'], $cardinality, ''),
       '#states' => [
         'visible' => [
-          ':input[name="' . $this->getElementName('primary_authority_status', $cardinality) . '"]' => ['value' => ParDataEnforcementAction::BLOCKED],
+          ':input[name="' . $this->getTargetName($this->getElementKey('primary_authority_status', $cardinality)) . '"]' => ['value' => ParDataEnforcementAction::BLOCKED],
         ]
       ],
     ];
@@ -81,7 +81,7 @@ class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
       '#default_value' => $this->getDefaultValuesByKey(['action', 'referral_notes'], $cardinality, ''),
       '#states' => [
         'visible' => [
-          ':input[name="' . $this->getElementName('primary_authority_status', $cardinality) . '"]' => ['value' => ParDataEnforcementAction::REFERRED],
+          ':input[name="' . $this->getTargetName($this->getElementKey('primary_authority_status', $cardinality)) . '"]' => ['value' => ParDataEnforcementAction::REFERRED],
         ]
       ],
     ];
