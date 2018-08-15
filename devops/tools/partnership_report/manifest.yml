@@ -1,4 +1,0 @@
-applications:
-- name: par-beta-csv
-  memory: 64M
-  buildpack: staticfile_buildpack
