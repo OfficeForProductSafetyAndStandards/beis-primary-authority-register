@@ -27,17 +27,19 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  protected $formItems = [
-    'par_data_premises:premises' => [
-      'address' => [
-        'country_code' => 'country_code',
-        'address_line1' => 'address_line1',
-        'address_line2' => 'address_line2',
-        'locality' => 'town_city',
-        'postal_code' => 'postcode',
-      ],
-      'nation' => 'nation',
-    ],
+  protected $entityMapping = [
+    ['country_code', 'par_data_premises', 'address', 'country_code', NULL, 0, []],
+    ['address_line1', 'par_data_premises', 'address', 'address_line1', NULL, 0, [
+      'Street address field is required.' => 'You must enter the first line of your address',
+    ]],
+    ['address_line2', 'par_data_premises', 'address', 'address_line2', NULL, 0, []],
+    ['town_city', 'par_data_premises', 'address', 'locality', NULL, 0, [
+      'Post town field is required.' => 'You must enter the town or city for this address'
+    ]],
+    ['postcode', 'par_data_premises', 'address', 'postal_code', NULL, 0, [
+      'Postal code field is required.' => 'You must enter a valid postcode.'
+    ]],
+    ['nation', 'par_data_premises', 'nation', NULL, NULL, 0, []],
   ];
 
   /**

@@ -1,7 +1,7 @@
 {
     "_links": {
         "self": {
-            "href": "http:\/\/default\/user\/9543?_format=hal_json"
+            "href": "http:\/\/default\/user\/3?_format=hal_json"
         },
         "type": {
             "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
@@ -9,7 +9,7 @@
     },
     "uid": [
         {
-            "value": 9543
+            "value": 3
         }
     ],
     "uuid": [
@@ -63,6 +63,11 @@
         {
             "value": true,
             "lang": "en"
+        }
+    ],
+    "field_gdpr": [
+        {
+            "value": true
         }
     ]
 }

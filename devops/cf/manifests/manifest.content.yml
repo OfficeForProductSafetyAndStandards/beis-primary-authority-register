@@ -1,0 +1,8 @@
+applications:
+- name: par-beta-content
+memory: 2G
+disk_quota: 2048M
+host: par-beta-content
+buildpack: php_buildpack
+services:
+- par-pg-content

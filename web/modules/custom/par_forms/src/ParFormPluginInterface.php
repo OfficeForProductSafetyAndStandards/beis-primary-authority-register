@@ -4,6 +4,7 @@ namespace Drupal\par_forms;
 
 use Drupal\Component\Plugin\ConfigurablePluginInterface;
 use Drupal\Component\Plugin\PluginInspectionInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -11,7 +12,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *
  * @see plugin_api
  */
-interface ParFormPluginBaseInterface extends PluginInspectionInterface, ConfigurablePluginInterface {
+interface ParFormPluginInterface extends PluginInspectionInterface, ConfigurablePluginInterface {
 
   /**
    * Get's the mapping of each form element to the entity
@@ -48,14 +49,16 @@ interface ParFormPluginBaseInterface extends PluginInspectionInterface, Configur
   /**
    * Validates the form elements.
    *
-   * @param array $form_state
+   * @param array $form
+   *   The build form.
+   * @param FormStateInterface $form_state
    *   The form state object to validate.
    * @param integer $cardinality
    *   The cardinality for this plugin.
-   * @param array $violations
-   *   An array of violations to add to.
+   * @param mixed $action
+   *   An identifier relating to the action to be performed.
    */
-  public function validate(&$form_state, $cardinality = 0, array $violations);
+  public function validate($form, &$form_state, $cardinality = 0, $action);
 
   /**
    * Saves the form elements.

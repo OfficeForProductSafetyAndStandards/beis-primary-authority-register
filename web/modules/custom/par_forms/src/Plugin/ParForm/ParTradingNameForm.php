@@ -19,12 +19,12 @@ class ParTradingNameForm extends ParFormPluginBase {
   use StringTranslationTrait;
 
   /**
-   * Mapping of the data parameters to the form elements.
+   * {@inheritdoc}
    */
-  protected $formItems = [
-    'par_data_organisation:organisation' => [
-      'trading_name' => 'trading_name',
-    ],
+  protected $entityMapping = [
+    ['trading_name', 'par_data_organisation', 'trading_name', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter the trading name for this organisation.'
+    ]],
   ];
 
   /**
@@ -79,7 +79,7 @@ class ParTradingNameForm extends ParFormPluginBase {
 
     $form['trading_name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Enter a trading name'),
+      '#title' => $this->formatPlural($cardinality, 'Enter a trading name', 'Enter an additional trading name (optional)'),
       '#default_value' => $this->getDefaultValuesByKey('trading_name', $cardinality),
     ];
 

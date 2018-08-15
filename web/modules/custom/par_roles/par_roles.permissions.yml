@@ -3,6 +3,11 @@ search public register:
   title: 'Search public register'
   description: 'A permission to allow searching of the public register of partnerships.'
   restrict access: TRUE
+# Permissions that control management of user profiles.
+manage par profile:
+  title: 'Manage PAR user profile'
+  description: 'A permission to allow users to edit their personal data within PAR.'
+  restrict access: TRUE
 # Permissions related to all helpdesk activities.
 access helpdesk:
   title: 'Access the PAR Helpdesk'

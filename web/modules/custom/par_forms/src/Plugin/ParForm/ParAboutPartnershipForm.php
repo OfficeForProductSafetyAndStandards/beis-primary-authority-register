@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -14,13 +15,14 @@ use Drupal\par_forms\ParFormPluginBase;
  */
 class ParAboutPartnershipForm extends ParFormPluginBase {
 
+
   /**
    * {@inheritdoc}
    */
-  protected $formItems = [
-    'par_data_partnership:partnership' => [
-      'about_partnership' => 'about_partnership',
-    ],
+  protected $entityMapping = [
+    ['about_partnership', 'par_data_partnership', 'about_partnership', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter some information about this partnership.'
+    ]],
   ];
 
   /**

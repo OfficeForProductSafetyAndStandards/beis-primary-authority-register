@@ -1,0 +1,8 @@
+applications:
+- name: par-beta-example
+memory: 2G
+disk_quota: 2048M
+host: par-beta-example
+buildpack: php_buildpack
+services:
+- par-pg-example

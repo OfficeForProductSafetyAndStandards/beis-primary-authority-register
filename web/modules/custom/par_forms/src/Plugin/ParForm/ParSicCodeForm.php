@@ -15,12 +15,12 @@ use Drupal\par_forms\ParFormPluginBase;
 class ParSicCodeForm extends ParFormPluginBase {
 
   /**
-   * Mapping of the data parameters to the form elements.
+   * {@inheritdoc}
    */
-  protected $formItems = [
-    'par_data_organisation:organisation' => [
-      'field_sic_code' => 'sic_code',
-    ],
+  protected $entityMapping = [
+    ['sic_code', 'par_data_organisation', 'field_sic_code', NULL, NULL, 0, [
+      'This value should be of the correct primitive type.' => 'You must choose the most relevant SIC code for the organisation.'
+    ]],
   ];
 
   /**
@@ -50,12 +50,12 @@ class ParSicCodeForm extends ParFormPluginBase {
 
     // Display the correct introductory text based on the action that is being performed.
     $intro_text = $this->getFlowDataHandler()->getFormPermValue("sic_code", NULL) ?
-      'Change the SIC Code of your organisation' :
-      'Add a new SIC Code to your organisation';
+      $this->formatPlural($cardinality, 'Change the SIC Code of your organisation', 'Change the SIC Code of your organisation (optional)') :
+      $this->formatPlural($cardinality, 'Add a new SIC Code to your organisation', 'Add a new SIC Code to your organisation (optional)');
 
     $form['sic_code'] = [
       '#type' => 'select',
-      '#title' => $this->t($intro_text),
+      '#title' => $intro_text,
       '#options' => ['' => ''] + $this->getParDataManager()->getEntitiesAsOptions($sic_codes),
       '#default_value' => $this->getDefaultValuesByKey('sic_code', $cardinality, NULL),
     ];

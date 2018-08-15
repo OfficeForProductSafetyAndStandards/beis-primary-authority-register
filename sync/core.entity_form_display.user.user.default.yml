@@ -3,6 +3,9 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.user.user.field_gdpr
+    - field.field.user.user.field_last_password_reset
+    - field.field.user.user.field_password_expiration
     - field.field.user.user.user_picture
   module:
     - datetime
@@ -21,24 +24,25 @@ content:
     third_party_settings: {  }
   field_last_password_reset:
     type: datetime_default
-    weight: 3
+    weight: 4
     settings: {  }
     third_party_settings: {  }
     region: content
   field_password_expiration:
     type: boolean_checkbox
-    weight: 2
+    weight: 3
     settings:
       display_label: true
     third_party_settings: {  }
     region: content
   google_analytics:
-    weight: 3
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   contact: true
+  field_gdpr: true
   langcode: true
   language: true
   timezone: true

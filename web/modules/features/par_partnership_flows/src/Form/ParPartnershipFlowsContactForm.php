@@ -20,19 +20,28 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
-  protected $formItems = [
-    'par_data_person:person' => [
-      'first_name' => 'first_name',
-      'last_name' => 'last_name',
-      'work_phone' => 'work_phone',
-      'mobile_phone' => 'mobile_phone',
-      'email' => 'email',
-      // @todo will need to look into this further on the next piece of work.
-      //  'communication_email'
-      //  'communication_phone'
-      //  'communication_mobile'
-      'communication_notes' => 'notes'
-    ],
+  /**
+   * {@inheritdoc}
+   */
+  protected $entityMapping = [
+    ['first_name', 'par_data_person', 'first_name', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter the first name for this contact.'
+    ]],
+    ['last_name', 'par_data_person', 'last_name', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter the last name for this contact.'
+    ]],
+    ['work_phone', 'par_data_person', 'work_phone', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter the work phone number for this contact.'
+    ]],
+    ['mobile_phone', 'par_data_person', 'mobile_phone', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter the mobile phone number for this contact.'
+    ]],
+    ['email', 'par_data_person', 'email', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter the email address for this contact.'
+    ]],
+    ['notes', 'par_data_person', 'communication_notes', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter any communication notes that are relevant to this contact.'
+    ]],
   ];
 
   /**

@@ -7,6 +7,8 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\par_data\ParDataRelationship;
+use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 
 /**
@@ -133,6 +135,89 @@ class ParDataPerson extends ParDataEntity {
   }
 
   /**
+   * Merge all user accounts that share the same e-mail address.
+   */
+  public function mergePeople() {
+    $uids = [];
+
+    // Foreach person record with the same email lookup any other
+    // entity which references it and update the reference to the
+    // new person record.
+    /** @var ParDataPerson[] $people */
+    $people = $this->getParDataManager()->getEntitiesByProperty('par_data_person', 'email', $this->getEmail());
+    foreach ($people as $person) {
+      // Skip this entity, this is the one we'll leave.
+      if ($person->id() === $this->id()) {
+        continue;
+      }
+
+      $referenced_users = $person->get('field_user_account')->referencedEntities();
+      foreach ($referenced_users as $referenced_user) {
+        if (!isset($uids[$referenced_user->id()])) {
+          $uids[$referenced_user->id()] = $referenced_user;
+        }
+      }
+
+      $relationships = $person->getRelationships(NULL, NULL, TRUE);
+      foreach ($relationships as $relationship) {
+        // Update all entities that reference the soon to be merged person.
+        if ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE) {
+          // Only update the related entity if it does not already reference the updated record.
+          $update = TRUE;
+          foreach ($relationship->getEntity()->get($relationship->getField()->getName())->referencedEntities() as $e) {
+            if ($e->id() === $this->id()) {
+              $update = FALSE;
+            }
+          }
+
+          if ($update) {
+            $relationship->getEntity()->get($relationship->getField()->getName())->appendItem($this->id());
+            $relationship->getEntity()->save();
+          }
+        }
+      }
+
+      // Remove this person record.
+      $person->delete();
+    }
+
+    // Be sure to make sure that all referenced uids on old person
+    // records are transferred.
+    foreach ($uids as $uid) {
+      $update = TRUE;
+      foreach ($this->get('field_user_account')->referencedEntities() as $e) {
+        if ($e->id() === $this->id()) {
+          $update = FALSE;
+        }
+      }
+      if ($update) {
+        $this->get('field_user_account')->appendItem($uid);
+      }
+    }
+
+    // This method will always save the entity.
+    $this->save();
+  }
+
+  /**
+   * Updates the person email address, and the user account if there isn't another person registered to it.
+   *
+   * @param string $email
+   *   The email address to update.
+   * @param User $account
+   */
+  public function updateEmail($email, User &$account) {
+    $this->set('email', $email);
+
+    if (!$account) {
+      $account = $this->lookupUserAccount();
+    }
+    if ($account) {
+      $account->setEmail($email);
+    }
+  }
+
+  /**
    * Get PAR Person's full name.
    *
    * @return string
@@ -177,6 +262,16 @@ class ParDataPerson extends ParDataEntity {
    */
   public function getEmail() {
     return $this->get('email')->getString();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getEmailWithPreferences() {
+    return $this->getCommunicationFieldText(
+      $this->get('email')->getString(),
+      'communication_email'
+    );
   }
 
   /**

@@ -12,7 +12,10 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Logger\LoggerChannelTrait;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_data\Event\ParDataEvent;
+use Drupal\par_data\ParDataException;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_data\ParDataRelationship;
 use Drupal\trance\Trance;
@@ -24,11 +27,24 @@ use Drupal\trance\Trance;
  */
 class ParDataEntity extends Trance implements ParDataEntityInterface {
 
+  use LoggerChannelTrait;
+  use StringTranslationTrait;
+
   const DELETE_FIELD = 'deleted';
   const REVOKE_FIELD = 'revoked';
   const ARCHIVE_FIELD = 'archived';
 
   const DEFAULT_RELATIONSHIP = 'default';
+
+  /**
+   * Returns the logger channel specific to errors logged by PAR Forms.
+   *
+   * @return string
+   *   Get the logger channel to use.
+   */
+  public function getLoggerChannel() {
+    return 'par';
+  }
 
   /**
    * Simple getter to inject the PAR Data Manager service.
@@ -375,21 +391,23 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
-  public function setParStatus($value) {
+  public function setParStatus($value, $ignore_transition_check = FALSE) {
     // Determine whether we can change the value based on the current status.
-    if (!$this->canTransition($value)) {
+    if (!$this->canTransition($value) && !$ignore_transition_check) {
       // Throw exception.
+      throw new ParDataException("This status transition is not allowed.");
     }
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
     $allowed_values = $this->getTypeEntity()->getAllowedValues($field_name);
-    if (isset($allowed_values[$value])) {
+    if (isset($allowed_values[$value]) && $this->get($field_name)->getString() !== $value) {
       $this->set($field_name, $value);
 
       // Always revision status changes.
       $this->setNewRevision(TRUE);
 
       // Dispatch a par event.
+      // @TODO We can't dispatch this event until the entity is saved, we may end up with repeat calls.
       $event = new ParDataEvent($this);
       $dispatcher = \Drupal::service('event_dispatcher');
       $dispatcher->dispatch(ParDataEvent::statusChange($this->getEntityTypeId(), $value), $event);
@@ -479,11 +497,13 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   The target type to return entities for.
    * @param string $action
    *   The action type to return relationships for.
+   * @param boolean $reset
+   *   Whether to reset the cache.
    *
    * @return EntityInterface[]
    *   An array of entities keyed by type.
    */
-  public function getRelationships($target = NULL, $action = NULL) {
+  public function getRelationships($target = NULL, $action = NULL, $reset = FALSE) {
     // Enable in memory caching for repeated entity lookups.
     $unique_function_id = __FUNCTION__ . ':' . $this->uuid() . ':' . (isset($target) ? $target : 'null') . ':' . (isset($action) ? $action : 'null');
     $relationships = &drupal_static($unique_function_id);
@@ -507,7 +527,9 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         if ($this->getEntityTypeId() === $entity_type) {
           foreach ($fields as $field_name => $field) {
             foreach ($this->get($field_name)->referencedEntities() as $referenced_entity) {
-              $relationships[$referenced_entity->uuid()] = new ParDataRelationship($this, $referenced_entity, $field);
+              if (!$referenced_entity->isDeleted()) {
+                $relationships[$referenced_entity->uuid()] = new ParDataRelationship($this, $referenced_entity, $field);
+              }
             }
           }
         }
@@ -518,7 +540,9 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
           foreach ($fields as $field_name => $field) {
             $referencing_entities = $this->getParDataManager()->getEntitiesByProperty($entity_type, $field_name, $this->id());
             foreach ($referencing_entities as $referenced_entity) {
-              $relationships[$referenced_entity->uuid()] = new ParDataRelationship($this, $referenced_entity, $field);
+              if (!$referenced_entity->isDeleted()) {
+                $relationships[$referenced_entity->uuid()] = new ParDataRelationship($this, $referenced_entity, $field);
+              }
             }
           }
         }

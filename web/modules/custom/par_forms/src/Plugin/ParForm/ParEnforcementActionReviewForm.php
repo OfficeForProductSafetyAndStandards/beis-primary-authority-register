@@ -4,6 +4,7 @@ namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
+use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -69,7 +70,7 @@ class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
       '#default_value' => $this->getDefaultValuesByKey(['action', 'primary_authority_notes'], $cardinality, ''),
       '#states' => [
         'visible' => [
-          ':input[name="' . $this->getElementName('primary_authority_status', $cardinality) . '"]' => ['value' => ParDataEnforcementAction::BLOCKED],
+          ':input[name="' . $this->getTargetName($this->getElementKey('primary_authority_status', $cardinality)) . '"]' => ['value' => ParDataEnforcementAction::BLOCKED],
         ]
       ],
     ];
@@ -80,7 +81,7 @@ class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
       '#default_value' => $this->getDefaultValuesByKey(['action', 'referral_notes'], $cardinality, ''),
       '#states' => [
         'visible' => [
-          ':input[name="' . $this->getElementName('primary_authority_status', $cardinality) . '"]' => ['value' => ParDataEnforcementAction::REFERRED],
+          ':input[name="' . $this->getTargetName($this->getElementKey('primary_authority_status', $cardinality)) . '"]' => ['value' => ParDataEnforcementAction::REFERRED],
         ]
       ],
     ];
@@ -91,7 +92,7 @@ class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
   /**
    * {@inheritdoc}
    */
-  public function validate(&$form_state, $cardinality = 1, array $violations = []) {
+  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
 //    $legal_entity = $this->getElementKey('legal_entities_select');
 //    $alternative_legal_entity = $this->getElementKey('alternative_legal_entity');
 //    if (empty($form_state->getValue($legal_entity)) && empty($form_state->getValue($alternative_legal_entity))) {
@@ -136,6 +137,6 @@ class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
 //      $this->setElementError(['actions', $delta, 'primary_authority_status'], $form_state, 'This action cannot be changed because it has already been reviewed.');
 //    }
 
-    return parent::validate($form_state, $cardinality, $violations);
+    return parent::validate($form, $form_state, $cardinality, $action);
   }
 }

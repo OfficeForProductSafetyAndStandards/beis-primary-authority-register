@@ -41,8 +41,20 @@ class ParPartnershipPageController extends ParBaseController {
     $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
     $premises_bundle = $this->getParDataManager()->getParBundleEntity('par_data_premises');
 
-    $par_data_authority = current($par_data_partnership->getAuthority());
-    $par_data_organisation = current($par_data_partnership->getOrganisation());
+    $par_data_authority = $par_data_partnership->getAuthority(TRUE);
+    $par_data_organisation = $par_data_partnership->getOrganisation(TRUE);
+
+    // In case of incorrect information.
+    if (empty($par_data_authority) || empty($par_data_organisation)) {
+      return [
+        'invalid_partnership' => [
+          '#type' => 'markup',
+          '#markup' => 'There has been an error display this partnership, please contact the helpdesk if this error persists.',
+          '#prefix' => '<h1>',
+          '#suffix' => '</h1>',
+        ]
+      ];
+    }
 
     // Display the primary address along with the link to edit it.
     $build['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
@@ -89,10 +101,10 @@ class ParPartnershipPageController extends ParBaseController {
     // Display all the trading names along with the links for the allowed operations on these.
     $build['trading_names'] = $this->renderSection('Trading Names', $par_data_organisation, ['trading_name' => 'full']);
 
-    // Everything below is for the authorioty to edit and add to.
+    // Everything below is for the authority to edit and add to.
     $build['authority'] = [
       '#type' => 'markup',
-      '#markup' => $par_data_authority->get('authority_name')->getString(),
+      '#markup' => $par_data_authority->label(),
       '#prefix' => '<h1>',
       '#suffix' => '</h1>',
     ];

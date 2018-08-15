@@ -394,7 +394,7 @@ function par_data_update_8026() {
 /**
  * Correct missing addresses.
  */
-function par_data_update_8028() {
+function par_data_update_8027() {
   $par_data_manager = \Drupal::service('par_data.manager');
 
   $allowed = [
@@ -449,4 +449,22 @@ function par_data_update_8028() {
       }
     }
   }
+}
+
+/**
+ * Tidy up databases.
+ */
+function par_data_update_8028() {
+  // Remove tables for test modules.
+  $db = \Drupal::database();
+  $tables_to_remove = ['watchdog', 'maillog', 'webprofiler'];
+  foreach ($tables_to_remove as $table) {
+    $exists = $db->schema()->tableExists($table);
+    if ($exists) {
+      $db->schema()->dropTable($table);
+    }
+  }
+
+  // Ensure all file fields are up to date.
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }

@@ -15,12 +15,12 @@ use Drupal\par_forms\ParFormPluginBase;
 class ParCeaseDateForm extends ParFormPluginBase {
 
   /**
-   * Mapping of the data parameters to the form elements.
+   * {@inheritdoc}
    */
-  protected $formItems = [
-    'par_data_coordinated_business:coordinated_business' => [
-      'date_membership_ceased' => 'date_membership_ceased',
-    ],
+  protected $entityMapping = [
+    ['date_membership_ceased', 'par_data_coordinated_business', 'date_membership_ceased', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter the date the membership was ceased e.g. 2017 - 9 - 21.'
+    ]],
   ];
 
   /**

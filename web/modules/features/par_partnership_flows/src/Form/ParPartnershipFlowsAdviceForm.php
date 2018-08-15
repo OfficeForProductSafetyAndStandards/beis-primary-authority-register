@@ -20,12 +20,15 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  protected $formItems = [
-    'par_data_advice:advice' => [
-      'advice_type' => 'advice_type',
-      'field_regulatory_function' => 'regulatory_functions',
-    ],
+  protected $entityMapping = [
+    ['advice_type', 'par_data_advice', 'advice_type', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must choose what type of advice this is.'
+    ]],
+    ['regulatory_functions', 'par_data_advice', 'field_regulatory_function', NULL, NULL, 0, [
+      'This value should not be null.' => 'You must choose which regulatory functions this advice applies to.'
+    ]],
   ];
+
 
   /**
    * {@inheritdoc}

@@ -16,10 +16,13 @@ class ParPartnershipFlowsApplicationOrganisationForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
-  protected $formItems = [
-    'par_data_organisation:organisation' => [
-      'organisation_name' => 'organisation_name',
-    ],
+  /**
+   * {@inheritdoc}
+   */
+  protected $entityMapping = [
+    ['organisation_name', 'par_data_organisation', 'organisation_name', NULL, NULL, 0, [
+      'You must fill in the missing information.' => "You must enter the organisation's name."
+    ]],
   ];
 
   protected $pageTitle = 'Who are you in partnership with?';

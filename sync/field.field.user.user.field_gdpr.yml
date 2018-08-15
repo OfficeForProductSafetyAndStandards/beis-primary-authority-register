@@ -1,0 +1,24 @@
+uuid: d8b87567-c6c8-4b5c-a474-4c87493958a2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_gdpr
+  module:
+    - user
+id: user.user.field_gdpr
+field_name: field_gdpr
+entity_type: user
+bundle: user
+label: GDPR
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: Accepted
+  off_label: 'Not Reviewed'
+field_type: boolean

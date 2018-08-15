@@ -18,6 +18,7 @@ use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
+use Drupal\par_forms\ParEntityValidationMappingTrait;
 use Drupal\par_forms\ParFormBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Utility\NestedArray;
@@ -38,7 +39,10 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   use RefinableCacheableDependencyTrait;
   use ParDisplayTrait;
   use StringTranslationTrait;
-  use ParControllerTrait;
+  use ParControllerTrait {
+    ParControllerTrait::getParDataManager insteadof ParEntityValidationMappingTrait;
+  }
+  use ParEntityValidationMappingTrait;
 
   /**
    * The access result
@@ -294,163 +298,41 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     }
 
     // If there's is a cardinality parameter present display only this item.
+    // @TODO Consider re-using this pattern, but not needed now.
     $cardinality = $this->getFlowDataHandler()->getParameter('cardinality');
 
-    // Add all the registered components to the form.
+    // Validate all the plugins first.
     foreach ($this->getComponents() as $component) {
-      $component_violations = $this->getFormBuilder()->validatePluginElements($component, $form_state, $cardinality);
-
-      // If there are violations for this plugin.
-      if (isset($component_violations[$component->getPluginId()])) {
-        foreach ($component_violations[$component->getPluginId()] as $i => $violations) {
-          foreach ($violations as $field_name => $violation_list) {
-            // Do not validate the last item if multiple cardinality is allowed.
-            if ($violation_list->count() >= 1) {
-              // Validate the first item, and all but the last items thereafter.
-              // @example 1st item out of 1 should be validated.
-              // @example 1st item out of 3 should be validated.
-              // @example 2nd item out of 3 should be validated.
-              // @example 3rd item out of 3 should _not_ be validated.
-              if ($component->getCardinality() === 1 || $i === 1 || $i < $component->countItems()) {
-                $this->setFieldViolations($field_name, $form_state, $violation_list);
-              }
-            }
-          }
-        }
-      }
+      $this->getFormBuilder()->validatePluginElements($component, $form, $form_state, $cardinality);
     }
 
-    // @TODO Remove this method once/if all forms use components.
-    if (!empty($this->getFormItems())) {
-      $form_violations = $this->validateElements($form_state);
-      if ($form_violations) {
-        foreach ($form_violations as $field_name => $violation_list) {
-          $this->setFieldViolations($field_name, $form_state, $violation_list);
-        }
+    // Validate all the form elements.
+    foreach ($this->createMappedEntities() as $entity) {
+      $values = $form_state->getValues();
+      $this->buildEntity($entity, $values);
+
+      // Validate the built entities by field only.
+      $violations = [];
+      try {
+        $field_names = $this->getFieldNamesByEntityType($entity->getEntityTypeId());
+        $violations = $entity->validate()->filterByFieldAccess()->getByFields($field_names);
       }
-    }
-  }
-
-  public function validateElements($form_state) {
-    $violations = [];
-
-    // Assign all the form values to the relevant entity field values.
-    foreach ($this->getFormItems() as $entity_name => $form_items) {
-      list($type, $bundle) = explode(':', $entity_name . ':');
-
-      $entity_class = $this->getParDataManager()->getParEntityType($type)->getClass();
-      $entity = $entity_class::create([
-        'type' => $this->getParDataManager()->getParBundleEntity($type, $bundle)->id(),
-      ]);
-
-      foreach ($form_items as $field_name => $form_item) {
-        $field_definition = $this->getParDataManager()->getFieldDefinition($entity->getEntityTypeId(), $entity->bundle(), $field_name);
-
-        if (is_array($form_item)) {
-          $field_value = [];
-          foreach ($form_item as $field_property => $form_property_item) {
-            // For entity reference fields we need to transform the ids to integers.
-            if ($field_definition->getType() === 'entity_reference' && $field_property === 'target_id') {
-              $field_value[$field_property] = (int) $form_state->getValue($form_property_item);
-            }
-            else {
-              $field_value[$field_property] = $form_state->getValue($form_property_item);
-            }
-          }
-        }
-        else {
-          $field_value = $form_state->getValue($form_item);
-        }
-
-        $entity->set($field_name, $field_value);
-
-        try {
-          $violations[$field_name] = $entity->validate()->filterByFieldAccess()
-            ->getByFields([
-              $field_name,
-            ]);
-        }
-        catch(\Exception $e) {
-          $this->getLogger($this->getLoggerChannel())->critical('An error occurred validating form %entity_id: @detail.', ['%entity_id' => $entity->getEntityTypeId(), '@details' => $e->getMessage()]);
-        }
+      catch(\Exception $e) {
+        $this->getLogger($this->getLoggerChannel())->critical('An error occurred validating form %entity_id: @details.', ['%entity_id' => $entity->getEntityTypeId(), '@details' => $e->getMessage()]);
       }
-    }
 
-    return $violations;
-  }
-
-  /**
-   * Set the errors for a given field based on entity violations.
-   *
-   * @param mixed $name
-   *   The name of the form element to set the error for.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The form state to set the error on.
-   * @param \Symfony\Component\Validator\ConstraintViolationListInterface $violations
-   *   The violations to set.
-   * @param array $replacements
-   *   An optional array of message replacement arguments.
-   */
-  public function setFieldViolations($name, FormStateInterface &$form_state, ConstraintViolationListInterface $violations, $replacements = NULL) {
-    $name = (array) $name;
-
-    if ($violations) {
+      // For each violation set the correct error message.
       foreach ($violations as $violation) {
-        $fragment = $this->getFormElementPageAnchor($name, $form_state);
-        $options = [
-          'fragment' => $fragment,
-        ];
+        if ($mapping = $this->getElementByViolation($violation)) {
+          $element = $this->getElementKey($mapping->getElement());
+          $name = $this->getElementName($element);
+          $id = $this->getElementId($element, $form);
 
-        $field_label = end($name);
-        if (!empty($replacements)) {
-          $arguments = is_string($replacements) ? ['@name' => $replacements, '@field' => $replacements] : $replacements;
+          $message = $this->getViolationMessage($violation, $mapping, $id);
+          $form_state->setErrorByName($name, $message);
         }
-        else {
-          $arguments = ['@name' => $field_label, '@field' => $field_label];
-        }
-        $message = $this->t($violation->getMessage()->getUntranslatedString(), $arguments);
-
-        $url = Url::fromUri('internal:#', $options);
-        $link = Link::fromTextAndUrl($message, $url)->toString();
-
-        $form_state->setErrorByName($field_label, $link);
       }
     }
-  }
-
-  /**
-   * Set the errors for a given field.
-   *
-   * @param mixed $name
-   *   The name of the form element to set the error for.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   The form state to set the error on.
-   * @param string $message
-   *   The message to set for this element.
-   * @param array $replacements
-   *   An optional array of message replacement arguments.
-   */
-  public function setElementError($name, FormStateInterface &$form_state, $message, $replacements = NULL) {
-    $name = (array) $name;
-
-    $fragment = $this->getFormElementPageAnchor($name, $form_state);
-    $options = [
-      'fragment' => $fragment,
-    ];
-
-    $field_label = end($name);
-    if (!empty($replacements)) {
-      $arguments = is_string($replacements) ? ['@field' => $replacements] : $replacements;
-    }
-    else {
-      $arguments = ['@field' => $field_label];
-    }
-    $message = $this->t($message, $arguments)->render();
-
-    $url = Url::fromUri('internal:#', $options);
-    $link = Link::fromTextAndUrl($message, $url)->toString();
-
-    $form_state->setErrorByName($field_label, $link);
   }
 
   /**
@@ -502,13 +384,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     $form_state->unsetValue([ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_id, (int) $cardinality - 1]);
 
-    // If the last item does not validate we must remove this too.
-    $violations = $component->validate($form_state, $last_index);
-    foreach ($violations as $field_name => $violation_list) {
-      if ($component && $violation_list->count() >= 1) {
-        $form_state->unsetValue([ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_id, $last_index]);
-      }
-    }
+    // Validate the components and remove any unvalidated last item.
+    $component->validate($form, $form_state, $last_index, ParFormBuilder::PAR_ERROR_CLEAR);
 
     // Resave the values based on the newly removed items.
     $values = $this->cleanseFormDefaults($form_state->getValues());

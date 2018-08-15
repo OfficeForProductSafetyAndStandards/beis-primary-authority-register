@@ -15,14 +15,18 @@ use Drupal\par_forms\ParFormPluginBase;
 class ParEnforcementActionForm extends ParFormPluginBase {
 
   /**
-   * Mapping of the data parameters to the form elements.
+   * {@inheritdoc}
    */
-  protected $formItems = [
-    'par_data_enforcement_action:enforcement_action' => [
-      'title' => 'title',
-      'details' => 'details',
-      'field_regulatory_function' => 'field_regulatory_function'
-    ],
+  protected $entityMapping = [
+    ['title', 'par_data_enforcement_action', 'title', NULL, NULL, 0, [
+      'This value should not be null.' => 'You must enter a title for this enforcement action.'
+    ]],
+    ['details', 'par_data_enforcement_action', 'details', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter the details of this enforcement action.'
+    ]],
+    ['field_regulatory_function', 'par_data_enforcement_action', 'field_regulatory_function', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must choose which regulatory functions this enforcement action relates to.'
+    ]],
   ];
 
   /**
@@ -32,9 +36,13 @@ class ParEnforcementActionForm extends ParFormPluginBase {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $reg_function_names = $par_data_partnership ? $par_data_partnership->getPartnershipRegulatoryFunctionNames() : [];
 
+    $action_label = $this->getCardinality() !== 1 ?
+      $this->formatPlural($cardinality, 'Details of Enforcement Action @index', 'Details of Enforcement Action @index (Optional)', ['@index' => $cardinality]) :
+      $this->t('Details of Enforcement Action');
+
     $form['action'] = [
       '#type' => 'fieldset',
-      '#title' => $this->formatPlural($this->getCardinality(), 'Details of Enforcement Action', 'Details of Enforcement Action @index', ['@index' => $cardinality]),
+      '#title' => $action_label,
     ];
 
     $form['title'] = [
@@ -62,7 +70,7 @@ class ParEnforcementActionForm extends ParFormPluginBase {
     $file_extensions = $field_definition->getSetting('file_extensions');
 
     // Multiple file field.
-    $form['files_title']['files'] = [
+    $form['files'] = [
       '#type' => 'managed_file',
       '#title' => $this->t('Add an attachment'),
       '#upload_location' => 's3private://documents/enforcement_action/',

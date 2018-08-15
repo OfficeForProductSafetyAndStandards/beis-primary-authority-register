@@ -96,6 +96,15 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
+   * Get renderer service.
+   *
+   * @return mixed
+   */
+  public static function getRenderer() {
+    return \Drupal::service('renderer');
+  }
+
+  /**
    * Getter the Par Data Manager with a reduced iterator.
    */
   public function getReducedIterator($iterations = 0) {
@@ -162,9 +171,14 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
-   * Get a field definition.
+   * {@inheritdoc}
    */
-  public function getFieldDefinition($entity_type, $bundle, $field) {
+  public function getFieldDefinition(string $entity_type, $bundle = NULL, string $field) {
+    if (!$bundle) {
+      $bundle_definition = $this->getParBundleEntity($entity_type, $bundle);
+      $bundle = $bundle_definition ? $bundle_definition->id() : NULL;
+    }
+
     $entity_fields = $this->entityFieldManager->getFieldDefinitions($entity_type, $bundle);
     return isset($entity_fields[$field]) ? $entity_fields[$field] : NULL;
   }
@@ -324,7 +338,7 @@ class ParDataManager implements ParDataManagerInterface {
    *   Returns whether the account is a part of a given entity.
    */
   public function isMember($entity, UserInterface $account) {
-    return isset($this->hasMembershipsByType($account, $entity->getEntityTypeId())[$entity->id()]);
+    return isset($this->hasMembershipsByType($account, $entity->getEntityTypeId())[$entity->uuid()]);
   }
 
   /**
@@ -340,7 +354,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @param bool $direct
    *   Whether to check only direct relationships.
    *
-   * @return array
+   * @return EntityInterface
    *   Returns an array of entities keyed by entity type and then by entity id.
    */
   public function hasMemberships(UserInterface $account, $direct = FALSE) {
@@ -375,7 +389,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @param bool $direct
    *   Whether to check only direct relationships.
    *
-   * @return array
+   * @return EntityInterface
    *   Returns the entities for the given type.
    */
   public function hasMembershipsByType(UserInterface $account, $type, $direct = FALSE) {
@@ -544,9 +558,9 @@ class ParDataManager implements ParDataManagerInterface {
   public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC') {
     $entities = [];
 
-    foreach ($conditions as $row) {
-      $query = $this->getEntityQuery($type);
+    $query = $this->getEntityQuery($type);
 
+    foreach ($conditions as $row) {
       foreach ($row as $condition_operator => $condition_row) {
         $group = (strtoupper($condition_operator) === 'OR') ? $query->orConditionGroup() : $query->andConditionGroup();
 
@@ -555,14 +569,14 @@ class ParDataManager implements ParDataManagerInterface {
         }
 
         $query->condition($group);
-
-        if ($limit) {
-          $query->range(0, $limit);
-        }
-
-        $entities += $query->execute();
       }
     }
+
+    if ($limit) {
+      $query->range(0, $limit);
+    }
+
+    $entities = $query->execute();
 
     return $this->entityManager->getStorage($type)->loadMultiple(array_unique($entities));
   }
@@ -578,14 +592,30 @@ class ParDataManager implements ParDataManagerInterface {
    * @return []
    *   An array of options keyed by entity id.
    */
-  public function getEntitiesAsOptions($entities, $options = []) {
+  public function getEntitiesAsOptions($entities, $options = [], $view_mode = NULL) {
     foreach ($entities as $entity) {
       if ($entity instanceof EntityInterface) {
-        $options[$entity->id()] = $entity->label();
+        if ($view_mode) {
+          $view_builder = $this->getViewBuilder($entity->getEntityTypeId());
+          $view = $view_builder->view($entity, $view_mode);
+          $options[$entity->id()] = $this->getRenderer()->renderPlain($view);
+        }
+        else {
+          $options[$entity->id()] = $entity->label();
+        }
       }
     }
 
     return $options;
+  }
+
+  public function renderEntityCallback($entiy_type, $entity_id, $view_mode) {
+    $view_builder = $this->getViewBuilder($entiy_type);
+    $entities = $this->getEntitiesByType($entiy_type, [$entity_id]);
+
+    foreach ($entities as $entity) {
+      return $view_builder->view($entity, $view_mode);
+    }
   }
 
   /**

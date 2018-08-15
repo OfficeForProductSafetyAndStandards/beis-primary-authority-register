@@ -44,12 +44,14 @@
     embedded ? 'pagerer-scrollpane-embedded',
   ]
 %}
+{% set nav_label =  'pagination-heading-' ~ random(1000) %}
+
 {% if items %}
-    <nav {{ attributes.addClass(classes) }} role="navigation" aria-labelledby="pagination-heading"
+    <nav {{ attributes.addClass(classes) }} role="navigation" aria-labelledby="{{ nav_label }}"
 {%- if id %}
  id="{{ id }}"
 {% endif -%}>
-      <h4 class="pagination-heading visually-hidden">{{ 'Pagination'|t }}</h4>
+      <h4 id="{{ nav_label }}" class="pagination-heading visually-hidden">{{ 'Pagination'|t }}</h4>
       {% if embedded %}
         {{ attach_library('pagerer/scrollpane') }}
         <div class="pagerer-viewport">
@@ -88,7 +90,7 @@
             {# Print prefix item. #}
             {% if items.prefix %}
               <li class="pager__item pagerer-prefix">
-                <span aria-hidden="true" role="presentation">{{- items.prefix.text -}}</span>
+                <span role="presentation">{{- items.prefix.text -}}</span>
               </li>
             {% endif %}
             {# Now generate the actual pager piece. #}
@@ -120,7 +122,7 @@
             {# Print suffix item. #}
             {% if items.suffix %}
               <li class="pager__item pagerer-suffix">
-                <span aria-hidden="true" role="presentation">{{- items.suffix.text -}}</span>
+                <span role="presentation">{{- items.suffix.text -}}</span>
               </li>
             {% endif %}
             {# Print next item. #}

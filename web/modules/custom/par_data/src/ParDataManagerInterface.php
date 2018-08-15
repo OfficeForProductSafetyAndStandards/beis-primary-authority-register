@@ -78,4 +78,17 @@ interface ParDataManagerInterface {
    */
   public function getEntityTypeStorage($definition);
 
+  /**
+   * @param string $type
+   *   The type of entity to get the bundle entity for.
+   * @param mixed $bundle
+   *   The bundle to load if there are multiple for a given
+   * @param string $field
+   *   The field name to retrieve the definition for.
+   *
+   * @return \Drupal\Core\Field\FieldDefinitionInterface
+   *   The field definition.
+   */
+  public function getFieldDefinition(string $type, $bundle = NULL, string $field);
+
 }
