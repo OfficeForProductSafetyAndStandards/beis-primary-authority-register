@@ -338,7 +338,7 @@ class ParDataManager implements ParDataManagerInterface {
    *   Returns whether the account is a part of a given entity.
    */
   public function isMember($entity, UserInterface $account) {
-    return isset($this->hasMembershipsByType($account, $entity->getEntityTypeId())[$entity->id()]);
+    return isset($this->hasMembershipsByType($account, $entity->getEntityTypeId())[$entity->uuid()]);
   }
 
   /**
@@ -354,7 +354,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @param bool $direct
    *   Whether to check only direct relationships.
    *
-   * @return array
+   * @return EntityInterface
    *   Returns an array of entities keyed by entity type and then by entity id.
    */
   public function hasMemberships(UserInterface $account, $direct = FALSE) {
@@ -389,7 +389,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @param bool $direct
    *   Whether to check only direct relationships.
    *
-   * @return array
+   * @return EntityInterface
    *   Returns the entities for the given type.
    */
   public function hasMembershipsByType(UserInterface $account, $type, $direct = FALSE) {
