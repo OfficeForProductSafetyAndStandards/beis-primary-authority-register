@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [20.1.0]
+### Changed
+- Enforced statuses so that only allowed transitions can be made.
+- Added extra checks to make sure only the PA can review enforcement notices.
+
+## [20.1.0]
 ### Added
 - Added further validation to elements that were missing it.
 
