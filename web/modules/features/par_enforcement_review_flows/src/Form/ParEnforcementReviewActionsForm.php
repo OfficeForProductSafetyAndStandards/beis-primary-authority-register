@@ -54,7 +54,7 @@ class ParEnforcementReviewActionsForm extends ParBaseForm {
 
       switch ($status) {
         case ParDataEnforcementAction::APPROVED:
-          $par_data_enforcement_action->approve(FALSE);
+          $approved = $par_data_enforcement_action->approve(FALSE);
           break;
 
         case ParDataEnforcementAction::BLOCKED:

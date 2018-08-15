@@ -67,7 +67,7 @@ class ParSelectEnforcedLegalEntityForm extends ParFormPluginBase {
       // Make sure the alternative legal entity field is selectively available.
       $form['alternative_legal_entity']['#states'] = [
         'visible' => [
-          ':input[name="legal_entities_select"]' => ['value' => 'add_new'],
+          ':input[name="' . $this->getTargetName($this->getElementKey('legal_entities_select', $cardinality)) . '"]' => ['value' => 'add_new'],
         ],
       ];
     }

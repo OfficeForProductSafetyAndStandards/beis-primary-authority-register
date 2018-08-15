@@ -5,6 +5,7 @@ namespace Drupal\par_partnership_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
@@ -260,8 +261,20 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
         $par_data_partnership->set($checkbox, $this->decideBooleanValue($this->getFlowDataHandler()->getTempDataValue($checkbox)));
 
         // Set partnership status.
-        $par_data_partnership->set('partnership_status',
-          ($checkbox === 'partnership_info_agreed_authority') ? 'confirmed_authority' : 'confirmed_business');
+        $status = ($checkbox === 'partnership_info_agreed_authority') ? 'confirmed_authority' : 'confirmed_business';
+        try {
+          $par_data_partnership->setParStatus($status);
+        }
+        catch (ParDataException $e) {
+          // If the status could not be updated we want to log this but contintue.
+          $message = $this->t("This status could not be updated to '%status' for the %label");
+          $replacements = [
+            '%label' => $par_data_partnership->label(),
+            '%status' => $status,
+          ];
+          $this->getLogger($this->getLoggerChannel())
+            ->error($message, $replacements);
+        }
       }
 
       if ($checkbox && $par_data_partnership->save()) {

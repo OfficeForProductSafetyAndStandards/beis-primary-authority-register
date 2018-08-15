@@ -110,7 +110,7 @@ class ParAddressForm extends ParFormPluginBase {
       '#default_value' => $this->getDefaultValuesByKey('nation', $cardinality),
       '#states' => [
         'visible' => [
-          'select[name="country_code"]' => [
+          'select[name="' . $this->getTargetName($this->getElementKey('country_code', $cardinality)) . '"]' => [
             ['value' => 'GB'],
           ],
         ],
