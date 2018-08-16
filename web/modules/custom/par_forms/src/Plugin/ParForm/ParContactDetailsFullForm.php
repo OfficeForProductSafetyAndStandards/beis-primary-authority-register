@@ -90,13 +90,13 @@ class ParContactDetailsFullForm extends ParFormPluginBase {
     ];
 
     $form['work_phone'] = [
-      '#type' => 'textfield',
+      '#type' => 'tel',
       '#title' => $this->t('Enter the work phone number'),
       '#default_value' => $this->getDefaultValuesByKey('work_phone', $cardinality),
     ];
 
     $form['mobile_phone'] = [
-      '#type' => 'textfield',
+      '#type' => 'tel',
       '#title' => $this->t('Enter the mobile phone number (optional)'),
       '#default_value' => $this->getDefaultValuesByKey('mobile_phone', $cardinality),
     ];

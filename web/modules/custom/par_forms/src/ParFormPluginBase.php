@@ -420,7 +420,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
           '#name' => "remove:{$this->getPluginId()}:{$cardinality}",
           '#weight' => 100,
           '#submit' => ['::removeItem'],
-          '#value' => $this->t("Remove"),
+          '#value' => $this->t("Remove item $cardinality"),
           '#attributes' => [
             'class' => ['btn-link'],
           ],
