@@ -100,7 +100,7 @@ display:
           default_row_class: true
           override: true
           sticky: false
-          caption: ''
+          caption: Partnerships
           summary: ''
           description: ''
           columns:
@@ -108,7 +108,8 @@ display:
             authority_name: authority_name
             organisation_name: organisation_name
             par_flow_link: par_flow_link
-            par_partnership_flow_link: par_partnership_flow_link
+            par_flow_link_1: par_flow_link_1
+            par_flow_link_2: par_flow_link_2
             partnership_status: partnership_status
           info:
             id:
@@ -139,7 +140,14 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            par_partnership_flow_link:
+            par_flow_link_1:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            par_flow_link_2:
               sortable: false
               default_sort_order: asc
               align: ''
