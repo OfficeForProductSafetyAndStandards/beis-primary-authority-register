@@ -783,7 +783,7 @@ display:
           label: Actions
           exclude: false
           alter:
-            alter_text: false
+            alter_text: true
             text: ''
             make_link: false
             path: ''
@@ -822,6 +822,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           title: 'Cease membership'
+          assistive_text: 'Cease the membership for {{ organisation_name }}'
           link: '/partnership/{{ id_1 }}/member/{{ id }}/cease'
           hidden: 1
           entity_type: par_data_coordinated_business

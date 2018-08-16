@@ -59,6 +59,16 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
     }
 
     // PAR Status Field.
+    $data[$this->entityType->getDataTable()]['par_label'] = [
+      'title' => t('PAR Label'),
+      'field' => [
+        'title' => t('PAR Label'),
+        'help' => t('Provides the generated label for PAR entities.'),
+        'id' => 'par_data_label',
+      ],
+    ];
+
+    // PAR Status Field.
     $data[$this->entityType->getDataTable()]['par_status'] = [
       'title' => t('PAR Status'),
       'field' => [
