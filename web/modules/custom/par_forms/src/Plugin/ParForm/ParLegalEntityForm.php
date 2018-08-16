@@ -30,6 +30,11 @@ class ParLegalEntityForm extends ParFormPluginBase {
   ];
 
   /**
+   * {@inheritdoc}
+   */
+  protected $wrapperName = 'legal entity';
+
+  /**
    * Load the data for this form.
    */
   public function loadData($cardinality = 1) {

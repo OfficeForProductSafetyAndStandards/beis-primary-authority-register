@@ -46,6 +46,11 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   protected $formDefaults = [];
 
   /**
+   * Wrapper name used to identify this component to users.
+   */
+  protected $wrapperName = 'item';
+
+  /**
    * {@inheritdoc}
    */
   public function getTitle() {
@@ -409,6 +414,13 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
+   * Get the wrapper name.
+   */
+  public function getWrapperName() {
+    return $this->wrapperName;
+  }
+
+  /**
    * Get the fieldset wrapper for this component.
    */
   public function getElementActions($cardinality = 1, $actions = []) {
@@ -420,9 +432,10 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
           '#name' => "remove:{$this->getPluginId()}:{$cardinality}",
           '#weight' => 100,
           '#submit' => ['::removeItem'],
-          '#value' => $this->t("Remove item $cardinality"),
+          '#value' => $this->t("Remove"),
           '#attributes' => [
             'class' => ['btn-link'],
+            'aria-label' => "Remove {$this->getWrapperName()} $cardinality",
           ],
       ];
     }
