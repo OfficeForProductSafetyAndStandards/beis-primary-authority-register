@@ -80,7 +80,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
 
       $form['section_one']['terms_organisation_agreed'] = [
         '#type' => 'checkbox',
-        '#title' => t("My local authority agrees to the Primary Authority <a href='{$terms_page}' target='_blank'>terms and conditions</a>."),
+        '#title' => t("My local authority agrees to the Primary Authority <a href='{$terms_page}' target='_blank'>terms and conditions (opens in a new window)</a>."),
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues("terms_organisation_agreed", FALSE),
         '#return_value' => 'on',
       ];
@@ -165,7 +165,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
 
       $form['section_one']['terms_local_authority_agreed'] = [
         '#type' => 'checkbox',
-        '#title' => t("My local authority agrees to the Primary Authority <a href='{$terms_page}' target='_blank'>Terms and Conditions</a>."),
+        '#title' => t("My local authority agrees to the Primary Authority <a href='{$terms_page}' target='_blank'>Terms and Conditions (opens in a new window)</a>."),
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues("terms_local_authority_agreed", FALSE),
         '#return_value' => 'on',
       ];

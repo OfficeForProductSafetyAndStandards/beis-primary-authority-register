@@ -28,6 +28,11 @@ class ParTradingNameForm extends ParFormPluginBase {
   ];
 
   /**
+   * {@inheritdoc}
+   */
+  protected $wrapperName = 'trading name';
+
+  /**
    * Load the data for this form.
    */
   public function loadData($cardinality = 1) {

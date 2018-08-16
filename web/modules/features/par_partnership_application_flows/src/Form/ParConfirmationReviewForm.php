@@ -144,7 +144,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       ];
 
       $url = Url::fromUri('internal:/par-terms-and-conditions', ['attributes' => ['target' => '_blank']]);
-      $terms_link = Link::fromTextAndUrl(t('Terms & Conditions'), $url);
+      $terms_link = Link::fromTextAndUrl(t('Terms & Conditions (opens in a new window)'), $url);
       $form['terms_authority_agreed'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('I have read and agree to the %terms.', ['%terms' => $terms_link->toString()]),

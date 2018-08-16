@@ -21,18 +21,12 @@ class ParApplicationTypeForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $partnership_bundle = $this->getParDataManager()->getParBundleEntity('par_data_partnership');
 
-    $form['application_type_fieldset'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    $form['application_type_fieldset']['application_type'] = [
+    $form['application_type'] = [
       '#title' => 'Choose a type of partnership',
       '#type' => 'radios',
       '#options' => $partnership_bundle->getAllowedValues('partnership_type'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('application_type'),
+      '#attributes' => ['class' => ['form-group']],
     ];
 
     return parent::buildForm($form, $form_state);
