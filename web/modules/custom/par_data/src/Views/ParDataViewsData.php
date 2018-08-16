@@ -68,6 +68,26 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
       ],
     ];
 
+    // PAR Status Updated Field.
+    $data[$this->entityType->getDataTable()]['par_status_time'] = [
+      'title' => t('PAR Status Time'),
+      'field' => [
+        'title' => t('PAR Status Time'),
+        'help' => t('Provides the time the status of a PAR entity was last updated.'),
+        'id' => 'par_data_status_time',
+      ],
+    ];
+
+    // PAR Status Author Field.
+    $data[$this->entityType->getDataTable()]['par_status_author'] = [
+      'title' => t('PAR Status Author'),
+      'field' => [
+        'title' => t('PAR Status Author'),
+        'help' => t('Provides the author of the last status change.'),
+        'id' => 'par_data_status_author',
+      ],
+    ];
+
     // PAR Flow Link.
     $data[$this->entityType->getDataTable()]['par_flow_link'] = [
       'title' => t('PAR Flow Link'),
