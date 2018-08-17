@@ -138,19 +138,23 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     // Validate required fields.
     // @todo create wrapper for setErrorByName as this is ugly creating a link.
     if (empty($form_state->getValue('email'))) {
-      $form_state->setErrorByName('email', $this->t('<a href="#edit-email">The email field is required.</a>'));
+      $id = $this->getElementId(['email'], $form);
+      $form_state->setErrorByName($this->getElementName('email'), $this->wrapErrorMessage('You must enter an email address.', $id));
     }
 
     if (empty($form_state->getValue('first_name'))) {
-      $form_state->setErrorByName('first_name', $this->t('<a href="#edit-first-name">The first name field is required.</a>'));
+      $id = $this->getElementId(['first_name'], $form);
+      $form_state->setErrorByName($this->getElementName('first_name'), $this->wrapErrorMessage('You must enter a first name.', $id));
     }
 
     if (empty($form_state->getValue('last_name'))) {
-      $form_state->setErrorByName('last_name', $this->t('<a href="#edit-last-name">The last name field is required.</a>'));
+      $id = $this->getElementId(['last_name'], $form);
+      $form_state->setErrorByName($this->getElementName('last_name'), $this->wrapErrorMessage('You must enter a last name.', $id));
     }
 
     if (empty($form_state->getValue('work_phone'))) {
-      $form_state->setErrorByName('work_phone', $this->t('<a href="#edit-work-phone">The work phone field is required.</a>'));
+      $id = $this->getElementId(['work_phone'], $form);
+      $form_state->setErrorByName($this->getElementName('work_phone'), $this->wrapErrorMessage('You must enter the work telephone number.', $id));
     }
 
     parent::validateForm($form, $form_state);

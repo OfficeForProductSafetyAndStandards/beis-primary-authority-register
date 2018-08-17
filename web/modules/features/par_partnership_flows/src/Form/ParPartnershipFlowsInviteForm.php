@@ -265,15 +265,18 @@ HEREDOC;
   public function validateForm(array &$form, FormStateInterface $form_state) {
 
     if (empty($form_state->getValue('recipient_email'))) {
-      $form_state->setErrorByName('recipient_email', $this->t('<a href="#edit-recipient-email">The Recipient email is required.</a>'));
+      $id = $this->getElementId(['recipient_email'], $form);
+      $form_state->setErrorByName($this->getElementName('recipient_email'), $this->wrapErrorMessage('You must enter the recipient\'s email address.', $id));
     }
 
     if (empty($form_state->getValue('email_subject'))) {
-      $form_state->setErrorByName('email_subject', $this->t('<a href="#edit-email-subject">The Message subject is required.</a>'));
+      $id = $this->getElementId(['email_subject'], $form);
+      $form_state->setErrorByName($this->getElementName('email_subject'), $this->wrapErrorMessage('You must enter the subbject for this message.', $id));
     }
 
     if (empty($form_state->getValue('email_body'))) {
-      $form_state->setErrorByName('email_body', $this->t('<a href="#edit-email-body">The Message is required.</a>'));
+      $id = $this->getElementId(['email_body'], $form);
+      $form_state->setErrorByName($this->getElementName('email_body'), $this->wrapErrorMessage('You must enter a message.', $id));
     }
     // Check that the email body contains an invite accept link.
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');

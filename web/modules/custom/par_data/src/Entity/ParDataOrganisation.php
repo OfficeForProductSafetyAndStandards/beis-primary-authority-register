@@ -184,7 +184,7 @@ class ParDataOrganisation extends ParDataEntity {
   public function setNation($nation, $force = FALSE) {
     $entity_type = $this->getParDataManager()->getParBundleEntity($this->getEntityTypeId());
     $allowed_types = $entity_type->getAllowedValues('nation');
-    if (isset($allowed_types[$nation])
+    if ($nation && isset($allowed_types[$nation])
       && ($this->get('nation')->isEmpty() || $force)) {
       $this->set('nation', $nation);
     }

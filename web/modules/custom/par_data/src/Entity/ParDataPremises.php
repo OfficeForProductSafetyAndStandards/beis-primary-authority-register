@@ -96,10 +96,10 @@ class ParDataPremises extends ParDataEntity {
    *
    * @return bool
    */
-  public function setNation(string $nation, $force = FALSE) {
+  public function setNation($nation, $force = FALSE) {
     $entity_type = $this->getParDataManager()->getParBundleEntity($this->getEntityTypeId());
     $allowed_types = $entity_type->getAllowedValues('nation');
-    if (isset($allowed_types[$nation])) {
+    if ($nation && isset($allowed_types[$nation])) {
       $this->set('nation', $nation);
     }
   }

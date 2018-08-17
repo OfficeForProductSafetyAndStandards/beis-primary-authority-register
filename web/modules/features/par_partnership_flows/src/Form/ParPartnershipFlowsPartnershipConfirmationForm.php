@@ -96,7 +96,8 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
 
     // Make sure the confirm box is ticked.
     if (!$form_state->getValue('partnership_info_agreed_business')) {
-      $this->setElementError('partnership_info_agreed_business', $form_state, 'Please confirm you have reviewed the details.');
+      $id = $this->getElementId(['partnership_info_agreed_business'], $form);
+      $form_state->setErrorByName($this->getElementName('partnership_info_agreed_business'), $this->wrapErrorMessage('You must confirm you have reviewed the details.', $id));
     }
   }
 
