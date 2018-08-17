@@ -122,7 +122,8 @@ class ParMemberUploadForm extends ParBaseForm {
 
       // If there was an error we want to invalidate the form.
       if (isset($error)) {
-        $form_state->setErrorByName('csv', $error);
+        $id = $this->getElementId(['csv'], $form);
+        $form_state->setErrorByName($this->getElementName('csv'), $this->wrapErrorMessage($error, $id));
       }
 
       if (count($rows) > 0) {

@@ -34,6 +34,7 @@ class ParAddressForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
+    $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
     $par_data_premises = $this->getFlowDataHandler()->getParameter('par_data_premises');
 
     if ($par_data_premises) {
@@ -50,7 +51,8 @@ class ParAddressForm extends ParBaseForm {
 
       $nation = $this->getFlowDataHandler()->getTempDataValue('country_code') === 'GB' ?
         $this->getFlowDataHandler()->getTempDataValue('nation') : '';
-      $par_data_premises->set('nation', $nation);
+      $par_data_premises->setNation($nation);
+      $par_data_organisation->setNation($nation);
 
       // Save the updated premises.
       if ($par_data_premises->save()) {
