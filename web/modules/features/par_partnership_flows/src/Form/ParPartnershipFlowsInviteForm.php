@@ -287,7 +287,8 @@ HEREDOC;
       $required_token = '[invite:invite-accept-link]';
     }
     if (!strpos($form_state->getValue('email_body'), $required_token)) {
-      $form_state->setErrorByName('email_body', $this->t("<a href=\"#edit-email-body\">Please make sure you have the invite token '@invite_token' somewhere in your message.</a>", ['@invite_token' => $required_token]));
+      $id = $this->getElementId(['email_body'], $form);
+      $form_state->setErrorByName($this->getElementName('email_body'), $this->wrapErrorMessage($this->t('You must make sure you have the invite token \'@invite_token\' somewhere in your message', ['@invite_token' => $required_token]), $id));
     }
 
     parent::validateForm($form, $form_state);
