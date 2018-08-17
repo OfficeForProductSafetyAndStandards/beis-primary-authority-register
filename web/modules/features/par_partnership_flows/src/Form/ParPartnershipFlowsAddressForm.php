@@ -223,12 +223,14 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
 
       $premises->set('address', $address);
 
-      $nation = $this->getFlowDataHandler()->getTempDataValue('country_code') === 'GB' ?
-        $this->getFlowDataHandler()->getTempDataValue('nation') : '';
-      $premises->set('nation', $nation);
+      $nation = $this->getFlowDataHandler()->getTempDataValue('nation');
+      $premises->setNation($nation);
 
       $par_data_partnership = $this->getPartnershipParam();
       $par_data_organisation = $par_data_partnership ? $par_data_partnership->getOrganisation(TRUE) : NULL;
+      if ($par_data_organisation) {
+        $par_data_organisation->setNation($nation);
+      }
 
       // Check we are updating an existing partnership/organisation.
       if ($par_data_partnership && $premises->save()) {

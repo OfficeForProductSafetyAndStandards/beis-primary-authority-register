@@ -140,11 +140,13 @@ HEREDOC;
   public function validateForm(array &$form, FormStateInterface $form_state) {
 
     if (empty($form_state->getValue('email_subject'))) {
-      $form_state->setErrorByName('email_subject', $this->t('<a href="#edit-email-subject">The Message subject is required.</a>'));
+      $id = $this->getElementId(['email_subject'], $form);
+      $form_state->setErrorByName($this->getElementName('email_subject'), $this->wrapErrorMessage('You must enter the subject for the message', $id));
     }
 
     if (empty($form_state->getValue('email_body'))) {
-      $form_state->setErrorByName('email_body', $this->t('<a href="#edit-email-body">The Message is required.</a>'));
+      $id = $this->getElementId(['email_body'], $form);
+      $form_state->setErrorByName($this->getElementName('email_body'), $this->wrapErrorMessage('You must enter the message', $id));
     }
     // Check that the email body contains an invite accept link.
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
@@ -155,7 +157,8 @@ HEREDOC;
       $required_token = '[invite:invite-accept-link]';
     }
     if (!strpos($form_state->getValue('email_body'), $required_token)) {
-      $form_state->setErrorByName('email_body', "Please make sure you have the invite token '$required_token' somewhere in your message.");
+      $id = $this->getElementId(['email_body'], $form);
+      $form_state->setErrorByName($this->getElementName('email_body'), $this->wrapErrorMessage($this->t('You must make sure you have the invite token \'@invite_token\' somewhere in your message', ['@invite_token' => $required_token]), $id));
     }
 
     parent::validateForm($form, $form_state);
