@@ -1,0 +1,12 @@
+uuid: 1c131837-57f5-4127-ae81-7ebccbcd922d
+langcode: en
+status: true
+dependencies: {  }
+id: general_enquiry
+label: 'General Enquiry'
+description: ''
+help: ''
+isDeletable: null
+isRevokable: null
+isArchivable: null
+configuration: null

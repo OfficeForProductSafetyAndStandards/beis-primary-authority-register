@@ -1,0 +1,10 @@
+uuid: 125b99b7-1988-44a3-9c65-2da75057cfd4
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_general_enquiry.full
+label: Full
+targetEntityType: par_data_general_enquiry
+cache: true

@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies: {  }
+id: general_enquiry
+label: 'General Enquiry'
+description: ''
+help: ''
+isDeletable: null
+isRevokable: null
+isArchivable: null
+configuration: null

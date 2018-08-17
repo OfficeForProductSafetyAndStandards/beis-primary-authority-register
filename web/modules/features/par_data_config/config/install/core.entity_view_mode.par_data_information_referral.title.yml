@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_information_referral.title
+label: Title
+targetEntityType: par_data_information_referral
+cache: true

@@ -7,7 +7,7 @@ namespace Drupal\par_data\Entity;
  *
  * @ConfigEntityType(
  *   id = "par_data_inspection_feedback_t",
- *   label = @Translation("PAR Deviation Request Type"),
+ *   label = @Translation("PAR Inspection Feedback Type"),
  *   handlers = {
  *     "list_builder" = "Drupal\trance\TranceTypeListBuilder",
  *     "form" = {

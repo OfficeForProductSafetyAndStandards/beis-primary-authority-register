@@ -1,0 +1,80 @@
+uuid: e8b29a6d-a0d9-4253-979d-cc81cc9fa19b
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_general_enquiry.full
+    - field.field.par_data_general_enquiry.general_enquiry.field_enforcing_authority
+    - field.field.par_data_general_enquiry.general_enquiry.field_person
+    - field.field.par_data_general_enquiry.general_enquiry.field_primary_authority
+    - par_data.par_data_general_enquiry_type.general_enquiry
+  module:
+    - datetime
+    - par_data
+    - text
+id: par_data_general_enquiry.general_enquiry.full
+targetEntityType: par_data_general_enquiry
+bundle: general_enquiry
+mode: full
+content:
+  field_enforcing_authority:
+    weight: 4
+    label: hidden
+    settings:
+      view_mode: title
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+  field_person:
+    weight: 5
+    label: hidden
+    settings:
+      view_mode: title
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+  field_primary_authority:
+    weight: 6
+    label: hidden
+    settings:
+      view_mode: title
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+  notes:
+    label: hidden
+    type: text_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  primary_authority_notes:
+    label: hidden
+    type: text_default
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  primary_authority_status:
+    label: hidden
+    weight: 2
+    region: content
+    settings:
+      display_original_value: false
+    third_party_settings: {  }
+    type: par_list_formatter
+  request_date:
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+hidden:
+  name: true
+  user_id: true

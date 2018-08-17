@@ -1,0 +1,19 @@
+uuid: af514960-c89f-4057-a96a-ab1eaf593c67
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_general_enquiry.field_enforcing_authority
+field_name: field_enforcing_authority
+entity_type: par_data_general_enquiry
+type: entity_reference
+settings:
+  target_type: par_data_authority
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

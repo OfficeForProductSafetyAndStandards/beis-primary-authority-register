@@ -1,0 +1,57 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_information_referral.summary
+    - field.field.par_data_information_referral.information_referral.field_enforcing_authority
+    - field.field.par_data_information_referral.information_referral.field_person
+    - field.field.par_data_information_referral.information_referral.field_primary_authority
+    - par_data.par_data_information_referral_type.information_referral
+  module:
+    - datetime
+    - par_data
+    - text
+id: par_data_information_referral.information_referral.summary
+targetEntityType: par_data_information_referral
+bundle: information_referral
+mode: summary
+content:
+  field_person:
+    weight: 3
+    label: hidden
+    settings:
+      view_mode: title
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+  notes:
+    label: hidden
+    type: text_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  primary_authority_status:
+    label: hidden
+    weight: 2
+    region: content
+    settings:
+      display_original_value: false
+    third_party_settings: {  }
+    type: par_list_formatter
+  request_date:
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+hidden:
+  field_enforcing_authority: true
+  field_primary_authority: true
+  name: true
+  primary_authority_notes: true
+  user_id: true

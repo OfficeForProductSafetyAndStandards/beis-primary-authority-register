@@ -408,3 +408,10 @@ function par_data_update_8027() {
   // Ensure all file fields are up to date.
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
+
+/**
+ * Update to physical model includes new message entities.
+ */
+function par_data_update_8028() {
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}

@@ -1,0 +1,28 @@
+uuid: 80090ef5-0a18-42d8-971f-a17f5dc53a8e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_information_referral.field_enforcing_authority
+    - par_data.par_data_authority_type.authority
+    - par_data.par_data_information_referral_type.information_referral
+id: par_data_information_referral.information_referral.field_enforcing_authority
+field_name: field_enforcing_authority
+entity_type: par_data_information_referral
+bundle: information_referral
+label: 'Enforcing Authority'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_authority'
+  handler_settings:
+    target_bundles:
+      authority: authority
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

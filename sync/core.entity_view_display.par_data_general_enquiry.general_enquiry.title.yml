@@ -1,0 +1,34 @@
+uuid: ed5a86c7-a224-411a-aa27-e7634b132658
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_general_enquiry.title
+    - field.field.par_data_general_enquiry.general_enquiry.field_enforcing_authority
+    - field.field.par_data_general_enquiry.general_enquiry.field_person
+    - field.field.par_data_general_enquiry.general_enquiry.field_primary_authority
+    - par_data.par_data_general_enquiry_type.general_enquiry
+  module:
+    - text
+id: par_data_general_enquiry.general_enquiry.title
+targetEntityType: par_data_general_enquiry
+bundle: general_enquiry
+mode: title
+content:
+  notes:
+    type: text_trimmed
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      trim_length: 300
+    third_party_settings: {  }
+hidden:
+  field_enforcing_authority: true
+  field_person: true
+  field_primary_authority: true
+  name: true
+  primary_authority_notes: true
+  primary_authority_status: true
+  request_date: true
+  user_id: true
