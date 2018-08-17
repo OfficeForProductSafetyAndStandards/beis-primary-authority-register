@@ -23,6 +23,8 @@ class ParApproveAction extends ActionBase {
    */
   public function execute($entity = NULL) {
     if ($entity instanceof ParDataEntityInterface) {
+      // Always make auto-updates as the default admin.
+      $entity->setRevisionUserId(1);
       $entity->approve();
     }
   }

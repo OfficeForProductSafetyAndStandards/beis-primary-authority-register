@@ -89,7 +89,7 @@ display:
           default_row_class: false
           override: true
           sticky: false
-          caption: ''
+          caption: 'Search partnerships'
           summary: ''
           description: ''
           columns:
@@ -97,12 +97,19 @@ display:
             id: id
             authority_name: authority_name
             organisation_name: organisation_name
-            terms_authority_agreed: terms_authority_agreed
-            document_completion: document_completion
-            terms_organisation_agreed: terms_organisation_agreed
+            par_flow_link: par_flow_link
+            partnership_type: partnership_type
+            trading_name_value_2: trading_name_value_2
             field_authority_person: field_authority_person
-            organisation_name_1: organisation_name_1
             trading_name_value: trading_name_value
+            registered_name: registered_name
+            registered_number: registered_number
+            field_regulatory_function: field_regulatory_function
+            approved_date: approved_date
+            trading_name_value_1: trading_name_value_1
+            organisation_name_1: organisation_name_1
+            registered_name_1: registered_name_1
+            registered_number_1: registered_number_1
           info:
             id_1:
               sortable: false
@@ -132,28 +139,66 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            terms_authority_agreed:
+            par_flow_link:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            document_completion:
+            partnership_type:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            terms_organisation_agreed:
-              sortable: false
-              default_sort_order: asc
+            trading_name_value_2:
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
             field_authority_person:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            trading_name_value:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            registered_name:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            registered_number:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_regulatory_function:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            approved_date:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            trading_name_value_1:
               align: ''
               separator: ''
               empty_column: false
@@ -165,7 +210,14 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            trading_name_value:
+            registered_name_1:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            registered_number_1:
               sortable: false
               default_sort_order: asc
               align: ''

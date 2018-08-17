@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\RevisionLogEntityTrait;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -29,6 +30,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
   use LoggerChannelTrait;
   use StringTranslationTrait;
+  use RevisionLogEntityTrait;
 
   const DELETE_FIELD = 'deleted';
   const REVOKE_FIELD = 'revoked';
@@ -412,6 +414,45 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       $dispatcher = \Drupal::service('event_dispatcher');
       $dispatcher->dispatch(ParDataEvent::statusChange($this->getEntityTypeId(), $value), $event);
     }
+  }
+
+  /**
+   * A helper function to get the revision at which the status was changed.
+   */
+  public function getStatusChanged($status) {
+    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+
+    // Get the latest revision of this status.
+    $query = $this->entityTypeManager()->getStorage($this->getEntityTypeId())->getQuery();
+    $query->allRevisions()
+      ->condition('id', $this->id())
+      ->condition($field_name, $status, 'LIKE')
+      ->sort('revision_timestamp', 'ASC');
+    $results = $query->execute();
+
+    $latest_status_revision = $this->entityTypeManager()
+      ->getStorage($this->getEntityTypeId())
+      ->loadRevision(key($results));
+
+    return $latest_status_revision ?: NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStatusTime($status) {
+    $revision = $this->getStatusChanged($status);
+
+    return $revision ? (int) $revision->get('revision_timestamp')->getString() : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStatusAuthor($status) {
+    $revision = $this->getStatusChanged($status);
+
+    return $revision ? $revision->get('revision_uid')->entity : NULL;
   }
 
   /**

@@ -100,7 +100,7 @@ display:
           default_row_class: true
           override: true
           sticky: false
-          caption: ''
+          caption: Partnerships
           summary: ''
           description: ''
           columns:
@@ -108,7 +108,8 @@ display:
             authority_name: authority_name
             organisation_name: organisation_name
             par_flow_link: par_flow_link
-            par_partnership_flow_link: par_partnership_flow_link
+            par_flow_link_1: par_flow_link_1
+            par_flow_link_2: par_flow_link_2
             partnership_status: partnership_status
           info:
             id:
@@ -139,7 +140,14 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            par_partnership_flow_link:
+            par_flow_link_1:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            par_flow_link_2:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -224,6 +232,56 @@ display:
           entity_type: par_data_partnership
           entity_field: id
           plugin_id: field
+        par_label:
+          id: par_label
+          table: par_partnerships_field_data
+          field: par_label
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          entity_type: par_data_partnership
+          plugin_id: par_data_label
         authority_name:
           id: authority_name
           table: par_authorities_field_data
@@ -403,6 +461,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           title: '{{authority_name}}'
+          assistive_text: 'Edit the authority''s details for the {{ par_label }}'
           link: '/partnership/{{id}}/authority-details'
           hidden: 0
           entity_type: par_data_authority
@@ -456,6 +515,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           title: '{{ organisation_name }}'
+          assistive_text: 'Edit the organisation''s details for the {{ par_label }}'
           link: '/partnership/{{id}}/organisation-details'
           hidden: 0
           entity_type: par_data_authority
