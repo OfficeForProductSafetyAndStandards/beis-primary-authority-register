@@ -72,6 +72,11 @@ class ParPartnershipPageController extends ParBaseController {
     $message_links['deviation_request_link'] = ['#type' => 'markup',
       '#markup' => $deviation_request_link ? $deviation_request_link : '<p>(none)</p>',
     ];
+    // Get the link for the first step of the inspection plan feedback journey.
+    $inspection_feedback_link = $this->getFlowNegotiator()->getFlow('inspection_feedback')->getLinkByStep(1)->setText('Submit feedback following an inspection')->toString();
+    $message_links['inspection_feedback_link'] = ['#type' => 'markup',
+      '#markup' => $inspection_feedback_link ? $inspection_feedback_link : '<p>(none)</p>',
+    ];
 
     // Create a list of links for the actions that can be performed on this partnership.
     $build['partnership_actions'] = [

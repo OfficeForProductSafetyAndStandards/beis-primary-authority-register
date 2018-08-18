@@ -131,6 +131,7 @@ class ParDataInformationReferral extends ParDataEntity {
     $fields['document'] = BaseFieldDefinition::create('file')
       ->setLabel(t('Document'))
       ->setDescription(t('Supporting documents.'))
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setRevisionable(TRUE)
       ->setSettings([
         'target_type' => 'file',

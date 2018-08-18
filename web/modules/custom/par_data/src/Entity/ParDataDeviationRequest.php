@@ -131,6 +131,7 @@ class ParDataDeviationRequest extends ParDataEntity {
     $fields['document'] = BaseFieldDefinition::create('file')
       ->setLabel(t('Document'))
       ->setDescription(t('Documents relating to the proposed deviation.'))
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setRevisionable(TRUE)
       ->addConstraint('par_required')
       ->setSettings([

@@ -1,23 +1,23 @@
 <?php
 
-namespace Drupal\par_deviation_request_flows\Form;
+namespace Drupal\par_inspection_feedback_flows\Form;
 
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
-use Drupal\par_data\Entity\ParDataDeviationRequest;
-use Drupal\par_deviation_request_flows\ParFormCancelTrait;
+use Drupal\par_data\Entity\ParDataInspectionFeedback;
+use Drupal\par_inspection_feedback_flows\ParFormCancelTrait;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\ParDisplayTrait;
-use Drupal\par_deviation_request_flows\ParFlowAccessTrait;
+use Drupal\par_inspection_feedback_flows\ParFlowAccessTrait;
 
 /**
  * The confirming the user is authorised to revoke partnerships.
  */
-class ParDeviationReviewForm extends ParBaseForm {
+class ParFeedbackReviewForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
   use ParFormCancelTrait;
@@ -25,25 +25,25 @@ class ParDeviationReviewForm extends ParBaseForm {
   /**
    * Set the page title.
    */
-  protected $pageTitle = "Review request";
+  protected $pageTitle = "Review submission";
 
   public function loadData() {
     // Set the data values on the entities
     $entities = $this->createEntities();
     extract($entities);
     /** @var ParDataPartnership $par_data_partnership */
-    /** @var ParDataDeviationRequest $par_data_deviation_request */
-    /** @var FileInterface $document */
+    /** @var ParDataInspectionFeedback $par_data_inspection_feedback */
+    /** @var FileInterface[] $document */
 
-    if ($par_data_deviation_request->hasField('request_date')) {
-      $this->getFlowDataHandler()->setFormPermValue("request_date", $par_data_deviation_request->request_date->view('full'));
+    if ($par_data_inspection_feedback->hasField('request_date')) {
+      $this->getFlowDataHandler()->setFormPermValue("request_date", $par_data_inspection_feedback->request_date->view('full'));
     }
-    if ($par_data_deviation_request->hasField('notes')) {
-      $this->getFlowDataHandler()->setFormPermValue("notes", $par_data_deviation_request->notes->view('full'));
+    if ($par_data_inspection_feedback->hasField('notes')) {
+      $this->getFlowDataHandler()->setFormPermValue("notes", $par_data_inspection_feedback->notes->view('full'));
     }
     if ($document) {
       $document_view_builder = $this->getParDataManager()->getViewBuilder('file');
-      $this->getFlowDataHandler()->setFormPermValue("document", $document_view_builder->view($document, 'title'));
+      $this->getFlowDataHandler()->setFormPermValue("document", $document_view_builder->viewMultiple($document, 'title'));
     }
 
     parent::loadData();
@@ -61,7 +61,7 @@ class ParDeviationReviewForm extends ParBaseForm {
     $request_date = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
 
     // Create the enforcement notice.
-    $par_data_deviation_request = ParDataDeviationRequest::create([
+    $par_data_inspection_feedback = ParDataInspectionFeedback::create([
       'notes' => $this->getFlowDataHandler()->getTempDataValue('notes', $deviation_request_cid),
       'field_enforcing_authority' => $this->getFlowDataHandler()->getDefaultValues('par_data_authority_id', NULL, $enforcing_authority_cid),
       'field_person' =>  $this->getFlowDataHandler()->getDefaultValues('enforcement_officer_id', NULL, $enforcement_officer_cid),
@@ -72,8 +72,8 @@ class ParDeviationReviewForm extends ParBaseForm {
 
     return [
       'par_data_partnership' => $par_data_partnership,
-      'par_data_deviation_request' => $par_data_deviation_request,
-      'document' => current(File::loadMultiple((array) $this->getFlowDataHandler()->getTempDataValue('files', $deviation_request_cid))),
+      'par_data_inspection_feedback' => $par_data_inspection_feedback,
+      'document' => File::loadMultiple((array) $this->getFlowDataHandler()->getTempDataValue('files', $deviation_request_cid)),
     ];
   }
 

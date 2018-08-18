@@ -10,31 +10,31 @@ use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
- * Deviation request details form plugin.
+ * Inspection plan feedback details form plugin.
  *
  * @ParForm(
- *   id = "deviation_request_detail",
- *   title = @Translation("The full deviation request display.")
+ *   id = "inspection_feedback_detail",
+ *   title = @Translation("The full inspection feedback display.")
  * )
  */
-class ParDeviationRequestDetail extends ParFormPluginBase {
+class ParInspectionFeedbackDetail extends ParFormPluginBase {
 
   /**
    * {@inheritdoc}
    */
   public function loadData($cardinality = 1) {
-    $par_data_deviation_request = $this->getFlowDataHandler()->getParameter('par_data_deviation_request');
+    $par_data_inspection_feedback = $this->getFlowDataHandler()->getParameter('par_data_inspection_feedback');
 
     // If an enforcement notice parameter is set use this.
-    if ($par_data_deviation_request) {
-      if ($par_data_deviation_request->hasField('request_date')) {
-        $this->getFlowDataHandler()->setFormPermValue("request_date", $par_data_deviation_request->request_date->view('full'));
+    if ($par_data_inspection_feedback) {
+      if ($par_data_inspection_feedback->hasField('request_date')) {
+        $this->getFlowDataHandler()->setFormPermValue("request_date", $par_data_inspection_feedback->request_date->view('full'));
       }
-      if ($par_data_deviation_request->hasField('notes')) {
-        $this->getFlowDataHandler()->setFormPermValue("notes", $par_data_deviation_request->notes->view('full'));
+      if ($par_data_inspection_feedback->hasField('notes')) {
+        $this->getFlowDataHandler()->setFormPermValue("notes", $par_data_inspection_feedback->notes->view('full'));
       }
-      if ($par_data_deviation_request->hasField('document')) {
-        $this->getFlowDataHandler()->setFormPermValue("document", $par_data_deviation_request->document->view('full'));
+      if ($par_data_inspection_feedback->hasField('document')) {
+        $this->getFlowDataHandler()->setFormPermValue("document", $par_data_inspection_feedback->document->view('full'));
       }
     }
 
@@ -49,13 +49,13 @@ class ParDeviationRequestDetail extends ParFormPluginBase {
     $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
     $params = $this->getRouteParams() + ['destination' => $return_path];
 
-    $form['deviation_request'] = [
+    $form['inspection_feedback'] = [
       '#type' => 'fieldset',
       '#attributes' => ['class' => ['form-group']],
       'title' => [
         '#type' => 'html_tag',
         '#tag' => 'h2',
-        '#value' => $this->t('Summary of deviation request'),
+        '#value' => $this->t('Summary of feedback'),
         '#attributes' => ['class' => 'heading-large'],
       ],
       'date' => $this->getDefaultValuesByKey('request_date', $cardinality, NULL),
@@ -65,7 +65,7 @@ class ParDeviationRequestDetail extends ParFormPluginBase {
 
     // Add operation link for updating notice details.
     try {
-      $form['deviation_request']['change_notes'] = [
+      $form['inspection_feedback']['change_notes'] = [
         '#type' => 'markup',
         '#weight' => 99,
         '#markup' => t('@link', [
