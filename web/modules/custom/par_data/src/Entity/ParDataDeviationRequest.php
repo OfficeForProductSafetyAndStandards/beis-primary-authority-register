@@ -127,6 +127,31 @@ class ParDataDeviationRequest extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
+    // Documents.
+    $fields['document'] = BaseFieldDefinition::create('file')
+      ->setLabel(t('Document'))
+      ->setDescription(t('Documents relating to the proposed deviation.'))
+      ->setRevisionable(TRUE)
+      ->addConstraint('par_required')
+      ->setSettings([
+        'target_type' => 'file',
+        'uri_scheme' => 's3private',
+        'max_filesize' => '20 MB',
+        'file_extensions' => 'jpg jpeg gif png tif pdf txt rdf doc docx odt xls xlsx csv ods ppt pptx odp pot potx pps',
+        'file_directory' => 'documents/advice',
+      ])
+      ->setDisplayOptions('form', [
+        'weight' => 4,
+        'default_widget' => "file_generic",
+        'default_formatter' => "file_default",
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
     // Primary Authority status.
     $fields['primary_authority_status'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Primary Authority Status'))

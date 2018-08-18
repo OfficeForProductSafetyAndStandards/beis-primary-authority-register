@@ -13,6 +13,7 @@ use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataException;
 use Drupal\par_enforcement_raise_flows\ParFlowAccessTrait;
+use Drupal\par_enforcement_raise_flows\ParFormCancelTrait;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\Core\Access\AccessResult;
 use Drupal\par_flows\ParFlowException;
@@ -25,6 +26,7 @@ use Symfony\Component\Routing\Route;
 class ParEnforcementReviewForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
+  use ParFormCancelTrait;
 
   /**
    * Set the page title.

@@ -62,20 +62,24 @@ class ParPartnershipPageController extends ParBaseController {
     // View and perform operations on the information about the business.
     $build['about_business'] = $this->renderSection('About the organisation', $par_data_organisation, ['comments' => 'about']);
 
-    // Create links for the actions that can be performed on this partnership.
-    $build['partnership_actions'] = [
-      '#type' => 'fieldset',
-      '#title' => t('Send a message about this organisation'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+    // Get the link for the first step of the raise enforcement journey.
+    $enforcement_notice_link = $this->getFlowNegotiator()->getFlow('raise_enforcement')->getLinkByStep(1)->setText('Send a notification of a proposed enforcement action')->toString();
+    $message_links['enforcement_notice_link'] = ['#type' => 'markup',
+      '#markup' => $enforcement_notice_link ? $enforcement_notice_link : '<p>(none)</p>',
+    ];
+    // Get the link for the first step of the deviation request journey.
+    $deviation_request_link = $this->getFlowNegotiator()->getFlow('deviation_request')->getLinkByStep(1)->setText('Request to deviate from the inspection plan')->toString();
+    $message_links['deviation_request_link'] = ['#type' => 'markup',
+      '#markup' => $deviation_request_link ? $deviation_request_link : '<p>(none)</p>',
     ];
 
-    // Get the link for the first step of the raise enforcement journey.
-    $link = $this->getFlowNegotiator()->getFlow('raise_enforcement')->getLinkByStep(1)->setText('Send a notification of a proposed enforcement action')->toString();
-
-    $build['partnership_actions']['link'] = ['#type' => 'markup',
-      '#markup' => $link ? $link : '<p>(none)</p>',
+    // Create a list of links for the actions that can be performed on this partnership.
+    $build['partnership_actions'] = [
+      '#theme' => 'item_list',
+      '#list_type' => 'ul',
+      '#title' => t('Send a message about this organisation'),
+      '#items' => $message_links,
+      '#attributes' => ['class' => ['list', 'form-group']],
     ];
 
     // Only show SIC Codes and Employee number if the partnership is a direct partnership.

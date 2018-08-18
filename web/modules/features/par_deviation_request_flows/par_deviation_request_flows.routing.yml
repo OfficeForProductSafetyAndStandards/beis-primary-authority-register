@@ -1,0 +1,78 @@
+# Routes required for deviating from an inspection plan.
+par_deviation_request_flows.select_inspection_plan:
+  path: '/deviation-request/{par_data_partnership}/select-inspection-plan'
+  defaults:
+    _form: '\Drupal\par_deviation_request_flows\Form\ParSelectInspectionPlanForm'
+    _title_callback: '\Drupal\par_deviation_request_flows\Form\ParSelectInspectionPlanForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    _custom_access: '\Drupal\par_deviation_request_flows\Form\ParSelectInspectionPlanForm::accessCallback'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+
+par_deviation_request_flows.select_authority:
+  path: '/deviation-request/{par_data_partnership}/select-authority'
+  defaults:
+    _form: '\Drupal\par_deviation_request_flows\Form\ParSelectAuthorityForm'
+    _title_callback: '\Drupal\par_deviation_request_flows\Form\ParSelectAuthorityForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    _custom_access: '\Drupal\par_deviation_request_flows\Form\ParSelectAuthorityForm::accessCallback'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+
+par_deviation_request_flows.officer_details:
+  path: '/deviation-request/{par_data_partnership}/enforcing-officer'
+  defaults:
+    _form: '\Drupal\par_deviation_request_flows\Form\ParContactForm'
+    _title_callback: '\Drupal\par_deviation_request_flows\Form\ParContactForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    _custom_access: '\Drupal\par_deviation_request_flows\Form\ParContactForm::accessCallback'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+
+par_deviation_request_flows.request_deviation:
+  path: '/deviation-request/{par_data_partnership}/request'
+  defaults:
+    _form: '\Drupal\par_deviation_request_flows\Form\ParDeviationRequestForm'
+    _title_callback: '\Drupal\par_deviation_request_flows\Form\ParDeviationRequestForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    _custom_access: '\Drupal\par_deviation_request_flows\Form\ParDeviationRequestForm::accessCallback'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+
+par_deviation_request_flows.review_deviation:
+  path: '/partnership/{par_data_partnership}/review'
+  defaults:
+    _form: '\Drupal\par_deviation_request_flows\Form\ParDeviationReviewForm'
+    _title_callback: '\Drupal\par_deviation_request_flows\Form\ParDeviationReviewForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    _custom_access: '\Drupal\par_deviation_request_flows\Form\ParDeviationReviewForm::accessCallback'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+
+par_deviation_request_flows.deviation_confirmed:
+  path: '/partnership/{par_data_partnership}/confirm'
+  defaults:
+    _controller: '\Drupal\par_deviation_request_flows\Controller\ParDeviationConfirmationForm:build'
+    _title_callback: '\Drupal\par_deviation_request_flows\Controller\ParDeviationConfirmationForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    _custom_access: '\Drupal\par_deviation_request_flows\Controller\ParDeviationConfirmationForm::accessCallback'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
