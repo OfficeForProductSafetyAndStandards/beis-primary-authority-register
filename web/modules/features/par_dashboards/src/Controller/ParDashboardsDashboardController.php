@@ -175,24 +175,19 @@ class ParDashboardsDashboardController extends ControllerBase {
         $link = $this->getLinkByRoute('view.par_user_enforcements.enforcement_notices_page')
           ->setText('See enforcement notices')
           ->toString();
-
         $build['messages'][] = [
           '#type' => 'markup',
           '#markup' => "<p>{$link}</p>",
         ];
-      }
 
-      // @TODO Add when enquiry journeys are completed.
-//      if ($this->getCurrentUser()->hasPermission('view authority enquiries')) {
-//        $enquiry_link = $this->getLinkByRoute('xxx')
-//          ->setText('See enquiries')
-//          ->toString();
-//
-//        $build['messages'][] = [
-//          '#type' => 'markup',
-//          '#markup' => "<p>{$enquiry_link}</p>",
-//        ];
-//      }
+        $deviation_requests_link = $this->getLinkByRoute('view.par_user_deviation_requests.deviation_requests_page')
+          ->setText('See deviation requests')
+          ->toString();
+        $build['messages'][] = [
+          '#type' => 'markup',
+          '#markup' => "<p>{$deviation_requests_link}</p>",
+        ];
+      }
     }
 
     // If there is nothing to display on the dashboard let the user know.

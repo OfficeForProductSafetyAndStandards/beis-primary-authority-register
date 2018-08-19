@@ -9,6 +9,7 @@ dependencies:
     - par_data.par_data_information_referral_type.information_referral
   module:
     - datetime
+    - file
     - par_data
     - text
 id: par_data_information_referral.information_referral.full
@@ -16,6 +17,14 @@ targetEntityType: par_data_information_referral
 bundle: information_referral
 mode: full
 content:
+  document:
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
   field_enforcing_authority:
     weight: 4
     label: hidden

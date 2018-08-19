@@ -10,13 +10,24 @@ dependencies:
     - par_data.par_data_information_referral_type.information_referral
   module:
     - datetime
+    - file
     - par_data
     - text
+_core:
+  default_config_hash: KnF4ifmwv-9RLbL2mx2D35EjJlXDdZ05HLwZ-LH8c50
 id: par_data_information_referral.information_referral.summary
 targetEntityType: par_data_information_referral
 bundle: information_referral
 mode: summary
 content:
+  document:
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
   field_person:
     weight: 3
     label: hidden

@@ -91,27 +91,23 @@ class ParFeedbackReviewForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-//    $par_data_coordinated_business = $this->getFlowDataHandler()->getParameter('par_data_coordinated_business');
-//
-//    // We only want to cease members that are currently active.
-//    if (!$par_data_coordinated_business->isRevoked()) {
-//      $cid = $this->getFlowNegotiator()->getFormKey('cease_date');
-//      $ceased = $par_data_coordinated_business->cease($this->getFlowDataHandler()->getTempDataValue('date_membership_ceased', $cid));
-//
-//      if ($ceased) {
-//        $this->getFlowDataHandler()->deleteStore();
-//      }
-//      else {
-//        $message = $this->t('Cease date could not be saved for %form_id');
-//        $replacements = [
-//          '%form_id' => $this->getFormId(),
-//        ];
-//        $this->getLogger($this->getLoggerChannel())
-//          ->error($message, $replacements);
-//      }
-//
-//    }
+    // Set the data values on the entities
+    $entities = $this->createEntities();
+    extract($entities);
+    /** @var ParDataPartnership $par_data_partnership */
+    /** @var ParDataInspectionFeedback $par_data_inspection_feedback */
+    /** @var FileInterface[] $document */
+
+    if ($par_data_inspection_feedback->save()) {
+      $this->getFlowDataHandler()->deleteStore();
+    }
+    else {
+      $message = $this->t('Inspection plan feedback could not be saved: %partnership');
+      $replacements = [
+        '%partnership' => $par_data_partnership->label(),
+      ];
+      $this->getLogger($this->getLoggerChannel())
+        ->error($message, $replacements);
+    }
   }
-
-
 }

@@ -1,0 +1,39 @@
+langcode: en
+status: true
+dependencies: {  }
+id: review_deviation
+label: 'Review Deviation'
+default_title: null
+default_section_title: 'Deviation response'
+description: 'The approval flow for a deviation request.'
+save_method: end
+states:
+  - par_data_deviation_request
+steps:
+  1:
+    route: par_deviation_review_flows.respond
+    form_id: par_deviation_request_respond
+    components:
+      enforcement_full_summary: {}
+      deviation_request_review: {}
+    redirect:
+      cancel: 5
+  2:
+    route: par_deviation_review_flows.review
+    form_id: par_deviation_request_response_review
+    components:
+      enforcement_full_summary: {}
+      deviation_request_detail: {}
+    redirect:
+      cancel: 4
+      save: 3
+      action_decision: 1
+    form_data:
+      response: par_enforcement_notice_approve
+      referrals: par_enforcement_referred_authority
+  3:
+    route: par_deviation_review_flows.completed
+    redirect:
+      done: 4
+  4:
+    route: view.par_user_deviation_requests.deviation_requests_page

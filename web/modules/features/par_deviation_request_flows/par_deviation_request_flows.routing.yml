@@ -52,7 +52,7 @@ par_deviation_request_flows.request_deviation:
         type: entity:par_data_partnership
 
 par_deviation_request_flows.review_deviation:
-  path: '/deviation-request/{par_data_partnership}/review'
+  path: '/deviation-request/{par_data_partnership}/request/review'
   defaults:
     _form: '\Drupal\par_deviation_request_flows\Form\ParDeviationReviewForm'
     _title_callback: '\Drupal\par_deviation_request_flows\Form\ParDeviationReviewForm::titleCallback'
@@ -65,7 +65,7 @@ par_deviation_request_flows.review_deviation:
         type: entity:par_data_partnership
 
 par_deviation_request_flows.deviation_confirmed:
-  path: '/deviation-request/{par_data_partnership}/confirm'
+  path: '/deviation-request/{par_data_partnership}/request/confirmed'
   defaults:
     _controller: '\Drupal\par_deviation_request_flows\Controller\ParDeviationConfirmationForm:build'
     _title_callback: '\Drupal\par_deviation_request_flows\Controller\ParDeviationConfirmationForm::titleCallback'

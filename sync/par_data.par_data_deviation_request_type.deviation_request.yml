@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: prpK9E84KNOOkJfiTxjWb2kDTU-8QrX306qljEF-w3k
+  default_config_hash: Gkg3u16BifzxyPPI-xoxjpReM3XUbG-9CMeR5P2odA4
 id: deviation_request
 label: 'Deviation Request'
 description: ''
@@ -18,11 +18,9 @@ configuration:
     status_field: primary_authority_status
     status_transitions:
       approved:
-        - awaiting_approval
+        - awaiting
       blocked:
-        - awaiting_approval
-      referred:
-        - awaiting_approval
+        - awaiting
   primary_authority_status:
     allowed_values:
       awaiting: 'Awaiting Review'

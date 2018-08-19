@@ -291,8 +291,6 @@ class ParDataEnforcementNotice extends ParDataEntity {
     }
   }
 
-
-
   /**
    * {@inheritdoc}
    */

@@ -9,12 +9,23 @@ dependencies:
     - field.field.par_data_information_referral.information_referral.field_primary_authority
     - par_data.par_data_information_referral_type.information_referral
   module:
+    - file
     - text
+_core:
+  default_config_hash: 3X5WCqDSSMVzX5biRYeQrfDntmbW-2sEUuSZ37UJAbk
 id: par_data_information_referral.information_referral.title
 targetEntityType: par_data_information_referral
 bundle: information_referral
 mode: title
 content:
+  document:
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
   notes:
     type: text_trimmed
     weight: 0

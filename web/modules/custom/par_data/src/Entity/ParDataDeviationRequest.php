@@ -4,6 +4,7 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\par_data\ParDataException;
 
 /**
  * Defines the par_data_deviation_request entity.
@@ -35,10 +36,10 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     },
  *     "access" = "Drupal\par_data\Access\ParDataAccessControlHandler",
  *   },
- *   base_table = "par_inspection_plan_deviation_requests",
- *   data_table = "par_inspection_plan_deviation_requests_field_data",
- *   revision_table = "par_inspection_plan_deviation_requests_revision",
- *   revision_data_table = "par_inspection_plan_deviation_requests_field_revision",
+ *   base_table = "par_deviation_requests",
+ *   data_table = "par_deviation_requests_field_data",
+ *   revision_table = "par_deviation_requests_revision",
+ *   revision_data_table = "par_deviation_requests_field_revision",
  *   admin_permission = "administer par_data_deviation_request entities",
  *   translatable = TRUE,
  *   entity_keys = {
@@ -63,6 +64,215 @@ use Drupal\Core\Field\BaseFieldDefinition;
  * )
  */
 class ParDataDeviationRequest extends ParDataEntity {
+
+  const APPROVED = 'approved';
+  const BLOCKED = 'blocked';
+
+  /**
+   * Check if this entity is approved.
+   *
+   * @return bool
+   */
+  public function isApproved() {
+    $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+    $current_status = $status_field ? $this->get($status_field)->getString() : NULL;
+    if ($current_status === self::APPROVED) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  /**
+   * Check if this entity is revoked.
+   *
+   * @return bool
+   */
+  public function isBlocked() {
+    $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+    $current_status = $status_field ? $this->get($status_field)->getString() : NULL;
+    if ($current_status === self::BLOCKED) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  /**
+   * Check if this entity is awaiting approval.
+   *
+   * @return bool
+   */
+  public function isAwaitingApproval() {
+    $status_field = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+    $current_status = $status_field ? $this->get($status_field)->getString() : NULL;
+    return ($this->getTypeEntity()->getDefaultStatus() === $current_status);
+  }
+
+  /**
+   * Approve an enforcement action.
+   */
+  public function approve($authority_notes, $save = TRUE) {
+    if ($this->isNew()) {
+      $save = FALSE;
+    }
+
+    if (!$this->isApproved()) {
+      try {
+        $this->setParStatus(self::APPROVED);
+        $this->set('primary_authority_notes', $authority_notes);
+      }
+      catch (ParDataException $e) {
+        // If the status could not be updated we want to log this but continue.
+        $message = $this->t("This status could not be updated to '%status' for %label");
+        $replacements = [
+          '%label' => $this->label(),
+          '%status' => self::APPROVED,
+        ];
+        $this->getLogger($this->getLoggerChannel())
+          ->error($message, $replacements);
+
+        return FALSE;
+      }
+
+      return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * Revoke if this entity is revokable and is not new
+   *
+   * @param string $authority_notes
+   *  primary authority notes submitted when the status is updated to blocked in the form.
+   *
+   * @return boolean
+   *   True if the entity was revoked, false for all other results.
+   */
+  public function block($authority_notes, $save = TRUE) {
+    if ($this->isNew()) {
+      $save = FALSE;
+    }
+
+    if (!$this->isBlocked()) {
+      try {
+        $this->setParStatus(self::BLOCKED);
+        $this->set('primary_authority_notes', $authority_notes);
+      }
+      catch (ParDataException $e) {
+        // If the status could not be updated we want to log this but continue.
+        $message = $this->t("This status could not be updated to '%status' for %label");
+        $replacements = [
+          '%label' => $this->label(),
+          '%status' => self::BLOCKED,
+        ];
+        $this->getLogger($this->getLoggerChannel())
+          ->error($message, $replacements);
+
+        return FALSE;
+      }
+
+      return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function inProgress() {
+    // Freeze Enforcement Actions that are awaiting approval.
+    if ($this->getTypeEntity()->getDefaultStatus() === $this->getRawStatus()) {
+      return TRUE;
+    }
+
+    return parent::inProgress();
+  }
+
+  /**
+   * Get the primary authority notes data from the current action.
+   *
+   * @return String primary_authority_notes | NULL
+   *   The referred text stored on the current action or null.
+   *
+   */
+  public function getPrimaryAuthorityNotes() {
+    return $this->get('primary_authority_notes')->getString();
+  }
+
+  /**
+   * Get the primary authority for this Deviation Request.
+   *
+   * @param boolean $single
+   *
+   * @return ParDataEntityInterface|bool
+   *   Return false if not referred.
+   *
+   */
+  public function getPrimaryAuthority($single = FALSE) {
+    if ($partnership = $this->getPartnership(TRUE)){
+      return $partnership ? $partnership->getAuthority($single) : NULL;
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Get the primary authority contact for this notice.
+   *
+   * If there is a partnership this will be the primary contact for the partnership.
+   * Otherwise it will be the primary contact for the authority as a whole.
+   *
+   * @return ParDataEntityInterface|bool
+   *   Return false if none found.
+   *
+   */
+  public function getPrimaryAuthorityContact() {
+    if ($partnership = $this->getPartnership(TRUE)) {
+      $pa_contact = $partnership->getAuthorityPeople(TRUE);
+    }
+    elseif ($authority = $this->getPrimaryAuthority(TRUE)) {
+      $pa_contact = $authority->getPerson(TRUE);
+    }
+
+    return isset($pa_contact) ? $pa_contact : NULL;
+  }
+
+  /**
+   * Get the Partnership for this Deviation Request.
+   *
+   * @param boolean $single
+   *
+   * @return ParDataEntityInterface|bool
+   *   Return false if none found.
+   *
+   */
+  public function getPartnership($single = FALSE) {
+    $partnerships = $this->get('field_partnership')->referencedEntities();
+    $partnership = !empty($partnerships) ? current($partnerships) : NULL;
+
+    return $single ? $partnership : $partnerships;
+  }
+
+  /**
+   * Get the enforcing authority for this Deviation Request.
+   */
+  public function getEnforcingAuthority($single = FALSE) {
+    $authorities = $this->get('field_enforcing_authority')->referencedEntities();
+    $authority = !empty($authorities) ? current($authorities) : NULL;
+
+    return $single ? $authority : $authorities;
+  }
+
+  /**
+   * Get the enforcing officer person for the current Deviation Request.
+   */
+  public function getEnforcingPerson($single = FALSE) {
+    $people = $this->get('field_person')->referencedEntities();
+    $person = !empty($people) ? current($people): NULL;
+
+    return $single ? $person : $people;
+  }
 
   /**
    * {@inheritdoc}

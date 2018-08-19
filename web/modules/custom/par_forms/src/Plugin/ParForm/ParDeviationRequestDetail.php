@@ -36,6 +36,11 @@ class ParDeviationRequestDetail extends ParFormPluginBase {
       if ($par_data_deviation_request->hasField('document')) {
         $this->getFlowDataHandler()->setFormPermValue("document", $par_data_deviation_request->document->view('full'));
       }
+      $this->setDefaultValuesByKey("deviation_status", $cardinality, $par_data_deviation_request->getParStatus());
+
+      if ($notes = $par_data_deviation_request->getPrimaryAuthorityNotes()) {
+        $this->setDefaultValuesByKey("deviation_status_notes", $cardinality, ' (' . $par_data_deviation_request->getPrimaryAuthorityNotes() . ')');
+      }
     }
 
     parent::loadData($cardinality);
@@ -57,6 +62,11 @@ class ParDeviationRequestDetail extends ParFormPluginBase {
         '#tag' => 'h2',
         '#value' => $this->t('Summary of deviation request'),
         '#attributes' => ['class' => 'heading-large'],
+      ],
+      'status' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->getDefaultValuesByKey('deviation_status', $cardinality) . $this->getDefaultValuesByKey('deviation_status_notes', $cardinality, ''),
       ],
       'date' => $this->getDefaultValuesByKey('request_date', $cardinality, NULL),
       'notes' => $this->getDefaultValuesByKey('notes', $cardinality, NULL),

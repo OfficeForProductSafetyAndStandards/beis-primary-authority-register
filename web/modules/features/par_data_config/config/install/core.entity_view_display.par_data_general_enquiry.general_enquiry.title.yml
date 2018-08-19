@@ -8,12 +8,21 @@ dependencies:
     - field.field.par_data_general_enquiry.general_enquiry.field_primary_authority
     - par_data.par_data_general_enquiry_type.general_enquiry
   module:
+    - file
     - text
 id: par_data_general_enquiry.general_enquiry.title
 targetEntityType: par_data_general_enquiry
 bundle: general_enquiry
 mode: title
 content:
+  document:
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
   notes:
     type: text_trimmed
     weight: 0

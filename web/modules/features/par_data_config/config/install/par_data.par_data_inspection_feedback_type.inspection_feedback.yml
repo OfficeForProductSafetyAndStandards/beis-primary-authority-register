@@ -15,11 +15,9 @@ configuration:
     status_field: primary_authority_status
     status_transitions:
       approved:
-        - awaiting_approval
+        - awaiting
       blocked:
-        - awaiting_approval
-      referred:
-        - awaiting_approval
+        - awaiting
   primary_authority_status:
     allowed_values:
       awaiting: 'Awaiting Review'
