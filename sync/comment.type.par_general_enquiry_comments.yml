@@ -1,0 +1,8 @@
+uuid: 0622df8b-c7a6-4bba-8230-76db584f7e12
+langcode: en
+status: true
+dependencies: {  }
+id: par_general_enquiry_comments
+label: 'PAR General Enquiry Comments'
+target_entity_type_id: par_data_general_enquiry
+description: ''

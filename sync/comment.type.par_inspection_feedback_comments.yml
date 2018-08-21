@@ -1,0 +1,8 @@
+uuid: 102d0b80-ecb1-438b-b56d-382e9a28387e
+langcode: en
+status: true
+dependencies: {  }
+id: par_inspection_feedback_comments
+label: 'PAR Inspection Feedback Comments'
+target_entity_type_id: par_data_inspection_feedback
+description: ''

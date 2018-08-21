@@ -1,0 +1,21 @@
+uuid: 684bfcb0-83f4-4e50-ba5f-ea5e9416f64f
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.par_general_enquiry_comments
+    - field.storage.comment.comment_body
+  module:
+    - text
+id: comment.par_general_enquiry_comments.comment_body
+field_name: comment_body
+entity_type: comment
+bundle: par_general_enquiry_comments
+label: Comment
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

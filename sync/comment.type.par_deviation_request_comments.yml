@@ -1,0 +1,8 @@
+uuid: f36f2dfa-9492-4c4b-bc9e-799c16e0f227
+langcode: en
+status: true
+dependencies: {  }
+id: par_deviation_request_comments
+label: 'PAR Deviation Request Comments'
+target_entity_type_id: par_data_deviation_request
+description: ''

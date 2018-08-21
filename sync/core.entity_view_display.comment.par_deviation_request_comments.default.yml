@@ -1,0 +1,36 @@
+uuid: 208c5544-f60b-4128-8a63-13b272b87e00
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.par_deviation_request_comments
+    - field.field.comment.par_deviation_request_comments.comment_body
+    - field.field.comment.par_deviation_request_comments.field_supporting_document
+  module:
+    - file
+    - text
+id: comment.par_deviation_request_comments.default
+targetEntityType: comment
+bundle: par_deviation_request_comments
+mode: default
+content:
+  comment_body:
+    label: hidden
+    type: text_default
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_supporting_document:
+    weight: 101
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
+    region: content
+  links:
+    weight: 100
+    region: content
+hidden:
+  langcode: true
