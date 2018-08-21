@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: x4QfP7M2WCrwUD4HjZHGwTZLMEiOIbEttpinAqtvOPI
+  default_config_hash: JClv5HL7YcjzhiOVWaEoLtt0g0GB1zhlgSRdxmaKYRw
 id: inspection_feedback
 label: 'Inspection Feedback'
 description: ''
@@ -17,12 +17,9 @@ configuration:
       - field_partnership
     status_field: primary_authority_status
     status_transitions:
-      approved:
-        - awaiting
-      blocked:
-        - awaiting
+      received:
+        - sent
   primary_authority_status:
     allowed_values:
-      awaiting: 'Awaiting Review'
-      approved: Approved
-      blocked: Blocked
+      sent: Submitted
+      received: Recieved

@@ -8,4 +8,15 @@ help: ''
 isDeletable: null
 isRevokable: null
 isArchivable: null
-configuration: null
+configuration:
+  entity:
+    label_fields:
+      - field_partnership
+    status_field: primary_authority_status
+    status_transitions:
+      received:
+        - sent
+  primary_authority_status:
+    allowed_values:
+      sent: 'Submitted'
+      received: Recieved
