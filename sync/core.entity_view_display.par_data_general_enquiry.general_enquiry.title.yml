@@ -12,7 +12,7 @@ dependencies:
     - file
     - text
 _core:
-  default_config_hash: G8VIws0HE6KT5FLHnqlUB3L5AFyq8MBcbAeSOOOOdZs
+  default_config_hash: UK0stNZkF1_8_T8ADpGdRuq-mXu21AzKFVzIHm_chQA
 id: par_data_general_enquiry.general_enquiry.title
 targetEntityType: par_data_general_enquiry
 bundle: general_enquiry
@@ -38,6 +38,7 @@ hidden:
   field_enforcing_authority: true
   field_person: true
   field_primary_authority: true
+  messages: true
   name: true
   primary_authority_notes: true
   primary_authority_status: true

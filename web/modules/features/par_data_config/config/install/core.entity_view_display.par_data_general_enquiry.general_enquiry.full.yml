@@ -84,5 +84,6 @@ content:
     third_party_settings: {  }
     type: datetime_default
 hidden:
+  messages: true
   name: true
   user_id: true

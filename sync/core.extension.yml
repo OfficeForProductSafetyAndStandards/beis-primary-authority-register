@@ -63,13 +63,17 @@ module:
   par_data_config: 0
   par_deviation_request_flows: 0
   par_deviation_review_flows: 0
+  par_deviation_view_flows: 0
   par_enforcement_raise_flows: 0
   par_enforcement_review_flows: 0
   par_enforcement_send_flows: 0
+  par_enquiry_send_flows: 0
+  par_enquiry_view_flows: 0
   par_flows: 0
   par_forms: 0
   par_header: 0
   par_inspection_feedback_flows: 0
+  par_inspection_feedback_view_flows: 0
   par_invite: 0
   par_login: 0
   par_member_add_flows: 0

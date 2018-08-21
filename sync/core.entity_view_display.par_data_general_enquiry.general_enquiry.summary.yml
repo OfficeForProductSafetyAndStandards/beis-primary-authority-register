@@ -14,7 +14,7 @@ dependencies:
     - par_data
     - text
 _core:
-  default_config_hash: z3-Vn50KblJ3ZQZhOo5TAqAB7z8d4nuuDnjxxUjmvNk
+  default_config_hash: r1MuSUa2G7sW8kTM-8FgEYxZ1jP7yGB1ZHdhHuiT3Ig
 id: par_data_general_enquiry.general_enquiry.summary
 targetEntityType: par_data_general_enquiry
 bundle: general_enquiry
@@ -64,6 +64,7 @@ content:
 hidden:
   field_enforcing_authority: true
   field_primary_authority: true
+  messages: true
   name: true
   primary_authority_notes: true
   user_id: true

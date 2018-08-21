@@ -14,7 +14,7 @@ dependencies:
     - par_data
     - text
 _core:
-  default_config_hash: knJLfhyJzyltyJSlQSQxIvAR6ZLzTp-Fg_FWVRqhcJI
+  default_config_hash: bd6gBDH6Ge7fQIEZlfijgM63fHgS0QmMSklMGmmMoz8
 id: par_data_general_enquiry.general_enquiry.full
 targetEntityType: par_data_general_enquiry
 bundle: general_enquiry
@@ -87,5 +87,6 @@ content:
     third_party_settings: {  }
     type: datetime_default
 hidden:
+  messages: true
   name: true
   user_id: true

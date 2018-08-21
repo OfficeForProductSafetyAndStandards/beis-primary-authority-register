@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: PjuQTq9O2r-QUcmPxTdHw_1ONts5hqtA6wnmo4wMnYg
+  default_config_hash: 6BaCO-L_vghWNj1udtGynDEoo6dGlhj6B0q2OKfTJQ0
 id: review_deviation
 label: 'Review Deviation'
 default_title: null
@@ -19,6 +19,8 @@ steps:
     components:
       enforcement_full_summary: {  }
       deviation_request_review: {  }
+      message_detail:
+        cardinality: -1
     redirect:
       cancel: 5
   2:
@@ -30,10 +32,7 @@ steps:
     redirect:
       cancel: 4
       save: 3
-      action_decision: 1
-    form_data:
-      response: par_enforcement_notice_approve
-      referrals: par_enforcement_referred_authority
+      response: 1
   3:
     route: par_deviation_review_flows.completed
     redirect:
