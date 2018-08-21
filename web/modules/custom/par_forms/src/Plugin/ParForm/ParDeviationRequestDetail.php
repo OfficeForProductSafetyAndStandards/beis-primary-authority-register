@@ -28,13 +28,13 @@ class ParDeviationRequestDetail extends ParFormPluginBase {
     // If an enforcement notice parameter is set use this.
     if ($par_data_deviation_request) {
       if ($par_data_deviation_request->hasField('request_date')) {
-        $this->getFlowDataHandler()->setFormPermValue("request_date", $par_data_deviation_request->request_date->view('full'));
+        $this->setDefaultValuesByKey("request_date", $cardinality, $par_data_deviation_request->request_date->view('full'));
       }
       if ($par_data_deviation_request->hasField('notes')) {
-        $this->getFlowDataHandler()->setFormPermValue("notes", $par_data_deviation_request->notes->view('full'));
+        $this->setDefaultValuesByKey("notes", $cardinality, $par_data_deviation_request->notes->view('full'));
       }
       if ($par_data_deviation_request->hasField('document')) {
-        $this->getFlowDataHandler()->setFormPermValue("document", $par_data_deviation_request->document->view('full'));
+        $this->setDefaultValuesByKey("document", $cardinality, $par_data_deviation_request->document->view('full'));
       }
       $this->setDefaultValuesByKey("deviation_status", $cardinality, $par_data_deviation_request->getParStatus());
 
@@ -73,7 +73,7 @@ class ParDeviationRequestDetail extends ParFormPluginBase {
       'document' => $this->getDefaultValuesByKey('document', $cardinality, NULL),
     ];
 
-    // Add operation link for updating notice details.
+    // Add operation link for updating request details.
     try {
       $form['deviation_request']['change_notes'] = [
         '#type' => 'markup',
@@ -89,7 +89,6 @@ class ParDeviationRequestDetail extends ParFormPluginBase {
     catch (ParFlowException $e) {
 
     }
-
 
     return $form;
   }

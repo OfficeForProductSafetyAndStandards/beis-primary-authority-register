@@ -16,6 +16,8 @@ steps:
     components:
       enforcement_full_summary: {}
       deviation_request_review: {}
+      message_detail:
+        cardinality: -1
     redirect:
       cancel: 5
   2:
@@ -27,10 +29,7 @@ steps:
     redirect:
       cancel: 4
       save: 3
-      action_decision: 1
-    form_data:
-      response: par_enforcement_notice_approve
-      referrals: par_enforcement_referred_authority
+      response: 1
   3:
     route: par_deviation_review_flows.completed
     redirect:

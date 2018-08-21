@@ -9,17 +9,17 @@ use Drupal\par_forms\ParFormPluginBase;
  * A form for submission of general enquiries.
  *
  * @ParForm(
- *   id = "inspection_feedback",
- *   title = @Translation("Inspection plan feedback form.")
+ *   id = "general_enquiry",
+ *   title = @Translation("Enquiry form.")
  * )
  */
-class ParInspectionFeedbackForm extends ParFormPluginBase {
+class ParEnquiryForm extends ParFormPluginBase {
 
   /**
    * {@inheritdoc}
    */
   protected $entityMapping = [
-    ['notes', 'par_data_inspection_feedback', 'notes', NULL, NULL, 0, [
+    ['notes', 'par_data_general_enquiry', 'notes', NULL, NULL, 0, [
       'You must fill in the missing information.' => 'You must enter the details of this enquiry.'
     ]],
   ];
@@ -28,8 +28,8 @@ class ParInspectionFeedbackForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function loadData($cardinality = 1) {
-    if ($par_data_inspection_feedback = $this->getFlowDataHandler()->getParameter('par_data_inspection_feedback')) {
-      $this->getFlowDataHandler()->setFormPermValue('notes', $par_data_inspection_feedback->get('notes')->getString());
+    if ($par_data_general_enquiry = $this->getFlowDataHandler()->getParameter('par_data_general_enquiry')) {
+      $this->getFlowDataHandler()->setFormPermValue('notes', $par_data_general_enquiry->get('notes')->getString());
     }
 
     parent::loadData();
@@ -40,15 +40,15 @@ class ParInspectionFeedbackForm extends ParFormPluginBase {
    */
   public function getElements($form = [], $cardinality = 1) {
 
-    $par_data_inspection_feedback_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('par_data_inspection_feedback', 'document');
-    $field_definition = $par_data_inspection_feedback_fields['document'];
+    $par_data_general_enquiry_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('par_data_general_enquiry', 'document');
+    $field_definition = $par_data_general_enquiry_fields['document'];
     $file_extensions = $field_definition->getSetting('file_extensions');
 
     $form['notes'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Provide feedback'),
       '#default_value' => $this->getDefaultValuesByKey('notes', $cardinality),
-      '#description' => '<p>Use this section to give feedback on this inspection plan, this will be submitted to the primary authority.</p>',
+      '#description' => '<p>Use this section to enter your enquiry, this will be submitted to the primary authority.</p>',
     ];
 
     // Multiple file field.
@@ -56,7 +56,7 @@ class ParInspectionFeedbackForm extends ParFormPluginBase {
       '#type' => 'managed_file',
       '#title' => t('Upload supporting documents (optional)'),
       '#description' => t('Use Ctrl or cmd to select multiple files'),
-      '#upload_location' => 's3private://documents/inspection_feedback/',
+      '#upload_location' => 's3private://documents/general_enquiry/',
       '#multiple' => TRUE,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("files"),
       '#upload_validators' => [

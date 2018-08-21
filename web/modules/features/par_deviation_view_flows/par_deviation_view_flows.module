@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Contains par_enquiry_view_flows.module.
+ */
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function par_deviation_view_flows_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the par_deviation_view_flows module.
+    case 'help.page.par_deviation_view_flows':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Allows primary authority officers to view requests to deviate from an inspection plan.') . '</p>';
+      return $output;
+
+    default:
+  }
+}

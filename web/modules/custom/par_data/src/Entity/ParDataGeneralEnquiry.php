@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\comment\Entity\Comment;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
@@ -63,6 +64,95 @@ use Drupal\Core\Field\BaseFieldDefinition;
  * )
  */
 class ParDataGeneralEnquiry extends ParDataEntity {
+
+  /**
+   * Get the primary authority for this Deviation Request.
+   *
+   * @param boolean $single
+   *
+   * @return ParDataEntityInterface|bool
+   *   Return false if not referred.
+   *
+   */
+  public function getPrimaryAuthority($single = FALSE) {
+    if ($partnership = $this->getPartnership(TRUE)){
+      return $partnership ? $partnership->getAuthority($single) : NULL;
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Get the primary authority contact for this notice.
+   *
+   * If there is a partnership this will be the primary contact for the partnership.
+   * Otherwise it will be the primary contact for the authority as a whole.
+   *
+   * @return ParDataEntityInterface|bool
+   *   Return false if none found.
+   *
+   */
+  public function getPrimaryAuthorityContact() {
+    if ($partnership = $this->getPartnership(TRUE)) {
+      $pa_contact = $partnership->getAuthorityPeople(TRUE);
+    }
+    elseif ($authority = $this->getPrimaryAuthority(TRUE)) {
+      $pa_contact = $authority->getPerson(TRUE);
+    }
+
+    return isset($pa_contact) ? $pa_contact : NULL;
+  }
+
+  /**
+   * Get the enforcing authority for this Deviation Request.
+   */
+  public function getEnforcingAuthority($single = FALSE) {
+    $authorities = $this->get('field_enforcing_authority')->referencedEntities();
+    $authority = !empty($authorities) ? current($authorities) : NULL;
+
+    return $single ? $authority : $authorities;
+  }
+
+  /**
+   * Get the Partnership for this Deviation Request.
+   *
+   * @param boolean $single
+   *
+   * @return ParDataEntityInterface|bool
+   *   Return false if none found.
+   *
+   */
+  public function getPartnership($single = FALSE) {
+    $partnerships = $this->get('field_partnership')->referencedEntities();
+    $partnership = !empty($partnerships) ? current($partnerships) : NULL;
+
+    return $single ? $partnership : $partnerships;
+  }
+
+  /**
+   * Get the enforcing officer person for the current Deviation Request.
+   */
+  public function getEnforcingPerson($single = FALSE) {
+    $people = $this->get('field_person')->referencedEntities();
+    $person = !empty($people) ? current($people): NULL;
+
+    return $single ? $person : $people;
+  }
+
+  /**
+   * Get the message comments.
+   */
+  public function getReplies($single = FALSE) {
+    $cids = \Drupal::entityQuery('comment')
+      ->condition('entity_id', $this->id())
+      ->condition('entity_type', $this->getEntityTypeId())
+      ->sort('cid', 'DESC')
+      ->execute();
+    $messages = array_values(Comment::loadMultiple($cids));
+    $message = !empty($messages) ? current($messages): NULL;
+
+    return $single ? $message : $messages;
+  }
 
   /**
    * {@inheritdoc}
@@ -138,7 +228,7 @@ class ParDataGeneralEnquiry extends ParDataEntity {
         'uri_scheme' => 's3private',
         'max_filesize' => '20 MB',
         'file_extensions' => 'jpg jpeg gif png tif pdf txt rdf doc docx odt xls xlsx csv ods ppt pptx odp pot potx pps',
-        'file_directory' => 'documents/advice',
+        'file_directory' => 'documents/general_enquiry',
       ])
       ->setDisplayOptions('form', [
         'weight' => 4,
@@ -195,6 +285,47 @@ class ParDataGeneralEnquiry extends ParDataEntity {
         'type' => 'text_default',
         'weight' => 0,
       ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['messages'] = BaseFieldDefinition::create('comment')
+      ->setLabel(t('Messages'))
+      ->setDescription(t('Replies to this general enquiry.'))
+      ->setSettings(
+        [
+          'default_mode' => 1,
+          'per_page' => 50,
+          'anonymous' => 0,
+          'form_location' => 1,
+          'preview' => 1,
+          'comment_type' => 'par_general_enquiry_comments',
+          'locked' => false,
+
+        ])
+      ->setDefaultValue(
+        [
+          'status' => 2,
+          'cid' => 0,
+          'last_comment_timestamp' => 0,
+          'last_comment_name' => null,
+          'last_comment_uid' => 0,
+          'comment_count' => 0,
+        ]
+      )
+      ->setDisplayOptions('form', [
+        'type' => 'comment_default',
+        'settings' => [
+          'form_location' => 1,
+          'default_mode' => 1,
+          'per_page' => 50,
+          'anonymous' => 0,
+          'preview' => 1,
+          'comment_type' => 'par_general_enquiry_comments',
+          'locked' => false,
+
+        ],
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
       ->setDisplayConfigurable('view', TRUE);
 
     return $fields;

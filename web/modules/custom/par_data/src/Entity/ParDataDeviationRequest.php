@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\comment\Entity\Comment;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\par_data\ParDataException;
@@ -239,6 +240,16 @@ class ParDataDeviationRequest extends ParDataEntity {
   }
 
   /**
+   * Get the enforcing authority for this Deviation Request.
+   */
+  public function getEnforcingAuthority($single = FALSE) {
+    $authorities = $this->get('field_enforcing_authority')->referencedEntities();
+    $authority = !empty($authorities) ? current($authorities) : NULL;
+
+    return $single ? $authority : $authorities;
+  }
+
+  /**
    * Get the Partnership for this Deviation Request.
    *
    * @param boolean $single
@@ -255,16 +266,6 @@ class ParDataDeviationRequest extends ParDataEntity {
   }
 
   /**
-   * Get the enforcing authority for this Deviation Request.
-   */
-  public function getEnforcingAuthority($single = FALSE) {
-    $authorities = $this->get('field_enforcing_authority')->referencedEntities();
-    $authority = !empty($authorities) ? current($authorities) : NULL;
-
-    return $single ? $authority : $authorities;
-  }
-
-  /**
    * Get the enforcing officer person for the current Deviation Request.
    */
   public function getEnforcingPerson($single = FALSE) {
@@ -272,6 +273,21 @@ class ParDataDeviationRequest extends ParDataEntity {
     $person = !empty($people) ? current($people): NULL;
 
     return $single ? $person : $people;
+  }
+
+  /**
+   * Get the message comments.
+   */
+  public function getReplies($single = FALSE) {
+    $cids = \Drupal::entityQuery('comment')
+      ->condition('entity_id', $this->id())
+      ->condition('entity_type', $this->getEntityTypeId())
+      ->sort('cid', 'DESC')
+      ->execute();
+    $messages = array_values(Comment::loadMultiple($cids));
+    $message = !empty($messages) ? current($messages): NULL;
+
+    return $single ? $message : $messages;
   }
 
   /**
@@ -349,7 +365,7 @@ class ParDataDeviationRequest extends ParDataEntity {
         'uri_scheme' => 's3private',
         'max_filesize' => '20 MB',
         'file_extensions' => 'jpg jpeg gif png tif pdf txt rdf doc docx odt xls xlsx csv ods ppt pptx odp pot potx pps',
-        'file_directory' => 'documents/advice',
+        'file_directory' => 'documents/deviation_request',
       ])
       ->setDisplayOptions('form', [
         'weight' => 4,
@@ -407,7 +423,47 @@ class ParDataDeviationRequest extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
+    $fields['messages'] = BaseFieldDefinition::create('comment')
+      ->setLabel(t('Messages'))
+      ->setDescription(t('Messages relating to this deviation request.'))
+      ->setSettings(
+        [
+          'default_mode' => 1,
+          'per_page' => 50,
+          'anonymous' => 0,
+          'form_location' => 1,
+          'preview' => 1,
+          'comment_type' => 'par_deviation_request_comments',
+          'locked' => false,
+
+      ])
+      ->setDefaultValue(
+        [
+          'status' => 2,
+          'cid' => 0,
+          'last_comment_timestamp' => 0,
+          'last_comment_name' => null,
+          'last_comment_uid' => 0,
+          'comment_count' => 0,
+        ]
+      )
+      ->setDisplayOptions('form', [
+        'type' => 'comment_default',
+        'settings' => [
+          'form_location' => 1,
+          'default_mode' => 1,
+          'per_page' => 50,
+          'anonymous' => 0,
+          'preview' => 1,
+          'comment_type' => 'par_deviation_request_comments',
+          'locked' => false,
+
+        ],
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayConfigurable('view', TRUE);
+
     return $fields;
   }
-
 }

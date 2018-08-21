@@ -1,0 +1,27 @@
+par_deviation_view_flows.view_deviation:
+  path: '/deviation-request/{par_data_deviation_request}/view'
+  defaults:
+    _controller: '\Drupal\par_deviation_view_flows\Controller\ParDeviationViewController::build'
+    _title_callback: '\Drupal\par_deviation_view_flows\Controller\ParDeviationViewController::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    _custom_access: '\Drupal\par_deviation_view_flows\Controller\ParDeviationViewController::accessCallback'
+    par_data_deviation_request: \d+
+  options:
+    parameters:
+      par_data_deviation_request:
+        type: entity:par_data_deviation_request
+
+par_deviation_view_flows.reply:
+  path: '/deviation-request/{par_data_deviation_request}/reply'
+  defaults:
+    _form: '\Drupal\par_deviation_view_flows\Form\ParDeviationReplyForm'
+    _title_callback: '\Drupal\par_deviation_view_flows\Form\ParDeviationReplyForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    _custom_access: '\Drupal\par_deviation_view_flows\Form\ParDeviationReplyForm::accessCallback'
+    par_data_deviation_request: \d+
+  options:
+    parameters:
+      par_data_deviation_request:
+        type: entity:par_data_deviation_request

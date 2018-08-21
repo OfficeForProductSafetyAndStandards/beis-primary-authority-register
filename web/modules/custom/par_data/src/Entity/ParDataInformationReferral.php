@@ -138,7 +138,7 @@ class ParDataInformationReferral extends ParDataEntity {
         'uri_scheme' => 's3private',
         'max_filesize' => '20 MB',
         'file_extensions' => 'jpg jpeg gif png tif pdf txt rdf doc docx odt xls xlsx csv ods ppt pptx odp pot potx pps',
-        'file_directory' => 'documents/advice',
+        'file_directory' => 'documents/information_referral',
       ])
       ->setDisplayOptions('form', [
         'weight' => 4,

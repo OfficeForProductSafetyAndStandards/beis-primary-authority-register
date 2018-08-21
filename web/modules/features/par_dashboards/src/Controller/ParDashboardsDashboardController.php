@@ -187,6 +187,22 @@ class ParDashboardsDashboardController extends ControllerBase {
           '#type' => 'markup',
           '#markup' => "<p>{$deviation_requests_link}</p>",
         ];
+
+        $inspection_feedback_link = $this->getLinkByRoute('view.par_user_inspection_feedback.inspection_feedback_page')
+          ->setText('See inspection feedback')
+          ->toString();
+        $build['messages'][] = [
+          '#type' => 'markup',
+          '#markup' => "<p>{$inspection_feedback_link}</p>",
+        ];
+
+        $general_enquiries_link = $this->getLinkByRoute('view.par_user_general_enquiries.general_enquiries_page')
+          ->setText('See general enquiries')
+          ->toString();
+        $build['messages'][] = [
+          '#type' => 'markup',
+          '#markup' => "<p>{$general_enquiries_link}</p>",
+        ];
       }
     }
 
