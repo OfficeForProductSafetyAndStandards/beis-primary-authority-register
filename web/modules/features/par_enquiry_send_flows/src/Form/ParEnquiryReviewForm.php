@@ -55,13 +55,13 @@ class ParEnquiryReviewForm extends ParBaseForm {
     // Get the cache IDs for the various forms that needs needs to be extracted from.
     $enforcement_officer_cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_officer_details');
     $enforcing_authority_cid = $this->getFlowNegotiator()->getFormKey('par_authority_selection');
-    $deviation_request_cid = $this->getFlowNegotiator()->getFormKey('par_deviation_request');
+    $enquiry_cid = $this->getFlowNegotiator()->getFormKey('par_enquiry');
 
     $request_date = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
 
     // Create the enforcement notice.
     $par_data_general_enquiry = ParDataGeneralEnquiry::create([
-      'notes' => $this->getFlowDataHandler()->getTempDataValue('notes', $deviation_request_cid),
+      'notes' => $this->getFlowDataHandler()->getTempDataValue('notes', $enquiry_cid),
       'field_enforcing_authority' => $this->getFlowDataHandler()->getDefaultValues('par_data_authority_id', NULL, $enforcing_authority_cid),
       'field_person' =>  $this->getFlowDataHandler()->getDefaultValues('enforcement_officer_id', NULL, $enforcement_officer_cid),
       'field_partnership' => $par_data_partnership->id(),
@@ -71,7 +71,7 @@ class ParEnquiryReviewForm extends ParBaseForm {
     return [
       'par_data_partnership' => $par_data_partnership,
       'par_data_general_enquiry' => $par_data_general_enquiry,
-      'document' => File::loadMultiple((array) $this->getFlowDataHandler()->getTempDataValue('files', $deviation_request_cid)),
+      'document' => File::loadMultiple((array) $this->getFlowDataHandler()->getTempDataValue('files', $enquiry_cid)),
     ];
   }
 
