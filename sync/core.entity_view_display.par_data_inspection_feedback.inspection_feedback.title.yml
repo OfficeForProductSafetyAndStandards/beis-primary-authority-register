@@ -10,7 +10,7 @@ dependencies:
     - field.field.par_data_inspection_feedback.inspection_feedback.field_person
     - par_data.par_data_inspection_feedback_type.inspection_feedback
   module:
-    - datetime
+    - file_entity
     - text
 _core:
   default_config_hash: sWOv7pvdWwA7Xh8RmocLcyP6V0Gm2NEynokgbnqdP3A
@@ -19,28 +19,31 @@ targetEntityType: par_data_inspection_feedback
 bundle: inspection_feedback
 mode: title
 content:
-  notes:
+  document:
     label: hidden
-    type: text_default
     weight: 1
     region: content
-    settings: {  }
+    settings:
+      access_message: 'You don''t have access to download this file.'
+      text: 'Download [file:name]'
     third_party_settings: {  }
-  request_date:
-    label: hidden
+    type: file_download_link
+  notes:
+    type: text_trimmed
     weight: 0
     region: content
+    label: hidden
     settings:
-      timezone_override: ''
-      format_type: gds_date_format
+      trim_length: 300
     third_party_settings: {  }
-    type: datetime_default
 hidden:
   field_enforcing_authority: true
   field_inspection_plan: true
   field_partnership: true
   field_person: true
+  messages: true
   name: true
   primary_authority_notes: true
   primary_authority_status: true
+  request_date: true
   user_id: true

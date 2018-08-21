@@ -78,10 +78,10 @@ class ParPartnershipPageController extends ParBaseController {
       '#markup' => $inspection_feedback_link ? $inspection_feedback_link : '<p>(none)</p>',
     ];
     // Get the link for the first step of the general enquiry journey.
-//    $general_enquiry_link = $this->getFlowNegotiator()->getFlow('general_enquiry')->getLinkByStep(1)->setText('Send a general enquiry to the primary authority')->toString();
-//    $message_links['general_enquiry_link'] = ['#type' => 'markup',
-//      '#markup' => $general_enquiry_link ? $general_enquiry_link : '<p>(none)</p>',
-//    ];
+    $general_enquiry_link = $this->getFlowNegotiator()->getFlow('enquiry')->getLinkByStep(1)->setText('Send a general enquiry to the primary authority')->toString();
+    $message_links['general_enquiry_link'] = ['#type' => 'markup',
+      '#markup' => $general_enquiry_link ? $general_enquiry_link : '<p>(none)</p>',
+    ];
 
     // Create a list of links for the actions that can be performed on this partnership.
     $build['partnership_actions'] = [

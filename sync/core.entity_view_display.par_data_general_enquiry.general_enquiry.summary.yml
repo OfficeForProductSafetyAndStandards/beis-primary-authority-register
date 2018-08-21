@@ -10,7 +10,7 @@ dependencies:
     - par_data.par_data_general_enquiry_type.general_enquiry
   module:
     - datetime
-    - file
+    - file_entity
     - par_data
     - text
 _core:
@@ -25,9 +25,10 @@ content:
     weight: 0
     region: content
     settings:
-      use_description_as_link_text: true
+      access_message: 'You don''t have access to download this file.'
+      text: 'Download [file:name]'
     third_party_settings: {  }
-    type: file_default
+    type: file_download_link
   field_person:
     weight: 3
     label: hidden
@@ -57,8 +58,8 @@ content:
     weight: 0
     region: content
     settings:
-      format_type: medium
       timezone_override: ''
+      format_type: gds_date_format
     third_party_settings: {  }
     type: datetime_default
 hidden:

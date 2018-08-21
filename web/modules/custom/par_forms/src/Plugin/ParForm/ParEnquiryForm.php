@@ -46,7 +46,7 @@ class ParEnquiryForm extends ParFormPluginBase {
 
     $form['notes'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('Provide feedback'),
+      '#title' => $this->t('Enter enquiry'),
       '#default_value' => $this->getDefaultValuesByKey('notes', $cardinality),
       '#description' => '<p>Use this section to enter your enquiry, this will be submitted to the primary authority.</p>',
     ];

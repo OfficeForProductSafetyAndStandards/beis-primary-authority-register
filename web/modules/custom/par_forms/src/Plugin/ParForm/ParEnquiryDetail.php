@@ -55,7 +55,7 @@ class ParEnquiryDetail extends ParFormPluginBase {
       'title' => [
         '#type' => 'html_tag',
         '#tag' => 'h2',
-        '#value' => $this->t('Summary of feedback'),
+        '#value' => $this->t('Summary of enquiry'),
         '#attributes' => ['class' => 'heading-large'],
       ],
       'date' => $this->getDefaultValuesByKey('request_date', $cardinality, NULL),
