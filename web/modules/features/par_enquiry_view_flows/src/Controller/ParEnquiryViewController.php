@@ -41,14 +41,12 @@ class ParEnquiryViewController extends ParBaseController {
   }
 
   public function build($build = []) {
-    $build = parent::build($build = []);
-
     $par_data_general_enquiry = $this->getFlowDataHandler()->getParameter('par_data_general_enquiry');
     if ($par_data_general_enquiry) {
       $this->addCacheableDependency($par_data_general_enquiry);
     }
 
-    return $build;
+    return parent::build($build);
   }
 
 }

@@ -41,14 +41,12 @@ class ParDeviationViewController extends ParBaseController {
   }
 
   public function build($build = []) {
-    $build = parent::build($build = []);
-
     $par_data_deviation_request = $this->getFlowDataHandler()->getParameter('par_data_deviation_request');
     if ($par_data_deviation_request) {
       $this->addCacheableDependency($par_data_deviation_request);
     }
 
-    return $build;
+    return parent::build($build);
   }
 
 }

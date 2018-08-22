@@ -41,14 +41,12 @@ class ParFeedbackViewController extends ParBaseController {
   }
 
   public function build($build = []) {
-    $build = parent::build($build = []);
-
     $par_data_inspection_feedback = $this->getFlowDataHandler()->getParameter('par_data_inspection_feedback');
     if ($par_data_inspection_feedback) {
       $this->addCacheableDependency($par_data_inspection_feedback);
     }
 
-    return $build;
+    return parent::build($build);
   }
 
 }

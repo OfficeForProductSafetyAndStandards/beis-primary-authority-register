@@ -148,7 +148,7 @@ class ParDataGeneralEnquiry extends ParDataEntity {
       ->condition('entity_type', $this->getEntityTypeId())
       ->sort('cid', 'DESC')
       ->execute();
-    $messages = array_values(Comment::loadMultiple($cids));
+    $messages = !empty($cids) ? array_values(Comment::loadMultiple($cids)) : NULL;
     $message = !empty($messages) ? current($messages): NULL;
 
     return $single ? $message : $messages;
