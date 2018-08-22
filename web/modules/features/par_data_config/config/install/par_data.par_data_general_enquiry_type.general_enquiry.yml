@@ -18,5 +18,5 @@ configuration:
         - sent
   primary_authority_status:
     allowed_values:
-      sent: 'Submitted'
+      sent: Submitted
       received: Recieved

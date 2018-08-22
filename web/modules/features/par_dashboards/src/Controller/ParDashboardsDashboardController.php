@@ -175,16 +175,24 @@ class ParDashboardsDashboardController extends ControllerBase {
           '#markup' => "<p>{$deviation_requests_link}</p>",
         ];
 
+        $new_feedback = count($this->getParDataManager()->hasNotCommentedOnMembershipsByType($account, 'par_data_inspection_feedback'));
+        $link_text = $new_feedback > 0 ?
+          $this->t('See your inspection feedback (@count pending)', ['@count' => $new_feedback]) :
+          $this->t('See your inspection feedback');
         $inspection_feedback_link = $this->getLinkByRoute('view.par_user_inspection_feedback.inspection_feedback_page')
-          ->setText('See your inspection feedback')
+          ->setText($link_text)
           ->toString();
         $build['messages'][] = [
           '#type' => 'markup',
           '#markup' => "<p>{$inspection_feedback_link}</p>",
         ];
 
+        $new_enquiries = count($this->getParDataManager()->hasNotCommentedOnMembershipsByType($account, 'par_data_general_enquiry'));
+        $link_text = $new_enquiries > 0 ?
+          $this->t('See your general enquiries (@count pending)', ['@count' => $new_enquiries]) :
+          $this->t('See your general enquiries');
         $general_enquiries_link = $this->getLinkByRoute('view.par_user_general_enquiries.general_enquiries_page')
-          ->setText('See your general enquiries')
+          ->setText($link_text)
           ->toString();
         $build['messages'][] = [
           '#type' => 'markup',

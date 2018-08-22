@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.par_data_general_enquiry.summary
     - field.field.par_data_general_enquiry.general_enquiry.field_enforcing_authority
+    - field.field.par_data_general_enquiry.general_enquiry.field_partnership
     - field.field.par_data_general_enquiry.general_enquiry.field_person
     - field.field.par_data_general_enquiry.general_enquiry.field_primary_authority
     - par_data.par_data_general_enquiry_type.general_enquiry
@@ -14,7 +15,7 @@ dependencies:
     - par_data
     - text
 _core:
-  default_config_hash: r1MuSUa2G7sW8kTM-8FgEYxZ1jP7yGB1ZHdhHuiT3Ig
+  default_config_hash: 0yhK91KuHubLv8YKXH239odMkgGVIOW1wWSHGGQ127U
 id: par_data_general_enquiry.general_enquiry.summary
 targetEntityType: par_data_general_enquiry
 bundle: general_enquiry
@@ -64,6 +65,7 @@ content:
     type: datetime_default
 hidden:
   field_enforcing_authority: true
+  field_partnership: true
   field_primary_authority: true
   messages: true
   name: true

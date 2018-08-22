@@ -27,6 +27,9 @@ class ParDataManager implements ParDataManagerInterface {
 
   use StringTranslationTrait;
 
+  const PAR_AUTHORITY_ROLE_PA = 'primary_authority';
+  const PAR_AUTHORITY_ROLE_EA = 'enforcing_authority';
+
   /**
    * The entity manager.
    *
@@ -354,7 +357,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @param bool $direct
    *   Whether to check only direct relationships.
    *
-   * @return EntityInterface
+   * @return EntityInterface[]
    *   Returns an array of entities keyed by entity type and then by entity id.
    */
   public function hasMemberships(UserInterface $account, $direct = FALSE) {
@@ -389,7 +392,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @param bool $direct
    *   Whether to check only direct relationships.
    *
-   * @return EntityInterface
+   * @return EntityInterface[]
    *   Returns the entities for the given type.
    */
   public function hasMembershipsByType(UserInterface $account, $type, $direct = FALSE) {
@@ -404,6 +407,7 @@ class ParDataManager implements ParDataManagerInterface {
 
   /**
    * Determine whether there are any in progress memberships of a given type.
+   *
    * @param UserInterface $account
    *   A user account to check for.
    * @param string $type
@@ -419,6 +423,54 @@ class ParDataManager implements ParDataManagerInterface {
 
     $memberships = array_filter($memberships, function ($membership) {
       return $membership->inProgress();
+    });
+
+    return $memberships;
+  }
+
+  /**
+   * Determine whether there are any in memberships of a given type that have been commented on.
+   *
+   * @param UserInterface $account
+   *   A user account to check for.
+   * @param string $type
+   *   An entity type to filter on the return on.
+   * @param string $authority_role
+   *   A authority role to filter on the return on. Can be either 'pa' or 'eo'
+   * @param bool $direct
+   *   Whether to check only direct relationships.
+   *
+   * @return EntityInterface
+   *   Returns the entities for the given type.
+   */
+  public function hasNotCommentedOnMembershipsByType(UserInterface $account, $type, $direct = FALSE) {
+    $memberships = $this->hasMembershipsByType($account, $type, $direct);
+
+    $memberships = array_filter($memberships, function ($membership) use ($account) {
+      $primary_authority = $membership->getPrimaryAuthority(TRUE);
+      $enforcing_authority = $membership->getEnforcingAuthority(TRUE);
+
+      if ($primary_authority_user = $this->getUserPerson($account, $primary_authority)) {
+        $authority_role = self::PAR_AUTHORITY_ROLE_EA;
+      }
+      elseif ($this->getUserPerson($account, $enforcing_authority)) {
+        $authority_role = self::PAR_AUTHORITY_ROLE_EA;
+      }
+
+      $messages = $membership->getReplies();
+      if (isset($authority_role) && !empty($messages)) {
+        foreach ($messages as $message) {
+          if ($this->getUserPerson($message->getOwner(), $primary_authority) && $authority_role === self::PAR_AUTHORITY_ROLE_EA) {
+            return FALSE;
+          }
+          elseif ($this->getUserPerson($message->getOwner(), $enforcing_authority) && $authority_role === self::PAR_AUTHORITY_ROLE_EA) {
+            return FALSE;
+          }
+        }
+      }
+      else {
+        return empty($messages);
+      }
     });
 
     return $memberships;
