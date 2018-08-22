@@ -14,6 +14,8 @@ use Drupal\par_data\Entity\ParDataDeviationRequestType;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_data\Entity\ParDataEnforcementActionType;
 use Drupal\par_data\Entity\ParDataEnforcementNoticeType;
+use Drupal\par_data\Entity\ParDataGeneralEnquiry;
+use Drupal\par_data\Entity\ParDataGeneralEnquiryType;
 use Drupal\par_data\Entity\ParDataInspectionFeedback;
 use Drupal\par_data\Entity\ParDataInspectionFeedbackType;
 use Drupal\par_data\Entity\ParDataInspectionPlan;
@@ -40,7 +42,7 @@ use Drupal\par_data\Entity\ParDataSicCodeType;
  */
 class ParDataTestBase extends EntityKernelTestBase {
 
-  static $modules = ['language', 'content_translation', 'trance', 'par_validation', 'par_data', 'par_data_config', 'address', 'datetime', 'datetime_range', 'file', 'file_entity'];
+  static $modules = ['language', 'content_translation', 'comment', 'trance', 'par_validation', 'par_data', 'par_data_config', 'address', 'datetime', 'datetime_range', 'file', 'file_entity'];
 
   protected $account = 1;
 
@@ -50,6 +52,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     'access par_data_enforcement_notice entities',
     'access par_data_deviation_request entities',
     'access par_data_inspection_feedback entities',
+    'access par_data_general_enquiry entities',
     'access par_data_inspection_plan entities',
     'access par_data_legal_entity entities',
     'access par_data_organisation entities',
@@ -64,6 +67,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     'edit par_data_enforcement_notice entities',
     'edit par_data_deviation_request entities',
     'edit par_data_inspection_feedback entities',
+    'edit par_data_general_enquiry entities',
     'edit par_data_inspection_plan entities',
     'edit par_data_legal_entity entities',
     'edit par_data_organisation entities',
@@ -100,6 +104,7 @@ class ParDataTestBase extends EntityKernelTestBase {
       'par_data_enforcement_notice',
       'par_data_deviation_request',
       'par_data_inspection_feedback',
+      'par_data_general_enquiry',
       'par_data_inspection_plan',
       'par_data_legal_entity',
       'par_data_organisation',
@@ -158,6 +163,13 @@ class ParDataTestBase extends EntityKernelTestBase {
     $type = ParDataInspectionFeedbackType::create([
       'id' => 'inspection_feedback',
       'label' => 'Inspection Feedback',
+    ]);
+    $type->save();
+
+    // Create the entity bundles required for testing.
+    $type = ParDataGeneralEnquiryType::create([
+      'id' => 'general_enquiry',
+      'label' => 'General Enquiry',
     ]);
     $type->save();
 
@@ -429,8 +441,41 @@ class ParDataTestBase extends EntityKernelTestBase {
       'type' => 'inspection_feedback',
       'request_date' => '2017-10-01',
       'notes' => $this->randomString(1000),
-      'primary_authority_status' => 'awaiting',
-      'primary_authority_notes' => $this->randomString(1000),
+      'field_enforcing_authority' => [
+        $enforcing_authority->id(),
+      ],
+      'field_partnership' => [
+        $partnership->id(),
+      ],
+      'field_inspection_plan' => [
+        $inspection_plan->id(),
+      ],
+      'field_person' => [
+        $person->id(),
+      ],
+    ] + $this->getBaseValues();
+
+  }
+
+  public function getGeneralEnquiryValues() {
+    // We need to create an Enforcing Authority first.
+    $enforcing_authority = ParDataAuthority::create($this->getAuthorityValues());
+    $enforcing_authority->save();
+
+    $people = $enforcing_authority->get('field_person')->referencedEntities();
+    $person = current($people);
+
+    // We need to create a partnership
+    $partnership = ParDataPartnership::create($this->getDirectPartnershipValues());
+    $partnership->save();
+
+    $inspection_plans = $partnership->get('field_inspection_plan')->referencedEntities();
+    $inspection_plan = current($inspection_plans);
+
+    return [
+      'type' => 'general_enquiry',
+      'request_date' => '2017-10-01',
+      'notes' => $this->randomString(1000),
       'field_enforcing_authority' => [
         $enforcing_authority->id(),
       ],
