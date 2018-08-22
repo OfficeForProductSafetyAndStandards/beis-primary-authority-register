@@ -26,6 +26,8 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
   public function loadData($cardinality = 1) {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
     $par_data_deviation_request = $this->getFlowDataHandler()->getParameter('par_data_deviation_request');
+    $par_data_inspection_feedback = $this->getFlowDataHandler()->getParameter('par_data_inspection_feedback');
+    $par_data_general_enquiry = $this->getFlowDataHandler()->getParameter('par_data_general_enquiry');
 
     // If an enforcement notice parameter is set use this.
     if ($par_data_enforcement_notice) {
@@ -55,7 +57,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
       }
     }
     // If a deviation request parameter is set use this.
-    if ($par_data_deviation_request) {
+    elseif ($par_data_deviation_request) {
       if ($enforcing_officer = $par_data_deviation_request->getEnforcingPerson(TRUE)) {
         $this->getFlowDataHandler()->setFormPermValue("enforcing_officer_name", $enforcing_officer->label());
         $this->getFlowDataHandler()->setFormPermValue("enforcing_officer_work_phone", $enforcing_officer->get('work_phone')->getString());
@@ -72,6 +74,52 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
       }
 
       if ($primary_authority_officer = $par_data_deviation_request->getPrimaryAuthorityContact()) {
+        $this->getFlowDataHandler()->setFormPermValue("pa_officer_name", $primary_authority_officer->label());
+        $this->getFlowDataHandler()->setFormPermValue("pa_officer_work_phone", $primary_authority_officer->get('work_phone')->getString());
+        $this->getFlowDataHandler()->setFormPermValue("pa_officer_email", $primary_authority_officer->get('email')->getString());
+      }
+    }
+    // If a deviation request parameter is set use this.
+    elseif ($par_data_inspection_feedback) {
+      if ($enforcing_officer = $par_data_inspection_feedback->getEnforcingPerson(TRUE)) {
+        $this->getFlowDataHandler()->setFormPermValue("enforcing_officer_name", $enforcing_officer->label());
+        $this->getFlowDataHandler()->setFormPermValue("enforcing_officer_work_phone", $enforcing_officer->get('work_phone')->getString());
+        $this->getFlowDataHandler()->setFormPermValue("enforcing_officer_email", $enforcing_officer->get('email')->getString());
+      }
+
+      if ($enforcing_authority = $par_data_inspection_feedback->getEnforcingAuthority(TRUE)) {
+        $this->getFlowDataHandler()->setFormPermValue("enforcing_authority", $enforcing_authority->label());
+      }
+
+      if ($primary_authority = $par_data_inspection_feedback->getPrimaryAuthority(TRUE)) {
+        $this->getFlowDataHandler()->setFormPermValue("primary_authority", $primary_authority->label());
+
+      }
+
+      if ($primary_authority_officer = $par_data_inspection_feedback->getPrimaryAuthorityContact()) {
+        $this->getFlowDataHandler()->setFormPermValue("pa_officer_name", $primary_authority_officer->label());
+        $this->getFlowDataHandler()->setFormPermValue("pa_officer_work_phone", $primary_authority_officer->get('work_phone')->getString());
+        $this->getFlowDataHandler()->setFormPermValue("pa_officer_email", $primary_authority_officer->get('email')->getString());
+      }
+    }
+    // If a deviation request parameter is set use this.
+    elseif ($par_data_general_enquiry) {
+      if ($enforcing_officer = $par_data_general_enquiry->getEnforcingPerson(TRUE)) {
+        $this->getFlowDataHandler()->setFormPermValue("enforcing_officer_name", $enforcing_officer->label());
+        $this->getFlowDataHandler()->setFormPermValue("enforcing_officer_work_phone", $enforcing_officer->get('work_phone')->getString());
+        $this->getFlowDataHandler()->setFormPermValue("enforcing_officer_email", $enforcing_officer->get('email')->getString());
+      }
+
+      if ($enforcing_authority = $par_data_general_enquiry->getEnforcingAuthority(TRUE)) {
+        $this->getFlowDataHandler()->setFormPermValue("enforcing_authority", $enforcing_authority->label());
+      }
+
+      if ($primary_authority = $par_data_general_enquiry->getPrimaryAuthority(TRUE)) {
+        $this->getFlowDataHandler()->setFormPermValue("primary_authority", $primary_authority->label());
+
+      }
+
+      if ($primary_authority_officer = $par_data_general_enquiry->getPrimaryAuthorityContact()) {
         $this->getFlowDataHandler()->setFormPermValue("pa_officer_name", $primary_authority_officer->label());
         $this->getFlowDataHandler()->setFormPermValue("pa_officer_work_phone", $primary_authority_officer->get('work_phone')->getString());
         $this->getFlowDataHandler()->setFormPermValue("pa_officer_email", $primary_authority_officer->get('email')->getString());

@@ -403,6 +403,28 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
+   * Determine whether there are any in progress memberships of a given type.
+   * @param UserInterface $account
+   *   A user account to check for.
+   * @param string $type
+   *   An entity type to filter on the return on.
+   * @param bool $direct
+   *   Whether to check only direct relationships.
+   *
+   * @return EntityInterface
+   *   Returns the entities for the given type.
+   */
+  public function hasInProgressMembershipsByType(UserInterface $account, $type, $direct = FALSE) {
+    $memberships = $this->hasMembershipsByType($account, $type, $direct);
+
+    $memberships = array_filter($memberships, function ($membership) {
+      return $membership->inProgress();
+    });
+
+    return $memberships;
+  }
+
+  /**
    * Checks if the person is a member of any authority.
    */
   public function isMemberOfAuthority($account) {
@@ -647,7 +669,8 @@ class ParDataManager implements ParDataManagerInterface {
     $entity_people = $entity->hasField('field_person') ? $entity->retrieveEntityIds('field_person') : [];
     $user_people = $this->getUserPeople($account);
 
-    $person_id = current(array_intersect_key(array_keys($user_people), array_keys($entity_people)));
+    $person_id = current(array_intersect(array_keys($user_people), $entity_people));
+
     return !empty($person_id) ? ParDataPerson::load($person_id) : NULL;
   }
 
