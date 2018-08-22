@@ -20,6 +20,9 @@ module.exports = {
         clickLinkByPureText: function(linkText){      
             return this.click('link text', linkText);
         },
+        clickLinkByPartialText: function(linkText){
+            return this.click('link text', partialLinkText);
+        },
         putTextFromSelectorToAnotherSelector: function(selector1, input1){ 
             var text;
             this.getValue(selector1, function (result) {

@@ -8,7 +8,7 @@ Feature: Enforcement notice management
     Scenario: Enforcement notice management
 
         Given I am logged in as "par_authority@example.com"
-        And I click the link text "See your enforcement notices"
+        And I click the link with text "See your enforcement notices"
         Then the element "h1.heading-xlarge" contains the text "Par User Enforcements"
 
         # APPROVE FORM
@@ -30,7 +30,7 @@ Feature: Enforcement notice management
         And I add "par_authority@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
-        When I click the link text "See your enforcement notices"
+        When I click the link with text "See your enforcement notices"
         And the element ".table-scroll-wrapper" contains the text "Enforcement notice 4"
         And the element ".table-scroll-wrapper" contains the text "Enforcement notice 1"
         And the element ".table-scroll-wrapper" contains the text "Enforcement notice 3"
@@ -46,7 +46,7 @@ Feature: Enforcement notice management
 
         Given I am logged in as "par_helpdesk@example.com"
         And I click the link text "Dashboard"
-        And I click the link text "See your enforcement notices"
+        And I click the link with text "See your enforcement notices"
         Then the element "h1.heading-xlarge" contains the text "Par User Enforcements"
 
         # APPROVAL FORM
@@ -59,11 +59,11 @@ Feature: Enforcement notice management
     Scenario: Check view of approved and unapproved EN records
 
         Given I am logged in as "par_authority@example.com"
-        When I click the link text "See your enforcement notices"
+        When I click the link with text "See your enforcement notices"
         And I click the link text "Enforcement notice 2"
         Then the element "h1.heading-xlarge" contains the text "Respond to notice of enforcement action"
         When I click the link text "Dashboard"
-        And I click the link text "See your enforcement notices"
+        And I click the link with text "See your enforcement notices"
         And I click the link text "Enforcement notice 4"
         Then the element "h1.heading-xlarge" contains the text "View notification of enforcement action received from"
 
@@ -72,7 +72,7 @@ Feature: Enforcement notice management
     Scenario: Check view of EN's for Enforcement Officer User
 
         Given I am logged in as "par_enforcement_officer@example.com"
-        When I click the link text "See your enforcement notices"
+        When I click the link with text "See your enforcement notices"
         And I click the link text "Enforcement notice 1"
         Then the element "#block-par-theme-content" contains the text "Grover Muppet"
         Then the element "#block-par-theme-content" contains the text "01723456789"
