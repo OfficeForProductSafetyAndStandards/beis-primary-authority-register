@@ -143,7 +143,7 @@ par_data.par_data_enforcement_notice_type.*:
         sequence:
           type: par_data.configuration_type.[%key]
           label: 'Configuration rules'
-par_data.par_data_inspection_feedback_t.*:
+par_data.par_data_inspection_feedback_type.*:
   type: config_entity
   label: 'PAR Data Inspection Feedback entity type config'
   mapping:
@@ -187,7 +187,7 @@ par_data.par_data_inspection_feedback_t.*:
         sequence:
           type: par_data.configuration_type.[%key]
           label: 'Configuration rules'
-par_data.par_data_deviation_request_t.*:
+par_data.par_data_deviation_request_type.*:
   type: config_entity
   label: 'PAR Data Deviation Request entity type config'
   mapping:
@@ -231,7 +231,7 @@ par_data.par_data_deviation_request_t.*:
         sequence:
           type: par_data.configuration_type.[%key]
           label: 'Configuration rules'
-par_data.par_data_general_enquiry_t.*:
+par_data.par_data_general_enquiry_type.*:
   type: config_entity
   label: 'PAR Data General Enquiry entity type config'
   mapping:
@@ -275,7 +275,7 @@ par_data.par_data_general_enquiry_t.*:
         sequence:
           type: par_data.configuration_type.[%key]
           label: 'Configuration rules'
-par_data.par_data_information_referral_t.*:
+par_data.par_data_information_referral_type.*:
   type: config_entity
   label: 'PAR Data Information Referral entity type config'
   mapping:
