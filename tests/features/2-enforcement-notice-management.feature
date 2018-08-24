@@ -9,7 +9,7 @@ Feature: Enforcement notice management
 
         Given I am logged in as "par_authority@example.com"
         And I click the link with text "See your enforcement notices"
-        Then the element "h1.heading-xlarge" contains the text "Par User Enforcements"
+        Then the element "h1.heading-xlarge" contains the text "Enforcements"
 
         # APPROVE FORM
 
@@ -47,7 +47,7 @@ Feature: Enforcement notice management
         Given I am logged in as "par_helpdesk@example.com"
         And I click the link text "Dashboard"
         And I click the link with text "See your enforcement notices"
-        Then the element "h1.heading-xlarge" contains the text "Par User Enforcements"
+        Then the element "h1.heading-xlarge" contains the text "Enforcements"
 
         # APPROVAL FORM
 
