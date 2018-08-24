@@ -24,6 +24,7 @@ module.exports = {
             return client
                 .useXpath()
                 .click("//*[contains(text(), '" + partialLinkText + "')]")
+                .useCss()
         },
         putTextFromSelectorToAnotherSelector: function(selector1, input1){ 
             var text;
