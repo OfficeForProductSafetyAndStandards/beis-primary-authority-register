@@ -21,11 +21,11 @@ class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
    * Load the data for this form.
    */
   public function loadData($cardinality = 1) {
-    $messages = $this->getFlowDataHandler()->getParameter('comments');
+    $par_data_enforcement_actions = $this->getFlowDataHandler()->getParameter('par_data_enforcement_actions');
     // Cardinality is not a zero-based index like the stored fields deltas.
-    $message = isset($messages[$cardinality-1]) ? $messages[$cardinality-1] : NULL;
+    $par_data_enforcement_action = isset($par_data_enforcement_actions[$cardinality-1]) ? $par_data_enforcement_actions[$cardinality-1] : NULL;
 
-    if ($message) {
+    if ($par_data_enforcement_action) {
       $this->setDefaultValuesByKey("is_referrable", $cardinality, $par_data_enforcement_action->isReferrable());
       $this->setDefaultValuesByKey("is_approvable", $cardinality, TRUE);
     }
