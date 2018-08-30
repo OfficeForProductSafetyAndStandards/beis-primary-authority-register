@@ -16,6 +16,8 @@ use Drupal\par_data\Entity\ParDataEnforcementActionType;
 use Drupal\par_data\Entity\ParDataEnforcementNoticeType;
 use Drupal\par_data\Entity\ParDataGeneralEnquiry;
 use Drupal\par_data\Entity\ParDataGeneralEnquiryType;
+use Drupal\par_data\Entity\ParDataInformationReferral;
+use Drupal\par_data\Entity\ParDataInformationReferralType;
 use Drupal\par_data\Entity\ParDataInspectionFeedback;
 use Drupal\par_data\Entity\ParDataInspectionFeedbackType;
 use Drupal\par_data\Entity\ParDataInspectionPlan;
@@ -53,6 +55,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     'access par_data_deviation_request entities',
     'access par_data_inspection_feedback entities',
     'access par_data_general_enquiry entities',
+    'access par_data_information_referral entities',
     'access par_data_inspection_plan entities',
     'access par_data_legal_entity entities',
     'access par_data_organisation entities',
@@ -68,6 +71,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     'edit par_data_deviation_request entities',
     'edit par_data_inspection_feedback entities',
     'edit par_data_general_enquiry entities',
+    'edit par_data_information_referral entities',
     'edit par_data_inspection_plan entities',
     'edit par_data_legal_entity entities',
     'edit par_data_organisation entities',
@@ -105,6 +109,7 @@ class ParDataTestBase extends EntityKernelTestBase {
       'par_data_deviation_request',
       'par_data_inspection_feedback',
       'par_data_general_enquiry',
+      'par_data_information_referral',
       'par_data_inspection_plan',
       'par_data_legal_entity',
       'par_data_organisation',
@@ -170,6 +175,13 @@ class ParDataTestBase extends EntityKernelTestBase {
     $type = ParDataGeneralEnquiryType::create([
       'id' => 'general_enquiry',
       'label' => 'General Enquiry',
+    ]);
+    $type->save();
+
+    // Create the entity bundles required for testing.
+    $type = ParDataInformationReferralType::create([
+      'id' => 'information_referral',
+      'label' => 'Information Referral',
     ]);
     $type->save();
 
