@@ -486,6 +486,8 @@ class ParDataTestBase extends EntityKernelTestBase {
       'type' => 'inspection_feedback',
       'request_date' => '2017-10-01',
       'notes' => $this->randomString(1000),
+      'primary_authority_status' => 'awaiting',
+      'primary_authority_notes' => $this->randomString(1000),
       'document' => [
         ''
       ],
@@ -517,13 +519,14 @@ class ParDataTestBase extends EntityKernelTestBase {
     $partnership = ParDataPartnership::create($this->getDirectPartnershipValues());
     $partnership->save();
 
-    $inspection_plans = $partnership->get('field_inspection_plan')->referencedEntities();
-    $inspection_plan = current($inspection_plans);
+    $primary_authority = $partnership->getAuthority(TRUE);
 
     return [
       'type' => 'general_enquiry',
       'request_date' => '2017-10-01',
       'notes' => $this->randomString(1000),
+      'primary_authority_status' => 'awaiting',
+      'primary_authority_notes' => $this->randomString(1000),
       'document' => [
         ''
       ],
@@ -533,8 +536,8 @@ class ParDataTestBase extends EntityKernelTestBase {
       'field_partnership' => [
         $partnership->id(),
       ],
-      'field_inspection_plan' => [
-        $inspection_plan->id(),
+      'field_primary_authority' => [
+        $primary_authority->id(),
       ],
       'field_person' => [
         $person->id(),
