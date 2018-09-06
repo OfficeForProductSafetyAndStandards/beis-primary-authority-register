@@ -9,7 +9,7 @@ Feature: PA User - Update a partnership
             
         # GO TO A PARTNERSHIP PAGE
         
-        And I go to detail page for partnership with authority "City Enforcement Squad"
+        And I go to detail page for partnership with authority "Lower East Side Borough Council"
 
         # EDIT ABOUT THE ORGANISATION
 
