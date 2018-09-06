@@ -39,8 +39,6 @@ class EntityParPersonTest extends ParDataTestBase {
    * Test to validate a people entity.
    */
   public function testPeopleRequiredFields() {
-    $this->createUser();
-
     $values = [
       'first_name' => '',
       'last_name' => '',
@@ -57,8 +55,6 @@ class EntityParPersonTest extends ParDataTestBase {
    * Test to validate an authority entity.
    */
   public function testPersonRequiredLengthFields() {
-    $this->createUser();
-
     $values = [
       'salutation' => $this->randomString(256),
       'first_name' => $this->randomString(501),
@@ -78,7 +74,6 @@ class EntityParPersonTest extends ParDataTestBase {
    * Test to create and save a PAR Person entity.
    */
   public function testEntityCreate() {
-    $this->createUser();
     $entity = ParDataPerson::create($this->getPersonValues());
     $this->assertTrue($entity->save(), 'PAR Person entity saved correctly.');
   }

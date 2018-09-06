@@ -58,8 +58,6 @@ class EntityParAuthorityTest extends ParDataTestBase {
    * Test to validate an authority entity.
    */
   public function testAuthorityRequiredLengthFields() {
-    $this->createUser();
-
     $values = [
       'authority_name' => $this->randomString(501),
       'authority_type' => $this->randomString(256),
@@ -76,7 +74,6 @@ class EntityParAuthorityTest extends ParDataTestBase {
    * Test to create and save an authority entity.
    */
   public function testEntityCreate() {
-    $this->createUser();
     $entity = ParDataAuthority::create($this->getAuthorityValues());
     $this->assertTrue($entity->save(), 'PAR Authority entity saved correctly.');
   }

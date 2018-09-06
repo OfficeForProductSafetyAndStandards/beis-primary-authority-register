@@ -4,6 +4,7 @@ namespace Drupal\par_validation\Plugin\Validation\Constraint;
 
 use Drupal\Core\Field\FieldItemInterface;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\user\Entity\Role;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

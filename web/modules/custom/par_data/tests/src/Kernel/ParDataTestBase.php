@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\par_data\Kernel;
 
+use Drupal\file\Entity\File;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataAdvice;
 use Drupal\par_data\Entity\ParDataAdviceType;
@@ -44,11 +45,13 @@ use Drupal\par_data\Entity\ParDataSicCodeType;
  */
 class ParDataTestBase extends EntityKernelTestBase {
 
-  static $modules = ['language', 'content_translation', 'comment', 'trance', 'par_validation', 'par_data', 'par_data_config', 'address', 'datetime', 'datetime_range', 'file', 'file_entity'];
+  static $modules = ['language', 'content_translation', 'comment', 'trance', 'par_validation', 'par_data', 'par_data_config', 'address', 'datetime', 'datetime_range', 'file_test', 'file', 'file_entity'];
 
-  protected $account = 1;
+  protected $account = 2;
 
   protected $permissions = [
+    'access content',
+    'bypass file access',
     'access par_data_advice entities',
     'access par_data_authority entities',
     'access par_data_enforcement_notice entities',
@@ -95,7 +98,9 @@ class ParDataTestBase extends EntityKernelTestBase {
 
     parent::setUp();
 
-    $this->account = $this->createUser([], $this->permissions);
+    // Create a new non-admin user.
+    $this->account = $this->createUser(['uid' => 2], $this->permissions);
+    \Drupal::currentUser()->setAccount($this->account);
 
     // Mimic some of the functionality in \Drupal\Tests\file\Kernel\FileManagedUnitTestBase
     $this->setUpFilesystem();
@@ -250,6 +255,28 @@ class ParDataTestBase extends EntityKernelTestBase {
 
     // Install the feature config
     $this->installConfig('par_data_config');
+
+    // Install file config.
+    $this->installConfig(['system']);
+    $this->installEntitySchema('file');
+    $this->installEntitySchema('user');
+    $this->installSchema('file', ['file_usage']);
+  }
+
+  public function createFile() {
+    // Create a new file entity.
+    $filename = "par-test.{$this->randomMachineName()}.txt";
+    $file = File::create([
+      'uid' => $this->account->id(),
+      'filename' => $filename,
+      'uri' => "public://$filename",
+      'filemime' => 'text/plain',
+      'status' => FILE_STATUS_PERMANENT,
+    ]);
+    file_put_contents($file->getFileUri(), 'This is a par test document');
+    $file->save();
+
+    return $file;
   }
 
   public function getBaseValues() {
@@ -412,12 +439,18 @@ class ParDataTestBase extends EntityKernelTestBase {
     $inspection_plans = $partnership->get('field_inspection_plan')->referencedEntities();
     $inspection_plan = current($inspection_plans);
 
+    /** @var \Drupal\file\Entity\File $document */
+    $document = $this->createFile();
+
     return [
       'type' => 'deviation_request',
       'request_date' => '2017-10-01',
       'notes' => $this->randomString(1000),
       'primary_authority_status' => 'awaiting',
       'primary_authority_notes' => $this->randomString(1000),
+      'document' => [
+        $document->id(),
+      ],
       'field_enforcing_authority' => [
         $enforcing_authority->id(),
       ],
@@ -453,6 +486,9 @@ class ParDataTestBase extends EntityKernelTestBase {
       'type' => 'inspection_feedback',
       'request_date' => '2017-10-01',
       'notes' => $this->randomString(1000),
+      'document' => [
+        ''
+      ],
       'field_enforcing_authority' => [
         $enforcing_authority->id(),
       ],
@@ -488,6 +524,9 @@ class ParDataTestBase extends EntityKernelTestBase {
       'type' => 'general_enquiry',
       'request_date' => '2017-10-01',
       'notes' => $this->randomString(1000),
+      'document' => [
+        ''
+      ],
       'field_enforcing_authority' => [
         $enforcing_authority->id(),
       ],

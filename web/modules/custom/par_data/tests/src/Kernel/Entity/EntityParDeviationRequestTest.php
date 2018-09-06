@@ -17,7 +17,7 @@ use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 class EntityParDeviationRequestTest extends ParDataTestBase {
 
   /**
-   * Test to validate an authority entity.
+   * Test to validate a deviation request entity.
    */
   public function testEntityValidate() {
     $entity = ParDataDeviationRequest::create($this->getDeviationRequestValues());
@@ -55,7 +55,6 @@ class EntityParDeviationRequestTest extends ParDataTestBase {
    * Test to create and save an authority entity.
    */
   public function testEntityCreate() {
-    $this->createUser();
     $entity = ParDataDeviationRequest::create($this->getDeviationRequestValues());
     $this->assertTrue($entity->save(), 'Par Deviation Request entity saved correctly.');
   }
