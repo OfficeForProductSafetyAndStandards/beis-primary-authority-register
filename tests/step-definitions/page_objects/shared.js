@@ -21,9 +21,10 @@ module.exports = {
             return this.click('link text', linkText);
         },
         clickLinkByPartialText: function(partialLinkText){
-            return this.useXpath()
+            client.useXpath()
                 .click("//*[contains(text(), '" + partialLinkText + "')]")
                 .useCss();
+            return this;
         },
         putTextFromSelectorToAnotherSelector: function(selector1, input1){ 
             var text;
