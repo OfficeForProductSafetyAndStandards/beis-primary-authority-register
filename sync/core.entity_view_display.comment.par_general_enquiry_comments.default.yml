@@ -1,0 +1,36 @@
+uuid: 82c9330d-217f-44bf-b846-7c5cbac27280
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.par_general_enquiry_comments
+    - field.field.comment.par_general_enquiry_comments.comment_body
+    - field.field.comment.par_general_enquiry_comments.field_supporting_document
+  module:
+    - file
+    - text
+id: comment.par_general_enquiry_comments.default
+targetEntityType: comment
+bundle: par_general_enquiry_comments
+mode: default
+content:
+  comment_body:
+    label: hidden
+    type: text_default
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_supporting_document:
+    weight: 101
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
+    region: content
+  links:
+    weight: 100
+    region: content
+hidden:
+  langcode: true

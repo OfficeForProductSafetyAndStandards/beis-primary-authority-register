@@ -143,6 +143,7 @@ class ParDataInspectionPlan extends ParDataEntity {
       ->setLabel(t('Document'))
       ->setDescription(t('Documents relating to the inspection.'))
       ->setRevisionable(TRUE)
+      ->addConstraint('par_required')
       ->setSettings([
         'target_type' => 'file',
         'uri_scheme' => 's3private',

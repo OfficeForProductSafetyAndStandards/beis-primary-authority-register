@@ -1,0 +1,27 @@
+uuid: f285d6a5-1e83-4dad-af90-6d855bb3be9f
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.par_inspection_feedback_comments
+    - field.storage.comment.field_supporting_document
+  module:
+    - file
+id: comment.par_inspection_feedback_comments.field_supporting_document
+field_name: field_supporting_document
+entity_type: comment
+bundle: par_inspection_feedback_comments
+label: 'Supporting documents'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: documents/inspection_feedback
+  file_extensions: 'jpg jpeg gif png tif pdf txt rdf doc docx odt xls xlsx csv ods ppt pptx odp pot potx pps'
+  max_filesize: '20 MB'
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

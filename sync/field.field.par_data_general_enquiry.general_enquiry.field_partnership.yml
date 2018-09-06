@@ -1,0 +1,28 @@
+uuid: d68dce05-ac3c-4243-aa41-f5acc320ebb1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_general_enquiry.field_partnership
+    - par_data.par_data_general_enquiry_type.general_enquiry
+    - par_data.par_data_partnership_type.partnership
+id: par_data_general_enquiry.general_enquiry.field_partnership
+field_name: field_partnership
+entity_type: par_data_general_enquiry
+bundle: general_enquiry
+label: Partnership
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_partnership'
+  handler_settings:
+    target_bundles:
+      partnership: partnership
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

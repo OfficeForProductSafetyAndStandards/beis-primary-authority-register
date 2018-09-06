@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\par_data\Kernel;
 
+use Drupal\file\Entity\File;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataAdvice;
 use Drupal\par_data\Entity\ParDataAdviceType;
@@ -14,6 +15,10 @@ use Drupal\par_data\Entity\ParDataDeviationRequestType;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_data\Entity\ParDataEnforcementActionType;
 use Drupal\par_data\Entity\ParDataEnforcementNoticeType;
+use Drupal\par_data\Entity\ParDataGeneralEnquiry;
+use Drupal\par_data\Entity\ParDataGeneralEnquiryType;
+use Drupal\par_data\Entity\ParDataInformationReferral;
+use Drupal\par_data\Entity\ParDataInformationReferralType;
 use Drupal\par_data\Entity\ParDataInspectionFeedback;
 use Drupal\par_data\Entity\ParDataInspectionFeedbackType;
 use Drupal\par_data\Entity\ParDataInspectionPlan;
@@ -40,16 +45,20 @@ use Drupal\par_data\Entity\ParDataSicCodeType;
  */
 class ParDataTestBase extends EntityKernelTestBase {
 
-  static $modules = ['language', 'content_translation', 'trance', 'par_validation', 'par_data', 'par_data_config', 'address', 'datetime', 'datetime_range', 'file', 'file_entity'];
+  static $modules = ['language', 'content_translation', 'comment', 'trance', 'par_validation', 'par_data', 'par_data_config', 'address', 'datetime', 'datetime_range', 'file_test', 'file', 'file_entity'];
 
-  protected $account = 1;
+  protected $account = 2;
 
   protected $permissions = [
+    'access content',
+    'bypass file access',
     'access par_data_advice entities',
     'access par_data_authority entities',
     'access par_data_enforcement_notice entities',
     'access par_data_deviation_request entities',
     'access par_data_inspection_feedback entities',
+    'access par_data_general_enquiry entities',
+    'access par_data_information_referral entities',
     'access par_data_inspection_plan entities',
     'access par_data_legal_entity entities',
     'access par_data_organisation entities',
@@ -64,6 +73,8 @@ class ParDataTestBase extends EntityKernelTestBase {
     'edit par_data_enforcement_notice entities',
     'edit par_data_deviation_request entities',
     'edit par_data_inspection_feedback entities',
+    'edit par_data_general_enquiry entities',
+    'edit par_data_information_referral entities',
     'edit par_data_inspection_plan entities',
     'edit par_data_legal_entity entities',
     'edit par_data_organisation entities',
@@ -87,7 +98,9 @@ class ParDataTestBase extends EntityKernelTestBase {
 
     parent::setUp();
 
-    $this->account = $this->createUser([], $this->permissions);
+    // Create a new non-admin user.
+    $this->account = $this->createUser(['uid' => 2], $this->permissions);
+    \Drupal::currentUser()->setAccount($this->account);
 
     // Mimic some of the functionality in \Drupal\Tests\file\Kernel\FileManagedUnitTestBase
     $this->setUpFilesystem();
@@ -100,6 +113,8 @@ class ParDataTestBase extends EntityKernelTestBase {
       'par_data_enforcement_notice',
       'par_data_deviation_request',
       'par_data_inspection_feedback',
+      'par_data_general_enquiry',
+      'par_data_information_referral',
       'par_data_inspection_plan',
       'par_data_legal_entity',
       'par_data_organisation',
@@ -158,6 +173,20 @@ class ParDataTestBase extends EntityKernelTestBase {
     $type = ParDataInspectionFeedbackType::create([
       'id' => 'inspection_feedback',
       'label' => 'Inspection Feedback',
+    ]);
+    $type->save();
+
+    // Create the entity bundles required for testing.
+    $type = ParDataGeneralEnquiryType::create([
+      'id' => 'general_enquiry',
+      'label' => 'General Enquiry',
+    ]);
+    $type->save();
+
+    // Create the entity bundles required for testing.
+    $type = ParDataInformationReferralType::create([
+      'id' => 'information_referral',
+      'label' => 'Information Referral',
     ]);
     $type->save();
 
@@ -226,6 +255,28 @@ class ParDataTestBase extends EntityKernelTestBase {
 
     // Install the feature config
     $this->installConfig('par_data_config');
+
+    // Install file config.
+    $this->installConfig(['system']);
+    $this->installEntitySchema('file');
+    $this->installEntitySchema('user');
+    $this->installSchema('file', ['file_usage']);
+  }
+
+  public function createFile() {
+    // Create a new file entity.
+    $filename = "par-test.{$this->randomMachineName()}.txt";
+    $file = File::create([
+      'uid' => $this->account->id(),
+      'filename' => $filename,
+      'uri' => "public://$filename",
+      'filemime' => 'text/plain',
+      'status' => FILE_STATUS_PERMANENT,
+    ]);
+    file_put_contents($file->getFileUri(), 'This is a par test document');
+    $file->save();
+
+    return $file;
   }
 
   public function getBaseValues() {
@@ -388,12 +439,18 @@ class ParDataTestBase extends EntityKernelTestBase {
     $inspection_plans = $partnership->get('field_inspection_plan')->referencedEntities();
     $inspection_plan = current($inspection_plans);
 
+    /** @var \Drupal\file\Entity\File $document */
+    $document = $this->createFile();
+
     return [
       'type' => 'deviation_request',
       'request_date' => '2017-10-01',
       'notes' => $this->randomString(1000),
       'primary_authority_status' => 'awaiting',
       'primary_authority_notes' => $this->randomString(1000),
+      'document' => [
+        $document->id(),
+      ],
       'field_enforcing_authority' => [
         $enforcing_authority->id(),
       ],
@@ -431,6 +488,9 @@ class ParDataTestBase extends EntityKernelTestBase {
       'notes' => $this->randomString(1000),
       'primary_authority_status' => 'awaiting',
       'primary_authority_notes' => $this->randomString(1000),
+      'document' => [
+        ''
+      ],
       'field_enforcing_authority' => [
         $enforcing_authority->id(),
       ],
@@ -439,6 +499,45 @@ class ParDataTestBase extends EntityKernelTestBase {
       ],
       'field_inspection_plan' => [
         $inspection_plan->id(),
+      ],
+      'field_person' => [
+        $person->id(),
+      ],
+    ] + $this->getBaseValues();
+
+  }
+
+  public function getGeneralEnquiryValues() {
+    // We need to create an Enforcing Authority first.
+    $enforcing_authority = ParDataAuthority::create($this->getAuthorityValues());
+    $enforcing_authority->save();
+
+    $people = $enforcing_authority->get('field_person')->referencedEntities();
+    $person = current($people);
+
+    // We need to create a partnership
+    $partnership = ParDataPartnership::create($this->getDirectPartnershipValues());
+    $partnership->save();
+
+    $primary_authority = $partnership->getAuthority(TRUE);
+
+    return [
+      'type' => 'general_enquiry',
+      'request_date' => '2017-10-01',
+      'notes' => $this->randomString(1000),
+      'primary_authority_status' => 'awaiting',
+      'primary_authority_notes' => $this->randomString(1000),
+      'document' => [
+        ''
+      ],
+      'field_enforcing_authority' => [
+        $enforcing_authority->id(),
+      ],
+      'field_partnership' => [
+        $partnership->id(),
+      ],
+      'field_primary_authority' => [
+        $primary_authority->id(),
       ],
       'field_person' => [
         $person->id(),

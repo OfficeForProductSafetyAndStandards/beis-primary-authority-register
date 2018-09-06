@@ -1,0 +1,36 @@
+langcode: en
+status: true
+dependencies: {  }
+id: view_enquiry
+label: 'View Enquiry'
+default_title: null
+default_section_title: 'Enquiry'
+description: 'The view operations for enquiries.'
+save_method: end
+states:
+  - par_data_general_enquiry
+steps:
+  1:
+    route: par_enquiry_view_flows.view_feedback
+    form_id: par_general_enquiry_view
+    components:
+      enforcement_full_summary: {}
+      enquiry_detail: {}
+      message_detail:
+        cardinality: -1
+    form_data:
+      reply: par_enquiry_reply
+    redirect:
+      reply: 2
+      done: 3
+  2:
+    route: par_enquiry_view_flows.reply
+    form_id: par_enquiry_reply
+    components:
+      messages:
+        cardinality: 1
+    redirect:
+      save: 1
+      cancel: 1
+  3:
+    route: view.par_user_general_enquiries.general_enquiries_page

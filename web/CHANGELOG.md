@@ -4,12 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [22.0.0]
-### Changed
-- Enforced statuses so that only allowed transitions can be made.
-- Added extra checks to make sure only the PA can review enforcement notices.
+## [23.0.0] - 2019-09-03
+### Added
+- Request to deviate from inspection plan process.
+- Feedback on inspection plans process.
+- General enquiries to a PA.
 
-## [21.0.0]
+## [22.0.0] - 2019-08-27
+### Changed
+- Enforced statuses so that they can only trainsition between allowed statuses.
+- Added extra checks to make sure only the PA can review enforcement notices.
+- Filled in missing nation data for partnerships.
+- Added the date the partnership was last updated.
+- Accessibility improvements.
+
+## [21.0.0] - 2019-08-14
 ### Added
 - Added further validation to elements that were missing it.
 
@@ -18,14 +27,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Improved validation messages to be clearer and more understandable.
 - Feedback form URL.
 
-## [20.2.1]
+## [20.2.1] - 2019-07-26
 ### Added
 - Role assignment so that the administrator role can only be assigned by administrators.
 
 ### Fixed
 - Removed sporadic issue downloading the Help Desk CSV report.
 
-## [20.1.0]
+## [20.1.0] - 2019-07-16
 ### Changed
 - Updated the public primary authority search with partnership type column and better search.
 - Public register now has more search options and displays a 'no results' message if no partnerships were found.
@@ -84,7 +93,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Improved dashboard for users that have been removed from authorities or organisations.
 ### Fixed
-- Corrected default vaue for 'Covered by Inspection' radio options.
+- Corrected default value for 'Covered by Inspection' radio options.
 - List formatting removed from email messages.
 - Resolved issues with a recent upgrade to invitations.
 ### Removed

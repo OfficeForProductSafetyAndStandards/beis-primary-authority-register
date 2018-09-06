@@ -1,0 +1,9 @@
+name: PAR General Enquiry View Flows
+type: module
+description: Creates the flows required to view general enquiries.
+core: 8.x
+package: PAR
+dependencies:
+  - par_data
+  - par_flows
+  - par_forms

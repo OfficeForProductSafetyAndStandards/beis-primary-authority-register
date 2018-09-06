@@ -20,6 +20,12 @@ module.exports = {
         clickLinkByPureText: function(linkText){      
             return this.click('link text', linkText);
         },
+        clickLinkByPartialText: function(partialLinkText){
+            client.useXpath()
+                .click("//*[contains(text(), '" + partialLinkText + "')]")
+                .useCss();
+            return this;
+        },
         putTextFromSelectorToAnotherSelector: function(selector1, input1){ 
             var text;
             this.getValue(selector1, function (result) {
@@ -140,7 +146,7 @@ module.exports = {
         goToPartnershipDetailPage: function(orgName, status){ 
         return this
             .clickLinkByPureText('Dashboard')
-            .clickLinkByPureText('See your partnerships')
+            .clickLinkByPartialText('See your partnerships')
             .setValue('#edit-keywords', orgName)
             .click('#edit-partnership-status-1 option[value="'+status+'"]')
             .click('#edit-submit-par-user-partnerships')

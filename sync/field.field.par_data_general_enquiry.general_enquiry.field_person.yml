@@ -1,0 +1,28 @@
+uuid: a95a3574-c30c-43c7-9bc9-d961ee593ed3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_general_enquiry.field_person
+    - par_data.par_data_general_enquiry_type.general_enquiry
+    - par_data.par_data_person_type.person
+id: par_data_general_enquiry.general_enquiry.field_person
+field_name: field_person
+entity_type: par_data_general_enquiry
+bundle: general_enquiry
+label: 'Enforcing Person'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_person'
+  handler_settings:
+    target_bundles:
+      person: person
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains par_enforcement_send_flows.module.
+ * Contains par_enquiry_view_flows.module.
  */
 use Drupal\Core\Routing\RouteMatchInterface;
 

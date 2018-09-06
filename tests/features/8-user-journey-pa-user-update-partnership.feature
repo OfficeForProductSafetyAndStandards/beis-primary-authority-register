@@ -9,7 +9,7 @@ Feature: PA User - Update a partnership
             
         # GO TO A PARTNERSHIP PAGE
         
-        And I go to detail page for partnership with authority "City Enforcement Squad"
+        And I go to detail page for partnership with authority "Lower East Side Borough Council"
 
         # EDIT ABOUT THE ORGANISATION
 
@@ -25,5 +25,6 @@ Feature: PA User - Update a partnership
 
         # COMPLETE CHANGES
 
+        And I click on the checkbox "#edit-partnership-info-agreed-authority"
         And I click on the button "#edit-save"
         Then the element "h1.heading-xlarge" contains the text "Your partnerships"

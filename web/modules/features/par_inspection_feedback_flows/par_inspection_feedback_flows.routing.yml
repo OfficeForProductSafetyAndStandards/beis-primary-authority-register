@@ -1,0 +1,78 @@
+# Routes required for submitting feedback for an inspection plan.
+par_inspection_feedback_flows.select_inspection_plan:
+  path: '/inspection-plan-feedback/{par_data_partnership}/select-inspection-plan'
+  defaults:
+    _form: '\Drupal\par_inspection_feedback_flows\Form\ParSelectInspectionPlanForm'
+    _title_callback: '\Drupal\par_inspection_feedback_flows\Form\ParSelectInspectionPlanForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    _custom_access: '\Drupal\par_inspection_feedback_flows\Form\ParSelectInspectionPlanForm::accessCallback'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+
+par_inspection_feedback_flows.select_authority:
+  path: '/inspection-plan-feedback/{par_data_partnership}/select-authority'
+  defaults:
+    _form: '\Drupal\par_inspection_feedback_flows\Form\ParSelectAuthorityForm'
+    _title_callback: '\Drupal\par_inspection_feedback_flows\Form\ParSelectAuthorityForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    _custom_access: '\Drupal\par_inspection_feedback_flows\Form\ParSelectAuthorityForm::accessCallback'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+
+par_inspection_feedback_flows.officer_details:
+  path: '/inspection-plan-feedback/{par_data_partnership}/enforcing-officer'
+  defaults:
+    _form: '\Drupal\par_inspection_feedback_flows\Form\ParContactForm'
+    _title_callback: '\Drupal\par_inspection_feedback_flows\Form\ParContactForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    _custom_access: '\Drupal\par_inspection_feedback_flows\Form\ParContactForm::accessCallback'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+
+par_inspection_feedback_flows.feedback:
+  path: '/inspection-plan-feedback/{par_data_partnership}/feedback'
+  defaults:
+    _form: '\Drupal\par_inspection_feedback_flows\Form\ParFeedbackForm'
+    _title_callback: '\Drupal\par_inspection_feedback_flows\Form\ParFeedbackForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    _custom_access: '\Drupal\par_inspection_feedback_flows\Form\ParFeedbackForm::accessCallback'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+
+par_inspection_feedback_flows.review_feedback:
+  path: '/inspection-plan-feedback/{par_data_partnership}/review'
+  defaults:
+    _form: '\Drupal\par_inspection_feedback_flows\Form\ParFeedbackReviewForm'
+    _title_callback: '\Drupal\par_inspection_feedback_flows\Form\ParFeedbackReviewForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    _custom_access: '\Drupal\par_inspection_feedback_flows\Form\ParFeedbackReviewForm::accessCallback'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+
+par_inspection_feedback_flows.feedback_confirmed:
+  path: '/inspection-plan-feedback/{par_data_partnership}/confirm'
+  defaults:
+    _controller: '\Drupal\par_inspection_feedback_flows\Controller\ParFeedbackConfirmationForm:build'
+    _title_callback: '\Drupal\par_inspection_feedback_flows\Controller\ParFeedbackConfirmationForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    _custom_access: '\Drupal\par_inspection_feedback_flows\Controller\ParFeedbackConfirmationForm::accessCallback'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership

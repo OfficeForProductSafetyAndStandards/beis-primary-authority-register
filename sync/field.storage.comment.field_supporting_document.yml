@@ -1,0 +1,23 @@
+uuid: f57a29d6-773e-4d80-8b2d-84150a609c7f
+langcode: en
+status: true
+dependencies:
+  module:
+    - comment
+    - file
+id: comment.field_supporting_document
+field_name: field_supporting_document
+entity_type: comment
+type: file
+settings:
+  display_field: false
+  display_default: false
+  uri_scheme: s3private
+  target_type: file
+module: file
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

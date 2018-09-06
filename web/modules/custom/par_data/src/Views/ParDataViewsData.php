@@ -51,10 +51,18 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
       $status_field = $entity_bundle->getConfigurationElementByType('entity', 'status_field');
     }
     if (isset($status_field)) {
-      $data[$this->entityType->getDataTable()][$status_field]['filter'] = [
-        'title' => t('PAR Status'),
-        'help' => t('Provides a status filter with configurable values to include.'),
-        'id' => 'par_data_status_filter',
+      $data[$this->entityType->getDataTable()][$status_field]  = [
+        'title' => t('PAR Status Field'),
+        'filter' => [
+          'title' => t('PAR Status'),
+          'help' => t('Provides a status filter with configurable values to include.'),
+          'id' => 'par_data_status_filter',
+        ],
+        'sort' => [
+          'title' => t('PAR Status'),
+          'help' => t('Provides a sort filter on the status field for PAR entities.'),
+          'id' => 'par_sort_allowed_statuses',
+        ],
       ];
     }
 
@@ -109,6 +117,7 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
     ];
 
     // PAR Partnership Flow Link.
+    // @deprecated
     $data[$this->entityType->getDataTable()]['par_partnership_flow_link'] = [
       'title' => t('PAR Partnership Flow Link'),
       'field' => [

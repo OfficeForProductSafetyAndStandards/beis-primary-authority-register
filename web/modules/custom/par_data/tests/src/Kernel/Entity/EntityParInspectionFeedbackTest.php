@@ -55,7 +55,6 @@ class EntityParInspectionFeedbackTest extends ParDataTestBase {
    * Test to create and save an authority entity.
    */
   public function testEntityCreate() {
-    $this->createUser();
     $entity = ParDataInspectionFeedback::create($this->getInspectionFeedbackValues());
     $this->assertTrue($entity->save(), 'Par Inspection Feedback entity saved correctly.');
   }
