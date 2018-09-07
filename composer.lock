@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2fbe3369bc32b4ce2084e9c9f9f9653b",
+    "content-hash": "d54ffc16937e554afda49b34eac5865c",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -8379,16 +8379,16 @@
         },
         {
             "name": "brianium/paratest",
-            "version": "0.14.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paratestphp/paratest.git",
-                "reference": "dddcfa8510da7aae9616ba1738ebf630d9e84aa4"
+                "reference": "30f01dff874f9a5dd0b0651bca6384888030d47b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paratestphp/paratest/zipball/dddcfa8510da7aae9616ba1738ebf630d9e84aa4",
-                "reference": "dddcfa8510da7aae9616ba1738ebf630d9e84aa4",
+                "url": "https://api.github.com/repos/paratestphp/paratest/zipball/30f01dff874f9a5dd0b0651bca6384888030d47b",
+                "reference": "30f01dff874f9a5dd0b0651bca6384888030d47b",
                 "shasum": ""
             },
             "require": {
@@ -8397,19 +8397,22 @@
                 "ext-pcre": "*",
                 "ext-reflection": "*",
                 "ext-simplexml": "*",
-                "php": ">=5.5.11",
-                "phpunit/php-timer": ">=1.0.4",
-                "phpunit/phpunit": ">=3.7.8",
-                "symfony/console": "~2.3|~3.0",
-                "symfony/process": "~2.3|~3.0"
+                "php": ">=7.0",
+                "phpunit/php-timer": "^1.0.4",
+                "phpunit/phpunit": "^6.0.13",
+                "symfony/console": "^3.4|^4.0",
+                "symfony/process": "^3.4|^4.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.3.2"
             },
             "bin": [
                 "bin/paratest"
             ],
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "ParaTest": [
+                "psr-4": {
+                    "ParaTest\\": [
                         "src/"
                     ]
                 }
@@ -8434,7 +8437,7 @@
                 "phpunit",
                 "testing"
             ],
-            "time": "2016-08-12T20:14:13+00:00"
+            "time": "2018-01-18T12:09:16+00:00"
         },
         {
             "name": "dflydev/dot-access-configuration",
