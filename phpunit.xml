@@ -33,6 +33,8 @@
         <env name="BROWSERTEST_OUTPUT_DIRECTORY" value=""/>
         <!-- Example BROWSERTEST_OUTPUT_FILE value: /path/to/webroot/sites/simpletest/browser_output/outputfile.txt -->
         <env name="BROWSERTEST_OUTPUT_FILE" value=""/>
+        <!-- Do not show depreciation notices. -->
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
     </php>
     <testsuites>
         <testsuite name="par">
