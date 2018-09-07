@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Contains par_member_cease_flows.module.
+ */
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function par_inspection_feedback_flows_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the par_inspection_feedback_flows module.
+    case 'help.page.par_inspection_feedback_flows':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Allows enforcement officers to submit feedback for an inspection plan.') . '</p>';
+      return $output;
+
+    default:
+  }
+}

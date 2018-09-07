@@ -276,15 +276,21 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Get the advice for this Partnership.
    */
-  public function getAdvice() {
-    return $this->get('field_advice')->referencedEntities();
+  public function getAdvice($single = FALSE) {
+    $documents = $this->get('field_advice')->referencedEntities();
+    $document = !empty($documents) ? current($documents) : NULL;
+
+    return $single ? $document : $documents;
   }
 
   /**
    * Get the inspection plans for this Partnership.
    */
-  public function getInspectionPlan() {
-    return $this->get('field_inspection_plan')->referencedEntities();
+  public function getInspectionPlan($single = FALSE) {
+    $plans = $this->get('field_inspection_plan')->referencedEntities();
+    $plan = !empty($plans) ? current($plans) : NULL;
+
+    return $single ? $plan : $plans;
   }
 
   /**

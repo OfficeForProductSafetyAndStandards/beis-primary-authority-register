@@ -6,7 +6,7 @@ Feature: Coordinator User - Update Partnership
         #LOGIN
         
         Given I am logged in as "par_coordinator@example.com"
-        When I click the link text "See your partnerships"
+        When I click the link with text "See your partnerships"
         And I add "Organisation For Coordinated Partnership" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
         And I click the link text "Organisation For Coordinated Partnership"

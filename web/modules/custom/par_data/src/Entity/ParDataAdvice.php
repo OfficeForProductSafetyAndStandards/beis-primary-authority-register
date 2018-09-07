@@ -222,8 +222,8 @@ class ParDataAdvice extends ParDataEntity {
     $fields['document'] = BaseFieldDefinition::create('file')
       ->setLabel(t('Document'))
       ->setDescription(t('Documents relating to the advice.'))
-      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
+      ->addConstraint('par_required')
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
       ->setSettings([
         'target_type' => 'file',

@@ -1,0 +1,39 @@
+uuid: 46281223-48df-4781-bbaa-b45a68721fcc
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: X3DU2zBxm2g2XAiWYAppjC-90cWqhVuSPYUpjKqgaJQ
+id: view_deviation
+label: 'View Deviation Request'
+default_title: null
+default_section_title: 'View deviation'
+description: 'The view operations for a deviation request.'
+save_method: end
+states:
+  - par_data_deviation_request
+steps:
+  1:
+    route: par_deviation_view_flows.view_deviation
+    form_id: par_deviation_request_view
+    components:
+      enforcement_full_summary: {  }
+      deviation_request_detail: {  }
+      message_detail:
+        cardinality: -1
+    form_data:
+      reply: par_deviation_request_reply
+    redirect:
+      reply: 2
+      done: 3
+  2:
+    route: par_deviation_view_flows.reply
+    form_id: par_deviation_request_reply
+    components:
+      messages:
+        cardinality: 1
+    redirect:
+      save: 1
+      cancel: 1
+  3:
+    route: view.par_user_deviation_requests.deviation_requests_page

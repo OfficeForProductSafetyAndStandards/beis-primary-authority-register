@@ -73,27 +73,8 @@ class ParDashboardsDashboardController extends ControllerBase {
   public function content() {
     // The dashboard is to0 complex and too important a page to cache.
     $this->killSwitch->trigger();
-    $build = [];
-
-    // User controls.
     $account = $this->getCurrentUser();
-    if ($account && $people = $this->getParDataManager()->getUserPeople($account)) {
-      $build['user'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t('Your account'),
-        '#attributes' => ['class' => 'form-group'],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ];
-
-      // Profile management link.
-      $manage_profile = $this->getLinkByRoute('par_profile_update_flows.gdpr', ['user' => $account->id()]);
-      $profile_link = $manage_profile->setText('Manage your profile details')->toString();
-      $build['user']['profile'] = [
-        '#type' => 'markup',
-        '#markup' => "<p>{$profile_link}</p>",
-      ];
-    }
+    $build = [];
 
     // Your partnerships.
     $partnerships = $this->getParDataManager()->hasMembershipsByType($this->getCurrentUser(), 'par_data_partnership');
@@ -112,18 +93,16 @@ class ParDashboardsDashboardController extends ControllerBase {
 
       // List of partnerships and pending applications links.
       if (($partnerships && $can_manage_partnerships)) {
+        $new_partnerships = count($this->getParDataManager()->hasInProgressMembershipsByType($account, 'par_data_partnership'));
+
         $manage_partnerships = $this->getLinkByRoute('view.par_user_partnerships.partnerships_page');
-        $manage_link = $manage_partnerships->setText('See your partnerships')->toString();
+        $link_text = $new_partnerships > 0 ?
+          $this->t('See your partnerships (@count pending)', ['@count' => $new_partnerships]) :
+          $this->t('See your partnerships');
+        $manage_link = $manage_partnerships->setText($link_text)->toString();
         $build['partnerships']['see'] = [
           '#type' => 'markup',
           '#markup' => "<p>{$manage_link}</p>",
-        ];
-
-        $manage_partnership_applications = $this->getLinkByRoute('view.par_user_partnerships.par_user_partnership_applications');
-        $manage_partnership_applications_link = $manage_partnership_applications->setText('See pending applications')->toString();
-        $build['partnerships']['my_partnerships'] = [
-          '#type' => 'markup',
-          '#markup' => "<p>{$manage_partnership_applications_link}</p>",
         ];
       }
 
@@ -172,27 +151,73 @@ class ParDashboardsDashboardController extends ControllerBase {
       ];
 
       if ($this->getCurrentUser()->hasPermission('send enforcement notice') || $this->getCurrentUser()->hasPermission('approve enforcement notice')) {
+        $new_enforcements = count($this->getParDataManager()->hasInProgressMembershipsByType($account, 'par_data_enforcement_notice'));
+        $link_text = $new_enforcements > 0 ?
+          $this->t('See your enforcement notices (@count pending)', ['@count' => $new_enforcements]) :
+          $this->t('See your enforcement notices');
         $link = $this->getLinkByRoute('view.par_user_enforcements.enforcement_notices_page')
-          ->setText('See enforcement notices')
+          ->setText($link_text)
           ->toString();
-
         $build['messages'][] = [
           '#type' => 'markup',
           '#markup' => "<p>{$link}</p>",
         ];
-      }
 
-      // @TODO Add when enquiry journeys are completed.
-//      if ($this->getCurrentUser()->hasPermission('view authority enquiries')) {
-//        $enquiry_link = $this->getLinkByRoute('xxx')
-//          ->setText('See enquiries')
-//          ->toString();
-//
-//        $build['messages'][] = [
-//          '#type' => 'markup',
-//          '#markup' => "<p>{$enquiry_link}</p>",
-//        ];
-//      }
+        $new_deviations = count($this->getParDataManager()->hasInProgressMembershipsByType($account, 'par_data_deviation_request'));
+        $link_text = $new_deviations > 0 ?
+          $this->t('See your deviation requests (@count pending)', ['@count' => $new_deviations]) :
+          $this->t('See your deviation requests');
+        $deviation_requests_link = $this->getLinkByRoute('view.par_user_deviation_requests.deviation_requests_page')
+          ->setText($link_text)
+          ->toString();
+        $build['messages'][] = [
+          '#type' => 'markup',
+          '#markup' => "<p>{$deviation_requests_link}</p>",
+        ];
+
+        $new_feedback = count($this->getParDataManager()->hasNotCommentedOnMembershipsByType($account, 'par_data_inspection_feedback'));
+        $link_text = $new_feedback > 0 ?
+          $this->t('See your inspection feedback (@count pending)', ['@count' => $new_feedback]) :
+          $this->t('See your inspection feedback');
+        $inspection_feedback_link = $this->getLinkByRoute('view.par_user_inspection_feedback.inspection_feedback_page')
+          ->setText($link_text)
+          ->toString();
+        $build['messages'][] = [
+          '#type' => 'markup',
+          '#markup' => "<p>{$inspection_feedback_link}</p>",
+        ];
+
+        $new_enquiries = count($this->getParDataManager()->hasNotCommentedOnMembershipsByType($account, 'par_data_general_enquiry'));
+        $link_text = $new_enquiries > 0 ?
+          $this->t('See your general enquiries (@count pending)', ['@count' => $new_enquiries]) :
+          $this->t('See your general enquiries');
+        $general_enquiries_link = $this->getLinkByRoute('view.par_user_general_enquiries.general_enquiries_page')
+          ->setText($link_text)
+          ->toString();
+        $build['messages'][] = [
+          '#type' => 'markup',
+          '#markup' => "<p>{$general_enquiries_link}</p>",
+        ];
+      }
+    }
+
+    // User controls.
+    if ($account && $people = $this->getParDataManager()->getUserPeople($account)) {
+      $build['user'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('Your account'),
+        '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+
+      // Profile management link.
+      $manage_profile = $this->getLinkByRoute('par_profile_update_flows.gdpr', ['user' => $account->id()]);
+      $profile_link = $manage_profile->setText('Manage your profile details')->toString();
+      $build['user']['profile'] = [
+        '#type' => 'markup',
+        '#markup' => "<p>{$profile_link}</p>",
+      ];
     }
 
     // If there is nothing to display on the dashboard let the user know.

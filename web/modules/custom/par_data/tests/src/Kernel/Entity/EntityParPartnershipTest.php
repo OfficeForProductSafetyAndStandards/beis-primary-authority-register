@@ -18,7 +18,6 @@ class EntityParPartnershipTest extends ParDataTestBase {
    * Test to validate a partnership entity.
    */
   public function testEntityValidate() {
-    $this->createUser();
     $entity = ParDataPartnership::create($this->getCoordinatedPartnershipValues());
     $violations = $entity->validate();
     $this->assertEqual(count($violations->getFieldNames()), 0, 'No violations when validating a default PAR Partnership entity.');
@@ -40,8 +39,6 @@ class EntityParPartnershipTest extends ParDataTestBase {
    * Test to validate a partnership entity.
    */
   public function testPartnershipRequiredFields() {
-    $this->createUser();
-
     $values = [
       'partnership_type' => '',
       'about_partnership' => '',
@@ -56,8 +53,6 @@ class EntityParPartnershipTest extends ParDataTestBase {
    * Test to validate a partnership entity.
    */
   public function testPartnershipRequiredLengthFields() {
-    $this->createUser();
-
     $values = [
       'partnership_type' => $this->randomString(256),
       'partnership_status' => $this->randomString(256),
@@ -74,7 +69,6 @@ class EntityParPartnershipTest extends ParDataTestBase {
    * Test to create and save a PAR Partnership entity.
    */
   public function testEntityCreate() {
-    $this->createUser();
     $entity = ParDataPartnership::create($this->getCoordinatedPartnershipValues());
     $this->assertTrue($entity->save(), 'PAR Partnership entity saved correctly.');
   }

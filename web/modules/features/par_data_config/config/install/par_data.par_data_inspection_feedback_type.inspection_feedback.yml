@@ -14,14 +14,9 @@ configuration:
       - field_partnership
     status_field: primary_authority_status
     status_transitions:
-      approved:
-        - awaiting_approval
-      blocked:
-        - awaiting_approval
-      referred:
-        - awaiting_approval
+      received:
+        - sent
   primary_authority_status:
     allowed_values:
-      awaiting: 'Awaiting Review'
-      approved: Approved
-      blocked: Blocked
+      sent: Submitted
+      received: Recieved

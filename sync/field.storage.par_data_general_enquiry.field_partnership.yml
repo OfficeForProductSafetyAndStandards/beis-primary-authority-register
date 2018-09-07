@@ -1,0 +1,19 @@
+uuid: 7a845b4f-5384-4495-bfb5-41de2bb7e1d6
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_general_enquiry.field_partnership
+field_name: field_partnership
+entity_type: par_data_general_enquiry
+type: entity_reference
+settings:
+  target_type: par_data_partnership
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

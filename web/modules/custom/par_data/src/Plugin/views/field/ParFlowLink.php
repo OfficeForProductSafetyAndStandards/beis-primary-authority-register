@@ -47,6 +47,7 @@ class ParFlowLink extends FieldPluginBase {
     $options = parent::defineOptions();
 
     $options['title'] = ['default' => []];
+    $options['assistive_text'] = ['default' => []];
     $options['link'] = ['default' => []];
     $options['hidden'] = ['default' => []];
 
@@ -64,6 +65,13 @@ class ParFlowLink extends FieldPluginBase {
       '#description' => 'Select the title for this link.',
       '#type' => 'textfield',
       '#default_value' => $this->options['title']  ?: '',
+    ];
+
+    $form['assistive_text'] = [
+      '#title' => 'Assistive text',
+      '#description' => 'Enter some descriptive text for screenreaders (this will be hidden).',
+      '#type' => 'textfield',
+      '#default_value' => $this->options['assistive_text']  ?: '',
     ];
 
     $form['link'] = [
@@ -94,11 +102,13 @@ class ParFlowLink extends FieldPluginBase {
     if ($entity instanceof ParDataEntityInterface) {
       $tokens = $this->getRenderTokens([]);
 
-      $path = strip_tags(Html::decodeEntities($this->viewsTokenReplace($this->options['link'], $tokens)));
-      $title = strip_tags(Html::decodeEntities($this->viewsTokenReplace($this->options['title'], $tokens)));
+      $path = strip_tags(Html::decodeEntities($this->viewsTokenReplace($this->options['link'] ?: '', $tokens)));
+      $title = strip_tags(Html::decodeEntities($this->viewsTokenReplace($this->options['title'] ?: '', $tokens)));
+      $assistive_text = strip_tags(Html::decodeEntities($this->viewsTokenReplace($this->options['assistive_text'] ?: '', $tokens)));
 
       $text = !empty($title) ? t($title) : 'Continue';
-      $url = !empty($path) ? Url::fromUserInput($path) : NULL;
+      $options = !empty($assistive_text) ? ['attributes' => ['aria-label' => $assistive_text]] : [];
+      $url = !empty($path) ? Url::fromUserInput($path, $options) : NULL;
 
       $link = $url ? Link::fromTextAndUrl($text, $url)->toRenderable() : NULL;
 

@@ -13,7 +13,7 @@ var county = faker.fake("{{address.county}}")
  When('I go to detail page for partnership with authority {string}', function (authority) {
   return shared
   .clickLinkByPureText('Dashboard')
-  .clickLinkByPureText('See your partnerships')
+  .clickLinkByPartialText('See your partnerships')
   .setValue('#edit-keywords', authority)
   .click('#edit-submit-par-user-partnerships')
   .clickLinkByPureText(authority)

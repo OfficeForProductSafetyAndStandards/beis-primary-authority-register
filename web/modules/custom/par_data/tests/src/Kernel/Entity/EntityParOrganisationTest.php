@@ -39,8 +39,6 @@ class EntityParOrganisationTest extends ParDataTestBase {
    * Test to validate an organisation entity.
    */
   public function testOrganisationRequiredFields() {
-    $this->createUser();
-
     $values = [
       'organisation_name' => '',
       'size' => '',
@@ -61,8 +59,6 @@ class EntityParOrganisationTest extends ParDataTestBase {
    * Test to validate an organisation entity.
    */
   public function testOrganisationRequiredLengthFields() {
-    $this->createUser();
-
     $values = [
       'organisation_name' => $this->randomString(501),
       'size' => $this->randomString(256),
@@ -85,8 +81,6 @@ class EntityParOrganisationTest extends ParDataTestBase {
    * Test to create and save a PAR Organisation entity.
    */
   public function testEntityCreate() {
-    $this->createUser();
-
     $entity = ParDataOrganisation::create($this->getOrganisationValues());
     $this->assertTrue($entity->save(), 'PAR Organisation entity saved correctly.');
   }

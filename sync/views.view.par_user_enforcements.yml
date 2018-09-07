@@ -77,18 +77,19 @@ display:
           default_row_class: true
           override: true
           sticky: false
-          caption: 'Your enforcement notifications'
+          caption: 'Notices of enforcement actions'
           summary: ''
           description: ''
           columns:
             id: id
             notice_date: notice_date
             title: title
-            par_flow_link: par_flow_link
             par_flow_link_1: par_flow_link
+            par_flow_link: par_flow_link
             field_enforcing_authority: field_enforcing_authority
-            field_organisation: field_organisation
+            field_primary_authority: field_primary_authority
             par_status: par_status
+            field_organisation: field_organisation
           info:
             id:
               sortable: false
@@ -111,14 +112,14 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            par_flow_link:
+            par_flow_link_1:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            par_flow_link_1:
+            par_flow_link:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -132,7 +133,7 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            field_organisation:
+            field_primary_authority:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -140,6 +141,13 @@ display:
               empty_column: false
               responsive: ''
             par_status:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_organisation:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -846,7 +854,7 @@ display:
           entity_type: par_data_enforcement_notice
           entity_field: created
           plugin_id: date
-      title: 'Par User Enforcements'
+      title: Enforcements
       header: {  }
       footer: {  }
       empty:

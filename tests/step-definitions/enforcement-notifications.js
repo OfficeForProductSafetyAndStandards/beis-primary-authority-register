@@ -49,6 +49,6 @@ When('I check that EO can see valid enforcement notification {string}', function
   .setValue('#edit-pass', 'TestPassword')
   .click('#edit-submit')
   .assert.containsText('#block-par-theme-account-menu', 'Log out')
-  .clickLinkByPureText('See enforcement notices')
+  .clickLinkByPartialText('See your enforcement notices')
   .assert.containsText('.table-scroll-wrapper', string)
 })

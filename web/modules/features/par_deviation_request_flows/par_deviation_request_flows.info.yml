@@ -1,0 +1,9 @@
+name: PAR Deviation Request Flows
+type: module
+description: Creates the flows required to allow enforcement officers to deviate from an inspecion plan.
+core: 8.x
+package: PAR
+dependencies:
+  - par_data
+  - par_flows
+  - par_forms

@@ -11,6 +11,8 @@ dependencies:
     - par_data.par_data_deviation_request_type.deviation_request
   module:
     - datetime
+    - file_entity
+    - par_data
     - text
 _core:
   default_config_hash: fPwFUiCq2pA_yrPfldru-xuQmzdC1VtT9qk5MXMYvLg
@@ -19,6 +21,15 @@ targetEntityType: par_data_deviation_request
 bundle: deviation_request
 mode: full
 content:
+  document:
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      access_message: 'You don''t have access to download this file.'
+      text: 'Download [file:name]'
+    third_party_settings: {  }
+    type: file_download_link
   notes:
     label: hidden
     type: text_default
@@ -38,9 +49,9 @@ content:
     weight: 2
     region: content
     settings:
-      link_to_entity: false
+      display_original_value: false
     third_party_settings: {  }
-    type: string
+    type: par_list_formatter
   request_date:
     label: hidden
     weight: 0
@@ -55,5 +66,6 @@ hidden:
   field_inspection_plan: true
   field_partnership: true
   field_person: true
+  messages: true
   name: true
   user_id: true

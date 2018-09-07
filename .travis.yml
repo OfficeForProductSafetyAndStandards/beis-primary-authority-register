@@ -130,9 +130,9 @@ before_script:
   - curl --silent http://127.0.0.1:8111 > /dev/null
 
 script:
-  - docker exec -it par_beta_web sh -c "./vendor/bin/paratest --processes=16 --log-junit=./tests/reports/phpunit.latest.xml"
-  - docker exec -it par_beta_web bash -c "apt-get update -y"  
-  - docker exec -it par_beta_web bash -c "apt-get install -y google-chrome-stable"
+  - if [[ "$TESTTYPE" == "unit" ]]; then docker exec -it par_beta_web sh -c "./vendor/bin/paratest --processes=16 --log-junit=./tests/reports/phpunit.latest.xml"; fi
+  - if [[ "$TESTTYPE" == "nightwatch" ]]; then docker exec -it par_beta_web bash -c "apt-get update -y"; fi
+  - if [[ "$TESTTYPE" == "nightwatch" ]]; then docker exec -it par_beta_web bash -c "apt-get install -y google-chrome-stable"; fi
   - if [[ "$TESTTYPE" == "nightwatch" ]]; then travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install && npm run selenium-install"; fi
   - if [[ "$TESTTYPE" == "nightwatch" ]]; then docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run nightwatch-cucumber-travis -- --tag ci"; fi
   - if [[ "$TESTTYPE" == "nightwatch" ]]; then docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run generate-report"; fi
@@ -194,6 +194,7 @@ notifications:
 env:
   matrix:
     - TESTTYPE=nightwatch
+    - TESTTYPE=unit
     - TESTTYPE=jmeter
   global:
   - secure: Fs3vok73zakpxIio13QqNuGlUoLVGeaE85FbFTTQI3+xdHWzVGausI7HW7GRh32cQP3jgPazcIe4WE/og4FHWwPIJzRzknbkaBN6zsmETS2nhh7H8rNCbw/vXqC1hXhXK3VdaIvuL9t+UBaqeojrgIvF7DVs5G3shtKX6om5NscxYDUmIMPeQL5gaIXVcGGIVlyL7rruQQ8swt1ld9YtNhoGv9zhJjezr5r2qGwrJkx2JkPWJJre6Dy8PaPWaOKQ9vV3NtI+uG2mbctBkBqG05XZ1Rm3V8r8lOyDhpQcWkn8M616QMkd/bWZgcS97RX7MEdKBQIhEGFAo66z76Uc+PwgnTy8hF3pM6oF1adrw9GBfbMD5gsS/KVLjs/GOlHF3blsoFALk99K/6WIt3/5682LmXxvY56lnJOBMWgDOiWk8dlmj5CXLnxEN8GCgMDphV+xkv8luN3H18dtnHQ9dp8p1w4CNwopsUXW/PgOdQput8DRP74Y0D3cpGMjoHEhY1kxuWghwy2q+SHCgrvMzjyZs4EXWJSQiGQmqw5AjUzntR2BsqEsne78L5SBC6rCcMalTcWf+BSHITI75RiEdzUg+wSciV5FMWwD1OBlAqgjeOpocWcoTvUYQW4jl6HnwWyOuIKYPTZnkqsKQjDsrfLsAgxtVZNRh4E6/y3ZJBY=

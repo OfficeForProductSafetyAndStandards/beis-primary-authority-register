@@ -9,13 +9,22 @@ dependencies:
     - field.field.par_data_deviation_request.deviation_request.field_person
     - par_data.par_data_deviation_request_type.deviation_request
   module:
-    - datetime
+    - file_entity
     - text
 id: par_data_deviation_request.deviation_request.title
 targetEntityType: par_data_deviation_request
 bundle: deviation_request
 mode: title
 content:
+  document:
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      access_message: 'You don''t have access to download this file.'
+      text: 'Download [file:name]'
+    third_party_settings: {  }
+    type: file_download_link
   notes:
     label: hidden
     type: text_default
@@ -23,21 +32,14 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  request_date:
-    label: hidden
-    weight: 0
-    region: content
-    settings:
-      timezone_override: ''
-      format_type: gds_date_format
-    third_party_settings: {  }
-    type: datetime_default
 hidden:
   field_enforcing_authority: true
   field_inspection_plan: true
   field_partnership: true
   field_person: true
+  messages: true
   name: true
   primary_authority_notes: true
   primary_authority_status: true
+  request_date: true
   user_id: true

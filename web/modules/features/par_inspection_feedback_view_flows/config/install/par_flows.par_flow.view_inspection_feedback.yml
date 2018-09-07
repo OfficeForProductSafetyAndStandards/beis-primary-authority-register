@@ -1,0 +1,36 @@
+langcode: en
+status: true
+dependencies: {  }
+id: view_inspection_feedback
+label: 'View Inspection Feedback'
+default_title: null
+default_section_title: 'View inspection feedback'
+description: 'The view operations for inspection plan feedback.'
+save_method: end
+states:
+  - par_data_inspection_feedback
+steps:
+  1:
+    route: par_inspection_feedback_view_flows.view_feedback
+    form_id: par_inspection_feedback_view
+    components:
+      enforcement_full_summary: {}
+      inspection_feedback_detail: {}
+      message_detail:
+        cardinality: -1
+    form_data:
+      reply: par_inspection_feedback_reply
+    redirect:
+      reply: 2
+      done: 3
+  2:
+    route: par_inspection_feedback_view_flows.reply
+    form_id: par_inspection_feedback_reply
+    components:
+      messages:
+        cardinality: 1
+    redirect:
+      save: 1
+      cancel: 1
+  3:
+    route: view.par_user_inspection_feedback.inspection_feedback_page

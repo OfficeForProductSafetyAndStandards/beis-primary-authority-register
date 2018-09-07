@@ -115,7 +115,7 @@ cf ssh par-beta-production -c "python app/devops/tools/postgres_dump.py"
 #### Sanitize the production database
 Go to the S3 artifacts bucket and download a copy of the drush-dump-production-unsanitized.sql file that was just created (and uploaded).
 
-**NOTE:** You must always be in master branch with dev and test settings files turned off:
+**NOTE:** You must always sanitize the database against the latest release code _only_ with dev and test settings files turned off:
 ```
 $config['config_split.config_split.dev_config']['status'] = FALSE;
 $config['config_split.config_split.test_config']['status'] = FALSE;

@@ -1,0 +1,55 @@
+langcode: en
+status: true
+dependencies: {  }
+id: inspection_feedback
+label: 'Inspection Plan Feedback'
+default_section_title: 'Inspection plan feedback'
+default_title: null
+description: ''
+save_method: end
+states:
+  - par_data_partnership
+steps:
+  1:
+    route: par_inspection_feedback_flows.select_inspection_plan
+    form_id: par_inspection_plan_selection
+    components:
+      select_inspection_plan: {}
+  2:
+    route: par_inspection_feedback_flows.select_authority
+    form_id: par_authority_selection
+    components:
+      authority_select: {}
+  3:
+    route: par_inspection_feedback_flows.officer_details
+    form_id: par_enforcement_officer_details
+    components:
+      contact_details_basic: {}
+    form_data:
+      authority_selection: par_authority_selection
+  4:
+    route: par_inspection_feedback_flows.feedback
+    form_id: par_deviation_request
+    form_data:
+      select_inspection_plan: par_inspection_plan_selection
+      enforcing_officer: par_enforcement_officer_details
+      authority_selection: par_authority_selection
+    components:
+      enforcement_full_summary: {}
+      inspection_feedback: {}
+  5:
+    route: par_inspection_feedback_flows.review_feedback
+    form_id: par_deviation_request_review
+    components:
+      enforcement_full_summary: {}
+      inspection_feedback_detail: {}
+    form_data:
+      select_inspection_plan: par_inspection_plan_selection
+      enforcing_officer: par_enforcement_officer_details
+      authority_selection: par_authority_selection
+      deviation_request: par_deviation_request
+    redirect:
+      request_details: 4
+      save: 6
+  6:
+    route: par_inspection_feedback_flows.feedback_confirmed

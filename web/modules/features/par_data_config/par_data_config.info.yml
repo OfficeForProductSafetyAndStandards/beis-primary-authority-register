@@ -5,6 +5,7 @@ core: 8.x
 dependencies:
   - address
   - better_exposed_filters
+  - comment
   - csv_serialization
   - datetime
   - datetime_range

@@ -1,0 +1,9 @@
+name: PAR Inspection Plan Feedback Flows
+type: module
+description: Creates the flows required to allow enforcement officers to submit feedback for an inspection plan.
+core: 8.x
+package: PAR
+dependencies:
+  - par_data
+  - par_flows
+  - par_forms

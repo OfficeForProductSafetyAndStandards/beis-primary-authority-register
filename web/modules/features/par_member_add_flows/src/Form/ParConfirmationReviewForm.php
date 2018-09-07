@@ -152,12 +152,12 @@ class ParConfirmationReviewForm extends ParBaseForm {
       'organisation_name' => $organisation_name,
       'trading_name' => $trading_names,
     ]);
+    $par_data_organisation->setNation($nation);
     $par_data_premises = ParDataPremises::create([
       'address' => $address,
     ]);
-    if (!empty($nation)) {
-      $par_data_premises->set('nation', $nation);
-    }
+    $par_data_premises->setNation($nation);
+
     $par_data_person = ParDataPerson::create($person);
 
     return [

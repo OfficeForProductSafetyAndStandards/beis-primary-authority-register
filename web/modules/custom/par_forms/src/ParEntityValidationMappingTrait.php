@@ -137,8 +137,7 @@ trait ParEntityValidationMappingTrait {
     $fields = [];
     foreach ($this->getMappingByEntityType($entity->getEntityTypeId()) as $mapping) {
       if (empty($values)) {
-        var_dump('wtf', $values);
-        die;
+        continue;
       }
       $value = NestedArray::getValue($values, (array) $mapping->getElement());
 

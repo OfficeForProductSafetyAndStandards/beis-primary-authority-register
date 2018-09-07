@@ -1,0 +1,27 @@
+par_inspection_feedback_view_flows.view_feedback:
+  path: '/inspection-feedback/{par_data_inspection_feedback}/view'
+  defaults:
+    _controller: '\Drupal\par_inspection_feedback_view_flows\Controller\ParFeedbackViewController::build'
+    _title_callback: '\Drupal\par_inspection_feedback_view_flows\Controller\ParFeedbackViewController::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    _custom_access: '\Drupal\par_inspection_feedback_view_flows\Controller\ParFeedbackViewController::accessCallback'
+    par_data_inspection_feedback: \d+
+  options:
+    parameters:
+      par_data_inspection_feedback:
+        type: entity:par_data_inspection_feedback
+
+par_inspection_feedback_view_flows.reply:
+  path: '/inspection-feedback/{par_data_inspection_feedback}/reply'
+  defaults:
+    _form: '\Drupal\par_inspection_feedback_view_flows\Form\ParFeedbackReplyForm'
+    _title_callback: '\Drupal\par_inspection_feedback_view_flows\Form\ParFeedbackReplyForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    _custom_access: '\Drupal\par_inspection_feedback_view_flows\Form\ParFeedbackReplyForm::accessCallback'
+    par_data_inspection_feedback: \d+
+  options:
+    parameters:
+      par_data_inspection_feedback:
+        type: entity:par_data_inspection_feedback
