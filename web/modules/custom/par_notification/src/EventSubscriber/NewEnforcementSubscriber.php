@@ -35,7 +35,7 @@ class NewEnforcementSubscriber implements EventSubscriberInterface {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[EntityEvents::create('par_data_enforcement_notice')][] = ['onNewEnforcement', 800];
+    $events[EntityEvents::insert('par_data_enforcement_notice')][] = ['onNewEnforcement', 800];
 
     return $events;
   }
