@@ -392,9 +392,69 @@ function par_data_update_8026() {
 }
 
 /**
- * Tidy up databases.
+ * Correct missing addresses.
  */
 function par_data_update_8027() {
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  $allowed = [
+    'GB-ENG' => 'England',
+    'GB-SCT' => 'Scotland',
+    'GB-WLS' => 'Wales',
+    'GB-NIR' => 'Northern Ireland',
+  ];
+
+  $types = ['par_data_premises', 'par_data_organisation'];
+
+  // Premises query.
+  $query = $par_data_manager->getEntityQuery('par_data_premises');
+  $premises_ids = $query->condition('nation', array_keys($allowed), 'NOT IN')
+    ->execute();
+
+  // Organisation query.
+  $query = $par_data_manager->getEntityQuery('par_data_organisation');
+  $group = $query
+    ->orConditionGroup()
+    ->condition('nation', array_keys($allowed), 'NOT IN')
+    ->condition('nation', NULL, 'IS NULL');
+  $organisation_ids = $query->condition($group)
+    ->execute();
+
+
+  $premises_entities = \Drupal::entityTypeManager()->getStorage('par_data_premises')->loadMultiple(array_unique($premises_ids));
+  $organisation_entities = \Drupal::entityTypeManager()->getStorage('par_data_organisation')->loadMultiple(array_unique($organisation_ids));
+
+  foreach ($premises_entities as $entity) {
+    // See if we can convert the entity.
+    $nation = $entity->get('nation')->getString();
+    if (!empty($nation) && $key = array_search(trim($nation), $allowed)) {
+      $entity->setNation($key, TRUE);
+      $entity->save();
+    }
+  }
+
+  foreach ($organisation_entities as $entity) {
+    // See if we can convert the entity.
+    $nation = $entity->get('nation')->getString();
+    if (!empty($nation) && $key = array_search(trim($nation), $allowed)) {
+      $entity->setNation($key, TRUE);
+      $entity->save();
+    }
+
+    if ($entity->get('nation')->isEmpty()) {
+      $premises = $entity->getPremises(TRUE);
+      if ($premises && !$premises->get('nation')->isEmpty()) {
+        $entity->setNation($premises->get('nation')->getString(), TRUE);
+        $entity->save();
+      }
+    }
+  }
+}
+
+/**
+ * Tidy up databases.
+ */
+function par_data_update_8028() {
   // Remove tables for test modules.
   $db = \Drupal::database();
   $tables_to_remove = ['watchdog', 'maillog', 'webprofiler'];
@@ -406,5 +466,12 @@ function par_data_update_8027() {
   }
 
   // Ensure all file fields are up to date.
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
+
+/**
+ * Update to physical model includes new message entities.
+ */
+function par_data_update_8029() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }

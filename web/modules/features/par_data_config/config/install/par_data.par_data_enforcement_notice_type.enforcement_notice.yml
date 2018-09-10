@@ -14,7 +14,7 @@ configuration:
       - notice_type
       - 'enforcement between'
       - field_primary_authority
-      - 'and'
+      - and
       - field_organisation
     status_field: enforcement_notice_status
   enforcement_notice_status:

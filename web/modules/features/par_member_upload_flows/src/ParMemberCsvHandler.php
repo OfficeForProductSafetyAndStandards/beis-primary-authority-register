@@ -488,7 +488,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       'postal_code' => $this->getValue($data, 'postcode'),
     ];
     $normalized['par_data_premises']->set('address', $address);
-    $normalized['par_data_premises']->set('nation', $this->getValue($data, 'nation'));
+    $normalized['par_data_premises']->setNation($this->getValue($data, 'nation'));
 
     // Set the legal entities.
     $normalized['par_data_legal_entity'][0]->set('registered_name', $this->getValue($data, 'legal_entity_name_first'));

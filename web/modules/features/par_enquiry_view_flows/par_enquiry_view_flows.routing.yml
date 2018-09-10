@@ -1,0 +1,27 @@
+par_enquiry_view_flows.view_feedback:
+  path: '/general-enquiry/{par_data_general_enquiry}/view'
+  defaults:
+    _controller: '\Drupal\par_enquiry_view_flows\Controller\ParEnquiryViewController::build'
+    _title_callback: '\Drupal\par_enquiry_view_flows\Controller\ParEnquiryViewController::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    _custom_access: '\Drupal\par_enquiry_view_flows\Controller\ParEnquiryViewController::accessCallback'
+    par_data_general_enquiry: \d+
+  options:
+    parameters:
+      par_data_general_enquiry:
+        type: entity:par_data_general_enquiry
+
+par_enquiry_view_flows.reply:
+  path: '/general-enquiry/{par_data_general_enquiry}/reply'
+  defaults:
+    _form: '\Drupal\par_enquiry_view_flows\Form\ParEnquiryReplyForm'
+    _title_callback: '\Drupal\par_enquiry_view_flows\Form\ParEnquiryReplyForm::titleCallback'
+  requirements:
+    _permission: 'raise enforcement notice'
+    _custom_access: '\Drupal\par_enquiry_view_flows\Form\ParEnquiryReplyForm::accessCallback'
+    par_data_general_enquiry: \d+
+  options:
+    parameters:
+      par_data_general_enquiry:
+        type: entity:par_data_general_enquiry

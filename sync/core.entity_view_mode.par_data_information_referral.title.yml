@@ -1,0 +1,10 @@
+uuid: 982abe7d-5625-419d-85a6-795279241b83
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_information_referral.title
+label: Title
+targetEntityType: par_data_information_referral
+cache: true

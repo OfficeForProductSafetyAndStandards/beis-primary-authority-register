@@ -153,7 +153,8 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     parent::validateForm($form, $form_state);
 
     if (!array_keys(array_filter($form_state->getValue('regulatory_functions')))) {
-      $this->setElementError('regulatory_functions', $form_state, 'Please select at least one regulatory function.');
+      $id = $this->getElementId(['regulatory_functions'], $form);
+      $form_state->setErrorByName($this->getElementName('regulatory_functions'), $this->wrapErrorMessage('You must select at least one regulatory function.', $id));
     };
   }
 

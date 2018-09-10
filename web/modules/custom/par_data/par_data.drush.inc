@@ -29,7 +29,7 @@ SET init=sub.hashemail, mail=sub.hashemail, name=sub.name
 FROM (SELECT trunc(random() * 999999999999 + 1) as name, mail, md5(mail) || '@localhost.localdomain' as hashemail
       FROM users_field_data) AS sub
 WHERE u.mail=sub.mail
-AND u.uid > 1;
+AND u.uid > 1 AND u.mail NOT LIKE '';
 SQL;
     $par_data_person_query = <<<SQL
 UPDATE {$table} AS p

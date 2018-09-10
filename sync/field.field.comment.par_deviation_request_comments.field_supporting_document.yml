@@ -1,0 +1,27 @@
+uuid: 5bd8b114-fa54-415b-b6a9-d4347a5cf5de
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.par_deviation_request_comments
+    - field.storage.comment.field_supporting_document
+  module:
+    - file
+id: comment.par_deviation_request_comments.field_supporting_document
+field_name: field_supporting_document
+entity_type: comment
+bundle: par_deviation_request_comments
+label: 'Supporting documents'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: documents/deviation_request
+  file_extensions: 'jpg jpeg gif png tif pdf txt rdf doc docx odt xls xlsx csv ods ppt pptx odp pot potx pps'
+  max_filesize: '20 MB'
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

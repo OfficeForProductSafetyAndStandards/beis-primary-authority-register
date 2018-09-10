@@ -1,0 +1,48 @@
+langcode: en
+status: true
+dependencies: {  }
+id: enquiry
+label: 'Enquiry'
+default_section_title: 'general enquiry'
+default_title: null
+description: ''
+save_method: end
+states:
+  - par_data_partnership
+steps:
+  1:
+    route: par_enquiry_send_flows.select_authority
+    form_id: par_authority_selection
+    components:
+      authority_select: {}
+  2:
+    route: par_enquiry_send_flows.officer_details
+    form_id: par_enforcement_officer_details
+    components:
+      contact_details_basic: {}
+    form_data:
+      authority_selection: par_authority_selection
+  3:
+    route: par_enquiry_send_flows.enquiry
+    form_id: par_enquiry
+    form_data:
+      enforcing_officer: par_enforcement_officer_details
+      authority_selection: par_authority_selection
+    components:
+      enforcement_full_summary: {}
+      general_enquiry: {}
+  4:
+    route: par_enquiry_send_flows.review_enquiry
+    form_id: par_deviation_request_review
+    components:
+      enforcement_full_summary: {}
+      enquiry_detail: {}
+    form_data:
+      enforcing_officer: par_enforcement_officer_details
+      authority_selection: par_authority_selection
+      enquiry: par_enquiry
+    redirect:
+      request_details: 3
+      save: 5
+  5:
+    route: par_enquiry_send_flows.enquiry_confirmed

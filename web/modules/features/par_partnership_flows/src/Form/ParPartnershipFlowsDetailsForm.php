@@ -241,7 +241,8 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     // Make sure the confirm box is ticked.
     $checkbox = $this->getInformationCheckbox();
     if (!$par_data_partnership->getBoolean($checkbox) && !$form_state->getValue($checkbox)) {
-      $this->setElementError($checkbox, $form_state, 'Please confirm you have reviewed the details.');
+      $id = $this->getElementId((array) $checkbox, $form);
+      $form_state->setErrorByName($this->getElementName('par_data_authority_id'), $this->wrapErrorMessage('You must confirm you have reviewed the details.', $id));
     }
   }
 

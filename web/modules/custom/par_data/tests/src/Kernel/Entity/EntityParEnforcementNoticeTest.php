@@ -56,8 +56,6 @@ class EntityParEnforcementNoticeTest extends ParDataTestBase {
    * Test to validate an authority entity.
    */
   public function testEnforcementNoticeRequiredLengthFields() {
-    $this->createUser();
-
     $values = [
       'notice_type' => $this->randomString(256),
       'legal_entity_name' => $this->randomString(501),
@@ -72,7 +70,6 @@ class EntityParEnforcementNoticeTest extends ParDataTestBase {
    * Test to create and save an authority entity.
    */
   public function testEntityCreate() {
-    $this->createUser();
     $entity = ParDataEnforcementNotice::create($this->getEnforcementNoticeValues());
     $this->assertTrue($entity->save(), 'Par Enforcement Notice entity saved correctly.');
   }

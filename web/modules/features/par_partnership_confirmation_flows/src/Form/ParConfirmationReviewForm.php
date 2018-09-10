@@ -191,7 +191,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
     ];
 
     $url = Url::fromUri('internal:/par-terms-and-conditions');
-    $terms_link = Link::fromTextAndUrl(t('Terms & Conditions'), $url);
+    $terms_link = Link::fromTextAndUrl(t('Terms & Conditions (opens in a new window)'), $url);
     $form['terms_organisation_agreed'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('I have read and agree to the %terms.', ['%terms' => $terms_link->toString()]),
@@ -241,7 +241,10 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
     // Set the data for the about form.
     $about_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_about_business');
+    $address_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_address');
+    $nation = $this->getFlowDataHandler()->getTempDataValue('country', $address_cid);
     $par_data_organisation->set('comments', $this->getFlowDataHandler()->getTempDataValue('about_business', $about_cid));
+    $par_data_organisation->setNation($nation);
 
     // Set the data for the address form.
     $par_data_premises = $par_data_organisation->getPremises(TRUE);
@@ -249,7 +252,6 @@ class ParConfirmationReviewForm extends ParBaseForm {
       $par_data_premises = ParDataPremises::create();
     }
 
-    $address_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_address');
     $address = [
       'country_code' => $this->getFlowDataHandler()->getTempDataValue('country_code', $address_cid),
       'address_line1' => $this->getFlowDataHandler()->getTempDataValue('address_line1', $address_cid),
@@ -259,7 +261,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       'postal_code' => $this->getFlowDataHandler()->getTempDataValue('postcode', $address_cid),
     ];
     $par_data_premises->set('address', $address);
-    $par_data_premises->set('nation', $this->getFlowDataHandler()->getTempDataValue('country', $address_cid));
+    $par_data_premises->setNation($nation);
 
     // Set the data for the contact form.
     $par_data_person = $par_data_partnership->getOrganisationPeople(TRUE);

@@ -42,4 +42,4 @@ Feature: Enforcement Officer - Issue enforcement notice
         And the element "#par-enforcement-notice-raise-review" contains the text "You will be notified by email of the outcome of this notification"
         When I click on the button "#edit-save"
         Then the element "h1.heading-xlarge" contains the text "Primary Authority Register"
-#       When I click the link text "See enforcement notices"
+#       When I click the link text "See your enforcement notices"

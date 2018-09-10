@@ -1,0 +1,21 @@
+uuid: f2181dbc-5b5b-4391-8a05-ad9b7f20f855
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.par_deviation_request_comments
+    - field.storage.comment.comment_body
+  module:
+    - text
+id: comment.par_deviation_request_comments.comment_body
+field_name: comment_body
+entity_type: comment
+bundle: par_deviation_request_comments
+label: Comment
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

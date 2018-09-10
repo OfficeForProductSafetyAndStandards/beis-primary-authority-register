@@ -144,7 +144,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       ];
 
       $url = Url::fromUri('internal:/par-terms-and-conditions', ['attributes' => ['target' => '_blank']]);
-      $terms_link = Link::fromTextAndUrl(t('Terms & Conditions'), $url);
+      $terms_link = Link::fromTextAndUrl(t('Terms & Conditions (opens in a new window)'), $url);
       $form['terms_authority_agreed'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('I have read and agree to the %terms.', ['%terms' => $terms_link->toString()]),
@@ -203,8 +203,6 @@ class ParConfirmationReviewForm extends ParBaseForm {
       $par_data_organisation->get('field_person')->appendItem($organisation_contact->id());
 
       $par_data_organisation->get('field_premises')->appendItem($par_data_premises->id());
-      $cid_organisation_address = $this->getFlowNegotiator()->getFormKey('organisation_address');
-      $par_data_organisation->set('nation', $this->getFlowDataHandler()->getDefaultValues('country','', $cid_organisation_address));
 
       $par_data_partnership->set('field_organisation_person', $organisation_contact->id());
       $par_data_partnership->set('field_authority_person', $primary_authority_contact->id());
@@ -285,8 +283,10 @@ class ParConfirmationReviewForm extends ParBaseForm {
       ]);
     }
 
+    $cid_organisation_address = $this->getFlowNegotiator()->getFormKey('organisation_address');
+    $nation = $this->getFlowDataHandler()->getDefaultValues('country','', $cid_organisation_address);
+    $par_data_organisation->setNation($nation);
     if (!isset($par_data_premises)) {
-      $cid_organisation_address = $this->getFlowNegotiator()->getFormKey('organisation_address');
       $par_data_premises = ParDataPremises::create([
         'type' => 'premises',
         'uid' => $this->getCurrentUser()->id(),
@@ -298,8 +298,8 @@ class ParConfirmationReviewForm extends ParBaseForm {
           'administrative_area' => $this->getFlowDataHandler()->getDefaultValues('county','', $cid_organisation_address),
           'postal_code' => $this->getFlowDataHandler()->getDefaultValues('postcode','', $cid_organisation_address),
         ],
-        'nation' => $this->getFlowDataHandler()->getDefaultValues('country','', $cid_organisation_address),
       ]);
+      $par_data_premises->setNation($nation);
     }
 
     if (!isset($organisation_contact)) {

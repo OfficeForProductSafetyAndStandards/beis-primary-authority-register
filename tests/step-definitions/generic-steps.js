@@ -22,6 +22,14 @@ const shared = client.page.shared();
       })
   });
 
+  Then('I click the link with text {string}', function (string) {
+    return shared
+        .clickLinkByPartialText(string).then(function (){
+          return client
+            .waitForElementVisible('h1', 3000)
+      })
+  });
+
   Then('I click on the button {string}', function (string) {
     return client
         .click(string).then(function (){

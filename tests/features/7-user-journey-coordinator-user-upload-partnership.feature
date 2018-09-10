@@ -5,7 +5,7 @@ Feature: Coordinator User - Upload Members
 
         # PARTNERSHIPS DASHBOARD
         Given I am logged in as "par_coordinator@example.com"
-        And I click the link text "See your partnerships"
+        And I click the link with text "See your partnerships"
         When I click the link text "Organisation For Coordinated Partnership"
         Then the element "h1" is not empty
 
@@ -106,7 +106,7 @@ Feature: Coordinator User - Upload Members
 
         Given I am logged in as "par_coordinator@example.com"
 
-        And I click the link text "See your partnerships"
+        And I click the link with text "See your partnerships"
         And I click the link text "Organisation For Coordinated Partnership"
         Then the element "h1" is not empty
         When I click the link text "Show members list"
@@ -132,7 +132,7 @@ Feature: Coordinator User - Upload Members
         # RE-CHECK MEMBERS (COORDINATOR)
 
         When I click the link text "Dashboard"
-        And I click the link text "See your partnerships"
+        And I click the link with text "See your partnerships"
         And I click the link text "Organisation For Coordinated Partnership"
         Then the element "h1" is not empty
         When I click the link text "Show members list"

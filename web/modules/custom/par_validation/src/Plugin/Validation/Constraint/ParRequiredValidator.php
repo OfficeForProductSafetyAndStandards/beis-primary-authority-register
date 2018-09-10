@@ -2,6 +2,9 @@
 
 namespace Drupal\par_validation\Plugin\Validation\Constraint;
 
+use Drupal\Core\Field\FieldItemInterface;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\user\Entity\Role;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -31,7 +34,7 @@ class ParRequiredValidator extends ConstraintValidator {
         }
         else {
           $message = $constraint->message;
-          $property = $value;
+          $property = $item instanceof FieldItemInterface ? $item->mainPropertyName() : $value;
         }
 
         if (!isset($item->$property) || false === $item->$property || (empty($item->$property) && '0' != $item->$property)) {

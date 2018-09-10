@@ -59,7 +59,8 @@ class ParPartnershipFlowsApplicationTypeForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
     if (!$form_state->getValue('application_type')) {
-      $this->setElementError('application_type', $form_state, 'Please select the type of application.');
+      $id = $this->getElementId(['application_type'], $form);
+      $form_state->setErrorByName($this->getElementName('application_type'), $this->wrapErrorMessage('You must select the type of application.', $id));
     }
   }
 

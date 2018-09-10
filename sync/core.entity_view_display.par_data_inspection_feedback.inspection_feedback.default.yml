@@ -9,9 +9,11 @@ dependencies:
     - field.field.par_data_inspection_feedback.inspection_feedback.field_person
     - par_data.par_data_inspection_feedback_type.inspection_feedback
   module:
+    - comment
     - datetime
+    - file_entity
+    - par_data
     - text
-    - user
 _core:
   default_config_hash: bD71-JNePuIGxSYKgsNY7LBORlEP0GQ7wuMkVIAntZ0
 id: par_data_inspection_feedback.inspection_feedback.default
@@ -19,82 +21,91 @@ targetEntityType: par_data_inspection_feedback
 bundle: inspection_feedback
 mode: default
 content:
-  field_enforcing_authority:
-    weight: 1
-    label: above
+  document:
+    label: hidden
+    weight: 2
+    region: content
     settings:
-      link: true
+      access_message: 'You don''t have access to download this file.'
+      text: 'Download [file:name]'
     third_party_settings: {  }
-    type: entity_reference_label
+    type: file_download_link
+  field_enforcing_authority:
+    weight: 5
+    label: hidden
+    settings:
+      view_mode: title
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
     region: content
   field_inspection_plan:
-    weight: 2
-    label: above
+    weight: 6
+    label: hidden
     settings:
-      link: true
+      view_mode: title
+      link: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_entity_view
     region: content
   field_partnership:
-    weight: 3
-    label: above
+    weight: 7
+    label: hidden
     settings:
-      link: true
+      view_mode: title
+      link: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_entity_view
     region: content
   field_person:
-    weight: 4
-    label: above
+    weight: 8
+    label: hidden
     settings:
-      link: true
+      view_mode: title
+      link: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_entity_view
     region: content
-  name:
-    label: above
-    type: string
-    weight: -4
+  messages:
+    type: comment_default
+    weight: 9
     region: content
+    label: hidden
     settings:
-      link_to_entity: false
+      view_mode: default
+      pager_id: 0
     third_party_settings: {  }
   notes:
     label: hidden
     type: text_default
-    weight: 0
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
   primary_authority_notes:
     label: hidden
     type: text_default
-    weight: 0
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
   primary_authority_status:
     label: hidden
-    weight: 0
+    weight: 3
     region: content
     settings:
-      link_to_entity: false
+      display_original_value: false
     third_party_settings: {  }
-    type: string
+    type: par_list_formatter
   request_date:
     label: hidden
     weight: 0
     region: content
     settings:
-      format_type: medium
       timezone_override: ''
+      format_type: gds_date_format
     third_party_settings: {  }
     type: datetime_default
-  user_id:
-    label: hidden
-    type: author
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-hidden: {  }
+hidden:
+  name: true
+  user_id: true
