@@ -475,3 +475,28 @@ function par_data_update_8028() {
 function par_data_update_8029() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
+
+/**
+ * Remove Enforcement Notices that were created in duplicate and that have no actions.
+ */
+function par_data_update_8031() {
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  // Retrieve all ENs with no actions.
+  $conditions = [
+    [
+      'AND' => [
+        ['field_enforcement_action', '', 'IS NULL'],
+      ]
+    ],
+  ];
+  $par_data_enforcement_notices = $par_data_manager->getEntitiesByQuery('par_data_enforcement_notice', $conditions);
+
+  foreach ($par_data_enforcement_notices as $par_data_enforcement_notice) {
+    if ($par_data_enforcement_notice->getEnforcementActions()) {
+      continue;
+    }
+    // Permanently remove this entity.
+    $par_data_enforcement_notice->destroy();
+  }
+}
