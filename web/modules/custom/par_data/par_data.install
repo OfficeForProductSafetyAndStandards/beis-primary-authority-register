@@ -475,3 +475,46 @@ function par_data_update_8028() {
 function par_data_update_8029() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
+
+/**
+ * Remove Enforcement Notices that were created in duplicate and that have no actions.
+ */
+function par_data_update_8030() {
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  // Retrieve all ENs with no actions.
+  $conditions = [
+    [
+      'AND' => [
+        ['field_enforcement_action', '', 'IS NULL'],
+      ]
+    ],
+  ];
+  $par_data_enforcement_notices = $par_data_manager->getEntitiesByQuery('par_data_enforcement_notice', $conditions);
+
+  foreach ($par_data_enforcement_notices as $par_data_enforcement_notice) {
+    if ($par_data_enforcement_notice->getEnforcementActions()) {
+      continue;
+    }
+    // Permanently remove this entity.
+    $par_data_enforcement_notice->destroy();
+  }
+
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
+
+/**
+ * Sync the old transform buckets to the new beis owned buckets.
+ */
+function par_data_update_8031() {
+  // For Private files.
+  if ($new = getenv('S3_BUCKET_PRIVATE') && $old = getenv('TRANSFORM_BUCKET_PRIVATE')) {
+    $exec = drush_shell_exec("aws s3 sync s3://{$old}/ s3://{$new}/");
+    drush_print(drush_shell_exec_output());
+  }
+  // For Public files.
+  if ($new = getenv('S3_BUCKET_PUBLIC') && $old = getenv('TRANSFORM_BUCKET_PUBLIC')) {
+    $exec = drush_shell_exec("aws s3 sync s3://{$old}/ s3://{$new}/");
+    drush_print(drush_shell_exec_output());
+  }
+}
