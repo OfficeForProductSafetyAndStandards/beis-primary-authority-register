@@ -880,29 +880,6 @@ $settings['flysystem'] = [
     'serve_js' => FALSE,
     'serve_css' => FALSE,
   ],
-  'transforms3public' => [
-    'name' => 'Transform S3 Public',
-    'description' => 'The old transform S3 store for public files.',
-    'driver' => 'local',
-    'config' => [
-      'root' => $settings['file_public_path'],
-      'public' => TRUE,
-    ],
-    'cache' => TRUE,
-    'serve_js' => TRUE,
-    'serve_css' => TRUE,
-  ],
-  'transforms3private' => [
-    'name' => 'Transform S3 Private',
-    'description' => 'The old transform S3 store for private files.',
-    'driver' => 'local',
-    'config' => [
-      'root' => $settings['file_private_path'],
-    ],
-    'cache' => TRUE,
-    'serve_js' => FALSE,
-    'serve_css' => FALSE,
-  ],
 ];
 
 // Only use S3 public store when required.
@@ -950,34 +927,6 @@ if (getenv('S3_BUCKET_PRIVATE')) {
       'prefix' => getenv('APP_ENV'),
     ],
   ] + $settings['flysystem']['s3private'];
-}
-
-// Set the transform s3 public bucket so contents can be synced.
-if (getenv('TRANSFORM_BUCKET_PUBLIC')) {
-  $settings['flysystem']['transforms3public'] = [
-    'driver' => 's3',
-    'config' => [
-      'key'    => getenv('TRANSFORM_ACCESS_KEY'),
-      'secret' => getenv('TRANSFORM_SECRET_KEY'),
-      'region' => 'eu-west-1',
-      'bucket' => getenv('TRANSFORM_BUCKET_PUBLIC'),
-      'prefix' => getenv('APP_ENV'),
-    ],
-  ] + $settings['flysystem']['transforms3public'];
-}
-
-// Set the transform s3 private bucket so contents can be synced
-if (getenv('TRANSFORM_BUCKET_PRIVATE')) {
-  $settings['flysystem']['transforms3private'] = [
-    'driver' => 's3',
-    'config' => [
-      'key'    => getenv('TRANSFORM_ACCESS_KEY'),
-      'secret' => getenv('TRANSFORM_SECRET_KEY'),
-      'region' => 'eu-west-1',
-      'bucket' => getenv('TRANSFORM_BUCKET_PRIVATE'),
-      'prefix' => getenv('APP_ENV'),
-    ],
-  ] + $settings['flysystem']['transforms3private'];
 }
 
 /**
