@@ -27,7 +27,7 @@ display:
         options:
           perm: 'access par_data_general_enquiry entities'
       cache:
-        type: tag
+        type: none
         options: {  }
       query:
         type: views_query
