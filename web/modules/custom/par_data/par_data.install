@@ -507,14 +507,19 @@ function par_data_update_8030() {
  * Sync the old transform buckets to the new beis owned buckets.
  */
 function par_data_update_8031() {
+  $private_old = getenv('TRANSFORM_BUCKET_PRIVATE');
+  $public_old = getenv('TRANSFORM_BUCKET_PUBLIC');
+  $private_new = getenv('S3_BUCKET_PRIVATE');
+  $public_new = getenv('S3_BUCKET_PRIVATE');
+
   // For Private files.
-  if ($new = getenv('S3_BUCKET_PRIVATE') && $old = getenv('TRANSFORM_BUCKET_PRIVATE')) {
-    $exec = drush_shell_exec("aws s3 sync s3://{$old}/ s3://{$new}/");
+  if (!empty($private_new) && !empty($private_old)) {
+    drush_shell_exec("aws s3 sync s3://{$private_old}/ s3://{$private_new}/");
     drush_print(drush_shell_exec_output());
   }
   // For Public files.
-  if ($new = getenv('S3_BUCKET_PUBLIC') && $old = getenv('TRANSFORM_BUCKET_PUBLIC')) {
-    $exec = drush_shell_exec("aws s3 sync s3://{$old}/ s3://{$new}/");
+  if (!empty($public_new) && !empty($public_old)) {
+    drush_shell_exec("aws s3 sync s3://{$public_old}/ s3://{$public_new}/");
     drush_print(drush_shell_exec_output());
   }
 }
