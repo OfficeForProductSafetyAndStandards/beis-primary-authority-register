@@ -29,7 +29,7 @@ display:
         options:
           perm: 'access par_data_deviation_request entities'
       cache:
-        type: tag
+        type: none
         options: {  }
       query:
         type: views_query
