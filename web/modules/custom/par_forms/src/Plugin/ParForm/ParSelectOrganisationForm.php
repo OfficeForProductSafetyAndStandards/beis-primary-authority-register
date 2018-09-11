@@ -47,12 +47,12 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
     // Get all the allowed authorities.
     $partnership_organisations = $this->getFlowDataHandler()->getFormPermValue('partnership_organisations');
 
+    if (count($partnership_organisations) === 1) {
+      $organisation = key($partnership_organisations);
+      $this->getFlowDataHandler()->setTempDataValue('par_data_organisation_id', $organisation);
+    }
     // If the partnership is direct or there are not multiple members proceed to the next step.
     if (count($partnership_organisations) <= 1) {
-      if (!empty($partnership_organisations)) {
-        $organisation = current($partnership_organisations);
-        $this->getFlowDataHandler()->setTempDataValue('par_data_organisation_id', $organisation->id());
-      }
       $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
       return new RedirectResponse($url);
     }
