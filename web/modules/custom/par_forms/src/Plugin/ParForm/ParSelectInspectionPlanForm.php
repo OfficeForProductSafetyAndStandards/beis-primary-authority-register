@@ -42,7 +42,7 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
         '#title' => $this->t('There are no inspection plans'),
         'text' => [
           '#type' => 'markup',
-          '#markup' => $this->t("This partnership is not covered by any inspection plans, please contact the primary authority to request an inspection plan."),
+          '#markup' => $this->t("This partnership is not covered by any inspection plans, please contact the primary authority to request an inspection plan be added first."),
           '#prefix' => '<p>',
           '#suffix' => '</p>',
         ],
