@@ -60,7 +60,7 @@ function out($user, $bucketOwner, $isDenied) {
 
 $parEnvs = [
     'production' => [
-        'bucket' => 'transform-par-beta-production-private',
+        'bucket' => readVaultValue('S3_BUCKET_PRIVATE', 'secret/par/env/' . $parEnvName),
         'path' => '/documents/advice',
         'document' => '10.Assured Advice.docx',
     ],    
@@ -68,7 +68,7 @@ $parEnvs = [
 
 foreach (['staging', 'demo', 'branch', 'continuous'] as $parEnvName) {
     $parEnvs[$parEnvName] = [
-        'bucket' => 'transform-par-beta-development-private',
+        'bucket' => readVaultValue('S3_BUCKET_PRIVATE', 'secret/par/env/' . $parEnvName),
         'path' => '/' . $parEnvName . '/documents/advice',
         'document' => '10.Assured Advice.docx',
     ];
