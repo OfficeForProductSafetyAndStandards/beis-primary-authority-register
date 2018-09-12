@@ -18,6 +18,11 @@ class ParSelectLegalEntitiesForm extends ParBaseForm {
   protected $pageTitle = 'Choose the legal entities for the partnership';
 
   /**
+   * {@inheritdoc}
+   */
+  protected $skipQueryRedirection = TRUE;
+
+  /**
    * Load the data for this form.
    */
   public function loadData() {
@@ -40,7 +45,7 @@ class ParSelectLegalEntitiesForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state) {
     // If there are no existing legal entities we can skip this step.
     if (!$this->getFlowDataHandler()->getParameter('organisation_legal_entities')) {
-      return $this->redirect($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
+      return $this->parRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
     }
 
     return parent::buildForm($form, $form_state);
