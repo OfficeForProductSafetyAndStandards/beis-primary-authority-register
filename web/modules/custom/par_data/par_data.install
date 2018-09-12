@@ -504,6 +504,17 @@ function par_data_update_8030() {
 }
 
 /**
+ * Update all block entities to be resuable.
+ */
+function par_data_update_8031() {
+  $blocks = \Drupal\block_content\Entity\BlockContent::loadMultiple();
+  foreach ($blocks as $block) {
+    $block->setReusable();
+    $block->save();
+  }
+}
+
+/**
  * Sync the old transform buckets to the new beis owned buckets.
  *
  * This is not ready to go until the new BEIS owned AWS S3 buckets are ready for production.
