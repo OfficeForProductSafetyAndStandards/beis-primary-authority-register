@@ -45,16 +45,7 @@ class ParSelectLegalEntitiesForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state) {
     // If there are no existing legal entities we can skip this step.
     if (!$this->getFlowDataHandler()->getParameter('organisation_legal_entities')) {
-      // Determine whether to use the 'destination' query parameter
-      // to determine redirection preferences.
-      $options = [];
-      $query = $this->getRequest()->query;
-      if ($this->skipQueryRedirection && $query->has('destination')) {
-        $options['query']['destination'] = $query->get('destination');
-        $query->remove('destination');
-      }
-
-      return $this->redirect($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams(), $options);
+      return $this->parRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
     }
 
     return parent::buildForm($form, $form_state);
