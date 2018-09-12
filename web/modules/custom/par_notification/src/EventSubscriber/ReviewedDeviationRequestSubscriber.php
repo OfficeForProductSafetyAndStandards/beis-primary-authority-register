@@ -13,14 +13,14 @@ use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ReviewedEnforcementSubscriber implements EventSubscriberInterface {
+class ReviewedDeviationRequestSubscriber implements EventSubscriberInterface {
 
   /**
    * The message template ID created for this notification.
    *
-   * @see /admin/structure/message/manage/reviewed_enforcement
+   * @see /admin/structure/message/manage/reviewed_deviation_request
    */
-  const MESSAGE_ID = 'reviewed_enforcement';
+  const MESSAGE_ID = 'reviewed_deviation_request';
 
   /**
    * The notication plugin that will deliver these notification messages.
@@ -35,7 +35,8 @@ class ReviewedEnforcementSubscriber implements EventSubscriberInterface {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[ParDataEvent::statusChange('par_data_enforcement_notice', 'reviewed')][] = ['onEnforcementReview', 800];
+    $events[ParDataEvent::statusChange('par_data_deviation_request', 'approved')][] = ['onDeviationRequestReview', 800];
+    $events[ParDataEvent::statusChange('par_data_deviation_request', 'blocked')][] = ['onDeviationRequestReview', 800];
 
     return $events;
   }
@@ -70,9 +71,9 @@ class ReviewedEnforcementSubscriber implements EventSubscriberInterface {
   /**
    * @param ParDataEventInterface $event
    */
-  public function onEnforcementReview(ParDataEvent $event) {
-    /** @var ParDataEntityInterface $par_data_enforcement_notice */
-    $par_data_enforcement_notice = $event->getEntity();
+  public function onDeviationRequestReview(ParDataEvent $event) {
+    /** @var ParDataEntityInterface $par_data_deviation_request */
+    $par_data_deviation_request = $event->getEntity();
 
     // Load the message template.
     $template_storage = $this->getEntityTypeManager()->getStorage('message_template');
@@ -80,17 +81,17 @@ class ReviewedEnforcementSubscriber implements EventSubscriberInterface {
 
     $message_storage = $this->getEntityTypeManager()->getStorage('message');
 
-    if (!$message_template || !$par_data_enforcement_notice) {
+    if (!$message_template || !$par_data_deviation_request) {
       // @TODO Log that the template couldn't be loaded.
       return;
     }
 
     // Get the link to approve this notice.
     $options = ['absolute' => TRUE];
-    $enforcement_url = Url::fromRoute('par_enforcement_send_flows.send_enforcement', ['par_data_enforcement_notice' => $par_data_enforcement_notice->id()], $options);
+    $deviation_url = Url::fromRoute('par_deviation_view_flows.view_deviation', ['par_data_deviation_request' => $par_data_deviation_request->id()], $options);
 
     // Notify the enforcing officer.
-    $enforcing_officer = $par_data_enforcement_notice->getEnforcingPerson(TRUE);
+    $enforcing_officer = $par_data_deviation_request->getEnforcingPerson(TRUE);
 
     // Notify all users in this authority with the appropriate permissions.
     if (($account = $enforcing_officer->getUserAccount()) && $enforcing_officer->getUserAccount()->hasPermission('approve enforcement notice')
@@ -105,13 +106,13 @@ class ReviewedEnforcementSubscriber implements EventSubscriberInterface {
       ]);
 
       // Add contextual information to this message.
-      if ($message->hasField('field_enforcement_notice')) {
-        $message->set('field_enforcement_notice', $par_data_enforcement_notice);
+      if ($message->hasField('field_deviation_request')) {
+        $message->set('field_deviation_request', $par_data_deviation_request);
       }
 
       // Add some custom arguments to this message.
       $message->setArguments([
-        '@enforcement_notice_view' => $enforcement_url->toString(),
+        '@deviation_request_view' => $deviation_url->toString(),
       ]);
 
       // The owner is the user who this message belongs to.

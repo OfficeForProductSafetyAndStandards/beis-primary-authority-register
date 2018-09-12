@@ -1,0 +1,29 @@
+uuid: c84c32d5-810c-4f24-a295-c0dbb72beaf9
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.full
+    - field.field.message.reviewed_deviation_request.field_deviation_request
+    - field.field.message.reviewed_deviation_request.field_message_subject
+    - message.template.reviewed_deviation_request
+id: message.reviewed_deviation_request.full
+targetEntityType: message
+bundle: reviewed_deviation_request
+mode: full
+content:
+  field_deviation_request:
+    weight: 1
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_message_subject: true
