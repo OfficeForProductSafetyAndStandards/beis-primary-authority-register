@@ -148,22 +148,11 @@ class ParConfirmationReviewForm extends ParBaseForm {
     $form['legal_entities'] = $this->renderEntities('Legal entities', $legal_entities);
 
     // Display the links to change legal entities
-    if (!empty($par_data_organisation->getLegalEntity())) {
-      $form['legal_entities_select_link'] = [
-        '#type' => 'markup',
-        '#markup' => t('@link', [
-          '@link' => $this->getFlowNegotiator()->getFlow()
-            ->getLinkByCurrentOperation('legal_select', [], ['query' => ['destination' => $return_path]])
-            ->setText('Change existing legal entities added to the organisation')
-            ->toString(),
-        ]),
-      ];
-    }
-    $form['legal_entities_new_link'] = [
+    $form['legal_entity_link'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
         '@link' => $this->getFlowNegotiator()->getFlow()
-          ->getLinkByCurrentOperation('legal_add', [], ['query' => ['destination' => $return_path]])
+          ->getLinkByCurrentOperation('legal_select', [], ['query' => ['destination' => $return_path]])
           ->setText('Change the legal entities')
           ->toString(),
       ]),
