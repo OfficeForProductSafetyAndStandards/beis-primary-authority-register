@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [23.1.2] - 2019-09-11
+### Changed
+- Security update to core software.
+- Inspection plan feedback and deviation requests cannot be created without an inspection plan.
+### Fixed
+- Resolved caching issue with user's enquiry lists.
+- Resolved issue of multiple notifications sent to the primary authority when a new enforcement notice is created.
+### Removed
+- Removed duplicate enforcement notices with no actions attached.
+
 ## [23.0.0] - 2019-09-03
 ### Added
 - Request to deviate from inspection plan process.
