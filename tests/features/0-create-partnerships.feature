@@ -4,7 +4,10 @@ Feature: New Direct Partnership For PA To Approve
         Given I am logged in as "par_authority@example.com"
     
     @directpartneship
-    Scenario: New Direct Partnership   
+    Scenario: New Direct Partnership
+
+        # CHECK FEEDBACK LINK
+        Then the element "#block-sitewidehelpdeskmessage" contains the text "If you need assistance please call 0121 345 1201 or email pa@beis.gov.uk"
 
         # PARTNERSHIP APPLY
 
