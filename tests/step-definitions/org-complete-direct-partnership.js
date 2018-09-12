@@ -136,17 +136,19 @@ When('I review the completions for direct partnership {string}', function (partn
 // Starting point: at beginning of this application step
 When('I change the completed legal entities', function () {
   return shared
-  .clickLinkByPureText('Change the legal entities')
-  .assert.containsText('h1.heading-xlarge','Confirm the legal entity')
-   .click('#edit-par-component-legal-entity-1-remove')
-   .setValue('#edit-par-component-legal-entity-0-registered-name','Changed to Public Company')
-   .click('#edit-par-component-legal-entity-0-legal-entity-type option[value="public_limited_company"]')
-   .assert.containsText('.form-item-par-component-legal-entity-0-registered-number label','Provide the registration number')
-   .setValue('#edit-par-component-legal-entity-0-registered-number','55555555558')
-   .click('#edit-next')
-   .assert.containsText('h1.heading-xlarge','Review the partnership summary information below')
-   .assert.containsText('#edit-legal-entities','Changed to Public Company')
-   .assert.containsText('#edit-legal-entities','55555555558')
+    .clickLinkByPureText('Change the legal entities')
+    .assert.containsText('h1.heading-xlarge','Choose the legal entities for the partnership')
+    .click('#edit-next')
+    .assert.containsText('h1.heading-xlarge','Confirm the legal entity')
+    .click('#edit-par-component-legal-entity-1-remove')
+    .setValue('#edit-par-component-legal-entity-0-registered-name','Changed to Public Company')
+    .click('#edit-par-component-legal-entity-0-legal-entity-type option[value="public_limited_company"]')
+    .assert.containsText('.form-item-par-component-legal-entity-0-registered-number label','Provide the registration number')
+    .setValue('#edit-par-component-legal-entity-0-registered-number','55555555558')
+    .click('#edit-next')
+    .assert.containsText('h1.heading-xlarge','Review the partnership summary information below')
+    .assert.containsText('#edit-legal-entities','Changed to Public Company')
+    .assert.containsText('#edit-legal-entities','55555555558')
 });
 
 // Starting point: at beginning of this application step
