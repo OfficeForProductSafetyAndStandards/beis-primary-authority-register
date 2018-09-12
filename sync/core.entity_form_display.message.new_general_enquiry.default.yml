@@ -1,0 +1,31 @@
+uuid: 341b1312-61ef-4e04-9078-285e2835ffae
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.new_general_enquiry.field_general_enquiry
+    - field.field.message.new_general_enquiry.field_message_subject
+    - message.template.new_general_enquiry
+id: message.new_general_enquiry.default
+targetEntityType: message
+bundle: new_general_enquiry
+mode: default
+content:
+  field_general_enquiry:
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_message_subject:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden: {  }

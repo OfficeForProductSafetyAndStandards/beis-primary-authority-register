@@ -1,0 +1,25 @@
+uuid: 185b5343-874b-45b4-88df-d42807815c63
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - field.field.message.new_general_enquiry.field_general_enquiry
+    - field.field.message.new_general_enquiry.field_message_subject
+    - message.template.new_general_enquiry
+id: message.new_general_enquiry.mail_body
+targetEntityType: message
+bundle: new_general_enquiry
+mode: mail_body
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  partial_1:
+    weight: 0
+    region: content
+hidden:
+  field_general_enquiry: true
+  field_message_subject: true
