@@ -138,8 +138,6 @@ When('I change the completed legal entities', function () {
   return shared
     .assert.containsText('#edit-legal-entities','Change the legal entities')
     .clickLinkByPureText('Change the legal entities')
-    .assert.containsText('h1.heading-xlarge','Choose the legal entities for the partnership')
-    .click('#edit-next')
     .assert.containsText('h1.heading-xlarge','Confirm the legal entity')
     .click('#edit-par-component-legal-entity-1-remove')
     .setValue('#edit-par-component-legal-entity-0-registered-name','Changed to Public Company')
