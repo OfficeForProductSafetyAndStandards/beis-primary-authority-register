@@ -1,0 +1,31 @@
+uuid: 74c43265-823b-4dbd-8b7e-c78b962d2486
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.new_deviation_request.field_deviation_request
+    - field.field.message.new_deviation_request.field_message_subject
+    - message.template.new_deviation_request
+id: message.new_deviation_request.default
+targetEntityType: message
+bundle: new_deviation_request
+mode: default
+content:
+  field_deviation_request:
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_message_subject:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden: {  }
