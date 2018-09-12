@@ -52,6 +52,18 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   protected $accessResult;
 
   /**
+   * Whether to skip redirection based on the 'destination' query parameter.
+   *
+   * This is typically done if we want to group two sets of forms together,
+   * in which case we ignore the destination parameter for this form but
+   * pass it on to the next route. Once the next form is completed it will be
+   * redirected to the desintation parameter.
+   *
+   * @var boolean
+   */
+  protected $skipQueryRedirection = FALSE;
+
+  /**
    * Keys to be ignored for the saved data.
    *
    * Example: ['save', 'next', 'cancel'].
@@ -344,11 +356,22 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $values = $this->cleanseMultipleValues($values);
     $this->getFlowDataHandler()->setFormTempData($values);
 
-    // Set the redirect to the next form based on the flow configuration 'operation'
-    // parameter that matches the submit button's name.
+    // Get the redirect route to the next form based on the flow configuration
+    // 'operation' parameter that matches the submit button's name.
     $submit_action = $form_state->getTriggeringElement()['#name'];
     $next = $this->getFlowNegotiator()->getFlow()->getNextRoute($submit_action);
-    $form_state->setRedirect($next, $this->getRouteParams());
+
+    // Determine whether to use the 'destination' query parameter
+    // to determine redirection preferences.
+    $options = [];
+    $query = $this->getRequest()->query;
+    if ($this->skipQueryRedirection && $query->has('destination')) {
+      $options['query']['destination'] = $query->get('destination');
+      $query->remove('destination');
+    }
+
+    // Set the redirection.
+    $form_state->setRedirect($next, $this->getRouteParams(), $options);
   }
 
   /**
