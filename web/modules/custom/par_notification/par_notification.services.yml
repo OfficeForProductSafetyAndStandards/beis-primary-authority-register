@@ -1,4 +1,24 @@
 services:
+  par_notification.new_deviation_request_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\NewDeviationRequestSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  par_notification.reviewed_deviation_request_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\ReviewedDeviationRequestSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  par_notification.new_general_enquiry_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\NewGeneralEnquirySubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  par_notification.new_enquiry_reply_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\NewEnquiryReplySubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  par_notification.new_inspection_feedback_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\NewInspectionFeedbackSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
   par_notification.new_enforcement_subscriber:
     class: '\Drupal\par_notification\EventSubscriber\NewEnforcementSubscriber'
     tags:

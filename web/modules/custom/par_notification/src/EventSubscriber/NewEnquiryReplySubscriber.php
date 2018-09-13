@@ -71,7 +71,7 @@ class NewEnquiryReplySubscriber implements EventSubscriberInterface {
   /**
    * @param ParDataEventInterface $event
    */
-  public function onNewDeviationRequest(EntityEvent $event) {
+  public function onNewReply(EntityEvent $event) {
     /** @var CommentInterface $comment */
     $comment = $event->getEntity();
 
@@ -84,9 +84,10 @@ class NewEnquiryReplySubscriber implements EventSubscriberInterface {
     // Get the link to approve this notice.
     $options = ['absolute' => TRUE];
     $response_url = Url::fromRoute('view.par_user_deviation_requests.deviation_requests_page', [], $options);
-    // Get the response entity type to customize the message.
+    // Get the response entity type to customize the message,
+    // without the 'par' prefix.
     $par_data_entity = $comment->getCommentedEntity();
-    $response_entity_type = $par_data_entity->getEntityType()->getLowercaseLabel();
+    $response_entity_type = str_replace('par ', '', $par_data_entity->getEntityType()->getLowercaseLabel());
 
     if (!$message_template) {
       // @TODO Log that the template couldn't be loaded.
@@ -97,16 +98,18 @@ class NewEnquiryReplySubscriber implements EventSubscriberInterface {
     $contacts = [];
     if ($par_data_entity && $par_data_entity instanceof ParDataEntityInterface) {
       if ($authority_person = $par_data_entity->getPrimaryAuthorityContact()) {
-        if ($authority_person_account = $authority_person->getUserAccount()
-          && $authority_person->getUserAccount()->hasPermission('raise enforcement notice')
-          && $authority_person->getUserAccount()->id() !== $comment->getOwnerId()) {
+        $authority_person_account = $authority_person->getUserAccount();
+        if ($authority_person_account
+          && $authority_person_account->hasPermission('raise enforcement notice')
+          && $authority_person_account->id() !== $comment->getOwnerId()) {
           $contacts[$authority_person_account->id()] = $authority_person_account;
         }
       }
       if ($enforcing_person = $par_data_entity->getEnforcingPerson(TRUE)) {
-        if ($enforcing_person_account = $enforcing_person->getUserAccount()
-          && $enforcing_person->getUserAccount()->hasPermission('raise enforcement notice')
-          && $enforcing_person->getUserAccount()->id() !== $comment->getOwnerId()) {
+        $enforcing_person_account = $enforcing_person->getUserAccount();
+        if ($enforcing_person_account
+          && $enforcing_person_account->hasPermission('raise enforcement notice')
+          && $enforcing_person_account->id() !== $comment->getOwnerId()) {
           $contacts[$enforcing_person_account->id()] = $enforcing_person_account;
         }
       }

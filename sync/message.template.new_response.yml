@@ -7,7 +7,7 @@ label: 'New Response'
 description: 'This is a message sent to all relevant authority users on a new reply to an enquiry, deviation request or inspection '
 text:
   -
-    value: "<p>Dear Colleague,</p>\r\n\r\n<p>This email is confirmation that you have received a response to @enquiry_type.</p>\r\n\r\n<p>Please log on to the PA Register to see the full details of the response.</p>\r\n\r\n<p>^ @response_view</p>\r\n\r\n<p>Thank you</p>\r\n\r\n<p>&nbsp;</p>\r\n"
+    value: "<p>Dear Colleague,</p>\r\n\r\n<p>This email is confirmation that you have received a response to your @enquiry_type.</p>\r\n\r\n<p>Please log on to the PA Register to see the full details of the response.</p>\r\n\r\n<p>^ @response_view</p>\r\n\r\n<p>Thank you</p>\r\n\r\n<p>&nbsp;</p>\r\n"
     format: basic_html
 settings:
   'token options':
