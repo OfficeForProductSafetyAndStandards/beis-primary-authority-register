@@ -15,6 +15,7 @@ steps:
     form_id: par_enforcement_notice_approve
     components:
       enforcement_full_summary: {}
+      enforcement_detail: {}
       enforcement_action_review:
         cardinality: -1
     redirect:
@@ -24,6 +25,7 @@ steps:
     form_id: par_enforcement_referred_authority
     components:
       enforcement_full_summary: {}
+      enforcement_detail: {}
       enforcement_action_refer:
         cardinality: -1
     redirect:
