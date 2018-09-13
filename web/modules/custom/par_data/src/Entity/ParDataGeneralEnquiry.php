@@ -104,7 +104,7 @@ class ParDataGeneralEnquiry extends ParDataEntity {
   }
 
   /**
-   * Get the enforcing authority for this Deviation Request.
+   * Get the enforcing authority for this General Enquiry.
    */
   public function getEnforcingAuthority($single = FALSE) {
     $authorities = $this->get('field_enforcing_authority')->referencedEntities();
@@ -114,7 +114,7 @@ class ParDataGeneralEnquiry extends ParDataEntity {
   }
 
   /**
-   * Get the Partnership for this Deviation Request.
+   * Get the Partnership for this General Enquiry.
    *
    * @param boolean $single
    *
@@ -130,7 +130,7 @@ class ParDataGeneralEnquiry extends ParDataEntity {
   }
 
   /**
-   * Get the enforcing officer person for the current Deviation Request.
+   * Get the enforcing officer person for the current General Enquiry.
    */
   public function getEnforcingPerson($single = FALSE) {
     $people = $this->get('field_person')->referencedEntities();
