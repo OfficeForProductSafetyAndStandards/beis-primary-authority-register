@@ -1,0 +1,4 @@
+text:
+  -
+    value: "<p>Dear Colleague,</p>\r\n\r\n<p>This email is confirmation that you have received a response to your @enquiry_type.</p>\r\n\r\n<p>Please log on to the PA Register to see the full details of the response.</p>\r\n\r\n<p>^ @response_view</p>\r\n\r\n<p>Thank you</p>\r\n\r\n<p>&nbsp;</p>\r\n"
+    format: basic_html

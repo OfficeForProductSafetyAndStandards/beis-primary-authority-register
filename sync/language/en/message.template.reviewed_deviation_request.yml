@@ -1,0 +1,4 @@
+text:
+  -
+    value: "<p>Dear Colleague,</p>\r\n\r\n<p>This email is confirmation that a deviation request that you have submitted has been reviewed.</p>\r\n\r\n<p>Please log on to the PA Register to see the full details of the deviation request.</p>\r\n\r\n<p>^ @deviation_request_view</p>\r\n\r\n<p>Thank you</p>\r\n"
+    format: basic_html

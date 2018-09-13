@@ -17,7 +17,7 @@ class PartnershipRevocationSubscriber implements EventSubscriberInterface {
   /**
    * The message template ID created for this notification.
    *
-   * @see /admin/structure/message/manage/partnership_revocation_notification
+   * @see /admin/structure/message/manage/partnership_revocation_notificat
    */
   const MESSAGE_ID = 'partnership_revocation_notificat';
 

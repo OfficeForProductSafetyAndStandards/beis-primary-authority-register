@@ -2,6 +2,7 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
+use Drupal\comment\CommentInterface;
 use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityEvents;
 use Drupal\Core\Link;
@@ -13,14 +14,14 @@ use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ReviewedEnforcementSubscriber implements EventSubscriberInterface {
+class NewEnquiryReplySubscriber implements EventSubscriberInterface {
 
   /**
    * The message template ID created for this notification.
    *
-   * @see /admin/structure/message/manage/reviewed_enforcement
+   * @see /admin/structure/message/manage/new_response
    */
-  const MESSAGE_ID = 'reviewed_enforcement';
+  const MESSAGE_ID = 'new_response';
 
   /**
    * The notication plugin that will deliver these notification messages.
@@ -35,7 +36,7 @@ class ReviewedEnforcementSubscriber implements EventSubscriberInterface {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[ParDataEvent::statusChange('par_data_enforcement_notice', 'reviewed')][] = ['onEnforcementReview', 800];
+    $events[EntityEvents::insert('comment')][] = ['onNewReply', 800];
 
     return $events;
   }
@@ -70,9 +71,9 @@ class ReviewedEnforcementSubscriber implements EventSubscriberInterface {
   /**
    * @param ParDataEventInterface $event
    */
-  public function onEnforcementReview(ParDataEvent $event) {
-    /** @var ParDataEntityInterface $par_data_enforcement_notice */
-    $par_data_enforcement_notice = $event->getEntity();
+  public function onNewReply(EntityEvent $event) {
+    /** @var CommentInterface $comment */
+    $comment = $event->getEntity();
 
     // Load the message template.
     $template_storage = $this->getEntityTypeManager()->getStorage('message_template');
@@ -80,38 +81,55 @@ class ReviewedEnforcementSubscriber implements EventSubscriberInterface {
 
     $message_storage = $this->getEntityTypeManager()->getStorage('message');
 
-    if (!$message_template || !$par_data_enforcement_notice) {
+    // Get the link to approve this notice.
+    $options = ['absolute' => TRUE];
+    $response_url = Url::fromRoute('view.par_user_deviation_requests.deviation_requests_page', [], $options);
+    // Get the response entity type to customize the message,
+    // without the 'par' prefix.
+    $par_data_entity = $comment->getCommentedEntity();
+    $response_entity_type = str_replace('par ', '', $par_data_entity->getEntityType()->getLowercaseLabel());
+
+    if (!$message_template) {
       // @TODO Log that the template couldn't be loaded.
       return;
     }
 
-    // Get the link to approve this notice.
-    $options = ['absolute' => TRUE];
-    $enforcement_url = Url::fromRoute('par_enforcement_send_flows.send_enforcement', ['par_data_enforcement_notice' => $par_data_enforcement_notice->id()], $options);
+    // Notify the primary authority contact and the enforcing officer contact for this response.
+    $contacts = [];
+    if ($par_data_entity && $par_data_entity instanceof ParDataEntityInterface) {
+      if ($authority_person = $par_data_entity->getPrimaryAuthorityContact()) {
+        $authority_person_account = $authority_person->getUserAccount();
+        if ($authority_person_account
+          && $authority_person_account->hasPermission('raise enforcement notice')
+          && $authority_person_account->id() !== $comment->getOwnerId()) {
+          $contacts[$authority_person_account->id()] = $authority_person_account;
+        }
+      }
+      if ($enforcing_person = $par_data_entity->getEnforcingPerson(TRUE)) {
+        $enforcing_person_account = $enforcing_person->getUserAccount();
+        if ($enforcing_person_account
+          && $enforcing_person_account->hasPermission('raise enforcement notice')
+          && $enforcing_person_account->id() !== $comment->getOwnerId()) {
+          $contacts[$enforcing_person_account->id()] = $enforcing_person_account;
+        }
+      }
+    }
 
-    // Notify the enforcing officer.
-    $enforcing_officer = $par_data_enforcement_notice->getEnforcingPerson(TRUE);
-
-    // Notify all users in this authority with the appropriate permissions.
-    if (($account = $enforcing_officer->getUserAccount()) && $enforcing_officer->getUserAccount()->hasPermission('approve enforcement notice')
-      && !isset($this->recipients[$account->id()])) {
-
-      // Record the recipient so that we don't send them the message twice.
-      $this->recipients[$account->id()] = $account->getEmail();
-
+    foreach ($contacts as $account) {
       // Create one message per user.
       $message = $message_storage->create([
         'template' => $message_template->id()
       ]);
 
       // Add contextual information to this message.
-      if ($message->hasField('field_enforcement_notice')) {
-        $message->set('field_enforcement_notice', $par_data_enforcement_notice);
+      if ($message->hasField('field_comment')) {
+        $message->set('field_comment', $comment);
       }
 
       // Add some custom arguments to this message.
       $message->setArguments([
-        '@enforcement_notice_view' => $enforcement_url->toString(),
+        '@response_view' => $response_url->toString(),
+        '@enquiry_type' => $response_entity_type,
       ]);
 
       // The owner is the user who this message belongs to.

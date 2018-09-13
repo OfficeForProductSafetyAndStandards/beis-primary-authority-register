@@ -13,14 +13,14 @@ use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ReviewedEnforcementSubscriber implements EventSubscriberInterface {
+class NewGeneralEnquirySubscriber implements EventSubscriberInterface {
 
   /**
    * The message template ID created for this notification.
    *
-   * @see /admin/structure/message/manage/reviewed_enforcement
+   * @see /admin/structure/message/manage/new_general_enquiry
    */
-  const MESSAGE_ID = 'reviewed_enforcement';
+  const MESSAGE_ID = 'new_general_enquiry';
 
   /**
    * The notication plugin that will deliver these notification messages.
@@ -35,7 +35,7 @@ class ReviewedEnforcementSubscriber implements EventSubscriberInterface {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[ParDataEvent::statusChange('par_data_enforcement_notice', 'reviewed')][] = ['onEnforcementReview', 800];
+    $events[EntityEvents::insert('par_data_general_enquiry')][] = ['onNewGeneralEnquiry', 800];
 
     return $events;
   }
@@ -70,9 +70,9 @@ class ReviewedEnforcementSubscriber implements EventSubscriberInterface {
   /**
    * @param ParDataEventInterface $event
    */
-  public function onEnforcementReview(ParDataEvent $event) {
-    /** @var ParDataEntityInterface $par_data_enforcement_notice */
-    $par_data_enforcement_notice = $event->getEntity();
+  public function onNewGeneralEnquiry(EntityEvent $event) {
+    /** @var ParDataEntityInterface $par_data_general_enquiry */
+    $par_data_general_enquiry = $event->getEntity();
 
     // Load the message template.
     $template_storage = $this->getEntityTypeManager()->getStorage('message_template');
@@ -80,20 +80,18 @@ class ReviewedEnforcementSubscriber implements EventSubscriberInterface {
 
     $message_storage = $this->getEntityTypeManager()->getStorage('message');
 
-    if (!$message_template || !$par_data_enforcement_notice) {
+    // Get the link to approve this notice.
+    $options = ['absolute' => TRUE];
+    $enquiry_url = Url::fromRoute('view.par_user_general_enquiries.general_enquiries_page', [], $options);
+
+    if (!$message_template) {
       // @TODO Log that the template couldn't be loaded.
       return;
     }
 
-    // Get the link to approve this notice.
-    $options = ['absolute' => TRUE];
-    $enforcement_url = Url::fromRoute('par_enforcement_send_flows.send_enforcement', ['par_data_enforcement_notice' => $par_data_enforcement_notice->id()], $options);
-
-    // Notify the enforcing officer.
-    $enforcing_officer = $par_data_enforcement_notice->getEnforcingPerson(TRUE);
-
-    // Notify all users in this authority with the appropriate permissions.
-    if (($account = $enforcing_officer->getUserAccount()) && $enforcing_officer->getUserAccount()->hasPermission('approve enforcement notice')
+    // Notify the primary authority contact for this General Enquiry.
+    $primary_authority_contact = $par_data_general_enquiry->getPrimaryAuthorityContact();
+    if ($primary_authority_contact && ($account = $primary_authority_contact->getUserAccount()) && $primary_authority_contact->getUserAccount()->hasPermission('raise enforcement notice')
       && !isset($this->recipients[$account->id()])) {
 
       // Record the recipient so that we don't send them the message twice.
@@ -105,13 +103,13 @@ class ReviewedEnforcementSubscriber implements EventSubscriberInterface {
       ]);
 
       // Add contextual information to this message.
-      if ($message->hasField('field_enforcement_notice')) {
-        $message->set('field_enforcement_notice', $par_data_enforcement_notice);
+      if ($message->hasField('field_general_enquiry')) {
+        $message->set('field_general_enquiry', $par_data_general_enquiry);
       }
 
       // Add some custom arguments to this message.
       $message->setArguments([
-        '@enforcement_notice_view' => $enforcement_url->toString(),
+        '@enquiry_view' => $enquiry_url->toString(),
       ]);
 
       // The owner is the user who this message belongs to.

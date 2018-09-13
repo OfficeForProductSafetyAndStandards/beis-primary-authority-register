@@ -16,7 +16,7 @@ class PartnershipApplicationCompletedSubscriber implements EventSubscriberInterf
   /**
    * The message template ID created for this notification.
    *
-   * @see /admin/structure/message/manage/partnership_confirmed_notification
+   * @see /admin/structure/message/manage/partnership_confirmed_notificati
    */
   const MESSAGE_ID = 'partnership_confirmed_notificati';
 

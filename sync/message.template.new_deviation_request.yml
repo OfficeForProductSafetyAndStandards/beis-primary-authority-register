@@ -1,0 +1,17 @@
+uuid: 25bc5b4f-cbfa-4bec-80c5-2bfc12d14faf
+langcode: en
+status: true
+dependencies: {  }
+template: new_deviation_request
+label: 'New Deviation Request'
+description: 'This is a message sent to all Primary Authorities on the issuance of a new deviation request.'
+text:
+  -
+    value: "<p>Dear Colleague,</p>\r\n\r\n<p>This email is confirmation that you have received a request to deviate from an inspection plan.</p>\r\n\r\n<p>You must respond within 5 working days, or this deviation request will be allowed automatically.</p>\r\n\r\n<p>Please log on to the PA Register to see the full details of the notification and to respond.</p>\r\n\r\n<p>^ @deviation_request_review</p>\r\n\r\n<p>Thank you</p>\r\n\r\n<p>&nbsp;</p>\r\n"
+    format: basic_html
+settings:
+  'token options':
+    clear: false
+    'token replace': true
+  purge_override: false
+  purge_methods: {  }
