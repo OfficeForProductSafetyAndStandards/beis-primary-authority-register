@@ -82,7 +82,7 @@ class ParMessageDetail extends ParFormPluginBase {
         'title' => [
           '#type' => 'html_tag',
           '#tag' => 'h2',
-          '#value' => $this->t('Replies to the deviation request'),
+          '#value' => $this->t('Responses'),
           '#attributes' => ['class' => ['heading-large']],
         ],
         '#attributes' => ['class' => ['form-group']],
@@ -96,7 +96,7 @@ class ParMessageDetail extends ParFormPluginBase {
           '#markup' => t('@link', [
             '@link' => $this->getFlowNegotiator()->getFlow()
               ->getLinkByCurrentOperation('reply', $params, [])
-              ->setText('Submit a reply')
+              ->setText('Submit a response')
               ->toString(),
           ]),
         ];
@@ -126,7 +126,7 @@ class ParMessageDetail extends ParFormPluginBase {
         'title' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => $this->t('There are no replies yet.'),
+          '#value' => $this->t('There are no responses yet.'),
         ],
       ];
     }
