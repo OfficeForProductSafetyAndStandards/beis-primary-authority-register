@@ -35,7 +35,7 @@ class NewInspectionFeedbackSubscriber implements EventSubscriberInterface {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[EntityEvents::insert('par_data_general_enquiry')][] = ['onNewInspectionFeedback', 800];
+    $events[EntityEvents::insert('par_data_inspection_feedback')][] = ['onNewInspectionFeedback', 800];
 
     return $events;
   }
