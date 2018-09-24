@@ -29,7 +29,7 @@ class ParScheduleManager extends DefaultPluginManager {
    *
    * This allows the queued items to be processed before the next run.
    */
-  const MIN_INTERVAL = 3600;
+  const MIN_INTERVAL = 0;
 
   /**
    * Constructs a ParScheduleManager object.
@@ -113,7 +113,7 @@ class ParScheduleManager extends DefaultPluginManager {
       $plugin->run();
     }
     catch (ParActionsException $e) {
-      $this->getLogger(self::PAR_LOGGER_CHANNEL)->error($e);
+      $this->getLogger(self::PAR_LOGGER_CHANNEL)->critical($e);
     }
   }
 
