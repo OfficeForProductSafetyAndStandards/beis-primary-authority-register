@@ -1,0 +1,10 @@
+{
+  "name": "par-forms",
+  "description": "Primary Authority Register Forms",
+  "dependencies": {
+    "ideal-postcodes-autocomplete": "^0.2.1"
+  },
+  "scripts": {
+    "postinstall": "cp node_modules/ideal-postcodes-*/dist/*.* assets"
+  }
+}

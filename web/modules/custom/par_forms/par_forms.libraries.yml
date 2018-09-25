@@ -1,0 +1,10 @@
+par-postcode-lookup:
+  version: 1.0
+  js:
+    assets/ideal-postcodes-core.js: {}
+    assets/ideal-postcodes-autocomplete.js: {}
+    js/postcode-lookup.js: {}
+  css:
+    theme:
+      assets/ideal-postcodes-core.css: {}
+      assets/ideal-postcodes-autocomplete.css: {}
