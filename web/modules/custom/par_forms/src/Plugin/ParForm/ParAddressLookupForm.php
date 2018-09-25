@@ -3,6 +3,7 @@
 namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Site\Settings;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -28,22 +29,9 @@ class ParAddressLookupForm extends ParAddressForm {
 
     // Attach the javascript for postcode lookup.
     $form['#attached']['library'][] = 'par_forms/par-postcode-lookup';
+    $form['#attached']['drupalSettings']['par_forms']['address_lookup']['api_key'] = Settings::get('ideal_postcodes_api_key');
 
-    // Add a new action for the postcode lookup.
-//    $this->getFlowNegotiator()->getFlow()->disableAction('next');
-//    $this->getFlowNegotiator()->getFlow()->disableAction('done');
-//    $this->getFlowNegotiator()->getFlow()->disableAction('save');
-//    $form['postcode_lookup'] = [
-//      '#type' => 'submit',
-//      '#name' => "postcode-lookup:{$this->getPluginId()}:{$cardinality}",
-//      '#weight' => 100,
-//      '#submit' => ["$plugin_class::postcodeLookup"],
-//      '#value' => $this->t("Find address"),
-//      '#attributes' => [
-//        'class' => ['cta-submit'],
-//      ],
-//    ];
-
+    // Retrieve the default form fields.
     $form['address'] = [
       '#type' => 'fieldset',
       '#title' => "Enter the address",

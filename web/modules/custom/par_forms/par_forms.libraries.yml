@@ -8,3 +8,6 @@ par-postcode-lookup:
     theme:
       assets/ideal-postcodes-core.css: {}
       assets/ideal-postcodes-autocomplete.css: {}
+  dependencies:
+    - core/jquery
+    - core/drupalSettings
