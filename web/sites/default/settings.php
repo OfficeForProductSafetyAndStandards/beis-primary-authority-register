@@ -944,6 +944,16 @@ $config['govuk_notify.settings']['api_key'] = getenv('PAR_GOVUK_NOTIFY_KEY');
 $config['govuk_notify.settings']['default_template_id'] = getenv('PAR_GOVUK_NOTIFY_TEMPLATE');
 
 /**
+ * Set Ideal Postcodes settings.
+ *
+ * These are confidential and should be set with ENV variables.
+ *
+ * Used to suggest addresses based on postcode lookups.
+ * @see https://ideal-postcodes.co.uk/documentation
+ */
+$settings['ideal_postcodes_api_key'] = getenv('IDEAL_POSTCODES_API_KEY');
+
+/**
  * Set the Raven Sentry keys.
  *
  * These are confidential and should be set with ENV variables.
