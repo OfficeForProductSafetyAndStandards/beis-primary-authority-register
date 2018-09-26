@@ -16,7 +16,7 @@ use Drupal\par_data\Entity\ParDataEntityInterface;
  *   type = "system"
  * )
  */
-class ParApproveAction extends ActionBase {
+class ParApproveEntity extends ActionBase {
 
   /**
    * {@inheritdoc}
@@ -24,8 +24,9 @@ class ParApproveAction extends ActionBase {
   public function execute($entity = NULL) {
     if ($entity instanceof ParDataEntityInterface) {
       // Always make auto-updates as the default admin.
+      $approval_notes = "Automatically approved following the required statutory notice period.";
       $entity->setRevisionUserId(1);
-      $entity->approve();
+      $entity->approve($approval_notes);
     }
   }
 
