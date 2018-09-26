@@ -16,7 +16,8 @@
     "gulp": "^3.9.1",
     "gulp-cli": "^1.4.0",
     "gulp-sass": "^3.2.1",
-    "gulp-sourcemaps": "^2.6.4"
+    "gulp-sourcemaps": "^2.6.4",
+    "ideal-postcodes-autocomplete": "^0.2.1"
   },
   "scripts": {
     "gulp": "gulp"
