@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use \Drupal\Core\Link;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -13,6 +14,23 @@ use Drupal\Core\Form\FormStateInterface;
 function par_login_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Add our custom validation.
   array_unshift($form['#validate'], 'par_login_validate');
+
+  // Alter username and password fields as per GOV.UK design patterns.
+  $form['name']['#title'] = t('Enter your e-mail address');
+  $form['pass']['#title'] = t('Enter your password');
+  unset($form['name']['#description']);
+  unset($form['pass']['#description']);
+
+  // Adding secondary links according to GOV.UK design patterns.
+  $form['secondary_links'] = [
+    '#type' => 'fieldset',
+    '#attributes' => ['class' => ['form-group']],
+    '#weight' => 100,
+  ];
+  $form['secondary_links']['password_reset'] = [
+    '#type' => 'markup',
+    '#markup' => Link::createFromRoute('Forgotten your password?', 'user.pass')->toString(),
+  ];
 }
 
 /**
