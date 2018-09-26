@@ -25,7 +25,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
   /**
    * Set the page title.
    */
-  protected $pageTitle = 'Review the partnership summary information below';
+  protected $pageTitle = 'Review partnership information';
 
   /**
    * {@inheritdoc}

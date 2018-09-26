@@ -23,6 +23,7 @@ class ParApplicationTypeForm extends ParBaseForm {
 
     $form['application_type'] = [
       '#title' => 'Choose a type of partnership',
+      '#description' => '<p>A business can form its own direct partnership. It then receives Primary Authority Advice tailored to its specific needs from its primary authority.</p><p>Alternatively, a business can belong to a trade association (or other type of group) to benefit from a co-ordinated primary authority. In this case, the Primary Authority Advice is still from the primary authority, but provided via the trade association, and tailored to the general needs of its members.</p><p>For more information visit the <a href="https://www.gov.uk/guidance/local-regulation-primary-authority#what-are-the-two-types-of-partnership" target="_blank">Primary Authority Guidance</a></p>',
       '#type' => 'radios',
       '#options' => $partnership_bundle->getAllowedValues('partnership_type'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('application_type'),
