@@ -22,6 +22,14 @@ par_partnership_application_flows.partnership_application_authority_checklist:
   requirements:
     _permission: 'manage my authorities'
     _custom_access: '\Drupal\par_partnership_application_flows\Form\ParChecklistForm::accessCallback'
+par_partnership_application_flows.partnership_application_notify_existing:
+  path: '/partnership/apply/notify-existing'
+  defaults:
+    _form: '\Drupal\par_partnership_application_flows\Form\ParNotifyExistingForm'
+    _title_callback: '\Drupal\par_partnership_application_flows\Form\ParNotifyExistingForm::titleCallback'
+  requirements:
+    _permission: 'manage my authorities'
+    _custom_access: '\Drupal\par_partnership_application_flows\Form\ParNotifyExistingForm::accessCallback'
 par_partnership_application_flows.partnership_application_partnership_about:
   path: '/partnership/apply/about'
   defaults:
