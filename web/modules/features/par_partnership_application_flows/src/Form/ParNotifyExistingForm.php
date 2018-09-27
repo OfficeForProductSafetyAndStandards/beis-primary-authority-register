@@ -5,6 +5,7 @@ namespace Drupal\par_partnership_application_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_application_flows\ParFlowAccessTrait;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * The condition acceptance form for partnership applications.
@@ -27,8 +28,6 @@ class ParNotifyExistingForm extends ParBaseForm {
     $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_application_type');
     $application_type = $this->getFlowDataHandler()->getDefaultValues('application_type', '', $cid);
 
-
-
     if ($application_type == 'direct') {
       $form['business_notified'] = [
         '#type' => 'radios',
@@ -39,7 +38,10 @@ class ParNotifyExistingForm extends ParBaseForm {
         ],
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues('business_regulated_by_one_authority', FALSE),
       ];
-
+    }
+    else {
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
+      return new RedirectResponse($url);
     }
 
     return parent::buildForm($form, $form_state);
