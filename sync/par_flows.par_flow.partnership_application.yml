@@ -100,11 +100,15 @@ steps:
   11:
     route: par_partnership_application_flows.partnership_application_invite
     form_id: par_partnership_invite
+    components:
+      invite: {}
+    form_data:
+      contact: par_partnership_contact
     redirect:
-      next: 11
+      next: 12
       cancel: 13
   12:
-    route: par_partnership_application_flows.partnership_application_invite_sent
+    route: par_partnership_application_flows.partnership_application_completed
     redirect:
       done: 13
   13:

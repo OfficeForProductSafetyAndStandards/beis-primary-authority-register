@@ -22,7 +22,7 @@ class ParChecklistForm extends ParBaseForm {
     $applicationType = ucfirst($this->getFlowDataHandler()->getDefaultValues('application_type', '', $cid));
 
     // Set page title.
-    $this->pageTitle = "{$applicationType} partnership checklist";
+    $this->pageTitle = "Declaration for a {$applicationType} partnership application";
 
     return parent::titleCallback();
   }
@@ -67,7 +67,7 @@ class ParChecklistForm extends ParBaseForm {
       $form['checklist'] = [
         '#theme' => 'item_list',
         '#list_type' => 'ul',
-        '#title' => 'Please confirm the partnership meets the following conditions',
+        '#title' => 'Please confirm that',
         '#items' => $checklist,
         '#attributes' => ['class' => ['list', 'list-bullet']],
         '#wrapper_attributes' => ['class' => ['form-group']],
@@ -78,6 +78,11 @@ class ParChecklistForm extends ParBaseForm {
         '#title' => $this->t('I confirm these conditions have been met'),
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues('confirm', FALSE),
         '#return_value' => 'on',
+      ];
+
+      $form['help'] = [
+        '#type' => 'markup',
+        '#markup' => '<p>These essential conditions for the nomination of direct partnerships are required by the Regulatory Enforcement and Sanctions Act 2008 (as amended by the Enterprise Act 2016) and the Primary Authority Statutory Guidance.</p>',
       ];
     }
 
