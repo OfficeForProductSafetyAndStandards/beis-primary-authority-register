@@ -4,6 +4,7 @@ namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\Url;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormException;
 use Drupal\par_forms\ParFormPluginBase;
@@ -58,9 +59,16 @@ HEREDOC;
       $this->getFlowDataHandler()->setFormPermValue('invitation_type_data', $data);
     }
 
+    // Set the default recipient address.
+    $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
+    if ($par_data_person && $par_data_person instanceof ParDataEntityInterface && !$this->setDefaultValuesByKey("to", $cardinality)) {
+      $this->getFlowDataHandler()->setTempDataValue('to', $par_data_person->getEmail());
+    }
+
+    // Set the default value for the sender
     if ($account = $this->getFlowNegotiator()->getCurrentUser()) {
-      $this->setDefaultValuesByKey("from", $cardinality, $account->getEmail());
-      $this->setDefaultValuesByKey("inviter", $cardinality, $account->id());
+      $this->getFlowDataHandler()->setTempDataValue("from", $account->getEmail());
+      $this->getFlowDataHandler()->setTempDataValue("inviter", $account->id());
 
       // Identify the sender's name, for use in the message template.
       $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
@@ -68,6 +76,7 @@ HEREDOC;
       $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
       if ($par_data_partnership && !$par_data_authority) {
         $par_data_authority = $par_data_partnership->getAuthority(TRUE);
+        $this->getFlowDataHandler()->setTempDataValue("inviter_authority", $par_data_authority->label());
       }
       if ($par_data_partnership && !$par_data_organisation) {
         $par_data_organisation = $par_data_partnership->getOrganisation(TRUE);
@@ -86,16 +95,16 @@ HEREDOC;
       else {
         $sender_name = '';
       }
-      $this->getFlowDataHandler()->setTempDataValue("inviter_name", $sender_name);
+      $this->getFlowDataHandler()->setFormPermValue("inviter_name", $sender_name);
     }
 
     // Get message subject and body if not already set.
     if ($message = $this->getMessage(NULL)) {
-      if (!$this->getFlowDataHandler()->getDefaultValues("email_subject", FALSE)) {
-        $this->getFlowDataHandler()->setFormPermValue("email_subject", $message['subject']);
+      if (!$this->getFlowDataHandler()->getDefaultValues("subject", FALSE)) {
+        $this->getFlowDataHandler()->setFormPermValue("subject", $message['subject']);
       }
-      if (!$this->getFlowDataHandler()->getDefaultValues("email_body", FALSE)) {
-        $this->getFlowDataHandler()->setFormPermValue("email_body", $message['body']);
+      if (!$this->getFlowDataHandler()->getDefaultValues("body", FALSE)) {
+        $this->getFlowDataHandler()->setFormPermValue("body", $message['body']);
       }
     }
 
@@ -133,7 +142,7 @@ HEREDOC;
     }
 
     // There must be a sender and a recipient to continue.
-    if (!$this->getDefaultValuesByKey('from', $cardinality, FALSE) || !$this->getFlowDataHandler()->getDefaultValues('to', FALSE)) {
+    if (!$this->getDefaultValuesByKey('from', $cardinality, FALSE) || !$this->getDefaultValuesByKey('to', $cardinality, FALSE)) {
       $form['no_recipient'] = [
         '#type' => 'fieldset',
         '#title' => t('No recipient'),
@@ -149,25 +158,34 @@ HEREDOC;
       return $form;
     }
 
-    $form['from'] = [
+    // Set the sender values and display the email.
+    $form['sender'] = [
       '#type' => 'fieldset',
       '#title' => t('Sender\'s email address'),
       [
-        '#markup' => "<p>{$this->getDefaultValuesByKey('from', $cardinality)}</p>"
-      ]
-    ];
-    $form['inviter'] = [
-      '#type' => 'hidden',
-      '#title' => t('Inviter'),
-      '#value' => $this->getDefaultValuesByKey('inviter', $cardinality, FALSE),
+        '#markup' => "<p>{$this->getFlowDataHandler()->getDefaultValues('from')}</p>"
+      ],
+      'from' => [
+        '#type' => 'hidden',
+        '#value' => $this->getFlowDataHandler()->getDefaultValues('from'),
+      ],
+      'user_id' => [
+        '#type' => 'hidden',
+        '#value' => $this->getFlowDataHandler()->getDefaultValues('inviter'),
+      ],
     ];
 
-    $form['to'] = [
+    // Set the recipient values and display the email.
+    $form['recipient'] = [
       '#type' => 'fieldset',
       '#title' => t('Recipient\'s email address'),
       [
         '#markup' => "<p>{$this->getFlowDataHandler()->getDefaultValues('to')}</p>"
-      ]
+      ],
+      'to' => [
+        '#type' => 'hidden',
+        '#value' => $this->getFlowDataHandler()->getDefaultValues('to'),
+      ],
     ];
 
     $form['email'] = [
@@ -180,7 +198,7 @@ HEREDOC;
     $form['email']['subject'] = [
       '#type' => 'textfield',
       '#title' => t('Message subject'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('email_subject'),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('subject'),
     ];
 
     // Allow the message body to be changed.
@@ -188,9 +206,10 @@ HEREDOC;
       '#type' => 'textarea',
       '#rows' => 18,
       '#title' => t('Message'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('email_body'),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('body'),
     ];
 
+    // Allow the invited role to be changed or set it if no choice is available.
     $roles = $this->getFlowDataHandler()->getDefaultValues('roles');
     if ($roles && count($roles) > 1) {
       $form['target_role'] = [
