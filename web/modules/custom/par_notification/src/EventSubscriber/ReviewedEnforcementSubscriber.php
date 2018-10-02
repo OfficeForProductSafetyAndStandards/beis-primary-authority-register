@@ -93,7 +93,7 @@ class ReviewedEnforcementSubscriber implements EventSubscriberInterface {
     $enforcing_officer = $par_data_enforcement_notice->getEnforcingPerson(TRUE);
 
     // Notify all users in this authority with the appropriate permissions.
-    if (($account = $enforcing_officer->getUserAccount()) && $enforcing_officer->getUserAccount()->hasPermission('approve enforcement notice')
+    if (($account = $enforcing_officer->lookupUserAccount()) && $enforcing_officer->lookupUserAccount()->hasPermission('approve enforcement notice')
       && !isset($this->recipients[$account->id()])) {
 
       // Record the recipient so that we don't send them the message twice.

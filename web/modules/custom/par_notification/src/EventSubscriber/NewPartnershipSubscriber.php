@@ -2,6 +2,8 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
+use Drupal\Core\Entity\EntityEvent;
+use Drupal\Core\Entity\EntityEvents;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\message\Entity\Message;
@@ -11,14 +13,14 @@ use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class PartnershipApprovedSubscriber implements EventSubscriberInterface {
+class NewPartnershipSubscriber implements EventSubscriberInterface {
 
   /**
    * The message template ID created for this notification.
    *
-   * @see /admin/structure/message/manage/partnership_approved_notificatio
+   * @see /admin/structure/message/manage/new_partnership_notification
    */
-  const MESSAGE_ID = 'partnership_approved_notificatio';
+  const MESSAGE_ID = 'new_partnership_notification';
 
   /**
    * The notification plugin that will deliver these notification messages.
@@ -33,8 +35,8 @@ class PartnershipApprovedSubscriber implements EventSubscriberInterface {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    // Nomination event should fire after a partnership has been nominated.
-    $events[ParDataEvent::statusChange('par_data_partnership', 'confirmed_rd')][] = ['onPartnershipNomination', -101];
+    // Confirmation event should fire after a partnership has been confirmed.
+    $events[EntityEvents::insert('par_data_partnership')][] = ['onNewPartnership', -101];
 
     return $events;
   }
@@ -67,9 +69,9 @@ class PartnershipApprovedSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * @param ParDataEventInterface $event
+   * @param EntityEvent $event
    */
-  public function onPartnershipNomination(ParDataEventInterface $event) {
+  public function onNewPartnership(EntityEvent $event) {
     /** @var ParDataEntityInterface $par_data_partnership */
     $par_data_partnership = $event->getEntity();
 
@@ -80,21 +82,21 @@ class PartnershipApprovedSubscriber implements EventSubscriberInterface {
 
     // Get the link to approve this notice.
     $options = ['absolute' => TRUE];
-    $partnership_url = Url::fromRoute('view.par_user_partnerships.partnerships_page', [], $options);
+    $pending_partnerships_url = Url::fromRoute('view.par_user_partnerships.par_user_partnership_applications', [], $options);
 
     if (!$message_template) {
       // @TODO Log that the template couldn't be loaded.
       return;
     }
 
-    // We need to get all the contacts for this partnership.
-    $contacts = array_merge($par_data_partnership->getAuthorityPeople(), $par_data_partnership->getOrganisationPeople());
+    // We only notify the authority contacts here.
+    $contacts = $par_data_partnership->getOrganisationPeople();
     if (!$contacts) {
       return;
     }
 
+    // Notify all users for the partnership that have an account.
     foreach ($contacts as $person) {
-      // Notify all users in this authority with the appropriate permissions.
       if (($account = $person->lookupUserAccount())
         && !isset($this->recipients[$account->id()])) {
 
@@ -113,7 +115,8 @@ class PartnershipApprovedSubscriber implements EventSubscriberInterface {
 
         // Add some custom arguments to this message.
         $message->setArguments([
-          '@partnership_search_link' => $partnership_url->toString(),
+          '@partnership_authority' => $par_data_partnership->getAuthority(TRUE)->label(),
+          '@partnership_pending_partnership_link' => $pending_partnerships_url->toString(),
         ]);
 
         // The owner is the user who this message belongs to.

@@ -1,0 +1,21 @@
+uuid: 31fb075f-32f1-4075-b6ed-f8db13f4c31c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_message_subject
+    - message.template.new_partnership_notification
+id: message.new_partnership_notification.field_message_subject
+field_name: field_message_subject
+entity_type: message
+bundle: new_partnership_notification
+label: 'Message Subject'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 'Primary Authority: Notification of New Partnership'
+default_value_callback: ''
+settings: {  }
+field_type: string

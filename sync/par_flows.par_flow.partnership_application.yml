@@ -16,7 +16,7 @@ steps:
     route: par_partnership_application_flows.partnership_application_start
     form_id: par_authority_selection
     components:
-      authority_select: {}
+      authority_select: {  }
     redirect:
       cancel: 13
   2:
@@ -38,21 +38,21 @@ steps:
     route: par_partnership_application_flows.partnership_application_partnership_about
     form_id: par_partnership_about
     components:
-      about_partnership: {}
+      about_partnership: {  }
     redirect:
       cancel: 13
   6:
     route: par_partnership_application_flows.partnership_application_organisation_name
     form_id: par_partnership_application_organisation
     components:
-      organisation_name: {}
+      organisation_name: {  }
     redirect:
       cancel: 13
   7:
     route: par_partnership_application_flows.partnership_application_organisation_confirm
     form_id: par_partnership_organisation_suggestion
     components:
-      organisation_select: {}
+      organisation_select: {  }
     form_data:
       organisation_select: par_partnership_application_organisation
     redirect:
@@ -63,14 +63,14 @@ steps:
     route: par_partnership_application_flows.partnership_application_organisation_address
     form_id: par_partnership_address
     components:
-      address: {}
+      address: {  }
     redirect:
       cancel: 13
   9:
     route: par_partnership_application_flows.partnership_application_organisation_contact
     form_id: par_partnership_contact
     components:
-      contact_details: {}
+      contact_details: {  }
     redirect:
       cancel: 13
   10:
@@ -101,7 +101,7 @@ steps:
     route: par_partnership_application_flows.partnership_application_invite
     form_id: par_partnership_invite
     components:
-      invite: {}
+      invite: {  }
     form_data:
       contact: par_partnership_contact
     redirect:

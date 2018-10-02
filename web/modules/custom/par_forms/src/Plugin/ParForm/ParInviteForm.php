@@ -59,10 +59,17 @@ HEREDOC;
       $this->getFlowDataHandler()->setFormPermValue('invitation_type_data', $data);
     }
 
-    // Set the default recipient address.
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
-    if ($par_data_person && $par_data_person instanceof ParDataEntityInterface && !$this->setDefaultValuesByKey("to", $cardinality)) {
-      $this->getFlowDataHandler()->setTempDataValue('to', $par_data_person->getEmail());
+    if ($par_data_person && $par_data_person instanceof ParDataEntityInterface) {
+      // Set the default recipient address.
+      if (!$this->setDefaultValuesByKey("to", $cardinality)) {
+        $this->getFlowDataHandler()->setTempDataValue('to', $par_data_person->getEmail());
+      }
+
+      // If the user already has an account then don't invite them.
+      if ($account = $par_data_person->lookupUserAccount()) {
+        $this->getFlowDataHandler()->setTempDataValue('existing', TRUE);
+      }
     }
 
     // Set the default value for the sender
@@ -139,6 +146,12 @@ HEREDOC;
     // There must be an invitation type specified.
     if (!$this->getFlowDataHandler()->getDefaultValues('invitation_type', FALSE)) {
       throw new ParFormException('There is no invitation type selected for this invitation.');
+    }
+
+    // If the contact has an existing user account skip the invitation.
+    if ($this->getFlowDataHandler()->getDefaultValues('existing', FALSE)) {
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
+      return new RedirectResponse($url);
     }
 
     // There must be a sender and a recipient to continue.

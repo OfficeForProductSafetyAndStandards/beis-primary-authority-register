@@ -1,0 +1,26 @@
+uuid: f4865c68-ef46-413b-81ed-0aee3c149094
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - field.field.message.new_partnership_notification.field_message_subject
+    - field.field.message.new_partnership_notification.field_partnership
+    - message.template.new_partnership_notification
+id: message.new_partnership_notification.mail_subject
+targetEntityType: message
+bundle: new_partnership_notification
+mode: mail_subject
+content:
+  field_message_subject:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  field_partnership: true
+  partial_0: true
+  partial_1: true
