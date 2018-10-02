@@ -115,7 +115,7 @@ class NewPartnershipSubscriber implements EventSubscriberInterface {
 
         // Add some custom arguments to this message.
         $message->setArguments([
-          '@partnership_authority' => $par_data_partnership->getAuthority(TRUE)->label(),
+          '@partnership_organisation' => $par_data_partnership->getAuthority(TRUE)->label(),
           '@partnership_pending_partnership_link' => $pending_partnerships_url->toString(),
         ]);
 
