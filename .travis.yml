@@ -71,12 +71,12 @@ install:
 # Create .env file
 #-----------------------------------------------------------------------------
 
-  - echo "S3_BUCKET_ARTIFACTS=$S3_BUCKET_ARTIFACTS" >> .env
-  - echo "S3_BUCKET_ARTIFACTS=$S3_BUCKET_ARTIFACTS"
   - echo "S3_REGION=$S3_REGION" >> .env
-  - echo "S3_REGION=$S3_REGION"
   - echo "S3_ACCESS_KEY=$S3_ACCESS_KEY" >> .env
   - echo "S3_SECRET_KEY=$S3_SECRET_KEY" >> .env
+  - echo "S3_BUCKET_ARTIFACTS=$S3_BUCKET_ARTIFACTS" >> .env
+  - echo "S3_BUCKET_PRIVATE=$S3_BUCKET_PRIVATE" >> .env
+  - echo "S3_BUCKET_PUBLIC=$S3_BUCKET_PUBLIC" >> .env
   - echo "PAR_HASH_SALT=$PAR_HASH_SALT" >> .env
   - echo "DATAFILE=$DATAFILE" >> .env
   - echo "APP_ENV=travis" >> .env
@@ -88,7 +88,11 @@ install:
   - echo "PAR_GOVUK_NOTIFY_TEMPLATE=$PAR_GOVUK_NOTIFY_TEMPLATE" >> .env
   - echo "CLAMAV_HTTP_USER=$CLAMAV_HTTP_USER" >> .env
   - echo "CLAMAV_HTTP_PASS=$CLAMAV_HTTP_PASS" >> .env
-  - cat .env
+# can be removed once the AWS accounts are migrated.
+  - echo "TRANSFORM_BUCKET_PRIVATE=$TRANSFORM_BUCKET_PRIVATE" >> .env
+  - echo "TRANSFORM_BUCKET_PUBLIC=$TRANSFORM_BUCKET_PUBLIC" >> .env
+  - echo "TRANSFORM_REGION=$TRANSFORM_REGION" >> .env
+  
 
 #-----------------------------------------------------------------------------
 # Import dev data from S3
