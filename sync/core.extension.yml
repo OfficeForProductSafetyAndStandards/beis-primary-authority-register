@@ -13,6 +13,7 @@ module:
   config_filter: 0
   config_readonly: 0
   config_split: 0
+  config_translation: 0
   config_update: 0
   content_translation: 0
   contextual: 0
@@ -47,6 +48,7 @@ module:
   invite_link: 0
   language: 0
   link: 0
+  locale: 0
   login_destination: 0
   menu_ui: 0
   message: 0
