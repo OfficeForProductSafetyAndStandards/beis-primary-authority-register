@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [24.0.0] - 2019-10-04
+### Added
+- Postcode lookup functionality (not yet turned on).
+
+### Changed
+- Helpdesk partnership list can now be searched by legal entity name.
+
+### Fixed
+- It is no longer possible for helpdesk users to assign themselves super administrator rights.
+- Resolved an issue that was stopping the auto-approval of deviation requests.
+
 ## [23.2.0] - 2019-09-18
 ### Added
 - Notifcations for new enquiries.

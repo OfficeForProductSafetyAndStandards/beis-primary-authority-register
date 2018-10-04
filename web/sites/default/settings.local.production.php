@@ -12,7 +12,7 @@ if (getenv('S3_BUCKET_PUBLIC')) {
         'config' => [
             'key'    => getenv('S3_ACCESS_KEY'),
             'secret' => getenv('S3_SECRET_KEY'),
-            'region' => 'eu-west-1',
+            'region' => getenv('S3_REGION'),
             'bucket' => getenv('S3_BUCKET_PUBLIC'),
         ],
     ] + $settings['flysystem']['s3public'];
@@ -25,7 +25,7 @@ if (getenv('S3_BUCKET_PRIVATE')) {
         'config' => [
             'key'    => getenv('S3_ACCESS_KEY'),
             'secret' => getenv('S3_SECRET_KEY'),
-            'region' => 'eu-west-1',
+            'region' => getenv('S3_REGION'),
             'bucket' => getenv('S3_BUCKET_PRIVATE'),
         ],
     ] + $settings['flysystem']['s3private'];
