@@ -11,7 +11,7 @@ _core:
 id: par_theme_help
 theme: par_theme
 region: content
-weight: -3
+weight: -4
 provider: null
 plugin: help_block
 settings:

@@ -11,7 +11,7 @@ dependencies:
 id: sitewidehelpdeskmessage
 theme: par_theme
 region: content
-weight: -6
+weight: -7
 provider: null
 plugin: 'block_content:c0a315eb-948b-4e33-b83c-72f65108dd5f'
 settings:

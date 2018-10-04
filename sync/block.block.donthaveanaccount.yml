@@ -12,7 +12,7 @@ dependencies:
 id: donthaveanaccount
 theme: par_theme
 region: content
-weight: 0
+weight: 1
 provider: null
 plugin: 'block_content:63f4e86b-35dd-460c-a40a-21d578c4e592'
 settings:
