@@ -80,7 +80,7 @@ Given('I complete valid organisation details for direct partnership {string}', f
 When('I complete review and submit valid direct partnership application', function () {
   return client
     .assert.containsText('h1.heading-xlarge .heading-secondary','New partnership application')
-    .assert.containsText('h1.heading-xlarge','Review the partnership summary information below')
+    .assert.containsText('h1.heading-xlarge','Check partnership information')
     .click('#edit-partnership-info-agreed-authority')
     .click('#edit-save')
 }); 

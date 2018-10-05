@@ -42,7 +42,7 @@ Feature: Coordinator User - Complete organisation details
 
         And I submit final confirmation of completion by organisation "Organisation For Coordinated Partnership"
 
-        # Then the element "h1.heading-xlarge" contains the text "Review the partnership summary information below"
+        # Then the element "h1.heading-xlarge" contains the text "Check partnership information"
         # Then the element "#edit-organisation-registered-address" contains the text "1 High St"
         # And the element "#edit-organisation-registered-address" contains the text "Southwark"
         # And the element "#edit-organisation-registered-address" contains the text "London"
@@ -101,7 +101,7 @@ Feature: Coordinator User - Complete organisation details
 
         And I submit final confirmation of completion by organisation "Organisation For No Members Coordinated Partnership"
 
-        # Then the element "h1.heading-xlarge" contains the text "Review the partnership summary information below"
+        # Then the element "h1.heading-xlarge" contains the text "Check partnership information"
         # Then the element "#edit-organisation-registered-address" contains the text "1 High St"
         # And the element "#edit-organisation-registered-address" contains the text "Southwark"
         # And the element "#edit-organisation-registered-address" contains the text "London"
