@@ -58,7 +58,7 @@ steps:
     route: par_partnership_application_flows.partnership_application_organisation_address
     form_id: par_partnership_address
     components:
-      address: {  }
+      address_lookup: {  }
     redirect:
       cancel: 12
   8:
