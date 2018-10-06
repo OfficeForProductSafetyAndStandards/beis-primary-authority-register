@@ -24,7 +24,7 @@ steps:
     route: par_member_add_flows.add_address
     form_id: par_member_add_address
     components:
-      address: {  }
+      address_lookup: {  }
     redirect:
       cancel: 10
   3:

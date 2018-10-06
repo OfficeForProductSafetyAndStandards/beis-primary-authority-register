@@ -41,7 +41,7 @@ steps:
     route: par_member_update_flows.update_address
     form_id: par_member_update_address
     components:
-      address: {  }
+      address_lookup: {  }
     redirect:
       save: 1
       cancel: 1
