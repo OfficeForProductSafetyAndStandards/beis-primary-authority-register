@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - New help desk dashboard.
 - New more granular permissions for each task improve control over which users can perform which actions.
 
+### Changed
+- Corrected links in email notification for responses to general enquiries.
+
 ## [24.0.1] - 2019-10-04
 ### Added
 - Postcode lookup functionality (not yet turned on).
