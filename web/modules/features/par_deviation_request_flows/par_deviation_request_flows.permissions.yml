@@ -1,0 +1,4 @@
+submit deviation request:
+  title: 'Submit deviation request'
+  description: 'Allow users to submit deviation requests.'
+  restrict access: TRUE

@@ -5,7 +5,7 @@ par_member_unlock_flows.member_unlock:
     _form: '\Drupal\par_member_unlock_flows\Form\ParMemberUnlockConfirmForm'
     _title_callback: '\Drupal\par_member_unlock_flows\Form\ParMemberUnlockConfirmForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'unlock membership list'
     _custom_access: '\Drupal\par_member_unlock_flows\Form\ParMemberUnlockConfirmForm::accessCallback'
   options:
     parameters:

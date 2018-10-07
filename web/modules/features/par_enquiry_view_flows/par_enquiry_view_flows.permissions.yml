@@ -1,0 +1,4 @@
+view general enquiry:
+  title: 'View general enquiry'
+  description: 'Allow users to view enquiries sent to a primary authority.'
+  restrict access: TRUE

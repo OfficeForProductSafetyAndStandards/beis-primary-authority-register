@@ -1,0 +1,4 @@
+cease coordinated member:
+  title: 'Cease coordinated member'
+  description: "Allow users to cease a coordinated member's enrolment in a partnership."
+  restrict access: TRUE

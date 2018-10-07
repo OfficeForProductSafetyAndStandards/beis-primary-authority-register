@@ -1,0 +1,8 @@
+update partnership authority details:
+  title: "Update authority's details"
+  description: "Allow users to update the authority's details for a partnership."
+  restrict access: TRUE
+update partnership organisation details:
+  title: "Update organisation's details"
+  description: "Allow users to update the organisation's details for a partnership."
+  restrict access: TRUE

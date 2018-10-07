@@ -11,7 +11,7 @@ dependencies:
     - datetime
     - pagerer
     - par_data
-    - user
+    - par_roles
 id: par_user_enforcements
 label: 'Par User Enforcements'
 module: views
@@ -28,9 +28,13 @@ display:
     position: 0
     display_options:
       access:
-        type: perm
+        type: views_access_multiple_permissions
         options:
-          perm: 'access par_data_enforcement_notice entities'
+          mult_perm:
+            'approve enforcement notice': 'approve enforcement notice'
+            'send enforcement notice': 'send enforcement notice'
+            'view enforcement notice': 'view enforcement notice'
+          mult_perm_all: 0
       cache:
         type: none
         options: {  }
@@ -855,7 +859,18 @@ display:
           entity_field: created
           plugin_id: date
       title: Enforcements
-      header: {  }
+      header:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: '<p>To submit a notice of enforcement action please <a href="/search/partnerships">search for the partnership</a> this relates to and submit your enforcement there.</p>'
+          plugin_id: text_custom
       footer: {  }
       empty:
         area_text_custom:

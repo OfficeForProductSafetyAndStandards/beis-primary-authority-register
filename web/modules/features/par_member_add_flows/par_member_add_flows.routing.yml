@@ -4,7 +4,7 @@ par_member_add_flows.add_organisation_name:
     _form: '\Drupal\par_member_add_flows\Form\ParOrganisationNameForm'
     _title_callback: '\Drupal\par_member_add_flows\Form\ParOrganisationNameForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'add coordinated member'
     _custom_access: '\Drupal\par_member_add_flows\Form\ParOrganisationNameForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -18,7 +18,7 @@ par_member_add_flows.add_address:
     _form: '\Drupal\par_member_add_flows\Form\ParAddressForm'
     _title_callback: '\Drupal\par_member_add_flows\Form\ParAddressForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'add coordinated member'
     _custom_access: '\Drupal\par_member_add_flows\Form\ParAddressForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -32,7 +32,7 @@ par_member_add_flows.add_contact:
     _form: '\Drupal\par_member_add_flows\Form\ParContactForm'
     _title_callback: '\Drupal\par_member_add_flows\Form\ParContactForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'add coordinated member'
     _custom_access: '\Drupal\par_member_add_flows\Form\ParContactForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -46,7 +46,7 @@ par_member_add_flows.add_begin_date:
     _form: '\Drupal\par_member_add_flows\Form\ParStartDateForm'
     _title_callback: '\Drupal\par_member_add_flows\Form\ParStartDateForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'add coordinated member'
     _custom_access: '\Drupal\par_member_add_flows\Form\ParStartDateForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -60,7 +60,7 @@ par_member_add_flows.add_trading_name:
     _form: '\Drupal\par_member_add_flows\Form\ParTradingForm'
     _title_callback: '\Drupal\par_member_add_flows\Form\ParTradingForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'add coordinated member'
     _custom_access: '\Drupal\par_member_add_flows\Form\ParTradingForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -74,7 +74,7 @@ par_member_add_flows.add_legal_entities:
     _form: '\Drupal\par_member_add_flows\Form\ParLegalEntityForm'
     _title_callback: '\Drupal\par_member_add_flows\Form\ParLegalEntityForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'add coordinated member'
     _custom_access: '\Drupal\par_member_add_flows\Form\ParLegalEntityForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -88,7 +88,7 @@ par_member_add_flows.covered_by_plan:
     _form: '\Drupal\par_member_add_flows\Form\ParCoveredByPlanForm'
     _title_callback: '\Drupal\par_member_add_flows\Form\ParCoveredByPlanForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'add coordinated member'
     _custom_access: '\Drupal\par_member_add_flows\Form\ParCoveredByPlanForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -102,7 +102,7 @@ par_member_add_flows.member_confirm_review:
     _form: '\Drupal\par_member_add_flows\Form\ParConfirmationReviewForm'
     _title_callback: '\Drupal\par_member_add_flows\Form\ParConfirmationReviewForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'add coordinated member'
     _custom_access: '\Drupal\par_member_add_flows\Form\ParConfirmationReviewForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -115,7 +115,7 @@ par_member_add_flows.member_confirmation:
     _controller: '\Drupal\par_member_add_flows\Controller\ParMembershipConfirmedController::content'
     _title_callback: '\Drupal\par_member_add_flows\Controller\ParMembershipConfirmedController::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'add coordinated member'
     _custom_access: '\Drupal\par_member_add_flows\Controller\ParMembershipConfirmedController::accessCallback'
     par_data_partnership: \d+
   options:

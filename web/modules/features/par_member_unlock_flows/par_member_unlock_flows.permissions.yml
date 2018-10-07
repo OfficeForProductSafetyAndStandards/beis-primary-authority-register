@@ -1,0 +1,4 @@
+unlock membership list:
+  title: 'Unlock membership list'
+  description: 'Allow users to unlock a membership that was locked (usually during a bulk member upload).'
+  restrict access: TRUE

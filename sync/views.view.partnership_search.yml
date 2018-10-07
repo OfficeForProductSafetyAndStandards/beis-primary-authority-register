@@ -29,7 +29,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'search partnership'
+          perm: 'search partnerships'
       cache:
         type: tag
         options: {  }

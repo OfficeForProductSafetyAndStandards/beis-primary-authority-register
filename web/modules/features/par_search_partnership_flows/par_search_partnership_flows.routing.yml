@@ -5,7 +5,7 @@ par_search_partnership_flows.partnership_page:
     _controller: '\Drupal\par_search_partnership_flows\Controller\ParPartnershipPageController::build'
     _title_callback: '\Drupal\par_search_partnership_flows\Controller\ParPartnershipPageController::titleCallback'
   requirements:
-    _permission: 'enforce organisation'
+    _permission: 'search partnerships'
     par_data_partnership: \d+
   options:
     parameters:
@@ -17,7 +17,7 @@ par_search_partnership_flows.advice_view:
     _controller: '\Drupal\par_search_partnership_flows\Controller\ParAdviceController::build'
     _title_callback: '\Drupal\par_search_partnership_flows\Controller\ParAdviceController::titleCallback'
   requirements:
-    _permission: 'enforce organisation'
+    _permission: 'search partnerships'
     par_data_partnership: \d+
   options:
     parameters:
@@ -29,7 +29,7 @@ par_search_partnership_flows.inspection_plan_view:
     _controller: '\Drupal\par_search_partnership_flows\Controller\ParInspectionPlanController::build'
     _title_callback: '\Drupal\par_search_partnership_flows\Controller\ParInspectionPlanController::titleCallback'
   requirements:
-    _permission: 'enforce organisation'
+    _permission: 'search partnerships'
     par_data_partnership: \d+
   options:
     parameters:

@@ -1,0 +1,4 @@
+view inspection feedback:
+  title: 'View inspection feedback'
+  description: 'Allow users to view feedback for an inspection plan.'
+  restrict access: TRUE

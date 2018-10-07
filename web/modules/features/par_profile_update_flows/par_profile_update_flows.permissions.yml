@@ -1,0 +1,4 @@
+manage par profile:
+  title: 'Update profile'
+  description: 'Allow users to update their profile details.'
+  restrict access: TRUE

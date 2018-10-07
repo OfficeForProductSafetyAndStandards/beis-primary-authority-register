@@ -1,0 +1,8 @@
+view enforcement notice:
+  title: 'View enforcement notice'
+  description: 'Allow a user to view an enforcement notice they raised against an Organisation.'
+  restrict access: TRUE
+send enforcement notice:
+  title: 'Send enforcement notice'
+  description: 'Allow a user to send the enforcement notice they raised against an Organisation.'
+  restrict access: TRUE

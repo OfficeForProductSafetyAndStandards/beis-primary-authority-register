@@ -4,7 +4,7 @@ par_inspection_feedback_view_flows.view_feedback:
     _controller: '\Drupal\par_inspection_feedback_view_flows\Controller\ParFeedbackViewController::build'
     _title_callback: '\Drupal\par_inspection_feedback_view_flows\Controller\ParFeedbackViewController::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'view inspection feedback'
     _custom_access: '\Drupal\par_inspection_feedback_view_flows\Controller\ParFeedbackViewController::accessCallback'
     par_data_inspection_feedback: \d+
   options:
@@ -18,7 +18,7 @@ par_inspection_feedback_view_flows.reply:
     _form: '\Drupal\par_inspection_feedback_view_flows\Form\ParFeedbackReplyForm'
     _title_callback: '\Drupal\par_inspection_feedback_view_flows\Form\ParFeedbackReplyForm::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'view inspection feedback'
     _custom_access: '\Drupal\par_inspection_feedback_view_flows\Form\ParFeedbackReplyForm::accessCallback'
     par_data_inspection_feedback: \d+
   options:

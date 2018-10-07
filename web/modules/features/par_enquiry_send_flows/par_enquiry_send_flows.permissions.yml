@@ -1,0 +1,4 @@
+send general enquiry:
+  title: 'Send general enquiry'
+  description: 'Allow users to send enquiries to a primary authority.'
+  restrict access: TRUE

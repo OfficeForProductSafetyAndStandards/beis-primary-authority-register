@@ -1,0 +1,4 @@
+approve enforcement notice:
+  title: 'Approve enforcement notice'
+  description: 'Allow approval, blocking or referral of enforcement notices.'
+  restrict access: TRUE

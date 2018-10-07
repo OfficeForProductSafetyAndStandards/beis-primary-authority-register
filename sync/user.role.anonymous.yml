@@ -13,6 +13,7 @@ permissions:
   - 'access content'
   - 'access par_data_regulatory_function entities'
   - 'access site-wide contact form'
+  - 'administer par_data_partnership entity types'
   - 'search content'
   - 'search public register'
   - 'use text format restricted_html'

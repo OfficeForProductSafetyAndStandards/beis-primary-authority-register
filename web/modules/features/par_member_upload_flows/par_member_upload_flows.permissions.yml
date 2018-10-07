@@ -1,0 +1,4 @@
+upload coordinated member:
+  title: 'Upload coordinated member'
+  description: 'Allow users to bulk upload up to 10,000 coordinated members to a partnership.'
+  restrict access: TRUE

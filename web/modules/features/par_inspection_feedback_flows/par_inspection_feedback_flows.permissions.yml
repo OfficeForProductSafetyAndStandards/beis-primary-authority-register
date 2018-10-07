@@ -1,0 +1,4 @@
+submit inspection feedback:
+  title: 'Submit inspection feedback'
+  description: 'Allow users to submit feedback for an inspection plan to the primary authority.'
+  restrict access: TRUE
