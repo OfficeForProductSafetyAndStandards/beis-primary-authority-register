@@ -9,7 +9,6 @@ is_admin: null
 permissions:
   - 'access content overview'
   - 'access helpdesk dashboard'
-  - 'access par dashboard'
   - 'access par journey transition business'
   - 'access par journey transition coordinator'
   - 'access par journey transition partnership details'
