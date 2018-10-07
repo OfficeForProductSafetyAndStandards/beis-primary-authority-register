@@ -12,7 +12,8 @@ Feature: Helpdesk approve partnership
     @ci @directpartnership @iostest
     Scenario: Helpdesk approve direct partnership
 
-        Given I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
+        Given I click the link text "Manage partnerships"
+        And I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
         And I select the option with the value "confirmed_business" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-helpdesk-dashboard"
         And there is "1" occurences of element ".par-rd-helpdesk-dashboard tbody tr"
@@ -39,7 +40,8 @@ Feature: Helpdesk approve partnership
 
         # REVOKE DIRECT PARTNERSHIP
 
-        Given I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
+        Given I click the link text "Manage partnerships"
+        And I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
         And I select the option with the value "0" for element "#edit-revoked"
         And I click on the button "#edit-submit-helpdesk-dashboard"
         And there is "1" occurences of element ".par-rd-helpdesk-dashboard tbody tr"

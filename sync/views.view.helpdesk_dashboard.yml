@@ -2260,7 +2260,7 @@ display:
     position: 3
     display_options:
       display_extenders: {  }
-      path: helpdesk/csv
+      path: helpdesk/partnerships/csv
       display_description: ''
       menu:
         type: tab
@@ -2291,7 +2291,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: helpdesk
+      path: helpdesk/partnerships
       footer:
         area_text_custom:
           id: area_text_custom
@@ -2302,7 +2302,7 @@ display:
           admin_label: ''
           empty: true
           tokenize: false
-          content: '<a href="/helpdesk/csv">CSV Report Download</a>'
+          content: '<a href="/helpdesk/partnerships/csv">CSV Report Download</a>'
           plugin_id: text_custom
       defaults:
         footer: false
