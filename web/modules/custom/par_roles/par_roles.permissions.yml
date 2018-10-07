@@ -3,67 +3,12 @@ search public register:
   title: 'Search public register'
   description: 'A permission to allow searching of the public register of partnerships.'
   restrict access: TRUE
-# Permissions that control management of user profiles.
-manage par profile:
-  title: 'Manage PAR user profile'
-  description: 'A permission to allow users to edit their personal data within PAR.'
-  restrict access: TRUE
 # Permissions related to all helpdesk activities.
-access helpdesk:
-  title: 'Access the PAR Helpdesk'
-  description: 'A permission to allow access to the PAR helpdesk.'
-  restrict access: TRUE
 update primary authority advice to local authorities:
   title: 'Update Primary Authority advice to Local Authorities'
   description: 'Update primary authority advice to local authorities.'
   restrict access: TRUE
-approve partnerships via help desk:
-  title: 'Approve partnerships via Help Desk'
-  description: 'Approve a given partnership.'
-  restrict access: TRUE
 invite authority members:
   title: 'Invite authority members to create accounts'
   description: 'Invite authority members that do not have user accounts to register with the system.'
-  restrict access: TRUE
-# Permissions related to all actions applied to partnerships.
-access partnerships dashboard:
-  title: 'Access the PAR Dashboard'
-  description: 'A permission to allow access to the PAR dashboard.'
-  restrict access: TRUE
-manage my organisations:
-  title: 'Manage my organisations'
-  description: 'A permission to allow the management of orgnisations.'
-  restrict access: TRUE
-manage my authorities:
-  title: 'Manage my authorities'
-  description: 'A permission to allow the management of orgnisations.'
-  restrict access: TRUE
-apply for partnership:
-  title: 'Apply for a partnership'
-  description: 'A permission to allow members of an authority to apply for new partnerships.'
-  restrict access: TRUE
-view authority enquiries:
-  title: 'View Authority Enquiries'
-  description: 'Allow a user to access all the enquiries relating to an authority.'
-  restrict access: TRUE
-# Permissions related to enforcement actions.
-search partnership:
-  title: 'Search partnerships'
-  description: 'A permission to allow searching of all partnerships within PAR.'
-  restrict access: TRUE
-enforce organisation:
-  title: 'Enforce organisation'
-  description: 'A permission to allow enforcement of an organisation.'
-  restrict access: TRUE
-raise enforcement notice:
-  title: 'Raise Enforcement Notice'
-  description: 'Allow a user to raise an enforcement notice against any Organisation.'
-  restrict access: TRUE
-approve enforcement notice:
-  title: 'Approve Enforcement Notice'
-  description: 'Allow approval of enforcement notices relevant to the Authority the user belongs to.'
-  restrict access: TRUE
-send enforcement notice:
-  title: 'Send Enforcement Notice'
-  description: 'Allow a user to send the enforcement notice they raised against an Organisation.'
   restrict access: TRUE

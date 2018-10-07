@@ -4,7 +4,7 @@ par_member_update_flows.member_confirm_summary:
     _form: '\Drupal\par_member_update_flows\Form\ParMemberDetailsForm'
     _title_callback: '\Drupal\par_member_update_flows\Form\ParMemberDetailsForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'update coordinated member'
     _custom_access: '\Drupal\par_member_update_flows\Form\ParMemberDetailsForm::accessCallback'
     par_data_partnership: \d+
     par_data_coordinated_business: \d+
@@ -21,7 +21,7 @@ par_member_update_flows.update_organisation_name:
     _form: '\Drupal\par_member_update_flows\Form\ParOrganisationNameForm'
     _title_callback: '\Drupal\par_member_update_flows\Form\ParOrganisationNameForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'update coordinated member'
     _custom_access: '\Drupal\par_member_update_flows\Form\ParOrganisationNameForm::accessCallback'
     par_data_partnership: \d+
     par_data_coordinated_business: \d+
@@ -38,7 +38,7 @@ par_member_update_flows.update_address:
     _form: '\Drupal\par_member_update_flows\Form\ParAddressForm'
     _title_callback: '\Drupal\par_member_update_flows\Form\ParAddressForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'update coordinated member'
     _custom_access: '\Drupal\par_member_update_flows\Form\ParAddressForm::accessCallback'
     par_data_partnership: \d+
     par_data_coordinated_business: \d+
@@ -55,7 +55,7 @@ par_member_update_flows.update_contact:
     _form: '\Drupal\par_member_update_flows\Form\ParContactForm'
     _title_callback: '\Drupal\par_member_update_flows\Form\ParContactForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'update coordinated member'
     _custom_access: '\Drupal\par_member_update_flows\Form\ParContactForm::accessCallback'
     par_data_partnership: \d+
     par_data_coordinated_business: \d+
@@ -72,7 +72,7 @@ par_member_update_flows.update_begin_date:
     _form: '\Drupal\par_member_update_flows\Form\ParStartDateForm'
     _title_callback: '\Drupal\par_member_update_flows\Form\ParStartDateForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'update coordinated member'
     _custom_access: '\Drupal\par_member_update_flows\Form\ParStartDateForm::accessCallback'
     par_data_partnership: \d+
     par_data_coordinated_business: \d+
@@ -89,7 +89,7 @@ par_member_update_flows.add_trading_name:
     _form: '\Drupal\par_member_update_flows\Form\ParTradingForm'
     _title_callback: '\Drupal\par_member_update_flows\Form\ParTradingForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'update coordinated member'
     _custom_access: '\Drupal\par_member_update_flows\Form\ParTradingForm::accessCallback'
     par_data_partnership: \d+
     par_data_coordinated_business: \d+
@@ -106,7 +106,7 @@ par_member_update_flows.update_trading_name:
     _form: '\Drupal\par_member_update_flows\Form\ParTradingForm'
     _title_callback: '\Drupal\par_member_update_flows\Form\ParTradingForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'update coordinated member'
     _custom_access: '\Drupal\par_member_update_flows\Form\ParTradingForm::accessCallback'
     par_data_partnership: \d+
     par_data_coordinated_business: \d+
@@ -124,7 +124,7 @@ par_member_update_flows.add_legal_entity:
     _form: '\Drupal\par_member_update_flows\Form\ParLegalEntityForm'
     _title_callback: '\Drupal\par_member_update_flows\Form\ParLegalEntityForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'update coordinated member'
     _custom_access: '\Drupal\par_member_update_flows\Form\ParLegalEntityForm::accessCallback'
     par_data_partnership: \d+
     par_data_coordinated_business: \d+
@@ -141,7 +141,7 @@ par_member_update_flows.update_legal_entities:
     _form: '\Drupal\par_member_update_flows\Form\ParLegalEntityForm'
     _title_callback: '\Drupal\par_member_update_flows\Form\ParLegalEntityForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'update coordinated member'
     _custom_access: '\Drupal\par_member_update_flows\Form\ParLegalEntityForm::accessCallback'
     par_data_partnership: \d+
     par_data_coordinated_business: \d+
@@ -161,7 +161,7 @@ par_member_update_flows.covered_by_plan:
     _form: '\Drupal\par_member_update_flows\Form\ParCoveredByPlanForm'
     _title_callback: '\Drupal\par_member_update_flows\Form\ParCoveredByPlanForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'update coordinated member'
     _custom_access: '\Drupal\par_member_update_flows\Form\ParCoveredByPlanForm::accessCallback'
     par_data_partnership: \d+
     par_data_coordinated_business: \d+

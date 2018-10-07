@@ -27,7 +27,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'access par_data_deviation_request entities'
+          perm: 'access par dashboard'
       cache:
         type: none
         options: {  }

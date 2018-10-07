@@ -1,0 +1,4 @@
+apply for partnership:
+  title: 'Apply for a partnership'
+  description: 'Allow users to apply for a new partnership.'
+  restrict access: TRUE

@@ -7,6 +7,7 @@ label: 'PAR Organisation Member'
 weight: 4
 is_admin: null
 permissions:
+  - 'access par dashboard'
   - 'access par journey transition business'
   - 'access par_data_advice entities'
   - 'access par_data_authority entities'

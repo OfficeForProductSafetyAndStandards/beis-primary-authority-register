@@ -5,7 +5,7 @@ par_member_upload_flows.member_download:
     _controller: '\Drupal\par_member_upload_flows\Controller\ParMemberDownload::content'
     _title: 'Download Member List'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'upload coordinated member'
   options:
     parameters:
       par_data_partnership:
@@ -18,7 +18,7 @@ par_member_upload_flows.member_upload:
     _form: '\Drupal\par_member_upload_flows\Form\ParMemberUploadForm'
     _title_callback: '\Drupal\par_member_upload_flows\Form\ParMemberUploadForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'upload coordinated member'
     _custom_access: '\Drupal\par_member_upload_flows\Form\ParMemberUploadForm::accessCallback'
   options:
     parameters:
@@ -31,7 +31,7 @@ par_member_upload_flows.member_validate:
     _form: '\Drupal\par_member_upload_flows\Form\ParMemberCsvValidationForm'
     _title_callback: '\Drupal\par_member_upload_flows\Form\ParMemberCsvValidationForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'upload coordinated member'
     _custom_access: '\Drupal\par_member_upload_flows\Form\ParMemberCsvValidationForm::accessCallback'
   options:
     parameters:
@@ -44,7 +44,7 @@ par_member_upload_flows.member_upload_confirm:
     _form: '\Drupal\par_member_upload_flows\Form\ParMemberConfirmUploadForm'
     _title_callback: '\Drupal\par_member_upload_flows\Form\ParMemberConfirmUploadForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'upload coordinated member'
     _custom_access: '\Drupal\par_member_upload_flows\Form\ParMemberConfirmUploadForm::accessCallback'
   options:
     parameters:
@@ -57,7 +57,7 @@ par_member_upload_flows.member_upload_success:
     _form: '\Drupal\par_member_upload_flows\Form\ParMemberUploadSuccessForm'
     _title_callback: '\Drupal\par_member_upload_flows\Form\ParMemberUploadSuccessForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'upload coordinated member'
     _custom_access: '\Drupal\par_member_upload_flows\Form\ParMemberUploadSuccessForm::accessCallback'
   options:
     parameters:

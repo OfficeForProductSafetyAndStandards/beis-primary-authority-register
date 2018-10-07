@@ -1,0 +1,4 @@
+update coordinated member:
+  title: 'Update coordinated member'
+  description: 'Allow users to update the details for a coordinated member.'
+  restrict access: TRUE

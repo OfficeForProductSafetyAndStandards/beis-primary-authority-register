@@ -1,0 +1,4 @@
+add coordinated member:
+  title: 'Add coordinated member'
+  description: 'Allow users to add a coordinated member to a partnership.'
+  restrict access: TRUE

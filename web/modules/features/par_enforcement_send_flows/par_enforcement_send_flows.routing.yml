@@ -4,7 +4,7 @@ par_enforcement_send_flows.send_enforcement:
     _controller: '\Drupal\par_enforcement_send_flows\Controller\ParEnforcementSendController::build'
     _title_callback: '\Drupal\par_enforcement_send_flows\Controller\ParEnforcementSendController::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'view enforcement notice'
     _custom_access: '\Drupal\par_enforcement_send_flows\Controller\ParEnforcementSendController::accessCallback'
     par_data_enforcement_notice: \d+
   options:

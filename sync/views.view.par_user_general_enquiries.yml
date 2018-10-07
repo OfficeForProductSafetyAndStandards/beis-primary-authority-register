@@ -25,7 +25,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'access par_data_general_enquiry entities'
+          perm: 'access par dashboard'
       cache:
         type: none
         options: {  }

@@ -1,0 +1,4 @@
+access par dashboard:
+  title: 'Access dashboard'
+  description: 'Allow users to access their PAR dashboard.'
+  restrict access: TRUE

@@ -1,0 +1,4 @@
+search partnerships:
+  title: 'Search partnerships'
+  description: 'Allow users to search partnerships.'
+  restrict access: TRUE
