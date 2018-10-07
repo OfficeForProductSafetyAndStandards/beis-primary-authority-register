@@ -1,3 +1,12 @@
+# PAR Help Desk
+par_help_desks_flows.helpdesk_dashboard:
+  path: '/helpdesk'
+  defaults:
+    _controller: '\Drupal\par_rd_help_desk_flows\Controller\ParHelpdeskDashboardController::build'
+    _title_callback: '\Drupal\par_rd_help_desk_flows\Controller\ParHelpdeskDashboardController::titleCallback'
+  requirements:
+    _permission: 'access helpdesk'
+
 # PAR Help Desk journey - approve partnership
 par_help_desks_flows.confirm_partnership:
   path: '/helpdesk/partnership/{par_data_partnership}/confirm'
