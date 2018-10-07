@@ -1,6 +1,0 @@
-uuid: 41549fb4-bb37-4199-9e30-a0ef724f9087
-langcode: en
-status: true
-dependencies: {  }
-id: invite_link
-sending_methods: invite_link||0

@@ -1,8 +1,0 @@
-uuid: 28bf1207-5966-4576-833e-214c8b5e139a
-langcode: en
-status: null
-dependencies: {  }
-id: invite_organisation_member
-label: 'Invite Organisation Member'
-description: 'Allows users to invite a member of an organisation to create an account.'
-data: 'a:4:{s:11:"use_default";i:1;s:16:"subject_editable";i:0;s:10:"html_email";i:0;s:11:"target_role";s:16:"par_organisation";}'

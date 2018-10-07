@@ -1,6 +1,0 @@
-uuid: 0575a567-261b-4a89-b689-0b12710c4f26
-langcode: en
-status: true
-dependencies: {  }
-id: invite_enforcement_officer
-sending_methods: invite_by_email||0

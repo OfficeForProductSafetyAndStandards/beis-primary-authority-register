@@ -1,8 +1,0 @@
-uuid: bd24aa34-95f1-4d72-b2cf-90008f3b3ff2
-langcode: en
-status: null
-dependencies: {  }
-id: invite_authority_member
-label: 'Invite Authority Member'
-description: ''
-data: 'a:4:{s:11:"use_default";i:1;s:16:"subject_editable";i:0;s:10:"html_email";i:0;s:11:"target_role";s:13:"par_authority";}'
