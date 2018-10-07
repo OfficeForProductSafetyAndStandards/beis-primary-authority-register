@@ -1,0 +1,19 @@
+uuid: 52e62349-8f7e-44cf-a6a2-37e249666010
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: nWliCUnXuR0Pw0eu6rJEsM951sjtFbOFS-xiHAHu1rc
+name: helpdesk
+label: Helpdesk
+triggers:
+  login: login
+  one-time-login: one-time-login
+destination_path: 'internal:/helpdesk'
+pages_type: 0
+pages: ''
+roles:
+  administrator: administrator
+  par_helpdesk: par_helpdesk
+weight: -10
+enabled: true

@@ -1,0 +1,77 @@
+uuid: a8309d6e-d1d7-4419-87bc-8e14d326f231
+langcode: en
+status: true
+dependencies: {  }
+id: gds_list_pagination
+label: 'GDS List Pagination'
+panes:
+  left:
+    style: basic
+    config:
+      display: items
+      display_restriction: 2
+      prefix_display: true
+      first_link: never
+      previous_link: never
+      next_link: never
+      last_link: never
+      tags:
+        items:
+          prefix_label: 'Showing @item_low-@item_high of @total_items results'
+          first: «
+          previous: ‹
+          next: ›
+          last: »
+          pageset_empty: 'No items to display.'
+          first_title: 'Go to first item'
+          previous_title: 'Go to previous items'
+          next_title: 'Go to next items'
+          last_title: 'Go to last item'
+          first_reader: 'First item'
+          previous_reader: 'Previous items'
+          next_reader: 'Next items'
+          last_reader: 'Last item'
+  center:
+    style: none
+    config: {  }
+  right:
+    style: standard
+    config:
+      quantity: 5
+      display_mode: normal
+      display: pages
+      display_restriction: 2
+      prefix_display: false
+      suffix_display: false
+      separator_display: false
+      breaker_display: false
+      first_link: never
+      previous_link: not_on_first
+      next_link: not_on_last
+      last_link: never
+      tags:
+        page_breaker: …
+        page_separator: '|'
+        pages:
+          prefix_label: Page
+          suffix_label: 'of @total'
+          page_current: '@number'
+          page_previous: '@number'
+          page_next: '@number'
+          first: First
+          previous: Previous
+          next: Next
+          last: Last
+          pageset_empty: 'No pages to display.'
+          page_current_title: 'Current page'
+          page_title: 'Go to page @number'
+          first_title: 'Go to first page'
+          previous_title: 'Go to previous page'
+          next_title: 'Go to next page'
+          last_title: 'Go to last page'
+          page_current_reader: 'Current page'
+          page_reader: Page
+          first_reader: 'First page'
+          previous_reader: 'Previous page'
+          next_reader: 'Next page'
+          last_reader: 'Last page'

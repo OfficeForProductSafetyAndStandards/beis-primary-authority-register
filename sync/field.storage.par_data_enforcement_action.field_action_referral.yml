@@ -1,0 +1,19 @@
+uuid: 3cfcd5df-c442-47be-a70b-b7d5ebc0b55f
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_enforcement_action.field_action_referral
+field_name: field_action_referral
+entity_type: par_data_enforcement_action
+type: entity_reference
+settings:
+  target_type: par_data_enforcement_action
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

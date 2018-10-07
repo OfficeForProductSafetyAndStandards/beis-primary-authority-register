@@ -1,0 +1,22 @@
+uuid: 1acbfb29-427e-4cc4-bbaf-d42fa22bb783
+langcode: en
+status: true
+dependencies:
+  module:
+    - invite
+    - par_data
+_core:
+  default_config_hash: l8C1vvk8HlHp9KrZd1Bo_hf0l_hY78Hp_l3jsRij_b0
+id: invite.field_invite_par_person
+field_name: field_invite_par_person
+entity_type: invite
+type: entity_reference
+settings:
+  target_type: par_data_person
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

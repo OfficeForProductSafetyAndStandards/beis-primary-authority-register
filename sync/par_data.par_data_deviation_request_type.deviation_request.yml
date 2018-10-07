@@ -1,0 +1,28 @@
+uuid: 780f11a0-10cf-41c0-9fe2-3359f94c7bfc
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: Gkg3u16BifzxyPPI-xoxjpReM3XUbG-9CMeR5P2odA4
+id: deviation_request
+label: 'Deviation Request'
+description: ''
+help: ''
+isDeletable: null
+isRevokable: null
+isArchivable: null
+configuration:
+  entity:
+    label_fields:
+      - field_partnership
+    status_field: primary_authority_status
+    status_transitions:
+      approved:
+        - awaiting
+      blocked:
+        - awaiting
+  primary_authority_status:
+    allowed_values:
+      awaiting: 'Awaiting Review'
+      approved: Approved
+      blocked: Blocked

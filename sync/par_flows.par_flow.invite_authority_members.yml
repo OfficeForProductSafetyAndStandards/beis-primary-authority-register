@@ -1,0 +1,28 @@
+uuid: c0906e9b-e941-44d2-bd5d-cfeb90a5924e
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: _dbh9ojuG0COIuUR50vOJDYRCV7MAtaoIL7TDEgQ-l8
+id: invite_authority_members
+label: 'Invite PAR Authority Users'
+default_title: null
+default_section_title: null
+description: 'Invite PAR Authority Users to register for an account.'
+save_method: end
+states:
+  - par_data_partnership
+  - par_data_person
+steps:
+  1:
+    route: par_help_desks_flows.invite_members
+    form_id: par_partnership_invite
+    redirect:
+      next: 2
+      cancel: 3
+  2:
+    route: par_help_desks_flows.invite_sent
+    redirect:
+      done: 3
+  3:
+    route: view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page

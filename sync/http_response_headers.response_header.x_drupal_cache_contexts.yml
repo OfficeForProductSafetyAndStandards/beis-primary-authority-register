@@ -1,0 +1,10 @@
+uuid: e8e4272f-7c85-49d7-845c-70ad423408db
+langcode: en
+status: true
+dependencies: {  }
+id: x_drupal_cache_contexts
+label: 'X Drupal Cache Contexts'
+description: 'Overrides the core drupal cache contexts'
+group: ''
+name: X-Drupal-Cache-Contexts
+value: ''

@@ -1,0 +1,19 @@
+uuid: ce9de8e5-9d92-4552-b2ee-47d84618937c
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_enforcement_notice.field_legal_entity
+field_name: field_legal_entity
+entity_type: par_data_enforcement_notice
+type: entity_reference
+settings:
+  target_type: par_data_legal_entity
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

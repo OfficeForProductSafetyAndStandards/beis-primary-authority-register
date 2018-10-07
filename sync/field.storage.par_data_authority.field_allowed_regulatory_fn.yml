@@ -1,0 +1,19 @@
+uuid: 4ccd04cd-d893-4fea-a9d2-a733676f54d5
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_authority.field_allowed_regulatory_fn
+field_name: field_allowed_regulatory_fn
+entity_type: par_data_authority
+type: entity_reference
+settings:
+  target_type: par_data_regulatory_function
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

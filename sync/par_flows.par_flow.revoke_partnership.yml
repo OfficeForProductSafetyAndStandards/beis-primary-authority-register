@@ -1,0 +1,28 @@
+uuid: 289f26b0-bee0-4c2d-b12e-3cfe96c2546f
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: v3ywlRNQRX-R0CHX80EP3jcUidTAV9KlkAJtN094QPE
+id: revoke_partnership
+label: 'Revoke Partnership'
+default_title: null
+default_section_title: null
+description: 'The revoke operations for a given partnership.'
+save_method: end
+states:
+  - par_data_partnership
+steps:
+  1:
+    route: par_help_desks_flows.confirm_revoke_partnership
+    form_id: par_rd_help_desk_revoke_confirm
+    redirect:
+      next: 2
+      cancel: 3
+  2:
+    route: par_help_desks_flows.revoke_partnership
+    form_id: par_rd_help_desk_revoke
+    redirect:
+      done: 3
+  3:
+    route: view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page

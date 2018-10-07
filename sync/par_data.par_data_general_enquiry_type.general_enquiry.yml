@@ -1,0 +1,25 @@
+uuid: 1c131837-57f5-4127-ae81-7ebccbcd922d
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: FRBPARe2qRsp-qCXuZcwjFVLPSfvwUXumjO2-8nfcM8
+id: general_enquiry
+label: 'General Enquiry'
+description: ''
+help: ''
+isDeletable: null
+isRevokable: null
+isArchivable: null
+configuration:
+  entity:
+    label_fields:
+      - field_partnership
+    status_field: primary_authority_status
+    status_transitions:
+      received:
+        - sent
+  primary_authority_status:
+    allowed_values:
+      sent: Submitted
+      received: Recieved

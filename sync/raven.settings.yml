@@ -1,0 +1,19 @@
+client_key: SENTRY_DSN
+fatal_error_handler: true
+fatal_error_handler_memory: 2560
+log_levels:
+  1: 1
+  3: 3
+  4: 4
+  5: 5
+  2: 0
+  6: 0
+  7: 0
+  8: 0
+stack: true
+timeout: !!float 2
+trace: false
+javascript_error_handler: true
+public_dsn: SENTRY_DSN_PUBLIC
+_core:
+  default_config_hash: EJsMMn516WDvtSeOL9Dx7ulP0PnE5dNVCv6AcXolnKg

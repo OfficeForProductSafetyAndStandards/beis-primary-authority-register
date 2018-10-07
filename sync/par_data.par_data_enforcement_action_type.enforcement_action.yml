@@ -1,0 +1,38 @@
+uuid: afd74fb7-e398-4839-beb6-9e25dc05b3f2
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: mUKonWFaFU5DDUWgDJeO1FsG6owS1kNSzBslM_mxLDk
+id: enforcement_action
+label: 'Enforcement Action'
+description: ''
+help: ''
+isDeletable: true
+isRevokable: false
+isArchivable: false
+configuration:
+  entity:
+    label_fields:
+      - title
+    status_field: primary_authority_status
+    status_transitions:
+      approved:
+        - awaiting_approval
+      blocked:
+        - awaiting_approval
+      referred:
+        - awaiting_approval
+  enforcement_action_status:
+    allowed_values:
+      unknown: Unknown
+      deferred: Deferred
+      served: Served
+      no_action: 'No Further Action'
+      ready_serve: 'Ready To Serve'
+  primary_authority_status:
+    allowed_values:
+      awaiting_approval: 'Awaiting approval'
+      approved: Approved
+      blocked: Blocked
+      referred: Referred

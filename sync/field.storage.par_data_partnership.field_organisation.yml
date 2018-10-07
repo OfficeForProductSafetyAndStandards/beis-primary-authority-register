@@ -1,0 +1,19 @@
+uuid: c5232fff-7800-41d9-a581-3be7c0311789
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_partnership.field_organisation
+field_name: field_organisation
+entity_type: par_data_partnership
+type: entity_reference
+settings:
+  target_type: par_data_organisation
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

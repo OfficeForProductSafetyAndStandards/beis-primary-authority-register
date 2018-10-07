@@ -1,0 +1,41 @@
+uuid: 231a708c-388d-401a-b666-c91fdeddb238
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: l40S-QbU0tgIvcQHNQH4_VLVSq9gy_a--K1kIQJ9ko0
+id: organisation
+label: Organisation
+description: 'An organisation - usually a commercial one, but not always as it can include charities and other non-commercial ventures - that is covered (or intends to be covered) by a Primary Authority Partnership.'
+help: ''
+isDeletable: true
+isRevokable: false
+isArchivable: false
+configuration:
+  entity:
+    label_fields:
+      - organisation_name
+    required_fields:
+      comments: 'The %field is required.'
+      trading_name: 'The %field is required.'
+  premises_mapped:
+    boolean_values:
+      'on': Mapped
+      'off': 'Not mapped'
+  nation:
+    allowed_values:
+      GB-ENG: England
+      GB-SCT: Scotland
+      GB-WLS: Wales
+      GB-NIR: 'Northern Ireland'
+  employees_band:
+    allowed_values:
+      10: '1 to 9'
+      50: '10 to 49'
+      250: '50 to 249'
+      1000: '250 or more'
+  size:
+    allowed_values:
+      small: Small
+      medium: Medium
+      large: Large

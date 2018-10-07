@@ -1,0 +1,14 @@
+langcode: en
+default_config:
+  panes:
+    left:
+      style: none
+      config: {  }
+    center:
+      style: standard
+      config: {  }
+    right:
+      style: none
+      config: {  }
+_core:
+  default_config_hash: '-rL0nDexAHYtF5mmC-u-onXnyho8G__xNLvoGDHOvhM'

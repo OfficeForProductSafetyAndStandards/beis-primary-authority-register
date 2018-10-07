@@ -1,0 +1,30 @@
+uuid: 99380ef6-6c1a-4f57-b123-f674d454bbda
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: Av9ZamwE0E5mRf9CEtsazUvHIBCxL1NAeuvetXtpLc4
+id: premises
+label: Premises
+description: 'Premises are a location used by either an Authority or an Organisation.'
+help: ''
+isDeletable: true
+isRevokable: false
+isArchivable: false
+configuration:
+  entity:
+    label_fields:
+      - 'address:address_line1'
+    required_fields:
+      address_line1: 'The %field is required.'
+      address_line2: 'The %field is required.'
+      locality: 'The %field is required.'
+      nation: 'The %field is required.'
+      postal_code: 'The %field is required.'
+      administrative_area: 'The %field is required.'
+  nation:
+    allowed_values:
+      GB-ENG: England
+      GB-SCT: Scotland
+      GB-WLS: Wales
+      GB-NIR: 'Northern Ireland'

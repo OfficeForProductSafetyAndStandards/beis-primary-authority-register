@@ -1,0 +1,20 @@
+uuid: 6e4994d8-3d5d-4647-bd9f-eeae1c6a2b70
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+    - user
+id: par_data_person.field_user_account
+field_name: field_user_account
+entity_type: par_data_person
+type: entity_reference
+settings:
+  target_type: user
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

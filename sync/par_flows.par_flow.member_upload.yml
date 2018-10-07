@@ -1,0 +1,40 @@
+uuid: 7aca2508-069b-4d5e-8d2c-b87d42d44ecf
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: r1wLSytK_TCA9WiWkOYdfZ4lg0IsSl0Dy1Sk123Gr44
+id: member_upload
+label: 'Member Upload'
+default_title: 'Upload a list of members'
+default_section_title: 'Coordinated partnership'
+description: ''
+save_method: end
+states:
+  - par_data_partnership
+steps:
+  1:
+    route: par_member_upload_flows.member_upload
+    form_id: par_member_upload_csv
+    redirect:
+      upload: 2
+      cancel: 5
+  2:
+    route: par_member_upload_flows.member_validate
+    form_id: par_member_upload_validation
+    redirect:
+      next: 3
+      done: 1
+  3:
+    route: par_member_upload_flows.member_upload_confirm
+    form_id: par_member_upload_csv_confirm
+    redirect:
+      save: 4
+      cancel: 5
+  4:
+    route: par_member_upload_flows.member_upload_success
+    form_id: par_member_upload_csv_success
+    redirect:
+      done: 5
+  5:
+    route: view.members_list.member_list_coordinator
