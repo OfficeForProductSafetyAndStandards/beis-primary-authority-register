@@ -8,6 +8,7 @@ weight: 6
 is_admin: null
 permissions:
   - 'access content overview'
+  - 'access helpdesk'
   - 'access helpdesk dashboard'
   - 'access par journey transition business'
   - 'access par journey transition coordinator'
@@ -53,6 +54,7 @@ permissions:
   - 'add par_data_sic_code entities'
   - 'administer users'
   - 'approve enforcement notice'
+  - 'approve partnerships'
   - 'approve partnerships via help desk'
   - 'assign par_enforcement role'
   - 'assign par_helpdesk role'
@@ -128,6 +130,7 @@ permissions:
   - 'manage my organisations'
   - 'manage par profile'
   - 'review deviation request'
+  - 'revoke partnerships'
   - 'search partnerships'
   - 'unlock membership list'
   - 'update coordinated member'
