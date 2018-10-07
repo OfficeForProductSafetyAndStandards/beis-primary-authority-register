@@ -97,6 +97,7 @@ if [ $? != 0 ]; then
     exit 1;
 fi
 
+
 ####################################################################################
 # Get AWS access keys to download the versioned package from S3
 ####################################################################################
@@ -110,7 +111,7 @@ if [ $? != 0 ]; then
 fi
 
 export AWS_ACCESS_KEY_ID=`vault read -field=AWS_ACCESS_KEY_ID secret/par/deploy/aws`
-export AWS_DEFAULT_REGION="eu-west-1"
+export AWS_DEFAULT_REGION=`vault read -field=AWS_REGION secret/par/deploy/aws`
 
 if [ $? != 0 ]; then
 	exit 1
@@ -126,6 +127,7 @@ export AWS_SECRET_ACCESS_KEY=`vault read -field=AWS_SECRET_ACCESS_KEY secret/par
 ####################################################################################
 
 VAULT_ENV_VARS=( \
+    "S3_REGION" \
     "S3_ACCESS_KEY" \
     "S3_SECRET_KEY" \
     "PAR_HASH_SALT" \
@@ -140,6 +142,7 @@ VAULT_ENV_VARS=( \
     "SENTRY_DSN_PUBLIC" \
     "TRANSFORM_BUCKET_PUBLIC" \
     "TRANSFORM_BUCKET_PRIVATE" \
+    "TRANSFORM_REGION" \
 )
 
 I=0
@@ -174,8 +177,9 @@ if [[ $1 != "environment-only" ]]; then
     mkdir $BUILD_DIR
     
     cd $BUILD_DIR
-    
-    aws s3 cp s3://transform-par-beta-artifacts/builds/$VER.tar.gz .
+
+    echo "Downloading build package s3://beis-par-artifacts/builds/$VER.tar.gz"
+    aws s3 cp s3://beis-par-artifacts/builds/$VER.tar.gz .
     
     ####################################################################################
     # Check that we got the package
