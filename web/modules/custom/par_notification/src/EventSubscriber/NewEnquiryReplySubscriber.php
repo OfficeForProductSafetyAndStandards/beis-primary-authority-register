@@ -81,13 +81,39 @@ class NewEnquiryReplySubscriber implements EventSubscriberInterface {
 
     $message_storage = $this->getEntityTypeManager()->getStorage('message');
 
-    // Get the link to approve this notice.
-    $options = ['absolute' => TRUE];
-    $response_url = Url::fromRoute('view.par_user_deviation_requests.deviation_requests_page', [], $options);
     // Get the response entity type to customize the message,
     // without the 'par' prefix.
     $par_data_entity = $comment->getCommentedEntity();
     $response_entity_type = str_replace('par ', '', $par_data_entity->getEntityType()->getLowercaseLabel());
+
+    // Get the link to approve this notice.
+    $options = ['absolute' => TRUE];
+    $response_url = Url::fromRoute('par_dashboards.dashboard', [], $options);
+
+    // Get the default permission.
+    $permission = 'post comments';
+
+    // Customise link and permission based on enquiry type.
+    switch ($response_entity_type) {
+      case 'deviation request':
+        $permission = 'view deviation request';
+        $response_url = Url::fromRoute('view.par_user_deviation_requests.deviation_requests_page', [], $options);
+
+        break;
+
+      case 'inspection feedback':
+        $permission = 'view inspection feedback';
+        $response_url = Url::fromRoute('view.par_user_inspection_feedback.inspection_feedback_page', [], $options);
+
+        break;
+
+      case 'general enquiry':
+        $permission = 'view general enquiry';
+        $response_url = Url::fromRoute('view.par_user_general_enquiries.general_enquiries_page', [], $options);
+
+        break;
+
+    }
 
     if (!$message_template) {
       // @TODO Log that the template couldn't be loaded.
@@ -100,7 +126,7 @@ class NewEnquiryReplySubscriber implements EventSubscriberInterface {
       if ($authority_person = $par_data_entity->getPrimaryAuthorityContact()) {
         $authority_person_account = $authority_person->lookupUserAccount();
         if ($authority_person_account
-          && $authority_person_account->hasPermission('raise enforcement notice')
+          && $authority_person_account->hasPermission($permission)
           && $authority_person_account->id() !== $comment->getOwnerId()) {
           $contacts[$authority_person_account->id()] = $authority_person_account;
         }
@@ -108,7 +134,7 @@ class NewEnquiryReplySubscriber implements EventSubscriberInterface {
       if ($enforcing_person = $par_data_entity->getEnforcingPerson(TRUE)) {
         $enforcing_person_account = $enforcing_person->lookupUserAccount();
         if ($enforcing_person_account
-          && $enforcing_person_account->hasPermission('raise enforcement notice')
+          && $enforcing_person_account->hasPermission($permission)
           && $enforcing_person_account->id() !== $comment->getOwnerId()) {
           $contacts[$enforcing_person_account->id()] = $enforcing_person_account;
         }

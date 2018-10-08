@@ -1,0 +1,4 @@
+review deviation request:
+  title: 'Review deviation request'
+  description: 'Allow users to approve and block deviation requests.'
+  restrict access: TRUE

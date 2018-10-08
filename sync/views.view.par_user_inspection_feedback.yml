@@ -25,7 +25,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'access par_data_inspection_feedback entities'
+          perm: 'view inspection feedback'
       cache:
         type: none
         options: {  }

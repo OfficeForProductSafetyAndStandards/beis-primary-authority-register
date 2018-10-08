@@ -8,7 +8,7 @@ dependencies:
     - better_exposed_filters
     - pagerer
     - par_data
-    - user
+    - par_roles
 id: par_user_partnerships
 label: 'Par User Partnerships'
 module: views
@@ -26,9 +26,13 @@ display:
     position: 0
     display_options:
       access:
-        type: perm
+        type: views_access_multiple_permissions
         options:
-          perm: 'access partnerships dashboard'
+          mult_perm:
+            'confirm partnership': 'confirm partnership'
+            'update partnership authority details': 'update partnership authority details'
+            'update partnership organisation details': 'update partnership organisation details'
+          mult_perm_all: 0
       cache:
         type: none
         options: {  }

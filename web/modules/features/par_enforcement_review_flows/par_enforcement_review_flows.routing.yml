@@ -45,7 +45,7 @@ par_enforcement_review_flows.completed_enforcement:
     _controller: '\Drupal\par_enforcement_review_flows\Controller\ParEnforcementConfirmController::build'
     _title_callback: '\Drupal\par_enforcement_review_flows\Controller\ParEnforcementConfirmController::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'approve enforcement notice'
     _custom_access: '\Drupal\par_enforcement_review_flows\Controller\ParEnforcementConfirmController::accessCallback'
     par_data_partnership: \d+
   options:

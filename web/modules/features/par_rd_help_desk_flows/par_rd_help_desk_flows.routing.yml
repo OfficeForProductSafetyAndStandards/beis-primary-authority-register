@@ -1,3 +1,12 @@
+# PAR Help Desk
+par_help_desks_flows.helpdesk_dashboard:
+  path: '/helpdesk'
+  defaults:
+    _controller: '\Drupal\par_rd_help_desk_flows\Controller\ParHelpdeskDashboardController::build'
+    _title_callback: '\Drupal\par_rd_help_desk_flows\Controller\ParHelpdeskDashboardController::titleCallback'
+  requirements:
+    _permission: 'access helpdesk'
+
 # PAR Help Desk journey - approve partnership
 par_help_desks_flows.confirm_partnership:
   path: '/helpdesk/partnership/{par_data_partnership}/confirm'
@@ -5,7 +14,7 @@ par_help_desks_flows.confirm_partnership:
     _form: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskApproveConfirmForm'
     _title_callback: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskApproveConfirmForm::titleCallback'
   requirements:
-    _permission: 'approve partnerships via help desk'
+    _permission: 'approve partnerships'
     _custom_access: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskApproveConfirmForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -18,7 +27,7 @@ par_help_desks_flows.approve_partnership:
     _form: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskApproveForm'
     _title_callback: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskApproveForm::titleCallback'
   requirements:
-    _permission: 'approve partnerships via help desk'
+    _permission: 'approve partnerships'
     par_data_partnership: \d+
   options:
     parameters:
@@ -32,7 +41,7 @@ par_help_desks_flows.confirm_revoke_partnership:
     _form: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskRevokeConfirmForm'
     _title_callback: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskRevokeConfirmForm::titleCallback'
   requirements:
-    _permission: 'approve partnerships via help desk'
+    _permission: 'revoke partnerships'
     _custom_access: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskRevokeConfirmForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -45,7 +54,7 @@ par_help_desks_flows.revoke_partnership:
     _form: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskRevokeForm'
     _title_callback: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskRevokeForm::titleCallback'
   requirements:
-    _permission: 'approve partnerships via help desk'
+    _permission: 'revoke partnerships'
     par_data_partnership: \d+
   options:
     parameters:
@@ -59,7 +68,7 @@ par_help_desks_flows.confirm_unrevoke_partnership:
     _form: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskUnrevokeConfirmForm'
     _title_callback: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskUnrevokeConfirmForm::titleCallback'
   requirements:
-    _permission: 'approve partnerships via help desk'
+    _permission: 'approve partnerships'
     _custom_access: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskUnrevokeConfirmForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -72,7 +81,7 @@ par_help_desks_flows.unrevoke_partnership:
     _form: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskUnrevokeForm'
     _title_callback: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskUnrevokeForm::titleCallback'
   requirements:
-    _permission: 'approve partnerships via help desk'
+    _permission: 'approve partnerships'
     par_data_partnership: \d+
   options:
     parameters:
@@ -110,12 +119,3 @@ par_help_desks_flows.invite_sent:
         type: entity:par_data_partnership
       par_data_person:
         type: entity:par_data_person
-
-# PAR Help Desk journey - manage legal entity migration
-par_help_desks_flows.legal_entity_migration:
-  path: '/helpdesk/manage-legal-entity-migration'
-  defaults:
-    _controller: '\Drupal\par_rd_help_desk_flows\Controller\ParRdHelpDeskPartnershipLegalEntitiesController::content'
-    _title: 'Legal Entity Migration'
-  requirements:
-    _permission: 'approve partnerships via help desk'

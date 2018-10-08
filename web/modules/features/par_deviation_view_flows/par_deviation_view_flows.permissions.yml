@@ -1,0 +1,4 @@
+view deviation request:
+  title: 'View deviation request'
+  description: 'Allow users to see completed deviation requests.'
+  restrict access: TRUE

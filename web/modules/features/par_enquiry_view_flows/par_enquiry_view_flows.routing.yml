@@ -4,7 +4,7 @@ par_enquiry_view_flows.view_feedback:
     _controller: '\Drupal\par_enquiry_view_flows\Controller\ParEnquiryViewController::build'
     _title_callback: '\Drupal\par_enquiry_view_flows\Controller\ParEnquiryViewController::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'view general enquiry'
     _custom_access: '\Drupal\par_enquiry_view_flows\Controller\ParEnquiryViewController::accessCallback'
     par_data_general_enquiry: \d+
   options:
@@ -18,7 +18,7 @@ par_enquiry_view_flows.reply:
     _form: '\Drupal\par_enquiry_view_flows\Form\ParEnquiryReplyForm'
     _title_callback: '\Drupal\par_enquiry_view_flows\Form\ParEnquiryReplyForm::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'view general enquiry'
     _custom_access: '\Drupal\par_enquiry_view_flows\Form\ParEnquiryReplyForm::accessCallback'
     par_data_general_enquiry: \d+
   options:

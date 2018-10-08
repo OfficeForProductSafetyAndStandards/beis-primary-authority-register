@@ -78,7 +78,14 @@ class ParDashboardsDashboardController extends ControllerBase {
 
     // Your partnerships.
     $partnerships = $this->getParDataManager()->hasMembershipsByType($this->getCurrentUser(), 'par_data_partnership');
-    $can_manage_partnerships = $this->getCurrentUser()->hasPermission('manage my organisations') || $this->getCurrentUser()->hasPermission('manage my authorities');
+    $enforcement_notices = $this->getParDataManager()->hasMembershipsByType($this->getCurrentUser(), 'par_data_enforcement_notice');
+    $deviation_requests = $this->getParDataManager()->hasMembershipsByType($this->getCurrentUser(), 'par_data_deviation_request');
+    $inspection_feedback = $this->getParDataManager()->hasMembershipsByType($this->getCurrentUser(), 'par_data_inspection_feedback');
+    $general_enquiries = $this->getParDataManager()->hasMembershipsByType($this->getCurrentUser(), 'par_data_general_enquiry');
+
+    $can_manage_partnerships = $this->getCurrentUser()->hasPermission('confirm partnership') ||
+      $this->getCurrentUser()->hasPermission('update partnership authority details') ||
+      $this->getCurrentUser()->hasPermission('update partnership organisation details');
     $can_create_partnerships = $this->getCurrentUser()->hasPermission('apply for partnership');
     if (($partnerships && $can_manage_partnerships) || $can_create_partnerships) {
       // Cache context needs to be added for users with memberships.
@@ -118,7 +125,7 @@ class ParDashboardsDashboardController extends ControllerBase {
     }
 
     // Partnerships search link.
-    if ($this->getCurrentUser()->hasPermission('enforce organisation')) {
+    if ($this->getCurrentUser()->hasPermission('search partnerships')) {
       $build['partnerships_find'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Find a partnership'),
@@ -141,7 +148,11 @@ class ParDashboardsDashboardController extends ControllerBase {
     }
 
     // Enforcement Notice links.
-    if ($this->getCurrentUser()->hasPermission('enforce organisation')) {
+    if (($deviation_requests && ($this->getCurrentUser()->hasPermission('review deviation request') || $this->getCurrentUser()->hasPermission('view deviation request'))) ||
+      ($enforcement_notices && ($this->getCurrentUser()->hasPermission('approve enforcement notice') || $this->getCurrentUser()->hasPermission('view enforcement notice') || $this->getCurrentUser()->hasPermission('send enforcement notice'))) ||
+      ($general_enquiries && $this->getCurrentUser()->hasPermission('view general enquiry')) ||
+      ($inspection_feedback && $this->getCurrentUser()->hasPermission('view inspection feedback'))) {
+
       $build['messages'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Messages'),
@@ -150,7 +161,11 @@ class ParDashboardsDashboardController extends ControllerBase {
         '#collapsed' => FALSE,
       ];
 
-      if ($this->getCurrentUser()->hasPermission('send enforcement notice') || $this->getCurrentUser()->hasPermission('approve enforcement notice')) {
+      if ($enforcement_notices &&
+        ($this->getCurrentUser()->hasPermission('approve enforcement notice') ||
+        $this->getCurrentUser()->hasPermission('view enforcement notice') ||
+        $this->getCurrentUser()->hasPermission('send enforcement notice'))) {
+
         $new_enforcements = count($this->getParDataManager()->hasInProgressMembershipsByType($account, 'par_data_enforcement_notice'));
         $link_text = $new_enforcements > 0 ?
           $this->t('See your enforcement notices (@count pending)', ['@count' => $new_enforcements]) :
@@ -162,6 +177,11 @@ class ParDashboardsDashboardController extends ControllerBase {
           '#type' => 'markup',
           '#markup' => "<p>{$link}</p>",
         ];
+      }
+
+      if ($deviation_requests &&
+        ($this->getCurrentUser()->hasPermission('review deviation request') ||
+        $this->getCurrentUser()->hasPermission('view deviation request'))) {
 
         $new_deviations = count($this->getParDataManager()->hasInProgressMembershipsByType($account, 'par_data_deviation_request'));
         $link_text = $new_deviations > 0 ?
@@ -174,6 +194,9 @@ class ParDashboardsDashboardController extends ControllerBase {
           '#type' => 'markup',
           '#markup' => "<p>{$deviation_requests_link}</p>",
         ];
+      }
+
+      if ($inspection_feedback && $this->getCurrentUser()->hasPermission('view inspection feedback')) {
 
         $new_feedback = count($this->getParDataManager()->hasNotCommentedOnMembershipsByType($account, 'par_data_inspection_feedback'));
         $link_text = $new_feedback > 0 ?
@@ -186,6 +209,9 @@ class ParDashboardsDashboardController extends ControllerBase {
           '#type' => 'markup',
           '#markup' => "<p>{$inspection_feedback_link}</p>",
         ];
+      }
+
+      if ($general_enquiries && $this->getCurrentUser()->hasPermission('view general enquiry')) {
 
         $new_enquiries = count($this->getParDataManager()->hasNotCommentedOnMembershipsByType($account, 'par_data_general_enquiry'));
         $link_text = $new_enquiries > 0 ?
@@ -202,7 +228,9 @@ class ParDashboardsDashboardController extends ControllerBase {
     }
 
     // User controls.
-    if ($account && $people = $this->getParDataManager()->getUserPeople($account)) {
+    if ($account && $people = $this->getParDataManager()->getUserPeople($account) &&
+      $this->getCurrentUser()->hasPermission('manage par profile')) {
+
       $build['user'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Your account'),

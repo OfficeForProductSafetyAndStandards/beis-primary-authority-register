@@ -91,7 +91,7 @@ class NewGeneralEnquirySubscriber implements EventSubscriberInterface {
 
     // Notify the primary authority contact for this General Enquiry.
     $primary_authority_contact = $par_data_general_enquiry->getPrimaryAuthorityContact();
-    if ($primary_authority_contact && ($account = $primary_authority_contact->lookupUserAccount()) && $primary_authority_contact->lookupUserAccount()->hasPermission('raise enforcement notice')
+    if ($primary_authority_contact && ($account = $primary_authority_contact->lookupUserAccount()) && $primary_authority_contact->lookupUserAccount()->hasPermission('view general enquiry')
       && !isset($this->recipients[$account->id()])) {
 
       // Record the recipient so that we don't send them the message twice.

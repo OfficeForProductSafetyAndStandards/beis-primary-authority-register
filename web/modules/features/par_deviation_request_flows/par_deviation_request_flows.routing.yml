@@ -5,7 +5,7 @@ par_deviation_request_flows.select_inspection_plan:
     _form: '\Drupal\par_deviation_request_flows\Form\ParSelectInspectionPlanForm'
     _title_callback: '\Drupal\par_deviation_request_flows\Form\ParSelectInspectionPlanForm::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'submit deviation request'
     _custom_access: '\Drupal\par_deviation_request_flows\Form\ParSelectInspectionPlanForm::accessCallback'
   options:
     parameters:
@@ -18,7 +18,7 @@ par_deviation_request_flows.select_authority:
     _form: '\Drupal\par_deviation_request_flows\Form\ParSelectAuthorityForm'
     _title_callback: '\Drupal\par_deviation_request_flows\Form\ParSelectAuthorityForm::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'submit deviation request'
     _custom_access: '\Drupal\par_deviation_request_flows\Form\ParSelectAuthorityForm::accessCallback'
   options:
     parameters:
@@ -31,7 +31,7 @@ par_deviation_request_flows.officer_details:
     _form: '\Drupal\par_deviation_request_flows\Form\ParContactForm'
     _title_callback: '\Drupal\par_deviation_request_flows\Form\ParContactForm::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'submit deviation request'
     _custom_access: '\Drupal\par_deviation_request_flows\Form\ParContactForm::accessCallback'
   options:
     parameters:
@@ -44,7 +44,7 @@ par_deviation_request_flows.request_deviation:
     _form: '\Drupal\par_deviation_request_flows\Form\ParDeviationRequestForm'
     _title_callback: '\Drupal\par_deviation_request_flows\Form\ParDeviationRequestForm::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'submit deviation request'
     _custom_access: '\Drupal\par_deviation_request_flows\Form\ParDeviationRequestForm::accessCallback'
   options:
     parameters:
@@ -57,7 +57,7 @@ par_deviation_request_flows.review_deviation:
     _form: '\Drupal\par_deviation_request_flows\Form\ParDeviationReviewForm'
     _title_callback: '\Drupal\par_deviation_request_flows\Form\ParDeviationReviewForm::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'submit deviation request'
     _custom_access: '\Drupal\par_deviation_request_flows\Form\ParDeviationReviewForm::accessCallback'
   options:
     parameters:
@@ -70,7 +70,7 @@ par_deviation_request_flows.deviation_confirmed:
     _controller: '\Drupal\par_deviation_request_flows\Controller\ParDeviationConfirmationForm:build'
     _title_callback: '\Drupal\par_deviation_request_flows\Controller\ParDeviationConfirmationForm::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'submit deviation request'
     _custom_access: '\Drupal\par_deviation_request_flows\Controller\ParDeviationConfirmationForm::accessCallback'
   options:
     parameters:

@@ -5,7 +5,7 @@ par_member_cease_flows.member_cease:
     _form: '\Drupal\par_member_cease_flows\Form\ParMemberCeaseDateForm'
     _title_callback: '\Drupal\par_member_cease_flows\Form\ParMemberCeaseDateForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'cease coordinated member'
     _custom_access: '\Drupal\par_member_cease_flows\Form\ParMemberCeaseDateForm::accessCallback'
   options:
     parameters:
@@ -20,7 +20,7 @@ par_member_cease_flows.member_cease_confirm:
     _form: '\Drupal\par_member_cease_flows\Form\ParMemberCeaseConfirmForm'
     _title_callback: '\Drupal\par_member_cease_flows\Form\ParMemberCeaseConfirmForm::titleCallback'
   requirements:
-    _permission: 'manage my organisations'
+    _permission: 'cease coordinated member'
     _custom_access: '\Drupal\par_member_cease_flows\Form\ParMemberCeaseConfirmForm::accessCallback'
   options:
     parameters:

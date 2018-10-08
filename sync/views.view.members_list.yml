@@ -28,7 +28,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'manage my organisations'
+          perm: 'update partnership organisation details'
       cache:
         type: none
         options: {  }

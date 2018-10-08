@@ -21,7 +21,7 @@ steps:
     route: par_partnership_confirmation_flows.confirm_address
     form_id: par_partnership_confirmation_address
     components:
-      address: {}
+      address_lookup: {}
     redirect:
       cancel: 11
   3:

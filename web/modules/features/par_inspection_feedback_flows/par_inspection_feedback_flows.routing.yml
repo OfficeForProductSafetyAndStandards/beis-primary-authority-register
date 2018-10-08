@@ -5,7 +5,7 @@ par_inspection_feedback_flows.select_inspection_plan:
     _form: '\Drupal\par_inspection_feedback_flows\Form\ParSelectInspectionPlanForm'
     _title_callback: '\Drupal\par_inspection_feedback_flows\Form\ParSelectInspectionPlanForm::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'submit inspection feedback'
     _custom_access: '\Drupal\par_inspection_feedback_flows\Form\ParSelectInspectionPlanForm::accessCallback'
   options:
     parameters:
@@ -18,7 +18,7 @@ par_inspection_feedback_flows.select_authority:
     _form: '\Drupal\par_inspection_feedback_flows\Form\ParSelectAuthorityForm'
     _title_callback: '\Drupal\par_inspection_feedback_flows\Form\ParSelectAuthorityForm::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'submit inspection feedback'
     _custom_access: '\Drupal\par_inspection_feedback_flows\Form\ParSelectAuthorityForm::accessCallback'
   options:
     parameters:
@@ -31,7 +31,7 @@ par_inspection_feedback_flows.officer_details:
     _form: '\Drupal\par_inspection_feedback_flows\Form\ParContactForm'
     _title_callback: '\Drupal\par_inspection_feedback_flows\Form\ParContactForm::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'submit inspection feedback'
     _custom_access: '\Drupal\par_inspection_feedback_flows\Form\ParContactForm::accessCallback'
   options:
     parameters:
@@ -44,7 +44,7 @@ par_inspection_feedback_flows.feedback:
     _form: '\Drupal\par_inspection_feedback_flows\Form\ParFeedbackForm'
     _title_callback: '\Drupal\par_inspection_feedback_flows\Form\ParFeedbackForm::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'submit inspection feedback'
     _custom_access: '\Drupal\par_inspection_feedback_flows\Form\ParFeedbackForm::accessCallback'
   options:
     parameters:
@@ -57,7 +57,7 @@ par_inspection_feedback_flows.review_feedback:
     _form: '\Drupal\par_inspection_feedback_flows\Form\ParFeedbackReviewForm'
     _title_callback: '\Drupal\par_inspection_feedback_flows\Form\ParFeedbackReviewForm::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'submit inspection feedback'
     _custom_access: '\Drupal\par_inspection_feedback_flows\Form\ParFeedbackReviewForm::accessCallback'
   options:
     parameters:
@@ -70,7 +70,7 @@ par_inspection_feedback_flows.feedback_confirmed:
     _controller: '\Drupal\par_inspection_feedback_flows\Controller\ParFeedbackConfirmationForm:build'
     _title_callback: '\Drupal\par_inspection_feedback_flows\Controller\ParFeedbackConfirmationForm::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'submit inspection feedback'
     _custom_access: '\Drupal\par_inspection_feedback_flows\Controller\ParFeedbackConfirmationForm::accessCallback'
   options:
     parameters:

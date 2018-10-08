@@ -1,0 +1,4 @@
+confirm partnership:
+  title: 'Complete partnership details'
+  description: 'Allow users to confirm and compete the partnership details.'
+  restrict access: TRUE

@@ -1,0 +1,4 @@
+raise enforcement notice:
+  title: 'Raise enforcement notice'
+  description: 'Allow a user to raise an enforcement notice against any Organisation.'
+  restrict access: TRUE

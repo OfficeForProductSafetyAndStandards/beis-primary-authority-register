@@ -5,7 +5,7 @@ par_enquiry_send_flows.select_authority:
     _form: '\Drupal\par_enquiry_send_flows\Form\ParSelectAuthorityForm'
     _title_callback: '\Drupal\par_enquiry_send_flows\Form\ParSelectAuthorityForm::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'send general enquiry'
     _custom_access: '\Drupal\par_enquiry_send_flows\Form\ParSelectAuthorityForm::accessCallback'
   options:
     parameters:
@@ -18,7 +18,7 @@ par_enquiry_send_flows.officer_details:
     _form: '\Drupal\par_enquiry_send_flows\Form\ParContactForm'
     _title_callback: '\Drupal\par_enquiry_send_flows\Form\ParContactForm::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'send general enquiry'
     _custom_access: '\Drupal\par_enquiry_send_flows\Form\ParContactForm::accessCallback'
   options:
     parameters:
@@ -31,7 +31,7 @@ par_enquiry_send_flows.enquiry:
     _form: '\Drupal\par_enquiry_send_flows\Form\ParEnquiryForm'
     _title_callback: '\Drupal\par_enquiry_send_flows\Form\ParEnquiryForm::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'send general enquiry'
     _custom_access: '\Drupal\par_enquiry_send_flows\Form\ParEnquiryForm::accessCallback'
   options:
     parameters:
@@ -44,7 +44,7 @@ par_enquiry_send_flows.review_enquiry:
     _form: '\Drupal\par_enquiry_send_flows\Form\ParEnquiryReviewForm'
     _title_callback: '\Drupal\par_enquiry_send_flows\Form\ParEnquiryReviewForm::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'send general enquiry'
     _custom_access: '\Drupal\par_enquiry_send_flows\Form\ParEnquiryReviewForm::accessCallback'
   options:
     parameters:
@@ -57,7 +57,7 @@ par_enquiry_send_flows.enquiry_confirmed:
     _controller: '\Drupal\par_enquiry_send_flows\Controller\ParEnquiryConfirmationForm:build'
     _title_callback: '\Drupal\par_enquiry_send_flows\Controller\ParEnquiryConfirmationForm::titleCallback'
   requirements:
-    _permission: 'raise enforcement notice'
+    _permission: 'send general enquiry'
     _custom_access: '\Drupal\par_enquiry_send_flows\Controller\ParEnquiryConfirmationForm::accessCallback'
   options:
     parameters:

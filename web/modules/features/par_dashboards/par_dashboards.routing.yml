@@ -6,4 +6,4 @@ par_dashboards.dashboard:
 #    _title: 'Primary Authority Register'
     _title_callback: '\Drupal\par_dashboards\Controller\ParDashboardsDashboardController::titleCallback'
   requirements:
-    _permission: 'access partnerships dashboard'
+    _permission: 'access par dashboard'

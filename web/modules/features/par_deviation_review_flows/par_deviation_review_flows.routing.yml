@@ -4,7 +4,7 @@ par_deviation_review_flows.respond:
     _form: '\Drupal\par_deviation_review_flows\Form\ParDeviationResponseForm'
     _title_callback: '\Drupal\par_deviation_review_flows\Form\ParDeviationResponseForm::titleCallback'
   requirements:
-    _permission: 'approve enforcement notice'
+    _permission: 'review deviation request'
     _custom_access: '\Drupal\par_deviation_review_flows\Form\ParDeviationResponseForm::accessCallback'
     par_data_deviation_request: \d+
   options:
@@ -18,7 +18,7 @@ par_deviation_review_flows.review:
     _form: '\Drupal\par_deviation_review_flows\Form\ParDeviationResponseReviewForm'
     _title_callback: '\Drupal\par_deviation_review_flows\Form\ParDeviationResponseReviewForm::titleCallback'
   requirements:
-    _permission: 'approve enforcement notice'
+    _permission: 'review deviation request'
     _custom_access: '\Drupal\par_deviation_review_flows\Form\ParDeviationResponseReviewForm::accessCallback'
     par_data_deviation_request: \d+
   options:
@@ -32,7 +32,7 @@ par_deviation_review_flows.completed:
     _controller: '\Drupal\par_deviation_review_flows\Controller\ParDeviationConfirmController::build'
     _title_callback: '\Drupal\par_deviation_review_flows\Controller\ParDeviationConfirmController::titleCallback'
   requirements:
-    _permission: 'approve enforcement notice'
+    _permission: 'review deviation request'
     _custom_access: '\Drupal\par_deviation_review_flows\Controller\ParDeviationConfirmController::accessCallback'
     par_data_partnership: \d+
   options:

@@ -4,7 +4,7 @@ par_partnership_application_flows.partnership_application_start:
     _form: '\Drupal\par_partnership_application_flows\Form\ParSelectAuthorityForm'
     _title_callback: '\Drupal\par_partnership_application_flows\Form\ParSelectAuthorityForm::titleCallback'
   requirements:
-    _permission: 'manage my authorities'
+    _permission: 'apply for partnership'
     _custom_access: '\Drupal\par_partnership_application_flows\Form\ParSelectAuthorityForm::accessCallback'
 par_partnership_application_flows.partnership_application_type:
   path: '/partnership/apply/type'
@@ -12,7 +12,7 @@ par_partnership_application_flows.partnership_application_type:
     _form: '\Drupal\par_partnership_application_flows\Form\ParApplicationTypeForm'
     _title_callback: '\Drupal\par_partnership_application_flows\Form\ParApplicationTypeForm::titleCallback'
   requirements:
-    _permission: 'manage my authorities'
+    _permission: 'apply for partnership'
     _custom_access: '\Drupal\par_partnership_application_flows\Form\ParApplicationTypeForm::accessCallback'
 par_partnership_application_flows.partnership_application_authority_checklist:
   path: '/partnership/apply/checklist'
@@ -20,7 +20,7 @@ par_partnership_application_flows.partnership_application_authority_checklist:
     _form: '\Drupal\par_partnership_application_flows\Form\ParChecklistForm'
     _title_callback: '\Drupal\par_partnership_application_flows\Form\ParChecklistForm::titleCallback'
   requirements:
-    _permission: 'manage my authorities'
+    _permission: 'apply for partnership'
     _custom_access: '\Drupal\par_partnership_application_flows\Form\ParChecklistForm::accessCallback'
 par_partnership_application_flows.partnership_application_notify_existing:
   path: '/partnership/apply/notify-existing'
@@ -36,7 +36,7 @@ par_partnership_application_flows.partnership_application_partnership_about:
     _form: '\Drupal\par_partnership_application_flows\Form\ParAboutPartnershipForm'
     _title_callback: '\Drupal\par_partnership_application_flows\Form\ParAboutPartnershipForm::titleCallback'
   requirements:
-    _permission: 'manage my authorities'
+    _permission: 'apply for partnership'
     _custom_access: '\Drupal\par_partnership_application_flows\Form\ParAboutPartnershipForm::accessCallback'
 par_partnership_application_flows.partnership_application_organisation_name:
   path: '/partnership/apply/organisation/name'
@@ -44,7 +44,7 @@ par_partnership_application_flows.partnership_application_organisation_name:
     _form: '\Drupal\par_partnership_application_flows\Form\ParOrganisationNameForm'
     _title_callback: '\Drupal\par_partnership_application_flows\Form\ParOrganisationNameForm::titleCallback'
   requirements:
-    _permission: 'manage my authorities'
+    _permission: 'apply for partnership'
     _custom_access: '\Drupal\par_partnership_application_flows\Form\ParOrganisationNameForm::accessCallback'
 par_partnership_application_flows.partnership_application_organisation_confirm:
   path: '/partnership/apply/organisation/confirm'
@@ -52,7 +52,7 @@ par_partnership_application_flows.partnership_application_organisation_confirm:
     _form: '\Drupal\par_partnership_application_flows\Form\ParOrganisationSuggestionForm'
     _title_callback: '\Drupal\par_partnership_application_flows\Form\ParOrganisationSuggestionForm::titleCallback'
   requirements:
-    _permission: 'manage my authorities'
+    _permission: 'apply for partnership'
     _custom_access: '\Drupal\par_partnership_application_flows\Form\ParOrganisationSuggestionForm::accessCallback'
 par_partnership_application_flows.partnership_application_organisation_address:
   path: '/partnership/apply/organisation/address'
@@ -60,7 +60,7 @@ par_partnership_application_flows.partnership_application_organisation_address:
     _form: '\Drupal\par_partnership_application_flows\Form\ParAddressForm'
     _title_callback: '\Drupal\par_partnership_application_flows\Form\ParAddressForm::titleCallback'
   requirements:
-    _permission: 'manage my authorities'
+    _permission: 'apply for partnership'
     _custom_access: '\Drupal\par_partnership_application_flows\Form\ParAddressForm::accessCallback'
 par_partnership_application_flows.partnership_application_organisation_contact:
   path: '/partnership/apply/organisation/contact'
@@ -68,7 +68,7 @@ par_partnership_application_flows.partnership_application_organisation_contact:
     _form: '\Drupal\par_partnership_application_flows\Form\ParContactForm'
     _title_callback: '\Drupal\par_partnership_application_flows\Form\ParContactForm::titleCallback'
   requirements:
-    _permission: 'manage my authorities'
+    _permission: 'apply for partnership'
     _custom_access: '\Drupal\par_partnership_application_flows\Form\ParContactForm::accessCallback'
 par_partnership_application_flows.partnership_application_review:
   path: '/partnership/apply/review'
@@ -76,7 +76,7 @@ par_partnership_application_flows.partnership_application_review:
     _form: '\Drupal\par_partnership_application_flows\Form\ParConfirmationReviewForm'
     _title_callback: '\Drupal\par_partnership_application_flows\Form\ParConfirmationReviewForm::titleCallback'
   requirements:
-    _permission: 'manage my authorities'
+    _permission: 'apply for partnership'
     _custom_access: '\Drupal\par_partnership_application_flows\Form\ParConfirmationReviewForm::accessCallback'
 par_partnership_application_flows.partnership_application_invite:
   path: '/partnership/apply/{par_data_partnership}/invite/{par_data_person}'
@@ -84,7 +84,7 @@ par_partnership_application_flows.partnership_application_invite:
     _form: '\Drupal\par_partnership_application_flows\Form\ParInviteForm'
     _title_callback: '\Drupal\par_partnership_application_flows\Form\ParInviteForm::titleCallback'
   requirements:
-    _permission: 'manage my authorities'
+    _permission: 'apply for partnership'
     _custom_access: '\Drupal\par_partnership_application_flows\Form\ParInviteForm::accessCallback'
     par_data_partnership: \d+
     par_data_person: \d+
@@ -100,7 +100,7 @@ par_partnership_application_flows.partnership_application_completed:
     _controller: '\Drupal\par_partnership_application_flows\Controller\ParPartnershipCompletedController::content'
     _title_callback: '\Drupal\par_partnership_application_flows\Controller\ParPartnershipCompletedController::titleCallback'
   requirements:
-    _permission: 'manage my authorities'
+    _permission: 'apply for partnership'
     _custom_access: '\Drupal\par_partnership_application_flows\Controller\ParPartnershipCompletedController::accessCallback'
     par_data_partnership: \d+
     par_data_person: \d+

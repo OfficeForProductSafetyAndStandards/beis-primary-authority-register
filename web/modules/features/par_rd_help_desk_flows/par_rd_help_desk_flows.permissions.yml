@@ -1,0 +1,12 @@
+access helpdesk:
+  title: 'Access the PAR Helpdesk'
+  description: 'A permission to allow access to the PAR helpdesk.'
+  restrict access: TRUE
+approve partnerships:
+  title: 'Approve partnerships'
+  description: 'Approve a partnership.'
+  restrict access: TRUE
+revoke partnerships:
+  title: 'Revoke partnerships'
+  description: 'Revoke a partnership.'
+  restrict access: TRUE
