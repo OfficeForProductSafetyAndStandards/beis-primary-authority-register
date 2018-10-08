@@ -7,7 +7,7 @@ label: 'Partnership confirmed notification'
 description: 'This is a message sent to all the partnership authority contacts when the partnership is confirmed.'
 text:
   -
-    value: "<p>Dear Colleague,</p>\r\n\r\n<p>@partnership_organisation has confirmed their details and your application for nomination has been submitted to the Secretary of State.</p>\r\n\r\n<p>You can view the pending partnership on the Primary Authority Register:</p>\r\n\r\n<p>^ @partnership_pending_partnership_link</p>\r\n\r\n<p>You will be notified when the partnership has been nominated.</p>\r\n\r\n<p>Thank you</p>\r\n"
+    value: "<p>Dear Colleague,</p>\r\n\r\n<p>@partnership_organisation has confirmed their details and your application for nomination has been submitted to the Primary Authority Processing Team. We are currently undertaking mandatory checks and will be back in contact in due course.</p>\r\n\r\n<p>A member of our team may make contact with you to confirm details about the application if necessary, please <span>endeavour</span> to return any information requested as quickly as possible to ensure your application is not delayed.</p>\r\n\r\n<p>You can view the pending partnership on the Primary Authority Register:</p>\r\n\r\n<p>^ @partnership_pending_partnership_link</p>\r\n\r\n<p>You will be notified when the partnership has been nominated.</p>\r\n\r\n<p>Thank you</p>\r\n"
     format: basic_html
 settings:
   'token options':
