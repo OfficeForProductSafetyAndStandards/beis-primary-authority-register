@@ -5,6 +5,7 @@ namespace Drupal\par_partnership_confirmation_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_confirmation_flows\ParFlowAccessTrait;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * The checklist form for partnership confirmations.
@@ -17,12 +18,25 @@ class ParChecklistForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    // Load application type from previous step.
-    $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_application_type');
-    $applicationType = ucfirst($this->getFlowDataHandler()->getDefaultValues('application_type', '', $cid));
+
 
     // Set page title.
-    $this->pageTitle = "Declaration for a {$applicationType} partnership application";
+    $this->pageTitle = "Declaration for completion by proxy";
+
+    return parent::titleCallback();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function loadData() {
+    // Load application type from previous step.
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+    $par_data_organisation = $par_data_partnership ? $par_data_partnership->getOrganisation(TRUE) : NULL;
+
+    if ($par_data_organisation && $this->getParDataManager()->isMember($par_data_organisation, $this->getCurrentUser())) {
+      $this->getFlowDataHandler()->setTempDataValue('organisation_member', TRUE);
+    }
 
     return parent::titleCallback();
   }
@@ -31,60 +45,23 @@ class ParChecklistForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-
-    // Load application type from previous step.
-    $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_application_type');
-    $application_type = $this->getFlowDataHandler()->getDefaultValues('application_type', '', $cid);
-
-    // Get Primary Authority Terms and Conditions URL.
-    $terms_page = \Drupal::service('path.alias_manager')
-      ->getAliasByPath('/node/49');
-
-    switch ($application_type) {
-      case 'direct':
-        $checklist = [
-          'the organisation is eligible to enter into a partnership',
-          'your local authority is suitable for nomination as primary authority for the organisation',
-          'a written summary of partnership arrangements has been agreed with the organisation',
-          t("your local authority agrees to the <a href='{$terms_page}' target='_blank'>terms and conditions (opens in a new window)</a>"),
-        ];
-
-        break;
-
-      case 'coordinated':
-        $checklist = [
-          'the prospective co-ordinator partner is suitable for nomination as a co-ordinator',
-          'your local authority is suitable for nomination as primary authority partner for the co-ordinator',
-          'a written summary of partnership arrangements has been agreed with the co-ordinator',
-          t("your local authority agrees to the <a href='{$terms_page}' target='_blank'>terms and conditions (opens in a new window)</a>"),
-        ];
-
-        break;
-
+    // Organisation members can skip this form.
+    if ($this->getFlowDataHandler()->getDefaultValues('organisation_member', FALSE)) {
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
+      return new RedirectResponse($url);
     }
 
-    if (!empty($checklist)) {
-      $form['checklist'] = [
-        '#theme' => 'item_list',
-        '#list_type' => 'ul',
-        '#title' => 'Please confirm that',
-        '#items' => $checklist,
-        '#attributes' => ['class' => ['list', 'list-bullet']],
-        '#wrapper_attributes' => ['class' => ['form-group']],
-      ];
+    $form['confirm'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('I confirm I have been given written permission by the organisation.'),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('confirm', FALSE),
+      '#return_value' => 'on',
+    ];
 
-      $form['confirm'] = [
-        '#type' => 'checkbox',
-        '#title' => $this->t('I confirm these conditions have been met'),
-        '#default_value' => $this->getFlowDataHandler()->getDefaultValues('confirm', FALSE),
-        '#return_value' => 'on',
-      ];
-
-      $form['help'] = [
-        '#type' => 'markup',
-        '#markup' => '<p>These essential conditions for the nomination of direct partnerships are required by the Regulatory Enforcement and Sanctions Act 2008 (as amended by the Enterprise Act 2016) and the Primary Authority Statutory Guidance.</p>',
-      ];
-    }
+    $form['help'] = [
+      '#type' => 'markup',
+      '#markup' => '<p>You are required to have obtained written permission from the organisation to fill in the details on their behalf and submit the partnership for nomination.</p>',
+    ];
 
     return parent::buildForm($form, $form_state);
   }
@@ -97,7 +74,7 @@ class ParChecklistForm extends ParBaseForm {
 
     if (!$form_state->getValue('confirm')) {
       $id = $this->getElementId('confirm', $form);
-      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please confirm that all conditions for a new partnership have been met.', $id));
+      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please confirm that you have been given permission.', $id));
     }
   }
 

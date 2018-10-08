@@ -14,7 +14,6 @@ states:
   - par_data_partnership
 steps:
   1:
-  1:
     route: par_partnership_confirmation_flows.partnership_confirmation_authority_checklist
     form_id: par_partnership_confirmation_checklist
     redirect:
@@ -23,49 +22,49 @@ steps:
     route: par_partnership_confirmation_flows.confirm_about_business
     form_id: par_partnership_confirmation_about_business
     components:
-      about_business: {}
+      about_business: {  }
     redirect:
       cancel: 12
   3:
     route: par_partnership_confirmation_flows.confirm_address
     form_id: par_partnership_confirmation_address
     components:
-      address_lookup: {}
+      address_lookup: {  }
     redirect:
       cancel: 12
   4:
     route: par_partnership_confirmation_flows.confirm_contact
     form_id: par_partnership_confirmation_contact
     components:
-      contact_details_full: {}
+      contact_details_full: {  }
     redirect:
       cancel: 12
   5:
     route: par_partnership_confirmation_flows.confirm_sic_code
     form_id: par_partnership_confirmation_sic_code
     components:
-      sic_code: {}
+      sic_code: {  }
     redirect:
       cancel: 12
   6:
     route: par_partnership_confirmation_flows.confirm_employee_number
     form_id: par_partnership_confirmation_employee_number
     components:
-      employee_number: {}
+      employee_number: {  }
     redirect:
       cancel: 12
   7:
     route: par_partnership_confirmation_flows.confirm_trading_name
     form_id: par_partnership_confirmation_trading_name
     components:
-      trading_name: {}
+      trading_name: {  }
     redirect:
       cancel: 12
   8:
     route: par_partnership_confirmation_flows.select_legal_entities
     form_id: par_partnership_confirmation_select_legal_entities
     components:
-      select_legal_entities: {}
+      select_legal_entities: {  }
     redirect:
       cancel: 12
   9:

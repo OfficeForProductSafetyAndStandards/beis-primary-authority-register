@@ -573,7 +573,8 @@ display:
           empty_zero: false
           hide_alter_empty: false
           title: '{{ organisation_name }}'
-          link: '/partnership/confirm/{{id}}/about'
+          assistive_text: ''
+          link: '/partnership/confirm/{{id}}/checklist'
           hidden: 1
           entity_type: par_data_authority
           plugin_id: par_flow_link

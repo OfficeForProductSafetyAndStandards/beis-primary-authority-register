@@ -4,8 +4,12 @@ par_partnership_confirmation_flows.partnership_confirmation_authority_checklist:
     _form: '\Drupal\par_partnership_confirmation_flows\Form\ParChecklistForm'
     _title_callback: '\Drupal\par_partnership_confirmation_flows\Form\ParChecklistForm::titleCallback'
   requirements:
-    _permission: 'apply for partnership'
+    _permission: 'confirm partnership'
     _custom_access: '\Drupal\par_partnership_confirmation_flows\Form\ParChecklistForm::accessCallback'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
 
 par_partnership_confirmation_flows.confirm_about_business:
   path: '/partnership/confirm/{par_data_partnership}/about'

@@ -2749,7 +2749,7 @@ display:
           field: par_flow_link
           relationship: field_authority
           group_type: group
-          admin_label: ''
+          admin_label: 'Approve partnership'
           label: Action
           exclude: true
           alter:
@@ -2803,7 +2803,7 @@ display:
           field: par_flow_link
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: 'Revoke partnership'
           label: Action
           exclude: true
           alter:
@@ -2857,12 +2857,12 @@ display:
           field: par_flow_link
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: 'Restore partnership'
           label: Action
           exclude: false
           alter:
             alter_text: true
-            text: "{{ par_flow_link }}\n{{ par_flow_link_1 }}\n{{ par_flow_link_2 }}"
+            text: "{{ par_flow_link }}\r\n{{ par_flow_link_1 }}\r\n{{ par_flow_link_2 }}"
             make_link: false
             path: ''
             absolute: false
