@@ -26,7 +26,13 @@ class ParPartnershipConfirmedController extends ParBaseController {
     ];
     $build['next_steps']['info'] = [
       '#type' => 'markup',
-      '#markup' => "The partnership has been updated, this information will now be presented to the Office for Product Safety & Standards. Once this partnership has been reviewed the Office will either nominate this partnership or contact you with more information.",
+      '#markup' => "Thank you for submitting your application to the Primary Authority Processing Team. We are currently undertaking mandatory checks and will be back in contact in due course.",
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
+    ];
+    $build['next_steps']['notice'] = [
+      '#type' => 'markup',
+      '#markup' => "A member of our team may make contact with you to confirm details about the application if necessary, please endeavour to return any information requested as quickly as possible to ensure your application is not delayed.",
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];
