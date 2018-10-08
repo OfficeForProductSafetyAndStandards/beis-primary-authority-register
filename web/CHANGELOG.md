@@ -4,7 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [24.0.0] - 2019-10-04
+## [24.1.0] - 2019-10-07
+### Added
+- Enabled postcode lookup functionality.
+- New help desk dashboard.
+- New more granular permissions for each task improve control over which users can perform which actions.
+
+### Changed
+- Corrected links in email notification for responses to general enquiries.
+
+## [24.0.1] - 2019-10-04
 ### Added
 - Postcode lookup functionality (not yet turned on).
 
