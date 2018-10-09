@@ -25,7 +25,7 @@ Feature: Enforcement notice management
 
         # CHECK PAR ENFORCEMENT OFFICER VIEW
 
-        And I click the link text "Log out"
+        And I click the link text "Sign out"
         Given I open the path "/user/login"
         And I add "par_authority@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
