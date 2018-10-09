@@ -204,7 +204,7 @@ HEREDOC;
     $form['email'] = [
       '#type' => 'fieldset',
       '#title' => t('Enter your message'),
-      '#description' => 'When you click ‘Continue’ below, your partner business will be emailed this invitation to log on to the Primary Authority Register and provide the information required to complete this application. You can amend the message if you wish but please do not change or delete the acceptance link.<br><br>'
+      '#description' => 'Your partner business will be emailed this invitation to sign in to the Primary Authority Register and provide the information required to complete this application. You can amend the message if you wish but please do not change or delete the acceptance link.<br><br>'
     ];
 
     // Allow the message subject to be changed.

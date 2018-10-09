@@ -147,7 +147,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
       $form['help_text'] = [
         '#type' => 'markup',
-        '#markup' => $this->t('Please review your information to confirm it is accurate, as you will not be able to amend some of it once ‘save’ is clicked.'),
+        '#markup' => $this->t('You won\'t be able to change these details after you save them. Please check everything is correct.'),
         '#prefix' => '<p>',
         '#suffix' => '</p>',
       ];
@@ -155,7 +155,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
     else {
       $form['help_text'] = [
         '#type' => 'markup',
-        '#markup' => $this->t('The partnership could not be created, please contact the Helpdesk if this problem persits.'),
+        '#markup' => $this->t('The partnership could not be created, please contact the Helpdesk if this problem persists.'),
         '#prefix' => '<p>',
         '#suffix' => '</p>',
       ];

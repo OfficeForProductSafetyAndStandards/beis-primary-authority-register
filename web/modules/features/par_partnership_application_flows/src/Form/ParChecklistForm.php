@@ -19,7 +19,7 @@ class ParChecklistForm extends ParBaseForm {
   public function titleCallback() {
     // Load application type from previous step.
     $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_application_type');
-    $applicationType = ucfirst($this->getFlowDataHandler()->getDefaultValues('application_type', '', $cid));
+    $applicationType = $this->getFlowDataHandler()->getDefaultValues('application_type', '', $cid);
 
     // Set page title.
     $this->pageTitle = "Declaration for a {$applicationType} partnership application";
