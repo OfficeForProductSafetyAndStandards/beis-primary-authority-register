@@ -12,6 +12,9 @@ use Drupal\par_data\Entity\ParDataEntity;
  * Implements hook_install().
  */
 function par_login_install() {
+  // Ensure the locale module is installed before continuing.
+  \Drupal::service('module_installer')->install(['locale']);
+
   $translations = [
     'en' => [
       'Log in' => 'Sign in',
@@ -44,6 +47,9 @@ function par_login_install() {
  * Update the translation strings.
  */
 function par_login_update_8001() {
+  // Ensure the locale module is installed before continuing.
+  \Drupal::service('module_installer')->install(['locale']);
+
   $translations = [
     'en' => [
       'Log in' => 'Sign in',

@@ -1,5 +1,7 @@
 name: PAR Login manager
 type: module
-description: Manages the error messages when people log into the site.
+description: Manages customisations to the login process.
 core: 8.x
 package: PAR
+dependencies:
+  - locale
