@@ -165,9 +165,6 @@ When('I submit final confirmation of completion by organisation {string}', funct
   return shared
    .click('#edit-save')
    .waitForElementVisible('.error-summary', 2000)
-   .click('#edit-partnership-info-agreed-business')
-   .click('#edit-save')
-   .waitForElementVisible('.error-summary', 1000)
    .click('#edit-terms-organisation-agreed')
    .click('#edit-save')
    .assert.containsText('h1.heading-xlarge','Thank you for completing the application')
