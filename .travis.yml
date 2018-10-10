@@ -189,7 +189,7 @@ deploy:
 
 addons:
   artifacts:
-    debug: false
+    debug: true
     paths:
     - "./tests/reports"
     target_paths: tests/$TRAVIS_BUILD_NUMBER
