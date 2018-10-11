@@ -45,6 +45,7 @@ class ParChecklistForm extends ParBaseForm {
         $checklist = [
           'the organisation is eligible to enter into a partnership',
           'your local authority is suitable for nomination as primary authority for the organisation',
+          'you have notified the organisation that any other authorities that currently regulate it will continue to do so after this partnership is created',
           'a written summary of partnership arrangements has been agreed with the organisation',
           t("your local authority agrees to the <a href='{$terms_page}' target='_blank'>terms and conditions (opens in a new window)</a>"),
         ];
