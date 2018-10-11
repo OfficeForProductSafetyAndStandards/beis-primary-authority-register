@@ -1,0 +1,79 @@
+<?php
+/**
+ * @file
+ * Installation hooks for par_login module.
+ */
+
+use Drupal\par_data\Entity\ParDataEnforcementNotice;
+use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\Entity\ParDataEntity;
+
+/**
+ * Implements hook_install().
+ */
+function par_login_install() {
+  // Ensure the locale module is installed before continuing.
+  \Drupal::service('module_installer')->install(['locale']);
+
+  $translations = [
+    'en' => [
+      'Log in' => 'Sign in',
+      'Log out' => 'Sign out',
+    ]
+  ];
+
+  foreach ($translations as $langcode => $translation) {
+    foreach ($translation as $source => $replacement) {
+      // Find existing source string.
+      $storage = \Drupal::service('locale.storage');
+      $string = $storage->findString(array('source' => $source));
+      if (is_null($string)) {
+        $string = new \Drupal\locale\SourceString();
+        $string->setString($source);
+        $string->setStorage($storage);
+        $string->save();
+      }
+      // Create translation. If one already exists, it will be replaced.
+      $translation = $storage->createTranslation(array(
+        'lid' => $string->lid,
+        'language' => $langcode,
+        'translation' => $replacement,
+      ))->save();
+    }
+  }
+}
+
+/**
+ * Update the translation strings.
+ */
+function par_login_update_8001() {
+  // Ensure the locale module is installed before continuing.
+  \Drupal::service('module_installer')->install(['locale']);
+
+  $translations = [
+    'en' => [
+      'Log in' => 'Sign in',
+      'Log out' => 'Sign out',
+    ]
+  ];
+
+  foreach ($translations as $langcode => $translation) {
+    foreach ($translation as $source => $replacement) {
+      // Find existing source string.
+      $storage = \Drupal::service('locale.storage');
+      $string = $storage->findString(array('source' => $source));
+      if (is_null($string)) {
+        $string = new \Drupal\locale\SourceString();
+        $string->setString($source);
+        $string->setStorage($storage);
+        $string->save();
+      }
+      // Create translation. If one already exists, it will be replaced.
+      $translation = $storage->createTranslation(array(
+        'lid' => $string->lid,
+        'language' => $langcode,
+        'translation' => $replacement,
+      ))->save();
+    }
+  }
+}

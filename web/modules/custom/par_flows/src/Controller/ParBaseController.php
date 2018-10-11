@@ -113,7 +113,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
         '#type' => 'markup',
         '#markup' => t('@link', [
           '@link' => $this->getFlowNegotiator()->getFlow()->getNextLink('done', $this->getRouteParams(), ['attributes' => ['class' => 'button']])
-            ->setText('Done')
+            ->setText($this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Done'))
             ->toString(),
         ]),
       ];
@@ -126,7 +126,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
           '#suffix' => '</div>',
           '#markup' => t('@link', [
             '@link' => $this->getFlowNegotiator()->getFlow()->getNextLink('next', $this->getRouteParams(), ['attributes' => ['class' => 'button']])
-              ->setText('Continue')
+              ->setText($this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Continue'))
               ->toString(),
           ]),
         ];

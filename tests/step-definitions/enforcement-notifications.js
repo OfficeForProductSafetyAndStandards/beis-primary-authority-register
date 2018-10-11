@@ -42,13 +42,13 @@ When('I create new valid enforcement notification {string} for organisation {str
 When('I check that EO can see valid enforcement notification {string}', function (string) {
   // CHECK RECEIVED ENFORCEMENT NOTIFICATIONS
   return shared
-  .clickLinkByPureText('Log out')
+  .clickLinkByPureText('Sign out')
   .waitForElementVisible('.button-start', 2000)
-  .clickLinkByPureText('Log in')
+  .clickLinkByPureText('Sign in')
   .setValue('#edit-name', 'par_authority@example.com')
   .setValue('#edit-pass', 'TestPassword')
   .click('#edit-submit')
-  .assert.containsText('#block-par-theme-account-menu', 'Log out')
+  .assert.containsText('#block-par-theme-account-menu', 'Sign out')
   .clickLinkByPartialText('See your enforcement notices')
   .assert.containsText('.table-scroll-wrapper', string)
 })

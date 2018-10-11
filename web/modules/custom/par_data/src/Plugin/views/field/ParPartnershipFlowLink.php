@@ -86,7 +86,7 @@ class ParPartnershipFlowLink extends FieldPluginBase {
         $partnership_journey_path =  "/partnership/{{id}}/organisation-details";
       }
       else {
-        $partnership_journey_path =  "/partnership/confirm/{{id}}/about";
+        $partnership_journey_path =  "/partnership/confirm/{{id}}/checklist";
       }
 
       $tokens = $this->getRenderTokens([]);

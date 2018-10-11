@@ -1,0 +1,4 @@
+text:
+  -
+    value: "<p>Dear Colleague,</p>\r\n\r\n<p>A new partnership has been created for you by @partnership_organisation.</p>\r\n\r\n<p>Please log in to the Primary Authority Register to update your organisation's details and submit your partnership for nomination by the secretary of state. To do this, please follow this link:</p>\r\n\r\n<p>^ @partnership_pending_partnership_link</p>\r\n\r\n<p>Thank you</p>\r\n"
+    format: basic_html

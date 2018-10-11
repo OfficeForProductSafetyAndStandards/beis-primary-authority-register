@@ -201,16 +201,12 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     // operations on these.
     $form['organisation_contacts'] = $this->renderSection('Contacts at the organisation', $par_data_partnership, ['field_organisation_person' => 'detailed'], ['edit-entity', 'add']);
 
-    $checkbox = $this->getInformationCheckbox();
-    if (!$par_data_partnership->getBoolean($checkbox)) {
-      $form[$checkbox] = [
-        '#type' => 'checkbox',
-        '#title' => t("I confirm I have reviewed the information above"),
-        '#default_value' => $this->getFlowDataHandler()->getDefaultValues($checkbox, FALSE),
-        '#disabled' => $this->getFlowDataHandler()->getDefaultValues($checkbox, FALSE),
-        '#return_value' => 'on',
-      ];
-    }
+    $form['help_text'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('Updating this information may change who recieves notifications for this partnership. Please check everything is correct.'),
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
+    ];
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
@@ -227,22 +223,6 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     }
     else {
       return 'partnership_info_agreed_business';
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
-
-    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-
-    // Make sure the confirm box is ticked.
-    $checkbox = $this->getInformationCheckbox();
-    if (!$par_data_partnership->getBoolean($checkbox) && !$form_state->getValue($checkbox)) {
-      $id = $this->getElementId((array) $checkbox, $form);
-      $form_state->setErrorByName($this->getElementName('par_data_authority_id'), $this->wrapErrorMessage('You must confirm you have reviewed the details.', $id));
     }
   }
 

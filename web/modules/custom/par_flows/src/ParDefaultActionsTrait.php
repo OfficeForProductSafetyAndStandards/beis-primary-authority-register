@@ -19,6 +19,13 @@ trait ParDefaultActionsTrait {
   protected $defaultActions;
 
   /**
+   * Primary action title
+   *
+   * Allows the primary action title to be overridden.
+   */
+  protected $primaryActionTitle;
+
+  /**
    * Getter for retrieving the forms actions.
    */
   public function getActions() {
@@ -30,6 +37,20 @@ trait ParDefaultActionsTrait {
    */
   public function setActions($actions = []) {
     $this->defaultActions = $actions;
+  }
+
+  /**
+   * Getter for retrieving the primary action title.
+   */
+  public function getPrimaryActionTitle($fallback = '') {
+    return !empty($this->primaryActionTitle) ? $this->t($this->primaryActionTitle) : $this->t($fallback);
+  }
+
+  /**
+   * Setter for the primary action title.
+   */
+  public function setPrimaryActionTitle($title = '') {
+    $this->primaryActionTitle = $title;
   }
 
   /**

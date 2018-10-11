@@ -136,12 +136,12 @@ module.exports = {
         },
         loggedInAs:function(string){ 
             return this
-                .clickLinkByPureText('Log in')
+                .clickLinkByPureText('Sign in')
                 .setValue('#edit-name', string)
                 .setValue('#edit-pass', 'TestPassword')
                 .click('#edit-submit')
                 .waitForElementVisible('#footer', 15000)
-                .assert.containsText('body', 'Log out')
+                .assert.containsText('body', 'Sign out')
         },
         goToPartnershipDetailPage: function(orgName, status){ 
         return this

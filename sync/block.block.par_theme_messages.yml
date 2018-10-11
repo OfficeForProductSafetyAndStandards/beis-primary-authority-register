@@ -11,7 +11,7 @@ _core:
 id: par_theme_messages
 theme: par_theme
 region: content
-weight: -7
+weight: -8
 provider: null
 plugin: system_messages_block
 settings:

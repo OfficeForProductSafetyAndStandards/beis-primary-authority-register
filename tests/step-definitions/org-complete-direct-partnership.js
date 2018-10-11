@@ -119,7 +119,7 @@ When('I complete the legal entities', function () {
 // Starting point: at beginning of this application step
 When('I review the completions for direct partnership {string}', function (partnershipname) {
   return shared
-  .assert.containsText('h1.heading-xlarge','Review the partnership summary information below')
+  .assert.containsText('h1.heading-xlarge','Check partnership information')
    .assert.containsText('#edit-organisation-name',partnershipname)
    .assert.containsText('#edit-organisation-registered-address','1 High St')
    .assert.containsText('#edit-organisation-registered-address','Southwark')
@@ -144,7 +144,7 @@ When('I change the completed legal entities', function () {
     .assert.containsText('.form-item-par-component-legal-entity-0-registered-number label','Provide the registration number')
     .setValue('#edit-par-component-legal-entity-0-registered-number','55555555558')
     .click('#edit-next')
-    .assert.containsText('h1.heading-xlarge','Review the partnership summary information below')
+    .assert.containsText('h1.heading-xlarge','Check partnership information')
     .assert.containsText('#edit-legal-entities','Changed to Public Company')
     .assert.containsText('#edit-legal-entities','55555555558')
 });
@@ -156,7 +156,7 @@ When('I change the completed about the organisation', function () {
   .clearValue('#edit-about-business')
   .setValue('#edit-about-business', 'Change to the information about organisation details')
   .click('#edit-next')   
-  .assert.containsText('h1.heading-xlarge','Review the partnership summary information below')
+  .assert.containsText('h1.heading-xlarge','Check partnership information')
   .assert.containsText('#edit-about-organisation','Change to the information about organisation details')
 });
 
@@ -165,9 +165,6 @@ When('I submit final confirmation of completion by organisation {string}', funct
   return shared
    .click('#edit-save')
    .waitForElementVisible('.error-summary', 2000)
-   .click('#edit-partnership-info-agreed-business')
-   .click('#edit-save')
-   .waitForElementVisible('.error-summary', 1000)
    .click('#edit-terms-organisation-agreed')
    .click('#edit-save')
    .assert.containsText('h1.heading-xlarge','Thank you for completing the application')

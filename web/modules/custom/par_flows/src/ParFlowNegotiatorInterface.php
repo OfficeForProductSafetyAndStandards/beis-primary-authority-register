@@ -3,6 +3,7 @@
 namespace Drupal\par_flows;
 
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\user\UserInterface;
 
 /**
 * Interface for the Par Flow Negotiator.
@@ -20,7 +21,7 @@ interface ParFlowNegotiatorInterface {
   /**
    * Get's the current user account.
    *
-   * @return \Drupal\Core\Entity\EntityInterface|null
+   * @return \Drupal\user\UserInterface|null
    */
   public function getCurrentUser();
 

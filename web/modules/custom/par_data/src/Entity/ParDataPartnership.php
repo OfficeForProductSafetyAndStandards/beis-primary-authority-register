@@ -210,11 +210,17 @@ class ParDataPartnership extends ParDataEntity {
    *
    * @param int $i
    *   The index to start counting from, can be used to add up all members.
+   * @param bool $include_expired
+   *   Whether to include expired members.
    *
    * @return int
    *   The number of active members.
    */
-  public function countMembers($i = 0) {
+  public function countMembers($i = 0, $include_expired = FALSE) {
+    if ($include_expired) {
+      return $this->get('field_coordinated_business')->count();
+    }
+
     foreach ($this->getCoordinatedMember() as $member) {
       if ($member->isLiving() && !$member->isRevoked() && !$member->isDeleted()) {
         $i++;

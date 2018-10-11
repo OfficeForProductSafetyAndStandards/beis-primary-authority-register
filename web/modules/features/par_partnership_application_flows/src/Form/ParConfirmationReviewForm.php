@@ -25,7 +25,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
   /**
    * Set the page title.
    */
-  protected $pageTitle = 'Review the partnership summary information below';
+  protected $pageTitle = 'Check partnership information';
 
   /**
    * {@inheritdoc}
@@ -132,30 +132,30 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
         // Display the authority contacts for information.
         if ($primary_authority_contact) {
-          $form['partnership']['authority']['primary_authority_contact'] = $this->renderEntities('Primary Contact', [$primary_authority_contact]);
+          $form['partnership']['authority']['primary_authority_contact'] = $this->renderEntities('Primary contact', [$primary_authority_contact]);
         }
       }
 
-      $form['partnership_info_agreed_authority'] = [
+      $url = Url::fromUri('internal:/par-terms-and-conditions', ['attributes' => ['target' => '_blank']]);
+      $terms_link = Link::fromTextAndUrl(t('terms & conditions (opens in a new window)'), $url);
+      $form['terms_authority_agreed'] = [
         '#type' => 'checkbox',
-        '#title' => $this->t('I confirm I have reviewed the information above'),
-        '#default_value' => $this->getFlowDataHandler()->getDefaultValues("partnership_info_agreed_authority"),
+        '#title' => $this->t('I have read and agree to the @terms.', ['@terms' => $terms_link->toString()]),
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues("terms_authority_agreed"),
         '#return_value' => 'on',
       ];
 
-      $url = Url::fromUri('internal:/par-terms-and-conditions', ['attributes' => ['target' => '_blank']]);
-      $terms_link = Link::fromTextAndUrl(t('Terms & Conditions (opens in a new window)'), $url);
-      $form['terms_authority_agreed'] = [
-        '#type' => 'checkbox',
-        '#title' => $this->t('I have read and agree to the %terms.', ['%terms' => $terms_link->toString()]),
-        '#default_value' => $this->getFlowDataHandler()->getDefaultValues("terms_authority_agreed"),
-        '#return_value' => 'on',
+      $form['help_text'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('You won\'t be able to change these details after you save them. Please check everything is correct.'),
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
       ];
     }
     else {
       $form['help_text'] = [
         '#type' => 'markup',
-        '#markup' => $this->t('The partnership could not be created, please contact the Helpdesk if this problem persits.'),
+        '#markup' => $this->t('The partnership could not be created, please contact the Helpdesk if this problem persists.'),
         '#prefix' => '<p>',
         '#suffix' => '</p>',
       ];
@@ -171,10 +171,6 @@ class ParConfirmationReviewForm extends ParBaseForm {
     parent::validateForm($form, $form_state);
 
     // Make sure the confirm box and terms box is ticked.
-    if (!$form_state->getValue('partnership_info_agreed_authority')) {
-      $message = $this->wrapErrorMessage('Please select the type of application.', $this->getElementId('partnership_info_agreed_authority', $form));
-      $form_state->setErrorByName($this->getElementName('partnership_info_agreed_authority'), $message);
-    }
     if (!$form_state->getValue('terms_authority_agreed')) {
       $message = $this->wrapErrorMessage('Please confirm you have read the terms & conditions.', $this->getElementId('terms_authority_agreed', $form));
       $form_state->setErrorByName($this->getElementName('terms_authority_agreed'), $message);
@@ -335,7 +331,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       'partnership_type' => $this->getFlowDataHandler()->getDefaultValues('application_type', '', $cid_application_type),
       'about_partnership' => $this->getFlowDataHandler()->getDefaultValues('about_partnership', '', $cid_about),
       'terms_authority_agreed' => $this->getFlowDataHandler()->getDefaultValues('terms_authority_agreed', 0),
-      'partnership_info_agreed_authority' => $this->getFlowDataHandler()->getDefaultValues('partnership_info_agreed_authority', 0),
+      'partnership_info_agreed_authority' => 1,
     ]);
 
     return [

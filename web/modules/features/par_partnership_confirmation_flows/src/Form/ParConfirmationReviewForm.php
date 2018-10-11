@@ -26,7 +26,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  protected $pageTitle = 'Review the partnership summary information below';
+  protected $pageTitle = 'Check partnership information';
 
   /**
    * Load the data for this form.
@@ -172,20 +172,20 @@ class ParConfirmationReviewForm extends ParBaseForm {
       ]),
     ];
 
-    $form['partnership_info_agreed_business'] = [
+    $url = Url::fromUri('internal:/par-terms-and-conditions', ['attributes' => ['target' => '_blank']]);
+    $terms_link = Link::fromTextAndUrl(t('terms & conditions (opens in a new window)'), $url);
+    $form['terms_organisation_agreed'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('I confirm I have reviewed the information above'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("partnership_info_agreed_business"),
+      '#title' => $this->t('I have read and agree to the @terms.', ['@terms' => $terms_link->toString()]),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("terms_organisation_agreed"),
       '#return_value' => 'on',
     ];
 
-    $url = Url::fromUri('internal:/par-terms-and-conditions');
-    $terms_link = Link::fromTextAndUrl(t('Terms & Conditions (opens in a new window)'), $url);
-    $form['terms_organisation_agreed'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('I have read and agree to the %terms.', ['%terms' => $terms_link->toString()]),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("terms_organisation_agreed"),
-      '#return_value' => 'on',
+    $form['help_text'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('You won\'t be able to change these details after you save them. Please check everything is correct.'),
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
     ];
 
     return parent::buildForm($form, $form_state);
@@ -197,12 +197,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    // Make sure the confirm box and terms box is ticked.
-    if (!$form_state->getValue('partnership_info_agreed_business')) {
-      $message = $this->wrapErrorMessage('Please confirm you have reviewed the details.', $this->getElementId('partnership_info_agreed_business', $form));
-      $form_state->setErrorByName($this->getElementName('partnership_info_agreed_business'), $message);
-
-    }
+    // Make sure the terms and conditions have been agreed.
     if (!$form_state->getValue('terms_organisation_agreed')) {
       $message = $this->wrapErrorMessage('Please confirm you have read the terms & conditions.', $this->getElementId('terms_organisation_agreed', $form));
       $form_state->setErrorByName($this->getElementName('terms_organisation_agreed'), $message);

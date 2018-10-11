@@ -94,7 +94,7 @@ class ReviewedEnforcementSubscriber implements EventSubscriberInterface {
 
     // Notify all users in this authority with the appropriate permissions.
     if (($account = $enforcing_officer->getUserAccount())
-      && ($enforcing_officer->getUserAccount()->hasPermission('view enforcement notice') || $enforcing_officer->getUserAccount()->hasPermission('send enforcement notice'))
+      && ($enforcing_officer->lookupUserAccount()->hasPermission('view enforcement notice') || $enforcing_officer->lookupUserAccount()->hasPermission('send enforcement notice'))
       && !isset($this->recipients[$account->id()])) {
 
       // Record the recipient so that we don't send them the message twice.

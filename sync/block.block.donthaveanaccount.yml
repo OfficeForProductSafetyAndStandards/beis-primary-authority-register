@@ -1,0 +1,31 @@
+uuid: 101ba298-f2a7-4583-bc70-abd284da920f
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:63f4e86b-35dd-460c-a40a-21d578c4e592'
+  module:
+    - block_content
+    - system
+  theme:
+    - par_theme
+id: donthaveanaccount
+theme: par_theme
+region: content
+weight: 1
+provider: null
+plugin: 'block_content:63f4e86b-35dd-460c-a40a-21d578c4e592'
+settings:
+  id: 'block_content:63f4e86b-35dd-460c-a40a-21d578c4e592'
+  label: 'Don''t have an account?'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: "<front>\r\n/user/login"
+    negate: false
+    context_mapping: {  }

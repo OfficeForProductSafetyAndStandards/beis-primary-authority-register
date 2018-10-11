@@ -16,15 +16,39 @@ class ParApplicationTypeForm extends ParBaseForm {
   protected $pageTitle = 'What kind of partnership are you applying for?';
 
   /**
+   * Load the data for this form.
+   */
+  public function loadData() {
+    $partnership_bundle = $this->getParDataManager()->getParBundleEntity('par_data_partnership');
+    $types = [];
+    foreach ($partnership_bundle->getAllowedValues('partnership_type') as $key => $type) {
+      $types[$key] = "$type";
+      switch ($key) {
+        case 'direct':
+          $types[$key] .= "<p class='form-hint'>For a partnership with a single business.</p>";
+
+          break;
+        case 'coordinated':
+          $types[$key] .= "<p class='form-hint'>For a partnership with a trade association or other organisation to provide advice to a group of businesses.</p>";
+
+          break;
+      }
+    }
+    $this->getFlowDataHandler()->setFormPermValue('application_types', $types);
+
+    parent::loadData();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $partnership_bundle = $this->getParDataManager()->getParBundleEntity('par_data_partnership');
 
     $form['application_type'] = [
       '#title' => 'Choose a type of partnership',
+      '#description' => '<p>For more information visit the <a href="https://www.gov.uk/guidance/local-regulation-primary-authority#what-are-the-two-types-of-partnership" target="_blank">Primary Authority Guidance</a></p>',
       '#type' => 'radios',
-      '#options' => $partnership_bundle->getAllowedValues('partnership_type'),
+      '#options' => $this->getFlowDataHandler()->getDefaultValues('application_types', []),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('application_type'),
       '#attributes' => ['class' => ['form-group']],
     ];

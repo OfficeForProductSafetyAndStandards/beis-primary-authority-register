@@ -228,7 +228,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       $form['actions']['done'] = [
         '#type' => 'submit',
         '#name' => 'done',
-        '#value' => $this->t('Done'),
+        '#value' => $this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Done'),
         '#limit_validation_errors' => [],
         '#attributes' => [
           'class' => ['cta-submit']
@@ -241,7 +241,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
         $form['actions']['upload'] = [
           '#type' => 'submit',
           '#name' => 'upload',
-          '#value' => $this->t('Upload'),
+          '#value' => $this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Upload'),
           '#attributes' => [
             'class' => ['cta-submit']
           ],
@@ -252,7 +252,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           '#type' => 'submit',
           '#name' => 'save',
           '#submit' => ['::submitForm', '::saveForm'],
-          '#value' => $this->t('Save'),
+          '#value' => $this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Save'),
           '#attributes' => [
             'class' => ['cta-submit']
           ],
@@ -262,7 +262,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
         $form['actions']['next'] = [
           '#type' => 'submit',
           '#name' => 'next',
-          '#value' => $this->t('Continue'),
+          '#value' => $this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Continue'),
           '#attributes' => [
             'class' => ['cta-submit']
           ],

@@ -91,7 +91,7 @@ class NewDeviationRequestSubscriber implements EventSubscriberInterface {
 
     // Notify the primary authority contact for this Deviation Request.
     $primary_authority_contact = $par_data_deviation_request->getPrimaryAuthorityContact();
-    if ($primary_authority_contact && ($account = $primary_authority_contact->getUserAccount()) && $primary_authority_contact->getUserAccount()->hasPermission('review deviation request')
+    if ($primary_authority_contact && ($account = $primary_authority_contact->lookupUserAccount()) && $primary_authority_contact->lookupUserAccount()->hasPermission('review deviation request')
       && !isset($this->recipients[$account->id()])) {
 
       // Record the recipient so that we don't send them the message twice.

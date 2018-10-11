@@ -9,7 +9,7 @@ _core:
 id: par_theme_local_actions
 theme: par_theme
 region: content
-weight: -2
+weight: -3
 provider: null
 plugin: local_actions_block
 settings:

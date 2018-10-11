@@ -9,7 +9,7 @@ _core:
 id: par_theme_page_title
 theme: par_theme
 region: content
-weight: -5
+weight: -6
 provider: null
 plugin: page_title_block
 settings:

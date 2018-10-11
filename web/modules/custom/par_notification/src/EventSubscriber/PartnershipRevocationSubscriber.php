@@ -93,7 +93,7 @@ class PartnershipRevocationSubscriber implements EventSubscriberInterface {
 
     foreach ($contacts as $person) {
       // Notify all users in this authority with the appropriate permissions.
-      if (($account = $person->getUserAccount())
+      if (($account = $person->lookupUserAccount())
         && !isset($this->recipients[$account->id()])) {
 
         // Record the recipient so that we don't send them the message twice.

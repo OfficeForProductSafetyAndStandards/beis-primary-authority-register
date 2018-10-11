@@ -124,7 +124,7 @@ class NewEnquiryReplySubscriber implements EventSubscriberInterface {
     $contacts = [];
     if ($par_data_entity && $par_data_entity instanceof ParDataEntityInterface) {
       if ($authority_person = $par_data_entity->getPrimaryAuthorityContact()) {
-        $authority_person_account = $authority_person->getUserAccount();
+        $authority_person_account = $authority_person->lookupUserAccount();
         if ($authority_person_account
           && $authority_person_account->hasPermission($permission)
           && $authority_person_account->id() !== $comment->getOwnerId()) {
@@ -132,7 +132,7 @@ class NewEnquiryReplySubscriber implements EventSubscriberInterface {
         }
       }
       if ($enforcing_person = $par_data_entity->getEnforcingPerson(TRUE)) {
-        $enforcing_person_account = $enforcing_person->getUserAccount();
+        $enforcing_person_account = $enforcing_person->lookupUserAccount();
         if ($enforcing_person_account
           && $enforcing_person_account->hasPermission($permission)
           && $enforcing_person_account->id() !== $comment->getOwnerId()) {

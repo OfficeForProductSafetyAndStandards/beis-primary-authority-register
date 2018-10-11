@@ -35,6 +35,10 @@ services:
     class: '\Drupal\par_notification\EventSubscriber\PartnershipApplicationCompletedSubscriber'
     tags:
       - { name: 'event_subscriber' }
+  par_notification.new_partnership_application_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\NewPartnershipSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
   par_notification.reviewed_enforcement_subscriber:
     class: '\Drupal\par_notification\EventSubscriber\ReviewedEnforcementSubscriber'
     tags:

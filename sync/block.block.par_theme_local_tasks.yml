@@ -2,6 +2,8 @@ uuid: 5c03dcba-4623-4a45-9483-67628a5cc4ea
 langcode: en
 status: true
 dependencies:
+  module:
+    - system
   theme:
     - par_theme
 _core:
@@ -9,7 +11,7 @@ _core:
 id: par_theme_local_tasks
 theme: par_theme
 region: content
-weight: -4
+weight: -5
 provider: null
 plugin: local_tasks_block
 settings:
@@ -19,4 +21,9 @@ settings:
   label_display: '0'
   primary: true
   secondary: true
-visibility: {  }
+visibility:
+  request_path:
+    id: request_path
+    pages: '/user/*'
+    negate: true
+    context_mapping: {  }

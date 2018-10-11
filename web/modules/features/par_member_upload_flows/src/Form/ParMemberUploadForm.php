@@ -57,30 +57,50 @@ class ParMemberUploadForm extends ParBaseForm {
       '#type' => 'hidden',
       '#value' => $par_data_partnership->id(),
     ];
-    $form['download'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Download list of members'),
-      '#description' => $this->t('Please download the latest members list before making any changes to it.'),
-      '#attributes' => [
-        'class' => ['form-group'],
-      ]
-    ];
-    $form['download']['download_link'] = [
-      '#type' => 'link',
-      '#title' => $this->t('Download link'),
-      '#url' => Url::fromRoute('par_member_upload_flows.member_download', $this->getRouteParams()),
-      '#ajax' => [
-        'callback' => $csv_handler_class . '::_ajaxDownload',
-        'event' => 'click',
-        'progress' => [
-          'type' => 'throbber',
-          'message' => 'Generating member list',
+
+    // Allow a member list to be downloaded.
+    if ($par_data_partnership->countMembers(0, TRUE) > 0) {
+      $form['download'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('Download list of members'),
+        '#description' => $this->t('Please download the latest members list before making any changes to it.'),
+        '#attributes' => [
+          'class' => ['form-group'],
+        ]
+      ];
+      $form['download']['download_link'] = [
+        '#type' => 'link',
+        '#title' => $this->t('Download membership list'),
+        '#url' => Url::fromRoute('par_member_upload_flows.member_download', $this->getRouteParams()),
+        '#ajax' => [
+          'callback' => $csv_handler_class . '::_ajaxDownload',
+          'event' => 'click',
+          'progress' => [
+            'type' => 'throbber',
+            'message' => 'Generating member list',
+          ],
         ],
-      ],
-      '#attributes' => [
-        'id' => 'download-members-link',
-      ],
-    ];
+        '#attributes' => [
+          'id' => 'download-members-link',
+        ],
+      ];
+    }
+    else {
+      $form['download'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('Download membership template'),
+        '#description' => $this->t('Please download the member list template to ensure you fill in the correct information.'),
+        '#attributes' => [
+          'class' => ['form-group'],
+        ]
+      ];
+      $module_handler = \Drupal::service('module_handler');
+      $path = $module_handler->getModule('par_member_upload_flows')->getPath() . '/assets/par_membership_blank_template.csv';
+      $form['download']['download_link'] = [
+        '#type' => 'markup',
+        '#markup' => "<a href='/$path'>{$this->t('Download membership template')}</a>",
+      ];
+    }
 
     // Multiple file field.
     $form['csv'] = [

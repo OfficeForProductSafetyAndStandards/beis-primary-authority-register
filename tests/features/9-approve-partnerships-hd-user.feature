@@ -3,7 +3,7 @@ Feature: Helpdesk approve partnership
     Background:
         Given I open the path "/user/login"
         # Given I click the link text "Menu"
-        # And I click the link text "Log in"
+        # And I click the link text "Sign in"
         And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
         When I add "TestPassword" to the inputfield "#edit-pass"
         And I click on the button "#edit-submit"

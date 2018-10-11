@@ -15,6 +15,6 @@ class ParSelectAuthorityForm extends ParBaseForm {
   /**
    * Set the page title.
    */
-  protected $pageTitle = 'Which authority are you acting on behalf of?';
+  protected $pageTitle = 'Choose the primary authority you are representing';
 
 }
