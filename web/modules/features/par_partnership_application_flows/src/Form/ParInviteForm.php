@@ -50,6 +50,9 @@ Thanks for your help.
 {$sender_name}
 HEREDOC;
     $this->getFlowDataHandler()->setFormPermValue('body', $body);
+
+    // Change the primary action title.
+    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Send invite');
   }
 
   /**
