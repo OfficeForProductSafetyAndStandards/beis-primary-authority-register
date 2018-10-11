@@ -98,6 +98,8 @@ class ParFeedbackReviewForm extends ParBaseForm {
     /** @var ParDataInspectionFeedback $par_data_inspection_feedback */
     /** @var FileInterface[] $document */
 
+    $par_data_inspection_feedback->set('document', $document);
+
     if ($par_data_inspection_feedback->save()) {
       $this->getFlowDataHandler()->deleteStore();
     }

@@ -96,6 +96,8 @@ class ParEnquiryReviewForm extends ParBaseForm {
     /** @var ParDataGeneralEnquiry $par_data_general_enquiry */
     /** @var FileInterface[] $document */
 
+    $par_data_general_enquiry->set('document', $document);
+
     if ($par_data_general_enquiry->save()) {
       $this->getFlowDataHandler()->deleteStore();
     }
