@@ -12,6 +12,7 @@ dependencies:
   - field
   - file
   - file_entity
+  - message
   - pagerer
   - par_data
   - par_data_config
