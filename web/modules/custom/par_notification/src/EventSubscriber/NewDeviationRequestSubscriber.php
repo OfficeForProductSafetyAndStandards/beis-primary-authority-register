@@ -67,6 +67,20 @@ class NewDeviationRequestSubscriber implements EventSubscriberInterface {
     return \Drupal::currentUser();
   }
 
+  public function getRecipients(EntityEvent $event) {
+    /** @var ParDataEntityInterface $par_data_deviation_request */
+    $par_data_deviation_request = $event->getEntity();
+
+    // Always notify the primary authority contact.
+    $primary_authority_contact = $par_data_deviation_request->getPrimaryAuthorityContacts(FALSE);
+
+    // Notify secondary contacts if they've opted-in.
+
+    // Notify all primary authority contacts if they've opted-in.
+
+    return $contacts;
+  }
+
   /**
    * @param ParDataEventInterface $event
    */

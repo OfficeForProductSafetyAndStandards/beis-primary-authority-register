@@ -65,6 +65,8 @@ use Drupal\Core\Field\BaseFieldDefinition;
  */
 class ParDataInspectionFeedback extends ParDataEntity {
 
+  use ParEnforcementEntityTrait;
+
   /**
    * Get the primary authority for this Deviation Request.
    *
