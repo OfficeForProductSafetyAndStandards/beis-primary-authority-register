@@ -83,7 +83,7 @@ trait ParEnforcementEntityTrait {
   }
 
   /**
-   * Get the primary authority contacts for this notice.
+   * Get the primary authority contacts.
    *
    * If there is a partnership this will be the primary contact for the partnership.
    * Otherwise it will be the primary contact for the authority as a whole.
@@ -94,7 +94,7 @@ trait ParEnforcementEntityTrait {
    * @return ParDataPerson|ParDataPerson[]
    *
    */
-  public function getPrimaryAuthorityContacts($single = TRUE) {
+  public function getPrimaryAuthorityContacts($single = FALSE) {
     if ($partnership = $this->getPartnership(TRUE)) {
       $pa_contact = $partnership->getAuthorityPeople($single);
     }
@@ -103,6 +103,32 @@ trait ParEnforcementEntityTrait {
     }
 
     return isset($pa_contact) ? $pa_contact : NULL;
+  }
+
+  /**
+   * Get the combined primary authority contacts for the partnership and authority.
+   *
+   * @return ParDataPerson[]
+   *
+   */
+  public function getAllPrimaryAuthorityContacts() {
+    if ($partnership = $this->getPartnership(TRUE)) {
+      $partnership_contact = (array) $partnership->getAuthorityPeople();
+    }
+    else {
+      $partnership_contact = [];
+    }
+
+    if ($authority = $this->getPrimaryAuthority(TRUE)) {
+      $authority_contacts = (array) $authority->getPerson();
+    }
+    else {
+      $authority_contacts = [];
+    }
+
+    $pa_contacts = $this->combineContacts($partnership_contact, $authority_contacts);
+
+    return !empty($pa_contacts) ? $pa_contacts : NULL;
   }
 
   /**
@@ -133,7 +159,7 @@ trait ParEnforcementEntityTrait {
    * @return ParDataPerson|ParDataPerson[]
    *
    */
-  public function getOrganisationContacts($single = TRUE) {
+  public function getOrganisationContacts($single = FALSE) {
     if ($partnership = $this->getPartnership(TRUE)) {
       $org_contact = $partnership->getOrganisationPeople($single);
     }
@@ -152,12 +178,24 @@ trait ParEnforcementEntityTrait {
    *
    * @return ParDataPerson|ParDataPerson[]
    */
-  public function getEnforcingPerson($single = TRUE) {
+  public function getEnforcingPerson($single = FALSE) {
     $people = $this->hasField('field_person') && !$this->get('field_person')->isEmpty() ?
       $this->get('field_person')->referencedEntities() : NULL;
     $person = $people ? current($people): NULL;
 
     return $single ? $person : $people;
+  }
+
+  /**
+   * Combine array values that may or may not have string keys.
+   *
+   * @param $first array
+   * @param $second array
+   *
+   * @return array
+   */
+  public function combineContacts($first, $second) {
+    return array_filter(array_merge(array_values($first), array_values($second)));
   }
 
 }

@@ -50,7 +50,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
 
       }
 
-      if ($primary_authority_officer = $par_data_enforcement_notice->getPrimaryAuthorityContact()) {
+      if ($primary_authority_officer = $par_data_enforcement_notice->getPrimaryAuthorityContacts(TRUE)) {
         $this->getFlowDataHandler()->setFormPermValue("pa_officer_name", $primary_authority_officer->label());
         $this->getFlowDataHandler()->setFormPermValue("pa_officer_work_phone", $primary_authority_officer->get('work_phone')->getString());
         $this->getFlowDataHandler()->setFormPermValue("pa_officer_email", $primary_authority_officer->get('email')->getString());
@@ -73,7 +73,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
 
       }
 
-      if ($primary_authority_officer = $par_data_deviation_request->getPrimaryAuthorityContact()) {
+      if ($primary_authority_officer = $par_data_deviation_request->getPrimaryAuthorityContacts(TRUE)) {
         $this->getFlowDataHandler()->setFormPermValue("pa_officer_name", $primary_authority_officer->label());
         $this->getFlowDataHandler()->setFormPermValue("pa_officer_work_phone", $primary_authority_officer->get('work_phone')->getString());
         $this->getFlowDataHandler()->setFormPermValue("pa_officer_email", $primary_authority_officer->get('email')->getString());
@@ -96,7 +96,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
 
       }
 
-      if ($primary_authority_officer = $par_data_inspection_feedback->getPrimaryAuthorityContact()) {
+      if ($primary_authority_officer = $par_data_inspection_feedback->getPrimaryAuthorityContacts(TRUE)) {
         $this->getFlowDataHandler()->setFormPermValue("pa_officer_name", $primary_authority_officer->label());
         $this->getFlowDataHandler()->setFormPermValue("pa_officer_work_phone", $primary_authority_officer->get('work_phone')->getString());
         $this->getFlowDataHandler()->setFormPermValue("pa_officer_email", $primary_authority_officer->get('email')->getString());
@@ -119,7 +119,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
 
       }
 
-      if ($primary_authority_officer = $par_data_general_enquiry->getPrimaryAuthorityContact()) {
+      if ($primary_authority_officer = $par_data_general_enquiry->getPrimaryAuthorityContacts(TRUE)) {
         $this->getFlowDataHandler()->setFormPermValue("pa_officer_name", $primary_authority_officer->label());
         $this->getFlowDataHandler()->setFormPermValue("pa_officer_work_phone", $primary_authority_officer->get('work_phone')->getString());
         $this->getFlowDataHandler()->setFormPermValue("pa_officer_email", $primary_authority_officer->get('email')->getString());

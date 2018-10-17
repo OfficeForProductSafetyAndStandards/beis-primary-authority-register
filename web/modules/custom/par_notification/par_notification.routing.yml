@@ -1,0 +1,14 @@
+par_notification.link_manager:
+  path: '/notifications/{message}/link-manager'
+  defaults:
+    _controller: '\Drupal\par_notification\Controller\ParLinkManagerController::receive'
+    _title: 'Link Manager'
+  requirements:
+    _access: 'TRUE'
+    message: \d+|\[message\:mid\] # Link needs to be able to generate with a message id replacement token.
+  options:
+    no_cache: 'TRUE'
+    parameters:
+      message:
+        type: entity:message
+

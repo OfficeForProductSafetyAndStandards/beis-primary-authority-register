@@ -10,6 +10,7 @@ use Drupal\Core\Url;
 use Drupal\message\Entity\Message;
 use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -69,11 +70,59 @@ class NewEnquiryReplySubscriber implements EventSubscriberInterface {
   }
 
   /**
+   * Get all the recipients for this notification.
+   *
+   * @param $event
+   *
+   * @return ParDataPerson[]
+   */
+  public function getRecipients(EntityEvent $event) {
+    $contacts = [];
+
+    /** @var CommentInterface $comment */
+    $comment = $event->getEntity();
+    /** @var ParDataEntityInterface $entity */
+    $entity = $comment->getCommentedEntity();
+
+    // Always notify the primary authority contact.
+    if ($primary_authority_contact = $entity->getPrimaryAuthorityContacts(TRUE)) {
+      $contacts[$primary_authority_contact->id()] = $primary_authority_contact;
+    }
+    if ($enforcing_authority_contact = $entity->getEnforcingPerson(TRUE)) {
+      $contacts[$enforcing_authority_contact->id()] = $enforcing_authority_contact;
+    }
+
+    // Notify secondary contacts if they've opted-in.
+    $secondary_primary_authority_contacts = $entity->getAllPrimaryAuthorityContacts();
+    $secondary_enforcing_authority_contacts = $entity->getEnforcingAuthorityContacts();
+    if ($secondary_contacts = $entity->combineContacts($secondary_primary_authority_contacts, $secondary_enforcing_authority_contacts)) {
+      foreach ($secondary_contacts as $contact) {
+        if (!isset($contacts[$contact->id()]) && $contact->hasNotificationPreference(self::MESSAGE_ID)) {
+          $contacts[$primary_authority_contact->id()] = $primary_authority_contact;
+        }
+      }
+    }
+
+    // Remove the contact if they are they created this response.
+    for ($i = 0; $i > count($contacts); $i++) {
+      $contact = &$contacts[$i];
+      $account = $contact->lookupUserAccount();
+      if ($account && $account->id() !== $comment->getOwnerId()) {
+
+        unset($contact);
+      }
+    }
+
+    return array_filter($contacts);
+  }
+
+  /**
    * @param ParDataEventInterface $event
    */
   public function onNewReply(EntityEvent $event) {
     /** @var CommentInterface $comment */
     $comment = $event->getEntity();
+    $par_data_entity = $comment->getCommentedEntity();
 
     // Load the message template.
     $template_storage = $this->getEntityTypeManager()->getStorage('message_template');
@@ -83,7 +132,6 @@ class NewEnquiryReplySubscriber implements EventSubscriberInterface {
 
     // Get the response entity type to customize the message,
     // without the 'par' prefix.
-    $par_data_entity = $comment->getCommentedEntity();
     $response_entity_type = str_replace('par ', '', $par_data_entity->getEntityType()->getLowercaseLabel());
 
     // Get the link to approve this notice.
@@ -120,28 +168,8 @@ class NewEnquiryReplySubscriber implements EventSubscriberInterface {
       return;
     }
 
-    // Notify the primary authority contact and the enforcing officer contact for this response.
-    $contacts = [];
-    if ($par_data_entity && $par_data_entity instanceof ParDataEntityInterface) {
-      if ($authority_person = $par_data_entity->getPrimaryAuthorityContact()) {
-        $authority_person_account = $authority_person->lookupUserAccount();
-        if ($authority_person_account
-          && $authority_person_account->hasPermission($permission)
-          && $authority_person_account->id() !== $comment->getOwnerId()) {
-          $contacts[$authority_person_account->id()] = $authority_person_account;
-        }
-      }
-      if ($enforcing_person = $par_data_entity->getEnforcingPerson(TRUE)) {
-        $enforcing_person_account = $enforcing_person->lookupUserAccount();
-        if ($enforcing_person_account
-          && $enforcing_person_account->hasPermission($permission)
-          && $enforcing_person_account->id() !== $comment->getOwnerId()) {
-          $contacts[$enforcing_person_account->id()] = $enforcing_person_account;
-        }
-      }
-    }
-
-    foreach ($contacts as $account) {
+    $contacts = $this->getRecipients($event);
+    foreach ($contacts as $contact) {
       // Create one message per user.
       $message = $message_storage->create([
         'template' => $message_template->id()
@@ -167,7 +195,7 @@ class NewEnquiryReplySubscriber implements EventSubscriberInterface {
       // The e-mail address can be overridden if we don't want
       // to send to the message owner set above.
       $options = [
-        'mail' => $account->getEmail(),
+        'mail' => $contact->getEmail(),
       ];
 
       $this->getNotifier()->send($message, $options, self::DELIVERY_METHOD);

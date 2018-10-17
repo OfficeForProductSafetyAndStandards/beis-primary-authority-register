@@ -1,4 +1,8 @@
 services:
+  plugin.manager.par_link_manager:
+    class: Drupal\par_notification\ParLinkManager
+    parent: default_plugin_manager
+    arguments: ['@entity_type.manager', '@current_user']
   par_notification.new_deviation_request_subscriber:
     class: '\Drupal\par_notification\EventSubscriber\NewDeviationRequestSubscriber'
     tags:

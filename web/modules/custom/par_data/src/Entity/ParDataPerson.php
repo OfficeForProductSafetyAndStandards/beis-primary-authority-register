@@ -329,6 +329,37 @@ class ParDataPerson extends ParDataEntity {
   }
 
   /**
+   * Get the notification preferences.
+   *
+   * @param string $notification_type
+   *   The \Drupal\message\Entity\MessageTemplate::id() that indicates the notification type.
+   *
+   * @return bool
+   *   Whether or not the person has choosen to receive additional notifications.
+   */
+  public function getNotificationPreferences() {
+    $notification_preferences = !$this->get('field_notification_preferences')->isEmpty() ?
+      $this->get('field_notification_preferences')->referencedEntities() : NULL;
+
+    return $notification_preferences;
+  }
+
+  /**
+   * Get the notification preferences.
+   *
+   * @param string $notification_type
+   *   The \Drupal\message\Entity\MessageTemplate::id() that indicates the notification type.
+   *
+   * @return bool
+   *   Whether or not the person has choosen to receive additional notifications.
+   */
+  public function hasNotificationPreference($notification_type) {
+    $notification_preferences = $this->getNotificationPreferences();
+
+    return ($notification_preferences && isset($notification_preferences[$notification_type]));
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
