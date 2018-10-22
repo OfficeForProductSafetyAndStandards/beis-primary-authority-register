@@ -1,0 +1,27 @@
+uuid: 082169d8-3356-419f-a088-17a125582531
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - field.field.message.new_inspection_feedback_response.field_comment
+    - field.field.message.new_inspection_feedback_response.field_inspection_feedback
+    - field.field.message.new_inspection_feedback_response.field_message_subject
+    - message.template.new_inspection_feedback_response
+id: message.new_inspection_feedback_response.mail_body
+targetEntityType: message
+bundle: new_inspection_feedback_response
+mode: mail_body
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  partial_1:
+    weight: 0
+    region: content
+hidden:
+  field_comment: true
+  field_inspection_feedback: true
+  field_message_subject: true

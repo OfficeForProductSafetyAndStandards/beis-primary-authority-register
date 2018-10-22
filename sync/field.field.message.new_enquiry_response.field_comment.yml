@@ -1,32 +1,28 @@
-uuid: 8de02ffa-fecc-4ac0-87f5-fb9da68ff16c
+uuid: ef5bc610-5ef8-4f59-86ce-2924497dc77b
 langcode: en
 status: true
 dependencies:
   config:
-    - comment.type.par_deviation_request_comments
     - comment.type.par_general_enquiry_comments
-    - comment.type.par_inspection_feedback_comments
     - field.storage.message.field_comment
-    - message.template.new_response
-id: message.new_response.field_comment
+    - message.template.new_enquiry_response
+id: message.new_enquiry_response.field_comment
 field_name: field_comment
 entity_type: message
-bundle: new_response
+bundle: new_enquiry_response
 label: Comment
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
   handler: 'default:comment'
   handler_settings:
     target_bundles:
-      par_deviation_request_comments: par_deviation_request_comments
       par_general_enquiry_comments: par_general_enquiry_comments
-      par_inspection_feedback_comments: par_inspection_feedback_comments
     sort:
       field: _none
     auto_create: false
-    auto_create_bundle: par_deviation_request_comments
+    auto_create_bundle: ''
 field_type: entity_reference

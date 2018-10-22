@@ -1,0 +1,28 @@
+uuid: 56488a0d-f88d-4ad4-a608-393fb6cfc2f9
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - field.field.message.new_enquiry_response.field_comment
+    - field.field.message.new_enquiry_response.field_general_enquiry
+    - field.field.message.new_enquiry_response.field_message_subject
+    - message.template.new_enquiry_response
+id: message.new_enquiry_response.mail_subject
+targetEntityType: message
+bundle: new_enquiry_response
+mode: mail_subject
+content:
+  field_message_subject:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  field_comment: true
+  field_general_enquiry: true
+  partial_0: true
+  partial_1: true

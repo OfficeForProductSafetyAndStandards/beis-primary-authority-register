@@ -2,20 +2,23 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
+use Drupal\comment\CommentInterface;
 use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityEvents;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Entity\ParDataGeneralEnquiry;
+use Drupal\par_data\Entity\ParDataInspectionFeedback;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_notification\ParNotificationSubscriberBase;
 
-class NewEnforcementSubscriber extends ParNotificationSubscriberBase {
+class NewInspectionFeedbackReplySubscriber extends ParNotificationSubscriberBase {
 
   /**
    * The message template ID created for this notification.
    *
-   * @see /admin/structure/message/manage/new_enforcement_notification
+   * @see /admin/structure/message/manage/new_inspection_feedback_response
    */
-  const MESSAGE_ID = 'new_enforcement_notification';
+  const MESSAGE_ID = 'new_inspection_feedback_response';
 
   /**
    * The events to react to.
@@ -23,7 +26,7 @@ class NewEnforcementSubscriber extends ParNotificationSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[EntityEvents::insert('par_data_enforcement_notice')][] = ['onNewEnforcement', 800];
+    $events[EntityEvents::insert('comment')][] = ['onNewReply', 800];
 
     return $events;
   }
@@ -38,17 +41,23 @@ class NewEnforcementSubscriber extends ParNotificationSubscriberBase {
   public function getRecipients(EntityEvent $event) {
     $contacts = [];
 
+    /** @var CommentInterface $comment */
+    $comment = $event->getEntity();
     /** @var ParDataEntityInterface $entity */
-    $entity = $event->getEntity();
-    var_dump($entity->label());
+    $entity = $comment->getCommentedEntity();
 
     // Always notify the primary authority contact.
     if ($primary_authority_contact = $entity->getPrimaryAuthorityContacts(TRUE)) {
       $contacts[$primary_authority_contact->id()] = $primary_authority_contact;
     }
+    if ($enforcing_authority_contact = $entity->getEnforcingPerson(TRUE)) {
+      $contacts[$enforcing_authority_contact->id()] = $enforcing_authority_contact;
+    }
 
     // Notify secondary contacts if they've opted-in.
-    if ($secondary_contacts = $entity->getAllPrimaryAuthorityContacts()) {
+    $secondary_primary_authority_contacts = $entity->getAllPrimaryAuthorityContacts();
+    $secondary_enforcing_authority_contacts = $entity->getEnforcingAuthorityContacts();
+    if ($secondary_contacts = $entity->combineContacts($secondary_primary_authority_contacts, $secondary_enforcing_authority_contacts)) {
       foreach ($secondary_contacts as $contact) {
         if (!isset($contacts[$contact->id()]) && $contact->hasNotificationPreference(self::MESSAGE_ID)) {
           $contacts[$contact->id()] = $contact;
@@ -56,15 +65,32 @@ class NewEnforcementSubscriber extends ParNotificationSubscriberBase {
       }
     }
 
-    return $contacts;
+    // Remove the contact if they are they created this response.
+    for ($i = 0; $i > count($contacts); $i++) {
+      $contact = &$contacts[$i];
+      $account = $contact->lookupUserAccount();
+      if ($account && $account->id() !== $comment->getOwnerId()) {
+
+        unset($contact);
+      }
+    }
+
+    return array_filter($contacts);
   }
 
   /**
    * @param EntityEvent $event
    */
-  public function onNewEnforcement(EntityEvent $event) {
-    /** @var ParDataEntityInterface $par_data_enforcement_notice */
-    $par_data_enforcement_notice = $event->getEntity();
+  public function onNewReply(EntityEvent $event) {
+    /** @var CommentInterface $comment */
+    $comment = $event->getEntity();
+    /** @var ParDataEntityInterface $entity */
+    $par_data_entity = $comment->getCommentedEntity();
+
+    // If the commented entity is not an inspection feedback enquiry do not process this event.
+    if (!$par_data_entity instanceof ParDataInspectionFeedback) {
+      return;
+    }
 
     $contacts = $this->getRecipients($event);
     foreach ($contacts as $contact) {
@@ -77,8 +103,8 @@ class NewEnforcementSubscriber extends ParNotificationSubscriberBase {
         $message = $this->createMessage();
 
         // Add contextual information to this message.
-        if ($message->hasField('field_enforcement_notice')) {
-          $message->set('field_enforcement_notice', $par_data_enforcement_notice);
+        if ($message->hasField('field_comment')) {
+          $message->set('field_comment', $comment);
         }
 
         // The owner is the user who this message belongs to.

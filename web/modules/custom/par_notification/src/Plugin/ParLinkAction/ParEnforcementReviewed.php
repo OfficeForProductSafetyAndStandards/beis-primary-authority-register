@@ -27,6 +27,7 @@ class ParEnforcementReviewed extends ParLinkActionBase {
     if ($message->hasField('field_enforcement_notice') && !$message->get('field_enforcement_notice')->isEmpty()) {
       $par_data_enforcement_notice = current($message->get('field_enforcement_notice')->referencedEntities());
 
+      // The route for viewing enforcement notices.
       $destination = Url::fromRoute('par_enforcement_send_flows.send_enforcement', ['par_data_enforcement_notice' => $par_data_enforcement_notice->id()]);
 
       if (!$par_data_enforcement_notice->inProgress() && $destination->access($this->user)) {

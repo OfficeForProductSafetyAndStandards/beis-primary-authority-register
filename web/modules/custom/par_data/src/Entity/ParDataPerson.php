@@ -81,6 +81,20 @@ class ParDataPerson extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  public function getOrLookupUserAccount() {
+    $account = $this->getUserAccount();
+
+    // Lookup the user account if one could not be saved.
+    if (!$account) {
+      $account = $this->lookupUserAccount();
+    }
+
+    return $account;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function setUserAccount($account) {
     $this->set('field_user_account', $account);
   }

@@ -421,7 +421,6 @@ class ParDataTestBase extends EntityKernelTestBase {
         $person->id(),
       ],
     ] + $this->getBaseValues();
-
   }
 
   public function getDeviationRequestValues() {
@@ -814,7 +813,8 @@ class ParDataTestBase extends EntityKernelTestBase {
       'communication_notes' => $this->randomString(1000),
       'field_user_account' => [
         $this->account->id(),
-      ]
+      ],
+      'field_notification_preferences' => []
     ] + $this->getBaseValues();
   }
 

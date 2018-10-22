@@ -1,0 +1,41 @@
+uuid: 9eedf91e-0f5d-4736-9a48-b7bdab44e3c9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.new_inspection_feedback_response.field_comment
+    - field.field.message.new_inspection_feedback_response.field_inspection_feedback
+    - field.field.message.new_inspection_feedback_response.field_message_subject
+    - message.template.new_inspection_feedback_response
+id: message.new_inspection_feedback_response.default
+targetEntityType: message
+bundle: new_inspection_feedback_response
+mode: default
+content:
+  field_comment:
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_inspection_feedback:
+    weight: 2
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_message_subject:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden: {  }

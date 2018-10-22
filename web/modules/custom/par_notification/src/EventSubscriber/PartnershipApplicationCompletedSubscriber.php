@@ -2,16 +2,13 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
-use Drupal\Core\Link;
-use Drupal\Core\Url;
-use Drupal\message\Entity\Message;
-use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Drupal\par_notification\ParNotificationSubscriberBase;
 
-class PartnershipApplicationCompletedSubscriber implements EventSubscriberInterface {
+class PartnershipApplicationCompletedSubscriber extends ParNotificationSubscriberBase {
 
   /**
    * The message template ID created for this notification.
@@ -19,13 +16,6 @@ class PartnershipApplicationCompletedSubscriber implements EventSubscriberInterf
    * @see /admin/structure/message/manage/partnership_confirmed_notificati
    */
   const MESSAGE_ID = 'partnership_confirmed_notificati';
-
-  /**
-   * The notification plugin that will deliver these notification messages.
-   */
-  const DELIVERY_METHOD = 'plain_email';
-
-  protected $recipients = [];
 
   /**
    * The events to react to.
@@ -40,30 +30,33 @@ class PartnershipApplicationCompletedSubscriber implements EventSubscriberInterf
   }
 
   /**
-   * Get the entity type manager.
+   * Get all the recipients for this notification.
    *
-   * @return \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @param $event
+   *
+   * @return ParDataPerson[]
    */
-  public function getEntityTypeManager() {
-    return \Drupal::entityTypeManager();
-  }
+  public function getRecipients(ParDataEventInterface $event) {
+    $contacts = [];
 
-  /**
-   * Get the notification service.
-   *
-   * @return mixed
-   */
-  public function getNotifier() {
-    return \Drupal::service('message_notify.sender');
-  }
+    /** @var ParDataEntityInterface $entity */
+    $entity = $event->getEntity();
 
-  /**
-   * Get the current user sending the message.
-   *
-   * @return \Drupal\Core\Session\AccountProxyInterface
-   */
-  public function getCurrentUser() {
-    return \Drupal::currentUser();
+    // Always notify the primary authority contact.
+    if ($primary_authority_contact = $entity->getAuthorityPeople(TRUE)) {
+      $contacts[$primary_authority_contact->id()] = $primary_authority_contact;
+    }
+
+    // Notify secondary contacts at the authority if there are any.
+    if ($authority = $entity->getAuthority(TRUE)) {
+      foreach ($authority->getPerson() as $contact) {
+        if (!isset($contacts[$contact->id()]) && $contact->hasNotificationPreference(self::MESSAGE_ID)) {
+          $contacts[$contact->id()] = $contact;
+        }
+      }
+    }
+
+    return $contacts;
   }
 
   /**
@@ -73,39 +66,15 @@ class PartnershipApplicationCompletedSubscriber implements EventSubscriberInterf
     /** @var ParDataEntityInterface $par_data_partnership */
     $par_data_partnership = $event->getEntity();
 
-    // Load the message template.
-    $template_storage = $this->getEntityTypeManager()->getStorage('message_template');
-    $message_template = $template_storage->load(self::MESSAGE_ID);
-    $message_storage = $this->getEntityTypeManager()->getStorage('message');
-
-    // Get the link to approve this notice.
-    $options = ['absolute' => TRUE];
-    $pending_partnerships_url = Url::fromRoute('view.par_user_partnerships.par_user_partnership_applications', [], $options);
-
-    if (!$message_template) {
-      // @TODO Log that the template couldn't be loaded.
-      return;
-    }
-
-    // We only notify the authority contacts here.
-    $contacts = $par_data_partnership->getAuthorityPeople();
-    if (!$contacts) {
-      return;
-    }
-
-    foreach ($contacts as $person) {
-      // Notify all users in this authority with the appropriate permissions.
-      if (($account = $person->lookupUserAccount())
-        && !isset($this->recipients[$account->id()])
-      ) {
-
+    $contacts = $this->getRecipients($event);
+    foreach ($contacts as $contact) {
+      if (!isset($this->recipients[$contact->getEmail()])) {
         // Record the recipient so that we don't send them the message twice.
-        $this->recipients[$account->id()] = $account->getEmail();
+        $this->recipients[$contact->getEmail] = $contact;
+        // Try and get the user account associated with this contact.
+        $account = $contact->getOrLookupUserAccount();
 
-        // Create one message per user.
-        $message = $message_storage->create([
-          'template' => $message_template->id()
-        ]);
+        $message = $this->createMessage();
 
         // Add contextual information to this message.
         if ($message->hasField('field_partnership')) {
@@ -115,22 +84,15 @@ class PartnershipApplicationCompletedSubscriber implements EventSubscriberInterf
         // Add some custom arguments to this message.
         $message->setArguments([
           '@partnership_organisation' => $par_data_partnership->getOrganisation(TRUE)->label(),
-          '@partnership_pending_partnership_link' => $pending_partnerships_url->toString(),
         ]);
 
         // The owner is the user who this message belongs to.
         if ($account) {
           $message->setOwnerId($account->id());
         }
-        $message->save();
 
-        // The e-mail address can be overridden if we don't want
-        // to send to the message owner set above.
-        $options = [
-          'mail' => $account->getEmail(),
-        ];
-
-        $this->getNotifier()->send($message, $options, self::DELIVERY_METHOD);
+        // Send the message.
+        $this->sendMessage($message, $contact->getEmail());
       }
     }
   }

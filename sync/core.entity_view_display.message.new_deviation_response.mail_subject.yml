@@ -1,15 +1,15 @@
-uuid: 696412ba-ce2f-4565-b556-6ee064161337
+uuid: 884bbbc3-7033-4856-9cd7-4163bbc05789
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.message.mail_subject
-    - field.field.message.new_response.field_comment
-    - field.field.message.new_response.field_message_subject
-    - message.template.new_response
-id: message.new_response.mail_subject
+    - field.field.message.new_deviation_response.field_comment
+    - field.field.message.new_deviation_response.field_message_subject
+    - message.template.new_deviation_response
+id: message.new_deviation_response.mail_subject
 targetEntityType: message
-bundle: new_response
+bundle: new_deviation_response
 mode: mail_subject
 content:
   field_message_subject:

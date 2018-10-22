@@ -1,0 +1,21 @@
+uuid: 8230ea1e-fa4c-455f-a786-4b102c075ee1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_message_subject
+    - message.template.new_deviation_response
+id: message.new_deviation_response.field_message_subject
+field_name: field_message_subject
+entity_type: message
+bundle: new_deviation_response
+label: 'Message Subject'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 'Primary Authority: Notification of response to deviation request'
+default_value_callback: ''
+settings: {  }
+field_type: string
