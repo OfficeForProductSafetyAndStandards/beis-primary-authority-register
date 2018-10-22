@@ -20,7 +20,4 @@ dependencies:
   - serialization
   - text
   - user
-  - views
-  - views_bulk_operations
-  - views_data_export
 package: PAR

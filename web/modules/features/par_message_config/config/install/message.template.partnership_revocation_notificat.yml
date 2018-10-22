@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies: {  }
+template: partnership_revocation_notificat
+label: 'Partnership Revocation Notification'
+description: 'This is a message sent to all of the partnership''s contacts when the partnership is revoked.'
+text:
+  -
+    value: "<p>Dear Colleague,</p>\r\n\r\n<p>Your partnership between<span>&nbsp;</span>@partnership_organisation and<span> @partnership_authority</span><span> </span>has been revoked.</p>\r\n\r\n<p>The partnership will no longer appear in search results.</p>\r\n\r\n<p>Thank you</p>\r\n"
+    format: basic_html
+settings:
+  'token options':
+    clear: false
+    'token replace': true
+  purge_override: false
+  purge_methods: {  }
