@@ -797,7 +797,7 @@ class ParDataTestBase extends EntityKernelTestBase {
       ] + $this->getBaseValues();
   }
 
-  public function getPersonValues() {
+  public function   getPersonValues() {
     return [
       'type' => 'person',
       'salutation' => 'Mrs',
@@ -806,7 +806,7 @@ class ParDataTestBase extends EntityKernelTestBase {
       'job_title' => 'Senior Telephone Sanitisation Engineer',
       'work_phone' => '01723456789',
       'mobile_phone' => '0777777777',
-      'email' => $this->randomString(20) . '@example.com',
+      'email' => $this->randomMachineName(20) . '@example.com',
       'communication_email' => TRUE,
       'communication_phone' => TRUE,
       'communication_mobile' => TRUE,
