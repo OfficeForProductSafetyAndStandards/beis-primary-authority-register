@@ -2,42 +2,16 @@
 
 namespace Drupal\Tests\par_notification\Kernel;
 
-use Drupal\file\Entity\File;
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
+use Drupal\message\Entity\MessageTemplate;
 use Drupal\par_data\Entity\ParDataAdvice;
-use Drupal\par_data\Entity\ParDataAdviceType;
 use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataAuthorityType;
-use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
-use Drupal\par_data\Entity\ParDataCoordinatedBusinessType;
-use Drupal\par_data\Entity\ParDataDeviationRequest;
-use Drupal\par_data\Entity\ParDataDeviationRequestType;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
-use Drupal\par_data\Entity\ParDataEnforcementActionType;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
-use Drupal\par_data\Entity\ParDataEnforcementNoticeType;
-use Drupal\par_data\Entity\ParDataGeneralEnquiry;
-use Drupal\par_data\Entity\ParDataGeneralEnquiryType;
-use Drupal\par_data\Entity\ParDataInformationReferral;
-use Drupal\par_data\Entity\ParDataInformationReferralType;
-use Drupal\par_data\Entity\ParDataInspectionFeedback;
-use Drupal\par_data\Entity\ParDataInspectionFeedbackType;
 use Drupal\par_data\Entity\ParDataInspectionPlan;
-use Drupal\par_data\Entity\ParDataInspectionPlanType;
-use Drupal\par_data\Entity\ParDataLegalEntity;
-use Drupal\par_data\Entity\ParDataLegalEntityType;
 use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataOrganisationType;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPartnershipType;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPersonType;
-use Drupal\par_data\Entity\ParDataPremises;
-use Drupal\par_data\Entity\ParDataPremisesType;
 use Drupal\par_data\Entity\ParDataRegulatoryFunction;
-use Drupal\par_data\Entity\ParDataRegulatoryFunctionType;
-use Drupal\par_data\Entity\ParDataSicCode;
-use Drupal\par_data\Entity\ParDataSicCodeType;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
@@ -50,13 +24,10 @@ use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 class ParNotificationTestBase extends ParDataTestBase
 {
 
-  static $modules = ['language', 'content_translation', 'comment', 'trance', 'par_data', 'par_data_config', 'message', 'par_notification', 'address', 'datetime', 'datetime_range', 'file_test', 'file', 'file_entity'];
-
-  protected $entityEvent;
-  protected $parDataEvent;
+  static $modules = ['language', 'content_translation', 'comment', 'trance', 'par_data', 'par_data_config', 'message', 'par_message_config', 'par_notification', 'address', 'datetime', 'datetime_range', 'file_test', 'file', 'file_entity'];
 
   /**
-   * Notification preferences
+   * Notification types
    */
   protected $preferences = [
     'new_deviation_request',
@@ -64,7 +35,9 @@ class ParNotificationTestBase extends ParDataTestBase
     'new_general_enquiry',
     'new_inspection_feedback',
     'new_partnership_notification',
-    'new_response',
+    'new_deviation_response',
+    'new_enquiry_response',
+    'new_inspection_feedback_response',
     'partnership_approved_notificatio',
     'partnership_confirmed_notificati',
     'partnership_revocation_notificat',
@@ -77,44 +50,127 @@ class ParNotificationTestBase extends ParDataTestBase
    */
   protected function setUp()
   {
-    // Must change the bytea_output to the format "escape" before running tests.
-    // @see https://www.drupal.org/node/2810049
-    //db_query("ALTER DATABASE 'par' SET bytea_output = 'escape';")->execute();
-
     parent::setUp();
 
-    // Set up the entity events.
-    $this->entityEvent = $this->getMockBuilder('Drupal\Core\Entity\EntityEvent')
-      ->setMethods(['getEntity'])
-      ->disableOriginalConstructor()
-      ->getMock();
-    $this->parDataEvent = $this->getMockBuilder('Drupal\par_data\Event\ParDataEventInterface')
-      ->setMethods(['getEntity'])
-      ->disableOriginalConstructor()
-      ->getMock();
+    // Install config for par_notification if required.
+    $this->installConfig('message');
+    $this->installConfig('par_notification');
 
-    $this->entityEvent
-      ->expects($this->any())
-      ->method('getEntity')
-      ->will($this->returnCallback([$this, 'getEntity']));
-    $this->parDataEvent
-      ->expects($this->any())
-      ->method('getEntity')
-      ->will($this->returnCallback([$this, 'getEntity']));
+    // Create the entity bundles required for testing.
+    foreach ($this->preferences as $notification_type) {
+      $type = MessageTemplate::create([
+        'template' => $notification_type,
+        'label' => ucfirst(str_replace('_', ' ', $notification_type)),
+      ]);
+      $type->save();
+    }
+
+    // Install the feature config for all messages
+    $this->installConfig('par_message_config');
+
+    // Mock all the par_notification event subscriber services.
+    $container = \Drupal::getContainer();
+
+    $this->new_deviation_response_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\NewDeviationRequestReplySubscriber')
+      ->setMethods(['getSubscribedEvents', 'onEvent'])
+      ->disableOriginalConstructor()
+      ->getMock();
+    $container->set('par_notification.new_deviation_reply_subscriber', $this->new_deviation_response_subscriber);
+
+    $this->new_deviation_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\NewDeviationRequestSubscriber')
+      ->setMethods(['getSubscribedEvents', 'onEvent'])
+      ->disableOriginalConstructor()
+      ->getMock();
+    $container->set('par_notification.new_deviation_request_subscriber', $this->new_deviation_subscriber);
+
+    $this->new_enforcement_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\NewEnforcementSubscriber')
+      ->setMethods(['getSubscribedEvents', 'onEvent'])
+      ->disableOriginalConstructor()
+      ->getMock();
+    $container->set('par_notification.new_enforcement_subscriber', $this->new_enforcement_subscriber);
+
+    $this->new_enquiry_response_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\NewGeneralEnquiryReplySubscriber')
+      ->setMethods(['getSubscribedEvents', 'onEvent'])
+      ->disableOriginalConstructor()
+      ->getMock();
+    $container->set('par_notification.new_enquiry_reply_subscriber', $this->new_enquiry_response_subscriber);
+
+    $this->new_enquiry_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\NewGeneralEnquirySubscriber')
+      ->setMethods(['getSubscribedEvents', 'onEvent'])
+      ->disableOriginalConstructor()
+      ->getMock();
+    $container->set('par_notification.new_general_enquiry_subscriber', $this->new_enquiry_subscriber);
+
+    $this->new_inspection_feedback_response_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\NewInspectionFeedbackReplySubscriber')
+      ->setMethods(['getSubscribedEvents', 'onEvent'])
+      ->disableOriginalConstructor()
+      ->getMock();
+    $container->set('par_notification.new_inspection_feedback_reply_subscriber', $this->new_inspection_feedback_response_subscriber);
+
+    $this->new_inspection_feedback_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\NewInspectionFeedbackSubscriber')
+      ->setMethods(['getSubscribedEvents', 'onEvent'])
+      ->disableOriginalConstructor()
+      ->getMock();
+    $container->set('par_notification.new_inspection_feedback_subscriber', $this->new_inspection_feedback_subscriber);
+
+    $this->new_partnership_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\NewPartnershipSubscriber')
+      ->setMethods(['getSubscribedEvents', 'onEvent'])
+      ->disableOriginalConstructor()
+      ->getMock();
+    $container->set('par_notification.new_partnership_application_subscriber', $this->new_partnership_subscriber);
+
+    $this->partnership_completed_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\PartnershipApplicationCompletedSubscriber')
+      ->setMethods(['getSubscribedEvents', 'onEvent'])
+      ->disableOriginalConstructor()
+      ->getMock();
+    $container->set('par_notification.partnership_application_completed_subscriber', $this->partnership_completed_subscriber);
+
+    $this->partnership_approved_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\PartnershipApprovedSubscriber')
+      ->setMethods(['getSubscribedEvents', 'onEvent'])
+      ->disableOriginalConstructor()
+      ->getMock();
+    $container->set('par_notification.partnership_approved_subscriber', $this->partnership_approved_subscriber);
+
+    $this->partnership_revoked_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\PartnershipRevocationSubscriber')
+      ->setMethods(['getSubscribedEvents', 'onEvent'])
+      ->disableOriginalConstructor()
+      ->getMock();
+    $container->set('par_notification.partnership_revocation_subscriber', $this->partnership_revoked_subscriber);
+
+    $this->deviation_reviewed_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\ReviewedDeviationRequestSubscriber')
+      ->setMethods(['getSubscribedEvents', 'onEvent'])
+      ->disableOriginalConstructor()
+      ->getMock();
+    $container->set('par_notification.reviewed_deviation_request_subscriber', $this->deviation_reviewed_subscriber);
+
+    $this->enforcement_reviewed_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\ReviewedEnforcementSubscriber')
+      ->setMethods(['getSubscribedEvents', 'onEvent'])
+      ->disableOriginalConstructor()
+      ->getMock();
+    $container->set('par_notification.reviewed_enforcement_subscriber', $this->enforcement_reviewed_subscriber);
+
+    \Drupal::setContainer($container);
   }
 
-  public function createAuthority()
+  public function createAuthority($name = NULL)
   {
+    if (!$name) {
+      $name = $this->randomString(16);
+    }
+
     // We need to create an authority first.
-    $authority_values = $this->getAuthorityValues();
+    $authority_values = ['authority_name' => "{$name} Authority"] + $this->getAuthorityValues();
 
     // We need to create additional people.
-    $person_2 = ParDataPerson::create($this->getPersonValues());
+    // person_1 is the primary contact for this authority and has already been added above.
+    // person_2 & person_3 are secondary contacts for the partnership that will be added to the partnership.
+    // person_4 & person_5 are members of the authority only, they have no relationship to the partnership.
+    $person_2 = ParDataPerson::create(['email' => "person_2@{$name}.com"] + $this->getPersonValues());
     $person_2->set('field_notification_preferences', $this->preferences);
-    $person_3 = ParDataPerson::create($this->getPersonValues());
-    $person_4 = ParDataPerson::create($this->getPersonValues());
+    $person_3 = ParDataPerson::create(['email' => "person_3@{$name}.com"] + $this->getPersonValues());
+    $person_4 = ParDataPerson::create(['email' => "person_4@{$name}.com"] + $this->getPersonValues());
     $person_4->set('field_notification_preferences', $this->preferences);
-    $person_5 = ParDataPerson::create($this->getPersonValues());
+    $person_5 = ParDataPerson::create(['email' => "person_5@{$name}.com"] + $this->getPersonValues());
     $person_2->save();
     $person_3->save();
     $person_4->save();
@@ -136,12 +192,15 @@ class ParNotificationTestBase extends ParDataTestBase
     $organisation_values = $this->getOrganisationValues();
 
     // We need to create additional people.
-    $person_7 = ParDataPerson::create($this->getPersonValues());
+    // person_6 is the primary contact for this organisation and has already been added above.
+    // person_7 & person_8 are secondary contacts for the organisation that will be added to the partnership.
+    // person_9 & person_10 are members of the organisation only, they have no relationship to the partnership.
+    $person_7 = ParDataPerson::create(['email' => 'person_7@example.com'] + $this->getPersonValues());
     $person_7->set('field_notification_preferences', $this->preferences);
-    $person_8 = ParDataPerson::create($this->getPersonValues());
-    $person_9 = ParDataPerson::create($this->getPersonValues());
+    $person_8 = ParDataPerson::create(['email' => 'person_8@example.com'] + $this->getPersonValues());
+    $person_9 = ParDataPerson::create(['email' => 'person_9@example.com'] + $this->getPersonValues());
     $person_9->set('field_notification_preferences', $this->preferences);
-    $person_10 = ParDataPerson::create($this->getPersonValues());
+    $person_10 = ParDataPerson::create(['email' => 'person_10@example.com'] + $this->getPersonValues());
     $person_7->save();
     $person_8->save();
     $person_9->save();
@@ -159,7 +218,7 @@ class ParNotificationTestBase extends ParDataTestBase
 
   public function createPartnership()
   {
-    $authority = $this->createAuthority();
+    $authority = $this->createAuthority('primary');
     $organisation = $this->createOrganisation();
 
     // We need to create an Advice first.
@@ -182,9 +241,9 @@ class ParNotificationTestBase extends ParDataTestBase
 
     // Get the organisation people that will be listed as contacts for this partnership.
     $organisation_people = $organisation->get('field_person')->referencedEntities();
-    $person_6 = $authority_people[0];
-    $person_7 = $authority_people[1];
-    $person_8 = $authority_people[2];
+    $person_6 = $organisation_people[0];
+    $person_7 = $organisation_people[1];
+    $person_8 = $organisation_people[2];
 
     $partnership_values = [
       'type' => 'partnership',
@@ -240,7 +299,7 @@ class ParNotificationTestBase extends ParDataTestBase
 
   public function createEnforcement() {
     // We need to create an Enforcing Authority first.
-    $enforcing_authority = $this->createAuthority();
+    $enforcing_authority = $this->createAuthority('enforcing');
 
     // We need to create a partnership
     $partnership = $this->createPartnership();

@@ -24,7 +24,7 @@ class PartnershipApprovedSubscriber extends ParNotificationSubscriberBase {
    */
   static function getSubscribedEvents() {
     // Nomination event should fire after a partnership has been nominated.
-    $events[ParDataEvent::statusChange('par_data_partnership', 'confirmed_rd')][] = ['onPartnershipNomination', -101];
+    $events[ParDataEvent::statusChange('par_data_partnership', 'confirmed_rd')][] = ['onEvent', -101];
 
     return $events;
   }
@@ -74,7 +74,7 @@ class PartnershipApprovedSubscriber extends ParNotificationSubscriberBase {
   /**
    * @param ParDataEventInterface $event
    */
-  public function onPartnershipNomination(ParDataEventInterface $event) {
+  public function onEvent(ParDataEventInterface $event) {
     /** @var ParDataEntityInterface $par_data_partnership */
     $par_data_partnership = $event->getEntity();
 

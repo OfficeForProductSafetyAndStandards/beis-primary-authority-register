@@ -23,8 +23,8 @@ class ReviewedDeviationRequestSubscriber extends ParNotificationSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[ParDataEvent::statusChange('par_data_deviation_request', 'approved')][] = ['onDeviationRequestReview', 800];
-    $events[ParDataEvent::statusChange('par_data_deviation_request', 'blocked')][] = ['onDeviationRequestReview', 800];
+    $events[ParDataEvent::statusChange('par_data_deviation_request', 'approved')][] = ['onEvent', 800];
+    $events[ParDataEvent::statusChange('par_data_deviation_request', 'blocked')][] = ['onEvent', 800];
 
     return $events;
   }
@@ -62,7 +62,7 @@ class ReviewedDeviationRequestSubscriber extends ParNotificationSubscriberBase {
   /**
    * @param ParDataEventInterface $event
    */
-  public function onDeviationRequestReview(ParDataEventInterface $event) {
+  public function onEvent(ParDataEventInterface $event) {
     /** @var ParDataEntityInterface $par_data_deviation_request */
     $par_data_deviation_request = $event->getEntity();
 

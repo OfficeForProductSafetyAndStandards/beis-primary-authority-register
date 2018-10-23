@@ -25,7 +25,7 @@ class NewPartnershipSubscriber extends ParNotificationSubscriberBase {
    */
   static function getSubscribedEvents() {
     // Confirmation event should fire after a partnership has been confirmed.
-    $events[EntityEvents::insert('par_data_partnership')][] = ['onNewPartnership', -101];
+    $events[EntityEvents::insert('par_data_partnership')][] = ['onEvent', -101];
 
     return $events;
   }
@@ -63,7 +63,7 @@ class NewPartnershipSubscriber extends ParNotificationSubscriberBase {
   /**
    * @param EntityEvent $event
    */
-  public function onNewPartnership(EntityEvent $event) {
+  public function onEvent(EntityEvent $event) {
     /** @var ParDataEntityInterface $par_data_partnership */
     $par_data_partnership = $event->getEntity();
 

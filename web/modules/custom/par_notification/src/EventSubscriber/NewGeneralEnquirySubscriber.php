@@ -23,7 +23,7 @@ class NewGeneralEnquirySubscriber extends ParNotificationSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[EntityEvents::insert('par_data_general_enquiry')][] = ['onNewGeneralEnquiry', 800];
+    $events[EntityEvents::insert('par_data_general_enquiry')][] = ['onEvent', 800];
 
     return $events;
   }
@@ -61,7 +61,7 @@ class NewGeneralEnquirySubscriber extends ParNotificationSubscriberBase {
   /**
    * @param EntityEvent $event
    */
-  public function onNewGeneralEnquiry(EntityEvent $event) {
+  public function onEvent(EntityEvent $event) {
     /** @var ParDataEntityInterface $par_data_general_enquiry */
     $par_data_general_enquiry = $event->getEntity();
 

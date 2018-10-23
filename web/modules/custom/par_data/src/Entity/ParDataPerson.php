@@ -370,7 +370,16 @@ class ParDataPerson extends ParDataEntity {
   public function hasNotificationPreference($notification_type) {
     $notification_preferences = $this->getNotificationPreferences();
 
-    return ($notification_preferences && isset($notification_preferences[$notification_type]));
+    if ($notification_preferences) {
+      $notification_preferences = array_filter($notification_preferences, function ($preference) use ($notification_type) {
+        return ($notification_type === $preference->getTemplate());
+      });
+    }
+    else {
+      $notification_preferences = NULL;
+    }
+
+    return (!empty($notification_preferences));
   }
 
   /**

@@ -23,7 +23,7 @@ class NewEnforcementSubscriber extends ParNotificationSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[EntityEvents::insert('par_data_enforcement_notice')][] = ['onNewEnforcement', 800];
+    $events[EntityEvents::insert('par_data_enforcement_notice')][] = ['onEvent', 800];
 
     return $events;
   }
@@ -40,11 +40,14 @@ class NewEnforcementSubscriber extends ParNotificationSubscriberBase {
 
     /** @var ParDataEntityInterface $entity */
     $entity = $event->getEntity();
-    var_dump($entity->label());
 
-    // Always notify the primary authority contact.
-    if ($primary_authority_contact = $entity->getPrimaryAuthorityContacts(TRUE)) {
-      $contacts[$primary_authority_contact->id()] = $primary_authority_contact;
+    // Always notify the primary authority contacts.
+    if ($primary_authority_contacts = $entity->getPrimaryAuthorityContacts()) {
+      foreach ($primary_authority_contacts as $contact) {
+        if (!isset($contacts[$contact->id()])) {
+          $contacts[$contact->id()] = $contact;
+        }
+      }
     }
 
     // Notify secondary contacts if they've opted-in.
@@ -62,7 +65,7 @@ class NewEnforcementSubscriber extends ParNotificationSubscriberBase {
   /**
    * @param EntityEvent $event
    */
-  public function onNewEnforcement(EntityEvent $event) {
+  public function onEvent(EntityEvent $event) {
     /** @var ParDataEntityInterface $par_data_enforcement_notice */
     $par_data_enforcement_notice = $event->getEntity();
 

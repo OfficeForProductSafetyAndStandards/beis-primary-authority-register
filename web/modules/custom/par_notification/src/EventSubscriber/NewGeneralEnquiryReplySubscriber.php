@@ -25,7 +25,7 @@ class NewGeneralEnquiryReplySubscriber extends ParNotificationSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[EntityEvents::insert('comment')][] = ['onNewReply', 800];
+    $events[EntityEvents::insert('comment')][] = ['onEvent', 800];
 
     return $events;
   }
@@ -80,7 +80,7 @@ class NewGeneralEnquiryReplySubscriber extends ParNotificationSubscriberBase {
   /**
    * @param EntityEvent $event
    */
-  public function onNewReply(EntityEvent $event) {
+  public function onEvent(EntityEvent $event) {
     /** @var CommentInterface $comment */
     $comment = $event->getEntity();
     /** @var ParDataEntityInterface $entity */

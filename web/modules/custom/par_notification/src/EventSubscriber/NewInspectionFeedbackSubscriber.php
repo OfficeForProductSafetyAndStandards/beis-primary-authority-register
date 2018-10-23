@@ -23,7 +23,7 @@ class NewInspectionFeedbackSubscriber extends ParNotificationSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[EntityEvents::insert('par_data_inspection_feedback')][] = ['onNewInspectionFeedback', 800];
+    $events[EntityEvents::insert('par_data_inspection_feedback')][] = ['onEvent', 800];
 
     return $events;
   }
@@ -61,7 +61,7 @@ class NewInspectionFeedbackSubscriber extends ParNotificationSubscriberBase {
   /**
    * @param EntityEvent $event
    */
-  public function onNewInspectionFeedback(EntityEvent $event) {
+  public function onEvent(EntityEvent $event) {
     /** @var ParDataEntityInterface $par_data_inspection_feedback */
     $par_data_inspection_feedback = $event->getEntity();
 

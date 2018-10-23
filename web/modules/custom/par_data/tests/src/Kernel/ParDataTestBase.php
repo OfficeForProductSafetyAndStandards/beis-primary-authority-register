@@ -806,7 +806,7 @@ class ParDataTestBase extends EntityKernelTestBase {
       'job_title' => 'Senior Telephone Sanitisation Engineer',
       'work_phone' => '01723456789',
       'mobile_phone' => '0777777777',
-      'email' => 'abcdefghijklmnopqrstuvwxyz@example.com',
+      'email' => $this->randomString(20) . '@example.com',
       'communication_email' => TRUE,
       'communication_phone' => TRUE,
       'communication_mobile' => TRUE,

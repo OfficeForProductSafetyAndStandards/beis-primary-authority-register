@@ -23,7 +23,7 @@ class NewDeviationRequestSubscriber extends ParNotificationSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[EntityEvents::insert('par_data_deviation_request')][] = ['onNewDeviationRequest', 800];
+    $events[EntityEvents::insert('par_data_deviation_request')][] = ['onEvent', 800];
 
     return $events;
   }
@@ -61,7 +61,7 @@ class NewDeviationRequestSubscriber extends ParNotificationSubscriberBase {
   /**
    * @param EntityEvent $event
    */
-  public function onNewDeviationRequest(EntityEvent $event) {
+  public function onEvent(EntityEvent $event) {
     /** @var ParDataEntityInterface $par_data_deviation_request */
     $par_data_deviation_request = $event->getEntity();
 

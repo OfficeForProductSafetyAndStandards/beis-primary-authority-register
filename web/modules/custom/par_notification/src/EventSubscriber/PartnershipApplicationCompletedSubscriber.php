@@ -24,7 +24,7 @@ class PartnershipApplicationCompletedSubscriber extends ParNotificationSubscribe
    */
   static function getSubscribedEvents() {
     // Confirmation event should fire after a partnership has been confirmed.
-    $events[ParDataEvent::statusChange('par_data_partnership', 'confirmed_business')][] = ['onPartnershipConfirmation', -101];
+    $events[ParDataEvent::statusChange('par_data_partnership', 'confirmed_business')][] = ['onEvent', -101];
 
     return $events;
   }
@@ -62,7 +62,7 @@ class PartnershipApplicationCompletedSubscriber extends ParNotificationSubscribe
   /**
    * @param ParDataEventInterface $event
    */
-  public function onPartnershipConfirmation(ParDataEventInterface $event) {
+  public function onEvent(ParDataEventInterface $event) {
     /** @var ParDataEntityInterface $par_data_partnership */
     $par_data_partnership = $event->getEntity();
 

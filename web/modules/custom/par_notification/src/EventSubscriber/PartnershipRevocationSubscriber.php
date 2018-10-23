@@ -25,7 +25,7 @@ class PartnershipRevocationSubscriber extends ParNotificationSubscriberBase {
   static function getSubscribedEvents() {
     // Revocation event should fire after most default events to make sure
     // revocation has not been cancelled.
-    $events[ParDataEvent::statusChange('par_data_partnership', 'revoked')][] = ['onPartnershipRevocation', -100];
+    $events[ParDataEvent::statusChange('par_data_partnership', 'revoked')][] = ['onEvent', -100];
 
     return $events;
   }
@@ -75,7 +75,7 @@ class PartnershipRevocationSubscriber extends ParNotificationSubscriberBase {
   /**
    * @param ParDataEventInterface $event
    */
-  public function onPartnershipNomination(ParDataEventInterface $event) {
+  public function onEvent(ParDataEventInterface $event) {
     /** @var ParDataEntityInterface $par_data_partnership */
     $par_data_partnership = $event->getEntity();
 
