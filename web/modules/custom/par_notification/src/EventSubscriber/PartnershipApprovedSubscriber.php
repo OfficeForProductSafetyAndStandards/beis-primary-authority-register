@@ -6,6 +6,7 @@ use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
+use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParNotificationSubscriberBase;
 
 class PartnershipApprovedSubscriber extends ParNotificationSubscriberBase {
@@ -86,7 +87,12 @@ class PartnershipApprovedSubscriber extends ParNotificationSubscriberBase {
         // Try and get the user account associated with this contact.
         $account = $contact->getOrLookupUserAccount();
 
-        $message = $this->createMessage();
+        try {
+          $message = $this->createMessage();
+        }
+        catch (ParNotificationException $e) {
+          break;
+        }
 
         // Add contextual information to this message.
         if ($message->hasField('field_partnership')) {

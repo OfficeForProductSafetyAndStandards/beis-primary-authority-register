@@ -7,17 +7,20 @@
 *                @kalpaitch
 
 ############
-# Overrides
+# Dev-ops
 ############
-/.travis.yml     @chris-moreton
-/Vagrantfile     @chris-moreton
-/.bp-config/     @chris-moreton
-/devops/         @chris-moreton
-/dashboard/      @chris-moreton
-/docker/         @chris-moreton
-/cf/             @chris-moreton
-/*.sh            @chris-moreton
-/tools/          @chris-moreton
+/.travis.yml     @kalpaitch
+/Vagrantfile     @kalpaitch
+/.bp-config/     @kalpaitch
+/devops/         @kalpaitch
+/dashboard/      @kalpaitch
+/docker/         @kalpaitch
+/cf/             @kalpaitch
+/*.sh            @kalpaitch
+/tools/          @kalpaitch
 
-/tests/          @jaffamonkey
+############
+# Testing
+############
+/tests/          @kalpaitch
 

@@ -130,9 +130,16 @@ abstract class ParNotificationSubscriberBase implements EventSubscriberInterface
 
   /**
    * Create the message.
+   *
+   * @throws ParNotificationException
    */
   public function createMessage() {
     // Create one message per user.
+    $template_id = $this->getMessageTemplateId();
+    if (!$template_id) {
+      throw new ParNotificationException('No template could be found.');
+    }
+
     return $this->getMessageStorage()->create([
       'template' => $this->getMessageTemplateId(),
     ]);

@@ -6,6 +6,7 @@ use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityEvents;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParNotificationSubscriberBase;
 
 class NewGeneralEnquirySubscriber extends ParNotificationSubscriberBase {
@@ -73,7 +74,12 @@ class NewGeneralEnquirySubscriber extends ParNotificationSubscriberBase {
         // Try and get the user account associated with this contact.
         $account = $contact->getOrLookupUserAccount();
 
-        $message = $this->createMessage();
+        try {
+          $message = $this->createMessage();
+        }
+        catch (ParNotificationException $e) {
+          break;
+        }
 
         // Add contextual information to this message.
         if ($message->hasField('field_general_enquiry')) {

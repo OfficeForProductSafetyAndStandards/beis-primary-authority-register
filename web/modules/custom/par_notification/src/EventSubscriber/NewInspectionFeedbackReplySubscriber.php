@@ -9,6 +9,7 @@ use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataGeneralEnquiry;
 use Drupal\par_data\Entity\ParDataInspectionFeedback;
 use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParNotificationSubscriberBase;
 
 class NewInspectionFeedbackReplySubscriber extends ParNotificationSubscriberBase {
@@ -100,7 +101,12 @@ class NewInspectionFeedbackReplySubscriber extends ParNotificationSubscriberBase
         // Try and get the user account associated with this contact.
         $account = $contact->getOrLookupUserAccount();
 
-        $message = $this->createMessage();
+        try {
+          $message = $this->createMessage();
+        }
+        catch (ParNotificationException $e) {
+          break;
+        }
 
         // Add contextual information to this message.
         if ($message->hasField('field_comment')) {
