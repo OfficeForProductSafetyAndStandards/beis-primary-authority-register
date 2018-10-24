@@ -112,6 +112,9 @@ class NewInspectionFeedbackReplySubscriber extends ParNotificationSubscriberBase
         if ($message->hasField('field_comment')) {
           $message->set('field_comment', $comment);
         }
+        if ($message->hasField('field_inspection_feedback')) {
+          $message->set('field_inspection_feedback', $par_data_entity);
+        }
 
         // The owner is the user who this message belongs to.
         if ($account) {

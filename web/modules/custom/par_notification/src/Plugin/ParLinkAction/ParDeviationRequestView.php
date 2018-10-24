@@ -8,20 +8,21 @@ use Drupal\par_notification\ParLinkActionBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * Check if a deviation request has already been reviewed.
+ * Send the user to view the deviation request if it has been reviewed.
  *
  * @ParLinkAction(
- *   id = "deviation_reviewed",
- *   title = @Translation("Deviation already approved."),
+ *   id = "deviation_view",
+ *   title = @Translation("View deviation request."),
  *   status = TRUE,
  *   weight = 2,
  *   notification = {
  *     "new_deviation_request",
  *     "reviewed_deviation_request",
+ *     "new_deviation_response",
  *   }
  * )
  */
-class ParDeviationRequestReviewed extends ParLinkActionBase {
+class ParDeviationRequestView extends ParLinkActionBase {
 
   public function receive(MessageInterface $message) {
     if ($message->hasField('field_deviation_request') && !$message->get('field_deviation_request')->isEmpty()) {

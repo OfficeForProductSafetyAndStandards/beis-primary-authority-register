@@ -1,11 +1,25 @@
 par_notification.link_manager:
-  path: '/notifications/{message}/link-manager'
+  path: '/notifications/{message}/link'
   defaults:
     _controller: '\Drupal\par_notification\Controller\ParLinkManagerController::receive'
     _title: 'Link Manager'
   requirements:
     _access: 'TRUE'
     message: \d+|\[message\:mid\] # Link needs to be able to generate with a message id replacement token.
+  options:
+    no_cache: 'TRUE'
+    parameters:
+      message:
+        type: entity:message
+
+par_notification.link_not_found:
+  path: '/notifications/{message}/link/not-found'
+  defaults:
+    _controller: '\Drupal\par_notification\Controller\ParLinkNotFoundController::build'
+    _title: 'Thank you'
+  requirements:
+    _access: 'TRUE'
+    message: \d+
   options:
     no_cache: 'TRUE'
     parameters:

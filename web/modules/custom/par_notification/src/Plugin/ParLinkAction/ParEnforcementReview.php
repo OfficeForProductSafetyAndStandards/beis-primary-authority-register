@@ -8,11 +8,11 @@ use Drupal\par_notification\ParLinkActionBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * Check if an enforcement is awaiting review.
+ * Send user to the enforcement review page.
  *
  * @ParLinkAction(
  *   id = "enforcement_review",
- *   title = @Translation("Enforcement notice review."),
+ *   title = @Translation("Review enforcement notice."),
  *   status = TRUE,
  *   weight = 1,
  *   notification = {

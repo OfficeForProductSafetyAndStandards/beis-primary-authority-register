@@ -21,7 +21,7 @@ class ParNotFound extends ParLinkActionBase {
 
   public function receive(MessageInterface $message) {
     // This should be the last redirection to happen if no other one could be found.
-    $dashboard_url = Url::fromRoute('par_dashboards.dashboard')->toString();
+    $dashboard_url = Url::fromRoute('par_notification.link_not_found', ['message' => $message->id()])->toString();
     return new RedirectResponse($dashboard_url);
   }
 }

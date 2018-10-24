@@ -111,6 +111,9 @@ class NewGeneralEnquiryReplySubscriber extends ParNotificationSubscriberBase {
         if ($message->hasField('field_comment')) {
           $message->set('field_comment', $comment);
         }
+        if ($message->hasField('field_general_enquiry')) {
+          $message->set('field_general_enquiry', $par_data_entity);
+        }
 
         // The owner is the user who this message belongs to.
         if ($account) {

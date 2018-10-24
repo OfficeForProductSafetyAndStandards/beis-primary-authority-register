@@ -8,15 +8,16 @@ use Drupal\par_notification\ParLinkActionBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * Check if a deviation request is awaiting review.
+ * Send the user to the deviation review page if it has not already been reviewed.
  *
  * @ParLinkAction(
  *   id = "deviation_review",
- *   title = @Translation("Deviation review."),
+ *   title = @Translation("Review deviation request."),
  *   status = TRUE,
  *   weight = 1,
  *   notification = {
  *     "new_deviation_request",
+ *     "new_deviation_response",
  *   }
  * )
  */

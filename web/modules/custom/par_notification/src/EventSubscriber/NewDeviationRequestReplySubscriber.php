@@ -111,6 +111,9 @@ class NewDeviationRequestReplySubscriber extends ParNotificationSubscriberBase {
         if ($message->hasField('field_comment')) {
           $message->set('field_comment', $comment);
         }
+        if ($message->hasField('field_deviation_request')) {
+          $message->set('field_deviation_request', $par_data_entity);
+        }
 
         // The owner is the user who this message belongs to.
         if ($account) {

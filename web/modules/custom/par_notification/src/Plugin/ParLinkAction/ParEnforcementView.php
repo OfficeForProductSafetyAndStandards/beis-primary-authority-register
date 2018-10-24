@@ -8,11 +8,11 @@ use Drupal\par_notification\ParLinkActionBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * Check if an enforcement has already been reviewed.
+ * Send user to the enforcement page.
  *
  * @ParLinkAction(
- *   id = "enforcement_reviewed",
- *   title = @Translation("Enforcement notice review."),
+ *   id = "enforcement_view",
+ *   title = @Translation("View enforcement notice."),
  *   status = TRUE,
  *   weight = 2,
  *   notification = {
@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *   }
  * )
  */
-class ParEnforcementReviewed extends ParLinkActionBase {
+class ParEnforcementView extends ParLinkActionBase {
 
   public function receive(MessageInterface $message) {
     if ($message->hasField('field_enforcement_notice') && !$message->get('field_enforcement_notice')->isEmpty()) {
