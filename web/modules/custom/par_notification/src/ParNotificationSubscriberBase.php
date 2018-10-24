@@ -114,7 +114,11 @@ abstract class ParNotificationSubscriberBase implements EventSubscriberInterface
    *
    * @return string|NULL
    */
-  public function getMessageTemplateId($message_id = self::MESSAGE_ID) {
+  public function getMessageTemplateId($message_id = NULL) {
+    if (!$message_id) {
+      $message_id = static::MESSAGE_ID;
+    }
+
     // Load the message template.
     if ($message_template = $this->getMessageTemplateStorage()->load($message_id)) {
       return $message_id;
@@ -144,7 +148,7 @@ abstract class ParNotificationSubscriberBase implements EventSubscriberInterface
         'mail' => $email,
       ];
 
-      $this->getNotifier()->send($message, $options, self::DELIVERY_METHOD);
+      $this->getNotifier()->send($message, $options, static::DELIVERY_METHOD);
     }
     else {
       $this->getLogger($this->getLoggerChannel())->warning('Could not save the \'%message_template\' message for %email.', ['%email' => $email, '%message_template' => $message->getTemplate()->label()]);
