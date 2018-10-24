@@ -66,6 +66,14 @@ Feature: New Direct Partnership For PA To Approve
         When I click on the checkbox "#edit-preferred-contact-communication-phone"
         And I click on the button "#edit-next"
 
+        Then the element "h1.heading-xlarge" contains the text "Update notification preferences"
+        When I click on the checkbox "#edit-preferred-contact-new-deviation-response"
+        When I click on the checkbox "#edit-preferred-contact-new-enquiry-response"
+        When I click on the checkbox "#edit-preferred-contact-new-inspection-feedback-response"
+        When I click on the checkbox "#edit-preferred-contact-reviewed-deviation-request"
+        When I click on the checkbox "#edit-preferred-contact-reviewed-enforcement"
+        And I click on the button "#edit-next"
+
         Then the element "h1.heading-xlarge" contains the text "Profile review"
         And the element "#edit-name" contains the text "Mrs Joe Smith"
         And the element "#edit-work-phone" contains the text "01870119991 (preferred)"

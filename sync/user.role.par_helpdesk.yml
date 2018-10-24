@@ -134,7 +134,6 @@ permissions:
   - 'receive new_general_enquiry notification'
   - 'receive new_inspection_feedback notification'
   - 'receive new_partnership_notification notification'
-  - 'receive new_response notification'
   - 'receive partnership_approved_notificatio notification'
   - 'receive partnership_confirmed_notificati notification'
   - 'receive partnership_revocation_notificat notification'
