@@ -121,7 +121,7 @@ install:
 # Run cron a handful of times.
 #-----------------------------------------------------------------------------
 
-  - docker exec -i par_beta_web bash -c "cd web && for ((n=0;n<5;n++)); do ../vendor/drush/drush/drush cron; done"
+  - docker exec -i par_beta_web bash -c "cd web && for ((n=0;n<3;n++)); do ../vendor/drush/drush/drush cron; done"
 
 #-----------------------------------------------------------------------------
 # Stamp the code with the build number
