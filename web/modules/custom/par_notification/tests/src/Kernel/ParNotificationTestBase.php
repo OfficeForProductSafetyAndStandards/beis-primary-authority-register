@@ -2,11 +2,15 @@
 
 namespace Drupal\Tests\par_notification\Kernel;
 
+use Drupal\comment\Entity\Comment;
 use Drupal\message\Entity\MessageTemplate;
 use Drupal\par_data\Entity\ParDataAdvice;
 use Drupal\par_data\Entity\ParDataAuthority;
+use Drupal\par_data\Entity\ParDataDeviationRequest;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
+use Drupal\par_data\Entity\ParDataGeneralEnquiry;
+use Drupal\par_data\Entity\ParDataInspectionFeedback;
 use Drupal\par_data\Entity\ParDataInspectionPlan;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
@@ -195,12 +199,12 @@ class ParNotificationTestBase extends ParDataTestBase
     // person_6 is the primary contact for this organisation and has already been added above.
     // person_7 & person_8 are secondary contacts for the organisation that will be added to the partnership.
     // person_9 & person_10 are members of the organisation only, they have no relationship to the partnership.
-    $person_7 = ParDataPerson::create(['email' => 'person_7@example.com'] + $this->getPersonValues());
+    $person_7 = ParDataPerson::create(['email' => 'person_7@organisation.com'] + $this->getPersonValues());
     $person_7->set('field_notification_preferences', $this->preferences);
-    $person_8 = ParDataPerson::create(['email' => 'person_8@example.com'] + $this->getPersonValues());
-    $person_9 = ParDataPerson::create(['email' => 'person_9@example.com'] + $this->getPersonValues());
+    $person_8 = ParDataPerson::create(['email' => 'person_8@organisation.com'] + $this->getPersonValues());
+    $person_9 = ParDataPerson::create(['email' => 'person_9@organisation.com'] + $this->getPersonValues());
     $person_9->set('field_notification_preferences', $this->preferences);
-    $person_10 = ParDataPerson::create(['email' => 'person_10@example.com'] + $this->getPersonValues());
+    $person_10 = ParDataPerson::create(['email' => 'person_10@organisation.com'] + $this->getPersonValues());
     $person_7->save();
     $person_8->save();
     $person_9->save();
@@ -300,6 +304,8 @@ class ParNotificationTestBase extends ParDataTestBase
   public function createEnforcement() {
     // We need to create an Enforcing Authority first.
     $enforcing_authority = $this->createAuthority('enforcing');
+    // We need to get the enforcing officer from the enforcing authority.
+    $enforcing_person = $enforcing_authority->get('field_person')->referencedEntities()[4];
 
     // We need to create a partnership
     $partnership = $this->createPartnership();
@@ -311,9 +317,6 @@ class ParNotificationTestBase extends ParDataTestBase
     // We need to create an Enforcement Action first.
     $enforcement_action = ParDataEnforcementAction::create($this->getEnforcementActionValues());
     $enforcement_action->save();
-
-    // We need to get the enforcing officer from the enforcing authority.
-    $enforcing_person = $enforcing_authority->get('field_person')->referencedEntities()[4];
 
     $enforcement_values = [
       'type' => 'enforcement_notice',
@@ -348,5 +351,154 @@ class ParNotificationTestBase extends ParDataTestBase
 
     $enforcement_notice->save();
     return $enforcement_notice;
+  }
+
+  public function createDeviationRequest() {
+    // We need to create an Enforcing Authority first.
+    $enforcing_authority = $this->createAuthority('enforcing');
+    // We need to get the enforcing officer from the enforcing authority.
+    $enforcing_person = $enforcing_authority->get('field_person')->referencedEntities()[4];
+
+    // We need to create a partnership
+    $partnership = $this->createPartnership();
+
+    $inspection_plans = $partnership->get('field_inspection_plan')->referencedEntities();
+    $inspection_plan = current($inspection_plans);
+
+    /** @var \Drupal\file\Entity\File $document */
+    $document = $this->createFile();
+
+    $deviation_request_values = [
+      'type' => 'deviation_request',
+      'request_date' => '2017-10-01',
+      'notes' => $this->randomString(1000),
+      'primary_authority_status' => 'awaiting',
+      'primary_authority_notes' => $this->randomString(1000),
+      'document' => [
+        $document->id(),
+      ],
+      'field_enforcing_authority' => [
+        $enforcing_authority->id(),
+      ],
+      'field_partnership' => [
+        $partnership->id(),
+      ],
+      'field_inspection_plan' => [
+        $inspection_plan->id(),
+      ],
+      'field_person' => [
+        $enforcing_person->id(),
+      ],
+    ] + $this->getBaseValues();
+
+    $deviation_request = ParDataDeviationRequest::create($deviation_request_values);
+
+    $deviation_request->save();
+    return $deviation_request;
+  }
+
+  public function createInspectionFeedback() {
+    // We need to create an Enforcing Authority first.
+    $enforcing_authority = $this->createAuthority('enforcing');
+    // We need to get the enforcing officer from the enforcing authority.
+    $enforcing_person = $enforcing_authority->get('field_person')->referencedEntities()[4];
+
+    // We need to create a partnership
+    $partnership = $this->createPartnership();
+
+    $inspection_plans = $partnership->get('field_inspection_plan')->referencedEntities();
+    $inspection_plan = current($inspection_plans);
+
+    $inspection_feedback_values = [
+        'type' => 'inspection_feedback',
+        'request_date' => '2017-10-01',
+        'notes' => $this->randomString(1000),
+        'primary_authority_status' => 'awaiting',
+        'primary_authority_notes' => $this->randomString(1000),
+        'document' => [
+          ''
+        ],
+        'field_enforcing_authority' => [
+          $enforcing_authority->id(),
+        ],
+        'field_partnership' => [
+          $partnership->id(),
+        ],
+        'field_inspection_plan' => [
+          $inspection_plan->id(),
+        ],
+        'field_person' => [
+          $enforcing_person->id(),
+        ],
+      ] + $this->getBaseValues();
+
+    $inspection_feedback = ParDataInspectionFeedback::create($inspection_feedback_values);
+
+    $inspection_feedback->save();
+    return $inspection_feedback;
+  }
+
+  public function createGeneralEnquiry() {
+    // We need to create an Enforcing Authority first.
+    $enforcing_authority = $this->createAuthority('enforcing');
+    // We need to get the enforcing officer from the enforcing authority.
+    $enforcing_person = $enforcing_authority->get('field_person')->referencedEntities()[4];
+
+    // We need to create a partnership.
+    $partnership = $this->createPartnership();
+    $primary_authority = current($partnership->getAuthority());
+
+    $general_enquiry_values = [
+        'type' => 'general_enquiry',
+        'request_date' => '2017-10-01',
+        'notes' => $this->randomString(1000),
+        'primary_authority_status' => 'awaiting',
+        'primary_authority_notes' => $this->randomString(1000),
+        'document' => [
+          ''
+        ],
+        'field_enforcing_authority' => [
+          $enforcing_authority->id(),
+        ],
+        'field_partnership' => [
+          $partnership->id(),
+        ],
+        'field_primary_authority' => [
+          $primary_authority->id(),
+        ],
+        'field_person' => [
+          $enforcing_person->id(),
+        ],
+      ] + $this->getBaseValues();
+
+    $general_enquiry = ParDataGeneralEnquiry::create($general_enquiry_values);
+
+    $general_enquiry->save();
+    return $general_enquiry;
+  }
+
+  public function createGeneralEnquiryComment() {
+    $enquiry = $this->createGeneralEnquiry();
+    $enforcing_officer_mail = !$enquiry->get('field_person')->isEmpty() ? current($enquiry->get('field_person')->referencedEntities())->getEmail() : '';
+
+    // Login as the enforcing officer.
+    $enforcing_officer = $this->createUser(['mail' => $enforcing_officer_mail], $this->permissions);
+    \Drupal::currentUser()->setAccount($enforcing_officer);
+
+    $comment = Comment::create([
+      'entity_type' => $enquiry->getEntityTypeId(),
+      'entity_id'   => $enquiry->id(),
+      'field_name'  => 'messages',
+      'uid' => $enforcing_officer->id(),
+      'comment_type' => 'par_deviation_request_comments',
+      'subject' => substr($enquiry->label(), 0, 64),
+      'status' => 1,
+      'comment_body' => $this->randomString(1000),
+    ]);
+    $comment->save();
+
+    \Drupal::currentUser()->setAccount($this->account);
+
+    return $comment;
   }
 }

@@ -43,8 +43,12 @@ class NewDeviationRequestSubscriber extends ParNotificationSubscriberBase {
     $entity = $event->getEntity();
 
     // Always notify the primary authority contact.
-    if ($primary_authority_contact = $entity->getPrimaryAuthorityContacts(TRUE)) {
-      $contacts[$primary_authority_contact->id()] = $primary_authority_contact;
+    if ($primary_authority_contacts = $entity->getPrimaryAuthorityContacts()) {
+      foreach ($primary_authority_contacts as $contact) {
+        if (!isset($contacts[$contact->id()])) {
+          $contacts[$contact->id()] = $contact;
+        }
+      }
     }
 
     // Notify secondary contacts if they've opted-in.

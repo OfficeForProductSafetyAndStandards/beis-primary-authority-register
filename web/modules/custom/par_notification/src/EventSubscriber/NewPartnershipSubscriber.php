@@ -45,8 +45,12 @@ class NewPartnershipSubscriber extends ParNotificationSubscriberBase {
     $entity = $event->getEntity();
 
     // Always notify the primary organisation contact.
-    if ($primary_organisation_contact = $entity->getOrganisationPeople(TRUE)) {
-      $contacts[$primary_organisation_contact->id()] = $primary_organisation_contact;
+    if ($primary_authority_contacts = $entity->getOrganisationPeople()) {
+      foreach ($primary_authority_contacts as $contact) {
+        if (!isset($contacts[$contact->id()])) {
+          $contacts[$contact->id()] = $contact;
+        }
+      }
     }
 
     // Notify secondary contacts at the organisation if there are any.

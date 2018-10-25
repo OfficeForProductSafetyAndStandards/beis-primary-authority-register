@@ -5,7 +5,7 @@ namespace Drupal\Tests\par_notification\Kernel\Subscriber;
 use Drupal\Tests\par_notification\Kernel\ParNotificationTestBase;
 
 /**
- * Tests PAR Enforcement Notice entity.
+ * Tests PAR enforcement notifications.
  *
  * @group PAR Notification
  */
@@ -22,7 +22,7 @@ class NewEnforcementSubscriberTest extends ParNotificationTestBase {
   }
 
   /**
-   * Test to validate an authority entity.
+   * Test new enforcement notification sends to the correct subscribers.
    */
   public function testNewEnforcementSubscribers() {
     // Set up the entity events.
@@ -48,7 +48,7 @@ class NewEnforcementSubscriberTest extends ParNotificationTestBase {
   }
 
   /**
-   * Test to validate an authority entity.
+   * Test reviewed enforcement notification sends to the correct subscribers.
    */
   public function testReviewedEnforcementSubscribers() {
     // Set up the entity events.

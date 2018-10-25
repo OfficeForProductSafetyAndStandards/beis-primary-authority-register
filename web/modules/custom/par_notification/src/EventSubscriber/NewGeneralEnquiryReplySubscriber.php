@@ -47,9 +47,14 @@ class NewGeneralEnquiryReplySubscriber extends ParNotificationSubscriberBase {
     $entity = $comment->getCommentedEntity();
 
     // Always notify the primary authority contact.
-    if ($primary_authority_contact = $entity->getPrimaryAuthorityContacts(TRUE)) {
-      $contacts[$primary_authority_contact->id()] = $primary_authority_contact;
+    if ($primary_authority_contacts = $entity->getPrimaryAuthorityContacts()) {
+      foreach ($primary_authority_contacts as $contact) {
+        if (!isset($contacts[$contact->id()])) {
+          $contacts[$contact->id()] = $contact;
+        }
+      }
     }
+    // Always notify the enforcing officer.
     if ($enforcing_authority_contact = $entity->getEnforcingPerson(TRUE)) {
       $contacts[$enforcing_authority_contact->id()] = $enforcing_authority_contact;
     }

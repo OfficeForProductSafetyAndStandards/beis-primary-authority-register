@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\par_data\Kernel;
 
+use Drupal\Core\Session\AccountInterface;
 use Drupal\file\Entity\File;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataAdvice;
@@ -47,7 +48,10 @@ class ParDataTestBase extends EntityKernelTestBase {
 
   static $modules = ['language', 'content_translation', 'comment', 'trance', 'par_validation', 'par_data', 'par_data_config', 'message', 'address', 'datetime', 'datetime_range', 'file_test', 'file', 'file_entity'];
 
-  protected $account = 2;
+  /**
+   * @var AccountInterface
+   */
+  protected $account;
 
   protected $permissions = [
     'access content',

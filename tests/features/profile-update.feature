@@ -25,6 +25,14 @@ Feature: New Direct Partnership For PA To Approve
         And I add "01865999000" to the inputfield "#edit-work-phone"
         And I click on the button "#edit-next"
 
+        Then the element "h1.heading-xlarge" contains the text "Update notification preferences"
+        When I click on the checkbox "#edit-preferred-contact-new-deviation-response"
+        When I click on the checkbox "#edit-preferred-contact-new-enquiry-response"
+        When I click on the checkbox "#edit-preferred-contact-new-inspection-feedback-response"
+        When I click on the checkbox "#edit-preferred-contact-reviewed-deviation-request"
+        When I click on the checkbox "#edit-preferred-contact-reviewed-enforcement"
+        And I click on the button "#edit-next"
+
         Then the element "h1.heading-xlarge" contains the text "Update communication preferences"
         When I click on the checkbox "#edit-preferred-contact-communication-phone"
         And I add "Please only contact me during office hours." to the inputfield "#edit-notes"

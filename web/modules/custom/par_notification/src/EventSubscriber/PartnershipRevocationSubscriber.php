@@ -44,13 +44,21 @@ class PartnershipRevocationSubscriber extends ParNotificationSubscriberBase {
     /** @var ParDataEntityInterface $entity */
     $entity = $event->getEntity();
 
-    // Always notify the primary authority contact.
-    if ($primary_authority_contact = $entity->getAuthorityPeople(TRUE)) {
-      $contacts[$primary_authority_contact->id()] = $primary_authority_contact;
+    // Always notify the primary authority contacts.
+    if ($primary_authority_contacts = $entity->getAuthorityPeople()) {
+      foreach ($primary_authority_contacts as $contact) {
+        if (!isset($contacts[$contact->id()])) {
+          $contacts[$contact->id()] = $contact;
+        }
+      }
     }
-    // Always notify the primary organisation contact.
-    if ($primary_organisation_contact = $entity->getOrganisationPeople(TRUE)) {
-      $contacts[$primary_organisation_contact->id()] = $primary_organisation_contact;
+    // Always notify the primary organisation contacts.
+    if ($primary_organisation_contact = $entity->getOrganisationPeople()) {
+      foreach ($primary_organisation_contact as $contact) {
+        if (!isset($contacts[$contact->id()])) {
+          $contacts[$contact->id()] = $contact;
+        }
+      }
     }
 
     // Notify secondary contacts at the authority if there are any.

@@ -44,8 +44,12 @@ class PartnershipApplicationCompletedSubscriber extends ParNotificationSubscribe
     $entity = $event->getEntity();
 
     // Always notify the primary authority contact.
-    if ($primary_authority_contact = $entity->getAuthorityPeople(TRUE)) {
-      $contacts[$primary_authority_contact->id()] = $primary_authority_contact;
+    if ($primary_authority_contacts = $entity->getAuthorityPeople()) {
+      foreach ($primary_authority_contacts as $contact) {
+        if (!isset($contacts[$contact->id()])) {
+          $contacts[$contact->id()] = $contact;
+        }
+      }
     }
 
     // Notify secondary contacts at the authority if there are any.
