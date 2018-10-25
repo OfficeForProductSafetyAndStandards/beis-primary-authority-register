@@ -4,6 +4,7 @@ namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Component\Utility\Xss;
 use Drupal\par_forms\ParFormPluginBase;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Contact details form plugin.
@@ -49,6 +50,12 @@ class ParNotificationPreferencesForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
+    $notification_options = $this->getFlowDataHandler()->getFormPermValue('notification_option');
+    if (count($notification_options) <= 0) {
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
+      return new RedirectResponse($url);
+    }
+
     $form['help'] = [
       '#markup' => '<p>As a primary contact you will always receive transactional notifications that relevant to your partnerships, authorities or organisations.</p><p class="form-group">However, you can also choose to receive these notifications as a secondary contact for the partnership or as a member of the authority or organisation it relates to.</p>',
     ];
@@ -57,7 +64,7 @@ class ParNotificationPreferencesForm extends ParFormPluginBase {
       '#type' => 'checkboxes',
       '#title' => $this->t('Choose which additional notifications to receive'),
       '#description' => '<p>Primary contacts will always be sent these notifications.</p>',
-      '#options' => $this->getFlowDataHandler()->getFormPermValue('notification_option'),
+      '#options' => $notification_options,
       '#default_value' => $this->getDefaultValuesByKey('notification_preferences', $cardinality, []),
       '#return_value' => 'on',
     ];
