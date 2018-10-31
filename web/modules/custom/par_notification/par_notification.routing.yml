@@ -13,7 +13,7 @@ par_notification.link_manager:
         type: entity:message
 
 par_notification.link_not_found:
-  path: '/notifications/{message}/link/not-found'
+  path: '/notifications/{message}/link-not-found'
   defaults:
     _controller: '\Drupal\par_notification\Controller\ParLinkNotFoundController::build'
     _title: 'Thank you'
