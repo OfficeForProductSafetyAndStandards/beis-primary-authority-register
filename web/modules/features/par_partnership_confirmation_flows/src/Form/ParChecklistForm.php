@@ -34,7 +34,8 @@ class ParChecklistForm extends ParBaseForm {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $par_data_partnership ? $par_data_partnership->getOrganisation(TRUE) : NULL;
 
-    if ($par_data_organisation && $this->getParDataManager()->isMember($par_data_organisation, $this->getCurrentUser())) {
+    $current_user = $this->getCurrentUser();
+    if ($par_data_organisation && $current_user && $this->getParDataManager()->isMember($par_data_organisation, $current_user)) {
       $this->getFlowDataHandler()->setTempDataValue('organisation_member', TRUE);
     }
 

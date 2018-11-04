@@ -66,6 +66,8 @@ use Drupal\par_data\ParDataException;
  */
 class ParDataEnforcementNotice extends ParDataEntity {
 
+  use ParEnforcementEntityTrait;
+
   /**
    * {@inheritdoc}
    */
@@ -98,54 +100,6 @@ class ParDataEnforcementNotice extends ParDataEntity {
   }
 
   /**
-   * Get the primary authority for this Enforcement Notice.
-   *
-   * @param boolean $single
-   *
-   * @return ParDataEntityInterface|bool
-   *   Return false if not referred.
-   *
-   */
-  public function getPrimaryAuthority($single = FALSE) {
-    // All referred notices should have an authority referenced in
-    // field_primary_authority which is the authority that is now responsible.
-    // If it doesn't have this we should get the original authority
-    // from the partnership.
-    if (!$this->get('field_primary_authority')->isEmpty()) {
-      $authorities = $this->get('field_primary_authority')->referencedEntities();
-      $authority = !empty($authorities) ? current($authorities) : NULL;
-
-      return $single ? $authority : $authorities;
-    }
-    elseif ($partnership = $this->getPartnership(TRUE)){
-      return $partnership ? $partnership->getAuthority($single) : NULL;
-    }
-
-    return NULL;
-  }
-
-  /**
-   * Get the primary authority contact for this notice.
-   *
-   * If there is a partnership this will be the primary contact for the partnership.
-   * Otherwise it will be the primary contact for the authority as a whole.
-   *
-   * @return ParDataEntityInterface|bool
-   *   Return false if none found.
-   *
-   */
-  public function getPrimaryAuthorityContact() {
-    if ($partnership = $this->getPartnership(TRUE)) {
-      $pa_contact = $partnership->getAuthorityPeople(TRUE);
-    }
-    elseif ($authority = $this->getPrimaryAuthority(TRUE)) {
-      $pa_contact = $authority->getPerson(TRUE);
-    }
-
-    return isset($pa_contact) ? $pa_contact : NULL;
-  }
-
-  /**
    * If this is a referred notice get the original notice.
    *
    * @return ParDataEntityInterface|bool
@@ -159,29 +113,6 @@ class ParDataEnforcementNotice extends ParDataEntity {
     }
 
     return FALSE;
-  }
-
-  /**
-   * Get the Partnership for this Enforcement Notice.
-   *
-   * @param boolean $single
-   *
-   */
-  public function getPartnership($single = FALSE) {
-    $partnerships = $this->get('field_partnership')->referencedEntities();
-    $partnership = !empty($partnerships) ? current($partnerships) : NULL;
-
-    return $single ? $partnership : $partnerships;
-  }
-
-  /**
-   * Get the enforcing authority for this Enforcement Notice.
-   */
-  public function getEnforcingAuthority($single = FALSE) {
-    $authorities = $this->get('field_enforcing_authority')->referencedEntities();
-    $authority = !empty($authorities) ? current($authorities) : NULL;
-
-    return $single ? $authority : $authorities;
   }
 
   /**
@@ -216,26 +147,6 @@ class ParDataEnforcementNotice extends ParDataEntity {
    */
   public function getEnforcementActions() {
     return $this->get('field_enforcement_action')->referencedEntities();
-  }
-
-  /**
-   * Get the enforced organisation for this Enforcement Notice.
-   */
-  public function getEnforcedOrganisation($single = FALSE) {
-    $organisations = $this->get('field_organisation')->referencedEntities();
-    $organisation = !empty($organisations) ? current($organisations) : NULL;
-
-    return $single ? $organisation : $organisations;
-  }
-
-  /**
-   * Get the enforcing officer person for the current Enforcement notice.
-   */
-  public function getEnforcingPerson($single = FALSE) {
-    $people = $this->get('field_person')->referencedEntities();
-    $person = !empty($people) ? current($people): NULL;
-
-    return $single ? $person : $people;
   }
 
   /**

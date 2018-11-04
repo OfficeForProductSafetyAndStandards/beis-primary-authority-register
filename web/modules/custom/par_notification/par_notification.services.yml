@@ -1,4 +1,8 @@
 services:
+  plugin.manager.par_link_manager:
+    class: Drupal\par_notification\ParLinkManager
+    parent: default_plugin_manager
+    arguments: ['@entity_type.manager', '@current_user']
   par_notification.new_deviation_request_subscriber:
     class: '\Drupal\par_notification\EventSubscriber\NewDeviationRequestSubscriber'
     tags:
@@ -11,8 +15,16 @@ services:
     class: '\Drupal\par_notification\EventSubscriber\NewGeneralEnquirySubscriber'
     tags:
       - { name: 'event_subscriber' }
+  par_notification.new_deviation_reply_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\NewDeviationRequestReplySubscriber'
+    tags:
+      - { name: 'event_subscriber' }
   par_notification.new_enquiry_reply_subscriber:
-    class: '\Drupal\par_notification\EventSubscriber\NewEnquiryReplySubscriber'
+    class: '\Drupal\par_notification\EventSubscriber\NewGeneralEnquiryReplySubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  par_notification.new_inspection_feedback_reply_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\NewInspectionFeedbackReplySubscriber'
     tags:
       - { name: 'event_subscriber' }
   par_notification.new_inspection_feedback_subscriber:

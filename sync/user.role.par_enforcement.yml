@@ -61,6 +61,11 @@ permissions:
   - invite_type_invite_organisation_member
   - 'manage par profile'
   - 'raise enforcement notice'
+  - 'receive new_deviation_response notification'
+  - 'receive new_enquiry_response notification'
+  - 'receive new_inspection_feedback_response notification'
+  - 'receive reviewed_deviation_request notification'
+  - 'receive reviewed_enforcement notification'
   - 'search partnership'
   - 'search partnerships'
   - 'send general enquiry'

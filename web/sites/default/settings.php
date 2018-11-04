@@ -883,7 +883,7 @@ $settings['flysystem'] = [
 ];
 
 // Only use S3 public store when required.
-if (getenv('S3_BUCKET_ARTIFACTS')) {
+if (getenv('S3_ACCESS_KEY') && getenv('S3_SECRET_KEY') && getenv('S3_REGION') && getenv('S3_BUCKET_ARTIFACTS')) {
   $settings['flysystem']['s3backups'] = [
     'name' => 'S3 Database Backups',
     'description' => 'The S3 store for database backups.',
@@ -902,7 +902,7 @@ if (getenv('S3_BUCKET_ARTIFACTS')) {
 }
 
 // Only use S3 public store when required.
-if (getenv('S3_BUCKET_PUBLIC')) {
+if (getenv('S3_ACCESS_KEY') && getenv('S3_SECRET_KEY') && getenv('S3_REGION') && getenv('S3_BUCKET_PUBLIC') && getenv('APP_ENV')) {
   $settings['flysystem']['s3public'] = [
     'driver' => 's3',
     'config' => [
@@ -916,7 +916,7 @@ if (getenv('S3_BUCKET_PUBLIC')) {
 }
 
 // Only use S3 private store when required.
-if (getenv('S3_BUCKET_PRIVATE')) {
+if (getenv('S3_ACCESS_KEY') && getenv('S3_SECRET_KEY') && getenv('S3_REGION') && getenv('S3_BUCKET_PRIVATE') && getenv('APP_ENV')) {
   $settings['flysystem']['s3private'] = [
     'driver' => 's3',
     'config' => [

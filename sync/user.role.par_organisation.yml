@@ -63,6 +63,10 @@ permissions:
   - invite_type_invite_organisation_member
   - 'manage my organisations'
   - 'manage par profile'
+  - 'receive new_partnership_notification notification'
+  - 'receive partnership_approved_notificatio notification'
+  - 'receive partnership_confirmed_notificati notification'
+  - 'receive partnership_revocation_notificat notification'
   - 'update coordinated member'
   - 'update partnership organisation details'
   - 'upload coordinated member'

@@ -420,21 +420,41 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * A helper function to get the revision at which the status was changed.
    */
   public function getStatusChanged($status) {
+    // Make sure not to request this more than once for a given entity unless the status changes.
+    $function_id = __FUNCTION__ . ':' . $this->uuid() . ':' . $this->getRawStatus();
+    $status_revision = &drupal_static($function_id);
+    if (!empty($status_revision)) {
+      return $status_revision;
+    }
+
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
 
-    // Get the latest revision of this status.
-    $query = $this->entityTypeManager()->getStorage($this->getEntityTypeId())->getQuery();
-    $query->allRevisions()
+    // Loop through all statuses and perform custom checks to
+    // find the most recent change the the specified status.
+    $check_status_query = $this->entityTypeManager()->getStorage($this->getEntityTypeId())->getQuery();
+    $check_status_query->allRevisions()
       ->condition('id', $this->id())
-      ->condition($field_name, $status, 'LIKE')
       ->sort('revision_timestamp', 'ASC');
-    $results = $query->execute();
+    $results = $check_status_query->execute();
 
-    $latest_status_revision = $this->entityTypeManager()
-      ->getStorage($this->getEntityTypeId())
-      ->loadRevision(key($results));
+    $status_revision = NULL;
+    if (!empty($results)) {
+      foreach ($results as $revision_id => $r) {
+        $revision = $this->entityTypeManager()->getStorage($this->getEntityTypeId())->loadRevision($revision_id);
 
-    return $latest_status_revision ?: NULL;
+        // If the status matches then we can save this as the status.
+        if ($revision && $revision->get($field_name)->getString() === $status) {
+          $status_revision = $revision;
+        }
+        // If we have already found an appropriate revision and the status
+        // has changed then don't go any further.
+        if ($status_revision && $revision->get($field_name)->getString() !== $status) {
+          break;
+        }
+      }
+    }
+
+    return $status_revision;
   }
 
   /**
@@ -443,7 +463,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function getStatusTime($status) {
     $revision = $this->getStatusChanged($status);
 
-    return $revision ? (int) $revision->get('revision_timestamp')->getString() : NULL;
+    return $revision ? $revision->get('revision_timestamp')->value : NULL;
   }
 
   /**

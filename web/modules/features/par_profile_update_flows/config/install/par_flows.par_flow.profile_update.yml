@@ -16,14 +16,14 @@ steps:
     components:
       data_policy: {}
     redirect:
-      cancel: 7
+      cancel: 8
   2:
     route: par_profile_update_flows.select_person
     form_id: par_choose_person
     components:
       person_select: {}
     redirect:
-      cancel: 7
+      cancel: 8
   3:
     route: par_profile_update_flows.update_contact
     form_id: par_profile_update
@@ -32,7 +32,7 @@ steps:
     form_data:
       select_person: par_choose_person
     redirect:
-      cancel: 7
+      cancel: 8
   4:
     route: par_profile_update_flows.contact_preferences
     form_id: par_preferences_update
@@ -42,8 +42,19 @@ steps:
       select_person: par_choose_person
       contact_details: par_profile_update
     redirect:
-      cancel: 7
+      cancel: 8
   5:
+    route: par_profile_update_flows.notification_preferences
+    form_id: par_notiication_preferences
+    components:
+      notification_preferences: {}
+    form_data:
+      select_person: par_choose_person
+      contact_details: par_profile_update
+      preferences: par_preferences_update
+    redirect:
+      cancel: 8
+  6:
     route: par_profile_update_flows.review
     form_id: par_profile_review
     form_data:
@@ -52,11 +63,11 @@ steps:
       contact_details: par_profile_update
       contact_preferences: par_preferences_update
     redirect:
-      save: 6
-      cancel: 7
-  6:
+      save: 7
+      cancel: 8
+  7:
     route: par_profile_update_flows.completed
     redirect:
-      done: 7
-  7:
+      done: 8
+  8:
     route: par_dashboards.dashboard

@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies: {  }
+template: new_enforcement_notification
+label: 'New Enforcement Notification'
+description: 'This is a message sent to all Primary Authorities on the raising of a new enforcement notice.'
+text:
+  -
+    value: "<p>Dear Colleague,</p>\r\n\r\n<p>This email is confirmation that you have received an enforcement notification.</p>\r\n\r\n<p>You must respond within 5 working days, or this notification will be allowed automatically. Please log on to the PA Register to see the full details of the notification and to respond.</p>\r\n\r\n<p>^ @enforcement_notice_review</p>\r\n\r\n<p>Thank you</p>\r\n"
+    format: basic_html
+settings:
+  'token options':
+    clear: false
+    'token replace': true
+  purge_override: false
+  purge_methods: {  }

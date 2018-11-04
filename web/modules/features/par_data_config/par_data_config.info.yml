@@ -12,6 +12,7 @@ dependencies:
   - field
   - file
   - file_entity
+  - message
   - pagerer
   - par_data
   - par_data_config
@@ -19,7 +20,4 @@ dependencies:
   - serialization
   - text
   - user
-  - views
-  - views_bulk_operations
-  - views_data_export
 package: PAR

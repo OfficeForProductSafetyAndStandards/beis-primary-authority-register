@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - message
+    - par_data
+id: par_data_person.field_notification_preferences
+field_name: field_notification_preferences
+entity_type: par_data_person
+type: entity_reference
+settings:
+  target_type: message_template
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

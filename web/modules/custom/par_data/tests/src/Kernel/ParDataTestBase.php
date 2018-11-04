@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\par_data\Kernel;
 
+use Drupal\Core\Session\AccountInterface;
 use Drupal\file\Entity\File;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataAdvice;
@@ -45,9 +46,12 @@ use Drupal\par_data\Entity\ParDataSicCodeType;
  */
 class ParDataTestBase extends EntityKernelTestBase {
 
-  static $modules = ['language', 'content_translation', 'comment', 'trance', 'par_validation', 'par_data', 'par_data_config', 'address', 'datetime', 'datetime_range', 'file_test', 'file', 'file_entity'];
+  static $modules = ['language', 'content_translation', 'comment', 'trance', 'par_validation', 'par_data', 'par_data_config', 'message', 'address', 'datetime', 'datetime_range', 'file_test', 'file', 'file_entity'];
 
-  protected $account = 2;
+  /**
+   * @var AccountInterface
+   */
+  protected $account;
 
   protected $permissions = [
     'access content',
@@ -421,7 +425,6 @@ class ParDataTestBase extends EntityKernelTestBase {
         $person->id(),
       ],
     ] + $this->getBaseValues();
-
   }
 
   public function getDeviationRequestValues() {
@@ -798,7 +801,7 @@ class ParDataTestBase extends EntityKernelTestBase {
       ] + $this->getBaseValues();
   }
 
-  public function getPersonValues() {
+  public function   getPersonValues() {
     return [
       'type' => 'person',
       'salutation' => 'Mrs',
@@ -807,14 +810,15 @@ class ParDataTestBase extends EntityKernelTestBase {
       'job_title' => 'Senior Telephone Sanitisation Engineer',
       'work_phone' => '01723456789',
       'mobile_phone' => '0777777777',
-      'email' => 'abcdefghijklmnopqrstuvwxyz@example.com',
+      'email' => $this->randomMachineName(20) . '@example.com',
       'communication_email' => TRUE,
       'communication_phone' => TRUE,
       'communication_mobile' => TRUE,
       'communication_notes' => $this->randomString(1000),
       'field_user_account' => [
         $this->account->id(),
-      ]
+      ],
+      'field_notification_preferences' => []
     ] + $this->getBaseValues();
   }
 

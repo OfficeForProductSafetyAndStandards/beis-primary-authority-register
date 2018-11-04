@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.par_data_person.person.field_notification_preferences
     - field.field.par_data_person.person.field_user_account
     - par_data.par_data_person_type.person
   module:
@@ -51,6 +52,7 @@ hidden:
   communication_mobile: true
   communication_phone: true
   email: true
+  field_notification_preferences: true
   field_user_account: true
   first_name: true
   job_title: true

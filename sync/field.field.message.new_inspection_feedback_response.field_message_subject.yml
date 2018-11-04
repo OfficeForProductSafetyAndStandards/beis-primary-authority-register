@@ -1,0 +1,21 @@
+uuid: cf5e2233-86cf-45a6-a48c-f4f06b35f207
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_message_subject
+    - message.template.new_inspection_feedback_response
+id: message.new_inspection_feedback_response.field_message_subject
+field_name: field_message_subject
+entity_type: message
+bundle: new_inspection_feedback_response
+label: 'Message Subject'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 'Primary Authority: Notification of response to inspection feedback'
+default_value_callback: ''
+settings: {  }
+field_type: string

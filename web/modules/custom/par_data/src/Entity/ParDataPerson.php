@@ -81,6 +81,20 @@ class ParDataPerson extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  public function getOrLookupUserAccount() {
+    $account = $this->getUserAccount();
+
+    // Lookup the user account if one could not be saved.
+    if (!$account) {
+      $account = $this->lookupUserAccount();
+    }
+
+    return $account;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function setUserAccount($account) {
     $this->set('field_user_account', $account);
   }
@@ -326,6 +340,46 @@ class ParDataPerson extends ParDataEntity {
     }
 
     return isset($preference_message) ? $preference_message : null;
+  }
+
+  /**
+   * Get the notification preferences.
+   *
+   * @param string $notification_type
+   *   The \Drupal\message\Entity\MessageTemplate::id() that indicates the notification type.
+   *
+   * @return bool
+   *   Whether or not the person has choosen to receive additional notifications.
+   */
+  public function getNotificationPreferences() {
+    $notification_preferences = !$this->get('field_notification_preferences')->isEmpty() ?
+      $this->get('field_notification_preferences')->referencedEntities() : NULL;
+
+    return $notification_preferences;
+  }
+
+  /**
+   * Get the notification preferences.
+   *
+   * @param string $notification_type
+   *   The \Drupal\message\Entity\MessageTemplate::id() that indicates the notification type.
+   *
+   * @return bool
+   *   Whether or not the person has choosen to receive additional notifications.
+   */
+  public function hasNotificationPreference($notification_type) {
+    $notification_preferences = $this->getNotificationPreferences();
+
+    if ($notification_preferences) {
+      $notification_preferences = array_filter($notification_preferences, function ($preference) use ($notification_type) {
+        return ($notification_type === $preference->getTemplate());
+      });
+    }
+    else {
+      $notification_preferences = NULL;
+    }
+
+    return (!empty($notification_preferences));
   }
 
   /**

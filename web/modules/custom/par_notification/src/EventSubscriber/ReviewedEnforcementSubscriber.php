@@ -2,18 +2,14 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
-use Drupal\Core\Entity\EntityEvent;
-use Drupal\Core\Entity\EntityEvents;
-use Drupal\Core\Link;
-use Drupal\Core\Url;
-use Drupal\message\Entity\Message;
-use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Drupal\par_notification\ParNotificationException;
+use Drupal\par_notification\ParNotificationSubscriberBase;
 
-class ReviewedEnforcementSubscriber implements EventSubscriberInterface {
+class ReviewedEnforcementSubscriber extends ParNotificationSubscriberBase {
 
   /**
    * The message template ID created for this notification.
@@ -23,112 +19,81 @@ class ReviewedEnforcementSubscriber implements EventSubscriberInterface {
   const MESSAGE_ID = 'reviewed_enforcement';
 
   /**
-   * The notication plugin that will deliver these notification messages.
-   */
-  const DELIVERY_METHOD = 'plain_email';
-
-  protected $recipients = [];
-
-  /**
    * The events to react to.
    *
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[ParDataEvent::statusChange('par_data_enforcement_notice', 'reviewed')][] = ['onEnforcementReview', 800];
+    $events[ParDataEvent::statusChange('par_data_enforcement_notice', 'reviewed')][] = ['onEvent', 800];
 
     return $events;
   }
 
   /**
-   * Get the entity type manager.
+   * Get all the recipients for this notification.
    *
-   * @return \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @param $event
+   *
+   * @return ParDataPerson[]
    */
-  public function getEntityTypeManager() {
-    return \Drupal::entityTypeManager();
-  }
+  public function getRecipients(ParDataEventInterface $event) {
+    $contacts = [];
 
-  /**
-   * Get the notification service.
-   *
-   * @return mixed
-   */
-  public function getNotifier() {
-    return \Drupal::service('message_notify.sender');
-  }
+    /** @var ParDataEntityInterface $entity */
+    $entity = $event->getEntity();
 
-  /**
-   * Get the current user sending the message.
-   *
-   * @return \Drupal\Core\Session\AccountProxyInterface
-   */
-  public function getCurrentUser() {
-    return \Drupal::currentUser();
+    // Always notify the primary authority contact.
+    if ($enforcing_authority_contact = $entity->getEnforcingPerson(TRUE)) {
+      $contacts[$enforcing_authority_contact->id()] = $enforcing_authority_contact;
+    }
+
+    // Notify secondary contacts if they've opted-in.
+    if ($secondary_contacts = $entity->getEnforcingAuthorityContacts()) {
+      foreach ($secondary_contacts as $contact) {
+        if (!isset($contacts[$contact->id()]) && $contact->hasNotificationPreference(self::MESSAGE_ID)) {
+          $contacts[$contact->id()] = $contact;
+        }
+      }
+    }
+
+    return $contacts;
   }
 
   /**
    * @param ParDataEventInterface $event
    */
-  public function onEnforcementReview(ParDataEvent $event) {
+  public function onEvent(ParDataEventInterface $event) {
     /** @var ParDataEntityInterface $par_data_enforcement_notice */
     $par_data_enforcement_notice = $event->getEntity();
 
-    // Load the message template.
-    $template_storage = $this->getEntityTypeManager()->getStorage('message_template');
-    $message_template = $template_storage->load(self::MESSAGE_ID);
+    $contacts = $this->getRecipients($event);
+    foreach ($contacts as $contact) {
+      if (!isset($this->recipients[$contact->getEmail()])) {
+        // Record the recipient so that we don't send them the message twice.
+        $this->recipients[$contact->getEmail] = $contact;
+        // Try and get the user account associated with this contact.
+        $account = $contact->getOrLookupUserAccount();
 
-    $message_storage = $this->getEntityTypeManager()->getStorage('message');
+        try {
+          $message = $this->createMessage();
+        }
+        catch (ParNotificationException $e) {
+          break;
+        }
 
-    if (!$message_template || !$par_data_enforcement_notice) {
-      // @TODO Log that the template couldn't be loaded.
-      return;
-    }
+        // Add contextual information to this message.
+        if ($message->hasField('field_enforcement_notice')) {
+          $message->set('field_enforcement_notice', $par_data_enforcement_notice);
+        }
 
-    // Get the link to approve this notice.
-    $options = ['absolute' => TRUE];
-    $enforcement_url = Url::fromRoute('par_enforcement_send_flows.send_enforcement', ['par_data_enforcement_notice' => $par_data_enforcement_notice->id()], $options);
+        // The owner is the user who this message belongs to.
+        if ($account) {
+          $message->setOwnerId($account->id());
+        }
 
-    // Notify the enforcing officer.
-    $enforcing_officer = $par_data_enforcement_notice->getEnforcingPerson(TRUE);
-
-    // Notify all users in this authority with the appropriate permissions.
-    if (($account = $enforcing_officer->getUserAccount())
-      && ($enforcing_officer->lookupUserAccount()->hasPermission('view enforcement notice') || $enforcing_officer->lookupUserAccount()->hasPermission('send enforcement notice'))
-      && !isset($this->recipients[$account->id()])) {
-
-      // Record the recipient so that we don't send them the message twice.
-      $this->recipients[$account->id()] = $account->getEmail();
-
-      // Create one message per user.
-      $message = $message_storage->create([
-        'template' => $message_template->id()
-      ]);
-
-      // Add contextual information to this message.
-      if ($message->hasField('field_enforcement_notice')) {
-        $message->set('field_enforcement_notice', $par_data_enforcement_notice);
+        // Send the message.
+        $this->sendMessage($message, $contact->getEmail());
       }
-
-      // Add some custom arguments to this message.
-      $message->setArguments([
-        '@enforcement_notice_view' => $enforcement_url->toString(),
-      ]);
-
-      // The owner is the user who this message belongs to.
-      if ($account) {
-        $message->setOwnerId($account->id());
-      }
-      $message->save();
-
-      // The e-mail address can be overridden if we don't want
-      // to send to the message owner set above.
-      $options = [
-        'mail' => $account->getEmail(),
-      ];
-
-      $this->getNotifier()->send($message, $options, self::DELIVERY_METHOD);
     }
   }
-
 }

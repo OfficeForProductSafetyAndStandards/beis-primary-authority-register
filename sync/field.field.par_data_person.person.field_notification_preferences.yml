@@ -1,0 +1,23 @@
+uuid: a1fe51b7-9417-4838-918c-6d284ab21eea
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_person.field_notification_preferences
+    - par_data.par_data_person_type.person
+id: par_data_person.person.field_notification_preferences
+field_name: field_notification_preferences
+entity_type: par_data_person
+bundle: person
+label: 'Notification Preferences'
+description: 'Allow the person to choose which additional notifications to receive (relevant to their partnerships, authorities and organisations).'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:message_template'
+  handler_settings:
+    target_bundles: null
+    auto_create: false
+field_type: entity_reference

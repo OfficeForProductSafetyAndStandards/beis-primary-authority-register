@@ -6,3 +6,4 @@ package: PAR Data Model
 dependencies:
   - trance
   - par_validation
+  - message

@@ -1,0 +1,28 @@
+uuid: ef5bc610-5ef8-4f59-86ce-2924497dc77b
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.par_general_enquiry_comments
+    - field.storage.message.field_comment
+    - message.template.new_enquiry_response
+id: message.new_enquiry_response.field_comment
+field_name: field_comment
+entity_type: message
+bundle: new_enquiry_response
+label: Comment
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:comment'
+  handler_settings:
+    target_bundles:
+      par_general_enquiry_comments: par_general_enquiry_comments
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

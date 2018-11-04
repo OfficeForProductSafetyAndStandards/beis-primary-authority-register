@@ -4,7 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [24.5.0] - 2019-10-17
+## [26.0.0] - 2019-11-05
+### Changed
+- Updated notification links to go to the related content rather than the dashboard.
+- Allowed notifications to go to email address that don't have user accounts.
+- Allowed users to login first when clicking links from emails.
+- Added notification preferences options to allow contacts who aren't the primary contact to receive notifications.
+
+## [25.0.0] - 2019-10-17
 ### Changed
 - Improved partnership application process, reducing the number of conditions checkboxes and overall worrdiness.
 - Improved member upload forms, adding a blank template to start from.
