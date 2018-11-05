@@ -2,11 +2,11 @@ langcode: en
 status: true
 dependencies: {  }
 template: new_general_enquiry
-label: 'New General Enquiry'
-description: 'This is a message sent to all Primary Authorities on the issuance of an enquiry.'
+label: 'New general enquiry'
+description: 'This notification is sent to the Primary Authority on the issuance of a new enquiry.'
 text:
   -
-    value: "<p>Dear Colleague,</p>\r\n\r\n<p>This email is confirmation that you have received an enquiry about one of your partnerships.</p>\r\n\r\n<p>Please log on to the PA Register to see the full details of the enquiry and to respond.</p>\r\n\r\n<p>^ @enquiry_view</p>\r\n\r\n<p>Thank you</p>\r\n\r\n<p>&nbsp;</p>\r\n"
+    value: "<p>Dear @first_name,</p>\r\n\r\n<p>You've received a new enquiry about the @partnership_label.</p>\r\n\r\n<p>To respond, sign in to your primary authority account.</p>\r\n\r\n<p>^ Respond to enquiry: [message:primary-action]</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n\r\n<p>&nbsp;</p>\r\n"
     format: basic_html
 settings:
   'token options':

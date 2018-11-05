@@ -5,6 +5,7 @@ namespace Drupal\par_notification\EventSubscriber;
 use Drupal\comment\CommentInterface;
 use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityEvents;
+use Drupal\message\Entity\Message;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataGeneralEnquiry;
 use Drupal\par_data\Entity\ParDataPerson;
@@ -91,6 +92,7 @@ class NewGeneralEnquiryReplySubscriber extends ParNotificationSubscriberBase {
     $comment = $event->getEntity();
     /** @var ParDataEntityInterface $entity */
     $par_data_entity = $comment->getCommentedEntity();
+    $par_data_partnership = $par_data_entity ? $par_data_entity->getPartnership(TRUE) : NULL;
 
     // If the commented entity is not a general enquiry do not process this event.
     if (!$par_data_entity instanceof ParDataGeneralEnquiry) {
@@ -106,6 +108,7 @@ class NewGeneralEnquiryReplySubscriber extends ParNotificationSubscriberBase {
         $account = $contact->getOrLookupUserAccount();
 
         try {
+          /** @var Message $message */
           $message = $this->createMessage();
         }
         catch (ParNotificationException $e) {
@@ -119,6 +122,12 @@ class NewGeneralEnquiryReplySubscriber extends ParNotificationSubscriberBase {
         if ($message->hasField('field_general_enquiry')) {
           $message->set('field_general_enquiry', $par_data_entity);
         }
+
+        // Add some custom arguments to this message.
+        $message->setArguments([
+          '@first_name' => $contact->getFirstName(),
+          '@partnership_label' => $par_data_partnership ? strtolower($par_data_partnership->label()) : 'partnership',
+        ]);
 
         // The owner is the user who this message belongs to.
         if ($account) {

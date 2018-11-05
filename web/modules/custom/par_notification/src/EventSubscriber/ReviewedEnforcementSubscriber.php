@@ -2,6 +2,7 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
+use Drupal\message\Entity\Message;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Event\ParDataEvent;
@@ -75,6 +76,7 @@ class ReviewedEnforcementSubscriber extends ParNotificationSubscriberBase {
         $account = $contact->getOrLookupUserAccount();
 
         try {
+          /** @var Message $message */
           $message = $this->createMessage();
         }
         catch (ParNotificationException $e) {
@@ -85,6 +87,12 @@ class ReviewedEnforcementSubscriber extends ParNotificationSubscriberBase {
         if ($message->hasField('field_enforcement_notice')) {
           $message->set('field_enforcement_notice', $par_data_enforcement_notice);
         }
+
+        // Add some custom arguments to this message.
+        $message->setArguments([
+          '@first_name' => $contact->getFirstName(),
+          '@enforced_organisation' => $par_data_enforcement_notice->getEnforcedEntityName(),
+        ]);
 
         // The owner is the user who this message belongs to.
         if ($account) {

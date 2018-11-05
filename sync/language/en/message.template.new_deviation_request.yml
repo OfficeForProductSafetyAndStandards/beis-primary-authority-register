@@ -1,4 +1,4 @@
 text:
   -
-    value: "<p>Dear Colleague,</p>\r\n\r\n<p>This email is confirmation that you have received a request to deviate from an inspection plan.</p>\r\n\r\n<p>You must respond within 5 working days, or this deviation request will be allowed automatically.</p>\r\n\r\n<p>Please log on to the PA Register to see the full details of the notification and to respond.</p>\r\n\r\n<p>[message:primary-action]</p>\r\n\r\n<p>Thank you</p>\r\n\r\n<p>&nbsp;</p>\r\n"
+    value: "<p>Dear @first_name,</p>\r\n\r\n<p>You've received a deviation request on the @partnership_label.</p>\r\n\r\n<p>To respond, sign in to your primary authority account.</p>\r\n\r\n<p>If you don't respond to this request within 5 working days, it will be automatically accepted.</p>\r\n\r\n<p>^ Respond to deviation request: [message:primary-action]</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n\r\n<p>&nbsp;</p>\r\n"
     format: basic_html
