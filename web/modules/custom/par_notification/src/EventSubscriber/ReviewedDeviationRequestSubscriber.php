@@ -67,6 +67,7 @@ class ReviewedDeviationRequestSubscriber extends ParNotificationSubscriberBase {
   public function onEvent(ParDataEventInterface $event) {
     /** @var ParDataEntityInterface $par_data_deviation_request */
     $par_data_deviation_request = $event->getEntity();
+    $par_data_partnership = $par_data_deviation_request ? $par_data_deviation_request->getPartnership(TRUE) : NULL;
 
     $contacts = $this->getRecipients($event);
     foreach ($contacts as $contact) {
@@ -92,6 +93,7 @@ class ReviewedDeviationRequestSubscriber extends ParNotificationSubscriberBase {
         // Add some custom arguments to this message.
         $message->setArguments([
           '@first_name' => $contact->getFirstName(),
+          '@partnership_label' => $par_data_partnership ? strtolower($par_data_partnership->label()) : 'partnership',
         ]);
 
         // The owner is the user who this message belongs to.

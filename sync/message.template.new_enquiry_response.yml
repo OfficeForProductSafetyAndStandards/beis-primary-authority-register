@@ -3,11 +3,11 @@ langcode: en
 status: true
 dependencies: {  }
 template: new_enquiry_response
-label: 'New Enquiry Response'
-description: 'This is a message sent to primary and enforcing authority users when a new response is issued to a general enquiry.'
+label: 'New enquiry response'
+description: 'This notification is sent to the primary and enforcing authorities when a general enquiry is responded to.'
 text:
   -
-    value: "<p><span>Dear Colleague,<br />\r\n<br />\r\nThis email is confirmation that you have received a response to your general enquiry.<br />\r\n<br />\r\nPlease log on to the PA Register to see the full details of the response.<br />\r\n<br />\r\n[message:primary-action]<br />\r\n<br />\r\nThank you</span></p>\r\n"
+    value: "<p>Dear @first_name,</p>\r\n\r\n<p>You've received a response to the general enquiry about the @partnership_label.</p>\r\n\r\n<p>To respond, sign in to your primary authority account.</p>\r\n\r\n<p>^ Respond now: [message:primary-action]<br />\r\n<br />\r\nRegards, Primary Authority Register team</p>\r\n"
     format: basic_html
 settings:
   'token options':

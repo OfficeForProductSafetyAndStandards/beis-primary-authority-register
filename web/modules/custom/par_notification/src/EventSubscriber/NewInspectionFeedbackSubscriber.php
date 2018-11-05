@@ -70,6 +70,7 @@ class NewInspectionFeedbackSubscriber extends ParNotificationSubscriberBase {
   public function onEvent(EntityEvent $event) {
     /** @var ParDataEntityInterface $par_data_inspection_feedback */
     $par_data_inspection_feedback = $event->getEntity();
+    $par_data_partnership = $par_data_inspection_feedback ? $par_data_inspection_feedback->getPartnership(TRUE) : NULL;
 
     $contacts = $this->getRecipients($event);
     foreach ($contacts as $contact) {
@@ -95,6 +96,7 @@ class NewInspectionFeedbackSubscriber extends ParNotificationSubscriberBase {
         // Add some custom arguments to this message.
         $message->setArguments([
           '@first_name' => $contact->getFirstName(),
+          '@partnership_label' => $par_data_partnership ? strtolower($par_data_partnership->label()) : 'partnership',
         ]);
 
         // The owner is the user who this message belongs to.

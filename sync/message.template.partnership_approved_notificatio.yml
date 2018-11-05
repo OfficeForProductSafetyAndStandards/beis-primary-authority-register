@@ -4,10 +4,10 @@ status: true
 dependencies: {  }
 template: partnership_approved_notificatio
 label: 'Partnership approved notification'
-description: 'This is a message sent to all of the partnership''s contacts when the partnership is nominated.'
+description: 'This notification is sent to the primary authority and the organisation when the partnership is nominated.'
 text:
   -
-    value: "<p>Dear Colleague,</p>\r\n\r\n<p>Your partnership has been nominated by the Secretary of State.</p>\r\n\r\n<p>Please log on to the Primary Authority Register to view the partnership details.</p>\r\n\r\n<p>^ @partnership_search_link</p>\r\n\r\n<p>Thank you</p>\r\n"
+    value: "<p>Dear @first_name,</p>\r\n\r\n<p>Your @partnership_label has been nominated by the Secretary of State.</p>\r\n\r\n<p>Please log on to the Primary Authority Register to view the partnership details.</p>\r\n\r\n<p>^ View partnership: [message:primary-action]</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n"
     format: basic_html
 settings:
   'token options':

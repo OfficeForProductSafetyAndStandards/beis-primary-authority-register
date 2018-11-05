@@ -96,7 +96,7 @@ class NewPartnershipSubscriber extends ParNotificationSubscriberBase {
 
         // Add some custom arguments to this message.
         $message->setArguments([
-          '@partnership_authority' => $par_data_partnership->getAuthority(TRUE)->label(),
+          '@primary_authority' => $par_data_partnership->getAuthority(TRUE)->label(),
           '@first_name' => $contact->getFirstName(),
         ]);
 

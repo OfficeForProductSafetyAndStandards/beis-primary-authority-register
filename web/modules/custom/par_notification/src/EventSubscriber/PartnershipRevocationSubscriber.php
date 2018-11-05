@@ -112,8 +112,7 @@ class PartnershipRevocationSubscriber extends ParNotificationSubscriberBase {
 
         // Add some custom arguments to this message.
         $message->setArguments([
-          '@partnership_authority' => $par_data_partnership->getAuthority(TRUE)->label(),
-          '@partnership_organisation' => $par_data_partnership->getOrganisation(TRUE)->label(),
+          '@partnership_label' => $par_data_partnership ? strtolower($par_data_partnership->label()) : 'partnership',
           '@first_name' => $contact->getFirstName(),
         ]);
 

@@ -2,11 +2,11 @@ langcode: en
 status: true
 dependencies: {  }
 template: new_inspection_feedback
-label: 'New Inspection Feedback'
-description: 'This is a message sent to all Primary Authorities on the issuance of inspection plan feedback.'
+label: 'New inspection feedback'
+description: 'This notification is sent to the Primary Authority on the issuance of new inspection plan feedback.'
 text:
   -
-    value: "<p>Dear Colleague,</p>\r\n\r\n<p>This email is confirmation that you have received feedback following an inspection of one of your partnerships.</p>\r\n\r\n<p>Please log on to the PA Register to see the full details of the feedback and to respond.</p>\r\n\r\n<p>^ @feedback_view</p>\r\n\r\n<p>Thank you</p>\r\n\r\n<p>&nbsp;</p>\r\n"
+    value: "<p>Dear @first_name,</p>\r\n\r\n<p>Feedback has been submitted from the inspection regarding the @partnership_label.</p>\r\n\r\n<p>To view and respond to the feedback, sign in to your primary authority account.</p>\r\n\r\n<p>^ Respond to feedback: [message:primary-action]</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n\r\n<p>&nbsp;</p>\r\n"
     format: basic_html
 settings:
   'token options':

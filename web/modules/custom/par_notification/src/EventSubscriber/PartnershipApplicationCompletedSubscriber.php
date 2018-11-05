@@ -95,7 +95,8 @@ class PartnershipApplicationCompletedSubscriber extends ParNotificationSubscribe
 
         // Add some custom arguments to this message.
         $message->setArguments([
-          '@partnership_organisation' => $par_data_partnership->getOrganisation(TRUE)->label(),
+          '@organisation' => $par_data_partnership->getOrganisation(TRUE)->label(),
+          '@primary_authority' => $par_data_partnership->getAuthority(TRUE)->label(),
           '@first_name' => $contact->getFirstName(),
         ]);
 

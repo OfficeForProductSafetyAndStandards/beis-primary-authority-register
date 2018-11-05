@@ -91,6 +91,7 @@ class ReviewedEnforcementSubscriber extends ParNotificationSubscriberBase {
         // Add some custom arguments to this message.
         $message->setArguments([
           '@first_name' => $contact->getFirstName(),
+          '@enforced_organisation' => $par_data_enforcement_notice->getEnforcedEntityName(),
         ]);
 
         // The owner is the user who this message belongs to.

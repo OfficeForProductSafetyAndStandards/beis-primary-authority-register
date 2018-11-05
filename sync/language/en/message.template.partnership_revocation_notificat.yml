@@ -1,4 +1,4 @@
 text:
   -
-    value: "<p>Dear Colleague,</p>\r\n\r\n<p>Your partnership between<span>&nbsp;</span>@partnership_organisation and<span> @partnership_authority</span><span> </span>has been revoked.</p>\r\n\r\n<p>The partnership will no longer appear in search results.</p>\r\n\r\n<p>Thank you</p>\r\n"
+    value: "<p>Dear @first_name,</p>\r\n\r\n<p>This message is to confirm that the @partnership_label has been revoked.</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n"
     format: basic_html

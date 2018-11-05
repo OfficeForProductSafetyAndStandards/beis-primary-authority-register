@@ -93,6 +93,7 @@ class NewInspectionFeedbackReplySubscriber extends ParNotificationSubscriberBase
     $comment = $event->getEntity();
     /** @var ParDataEntityInterface $entity */
     $par_data_entity = $comment->getCommentedEntity();
+    $par_data_partnership = $par_data_entity ? $par_data_entity->getPartnership(TRUE) : NULL;
 
     // If the commented entity is not an inspection feedback enquiry do not process this event.
     if (!$par_data_entity instanceof ParDataInspectionFeedback) {
@@ -126,6 +127,7 @@ class NewInspectionFeedbackReplySubscriber extends ParNotificationSubscriberBase
         // Add some custom arguments to this message.
         $message->setArguments([
           '@first_name' => $contact->getFirstName(),
+          '@partnership_label' => $par_data_partnership ? strtolower($par_data_partnership->label()) : 'partnership',
         ]);
 
         // The owner is the user who this message belongs to.

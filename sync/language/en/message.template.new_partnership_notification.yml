@@ -1,4 +1,4 @@
 text:
   -
-    value: "<p>Dear Colleague,</p>\r\n\r\n<p>A new partnership has been created for you by @partnership_organisation.</p>\r\n\r\n<p>Please log in to the Primary Authority Register to update your organisation's details and submit your partnership for nomination by the secretary of state. To do this, please follow this link:</p>\r\n\r\n<p>^ @partnership_pending_partnership_link</p>\r\n\r\n<p>Thank you</p>\r\n"
+    value: "<p>Dear @first_name,</p>\r\n\r\n<p>This message is about your pending primary authority partnership with @primary_authority.</p>\r\n\r\n<p>Before your partnership can be submitted for nomination by the Secretary of State, you need to update a few details about your organisation.</p>\r\n\r\n<p>^ Update details now: [message:primary-action]</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n"
     format: basic_html

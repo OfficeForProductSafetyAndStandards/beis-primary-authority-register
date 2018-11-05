@@ -1,4 +1,4 @@
 text:
   -
-    value: "<p>Dear Colleague,</p>\r\n\r\n<p>This email is confirmation that you have received an enforcement notification.</p>\r\n\r\n<p>You must respond within 5 working days, or this notification will be allowed automatically. Please log on to the PA Register to see the full details of the notification and to respond.</p>\r\n\r\n<p>^ @enforcement_notice_review</p>\r\n\r\n<p>Thank you</p>\r\n"
+    value: "<p>Dear @first_name,</p>\r\n\r\n<p>You've received a notification of enforcement action against @enforced_organisation.</p>\r\n\r\n<p>To respond, sign in to your primary authority account.</p>\r\n\r\n<p>If you don't respond to this notification within 5 working days, it will be automatically accepted.</p>\r\n\r\n<p>^ Respond to notification: [message:primary-action]</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n"
     format: basic_html
