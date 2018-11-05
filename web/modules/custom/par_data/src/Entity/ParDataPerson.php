@@ -240,9 +240,19 @@ class ParDataPerson extends ParDataEntity {
   public function getFullName() {
     return implode(" ", [
       $this->get('salutation')->getString(),
-      $this->get('first_name')->getString(),
+      $this->getFirstName(),
       $this->get('last_name')->getString(),
     ]);
+  }
+
+  /**
+   * Get PAR Person's first name.
+   *
+   * @return string
+   *   Their first name.
+   */
+  public function getFirstName() {
+    return $this->get('first_name')->getString();
   }
 
   /**

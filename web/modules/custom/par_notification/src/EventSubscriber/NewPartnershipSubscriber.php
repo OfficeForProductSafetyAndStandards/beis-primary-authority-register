@@ -5,6 +5,7 @@ namespace Drupal\par_notification\EventSubscriber;
 use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityEvents;
 use Drupal\Core\Url;
+use Drupal\message\Entity\Message;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_notification\ParNotificationException;
@@ -81,6 +82,7 @@ class NewPartnershipSubscriber extends ParNotificationSubscriberBase {
         $account = $contact->getOrLookupUserAccount();
 
         try {
+          /** @var Message $message */
           $message = $this->createMessage();
         }
         catch (ParNotificationException $e) {
@@ -95,6 +97,7 @@ class NewPartnershipSubscriber extends ParNotificationSubscriberBase {
         // Add some custom arguments to this message.
         $message->setArguments([
           '@partnership_authority' => $par_data_partnership->getAuthority(TRUE)->label(),
+          '@first_name' => $contact->getFirstName(),
         ]);
 
         // The owner is the user who this message belongs to.

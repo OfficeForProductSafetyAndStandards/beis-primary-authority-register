@@ -4,6 +4,7 @@ namespace Drupal\par_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityEvents;
+use Drupal\message\Entity\Message;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_notification\ParNotificationException;
@@ -69,6 +70,7 @@ class NewDeviationRequestSubscriber extends ParNotificationSubscriberBase {
   public function onEvent(EntityEvent $event) {
     /** @var ParDataEntityInterface $par_data_deviation_request */
     $par_data_deviation_request = $event->getEntity();
+    $par_data_partnership = $par_data_deviation_request ? $par_data_deviation_request->getPartnership(TRUE) : NULL;
 
     $contacts = $this->getRecipients($event);
     foreach ($contacts as $contact) {
@@ -79,6 +81,7 @@ class NewDeviationRequestSubscriber extends ParNotificationSubscriberBase {
         $account = $contact->getOrLookupUserAccount();
 
         try {
+          /** @var Message $message */
           $message = $this->createMessage();
         }
         catch (ParNotificationException $e) {
@@ -89,6 +92,12 @@ class NewDeviationRequestSubscriber extends ParNotificationSubscriberBase {
         if ($message->hasField('field_deviation_request')) {
           $message->set('field_deviation_request', $par_data_deviation_request);
         }
+
+        // Add some custom arguments to this message.
+        $message->setArguments([
+          '@first_name' => $contact->getFirstName(),
+          '@partnership_label' => $par_data_partnership ? strtolower($par_data_partnership->label()) : 'partnership',
+        ]);
 
         // The owner is the user who this message belongs to.
         if ($account) {
