@@ -56,24 +56,12 @@ class ParConfirmationReviewForm extends ParBaseForm {
     $form['membership_date'] = $this->renderSection('Date of membership', $par_data_coordinated_business, ['date_membership_began' => 'default']);
 
     // Display contacts at the organisation.
-    $form['member_contact'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-      '#title' => 'Member contact details',
-      'person' => $this->renderEntities('Legal entities', [$par_data_person], 'detailed'),
-    ];
+    $form['member_contact'] = $this->renderEntities('Member contact details', [$par_data_person], 'detailed');
+    $form['member_contact']['#attributes']['class'][] = 'form-group';
 
     // Display legal entities.
-    $form['legal_entities'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-      '#title' => 'Legal Entities',
-      'legal_entities' => $this->renderEntities('Legal entities', $par_data_legal_entities),
-    ];
+    $form['legal_entities'] = $this->renderEntities('Legal entities', $par_data_legal_entities);
+    $form['legal_entities']['#attributes']['class'][] = 'form-group';
 
     // Display the trading names.
     $form['trading_names'] = $this->renderSection('Trading names', $par_data_organisation, ['trading_name' => 'title']);
