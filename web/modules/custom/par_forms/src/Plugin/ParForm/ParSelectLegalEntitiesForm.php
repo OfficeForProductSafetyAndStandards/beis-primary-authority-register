@@ -56,6 +56,13 @@ limited company or partnership, as well as other types of organisations such as 
         '#prefix' => '<p>',
         '#suffix' => '</p>',
       ],
+      'note' => [
+        '#type' => 'markup',
+        '#markup' => '<div class="form-group notice">
+            <i class="icon icon-important"><span class="visually-hidden">Warning</span></i>
+            <strong class="bold-small">Please select the legal entities for the coordinator not the members covered by this partnership.</strong>
+          </div>',
+      ],
     ];
 
     // Checkboxes for legal entities.
