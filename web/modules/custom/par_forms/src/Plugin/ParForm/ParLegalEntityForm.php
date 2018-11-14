@@ -44,6 +44,10 @@ class ParLegalEntityForm extends ParFormPluginBase {
       $this->getFlowDataHandler()->setFormPermValue("registered_number", $par_data_legal_entity->get('registered_number')->getString());
     }
 
+    if ($par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership')) {
+      $this->getFlowDataHandler()->setFormPermValue('coordinated_partnership', $par_data_partnership->isCoordinated());
+    }
+
     parent::loadData();
   }
 
@@ -59,7 +63,6 @@ class ParLegalEntityForm extends ParFormPluginBase {
    */
   public function getElements($form = [], $cardinality = 1) {
     $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
-    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     if ($cardinality === 1) {
       $form['legal_entity_intro_fieldset'] = [
@@ -70,7 +73,7 @@ class ParLegalEntityForm extends ParFormPluginBase {
           '#markup' => "<p>" . $this->t("A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisations such as trusts and charities.") . "</p>",
         ],
       ];
-      if ($par_data_partnership && $par_data_partnership->isCoordinated()) {
+      if ($this->getFlowDataHandler()->getFormPermValue('coordinated_partnership')) {
         $form['legal_entity_intro_fieldset']['note'] = [
           '#type' => 'markup',
           '#markup' => '<div class="form-group notice">
