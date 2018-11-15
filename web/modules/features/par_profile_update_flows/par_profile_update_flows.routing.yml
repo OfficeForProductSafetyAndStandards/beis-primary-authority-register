@@ -4,12 +4,16 @@ par_profile_update_flows.registration_current_user_gdpr:
     _controller: '\Drupal\par_profile_update_flows\Form\ParGdprForm::registrationRedirectCurrentUser'
   requirements:
     _permission: 'access content'
+  options:
+    no_cache: TRUE
 par_profile_update_flows.login_current_user_gdpr:
   path: '/profile-login/data-policy'
   defaults:
     _controller: '\Drupal\par_profile_update_flows\Form\ParGdprForm::loginRedirectCurrentUser'
   requirements:
     _permission: 'access content'
+  options:
+    no_cache: TRUE
 
 
 par_profile_update_flows.gdpr:
