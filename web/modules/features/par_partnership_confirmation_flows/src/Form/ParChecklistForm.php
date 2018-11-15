@@ -5,6 +5,7 @@ namespace Drupal\par_partnership_confirmation_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_confirmation_flows\ParFlowAccessTrait;
+use Drupal\user\UserInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -18,8 +19,6 @@ class ParChecklistForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-
-
     // Set page title.
     $this->pageTitle = "Declaration for completion by proxy";
 
@@ -35,11 +34,12 @@ class ParChecklistForm extends ParBaseForm {
     $par_data_organisation = $par_data_partnership ? $par_data_partnership->getOrganisation(TRUE) : NULL;
 
     $current_user = $this->getCurrentUser();
-    if ($par_data_organisation && $current_user && $this->getParDataManager()->isMember($par_data_organisation, $current_user)) {
+    if ($par_data_organisation && $current_user instanceof UserInterface
+      && $this->getParDataManager()->isMember($par_data_organisation, $current_user)) {
       $this->getFlowDataHandler()->setTempDataValue('organisation_member', TRUE);
     }
 
-    return parent::titleCallback();
+    parent::loadData();
   }
 
   /**
