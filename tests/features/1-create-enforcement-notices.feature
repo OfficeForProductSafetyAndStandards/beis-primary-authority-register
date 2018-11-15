@@ -96,6 +96,8 @@ Feature: Enforcement Officer - Enforcement Notice Process
         And I click on the button "#edit-submit-partnership-search"
         And I click the link text "Partnership between Salford City Council and Charity Retail Association"
         When I click the link text "Send a notification of a proposed enforcement action"
+        And the element "h1.heading-xlarge" contains the text "Have you discussed this enforcement?"
+        And I click on the button "#edit-next"
         And I click on authority selection if available
         When I click on the button "#edit-next"
         And I add "Added Legal Entity" to the inputfield "#edit-alternative-legal-entity"
