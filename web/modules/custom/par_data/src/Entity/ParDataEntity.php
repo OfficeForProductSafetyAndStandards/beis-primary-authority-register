@@ -3,6 +3,7 @@
 namespace Drupal\par_data\Entity;
 
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityEvents;
 use Drupal\Core\Entity\EntityInterface;
@@ -55,6 +56,15 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
+  }
+
+  /**
+   * Simple getter to inject the date formatter service.
+   *
+   * @return DateFormatterInterface
+   */
+  public function getDateFormatter() {
+    return \Drupal::service('date.formatter');
   }
 
   /**
@@ -473,6 +483,30 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     $revision = $this->getStatusChanged($status);
 
     return $revision ? $revision->get('revision_uid')->entity : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStatusDescription($status) {
+    $author = $this->getStatusAuthor($status);
+    $label = $author ? 'updated by' . $author->label() : 'updated';
+
+    if ($contacts = $this->getParDataManager()->getUserPeople($author)) {
+      $contact = current($contacts);
+      $label = 'updated by ' . $contact->label();
+    }
+
+    // If the uid is that of the admin user this has been automatically approved.
+    if ($author->id() <= 1) {
+      $label = 'updated automatically';
+    }
+
+    if ($time = $this->getStatusTime($status)) {
+      $label .= ' on ' . $this->getDateFormatter()->format($time, 'gds_date_format');
+    }
+
+    return ucfirst($label);
   }
 
   /**

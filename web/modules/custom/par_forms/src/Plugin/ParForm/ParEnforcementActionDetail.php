@@ -41,12 +41,15 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
 
       if ($par_data_enforcement_action->getRawStatus() === ParDataEnforcementAction::APPROVED) {
         $this->setDefaultValuesByKey("action_status_notes", $cardinality, ' (This action can be enforced)');
+        $this->setDefaultValuesByKey("action_status_meta", $cardinality, $par_data_enforcement_action->getStatusDescription($par_data_enforcement_action->getRawStatus()));
       }
       elseif ($par_data_enforcement_action->getRawStatus() === ParDataEnforcementAction::BLOCKED) {
         $this->setDefaultValuesByKey("action_status_notes", $cardinality, ' (' . $par_data_enforcement_action->getPrimaryAuthorityNotes() . ')');
+        $this->setDefaultValuesByKey("action_status_meta", $cardinality, $par_data_enforcement_action->getStatusDescription($par_data_enforcement_action->getRawStatus()));
       }
       elseif ($par_data_enforcement_action->getRawStatus() === ParDataEnforcementAction::REFERRED) {
         $this->setDefaultValuesByKey("action_status_notes", $cardinality, ' (' . $par_data_enforcement_action->getReferralNotes() . ')');
+        $this->setDefaultValuesByKey("action_status_meta", $cardinality, $par_data_enforcement_action->getStatusDescription($par_data_enforcement_action->getRawStatus()));
       }
 
       if (!$par_data_enforcement_action->get('field_regulatory_function')->isEmpty()) {
@@ -75,12 +78,14 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
         'title' => [
           '#type' => 'html_tag',
           '#tag' => 'h3',
+          '#weight' => -2,
           '#value' => $this->getDefaultValuesByKey('action_title', $cardinality),
           '#attributes' => ['class' => 'heading-medium'],
         ],
         'status' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
+          '#weight' => -1,
           '#value' => $this->getDefaultValuesByKey('action_status', $cardinality) . $this->getDefaultValuesByKey('action_status_notes', $cardinality, ''),
         ],
         'regulatory_functions' => $this->getDefaultValuesByKey('action_regulatory_functions', $cardinality, []),
@@ -89,6 +94,15 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
           '#attributes' => ['class' => ['form-group']]
         ],
       ];
+
+      if ($meta = $this->getDefaultValuesByKey('action_status_meta', $cardinality)) {
+        $form['status_description'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#weight' => -1,
+          '#value' => $meta,
+        ];
+      }
 
       // Add operation link for updating action details.
       try {
