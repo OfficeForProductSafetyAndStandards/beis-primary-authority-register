@@ -11,16 +11,19 @@ states:
   - par_data_partnership
 steps:
   1:
+    route: par_enforcement_raise_flows.checklist
+    form_id: par_enforcement_checklist
+  2:
     route: par_enforcement_raise_flows.select_authority
     form_id: par_authority_selection
     components:
       authority_select: {}
-  2:
+  3:
     route: par_enforcement_raise_flows.select_organisation
     form_id: par_enforce_organisation
     components:
       member_select: {}
-  3:
+  4:
     route: par_enforcement_raise_flows.officer_details
     form_id: par_enforcement_officer_details
     components:
@@ -28,7 +31,7 @@ steps:
     form_data:
       authority_selection: par_authority_selection
       member_selection: par_enforce_organisation
-  4:
+  5:
     route: par_enforcement_raise_flows.select_legal_entity
     form_id: par_enforcement_notice_raise
     components:
@@ -39,7 +42,7 @@ steps:
       select_legal: par_enforcement_notice_raise
       authority_selection: par_authority_selection
       member_selection: par_enforce_organisation
-  5:
+  6:
     route: par_enforcement_raise_flows.raise_details
     form_id: par_enforcement_notice_raise_details
     components:
@@ -49,7 +52,7 @@ steps:
       select_legal: par_enforcement_notice_raise
       authority_selection: par_authority_selection
       member_selection: par_enforce_organisation
-  6:
+  7:
     route: par_enforcement_raise_flows.add_action
     form_id: par_enforcement_notice_add_action
     components:
@@ -61,7 +64,7 @@ steps:
       select_legal: par_enforcement_notice_raise
       authority_selection: par_authority_selection
       member_selection: par_enforce_organisation
-  7:
+  8:
     route: par_enforcement_raise_flows.raise_review
     form_id: par_enforcement_notice_raise_review
     components:
@@ -75,9 +78,9 @@ steps:
       authority_selection: par_authority_selection
       member_selection: par_enforce_organisation
     redirect:
-      select_legal: 4
-      enforcement_details: 5
-      enforcement_action: 6
-      save: 8
-  8:
+      select_legal: 5
+      enforcement_details: 6
+      enforcement_action: 7
+      save: 9
+  9:
     route: par_enforcement_raise_flows.raise_confirm
