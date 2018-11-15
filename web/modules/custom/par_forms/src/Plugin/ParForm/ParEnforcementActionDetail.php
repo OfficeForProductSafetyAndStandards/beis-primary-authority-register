@@ -41,15 +41,21 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
 
       if ($par_data_enforcement_action->getRawStatus() === ParDataEnforcementAction::APPROVED) {
         $this->setDefaultValuesByKey("action_status_notes", $cardinality, ' (This action can be enforced)');
-        $this->setDefaultValuesByKey("action_status_meta", $cardinality, $par_data_enforcement_action->getStatusDescription($par_data_enforcement_action->getRawStatus()));
+        
+        $description = $par_data_enforcement_action->getStatusDescription($par_data_enforcement_action->getRawStatus(), 'approved');
+        $this->setDefaultValuesByKey("action_status_meta", $cardinality, $description);
       }
       elseif ($par_data_enforcement_action->getRawStatus() === ParDataEnforcementAction::BLOCKED) {
         $this->setDefaultValuesByKey("action_status_notes", $cardinality, ' (' . $par_data_enforcement_action->getPrimaryAuthorityNotes() . ')');
-        $this->setDefaultValuesByKey("action_status_meta", $cardinality, $par_data_enforcement_action->getStatusDescription($par_data_enforcement_action->getRawStatus()));
+
+        $description = $par_data_enforcement_action->getStatusDescription($par_data_enforcement_action->getRawStatus(), 'blocked');
+        $this->setDefaultValuesByKey("action_status_meta", $cardinality, $description);
       }
       elseif ($par_data_enforcement_action->getRawStatus() === ParDataEnforcementAction::REFERRED) {
         $this->setDefaultValuesByKey("action_status_notes", $cardinality, ' (' . $par_data_enforcement_action->getReferralNotes() . ')');
-        $this->setDefaultValuesByKey("action_status_meta", $cardinality, $par_data_enforcement_action->getStatusDescription($par_data_enforcement_action->getRawStatus()));
+
+        $description = $par_data_enforcement_action->getStatusDescription($par_data_enforcement_action->getRawStatus(), 'referred');
+        $this->setDefaultValuesByKey("action_status_meta", $cardinality, $description);
       }
 
       if (!$par_data_enforcement_action->get('field_regulatory_function')->isEmpty()) {
