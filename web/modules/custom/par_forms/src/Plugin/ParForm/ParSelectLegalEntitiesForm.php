@@ -31,6 +31,10 @@ class ParSelectLegalEntitiesForm extends ParFormPluginBase {
     $this->getFlowDataHandler()
       ->setTempDataValue('partnership_legal_entities', $par_data_partnership->retrieveEntityIds('field_legal_entity'));
 
+    if ($par_data_partnership) {
+      $this->getFlowDataHandler()->setFormPermValue('coordinated_partnership', $par_data_partnership->isCoordinated());
+    }
+
     parent::loadData();
   }
 
@@ -57,6 +61,15 @@ limited company or partnership, as well as other types of organisations such as 
         '#suffix' => '</p>',
       ],
     ];
+    if ($this->getFlowDataHandler()->getFormPermValue('coordinated_partnership')) {
+      $form['legal_entity_intro']['note'] = [
+        '#type' => 'markup',
+        '#markup' => '<div class="form-group notice">
+              <i class="icon icon-important"><span class="visually-hidden">Warning</span></i>
+              <strong class="bold-small">Please select the legal entities for the coordinator not the members covered by this partnership.</strong>
+            </div>',
+      ];
+    }
 
     // Checkboxes for legal entities.
     $form['field_legal_entity'] = [

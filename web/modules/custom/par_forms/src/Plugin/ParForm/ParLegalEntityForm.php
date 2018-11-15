@@ -44,6 +44,10 @@ class ParLegalEntityForm extends ParFormPluginBase {
       $this->getFlowDataHandler()->setFormPermValue("registered_number", $par_data_legal_entity->get('registered_number')->getString());
     }
 
+    if ($par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership')) {
+      $this->getFlowDataHandler()->setFormPermValue('coordinated_partnership', $par_data_partnership->isCoordinated());
+    }
+
     parent::loadData();
   }
 
@@ -67,8 +71,17 @@ class ParLegalEntityForm extends ParFormPluginBase {
         'intro' => [
           '#type' => 'markup',
           '#markup' => "<p>" . $this->t("A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisations such as trusts and charities.") . "</p>",
-        ]
+        ],
       ];
+      if ($this->getFlowDataHandler()->getFormPermValue('coordinated_partnership')) {
+        $form['legal_entity_intro_fieldset']['note'] = [
+          '#type' => 'markup',
+          '#markup' => '<div class="form-group notice">
+              <i class="icon icon-important"><span class="visually-hidden">Warning</span></i>
+              <strong class="bold-small">Please enter the legal entities for the coordinator not the members covered by this partnership.</strong>
+            </div>',
+        ];
+      }
     }
 
     $legal_entity_label = $this->getCardinality() !== 1 ?
