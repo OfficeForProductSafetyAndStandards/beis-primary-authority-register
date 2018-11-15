@@ -41,7 +41,7 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
 
       if ($par_data_enforcement_action->getRawStatus() === ParDataEnforcementAction::APPROVED) {
         $this->setDefaultValuesByKey("action_status_notes", $cardinality, ' (This action can be enforced)');
-        
+
         $description = $par_data_enforcement_action->getStatusDescription($par_data_enforcement_action->getRawStatus(), 'approved');
         $this->setDefaultValuesByKey("action_status_meta", $cardinality, $description);
       }
