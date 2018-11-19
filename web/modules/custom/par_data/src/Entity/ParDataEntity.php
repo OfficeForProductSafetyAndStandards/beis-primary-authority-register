@@ -490,22 +490,26 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    */
   public function getStatusDescription($status, $verb = 'updated') {
     $author = $this->getStatusAuthor($status);
-    $label = $author ? "$verb by {$author->label()}" : "$verb";
+    $time = $this->getStatusTime($status);
 
     // If the uid is that of the admin user this has been automatically approved.
-    if ($author->id() <= 1) {
+    if ($author && $author->id() <= 1) {
       $label = "$verb automatically";
     }
-    elseif ($contacts = $this->getParDataManager()->getUserPeople($author)) {
+    elseif ($author && $contacts = $this->getParDataManager()->getUserPeople($author)) {
       $contact = current($contacts);
       $label = "$verb by {$contact->label()}";
     }
-
-    if ($time = $this->getStatusTime($status)) {
-      $label .= ' on ' . $this->getDateFormatter()->format($time, 'gds_date_format');
+    elseif ($author) {
+      $label = "$verb by {$author->label()}";
     }
 
-    return ucfirst($label);
+    if ($time) {
+      $time_string = ' on ' . $this->getDateFormatter()->format($time, 'gds_date_format');
+      $label = isset($label) ? $label . $time_string : $time_string;
+    }
+
+    return isset($label) ? ucfirst($label): NULL;
   }
 
   /**
