@@ -12,6 +12,8 @@ When('I create new valid enforcement notification {string} for organisation {str
     .clickLinkByPureText('Send a notification of a proposed enforcement action')
     .click('#edit-cancel')
     .clickLinkByPureText('Send a notification of a proposed enforcement action')
+    .assert.containsText('h1.heading-xlarge','Have you discussed this enforcement?')
+    .click('#edit-next')
       // CHOOSE MEMBER
     .chooseMemberIfOptionPresent()
     // ENTER EO DETAILS
