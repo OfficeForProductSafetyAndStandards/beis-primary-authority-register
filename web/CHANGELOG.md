@@ -4,7 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [26.0.0] - 2019-11-05
+## [27.0.0] - 2019-11-26
+### Added
+- Information about who approved an enforcement notice.
+- Notice to tell users to add the coordinator's legal entities when creating a coordinated partnership not those belonging to the members.
+- A page to the start of a new enforcement to make sure the enforcing officer has been in contact with the primary authority prior to raising the notice.
+
+### Fixed
+- Only able to select the first 10 members when enforcing a coordinated partnership.
+
+## [26.0.1] - 2019-11-05
 ### Changed
 - Updated notification links to go to the related content rather than the dashboard.
 - Allowed notifications to go to email address that don't have user accounts.
