@@ -37,16 +37,30 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
 
     if ($par_data_enforcement_action && $par_data_enforcement_action instanceof ParDataEnforcementAction) {
       $this->setDefaultValuesByKey("action_title", $cardinality, $par_data_enforcement_action->label());
-      $this->setDefaultValuesByKey("action_status", $cardinality, $par_data_enforcement_action->getParStatus());
 
       if ($par_data_enforcement_action->getRawStatus() === ParDataEnforcementAction::APPROVED) {
-        $this->setDefaultValuesByKey("action_status_notes", $cardinality, ' (This action can be enforced)');
+        $description = $par_data_enforcement_action->getStatusDescription($par_data_enforcement_action->getRawStatus(), $par_data_enforcement_action->getParStatus());
       }
       elseif ($par_data_enforcement_action->getRawStatus() === ParDataEnforcementAction::BLOCKED) {
-        $this->setDefaultValuesByKey("action_status_notes", $cardinality, ' (' . $par_data_enforcement_action->getPrimaryAuthorityNotes() . ')');
+        $this->setDefaultValuesByKey("action_status_notes", $cardinality, $par_data_enforcement_action->getPrimaryAuthorityNotes());
+
+        $description = $par_data_enforcement_action->getStatusDescription($par_data_enforcement_action->getRawStatus(), $par_data_enforcement_action->getParStatus());
       }
       elseif ($par_data_enforcement_action->getRawStatus() === ParDataEnforcementAction::REFERRED) {
-        $this->setDefaultValuesByKey("action_status_notes", $cardinality, ' (' . $par_data_enforcement_action->getReferralNotes() . ')');
+        $this->setDefaultValuesByKey("action_status_notes", $cardinality, $par_data_enforcement_action->getReferralNotes());
+
+        $description = $par_data_enforcement_action->getStatusDescription($par_data_enforcement_action->getRawStatus(), $par_data_enforcement_action->getParStatus());
+      }
+      else {
+        $description = $par_data_enforcement_action->getStatusDescription($par_data_enforcement_action->getRawStatus(), 'created');
+      }
+
+      // Set the status description, if there is no revision data this should be the plain status.
+      if ($description) {
+        $this->setDefaultValuesByKey("action_status", $cardinality, $description);
+      }
+      else {
+        $this->setDefaultValuesByKey("action_status", $cardinality, $par_data_enforcement_action->getParStatus());
       }
 
       if (!$par_data_enforcement_action->get('field_regulatory_function')->isEmpty()) {
@@ -75,13 +89,15 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
         'title' => [
           '#type' => 'html_tag',
           '#tag' => 'h3',
+          '#weight' => -2,
           '#value' => $this->getDefaultValuesByKey('action_title', $cardinality),
           '#attributes' => ['class' => 'heading-medium'],
         ],
         'status' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => $this->getDefaultValuesByKey('action_status', $cardinality) . $this->getDefaultValuesByKey('action_status_notes', $cardinality, ''),
+          '#weight' => -1,
+          '#value' => $this->getDefaultValuesByKey('action_status', $cardinality),
         ],
         'regulatory_functions' => $this->getDefaultValuesByKey('action_regulatory_functions', $cardinality, []),
         'details' => $this->getDefaultValuesByKey('action_details', $cardinality, []),
@@ -89,6 +105,15 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
           '#attributes' => ['class' => ['form-group']]
         ],
       ];
+
+      if ($notes = $this->getDefaultValuesByKey('action_status_notes', $cardinality)) {
+        $form['status_description'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#weight' => -1,
+          '#value' => $notes,
+        ];
+      }
 
       // Add operation link for updating action details.
       try {

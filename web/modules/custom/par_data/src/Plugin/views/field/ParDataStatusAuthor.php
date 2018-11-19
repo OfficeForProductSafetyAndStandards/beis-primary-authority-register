@@ -29,15 +29,33 @@ class ParDataStatusAuthor extends FieldPluginBase {
   }
 
   /**
+   * Get the par data manager.
+   */
+  public function getParDataManager() {
+    return \Drupal::service('par_data.manager');
+  }
+
+  /**
    * @{inheritdoc}
    */
   public function render(ResultRow $values) {
     $entity = $this->getEntity($values);
 
     if ($entity instanceof ParDataEntityInterface) {
-      $author = $entity->getStatusTime($entity->getRawStatus());
+      $author = $entity->getStatusAuthor($entity->getRawStatus());
+      $label = $author ? $author->label() : '';
 
-      return $author ? $author->label() : '';
+      if ($contacts = $this->getParDataManager()->getUserPeople($author)) {
+        $contact = current($contacts);
+        $label = $contact->label();
+      }
+
+      // If the uid is that of the admin user this has been automatically approved.
+      if ($author->id() <= 1) {
+        $label = '(automatically approved)';
+      }
+
+      return $label;
     }
   }
 }

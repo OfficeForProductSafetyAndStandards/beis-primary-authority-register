@@ -255,6 +255,34 @@ class ParDataEnforcementNotice extends ParDataEntity {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function getStatusTime($status) {
+    // Loop through all actions to determine status.
+    foreach ($this->getEnforcementActions() as $action) {
+      if ($time = $action->getStatusTime($status)) {
+        return $time;
+      }
+    }
+
+    return NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStatusAuthor($status) {
+    // Loop through all actions to determine status.
+    foreach ($this->getEnforcementActions() as $action) {
+      if ($time = $action->getStatusAuthor($status)) {
+        return $time;
+      }
+    }
+
+    return NULL;
+  }
+
+  /**
    * Clone an enforcement notice entity to support the referral process.
    *
    * @return ParDataEnforcementNotice
