@@ -14,7 +14,7 @@ Feature: Enforcement Officer - Issue enforcement notice
        # ENFORCEMENT ACTION FORM
 
        When I click the link text "Send a notification of a proposed enforcement action"
-       And the element "h1.heading-xlarge" contains the text "Have you discussed this enforcement?"
+       And the element "h1.heading-xlarge" contains the text "Have you discussed this issue with the Primary Authority?"
        And I click on the button "#edit-next"
        And I click on authority selection if available
        When I click on the button "#edit-next"

@@ -12,7 +12,7 @@ When('I create new valid enforcement notification {string} for organisation {str
     .clickLinkByPureText('Send a notification of a proposed enforcement action')
     .click('#edit-cancel')
     .clickLinkByPureText('Send a notification of a proposed enforcement action')
-    .assert.containsText('h1.heading-xlarge','Have you discussed this enforcement?')
+    .assert.containsText('h1.heading-xlarge','Have you discussed this issue with the Primary Authority?')
     .click('#edit-next')
       // CHOOSE MEMBER
     .chooseMemberIfOptionPresent()

@@ -77,7 +77,7 @@ Feature: Coordinator User - Upload Members
         And I click on the button "#edit-submit-partnership-search"
         And I click on the button "td.views-field.views-field-par-flow-link a"
         And I click the link text "Send a notification of a proposed enforcement action"
-        And the element "h1.heading-xlarge" contains the text "Have you discussed this enforcement?"
+        And the element "h1.heading-xlarge" contains the text "Have you discussed this issue with the Primary Authority?"
         And I click on the button "#edit-next"
         Then the element "h1.heading-xlarge" contains the text "Raise notice of enforcement action"
         And the element "#par-enforce-organisation" contains the text "Choose the member to enforce"
