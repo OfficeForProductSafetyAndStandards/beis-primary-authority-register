@@ -695,6 +695,11 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * Get the PAR People that share the same email with the user account.
    *
+   * A person can be matched to a user account if:
+   * a) the user id is set on the par_data_person in field_user_account
+   * b) the person has no user account set (as above) but the email matches the user account email
+   * @see ParDataPerson::setUserAccount()
+   *
    * @param UserInterface $account
    *   A user account.
    *
@@ -702,9 +707,21 @@ class ParDataManager implements ParDataManagerInterface {
    *   PAR People related to the user account.
    */
   public function getUserPeople(UserInterface $account) {
-    return $this->entityTypeManager
-      ->getStorage('par_data_person')
-      ->loadByProperties(['email' => $account->get('mail')->getString()]);
+    $conditions = [
+      [
+        'OR' => [
+          ['field_user_account', $account->id(), 'IN']
+         ],
+      ],
+      [
+        'OR' => [
+          ['email', $account->get('mail')->getString(), 'CONTAINS'],
+          ['field_user_account', NULL, 'IS NULL']
+        ],
+      ],
+    ];
+
+    return $this->getEntitiesByQuery('par_data_person', $conditions);
   }
 
   /**

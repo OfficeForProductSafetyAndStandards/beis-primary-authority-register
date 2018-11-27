@@ -7,6 +7,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_data\ParDataRelationship;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
@@ -72,19 +73,39 @@ class ParDataPerson extends ParDataEntity {
 
   /**
    * {@inheritdoc}
+   *
+   * Internal function only to get the correct user account for a person
+   * @see self::getUserAccount()
    */
-  public function getUserAccount() {
+  public function retrieveUserAccount() {
     $entities = $this->get('field_user_account')->referencedEntities();
+
     return $entities ? current($entities) : NULL;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getOrLookupUserAccount() {
+  public function lookupUserAccount() {
+    $entities = \Drupal::entityTypeManager()
+      ->getStorage('user')
+      ->loadByProperties(['mail' => $this->get('email')->getString()]);
+
+    return $entities ? current($entities) : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * A person can be matched to a user account if:
+   * a) the user id is set on the field_user_account
+   * b) the user account is not set (as above) but the email matches the user account email
+   * @see ParDataManager::getUserPeople()
+   */
+  public function getUserAccount() {
     $account = $this->getUserAccount();
 
-    // Lookup the user account if one could not be saved.
+    // Lookup the user account if one has not been saved.
     if (!$account) {
       $account = $this->lookupUserAccount();
     }
@@ -118,16 +139,6 @@ class ParDataPerson extends ParDataEntity {
     }
 
     return isset($accounts) ? $accounts : [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function lookupUserAccount() {
-    $entities = \Drupal::entityTypeManager()
-      ->getStorage('user')
-      ->loadByProperties(['mail' => $this->get('email')->getString()]);
-    return $entities ? current($entities) : NULL;
   }
 
   /**
@@ -390,6 +401,41 @@ class ParDataPerson extends ParDataEntity {
     }
 
     return (!empty($notification_preferences));
+  }
+
+  public function getReferencedLocations() {
+    $locations = [];
+    $relationships = $this->getRelationships();
+
+    // Get all the relationships that reference this person.
+    $relationships = array_filter($relationships, function ($relationship) {
+      return (ParDataRelationship::DIRECTION_REVERSE === $relationship->getRelationshipDirection());
+    });
+
+    foreach ($relationships as $relationship) {
+      $label = '';
+
+      switch ($relationship->getId()) {
+        case 'par_data_organisation:field_person':
+          $label .= 'Contact at the organisation: ';
+          break;
+
+        case 'par_data_authority:field_person':
+          $label .= 'Contact at the authority: ';
+          break;
+        case 'par_data_partnership:field_organisation_person':
+          $label .= 'Primary contact for the organisation: ';
+          break;
+
+        case 'par_data_authority:field_authority_person':
+          $label .= 'Primary contact for the authority: ';
+          break;
+      }
+
+      $locations[] = $label . $relationship->getEntity()->label();
+    }
+
+    return $locations;
   }
 
   /**

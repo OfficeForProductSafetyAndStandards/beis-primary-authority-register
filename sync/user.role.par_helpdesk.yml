@@ -154,6 +154,7 @@ permissions:
   - 'view general enquiry'
   - 'view inspection feedback'
   - 'view own private files'
+  - 'view par profile'
   - 'view private files'
   - 'view published invite entities'
   - 'view unpublished invite entities'

@@ -88,6 +88,7 @@ module:
   par_partnership_confirmation_flows: 0
   par_partnership_flows: 0
   par_profile_update_flows: 0
+  par_profile_view_flows: 0
   par_rd_help_desk_flows: 0
   par_roles: 0
   par_search_partnership_flows: 0

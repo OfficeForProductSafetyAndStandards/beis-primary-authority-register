@@ -72,6 +72,7 @@ permissions:
   - 'upload coordinated member'
   - 'use text format basic_html'
   - 'view own private files'
+  - 'view par profile'
   - 'view private files'
   - 'view unpublished par_data_advice entities'
   - 'view unpublished par_data_authority entities'

@@ -62,6 +62,10 @@ class ParDataRelationship {
     return $this->entity;
   }
 
+  public function getId() {
+    return $this->getEntity()->getEntityTypeId() . ':' . $this->getField()->getName();
+  }
+
   /**
    * Get the field that defines the relationship.
    *

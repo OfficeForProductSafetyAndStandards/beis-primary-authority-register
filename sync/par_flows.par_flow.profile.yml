@@ -1,0 +1,26 @@
+uuid: 1668f4f7-5264-4969-8e84-dfb92d696077
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 7up644JXMpalbz8VAu3vvYJmrirj5FqpMunHcwZgN-E
+id: profile
+label: 'Profile View / Manage Flow'
+default_title: null
+default_section_title: Profile
+description: ''
+save_method: end
+states:
+  - user
+steps:
+  1:
+    route: par_profile_view_flows.profile
+    form_id: par_profile
+    components:
+      user_detail: {}
+      contact_detail:
+        cardinality: -1
+    redirect:
+      done: 2
+  2:
+    route: par_dashboards.dashboard
