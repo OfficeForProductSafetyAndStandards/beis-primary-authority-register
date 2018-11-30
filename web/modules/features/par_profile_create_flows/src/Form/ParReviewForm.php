@@ -152,10 +152,9 @@ class ParReviewForm extends ParBaseForm {
   }
 
   public function createEntities() {
-    $account = $this->getFlowDataHandler()->getParameter('user');
-
     // Get the cache IDs for the various forms that needs needs to be extracted from.
     $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_add_contact');
+    $link_account_cid = $this->getFlowNegotiator()->getFormKey('par_profile_link');
 
     $par_data_person = ParDataPerson::create([
       'type' => 'person',
@@ -167,9 +166,16 @@ class ParReviewForm extends ParBaseForm {
       'email' => $this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid),
     ]);
 
+    // If there is an existing user attach it to this person.
+    $user_id = $this->getFlowDataHandler()->getDefaultValues('user_id', NULL, $link_account_cid);
+    $account = $user_id ? User::load($user_id) : NULL;
+    if ($account) {
+      $par_data_person->setUserAccount($account);
+    }
+
     return [
       'par_data_person' => $par_data_person,
-      'account' => $account,
+      'account' => $account ?: NULL,
     ];
   }
 
@@ -224,6 +230,10 @@ class ParReviewForm extends ParBaseForm {
       // any new relationships have been saved.
       if (!empty($authorities) && !empty($organisations)) {
         $par_data_person->getRelationships(NULL, NULL, TRUE);
+      }
+      // Also invalidate the user account cache if there is one.
+      if ($account) {
+        \Drupal::entityTypeManager()->getStorage('user')->resetCache([$account->id()]);
       }
 
       $this->getFlowDataHandler()->deleteStore();

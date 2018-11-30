@@ -135,7 +135,7 @@ class ParUserDetail extends ParFormPluginBase {
       ];
 
       try {
-        $params = $this->getRouteParams() + ['par_data_person' => $person_id];
+        $params = $this->getRouteParams();
         $form['user_account']['invite'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [

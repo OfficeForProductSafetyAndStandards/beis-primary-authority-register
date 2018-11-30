@@ -16,7 +16,7 @@ steps:
     components:
       person_select: {}
     redirect:
-      cancel: 5
+      cancel: 8
   2:
     route: par_profile_update_flows.edit_update_contact
     form_id: par_profile_update
@@ -25,19 +25,55 @@ steps:
     form_data:
       select_person: par_choose_person
     redirect:
-      cancel: 5
+      cancel: 8
   3:
+    route: par_profile_update_flows.choose_institution
+    form_id: par_update_institution
+    components:
+      authority_select: {}
+      organisation_select: {}
+    form_data:
+      select_person: par_choose_person
+      contact_details: par_profile_update
+    redirect:
+      cancel: 8
+  4:
+    route: par_profile_update_flows.link_contact
+    form_id: par_profile_update_link
+    components:
+      link_contact: {}
+    form_data:
+      select_person: par_choose_person
+      contact_details: par_profile_update
+    redirect:
+      cancel: 8
+  5:
+    route: par_profile_update_flows.invite_contact
+    form_id: par_profile_invite
+    components:
+      invite: {}
+    form_data:
+      select_person: par_choose_person
+      contact_details: par_add_contact
+      user_account: par_profile_update_link
+    redirect:
+      cancel: 8
+  6:
     route: par_profile_update_flows.edit_review
     form_id: par_profile_review
     form_data:
       select_person: par_choose_person
       contact_details: par_profile_update
+      link_account: par_profile_update_link
+      select_authority: par_update_institution
+      select_organisation: par_update_institution
+      invite: par_profile_invite
     redirect:
-      save: 4
-      cancel: 5
-  4:
+      save: 7
+      cancel: 8
+  7:
     route: par_profile_update_flows.edit_completed
     redirect:
-      done: 5
-  5:
+      done: 8
+  8:
     route: view.par_people.people

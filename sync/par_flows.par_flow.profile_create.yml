@@ -17,22 +17,24 @@ steps:
     route: par_profile_create_flows.create_contact
     form_id: par_add_contact
     components:
-      contact_details: {  }
+      contact_details: {}
     redirect:
       cancel: 8
   2:
     route: par_profile_create_flows.choose_role
     form_id: par_choose_role
     components:
-      role_select: {  }
+      role_select: {}
+    form_data:
+      contact_details: par_add_contact
     redirect:
       cancel: 8
   3:
     route: par_profile_create_flows.choose_institution
     form_id: par_add_institution
     components:
-      authority_select: {  }
-      organisation_select: {  }
+      authority_select: {}
+      organisation_select: {}
     form_data:
       role_select: par_choose_role
       contact_details: par_add_contact
@@ -42,7 +44,7 @@ steps:
     route: par_profile_create_flows.link_contact
     form_id: par_profile_link
     components:
-      link_contact: {  }
+      link_contact: {}
     form_data:
       contact_details: par_add_contact
     redirect:
@@ -51,7 +53,7 @@ steps:
     route: par_profile_create_flows.invite_contact
     form_id: par_profile_invite
     components:
-      invite: {  }
+      invite: {}
     form_data:
       contact_details: par_add_contact
       user_account: par_profile_link
@@ -61,8 +63,13 @@ steps:
     route: par_profile_create_flows.review
     form_id: par_profile_review
     form_data:
+      role_select: par_choose_role
       contact_details: par_add_contact
+      link_account: par_profile_link
+      select_authority: par_add_institution
+      select_organisation: par_add_institution
       user_account: par_profile_link
+      invite: par_profile_invite
     redirect:
       save: 7
       cancel: 8

@@ -30,10 +30,11 @@ par_profile_update_flows.gdpr:
         type: entity:user
 
 par_profile_update_flows.select_person:
-  path: '/person/{user}/profile-update/choose-contact'
+  path: '/person/{user}/profile-update/choose-contact/{par_data_person}'
   defaults:
     _form: '\Drupal\par_profile_update_flows\Form\ParChooseContactForm'
     _title_callback: '\Drupal\par_profile_update_flows\Form\ParChooseContactForm::titleCallback'
+    par_data_person: null
   requirements:
     _permission: 'manage par profile'
     _custom_access: '\Drupal\par_profile_update_flows\Form\ParChooseContactForm::accessCallback'
@@ -42,6 +43,8 @@ par_profile_update_flows.select_person:
     parameters:
       user:
         type: entity:user
+      par_data_person:
+        type: entity:par_data_person
 
 par_profile_update_flows.update_contact:
   path: '/person/{user}/profile-update/contact'
@@ -115,10 +118,11 @@ par_profile_update_flows.completed:
 
 
 par_profile_update_flows.edit_select_person:
-  path: '/person/{user}/update/choose-contact'
+  path: '/person/{user}/update/choose-contact/{par_data_person}'
   defaults:
     _form: '\Drupal\par_profile_update_flows\Form\ParChooseContactForm'
     _title_callback: '\Drupal\par_profile_update_flows\Form\ParChooseContactForm::titleCallback'
+    par_data_person: null
   requirements:
     _permission: 'manage par profile'
     _custom_access: '\Drupal\par_profile_update_flows\Form\ParChooseContactForm::accessCallback'
@@ -127,6 +131,8 @@ par_profile_update_flows.edit_select_person:
     parameters:
       user:
         type: entity:user
+      par_data_person:
+        type: entity:par_data_person
 
 par_profile_update_flows.edit_update_contact:
   path: '/person/{user}/update/contact'
@@ -136,6 +142,48 @@ par_profile_update_flows.edit_update_contact:
   requirements:
     _permission: 'manage par profile'
     _custom_access: '\Drupal\par_profile_update_flows\Form\ParContactForm::accessCallback'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user
+        
+par_profile_update_flows.choose_institution:
+  path: '/person/{user}/update/membership'
+  defaults:
+    _form: '\Drupal\par_profile_update_flows\Form\ParUpdateInstitutionForm'
+    _title_callback: '\Drupal\par_profile_update_flows\Form\ParUpdateInstitutionForm::titleCallback'
+  requirements:
+    _permission: 'manage par profile'
+    _custom_access: '\Drupal\par_profile_update_flows\Form\ParUpdateInstitutionForm::accessCallback'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user
+
+par_profile_update_flows.link_contact:
+  path: '/person/{user}/update/link'
+  defaults:
+    _form: '\Drupal\par_profile_update_flows\Form\ParLinkContactForm'
+    _title_callback: '\Drupal\par_profile_update_flows\Form\ParLinkContactForm::titleCallback'
+  requirements:
+    _permission: 'manage par profile'
+    _custom_access: '\Drupal\par_profile_update_flows\Form\ParLinkContactForm::accessCallback'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user
+
+par_profile_update_flows.invite_contact:
+  path: '/person/{user}/update/invite'
+  defaults:
+    _form: '\Drupal\par_profile_update_flows\Form\ParInviteForm'
+    _title_callback: '\Drupal\par_profile_update_flows\Form\ParInviteForm::titleCallback'
+  requirements:
+    _permission: 'manage par profile'
+    _custom_access: '\Drupal\par_profile_update_flows\Form\ParInviteForm::accessCallback'
     user: \d+
   options:
     parameters:

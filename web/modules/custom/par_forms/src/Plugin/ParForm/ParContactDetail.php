@@ -125,21 +125,6 @@ class ParContactDetail extends ParFormPluginBase {
           '#value' => \Drupal::service('renderer')->render($locations),
         ],
       ];
-
-      $user_id = $this->getFlowDataHandler()->getFormPermValue('user_id', $cardinality, NULL);
-      $params = $this->getRouteParams() + ['user' => $user_id];
-      try {
-        $form['message']['edit'] = [
-          '#type' => 'markup',
-          '#markup' => t('@link', [
-            '@link' => $this->getLinkByRoute('par_profile_update_flows.select_person', $params, ['attributes' => ['class' => ['column-full']]])
-              ->setText('Edit the contact details')
-              ->toString(),
-          ]),
-        ];
-      } catch (ParFlowException $e) {
-
-      }
     }
     else {
       $form['contact'] = [

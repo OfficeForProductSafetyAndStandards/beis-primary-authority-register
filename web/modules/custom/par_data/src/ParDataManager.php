@@ -651,7 +651,6 @@ class ParDataManager implements ParDataManagerInterface {
     }
 
     $entities = $query->execute();
-//    var_dump(count($entities));
 
     return $this->entityManager->getStorage($type)->loadMultiple(array_unique($entities));
   }
@@ -710,14 +709,16 @@ class ParDataManager implements ParDataManagerInterface {
   public function getUserPeople(UserInterface $account) {
     $conditions = [
       [
-        'OR' => [
-          ['field_user_account', $account->id(), 'IN']
+        'AND' => [
+          ['field_user_account', $account->id(), 'IN'],
+          ['deleted', 1, '<>'],
          ],
       ],
       [
         'AND' => [
           ['email', $account->get('mail')->getString()],
-          ['field_user_account', NULL, 'IS NULL']
+          ['field_user_account', NULL, 'IS NULL'],
+          ['deleted', 1, '<>'],
         ],
       ],
     ];

@@ -25,6 +25,7 @@ par_profile_create_flows.choose_role:
     parameters:
       user:
         type: entity:user
+
 par_profile_create_flows.choose_institution:
   path: '/person/create/membership'
   defaults:

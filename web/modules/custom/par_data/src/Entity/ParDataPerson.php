@@ -165,11 +165,9 @@ class ParDataPerson extends ParDataEntity {
   public function mergePeople() {
     $uids = [];
 
-    // Foreach person record with the same email lookup any other
-    // entity which references it and update the reference to the
-    // new person record.
-    /** @var ParDataPerson[] $people */
-    $people = $this->getParDataManager()->getEntitiesByProperty('par_data_person', 'email', $this->getEmail());
+    // Lookup related people.
+    $account = $this->getUserAccount();
+    $people = $account ? $this->getParDataManager()->getUserPeople($account) : [];
     foreach ($people as $person) {
       // Skip this entity, this is the one we'll leave.
       if ($person->id() === $this->id()) {
@@ -203,7 +201,7 @@ class ParDataPerson extends ParDataEntity {
       }
 
       // Remove this person record.
-      $person->delete();
+      $deleted = $person->delete();
     }
 
     // Be sure to make sure that all referenced uids on old person

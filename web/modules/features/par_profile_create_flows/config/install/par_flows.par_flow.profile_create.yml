@@ -22,6 +22,8 @@ steps:
     form_id: par_choose_role
     components:
       role_select: {}
+    form_data:
+      contact_details: par_add_contact
     redirect:
       cancel: 8
   3:
@@ -60,9 +62,9 @@ steps:
     form_data:
       role_select: par_choose_role
       contact_details: par_add_contact
+      link_account: par_profile_link
       select_authority: par_add_institution
       select_organisation: par_add_institution
-      user_account: par_profile_link
       invite: par_profile_invite
     redirect:
       save: 7

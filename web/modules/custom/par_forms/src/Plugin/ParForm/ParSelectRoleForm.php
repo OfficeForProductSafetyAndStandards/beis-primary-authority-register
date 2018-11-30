@@ -27,6 +27,9 @@ class ParSelectRoleForm extends ParFormPluginBase {
     if ($this->getFlowDataHandler()->getCurrentUser()->isAuthenticated()) {
       $account = User::Load($this->getFlowDataHandler()->getCurrentUser()->id());
     }
+    else {
+      $account = NULL;
+    }
 
     $roles = [];
     if ($account && $account->hasPermission('create organisation user')) {
@@ -44,6 +47,19 @@ class ParSelectRoleForm extends ParFormPluginBase {
 
     if (!empty($roles)) {
       $role_options = $this->getParDataManager()->getEntitiesAsOptions($roles, []);
+
+      // Add an option not to create a role if the user doesn't already exist.
+      $cid_contact_details = $this->getFlowNegotiator()->getFormKey('contact_details');
+      $email = $this->getFlowDataHandler()->getDefaultValues('email', NULL, $cid_contact_details);
+      if (!empty($email) && current($this->getParDataManager()->getEntitiesByProperty('user', 'mail', $email))) {
+        $this->getFlowDataHandler()->setFormPermValue("user_required", TRUE);
+      }
+      else {
+        $role_options[''] = "<i>Don't create a user, just add the contact details</i>";
+
+        $this->getFlowDataHandler()->setFormPermValue("user_required", FALSE);
+      }
+
       $this->getFlowDataHandler()->setFormPermValue("roles_options", $role_options);
     }
 
@@ -65,7 +81,14 @@ class ParSelectRoleForm extends ParFormPluginBase {
 
     $form['intro'] = [
       '#type' => 'markup',
-      '#markup' => "Would you like to give this person a user account so that they can sign in to the Primary Authority Register?<br>If you choose not to this person can still be listed as a contact but won't be able to view any of the information or interact with the Primary Authority Register.",
+      '#markup' => "Would you like to give this person a user account so that they can sign in to the Primary Authority Register?",
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
+    ];
+
+    $form['explanation'] = [
+      '#type' => 'markup',
+      '#markup' => "If you choose not to this person can still be listed as a contact but won't be able to view any of the information or interact with the Primary Authority Register.",
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];
@@ -73,7 +96,7 @@ class ParSelectRoleForm extends ParFormPluginBase {
     $form['role'] = [
       '#type' => 'radios',
       '#title' => t('Choose what type of user this person is'),
-      '#options' => $role_options + ["<i>Don't create a user, just add the contact details</i>"],
+      '#options' => $role_options,
       '#default_value' => $this->getDefaultValuesByKey("role", $cardinality, key($role_options)),
       '#attributes' => ['class' => ['form-group']],
     ];
