@@ -32,6 +32,8 @@ permissions:
   - 'cease coordinated member'
   - 'confirm partnership'
   - 'create files'
+  - 'create organisation user'
+  - 'create par profile'
   - 'delete own document files'
   - 'delete own image files'
   - 'download any csv files'

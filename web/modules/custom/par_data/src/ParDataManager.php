@@ -629,10 +629,10 @@ class ParDataManager implements ParDataManagerInterface {
    * ];
    * @endcode
    */
-  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC') {
+  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC', $conjunction = 'AND') {
     $entities = [];
 
-    $query = $this->getEntityQuery($type);
+    $query = $this->getEntityQuery($type, $conjunction);
 
     foreach ($conditions as $row) {
       foreach ($row as $condition_operator => $condition_row) {
@@ -651,6 +651,7 @@ class ParDataManager implements ParDataManagerInterface {
     }
 
     $entities = $query->execute();
+//    var_dump(count($entities));
 
     return $this->entityManager->getStorage($type)->loadMultiple(array_unique($entities));
   }
@@ -714,14 +715,14 @@ class ParDataManager implements ParDataManagerInterface {
          ],
       ],
       [
-        'OR' => [
-          ['email', $account->get('mail')->getString(), 'CONTAINS'],
+        'AND' => [
+          ['email', $account->get('mail')->getString()],
           ['field_user_account', NULL, 'IS NULL']
         ],
       ],
     ];
 
-    return $this->getEntitiesByQuery('par_data_person', $conditions);
+    return $this->getEntitiesByQuery('par_data_person', $conditions, NULL, NULL, 'ASC', 'OR');
   }
 
   /**

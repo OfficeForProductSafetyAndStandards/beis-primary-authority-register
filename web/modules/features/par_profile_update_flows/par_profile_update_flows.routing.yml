@@ -15,7 +15,6 @@ par_profile_update_flows.login_current_user_gdpr:
   options:
     no_cache: TRUE
 
-
 par_profile_update_flows.gdpr:
   path: '/person/{user}/profile-update/data-policy'
   defaults:
@@ -102,6 +101,63 @@ par_profile_update_flows.review:
 
 par_profile_update_flows.completed:
   path: '/person/{user}/profile-update/completed'
+  defaults:
+    _controller: '\Drupal\par_profile_update_flows\Controller\ParConfirmedController::content'
+    _title_callback: '\Drupal\par_profile_update_flows\Controller\ParConfirmedController::titleCallback'
+  requirements:
+    _permission: 'manage par profile'
+    _custom_access: '\Drupal\par_profile_update_flows\Controller\ParConfirmedController::accessCallback'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user
+
+
+par_profile_update_flows.edit_select_person:
+  path: '/person/{user}/update/choose-contact'
+  defaults:
+    _form: '\Drupal\par_profile_update_flows\Form\ParChooseContactForm'
+    _title_callback: '\Drupal\par_profile_update_flows\Form\ParChooseContactForm::titleCallback'
+  requirements:
+    _permission: 'manage par profile'
+    _custom_access: '\Drupal\par_profile_update_flows\Form\ParChooseContactForm::accessCallback'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user
+
+par_profile_update_flows.edit_update_contact:
+  path: '/person/{user}/update/contact'
+  defaults:
+    _form: '\Drupal\par_profile_update_flows\Form\ParContactForm'
+    _title_callback: '\Drupal\par_profile_update_flows\Form\ParContactForm::titleCallback'
+  requirements:
+    _permission: 'manage par profile'
+    _custom_access: '\Drupal\par_profile_update_flows\Form\ParContactForm::accessCallback'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user
+
+par_profile_update_flows.edit_review:
+  path: '/person/{user}/update/review'
+  defaults:
+    _form: '\Drupal\par_profile_update_flows\Form\ParReviewForm'
+    _title_callback: '\Drupal\par_profile_update_flows\Form\ParReviewForm::titleCallback'
+  requirements:
+    _permission: 'manage par profile'
+    _custom_access: '\Drupal\par_profile_update_flows\Form\ParReviewForm::accessCallback'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user
+
+par_profile_update_flows.edit_completed:
+  path: '/person/{user}/update/completed'
   defaults:
     _controller: '\Drupal\par_profile_update_flows\Controller\ParConfirmedController::content'
     _title_callback: '\Drupal\par_profile_update_flows\Controller\ParConfirmedController::titleCallback'

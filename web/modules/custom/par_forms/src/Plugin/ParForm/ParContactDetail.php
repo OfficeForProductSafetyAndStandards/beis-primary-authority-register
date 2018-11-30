@@ -140,32 +140,6 @@ class ParContactDetail extends ParFormPluginBase {
       } catch (ParFlowException $e) {
 
       }
-
-      try {
-        $form['message']['remove'] = [
-          '#type' => 'markup',
-          '#markup' => t('@link', [
-            '@link' => $this->getLinkByRoute('par_profile_update_flows.select_person', $params, ['attributes' => ['class' => ['column-full']]])
-              ->setText('Remove this contact record')
-              ->toString(),
-          ]),
-        ];
-      } catch (ParFlowException $e) {
-
-      }
-
-      try {
-        $form['message']['connected'] = [
-          '#type' => 'markup',
-          '#markup' => t('@link', [
-            '@link' => $this->getLinkByRoute('par_profile_update_flows.select_person', $params, ['attributes' => ['class' => ['column-full']]])
-              ->setText('Add / Remove organisation or authority')
-              ->toString(),
-          ]),
-        ];
-      } catch (ParFlowException $e) {
-
-      }
     }
     else {
       $form['contact'] = [

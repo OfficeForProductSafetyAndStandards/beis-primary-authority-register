@@ -48,7 +48,7 @@ steps:
     route: par_partnership_application_flows.partnership_application_organisation_confirm
     form_id: par_partnership_organisation_suggestion
     components:
-      organisation_select: {}
+      organisation_suggestion: {}
     form_data:
       organisation_select: par_partnership_application_organisation
     redirect:

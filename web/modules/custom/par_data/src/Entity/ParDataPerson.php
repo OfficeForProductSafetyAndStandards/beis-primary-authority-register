@@ -103,7 +103,7 @@ class ParDataPerson extends ParDataEntity {
    * @see ParDataManager::getUserPeople()
    */
   public function getUserAccount() {
-    $account = $this->getUserAccount();
+    $account = $this->retrieveUserAccount();
 
     // Lookup the user account if one has not been saved.
     if (!$account) {
@@ -124,7 +124,7 @@ class ParDataPerson extends ParDataEntity {
    * {@inheritdoc}
    */
   public function getSimilarPeople($link_up = TRUE) {
-    $account = $this->getUserAccount();
+    $account = $this->retrieveUserAccount();
 
     // Link this entity to the Drupal User if one exists.
     if (!$account && $link_up) {
@@ -149,7 +149,7 @@ class ParDataPerson extends ParDataEntity {
     if (!$account) {
       $account = $this->lookupUserAccount();
     }
-    $current_user_account = $this->getUserAccount();
+    $current_user_account = $this->retrieveUserAccount();
     if ($account && (!$current_user_account || $account->id() !== $current_user_account->id())) {
       // Add the user account to this person.
       $this->setUserAccount($account);
@@ -252,7 +252,7 @@ class ParDataPerson extends ParDataEntity {
     return implode(" ", [
       $this->get('salutation')->getString(),
       $this->getFirstName(),
-      $this->get('last_name')->getString(),
+      $this->getLastName(),
     ]);
   }
 
@@ -264,6 +264,16 @@ class ParDataPerson extends ParDataEntity {
    */
   public function getFirstName() {
     return $this->get('first_name')->getString();
+  }
+
+  /**
+   * Get PAR Person's first name.
+   *
+   * @return string
+   *   Their first name.
+   */
+  public function getLastName() {
+    return $this->get('last_name')->getString();
   }
 
   /**
@@ -405,7 +415,7 @@ class ParDataPerson extends ParDataEntity {
 
   public function getReferencedLocations() {
     $locations = [];
-    $relationships = $this->getRelationships();
+    $relationships = $this->getRelationships(NULL, NULL, TRUE);
 
     // Get all the relationships that reference this person.
     $relationships = array_filter($relationships, function ($relationship) {
@@ -432,7 +442,7 @@ class ParDataPerson extends ParDataEntity {
           break;
       }
 
-      $locations[] = $label . $relationship->getEntity()->label();
+      $locations[] = ucfirst($label . $relationship->getEntity()->label());
     }
 
     return $locations;

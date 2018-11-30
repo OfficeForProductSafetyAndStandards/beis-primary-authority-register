@@ -1,4 +1,8 @@
+manage own par profile:
+  title: 'Manage own profile'
+  description: 'Allow users to manage their own user profile.'
+  restrict access: TRUE
 manage par profile:
-  title: 'Update profile'
-  description: 'Allow users to update their profile details.'
+  title: 'Manage profiles'
+  description: 'Allow users to manage all user profiles that they have access to.'
   restrict access: TRUE

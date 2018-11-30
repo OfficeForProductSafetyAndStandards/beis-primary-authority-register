@@ -24,14 +24,14 @@ class ParInviteForm extends ParFormPluginBase {
    * Invitation messages
    */
   public function getMessage($invitation_type) {
-    $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
     $sender_name = $this->getFlowDataHandler()->getDefaultValues('inviter_name', FALSE);
+    $recipient_name = $this->getFlowDataHandler()->getDefaultValues('recipient_name', FALSE);
 
     switch ($invitation_type) {
       default:
         $subject = 'Invitation to join the Primary Authority Register';
         $body = <<<HEREDOC
-Dear {$par_data_person->getFullName()},
+Dear {$recipient_name},
 
 You are being invited to join the Primary Authority Register. Please create your account so that you can manage your partnerships. To do this, please follow this link:
 
@@ -70,6 +70,8 @@ HEREDOC;
       if ($account = $par_data_person->lookupUserAccount()) {
         $this->getFlowDataHandler()->setTempDataValue('existing', TRUE);
       }
+
+      $this->getFlowDataHandler()->setFormPermValue("recipient_name", $par_data_person->getFullName());
     }
 
     // Set the default value for the sender
@@ -90,7 +92,7 @@ HEREDOC;
       }
       $authority_person = $par_data_authority ? $this->getParDataManager()->getUserPerson($account, $par_data_authority) : NULL;
       $organisation_person = $par_data_organisation ? $this->getParDataManager()->getUserPerson($account, $par_data_organisation) : NULL;
-      if($account->hasPermission('invite authority members')) {
+      if($account->hasPermission('invite helpdesk members')) {
         $sender_name = 'BEIS RD Department';
       }
       elseif ($authority_person) {

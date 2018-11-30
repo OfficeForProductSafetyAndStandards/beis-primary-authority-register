@@ -1,0 +1,74 @@
+uuid: be6ba317-40ee-4247-a773-6a31498f2eb4
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: J5Q7Rbz-BMEuiLKkj1WJEiqXGFE3G7VcldWc2kTdqWo
+id: profile_create
+label: 'Create Profile Flow'
+default_title: null
+default_section_title: 'Create Person'
+description: ''
+save_method: end
+states:
+  - user
+steps:
+  1:
+    route: par_profile_create_flows.create_contact
+    form_id: par_add_contact
+    components:
+      contact_details: {  }
+    redirect:
+      cancel: 8
+  2:
+    route: par_profile_create_flows.choose_role
+    form_id: par_choose_role
+    components:
+      role_select: {  }
+    redirect:
+      cancel: 8
+  3:
+    route: par_profile_create_flows.choose_institution
+    form_id: par_add_institution
+    components:
+      authority_select: {  }
+      organisation_select: {  }
+    form_data:
+      role_select: par_choose_role
+      contact_details: par_add_contact
+    redirect:
+      cancel: 8
+  4:
+    route: par_profile_create_flows.link_contact
+    form_id: par_profile_link
+    components:
+      link_contact: {  }
+    form_data:
+      contact_details: par_add_contact
+    redirect:
+      cancel: 8
+  5:
+    route: par_profile_create_flows.invite_contact
+    form_id: par_profile_invite
+    components:
+      invite: {  }
+    form_data:
+      contact_details: par_add_contact
+      user_account: par_profile_link
+    redirect:
+      cancel: 8
+  6:
+    route: par_profile_create_flows.review
+    form_id: par_profile_review
+    form_data:
+      contact_details: par_add_contact
+      user_account: par_profile_link
+    redirect:
+      save: 7
+      cancel: 8
+  7:
+    route: par_profile_create_flows.completed
+    redirect:
+      done: 8
+  8:
+    route: view.par_people.people

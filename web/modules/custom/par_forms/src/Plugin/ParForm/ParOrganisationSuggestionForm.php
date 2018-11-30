@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  * About partnership form plugin.
  *
  * @ParForm(
- *   id = "organisation_select",
+ *   id = "organisation_suggestion",
  *   title = @Translation("De-dupe organisation form.")
  * )
  */
