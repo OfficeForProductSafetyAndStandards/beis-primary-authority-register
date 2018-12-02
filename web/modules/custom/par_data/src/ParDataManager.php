@@ -68,7 +68,7 @@ class ParDataManager implements ParDataManagerInterface {
    *
    * Change to TRUE to get an onscreen output.
    */
-  protected $debug = FALSE;
+  protected $debug = TRUE;
 
   /**
    * Constructs a ParDataPermissions instance.

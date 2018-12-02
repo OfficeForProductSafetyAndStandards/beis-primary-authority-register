@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Plugin\views\filter;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
 use Drupal\views\Plugin\views\filter\FilterPluginBase;
 use Drupal\views\ViewExecutable;
@@ -32,6 +33,19 @@ class ParMember extends FilterPluginBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  protected function valueForm(&$form, FormStateInterface $form_state) {
+    // Whether to show only direct memberships.
+    $form['value'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Direct membership only (memberships will only be listed if they are directly related to an authority or organisation)'),
+      '#default_value' => $this->value,
+      '#return_value' => "direct",
+    ];
+  }
+
+  /**
    * {@inheritdoc)
    */
   public function query() {
@@ -48,7 +62,7 @@ class ParMember extends FilterPluginBase {
 
     // Find memberships.
     $membership_filter = [];
-    $memberships = $this->getParDataManager()->hasMembershipsByType($account, $this->getEntityType());
+    $memberships = $this->getParDataManager()->hasMembershipsByType($account, $this->getEntityType(), (bool) ($this->value === 'direct'));
     foreach ($memberships as $membership) {
       $membership_filter[] = $membership->id();
     }

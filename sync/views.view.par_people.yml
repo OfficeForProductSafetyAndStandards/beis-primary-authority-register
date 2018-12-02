@@ -570,7 +570,7 @@ display:
           group_type: group
           admin_label: ''
           operator: '='
-          value: ''
+          value: direct
           group: 1
           exposed: false
           expose:
