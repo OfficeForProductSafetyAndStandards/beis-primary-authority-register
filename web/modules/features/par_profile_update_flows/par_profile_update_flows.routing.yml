@@ -1,3 +1,4 @@
+# Update own user.
 par_profile_update_flows.registration_current_user_gdpr:
   path: '/profile-registration/data-policy'
   defaults:
@@ -116,7 +117,7 @@ par_profile_update_flows.completed:
       user:
         type: entity:user
 
-
+# Update all users.
 par_profile_update_flows.edit_select_person:
   path: '/person/{user}/update/choose-contact/{par_data_person}'
   defaults:
@@ -142,6 +143,20 @@ par_profile_update_flows.edit_update_contact:
   requirements:
     _permission: 'manage par profile'
     _custom_access: '\Drupal\par_profile_update_flows\Form\ParContactForm::accessCallback'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user
+
+par_profile_update_flows.choose_role:
+  path: '/person/{user}/update/role'
+  defaults:
+    _form: '\Drupal\par_profile_update_flows\Form\ParRoleForm'
+    _title_callback: '\Drupal\par_profile_update_flows\Form\ParRoleForm::titleCallback'
+  requirements:
+    _permission: 'create par profile'
+    _custom_access: '\Drupal\par_profile_update_flows\Form\ParRoleForm::accessCallback'
     user: \d+
   options:
     parameters:
