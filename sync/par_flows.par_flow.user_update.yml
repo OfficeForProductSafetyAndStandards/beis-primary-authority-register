@@ -17,14 +17,14 @@ steps:
     route: par_profile_update_flows.edit_select_person
     form_id: par_choose_person
     components:
-      person_select: {}
+      person_select: {  }
     redirect:
       cancel: 8
   2:
     route: par_profile_update_flows.edit_update_contact
     form_id: par_profile_update
     components:
-      contact_details: {}
+      contact_details: {  }
     form_data:
       select_person: par_choose_person
     redirect:
@@ -33,8 +33,8 @@ steps:
     route: par_profile_update_flows.choose_institution
     form_id: par_update_institution
     components:
-      authority_select: {}
-      organisation_select: {}
+      authority_select: {  }
+      organisation_select: {  }
     form_data:
       select_person: par_choose_person
       contact_details: par_profile_update
@@ -44,7 +44,7 @@ steps:
     route: par_profile_update_flows.link_contact
     form_id: par_profile_update_link
     components:
-      link_contact: {}
+      link_contact: {  }
     form_data:
       select_person: par_choose_person
       contact_details: par_profile_update
@@ -54,7 +54,7 @@ steps:
     route: par_profile_update_flows.invite_contact
     form_id: par_profile_invite
     components:
-      invite: {}
+      invite: {  }
     form_data:
       select_person: par_choose_person
       contact_details: par_add_contact
