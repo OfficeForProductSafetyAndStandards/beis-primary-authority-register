@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: par_helpdesk
-label: 'PAR Helpdesk'
+label: 'Processing Team Member'
 weight: 6
 is_admin: null
 permissions:

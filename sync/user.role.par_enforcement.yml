@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: par_enforcement
-label: 'PAR Enforcement Officer'
+label: 'Enforcement Officer'
 weight: 3
 is_admin: null
 permissions:

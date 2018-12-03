@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: par_organisation
-label: 'PAR Organisation Member'
+label: 'Organisation Member'
 weight: 4
 is_admin: null
 permissions:
