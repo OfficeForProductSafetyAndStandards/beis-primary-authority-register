@@ -369,6 +369,7 @@ class ParDataManager implements ParDataManagerInterface {
     }
 
     $account_people = $this->getUserPeople($account);
+
     // When we say direct we really mean by a maximum factor of two.
     // Because we must first jump through one of the core membership
     //  entities, i.e. authorities or organisations.
@@ -429,7 +430,7 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
-   * Determine whether there are any memberships of a given type that have been commented on.
+   * Determine whether there are any in memberships of a given type that have been commented on.
    *
    * @param UserInterface $account
    *   A user account to check for.

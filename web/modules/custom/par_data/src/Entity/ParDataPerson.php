@@ -79,7 +79,7 @@ class ParDataPerson extends ParDataEntity {
     switch ($action) {
       case 'manage':
         // Only follow relationships to authorities and organisations.
-        // This is the very core of how membership is granted.
+        // This is the very core of how membership is granted within PAR.
         return (bool) ($relationship->getEntity()->getEntityTypeId() === 'par_data_organisation'
           || $relationship->getEntity()->getEntityTypeId() === 'par_data_authority');
 

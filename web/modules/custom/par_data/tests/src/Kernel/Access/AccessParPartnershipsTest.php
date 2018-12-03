@@ -61,7 +61,12 @@ class AccessParPartnershipsTest extends ParDataTestBase {
         $this->people[$i]->save();
       }
       else {
-        $this->people[$i] = ParDataPerson::create(['name' => "Person $i", 'email' => $this->email] + $this->getPersonValues());
+        $this->people[$i] = ParDataPerson::create([
+            'name' => "Person $i",
+            'email' => $this->email,
+            'field_user_account' => [$this->membershipUser->id()]
+          ] + $this->getPersonValues()
+        );
         $this->people[$i]->save();
       }
 
