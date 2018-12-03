@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -85,6 +86,90 @@ class ParDataPerson extends ParDataEntity {
     }
 
     return parent::filterRelationshipsByAction($relationship, $action);
+  }
+
+  /**
+   * A helper function to save this person to the correct authorities.
+   *
+   * @param $authorities
+   *   A list of authority IDs to save.
+   * @param bool $save
+   *
+   * @return array
+   *   An array of updated authorities.
+   */
+  public function updateAuthorityMemberships($authorities, $save = FALSE) {
+    $authorities = NestedArray::filter((array) $authorities);
+
+    $user = User::load(\Drupal::currentUser()->id());
+    $user_authorities = $this->getParDataManager()->hasMembershipsByType($user, 'par_data_authority');
+    $user_authorities_ids = $this->getParDataManager()->getEntitiesAsOptions($user_authorities);
+
+    $relationships = $this->getRelationships('par_data_authority');
+    foreach ($relationships as $relationship) {
+      $id = $relationship->getEntity()->id();
+      // Any existing relationships that the current user is
+      // not allowed to update should not be removed.
+      if (!isset($user_authorities_ids[$id]) && !array_search($id, $authorities)) {
+        $authorities[] = $id;
+      }
+    }
+
+    $authorities = ParDataAuthority::loadMultiple(array_unique($authorities));
+
+    foreach ($authorities as $authority) {
+      $authority->get('field_person')->appendItem([
+        'target_id' => $this->id(),
+      ]);
+
+      if ($save) {
+        $authority->save();
+      }
+    }
+
+    return $authorities;
+  }
+
+  /**
+   * A helper function to save this person to the correct organisations.
+   *
+   * @param $organisations
+   *   A list of organisation IDs to save.
+   * @param bool $save
+   *
+   * @return array
+   *   An array or updated organisations.
+   */
+  public function updateOrganisationMemberships($organisations, $save = FALSE) {
+    $organisations = NestedArray::filter((array) $organisations);
+
+    $user = User::load(\Drupal::currentUser()->id());
+    $user_organisations = $this->getParDataManager()->hasMembershipsByType($user, 'par_data_organisation');
+    $user_organisations_ids = $this->getParDataManager()->getEntitiesAsOptions($user_organisations);
+
+    $relationships = $this->getRelationships('par_data_organisation');
+    foreach ($relationships as $relationship) {
+      $id = $relationship->getEntity()->id();
+      // Any existing relationships that the current user is
+      // not allowed to update should not be removed.
+      if (!isset($user_organisations_ids[$id]) && !array_search($id, $organisations)) {
+        $organisations[] = $id;
+      }
+    }
+
+    $organisations = ParDataOrganisation::loadMultiple(array_unique($organisations));
+
+    foreach ($organisations as $organisation) {
+      $organisation->get('field_person')->appendItem([
+        'target_id' => $this->id(),
+      ]);
+
+      if ($save) {
+        $organisation->save();
+      }
+    }
+
+    return $organisations;
   }
 
   /**

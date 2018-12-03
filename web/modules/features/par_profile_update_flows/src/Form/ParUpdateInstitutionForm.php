@@ -82,8 +82,15 @@ class ParUpdateInstitutionForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    // If the user has choosen not
-    if ($this->getFlowDataHandler()->getDefaultValues('skip', FALSE)) {
+    $cid_link_account = $this->getFlowNegotiator()->getFormKey('par_profile_update_link');
+    $user_id = $this->getFlowDataHandler()->getDefaultValues('user_id', NULL, $cid_link_account);
+
+    $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
+    $role = $this->getFlowDataHandler()->getDefaultValues('role', '', $cid_role_select);
+
+    // Skip the invitation process if a user id has already been matched
+    // or the user has choosen not to add a user.
+    if (!empty($user_id) || !$role) {
       $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
       return new RedirectResponse($url);
     }

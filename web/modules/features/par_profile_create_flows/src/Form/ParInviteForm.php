@@ -69,7 +69,7 @@ class ParInviteForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $cid_link_account = $this->getFlowNegotiator()->getFormKey('user_account');
+    $cid_link_account = $this->getFlowNegotiator()->getFormKey('par_profile_link');
     $user_id = $this->getFlowDataHandler()->getDefaultValues('user_id', NULL, $cid_link_account);
 
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');

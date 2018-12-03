@@ -66,11 +66,6 @@ HEREDOC;
         $this->getFlowDataHandler()->setTempDataValue('to', $par_data_person->getEmail());
       }
 
-      // If the user already has an account then don't invite them.
-      if ($account = $par_data_person->lookupUserAccount()) {
-        $this->getFlowDataHandler()->setTempDataValue('existing', TRUE);
-      }
-
       $this->getFlowDataHandler()->setFormPermValue("recipient_name", $par_data_person->getFullName());
     }
 

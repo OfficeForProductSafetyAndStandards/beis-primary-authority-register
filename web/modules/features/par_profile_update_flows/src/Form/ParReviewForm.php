@@ -213,49 +213,17 @@ class ParReviewForm extends ParBaseForm {
       }
     }
 
-    // Get the authorities and organisations that are allowed to be changed.
-    $current_user_authorities = $this->getParDataManager()->hasMembershipsByType($current_user, 'par_data_authority');
-    $current_user_organisations = $this->getParDataManager()->hasMembershipsByType($current_user, 'par_data_organisation');
-    $current_user_authority_options = isset($current_user_authorities) ? array_keys($this->getParDataManager()->getEntitiesAsOptions($current_user_authorities)) : [];
-    $current_user_organisation_options = isset($current_user_organisations) ? array_keys($this->getParDataManager()->getEntitiesAsOptions($current_user_organisations)) : [];
-
     // Get the authorities and organisations that will be associated with the person.
     $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_authority_cid);
     $organisation_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_organisation_id', $select_organisation_cid);
-
-    // Get the authorities and organisations that will not be added.
-//    $remove_authorities = array_diff();
-
-
-    // If some authorities have been selected and either
-    // an authority role has been selected or no user is being created.
-    if ($authority_ids) {
-      $ids = NestedArray::filter((array)$authority_ids);
-      $authorities = ParDataAuthority::loadMultiple($ids);
-      foreach ($authorities as $authority) {
-        $authority->get('field_person')->appendItem([
-          'target_id' => $par_data_person->id(),
-        ]);
-      }
-    }
-
-    // If some organisations have been selected and either
-    // an organisation role has been selected or no user is being created.
-    if ($organisation_ids) {
-      $ids = NestedArray::filter((array)$organisation_ids);
-      $organisations = ParDataOrganisation::loadMultiple($ids);
-      foreach ($organisations as $organisation) {
-        $organisation->get('field_person')->appendItem([
-          'target_id' => $par_data_person->id(),
-        ]);
-      }
-    }
+    $par_data_authorities = $par_data_person->updateAuthorityMemberships($authority_ids);
+    $par_data_organisations = $par_data_person->updateOrganisationMemberships($organisation_ids);
 
     return [
       'par_data_person' => $par_data_person,
       'account' => $account,
-      'par_data_authority' => isset($authorities) ? $authorities : NULL,
-      'par_data_organisation' => isset($organisations) ? $organisations : NULL,
+      'par_data_authority' => !empty($par_data_authorities) ? $par_data_authorities : NULL,
+      'par_data_organisation' => !empty($par_data_organisations) ? $par_data_organisations : NULL,
     ];
   }
 
