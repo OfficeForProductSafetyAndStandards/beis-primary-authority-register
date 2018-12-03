@@ -135,12 +135,11 @@ class ParUserDetail extends ParFormPluginBase {
       ];
 
       try {
-        $params = $this->getRouteParams();
+        $params = $this->getRouteParams() + ['par_data_person' => $person_id];
         $form['user_account']['invite'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
-            '@link' => $this->getFlowNegotiator()->getFlow()
-              ->getLinkByCurrentOperation('invite_user', $params, ['query' => ['destination' => $return_path]])
+            '@link' => $this->getLinkByRoute('par_invite_user_flows.link_contact', $params, ['attributes' => ['class' => ['column-full']]])
               ->setText('Invite the user to create an account')
               ->toString(),
           ]),

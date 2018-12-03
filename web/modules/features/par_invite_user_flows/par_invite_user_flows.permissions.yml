@@ -1,0 +1,4 @@
+invite user:
+  title: 'Invite a user'
+  description: 'Allow users to invite other users to create an account.'
+  restrict access: TRUE

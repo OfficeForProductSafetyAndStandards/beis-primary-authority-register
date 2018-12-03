@@ -1,0 +1,9 @@
+name: 'PAR User Invite Flows'
+type: module
+description: 'Creates the flows required to invite an existing person to create an account.'
+core: 8.x
+package: PAR
+dependencies:
+  - par_data
+  - par_flows
+  - par_forms

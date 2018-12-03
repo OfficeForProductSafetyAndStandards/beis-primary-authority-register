@@ -22,7 +22,7 @@ par_profile_update_flows.gdpr:
     _form: '\Drupal\par_profile_update_flows\Form\ParGdprForm'
     _title_callback: '\Drupal\par_profile_update_flows\Form\ParGdprForm::titleCallback'
   requirements:
-    _permission: 'manage par profile'
+    _permission: 'manage own par profile'
     _custom_access: '\Drupal\par_profile_update_flows\Form\ParGdprForm::accessCallback'
     user: \d+
   options:
@@ -37,7 +37,7 @@ par_profile_update_flows.select_person:
     _title_callback: '\Drupal\par_profile_update_flows\Form\ParChooseContactForm::titleCallback'
     par_data_person: null
   requirements:
-    _permission: 'manage par profile'
+    _permission: 'manage own par profile'
     _custom_access: '\Drupal\par_profile_update_flows\Form\ParChooseContactForm::accessCallback'
     user: \d+
   options:
@@ -53,7 +53,7 @@ par_profile_update_flows.update_contact:
     _form: '\Drupal\par_profile_update_flows\Form\ParContactForm'
     _title_callback: '\Drupal\par_profile_update_flows\Form\ParContactForm::titleCallback'
   requirements:
-    _permission: 'manage par profile'
+    _permission: 'manage own par profile'
     _custom_access: '\Drupal\par_profile_update_flows\Form\ParContactForm::accessCallback'
     user: \d+
   options:
@@ -67,7 +67,7 @@ par_profile_update_flows.contact_preferences:
     _form: '\Drupal\par_profile_update_flows\Form\ParCommunicationPreferencesForm'
     _title_callback: '\Drupal\par_profile_update_flows\Form\ParCommunicationPreferencesForm::titleCallback'
   requirements:
-    _permission: 'manage par profile'
+    _permission: 'manage own par profile'
     _custom_access: '\Drupal\par_profile_update_flows\Form\ParCommunicationPreferencesForm::accessCallback'
     user: \d+
   options:
@@ -81,7 +81,7 @@ par_profile_update_flows.notification_preferences:
     _form: '\Drupal\par_profile_update_flows\Form\ParNotificationPreferencesForm'
     _title_callback: '\Drupal\par_profile_update_flows\Form\ParNotificationPreferencesForm::titleCallback'
   requirements:
-    _permission: 'manage par profile'
+    _permission: 'manage own par profile'
     _custom_access: '\Drupal\par_profile_update_flows\Form\ParNotificationPreferencesForm::accessCallback'
     user: \d+
   options:
@@ -95,7 +95,7 @@ par_profile_update_flows.review:
     _form: '\Drupal\par_profile_update_flows\Form\ParReviewForm'
     _title_callback: '\Drupal\par_profile_update_flows\Form\ParReviewForm::titleCallback'
   requirements:
-    _permission: 'manage par profile'
+    _permission: 'manage own par profile'
     _custom_access: '\Drupal\par_profile_update_flows\Form\ParReviewForm::accessCallback'
     user: \d+
   options:
@@ -109,7 +109,7 @@ par_profile_update_flows.completed:
     _controller: '\Drupal\par_profile_update_flows\Controller\ParConfirmedController::content'
     _title_callback: '\Drupal\par_profile_update_flows\Controller\ParConfirmedController::titleCallback'
   requirements:
-    _permission: 'manage par profile'
+    _permission: 'manage own par profile'
     _custom_access: '\Drupal\par_profile_update_flows\Controller\ParConfirmedController::accessCallback'
     user: \d+
   options:
