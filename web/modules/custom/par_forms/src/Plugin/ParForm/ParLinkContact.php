@@ -36,18 +36,36 @@ class ParLinkContact extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function loadData($cardinality = 1) {
+    $cid_contact_details = $this->getFlowNegotiator()->getFormKey('contact_details');
+
+    $account_options = [];
+
     if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
-      $email = $par_data_person->getEmail();
+      $par_data_person_email = $par_data_person->getEmail();
+      // If an account can be found that matches by e-mail address then we should use this.
+      if (!empty($par_data_person_email) && $existing_account = current($this->getParDataManager()->getEntitiesByProperty('user', 'mail', $par_data_person_email))) {
+        $account_options[$existing_account->id()] = 'Keep the existing account: ' . $existing_account->getEmail();
+      }
     }
-    else {
-      $cid_contact_details = $this->getFlowNegotiator()->getFormKey('contact_details');
-      $email = $this->getFlowDataHandler()->getDefaultValues('email', NULL, $cid_contact_details);
+    if ($contact_details_email = $this->getFlowDataHandler()->getDefaultValues('email', NULL, $cid_contact_details)) {
+      // If an account can be found that matches by e-mail address then we should use this.
+      if (!empty($contact_details_email) && $new_account = current($this->getParDataManager()->getEntitiesByProperty('user', 'mail', $contact_details_email))) {
+        $account_options[$new_account->id()] = 'Update to: ' . $new_account->getEmail();
+      }
+      elseif (isset($existing_account) && $existing_account instanceof User) {
+        // Add an option to allow the user account to be removed.
+        // This can only be done if the new email address doesn't
+        // match an account and there is an account already.
+        $account_options[''] = "<i>Remove the user account or invite a new user, {$existing_account->getEmail()} will no longer be able to access this person's authorities and organisations</i>";
+      }
     }
 
     // If an account can be found that matches by e-mail address then we should use this.
     if (!empty($email) && $user = current($this->getParDataManager()->getEntitiesByProperty('user', 'mail', $email))) {
-      $this->getFlowDataHandler()->setFormPermValue("user_id", $user->id());
+      $account_options[$user->id()] = $user->getEmail();
     }
+
+    $this->getFlowDataHandler()->setFormPermValue("user_accounts", $account_options);
 
     parent::loadData();
   }
@@ -56,16 +74,27 @@ class ParLinkContact extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
-    $user_id = $this->getFlowDataHandler()->getDefaultValues('user_id', NULL);
+    $user_accounts = $this->getFlowDataHandler()->getDefaultValues('user_accounts', []);
 
-    // If there is no user skip on to the invitation stage.
-    if ($user_id) {
-      $this->getFlowDataHandler()->setTempDataValue('user_id', $user_id);
+    // If there is only one choice select it and go to the next page.
+    if (count($user_accounts) === 1) {
+      $this->getFlowDataHandler()->setTempDataValue('user_id', key($user_accounts));
+    }
+    // If there isn't a choice go to the next page.
+    if (count($user_accounts) <= 1) {
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
+      return new RedirectResponse($url);
     }
 
-    // There is no display for this form, it always redirects to the next step once the user has been selected.
-    $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
-    return new RedirectResponse($url);
+    $form['user_id'] = [
+      '#type' => 'radios',
+      '#title' => t('Choose a user account'),
+      '#options' => $user_accounts,
+      '#default_value' => $this->getDefaultValuesByKey("user_id", $cardinality, key($user_accounts)),
+      '#attributes' => ['class' => ['form-group']],
+    ];
+
+    return $form;
   }
 
   /**

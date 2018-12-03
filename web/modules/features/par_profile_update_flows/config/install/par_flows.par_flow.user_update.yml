@@ -1,10 +1,10 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies: {}
 id: user_update
 label: 'User Update Flow'
 default_title: null
-default_section_title: 'Update User'
+default_section_title: 'Update Person'
 description: ''
 save_method: end
 states:
@@ -14,43 +14,44 @@ steps:
     route: par_profile_update_flows.edit_select_person
     form_id: par_choose_person
     components:
-      person_select: {  }
+      person_select: {}
     redirect:
       cancel: 9
   2:
     route: par_profile_update_flows.edit_update_contact
     form_id: par_profile_update
     components:
-      contact_details: {  }
+      contact_details: {}
     form_data:
       select_person: par_choose_person
     redirect:
       cancel: 9
   3:
+    route: par_profile_update_flows.link_contact
+    form_id: par_profile_update_link
+    components:
+      link_contact: {}
+    form_data:
+      select_person: par_choose_person
+      contact_details: par_profile_update
+    redirect:
+      cancel: 9
+  4:
     route: par_profile_update_flows.choose_role
     form_id: par_choose_role
     components:
       role_select: {}
     form_data:
       contact_details: par_add_contact
-    redirect:
-      cancel: 9
-  4:
-    route: par_profile_update_flows.choose_institution
-    form_id: par_update_institution
-    components:
-      authority_select: {  }
-      organisation_select: {  }
-    form_data:
-      select_person: par_choose_person
-      contact_details: par_profile_update
+      link_account: par_profile_update_link
     redirect:
       cancel: 9
   5:
-    route: par_profile_update_flows.link_contact
-    form_id: par_profile_update_link
+    route: par_profile_update_flows.choose_institution
+    form_id: par_update_institution
     components:
-      link_contact: {  }
+      authority_select: {}
+      organisation_select: {}
     form_data:
       select_person: par_choose_person
       contact_details: par_profile_update
@@ -60,7 +61,7 @@ steps:
     route: par_profile_update_flows.invite_contact
     form_id: par_profile_invite
     components:
-      invite: {  }
+      invite: {}
     form_data:
       select_person: par_choose_person
       contact_details: par_add_contact

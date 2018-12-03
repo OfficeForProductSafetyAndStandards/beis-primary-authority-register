@@ -18,12 +18,17 @@ class ParLinkContactForm extends ParBaseForm {
   /**
    * Set the page title.
    */
-  protected $pageTitle = 'Would type of user would you like to add?';
+  protected $pageTitle = 'Link this person to a user account?';
 
   /**
    * {@inheritdoc}
    */
   public function loadData() {
+    $cid_person_select = $this->getFlowNegotiator()->getFormKey('par_choose_person');
+    $person = $this->getFlowDataHandler()->getDefaultValues('user_person', '', $cid_person_select);
+    if ($par_data_person = ParDataPerson::load($person)) {
+      $this->getFlowDataHandler()->setParameter('par_data_person', $par_data_person);
+    }
 
     parent::loadData();
   }

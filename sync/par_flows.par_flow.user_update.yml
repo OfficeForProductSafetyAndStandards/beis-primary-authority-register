@@ -3,11 +3,11 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: AqdmLZiPgglo1A8FyZ89I_AgYL23GODQL1ou66gkHWQ
+  default_config_hash: aiE-o1QqOm814IoIZfL1fmLXSvcheXmOQrRAcg1KQOA
 id: user_update
 label: 'User Update Flow'
 default_title: null
-default_section_title: 'Update User'
+default_section_title: 'Update Person'
 description: ''
 save_method: end
 states:
@@ -30,30 +30,31 @@ steps:
     redirect:
       cancel: 9
   3:
-    route: par_profile_update_flows.choose_role
-    form_id: par_choose_role
+    route: par_profile_update_flows.link_contact
+    form_id: par_profile_update_link
     components:
-      role_select: {}
-    form_data:
-      contact_details: par_add_contact
-    redirect:
-      cancel: 9
-  4:
-    route: par_profile_update_flows.choose_institution
-    form_id: par_update_institution
-    components:
-      authority_select: {  }
-      organisation_select: {  }
+      link_contact: {  }
     form_data:
       select_person: par_choose_person
       contact_details: par_profile_update
     redirect:
       cancel: 9
-  5:
-    route: par_profile_update_flows.link_contact
-    form_id: par_profile_update_link
+  4:
+    route: par_profile_update_flows.choose_role
+    form_id: par_choose_role
     components:
-      link_contact: {  }
+      role_select: {  }
+    form_data:
+      contact_details: par_add_contact
+      link_account: par_profile_update_link
+    redirect:
+      cancel: 9
+  5:
+    route: par_profile_update_flows.choose_institution
+    form_id: par_update_institution
+    components:
+      authority_select: {  }
+      organisation_select: {  }
     form_data:
       select_person: par_choose_person
       contact_details: par_profile_update

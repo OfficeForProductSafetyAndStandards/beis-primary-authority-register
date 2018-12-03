@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: 5tQCZgS1g-DpZ-n2D1os8GoU-nllBxB2cGRrqknYj60
+  default_config_hash: 7a6ztTJdB6idxjT0xY5WwF7cPH2kokf_TgR6WTbYueo
 id: profile_create
 label: 'Create Profile Flow'
 default_title: null
@@ -21,15 +21,25 @@ steps:
     redirect:
       cancel: 8
   2:
+    route: par_profile_create_flows.link_contact
+    form_id: par_profile_link
+    components:
+      link_contact: {  }
+    form_data:
+      contact_details: par_add_contact
+    redirect:
+      cancel: 8
+  3:
     route: par_profile_create_flows.choose_role
     form_id: par_choose_role
     components:
       role_select: {  }
     form_data:
       contact_details: par_add_contact
+      link_account: par_profile_link
     redirect:
       cancel: 8
-  3:
+  4:
     route: par_profile_create_flows.choose_institution
     form_id: par_add_institution
     components:
@@ -37,15 +47,6 @@ steps:
       organisation_select: {  }
     form_data:
       role_select: par_choose_role
-      contact_details: par_add_contact
-    redirect:
-      cancel: 8
-  4:
-    route: par_profile_create_flows.link_contact
-    form_id: par_profile_link
-    components:
-      link_contact: {  }
-    form_data:
       contact_details: par_add_contact
     redirect:
       cancel: 8

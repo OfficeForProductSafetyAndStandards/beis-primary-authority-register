@@ -48,10 +48,15 @@ class ParSelectRoleForm extends ParFormPluginBase {
     if (!empty($roles)) {
       $role_options = $this->getParDataManager()->getEntitiesAsOptions($roles, []);
 
-      // Add an option not to create a role if the user doesn't already exist.
-      $cid_contact_details = $this->getFlowNegotiator()->getFormKey('contact_details');
-      $email = $this->getFlowDataHandler()->getDefaultValues('email', NULL, $cid_contact_details);
-      if (!empty($email) && current($this->getParDataManager()->getEntitiesByProperty('user', 'mail', $email))) {
+      // If there is an existing user selected force a user role to be choosen.
+      $link_account_cid = $this->getFlowNegotiator()->getFormKey('par_profile_update_link');
+      $user_id = $this->getFlowDataHandler()->getDefaultValues('user_id', NULL, $link_account_cid);
+      $linked_account = !empty($user_id) ? User::load($user_id) : NULL;
+
+      if ($linked_account) {
+        // Determine whether a user is being updated or created.
+        $this->getFlowDataHandler()->setFormPermValue("existing_user", $linked_account->label());
+
         $this->getFlowDataHandler()->setFormPermValue("user_required", TRUE);
       }
       else {
@@ -73,25 +78,39 @@ class ParSelectRoleForm extends ParFormPluginBase {
     // Get all the allowed authorities.
     $role_options = $this->getFlowDataHandler()->getFormPermValue('roles_options');
 
+    // If there is only one choice select it and go to the next page.
+    if (count($role_options) === 1) {
+      $this->getFlowDataHandler()->setTempDataValue('role', key($role_options));
+    }
     // If there isn't a choice go to the next page.
-    if (count($role_options) <= 0) {
+    if (count($role_options) <= 1) {
       $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
       return new RedirectResponse($url);
     }
 
-    $form['intro'] = [
-      '#type' => 'markup',
-      '#markup' => "Would you like to give this person a user account so that they can sign in to the Primary Authority Register?",
-      '#prefix' => '<p>',
-      '#suffix' => '</p>',
-    ];
+    if ($existing_user = $this->getFlowDataHandler()->getFormPermValue('existing_user')) {
+      $form['intro'] = [
+        '#type' => 'markup',
+        '#markup' => "Some of the roles given to a user are assigned automatically. If you are not a part of the same authorities and organisations as this user you may not be able to change all of the user's roles.",
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+      ];
+    }
+    else {
+      $form['intro'] = [
+        '#type' => 'markup',
+        '#markup' => "Would you like to give this person a user account so that they can sign in to the Primary Authority Register?",
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+      ];
 
-    $form['explanation'] = [
-      '#type' => 'markup',
-      '#markup' => "If you choose not to this person can still be listed as a contact but won't be able to view any of the information or interact with the Primary Authority Register.",
-      '#prefix' => '<p>',
-      '#suffix' => '</p>',
-    ];
+      $form['explanation'] = [
+        '#type' => 'markup',
+        '#markup' => "If you choose not to this person can still be listed as a contact but won't be able to view any of the information or interact with the Primary Authority Register.",
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+      ];
+    }
 
     $form['role'] = [
       '#type' => 'radios',
