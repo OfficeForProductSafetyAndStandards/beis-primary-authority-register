@@ -70,19 +70,21 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
       $form['par_data_authority_id'] = [
         '#type' => $multiple ? 'checkboxes' : 'radios',
         '#title' => t('Choose an Authority'),
-        '#options' => $chunks[$current_page],
+        '#options' => $authorities,
         '#default_value' => $multiple ? (array) $default_value : $default_value,
         '#attributes' => ['class' => ['form-group']],
       ];
 
-      $form['pager'] = [
-        '#type' => 'pager',
-        '#theme' => 'pagerer',
-        '#element' => $cardinality,
-        '#config' => [
-          'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
-        ],
-      ];
+      // @TODO Add pager so that any selected checkboxes aren't unselected when a new page is loaded.
+//      $form['pager'] = [
+//        '#type' => 'pager',
+//        '#theme' => 'pagerer',
+//        '#element' => $cardinality,
+//        '#config' => [
+//          'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
+//        ],
+//      ];
+
     }
     else {
       $form['intro'] = [
