@@ -40,7 +40,7 @@ par_invite_user_flows.choose_institution:
       par_data_person:
         type: entity:par_data_person
 
-par_invite_user_flows.invite:
+par_invite_user_flows.invite_contact:
   path: '/person/{par_data_person}/invite/contact'
   defaults:
     _form: '\Drupal\par_invite_user_flows\Form\ParInviteForm'

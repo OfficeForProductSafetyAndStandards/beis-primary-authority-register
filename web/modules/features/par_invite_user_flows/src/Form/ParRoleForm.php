@@ -48,6 +48,13 @@ class ParRoleForm extends ParBaseForm {
   public function loadData() {
 
     parent::loadData();
+
+    // Remove the empty value, a user account must be invited in this journey.
+    $role_options = $this->getFlowDataHandler()->getFormPermValue("roles_options");
+    $role_options = array_filter($role_options, function($k) {
+      return !empty($k);
+    }, ARRAY_FILTER_USE_KEY);
+    $this->getFlowDataHandler()->setFormPermValue("roles_options", $role_options);
   }
 
 }

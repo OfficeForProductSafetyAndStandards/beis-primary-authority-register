@@ -889,7 +889,7 @@ EOT;
       try {
         $executed = $connection->query($query);
       }
-      catch (Exception $e) {
+      catch (\Exception $e) {
         var_dump($e->getMessage());
       }
     }

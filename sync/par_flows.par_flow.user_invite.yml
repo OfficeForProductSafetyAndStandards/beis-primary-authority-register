@@ -1,0 +1,76 @@
+uuid: 23b8cc10-740c-47b9-9de5-bf2be44e8cbf
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: lbLbbPo2aUHhG8pLIO1c2Uk7P1-AAeetVq-CyzPskZs
+id: user_invite
+label: 'User Invite Flow'
+default_title: null
+default_section_title: 'Invite Person'
+description: ''
+save_method: end
+states:
+  - user
+steps:
+  1:
+    route: par_invite_user_flows.link_contact
+    form_id: par_profile_invite_link
+    components:
+      link_contact: {  }
+    form_data:
+      select_person: par_choose_person
+      contact_details: par_profile_update
+    redirect:
+      cancel: 7
+  2:
+    route: par_invite_user_flows.choose_role
+    form_id: par_choose_role
+    components:
+      role_select: {  }
+    form_data:
+      contact_details: par_add_contact
+      link_account: par_profile_invite_link
+    redirect:
+      cancel: 7
+  3:
+    route: par_invite_user_flows.choose_institution
+    form_id: par_invite_institution
+    components:
+      authority_select: {  }
+      organisation_select: {  }
+    form_data:
+      select_person: par_choose_person
+      contact_details: par_profile_update
+    redirect:
+      cancel: 7
+  4:
+    route: par_invite_user_flows.invite_contact
+    form_id: par_invite
+    components:
+      invite: {  }
+    form_data:
+      select_person: par_choose_person
+      contact_details: par_add_contact
+      user_account: par_profile_update_link
+    redirect:
+      cancel: 7
+  5:
+    route: par_invite_user_flows.review
+    form_id: par_invite_review
+    form_data:
+      select_person: par_choose_person
+      contact_details: par_profile_update
+      link_account: par_profile_update_link
+      select_authority: par_update_institution
+      select_organisation: par_update_institution
+      invite: par_profile_invite
+    redirect:
+      save: 7
+      cancel: 7
+  6:
+    route: par_invite_user_flows.completed
+    redirect:
+      done: 7
+  7:
+    route: view.par_people.people

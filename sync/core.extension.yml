@@ -77,6 +77,7 @@ module:
   par_inspection_feedback_flows: 0
   par_inspection_feedback_view_flows: 0
   par_invite: 0
+  par_invite_user_flows: 0
   par_login: 0
   par_member_add_flows: 0
   par_member_cease_flows: 0
