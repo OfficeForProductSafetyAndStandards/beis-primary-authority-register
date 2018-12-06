@@ -220,9 +220,8 @@ class ParReviewForm extends ParBaseForm {
 
       // We also need to clear the relationships caches once
       // any new relationships have been saved.
-      if (!empty($authorities) && !empty($organisations)) {
-        $par_data_person->getRelationships(NULL, NULL, TRUE);
-      }
+      $par_data_person->getRelationships(NULL, NULL, TRUE);
+
       // Also invalidate the user account cache if there is one.
       if ($account) {
         \Drupal::entityTypeManager()->getStorage('user')->resetCache([$account->id()]);
