@@ -89,90 +89,6 @@ class ParDataPerson extends ParDataEntity {
   }
 
   /**
-   * A helper function to save this person to the correct authorities.
-   *
-   * @param $authorities
-   *   A list of authority IDs to save.
-   * @param bool $save
-   *
-   * @return array
-   *   An array of updated authorities.
-   */
-  public function updateAuthorityMemberships($authorities, $save = FALSE) {
-    $authorities = NestedArray::filter((array) $authorities);
-
-    $user = User::load(\Drupal::currentUser()->id());
-    $user_authorities = $this->getParDataManager()->hasMembershipsByType($user, 'par_data_authority');
-    $user_authorities_ids = $this->getParDataManager()->getEntitiesAsOptions($user_authorities);
-
-    $relationships = $this->getRelationships('par_data_authority');
-    foreach ($relationships as $relationship) {
-      $id = $relationship->getEntity()->id();
-      // Any existing relationships that the current user is
-      // not allowed to update should not be removed.
-      if (!isset($user_authorities_ids[$id]) && !array_search($id, $authorities)) {
-        $authorities[] = $id;
-      }
-    }
-
-    $authorities = ParDataAuthority::loadMultiple(array_unique($authorities));
-
-    foreach ($authorities as $authority) {
-      $authority->get('field_person')->appendItem([
-        'target_id' => $this->id(),
-      ]);
-
-      if ($save) {
-        $authority->save();
-      }
-    }
-
-    return $authorities;
-  }
-
-  /**
-   * A helper function to save this person to the correct organisations.
-   *
-   * @param $organisations
-   *   A list of organisation IDs to save.
-   * @param bool $save
-   *
-   * @return array
-   *   An array or updated organisations.
-   */
-  public function updateOrganisationMemberships($organisations, $save = FALSE) {
-    $organisations = NestedArray::filter((array) $organisations);
-
-    $user = User::load(\Drupal::currentUser()->id());
-    $user_organisations = $this->getParDataManager()->hasMembershipsByType($user, 'par_data_organisation');
-    $user_organisations_ids = $this->getParDataManager()->getEntitiesAsOptions($user_organisations);
-
-    $relationships = $this->getRelationships('par_data_organisation');
-    foreach ($relationships as $relationship) {
-      $id = $relationship->getEntity()->id();
-      // Any existing relationships that the current user is
-      // not allowed to update should not be removed.
-      if (!isset($user_organisations_ids[$id]) && !array_search($id, $organisations)) {
-        $organisations[] = $id;
-      }
-    }
-
-    $organisations = ParDataOrganisation::loadMultiple(array_unique($organisations));
-
-    foreach ($organisations as $organisation) {
-      $organisation->get('field_person')->appendItem([
-        'target_id' => $this->id(),
-      ]);
-
-      if ($save) {
-        $organisation->save();
-      }
-    }
-
-    return $organisations;
-  }
-
-  /**
    * {@inheritdoc}
    *
    * Internal function only to get the correct user account for a person
@@ -339,6 +255,152 @@ class ParDataPerson extends ParDataEntity {
     if ($account) {
       $account->setEmail($email);
     }
+  }
+
+  /**
+   * A helper function to save this person to the correct authorities.
+   *
+   * @param $authorities
+   *   A list of authority IDs to save.
+   * @param bool $save
+   *
+   * @return array
+   *   An array of updated authorities.
+   */
+  public function updateAuthorityMemberships($authorities, $save = FALSE) {
+    $authorities = NestedArray::filter((array) $authorities);
+
+    $user = User::load(\Drupal::currentUser()->id());
+    $user_authorities = $this->getParDataManager()->hasMembershipsByType($user, 'par_data_authority');
+    $user_authorities_ids = $this->getParDataManager()->getEntitiesAsOptions($user_authorities);
+
+    $relationships = $this->getRelationships('par_data_authority');
+    foreach ($relationships as $relationship) {
+      $id = $relationship->getEntity()->id();
+      // Any existing relationships that the current user is
+      // not allowed to update should not be removed.
+      if (!isset($user_authorities_ids[$id]) && !array_search($id, $authorities)) {
+        $authorities[] = $id;
+      }
+      // Any existing relationships that the current user is
+      // allowed to update but that have been excluded should be removed.
+      if (isset($user_authorities_ids[$id]) && !array_search($id, $authorities)) {
+        $unset[] = $id;
+      }
+    }
+
+    // Add this person to any authorities.
+    $authorities = ParDataAuthority::loadMultiple(array_unique($authorities));
+    foreach ($authorities as $authority) {
+      $referenced_ids = array_column($authority->get('field_person')->getValue(), 'target_id');
+      // Check that we're not adding a duplicate.
+      $search = array_search($this->id(), $referenced_ids);
+      if (!$search) {
+        $authority->get('field_person')->appendItem([
+          'target_id' => $this->id(),
+        ]);
+
+        if ($save) {
+          $authority->save();
+        }
+      }
+    }
+
+    // Remove this person from any authorities.
+    if ($save) {
+      $removed_authorities = isset($unset) ? ParDataAuthority::loadMultiple(array_unique($unset)) : [];
+      foreach ($removed_authorities as $authority) {
+        $referenced_ids = array_column($authority->get('field_person')->getValue(), 'target_id');
+        // For some insanely annoying reason the field re-counts the index
+        // on removing an item so performing this in reverse ensures none
+        // of the remaining keys queued for deletion will get re-counted.
+        $keys = array_reverse(array_keys($referenced_ids, $this->id()));
+        if ($keys) {
+          foreach ($keys as $key) {
+            if ($authority->get('field_person')->offsetExists($key)) {
+              $authority->get('field_person')->removeItem($key);
+            }
+          }
+          $authority->save();
+        }
+
+      }
+    }
+
+    return $authorities;
+  }
+
+  /**
+   * A helper function to save this person to the correct organisations.
+   *
+   * @param $organisations
+   *   A list of organisation IDs to save.
+   * @param bool $save
+   *
+   * @return array
+   *   An array or updated organisations.
+   */
+  public function updateOrganisationMemberships($organisations, $save = FALSE) {
+    $organisations = NestedArray::filter((array) $organisations);
+
+    $user = User::load(\Drupal::currentUser()->id());
+    $user_organisations = $this->getParDataManager()->hasMembershipsByType($user, 'par_data_organisation');
+    $user_organisations_ids = $this->getParDataManager()->getEntitiesAsOptions($user_organisations);
+
+    $relationships = $this->getRelationships('par_data_organisation');
+    foreach ($relationships as $relationship) {
+      $id = $relationship->getEntity()->id();
+
+      // Any existing relationships that the current user is
+      // not allowed to update should not be removed.
+      if (!isset($user_organisations_ids[$id]) && !array_search($id, $organisations)) {
+        $organisations[] = (int) $id;
+      }
+      // Any existing relationships that the current user is
+      // allowed to update but that have been excluded should be removed.
+      if (isset($user_organisations_ids[$id]) && !array_search($id, $organisations)) {
+        $unset[] = (int) $id;
+      }
+    }
+
+    $organisations = ParDataOrganisation::loadMultiple(array_unique($organisations));
+    foreach ($organisations as $organisation) {
+      $referenced_ids = array_column($organisation->get('field_person')->getValue(), 'target_id');
+      // Check that we're not adding a duplicate.
+      $search = array_search($this->id(), $referenced_ids);
+      if (!$search) {
+        $organisation->get('field_person')->appendItem([
+          'target_id' => $this->id(),
+        ]);
+
+        if ($save) {
+          $organisation->save();
+        }
+      }
+
+    }
+
+    // Remove this person from any authorities.
+    if ($save) {
+      $removed_organisations = isset($unset) ? ParDataOrganisation::loadMultiple(array_unique($unset)) : [];
+      foreach ($removed_organisations as $organisation) {
+        $referenced_ids = array_column($organisation->get('field_person')->getValue(), 'target_id');
+        // For some insanely annoying reason the field re-counts the index
+        // on removing an item so performing this in reverse ensures none
+        // of the remaining keys queued for deletion will get re-counted.
+        $keys = array_reverse(array_keys($referenced_ids, $this->id()));
+        if ($keys) {
+          foreach ($keys as $key) {
+            if ($organisation->get('field_person')->offsetExists($key)) {
+              $organisation->get('field_person')->removeItem($key);
+            }
+          }
+          $organisation->save();
+        }
+      }
+    }
+
+    return $organisations;
   }
 
   /**

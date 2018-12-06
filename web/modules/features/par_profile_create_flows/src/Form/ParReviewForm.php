@@ -191,39 +191,31 @@ class ParReviewForm extends ParBaseForm {
     /** @var ParDataPerson $par_data_person */
     /** @var User $account */
 
-    if ($par_data_person->save()) {
-      $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
-      $select_authority_cid = $this->getFlowNegotiator()->getFormKey('par_add_institution');
-      $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('par_add_institution');
+    $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
+    $select_authority_cid = $this->getFlowNegotiator()->getFormKey('par_add_institution');
+    $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('par_add_institution');
+    $cid_invitation = $this->getFlowNegotiator()->getFormKey('par_profile_invite');
 
+    if ($par_data_person->save()) {
       $role = $this->getFlowDataHandler()->getTempDataValue('role', $cid_role_select);
 
       // If some authorities have been selected and either
       // an authority role has been selected or no user is being created.
       $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_authority_cid);
       if ($authority_ids && (in_array($role, ['par_authority', 'par_enforcement']) || !$role)) {
-        $ids = NestedArray::filter((array)$authority_ids);
-        $authorities = ParDataAuthority::loadMultiple($ids);
-        foreach ($authorities as $authority) {
-          $authority->get('field_person')->appendItem([
-            'target_id' => $par_data_person->id(),
-          ]);
-          $authority->save();
-        }
+        $par_data_person->updateAuthorityMemberships($authority_ids, TRUE);
       }
 
       // If some organisations have been selected and either
       // an organisation role has been selected or no user is being created.
       $organisation_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_organisation_id', $select_organisation_cid);
       if ($organisation_ids && ($role === 'par_organisation' || !$role)) {
-        $ids = NestedArray::filter((array)$organisation_ids);
-        $organisations = ParDataOrganisation::loadMultiple($ids);
-        foreach ($organisations as $organisation) {
-          $organisation->get('field_person')->appendItem([
-            'target_id' => $par_data_person->id(),
-          ]);
-          $organisation->save();
-        }
+        $par_data_person->updateOrganisationMemberships($organisation_ids, TRUE);
+      }
+
+      // Send the invite.
+      if (isset($invite)) {
+        $invite->save();
       }
 
       // We also need to clear the relationships caches once

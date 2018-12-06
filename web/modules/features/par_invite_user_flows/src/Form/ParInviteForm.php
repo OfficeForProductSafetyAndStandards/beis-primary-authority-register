@@ -26,12 +26,6 @@ class ParInviteForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function loadData() {
-//    $cid_person_select = $this->getFlowNegotiator()->getFormKey('par_choose_person');
-//    $person = $this->getFlowDataHandler()->getDefaultValues('user_person', '', $cid_person_select);
-//    if ($par_data_person = ParDataPerson::load($person)) {
-//      $this->getFlowDataHandler()->setParameter('par_data_person', $par_data_person);
-//    }
-
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
     $role = $this->getFlowDataHandler()->getDefaultValues('role', '', $cid_role_select);
 

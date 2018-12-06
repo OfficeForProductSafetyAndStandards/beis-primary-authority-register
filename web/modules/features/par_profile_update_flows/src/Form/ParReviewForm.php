@@ -6,6 +6,7 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\invite\Entity\Invite;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataLegalEntity;
@@ -241,6 +242,47 @@ class ParReviewForm extends ParBaseForm {
     /** @var ParDataAuthority[] $par_data_authority */
     /** @var ParDataOrganisation[] $par_data_organisation */
 
+    $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
+    $select_authority_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
+    $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
+    $cid_invitation = $this->getFlowNegotiator()->getFormKey('par_invite');
+
+    $role = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);
+    switch ($role) {
+      case 'par_enforcement':
+        $invitation_type = 'invite_enforcement_officer';
+
+        break;
+
+      case 'par_authority':
+        $invitation_type = 'invite_authority_member';
+
+        break;
+
+      case 'par_organisation':
+        $invitation_type = 'invite_organisation_member';
+
+        break;
+
+      case 'par_helpdesk':
+        $invitation_type = 'invite_processing_team_member';
+
+        break;
+    }
+
+    // Create invitation if an invitation type has been set and no existing user has been found.
+    if (isset($invitation_type) && !$account) {
+      $invite = Invite::create([
+        'type' => $invitation_type,
+        'user_id' => $this->getCurrentUser()->id(),
+        'invitee' => $this->getFlowDataHandler()->getDefaultValues('to', NULL, $cid_invitation),
+      ]);
+      $invite->set('field_invite_email_address', $this->getFlowDataHandler()->getDefaultValues('to', NULL, $cid_invitation));
+      $invite->set('field_invite_email_subject', $this->getFlowDataHandler()->getDefaultValues('subject', NULL, $cid_invitation));
+      $invite->set('field_invite_email_body', $this->getFlowDataHandler()->getDefaultValues('body', NULL, $cid_invitation));
+      $invite->setPlugin('invite_by_email');
+    }
+
     // Merge all accounts (and save them) or just save the person straight up.
     if (($this->getFlowDataHandler()->getTempDataValue('update_all_contacts') === 'on' && $par_data_person->mergePeople())
         || $par_data_person->save()) {
@@ -250,15 +292,29 @@ class ParReviewForm extends ParBaseForm {
         $this->getParDataManager()->getMessenger()->addMessage(t('The email address you use to login has been updated to @email', ['@email' => $account->getEmail()]));
       }
 
-      if ($par_data_organisation) {
-        foreach ($par_data_organisation as $organisation) {
-          $organisation->save();
-        }
+      // Update the membership authorities or organisations.
+      $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_authority_cid);
+      if ($authority_ids && (in_array($role, ['par_authority', 'par_enforcement']) || !$role)) {
+        $par_data_person->updateAuthorityMemberships($authority_ids, TRUE);
       }
-      if ($par_data_authority) {
-        foreach ($par_data_authority as $authority) {
-          $authority->save();
-        }
+      $organisation_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_organisation_id', $select_organisation_cid);
+      if ($organisation_ids && ($role === 'par_organisation' || !$role)) {
+        $par_data_person->updateOrganisationMemberships($organisation_ids, TRUE);
+      }
+
+      // Send the invite.
+      if (isset($invite)) {
+        $invite->save();
+      }
+
+      // We also need to clear the relationships caches once
+      // any new relationships have been saved.
+      if (!empty($authorities) && !empty($organisations)) {
+        $par_data_person->getRelationships(NULL, NULL, TRUE);
+      }
+      // Also invalidate the user account cache if there is one.
+      if ($account) {
+        \Drupal::entityTypeManager()->getStorage('user')->resetCache([$account->id()]);
       }
 
       $this->getFlowDataHandler()->deleteStore();
