@@ -26,12 +26,7 @@ class ParUpdateInstitutionForm extends ParBaseForm {
    */
   public function loadData() {
     $account = $this->getCurrentUser();
-    if ($update_account = $this->getFlowDataHandler()->getParameter('user')) {
-      // Get the person being updated.
-      $cid_person_select = $this->getFlowNegotiator()->getFormKey('par_choose_person');
-      $person = $this->getFlowDataHandler()->getDefaultValues('user_person', '', $cid_person_select);
-      $par_data_person = ParDataPerson::load($person);
-
+    if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
       // Get the directly related authorities and organisations.
       $par_relationship_manager = $this->getParDataManager()->getReducedIterator(1);
       $memberships = $par_relationship_manager->getRelatedEntities($par_data_person);

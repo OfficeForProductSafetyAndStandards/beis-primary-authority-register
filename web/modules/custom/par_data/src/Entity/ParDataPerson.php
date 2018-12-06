@@ -299,10 +299,10 @@ class ParDataPerson extends ParDataEntity {
         $authority->get('field_person')->appendItem([
           'target_id' => $this->id(),
         ]);
+      }
 
-        if ($save) {
-          $authority->save();
-        }
+      if ($save) {
+        $authority->save();
       }
     }
 
@@ -372,10 +372,10 @@ class ParDataPerson extends ParDataEntity {
         $organisation->get('field_person')->appendItem([
           'target_id' => $this->id(),
         ]);
+      }
 
-        if ($save) {
-          $organisation->save();
-        }
+      if ($save) {
+        $organisation->save();
       }
 
     }
