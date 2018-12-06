@@ -43,7 +43,7 @@ class ParGdprForm extends ParBaseForm {
 
     // All users after the GDPR start time should confirm acceptance
     // of data policy if they haven't done so already.
-    if ($account->getCreatedTime() >= self::GDPR_START_TIME && $account->get('field_gdpr')->getString() !== '1') {
+    if ($account && $account->getCreatedTime() >= self::GDPR_START_TIME && $account->get('field_gdpr')->getString() !== '1') {
       $url = $this->getUrlGenerator()->generateFromRoute('par_profile_update_flows.gdpr', $this->getRouteParams() + ['user' => $account->id()]);
     }
     else {
