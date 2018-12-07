@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: gildjEAvbS7rVb2lQPVMVCN52zTUWUHcMhaEyic_z54
+  default_config_hash: 4bPP4I2sB4vg0Zb62xbkNmXrSAuXon54wg6bCwkNzJE
 id: profile_update
 label: 'Profile Update Flow'
 default_title: null
@@ -48,7 +48,7 @@ steps:
       cancel: 8
   5:
     route: par_profile_update_flows.notification_preferences
-    form_id: par_notiication_preferences
+    form_id: par_notification_preferences
     components:
       notification_preferences: {  }
     form_data:
