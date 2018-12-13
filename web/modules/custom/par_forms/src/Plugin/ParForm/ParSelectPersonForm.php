@@ -23,6 +23,7 @@ class ParSelectPersonForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function loadData($cardinality = 1) {
+    $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
     $user_people = [];
 
     // Get the person entities that represent a given user.
@@ -35,6 +36,12 @@ class ParSelectPersonForm extends ParFormPluginBase {
       });
 
       $user_people = $this->getParDataManager()->getEntitiesAsOptions($people, $user_people, 'summary');
+    }
+
+    // Pre-select a person if they have already been choosen
+    // and they are in the list of available choices.
+    if ($par_data_person && isset($user_people[$par_data_person->id()])) {
+      $this->getFlowDataHandler()->setFormPermValue('user_person', $par_data_person->id());
     }
 
     $this->getFlowDataHandler()->setFormPermValue('user_people', $user_people);
@@ -54,7 +61,7 @@ class ParSelectPersonForm extends ParFormPluginBase {
       $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('cancel'), $this->getRouteParams());
       return new RedirectResponse($url);
     }
-    // If only one authority submit the form automatically and go to the next step.
+    // If there is only one person to choose submit the form automatically and go to the next step.
     elseif (count($user_people) === 1) {
       $this->getFlowDataHandler()->setTempDataValue('user_person', key($user_people));
       $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());

@@ -17,7 +17,7 @@ steps:
     route: par_profile_view_flows.profile
     form_id: par_profile
     components:
-      user_detail: {}
+      user_detail: {  }
       contact_detail:
         cardinality: -1
     redirect:

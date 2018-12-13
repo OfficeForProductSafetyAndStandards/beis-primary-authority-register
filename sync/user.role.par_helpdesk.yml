@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: par_helpdesk
-label: 'PAR Helpdesk'
+label: 'Processing Team Member'
 weight: 6
 is_admin: null
 permissions:
@@ -58,13 +58,19 @@ permissions:
   - 'approve partnerships via help desk'
   - 'assign par_enforcement role'
   - 'assign par_helpdesk role'
+  - 'block user'
   - 'bypass par_data membership'
   - 'bypass partnership journey'
   - 'cease coordinated member'
   - 'confirm partnership'
   - 'create article content'
+  - 'create authority user'
+  - 'create enforcement user'
   - 'create files'
+  - 'create helpdesk user'
+  - 'create organisation user'
   - 'create page content'
+  - 'create par profile'
   - 'delete any document files'
   - 'delete any image files'
   - 'delete invite entities'
@@ -142,6 +148,7 @@ permissions:
   - 'review deviation request'
   - 'revoke partnerships'
   - 'search partnerships'
+  - 'unblock user'
   - 'unlock membership list'
   - 'update coordinated member'
   - 'update partnership authority details'

@@ -90,74 +90,32 @@ class ParUserDetail extends ParFormPluginBase {
     }
 
     if ($user_id = $this->getFlowDataHandler()->getFormPermValue('user_id', $cardinality, NULL)) {
-      $form['user_account']['email_heading'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => '<strong>E-mail</strong>',
-        '#attributes' => ['class' => ['column-one-third']],
-      ];
-      $form['user_account']['last_access_heading'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => '<strong>Last sign in</strong>',
-        '#attributes' => ['class' => ['column-one-third']],
-      ];
-      $form['user_account']['roles_heading'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => '<strong>Type of account</strong>',
-        '#attributes' => ['class' => ['column-one-third']],
-      ];
       $form['user_account']['email'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $this->getDefaultValuesByKey('user_account', $cardinality, ''),
-        '#attributes' => ['class' => ['column-one-third']],
+        '#value' => '<strong>E-mail</strong><br>' . $this->getDefaultValuesByKey('user_account', $cardinality, ''),
+        '#attributes' => ['class' => ['column-full']],
       ];
       $form['user_account']['last_access'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $this->getDefaultValuesByKey('user_login', $cardinality, ''),
-        '#attributes' => ['class' => ['column-one-third']],
+        '#value' => '<strong>Type of account</strong><br>' . $this->getDefaultValuesByKey('user_roles', $cardinality, ''),
+        '#attributes' => ['class' => ['column-two-thirds']],
       ];
       $form['user_account']['roles'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $this->getDefaultValuesByKey('user_roles', $cardinality, ''),
+        '#value' => '<strong>Last sign in</strong><br>' . $this->getDefaultValuesByKey('user_login', $cardinality, ''),
         '#attributes' => ['class' => ['column-one-third']],
       ];
 
       $params = $this->getRouteParams() + ['user' => $user_id];
-      try {
-        $form['user_account']['block'] = [
-          '#type' => 'markup',
-          '#markup' => t('@link', [
-            '@link' => $this->getFlowNegotiator()->getFlow()
-              ->getLinkByCurrentOperation('block', $params, ['query' => ['destination' => $return_path]])
-              ->setText('Block user')
-              ->toString(),
-          ]),
-          '#attributes' => ['class' => ['column-full']],
-        ];
-        $form['user_account']['unblock'] = [
-          '#type' => 'markup',
-          '#markup' => t('@link', [
-            '@link' => $this->getFlowNegotiator()->getFlow()
-              ->getLinkByCurrentOperation('unblock', $params, ['query' => ['destination' => $return_path]])
-              ->setText('Unblock user')
-              ->toString(),
-          ]),
-          '#attributes' => ['class' => ['column-full']],
-        ];
-      } catch (ParFlowException $e) {
-
-      }
-
+      // Try to add an update profile link.
       try {
         $form['user_account']['manage'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
-            '@link' => $this->getLinkByRoute('par_profile_update_flows.select_person', $params, ['attributes' => ['class' => ['column-full']]])
+            '@link' => $this->getLinkByRoute('par_profile_update_flows.edit_select_person', $params, ['attributes' => ['class' => ['column-full']]])
               ->setText('Update user profile')
               ->toString(),
           ]),
@@ -166,25 +124,13 @@ class ParUserDetail extends ParFormPluginBase {
 
       }
 
-      try {
-        $form['user_account']['invite'] = [
-          '#type' => 'markup',
-          '#markup' => t('@link', [
-            '@link' => $this->getLinkByRoute('par_profile_update_flows.select_person', $params, ['attributes' => ['class' => ['column-full']]])
-              ->setText('Invite the user to create an account')
-              ->toString(),
-          ]),
-        ];
-      } catch (ParFlowException $e) {
-
-      }
-
+      // Try to add a block user link.
       try {
         $form['user_account']['block'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
-            '@link' => $this->getLinkByRoute('par_profile_update_flows.select_person', $params, ['attributes' => ['class' => ['column-full']]])
-              ->setText('Block the user')
+            '@link' => $this->getLinkByRoute('par_user_block_flows.block', $params, ['attributes' => ['class' => ['column-full']]])
+              ->setText('Block user account')
               ->toString(),
           ]),
         ];
@@ -192,12 +138,13 @@ class ParUserDetail extends ParFormPluginBase {
 
       }
 
+      // Try to add a block user link.
       try {
-        $form['user_account']['role'] = [
+        $form['user_account']['unblock'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
-            '@link' => $this->getLinkByRoute('par_profile_update_flows.select_person', $params, ['attributes' => ['class' => ['column-full']]])
-              ->setText('Change role')
+            '@link' => $this->getLinkByRoute('par_user_block_flows.unblock', $params, ['attributes' => ['class' => ['column-full']]])
+              ->setText('Re-activate user account')
               ->toString(),
           ]),
         ];
@@ -216,13 +163,13 @@ class ParUserDetail extends ParFormPluginBase {
         ],
       ];
 
+      // Try to add an invite link.
       try {
         $params = $this->getRouteParams() + ['par_data_person' => $person_id];
         $form['user_account']['invite'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
-            '@link' => $this->getFlowNegotiator()->getFlow()
-              ->getLinkByCurrentOperation('invite_user', $params, ['query' => ['destination' => $return_path]])
+            '@link' => $this->getLinkByRoute('par_invite_user_flows.link_contact', $params, ['attributes' => ['class' => ['column-full']]])
               ->setText('Invite the user to create an account')
               ->toString(),
           ]),

@@ -77,6 +77,7 @@ module:
   par_inspection_feedback_flows: 0
   par_inspection_feedback_view_flows: 0
   par_invite: 0
+  par_invite_user_flows: 0
   par_login: 0
   par_member_add_flows: 0
   par_member_cease_flows: 0
@@ -87,11 +88,13 @@ module:
   par_partnership_application_flows: 0
   par_partnership_confirmation_flows: 0
   par_partnership_flows: 0
+  par_profile_create_flows: 0
   par_profile_update_flows: 0
   par_profile_view_flows: 0
   par_rd_help_desk_flows: 0
   par_roles: 0
   par_search_partnership_flows: 0
+  par_user_block_flows: 0
   par_validation: 0
   password_policy: 0
   password_policy_character_types: 0

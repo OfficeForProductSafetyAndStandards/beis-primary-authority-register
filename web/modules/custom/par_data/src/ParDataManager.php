@@ -369,6 +369,7 @@ class ParDataManager implements ParDataManagerInterface {
     }
 
     $account_people = $this->getUserPeople($account);
+
     // When we say direct we really mean by a maximum factor of two.
     // Because we must first jump through one of the core membership
     //  entities, i.e. authorities or organisations.
@@ -629,10 +630,10 @@ class ParDataManager implements ParDataManagerInterface {
    * ];
    * @endcode
    */
-  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC') {
+  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC', $conjunction = 'AND') {
     $entities = [];
 
-    $query = $this->getEntityQuery($type);
+    $query = $this->getEntityQuery($type, $conjunction);
 
     foreach ($conditions as $row) {
       foreach ($row as $condition_operator => $condition_row) {
@@ -709,19 +710,21 @@ class ParDataManager implements ParDataManagerInterface {
   public function getUserPeople(UserInterface $account) {
     $conditions = [
       [
-        'OR' => [
-          ['field_user_account', $account->id(), 'IN']
+        'AND' => [
+          ['field_user_account', $account->id(), 'IN'],
+          ['deleted', 1, '<>'],
          ],
       ],
       [
-        'OR' => [
-          ['email', $account->get('mail')->getString(), 'CONTAINS'],
-          ['field_user_account', NULL, 'IS NULL']
+        'AND' => [
+          ['email', $account->get('mail')->getString()],
+          ['field_user_account', NULL, 'IS NULL'],
+          ['deleted', 1, '<>'],
         ],
       ],
     ];
 
-    return $this->getEntitiesByQuery('par_data_person', $conditions);
+    return $this->getEntitiesByQuery('par_data_person', $conditions, NULL, NULL, 'ASC', 'OR');
   }
 
   /**
@@ -886,7 +889,7 @@ EOT;
       try {
         $executed = $connection->query($query);
       }
-      catch (Exception $e) {
+      catch (\Exception $e) {
         var_dump($e->getMessage());
       }
     }

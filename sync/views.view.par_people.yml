@@ -27,7 +27,7 @@ display:
         options:
           perm: 'view par profile'
       cache:
-        type: tag
+        type: none
         options: {  }
       query:
         type: views_query
@@ -95,7 +95,7 @@ display:
           default_row_class: true
           override: true
           sticky: false
-          caption: ''
+          caption: 'People that you can manage'
           summary: ''
           description: ''
           columns:
@@ -103,7 +103,8 @@ display:
             first_name: first_name
             last_name: last_name
             email: email
-            login: login
+            par_flow_link: par_flow_link
+            par_flow_link_1: par_flow_link_1
           info:
             id:
               sortable: false
@@ -133,14 +134,21 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            login:
+            par_flow_link:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-          default: '-1'
+            par_flow_link_1:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          default: email
           empty_table: false
       row:
         type: fields
@@ -393,8 +401,9 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
-          group_columns: {  }
+          group_column: entity_id
+          group_columns:
+            value: value
           group_rows: true
           delta_limit: 0
           delta_offset: 0
@@ -412,7 +421,7 @@ display:
           field: par_flow_link
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: 'Manage person'
           label: Actions
           exclude: false
           alter:
@@ -457,6 +466,60 @@ display:
           title: 'Manage contact'
           assistive_text: 'Manage {{ first_name }} {{ last_name }}'
           link: '/person/{{ id }}'
+          hidden: 1
+          entity_type: par_data_person
+          plugin_id: par_flow_link
+        par_flow_link_1:
+          id: par_flow_link_1
+          table: par_people_field_data
+          field: par_flow_link
+          relationship: none
+          group_type: group
+          admin_label: 'Add a person'
+          label: 'PAR Flow Link'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: false
+          title: 'Add a person'
+          assistive_text: ''
+          link: /person/create/contact
           hidden: 1
           entity_type: par_data_person
           plugin_id: par_flow_link
@@ -507,7 +570,7 @@ display:
           group_type: group
           admin_label: ''
           operator: '='
-          value: ''
+          value: direct
           group: 1
           exposed: false
           expose:
@@ -598,8 +661,21 @@ display:
           entity_type: par_data_person
           entity_field: last_name
           plugin_id: standard
-      title: 'PAR Authority Members'
-      header: {  }
+      title: People
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: true
+          content:
+            value: '{{ par_flow_link_1 }}'
+            format: full_html
+          plugin_id: text
       footer: {  }
       empty: {  }
       relationships: {  }

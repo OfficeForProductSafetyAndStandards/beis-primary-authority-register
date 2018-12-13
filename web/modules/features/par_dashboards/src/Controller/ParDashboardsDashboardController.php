@@ -227,6 +227,27 @@ class ParDashboardsDashboardController extends ControllerBase {
       }
     }
 
+    // User management
+    if ($account && $people = $this->getParDataManager()->getUserPeople($account) &&
+        $this->getCurrentUser()->hasPermission('manage par profile')) {
+
+      $build['users'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('People'),
+        '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+
+      // User management link.
+      $manage_people_link = $this->getLinkByRoute('view.par_people.people')
+        ->setText('Manage your colleagues')->toString();
+      $build['users']['people'] = [
+        '#type' => 'markup',
+        '#markup' => "<p>{$manage_people_link}</p>",
+      ];
+    }
+
     // User controls.
     if ($account && $people = $this->getParDataManager()->getUserPeople($account) &&
       $this->getCurrentUser()->hasPermission('manage par profile')) {

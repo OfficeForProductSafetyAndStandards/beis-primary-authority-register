@@ -2,16 +2,18 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
+use Drupal\user\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * About business form plugin.
+ * Form for selecting an organisation.
  *
  * @ParForm(
- *   id = "member_select",
- *   title = @Translation("Member organisation selection.")
+ *   id = "organisation_select",
+ *   title = @Translation("Organisation selection.")
  * )
  */
 class ParSelectOrganisationForm extends ParFormPluginBase {
@@ -20,22 +22,16 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function loadData($cardinality = 1) {
-    $organisations = [];
+    $organisation_options = [];
 
-    // Set the organisation id for direct partnerships with only one organisation.
-    if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {
-      if ($par_data_partnership->isDirect()) {
-        $organisations = $par_data_partnership->getOrganisation();
-      }
-      elseif ($par_data_partnership->isCoordinated()) {
-        foreach ($par_data_partnership->getCoordinatedMember() as $coordinated_member) {
-          $coordinated_organisations = $coordinated_member->getOrganisation();
-          $organisations = $this->getParDataManager()->getEntitiesAsOptions($coordinated_organisations, $organisations);
-        }
-      }
+    // Get the organisations that the current user belongs to.
+    if ($this->getFlowDataHandler()->getCurrentUser()->isAuthenticated()) {
+      $account = User::Load($this->getFlowDataHandler()->getCurrentUser()->id());
+      $organisations = $this->getParDataManager()->hasMembershipsByType($account, 'par_data_organisation', TRUE);
+      $organisation_options = $this->getParDataManager()->getEntitiesAsOptions($organisations, []);
     }
 
-    $this->getFlowDataHandler()->setFormPermValue('partnership_organisations', $organisations);
+    $this->getFlowDataHandler()->setFormPermValue('organisations', $organisation_options);
 
     parent::loadData();
   }
@@ -45,40 +41,58 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
    */
   public function getElements($form = [], $cardinality = 1) {
     // Get all the allowed authorities.
-    $partnership_organisations = $this->getFlowDataHandler()->getFormPermValue('partnership_organisations');
+    $organisations = $this->getFlowDataHandler()->getFormPermValue('organisations');
+    $required = $this->getFlowDataHandler()->getDefaultValues('organisation_required', TRUE);
 
-    if (count($partnership_organisations) === 1) {
-      $organisation = key($partnership_organisations);
-      $this->getFlowDataHandler()->setTempDataValue('par_data_organisation_id', $organisation);
+    // If no suggestions were found cancel out of the journey.
+    if ($required && count($organisations) <= 0) {
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getPrevRoute('prev'), $this->getRouteParams());
+      return new RedirectResponse($url);
     }
-    // If the partnership is direct or there are not multiple members proceed to the next step.
-    if (count($partnership_organisations) <= 1) {
+
+    // If only one authority submit the form automatically and go to the next step.
+    elseif ($required && count($organisations) === 1) {
+      $this->getFlowDataHandler()->setTempDataValue('par_data_organisation_id', key($organisations));
       $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
       return new RedirectResponse($url);
     }
 
-    // Initialize pager and get current page.
-    $number_of_items = 10;
-    $current_page = pager_default_initialize(count($partnership_organisations), $number_of_items, $cardinality);
+    if ($organisations) {
+      // Initialize pager and get current page.
+      $number_of_items = 10;
+      $current_page = pager_default_initialize(count($organisations), $number_of_items, $cardinality);
 
-    // Split the items up into chunks:
-    $chunks = array_chunk($partnership_organisations, $number_of_items, TRUE);
+      // Split the items up into chunks:
+      $chunks = array_chunk($organisations, $number_of_items, TRUE);
 
-    $form['par_data_organisation_id'] = [
-      '#type' => 'radios',
-      '#title' => t('Choose the member to enforce'),
-      '#options' => $chunks[$current_page],
-      '#default_value' => $this->getDefaultValuesByKey('par_data_organisation_id', $cardinality, []),
-    ];
+      $multiple = $this->getFlowDataHandler()->getDefaultValues('allow_multiple', FALSE);
+      $default_value = $this->getDefaultValuesByKey("par_data_organisation_id", $cardinality, NULL);
+      $form['par_data_organisation_id'] = [
+        '#type' => $multiple ? 'checkboxes' : 'radios',
+        '#title' => t('Choose an Organisation'),
+        '#options' => $organisations,
+        '#default_value' => $multiple ? (array) $default_value : $default_value,
+        '#attributes' => ['class' => ['form-group']],
+      ];
 
-    $form['pager'] = [
-      '#type' => 'pager',
-      '#theme' => 'pagerer',
-      '#element' => $cardinality,
-      '#config' => [
-        'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
-      ],
-    ];
+      // @TODO Add pager so that any selected checkboxes aren't unselected when a new page is loaded.
+//      $form['pager'] = [
+//        '#type' => 'pager',
+//        '#theme' => 'pagerer',
+//        '#element' => $cardinality,
+//        '#config' => [
+//          'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
+//        ],
+//      ];
+    }
+    else {
+      $form['intro'] = [
+        '#type' => 'markup',
+        '#markup' => "There are no organisations to choose from.",
+        '#prefix' => '<p class=""form-group">',
+        '#suffix' => '</p>',
+      ];
+    }
 
     return $form;
   }
@@ -87,10 +101,17 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
    * Validate date field.
    */
   public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
-    $organisation_id_key = $this->getElementKey('par_data_organisation_id');
-    if (empty($form_state->getValue($organisation_id_key))) {
+    $required = $this->getFlowDataHandler()->getDefaultValues('organisation_required', TRUE);
+
+    // If multiple choices are allowed the resulting value may be an array with keys but empty values.
+    $organisation_element_key = $this->getElementKey('par_data_organisation_id', $cardinality);
+    $authorities_selected = $this->getFlowDataHandler()->getDefaultValues('allow_multiple', FALSE) ?
+      NestedArray::filter((array) $form_state->getValue($organisation_element_key)) :
+      $form_state->getValue($organisation_element_key);
+
+    if ($required && empty($authorities_selected)) {
       $id_key = $this->getElementKey('par_data_organisation_id', $cardinality, TRUE);
-      $form_state->setErrorByName($this->getElementName($organisation_id_key), $this->wrapErrorMessage('You must select an organisation.', $this->getElementId($id_key, $form)));
+      $form_state->setErrorByName($this->getElementName($organisation_element_key), $this->wrapErrorMessage('You must select an organisation.', $this->getElementId($id_key, $form)));
     }
 
     return parent::validate($form, $form_state, $cardinality, $action);

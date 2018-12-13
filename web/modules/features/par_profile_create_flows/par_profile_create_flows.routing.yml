@@ -1,0 +1,97 @@
+par_profile_create_flows.create_contact:
+  path: '/person/create/contact'
+  defaults:
+    _form: '\Drupal\par_profile_create_flows\Form\ParContactForm'
+    _title_callback: '\Drupal\par_profile_create_flows\Form\ParContactForm::titleCallback'
+  requirements:
+    _permission: 'create par profile'
+    _custom_access: '\Drupal\par_profile_create_flows\Form\ParContactForm::accessCallback'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user
+        
+par_profile_create_flows.choose_role:
+  path: '/person/create/role'
+  defaults:
+    _form: '\Drupal\par_profile_create_flows\Form\ParRoleForm'
+    _title_callback: '\Drupal\par_profile_create_flows\Form\ParRoleForm::titleCallback'
+  requirements:
+    _permission: 'create par profile'
+    _custom_access: '\Drupal\par_profile_create_flows\Form\ParRoleForm::accessCallback'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user
+
+par_profile_create_flows.choose_institution:
+  path: '/person/create/membership'
+  defaults:
+    _form: '\Drupal\par_profile_create_flows\Form\ParAddInstitutionForm'
+    _title_callback: '\Drupal\par_profile_create_flows\Form\ParAddInstitutionForm::titleCallback'
+  requirements:
+    _permission: 'create par profile'
+    _custom_access: '\Drupal\par_profile_create_flows\Form\ParAddInstitutionForm::accessCallback'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user
+
+par_profile_create_flows.link_contact:
+  path: '/person/create/link'
+  defaults:
+    _form: '\Drupal\par_profile_create_flows\Form\ParLinkContactForm'
+    _title_callback: '\Drupal\par_profile_create_flows\Form\ParLinkContactForm::titleCallback'
+  requirements:
+    _permission: 'create par profile'
+    _custom_access: '\Drupal\par_profile_create_flows\Form\ParLinkContactForm::accessCallback'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user
+
+par_profile_create_flows.invite_contact:
+  path: '/person/create/invite'
+  defaults:
+    _form: '\Drupal\par_profile_create_flows\Form\ParInviteForm'
+    _title_callback: '\Drupal\par_profile_create_flows\Form\ParInviteForm::titleCallback'
+  requirements:
+    _permission: 'create par profile'
+    _custom_access: '\Drupal\par_profile_create_flows\Form\ParInviteForm::accessCallback'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user
+
+par_profile_create_flows.review:
+  path: '/person/create/review'
+  defaults:
+    _form: '\Drupal\par_profile_create_flows\Form\ParReviewForm'
+    _title_callback: '\Drupal\par_profile_create_flows\Form\ParReviewForm::titleCallback'
+  requirements:
+    _permission: 'create par profile'
+    _custom_access: '\Drupal\par_profile_create_flows\Form\ParReviewForm::accessCallback'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user
+
+par_profile_create_flows.completed:
+  path: '/person/create/completed'
+  defaults:
+    _controller: '\Drupal\par_profile_create_flows\Controller\ParConfirmedController::content'
+    _title_callback: '\Drupal\par_profile_create_flows\Controller\ParConfirmedController::titleCallback'
+  requirements:
+    _permission: 'create par profile'
+    _custom_access: '\Drupal\par_profile_create_flows\Controller\ParConfirmedController::accessCallback'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user

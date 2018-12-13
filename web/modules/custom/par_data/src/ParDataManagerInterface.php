@@ -45,7 +45,7 @@ interface ParDataManagerInterface {
    *   An array of entity objects indexed by their IDs. Returns an empty array
    *   if no matching entities are found.
    */
-  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort, $direction = 'ASC');
+  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC');
 
   /**
    * Gets the entity definition for the class that defines an entities bundles.

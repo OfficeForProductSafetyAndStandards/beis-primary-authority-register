@@ -1,0 +1,26 @@
+par_user_block_flows.block:
+  path: '/person/{par_data_person}/block'
+  defaults:
+    _form: '\Drupal\par_user_block_flows\Form\ParBlockUserController'
+    _title_callback: '\Drupal\par_user_block_flows\Form\ParBlockUserController::titleCallback'
+  requirements:
+    _permission: 'block user'
+    _custom_access: '\Drupal\par_user_block_flows\Form\ParBlockUserController::accessCallback'
+    par_data_person: \d+
+  options:
+    parameters:
+      par_data_person:
+        type: entity:par_data_person
+par_user_block_flows.unblock:
+  path: '/person/{par_data_person}/unblock'
+  defaults:
+    _form: '\Drupal\par_user_block_flows\Form\ParUnblockUserController'
+    _title_callback: '\Drupal\par_user_block_flows\Form\ParUnblockUserController::titleCallback'
+  requirements:
+    _permission: 'unblock user'
+    _custom_access: '\Drupal\par_user_block_flows\Form\ParUnblockUserController::accessCallback'
+    par_data_person: \d+
+  options:
+    parameters:
+      par_data_person:
+        type: entity:par_data_person

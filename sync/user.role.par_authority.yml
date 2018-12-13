@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: par_authority
-label: 'PAR Authority Member'
+label: 'Authority Member'
 weight: 3
 is_admin: null
 permissions:
@@ -31,7 +31,10 @@ permissions:
   - 'approve enforcement notice'
   - 'authority partnership journey'
   - 'confirm partnership'
+  - 'create authority user'
+  - 'create enforcement user'
   - 'create files'
+  - 'create par profile'
   - 'delete own document files'
   - 'delete own image files'
   - 'download any csv files'
