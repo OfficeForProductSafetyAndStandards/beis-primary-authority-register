@@ -22,7 +22,7 @@ class ParChecklistForm extends ParBaseForm {
   /**
    * Set the page title.
    */
-  protected $pageTitle = 'Have you discussed this enforcement?';
+  protected $pageTitle = 'Have you discussed this issue with the Primary Authority?';
 
   /**
    * Load the data for this form.

@@ -21,7 +21,7 @@ gulp.task('sass', function () {
     .pipe(gulp.dest(themeDir + '/css'));
 });
 
-gulp.task('cp-assets', [], function() {
+gulp.task('cp-assets', function() {
   return gulp.src([
     "node_modules/govuk_frontend_toolkit/images/**"
   ])
@@ -32,5 +32,5 @@ gulp.task('watch', function() {
   gulp.watch(themeDir + '/sass/**/*.scss', ['sass']);
 });
 
-gulp.task('build', ['cp-assets', 'sass']);
-gulp.task('default', ['cp-assets', 'sass']);
+gulp.task('build', gulp.series('cp-assets', 'sass'));
+gulp.task('default', gulp.series('cp-assets', 'sass'));

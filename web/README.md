@@ -4,7 +4,7 @@ The web application runs on Drupal 8.
 
 # Configure
 
-To configure the application run the following
+To configure the application run the following. Ensure you have already imported the database.
 
     npm install
     npm run gulp
