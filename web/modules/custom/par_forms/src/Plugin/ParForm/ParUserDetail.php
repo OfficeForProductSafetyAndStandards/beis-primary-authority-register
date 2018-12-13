@@ -110,12 +110,41 @@ class ParUserDetail extends ParFormPluginBase {
       ];
 
       $params = $this->getRouteParams() + ['user' => $user_id];
+      // Try to add an update profile link.
       try {
         $form['user_account']['manage'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
             '@link' => $this->getLinkByRoute('par_profile_update_flows.edit_select_person', $params, ['attributes' => ['class' => ['column-full']]])
               ->setText('Update user profile')
+              ->toString(),
+          ]),
+        ];
+      } catch (ParFlowException $e) {
+
+      }
+
+      // Try to add a block user link.
+      try {
+        $form['user_account']['block'] = [
+          '#type' => 'markup',
+          '#markup' => t('@link', [
+            '@link' => $this->getLinkByRoute('par_user_block_flows.block', $params, ['attributes' => ['class' => ['column-full']]])
+              ->setText('Block user account')
+              ->toString(),
+          ]),
+        ];
+      } catch (ParFlowException $e) {
+
+      }
+
+      // Try to add a block user link.
+      try {
+        $form['user_account']['unblock'] = [
+          '#type' => 'markup',
+          '#markup' => t('@link', [
+            '@link' => $this->getLinkByRoute('par_user_block_flows.unblock', $params, ['attributes' => ['class' => ['column-full']]])
+              ->setText('Re-activate user account')
               ->toString(),
           ]),
         ];
@@ -134,6 +163,7 @@ class ParUserDetail extends ParFormPluginBase {
         ],
       ];
 
+      // Try to add an invite link.
       try {
         $params = $this->getRouteParams() + ['par_data_person' => $person_id];
         $form['user_account']['invite'] = [

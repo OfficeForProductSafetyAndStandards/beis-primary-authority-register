@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies: {  }
+id: unblock_user
+label: 'Unblock User Flow'
+default_title: null
+default_section_title: 'Reactivate user'
+description: ''
+save_method: end
+states:
+  - user
+steps:
+  1:
+    route: par_user_block_flows.unblock
+    form_id: par_unblock_user
+    redirect:
+      done: 2

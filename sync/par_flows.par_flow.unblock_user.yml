@@ -1,0 +1,20 @@
+uuid: 1fdda6e0-875d-4c61-b4d7-c52d0802abf2
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: CF7fGxwVfSVxtSEValp6_CZ1AHwpPZtdzAT_nFvrVEw
+id: unblock_user
+label: 'Unblock User Flow'
+default_title: null
+default_section_title: 'Reactivate user'
+description: ''
+save_method: end
+states:
+  - user
+steps:
+  1:
+    route: par_user_block_flows.unblock
+    form_id: par_unblock_user
+    redirect:
+      save: 2
