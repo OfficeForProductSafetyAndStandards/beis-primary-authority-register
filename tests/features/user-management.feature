@@ -82,6 +82,36 @@ Feature: User management
         Then the element ".component-contact-detail .contact-detail-locations-1" contains the text "Contact at the authority: Authority for user management test"
         And the element ".component-contact-detail .contact-detail-locations-1" contains the text "Contact at the authority: Alternate authority for user management test"
 
+    @usermanagement @ci
+    Scenario: Check that existing contacts can be invited
+
+        Given I am logged in as "par_authority_user_management@example.com"
+
+        When I click the link text "Manage your colleagues"
+
+        Then the element "h1.heading-xlarge" contains the text "People"
+        When I add "par_user_management_contact@example.com" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-par-people"
+        And I click the link text "Manage contact"
+
+        # Update the user.
+        When I click the link text "Invite the user to create an account"
+
+        Then the element "h1.heading-xlarge" contains the text "What type of user would you like to create?"
+        And I click on the radio "#edit-role-par-enforcement"
+        When I click on the button "#edit-next"
+
+        Then the element "h1.heading-xlarge" contains the text "Update which authorities or organisations this person belongs to"
+        Then the element ".component-authority-select" contains the text "Choose an Authority"
+        Then the element ".component-organisation-select" contains the text "There are no organisations to choose from."
+        When I click on the button "#edit-next"
+
+        Then the element "h1.heading-xlarge" contains the text "Invite the person to create an account"
+        When I click on the button "#edit-next"
+
+        Then the element "h1.heading-xlarge" contains the text "Invitation review"
+        Then the element ".par-invite-review" contains the text "An invitation will be sent to this person to invite them to join the Primary Authority Register."
+        When I click on the button "#edit-save"
 
 
 
@@ -90,7 +120,3 @@ Feature: User management
 #
 #        Given I am logged in as "par_authority_user_management@example.com"
 #
-#    @usermanagement @ci
-#    Scenario: Check that contacts can be invited
-#
-#        Given I am logged in as "par_authority_user_management@example.com"
