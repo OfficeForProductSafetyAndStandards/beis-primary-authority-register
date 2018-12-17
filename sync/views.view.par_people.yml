@@ -40,7 +40,7 @@ display:
       exposed_form:
         type: bef
         options:
-          submit_button: Apply
+          submit_button: Submit
           reset_button: false
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
@@ -54,18 +54,9 @@ display:
               allow_secondary: false
               secondary_label: 'Advanced options'
               autosubmit: false
+              autosubmit_exclude_textfield: false
               autosubmit_hide: false
-            first_name:
-              bef_format: default
-              more_options:
-                is_secondary: false
-                placeholder_text: ''
-            email:
-              bef_format: default
-              more_options:
-                is_secondary: false
-                placeholder_text: ''
-            last_name:
+            combine:
               bef_format: default
               more_options:
                 is_secondary: false
@@ -91,7 +82,7 @@ display:
         type: table
         options:
           grouping: {  }
-          row_class: ''
+          row_class: list-item-person
           default_row_class: true
           override: true
           sticky: false
@@ -161,7 +152,7 @@ display:
           group_type: group
           admin_label: ''
           label: 'Person ID'
-          exclude: false
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -616,7 +607,7 @@ display:
             description: ''
             use_operator: false
             operator: combine_op
-            identifier: combine
+            identifier: keywords
             required: false
             remember: false
             multiple: false
@@ -687,6 +678,7 @@ display:
           1: OR
           2: AND
       group_by: true
+      css_class: user-management-list
     cache_metadata:
       max-age: -1
       contexts:
