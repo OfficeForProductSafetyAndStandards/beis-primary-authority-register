@@ -49,8 +49,40 @@ Feature: User management
         When I click the link text "Update user profile"
 
         Then the element "h1.heading-xlarge" contains the text "Choose which contact to update"
+        When I click on the button "#edit-next"
+
+        Then the element "h1.heading-xlarge" contains the text "Update contact details"
+        Then I add "Mrs" to the inputfield "#edit-salutation"
+        Then I add "Emilia" to the inputfield "#edit-first-name"
+        Then I add "Daviddson" to the inputfield "#edit-last-name"
+        And I add "01870446558" to the inputfield "#edit-work-phone"
         And I click on the button "#edit-next"
-    
+
+        Then the element "h1.heading-xlarge" contains the text "Change the type of user"
+        When I click on the button "#edit-next"
+
+        Then the element "h1.heading-xlarge" contains the text "Profile review"
+        And the element "#edit-personal" contains the text "Mrs Emilia Daviddson"
+        And the element "#edit-contact-details" contains the text "01870446558"
+        And the element "#edit-update-all-contacts" contains the text "Would you like to update all contact records with this information?"
+        When I click on the button "#edit-save"
+
+        Then the element "h1.heading-xlarge" contains the text "Thank you for updating your profile"
+        And I click on the button "#edit-done"
+
+        # Check the user details have been updated and the contact records merged.
+        Then the element "h1.heading-xlarge" contains the text "People"
+        When I add "par_user_management_officer@example.com" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-par-people"
+        And I click the link text "Manage contact"
+
+        Then the element "h1.heading-xlarge" contains the text "Mrs Emilia Daviddson"
+        And the element ".component-user-detail" contains the text "par_user_management_officer@example.com"
+        When there is "1" occurences of element ".component-contact-detail .component-item"
+        Then the element ".component-contact-detail .contact-detail-locations-1" contains the text "Contact at the authority: Authority for user management test"
+        And the element ".component-contact-detail .contact-detail-locations-1" contains the text "Contact at the authority: Alternate authority for user management test"
+
+
 
 
 #    @usermanagement @ci
