@@ -26,6 +26,9 @@
             },
             {
                 "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118790?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118791?_format=hal_json"
             }
         ],
         "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/field_regulatory_function": [
@@ -135,6 +138,21 @@
                         "value": "706fd108-d978-4ad1-8753-534f4fa09482"
                     }
                 ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118791?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "b186ca9f-4b84-4182-adc3-8429230b8f25"
+                    }
+                ]
             }
         ],
         "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/field_regulatory_function": [
@@ -173,7 +191,7 @@
     ],
     "changed": [
         {
-            "value": 1545047483
+            "value": 1545056223
         }
     ],
     "revision_timestamp": [
