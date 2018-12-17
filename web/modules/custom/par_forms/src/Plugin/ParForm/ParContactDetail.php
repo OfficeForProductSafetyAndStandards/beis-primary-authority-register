@@ -96,10 +96,10 @@ class ParContactDetail extends ParFormPluginBase {
           '#value' => $this->getDefaultValuesByKey('locations', $cardinality, ''),
         ],
       ];
-      $form['message'] = [
+      $form['contact'] = [
         '#type' => 'fieldset',
         '#weight' => 1,
-        '#attributes' => ['class' => ['grid-row', 'form-group']],
+        '#attributes' => ['class' => ['grid-row', 'form-group', 'contact-details']],
         'name' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
@@ -121,7 +121,7 @@ class ParContactDetail extends ParFormPluginBase {
         'locations' => [
           '#type' => 'html_tag',
           '#tag' => 'details',
-          '#attributes' => ['class' => ['column-full'], 'role' => 'group'],
+          '#attributes' => ['class' => ['column-full', 'contact-locations'], 'role' => 'group'],
           '#value' => \Drupal::service('renderer')->render($locations),
         ],
       ];

@@ -20,6 +20,12 @@
         "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/field_person": [
             {
                 "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118786?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118788?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118790?_format=hal_json"
             }
         ],
         "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/field_regulatory_function": [
@@ -45,7 +51,7 @@
     ],
     "revision_id": [
         {
-            "value": 3440
+            "value": 3441
         }
     ],
     "_embedded": {
@@ -99,6 +105,36 @@
                         "value": "5e0977f0-29de-4904-9a86-c697252e8bc5"
                     }
                 ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118788?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "2d36609d-7212-4eba-baa9-530e33e98c84"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118790?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "706fd108-d978-4ad1-8753-534f4fa09482"
+                    }
+                ]
             }
         ],
         "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/field_regulatory_function": [
@@ -137,12 +173,12 @@
     ],
     "changed": [
         {
-            "value": 1544978235
+            "value": 1545047483
         }
     ],
     "revision_timestamp": [
         {
-            "value": 1544978235
+            "value": 1545047483
         }
     ],
     "revision_translation_affected": [
