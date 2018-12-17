@@ -22,10 +22,7 @@
                 "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118786?_format=hal_json"
             },
             {
-                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118788?_format=hal_json"
-            },
-            {
-                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118790?_format=hal_json"
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118791?_format=hal_json"
             }
         ],
         "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/field_regulatory_function": [
@@ -46,7 +43,7 @@
     ],
     "uuid": [
         {
-            "value": "84e03a59-b111-4e14-994c-67c7e08a3cfe"
+            "value": "d1d7868f-e83d-4d48-9afa-b352c2444e32"
         }
     ],
     "revision_id": [
@@ -109,7 +106,7 @@
             {
                 "_links": {
                     "self": {
-                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118788?_format=hal_json"
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118791?_format=hal_json"
                     },
                     "type": {
                         "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
@@ -117,22 +114,7 @@
                 },
                 "uuid": [
                     {
-                        "value": "2d36609d-7212-4eba-baa9-530e33e98c84"
-                    }
-                ]
-            },
-            {
-                "_links": {
-                    "self": {
-                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118790?_format=hal_json"
-                    },
-                    "type": {
-                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
-                    }
-                },
-                "uuid": [
-                    {
-                        "value": "706fd108-d978-4ad1-8753-534f4fa09482"
+                        "value": "b186ca9f-4b84-4182-adc3-8429230b8f25"
                     }
                 ]
             }
@@ -210,7 +192,7 @@
     ],
     "authority_name": [
         {
-            "value": "Authority for user management test"
+            "value": "Alternate authority for user management test"
         }
     ],
     "authority_type": [
