@@ -1,6 +1,6 @@
 Feature: User management
 
-    @usermanagement @ci
+    @usermanagement @smoke
     Scenario: Check correct users can be managed
 
         Given I am logged in as "par_authority_user_management@example.com"
@@ -24,7 +24,7 @@ Feature: User management
         And the element ".user-management-list .table-scroll-wrapper tbody" contains the text "par_user_management_contact@example.com"
         And the element ".user-management-list .table-scroll-wrapper tbody" does not contain the text "par_organisation_user_management@example.com"
 
-    @usermanagement @ci
+    @usermanagement @smoke
     Scenario: Check that users can be updated
 
         Given I am logged in as "par_authority_user_management@example.com"
@@ -82,7 +82,7 @@ Feature: User management
         Then the element "#contact-detail-locations-1" contains the text "Contact at the authority: Authority for user management test"
         And the element "#contact-detail-locations-1" contains the text "Contact at the authority: Alternate authority for user management test"
 
-    @usermanagement @ci
+    @usermanagement @smoke
     Scenario: Check that existing contacts can be invited
 
         Given I am logged in as "par_authority_user_management@example.com"
