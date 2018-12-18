@@ -1,6 +1,6 @@
 Feature: New Direct Partnership For PA To Approve
 
-    @profileupdate @ci
+    @profileupdate @ci @smoke
     Scenario: Update profile with one contact record
 
         Given I am logged in as "par_authority_profile@example.com"

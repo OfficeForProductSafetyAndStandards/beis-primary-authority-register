@@ -13,7 +13,7 @@ filter_secrets: false
 language: php
 
 php:
-  - 7.1
+  - 7.2
 
 services:
   - docker
@@ -113,7 +113,15 @@ install:
 # Run further Drush commands
 #-----------------------------------------------------------------------------
 
-  - docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
+#  - docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/drush/drush/drush sset system.maintenance_mode 1"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/drush/drush/drush cr"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/drush/drush/drush updb -y"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/drush/drush/drush cim -y && ../vendor/drush/drush/drush cim -y"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/drush/drush/drush cc drush"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/drush/drush/drush fra -y"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/drush/drush/drush sset system.maintenance_mode 0"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/drush/drush/drush cr"
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cex -n"
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush core-requirements --severity=2"
 
@@ -135,13 +143,16 @@ install:
 
 before_script:
   - curl --silent http://127.0.0.1:8111 > /dev/null
-
-script:
-  - if [[ "$TESTTYPE" == "unit" ]]; then docker exec -it par_beta_web sh -c "./vendor/bin/paratest --processes=16 --log-junit=./tests/reports/phpunit.latest.xml"; fi
   - if [[ "$TESTTYPE" == "nightwatch" ]]; then docker exec -it par_beta_web bash -c "apt-get update -y"; fi
   - if [[ "$TESTTYPE" == "nightwatch" ]]; then docker exec -it par_beta_web bash -c "apt-get install -y google-chrome-stable"; fi
   - if [[ "$TESTTYPE" == "nightwatch" ]]; then travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install && npm run selenium-install"; fi
-  - if [[ "$TESTTYPE" == "nightwatch" ]]; then docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run nightwatch-cucumber-travis -- --tag ci"; fi
+
+script:
+  - if [[ "$TESTTYPE" == "unit" ]]; then docker exec -it par_beta_web sh -c "./vendor/bin/paratest --processes=16 --log-junit=./tests/reports/phpunit.latest.xml"; fi
+  # Run full tests on tag builds.
+  - if [[ $TRAVIS_TAG != '' && "$TESTTYPE" == "nightwatch" ]]; then docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run nightwatch-cucumber-travis --tag ci"; fi
+  # Run smoke tests on all other builds.
+  - if [[ $TRAVIS_TAG == '' && "$TESTTYPE" == "nightwatch" ]]; then docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run nightwatch-cucumber-travis --tag smoke"; fi
   - if [[ "$TESTTYPE" == "nightwatch" ]]; then docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run generate-report"; fi
   - "if [[ $TRAVIS_BRANCH == 'master' ]]; then curl -X POST https://par-dashboard.cloudapps.digital/push/test_results_unit -H 'Accept: application/json' -H 'Cache-Control: no-cache' -H 'Content-Type: application/xml' -d '@./tests/reports/phpunit.latest.xml'; fi"
   - "if [[ $TRAVIS_BRANCH == 'master' ]]; then curl -X POST https://par-dashboard.cloudapps.digital/push/test_results_acceptance -H 'Accept: application/json' -H 'Cache-Control: no-cache' -H 'Content-Type: application/json' -d '@./tests/reports/cucumber.json'; fi"
