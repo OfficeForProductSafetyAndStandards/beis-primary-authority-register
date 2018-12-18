@@ -13,7 +13,7 @@ filter_secrets: false
 language: php
 
 php:
-  - 7.1
+  - 7.2
 
 services:
   - docker
@@ -113,7 +113,15 @@ install:
 # Run further Drush commands
 #-----------------------------------------------------------------------------
 
-  - docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
+#  - docker exec -i par_beta_web sh /var/www/html/drupal-update.sh /var/www/html
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/drush/drush/drush sset system.maintenance_mode 1"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/drush/drush/drush cr"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/drush/drush/drush updb -y"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/drush/drush/drush cim -y && ../vendor/drush/drush/drush cim -y"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/drush/drush/drush cc drush"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/drush/drush/drush fra -y"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/drush/drush/drush sset system.maintenance_mode 0"
+  - docker exec -i par_beta_web bash -c "cd web && ../vendor/drush/drush/drush cr"
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush cex -n"
   - docker exec -i par_beta_web bash -c "cd web && ../vendor/bin/drush core-requirements --severity=2"
 
