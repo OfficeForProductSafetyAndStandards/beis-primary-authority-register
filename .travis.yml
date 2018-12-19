@@ -151,9 +151,9 @@ script:
   - 'echo "{ \"build\" : \"${TRAVIS_BUILD_NUMBER}\", \"tag\":\"${TRAVIS_TAG}\", \"time\":\"$(date -u)\"}"'
   - if [[ "$TESTTYPE" == "unit" ]]; then docker exec -it par_beta_web sh -c "./vendor/bin/paratest --processes=16 --log-junit=./tests/reports/phpunit.latest.xml"; fi
   # Run full tests on tag builds.
-  - if [[ $TRAVIS_TAG != '' && "$TESTTYPE" == "nightwatch" ]]; then docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run nightwatch-cucumber-travis --tag ci"; fi
+  - if [[ $TRAVIS_TAG != '' && "$TESTTYPE" == "nightwatch" ]]; then docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run nightwatch-cucumber-travis -- --tag ci"; fi
   # Run smoke tests on all other builds.
-  - if [[ $TRAVIS_TAG == '' && "$TESTTYPE" == "nightwatch" ]]; then docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run nightwatch-cucumber-travis --tag smoke"; fi
+  - if [[ $TRAVIS_TAG == '' && "$TESTTYPE" == "nightwatch" ]]; then docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run nightwatch-cucumber-travis -- --tag smoke"; fi
   - if [[ "$TESTTYPE" == "nightwatch" ]]; then docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run generate-report"; fi
   - "if [[ $TRAVIS_BRANCH == 'master' ]]; then curl -X POST https://par-dashboard.cloudapps.digital/push/test_results_unit -H 'Accept: application/json' -H 'Cache-Control: no-cache' -H 'Content-Type: application/xml' -d '@./tests/reports/phpunit.latest.xml'; fi"
   - "if [[ $TRAVIS_BRANCH == 'master' ]]; then curl -X POST https://par-dashboard.cloudapps.digital/push/test_results_acceptance -H 'Accept: application/json' -H 'Cache-Control: no-cache' -H 'Content-Type: application/json' -d '@./tests/reports/cucumber.json'; fi"
