@@ -9,15 +9,16 @@ use Drupal\Core\Controller\ControllerBase;
 */
 class ParDataTestController extends ControllerBase {
 
+  protected function getContentManager() {
+    return \Drupal::service('par_data_test.manager');
+  }
+
   /**
   * The main index page for the styleguide.
   */
   public function reset() {
-    // Load the install file to reset the data.
-    module_load_include('install', 'par_data_test');
-
-    par_data_test_uninstall();
-    par_data_test_install();
+    $this->getContentManager()->removeData();
+    $this->getContentManager()->importData();
 
     $build = [
       '#type' => 'markup',
@@ -26,5 +27,4 @@ class ParDataTestController extends ControllerBase {
 
     return $build;
   }
-
 }

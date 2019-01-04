@@ -8,44 +8,18 @@
  * Implements hook_uninstall().
  */
 function par_data_test_uninstall() {
-  // Delete all the entities when we uninstall.
-  // Must be removed before we do the final migration.
-  // This should just be used for testing while we
-  // have no other content in the database.
-  $par_data_manager = \Drupal::service('par_data.manager');
+  // Remove data.
+  \Drupal::service('par_data_test.manager')->removeData();
 
-  $module_folder = \Drupal::moduleHandler()
-      ->getModule('par_data_test')
-      ->getPath() . '/content';
-  $entity_folders = array_filter(scandir($module_folder), function($item) {
-    return $item[0] !== '.';
-  });
+  // Unset State.
+  \Drupal::state()->delete('par_data_test.package');
+}
 
-  $entities = [];
-  foreach ($entity_folders as $directory) {
-    $entity_uuids = array_filter(scandir($module_folder . '/' . $directory), function($item) {
-      return $item[0] !== '.';
-    });
-
-
-    $entities[$directory] = [];
-    foreach ($entity_uuids as $uuid) {
-      $entities[$directory][] = rtrim($uuid, '.json');
-    }
-  }
-
-  // Permanently delete all entities.
-  foreach ($entities as $entity_type => $uuid) {
-    $storage = \Drupal::entityTypeManager()->getStorage($entity_type);
-    $entity = $storage->loadByProperties(['uuid' => $uuid]);
-
-    foreach ($entity as $e) {
-      if ($e instanceof \Drupal\par_data\Entity\ParDataEntityInterface) {
-        $e->destroy();
-      }
-      else {
-        $e->delete();
-      }
-    }
-  }
+/**
+ * Implements hook_install().
+ */
+function par_data_test_install() {
+  $data_controller = \Drupal::service('par_data_test.controller');
+  // Set the package name.
+  $data_controller->getPackageName();
 }

@@ -10,10 +10,10 @@ use Drupal\Core\Routing\RouteMatchInterface;
 /**
  * Implements hook_help().
  */
-function par_data_test_help($route_name, RouteMatchInterface $route_match) {
+function par_user_management_test_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
-    // Main module help for the par_data_test module.
-    case 'help.page.par_data_test':
+    // Main module help for the par_user_management_test module.
+    case 'help.page.par_user_management_test':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('Test data for the PAR Data model') . '</p>';

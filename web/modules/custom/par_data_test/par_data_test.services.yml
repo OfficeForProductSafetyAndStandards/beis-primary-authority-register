@@ -3,3 +3,6 @@ services:
     class: '\Drupal\par_data_test\EventSubscriber\ImportSubscriber'
     tags:
       - { name: 'event_subscriber' }
+  par_data_test.manager:
+    class: '\Drupal\par_data_test\ParDataTestManager'
+    arguments: ['@default_content.importer', '@entity_type.manager', '@module_handler', '@extension.list.module', '@info_parser', '@state', '@messenger']

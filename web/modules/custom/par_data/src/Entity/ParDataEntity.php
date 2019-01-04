@@ -598,8 +598,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * @param boolean $reset
    *   Whether to reset the cache.
    *
-   * @return EntityInterface[]
-   *   An array of entities keyed by type.
+   * @return ParDataRelationship[]
+   *   An array of relationships keyed by entity uuid.
    */
   public function getRelationships($target = NULL, $action = NULL, $reset = FALSE) {
     // Enable in memory caching for repeated entity lookups.
