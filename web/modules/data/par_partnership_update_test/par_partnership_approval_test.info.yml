@@ -1,0 +1,7 @@
+name: Par Partnership Approval & Rejection Test
+type: module
+description: Test data for the partnership approval & rejection tests
+core: 8.x
+package: PAR Test Data
+dependencies:
+  - par_data_test

@@ -1,0 +1,7 @@
+name: Par Partnership Update Test
+type: module
+description: Test data for the partnership update tests
+core: 8.x
+package: PAR Test Data
+dependencies:
+  - par_data_test

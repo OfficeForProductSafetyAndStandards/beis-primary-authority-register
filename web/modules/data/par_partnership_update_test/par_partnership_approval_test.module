@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains par_partnership_creation_test.module.
+ * Contains par_partnership_approval_test.module.
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -10,10 +10,10 @@ use Drupal\Core\Routing\RouteMatchInterface;
 /**
  * Implements hook_help().
  */
-function par_partnership_creation_test_help($route_name, RouteMatchInterface $route_match) {
+function par_partnership_approval_test_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
-    // Main module help for the par_partnership_creation_test module.
-    case 'help.page.par_partnership_creation_test':
+    // Main module help for the par_partnership_approval_test module.
+    case 'help.page.par_partnership_approval_test':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('Test data for the PAR Data model') . '</p>';
