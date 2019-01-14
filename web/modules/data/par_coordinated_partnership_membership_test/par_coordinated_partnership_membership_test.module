@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains par_coordinated_partnership_membership_test.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function par_coordinated_partnership_membership_test_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the par_coordinated_partnership_membership_test module.
+    case 'help.page.par_coordinated_partnership_membership_test':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Test data for the PAR Data model') . '</p>';
+      return $output;
+
+    default:
+  }
+}
