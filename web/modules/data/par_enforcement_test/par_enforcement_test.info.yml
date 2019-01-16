@@ -1,0 +1,7 @@
+name: Par Enforcement Notice Creation Test Data
+type: module
+description: Test data for the enforcement notice creation & approval tests
+core: 8.x
+package: PAR Test Data
+dependencies:
+  - par_data_test

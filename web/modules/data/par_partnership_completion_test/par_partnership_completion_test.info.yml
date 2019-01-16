@@ -1,7 +1,0 @@
-name: Par Partnership Completion Test
-type: module
-description: Test data for the partnership completion tests
-core: 8.x
-package: PAR Test Data
-dependencies:
-  - par_data_test

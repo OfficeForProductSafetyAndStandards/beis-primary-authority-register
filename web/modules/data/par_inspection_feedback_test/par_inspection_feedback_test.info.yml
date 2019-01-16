@@ -1,0 +1,7 @@
+name: Par Inspection Feedback Creation Test Data
+type: module
+description: Test data for the inspection feedback creation tests
+core: 8.x
+package: PAR Test Data
+dependencies:
+  - par_data_test

@@ -1,0 +1,7 @@
+name: Par General Enquiry Creation Test Data
+type: module
+description: Test data for the general enquiry creation tests
+core: 8.x
+package: PAR Test Data
+dependencies:
+  - par_data_test
