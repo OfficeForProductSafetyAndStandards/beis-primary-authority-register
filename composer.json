@@ -76,7 +76,7 @@
         "brianium/paratest": "^1.1",
         "drupal/config_inspector": "^1.0@beta",
         "drupal/console": "~1.8.0",
-        "drupal/devel": "~1.2.0",     
+        "drupal/devel": "1.x-dev#7eb4b0c10f5f3b1bddf20d1ac907b04e1afde17d",
 		"drupal/examples": "dev-1.x",
         "drupal/coder": "^8.2.12",
         "jcalderonzumba/gastonjs": "^1.0.2",
