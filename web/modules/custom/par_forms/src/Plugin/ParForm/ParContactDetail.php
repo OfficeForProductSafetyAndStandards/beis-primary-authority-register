@@ -32,7 +32,8 @@ class ParContactDetail extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function loadData($cardinality = 1) {
-    $contacts = array_values($this->getFlowDataHandler()->getParameter('contacts'));
+    $contacts = $this->getFlowDataHandler()->getParameter('contacts');
+    $contacts = !empty($contacts) ? array_values($contacts) : [];
     // Cardinality is not a zero-based index like the stored fields deltas.
     $contact = isset($contacts[$cardinality-1]) ? $contacts[$cardinality-1] : NULL;
 

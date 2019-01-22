@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: RXmH8R662wbaWVCydwZ3IjjCzVLdToMalcieIsK5gBs
+  default_config_hash: 9s2FlmpPwyrE9VFaMaX3EbhH0YF3Fs1sxOupGz3jZeo
 id: block_user
 label: 'Block User Flow'
 default_title: null
@@ -16,5 +16,3 @@ steps:
   1:
     route: par_user_block_flows.block
     form_id: par_block_user
-    redirect:
-      done: 2

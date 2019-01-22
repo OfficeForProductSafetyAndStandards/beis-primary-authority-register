@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: 3NZmRz2c4-SbS_dS6r1A19L1WW4wOGijiV52LBdGKbk
+  default_config_hash: atxORMCyCyLip7Vl8zse69eDHAM7MS7Z-2dIztMf_sY
 id: unblock_user
 label: 'Unblock User Flow'
 default_title: null
@@ -16,5 +16,3 @@ steps:
   1:
     route: par_user_block_flows.unblock
     form_id: par_unblock_user
-    redirect:
-      done: 2

@@ -192,9 +192,10 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
    */
   public function countItems($data = NULL) {
     if ($this->getCardinality() !== 1) {
+      $temp_data = (array) $this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginId());
       return isset($data[ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginId()]) ?
         count($data[ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginId()]) :
-        count($this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginId()));
+        count($temp_data);
     }
 
     return 0;

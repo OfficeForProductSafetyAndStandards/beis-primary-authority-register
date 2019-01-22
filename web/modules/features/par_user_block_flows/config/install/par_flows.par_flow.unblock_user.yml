@@ -13,5 +13,3 @@ steps:
   1:
     route: par_user_block_flows.unblock
     form_id: par_unblock_user
-    redirect:
-      done: 2

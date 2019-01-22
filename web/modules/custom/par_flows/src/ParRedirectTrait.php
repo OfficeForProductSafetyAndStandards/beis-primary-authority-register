@@ -23,7 +23,7 @@ trait ParRedirectTrait {
 
     $link_options += [
       'absolute' => TRUE,
-//      'attributes' => ['class' => 'flow-link']
+      'attributes' => ['class' => 'flow-link']
     ];
     return Link::createFromRoute('', $route, $route_params, $link_options);
   }
