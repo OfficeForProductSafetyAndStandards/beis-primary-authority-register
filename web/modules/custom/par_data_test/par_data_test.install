@@ -19,7 +19,7 @@ function par_data_test_uninstall() {
  * Implements hook_install().
  */
 function par_data_test_install() {
-  $data_controller = \Drupal::service('par_data_test.controller');
+  $data_controller = \Drupal::service('par_data_test.manager');
   // Set the package name.
   $data_controller->getPackageName();
 }
