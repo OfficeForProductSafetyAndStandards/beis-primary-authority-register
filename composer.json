@@ -128,9 +128,6 @@
                 "Do not reimport existing entities": "https://www.drupal.org/files/issues/default_content-dont-reimport-existing-entities-2698425-99.patch",
                 "Allow manual imports": "https://www.drupal.org/files/issues/allow_manual_imports-2640734-67.patch"
             },
-            "drupal/devel": {
-                "Fatal call to getInstance on MailPluginWrapper": "https://www.drupal.org/files/issues/get_instance_fatal-2927963-2.patch"
-            },
             "drupal/file_entity": {
                 "Provides support for s3 response objects": "./patches/file_entity_s3_file_support.patch"
             },
