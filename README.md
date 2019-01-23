@@ -20,8 +20,8 @@ The Vagrant development environment tries to maximise all the work done for Drup
 
 #### Prerequisites
 
-* [VirtualBox](https://www.virtualbox.org/wiki/Downloads) - tested with version 5.1.22
-* [Vagrant](https://www.vagrantup.com/downloads.html) - tested with version 1.9.6
+* [VirtualBox](https://www.virtualbox.org/wiki/Downloads) - tested with version 5.2.22
+* [Vagrant](https://www.vagrantup.com/downloads.html) - tested with version 2.2.0
 * [Drupal-VM](https://github.com/kalpaitch/drupal-vm)
 * A copy of the [Drupal-VM config.yml file](https://s3.eu-west-2.amazonaws.com/beis-par-artifacts/dev/config.yml) in the BEIS S3 artifacts bucket.
 * A copy of the [latest sanitised PAR database](https://s3.eu-west-2.amazonaws.com/beis-par-artifacts/backups/drush-dump-production-sanitized-latest.sql.tar.gz) from the BEIS S3 artifacts bucket.
@@ -39,7 +39,7 @@ In order to run the site you will need to import a copy of the latest par databa
 Import the database using drush (note the database should be truncated before re-importing)
 ```bash
 cd /var/www/par/web
-tar -zxvf drush-dump-production-sanitized-latest.sql.tar.gz drush-dump-production-sanitized-latest.sql
+tar -zxvf ../backups/drush-dump-production-sanitized-latest.sql.tar.gz ../backups/drush-dump-production-sanitized-latest.sql
 ../vendor/bin/drush sql-cli < ../backups/drush-dump-production-sanitized-latest.sql
 ```
     
