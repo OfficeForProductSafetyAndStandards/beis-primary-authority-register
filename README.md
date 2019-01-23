@@ -30,7 +30,7 @@ The Vagrant development environment tries to maximise all the work done for Drup
 
 Before starting the Drupal-VM make sure that you have cloned a copy of the website and run all the necessary setup on this. You will need to configure Drupal-VM so that the `vagrant_synced_folders` for this project points to the correct `local_path` of your application.
 
-As part of the site steup run composer install from the project root folder.  Ensure the vendor directory is created with all the required application components before moving on to the database section.
+As part of the site setup run composer install from the project root folder.  Ensure the vendor directory is created with all the required application components before moving on to the database section.
 
 #### Database
 
