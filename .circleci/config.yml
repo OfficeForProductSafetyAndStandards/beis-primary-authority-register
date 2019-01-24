@@ -1,33 +1,61 @@
 version: 2.1
 orbs:
   aws-s3: circleci/aws-s3@1.0.0
+
+defaults: &defaults
+  docker:
+    - image: parbeta/web:v9
+      name: web
+      environment:
+        APP_ENV: ci
+
+    - image: postgres:9.6.3
+      environment:
+        POSTGRES_USER: par
+        POSTGRES_PASSWORD: 123456
+        POSTGRES_DB: par
+
+  environment:
+    TEST_REPORTS: /tmp/test-reports
+    S3_ARTIFACTS_BUCKET: beis-par-artifacts
+    SANITISED_DATABASE: drush-dump-production-sanitized-latest.sql
+
+  working_directory: ~/par
+
+install_composer: &install_composer
+  name: "Install composer"
+  command: |
+    cd /tmp
+    EXPECTED_SIGNATURE=$(curl -q https://composer.github.io/installer.sig)
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    ACTUAL_SIGNATURE=$(php -r "echo hash_file('SHA384', 'composer-setup.php');")
+    if [ "$EXPECTED_SIGNATURE" != "$ACTUAL_SIGNATURE" ]
+    then
+        >&2 echo 'ERROR: Invalid installer signature'
+        rm composer-setup.php
+        exit 1
+    fi
+    sudo php composer-setup.php --quiet --install-dir /usr/local/bin --filename composer
+    RESULT=$?
+    rm composer-setup.php
+    exit $RESULT
+
 jobs:
   build:
-    docker:
-      - image: parbeta/web:v9
-        name: web
-        environment:
-          APP_ENV: ci
-
-      - image: postgres:9.6.3
-        environment:
-          POSTGRES_USER: par
-          POSTGRES_PASSWORD: 123456
-          POSTGRES_DB: par
-
-    environment:
-      TEST_REPORTS: /tmp/test-reports
-      S3_ARTIFACTS_BUCKET: beis-par-artifacts
-      SANITISED_DATABASE: drush-dump-production-sanitized-latest.sql
-
-    working_directory: ~/par
-
+    <<: *defaults
     steps:
       - restore_cache:
           keys:
             - par-build-{{ checksum "project.clj" }}
 
       - checkout
+
+      - run:
+          <<: *install_composer
+
+      - run:
+          name: "Install npm"
+          command: 'sudo npm install -g npm@latest'
 
       - run:
           name: "Installing app"
