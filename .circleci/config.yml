@@ -54,10 +54,6 @@ jobs:
           <<: *install_composer
 
       - run:
-          name: "Install npm"
-          command: 'npm install -g npm@latest'
-
-      - run:
           name: "Installing app"
           command: |
             composer install -v
