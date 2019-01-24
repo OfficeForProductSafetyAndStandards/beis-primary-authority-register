@@ -46,7 +46,7 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - par-build-{{ checksum "project.clj" }}
+            - par-build-{{ .BuildNum }}
 
       - checkout
 
