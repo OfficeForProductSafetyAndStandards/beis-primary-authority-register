@@ -87,6 +87,5 @@ workflows:
       - build:
           filters:
             branches:
-              only:
-                - dev
-                - /^PAR-*/
+              ignore:
+                - master
