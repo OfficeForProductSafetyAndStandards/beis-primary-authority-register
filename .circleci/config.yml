@@ -1,0 +1,92 @@
+version: 2.1
+orbs:
+  aws-s3: circleci/aws-s3@1.0.0
+jobs:
+  build:
+    docker:
+      - image: parbeta/web:v9
+        name: web
+        environment:
+          APP_ENV: ci
+
+      - image: postgres:9.6.3
+        ports:
+          - "5411:5432"
+        environment:
+          POSTGRES_USER: par
+          POSTGRES_PASSWORD: 123456
+          POSTGRES_DB: par
+
+    environment:
+      TEST_REPORTS: /tmp/test-reports
+      S3_ARTIFACTS_BUCKET: beis-par-artifacts
+      SANITISED_DATABASE: drush-dump-production-sanitized-latest.sql
+
+    working_directory: ~/par
+
+    steps:
+      - restore_cache:
+          keys:
+            - par-build-{{ checksum "project.clj" }}
+
+      - checkout
+
+      - run:
+          name: "Installing app"
+          command: |
+            composer install -v
+            npm install
+            npm run gulp
+            cd ./tests && rm -rf node_modules && npm install
+
+      - run:
+          name: "Downloading database"
+          command: mkdir -p backups
+
+      - aws-s3/copy:
+          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}"
+          to: backups/sanitised-db.sql
+          overwrite: true
+
+      - run:
+          name: "Unpacking database"
+          command: cd backups && tar --no-same-owner -zxvf sanitised-db.sql
+
+      - run:
+          name: "Importing database"
+          command: cd web && ../vendor/bin/drush sql-cli @dev < ${SANITISED_DATABASE}
+
+      - run:
+          name: "Setup application"
+          command: drupal-update.sh
+
+      - run:
+          name: "Application Checklists"
+          command: |
+            - cd web && ../vendor/bin/drush cex -n
+            - cd web && ../vendor/bin/drush core-requirements --severity=2
+
+      - save_cache:
+          key: par-build-{{ checksum "project.clj" }}
+          paths:
+            - ~/par
+
+      # Save artifacts
+      - store_artifacts:
+          path: /tmp/artifacts
+          destination: build
+
+      # Upload test results
+      - store_test_results:
+          path: /tmp/test-reports
+
+workflows:
+  version: 2.1
+  build-test:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - dev
+                - /^PAR-*/

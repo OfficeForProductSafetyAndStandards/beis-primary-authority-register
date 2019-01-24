@@ -1,7 +1,5 @@
 <?php
 
-// @TODO: To be deprecated once travis config has been moved to the 'ci' environment.
-
 $databases['default']['default'] = array (
   'database' => 'par',
   'username' => 'par',
