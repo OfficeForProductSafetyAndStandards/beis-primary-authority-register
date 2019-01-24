@@ -10,8 +10,6 @@ jobs:
           APP_ENV: ci
 
       - image: postgres:9.6.3
-        ports:
-          - "5411:5432"
         environment:
           POSTGRES_USER: par
           POSTGRES_PASSWORD: 123456
