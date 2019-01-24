@@ -35,7 +35,7 @@ install_composer: &install_composer
         rm composer-setup.php
         exit 1
     fi
-    sudo php composer-setup.php --quiet --install-dir /usr/local/bin --filename composer
+    php composer-setup.php --quiet --install-dir /usr/local/bin --filename composer
     RESULT=$?
     rm composer-setup.php
     exit $RESULT
@@ -55,7 +55,7 @@ jobs:
 
       - run:
           name: "Install npm"
-          command: 'sudo npm install -g npm@latest'
+          command: 'npm install -g npm@latest'
 
       - run:
           name: "Installing app"
