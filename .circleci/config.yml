@@ -44,7 +44,6 @@ jobs:
       - aws-s3/copy:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}"
           to: backups/sanitised-db.sql
-          overwrite: true
 
       - run:
           name: "Unpacking database"
