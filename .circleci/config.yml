@@ -65,7 +65,7 @@ jobs:
           name: "Downloading database"
           command: |
             mkdir -p backups
-            apt-get install python-pip -y
+            apt-get install sudo python-pip -y
 
       - aws-s3/copy:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}"
