@@ -82,7 +82,7 @@ jobs:
 
       - run:
           name: "Setup application"
-          command: drupal-update.sh
+          command: sh drupal-update.sh
 
       - run:
           name: "Application Checklists"
