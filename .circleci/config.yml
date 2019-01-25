@@ -62,7 +62,7 @@ jobs:
             cd ./tests && rm -rf node_modules && npm install
 
       - run:
-          name: "Downloading database"
+          name: "Database preparation"
           command: |
             mkdir -p backups
             apt-get install sudo python-pip -y
@@ -78,7 +78,7 @@ jobs:
 
       - run:
           name: "Importing database"
-          command: cd web && ../vendor/bin/drush sql-cli @dev < ${SANITISED_DATABASE}
+          command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${SANITISED_DATABASE}
 
       - run:
           name: "Setup application"
