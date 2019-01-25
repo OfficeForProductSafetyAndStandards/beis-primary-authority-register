@@ -104,11 +104,10 @@ jobs:
             ../vendor/bin/drush cron
             ../vendor/bin/drush cron
 
-
-      - save_cache:
-          key: par-build-{{ checksum "project.clj" }}
-          paths:
-            - ~/par
+      - run:
+          name: "Run cron"
+          command: |
+            ./vendor/bin/paratest --processes=16 --log-junit=${TEST_REPORTS}/phpunit.latest.xml
 
       # Save artifacts
       - store_artifacts:
