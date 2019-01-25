@@ -87,8 +87,9 @@ jobs:
       - run:
           name: "Application Checklists"
           command: |
-            - cd web && ../vendor/bin/drush cex -n
-            - cd web && ../vendor/bin/drush core-requirements --severity=2
+            - cd web
+            - ../vendor/bin/drush cex -n
+            ../vendor/bin/drush core-requirements --severity=2
 
       - save_cache:
           key: par-build-{{ checksum "project.clj" }}
