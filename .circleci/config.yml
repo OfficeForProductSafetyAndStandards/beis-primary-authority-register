@@ -70,6 +70,7 @@ jobs:
       - aws-s3/copy:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}"
           to: backups/sanitised-db.sql
+          arguments: '--region eu-west-1'
 
       - run:
           name: "Unpacking database"
