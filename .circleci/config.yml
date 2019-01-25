@@ -68,7 +68,7 @@ jobs:
             apt-get install sudo python-pip -y
 
       - aws-s3/copy:
-          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}"
+          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}.tar.gz"
           to: backups/sanitised-db.sql
           arguments: '--region eu-west-1'
 
