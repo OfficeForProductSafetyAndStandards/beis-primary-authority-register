@@ -92,17 +92,17 @@ jobs:
       - run:
           name: "Application Checklists"
           command: |
-            - cd web
-            - ../vendor/bin/drush cex -n
-            - ../vendor/bin/drush core-requirements --severity=2
+            cd web
+            ../vendor/bin/drush cex -n
+            ../vendor/bin/drush core-requirements --severity=2
 
       - run:
           name: "Run cron"
           command: |
-            - cd web
-            - ../vendor/bin/drush cron
-            - ../vendor/bin/drush cron
-            - ../vendor/bin/drush cron
+            cd web
+            ../vendor/bin/drush cron
+            ../vendor/bin/drush cron
+            ../vendor/bin/drush cron
 
 
       - save_cache:
