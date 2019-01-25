@@ -44,12 +44,11 @@ jobs:
   build:
     <<: *defaults
     steps:
-      - restore_cache:
-          keys:
-            - par-build-{{ .BuildNum }}
-
       - checkout
 
+      - restore_cache:
+          keys:
+            - par-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
       - run:
           <<: *install_composer
 
@@ -60,6 +59,12 @@ jobs:
             npm install
             npm run gulp
             cd ./tests && rm -rf node_modules && npm install
+
+      - save_cache:
+          key: par-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
+          paths:
+            - ./vendor
+            - ./node_modules
 
       - run:
           name: "Database preparation"
