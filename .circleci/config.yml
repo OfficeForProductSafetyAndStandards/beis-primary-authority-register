@@ -106,16 +106,18 @@ jobs:
             ../vendor/bin/drush cron
 
       - run:
-          name: "Run unit tests"
-          command: |
-            ./vendor/bin/paratest --processes=16 --log-junit=${TEST_REPORTS}/phpunit.latest.xml
-
-      - run:
           name: "Install test dependencies"
           command: |
             cd tests
+            mkdir -p ./reports/phpunit
+            mkdir -p ./reports/nightwatch
             npm install
             npm run selenium-install
+
+      - run:
+          name: "Run unit tests"
+          command: |
+            ./vendor/bin/paratest --processes=16 --log-junit=${TEST_REPORTS}/phpunit.latest.xml
       - run:
           name: "Run feature tests"
           command: |
