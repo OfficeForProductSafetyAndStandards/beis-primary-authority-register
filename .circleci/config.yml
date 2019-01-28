@@ -111,10 +111,15 @@ jobs:
             ./vendor/bin/paratest --processes=16 --log-junit=${TEST_REPORTS}/phpunit.latest.xml
 
       - run:
+          name: "Install test dependencies"
+          command: |
+            cd tests
+            npm install
+            npm run selenium-install
+      - run:
           name: "Run feature tests"
           command: |
             cd tests
-            npm run selenium-install
             npm run nightwatch-cucumber-circleci -- --tag smoke
             npm run generate-report
 
