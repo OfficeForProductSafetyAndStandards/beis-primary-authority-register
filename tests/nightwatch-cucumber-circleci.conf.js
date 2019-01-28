@@ -14,7 +14,7 @@ require('nightwatch-cucumber')({
 })
 
 module.exports = {
-    output_folder: 'reports',
+    output_folder: 'reports/nightwatch',
     custom_assertions_path: 'step-definitions/assertions',
     page_objects_path: 'step-definitions/page_objects',
     live_output: false,
@@ -34,7 +34,7 @@ module.exports = {
             screenshots : {
                 enabled : true,
                 on_failure : true,
-                path: 'reports/screenshots'
+                path: 'reports/nightwatch/screenshots'
             },
             desiredCapabilities: {
                 browserName: 'chrome',
@@ -49,13 +49,6 @@ module.exports = {
                 cli_args: {
                     'webdriver.chrome.driver': chromedriver.path
                 }
-            }
-        },
-        firefox: {
-            desiredCapabilities: {
-                browserName: 'firefox',
-                javascriptEnabled: true,
-                acceptSslCerts: true
             }
         }
     }

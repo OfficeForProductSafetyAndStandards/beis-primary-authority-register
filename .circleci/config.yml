@@ -16,7 +16,7 @@ defaults: &defaults
         POSTGRES_DB: par
 
   environment:
-    TEST_REPORTS: /tmp/test-reports
+    TEST_REPORTS: ~/par/tests/reports
     S3_ARTIFACTS_BUCKET: beis-par-artifacts
     SANITISED_DATABASE: drush-dump-production-sanitized-latest.sql
     SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
@@ -130,7 +130,7 @@ jobs:
 
       # Upload test results
       - store_test_results:
-          path: /tmp/test-reports
+          path: ~/par/tests/reports
 
 workflows:
   version: 2.1
