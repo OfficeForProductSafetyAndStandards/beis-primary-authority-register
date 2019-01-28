@@ -23,6 +23,7 @@ RUN sh -c "echo debconf shared/accepted-oracle-license-v1-1 select true | debcon
         libfontconfig \
         unzip \
         python-pip \
+        google-chrome-stable \
     && sh -c "echo \"deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main\" | tee /etc/apt/sources.list.d/webupd8team-java.list" \
     && sh -c "echo \"deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main\" | tee -a /etc/apt/sources.list.d/webupd8team-java.list" \
     && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886 \
