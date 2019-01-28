@@ -133,10 +133,10 @@ before_script:
   - curl --silent http://127.0.0.1:8111 > /dev/null
 
 script:
-  - if [[ $TRAVIS_TAG != '' ]]; then docker exec -it par_beta_web bash -c "apt-get update -y"; fi
-  - if [[ $TRAVIS_TAG != '' ]]; then docker exec -it par_beta_web bash -c "apt-get install -y google-chrome-stable"; fi
-  - if [[ $TRAVIS_TAG != '' ]]; then travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install && npm run selenium-install"; fi
-  - if [[ $TRAVIS_TAG != '' ]]; then docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run nightwatch-cucumber-travis -- --tag ci"; fi
+  - docker exec -it par_beta_web bash -c "apt-get update -y"
+  - docker exec -it par_beta_web bash -c "apt-get install -y google-chrome-stable"
+  - travis_retry docker exec -ti par_beta_web bash -c "cd tests && rm -rf node_modules && /usr/local/n/versions/node/7.2.1/bin/npm install && npm run selenium-install"
+  - docker exec -ti par_beta_web bash -c "cd tests && /usr/local/n/versions/node/7.2.1/bin/npm run nightwatch-cucumber-travis -- --tag ci"
 
 #-----------------------------------------------------------------------------
 # Run Jmeter - to be run manually on all releases against staging from now on.
