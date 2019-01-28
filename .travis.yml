@@ -88,11 +88,7 @@ install:
   - echo "PAR_GOVUK_NOTIFY_TEMPLATE=$PAR_GOVUK_NOTIFY_TEMPLATE" >> .env
   - echo "CLAMAV_HTTP_USER=$CLAMAV_HTTP_USER" >> .env
   - echo "CLAMAV_HTTP_PASS=$CLAMAV_HTTP_PASS" >> .env
-# can be removed once the AWS accounts are migrated.
-  - echo "TRANSFORM_BUCKET_PRIVATE=$TRANSFORM_BUCKET_PRIVATE" >> .env
-  - echo "TRANSFORM_BUCKET_PUBLIC=$TRANSFORM_BUCKET_PUBLIC" >> .env
-  - echo "TRANSFORM_REGION=$TRANSFORM_REGION" >> .env
-  
+  - echo "SIMPLETEST_DB=pgsql://par:123456@db:5432/par" >> .env
 
 #-----------------------------------------------------------------------------
 # Import dev data from S3

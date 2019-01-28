@@ -19,6 +19,7 @@ defaults: &defaults
     TEST_REPORTS: /tmp/test-reports
     S3_ARTIFACTS_BUCKET: beis-par-artifacts
     SANITISED_DATABASE: drush-dump-production-sanitized-latest.sql
+    SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
 
   working_directory: ~/par
 
@@ -90,7 +91,7 @@ jobs:
           command: sh drupal-update.sh
 
       - run:
-          name: "Application Checklists"
+          name: "Application checklist"
           command: |
             cd web
             ../vendor/bin/drush cex -n
@@ -105,9 +106,15 @@ jobs:
             ../vendor/bin/drush cron
 
       - run:
-          name: "Run cron"
+          name: "Run unit tests"
           command: |
             ./vendor/bin/paratest --processes=16 --log-junit=${TEST_REPORTS}/phpunit.latest.xml
+
+      - run:
+          name: "Run feature tests"
+          command: |
+            npm run nightwatch-cucumber-travis -- --tag ci
+            npm run generate-report
 
       # Save artifacts
       - store_artifacts:
