@@ -1,13 +1,11 @@
 <?php
 
-// @TODO: To be deprecated once travis config has been moved to the 'ci' environment.
-
 $databases['default']['default'] = array (
   'database' => 'par',
   'username' => 'par',
   'password' => '123456',
   'prefix' => '',
-  'host' => 'db',
+  'host' => 'localhost',
   'port' => '5432',
   'namespace' => 'Drupal\\Core\\Database\\Driver\\pgsql',
   'driver' => 'pgsql',
