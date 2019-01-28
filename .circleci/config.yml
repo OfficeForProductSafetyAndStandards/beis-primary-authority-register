@@ -132,7 +132,7 @@ jobs:
 
       # Upload test results
       - store_test_results:
-          path: ~/par/tests/reports
+          path: tests/reports
 
 workflows:
   version: 2.1

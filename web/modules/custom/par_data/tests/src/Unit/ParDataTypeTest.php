@@ -87,7 +87,6 @@ class ParDataTypeTest extends UnitTestCase {
     $actual = $this->parDataType->getConfigurationElement('field_salutation');
 
     $this->assertArrayEquals($expected, $actual, "The configuration element for the field_salutation field has been returned.");
-    $this->assertTrue(FALSE, "Deliberate error.");
   }
 
   /**
