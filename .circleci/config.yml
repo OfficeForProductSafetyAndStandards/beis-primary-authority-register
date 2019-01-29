@@ -1,0 +1,145 @@
+version: 2.1
+orbs:
+  aws-s3: circleci/aws-s3@1.0.0
+
+defaults: &defaults
+  docker:
+    - image: parbeta/web:v9
+      name: web
+      environment:
+        APP_ENV: ci
+
+    - image: postgres:9.6.3
+      environment:
+        POSTGRES_USER: par
+        POSTGRES_PASSWORD: 123456
+        POSTGRES_DB: par
+
+  environment:
+    TEST_REPORTS: ~/par/tests/reports
+    S3_ARTIFACTS_BUCKET: beis-par-artifacts
+    SANITISED_DATABASE: drush-dump-production-sanitized-latest.sql
+    SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
+
+  working_directory: ~/par
+
+install_composer: &install_composer
+  name: "Install composer"
+  command: |
+    cd /tmp
+    EXPECTED_SIGNATURE=$(curl -q https://composer.github.io/installer.sig)
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    ACTUAL_SIGNATURE=$(php -r "echo hash_file('SHA384', 'composer-setup.php');")
+    if [ "$EXPECTED_SIGNATURE" != "$ACTUAL_SIGNATURE" ]
+    then
+        >&2 echo 'ERROR: Invalid installer signature'
+        rm composer-setup.php
+        exit 1
+    fi
+    php composer-setup.php --quiet --install-dir /usr/local/bin --filename composer
+    RESULT=$?
+    rm composer-setup.php
+    exit $RESULT
+
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - par-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
+      - run:
+          <<: *install_composer
+
+      - run:
+          name: "Installing app"
+          command: |
+            composer install -v
+            npm install
+            npm run gulp
+            cd ./tests && rm -rf node_modules && npm install
+
+      - save_cache:
+          key: par-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
+          paths:
+            - ./vendor
+            - ./node_modules
+
+      - run:
+          name: "Database preparation"
+          command: |
+            mkdir -p backups
+            apt-get install sudo python-pip -y
+
+      - aws-s3/copy:
+          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}.tar.gz"
+          to: backups/sanitised-db.sql
+          arguments: '--region eu-west-1'
+
+      - run:
+          name: "Unpacking database"
+          command: cd backups && tar --no-same-owner -zxvf sanitised-db.sql
+
+      - run:
+          name: "Importing database"
+          command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${SANITISED_DATABASE}
+
+      - run:
+          name: "Setup application"
+          command: sh drupal-update.sh
+
+      - run:
+          name: "Application checklist"
+          command: |
+            cd web
+            ../vendor/bin/drush cex -n
+            ../vendor/bin/drush core-requirements --severity=2
+
+      - run:
+          name: "Run cron"
+          command: |
+            cd web
+            ../vendor/bin/drush cron
+            ../vendor/bin/drush cron
+            ../vendor/bin/drush cron
+
+      - run:
+          name: "Install test dependencies"
+          command: |
+            cd tests
+            mkdir -p ./reports/phpunit
+            mkdir -p ./reports/nightwatch
+            npm install
+            npm run selenium-install
+
+      - run:
+          name: "Run unit tests"
+          command: |
+            ./vendor/bin/paratest --processes=16 --log-junit=${TEST_REPORTS}/phpunit.latest.xml
+      - run:
+          name: "Run feature tests"
+          command: |
+            cd tests
+            npm run nightwatch-cucumber-circleci -- --tag smoke
+            npm run generate-report
+
+      # Save artifacts
+      - store_artifacts:
+          path: /tmp/artifacts
+          destination: build
+
+      # Upload test results
+      - store_test_results:
+          path: tests/reports
+
+workflows:
+  version: 2.1
+  build-test:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore:
+                - master

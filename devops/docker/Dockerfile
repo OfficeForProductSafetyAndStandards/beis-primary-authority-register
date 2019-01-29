@@ -1,4 +1,4 @@
-# parbeta/web:v7
+# beispar/web:v1
 
 FROM php:7.1-apache
 RUN sh -c "echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections" \
@@ -7,6 +7,7 @@ RUN sh -c "echo debconf shared/accepted-oracle-license-v1-1 select true | debcon
     && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
     && sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" >> /etc/apt/sources.list.d/postgresql.list' \
     && apt-get update && apt-get install -y \
+        sudo \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
@@ -21,6 +22,8 @@ RUN sh -c "echo debconf shared/accepted-oracle-license-v1-1 select true | debcon
         libgconf-2-4 \
         libfontconfig \
         unzip \
+        python-pip \
+        google-chrome-stable \
     && sh -c "echo \"deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main\" | tee /etc/apt/sources.list.d/webupd8team-java.list" \
     && sh -c "echo \"deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main\" | tee -a /etc/apt/sources.list.d/webupd8team-java.list" \
     && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886 \
