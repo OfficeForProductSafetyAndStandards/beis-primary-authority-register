@@ -119,7 +119,6 @@ Feature: Coordinator User - Upload Members
         And the element ".table-scroll-wrapper" contains the text "Coordinated Member 2"
         And the element ".table-scroll-wrapper" contains the text "Coordinated Member 3"
         And the element ".table-scroll-wrapper" contains the text "Coordinated Member 4"
-        And the element ".table-scroll-wrapper" does not contain the text "New Member One"
 
         # REUPLOAD MEMBERS
 
@@ -141,15 +140,23 @@ Feature: Coordinator User - Upload Members
         When I click the link text "Show members list"
         Then the element "h1.heading-xlarge" contains the text "Members list"
 
-        And the element "tr:nth-child(1) td.views-field.views-field-par-flow-link a" does exist
-        And the element "tr:nth-child(2) td.views-field.views-field-par-flow-link a" does not exist
-        And the element "tr:nth-child(3) td.views-field.views-field-par-flow-link a" does exist
-        And the element "tr:nth-child(4) td.views-field.views-field-par-flow-link a" does exist
-        And the element "tr:nth-child(5) td.views-field.views-field-par-flow-link a" does not exist
+        When I add "Coordinated Member 2" to the inputfield "#edit-organisation-name"
+        And I click on the button "#edit-submit-members-list"
+        Then the element ".table-scroll-wrapper" does not contain the text "Coordinated Member 2"
+        And the element ".table-scroll-wrapper a*=Coordinated Member 2" does not exist
+        And the element "Cease membership" does not exist
 
-        And the element ".table-scroll-wrapper" does not contain the text "Coordinated Member 2"
-        And the element ".table-scroll-wrapper" does not contain the text "Coordinated Member 3"
-        And the element ".table-scroll-wrapper" does not contain the text "Coordinated Member 4"
+        When I add "Coordinated Member 3" to the inputfield "#edit-organisation-name"
+        And I click on the button "#edit-submit-members-list"
+        Then the element ".table-scroll-wrapper" does not contain the text "Coordinated Member 3"
+        And the element ".table-scroll-wrapper a*=Coordinated Member 3" does not exist
+        And the element "Cease membership" does not exist
+
+        When I add "Coordinated Member 4" to the inputfield "#edit-organisation-name"
+        And I click on the button "#edit-submit-members-list"
+        Then the element ".table-scroll-wrapper" does not contain the text "Coordinated Member 4"
+        And the element ".table-scroll-wrapper a*=Coordinated Member 4" does not exist
+        And the element "Cease membership" does not exist
 
         @coordinatedpartnership @ci
     Scenario: Test search criteria
