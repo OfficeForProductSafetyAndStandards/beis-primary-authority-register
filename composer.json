@@ -23,7 +23,7 @@
         "drupal/better_exposed_filters": "~3.0.0",
         "drupal/clamav": "~1.0.0",
         "drupal/config_readonly": "~1.0.0",
-        "drupal/config_split": "~1.0.0",
+        "drupal/config_split": "~1.4.0",
         "drupal/config_update": "~1.3.0",
         "drupal/core": "~8.6.0",
         "drupal/csv_serialization": "~1.0.0",
@@ -75,8 +75,8 @@
         "behat/mink-selenium2-driver": "1.3.x-dev",
         "brianium/paratest": "^1.1",
         "drupal/config_inspector": "^1.0@beta",
-        "drupal/console": "~1.0.0",
-        "drupal/devel": "~1.2.0",     
+        "drupal/console": "~1.8.0",
+        "drupal/devel": "1.x-dev#7eb4b0c10f5f3b1bddf20d1ac907b04e1afde17d",
 		"drupal/examples": "dev-1.x",
         "drupal/coder": "^8.2.12",
         "jcalderonzumba/gastonjs": "^1.0.2",
@@ -127,9 +127,6 @@
             "drupal/default_content": {
                 "Do not reimport existing entities": "https://www.drupal.org/files/issues/default_content-dont-reimport-existing-entities-2698425-99.patch",
                 "Allow manual imports": "https://www.drupal.org/files/issues/allow_manual_imports-2640734-67.patch"
-            },
-            "drupal/devel": {
-                "Fatal call to getInstance on MailPluginWrapper": "https://www.drupal.org/files/issues/get_instance_fatal-2927963-2.patch"
             },
             "drupal/file_entity": {
                 "Provides support for s3 response objects": "./patches/file_entity_s3_file_support.patch"
