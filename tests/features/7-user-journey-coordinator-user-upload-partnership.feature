@@ -142,19 +142,19 @@ Feature: Coordinator User - Upload Members
 
         When I add "Coordinated Member 2" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-submit-members-list"
-        Then the element ".table-scroll-wrapper" does not contain the text "Coordinated Member 2"
+        Then the element ".table-scroll-wrapper" contains the text "Coordinated Member 2"
         And the element ".table-scroll-wrapper a*=Coordinated Member 2" does not exist
         And the element "Cease membership" does not exist
 
         When I add "Coordinated Member 3" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-submit-members-list"
-        Then the element ".table-scroll-wrapper" does not contain the text "Coordinated Member 3"
+        Then the element ".table-scroll-wrapper" contains the text "Coordinated Member 3"
         And the element ".table-scroll-wrapper a*=Coordinated Member 3" does not exist
         And the element "Cease membership" does not exist
 
         When I add "Coordinated Member 4" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-submit-members-list"
-        Then the element ".table-scroll-wrapper" does not contain the text "Coordinated Member 4"
+        Then the element ".table-scroll-wrapper" contains the text "Coordinated Member 4"
         And the element ".table-scroll-wrapper a*=Coordinated Member 4" does not exist
         And the element "Cease membership" does not exist
 
