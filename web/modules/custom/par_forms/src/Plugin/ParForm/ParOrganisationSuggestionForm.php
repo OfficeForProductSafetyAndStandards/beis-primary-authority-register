@@ -42,10 +42,8 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
       else {
         $radio_options = [];
         foreach ($organisations as $organisation) {
-          // PAR-1172 Do not display organisations in coordinated partnerships.
-          if (!$organisation->isCoordinatedMember()) {
-            $radio_options = $this->getParDataManager()->getEntitiesAsOptions([$organisation], $radio_options, 'summary');
-          }
+          // As per PAR-1348 coordinated organisations can now be referenced.
+          $radio_options = $this->getParDataManager()->getEntitiesAsOptions([$organisation], $radio_options, 'summary');
         }
         $this->getFlowDataHandler()->setFormPermValue('organisation_options', $radio_options);
       }
