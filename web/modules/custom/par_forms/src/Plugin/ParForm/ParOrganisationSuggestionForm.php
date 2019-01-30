@@ -28,7 +28,11 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
       $conditions = [
         'name' => [
           'OR' => [
+            ['organisation_name', ' ' . $search_query, 'CONTAINS'],
+            ['organisation_name', $search_query . ' ', 'CONTAINS'],
             ['organisation_name', $search_query, 'STARTS_WITH'],
+            ['trading_name', ' ' . $search_query, 'CONTAINS'],
+            ['trading_name', $search_query . ' ', 'CONTAINS'],
             ['trading_name', $search_query, 'STARTS_WITH'],
           ]
         ],
