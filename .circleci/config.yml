@@ -31,7 +31,7 @@ jobs:
 
       - run:
           name: "Configure web root"
-          command:
+          command: |
             - ln -sf ~/par/web /var/www/html/web
 
       - restore_cache:
