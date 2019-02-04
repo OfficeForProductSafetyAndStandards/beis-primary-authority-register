@@ -4,7 +4,7 @@ orbs:
 
 defaults: &defaults
   docker:
-    - image: parbeta/web:v9
+    - image: beispar/web:v1.0.0
       name: web
       environment:
         APP_ENV: ci
@@ -23,35 +23,20 @@ defaults: &defaults
 
   working_directory: ~/par
 
-install_composer: &install_composer
-  name: "Install composer"
-  command: |
-    cd /tmp
-    EXPECTED_SIGNATURE=$(curl -q https://composer.github.io/installer.sig)
-    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-    ACTUAL_SIGNATURE=$(php -r "echo hash_file('SHA384', 'composer-setup.php');")
-    if [ "$EXPECTED_SIGNATURE" != "$ACTUAL_SIGNATURE" ]
-    then
-        >&2 echo 'ERROR: Invalid installer signature'
-        rm composer-setup.php
-        exit 1
-    fi
-    php composer-setup.php --quiet --install-dir /usr/local/bin --filename composer
-    RESULT=$?
-    rm composer-setup.php
-    exit $RESULT
-
 jobs:
   build:
     <<: *defaults
     steps:
       - checkout
 
+      - run:
+          name: "Configure web root"
+          command:
+            - ln -sf ~/par/web /var/www/html/web
+
       - restore_cache:
           keys:
             - par-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
-      - run:
-          <<: *install_composer
 
       - run:
           name: "Installing app"
