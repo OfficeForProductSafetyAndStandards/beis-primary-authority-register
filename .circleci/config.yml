@@ -32,7 +32,7 @@ jobs:
       - run:
           name: "Configure web root"
           command: |
-            - ln -sf ~/par/web /var/www/html/web
+            ln -sf ~/par/web /var/www/html/web
 
       - restore_cache:
           keys:
