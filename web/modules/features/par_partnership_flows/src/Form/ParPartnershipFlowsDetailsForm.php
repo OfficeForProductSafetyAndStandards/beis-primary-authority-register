@@ -140,7 +140,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
 
     if ($checkbox === 'partnership_info_agreed_business' && !$par_data_partnership->getBoolean($checkbox)) {
       // Active/confirmed partnerships do not allow for associated legal entities to be altered.
-      if (in_array(!$par_data_partnership->getRawStatus(), $allowed_statuses) && $this->getCurrentUser()->hasPermission('update legal entities on active partnership')) {
+      if (!in_array($par_data_partnership->getRawStatus(), $allowed_statuses) || $this->getCurrentUser()->hasPermission('update legal entities on active partnership')) {
         $operations = ['edit-entity','add'];
       }
     }
