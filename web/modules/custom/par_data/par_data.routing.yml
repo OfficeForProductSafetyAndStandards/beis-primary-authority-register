@@ -32,3 +32,13 @@ par_data.reports_page:
     _permission: 'administer site configuration'
   options:
     _admin_route: FALSE
+
+par_data.references_list:
+  path: '/admin/reports/fields/par'
+  defaults:
+    _controller: '\Drupal\par_data\Controller\ParDataReferencesController::content'
+    _title: 'PAR References'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE

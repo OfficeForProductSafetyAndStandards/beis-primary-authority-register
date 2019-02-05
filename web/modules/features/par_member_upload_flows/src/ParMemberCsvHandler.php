@@ -884,29 +884,17 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       }
     );
 
-    $maintain = [];
-
     // Re-load the partnership to get any updates perforced during batch processes.
     $par_data_partnership = ParDataPartnership::load($par_data_partnership->id());
 
     foreach ($diff as $member) {
-      // So long as the member isn't required by another entity then we can permanently remove it.
-      if (!$this->canDestroyMember($member)) {
-        $date = $this->getDateFormatter()->format(time(), 'custom', 'Y-m-d');
-        $member->cease($date, TRUE);
-
-        // Make sure the member is added back to the partnership.
-        $par_data_partnership->get('field_coordinated_business')->appendItem($member->id());
-      }
-      else {
-        $member->destroy();
-
-        // Remove all referenced entities also.
-        // @TODO Make sure these entities are not removed if they are referenced by something else.
-        foreach ($member->getDependents() as $entity) {
-          $entity->destroy();
-        }
-      }
+      // As per PAR-1438 do not remove members permanently because this changes
+      // the nature of an active partnership and can cause other data to be
+      // incorrectly removed (@see PAR-1439).
+      $date = $this->getDateFormatter()->format(time(), 'custom', 'Y-m-d');
+      $member->cease($date, TRUE);
+      // Make sure the member is added back to the partnership.
+      $par_data_partnership->get('field_coordinated_business')->appendItem($member->id());
     }
 
     // Save the partnership with any members that were carried across.
