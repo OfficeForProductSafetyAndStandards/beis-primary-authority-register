@@ -125,3 +125,8 @@ RUN export CHROMEDRIVER_RELEASE=$(curl --location --fail --retry 3 http://chrome
       && sudo mv chromedriver /usr/local/bin/chromedriver \
       && sudo chmod +x /usr/local/bin/chromedriver \
       && chromedriver --version
+
+# Start apache
+CMD sudo service apache2 start
+
+EXPOSE 80

@@ -33,6 +33,7 @@ jobs:
           name: "Configure web root"
           command: |
             ln -sf ~/par/web /var/www/html/web
+            service apache2 restart
 
       - restore_cache:
           keys:
@@ -76,19 +77,20 @@ jobs:
           command: sh drupal-update.sh
 
       - run:
-          name: "Application checklist"
-          command: |
-            cd web
-            ../vendor/bin/drush cex -n
-            ../vendor/bin/drush core-requirements --severity=2
-
-      - run:
           name: "Run cron"
           command: |
             cd web
             ../vendor/bin/drush cron
             ../vendor/bin/drush cron
             ../vendor/bin/drush cron
+
+      - run:
+          name: "Application checklist"
+          command: |
+            cd web
+            ../vendor/bin/drush cex -n
+            ../vendor/bin/drush core-requirements --severity=2
+            curl -sD - -o /dev/null http://127.0.0.1:80
 
       - run:
           name: "Install test dependencies"
@@ -103,6 +105,7 @@ jobs:
           name: "Run unit tests"
           command: |
             ./vendor/bin/paratest --processes=16 --log-junit=${TEST_REPORTS}/phpunit.latest.xml
+
       - run:
           name: "Run feature tests"
           command: |
