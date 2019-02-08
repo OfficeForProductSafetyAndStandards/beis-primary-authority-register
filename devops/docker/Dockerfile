@@ -61,8 +61,9 @@ RUN buildDeps=" \
     && a2enmod rewrite
 
 # Configure Apache
-RUN adduser --disabled-password --gecos "" composer \
-    && sed -i 's/DocumentRoot \/var\/www\/html/DocumentRoot \/var\/www\/html\/web/g' /etc/apache2/sites-available/000-default.conf
+RUN echo "127.0.0.1 par.localhost" | sudo tee --append /etc/hosts
+
+COPY ./par.localhost.conf /etc/apache2/sites-available/par.localhost.conf
 
 # Install composer
 ## Using composer installation from https://getcomposer.org/download/
@@ -127,6 +128,6 @@ RUN export CHROMEDRIVER_RELEASE=$(curl --location --fail --retry 3 http://chrome
       && chromedriver --version
 
 # Start apache
-CMD sudo service apache2 start
+CMD apachectl -D FOREGROUND
 
 EXPOSE 80
