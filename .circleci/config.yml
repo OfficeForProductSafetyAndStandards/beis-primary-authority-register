@@ -21,7 +21,7 @@ defaults: &defaults
     SANITISED_DATABASE: drush-dump-production-sanitized-latest.sql
     SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
 
-  working_directory: ~/par
+  working_directory: /var/www/html
 
 jobs:
   build:
@@ -32,9 +32,11 @@ jobs:
       - run:
           name: "Configure web root"
           command: |
-            ln -sf ~/par/web /var/www/html/web
+            chown -R -L www-data:www-data /var/www/html/web
             a2ensite par.localhost
             service apache2 restart
+            echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
+            cat /etc/hosts
 
       - restore_cache:
           keys:
