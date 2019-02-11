@@ -135,7 +135,6 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     $allowed_statuses = [
       $par_data_partnership->getTypeEntity()->getDefaultStatus(),
       'confirmed_authority',
-      'active',
     ];
 
     if ($checkbox === 'partnership_info_agreed_business' && !$par_data_partnership->getBoolean($checkbox)) {
