@@ -47,16 +47,6 @@ jobs:
             echo "CLAMAV_HTTP_USER=$CLAMAV_HTTP_USER" >> .env
             echo "CLAMAV_HTTP_PASS=$CLAMAV_HTTP_PASS" >> .env
 
-      - run:
-          name: "Configure web root"
-          command: |
-            sudo chown -R www-data:www-data /var/www/html/web
-            ls -lah /var/www/html/web
-            a2ensite par.localhost
-            service apache2 restart
-            echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
-            cat /etc/hosts
-
       - restore_cache:
           keys:
             - par-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
@@ -75,6 +65,16 @@ jobs:
           paths:
             - ./vendor
             - ./node_modules
+
+      - run:
+          name: "Configure web root"
+          command: |
+            sudo chown -R -L www-data:www-data /var/www/html/web
+            ls -lah /var/www/html/web
+            a2ensite par.localhost
+            service apache2 restart
+            echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
+            cat /etc/hosts
 
       - run:
           name: "Database preparation"
