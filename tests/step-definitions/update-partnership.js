@@ -107,7 +107,7 @@ When('I upload a file to the partnership advice section', function () {
     .clickLinkByPureText('See all Advice')
     .clickLinkByPureText('Upload advice')
     .assert.containsText('h3.heading-medium', 'How to upload Primary Authority Advice to Local Authorities')
-    .setValue('input[name=\"files[files][]\"]', __dirname + '/files/test.png') 
+    .setValue('#edit-files-upload', __dirname + '/files/test.png')
     .click('#edit-upload')
     .waitForElementVisible('#par-partnership-advice-add', 2000)
     .click('#edit-regulatory-functions--wrapper > div > div > label')
@@ -155,4 +155,3 @@ return shared
       .assert.containsText('.par-partnership-details', '01234865432')
       .assert.containsText('.par-partnership-details', '07877943768 (preferred)')
   });
-  
