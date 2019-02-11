@@ -138,12 +138,12 @@ jobs:
 
       # Save artifacts
       - store_artifacts:
-          path: /tmp/artifacts
+          path: /var/www/html/tests/reports
           destination: build
 
       # Upload test results
       - store_test_results:
-          path: tests/reports
+          path: /var/www/html/tests/reports
 
 workflows:
   version: 2.1
