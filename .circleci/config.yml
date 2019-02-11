@@ -50,7 +50,7 @@ jobs:
       - run:
           name: "Configure web root"
           command: |
-            chown -RL www-data:www-data /var/www/html/web
+            sudo chown -R www-data:www-data /var/www/html/web
             a2ensite par.localhost
             service apache2 restart
             echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
