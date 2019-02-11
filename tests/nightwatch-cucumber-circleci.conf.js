@@ -28,7 +28,7 @@ module.exports = {
     },
     test_settings: {
         default: {
-            launch_url: 'http://127.0.0.1:80',
+            launch_url: 'http://par.localhost',
             selenium_port: 4444,
             // selenium_host: 'localhost',
             screenshots : {
