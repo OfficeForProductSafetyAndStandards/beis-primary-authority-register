@@ -30,6 +30,24 @@ jobs:
       - checkout
 
       - run:
+          name: "Export environment variables"
+          command: |
+            echo "S3_REGION=$S3_REGION" >> .env
+            echo "S3_ACCESS_KEY=$S3_ACCESS_KEY" >> .env
+            echo "S3_SECRET_KEY=$S3_SECRET_KEY" >> .env
+            echo "S3_BUCKET_ARTIFACTS=$S3_BUCKET_ARTIFACTS" >> .env
+            echo "S3_BUCKET_PRIVATE=$S3_BUCKET_PRIVATE" >> .env
+            echo "S3_BUCKET_PUBLIC=$S3_BUCKET_PUBLIC" >> .env
+            echo "PAR_HASH_SALT=$PAR_HASH_SALT" >> .env
+            echo "APP_ENV=$APP_ENV" >> .env
+            echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+            echo "SENTRY_DSN_PUBLIC=$SENTRY_DSN_PUBLIC" >> .env
+            echo "PAR_GOVUK_NOTIFY_KEY=$PAR_GOVUK_NOTIFY_KEY" >> .env
+            echo "PAR_GOVUK_NOTIFY_TEMPLATE=$PAR_GOVUK_NOTIFY_TEMPLATE" >> .env
+            echo "CLAMAV_HTTP_USER=$CLAMAV_HTTP_USER" >> .env
+            echo "CLAMAV_HTTP_PASS=$CLAMAV_HTTP_PASS" >> .env
+
+      - run:
           name: "Configure web root"
           command: |
             chown -R -L www-data:www-data /var/www/html/web
@@ -45,6 +63,7 @@ jobs:
       - run:
           name: "Installing app"
           command: |
+            echo "$(pwd)"
             composer install -v
             npm install
             npm run gulp
