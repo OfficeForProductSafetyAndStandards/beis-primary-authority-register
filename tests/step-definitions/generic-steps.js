@@ -54,7 +54,7 @@ const shared = client.page.shared();
   });
 
   Then('the element {string} contains the text {string}', function (elName, elText) {
-    return client.expect.element(elName).text[1].to.contain(elText)
+    return client.expect.element(elName).text.to.contain(elText)
   });
 
   Then('the element {string} does not contain the text {string}', function (string, string2) {

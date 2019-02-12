@@ -109,7 +109,7 @@ When('I upload a file to the partnership advice section', function () {
     .assert.containsText('h3.heading-medium', 'How to upload Primary Authority Advice to Local Authorities')
     .setValue('#edit-files-upload', __dirname + '/files/test.png')
     .click('#edit-upload')
-    //.waitForElementVisible('#par-partnership-advice-add', 2000)
+    .waitForElementVisible('#par-partnership-advice-add', 2000)
     .click('#edit-regulatory-functions--wrapper > div > div > label')
     .click('#edit-advice-type-business-advice')
     .click('#edit-save')
