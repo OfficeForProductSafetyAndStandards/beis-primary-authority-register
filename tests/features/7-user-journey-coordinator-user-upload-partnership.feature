@@ -21,7 +21,7 @@ Feature: Coordinator User - Upload Members
 
         # VALIDATION
 
-        When I upload the file "./files/csv_test_errors.csv" to field "input#edit-csv-upload"
+        When I upload the file "./files/csv_test_errors.csv" to field "#edit-csv-upload"
         And I click on the button "#edit-upload"
         Then the element "h1.heading-xlarge" contains the text "CSV validation errors"
         And the element "#edit-info--description em a" contains the text "Member Guidance Page"
