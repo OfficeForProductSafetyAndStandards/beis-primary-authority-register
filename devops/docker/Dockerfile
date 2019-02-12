@@ -60,9 +60,7 @@ RUN buildDeps=" \
     && rm -r /var/lib/apt/lists/* \
     && a2enmod rewrite
 
-# Configure Apache
-RUN echo "127.0.0.1 par.localhost" | sudo tee --append /etc/hosts
-
+# Configure Apache virtual host
 COPY ./par.localhost.conf /etc/apache2/sites-available/par.localhost.conf
 
 # Install composer
