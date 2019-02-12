@@ -49,7 +49,7 @@ const shared = client.page.shared();
         .click(string)
   });
 
-  Then('I upload the file {string} to field {string}', function (filepath, uploadfield) {
+  When('I upload the file {string} to field {string}', function (filepath, uploadfield) {
     return client.setValue(uploadfield, __dirname + '/' + filepath);
   });
 
