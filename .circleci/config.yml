@@ -133,7 +133,7 @@ jobs:
           name: "Run feature tests"
           command: |
             cd tests
-            npm run nightwatch-cucumber-circleci -- --tag ci
+            npm run nightwatch-cucumber-circleci -- --verbose --tag ci
             npm run generate-report
 
       # Save artifacts
