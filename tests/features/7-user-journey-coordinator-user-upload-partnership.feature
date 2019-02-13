@@ -21,7 +21,7 @@ Feature: Coordinator User - Upload Members
 
         # VALIDATION
 
-        When I upload the file "./files/csv_test_errors.csv" to field "#edit-csv-upload"
+        When I upload the file "files/csv_test_errors.csv" to field "#edit-csv-upload"
         And I click on the button "#edit-upload"
         Then the element "h1.heading-xlarge" contains the text "CSV validation errors"
         And the element "#edit-info--description em a" contains the text "Member Guidance Page"
@@ -37,7 +37,7 @@ Feature: Coordinator User - Upload Members
         # CSV PROCESSING
 
         Then the element "h1.heading-xlarge" contains the text "Upload a list of members"
-        When I upload the file "./files/csv_test_valid.csv" to field "#edit-csv-upload"
+        When I upload the file "files/csv_test_valid.csv" to field "#edit-csv-upload"
         And I click on the button "#edit-upload"
         Then the element "h1.heading-xlarge" contains the text "Confirm member upload"
         When I click on the button "#edit-save"
@@ -124,7 +124,7 @@ Feature: Coordinator User - Upload Members
 
         When I click the link text "Upload a Member List (CSV)"
         Then the element "h1.heading-xlarge" contains the text "Upload a list of members"
-        When I upload the file "./files/csv_test_second.csv" to field "#edit-csv-upload"
+        When I upload the file "files/csv_test_second.csv" to field "#edit-csv-upload"
         And I click on the button "#edit-upload"
         Then the element "h1.heading-xlarge" contains the text "Confirm member upload"
         When I click on the button "#edit-save"
