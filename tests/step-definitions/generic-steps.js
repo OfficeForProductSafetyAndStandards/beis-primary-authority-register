@@ -52,7 +52,8 @@ const shared = client.page.shared();
   When('I upload the file {string} to field {string}', function (filepath, uploadfield) {
     console.log(__dirname + '/' + filepath);
     console.log(uploadfield);
-    return client.setValue(uploadfield, __dirname + '/' + filepath);
+    return client.setValue(uploadfield, __dirname + '/' + filepath)
+        .saveScreenshot('./reports/' + filepath + '.png');
   });
 
   Then('the element {string} contains the text {string}', function (elName, elText) {
