@@ -6,7 +6,3 @@ update partnership organisation details:
   title: "Update organisation's details"
   description: "Allow users to update the organisation's details for a partnership."
   restrict access: TRUE
-update legal entities on active partnership:
-  title: "Update legal entities on active partnerships"
-  description: "Allow users to update/create a legal entity on an active partnership."
-  restrict access: TRUE

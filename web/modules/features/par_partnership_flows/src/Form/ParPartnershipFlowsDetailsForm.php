@@ -132,8 +132,6 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     $operations = [];
     $checkbox = $this->getInformationCheckbox();
 
-
-    var_dump($par_data_partnership->getRawStatus());
     if ($checkbox === 'partnership_info_agreed_business' && !$par_data_partnership->getBoolean($checkbox)) {
       // Active partnerships do not allow for associated legal entities to be altered/added.
       if ($par_data_partnership->inProgress()) {
