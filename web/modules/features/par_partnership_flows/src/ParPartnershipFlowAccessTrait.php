@@ -29,9 +29,7 @@ trait ParPartnershipFlowAccessTrait {
 
     }
 
-    // Get the parameters for this route.
-
-    // If the partnership isn't a coordinated one then don't allow update.
+    // Restrict access to active partnerships.
     if (!$par_data_partnership->inProgress()) {
       $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entity cannot be updated/added.');
     }
