@@ -25,6 +25,18 @@ references:
 
     working_directory: /var/www/html
 
+  restore_code: &restore_code
+    restore_cache:
+      keys:
+        - v1-repo-{{ .Branch }}-{{ .Revision }}
+        - v1-repo-{{ .Branch }}
+        - v1-repo
+
+  restore_dependencies: &restore_dependencies
+    - restore_cache:
+        keys:
+          - par-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
+
   workspace_root: &workspace_root
     /tmp/workspace
 
@@ -33,10 +45,12 @@ references:
       at: *workspace_root
 
 jobs:
-  build:
+  checkout_code:
     <<: *defaults
 
     steps:
+      - *restore_code
+
       - checkout
 
       - run:
@@ -57,9 +71,18 @@ jobs:
             echo "CLAMAV_HTTP_USER=$CLAMAV_HTTP_USER" >> .env
             echo "CLAMAV_HTTP_PASS=$CLAMAV_HTTP_PASS" >> .env
 
-      - restore_cache:
-          keys:
-            - par-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
+      - save_cache:
+          key: v1-repo-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - .
+
+  compile_code:
+    <<: *defaults
+
+    steps:
+      - *restore_code
+
+      - *restore_dependencies
 
       - run:
           name: "Installing app"
@@ -75,6 +98,105 @@ jobs:
           paths:
             - ./vendor
             - ./node_modules
+
+  test-smoke:
+    <<: *defaults
+
+    steps:
+      - *restore_code
+
+      - *restore_dependencies
+
+      - run:
+          name: "Configure web root"
+          command: |
+            sudo chown -R -L www-data:www-data /var/www/html/web
+            ls -lah /var/www/html/web
+            a2ensite par.localhost
+            service apache2 restart
+            echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
+            cat /etc/hosts
+
+      - run:
+          name: "Database preparation"
+          command: |
+            mkdir -p backups
+            apt-get install sudo python-pip -y
+
+      - aws-s3/copy:
+          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}.tar.gz"
+          to: backups/sanitised-db.sql
+          arguments: '--region eu-west-1'
+
+      - run:
+          name: "Unpacking database"
+          command: cd backups && tar --no-same-owner -zxvf sanitised-db.sql
+
+      - run:
+          name: "Importing database"
+          command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${SANITISED_DATABASE}
+
+      - run:
+          name: "Setup application"
+          command: sh drupal-update.sh
+
+      - run:
+          name: "Run cron"
+          command: |
+            cd web
+            ../vendor/bin/drush cron
+            ../vendor/bin/drush cron
+            ../vendor/bin/drush cron
+
+      - run:
+          name: "Application checklist"
+          command: |
+            cd web
+            ../vendor/bin/drush cex -n
+            ../vendor/bin/drush core-requirements --severity=2
+            curl -sD - -o /dev/null http://par.localhost
+
+      - run:
+          name: "Install test dependencies"
+          command: |
+            cd tests
+            mkdir -p ./reports/phpunit
+            mkdir -p ./reports/nightwatch
+            npm install
+            npm run selenium-install
+
+      - run:
+          name: "Run unit tests"
+          command: |
+            ./vendor/bin/paratest --processes=16 --log-junit=${TEST_REPORTS}/phpunit.latest.xml
+
+      - run:
+          name: "Run feature tests"
+          command: |
+            cd tests
+            npm run nightwatch-cucumber-circleci -- --tag smoke
+            npm run generate-report
+
+      # Save artifacts
+      - store_artifacts:
+          path: /var/www/html/tests/reports
+          destination: build
+
+      # Upload test results
+      - store_test_results:
+          path: /var/www/html/tests/reports
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  test-full:
+    <<: *defaults
+
+    steps:
+      - *restore_code
+
+      - *restore_dependencies
 
       - run:
           name: "Configure web root"
@@ -160,7 +282,23 @@ jobs:
           paths:
             - .
 
-  deploy:
+  deploy-stage:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: "Make asset bundle"
+          command: |
+            rm -f .env
+            rm -fr tests
+            rm -fr backups
+            mkdir /tmp/$CIRCLE_TAG
+            tar -zcf /tmp/$CIRCLE_TAG/$CIRCLE_TAG.tar.gz .
+
+  deploy-test:
     <<: *defaults
 
     steps:
@@ -180,35 +318,65 @@ workflows:
   version: 2.1
   build-test:
     jobs:
-      - build:
+      - checkout_code
+      - compile_code:
+          requires:
+            - checkout_code
+      - test-smoke:
+          requires:
+            - compile_code
           filters:
+            tags:
+              ignore: /.*/
             branches:
               ignore:
                 - master
-                - circleci
 
   deploy-staging:
     jobs:
-      - build:
+      - checkout_code
+      - compile_code:
+          requires:
+            - checkout_code
+      - test-full:
+          requires:
+            - compile_code
           filters:
             tags:
               only: /^v.*/
             branches:
-              only:
-                - circleci
+              ignore: /.*/
       - hold:
           type: approval
           requires:
             - build
-      - deploy:
+      - deploy-stage:
           requires:
             - hold
           filters:
             tags:
               only: /^v.*/
             branches:
-              only:
-                - circleci
+              ignore: /.*/
+
+  deploy-test:
+    jobs:
+      - checkout_code
+      - compile_code:
+          requires:
+            - checkout_code
+      - hold:
+          type: approval
+          requires:
+            - build
+      - deploy-test:
+          requires:
+            - hold
+          filters:
+            tags:
+              only: /^test-*/
+            branches:
+              ignore: /.*/
 
   nightly:
     triggers:
@@ -219,4 +387,10 @@ workflows:
               only:
                 - master
     jobs:
-      - build
+      - checkout_code
+      - compile_code:
+          requires:
+            - checkout_code
+      - test:
+          requires:
+            - compile_code
