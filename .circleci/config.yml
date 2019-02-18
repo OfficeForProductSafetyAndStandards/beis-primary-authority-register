@@ -33,7 +33,7 @@ references:
       at: *workspace_root
 
 jobs:
-  test:
+  build:
     <<: *defaults
 
     steps:
