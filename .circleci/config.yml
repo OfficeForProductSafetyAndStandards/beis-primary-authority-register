@@ -3,7 +3,6 @@ orbs:
   aws-s3: circleci/aws-s3@1.0.0
 
 references:
-
   defaults: &defaults
     docker:
       - image: beispar/web:v2.0.0
@@ -33,9 +32,9 @@ references:
         - v1-repo
 
   restore_dependencies: &restore_dependencies
-    - restore_cache:
-        keys:
-          - par-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
+    restore_cache:
+      keys:
+        - par-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
 
   workspace_root: &workspace_root
     /tmp/workspace
@@ -50,9 +49,7 @@ jobs:
 
     steps:
       - *restore_code
-
       - checkout
-
       - run:
           name: "Export environment variables"
           command: |
@@ -70,7 +67,6 @@ jobs:
             echo "PAR_GOVUK_NOTIFY_TEMPLATE=$PAR_GOVUK_NOTIFY_TEMPLATE" >> .env
             echo "CLAMAV_HTTP_USER=$CLAMAV_HTTP_USER" >> .env
             echo "CLAMAV_HTTP_PASS=$CLAMAV_HTTP_PASS" >> .env
-
       - save_cache:
           key: v1-repo-{{ .Branch }}-{{ .Revision }}
           paths:
@@ -81,9 +77,7 @@ jobs:
 
     steps:
       - *restore_code
-
       - *restore_dependencies
-
       - run:
           name: "Installing app"
           command: |
@@ -92,21 +86,22 @@ jobs:
             npm install
             npm run gulp
             cd ./tests && rm -rf node_modules && npm install
-
       - save_cache:
           key: par-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
           paths:
             - ./vendor
             - ./node_modules
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - .
 
   test-smoke:
     <<: *defaults
 
     steps:
       - *restore_code
-
       - *restore_dependencies
-
       - run:
           name: "Configure web root"
           command: |
@@ -116,30 +111,24 @@ jobs:
             service apache2 restart
             echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
             cat /etc/hosts
-
       - run:
           name: "Database preparation"
           command: |
             mkdir -p backups
             apt-get install sudo python-pip -y
-
       - aws-s3/copy:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}.tar.gz"
           to: backups/sanitised-db.sql
           arguments: '--region eu-west-1'
-
       - run:
           name: "Unpacking database"
           command: cd backups && tar --no-same-owner -zxvf sanitised-db.sql
-
       - run:
           name: "Importing database"
           command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${SANITISED_DATABASE}
-
       - run:
           name: "Setup application"
           command: sh drupal-update.sh
-
       - run:
           name: "Run cron"
           command: |
@@ -147,7 +136,6 @@ jobs:
             ../vendor/bin/drush cron
             ../vendor/bin/drush cron
             ../vendor/bin/drush cron
-
       - run:
           name: "Application checklist"
           command: |
@@ -155,7 +143,6 @@ jobs:
             ../vendor/bin/drush cex -n
             ../vendor/bin/drush core-requirements --severity=2
             curl -sD - -o /dev/null http://par.localhost
-
       - run:
           name: "Install test dependencies"
           command: |
@@ -164,40 +151,30 @@ jobs:
             mkdir -p ./reports/nightwatch
             npm install
             npm run selenium-install
-
       - run:
           name: "Run unit tests"
           command: |
             ./vendor/bin/paratest --processes=16 --log-junit=${TEST_REPORTS}/phpunit.latest.xml
-
       - run:
           name: "Run feature tests"
           command: |
             cd tests
             npm run nightwatch-cucumber-circleci -- --tag smoke
             npm run generate-report
-
       # Save artifacts
       - store_artifacts:
           path: /var/www/html/tests/reports
           destination: build
-
       # Upload test results
       - store_test_results:
           path: /var/www/html/tests/reports
 
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
   test-full:
     <<: *defaults
 
     steps:
       - *restore_code
-
       - *restore_dependencies
-
       - run:
           name: "Configure web root"
           command: |
@@ -207,30 +184,24 @@ jobs:
             service apache2 restart
             echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
             cat /etc/hosts
-
       - run:
           name: "Database preparation"
           command: |
             mkdir -p backups
             apt-get install sudo python-pip -y
-
       - aws-s3/copy:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}.tar.gz"
           to: backups/sanitised-db.sql
           arguments: '--region eu-west-1'
-
       - run:
           name: "Unpacking database"
           command: cd backups && tar --no-same-owner -zxvf sanitised-db.sql
-
       - run:
           name: "Importing database"
           command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${SANITISED_DATABASE}
-
       - run:
           name: "Setup application"
           command: sh drupal-update.sh
-
       - run:
           name: "Run cron"
           command: |
@@ -238,7 +209,6 @@ jobs:
             ../vendor/bin/drush cron
             ../vendor/bin/drush cron
             ../vendor/bin/drush cron
-
       - run:
           name: "Application checklist"
           command: |
@@ -246,7 +216,6 @@ jobs:
             ../vendor/bin/drush cex -n
             ../vendor/bin/drush core-requirements --severity=2
             curl -sD - -o /dev/null http://par.localhost
-
       - run:
           name: "Install test dependencies"
           command: |
@@ -255,67 +224,55 @@ jobs:
             mkdir -p ./reports/nightwatch
             npm install
             npm run selenium-install
-
       - run:
           name: "Run unit tests"
           command: |
             ./vendor/bin/paratest --processes=16 --log-junit=${TEST_REPORTS}/phpunit.latest.xml
-
       - run:
           name: "Run feature tests"
           command: |
             cd tests
             npm run nightwatch-cucumber-circleci -- --tag ci
             npm run generate-report
-
       # Save artifacts
       - store_artifacts:
           path: /var/www/html/tests/reports
           destination: build
-
       # Upload test results
       - store_test_results:
           path: /var/www/html/tests/reports
-
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
 
   deploy-stage:
     <<: *defaults
 
     steps:
-      - attach_workspace:
-          at: .
-
+      - *attach_workspace
       - run:
           name: "Make asset bundle"
           command: |
             rm -f .env
             rm -fr tests
             rm -fr backups
-            mkdir /tmp/$CIRCLE_TAG
+            mkdir -p /tmp/$CIRCLE_TAG
             tar -zcf /tmp/$CIRCLE_TAG/$CIRCLE_TAG.tar.gz .
 
   deploy-test:
     <<: *defaults
 
     steps:
-      - attach_workspace:
-          at: .
-
+      - *attach_workspace
       - run:
           name: "Make asset bundle"
           command: |
             rm -f .env
             rm -fr tests
             rm -fr backups
-            mkdir /tmp/$CIRCLE_TAG
+            mkdir -p /tmp/$CIRCLE_TAG
             tar -zcf /tmp/$CIRCLE_TAG/$CIRCLE_TAG.tar.gz .
 
 workflows:
   version: 2.1
+
   build-test:
     jobs:
       - checkout_code
