@@ -2,30 +2,40 @@ version: 2.1
 orbs:
   aws-s3: circleci/aws-s3@1.0.0
 
-defaults: &defaults
-  docker:
-    - image: beispar/web:v2.0.0
-      name: web
-      environment:
-        APP_ENV: ci
+references:
 
-    - image: postgres:9.6.3
-      environment:
-        POSTGRES_USER: par
-        POSTGRES_PASSWORD: 123456
-        POSTGRES_DB: par
+  defaults: &defaults
+    docker:
+      - image: beispar/web:v2.0.0
+        name: web
+        environment:
+          APP_ENV: ci
 
-  environment:
-    TEST_REPORTS: ~/par/tests/reports
-    S3_ARTIFACTS_BUCKET: beis-par-artifacts
-    SANITISED_DATABASE: drush-dump-production-sanitized-latest.sql
-    SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
+      - image: postgres:9.6.3
+        environment:
+          POSTGRES_USER: par
+          POSTGRES_PASSWORD: 123456
+          POSTGRES_DB: par
 
-  working_directory: /var/www/html
+    environment:
+      TEST_REPORTS: ~/par/tests/reports
+      S3_ARTIFACTS_BUCKET: beis-par-artifacts
+      SANITISED_DATABASE: drush-dump-production-sanitized-latest.sql
+      SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
+
+    working_directory: /var/www/html
+
+  workspace_root: &workspace_root
+    /tmp/workspace
+
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: *workspace_root
 
 jobs:
-  build:
+  test:
     <<: *defaults
+
     steps:
       - checkout
 
@@ -145,6 +155,27 @@ jobs:
       - store_test_results:
           path: /var/www/html/tests/reports
 
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  deploy:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: "Make asset bundle"
+          command: |
+            rm -f .env
+            rm -fr tests
+            rm -fr backups
+            mkdir /tmp/$TRAVIS_TAG
+            tar -zcf /tmp/$TRAVIS_TAG/$TRAVIS_TAG.tar.gz .
+
 workflows:
   version: 2.1
   build-test:
@@ -154,3 +185,35 @@ workflows:
             branches:
               ignore:
                 - master
+
+  deploy-staging:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - hold:
+          type: approval
+          requires:
+            - build
+      - deploy:
+          requires:
+            - hold
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build
