@@ -1,5 +1,5 @@
 {
-    "name": "TransformCore/beis-par-beta",
+    "name": "beis/primary-authority-register",
     "description": "The beta platform for BEIS PAR.",
     "type": "project",
     "repositories": [
