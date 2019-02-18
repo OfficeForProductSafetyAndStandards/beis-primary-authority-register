@@ -173,8 +173,8 @@ jobs:
             rm -f .env
             rm -fr tests
             rm -fr backups
-            mkdir /tmp/$TRAVIS_TAG
-            tar -zcf /tmp/$TRAVIS_TAG/$TRAVIS_TAG.tar.gz .
+            mkdir /tmp/$CIRCLE_TAG
+            tar -zcf /tmp/$CIRCLE_TAG/$CIRCLE_TAG.tar.gz .
 
 workflows:
   version: 2.1
@@ -185,6 +185,7 @@ workflows:
             branches:
               ignore:
                 - master
+                - circleci
 
   deploy-staging:
     jobs:
@@ -193,7 +194,8 @@ workflows:
             tags:
               only: /^v.*/
             branches:
-              ignore: /.*/
+              only:
+                - circleci
       - hold:
           type: approval
           requires:
@@ -205,7 +207,8 @@ workflows:
             tags:
               only: /^v.*/
             branches:
-              ignore: /.*/
+              only:
+                - circleci
 
   nightly:
     triggers:
