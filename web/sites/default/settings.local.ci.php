@@ -15,13 +15,7 @@ $settings['trusted_host_patterns'] = [''];
 
 $settings['config_readonly'] = FALSE;
 
-/**
- * Show all error messages, with backtrace information.
- *
- * In case the error level could not be fetched from the database, as for
- * example the database connection failed, we rely only on this value.
- */
-$config['system.logging']['error_level'] = 'verbose';
+$settings['skip_permissions_hardening'] = TRUE;
 
 $config['config_split.config_split.dev_config']['status'] = TRUE;
 $config['config_split.config_split.test_config']['status'] = TRUE;
