@@ -254,7 +254,11 @@ jobs:
             rm -fr tests
             rm -fr backups
             mkdir -p /tmp/$CIRCLE_TAG
-            tar -zcf /tmp/$CIRCLE_TAG/$CIRCLE_TAG.tar.gz .
+            tar -zcf /tmp/$CIRCLE_TAG/$CIRCLE_TAG.tar.gz /tmp/workspace/*
+      - aws-s3/copy:
+          from: /tmp/$CIRCLE_TAG
+          to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}"
+          arguments: '--region eu-west-1'
 
   deploy-test:
     <<: *defaults
@@ -268,7 +272,11 @@ jobs:
             rm -fr tests
             rm -fr backups
             mkdir -p /tmp/$CIRCLE_TAG
-            tar -zcf /tmp/$CIRCLE_TAG/$CIRCLE_TAG.tar.gz .
+            tar -zcf /tmp/$CIRCLE_TAG/$CIRCLE_TAG.tar.gz /tmp/workspace/*
+      - aws-s3/copy:
+          from: /tmp/$CIRCLE_TAG
+          to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}"
+          arguments: '--region eu-west-1'
 
 workflows:
   version: 2.1
