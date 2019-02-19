@@ -314,7 +314,7 @@ workflows:
       - hold:
           type: approval
           requires:
-            - build
+            - test-full
       - deploy-stage:
           requires:
             - hold
@@ -333,7 +333,7 @@ workflows:
       - hold:
           type: approval
           requires:
-            - build
+            - compile_code
       - deploy-test:
           requires:
             - hold
