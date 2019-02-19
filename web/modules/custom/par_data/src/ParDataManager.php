@@ -212,13 +212,11 @@ class ParDataManager implements ParDataManagerInterface {
    *   The entity type to search for.
    * @param string $bundle
    *   The entity bundle to search for.
-   * @param bool $include_reverse
-   *   Whether to include reverse references.
    *
    * @return \Drupal\Core\Field\FieldDefinitionInterface[]
    *   An array of field definitions keyed by the entity type they are attached to.
    */
-  public function getReferences($type, $bundle, $include_reverse = TRUE) {
+  public function getReferences($type, $bundle) {
     $reference_fields = [];
 
     // First get all the entities referenced by this entity type.
@@ -893,6 +891,52 @@ EOT;
         var_dump($e->getMessage());
       }
     }
+  }
+
+  /**
+   * Debugging function for introspecting all reference fields on an entity type.
+   */
+  public function buildReferenceTree($entity_types = [], $references = []) {
+    if (empty($entity_types)) {
+      $entity_types = $this->getParEntityTypes();
+    }
+    if ($this->debug) {
+      $debug_tree = '';
+    }
+
+    foreach ($entity_types as $entity_type_id => $entity_type) {
+      $definition = $entity_type ? $this->getEntityBundleDefinition($entity_type) : NULL;
+      $bundles = $definition ? $this->getEntityTypeStorage($definition->id())->loadMultiple() : [];
+
+      foreach ($bundles as $bundle) {
+        $current_references = $this->getReferences($entity_type_id, $bundle->id());
+        // Only use the reverse references.
+        $current_references = array_filter($current_references, function ($relationship) {
+          return ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE);
+        });
+
+        // Allow a debug tree to be built.
+        if ($this->debug) {
+          $debug_tree .= $entity_type_id . PHP_EOL;
+          $debug_tree .= '&mdash;' . $bundle->id() . PHP_EOL;
+          if (isset($current_references[$entity_type_id])) {
+            foreach ($current_references[$entity_type_id] as $reference) {
+              $debug_tree .= '&mdash;&mdash;' . $reference->getsetting('target_type') . PHP_EOL;
+            }
+          }
+        }
+
+        $references += $current_references;
+      }
+    }
+
+    // Output debugging.
+    if ($this->debug) {
+      $tree = \Drupal\Core\Render\Markup::create(nl2br("<br>" . $debug_tree));
+      $this->getMessenger()->addMessage(t('New relationship tree: @tree', ['@tree' => $tree]));
+    }
+
+    return $references;
   }
 
 }

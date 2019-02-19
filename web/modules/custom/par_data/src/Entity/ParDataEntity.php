@@ -230,9 +230,22 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * Destroy and entity, and completely remove.
    */
   public function destroy() {
-    if (!$this->isNew()) {
+    if (!$this->isNew() && $this->isDeletable()) {
       return $this->entityManager()->getStorage($this->entityTypeId)->destroy([$this->id() => $this]);
     }
+  }
+
+  /**
+   * Check whether this entity is destroyable.
+   *
+   * @TODO Related to PAR-1439, do not use until this is complete.
+   */
+  public function isDeletable() {
+    // If there are any relationships whereby another entity requires this one
+    // then this entity should not be deleted.
+    $relationships = $this->getRequiredRelationships();
+
+    return $relationships ? FALSE : TRUE;
   }
 
   /**
@@ -563,30 +576,50 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Get all the entities that are dependent on this entity.
+   * Get all the entities that are rely on this entity.
+   *
+   * @TODO Once PAR-1349 has been looked at this method should probably
+   * be rolled into self::getRequiredRelationships()
    *
    * @return array
    *   An array of entities that are dependent on this entity, numerically indexed.
    */
   public function getDependents($dependents = []) {
-    if (!isset($this->dependents) || empty($this->dependents)) {
-      return $dependents;
-    }
+    if (isset($this->dependents)) {
+      foreach ($this->dependents as $entity_type) {
+        $relationships = $this->getRelationships($entity_type);
+        foreach ($relationships as $uuid => $relationship) {
+          // Don't get yer knickers in a twist and go loopy.
+          if ($relationship->getEntity()->uuid() === $this->uuid()) {
+            continue;
+          }
 
-    foreach ($this->dependents as $entity_type) {
-      $relationships = $this->getRelationships($entity_type);
-      foreach ($relationships as $uuid => $relationship) {
-        // Don't get yer knickers in a twist and go loopy.
-        if ($relationship->getEntity()->uuid() === $this->uuid()) {
-          continue;
+          $dependents[] = $relationship->getEntity();
+          $dependents = $relationship->getEntity()->getDependents($dependents);
         }
-
-        $dependents[] = $relationship->getEntity();
-        $dependents = $relationship->getEntity()->getDependents($dependents);
       }
     }
 
     return $dependents;
+  }
+
+  /**
+   * A required relationship is one that cannot be removed or broken.
+   *
+   * @TODO There are many complex rules to determine these relationships,
+   * this needs to be worked out in greater detail in PAR-1349
+   *
+   * @return array|\Drupal\par_data\ParDataRelationship|\Drupal\par_data\ParDataRelationship[]
+   */
+  public function getRequiredRelationships() {
+    // As a general rule, any entities that reference this entity
+    // should stop this entity being deleted.
+    $relationships = $this->getRelationships(NULL, 'dependents');
+    $relationships = array_filter($relationships, function ($relationship) {
+      return ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE);
+    });
+
+    return $relationships;
   }
 
   /**
@@ -599,7 +632,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * @param boolean $reset
    *   Whether to reset the cache.
    *
-   * @return EntityInterface[]
+   * @return ParDataRelationship[]
    *   An array of entities keyed by type.
    */
   public function getRelationships($target = NULL, $action = NULL, $reset = FALSE) {

@@ -34,6 +34,7 @@ Feature: Coordinator User - Update Partnership
         And I click on the button "#edit-next"
         And I add "14" to the inputfield "#edit-day"
         And I add "01" to the inputfield "#edit-month"
+        And I add "2018" to the inputfield "#edit-year"
         And I click on the button "#edit-next"
         And I add "A trading Name" to the inputfield "#edit-par-component-trading-name-0-trading-name"
         And I click on the button "#edit-next"
