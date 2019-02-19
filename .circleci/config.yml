@@ -285,7 +285,7 @@ jobs:
 workflows:
   version: 2.1
 
-  build-test:
+  build-test-deploy:
     jobs:
       - checkout_code
       - compile_code:
@@ -300,13 +300,6 @@ workflows:
             branches:
               ignore:
                 - master
-
-  deploy-staging:
-    jobs:
-      - checkout_code
-      - compile_code:
-          requires:
-            - checkout_code
       - test-full:
           requires:
             - compile_code
@@ -315,32 +308,25 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
-      - hold:
+      - staging-hold:
           type: approval
           requires:
             - test-full
       - deploy-stage:
           requires:
-            - hold
-
-  deploy-test:
-    jobs:
-      - checkout_code
-      - compile_code:
-          requires:
-            - checkout_code
-      - hold:
+            - staging-hold
+      - test-hold:
           type: approval
           requires:
             - compile_code
-      - deploy-test:
-          requires:
-            - hold
           filters:
             tags:
               only: /^test-*/
             branches:
               ignore: /.*/
+      - deploy-test:
+          requires:
+            - test-hold
 
   nightly:
     triggers:
