@@ -348,6 +348,6 @@ workflows:
       - compile_code:
           requires:
             - checkout_code
-      - test:
+      - test-full:
           requires:
             - compile_code
