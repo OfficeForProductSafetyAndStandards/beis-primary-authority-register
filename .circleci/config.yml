@@ -91,6 +91,10 @@ jobs:
           paths:
             - ./vendor
             - ./node_modules
+      - run:
+          name: "Create workspace"
+          command: |
+            mkdir -p /tmp/workspace
       - persist_to_workspace:
           root: *workspace_root
           paths:
@@ -299,7 +303,7 @@ workflows:
 
   deploy-staging:
     jobs:
-      - checkout_code
+      - checkout_code:
       - compile_code:
           requires:
             - checkout_code
@@ -318,11 +322,6 @@ workflows:
       - deploy-stage:
           requires:
             - hold
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
 
   deploy-test:
     jobs:
