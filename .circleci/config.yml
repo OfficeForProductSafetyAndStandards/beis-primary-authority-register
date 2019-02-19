@@ -303,7 +303,7 @@ workflows:
 
   deploy-staging:
     jobs:
-      - checkout_code:
+      - checkout_code
       - compile_code:
           requires:
             - checkout_code
