@@ -1,0 +1,147 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_sic_code\/54?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_sic_code\/sic_code"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/par_data_sic_code\/sic_code\/user_id": [
+            {
+                "href": "http:\/\/default\/user\/1?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_sic_code\/sic_code\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/1?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 54
+        }
+    ],
+    "type": [
+        {
+            "target_id": "sic_code"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "0f59d76d-3062-4c5e-8b26-b0a798a7104c"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": 56
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/par_data_sic_code\/sic_code\/user_id": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/1?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "3508aee8-7e04-4b5d-a784-3667ea038e49"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_sic_code\/sic_code\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/1?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "3508aee8-7e04-4b5d-a784-3667ea038e49"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1521559594
+        }
+    ],
+    "changed": [
+        {
+            "value": 1521559594
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": 1521559594
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "5ab1282d3025e",
+            "lang": "en"
+        }
+    ],
+    "deleted": [
+        {
+            "value": false
+        }
+    ],
+    "revoked": [
+        {
+            "value": false
+        }
+    ],
+    "archived": [
+        {
+            "value": false
+        }
+    ],
+    "sic_code": [
+        {
+            "value": "111111"
+        }
+    ],
+    "description": [
+        {
+            "value": "This SIC Code should be used if you allow people to eat cookies on your premises."
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ]
+}

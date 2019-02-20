@@ -1,0 +1,262 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_authority\/532?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_authority\/authority"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/user_id": [
+            {
+                "href": "http:\/\/default\/user\/11895?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/5?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/field_person": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118786?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118788?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118790?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118805?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/field_regulatory_function": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_regulatory_function\/14?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 532
+        }
+    ],
+    "type": [
+        {
+            "target_id": "authority"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "84e03a59-b111-4e14-994c-67c7e08a3cfe"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": 3438
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/user_id": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/11895?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "bcb59c34-32d6-456a-a936-90cfeae6fc41"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/5?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "46e65664-bf34-4713-ab14-740cbe581538"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/field_person": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118786?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "5e0977f0-29de-4904-9a86-c697252e8bc5"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118788?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "2d36609d-7212-4eba-baa9-530e33e98c84"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118790?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "706fd108-d978-4ad1-8753-534f4fa09482"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118805?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "be011888-ccfa-4046-ae12-0bee3576619b"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/field_regulatory_function": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_regulatory_function\/14?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_regulatory_function\/regulatory_function"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "15660610-03e4-47f4-b26e-159d0cd4d86a"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1544978235
+        }
+    ],
+    "changed": [
+        {
+            "value": 1550683729
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": 1545047483
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "5c167e7847092",
+            "lang": "en"
+        }
+    ],
+    "deleted": [
+        {
+            "value": false
+        }
+    ],
+    "revoked": [
+        {
+            "value": false
+        }
+    ],
+    "archived": [
+        {
+            "value": false
+        }
+    ],
+    "authority_name": [
+        {
+            "value": "Authority for user management test"
+        }
+    ],
+    "authority_type": [
+        {
+            "value": "metropolitan_district"
+        }
+    ],
+    "nation": [
+        {
+            "value": "EN-WLS"
+        }
+    ],
+    "ons_code": [
+        {
+            "value": "123456"
+        }
+    ],
+    "comments": [
+        {
+            "value": "<p>This is an authority for testing purposes only.<\/p>\r\n",
+            "format": "basic_html",
+            "processed": "<p>This is an authority for testing purposes only.<\/p>"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ]
+}

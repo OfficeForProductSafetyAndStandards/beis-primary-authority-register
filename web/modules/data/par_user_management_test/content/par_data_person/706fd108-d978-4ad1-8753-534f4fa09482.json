@@ -1,0 +1,162 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118790?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/user_id": [
+            {
+                "href": "http:\/\/default\/user\/11895?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/11895?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 118790
+        }
+    ],
+    "type": [
+        {
+            "target_id": "person"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "706fd108-d978-4ad1-8753-534f4fa09482"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": 33671
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/user_id": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/11895?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "bcb59c34-32d6-456a-a936-90cfeae6fc41"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/11895?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "bcb59c34-32d6-456a-a936-90cfeae6fc41"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1545047134
+        }
+    ],
+    "changed": [
+        {
+            "value": 1545047134
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": 1545047134
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "5c178c5f0ea96",
+            "lang": "en"
+        }
+    ],
+    "deleted": [
+        {
+            "value": false
+        }
+    ],
+    "revoked": [
+        {
+            "value": false
+        }
+    ],
+    "archived": [
+        {
+            "value": false
+        }
+    ],
+    "salutation": [
+        {
+            "value": "Mr"
+        }
+    ],
+    "first_name": [
+        {
+            "value": "Jacob"
+        }
+    ],
+    "last_name": [
+        {
+            "value": "Pilcher"
+        }
+    ],
+    "work_phone": [
+        {
+            "value": "01345991589"
+        }
+    ],
+    "email": [
+        {
+            "value": "par_user_management_contact@example.com"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ]
+}

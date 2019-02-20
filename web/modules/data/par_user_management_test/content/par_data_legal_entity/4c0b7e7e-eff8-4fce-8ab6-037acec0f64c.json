@@ -1,0 +1,152 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_legal_entity\/21583?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_legal_entity\/legal_entity"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/par_data_legal_entity\/legal_entity\/user_id": [
+            {
+                "href": "http:\/\/default\/user\/11896?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_legal_entity\/legal_entity\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/11896?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 21583
+        }
+    ],
+    "type": [
+        {
+            "target_id": "legal_entity"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "4c0b7e7e-eff8-4fce-8ab6-037acec0f64c"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": 6818
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/par_data_legal_entity\/legal_entity\/user_id": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/11896?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "ecb74dab-095e-4362-b032-5c18413b6d2d"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_legal_entity\/legal_entity\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/11896?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "ecb74dab-095e-4362-b032-5c18413b6d2d"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1550683564
+        }
+    ],
+    "changed": [
+        {
+            "value": 1550683564
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": 1550683564
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "5c6d8dac8eab5",
+            "lang": "en"
+        }
+    ],
+    "deleted": [
+        {
+            "value": false
+        }
+    ],
+    "revoked": [
+        {
+            "value": false
+        }
+    ],
+    "archived": [
+        {
+            "value": false
+        }
+    ],
+    "registered_name": [
+        {
+            "value": "Test Organisation User Management Ltd"
+        }
+    ],
+    "registered_number": [
+        {
+            "value": "93847573647"
+        }
+    ],
+    "legal_entity_type": [
+        {
+            "value": "limited_company"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ]
+}

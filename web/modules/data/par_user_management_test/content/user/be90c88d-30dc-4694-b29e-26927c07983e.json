@@ -1,0 +1,63 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/user\/11897?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+        }
+    },
+    "uid": [
+        {
+            "value": 11897
+        }
+    ],
+    "uuid": [
+        {
+            "value": "be90c88d-30dc-4694-b29e-26927c07983e"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "par_user_management_officer"
+        }
+    ],
+    "created": [
+        {
+            "value": 1545046309
+        }
+    ],
+    "changed": [
+        {
+            "value": 1545046309,
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "field_gdpr": [
+        {
+            "value": false
+        }
+    ],
+    "field_last_password_reset": [
+        {
+            "value": "2019-02-20T12:33:21"
+        }
+    ],
+    "field_password_expiration": [
+        {
+            "value": false
+        }
+    ]
+}

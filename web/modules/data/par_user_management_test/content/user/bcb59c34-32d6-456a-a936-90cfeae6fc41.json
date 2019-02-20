@@ -1,0 +1,83 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/user\/11895?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+        }
+    },
+    "uid": [
+        {
+            "value": 11895
+        }
+    ],
+    "uuid": [
+        {
+            "value": "bcb59c34-32d6-456a-a936-90cfeae6fc41"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "mail": [
+      {
+        "value": "par_authority_user_management@example.com"
+      }
+    ],
+    "name": [
+      {
+        "value": "par_authority_user_management"
+      }
+    ],
+    "pass": [
+      {
+        "value": "TestPassword"
+      }
+    ],
+    "status": [
+      {
+        "value": "1"
+      }
+    ],
+    "roles": [
+      {
+        "target_id": "par_authority"
+      }
+    ],
+    "created": [
+        {
+            "value": 1544976255
+        }
+    ],
+    "changed": [
+        {
+            "value": 1550683132,
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "field_gdpr": [
+        {
+            "value": true
+        }
+    ],
+    "field_last_password_reset": [
+        {
+            "value": "2019-02-20T12:33:21"
+        }
+    ],
+    "field_password_expiration": [
+        {
+            "value": false
+        }
+    ]
+}
