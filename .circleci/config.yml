@@ -53,12 +53,9 @@ jobs:
 
     steps:
       - *restore_code
-      - run:
-          ## Resolving bug https://discuss.circleci.com/t/builds-using-git-tags-failing/14904
-          name: "Fetch git updates"
-          command: |
-            git fetch --tags
-      - checkout
+      - checkout:
+          post:
+            - git fetch --tags
       - run:
           name: "Export environment variables"
           command: |
