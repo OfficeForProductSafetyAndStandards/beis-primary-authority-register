@@ -269,14 +269,14 @@ jobs:
       - run:
           name: "Make asset bundle"
           command: |
+            cd /tmp/workspace/
             rm -f .env
             rm -fr tests
             rm -fr backups
-            mkdir -p /tmp/$CIRCLE_TAG
-            tar -zcf /tmp/$CIRCLE_TAG/$CIRCLE_TAG.tar.gz /tmp/workspace/
+            tar -zcf /tmp/$CIRCLE_TAG.tar.gz /tmp/workspace/
       - aws-s3/copy:
-          from: /tmp/$CIRCLE_TAG
-          to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}"
+          from: /tmp/${CIRCLE_TAG}.tar.gz
+          to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
           arguments: '--region eu-west-1'
 
   deploy_test:
@@ -287,14 +287,14 @@ jobs:
       - run:
           name: "Make asset bundle"
           command: |
+            cd /tmp/workspace/
             rm -f .env
             rm -fr tests
             rm -fr backups
-            mkdir -p /tmp/$CIRCLE_TAG
-            tar -zcf /tmp/$CIRCLE_TAG/$CIRCLE_TAG.tar.gz /tmp/workspace/
+            tar -zcf /tmp/$CIRCLE_TAG.tar.gz /tmp/workspace/
       - aws-s3/copy:
-          from: /tmp/$CIRCLE_TAG
-          to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}"
+          from: /tmp/${CIRCLE_TAG}.tar.gz
+          to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
           arguments: '--region eu-west-1'
 
 workflows:
