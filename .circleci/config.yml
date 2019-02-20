@@ -300,7 +300,61 @@ jobs:
 workflows:
   version: 2.1
 
-  build_test_deploy:
+  deploy_stage:
+    jobs:
+      - checkout_code
+      - compile_code:
+          requires:
+            - checkout_code
+      - test_full:
+          requires:
+            - compile_code
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - hold_stage:
+          type: approval
+          requires:
+            - test_full
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - deploy_stage:
+          requires:
+            - hold_stage
+
+  deploy_test:
+    jobs:
+      - checkout_code
+      - compile_code:
+          requires:
+            - checkout_code
+      - test_smoke:
+          requires:
+            - compile_code
+          filters:
+            tags:
+              only: /^test-.*/
+            branches:
+              ignore: /.*/
+      - hold_test:
+          type: approval
+          requires:
+            - compile_code
+          filters:
+            tags:
+              only: /^test-.*/
+            branches:
+              ignore: /.*/
+      - deploy_test:
+          requires:
+            - hold_test
+
+  branch_test:
     jobs:
       - checkout_code
       - compile_code:
@@ -315,33 +369,6 @@ workflows:
             branches:
               ignore:
                 - master
-      - test_full:
-          requires:
-            - compile_code
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-      - hold_stage:
-          type: approval
-          requires:
-            - test_full
-      - deploy_stage:
-          requires:
-            - hold_stage
-      - hold_test:
-          type: approval
-          requires:
-            - compile_code
-          filters:
-            tags:
-              only: /^test-.*/
-            branches:
-              ignore: /.*/
-      - deploy_test:
-          requires:
-            - hold_test
 
   nightly:
     triggers:
