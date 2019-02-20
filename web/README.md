@@ -4,12 +4,16 @@ The web application runs on Drupal 8.
 
 # Configure
 
-To configure the application run the following. Ensure you have already imported the database.
+To configure the application run the following.
 
     npm install
     npm run gulp
     composer install
-    sh ./docker/drupal-update.sh /var/www/html
+    cd ./web && sh drupal-update.sh
+    
+*Note:* Run these commands inside the vm from the project root.
+
+*Note:* Ensure you have already imported the database.
     
 You must run these commands every time you switch branch or change the applications configuration in any way.
 
