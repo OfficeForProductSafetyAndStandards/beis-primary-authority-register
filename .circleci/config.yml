@@ -25,15 +25,19 @@ references:
     working_directory: /var/www/html
 
   restore_code: &restore_code
-    - restore_cache:
+    restore_cache:
       keys:
         - v1-repo-{{ .Branch }}-{{ .Revision }}
+        - v1-repo-{{ .Branch }}
+        - v1-repo
 
   restore_dependencies: &restore_dependencies
-    - restore_cache:
+    restore_cache:
       keys:
         - v2-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
-    - run:
+
+  restore_scaffold: &restore_scaffold
+    run:
       name: "Install drupal scaffold files"
       command: |
         composer drupal-scaffold
@@ -42,15 +46,15 @@ references:
     /tmp/workspace
 
   attach_workspace: &attach_workspace
-    - attach_workspace:
-        at: *workspace_root
+    attach_workspace:
+      at: *workspace_root
 
 jobs:
   checkout_code:
     <<: *defaults
 
     steps:
-      *restore_code
+      - *restore_code
       - checkout
       - run:
           name: "Export environment variables"
@@ -78,8 +82,9 @@ jobs:
     <<: *defaults
 
     steps:
-      *restore_code
-      *restore_dependencies
+      - *restore_code
+      - *restore_dependencies
+      - *restore_scaffold
       - run:
           name: "Installing app"
           command: |
@@ -112,8 +117,9 @@ jobs:
     <<: *defaults
 
     steps:
-      *restore_code
-      *restore_dependencies
+      - *restore_code
+      - *restore_dependencies
+      - *restore_scaffold
       - run:
           name: "Configure web root"
           command: |
@@ -185,8 +191,9 @@ jobs:
     <<: *defaults
 
     steps:
-      *restore_code
-      *restore_dependencies
+      - *restore_code
+      - *restore_dependencies
+      - *restore_scaffold
       - run:
           name: "Configure web root"
           command: |
@@ -258,7 +265,7 @@ jobs:
     <<: *defaults
 
     steps:
-      *attach_workspace
+      - *attach_workspace
       - run:
           name: "Make asset bundle"
           command: |
@@ -276,7 +283,7 @@ jobs:
     <<: *defaults
 
     steps:
-      *attach_workspace
+      - *attach_workspace
       - run:
           name: "Make asset bundle"
           command: |
