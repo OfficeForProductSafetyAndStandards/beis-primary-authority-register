@@ -321,8 +321,6 @@ workflows:
           filters:
             tags:
               only: /^v.*/
-            branches:
-              ignore: /.*/
       - staging_hold:
           type: approval
           requires:
@@ -337,8 +335,6 @@ workflows:
           filters:
             tags:
               only: /^test-*/
-            branches:
-              ignore: /.*/
       - deploy_test:
           requires:
             - test_hold
