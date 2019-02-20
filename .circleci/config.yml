@@ -28,13 +28,15 @@ references:
     restore_cache:
       keys:
         - v1-repo-{{ .Branch }}-{{ .Revision }}
-        - v1-repo-{{ .Branch }}
-        - v1-repo
 
   restore_dependencies: &restore_dependencies
     restore_cache:
       keys:
-        - v1-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
+        - v2-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+    run:
+      name: "Install drupal scaffold files"
+      command: |
+        composer drupal-scaffold
 
   workspace_root: &workspace_root
     /tmp/workspace
@@ -87,9 +89,15 @@ jobs:
             npm run gulp
             cd ./tests && rm -rf node_modules && npm install
       - save_cache:
-          key: v1-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
+          key: v2-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
           paths:
             - ./vendor
+            - ./web/core
+            - ./web/libraries
+            - ./web/modules/contrib
+            - ./web/profiles/contrib
+            - ./web/themes/contrib
+            - ./drush/contrib
             - ./node_modules
       - run:
           name: "Create workspace"
