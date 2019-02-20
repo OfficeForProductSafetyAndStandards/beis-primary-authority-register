@@ -341,6 +341,6 @@ workflows:
       - compile_code:
           requires:
             - checkout_code
-      - test-full:
+      - test_full:
           requires:
             - compile_code
