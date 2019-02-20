@@ -27,9 +27,7 @@ references:
   restore_code: &restore_code
     restore_cache:
       keys:
-        - v1-repo-{{ .Branch }}-{{ .Revision }}
-        - v1-repo-{{ .Branch }}
-        - v1-repo
+        - v2-repo-{{ .Branch }}-{{ .Revision }}
 
   restore_dependencies: &restore_dependencies
     restore_cache:
@@ -55,6 +53,11 @@ jobs:
 
     steps:
       - *restore_code
+      - run:
+          ## Resolving bug https://discuss.circleci.com/t/builds-using-git-tags-failing/14904
+          name: "Fetch git updates"
+          command: |
+            git fetch --tags
       - checkout
       - run:
           name: "Export environment variables"
@@ -74,7 +77,7 @@ jobs:
             echo "CLAMAV_HTTP_USER=$CLAMAV_HTTP_USER" >> .env
             echo "CLAMAV_HTTP_PASS=$CLAMAV_HTTP_PASS" >> .env
       - save_cache:
-          key: v1-repo-{{ .Branch }}-{{ .Revision }}
+          key: v2-repo-{{ .Branch }}-{{ .Revision }}
           paths:
             - .
 
