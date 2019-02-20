@@ -312,7 +312,7 @@ workflows:
           type: approval
           requires:
             - test_full
-      - deploy-stage:
+      - deploy_stage:
           requires:
             - staging_hold
       - test_hold:
