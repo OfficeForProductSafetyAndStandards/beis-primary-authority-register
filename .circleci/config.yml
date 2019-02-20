@@ -306,16 +306,18 @@ workflows:
           filters:
             tags:
               only: /.*/
-            ignore:
-              - master
+            branches:
+              ignore:
+                - master
       - compile_code:
           requires:
             - checkout_code
           filters:
             tags:
               only: /.*/
-            ignore:
-              - master
+            branches:
+              ignore:
+                - master
       - test_full:
           requires:
             - compile_code
@@ -347,8 +349,9 @@ workflows:
           filters:
             tags:
               only: /^test-.*/
-            ignore:
-              - master
+            branches:
+              ignore:
+                - master
       - hold_test:
           type: approval
           requires:
