@@ -34,7 +34,7 @@ references:
   restore_dependencies: &restore_dependencies
     restore_cache:
       keys:
-        - par-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
+        - v1-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
 
   workspace_root: &workspace_root
     /tmp/workspace
@@ -87,7 +87,7 @@ jobs:
             npm run gulp
             cd ./tests && rm -rf node_modules && npm install
       - save_cache:
-          key: par-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
+          key: v1-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
           paths:
             - ./vendor
             - ./node_modules
@@ -285,13 +285,13 @@ jobs:
 workflows:
   version: 2.1
 
-  build-test-deploy:
+  build_test_deploy:
     jobs:
       - checkout_code
       - compile_code:
           requires:
             - checkout_code
-      - test-smoke:
+      - test_smoke:
           requires:
             - compile_code
           filters:
@@ -300,7 +300,7 @@ workflows:
             branches:
               ignore:
                 - master
-      - test-full:
+      - test_full:
           requires:
             - compile_code
           filters:
@@ -308,14 +308,14 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
-      - staging-hold:
+      - staging_hold:
           type: approval
           requires:
-            - test-full
+            - test_full
       - deploy-stage:
           requires:
-            - staging-hold
-      - test-hold:
+            - staging_hold
+      - test_hold:
           type: approval
           requires:
             - compile_code
@@ -324,9 +324,9 @@ workflows:
               only: /^test-*/
             branches:
               ignore: /.*/
-      - deploy-test:
+      - deploy_test:
           requires:
-            - test-hold
+            - test_hold
 
   nightly:
     triggers:
