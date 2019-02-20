@@ -108,6 +108,7 @@ jobs:
           name: "Create workspace"
           command: |
             mkdir -p /tmp/workspace
+            cp -rT . /tmp/workspace
       - persist_to_workspace:
           root: *workspace_root
           paths:
@@ -273,7 +274,7 @@ jobs:
             rm -f .env
             rm -fr tests
             rm -fr backups
-            tar -zcf /tmp/$CIRCLE_TAG.tar.gz /tmp/workspace/
+            tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
           to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
@@ -291,7 +292,7 @@ jobs:
             rm -f .env
             rm -fr tests
             rm -fr backups
-            tar -zcf /tmp/$CIRCLE_TAG.tar.gz /tmp/workspace/
+            tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
           to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
