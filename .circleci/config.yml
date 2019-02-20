@@ -300,22 +300,22 @@ jobs:
 workflows:
   version: 2.1
 
-  deploy_stage:
+  build_test_deploy:
     jobs:
       - checkout_code:
           filters:
             tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
+              only: /.*/
+            ignore:
+              - master
       - compile_code:
           requires:
             - checkout_code
           filters:
             tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
+              only: /.*/
+            ignore:
+              - master
       - test_full:
           requires:
             - compile_code
@@ -341,31 +341,14 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
-
-  deploy_test:
-    jobs:
-      - checkout_code:
-          filters:
-            tags:
-              only: /^test-.*/
-            branches:
-              ignore: /.*/
-      - compile_code:
-          requires:
-            - checkout_code
-          filters:
-            tags:
-              only: /^test-.*/
-            branches:
-              ignore: /.*/
       - test_smoke:
           requires:
             - compile_code
           filters:
             tags:
               only: /^test-.*/
-            branches:
-              ignore: /.*/
+            ignore:
+              - master
       - hold_test:
           type: approval
           requires:
@@ -383,28 +366,6 @@ workflows:
               only: /^test-.*/
             branches:
               ignore: /.*/
-
-  branch_test:
-    jobs:
-      - checkout_code:
-          filters:
-            branches:
-              ignore:
-                - master
-      - compile_code:
-          requires:
-            - checkout_code
-          filters:
-            branches:
-              ignore:
-                - master
-      - test_smoke:
-          requires:
-            - compile_code
-          filters:
-            branches:
-              ignore:
-                - master
 
   nightly:
     triggers:
