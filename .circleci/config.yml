@@ -311,16 +311,36 @@ workflows:
       - compile_code:
           requires:
             - checkout_code
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
       - test_full:
           requires:
             - compile_code
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
       - hold_stage:
           type: approval
           requires:
             - test_full
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
       - deploy_stage:
           requires:
             - hold_stage
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
 
   deploy_test:
     jobs:
@@ -333,32 +353,58 @@ workflows:
       - compile_code:
           requires:
             - checkout_code
+          filters:
+            tags:
+              only: /^test-.*/
+            branches:
+              ignore: /.*/
       - test_smoke:
           requires:
             - compile_code
+          filters:
+            tags:
+              only: /^test-.*/
+            branches:
+              ignore: /.*/
       - hold_test:
           type: approval
           requires:
             - compile_code
+          filters:
+            tags:
+              only: /^test-.*/
+            branches:
+              ignore: /.*/
       - deploy_test:
           requires:
             - hold_test
+          filters:
+            tags:
+              only: /^test-.*/
+            branches:
+              ignore: /.*/
 
   branch_test:
     jobs:
       - checkout_code:
           filters:
-            tags:
-              ignore: /.*/
             branches:
               ignore:
                 - master
       - compile_code:
           requires:
             - checkout_code
+          filters:
+            branches:
+              ignore:
+                - master
       - test_smoke:
           requires:
             - compile_code
+          filters:
+            branches:
+              ignore:
+                - master
 
   nightly:
     triggers:
