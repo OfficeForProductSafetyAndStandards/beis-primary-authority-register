@@ -336,7 +336,7 @@ workflows:
             - compile_code
           filters:
             tags:
-              only: /^test-*/
+              only: /^test-.*/
             branches:
               ignore: /.*/
       - deploy_test:
