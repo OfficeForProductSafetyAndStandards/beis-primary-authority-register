@@ -321,23 +321,27 @@ workflows:
           filters:
             tags:
               only: /^v.*/
-      - staging_hold:
+            branches:
+              ignore: /.*/
+      - hold_stage:
           type: approval
           requires:
             - test_full
       - deploy_stage:
           requires:
-            - staging_hold
-      - test_hold:
+            - hold_stage
+      - hold_test:
           type: approval
           requires:
             - compile_code
           filters:
             tags:
               only: /^test-*/
+            branches:
+              ignore: /.*/
       - deploy_test:
           requires:
-            - test_hold
+            - hold_test
 
   nightly:
     triggers:
