@@ -100,7 +100,7 @@ jobs:
           paths:
             - .
 
-  test-smoke:
+  test_smoke:
     <<: *defaults
 
     steps:
@@ -173,7 +173,7 @@ jobs:
       - store_test_results:
           path: /var/www/html/tests/reports
 
-  test-full:
+  test_full:
     <<: *defaults
 
     steps:
@@ -246,7 +246,7 @@ jobs:
       - store_test_results:
           path: /var/www/html/tests/reports
 
-  deploy-stage:
+  deploy_stage:
     <<: *defaults
 
     steps:
@@ -264,7 +264,7 @@ jobs:
           to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}"
           arguments: '--region eu-west-1'
 
-  deploy-test:
+  deploy_test:
     <<: *defaults
 
     steps:
