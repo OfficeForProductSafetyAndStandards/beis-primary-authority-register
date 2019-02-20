@@ -9,7 +9,7 @@ To configure the application run the following.
     npm install
     npm run gulp
     composer install
-    cd ./web && sh drupal-update.sh
+    sh drupal-update.sh
     
 *Note:* Run these commands inside the vm from the project root.
 
