@@ -11,11 +11,14 @@ RUN apt-get update \
         apt-utils \
         gnupg2 \
         wget \
-        curl
+        curl \
+        certbot
 
 RUN sh -c "echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections" \
     && sh -c "echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections" \
     && apt-key adv --no-tty --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886 \
+    && sh -c 'echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list' \
+    && apt-key adv --no-tty --fetch-keys https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key \
     && sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list' \
     && apt-key adv --no-tty --fetch-keys https://www.postgresql.org/media/keys/ACCC4CF8.asc \
     && apt-get update \
@@ -26,7 +29,15 @@ RUN sh -c "echo debconf shared/accepted-oracle-license-v1-1 select true | debcon
         libgconf-2-4 \
         libfontconfig \
         unzip \
-        python-pip
+        python-pip \
+        cf-cli
+
+# Install Vault
+## Using vault installation from https://www.vaultproject.io/docs/install/index.html
+RUN cd /tmp \
+    && wget https://releases.hashicorp.com/vault/1.0.3/vault_1.0.3_linux_amd64.zip \
+    && unzip vault_1.0.3_linux_amd64.zip \
+    && mv vault /usr/local/bin/vault
 
 # Configure PHP extensions
 ## Using php upgrade from https://github.com/chialab/docker-php
