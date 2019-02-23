@@ -27,12 +27,12 @@ references:
   restore_code: &restore_code
     restore_cache:
       keys:
-        - v2-repo-{{ .Branch }}-{{ .Revision }}
+        - v3-repo-{{ .Branch }}-{{ .Revision }}
 
   restore_dependencies: &restore_dependencies
     restore_cache:
       keys:
-        - v2-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+        - v3-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
 
   restore_scaffold: &restore_scaffold
     run:
@@ -73,8 +73,19 @@ jobs:
             echo "PAR_GOVUK_NOTIFY_TEMPLATE=$PAR_GOVUK_NOTIFY_TEMPLATE" >> .env
             echo "CLAMAV_HTTP_USER=$CLAMAV_HTTP_USER" >> .env
             echo "CLAMAV_HTTP_PASS=$CLAMAV_HTTP_PASS" >> .env
+      - run:
+          name: "Database preparation"
+          command: |
+            mkdir -p backups
+      - aws-s3/copy:
+          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}.tar.gz"
+          to: backups/sanitised-db.sql.tar.gz
+          arguments: '--region eu-west-1'
+      - run:
+          name: "Unpacking database"
+          command: cd backups && tar --no-same-owner -zxvf sanitised-db.sql.tar.gz
       - save_cache:
-          key: v2-repo-{{ .Branch }}-{{ .Revision }}
+          key: v3-repo-{{ .Branch }}-{{ .Revision }}
           paths:
             - .
 
@@ -93,21 +104,9 @@ jobs:
             npm install
             npm run gulp
             cd ./tests && rm -rf node_modules && npm install
-      - run:
-          name: "Database preparation"
-          command: |
-            mkdir -p backups
-      - aws-s3/copy:
-          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}.tar.gz"
-          to: backups/sanitised-db.sql.tar.gz
-          arguments: '--region eu-west-1'
-      - run:
-          name: "Unpacking database"
-          command: cd backups && tar --no-same-owner -zxvf sanitised-db.sql.tar.gz
       - save_cache:
-          key: v2-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+          key: v3-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
           paths:
-            - ./backups
             - ./vendor
             - ./web/core
             - ./web/libraries
