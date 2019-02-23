@@ -49,8 +49,8 @@ command -v cf >/dev/null 2>&1 || {
 #    VAULT_ADDR - the vault service endpoint
 #    VAULT_UNSEAL_KEY (required) - the key used to unseal the vault
 ####################################################################################
-OPTIONS=se:u:p:d:v:u:t:
-LONGOPTS=single,environment:,user:,password:,directory:,vault:,unseal:,token:
+OPTIONS=su:p:i:b:rd:v:u:t:
+LONGOPTS=single,user:,password:,instances:,database:,refresh-database,directory:,vault:,unseal:,token:
 
 # -use ! and PIPESTATUS to get exit code with errexit set
 # -temporarily store output to be able to check for errors
@@ -70,8 +70,10 @@ ENV_ONLY=${ENV_ONLY:=n}
 GOVUK_CF_USER=${GOVUK_CF_USER:-}
 GOVUK_CF_PWD=${GOVUK_CF_PWD:-}
 CF_INSTANCES=${CF_INSTANCES:=1}
+DB_IMPORT=${DB_IMPORT:="$PWD/backups/sanitised-db.sql"}
+DB_RESET=${DB_RESET:=n}
 BUILD_DIR=${BUILD_DIR:=$PWD}
-VAULT_ADDR=${VAULT_ADDR:=https://vault.primary-authority.beis.gov.uk:8200}
+VAULT_ADDR=${VAULT_ADDR:="https://vault.primary-authority.beis.gov.uk:8200"}
 VAULT_UNSEAL=${VAULT_UNSEAL:-}
 VAULT_TOKEN=${VAULT_TOKEN:-}
 
@@ -92,6 +94,14 @@ while true; do
         -i|--instances)
             CF_INSTANCES="$2"
             shift 2
+            ;;
+        -b|--database)
+            DB_IMPORT="$2"
+            shift 2
+            ;;
+        -r|--refresh-database)
+            DB_RESET=y
+            shift
             ;;
         -d|--directory)
             BUILD_DIR="$2"
@@ -131,12 +141,6 @@ ENV=$1
 if [[ $ENV == 'production' ]]; then
     echo "Deployment to production isn't supported at this time."
     exit 11
-fi
-
-## Deployment to no production environments need a database
-if [[ $ENV != "production" ]] && [[ ! -f "$BUILD_DIR/backups/sanitised-db.sql" ]]; then
-    printf "Non-production environments need a copy of the database to seed from at '$BUILD_DIR/backups/sanitised-db.sql'.\n"
-    exit 5
 fi
 
 
@@ -223,6 +227,45 @@ if [[ ! -f $MANIFEST ]]; then
     MANIFEST="${BASH_SOURCE%/*}/manifests/manifest.non-production.yml"
 fi
 
+## Copy the seed database to the build directory to use for import
+mkdir -p "$BUILD_DIR/backups"
+if [[ ! -f $DB_IMPORT ]]; then
+    cp $DB_IMPORT "$BUILD_DIR/backups/sanitised-db.sql"
+fi
+
+
+####################################################################################
+# Cleanup any instances that have been created
+#
+# If this script exists with an error remove any GovUK PaaS instances created.
+#
+# In non-production environments it doesn't really matter if we remove the entire
+# environment because we can just create it again, there are no known persistent
+# non-production environments. If there are any created these should be added
+# to the exception list.
+####################################################################################
+function cf_teardown {
+    if [[ $ENV != "production" ]]; then
+
+        ## Remove any postgres backing services
+        if ! cf service par-pg-$ENV 2>&1; then
+            cf delete-service -f par-pg-$ENV
+        fi
+
+        ## Remove the main app if it exists
+        if ! cf app par-beta-$ENV 2>&1; then
+            cf delete par-beta-$ENV -f
+        fi
+
+        ## Remove any instantiated green instances
+        if [[ $ENV_ONLY != y ]] && ! cf app par-beta-$ENV-green 2>&1; then
+            cf delete par-beta-$ENV-green -f
+        fi
+
+    fi
+}
+trap cf_teardown ERR
+
 
 ####################################################################################
 # Start the app
@@ -237,7 +280,7 @@ cf push --no-start -f $MANIFEST -p $BUILD_DIR -n $TARGET_ENV $TARGET_ENV
 ## Set the cf environment variables directly
 for VAR_NAME in "${VAULT_VARS[@]}"
 do
-    cf set-env $TARGET_ENV $VAR_NAME ${!VAR_NAME}
+    cf set-env $TARGET_ENV $VAR_NAME ${!VAR_NAME} > /dev/null
 done
 cf set-env $TARGET_ENV APP_ENV $ENV
 
@@ -247,40 +290,56 @@ cf set-env $TARGET_ENV APP_ENV $ENV
 # This should only be done on non-production environments
 # Any issues with production should be resolved manually
 # For creating backing services see https://docs.cloud.service.gov.uk/deploying_services/
+#
+# `cf create-service` is by default asynchronous and requires
+# polling to see if the tasks have been completed, for more information
+# see https://github.com/cloudfoundry/cli/issues/1354
+# Until then we're just going to wait for 10 minutes
+# `cf bind-service` is likely to be made asynchronous in the future
 ####################################################################################
 printf "Checking and enabling backing services...\n"
 
 if [[ $ENV != "production" ]]; then
-
     ## Check for the postgres database service
     if ! cf service par-pg-$ENV 2>&1; then
         printf "Creating postgres service, instance of tiny-unencrypted-9.5 (free)...\n"
         cf create-service postgres tiny-unencrypted-9.5 par-pg-$ENV
-        cf bind-service $TARGET_ENV par-pg-$ENV
-        IMPORT_DB=true
+
+        echo "################################################################################################"
+        echo >&2 "The new postgres service is being created, this can take up to 10 minutes"
+        echo "################################################################################################"
+        printf 'Polling RDS broker for new service.\n'
+        I=1
+        while [[ $(cf service par-pg-$ENV | awk -F '[[:space:]][[:space:]]+' '/status:/ {print $2}') != 'create succeeded' ]]
+        do
+          printf "%0.s-" $(seq 1 $I)
+          sleep 2
+        done
+
+        ## If a new db is created it needs an import
+        DB_RESET=y
     fi
 
-    ## Check for the cdn service
-#    if ! cf service par-cdn-$ENV 2>&1 1>/dev/null; then
-#        printf "Creating cdn service, instance of cdn-route...\n"
-#        cf create-service cdn-route cdn-route par-cdn-$ENV
-#
-#        cf create-domain beis-nmo-trial $ENV-cdn.par-beta.net
-#        cf map-route par-beta-$ENV $ENV-cdn.par-beta.net
-#        cf create-service cdn-route cdn-route par-cdn-$ENV -c '{"domain":"'$ENV'-cdn.par-beta.net"}'
-#    fi
+    cf bind-service $TARGET_ENV par-pg-$ENV
+
+    ## Deployment to no production environments need a database
+    if [[ $DB_RESET == y ]] && [[ ! -f $DB_IMPORT ]]; then
+        printf "Non-production environments need a copy of the database to seed from at '$DB_IMPORT'.\n"
+        exit 5
+    fi
 fi
 
 
 ####################################################################################
-# Start the app
+# Boot the app
 ####################################################################################
 printf "Starting the application...\n"
 
 cf start $TARGET_ENV
 
-if [[ $ENV != "production" ]] && [[ ! -z IMPORT_DB ]]; then
-    cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/import_fresh_db.py -f ./backups/sanitised-db.sql"
+## Import the seed database and then delete it.
+if [[ $ENV != "production" ]] && [[ ! -z DB_IMPORT ]] && [[ $DB_RESET ]]; then
+    cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/import_fresh_db.py -f ./backups/sanitised-db.sql && rm -f ./backups/sanitised-db.sql"
 fi
 
 cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/post_deploy.py"
@@ -297,20 +356,25 @@ else
     CDN_DOMAIN=$ENV-cdn.par-beta.net
 fi
 
+cf map-route $TARGET_ENV cloudapps.digital -n par-beta-$ENV
+cf map-route $TARGET_ENV $CDN_DOMAIN
+
+
 if [[ $ENV_ONLY != y ]]; then
-    cf map-route $TARGET_ENV cloudapps.digital -n par-beta-$ENV
+    ## Only unmap blue routes if doing a blue-green deployment
     cf unmap-route par-beta-$ENV cloudapps.digital -n par-beta-$ENV
-    cf map-route $TARGET_ENV $CDN_DOMAIN
     cf unmap-route par-beta-$ENV $CDN_DOMAIN
 
-    ## Only delete blue if it exists
+    ## Only delete blue if it exists and doing a blue-green deployment
     if ! cf app par-beta-$ENV 2>&1; then
         cf delete par-beta-$ENV -f
     fi
 
+    ## Only rename green service if doing a blue-green deployment
     cf rename $TARGET_ENV par-beta-$ENV
     TARGET_ENV=par-beta-$ENV
 fi
+
 
 
 ####################################################################################
@@ -319,7 +383,7 @@ fi
 echo -n "Scaling up the application...\n"
 
 if [[ CF_INSTANCES -gt 1 ]]; then
-    cf scale par-beta-$ENV -i CF_INSTANCES
+    cf scale $TARGET_ENV -i CF_INSTANCES
 fi
 
 

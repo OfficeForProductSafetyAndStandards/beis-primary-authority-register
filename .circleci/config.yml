@@ -270,9 +270,11 @@ jobs:
       - run:
           name: "Make asset bundle"
           command: |
-            cd /tmp/workspace/
+            cd /tmp/workspace
             rm -f .env
+            rm -f .git
             rm -fr tests
+            rm -fr clamav
             rm -fr backups
             tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
       - aws-s3/copy:
@@ -288,15 +290,23 @@ jobs:
       - run:
           name: "Make asset bundle"
           command: |
-            cd /tmp/workspace/
+            cd /tmp/workspace
             rm -f .env
+            rm -f .git
             rm -fr tests
+            rm -fr clamav
             rm -fr backups
             tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
           to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
           arguments: '--region eu-west-1'
+      - run:
+          name: "Deploy to test environment"
+          command: |
+            DEPLOY_ENV=($(echo $CIRCLE_TAG | awk -F '-' '{print $1}')
+            printf "$DEPLOY_ENV\n"
+            ./devops/cf/push.local.sh -r -b backups/sanitised-db.sql -d /tmp/workspace $DEPLOY_ENV
 
 workflows:
   version: 2.1
@@ -324,7 +334,7 @@ workflows:
             - compile_code
           filters:
             tags:
-              only: /^v.*/
+              only: /^[a-zA-Z0-9]+.*/
             branches:
               ignore: /.*/
       - hold_stage:
@@ -348,8 +358,6 @@ workflows:
           requires:
             - compile_code
           filters:
-            tags:
-              only: /^test-.*/
             branches:
               ignore:
                 - master
@@ -359,7 +367,7 @@ workflows:
             - compile_code
           filters:
             tags:
-              only: /^test-.*/
+              only: /^[a-uw-zA-Z0-9]+.*/
             branches:
               ignore: /.*/
       - deploy_test:
@@ -367,7 +375,7 @@ workflows:
             - hold_test
           filters:
             tags:
-              only: /^test-.*/
+              only: /^[a-uw-zA-Z0-9]+.*/
             branches:
               ignore: /.*/
 
