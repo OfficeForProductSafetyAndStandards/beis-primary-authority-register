@@ -304,7 +304,7 @@ jobs:
       - run:
           name: "Deploy to test environment"
           command: |
-            DEPLOY_ENV=($(echo $CIRCLE_TAG | awk -F '-' '{print $1}')
+            DEPLOY_ENV=($(echo $CIRCLE_TAG | awk -F '-' '{print $1}'))
             printf "$DEPLOY_ENV\n"
             ./devops/cf/push.local.sh -r -b backups/sanitised-db.sql -d /tmp/workspace $DEPLOY_ENV
 
