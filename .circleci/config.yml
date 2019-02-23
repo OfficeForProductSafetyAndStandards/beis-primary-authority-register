@@ -99,11 +99,11 @@ jobs:
             mkdir -p backups
       - aws-s3/copy:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}.tar.gz"
-          to: backups/sanitised-db.sql
+          to: backups/sanitised-db.sql.tar.gz
           arguments: '--region eu-west-1'
       - run:
           name: "Unpacking database"
-          command: cd backups && tar --no-same-owner -zxvf sanitised-db.sql
+          command: cd backups && tar --no-same-owner -zxvf sanitised-db.sql.tar.gz
       - save_cache:
           key: v2-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
           paths:
@@ -277,7 +277,7 @@ jobs:
           command: |
             DEPLOY_ENV="staging"
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -r -b /var/www/html/backups/sanitised-db.sql -d /tmp/workspace $DEPLOY_ENV
+            ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE} -d /tmp/workspace $DEPLOY_ENV
 
   deploy_test:
     <<: *defaults
