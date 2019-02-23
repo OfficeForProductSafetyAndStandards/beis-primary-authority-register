@@ -287,7 +287,7 @@ jobs:
           command: |
             DEPLOY_ENV="staging"
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -r -b "/var/www/html/backups/sanitised-db.sql -d /tmp/workspace $DEPLOY_ENV
+            ./devops/cf/push.local.sh -r -b /var/www/html/backups/sanitised-db.sql -d /tmp/workspace $DEPLOY_ENV
 
   deploy_test:
     <<: *defaults
@@ -316,7 +316,7 @@ jobs:
           command: |
             DEPLOY_ENV=($(echo $CIRCLE_TAG | awk -F '-' '{print $1}'))
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -r -b "/var/www/html/backups/sanitised-db.sql -d /tmp/workspace $DEPLOY_ENV
+            ./devops/cf/push.local.sh -r -b /var/www/html/backups/sanitised-db.sql -d /tmp/workspace $DEPLOY_ENV
 
 workflows:
   version: 2.1
