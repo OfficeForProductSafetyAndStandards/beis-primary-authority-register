@@ -1,4 +1,4 @@
-# beispar/web:v1
+# beispar/web:v3.0.0
 
 FROM php:7.3-apache
 
@@ -9,6 +9,7 @@ RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y \
         sudo \
         apt-utils \
+        apt-transport-https \
         gnupg2 \
         wget \
         curl \
@@ -38,6 +39,11 @@ RUN cd /tmp \
     && wget https://releases.hashicorp.com/vault/1.0.3/vault_1.0.3_linux_amd64.zip \
     && unzip vault_1.0.3_linux_amd64.zip \
     && mv vault /usr/local/bin/vault
+
+# Install AWS CLI
+## Using vault installation from https://www.vaultproject.io/docs/install/index.html
+RUN cd /tmp \
+    pip install awscli --upgrade
 
 # Configure PHP extensions
 ## Using php upgrade from https://github.com/chialab/docker-php

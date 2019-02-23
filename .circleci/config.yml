@@ -5,7 +5,7 @@ orbs:
 references:
   defaults: &defaults
     docker:
-      - image: beispar/web:v2.0.0
+      - image: beispar/web:v3.0.0
         name: web
         environment:
           APP_ENV: ci
@@ -134,7 +134,6 @@ jobs:
           name: "Database preparation"
           command: |
             mkdir -p backups
-            apt-get install sudo python-pip -y
       - aws-s3/copy:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}.tar.gz"
           to: backups/sanitised-db.sql
@@ -208,7 +207,6 @@ jobs:
           name: "Database preparation"
           command: |
             mkdir -p backups
-            apt-get install sudo python-pip -y
       - aws-s3/copy:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}.tar.gz"
           to: backups/sanitised-db.sql
@@ -267,6 +265,9 @@ jobs:
 
     steps:
       - *attach_workspace
+      - *restore_code
+      - *restore_dependencies
+      - *restore_scaffold
       - run:
           name: "Make asset bundle"
           command: |
@@ -287,6 +288,9 @@ jobs:
 
     steps:
       - *attach_workspace
+      - *restore_code
+      - *restore_dependencies
+      - *restore_scaffold
       - run:
           name: "Make asset bundle"
           command: |
@@ -306,7 +310,6 @@ jobs:
           command: |
             DEPLOY_ENV=($(echo $CIRCLE_TAG | awk -F '-' '{print $1}'))
             printf "$DEPLOY_ENV\n"
-            ls -lah ./devops/cf/
             ./devops/cf/push.local.sh -r -b backups/sanitised-db.sql -d /tmp/workspace $DEPLOY_ENV
 
 workflows:
