@@ -93,9 +93,21 @@ jobs:
             npm install
             npm run gulp
             cd ./tests && rm -rf node_modules && npm install
+      - run:
+          name: "Database preparation"
+          command: |
+            mkdir -p backups
+      - aws-s3/copy:
+          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}.tar.gz"
+          to: backups/sanitised-db.sql
+          arguments: '--region eu-west-1'
+      - run:
+          name: "Unpacking database"
+          command: cd backups && tar --no-same-owner -zxvf sanitised-db.sql
       - save_cache:
           key: v2-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
           paths:
+            - ./backups
             - ./vendor
             - ./web/core
             - ./web/libraries
@@ -130,17 +142,6 @@ jobs:
             service apache2 restart
             echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
             cat /etc/hosts
-      - run:
-          name: "Database preparation"
-          command: |
-            mkdir -p backups
-      - aws-s3/copy:
-          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}.tar.gz"
-          to: backups/sanitised-db.sql
-          arguments: '--region eu-west-1'
-      - run:
-          name: "Unpacking database"
-          command: cd backups && tar --no-same-owner -zxvf sanitised-db.sql
       - run:
           name: "Importing database"
           command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${SANITISED_DATABASE}
@@ -203,17 +204,6 @@ jobs:
             service apache2 restart
             echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
             cat /etc/hosts
-      - run:
-          name: "Database preparation"
-          command: |
-            mkdir -p backups
-      - aws-s3/copy:
-          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}.tar.gz"
-          to: backups/sanitised-db.sql
-          arguments: '--region eu-west-1'
-      - run:
-          name: "Unpacking database"
-          command: cd backups && tar --no-same-owner -zxvf sanitised-db.sql
       - run:
           name: "Importing database"
           command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${SANITISED_DATABASE}
