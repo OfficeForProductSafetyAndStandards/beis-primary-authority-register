@@ -272,7 +272,7 @@ jobs:
           command: |
             cd /tmp/workspace
             rm -f .env
-            rm -f .git
+            rm -fr .git
             rm -fr tests
             rm -fr clamav
             rm -fr backups
@@ -292,7 +292,7 @@ jobs:
           command: |
             cd /tmp/workspace
             rm -f .env
-            rm -f .git
+            rm -fr .git
             rm -fr tests
             rm -fr clamav
             rm -fr backups
