@@ -230,7 +230,7 @@ fi
 
 ## Copy the seed database to the build directory to use for import
 mkdir -p "$BUILD_DIR/backups"
-if [[ ! -f $DB_IMPORT ]]; then
+if [[ -f $DB_IMPORT ]]; then
     cp $DB_IMPORT "$BUILD_DIR/backups/sanitised-db.sql"
 fi
 
@@ -317,7 +317,7 @@ cf set-env $TARGET_ENV APP_ENV $ENV
 printf "Checking and enabling backing services...\n"
 
 ## Ensure the right service plan is selected
-if [[ $ENV != "production" ]] || [[ $ENV != "staging" ]]; then
+if [[ $ENV = "production" ]] || [[ $ENV = "staging" ]]; then
     PG_PLAN='medium-ha-9.5'
 else
     ## The free plan can be used for any non-critical environments
@@ -363,7 +363,12 @@ printf "Starting the application...\n"
 cf start $TARGET_ENV
 
 ## Import the seed database and then delete it.
-if [[ $ENV != "production" ]] && [[ ! -z DB_IMPORT ]] && [[ $DB_RESET ]]; then
+if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
+    if [[ ! -f "$BUILD_DIR/backups/sanitised-db.sql" ]]; then
+        printf "Seed database required, but could not find one at '$BUILD_DIR/backups/sanitised-db.sql'.\n"
+        exit 6
+    fi
+    
     cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/import_fresh_db.py -f ./backups/sanitised-db.sql && rm -f ./backups/sanitised-db.sql"
 fi
 
