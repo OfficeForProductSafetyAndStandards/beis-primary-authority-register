@@ -249,11 +249,11 @@ function cf_teardown {
     if [[ $ENV != "production" ]] && [[ $ENV != "staging" ]]; then
 
         ## Remove any postgres backing services, unbind services first
-        if ! cf service par-pg-$ENV 2>&1; then
-            if ! cf app par-beta-$ENV 2>&1; then
+        if cf service par-pg-$ENV >/dev/null 2>&1; then
+            if cf app par-beta-$ENV >/dev/null 2>&1; then
                 cf unbind-service par-beta-$ENV par-pg-$ENV
             fi
-            if [[ $ENV_ONLY != y ]] && ! cf app par-beta-$ENV-green 2>&1; then
+            if [[ $ENV_ONLY != y ]] && cf app par-beta-$ENV-green >/dev/null 2>&1; then
                 cf unbind-service par-beta-$ENV-green par-pg-$ENV
             fi
 
@@ -264,12 +264,12 @@ function cf_teardown {
         fi
 
         ## Remove the main app if it exists
-        if ! cf app par-beta-$ENV 2>&1; then
+        if cf app par-beta-$ENV >/dev/null 2>&1; then
             cf delete -f par-beta-$ENV
         fi
 
         ## Remove any instantiated green instances
-        if [[ $ENV_ONLY != y ]] && ! cf app par-beta-$ENV-green 2>&1; then
+        if [[ $ENV_ONLY != y ]] && cf app par-beta-$ENV-green >/dev/null 2>&1; then
             cf delete -f par-beta-$ENV-green
         fi
 
@@ -368,7 +368,7 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
         printf "Seed database required, but could not find one at '$BUILD_DIR/backups/sanitised-db.sql'.\n"
         exit 6
     fi
-    
+
     cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/import_fresh_db.py -f ./backups/sanitised-db.sql && rm -f ./backups/sanitised-db.sql"
 fi
 
