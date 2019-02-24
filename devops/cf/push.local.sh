@@ -266,21 +266,6 @@ function cf_teardown {
             cf delete-service -f $PG_BACKING_SERVICE
         fi
 
-        ## Remove any cdn backing services, unbind services first
-        if cf service $CDN_BACKING_SERVICE >/dev/null 2>&1; then
-            if cf app par-beta-$ENV >/dev/null 2>&1; then
-                cf unbind-service par-beta-$ENV $CDN_BACKING_SERVICE
-            fi
-            if [[ $ENV_ONLY != y ]] && cf app par-beta-$ENV-green >/dev/null 2>&1; then
-                cf unbind-service par-beta-$ENV-green $CDN_BACKING_SERVICE
-            fi
-
-            ## In some instances service keys may also have to be deleted
-            printf "If there are any service keys these will need to be deleted manually, see 'cf service-keys $CDN_BACKING_SERVICE'"
-
-            cf delete-service -f $CDN_BACKING_SERVICE
-        fi
-
         ## Remove the main app if it exists
         if cf app par-beta-$ENV >/dev/null 2>&1; then
             cf delete -f par-beta-$ENV
@@ -396,25 +381,6 @@ if [[ $ENV != "production" ]]; then
         printf "Non-production environments need a copy of the database to seed from at '$DB_IMPORT'.\n"
         exit 5
     fi
-
-    ## Check for the postgres database service
-    if ! cf service $CDN_BACKING_SERVICE 2>&1; then
-        printf "Creating postgres service, instance of $PG_PLAN...\n"
-        cf create-service cdn-route cdn-route $CDN_BACKING_SERVICE
-
-        echo "################################################################################################"
-        echo >&2 "The new cdn service is being created, this can take up to 10 minutes"
-        echo "################################################################################################"
-        printf 'Polling CDN broker for new service.\n'
-        I=1
-        while [[ $(cf service $CDN_BACKING_SERVICE | awk -F '  +' '/status:/ {print $2}') != 'create succeeded' ]]
-        do
-          printf "%0.s-" $(seq 1 $I)
-          sleep 2
-        done
-    fi
-
-    cf bind-service $TARGET_ENV $CDN_BACKING_SERVICE
 fi
 
 
