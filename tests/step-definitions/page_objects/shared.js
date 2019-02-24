@@ -152,6 +152,34 @@ module.exports = {
             .click('#edit-submit-par-user-partnerships')
             .clickLinkByPureText(orgName)
         },
+        createNewPartnership: function(){
+             return this
+              .clickLinkByPureText('Apply for a new partnership')
+              .click('#edit-cancel')
+              .clickLinkByPureText('Apply for a new partnership')
+              .chooseAuthorityIfOptionPresent('input[name="par_data_authority_id"]', '//div[text()="City Enforcement Squad"]')
+              .click('#edit-application-type-direct')
+              .click('#edit-next')
+              .click('#edit-next')
+              .waitForElementVisible('.error-summary', 1000)
+              .assert.containsText('.error-summary', 'Please confirm that all conditions for a new partnership have been met')
+              .click('#edit-edit-confirm')
+              .click('#edit-next')
+              .click('#edit-next')
+              .waitForElementVisible('.error-summary', 1000)
+              .assert.containsText('.error-summary', 'Please confirm whether the organisation has been notified that any existing local authorities will continue to regulate it')
+              .click('#edit-business-notified-2')
+              .click('#edit-next')
+              .assert.containsText('#par-partnership-about','Use this section to give a brief overview of the partnership')
+              .setValue('#edit-about-partnership', 'About the partnership detail')
+              .click('#edit-next')    
+        },
+        searchSelectOrganisation: function(organisation){
+            return this
+
+        },
+
+
         runTota11yAgainstCurrentPage: function(){ 
             return this.click('.tota11y-toolbar-toggle')
             var list = ['Headings', 'Contrast', 'Link text', 'Labels', 'Image alt-text'];
