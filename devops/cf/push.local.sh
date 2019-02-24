@@ -223,6 +223,8 @@ else
     TARGET_ENV=par-beta-$ENV-green
 fi
 
+PG_BACKING_SERVICE="par-pg-$ENV"
+
 MANIFEST="${BASH_SOURCE%/*}/manifests/manifest.$ENV.yml"
 if [[ ! -f $MANIFEST ]]; then
     MANIFEST="${BASH_SOURCE%/*}/manifests/manifest.non-production.yml"
@@ -249,18 +251,18 @@ function cf_teardown {
     if [[ $ENV != "production" ]] && [[ $ENV != "staging" ]]; then
 
         ## Remove any postgres backing services, unbind services first
-        if cf service par-pg-$ENV >/dev/null 2>&1; then
+        if cf service $PG_BACKING_SERVICE >/dev/null 2>&1; then
             if cf app par-beta-$ENV >/dev/null 2>&1; then
-                cf unbind-service par-beta-$ENV par-pg-$ENV
+                cf unbind-service par-beta-$ENV $PG_BACKING_SERVICE
             fi
             if [[ $ENV_ONLY != y ]] && cf app par-beta-$ENV-green >/dev/null 2>&1; then
-                cf unbind-service par-beta-$ENV-green par-pg-$ENV
+                cf unbind-service par-beta-$ENV-green $PG_BACKING_SERVICE
             fi
 
             ## In some instances service keys may also have to be deleted
-            printf "If there are any service keys these will need to be deleted manually, see 'cf service-keys par-pg-$ENV'"
+            printf "If there are any service keys these will need to be deleted manually, see 'cf service-keys $PG_BACKING_SERVICE'"
 
-            cf delete-service -f par-pg-$ENV
+            cf delete-service -f $PG_BACKING_SERVICE
         fi
 
         ## Remove the main app if it exists
@@ -276,12 +278,40 @@ function cf_teardown {
         printf "################################################################################################\n"
         printf >&2 "This script failed to build and is tearing down any non-production instances.\n"
         printf >&2 "This could take up to 10 minutes, please do not try to rebuild until this is complete.\n"
-        printf >&2 "You can check the progress by running 'cf service par-pg-$ENV' and 'cf app par-beta-$ENV'.\n"
+        printf >&2 "You can check the progress by running 'cf service $PG_BACKING_SERVICE' and 'cf app par-beta-$ENV'.\n"
         printf "################################################################################################\n"
 
     fi
 }
 trap cf_teardown ERR
+
+
+####################################################################################
+# Waiting for cloud foundry to be ready
+# If an existing process is already in progress for this environment then wait
+# for it's completion before continuing.
+####################################################################################
+printf "Waiting for cloud foundry (readiness)...\n"
+
+## Checking the app
+printf "Waiting for the app...\n"
+I=1
+while [[ $(cf app $TARGET_ENV | awk -F '  +' '/status:/ {print $2}' | grep 'in progress') ]]
+do
+  printf "%0.s-" $(seq 1 $I)
+  sleep 2
+done
+
+## Checking the postgres backing services
+I=1
+printf "Waiting for the postgres backing service...\n"
+while [[ $(cf service $PG_BACKING_SERVICE | awk -F '  +' '/status:/ {print $2}' | grep 'in progress') ]]
+do
+  printf "%0.s-" $(seq 1 $I)
+  sleep 2
+done
+
+echo "status:     something is in progress" | awk -F '  +' '/status:/ {print $2}') | grep 'in progress'
 
 
 ####################################################################################
@@ -326,16 +356,16 @@ fi
 
 if [[ $ENV != "production" ]]; then
     ## Check for the postgres database service
-    if ! cf service par-pg-$ENV 2>&1; then
+    if ! cf service $PG_BACKING_SERVICE 2>&1; then
         printf "Creating postgres service, instance of $PG_PLAN...\n"
-        cf create-service postgres $PG_PLAN par-pg-$ENV
+        cf create-service postgres $PG_PLAN $PG_BACKING_SERVICE
 
         echo "################################################################################################"
         echo >&2 "The new postgres service is being created, this can take up to 10 minutes"
         echo "################################################################################################"
         printf 'Polling RDS broker for new service.\n'
         I=1
-        while [[ $(cf service par-pg-$ENV | awk -F '  +' '/status:/ {print $2}') != 'create succeeded' ]]
+        while [[ $(cf service $PG_BACKING_SERVICE | awk -F '  +' '/status:/ {print $2}') != 'create succeeded' ]]
         do
           printf "%0.s-" $(seq 1 $I)
           sleep 2
@@ -345,7 +375,7 @@ if [[ $ENV != "production" ]]; then
         DB_RESET=y
     fi
 
-    cf bind-service $TARGET_ENV par-pg-$ENV
+    cf bind-service $TARGET_ENV $PG_BACKING_SERVICE
 
     ## Deployment to no production environments need a database
     if [[ $DB_RESET == y ]] && [[ ! -f $DB_IMPORT ]]; then
