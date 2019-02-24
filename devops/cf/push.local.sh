@@ -221,6 +221,7 @@ if [[ $ENV_ONLY == y ]]; then
     TARGET_ENV=par-beta-$ENV
 else
     TARGET_ENV=par-beta-$ENV-green
+    BLUE_ENV=par-beta-$ENV
 fi
 
 PG_BACKING_SERVICE="par-pg-$ENV"
@@ -416,28 +417,31 @@ else
 fi
 
 cf map-route $TARGET_ENV cloudapps.digital -n par-beta-$ENV
-if cf service $CDN_BACKING_SERVICE 2>&1; then
+if cf service $CDN_BACKING_SERVICE >/dev/null 2>&1; then
     cf map-route $TARGET_ENV $CDN_DOMAIN
 fi
 
 
 if [[ $ENV_ONLY != y ]]; then
-    ## Only unmap blue routes if doing a blue-green deployment
-    cf unmap-route par-beta-$ENV cloudapps.digital -n par-beta-$ENV
-    if cf service $CDN_BACKING_SERVICE 2>&1; then
-        cf unmap-route par-beta-$ENV $CDN_DOMAIN
-    fi
+    ## Only unmap blue routes if doing a blue-green deployment and it exists
+    if cf app $BLUE_ENV >/dev/null 2>&1; then
+        cf unmap-route $BLUE_ENV cloudapps.digital -n par-beta-$ENV
 
-    ## Only delete blue if it exists and doing a blue-green deployment
-    if ! cf app par-beta-$ENV 2>&1; then
-        cf delete par-beta-$ENV -f
+        ## Only unmap cdn service if doing a blue-green deployment and it exists
+        if cf service $CDN_BACKING_SERVICE >/dev/null 2>&1; then
+            cf unmap-route $BLUE_ENV $CDN_DOMAIN
+        fi
+
+        ## Only delete blue app if it exists and doing a blue-green deployment
+        cf delete $BLUE_ENV -f
     fi
 
     ## Only rename green service if doing a blue-green deployment
-    cf rename $TARGET_ENV par-beta-$ENV
-    TARGET_ENV=par-beta-$ENV
+    if cf app $TARGET_ENV >/dev/null 2>&1; then
+        cf rename $TARGET_ENV $BLUE_ENV
+    fi
+    TARGET_ENV=$BLUE_ENV
 fi
-
 
 
 ####################################################################################
