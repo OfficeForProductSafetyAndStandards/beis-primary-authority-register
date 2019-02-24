@@ -277,7 +277,12 @@ jobs:
           command: |
             DEPLOY_ENV="staging"
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE} -d /tmp/workspace $DEPLOY_ENV
+            if [[ "${CIRCLE_BRANCH}" != "master" ]]; then
+              echo "Tags can only be deployed from the master branch"
+              exit 1
+            else
+              ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE} -d /tmp/workspace $DEPLOY_ENV
+            fi
 
   deploy_test:
     <<: *defaults

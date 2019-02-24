@@ -1,5 +1,7 @@
 ##############################################################################
 ### BUILD                                                                  ###
+### Maintained for reference only - 24/2/2019                              ###
+### No longer in active use.                                                ###
 ##############################################################################
 
 # Fix Travis write errors. These write errors occurred after
