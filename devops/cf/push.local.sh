@@ -1,5 +1,6 @@
 #!/bin/bash
 # This script will push local assets to an environment.
+echo $BASH_VERSION
 
 set -o errexit -euo pipefail -o noclobber -o nounset
 
@@ -245,22 +246,38 @@ fi
 # to the exception list.
 ####################################################################################
 function cf_teardown {
-    if [[ $ENV != "production" ]]; then
+    if [[ $ENV != "production" ]] && [[ $ENV != "staging" ]]; then
 
-        ## Remove any postgres backing services
+        ## Remove any postgres backing services, unbind services first
         if ! cf service par-pg-$ENV 2>&1; then
+            if ! cf app par-beta-$ENV 2>&1; then
+                cf unbind-service par-beta-$ENV par-pg-$ENV
+            fi
+            if [[ $ENV_ONLY != y ]] && ! cf app par-beta-$ENV-green 2>&1; then
+                cf unbind-service par-beta-$ENV-green par-pg-$ENV
+            fi
+
+            ## In some instances service keys may also have to be deleted
+            printf "If there are any service keys these will need to be deleted manually, see 'cf service-keys par-pg-$ENV'"
+
             cf delete-service -f par-pg-$ENV
         fi
 
         ## Remove the main app if it exists
         if ! cf app par-beta-$ENV 2>&1; then
-            cf delete par-beta-$ENV -f
+            cf delete -f par-beta-$ENV
         fi
 
         ## Remove any instantiated green instances
         if [[ $ENV_ONLY != y ]] && ! cf app par-beta-$ENV-green 2>&1; then
-            cf delete par-beta-$ENV-green -f
+            cf delete -f par-beta-$ENV-green
         fi
+
+        printf "################################################################################################\n"
+        printf >&2 "This script failed to build and is tearing down any non-production instances.\n"
+        printf >&2 "This could take up to 10 minutes, please do not try to rebuild until this is complete.\n"
+        printf >&2 "You can check the progress by running 'cf service par-pg-$ENV' and 'cf app par-beta-$ENV'.\n"
+        printf "################################################################################################\n"
 
     fi
 }
@@ -299,18 +316,26 @@ cf set-env $TARGET_ENV APP_ENV $ENV
 ####################################################################################
 printf "Checking and enabling backing services...\n"
 
+## Ensure the right service plan is selected
+if [[ $ENV != "production" ]] || [[ $ENV != "staging" ]]; then
+    PG_PLAN='medium-ha-9.5'
+else
+    ## The free plan can be used for any non-critical environments
+    PG_PLAN='tiny-unencrypted-9.5'
+fi
+
 if [[ $ENV != "production" ]]; then
     ## Check for the postgres database service
     if ! cf service par-pg-$ENV 2>&1; then
-        printf "Creating postgres service, instance of tiny-unencrypted-9.5 (free)...\n"
-        cf create-service postgres tiny-unencrypted-9.5 par-pg-$ENV
+        printf "Creating postgres service, instance of $PG_PLAN...\n"
+        cf create-service postgres $PG_PLAN par-pg-$ENV
 
         echo "################################################################################################"
         echo >&2 "The new postgres service is being created, this can take up to 10 minutes"
         echo "################################################################################################"
         printf 'Polling RDS broker for new service.\n'
         I=1
-        while [[ $(cf service par-pg-$ENV | awk -F '[[:space:]][[:space:]]+' '/status:/ {print $2}') != 'create succeeded' ]]
+        while [[ $(cf service par-pg-$ENV | awk -F '  +' '/status:/ {print $2}') != 'create succeeded' ]]
         do
           printf "%0.s-" $(seq 1 $I)
           sleep 2
