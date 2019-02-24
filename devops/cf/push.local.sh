@@ -311,8 +311,6 @@ do
   sleep 2
 done
 
-echo "status:     something is in progress" | awk -F '  +' '/status:/ {print $2}') | grep 'in progress'
-
 
 ####################################################################################
 # Start the app
