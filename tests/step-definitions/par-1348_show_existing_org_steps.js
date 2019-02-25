@@ -15,6 +15,13 @@ When('I select direct partnership', function () {
     .click('#edit-next')
          });
 
+
+When('I select coordinated partnership', function () {
+	return shared
+	.click('#edit-application-type-coordinated')
+    .click('#edit-next')
+         });
+
  When('I fill in all required fields', function () {
  	return client 
  	 	 .click('#edit-confirm')
