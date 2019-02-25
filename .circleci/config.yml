@@ -215,8 +215,6 @@ jobs:
           command: |
             cd web
             ../vendor/bin/drush cron
-            ../vendor/bin/drush cron
-            ../vendor/bin/drush cron
       - run:
           name: "Application checklist"
           command: |
