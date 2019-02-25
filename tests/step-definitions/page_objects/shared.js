@@ -33,6 +33,8 @@ module.exports = {
                 browser.setValue(input1, text);
           });
         },  
+
+       
         chooseAuthorityIfOptionPresent: function(elem, toClick){ 
             return this.api.element('css selector', elem , function (result) {
                 if (result.value.ELEMENT) {
@@ -140,7 +142,7 @@ module.exports = {
                 .setValue('#edit-name', string)
                 .setValue('#edit-pass', 'TestPassword')
                 .click('#edit-submit')
-                .waitForElementVisible('#footer', 15000)
+               .waitForElementVisible('#footer', 15000)
                 .assert.containsText('body', 'Sign out')
         },
         goToPartnershipDetailPage: function(orgName, status){ 
@@ -154,14 +156,6 @@ module.exports = {
         },
         createNewPartnership: function(){
              return this
-              .clickLinkByPureText('Apply for a new partnership')
-              .click('#edit-cancel')
-              .clickLinkByPureText('Apply for a new partnership')
-              .chooseAuthorityIfOptionPresent('input[name="par_data_authority_id"]', '//div[text()="City Enforcement Squad"]')
-              .click('#edit-application-type-direct')
-              .click('#edit-next')
-              .click('#edit-next')
-              .waitForElementVisible('.error-summary', 1000)
               .assert.containsText('.error-summary', 'Please confirm that all conditions for a new partnership have been met')
               .click('#edit-edit-confirm')
               .click('#edit-next')
@@ -178,7 +172,6 @@ module.exports = {
             return this
 
         },
-
 
         runTota11yAgainstCurrentPage: function(){ 
             return this.click('.tota11y-toolbar-toggle')
