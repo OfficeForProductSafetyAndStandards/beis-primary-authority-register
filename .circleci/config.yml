@@ -173,7 +173,7 @@ jobs:
       - run:
           name: "Run unit tests"
           command: |
-            ./vendor/bin/paratest --processes=16 --log-junit=${TEST_REPORTS}/phpunit.latest.xml
+            ./vendor/bin/paratest --processes=16
       - run:
           name: "Run feature tests"
           command: |
@@ -235,7 +235,7 @@ jobs:
       - run:
           name: "Run unit tests"
           command: |
-            ./vendor/bin/paratest --processes=16 --log-junit=${TEST_REPORTS}/phpunit.latest.xml
+            ./vendor/bin/paratest --processes=16
       - run:
           name: "Run feature tests"
           command: |
