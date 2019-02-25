@@ -23,7 +23,6 @@ module.exports = {
         clickLinkByPartialText: function(partialLinkText){
             client.useXpath()
                 .click("//a[contains(.,'" + partialLinkText + "')]")
-              //  .click("//*[contains(text(), '" + partialLinkText + "')]")
                 .useCss();
             return this;
         },
