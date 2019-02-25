@@ -82,18 +82,7 @@ class ParDashboardsDashboardController extends ControllerBase {
     $deviation_requests = $this->getParDataManager()->hasMembershipsByType($this->getCurrentUser(), 'par_data_deviation_request');
     $inspection_feedback = $this->getParDataManager()->hasMembershipsByType($this->getCurrentUser(), 'par_data_inspection_feedback');
     $general_enquiries = $this->getParDataManager()->hasMembershipsByType($this->getCurrentUser(), 'par_data_general_enquiry');
-    $build['p_count'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Number of partnerships'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-      '#cache' => ['contexts' => ['user.par_memberships:authority']],
-      [
-        '#type' => 'markup',
-        '#markup' => "<p>{count($partnerships)}</p>",
-      ],
-    ];
+
     $can_manage_partnerships = $this->getCurrentUser()->hasPermission('confirm partnership') ||
       $this->getCurrentUser()->hasPermission('update partnership authority details') ||
       $this->getCurrentUser()->hasPermission('update partnership organisation details');
