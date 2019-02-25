@@ -98,6 +98,7 @@
         "sort-packages": true
     },
     "extra": {
+        "composer-exit-on-patch-failure": true,
         "installer-paths": {
             "web/core": ["type:drupal-core"],
             "web/libraries/{$name}": ["type:drupal-library"],
@@ -164,8 +165,7 @@
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2018-07-26/allow_configurable_scheme-2988257-5.patch"
             },
             "drush/drush": {
-                "Fix SQL dump problem where extra params are passed when trying only to list tables": "./patches/3321-sql-dump-no-extra-fix.patch",
-                "Refs #2079. Do not pass `$this->query_extra` to `pg_dump`": "./patches/drush-sqldump-postgres95.patch"
+                "Fix SQL dump problem where extra params are passed when trying only to list tables": "./patches/3321-sql-dump-no-extra-fix.patch"
             }
         }
     },
