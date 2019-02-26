@@ -1,0 +1,3 @@
+memory: 2G
+disk_quota: 2048M
+buildpack: php_buildpack

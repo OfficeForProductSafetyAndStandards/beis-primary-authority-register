@@ -1,21 +1,7 @@
 <?php
-
-// @TODO: To be deprecated once travis config has been moved to the 'ci' environment.
-
-$databases['default']['default'] = array (
-  'database' => 'par',
-  'username' => 'par',
-  'password' => '123456',
-  'prefix' => '',
-  'host' => 'db',
-  'port' => '5432',
-  'namespace' => 'Drupal\\Core\\Database\\Driver\\pgsql',
-  'driver' => 'pgsql',
-);
+// A generic settings file for use on all GovUK PaaS non-production instances.
 
 $settings['trusted_host_patterns'] = [''];
-
-$settings['config_readonly'] = FALSE;
 
 $config['config_split.config_split.dev_config']['status'] = TRUE;
 $config['config_split.config_split.test_config']['status'] = TRUE;

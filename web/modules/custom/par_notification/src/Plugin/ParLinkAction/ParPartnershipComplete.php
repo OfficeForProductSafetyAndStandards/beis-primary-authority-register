@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *   }
  * )
  */
-class ParPartnershipOrganisationView extends ParLinkActionBase {
+class ParPartnershipComplete extends ParLinkActionBase {
 
   public function receive(MessageInterface $message) {
     if ($message->hasField('field_partnership') && !$message->get('field_partnership')->isEmpty()) {
