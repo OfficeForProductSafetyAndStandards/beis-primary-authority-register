@@ -18,6 +18,10 @@ trait ParPartnershipFlowAccessTrait {
    *   The route match object to be checked.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
+   * 
+   * @TODO Please be aware that this access callback is currently specific to
+   * the ParPartnershipFlowsLegalEntityForm class and would need to be updated
+   * for use with other forms in par_partnership_flows flows.
    */
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
     try {
