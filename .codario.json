@@ -1,0 +1,92 @@
+{
+  "integrations": {
+    "collaboration_tool": {
+      "credential": "slack"
+    }
+  },
+  "update_behavior": {
+    "auto_start_updates": "auto_for_vulnerable",
+    "skip_manual_testing": "yes",
+    "source_branch": "master",
+    "destination_branch": "security-updates/[task:id]"
+  },
+  "events": {
+    "new_updates_available": [
+      {
+        "sendmail": {
+          "emails": "[user:email]",
+          "subject": "New updates are available for [project:name]",
+          "message": "[snippet:workflow.event.new-updates-available]",
+          "cc": "",
+          "bcc": ""
+        }
+      }
+    ],
+    "ready_to_test": [
+      {
+        "sendmail": {
+          "emails": "[user:email]",
+          "subject": "Updates for [project:name] are ready for testing",
+          "message": "We've found the new updates for your project.\n\nThe packages:\n[task:packages|, ][package:name]: [package:current-version] → [package:new-version][/task:packages]",
+          "cc": "",
+          "bcc": ""
+        }
+      },
+      {
+        "sendmessage": {
+          "title": "Updates for [project:name] are ready for testing",
+          "message": "We've found the new updates for your project.\n\nThe packages:\n[task:packages|, ][package:name]: [package:current-version] → [package:new-version][/task:packages]",
+          "color": "#998877"
+        }
+      }
+    ],
+    "test_passed": [
+      {
+        "merge_branch": {
+          "source": "security-updates/[task:id]",
+          "delete_after_merge": "yes",
+          "target": [
+            "master"
+          ]
+        }
+      }
+    ],
+    "failed": [
+      {
+        "sendmail": {
+          "emails": "[user:email]",
+          "subject": "An update error occurred in [project:name]",
+          "message": "[snippet:workflow.event.failed]",
+          "cc": "",
+          "bcc": ""
+        }
+      },
+      {
+        "sendmessage": {
+          "title": "An update error occurred in [project:name]",
+          "message": "Some updates for your project failed to pass testing.\n\nThe packages:\n[task:packages|, ][package:name]: [package:current-version] → [package:new-version][/task:packages]",
+          "color": "#998877"
+        }
+      }
+    ],
+    "patch_cant_be_applied": [
+      {
+        "sendmail": {
+          "emails": "[user:email]",
+          "subject": "A task error occurred in [project:name]",
+          "message": "[snippet:workflow.event.failed]",
+          "cc": "",
+          "bcc": ""
+        }
+      },
+      {
+        "sendmessage": {
+          "title": "An update error occurred patching [project:name]",
+          "message": "Some patches could not be applied to the updates for your project.\n\nThe packages:\n[task:packages|, ][package:name]: [package:current-version] → [package:new-version][/task:packages]",
+          "color": "#998877"
+        }
+      }
+    ]
+  }
+}
+
