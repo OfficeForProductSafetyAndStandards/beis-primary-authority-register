@@ -275,7 +275,7 @@ jobs:
           command: |
             DEPLOY_ENV="staging"
             printf "$DEPLOY_ENV\n"
-            if [[ "${CIRCLE_BRANCH}" != "master" ]]; then
+            if ! test $(git rev-parse master) = $(git rev-parse $CIRCLE_TAG^{commit}); then
               echo "Tags can only be deployed from the master branch"
               exit 1
             else
