@@ -131,8 +131,12 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     // operations on these.
     $operations = [];
     $checkbox = $this->getInformationCheckbox();
+
     if ($checkbox === 'partnership_info_agreed_business' && !$par_data_partnership->getBoolean($checkbox)) {
-      $operations = ['edit-entity','add'];
+      // PAR-1354 - active partnerships do not allow for associated legal entities to be altered or new entities to be added.
+      if ($par_data_partnership->inProgress()) {
+        $operations = ['edit-entity','add'];
+      }
     }
     $form['legal_entities'] = $this->renderSection('Legal entities', $par_data_partnership, ['field_legal_entity' => 'summary'], $operations);
 
