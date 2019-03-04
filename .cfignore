@@ -1,9 +1,14 @@
+.git
+devops/dashboard/
+devops/docker/
+devops/vault/
+clamav/
+tests/
 composer.json
 composer.lock
-composer.sh
-devops/dashboard/
+package.json
+package-lock.json
+phpunit.xml
 web/sites/default/settings.local.php
-.env
-cf/
 *.tar.gz
 

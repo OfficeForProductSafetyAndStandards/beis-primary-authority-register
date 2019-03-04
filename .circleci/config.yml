@@ -2,101 +2,152 @@ version: 2.1
 orbs:
   aws-s3: circleci/aws-s3@1.0.0
 
-defaults: &defaults
-  docker:
-    - image: parbeta/web:v9
-      name: web
-      environment:
-        APP_ENV: ci
+references:
+  defaults: &defaults
+    docker:
+      - image: beispar/web:v3.0.0
+        name: web
+        environment:
+          APP_ENV: ci
 
-    - image: postgres:9.6.3
-      environment:
-        POSTGRES_USER: par
-        POSTGRES_PASSWORD: 123456
-        POSTGRES_DB: par
+      - image: postgres:9.6.3
+        environment:
+          POSTGRES_USER: par
+          POSTGRES_PASSWORD: 123456
+          POSTGRES_DB: par
 
-  environment:
-    TEST_REPORTS: ~/par/tests/reports
-    S3_ARTIFACTS_BUCKET: beis-par-artifacts
-    SANITISED_DATABASE: drush-dump-production-sanitized-latest.sql
-    SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
+    environment:
+      TEST_REPORTS: ~/par/tests/reports
+      S3_ARTIFACTS_BUCKET: beis-par-artifacts
+      SANITISED_DATABASE: drush-dump-production-sanitized-latest.sql
+      SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
 
-  working_directory: ~/par
+    working_directory: /var/www/html
 
-install_composer: &install_composer
-  name: "Install composer"
-  command: |
-    cd /tmp
-    EXPECTED_SIGNATURE=$(curl -q https://composer.github.io/installer.sig)
-    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-    ACTUAL_SIGNATURE=$(php -r "echo hash_file('SHA384', 'composer-setup.php');")
-    if [ "$EXPECTED_SIGNATURE" != "$ACTUAL_SIGNATURE" ]
-    then
-        >&2 echo 'ERROR: Invalid installer signature'
-        rm composer-setup.php
-        exit 1
-    fi
-    php composer-setup.php --quiet --install-dir /usr/local/bin --filename composer
-    RESULT=$?
-    rm composer-setup.php
-    exit $RESULT
+  restore_code: &restore_code
+    restore_cache:
+      keys:
+        - v3-repo-{{ .Branch }}-{{ .Revision }}
+
+  restore_dependencies: &restore_dependencies
+    restore_cache:
+      keys:
+        - v4-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+
+  restore_scaffold: &restore_scaffold
+    run:
+      name: "Install drupal scaffold files"
+      command: |
+        composer drupal-scaffold
+
+  workspace_root: &workspace_root
+    /tmp/workspace
+
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: *workspace_root
 
 jobs:
-  build:
+  checkout_code:
     <<: *defaults
+
     steps:
-      - checkout
-
-      - restore_cache:
-          keys:
-            - par-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
+      - *restore_code
+      - checkout:
+          post:
+            - git fetch --tags
       - run:
-          <<: *install_composer
-
-      - run:
-          name: "Installing app"
+          name: "Export environment variables"
           command: |
-            composer install -v
-            npm install
-            npm run gulp
-            cd ./tests && rm -rf node_modules && npm install
-
-      - save_cache:
-          key: par-dependencies-{{ checksum "composer.json" }}-{{ checksum "package.json" }}
-          paths:
-            - ./vendor
-            - ./node_modules
-
+            echo "S3_REGION=$S3_REGION" >> .env
+            echo "S3_ACCESS_KEY=$S3_ACCESS_KEY" >> .env
+            echo "S3_SECRET_KEY=$S3_SECRET_KEY" >> .env
+            echo "S3_BUCKET_ARTIFACTS=$S3_BUCKET_ARTIFACTS" >> .env
+            echo "S3_BUCKET_PRIVATE=$S3_BUCKET_PRIVATE" >> .env
+            echo "S3_BUCKET_PUBLIC=$S3_BUCKET_PUBLIC" >> .env
+            echo "PAR_HASH_SALT=$PAR_HASH_SALT" >> .env
+            echo "APP_ENV=$APP_ENV" >> .env
+            echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+            echo "SENTRY_DSN_PUBLIC=$SENTRY_DSN_PUBLIC" >> .env
+            echo "PAR_GOVUK_NOTIFY_KEY=$PAR_GOVUK_NOTIFY_KEY" >> .env
+            echo "PAR_GOVUK_NOTIFY_TEMPLATE=$PAR_GOVUK_NOTIFY_TEMPLATE" >> .env
+            echo "CLAMAV_HTTP_USER=$CLAMAV_HTTP_USER" >> .env
+            echo "CLAMAV_HTTP_PASS=$CLAMAV_HTTP_PASS" >> .env
       - run:
           name: "Database preparation"
           command: |
             mkdir -p backups
-            apt-get install sudo python-pip -y
-
       - aws-s3/copy:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}.tar.gz"
-          to: backups/sanitised-db.sql
+          to: backups/sanitised-db.sql.tar.gz
           arguments: '--region eu-west-1'
-
       - run:
           name: "Unpacking database"
-          command: cd backups && tar --no-same-owner -zxvf sanitised-db.sql
+          command: cd backups && tar --no-same-owner -zxvf sanitised-db.sql.tar.gz
+      - save_cache:
+          key: v3-repo-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - .
 
+  compile_code:
+    <<: *defaults
+
+    steps:
+      - *restore_code
+      - *restore_dependencies
+      - *restore_scaffold
+      - run:
+          name: "Installing app"
+          command: |
+            echo "$(pwd)"
+            composer install -v
+            npm install
+            npm run gulp
+            cd ./tests && rm -rf node_modules && npm install
+      - save_cache:
+          key: v4-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+          paths:
+            - ./vendor
+            - ./web/core
+            - ./web/libraries
+            - ./web/modules/contrib
+            - ./web/profiles/contrib
+            - ./web/themes/contrib
+            - ./drush/contrib
+            - ./node_modules
+            - ./web/themes/custom
+      - run:
+          name: "Create workspace"
+          command: |
+            mkdir -p /tmp/workspace
+            cp -rT . /tmp/workspace
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - .
+
+  test_smoke:
+    <<: *defaults
+
+    steps:
+      - *restore_code
+      - *restore_dependencies
+      - *restore_scaffold
+      - run:
+          name: "Configure web root"
+          command: |
+            sudo chown -R -L www-data:www-data /var/www/html/web
+            ls -lah /var/www/html/web
+            a2ensite par.localhost
+            service apache2 restart
+            echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
+            cat /etc/hosts
       - run:
           name: "Importing database"
           command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${SANITISED_DATABASE}
-
       - run:
           name: "Setup application"
           command: sh drupal-update.sh
-
-      - run:
-          name: "Application checklist"
-          command: |
-            cd web
-            ../vendor/bin/drush cex -n
-            ../vendor/bin/drush core-requirements --severity=2
-
       - run:
           name: "Run cron"
           command: |
@@ -104,7 +155,13 @@ jobs:
             ../vendor/bin/drush cron
             ../vendor/bin/drush cron
             ../vendor/bin/drush cron
-
+      - run:
+          name: "Application checklist"
+          command: |
+            cd web
+            ../vendor/bin/drush cex -n
+            ../vendor/bin/drush core-requirements --severity=2
+            curl -sD - -o /dev/null http://par.localhost
       - run:
           name: "Install test dependencies"
           command: |
@@ -113,33 +170,279 @@ jobs:
             mkdir -p ./reports/nightwatch
             npm install
             npm run selenium-install
-
       - run:
           name: "Run unit tests"
           command: |
-            ./vendor/bin/paratest --processes=16 --log-junit=${TEST_REPORTS}/phpunit.latest.xml
+            ./vendor/bin/paratest --processes=16
       - run:
           name: "Run feature tests"
           command: |
             cd tests
-            npm run nightwatch-cucumber-circleci -- --tag smoke
+            npm run ci -- --tag ci
             npm run generate-report
-
       # Save artifacts
       - store_artifacts:
-          path: /tmp/artifacts
+          path: /var/www/html/tests/reports
           destination: build
-
       # Upload test results
       - store_test_results:
-          path: tests/reports
+          path: /var/www/html/tests/reports
+
+  test_full:
+    <<: *defaults
+
+    steps:
+      - *restore_code
+      - *restore_dependencies
+      - *restore_scaffold
+      - run:
+          name: "Configure web root"
+          command: |
+            sudo chown -R -L www-data:www-data /var/www/html/web
+            ls -lah /var/www/html/web
+            a2ensite par.localhost
+            service apache2 restart
+            echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
+            cat /etc/hosts
+      - run:
+          name: "Importing database"
+          command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${SANITISED_DATABASE}
+      - run:
+          name: "Setup application"
+          command: sh drupal-update.sh
+      - run:
+          name: "Run cron"
+          command: |
+            cd web
+            ../vendor/bin/drush cron
+      - run:
+          name: "Application checklist"
+          command: |
+            cd web
+            ../vendor/bin/drush cex -n
+            ../vendor/bin/drush core-requirements --severity=2
+            curl -sD - -o /dev/null http://par.localhost
+      - run:
+          name: "Install test dependencies"
+          command: |
+            cd tests
+            mkdir -p ./reports/phpunit
+            mkdir -p ./reports/nightwatch
+            npm install
+            npm run selenium-install
+      - run:
+          name: "Run unit tests"
+          command: |
+            ./vendor/bin/paratest --processes=16
+      - run:
+          name: "Run feature tests"
+          command: |
+            cd tests
+            npm run ci -- --tag ci
+            npm run generate-report
+      # Save artifacts
+      - store_artifacts:
+          path: /var/www/html/tests/reports
+          destination: build
+      # Upload test results
+      - store_test_results:
+          path: /var/www/html/tests/reports
+
+  deploy_stage:
+    <<: *defaults
+
+    steps:
+      - *attach_workspace
+      - *restore_code
+      - *restore_dependencies
+      - *restore_scaffold
+      - run:
+          name: "Make asset bundle"
+          command: |
+            cd /tmp/workspace
+            rm -f .env
+            rm -fr .git
+            rm -fr tests
+            rm -fr clamav
+            rm -fr backups
+            echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
+            tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
+      - aws-s3/copy:
+          from: /tmp/${CIRCLE_TAG}.tar.gz
+          to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
+          arguments: '--region eu-west-1'
+      - run:
+          name: "Deploy to staging environment"
+          command: |
+            DEPLOY_ENV="staging"
+            printf "$DEPLOY_ENV\n"
+            if ! test $(git rev-parse master) = $(git rev-parse $CIRCLE_TAG^{commit}); then
+              echo "Tags can only be deployed from the master branch"
+              exit 1
+            else
+              ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE} -d /tmp/workspace $DEPLOY_ENV
+            fi
+
+  deploy_test:
+    <<: *defaults
+
+    steps:
+      - *attach_workspace
+      - *restore_code
+      - *restore_dependencies
+      - *restore_scaffold
+      - run:
+          name: "Make asset bundle"
+          command: |
+            cd /tmp/workspace
+            rm -f .env
+            rm -fr .git
+            rm -fr tests
+            rm -fr clamav
+            rm -fr backups
+            echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
+            tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
+      - aws-s3/copy:
+          from: /tmp/${CIRCLE_TAG}.tar.gz
+          to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
+          arguments: '--region eu-west-1'
+      - run:
+          name: "Deploy to test environment"
+          command: |
+            DEPLOY_ENV=($(echo $CIRCLE_TAG | awk -F '-' '{print $1}'))
+            printf "$DEPLOY_ENV\n"
+            ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE} -d /tmp/workspace $DEPLOY_ENV
+
+  archive_database:
+    <<: *defaults
+
+    steps:
+      - run:
+          name: "Backup production database"
+          command: |
+            ./devops/cf/db-backup.sh production
+
+  sanitise_database:
+    <<: *defaults
+
+    steps:
+      - run:
+          name: "Download production database"
+          command: |
+            echo 'downloaded'
 
 workflows:
   version: 2.1
-  build-test:
+
+  build_test_deploy:
     jobs:
-      - build:
+      - checkout_code:
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore:
+                - master
+      - compile_code:
+          requires:
+            - checkout_code
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore:
+                - master
+      - test_full:
+          requires:
+            - compile_code
+          filters:
+            tags:
+              only: /^[a-zA-Z0-9]+.*/
+            branches:
+              ignore: /.*/
+      - hold_stage:
+          type: approval
+          requires:
+            - test_full
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - deploy_stage:
+          requires:
+            - hold_stage
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - test_smoke:
+          requires:
+            - compile_code
           filters:
             branches:
               ignore:
                 - master
+      - hold_test:
+          type: approval
+          requires:
+            - compile_code
+          filters:
+            tags:
+              only: /^[a-uw-zA-Z0-9]+.*/
+            branches:
+              ignore: /.*/
+      - deploy_test:
+          requires:
+            - hold_test
+          filters:
+            tags:
+              only: /^[a-uw-zA-Z0-9]+.*/
+            branches:
+              ignore: /.*/
+
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - checkout_code
+      - compile_code:
+          requires:
+            - checkout_code
+      - test_full:
+          requires:
+            - compile_code
+
+#  db_archive:
+#    triggers:
+#      - schedule:
+#          cron: "0 0 * * 1,2,3,4,5"
+#          filters:
+#            branches:
+#              only:
+#                - master
+#    jobs:
+#      - archive_database
+#
+#  db_sanitise:
+#    triggers:
+#      - schedule:
+#          cron: "11 59 * * 7"
+#          filters:
+#            branches:
+#              only:
+#                - master
+#    jobs:
+#      - checkout_code
+#      - compile_code:
+#          requires:
+#            - checkout_code
+#      - sanitise_database:
+#          requires:
+#            - compile_code
