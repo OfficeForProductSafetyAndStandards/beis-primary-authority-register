@@ -20,6 +20,7 @@ references:
       TEST_REPORTS: ~/par/tests/reports
       S3_ARTIFACTS_BUCKET: beis-par-artifacts
       SANITISED_DATABASE: drush-dump-production-sanitized-latest.sql
+      UNSANITISED_DATABASE: db-dump-production-unsanitized
       SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
 
     working_directory: /var/www/html
