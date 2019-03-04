@@ -7,6 +7,7 @@ use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
+use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 
 /**
  * The primary contact form for the partnership details steps of the
@@ -15,6 +16,7 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
+  use ParPartnershipFlowAccessTrait;
 
   /**
    * {@inheritdoc}

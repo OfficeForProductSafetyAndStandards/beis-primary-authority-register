@@ -20,6 +20,7 @@ references:
       TEST_REPORTS: ~/par/tests/reports
       S3_ARTIFACTS_BUCKET: beis-par-artifacts
       SANITISED_DATABASE: drush-dump-production-sanitized-latest.sql
+      UNSANITISED_DATABASE: db-dump-production-unsanitized
       SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
 
     working_directory: /var/www/html
@@ -39,6 +40,17 @@ references:
       name: "Install drupal scaffold files"
       command: |
         composer drupal-scaffold
+
+  configure_webroot: &configure_webroot
+    run:
+      name: "Configure web root"
+      command: |
+        sudo chown -R -L www-data:www-data /var/www/html/web
+        ls -lah /var/www/html/web
+        a2ensite par.localhost
+        service apache2 restart
+        echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
+        cat /etc/hosts
 
   workspace_root: &workspace_root
     /tmp/workspace
@@ -133,15 +145,7 @@ jobs:
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
-      - run:
-          name: "Configure web root"
-          command: |
-            sudo chown -R -L www-data:www-data /var/www/html/web
-            ls -lah /var/www/html/web
-            a2ensite par.localhost
-            service apache2 restart
-            echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
-            cat /etc/hosts
+      - *configure_webroot
       - run:
           name: "Importing database"
           command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${SANITISED_DATABASE}
@@ -195,15 +199,7 @@ jobs:
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
-      - run:
-          name: "Configure web root"
-          command: |
-            sudo chown -R -L www-data:www-data /var/www/html/web
-            ls -lah /var/www/html/web
-            a2ensite par.localhost
-            service apache2 restart
-            echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
-            cat /etc/hosts
+      - *configure_webroot
       - run:
           name: "Importing database"
           command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${SANITISED_DATABASE}
@@ -265,6 +261,7 @@ jobs:
             rm -fr tests
             rm -fr clamav
             rm -fr backups
+            echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
             tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
@@ -275,7 +272,7 @@ jobs:
           command: |
             DEPLOY_ENV="staging"
             printf "$DEPLOY_ENV\n"
-            if [[ "${CIRCLE_BRANCH}" != "master" ]]; then
+            if ! test $(git rev-parse master) = $(git rev-parse $CIRCLE_TAG^{commit}); then
               echo "Tags can only be deployed from the master branch"
               exit 1
             else
@@ -299,6 +296,7 @@ jobs:
             rm -fr tests
             rm -fr clamav
             rm -fr backups
+            echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
             tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
@@ -310,6 +308,58 @@ jobs:
             DEPLOY_ENV=($(echo $CIRCLE_TAG | awk -F '-' '{print $1}'))
             printf "$DEPLOY_ENV\n"
             ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE} -d /tmp/workspace $DEPLOY_ENV
+
+  archive_database:
+    <<: *defaults
+
+    steps:
+      - run:
+          name: "Backup production database"
+          command: |
+            cf run-task par-beta-production "./scripts/db-backup.sh production -p"  --name DB_BACKUP
+
+  sanitise_database:
+    <<: *defaults
+
+    steps:
+      - *restore_code
+      - *restore_dependencies
+      - *restore_scaffold
+      - *configure_webroot
+      - aws-s3/copy:
+          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${UNSANITISED_DATABASE}-latest.tar.gz"
+          to: backups/unsanitised-db.tar.gz
+          arguments: '--region eu-west-1'
+      - run:
+          name: "Unpacking database"
+          command: cd backups && tar --no-same-owner -zxvf unsanitised-db.tar.gz
+      - run:
+          name: "Importing database"
+          command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${UNSANITISED_DATABASE}.sql
+      - run:
+          name: "Setup application"
+          command: sh drupal-update.sh
+      - run:
+          name: "Run cron"
+          command: |
+            cd web
+            ../vendor/bin/drush cron
+      - run:
+          name: "Application checklist"
+          command: |
+            cd web
+            ../vendor/bin/drush cex -n
+            ../vendor/bin/drush core-requirements --severity=2
+            curl -sD - -o /dev/null http://par.localhost
+      - run:
+          name: "Sanitise database"
+          command: |
+            cd web
+            ../vendor/bin/drush sql-sanitize @par.paas -y
+      - run:
+          name: "Backup production database"
+          command: |
+            cf run-task par-beta-production "./scripts/db-backup.sh production -p"  --name DB_BACKUP
 
 workflows:
   version: 2.1
@@ -396,5 +446,33 @@ workflows:
           requires:
             - checkout_code
       - test_full:
+          requires:
+            - compile_code
+
+  db_archive:
+    triggers:
+      - schedule:
+          cron: "0 0 * * 1,2,3,4,5"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - archive_database
+
+  db_sanitise:
+    triggers:
+      - schedule:
+          cron: "0 0 * * 0"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - checkout_code
+      - compile_code:
+          requires:
+            - checkout_code
+      - sanitise_database:
           requires:
             - compile_code
