@@ -265,6 +265,7 @@ jobs:
             rm -fr tests
             rm -fr clamav
             rm -fr backups
+            echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${$CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
             tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
@@ -299,6 +300,7 @@ jobs:
             rm -fr tests
             rm -fr clamav
             rm -fr backups
+            echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${$CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
             tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
@@ -310,6 +312,24 @@ jobs:
             DEPLOY_ENV=($(echo $CIRCLE_TAG | awk -F '-' '{print $1}'))
             printf "$DEPLOY_ENV\n"
             ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE} -d /tmp/workspace $DEPLOY_ENV
+
+  archive_database:
+    <<: *defaults
+
+    steps:
+      - run:
+          name: "Backup production database"
+          command: |
+            ./devops/cf/backup-db.local.sh production
+
+  sanitise_database:
+    <<: *defaults
+
+    steps:
+      - run:
+          name: "Download production database"
+          command: |
+            echo 'downloaded'
 
 workflows:
   version: 2.1
@@ -398,3 +418,24 @@ workflows:
       - test_full:
           requires:
             - compile_code
+
+#  db_archive:
+#    triggers:
+#      - schedule:
+#          cron: "0 0 * * 1,2,3,4,5"
+#          filters:
+#            branches:
+#              only:
+#                - master
+#    jobs:
+#      - checkout_code
+#      - compile_code:
+#          requires:
+#            - checkout_code
+#      - archive_database:
+#          requires:
+#            - compile_code
+#      - sanitise_database:
+#          requires:
+#            - archive_database
+#            - compile_code
