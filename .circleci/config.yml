@@ -265,7 +265,7 @@ jobs:
             rm -fr tests
             rm -fr clamav
             rm -fr backups
-            echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${$CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
+            echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
             tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
@@ -300,7 +300,7 @@ jobs:
             rm -fr tests
             rm -fr clamav
             rm -fr backups
-            echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${$CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
+            echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
             tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
@@ -320,7 +320,7 @@ jobs:
       - run:
           name: "Backup production database"
           command: |
-            ./devops/cf/backup-db.local.sh production
+            ./devops/cf/db-backup.sh production
 
   sanitise_database:
     <<: *defaults
@@ -428,14 +428,21 @@ workflows:
 #              only:
 #                - master
 #    jobs:
+#      - archive_database
+#
+#  db_sanitise:
+#    triggers:
+#      - schedule:
+#          cron: "11 59 * * 7"
+#          filters:
+#            branches:
+#              only:
+#                - master
+#    jobs:
 #      - checkout_code
 #      - compile_code:
 #          requires:
 #            - checkout_code
-#      - archive_database:
-#          requires:
-#            - compile_code
 #      - sanitise_database:
 #          requires:
-#            - archive_database
 #            - compile_code
