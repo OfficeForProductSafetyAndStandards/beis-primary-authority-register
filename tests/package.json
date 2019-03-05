@@ -7,13 +7,7 @@
     "e2e-debug": "node --inspect node_modules/nightwatch/bin/nightwatch",
     "selenium-install": "node_modules/.bin/selenium-standalone install",
     "selenium": "node_modules/.bin/selenium-standalone start",
-    "nightwatch-cucumber-chrome": "node_modules/.bin/nightwatch -c ./nightwatch-cucumber.conf.js -e default",
-    "nightwatch-cucumber-travis": "node_modules/.bin/nightwatch -c ./nightwatch-cucumber-travis.conf.js",
-    "nightwatch-cucumber-circleci": "node_modules/.bin/nightwatch -c ./nightwatch-cucumber-circleci.conf.js",
-    "nightwatch-cucumber-parallel": "node_modules/.bin/nightwatch -c ./nightwatch-cucumber-parallel.conf.js",
-    "nightwatch-cucumber-firefox": "node_modules/.bin/nightwatch -c ./nightwatch-cucumber.conf.js -e firefox",
-    "nightwatch-cucumber-ios": "node_modules/.bin/nightwatch -c ./nightwatch-cucumber-ios.conf.js -e default",
-    "nightwatch-cucumber-chrome-firefox": "node_modules/.bin/nightwatch -c ./nightwatch-cucumber.conf.js -e chrome,firefox",
+    "ci": "node_modules/.bin/nightwatch -c ./nightwatch-cucumber-ci.conf.js",
     "generate-report": "node generate-report.js"
   },
   "dependencies": {

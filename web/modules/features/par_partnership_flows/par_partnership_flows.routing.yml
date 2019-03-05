@@ -278,6 +278,7 @@ par_partnership_flows.legal_entity_edit:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm::accessCallback'
     par_data_partnership: \d+
     par_data_legal_entity: \d+
   options:
@@ -293,6 +294,7 @@ par_partnership_flows.legal_entity_add:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:

@@ -69,17 +69,15 @@ web/sites/simpletest
 .settings/
 /nbproject/
 
-# Exclude VM logs
-ubuntu-xenial-16.04-cloudimg-console.log
-
 # Exclude any Vagrant boxes
 package.box
 .vagrant/
 
+# Exclude any docker containers
+.docker-sync/
+
 # Exclude local environment settings
 .env
 .env.*
-!.env.continuous.enc
 
 auth.json
-google-chrome-stable_62.0.3202.62-1_amd64.deb

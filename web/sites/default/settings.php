@@ -972,8 +972,13 @@ $config['config_split.config_split.test_config']['status'] = FALSE;
  *
  * Load specific settings for each app environment.
  */
-if (!empty($appEnv) && file_exists("{$app_root}/{$site_path}/settings.local.{$appEnv}.php")) {
-  include "{$app_root}/{$site_path}/settings.local.{$appEnv}.php";
+if (!empty($appEnv)) {
+  if (file_exists("{$app_root}/{$site_path}/settings.local.{$appEnv}.php")) {
+    include "{$app_root}/{$site_path}/settings.local.{$appEnv}.php";
+  }
+  else {
+    include "{$app_root}/{$site_path}/settings.local.non-production.php";
+  }
 }
 
 /**

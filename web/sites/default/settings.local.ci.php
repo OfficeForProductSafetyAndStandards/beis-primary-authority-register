@@ -15,6 +15,8 @@ $settings['trusted_host_patterns'] = [''];
 
 $settings['config_readonly'] = FALSE;
 
+$settings['skip_permissions_hardening'] = TRUE;
+
 $config['config_split.config_split.dev_config']['status'] = TRUE;
 $config['config_split.config_split.test_config']['status'] = TRUE;
 

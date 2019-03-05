@@ -65,6 +65,17 @@
         </whitelist>
     </filter>
     <logging>
+        <log type="coverage-html"
+             target="./tests/reports/phpunit/html"
+             lowUpperBound="35"
+             highLowerBound="70"/>
+        <log type="coverage-clover"
+             target="./tests/reports/phpunit/phpunit.coverage.xml"/>
+        <log type="coverage-php"
+             target="./tests/reports/phpunit/phpunit.coverage.php"/>
+        <log type="coverage-text"
+             target="./tests/reports/phpunit/phpunit.coverage.txt"
+             showUncoveredFiles="false"/>
         <log type="junit"
              target="./tests/reports/phpunit/phpunit.latest.xml"
              logIncompleteSkipped="false"/>

@@ -4,7 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [27.0.0] - 2019-11-26
+## [27.0.3] - 2019-03-04
+### Updated
+- Critical security fixes
+- Resolved issues when clicking notification links
+- Stopped users from updating legal entities for active partnerships
+
+## [27.0.0] - 2018-11-26
 ### Added
 - Information about who approved an enforcement notice.
 - Notice to tell users to add the coordinator's legal entities when creating a coordinated partnership not those belonging to the members.
@@ -13,19 +19,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Only able to select the first 10 members when enforcing a coordinated partnership.
 
-## [26.0.1] - 2019-11-05
+## [26.0.1] - 2018-11-05
 ### Changed
 - Updated notification links to go to the related content rather than the dashboard.
 - Allowed notifications to go to email address that don't have user accounts.
 - Allowed users to login first when clicking links from emails.
 - Added notification preferences options to allow contacts who aren't the primary contact to receive notifications.
 
-## [25.0.0] - 2019-10-17
+## [25.0.0] - 2018-10-17
 ### Changed
 - Improved partnership application process, reducing the number of conditions checkboxes and overall worrdiness.
 - Improved member upload forms, adding a blank template to start from.
 
-## [24.1.0] - 2019-10-07
+## [24.1.0] - 2018-10-07
 ### Added
 - Enabled postcode lookup functionality.
 - New help desk dashboard.
@@ -34,7 +40,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Corrected links in email notification for responses to general enquiries.
 
-## [24.0.1] - 2019-10-04
+## [24.0.1] - 2018-10-04
 ### Added
 - Postcode lookup functionality (not yet turned on).
 
@@ -45,7 +51,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - It is no longer possible for helpdesk users to assign themselves super administrator rights.
 - Resolved an issue that was stopping the auto-approval of deviation requests.
 
-## [23.2.0] - 2019-09-18
+## [23.2.0] - 2018-09-18
 ### Added
 - Notifcations for new enquiries.
 - Notifications for responses to enquiries.
@@ -55,7 +61,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Resolved issues with attachments not showing for Enforcement actions.
 - Resolved problem whereby validation for legal entities could be skipped under certain circumstances.
 
-## [23.1.2] - 2019-09-11
+## [23.1.2] - 2018-09-11
 ### Changed
 - Security update to core software.
 - Inspection plan feedback and deviation requests cannot be created without an inspection plan.
@@ -65,13 +71,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Removed
 - Removed duplicate enforcement notices with no actions attached.
 
-## [23.0.0] - 2019-09-03
+## [23.0.0] - 2018-09-03
 ### Added
 - Request to deviate from inspection plan process.
 - Feedback on inspection plans process.
 - General enquiries to a PA.
 
-## [22.0.0] - 2019-08-27
+## [22.0.0] - 2018-08-27
 ### Changed
 - Enforced statuses so that they can only trainsition between allowed statuses.
 - Added extra checks to make sure only the PA can review enforcement notices.
@@ -79,7 +85,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Added the date the partnership was last updated.
 - Accessibility improvements.
 
-## [21.0.0] - 2019-08-14
+## [21.0.0] - 2018-08-14
 ### Added
 - Added further validation to elements that were missing it.
 
@@ -88,14 +94,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Improved validation messages to be clearer and more understandable.
 - Feedback form URL.
 
-## [20.2.1] - 2019-07-26
+## [20.2.1] - 2018-07-26
 ### Added
 - Role assignment so that the administrator role can only be assigned by administrators.
 
 ### Fixed
 - Removed sporadic issue downloading the Help Desk CSV report.
 
-## [20.1.0] - 2019-07-16
+## [20.1.0] - 2018-07-16
 ### Changed
 - Updated the public primary authority search with partnership type column and better search.
 - Public register now has more search options and displays a 'no results' message if no partnerships were found.
@@ -108,7 +114,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Hidden menu links disabled for screenreader.
 - Pagination now validates as (x)html.
 
-## [20.0.1] - 2019-07-05
+## [20.0.1] - 2018-07-05
 ### Added
 - GDPR agreement required after registration.
 - Profile update capabilities allows review of user's.
@@ -117,7 +123,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Performance improvements made by removing relationships to deleted data.
 
-## [19.0.0] - 2019-06-25
+## [19.0.0] - 2018-06-25
 ### Added
 - Added journeys for helpdesk users to restore mistakenly revoked partnerships.
 ### Changed
@@ -126,11 +132,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Partnerships now show up immediately in a users dashboard when first created.
 - Resolved missing relationships between users and their relevant enforcements and partnerships.
 
-## [18.3.2] - 2019-06-10
+## [18.3.2] - 2018-06-10
 ### Fixed
 - Resolved issues blocking enforcements that can be referred.
 
-## [18.3.1] - 2019-06-07
+## [18.3.1] - 2018-06-07
 ### Added
 - Authorities can now complete business details.
 - New links on partnership review screen to allow details to be changed.

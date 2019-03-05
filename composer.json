@@ -1,5 +1,5 @@
 {
-    "name": "TransformCore/beis-par-beta",
+    "name": "beis/primary-authority-register",
     "description": "The beta platform for BEIS PAR.",
     "type": "project",
     "repositories": [
@@ -21,15 +21,15 @@
         "drupal-composer/drupal-scaffold": "~2.3.0",
         "drupal/address": "~1.4.0",
         "drupal/better_exposed_filters": "~3.0.0",
-        "drupal/clamav": "~1.0.0",
+        "drupal/clamav": "~1.1.0",
         "drupal/config_readonly": "~1.0.0",
         "drupal/config_split": "~1.4.0",
-        "drupal/config_update": "~1.3.0",
+        "drupal/config_update": "~1.6.0",
         "drupal/core": "~8.6.0",
-        "drupal/csv_serialization": "~1.0.0",
+        "drupal/csv_serialization": "~1.4.0",
         "drupal/default_content": "~1.0.0",
         "drupal/email_registration": "~1.0.0",
-        "drupal/features": "~3.5.0",
+        "drupal/features": "~3.8.0",
         "drupal/file_entity": "~2.0.0",
         "drupal/flysystem": "~1.0.0",
         "drupal/flysystem_s3": "~1.0.0",
@@ -45,12 +45,12 @@
         "drupal/message": "~1.0.0",
         "drupal/message_notify": "~1.0.0@beta",
         "drupal/no_autocomplete": "~1.0.0",
-        "drupal/pagerer": "~1.1.0",
+        "drupal/pagerer": "~1.4.0",
         "drupal/password_policy": "3.x-dev#ef81a55ad49d7d4e18f493fad2284923d28bfe70",
         "drupal/password_strength": "~2.0.0",
         "drupal/queue_ui": "~2.0.0",
         "drupal/range": "~1.1.0",
-        "drupal/raven": "~2.4.0",
+        "drupal/raven": "~2.10.0",
         "drupal/robotstxt": "~1.1.0",
         "drupal/role_delegation": "~1.0.0",
         "drupal/swiftmailer": "~1.0.0-beta1",
@@ -58,8 +58,8 @@
         "drupal/twig_field_value": "~1.1.0",
         "drupal/twig_tweak": "~1.8.0",
         "drupal/ultimate_cron": "~2.0.0",
-        "drupal/vbo_export": "~2.0.0",
-        "drupal/views_bulk_operations": "~1.0.0",
+        "drupal/vbo_export": "~2.1.0",
+        "drupal/views_bulk_operations": "~2.4.0",
         "drupal/views_contextual_filters_or": "~1.0.0",
         "drupal/views_data_export": "~1.0.0",
         "drupal/views_field_view": "~1.0.0",
@@ -98,6 +98,7 @@
         "sort-packages": true
     },
     "extra": {
+        "composer-exit-on-patch-failure": true,
         "installer-paths": {
             "web/core": ["type:drupal-core"],
             "web/libraries/{$name}": ["type:drupal-library"],
@@ -164,8 +165,7 @@
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2018-07-26/allow_configurable_scheme-2988257-5.patch"
             },
             "drush/drush": {
-                "Fix SQL dump problem where extra params are passed when trying only to list tables": "./patches/3321-sql-dump-no-extra-fix.patch",
-                "Refs #2079. Do not pass `$this->query_extra` to `pg_dump`": "./patches/drush-sqldump-postgres95.patch"
+                "Fix SQL dump problem where extra params are passed when trying only to list tables": "./patches/3321-sql-dump-no-extra-fix.patch"
             }
         }
     },

@@ -86,7 +86,6 @@ fi
 # Vault is first sealed to ensure that deployment can't happen unless user has
 # the unseal token. Mostly this is to avoid copy/paste unintended deployments. 
 ####################################################################################
-
 export VAULT_ADDR=https://vault.primary-authority.beis.gov.uk:8200
 
 vault seal

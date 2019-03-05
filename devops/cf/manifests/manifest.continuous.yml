@@ -1,8 +1,0 @@
-applications:
-- name: par-beta-continuous
-memory: 2G
-disk_quota: 2048M
-host: par-beta-continuous
-buildpack: php_buildpack
-services:
-- par-pg-continuous
