@@ -88,7 +88,8 @@ module:
   par_partnership_application_flows: 0
   par_partnership_confirmation_flows: 0
   par_partnership_flows: 0
-  par_profile_create_flows: 0
+  par_person_create_flows: 0
+  par_person_update_flows: 0
   par_profile_update_flows: 0
   par_profile_view_flows: 0
   par_rd_help_desk_flows: 0

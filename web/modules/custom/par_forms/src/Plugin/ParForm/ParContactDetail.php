@@ -47,10 +47,7 @@ class ParContactDetail extends ParFormPluginBase {
       $locations = $contact->getReferencedLocations();
       $this->setDefaultValuesByKey("locations", $cardinality, implode('<br>', $locations));
 
-      $this->getFlowDataHandler()->setFormPermValue("person_id", $contact->id());
-    }
-    if ($user = $this->getFlowDataHandler()->getParameter('user')) {
-      $this->getFlowDataHandler()->setFormPermValue("user_id", $user->id());
+      $this->setDefaultValuesByKey("person_id", $cardinality, $contact->id());
     }
 
     parent::loadData();
@@ -60,10 +57,6 @@ class ParContactDetail extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
-    // Return path for all redirect links.
-    $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
-    $params = $this->getRouteParams() + ['destination' => $return_path];
-
     if ($cardinality === 1) {
       $form['message_intro'] = [
         '#type' => 'fieldset',
@@ -97,6 +90,18 @@ class ParContactDetail extends ParFormPluginBase {
           '#value' => $this->getDefaultValuesByKey('locations', $cardinality, ''),
         ],
       ];
+      try {
+        $params = ['par_data_person' => $this->getDefaultValuesByKey('person_id', $cardinality, NULL)];
+        var_dump($params);
+        $actions = t('@link', [
+            '@link' => $this->getLinkByRoute('par_person_update_flows.update_contact', $params)
+              ->setText('Update ' . $this->getDefaultValuesByKey('name', $cardinality, 'person'))
+              ->toString(),
+          ]);
+      } catch (ParFlowException $e) {
+
+      }
+
       $form['contact'] = [
         '#type' => 'fieldset',
         '#weight' => 1,
@@ -105,13 +110,19 @@ class ParContactDetail extends ParFormPluginBase {
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => $this->getDefaultValuesByKey('name', $cardinality, NULL),
+          '#attributes' => ['class' => ['column-two-thirds']],
+        ],
+        'actions' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => isset($actions) ? $actions : 'Update contact details',
           '#attributes' => ['class' => ['column-one-third']],
         ],
         'email' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => $this->getDefaultValuesByKey('email_preferences', $cardinality, NULL),
-          '#attributes' => ['class' => ['column-one-third']],
+          '#attributes' => ['class' => ['column-two-thirds']],
         ],
         'phone' => [
           '#type' => 'html_tag',

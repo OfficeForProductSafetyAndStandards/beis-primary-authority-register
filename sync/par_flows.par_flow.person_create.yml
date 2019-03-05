@@ -1,77 +1,80 @@
+uuid: d254d1c7-1f43-4e39-9923-902565ae2c44
 langcode: en
 status: true
 dependencies: {  }
-id: profile_create
-label: 'Create Profile Flow'
+_core:
+  default_config_hash: dDDizgWymgHHeT_Hnm_4dxmk2VWZt9q284Wj5nZ8nfA
+id: person_create
+label: 'Create Person Flow'
 default_title: null
-default_section_title: 'Create Person'
+default_section_title: 'Create a new Person'
 description: ''
 save_method: end
 states:
   - user
 steps:
   1:
-    route: par_profile_create_flows.create_contact
+    route: par_person_create_flows.create_contact
     form_id: par_add_contact
     components:
-      contact_details: {}
+      contact_details: {  }
     redirect:
       cancel: 8
   2:
-    route: par_profile_create_flows.link_contact
-    form_id: par_profile_link
+    route: par_person_create_flows.link_contact
+    form_id: par_person_link
     components:
-      link_contact: {}
+      link_contact: {  }
     form_data:
       contact_details: par_add_contact
     redirect:
       cancel: 8
   3:
-    route: par_profile_create_flows.choose_role
+    route: par_person_create_flows.choose_role
     form_id: par_choose_role
     components:
-      role_select: {}
+      role_select: {  }
     form_data:
       contact_details: par_add_contact
-      link_account: par_profile_link
+      link_account: par_person_link
     redirect:
       cancel: 8
   4:
-    route: par_profile_create_flows.choose_institution
+    route: par_person_create_flows.choose_institution
     form_id: par_add_institution
     components:
-      authority_select: {}
-      organisation_select: {}
+      authority_select: {  }
+      organisation_select: {  }
     form_data:
       role_select: par_choose_role
       contact_details: par_add_contact
     redirect:
       cancel: 8
   5:
-    route: par_profile_create_flows.invite_contact
-    form_id: par_profile_invite
+    route: par_person_create_flows.invite_contact
+    form_id: par_person_invite
     components:
-      invite: {}
+      invite: {  }
     form_data:
       contact_details: par_add_contact
-      user_account: par_profile_link
+      user_account: par_person_link
     redirect:
       cancel: 8
   6:
-    route: par_profile_create_flows.review
-    form_id: par_profile_review
+    route: par_person_create_flows.review
+    form_id: par_person_review
     form_data:
       role_select: par_choose_role
       contact_details: par_add_contact
-      link_account: par_profile_link
+      link_account: par_person_link
       select_authority: par_add_institution
       select_organisation: par_add_institution
-      invite: par_profile_invite
+      invite: par_person_invite
     redirect:
       save: 7
       cancel: 8
   7:
-    route: par_profile_create_flows.completed
+    route: par_person_create_flows.completed
     redirect:
       done: 8
   8:

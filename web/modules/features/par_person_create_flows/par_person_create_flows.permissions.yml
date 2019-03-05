@@ -1,6 +1,6 @@
-create par profile:
-  title: 'Create profiles'
-  description: 'Allow users to create new user profiles and invite users.'
+create par person:
+  title: 'Create people'
+  description: 'Allow users to create new people and invite them to create a user account.'
   restrict access: TRUE
 create organisation user:
   title: 'Create an organisation user'

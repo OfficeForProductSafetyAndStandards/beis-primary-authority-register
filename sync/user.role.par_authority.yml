@@ -34,6 +34,7 @@ permissions:
   - 'create authority user'
   - 'create enforcement user'
   - 'create files'
+  - 'create par person'
   - 'create par profile'
   - 'delete own document files'
   - 'delete own image files'
@@ -65,8 +66,10 @@ permissions:
   - 'edit par_data_sic_code entities'
   - 'enforce organisation'
   - 'invite authority members'
+  - 'invite user'
   - invite_type_invite_organisation_member
   - 'manage my authorities'
+  - 'manage par person'
   - 'manage par profile'
   - 'raise enforcement notice'
   - 'receive new_deviation_request notification'

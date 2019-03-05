@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_profile_create_flows;
+namespace Drupal\par_person_update_flows;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;

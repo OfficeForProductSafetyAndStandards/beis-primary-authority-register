@@ -1,12 +1,12 @@
 <?php
 
-namespace Drupal\par_profile_create_flows\Form;
+namespace Drupal\par_person_update_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_profile_create_flows\ParFlowAccessTrait;
+use Drupal\par_person_update_flows\ParFlowAccessTrait;
 use Drupal\user\Entity\Role;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -26,6 +26,11 @@ class ParInviteForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function loadData() {
+    if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
+      $account = $par_data_person->getUserAccount();
+      $this->getFlowDataHandler()->setParameter('user', $account);
+    }
+
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
     $role = $this->getFlowDataHandler()->getDefaultValues('role', '', $cid_role_select);
 
@@ -54,7 +59,7 @@ class ParInviteForm extends ParBaseForm {
     $this->getFlowDataHandler()->setFormPermValue('invitation_type', $invitation_type);
     $this->getFlowDataHandler()->setFormPermValue("roles", $role_options);
 
-    $cid_contact_details = $this->getFlowNegotiator()->getFormKey('par_add_contact');
+    $cid_contact_details = $this->getFlowNegotiator()->getFormKey('par_person_update');
     if ($email = $this->getFlowDataHandler()->getDefaultValues('email', NULL, $cid_contact_details)) {
       $this->getFlowDataHandler()->setTempDataValue('to', $email);
     }
@@ -69,7 +74,7 @@ class ParInviteForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $cid_link_account = $this->getFlowNegotiator()->getFormKey('par_profile_link');
+    $cid_link_account = $this->getFlowNegotiator()->getFormKey('par_person_update_link');
     $user_id = $this->getFlowDataHandler()->getDefaultValues('user_id', NULL, $cid_link_account);
 
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');

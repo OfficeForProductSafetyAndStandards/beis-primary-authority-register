@@ -48,18 +48,13 @@ class ParSelectRoleForm extends ParFormPluginBase {
     if (!empty($roles)) {
       $role_options = $this->getParDataManager()->getEntitiesAsOptions($roles, []);
 
-      // If there is an existing user selected force a user role to be choosen.
-      $link_account_cid = $this->getFlowNegotiator()->getFormKey('par_profile_update_link');
-      $user_id = $this->getFlowDataHandler()->getDefaultValues('user_id', NULL, $link_account_cid);
-      $linked_account = !empty($user_id) ? User::load($user_id) : NULL;
-
-      if ($linked_account) {
+      if ($account = $this->getFlowDataHandler()->getParameter('user')) {
         // Determine whether a user is being updated or created.
-        $this->getFlowDataHandler()->setFormPermValue("existing_user", $linked_account->label());
+        $this->getFlowDataHandler()->setFormPermValue("existing_user", $account->label());
 
         $this->getFlowDataHandler()->setFormPermValue("user_required", TRUE);
       }
-      else {
+      else if ($sdf = '') {
         $role_options[''] = "<i>Don't create a user, just add the contact details</i>";
 
         $this->getFlowDataHandler()->setFormPermValue("user_required", FALSE);

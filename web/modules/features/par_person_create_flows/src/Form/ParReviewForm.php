@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_profile_create_flows\Form;
+namespace Drupal\par_person_create_flows\Form;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Form\FormStateInterface;
@@ -15,7 +15,7 @@ use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\ParFormBuilder;
-use Drupal\par_profile_create_flows\ParFlowAccessTrait;
+use Drupal\par_person_create_flows\ParFlowAccessTrait;
 use Drupal\user\Entity\User;
 
 /**
@@ -48,7 +48,7 @@ class ParReviewForm extends ParBaseForm {
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
     $role = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);
 
-    $cid_link_account = $this->getFlowNegotiator()->getFormKey('par_profile_link');
+    $cid_link_account = $this->getFlowNegotiator()->getFormKey('par_person_link');
     $user_id = $this->getFlowDataHandler()->getDefaultValues('user_id', NULL, $cid_link_account);
 
     if (!$role) {
@@ -154,7 +154,7 @@ class ParReviewForm extends ParBaseForm {
   public function createEntities() {
     // Get the cache IDs for the various forms that needs needs to be extracted from.
     $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_add_contact');
-    $link_account_cid = $this->getFlowNegotiator()->getFormKey('par_profile_link');
+    $link_account_cid = $this->getFlowNegotiator()->getFormKey('par_person_link');
 
     $par_data_person = ParDataPerson::create([
       'type' => 'person',
@@ -194,7 +194,7 @@ class ParReviewForm extends ParBaseForm {
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
     $select_authority_cid = $this->getFlowNegotiator()->getFormKey('par_add_institution');
     $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('par_add_institution');
-    $cid_invitation = $this->getFlowNegotiator()->getFormKey('par_profile_invite');
+    $cid_invitation = $this->getFlowNegotiator()->getFormKey('par_person_invite');
 
     if ($par_data_person->save()) {
       $role = $this->getFlowDataHandler()->getTempDataValue('role', $cid_role_select);
@@ -230,7 +230,7 @@ class ParReviewForm extends ParBaseForm {
       $this->getFlowDataHandler()->deleteStore();
     }
     else {
-      $message = $this->t('User profile could not be created for: %account');
+      $message = $this->t('Person could not be created for: %account');
       $replacements = [
         '%account' => $par_data_person->id(),
       ];

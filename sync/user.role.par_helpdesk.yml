@@ -70,6 +70,7 @@ permissions:
   - 'create helpdesk user'
   - 'create organisation user'
   - 'create page content'
+  - 'create par person'
   - 'create par profile'
   - 'delete any document files'
   - 'delete any image files'
@@ -134,6 +135,7 @@ permissions:
   - invite_type_invite_organisation_member
   - 'manage my authorities'
   - 'manage my organisations'
+  - 'manage par person'
   - 'manage par profile'
   - 'receive new_deviation_request notification'
   - 'receive new_enforcement_notification notification'

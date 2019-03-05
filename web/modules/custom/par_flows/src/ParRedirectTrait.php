@@ -16,7 +16,7 @@ trait ParRedirectTrait {
 
     // Automatically add the route params from the current route if needed.
     foreach ($this->getRouteParams() as $current_route_param => $value) {
-      if (in_array($current_route_param, $path_variables)) {
+      if (in_array($current_route_param, $path_variables) && !isset($route_params[$current_route_param])) {
         $route_params[$current_route_param] = $value;
       }
     }

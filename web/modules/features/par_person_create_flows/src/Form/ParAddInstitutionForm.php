@@ -1,12 +1,12 @@
 <?php
 
-namespace Drupal\par_profile_create_flows\Form;
+namespace Drupal\par_person_create_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_profile_create_flows\ParFlowAccessTrait;
+use Drupal\par_person_create_flows\ParFlowAccessTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**

@@ -1,11 +1,11 @@
 <?php
 
-namespace Drupal\par_profile_create_flows\Controller;
+namespace Drupal\par_person_create_flows\Controller;
 
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Controller\ParBaseController;
-use Drupal\par_profile_create_flows\ParPartnershipFlowsTrait;
+use Drupal\par_person_create_flows\ParPartnershipFlowsTrait;
 
 /**
  * A controller for displaying the application confirmation.
