@@ -138,10 +138,18 @@ if [[ $# -ne 1 ]]; then
 fi
 ENV=$1
 
-## Deployment to production environment isn't supported at this time
+## Automated deployment to production environment isn't supported at this time
 if [[ $ENV == 'production' ]]; then
-    echo "Deployment to production isn't supported at this time."
-    exit 11
+    read -r -p "Are you sure you wish to deploy to production? [y/N] " response
+    case "$response" in
+        [yY][eE][sS]|[yY])
+            echo "Deploying to production."
+            ;;
+        *)
+            echo "Deployment to production isn't supported at this time."
+            exit 11
+            ;;
+    esac
 fi
 
 
