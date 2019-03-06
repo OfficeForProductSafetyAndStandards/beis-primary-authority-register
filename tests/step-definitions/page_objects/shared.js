@@ -33,6 +33,8 @@ module.exports = {
                 browser.setValue(input1, text);
           });
         },  
+
+       
         chooseAuthorityIfOptionPresent: function(elem, toClick){ 
             return this.api.element('css selector', elem , function (result) {
                 if (result.value.ELEMENT) {
@@ -140,7 +142,7 @@ module.exports = {
                 .setValue('#edit-name', string)
                 .setValue('#edit-pass', 'TestPassword')
                 .click('#edit-submit')
-                .waitForElementVisible('#footer', 15000)
+               .waitForElementVisible('#footer', 15000)
                 .assert.containsText('body', 'Sign out')
         },
         goToPartnershipDetailPage: function(orgName, status){ 
@@ -152,6 +154,25 @@ module.exports = {
             .click('#edit-submit-par-user-partnerships')
             .clickLinkByPureText(orgName)
         },
+        createNewPartnership: function(){
+             return this
+              .assert.containsText('.error-summary', 'Please confirm that all conditions for a new partnership have been met')
+              .click('#edit-edit-confirm')
+              .click('#edit-next')
+              .click('#edit-next')
+              .waitForElementVisible('.error-summary', 1000)
+              .assert.containsText('.error-summary', 'Please confirm whether the organisation has been notified that any existing local authorities will continue to regulate it')
+              .click('#edit-business-notified-2')
+              .click('#edit-next')
+              .assert.containsText('#par-partnership-about','Use this section to give a brief overview of the partnership')
+              .setValue('#edit-about-partnership', 'About the partnership detail')
+              .click('#edit-next')    
+        },
+        searchSelectOrganisation: function(organisation){
+            return this
+
+        },
+
         runTota11yAgainstCurrentPage: function(){ 
             return this.click('.tota11y-toolbar-toggle')
             var list = ['Headings', 'Contrast', 'Link text', 'Labels', 'Image alt-text'];

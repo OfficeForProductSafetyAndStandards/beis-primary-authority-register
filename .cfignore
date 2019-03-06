@@ -1,14 +1,30 @@
+# Ignore defaults
+.cfignore
+_darcs
+.DS_Store
 .git
-devops/dashboard/
-devops/docker/
-devops/vault/
-clamav/
-tests/
+.gitignore
+.hg
+manifest.yml
+.svn
+
+# Ignore non-app files
+/devops/dashboard/
+/devops/docker/
+/devops/vault/
+/clamav/
+/tests/
+
+# Ignore package files
 composer.json
 composer.lock
 package.json
 package-lock.json
 phpunit.xml
-web/sites/default/settings.local.php
+
+# Ignore local only files
+/web/sites/default/settings.local.php
+
+# Ignore temporary assets
 *.tar.gz
 

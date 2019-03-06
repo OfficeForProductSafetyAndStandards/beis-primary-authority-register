@@ -33,7 +33,7 @@ references:
   restore_dependencies: &restore_dependencies
     restore_cache:
       keys:
-        - v4-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+        - v5-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
 
   restore_scaffold: &restore_scaffold
     run:
@@ -117,7 +117,7 @@ jobs:
             npm run gulp
             cd ./tests && rm -rf node_modules && npm install
       - save_cache:
-          key: v4-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+          key: v5-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
           paths:
             - ./vendor
             - ./web/core
@@ -316,7 +316,9 @@ jobs:
       - run:
           name: "Backup production database"
           command: |
-            cf run-task par-beta-production "./scripts/db-backup.sh production -p"  --name DB_BACKUP
+            cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD
+            cf target -o office-for-product-safety-and-standards -s primary-authority-register
+            cf run-task par-beta-production "./scripts/db-backup.sh production -p" --name DB_BACKUP
 
   sanitise_database:
     <<: *defaults
