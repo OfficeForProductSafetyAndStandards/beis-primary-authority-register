@@ -60,7 +60,7 @@ Feature: User Management
         Then
 
     @user-management
-    Sceenario: Update telephone
+    Scenario: Update telephone
 
     @user-management
     Scenario: user not able to edit with existing email
