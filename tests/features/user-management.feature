@@ -1,6 +1,27 @@
 Feature: User management
 
-    @usermanagement @smoke
+    @user-management @smoke
+    Scenario Outline: Verify users have permission to manage people
+        Given I login as "<user>"
+        Then I should see "Manage your colleagues" link
+
+        Examples:
+            |User|
+            |par_business@example.com	|
+            |par_authority@example.com	|
+
+
+    @user-management
+    Scenario Outline: Verify enforcement officers cannot manage people
+        Given I login as "<user>"
+        Then I should not see "Manage your colleagues" link
+
+        Examples:
+            |User|
+            |par_enforcement_officer@example.com	|
+
+
+    @user-management @smoke
     Scenario: Check correct users can be managed
 
         Given I am logged in as "par_authority_user_management@example.com"
@@ -24,7 +45,8 @@ Feature: User management
         And the element ".user-management-list .table-scroll-wrapper tbody" contains the text "par_user_management_contact@example.com"
         And the element ".user-management-list .table-scroll-wrapper tbody" does not contain the text "par_organisation_user_management@example.com"
 
-    @usermanagement @smoke
+
+    @user-management @smoke
     Scenario: Check that users can be updated
 
         Given I am logged in as "par_authority_user_management@example.com"
@@ -82,7 +104,8 @@ Feature: User management
         Then the element "#contact-detail-locations-1" contains the text "Contact at the authority: Authority for user management test"
         And the element "#contact-detail-locations-1" contains the text "Contact at the authority: Alternate authority for user management test"
 
-    @usermanagement @smoke
+
+    @user-management @smoke
     Scenario: Check that existing contacts can be invited
 
         Given I am logged in as "par_authority_user_management@example.com"
@@ -115,7 +138,7 @@ Feature: User management
 
 
 
-#    @usermanagement @ci
+#    @user-management @ci
 #    Scenario: Add a new user
 #
 #        Given I am logged in as "par_authority_user_management@example.com"
