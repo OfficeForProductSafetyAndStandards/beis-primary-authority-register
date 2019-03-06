@@ -358,10 +358,6 @@ jobs:
           command: |
             cd web
             ../vendor/bin/drush sql-sanitize @par.paas -y
-      - run:
-          name: "Backup production database"
-          command: |
-            cf run-task par-beta-production "./scripts/db-backup.sh production -p"  --name DB_BACKUP
 
 workflows:
   version: 2.1
