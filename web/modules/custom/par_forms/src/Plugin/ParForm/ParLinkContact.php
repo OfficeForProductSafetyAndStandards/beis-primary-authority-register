@@ -51,15 +51,16 @@ class ParLinkContact extends ParFormPluginBase {
     }
 
     if ($contact_email) {
-      $new_account = current($this->getParDataManager()->getEntitiesByProperty('user', 'mail', $contact_email));
+      $users = $this->getParDataManager()->getEntitiesByProperty('user', 'mail', $contact_email);
+      $new_account = !empty($users) ? current($users) : NULL;
     }
-    if ($new_account && (!$existing_account || ($existing_account->id() !== $new_account->id()))) {
+    if (isset($new_account) && (!isset($existing_account) || ($existing_account->id() !== $new_account->id()))) {
       // If an account can be found that matches by e-mail address then we should use this.
       $account_options[$new_account->id()] = 'Update to: ' . $new_account->getEmail();
 
 
     }
-    if (!$new_account && $existing_account && $contact_email !== $existing_account->getEmail()) {
+    if (!isset($new_account) && isset($existing_account) && $contact_email !== $existing_account->getEmail()) {
       // Add an option to allow the user account to be removed.
       // This can only be done if the new email address doesn't
       // match an account and there is an account already.

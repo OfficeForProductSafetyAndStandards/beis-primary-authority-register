@@ -30,24 +30,23 @@ steps:
     redirect:
       cancel: 8
   3:
-    route: par_person_create_flows.choose_role
-    form_id: par_choose_role
-    components:
-      role_select: {  }
-    form_data:
-      contact_details: par_add_contact
-      link_account: par_person_link
-    redirect:
-      cancel: 8
-  4:
     route: par_person_create_flows.choose_institution
     form_id: par_add_institution
     components:
-      authority_select: {  }
-      organisation_select: {  }
+      authority_select: {}
+      organisation_select: {}
     form_data:
-      role_select: par_choose_role
       contact_details: par_add_contact
+    redirect:
+      cancel: 8
+  4:
+    route: par_person_create_flows.choose_role
+    form_id: par_choose_role
+    components:
+      role_select: {}
+    form_data:
+      contact_details: par_add_contact
+      link_account: par_person_link
     redirect:
       cancel: 8
   5:

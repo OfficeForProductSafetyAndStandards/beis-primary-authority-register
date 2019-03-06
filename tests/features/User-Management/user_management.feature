@@ -27,7 +27,7 @@ Feature: User Management
     Scenario: Add new person
         Given I login as "par_authority@example.com"
         When I click on "Manage your colleagues" link
-        And I fill in add new person form
+        And  I fill in add new person form
         And I click on create account
         Then I should see confirmation message "Invitation sent out to new user"
 

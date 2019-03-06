@@ -9,21 +9,41 @@ Feature: User management
             |User|
             |par_business@example.com	|
             |par_authority@example.com	|
+            |par_helpdesk@example.com	|
 
 
     @user-management
-    Scenario Outline: Verify enforcement officers cannot manage people
-        Given I login as "<user>"
+    Scenario: Verify an enforcement officer cannot added new person
+        Given I login as enforcement user
         Then I should not see "Manage your colleagues" link
 
-        Examples:
-            |User|
-            |par_enforcement_officer@example.com	|
-
-
     @user-management @smoke
-    Scenario: Check correct users can be managed
+    Scenario Outline: Add new person
+        Given I am logged in as "par_authority_user_management@example.com"
+        When I click the link text "Manage your colleagues"
 
+        Then the element "h1.heading-xlarge" contains the text "People"
+        When I click the link text "Add a person"
+
+        # Enter the contact details
+        Then the element "h1.heading-xlarge" contains the text "Add contact details"
+        And I add "<title>" to the inputfield "#edit-salutation"
+        And I add "<first_name>" to the inputfield "#edit-first-name"
+        And I add "<last_name>" to the inputfield "#edit-last-name"
+        And I add "<work_phone>" to the inputfield "#edit-work-phone"
+        And I add "<mobile_phone>" to the inputfield "#edit-mobile-phone"
+        And I add "<email>" to the inputfield "#edit-email"
+        And I click on the button "#edit-next"
+
+        Examples:
+            | email                                             | title | first_name    | last_name | work_phone    | mobile_phone  |
+            | par_user_management_second_officer@example.com    | Mr    | Joe           | Smith     | 01899 190 708 | 07111 000 111 |
+            | par_user_management_second_contact@example.com    | Ms    | Hermione      | Ruth      | 01000 200 300 | 07999 999 999 |
+
+
+
+    @user-management
+    Scenario: Check correct users can be managed
         Given I am logged in as "par_authority_user_management@example.com"
 
         # Check the dashboard links.
@@ -46,9 +66,8 @@ Feature: User management
         And the element ".user-management-list .table-scroll-wrapper tbody" does not contain the text "par_organisation_user_management@example.com"
 
 
-    @user-management @smoke
+    @user-management
     Scenario: Check that users can be updated
-
         Given I am logged in as "par_authority_user_management@example.com"
 
         When I click the link text "Manage your colleagues"
@@ -107,7 +126,6 @@ Feature: User management
 
     @user-management @smoke
     Scenario: Check that existing contacts can be invited
-
         Given I am logged in as "par_authority_user_management@example.com"
 
         When I click the link text "Manage your colleagues"
