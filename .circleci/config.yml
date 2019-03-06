@@ -33,7 +33,7 @@ references:
   restore_dependencies: &restore_dependencies
     restore_cache:
       keys:
-        - v4-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+        - v5-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
 
   restore_scaffold: &restore_scaffold
     run:
@@ -117,7 +117,7 @@ jobs:
             npm run gulp
             cd ./tests && rm -rf node_modules && npm install
       - save_cache:
-          key: v4-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+          key: v5-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
           paths:
             - ./vendor
             - ./web/core
