@@ -1,15 +1,0 @@
-          ok  Starting unison for sync docker-mac-sync
-          ok  docker-mac-sync container still running, restarting unison in container
-     command  docker exec docker-mac-sync supervisorctl restart unison
-          ok  starting initial sync of docker-mac-sync
-     command  docker inspect --format='{{(index (index .NetworkSettings.Ports "5000/tcp") 0).HostPort}}' docker-mac-sync
-     command  unison -testserver /app_sync "socket://127.0.0.1:32768"
-     command  docker inspect --format='{{(index (index .NetworkSettings.Ports "5000/tcp") 0).HostPort}}' docker-mac-sync
-     command  unison '/Users/Chris/git/par/beis-par-beta/docker/' -auto -batch -prefer '/Users/Chris/git/par/beis-par-beta/docker/' -copyonconflict -prefer newer -ignore='Path .git' -ignore='BelowPath .git' socket://127.0.0.1:32768
-          ok  Synced /Users/Chris/git/par/beis-par-beta/docker/
-      output  - Dockerfile-web                new file ---->            .docker-sync/daemon.log  
-new file ---->            .docker-sync/daemon.pid  
- 99%  00:00 ETA               100%  00:00 ETA               100%  00:00 ETA               100%  00:00 ETA               100%  00:00 ETA               
-     success  Unison server started
-     command  docker inspect --format='{{(index (index .NetworkSettings.Ports "5000/tcp") 0).HostPort}}' docker-mac-sync
-     command  unison '/Users/Chris/git/par/beis-par-beta/docker/' -auto -batch -prefer '/Users/Chris/git/par/beis-par-beta/docker/' -copyonconflict -prefer newer -ignore='Path .git' -ignore='BelowPath .git' socket://127.0.0.1:32768
