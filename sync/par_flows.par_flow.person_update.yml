@@ -79,8 +79,10 @@ steps:
     form_data:
       contact_details: par_person_update
       user_account: par_person_update_link
+      create_account: par_person_update_account
       select_authority: par_update_institution
       select_organisation: par_update_institution
+      role_select: par_choose_role
       invite: par_person_invite
     redirect:
       save: 8

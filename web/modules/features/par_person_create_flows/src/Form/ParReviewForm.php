@@ -6,6 +6,7 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\invite\Entity\Invite;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataLegalEntity;
@@ -15,6 +16,7 @@ use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\ParFormBuilder;
+use Drupal\par_forms\Plugin\ParForm\ParCreateAccount;
 use Drupal\par_person_create_flows\ParFlowAccessTrait;
 use Drupal\user\Entity\User;
 
@@ -194,7 +196,48 @@ class ParReviewForm extends ParBaseForm {
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
     $select_authority_cid = $this->getFlowNegotiator()->getFormKey('par_add_institution');
     $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('par_add_institution');
-    $cid_invitation = $this->getFlowNegotiator()->getFormKey('par_person_invite');
+    $cid_invitation = $this->getFlowNegotiator()->getFormKey('invite');
+    $create_account_cid = $this->getFlowNegotiator()
+      ->getFormKey('create_account');
+
+    $create_account = $this->getFlowDataHandler()
+      ->getDefaultValues('create_account', FALSE, $create_account_cid);
+
+    $role = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);
+    switch ($role) {
+      case 'par_enforcement':
+        $invitation_type = 'invite_enforcement_officer';
+
+        break;
+
+      case 'par_authority':
+        $invitation_type = 'invite_authority_member';
+
+        break;
+
+      case 'par_organisation':
+        $invitation_type = 'invite_organisation_member';
+
+        break;
+
+      case 'par_helpdesk':
+        $invitation_type = 'invite_processing_team_member';
+
+        break;
+    }
+
+    // Create invitation if an invitation type has been set and no existing user has been found.
+    if (isset($invitation_type) && !$account && !in_array($create_account, ParCreateAccount::IGNORE)) {
+      $invite = Invite::create([
+        'type' => $invitation_type,
+        'user_id' => $this->getCurrentUser()->id(),
+        'invitee' => $this->getFlowDataHandler()->getDefaultValues('to', NULL, $cid_invitation),
+      ]);
+      $invite->set('field_invite_email_address', $this->getFlowDataHandler()->getDefaultValues('to', NULL, $cid_invitation));
+      $invite->set('field_invite_email_subject', $this->getFlowDataHandler()->getDefaultValues('subject', NULL, $cid_invitation));
+      $invite->set('field_invite_email_body', $this->getFlowDataHandler()->getDefaultValues('body', NULL, $cid_invitation));
+      $invite->setPlugin('invite_by_email');
+    }
 
     if ($par_data_person->save()) {
       $role = $this->getFlowDataHandler()->getTempDataValue('role', $cid_role_select);

@@ -239,6 +239,11 @@ HEREDOC;
       ];
     }
 
+    $form['invitation_type'] = [
+      '#type' => 'hidden',
+      '#value' => $this->getFlowDataHandler()->getDefaultValues('invitation_type'),
+    ];
+
     return $form;
   }
 

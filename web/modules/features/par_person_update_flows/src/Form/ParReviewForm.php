@@ -16,6 +16,7 @@ use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\ParFormBuilder;
+use Drupal\par_forms\Plugin\ParForm\ParCreateAccount;
 use Drupal\par_person_update_flows\ParFlowAccessTrait;
 use Drupal\user\Entity\User;
 
@@ -249,7 +250,12 @@ class ParReviewForm extends ParBaseForm {
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
     $select_authority_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
     $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
-    $cid_invitation = $this->getFlowNegotiator()->getFormKey('par_invite');
+    $cid_invitation = $this->getFlowNegotiator()->getFormKey('invite');
+    $create_account_cid = $this->getFlowNegotiator()
+      ->getFormKey('create_account');
+
+    $create_account = $this->getFlowDataHandler()
+      ->getDefaultValues('create_account', FALSE, $create_account_cid);
 
     $role = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);
     switch ($role) {
@@ -275,7 +281,7 @@ class ParReviewForm extends ParBaseForm {
     }
 
     // Create invitation if an invitation type has been set and no existing user has been found.
-    if (isset($invitation_type) && !$account) {
+    if (isset($invitation_type) && !$account && !in_array($create_account, ParCreateAccount::IGNORE)) {
       $invite = Invite::create([
         'type' => $invitation_type,
         'user_id' => $this->getCurrentUser()->id(),
