@@ -37,9 +37,6 @@ class ParSelectRoleForm extends ParFormPluginBase {
     $create_account_cid = $this->getFlowNegotiator()->getFormKey('create_account');
     $create_account = $this->getFlowDataHandler()->getDefaultValues('create_account', FALSE, $create_account_cid);
 
-    /** @var \Drupal\par_data\Entity\ParDataEntityInterface[] $memberships */
-    $memberships = $this->getFlowDataHandler()->getParameter('memberships');
-
     $roles = [];
     if ($current_user && $current_user->hasPermission('create organisation user')) {
       $roles[] = Role::load('par_organisation');
@@ -69,8 +66,9 @@ class ParSelectRoleForm extends ParFormPluginBase {
         $this->getFlowDataHandler()->setFormPermValue("user_required", FALSE);
         $this->getFlowDataHandler()->setFormPermValue("roles_options", $role_options);
       }
-
     }
+
+    $this->getFlowDataHandler()->setFormPermValue("roles_options", !empty($role_options) ? $role_options : []);
 
     parent::loadData();
   }

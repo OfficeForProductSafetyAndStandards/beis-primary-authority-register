@@ -95,6 +95,7 @@ Feature: User management
         And the element ".user-management-list .table-scroll-wrapper tbody" contains the text "par_authority_user_management@example.com"
         And the element ".user-management-list .table-scroll-wrapper tbody" contains the text "par_user_management_officer@example.com"
         And the element ".user-management-list .table-scroll-wrapper tbody" contains the text "par_user_management_contact@example.com"
+        And the element ".user-management-list .table-scroll-wrapper tbody" contains the text "par_user_management_multiple@example.com"
         And the element ".user-management-list .table-scroll-wrapper tbody" does not contain the text "par_organisation_user_management@example.com"
 
 
@@ -119,10 +120,7 @@ Feature: User management
         And the element "#contact-detail-locations-2" contains the text "Contact at the authority: Alternate authority for user management test"
 
         # Update the user.
-        When I click the link text "Update user profile"
-
-        Then the element "h1.heading-xlarge" contains the text "Choose which contact to update"
-        When I click on the button "#edit-next"
+        When I click the link text "Update Ms Emily Davidson"
 
         Then the element "h1.heading-xlarge" contains the text "Update contact details"
         Then I add "Mrs" to the inputfield "#edit-salutation"
@@ -131,7 +129,7 @@ Feature: User management
         And I add "01870446558" to the inputfield "#edit-work-phone"
         And I click on the button "#edit-next"
 
-        Then the element "h1.heading-xlarge" contains the text "Change the type of user"
+        Then the element "h1.heading-xlarge" contains the text "Update which authorities or organisations this person belongs to"
         When I click on the button "#edit-next"
 
         Then the element "h1.heading-xlarge" contains the text "Profile review"
@@ -186,10 +184,3 @@ Feature: User management
         Then the element ".par-invite-review" contains the text "An invitation will be sent to this person to invite them to join the Primary Authority Register."
         When I click on the button "#edit-save"
 
-
-
-#    @user-management @ci
-#    Scenario: Add a new user
-#
-#        Given I am logged in as "par_authority_user_management@example.com"
-#

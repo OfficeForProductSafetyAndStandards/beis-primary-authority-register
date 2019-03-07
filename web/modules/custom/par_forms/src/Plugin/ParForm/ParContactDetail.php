@@ -92,7 +92,6 @@ class ParContactDetail extends ParFormPluginBase {
       ];
       try {
         $params = ['par_data_person' => $this->getDefaultValuesByKey('person_id', $cardinality, NULL)];
-        var_dump($params);
         $actions = t('@link', [
             '@link' => $this->getLinkByRoute('par_person_update_flows.update_contact', $params)
               ->setText('Update ' . $this->getDefaultValuesByKey('name', $cardinality, 'person'))
