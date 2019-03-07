@@ -87,6 +87,9 @@ class ParLinkContact extends ParFormPluginBase {
     if (count($user_accounts) === 1) {
       $this->getFlowDataHandler()->setTempDataValue('user_id', key($user_accounts));
     }
+    if (empty($user_accounts)) {
+      $this->getFlowDataHandler()->setTempDataValue('user_id', []);
+    }
     // If there isn't a choice go to the next page.
     if (count($user_accounts) <= 1) {
       $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());

@@ -16,7 +16,7 @@ steps:
     components:
       contact_details: {}
     redirect:
-      cancel: 8
+      cancel: 9
   2:
     route: par_person_create_flows.link_contact
     form_id: par_person_link
@@ -25,28 +25,39 @@ steps:
     form_data:
       contact_details: par_add_contact
     redirect:
-      cancel: 8
+      cancel: 9
   3:
+    route: par_person_create_flows.create_account
+    form_id: par_person_create_account
+    components:
+      create_account: {}
+    form_data:
+      contact_details: par_person_update
+      user_account: par_person_link
+    redirect:
+      cancel: 9
+  4:
     route: par_person_create_flows.choose_institution
     form_id: par_add_institution
     components:
-      authority_select: {}
-      organisation_select: {}
+      memberships_select: {}
     form_data:
+      create_account: par_person_create_account
       contact_details: par_add_contact
     redirect:
-      cancel: 8
-  4:
+      cancel: 9
+  5:
     route: par_person_create_flows.choose_role
     form_id: par_choose_role
     components:
       role_select: {}
     form_data:
       contact_details: par_add_contact
-      link_account: par_person_link
+      user_account: par_person_link
+      create_account: par_person_create_account
     redirect:
-      cancel: 8
-  5:
+      cancel: 9
+  6:
     route: par_person_create_flows.invite_contact
     form_id: par_person_invite
     components:
@@ -54,24 +65,25 @@ steps:
     form_data:
       contact_details: par_add_contact
       user_account: par_person_link
+      create_account: par_person_create_account
     redirect:
-      cancel: 8
-  6:
+      cancel: 9
+  7:
     route: par_person_create_flows.review
     form_id: par_person_review
     form_data:
       role_select: par_choose_role
       contact_details: par_add_contact
-      link_account: par_person_link
+      user_account: par_person_link
       select_authority: par_add_institution
       select_organisation: par_add_institution
       invite: par_person_invite
     redirect:
-      save: 7
-      cancel: 8
-  7:
+      save: 8
+      cancel: 9
+  8:
     route: par_person_create_flows.completed
     redirect:
-      done: 8
-  8:
+      done: 9
+  9:
     route: view.par_people.people

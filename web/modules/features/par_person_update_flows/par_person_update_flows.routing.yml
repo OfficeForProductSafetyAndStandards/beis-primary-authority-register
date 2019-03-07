@@ -26,6 +26,20 @@ par_person_update_flows.link_contact:
       par_data_person:
         type: entity:par_data_person
 
+par_person_update_flows.create_account:
+  path: '/person/{par_data_person}/update/account'
+  defaults:
+    _form: '\Drupal\par_person_update_flows\Form\ParAccountForm'
+    _title_callback: '\Drupal\par_person_update_flows\Form\ParAccountForm::titleCallback'
+  requirements:
+    _permission: 'manage par person'
+    _custom_access: '\Drupal\par_person_update_flows\Form\ParAccountForm::accessCallback'
+    par_data_person: \d+
+  options:
+    parameters:
+      par_data_person:
+        type: entity:par_data_person
+
 par_person_update_flows.choose_institution:
   path: '/person/{par_data_person}/update/memberships'
   defaults:

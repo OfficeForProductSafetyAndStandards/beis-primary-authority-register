@@ -17,69 +17,77 @@ steps:
     route: par_person_update_flows.update_contact
     form_id: par_person_update
     components:
-      contact_details: {  }
+      contact_details: {}
     form_data:
       select_person: par_choose_person
     redirect:
-      cancel: 8
+      cancel: 9
   2:
     route: par_person_update_flows.link_contact
     form_id: par_person_update_link
     components:
-      link_contact: {  }
+      link_contact: {}
     form_data:
-      select_person: par_choose_person
       contact_details: par_person_update
     redirect:
-      cancel: 8
+      cancel: 9
   3:
+    route: par_person_update_flows.create_account
+    form_id: par_person_update_account
+    components:
+      create_account: {}
+    form_data:
+      contact_details: par_person_update
+      user_account: par_person_update_link
+    redirect:
+      cancel: 9
+  4:
     route: par_person_update_flows.choose_institution
     form_id: par_update_institution
     components:
-      authority_select: {  }
-      organisation_select: {  }
+      memberships_select: {}
     form_data:
-      select_person: par_choose_person
+      create_account: par_person_update_account
       contact_details: par_person_update
     redirect:
-      cancel: 8
-  4:
+      cancel: 9
+  5:
     route: par_person_update_flows.choose_role
     form_id: par_choose_role
     components:
-      role_select: {  }
+      role_select: {}
     form_data:
       contact_details: par_add_contact
-      link_account: par_person_update_link
+      user_account: par_person_update_link
+      create_account: par_person_update_account
     redirect:
-      cancel: 8
-  5:
+      cancel: 9
+  6:
     route: par_person_update_flows.invite_contact
     form_id: par_person_invite
     components:
-      invite: {  }
+      invite: {}
     form_data:
-      select_person: par_choose_person
       contact_details: par_add_contact
       user_account: par_person_update_link
+      create_account: par_person_update_account
     redirect:
-      cancel: 8
-  6:
+      cancel: 9
+  7:
     route: par_person_update_flows.edit_review
     form_id: par_person_review
     form_data:
-      select_person: par_choose_person
       contact_details: par_person_update
-      link_account: par_person_update_link
+      user_account: par_person_update_link
       select_authority: par_update_institution
       select_organisation: par_update_institution
       invite: par_person_invite
     redirect:
-      save: 7
-      cancel: 8
-  7:
+      save: 8
+      cancel: 9
+  8:
     route: par_person_update_flows.edit_completed
     redirect:
-      done: 8
-  8:
+      done: 9
+  9:
     route: view.par_people.people

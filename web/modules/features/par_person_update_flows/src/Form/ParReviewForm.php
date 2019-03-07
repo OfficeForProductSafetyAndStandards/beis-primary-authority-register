@@ -36,7 +36,7 @@ class ParReviewForm extends ParBaseForm {
    */
   public function loadData() {
     // Select the user account that is being updated.
-    $link_account_cid = $this->getFlowNegotiator()->getFormKey('par_person_update_link');
+    $link_account_cid = $this->getFlowNegotiator()->getFormKey('user_account');
     $user_id = $this->getFlowDataHandler()->getDefaultValues('user_id', NULL, $link_account_cid);
     $account = !empty($user_id) ? User::load($user_id) : NULL;
     if ($account) {
@@ -174,7 +174,7 @@ class ParReviewForm extends ParBaseForm {
     // Get the cache IDs for the various forms that needs needs to be extracted from.
     $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_person_update');
     $contact_preferences_cid = $this->getFlowNegotiator()->getFormKey('par_preferences_update');
-    $link_account_cid = $this->getFlowNegotiator()->getFormKey('par_person_update_link');
+    $link_account_cid = $this->getFlowNegotiator()->getFormKey('user_account');
     $select_authority_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
     $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
 

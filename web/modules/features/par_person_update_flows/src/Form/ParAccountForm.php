@@ -1,26 +1,26 @@
 <?php
 
-namespace Drupal\par_person_create_flows\Form;
+namespace Drupal\par_person_update_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_person_create_flows\ParFlowAccessTrait;
+use Drupal\par_person_update_flows\ParFlowAccessTrait;
+use Drupal\user\Entity\Role;
 use Drupal\user\Entity\User;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * The form for adding users to an institution.
+ * The form for choosing whether to create an account for this user.
  */
-class ParAddInstitutionForm extends ParBaseForm {
+class ParAccountForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
 
   /**
-   * Title callback default.
+   * Set the page title.
    */
-  protected $pageTitle = 'Choose their memberships';
+  protected $pageTitle = 'Give this person a user account?';
 
   /**
    * {@inheritdoc}
@@ -33,8 +33,6 @@ class ParAddInstitutionForm extends ParBaseForm {
     if ($account) {
       $this->getFlowDataHandler()->setParameter('user', $account);
     }
-
-    $this->getFlowDataHandler()->setFormPermValue('allow_multiple', TRUE);
 
     parent::loadData();
   }

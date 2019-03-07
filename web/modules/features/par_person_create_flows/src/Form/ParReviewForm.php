@@ -48,7 +48,7 @@ class ParReviewForm extends ParBaseForm {
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
     $role = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);
 
-    $cid_link_account = $this->getFlowNegotiator()->getFormKey('par_person_link');
+    $cid_link_account = $this->getFlowNegotiator()->getFormKey('user_account');
     $user_id = $this->getFlowDataHandler()->getDefaultValues('user_id', NULL, $cid_link_account);
 
     if (!$role) {
@@ -154,7 +154,7 @@ class ParReviewForm extends ParBaseForm {
   public function createEntities() {
     // Get the cache IDs for the various forms that needs needs to be extracted from.
     $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_add_contact');
-    $link_account_cid = $this->getFlowNegotiator()->getFormKey('par_person_link');
+    $link_account_cid = $this->getFlowNegotiator()->getFormKey('user_account');
 
     $par_data_person = ParDataPerson::create([
       'type' => 'person',

@@ -10,6 +10,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_data\ParDataRelationship;
+use Drupal\user\Entity\Role;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 
@@ -380,7 +381,7 @@ class ParDataPerson extends ParDataEntity {
 
     }
 
-    // Remove this person from any authorities.
+    // Remove this person from any organisations.
     if ($save) {
       $removed_organisations = isset($unset) ? ParDataOrganisation::loadMultiple(array_unique($unset)) : [];
       foreach ($removed_organisations as $organisation) {

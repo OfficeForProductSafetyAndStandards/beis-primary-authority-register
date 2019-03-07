@@ -25,42 +25,51 @@ class ParSelectRoleForm extends ParFormPluginBase {
    */
   public function loadData($cardinality = 1) {
     if ($this->getFlowDataHandler()->getCurrentUser()->isAuthenticated()) {
-      $account = User::Load($this->getFlowDataHandler()->getCurrentUser()->id());
+      $current_user = User::Load($this->getFlowDataHandler()->getCurrentUser()->id());
     }
     else {
-      $account = NULL;
+      $current_user = NULL;
     }
 
+    $account = $this->getFlowDataHandler()->getParameter('user');
+
+    // If the create account form was used in this flow use this to determine whether a user role is required.
+    $create_account_cid = $this->getFlowNegotiator()->getFormKey('create_account');
+    $create_account = $this->getFlowDataHandler()->getDefaultValues('create_account', FALSE, $create_account_cid);
+
+    /** @var \Drupal\par_data\Entity\ParDataEntityInterface[] $memberships */
+    $memberships = $this->getFlowDataHandler()->getParameter('memberships');
+
     $roles = [];
-    if ($account && $account->hasPermission('create organisation user')) {
+    if ($current_user && $current_user->hasPermission('create organisation user')) {
       $roles[] = Role::load('par_organisation');
     }
-    if ($account && $account->hasPermission('create authority user')) {
+    if ($current_user && $current_user->hasPermission('create authority user')) {
       $roles[] = Role::load('par_authority');
     }
-    if ($account && $account->hasPermission('create enforcement user')) {
+    if ($current_user && $current_user->hasPermission('create enforcement user')) {
       $roles[] = Role::load('par_enforcement');
     }
-    if ($account && $account->hasPermission('create helpdesk user')) {
+    if ($current_user && $current_user->hasPermission('create helpdesk user')) {
       $roles[] = Role::load('par_helpdesk');
     }
 
-    if (!empty($roles)) {
+    if (!empty($roles) && ($account || $create_account)) {
       $role_options = $this->getParDataManager()->getEntitiesAsOptions($roles, []);
 
-      if ($account = $this->getFlowDataHandler()->getParameter('user')) {
-        // Determine whether a user is being updated or created.
+      if ($account) {
         $this->getFlowDataHandler()->setFormPermValue("existing_user", $account->label());
-
-        $this->getFlowDataHandler()->setFormPermValue("user_required", TRUE);
       }
-      else if ($sdf = '') {
-        $role_options[''] = "<i>Don't create a user, just add the contact details</i>";
 
+      // If the create account form has been selected to ignore account creation.
+      if (!empty($create_account) && in_array($create_account, ParCreateAccount::IGNORE)) {
         $this->getFlowDataHandler()->setFormPermValue("user_required", FALSE);
       }
+      else {
+        $this->getFlowDataHandler()->setFormPermValue("user_required", FALSE);
+        $this->getFlowDataHandler()->setFormPermValue("roles_options", $role_options);
+      }
 
-      $this->getFlowDataHandler()->setFormPermValue("roles_options", $role_options);
     }
 
     parent::loadData();
@@ -83,29 +92,12 @@ class ParSelectRoleForm extends ParFormPluginBase {
       return new RedirectResponse($url);
     }
 
-    if ($existing_user = $this->getFlowDataHandler()->getFormPermValue('existing_user')) {
-      $form['intro'] = [
-        '#type' => 'markup',
-        '#markup' => "Some of the roles given to a user are assigned automatically. If you are not a part of the same authorities and organisations as this user you may not be able to change all of the user's roles.",
-        '#prefix' => '<p>',
-        '#suffix' => '</p>',
-      ];
-    }
-    else {
-      $form['intro'] = [
-        '#type' => 'markup',
-        '#markup' => "Would you like to give this person a user account so that they can sign in to the Primary Authority Register?",
-        '#prefix' => '<p>',
-        '#suffix' => '</p>',
-      ];
-
-      $form['explanation'] = [
-        '#type' => 'markup',
-        '#markup' => "If you choose not to this person can still be listed as a contact but won't be able to view any of the information or interact with the Primary Authority Register.",
-        '#prefix' => '<p>',
-        '#suffix' => '</p>',
-      ];
-    }
+    $form['intro'] = [
+      '#type' => 'markup',
+      '#markup' => "Some of the roles given to a user are assigned automatically. If you are not a part of the same authorities and organisations as this user you may not be able to change all of the user's roles.",
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
+    ];
 
     $form['role'] = [
       '#type' => 'radios',

@@ -105,11 +105,11 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
 
     // If multiple choices are allowed the resulting value may be an array with keys but empty values.
     $organisation_element_key = $this->getElementKey('par_data_organisation_id', $cardinality);
-    $authorities_selected = $this->getFlowDataHandler()->getDefaultValues('allow_multiple', FALSE) ?
+    $organisations_selected = $this->getFlowDataHandler()->getDefaultValues('allow_multiple', FALSE) ?
       NestedArray::filter((array) $form_state->getValue($organisation_element_key)) :
       $form_state->getValue($organisation_element_key);
 
-    if ($required && empty($authorities_selected)) {
+    if ($required && empty($organisations_selected)) {
       $id_key = $this->getElementKey('par_data_organisation_id', $cardinality, TRUE);
       $form_state->setErrorByName($this->getElementName($organisation_element_key), $this->wrapErrorMessage('You must select an organisation.', $this->getElementId($id_key, $form)));
     }

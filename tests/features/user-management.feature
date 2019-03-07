@@ -6,10 +6,9 @@ Feature: User management
         Then I should see "Manage your colleagues" link
 
         Examples:
-            |User|
+            |User                       |
             |par_business@example.com	|
             |par_authority@example.com	|
-            |par_helpdesk@example.com	|
 
 
     @user-management
@@ -27,7 +26,7 @@ Feature: User management
 
         # Enter the contact details
         Then the element "h1.heading-xlarge" contains the text "Add contact details"
-        And I add "<title>" to the inputfield "#edit-salutation"
+        When I add "<title>" to the inputfield "#edit-salutation"
         And I add "<first_name>" to the inputfield "#edit-first-name"
         And I add "<last_name>" to the inputfield "#edit-last-name"
         And I add "<work_phone>" to the inputfield "#edit-work-phone"
@@ -35,10 +34,43 @@ Feature: User management
         And I add "<email>" to the inputfield "#edit-email"
         And I click on the button "#edit-next"
 
+        # Choose to create an account
+        Then the element "h1.heading-xlarge" contains the text "Give this person a user account?"
+        When I click on the radio "#edit-create-account-yes"
+        And I click on the button "#edit-next"
+
+        # Choose authorities for the person
+        Then the element "h1.heading-xlarge" contains the text "Choose their memberships"
+        When I click on the checkbox "#edit-par-component-memberships-select input"
+        And I click on the button "#edit-next"
+
+        # Choose role for the person
+        Then the element "h1.heading-xlarge" contains the text "What type of user would you like to create?"
+        When I click on the radio "#edit-role-par-<role>"
+        And I click on the button "#edit-next"
+
+        # Send invitation
+        Then the element "h1.heading-xlarge" contains the text "Invite the person to create an account"
+        And the element "#edit-recipient" contains the text "<email>"
+        And I click on the button "#edit-next"
+
+        # Check review page
+        Then the element "h1.heading-xlarge" contains the text "Profile review"
+        And the element "#edit-name" contains the text "<title> <first_name> <last_name>"
+        And the element "#edit-email" contains the text "<email>"
+        And the element "#edit-work-phone" contains the text "<work_phone>"
+        And the element "#edit-mobile-phone" contains the text "<mobile_phone>"
+        And the element "#edit-intro" contains the text "An invitation will be sent to this person to invite them to join the Primary Authority Register."
+        And I click on the button "#edit-next"
+
+        # Choose authorities for the person
+        Then the element "h1.heading-xlarge" contains the text "You're new person has been created"
+        And I click on the button "#edit-done"
+
         Examples:
-            | email                                             | title | first_name    | last_name | work_phone    | mobile_phone  |
-            | par_user_management_second_officer@example.com    | Mr    | Joe           | Smith     | 01899 190 708 | 07111 000 111 |
-            | par_user_management_second_contact@example.com    | Ms    | Hermione      | Ruth      | 01000 200 300 | 07999 999 999 |
+            | email                                             | title | first_name    | last_name | work_phone    | mobile_phone  | role          |
+            | par_user_management_second_officer@example.com    | Mr    | Joe           | Smith     | 01899 190 708 | 07111 000 111 | enforcement   |
+            | par_user_management_second_contact@example.com    | Ms    | Hermione      | Ruth      | 01000 200 300 | 07999 999 999 | authority     |
 
 
 
