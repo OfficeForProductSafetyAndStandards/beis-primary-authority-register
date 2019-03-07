@@ -1,6 +1,6 @@
 Feature: User management
 
-    @user-management @smoke
+    @user-management @ci @smoke
     Scenario Outline: Verify users have permission to manage people
         Given I login as "<user>"
         Then I should see "Manage your colleagues" link
@@ -11,12 +11,12 @@ Feature: User management
             |par_authority@example.com	|
 
 
-    @user-management
+    @user-management @ci
     Scenario: Verify an enforcement officer cannot added new person
         Given I login as enforcement user
         Then I should not see "Manage your colleagues" link
 
-    @user-management @smoke
+    @user-management @ci @smoke
     Scenario Outline: Add new person
         Given I am logged in as "par_authority_user_management@example.com"
         When I click the link text "Manage your colleagues"
@@ -73,8 +73,7 @@ Feature: User management
             | par_user_management_second_contact@example.com    | Ms    | Hermione      | Ruth      | 01000 200 300 | 07999 999 999 | authority     |
 
 
-
-    @user-management
+    @user-management @ci
     Scenario: Check correct users can be managed
         Given I am logged in as "par_authority_user_management@example.com"
 
@@ -99,7 +98,7 @@ Feature: User management
         And the element ".user-management-list .table-scroll-wrapper tbody" does not contain the text "par_organisation_user_management@example.com"
 
 
-    @user-management
+    @user-management @ci
     Scenario: Check that users can be updated
         Given I am logged in as "par_authority_user_management@example.com"
 
@@ -157,7 +156,7 @@ Feature: User management
         And the element "#contact-detail-locations-1" contains the text "Contact at the authority: Alternate authority for user management test"
 
 
-    @user-management @smoke
+    @user-management @ci @smoke
     Scenario: Check that existing contacts can be invited
         Given I am logged in as "par_authority_user_management@example.com"
 
