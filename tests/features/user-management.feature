@@ -132,6 +132,9 @@ Feature: User management
         Then the element "h1.heading-xlarge" contains the text "Update which authorities or organisations this person belongs to"
         When I click on the button "#edit-next"
 
+        Then the element "h1.heading-xlarge" contains the text "Change the type of user"
+        When I click on the button "#edit-next"
+
         Then the element "h1.heading-xlarge" contains the text "Profile review"
         And the element "#edit-personal" contains the text "Mrs Emilia Daviddson"
         And the element "#edit-contact-details" contains the text "01870446558"

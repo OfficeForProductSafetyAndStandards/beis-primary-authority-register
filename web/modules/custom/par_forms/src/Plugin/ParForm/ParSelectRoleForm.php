@@ -67,7 +67,6 @@ class ParSelectRoleForm extends ParFormPluginBase {
         $this->getFlowDataHandler()->setFormPermValue("roles_options", $role_options);
       }
     }
-
     $this->getFlowDataHandler()->setFormPermValue("roles_options", !empty($role_options) ? $role_options : []);
 
     parent::loadData();

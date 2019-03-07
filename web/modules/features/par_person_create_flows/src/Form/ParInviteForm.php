@@ -82,7 +82,7 @@ class ParInviteForm extends ParBaseForm {
 
     // Skip the invitation process if a user id has already been matched
     // or the user has chosen not to add a user.
-    if (!empty($user_id) || (!empty($create_account) && in_array($create_account, ParCreateAccount::IGNORE))) {
+    if ($user_id || in_array($create_account, ParCreateAccount::IGNORE)) {
       $url = $this->getUrlGenerator()
         ->generateFromRoute($this->getFlowNegotiator()
           ->getFlow()

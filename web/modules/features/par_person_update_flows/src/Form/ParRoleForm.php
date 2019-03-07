@@ -43,6 +43,21 @@ class ParRoleForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function loadData() {
+    // Select the user account that is being updated.
+    $link_account_cid = $this->getFlowNegotiator()->getFormKey('user_account');
+    $user_id = $this->getFlowDataHandler()->getDefaultValues('user_id', NULL, $link_account_cid);
+    $account = !empty($user_id) ? User::load($user_id) : NULL;
+    if ($account) {
+      $this->getFlowDataHandler()->setParameter('user', $account);
+    }
+
+    parent::loadData();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildForm(array $form, FormStateInterface $form_state) {
     $cid_link_account = $this->getFlowNegotiator()
       ->getFormKey('user_account');
     $user_id = $this->getFlowDataHandler()
@@ -55,7 +70,7 @@ class ParRoleForm extends ParBaseForm {
 
     // Skip the invitation process if a user id has already been matched
     // or the user has chosen not to add a user.
-    if (!empty($user_id) || (!empty($create_account) && in_array($create_account, ParCreateAccount::IGNORE))) {
+    if (empty($user_id) && !in_array($create_account, ParCreateAccount::IGNORE)) {
       $url = $this->getUrlGenerator()
         ->generateFromRoute($this->getFlowNegotiator()
           ->getFlow()
@@ -63,7 +78,7 @@ class ParRoleForm extends ParBaseForm {
       return new RedirectResponse($url);
     }
 
-    parent::loadData();
+    return parent::buildForm($form, $form_state);
   }
 
 }
