@@ -23,9 +23,29 @@
             "lang": "en"
         }
     ],
+    "mail": [
+        {
+          "value": "par_user_management_multiple@example.com"
+        }
+    ],
     "name": [
         {
-            "value": "par_user_management_multiple"
+            "value": "par_user_management_multiple@example.com"
+        }
+    ],
+    "pass": [
+        {
+          "value": "TestPassword"
+        }
+    ],
+    "status": [
+        {
+          "value": "1"
+        }
+    ],
+    "roles": [
+        {
+          "target_id": "par_authority"
         }
     ],
     "created": [
@@ -46,16 +66,6 @@
         }
     ],
     "field_gdpr": [
-        {
-            "value": false
-        }
-    ],
-    "field_last_password_reset": [
-        {
-            "value": "2019-03-07T11:46:23"
-        }
-    ],
-    "field_password_expiration": [
         {
             "value": false
         }
