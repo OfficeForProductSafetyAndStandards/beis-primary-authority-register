@@ -1,5 +1,5 @@
 #!/bin/bash
-# This script will push local assets to an environment.
+# This script will copy a set of vault secrets from one store to another.
 echo $BASH_VERSION
 
 set -o errexit -euo pipefail -o noclobber -o nounset
@@ -28,12 +28,11 @@ command -v vault >/dev/null 2>&1 || {
 
 ####################################################################################
 # Set required parameters
-#    ENV (required) - the password for the user account
-#    GOVUK_CF_USER (required) - the user deploying the script
-#    GOVUK_CF_PWD (required) - the password for the user account
-#    BUILD_DIR - the directory containing the build assets
+#    FORM_ENV (required) - the secret store to copy from
+#    DEST_ENV (required) - the secret store to copy to
 #    VAULT_ADDR - the vault service endpoint
-#    VAULT_UNSEAL_KEY (required) - the key used to unseal the vault
+#    VAULT_UNSEAL (required) - the key used to unseal the vault
+#    VAULT_TOKEN (required) - the master token to unseal the vaule
 ####################################################################################
 OPTIONS=v:u:t:
 LONGOPTS=vault:,unseal:,token:
@@ -91,12 +90,8 @@ DEST_ENV=$2
 
 ####################################################################################
 # Allow manual input of missing parameters
-#    ENV (required) - the password for the user account
-#    GOVUK_CF_USER (required) - the user deploying the script
-#    GOVUK_CF_PWD (required) - the password for the user account
-#    BUILD_DIR - the directory containing the build assets
-#    VAULT_ADDR - the vault service endpoint
-#    VAULT_UNSEAL_KEY (required) - the key used to unseal the vault
+#    VAULT_TOKEN (required) - the vault token to unseal the vault
+#    VAULT_UNSEAL (required) - the key used to unseal the vault
 ####################################################################################
 if [[ -z "${VAULT_UNSEAL}" ]]; then
     echo -n "Enter your Vault unseal key (will be hidden): "
@@ -122,6 +117,9 @@ vault operator unseal -tls-skip-verify $VAULT_UNSEAL
 printf "Copying from vault keystore: '$FROM_ENV'...\n"
 rm -f .env
 VAULT_VARS=($(vault kv get -tls-skip-verify secret/par/env/$FROM_ENV | awk 'NR > 3 {print $1}'))
+
+## Generate the vault variables into a writable string
+## @TODO Allow variables to be overwritted/updated
 VAULT_STRING=''
 for VAR_NAME in "${VAULT_VARS[@]}"
 do
