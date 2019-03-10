@@ -138,10 +138,18 @@ if [[ $# -ne 1 ]]; then
 fi
 ENV=$1
 
-## Deployment to production environment isn't supported at this time
+## Automated deployment to production environment isn't supported at this time
 if [[ $ENV == 'production' ]]; then
-    echo "Deployment to production isn't supported at this time."
-    exit 11
+    read -r -p "Are you sure you wish to deploy to production? [y/N] " response
+    case "$response" in
+        [yY][eE][sS]|[yY])
+            echo "Deploying to production."
+            ;;
+        *)
+            echo "Deployment to production isn't supported at this time."
+            exit 11
+            ;;
+    esac
 fi
 
 
@@ -185,12 +193,25 @@ export VAULT_TOKEN
 vault operator seal -tls-skip-verify
 vault operator unseal -tls-skip-verify $VAULT_UNSEAL
 
+if [[ $(vault kv list -tls-skip-verify secret/par/env | awk 'NR > 2 {print $1}' | grep $ENV) ]]; then
+    VAULT_ENV=$ENV
+else
+    VAULT_ENV='paas'
+fi
+
+## Ensure the production deployment uses the production vault keystore
+if [[ $ENV == 'production' ]] && [[ $VAULT_ENV != $ENV ]]; then
+    printf "Can't access the vault store for production secrets...\n"
+    exit 12
+fi
+
 ## Set the environment variables by generating an .env file
+printf "Using vault keystore: '$VAULT_ENV'...\n"
 rm -f .env
-VAULT_VARS=($(vault kv get -tls-skip-verify secret/par/env/staging | awk 'NR > 3 {print $1}'))
+VAULT_VARS=($(vault kv get -tls-skip-verify secret/par/env/$VAULT_ENV | awk 'NR > 3 {print $1}'))
 for VAR_NAME in "${VAULT_VARS[@]}"
 do
-  printf "$VAR_NAME='$(vault kv get --field=$VAR_NAME -tls-skip-verify secret/par/env/staging)'\n" >> .env
+  printf "$VAR_NAME='$(vault kv get --field=$VAR_NAME -tls-skip-verify secret/par/env/$VAULT_ENV)'\n" >> .env
 done
 ## Export the vars in .env for use in this script
 export $(egrep -v '^#' .env | xargs)
