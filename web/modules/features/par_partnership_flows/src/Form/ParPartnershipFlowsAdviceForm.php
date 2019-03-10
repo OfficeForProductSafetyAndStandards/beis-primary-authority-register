@@ -9,6 +9,7 @@ use Drupal\par_flows\Form\ParBaseForm;
 
 use Drupal\file\Entity\File;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
+use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 
 /**
  * The advice document form.
@@ -16,6 +17,7 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 class ParPartnershipFlowsAdviceForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
+  use ParPartnershipFlowAccessTrait;
 
   /**
    * {@inheritdoc}
