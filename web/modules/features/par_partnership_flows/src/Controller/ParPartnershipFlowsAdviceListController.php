@@ -110,14 +110,18 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
         '#attributes' => ['class' => 'form-group'],
       ];
 
-      $build['actions']['upload'] = [
-        '#type' => 'markup',
-        '#markup' => t('@link', [
-          '@link' => $this->getFlowNegotiator()->getFlow()->getNextLink('upload', $this->getRouteParams())
-            ->setText('Upload advice')
-            ->toString(),
-        ]),
-      ];
+      // PAR-1359 only allow advice uploading on active partnerships as only active partnerships have regulatory
+      // functions assigned to them.
+      if (!$par_data_partnership->inProgress()) {
+        $build['actions']['upload'] = [
+          '#type' => 'markup',
+          '#markup' => t('@link', [
+            '@link' => $this->getFlowNegotiator()->getFlow()->getNextLink('upload', $this->getRouteParams())
+                ->setText('Upload advice')
+                ->toString(),
+          ]),
+        ];
+      }
     }
 
     // Make sure to add the partnership cacheability data to this form.
