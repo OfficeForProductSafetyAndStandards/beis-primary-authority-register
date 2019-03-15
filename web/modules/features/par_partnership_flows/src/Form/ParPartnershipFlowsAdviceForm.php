@@ -59,6 +59,11 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       if (isset($allowed_types[$advice_type])) {
         $this->getFlowDataHandler()->setFormPermValue('advice_type', $advice_type);
       }
+      // Advice title.
+      $advice_title = $par_data_advice->get('advice_title')->getString();
+      if (isset($advice_title)) {
+        $this->getFlowDataHandler()->setFormPermValue('advice_title', $advice_title);
+      }
 
       // Get Regulatory Functions.
       $regulatory_functions = $par_data_advice->get('field_regulatory_function')->referencedEntities();
@@ -109,6 +114,17 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     if (!$this->currentUser()->hasPermission('update primary authority advice to local authorities')) {
       unset($allowed_types['authority_advice']);
     }
+
+    // The advice title.
+    $form['advice_title'] = [
+      '#type' => 'textfield',
+      '#attributes' => [
+        'class' => ['form-group'],
+      ],
+      '#title' => $this->t('Advice title'),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('advice_title'),
+      '#required' => TRUE,
+    ];
 
     // The advice type.
     $form['advice_type'] = [
@@ -199,6 +215,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     if ($par_data_advice) {
       $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
       $advice_type = $this->getFlowDataHandler()->getTempDataValue('advice_type');
+      $advice_title = $this->getFlowDataHandler()->getTempDataValue('advice_title');
 
       if (isset($allowed_types[$advice_type])) {
         $par_data_advice->set('advice_type', $advice_type);
@@ -210,6 +227,11 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       // Check if there are files to add from the Advice Upload form.
       if ($files_to_add) {
         $par_data_advice->set('document', $files_to_add);
+      }
+
+      // Check if title data has been stored.
+      if ($advice_title) {
+        $par_data_advice->set('advice_title', $advice_title);
       }
 
       if ($par_data_advice->save()) {
