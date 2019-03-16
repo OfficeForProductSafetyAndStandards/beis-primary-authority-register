@@ -551,3 +551,10 @@ function par_data_update_8032() {
 function par_data_update_8033() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
+
+/**
+ * Update fields required for new advice entity.
+ */
+function par_data_update_8034() {
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
