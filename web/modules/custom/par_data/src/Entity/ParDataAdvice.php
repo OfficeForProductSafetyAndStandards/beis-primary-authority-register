@@ -146,11 +146,11 @@ class ParDataAdvice extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Notes.
-    $fields['notes'] = BaseFieldDefinition::create('text_long')
-      ->setLabel(t('Notes'))
-      ->setDescription(t('Notes about this advice.'))
-      ->addConstraint('par_required')
+    // Advice Summary.
+    $fields['advice_summary'] = BaseFieldDefinition::create('text_long')
+      ->setLabel(t('Advice Summary'))
+      ->setDescription(t('Summary info for this advice.'))
+      ->setRequired(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
