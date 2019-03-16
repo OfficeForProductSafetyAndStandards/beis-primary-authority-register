@@ -18,7 +18,7 @@ trait ParPartnershipFlowAccessTrait {
    *   The route match object to be checked.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
-   * 
+   *
    * @TODO Please be aware that this access callback is currently specific to
    * the ParPartnershipFlowsLegalEntityForm class and would need to be updated
    * for use with other forms in par_partnership_flows flows.
@@ -33,11 +33,21 @@ trait ParPartnershipFlowAccessTrait {
 
     }
 
-    // Restrict access to active partnerships.
-    if (!$par_data_partnership->inProgress()) {
-      $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entity cannot be updated/added.');
-    }
-
+    switch ($route_match->getRouteName()) {
+      case 'par_partnership_flows.advice_add':
+      case 'par_partnership_flows.advice_upload_documents':
+        if ($par_data_partnership->inProgress()) {
+          $this->accessResult = AccessResult::forbidden('Advice can only be added to active partnerships.');
+        }
+        break;
+      case 'par_partnership_flows.legal_entity_add':
+      case 'par_partnership_flows.legal_entity_edit':
+        // Restrict access to active partnerships.
+        if (!$par_data_partnership->inProgress()) {
+          $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entity cannot be added.');
+        }
+        break;
+      }
     return parent::accessCallback($route, $route_match, $account);
   }
 }
