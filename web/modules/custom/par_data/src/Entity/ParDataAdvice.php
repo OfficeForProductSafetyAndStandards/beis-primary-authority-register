@@ -104,6 +104,27 @@ class ParDataAdvice extends ParDataEntity {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
+    // Advice Title.
+    $fields['advice_title'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Advice Title'))
+      ->setDescription(t('The title of the advice documents.'))
+      ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
     // Advice Type.
     $fields['advice_type'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Advice Type'))
@@ -125,11 +146,11 @@ class ParDataAdvice extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Notes.
-    $fields['notes'] = BaseFieldDefinition::create('text_long')
-      ->setLabel(t('Notes'))
-      ->setDescription(t('Notes about this advice.'))
-      ->addConstraint('par_required')
+    // Advice Summary.
+    $fields['advice_summary'] = BaseFieldDefinition::create('text_long')
+      ->setLabel(t('Advice Summary'))
+      ->setDescription(t('Summary info for this advice.'))
+      ->setRequired(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
