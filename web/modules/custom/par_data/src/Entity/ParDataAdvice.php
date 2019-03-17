@@ -99,6 +99,33 @@ class ParDataAdvice extends ParDataEntity {
   }
 
   /**
+   * Get PAR Advice's title.
+   *
+   * @return string
+   *   advice entity title.
+   */
+  public function getAdviceTitle() {
+    return $this->get('advice_title')->getString();
+  }
+
+  /**
+   * Set PAR Advice's title.
+   */
+  public function setAdviceTitle($advice_title) {
+    $this->set('advice_title', $advice_title);
+  }
+
+  /**
+   * Get PAR Advice type.
+   *
+   * @return string
+   *   advice entity title.
+   */
+  public function getAdviceType() {
+    return $this->get('advice_type')->getString();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
