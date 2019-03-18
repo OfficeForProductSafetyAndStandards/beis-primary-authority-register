@@ -56,8 +56,11 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
 
     // PAR-1158 add the required external link for advice templates.
     $link_text = t('For advice templates, go to:');
-    $options = array();
-    $link = Link::fromTextAndUrl(t('Primary Authority templates'), Url::fromUri('https://www.gov.uk/government/collections/primary-authority-documents#templates', $options))->toString();
+    $options = ['attributes' => ['target' => '_blank'],
+               'fragment' => 'templates'];
+    $URL = Url::fromUri('https://www.gov.uk/government/collections/primary-authority-documents', $options);
+
+    $link = Link::fromTextAndUrl(t('Primary Authority templates'), $URL)->toString();
     $form['advice_type_help_text_link'] = [
       '#type' => 'markup',
       '#markup' => "<p>{$link_text} {$link}</p>",
