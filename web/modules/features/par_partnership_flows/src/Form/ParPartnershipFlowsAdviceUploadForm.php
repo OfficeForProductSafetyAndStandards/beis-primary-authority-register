@@ -8,6 +8,8 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 
 use Drupal\file\Entity\File;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 
@@ -51,6 +53,15 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_advice);
+
+    // PAR-1158 add the required external link for advice templates.
+    $link_text = t('For advice templates, go to:');
+    $options = array();
+    $link = Link::fromTextAndUrl(t('Primary Authority templates'), Url::fromUri('https://www.gov.uk/government/collections/primary-authority-documents#templates', $options))->toString();
+    $form['advice_type_help_text_link'] = [
+      '#type' => 'markup',
+      '#markup' => "<p>{$link_text} {$link}</p>",
+    ];
 
     $par_data_advice_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('par_data_advice', 'document');
     $field_definition = $par_data_advice_fields['document'];
