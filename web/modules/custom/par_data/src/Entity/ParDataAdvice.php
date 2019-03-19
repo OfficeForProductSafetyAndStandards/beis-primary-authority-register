@@ -99,6 +99,33 @@ class ParDataAdvice extends ParDataEntity {
   }
 
   /**
+   * Get PAR Advice's title.
+   *
+   * @return string
+   *   advice entity title.
+   */
+  public function getAdviceTitle() {
+    return $this->get('advice_title')->getString();
+  }
+
+  /**
+   * Set PAR Advice's title.
+   */
+  public function setAdviceTitle($advice_title) {
+    $this->set('advice_title', $advice_title);
+  }
+
+  /**
+   * Get PAR Advice type.
+   *
+   * @return string
+   *   advice entity title.
+   */
+  public function getAdviceType() {
+    return $this->get('advice_type')->getString();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
@@ -146,11 +173,11 @@ class ParDataAdvice extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Notes.
-    $fields['notes'] = BaseFieldDefinition::create('text_long')
-      ->setLabel(t('Notes'))
-      ->setDescription(t('Notes about this advice.'))
-      ->addConstraint('par_required')
+    // Advice Summary.
+    $fields['advice_summary'] = BaseFieldDefinition::create('text_long')
+      ->setLabel(t('Advice Summary'))
+      ->setDescription(t('Summary info for this advice.'))
+      ->setRequired(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,

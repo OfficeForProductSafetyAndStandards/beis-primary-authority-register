@@ -551,3 +551,45 @@ function par_data_update_8032() {
 function par_data_update_8033() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
+
+/**
+ * Update fields required for new advice entity.
+ */
+function par_data_update_8034() {
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
+
+
+/**
+ * Set default title value for advice entities that don't have title values.
+ */
+function par_data_update_8035() {
+
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  // Advice entities with no titles.
+  $conditions = [
+    [
+      'AND' => [
+        ['advice_title', '', 'IS NULL'],
+      ]
+    ],
+  ];
+  $par_data_advice_entities = $par_data_manager->getEntitiesByQuery('par_data_advice', $conditions);
+
+  foreach ($par_data_advice_entities as $par_data_advice) {
+    $advice_type = $par_data_advice->getAdviceType();
+    if ($par_data_advice->getAdviceTitle() == NULL && !empty($advice_type)) {
+      $par_data_advice->setAdviceTitle($advice_type);
+      // Update advice entities with default titles.
+      if (!$par_data_advice->save()) {
+        $message = $this->t('This %advice could not be saved.');
+        $replacements = [
+          '%advice' => $par_data_advice->label(),
+        ];
+        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+      }
+    }
+  }
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
