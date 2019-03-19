@@ -293,7 +293,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
 
       $advice_summary = $this->getFlowDataHandler()->getTempDataValue('advice_summary');
 
-      if (isset($advice_title)) {
+      if (isset($advice_summary)) {
         $par_data_advice->set('advice_summary', $advice_summary);
       }
 
