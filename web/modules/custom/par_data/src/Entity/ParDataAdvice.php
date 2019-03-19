@@ -99,10 +99,58 @@ class ParDataAdvice extends ParDataEntity {
   }
 
   /**
+   * Get PAR Advice's title.
+   *
+   * @return string
+   *   advice entity title.
+   */
+  public function getAdviceTitle() {
+    return $this->get('advice_title')->getString();
+  }
+
+  /**
+   * Set PAR Advice's title.
+   */
+  public function setAdviceTitle($advice_title) {
+    $this->set('advice_title', $advice_title);
+  }
+
+  /**
+   * Get PAR Advice type.
+   *
+   * @return string
+   *   advice entity title.
+   */
+  public function getAdviceType() {
+    return $this->get('advice_type')->getString();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
+
+    // Advice Title.
+    $fields['advice_title'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Advice Title'))
+      ->setDescription(t('The title of the advice documents.'))
+      ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
 
     // Advice Type.
     $fields['advice_type'] = BaseFieldDefinition::create('string')
@@ -125,11 +173,11 @@ class ParDataAdvice extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Notes.
-    $fields['notes'] = BaseFieldDefinition::create('text_long')
-      ->setLabel(t('Notes'))
-      ->setDescription(t('Notes about this advice.'))
-      ->addConstraint('par_required')
+    // Advice Summary.
+    $fields['advice_summary'] = BaseFieldDefinition::create('text_long')
+      ->setLabel(t('Advice Summary'))
+      ->setDescription(t('Summary info for this advice.'))
+      ->setRequired(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,

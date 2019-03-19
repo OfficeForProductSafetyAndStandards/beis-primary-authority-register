@@ -23,8 +23,14 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
    * {@inheritdoc}
    */
   protected $entityMapping = [
+    ['advice_title', 'par_data_advice', 'advice_title', NULL, NULL, 0, [
+      'This value should not be null.' => 'You must provide a title for this advice document.'
+    ]],
+    ['advice_summary', 'par_data_advice', 'advice_summary', NULL, NULL, 0, [
+      'This value should not be null.' => 'You must provide a summary for this advice document.'
+    ]],
     ['advice_type', 'par_data_advice', 'advice_type', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must choose what type of advice this is.'
+      'This value should not be null.' => 'You must choose what type of advice this is.'
     ]],
     ['regulatory_functions', 'par_data_advice', 'field_regulatory_function', NULL, NULL, 0, [
       'This value should not be null.' => 'You must choose which regulatory functions this advice applies to.'
@@ -58,6 +64,17 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       $advice_type = $par_data_advice->get('advice_type')->getString();
       if (isset($allowed_types[$advice_type])) {
         $this->getFlowDataHandler()->setFormPermValue('advice_type', $advice_type);
+      }
+      // Advice title.
+      $advice_title = $par_data_advice->get('advice_title')->getString();
+      if (isset($advice_title)) {
+        $this->getFlowDataHandler()->setFormPermValue('advice_title', $advice_title);
+      }
+
+      // Advice summary.
+      $advice_summary = $par_data_advice->get('advice_summary')->getString();
+      if (isset($advice_summary)) {
+        $this->getFlowDataHandler()->setFormPermValue('advice_summary', $advice_summary);
       }
 
       // Get Regulatory Functions.
@@ -110,6 +127,27 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       unset($allowed_types['authority_advice']);
     }
 
+    // The advice title.
+    $form['advice_title'] = [
+      '#type' => 'textfield',
+      '#attributes' => [
+        'class' => ['form-group'],
+      ],
+      '#title' => '<h3 class="heading-medium">' . $this->t('Advice title')  . '</h3>',
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('advice_title'),
+    ];
+
+    // The advice summary.
+    $form['advice_summary'] = [
+      '#type' => 'textarea',
+      '#attributes' => [
+        'class' => ['form-group'],
+      ],
+      '#title' => '<h3 class="heading-medium">' . $this->t('Provide summarised details of this advice') . '</h3>',
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('advice_summary'),
+      '#description' => '<p>Use this section to give a brief overview of the advice document.</p><p>Include any information you feel may be useful.</p>',
+    ];
+
     // The advice type.
     $form['advice_type'] = [
       '#type' => 'radios',
@@ -119,7 +157,6 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       '#title' => $this->t('Type of advice'),
       '#options' => $allowed_types,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('advice_type'),
-      '#required' => TRUE,
     ];
 
     $form['advice_type_help_text'] = [
@@ -199,6 +236,18 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     if ($par_data_advice) {
       $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
       $advice_type = $this->getFlowDataHandler()->getTempDataValue('advice_type');
+      $advice_title = $this->getFlowDataHandler()->getTempDataValue('advice_title');
+      $advice_summary = $this->getFlowDataHandler()->getTempDataValue('advice_summary');
+
+      // Check if title data has been stored.
+      if ($advice_title) {
+        $par_data_advice->set('advice_title', $advice_title);
+      }
+
+      // Check if advice_summary data has been stored.
+      if ($advice_summary) {
+        $par_data_advice->set('advice_summary', $advice_summary);
+      }
 
       if (isset($allowed_types[$advice_type])) {
         $par_data_advice->set('advice_type', $advice_type);
@@ -234,6 +283,18 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       // Check if there are files to add from the Advice Upload form.
       if ($files_to_add) {
         $par_data_advice->set('document', $files_to_add);
+      }
+
+      $advice_title = $this->getFlowDataHandler()->getTempDataValue('advice_title');
+
+      if (isset($advice_title)) {
+        $par_data_advice->set('advice_title', $advice_title);
+      }
+
+      $advice_summary = $this->getFlowDataHandler()->getTempDataValue('advice_summary');
+
+      if (isset($advice_title)) {
+        $par_data_advice->set('advice_summary', $advice_summary);
       }
 
       // Set advice type.
