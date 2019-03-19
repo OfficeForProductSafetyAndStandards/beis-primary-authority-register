@@ -104,6 +104,27 @@ class ParDataAdvice extends ParDataEntity {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
+    // Advice Title.
+    $fields['advice_title'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Advice Title'))
+      ->setDescription(t('The title of the advice documents.'))
+      ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
     // Advice Type.
     $fields['advice_type'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Advice Type'))
