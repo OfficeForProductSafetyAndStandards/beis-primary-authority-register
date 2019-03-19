@@ -55,15 +55,16 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $par_data_advice);
 
     // PAR-1158 add the required external link for advice templates.
-    $par_text = t('For advice templates, go to:');
+    $par_text = t('For advice templates, go to: ');
     $options = ['attributes' => ['target' => '_blank'],
                'fragment' => 'templates'];
     $url_obj = Url::fromUri('https://www.gov.uk/government/collections/primary-authority-documents', $options);
 
     $link = Link::fromTextAndUrl(t('Primary Authority templates'), $url_obj)->toString();
+    $output = $par_text . $link;
     $form['advice_type_help_text_link'] = [
       '#type' => 'markup',
-      '#markup' => "<p>{$par_text} {$link}</p>",
+      '#markup' => "<p>{$output}</p>",
     ];
 
     $par_data_advice_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('par_data_advice', 'document');
