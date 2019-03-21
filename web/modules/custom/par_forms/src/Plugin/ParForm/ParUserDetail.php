@@ -37,7 +37,11 @@ class ParUserDetail extends ParFormPluginBase {
     $user = $this->getFlowDataHandler()->getParameter('user');
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
 
+    $cache_tags = [];
+
     if ($user instanceof UserInterface) {
+      $cache_tags[] = "user:{$user->id()}";
+
       $this->getFlowDataHandler()->setFormPermValue('user_account', $user->getEmail());
       $last_login_date = $this->getDateFormatter()->format($user->getLastLoginTime(), 'gds_date_format');
       $this->setDefaultValuesByKey('user_login', $cardinality, $last_login_date);
@@ -45,16 +49,21 @@ class ParUserDetail extends ParFormPluginBase {
       $roles = Role::loadMultiple($user->getRoles());
       $user_roles = [];
       foreach ($roles as $user_role) {
-        if (in_array($user_role->id(), ['par_authority', 'par_enforcement_officer', 'par_organisation', 'par_helpdesk'])) {
+        if (in_array($user_role->id(), ['par_authority', 'par_enforcement', 'par_organisation', 'par_helpdesk'])) {
           $user_roles[] = str_replace('PAR ', '', $user_role->label());
         }
       }
+
       $this->setDefaultValuesByKey("user_roles", $cardinality, implode(', ', $user_roles));
       $this->getFlowDataHandler()->setFormPermValue("user_id", $user->id());
     }
     elseif ($par_data_person instanceof ParDataEntityInterface) {
+      $cache_tags[] = "par_data_person:{$par_data_person->id()}";
+
       $this->getFlowDataHandler()->setFormPermValue("person_id", $par_data_person->id());
     }
+
+    $this->getFlowDataHandler()->setFormPermValue('cache_tags', $cache_tags);
 
     parent::loadData();
   }
@@ -65,6 +74,7 @@ class ParUserDetail extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     // Get the current invitation expiry date if one has already been sent.
     $invitation_expiry = $this->getFlowDataHandler()->getDefaultValues('invitation_expiration', FALSE);
+    $cache_tags = $this->getFlowDataHandler()->getDefaultValues('cache_tags', []);
 
     // Return path for all redirect links.
     $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
@@ -74,6 +84,7 @@ class ParUserDetail extends ParFormPluginBase {
       '#type' => 'fieldset',
       '#weight' => -1,
       '#attributes' => ['class' => ['grid-row', 'form-group']],
+      '#cache' => ['tags' => $cache_tags]
     ];
     if ($cardinality === 1) {
       $form['user_account'] += [
@@ -99,13 +110,13 @@ class ParUserDetail extends ParFormPluginBase {
         '#value' => '<strong>E-mail</strong><br>' . $this->getDefaultValuesByKey('user_account', $cardinality, ''),
         '#attributes' => ['class' => ['column-full']],
       ];
-      $form['user_account']['last_access'] = [
+      $form['user_account']['roles'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#value' => '<strong>Type of account</strong><br>' . $this->getDefaultValuesByKey('user_roles', $cardinality, ''),
         '#attributes' => ['class' => ['column-two-thirds']],
       ];
-      $form['user_account']['roles'] = [
+      $form['user_account']['last_access'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#value' => '<strong>Last sign in</strong><br>' . $this->getDefaultValuesByKey('user_login', $cardinality, ''),

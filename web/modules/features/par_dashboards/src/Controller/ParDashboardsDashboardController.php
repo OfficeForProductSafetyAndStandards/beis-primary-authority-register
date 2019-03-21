@@ -71,7 +71,7 @@ class ParDashboardsDashboardController extends ControllerBase {
    * {@inheritdoc}
    */
   public function content() {
-    // The dashboard is to0 complex and too important a page to cache.
+    // The dashboard is too complex and too important a page to cache.
     $this->killSwitch->trigger();
     $account = $this->getCurrentUser();
     $build = [];

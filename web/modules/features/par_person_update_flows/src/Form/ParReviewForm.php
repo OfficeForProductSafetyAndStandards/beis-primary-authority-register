@@ -271,17 +271,31 @@ class ParReviewForm extends ParBaseForm {
       $invite->setPlugin('invite_by_email');
     }
     // Update any roles as necessary.
-    else if ($account && !$account->hasRole($role)) {
-      $account->addRole($role);
+    elseif ($account) {
+      $role_options = $this->getFlowDataHandler()->getDefaultValues('role_options', [], $cid_role_select);
+      foreach ($role_options as $option) {
+        if ($option !== $role) {
+          $account->removeRole($option);
+        }
+      }
+      if (!$account->hasRole($role)) {
+        $account->addRole($role);
+      }
     }
 
     // Merge all accounts (and save them) or just save the person straight up.
     if (($this->getFlowDataHandler()->getTempDataValue('update_all_contacts') === 'on' && $par_data_person->mergePeople())
         || $par_data_person->save()) {
       // Also save the user if the email has been updated.
-      if ($account && $account->getEmail() !== $this->getFlowDataHandler()->getFormPermValue('orginal_email')) {
+      if ($account) {
         $account->save();
-        $this->getParDataManager()->getMessenger()->addMessage(t('The email address you use to login has been updated to @email', ['@email' => $account->getEmail()]));
+
+        // Display a message to indicate the email address has changed.
+        if ($account->getEmail() !== $this->getFlowDataHandler()->getFormPermValue('orginal_email')) {
+          $this->getParDataManager()
+            ->getMessenger()
+            ->addMessage(t('The email address used to login has been updated to @email', ['@email' => $account->getEmail()]));
+        }
       }
 
       // Update the membership authorities or organisations.

@@ -55,7 +55,15 @@ class ParSelectRoleForm extends ParFormPluginBase {
       }
 
       $this->getFlowDataHandler()->setFormPermValue("user_required", FALSE);
+
+      foreach (array_keys($role_options) as $option) {
+        if ($account->hasRole($option)) {
+          $this->getFlowDataHandler()->setFormPermValue("default_role", $option);
+          break;
+        }
+      }
     }
+
     $this->getFlowDataHandler()->setFormPermValue("roles_options", !empty($role_options) ? $role_options : []);
 
     parent::loadData();
@@ -67,6 +75,9 @@ class ParSelectRoleForm extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     // Get all the allowed authorities.
     $role_options = $this->getFlowDataHandler()->getFormPermValue('roles_options');
+
+    // Get the default role selection.
+    $default_option = $this->getDefaultValuesByKey("default_role", $cardinality, key($role_options));
 
     // If there is only one choice select it and go to the next page.
     if (count($role_options) === 1) {
@@ -80,7 +91,7 @@ class ParSelectRoleForm extends ParFormPluginBase {
 
     $form['intro'] = [
       '#type' => 'markup',
-      '#markup' => "Some of the roles given to a user are assigned automatically. If you are not a part of the same authorities and organisations as this user you may not be able to change all of the user's roles.",
+      '#markup' => "Some of the roles given to a user are assigned automatically and you may not be able to change them.<br><br>The user may also have other roles that you are not permitted to change.",
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];
@@ -89,8 +100,13 @@ class ParSelectRoleForm extends ParFormPluginBase {
       '#type' => 'radios',
       '#title' => t('Choose what type of user this person is'),
       '#options' => $role_options,
-      '#default_value' => $this->getDefaultValuesByKey("role", $cardinality, key($role_options)),
+      '#default_value' => $this->getDefaultValuesByKey("role", $cardinality, $default_option),
       '#attributes' => ['class' => ['form-group']],
+    ];
+
+    $form['role_options'] = [
+      '#type' => 'hidden',
+      '#value' => array_keys($role_options),
     ];
 
     return $form;

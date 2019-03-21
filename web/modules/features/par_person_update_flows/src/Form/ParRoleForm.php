@@ -65,7 +65,7 @@ class ParRoleForm extends ParBaseForm {
     $account_selection = $this->getFlowDataHandler()->getDefaultValues('account', NULL, $choose_account_cid);
     $account = $this->getFlowDataHandler()->getParameter('user');
 
-    if ($account_selection !== ParChooseAccount::CREATE) {
+    if (!$account && $account_selection !== ParChooseAccount::CREATE) {
       $url = $this->getUrlGenerator()
         ->generateFromRoute($this->getFlowNegotiator()
           ->getFlow()

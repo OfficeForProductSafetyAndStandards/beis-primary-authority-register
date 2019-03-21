@@ -258,9 +258,25 @@ class ParReviewForm extends ParBaseForm {
       $invite->set('field_invite_email_body', $this->getFlowDataHandler()->getDefaultValues('body', NULL, $cid_invitation));
       $invite->setPlugin('invite_by_email');
     }
+    // Update any roles as necessary.
+    elseif ($account) {
+      $role_options = $this->getFlowDataHandler()->getDefaultValues('role_options', [], $cid_role_select);
+      foreach ($role_options as $option) {
+        if ($option !== $role) {
+          $account->removeRole($option);
+        }
+      }
+      if (!$account->hasRole($role)) {
+        $account->addRole($role);
+      }
+    }
 
     if ($par_data_person->save()) {
       $role = $this->getFlowDataHandler()->getTempDataValue('role', $cid_role_select);
+
+      if ($account) {
+        $account->save();
+      }
 
       // If some authorities have been selected and either
       // an authority role has been selected or no user is being created.

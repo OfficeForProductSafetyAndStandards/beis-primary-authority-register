@@ -3,6 +3,7 @@
 namespace Drupal\par_profile_view_flows\Controller;
 
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\invite\Entity\Invite;
 use Drupal\par_data\Entity\ParDataPartnership;
