@@ -62,7 +62,7 @@ HEREDOC;
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
     if ($par_data_person && $par_data_person instanceof ParDataEntityInterface) {
       // Set the default recipient address.
-      if (!$this->setDefaultValuesByKey("to", $cardinality)) {
+      if (!$this->getFlowDataHandler()->getDefaultValues("to", NULL)) {
         $this->getFlowDataHandler()->setTempDataValue('to', $par_data_person->getEmail());
       }
 

@@ -11,6 +11,7 @@ use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Controller\ParBaseController;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormBuilder;
+use Drupal\invite\InviteConstants;
 
 /**
  * A controller for displaying the application confirmation.
@@ -22,6 +23,13 @@ class ParProfileController extends ParBaseController {
    */
   protected function getDateFormatter() {
     return \Drupal::service('date.formatter');
+  }
+
+  /**
+   * @return DateFormatterInterface
+   */
+  protected function getEntityTypeManager() {
+    return \Drupal::service('entity_type.manager');
   }
 
   /**
@@ -51,8 +59,12 @@ class ParProfileController extends ParBaseController {
 
     if ($par_data_person) {
       // See if there are any outstanding invitations.
-      $invitations = $this->getParDataManager()
-        ->getEntitiesByProperty('invite', 'field_invite_email_address', $par_data_person->getEmail());
+      $invitations = $this->getEntityTypeManager()
+        ->getStorage('invite')
+        ->loadByProperties([
+          'field_invite_email_address' => $par_data_person->getEmail(),
+          'status' => InviteConstants::INVITE_VALID
+        ]);
 
       if (count($invitations) >= 1) {
         $invite = current($invitations);

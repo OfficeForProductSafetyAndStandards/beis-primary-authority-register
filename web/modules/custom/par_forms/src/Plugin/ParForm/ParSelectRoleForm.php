@@ -52,16 +52,18 @@ class ParSelectRoleForm extends ParFormPluginBase {
 
       if ($account) {
         $this->getFlowDataHandler()->setFormPermValue("existing_user", $account->label());
+
+        foreach (array_keys($role_options) as $option) {
+          if ($account->hasRole($option)) {
+            $this->getFlowDataHandler()->setFormPermValue("default_role", $option);
+            break;
+          }
+        }
       }
 
       $this->getFlowDataHandler()->setFormPermValue("user_required", FALSE);
 
-      foreach (array_keys($role_options) as $option) {
-        if ($account->hasRole($option)) {
-          $this->getFlowDataHandler()->setFormPermValue("default_role", $option);
-          break;
-        }
-      }
+
     }
 
     $this->getFlowDataHandler()->setFormPermValue("roles_options", !empty($role_options) ? $role_options : []);
