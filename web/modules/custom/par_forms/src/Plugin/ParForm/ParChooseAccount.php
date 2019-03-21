@@ -53,7 +53,7 @@ class ParChooseAccount extends ParFormPluginBase {
       }
     }
 
-    $account = User::load($value);
+    $account = $value ? User::load($value) : NULL;
 
     return $account;
   }

@@ -63,6 +63,9 @@ class ParUserDetail extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
+    // Get the current invitation expiry date if one has already been sent.
+    $invitation_expiry = $this->getFlowDataHandler()->getDefaultValues('invitation_expiration', FALSE);
+
     // Return path for all redirect links.
     $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
     $params = $this->getRouteParams() + ['destination' => $return_path];
@@ -147,7 +150,9 @@ class ParUserDetail extends ParFormPluginBase {
         'title' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => $this->t('No user account could be found.'),
+          '#value' => $this->t($invitation_expiry ?
+            "An invitation has already been sent, it is due to expire on $invitation_expiry" :
+            "No user account could be found"),
         ],
       ];
 
@@ -159,7 +164,9 @@ class ParUserDetail extends ParFormPluginBase {
           $form['user_account']['invite'] = [
             '#type' => 'markup',
             '#markup' => t('@link', [
-              '@link' => $link->setText('Invite the user to create an account')->toString(),
+              '@link' => $link->setText($invitation_expiry ?
+                'Re-send the invitation' :
+                'Invite the user to create an account')->toString(),
             ]),
           ];
         }

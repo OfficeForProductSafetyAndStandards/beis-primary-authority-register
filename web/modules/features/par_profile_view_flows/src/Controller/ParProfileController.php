@@ -4,6 +4,7 @@ namespace Drupal\par_profile_view_flows\Controller;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
+use Drupal\invite\Entity\Invite;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Controller\ParBaseController;
@@ -45,6 +46,23 @@ class ParProfileController extends ParBaseController {
 
     if ($user) {
       $this->getFlowDataHandler()->setParameter('user', $user);
+    }
+
+    if ($par_data_person) {
+      // See if there are any outstanding invitations.
+      $invitations = $this->getParDataManager()
+        ->getEntitiesByProperty('invite', 'field_invite_email_address', $par_data_person->getEmail());
+
+      if (count($invitations) >= 1) {
+        $invite = current($invitations);
+        if ($invite->expires->value >= time()) {
+          $date = $this->getDateFormatter()
+            ->format($invite->expires->value, 'gds_date_format');
+
+          $this->getFlowDataHandler()
+            ->setFormPermValue('invitation_expiration', $date);
+        }
+      }
     }
 
     if ($user && $people = $this->getParDataManager()->getUserPeople($user)) {

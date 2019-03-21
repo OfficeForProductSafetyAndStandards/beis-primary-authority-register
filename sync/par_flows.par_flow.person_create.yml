@@ -26,8 +26,7 @@ steps:
     components:
       choose_account: {}
     form_data:
-      contact_details: par_person_update
-      user_account: par_person_link
+      contact_details: par_add_contact
     redirect:
       cancel: 8
   3:
@@ -67,8 +66,7 @@ steps:
     form_id: par_person_review
     form_data:
       contact_details: par_add_contact
-      user_account: par_person_link
-      choose_account: par_person_update_account
+      choose_account: par_person_choose_account
       select_authority: par_add_institution
       select_organisation: par_add_institution
       role_select: par_choose_role
