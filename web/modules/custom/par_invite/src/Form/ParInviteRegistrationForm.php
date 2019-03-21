@@ -51,9 +51,7 @@ class ParInviteRegistrationForm extends FormBase {
     ];
 
     $form['account']['intro'] = [
-      '#markup' => t('<p>We\'re redesigning the Primary Authority Register to make it easier for you to use.</p>
-        <p>Register now to move your data over into the new system. You need to confirm that you agree to the new rules, and also update your data so that it is correct when the new register goes live.</p>
-        <p>Register below to complete these steps.</p>'),
+      '#markup' => t('<p>You have been invited to complete an account with the Primary Authority Register.<br><br>Please review the terms and conditions and complete your user account details below to be granted access to the register.</p>'),
     ];
 
     // Change password.
