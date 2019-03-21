@@ -16,7 +16,7 @@ use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\ParFormBuilder;
-use Drupal\par_forms\Plugin\ParForm\ParCreateAccount;
+use Drupal\par_forms\Plugin\ParForm\ParChooseAccount;
 use Drupal\par_person_create_flows\ParFlowAccessTrait;
 use Drupal\user\Entity\User;
 
@@ -36,6 +36,15 @@ class ParReviewForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function loadData() {
+    // Set the user account that is being updated as a parameter for plugins to access
+    $choose_account_cid = $this->getFlowNegotiator()->getFormKey('choose_account');
+    $account_selection = $this->getFlowDataHandler()->getDefaultValues('account', NULL, $choose_account_cid);
+    $account = ParChooseAccount::getUserAccount($account_selection);
+
+    if ($account) {
+      $this->getFlowDataHandler()->setParameter('user', $account);
+    }
+
     // Set the data values on the entities
     $entities = $this->createEntities();
     extract($entities);
@@ -50,13 +59,10 @@ class ParReviewForm extends ParBaseForm {
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
     $role = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);
 
-    $cid_link_account = $this->getFlowNegotiator()->getFormKey('user_account');
-    $user_id = $this->getFlowDataHandler()->getDefaultValues('user_id', NULL, $cid_link_account);
-
     if (!$role) {
       $this->getFlowDataHandler()->setFormPermValue("user_status", 'none');
     }
-    elseif(!empty($user_id)) {
+    elseif($account) {
       $this->getFlowDataHandler()->setFormPermValue("user_status", 'existing');
     }
     else {
@@ -156,7 +162,13 @@ class ParReviewForm extends ParBaseForm {
   public function createEntities() {
     // Get the cache IDs for the various forms that needs needs to be extracted from.
     $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_add_contact');
-    $link_account_cid = $this->getFlowNegotiator()->getFormKey('user_account');
+    $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
+    $select_authority_cid = $this->getFlowNegotiator()->getFormKey('par_add_institution');
+    $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('par_add_institution');
+    $cid_invitation = $this->getFlowNegotiator()->getFormKey('invite');
+    $choose_account_cid = $this->getFlowNegotiator()->getFormKey('choose_account');
+
+    $account = $this->getFlowDataHandler()->getParameter('user');
 
     $par_data_person = ParDataPerson::create([
       'type' => 'person',
@@ -169,15 +181,22 @@ class ParReviewForm extends ParBaseForm {
     ]);
 
     // If there is an existing user attach it to this person.
-    $user_id = $this->getFlowDataHandler()->getDefaultValues('user_id', NULL, $link_account_cid);
-    $account = $user_id ? User::load($user_id) : NULL;
     if ($account) {
       $par_data_person->setUserAccount($account);
     }
 
+    // Get the authorities and organisations that will be associated with the person.
+    $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_authority_cid);
+    $organisation_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_organisation_id', $select_organisation_cid);
+    $par_data_authorities = $par_data_person->updateAuthorityMemberships($authority_ids);
+    $par_data_organisations = $par_data_person->updateOrganisationMemberships($organisation_ids);
+
+
     return [
       'par_data_person' => $par_data_person,
       'account' => $account ?: NULL,
+      'par_data_authority' => !empty($par_data_authorities) ? $par_data_authorities : NULL,
+      'par_data_organisation' => !empty($par_data_organisations) ? $par_data_organisations : NULL,
     ];
   }
 
@@ -192,16 +211,17 @@ class ParReviewForm extends ParBaseForm {
     extract($entities);
     /** @var ParDataPerson $par_data_person */
     /** @var User $account */
+    /** @var ParDataAuthority[] $par_data_authority */
+    /** @var ParDataOrganisation[] $par_data_organisation */
 
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
     $select_authority_cid = $this->getFlowNegotiator()->getFormKey('par_add_institution');
     $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('par_add_institution');
     $cid_invitation = $this->getFlowNegotiator()->getFormKey('invite');
-    $create_account_cid = $this->getFlowNegotiator()
-      ->getFormKey('create_account');
+    $choose_account_cid = $this->getFlowNegotiator()->getFormKey('choose_account');
 
-    $create_account = $this->getFlowDataHandler()
-      ->getDefaultValues('create_account', FALSE, $create_account_cid);
+    $account_selection = $this->getFlowDataHandler()->getDefaultValues('account', NULL, $choose_account_cid);
+    $account = $this->getFlowDataHandler()->getParameter('user');
 
     $role = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);
     switch ($role) {
@@ -227,7 +247,7 @@ class ParReviewForm extends ParBaseForm {
     }
 
     // Create invitation if an invitation type has been set and no existing user has been found.
-    if (isset($invitation_type) && !$account && !in_array($create_account, ParCreateAccount::IGNORE)) {
+    if (isset($invitation_type) && !$account && $account_selection === ParChooseAccount::CREATE) {
       $invite = Invite::create([
         'type' => $invitation_type,
         'user_id' => $this->getCurrentUser()->id(),

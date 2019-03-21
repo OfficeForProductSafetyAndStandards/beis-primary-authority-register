@@ -33,10 +33,6 @@ class ParSelectRoleForm extends ParFormPluginBase {
 
     $account = $this->getFlowDataHandler()->getParameter('user');
 
-    // If the create account form was used in this flow use this to determine whether a user role is required.
-    $create_account_cid = $this->getFlowNegotiator()->getFormKey('create_account');
-    $create_account = $this->getFlowDataHandler()->getDefaultValues('create_account', FALSE, $create_account_cid);
-
     $roles = [];
     if ($current_user && $current_user->hasPermission('create organisation user')) {
       $roles[] = Role::load('par_organisation');
@@ -51,21 +47,14 @@ class ParSelectRoleForm extends ParFormPluginBase {
       $roles[] = Role::load('par_helpdesk');
     }
 
-    if (!empty($roles) && ($account || $create_account)) {
+    if (!empty($roles)) {
       $role_options = $this->getParDataManager()->getEntitiesAsOptions($roles, []);
 
       if ($account) {
         $this->getFlowDataHandler()->setFormPermValue("existing_user", $account->label());
       }
 
-      // If the create account form has been selected to ignore account creation.
-      if (!empty($create_account) && in_array($create_account, ParCreateAccount::IGNORE)) {
-        $this->getFlowDataHandler()->setFormPermValue("user_required", FALSE);
-      }
-      else {
-        $this->getFlowDataHandler()->setFormPermValue("user_required", FALSE);
-        $this->getFlowDataHandler()->setFormPermValue("roles_options", $role_options);
-      }
+      $this->getFlowDataHandler()->setFormPermValue("user_required", FALSE);
     }
     $this->getFlowDataHandler()->setFormPermValue("roles_options", !empty($role_options) ? $role_options : []);
 

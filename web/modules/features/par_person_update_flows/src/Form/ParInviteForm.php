@@ -6,7 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_forms\Plugin\ParForm\ParCreateAccount;
+use Drupal\par_forms\Plugin\ParForm\ParChooseAccount;
 use Drupal\par_person_update_flows\ParFlowAccessTrait;
 use Drupal\user\Entity\Role;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,8 +27,12 @@ class ParInviteForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function loadData() {
-    if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
-      $account = $par_data_person->getUserAccount();
+    // Set the user account that is being updated as a parameter for plugins to access
+    $choose_account_cid = $this->getFlowNegotiator()->getFormKey('choose_account');
+    $account_selection = $this->getFlowDataHandler()->getDefaultValues('account', NULL, $choose_account_cid);
+    $account = ParChooseAccount::getUserAccount($account_selection);
+
+    if ($account) {
       $this->getFlowDataHandler()->setParameter('user', $account);
     }
 
@@ -75,19 +79,12 @@ class ParInviteForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $cid_link_account = $this->getFlowNegotiator()
-      ->getFormKey('user_account');
-    $user_id = $this->getFlowDataHandler()
-      ->getDefaultValues('user_id', NULL, $cid_link_account);
-
-    $create_account_cid = $this->getFlowNegotiator()
-      ->getFormKey('create_account');
-    $create_account = $this->getFlowDataHandler()
-      ->getDefaultValues('create_account', FALSE, $create_account_cid);
+    $choose_account_cid = $this->getFlowNegotiator()->getFormKey('choose_account');
+    $account_selection = $this->getFlowDataHandler()->getDefaultValues('account', NULL, $choose_account_cid);
 
     // Skip the invitation process if a user id has already been matched
     // or the user has chosen not to add a user.
-    if ($user_id || in_array($create_account, ParCreateAccount::IGNORE)) {
+    if ($account_selection !== ParChooseAccount::CREATE) {
       $url = $this->getUrlGenerator()
         ->generateFromRoute($this->getFlowNegotiator()
           ->getFlow()

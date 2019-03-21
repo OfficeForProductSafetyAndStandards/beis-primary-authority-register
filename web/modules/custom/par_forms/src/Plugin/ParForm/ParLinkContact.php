@@ -56,7 +56,7 @@ class ParLinkContact extends ParFormPluginBase {
     }
     if (isset($new_account) && (!isset($existing_account) || ($existing_account->id() !== $new_account->id()))) {
       // If an account can be found that matches by e-mail address then we should use this.
-      $account_options[$new_account->id()] = 'Update to: ' . $new_account->getEmail();
+      $account_options[$new_account->id()] = 'Use the new account: ' . $new_account->getEmail();
 
 
     }

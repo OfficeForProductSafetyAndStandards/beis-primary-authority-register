@@ -16,7 +16,7 @@ use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\ParFormBuilder;
-use Drupal\par_forms\Plugin\ParForm\ParCreateAccount;
+use Drupal\par_forms\Plugin\ParForm\ParChooseAccount;
 use Drupal\par_person_update_flows\ParFlowAccessTrait;
 use Drupal\user\Entity\User;
 
@@ -36,10 +36,11 @@ class ParReviewForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function loadData() {
-    // Select the user account that is being updated.
-    $link_account_cid = $this->getFlowNegotiator()->getFormKey('user_account');
-    $user_id = $this->getFlowDataHandler()->getDefaultValues('user_id', NULL, $link_account_cid);
-    $account = !empty($user_id) ? User::load($user_id) : NULL;
+    // Set the user account that is being updated as a parameter for plugins to access
+    $choose_account_cid = $this->getFlowNegotiator()->getFormKey('choose_account');
+    $account_selection = $this->getFlowDataHandler()->getDefaultValues('account', NULL, $choose_account_cid);
+    $account = ParChooseAccount::getUserAccount($account_selection);
+
     if ($account) {
       $this->getFlowDataHandler()->setParameter('user', $account);
     }
@@ -174,14 +175,11 @@ class ParReviewForm extends ParBaseForm {
 
     // Get the cache IDs for the various forms that needs needs to be extracted from.
     $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_person_update');
-    $contact_preferences_cid = $this->getFlowNegotiator()->getFormKey('par_preferences_update');
-    $link_account_cid = $this->getFlowNegotiator()->getFormKey('user_account');
     $select_authority_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
     $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
+    $choose_account_cid = $this->getFlowNegotiator()->getFormKey('choose_account');
 
-    // If there is an existing user attach it to this person.
-    $user_id = $this->getFlowDataHandler()->getDefaultValues('user_id', NULL, $link_account_cid);
-    $account = $user_id ? User::load($user_id) : $this->getFlowDataHandler()->getParameter('user');
+    $account = $this->getFlowDataHandler()->getParameter('user');
 
     if ($par_data_person) {
       // Store the original email to check if it changes.
@@ -194,24 +192,6 @@ class ParReviewForm extends ParBaseForm {
       $par_data_person->set('work_phone', $this->getFlowDataHandler()->getTempDataValue('work_phone', $contact_details_cid));
       $par_data_person->set('mobile_phone', $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $contact_details_cid));
       $par_data_person->updateEmail($this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid), $current_user);
-
-      if ($communication_notes = $this->getFlowDataHandler()->getTempDataValue('notes', $contact_preferences_cid)) {
-        $par_data_person->set('communication_notes', $communication_notes);
-      }
-
-      if ($preferred_contact = $this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_preferences_cid)) {
-        $email_preference_value = isset($preferred_contact['communication_email']) && !empty($preferred_contact['communication_email']);
-        $par_data_person->set('communication_email', $email_preference_value);
-
-        // Save the work phone preference.
-        $work_phone_preference_value = isset($preferred_contact['communication_phone']) && !empty($preferred_contact['communication_phone']);
-        $par_data_person->set('communication_phone', $work_phone_preference_value);
-
-        // Save the mobile phone preference.
-        $mobile_phone_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_preferences_cid)['communication_mobile'])
-          && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_preferences_cid)['communication_mobile']);
-        $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
-      }
 
       // Make sure to save the related user account.
       if ($account) {
@@ -251,11 +231,9 @@ class ParReviewForm extends ParBaseForm {
     $select_authority_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
     $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
     $cid_invitation = $this->getFlowNegotiator()->getFormKey('invite');
-    $create_account_cid = $this->getFlowNegotiator()
-      ->getFormKey('create_account');
+    $choose_account_cid = $this->getFlowNegotiator()->getFormKey('choose_account');
 
-    $create_account = $this->getFlowDataHandler()
-      ->getDefaultValues('create_account', FALSE, $create_account_cid);
+    $account_selection = $this->getFlowDataHandler()->getDefaultValues('account', NULL, $choose_account_cid);
 
     $role = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);
     switch ($role) {
@@ -281,7 +259,7 @@ class ParReviewForm extends ParBaseForm {
     }
 
     // Create invitation if an invitation type has been set and no existing user has been found.
-    if (isset($invitation_type) && !$account && !in_array($create_account, ParCreateAccount::IGNORE)) {
+    if (isset($invitation_type) && !$account && $account_selection === ParChooseAccount::CREATE) {
       $invite = Invite::create([
         'type' => $invitation_type,
         'user_id' => $this->getCurrentUser()->id(),
@@ -291,6 +269,10 @@ class ParReviewForm extends ParBaseForm {
       $invite->set('field_invite_email_subject', $this->getFlowDataHandler()->getDefaultValues('subject', NULL, $cid_invitation));
       $invite->set('field_invite_email_body', $this->getFlowDataHandler()->getDefaultValues('body', NULL, $cid_invitation));
       $invite->setPlugin('invite_by_email');
+    }
+    // Update any roles as necessary.
+    else if ($account && !$account->hasRole($role)) {
+      $account->addRole($role);
     }
 
     // Merge all accounts (and save them) or just save the person straight up.

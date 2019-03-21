@@ -7,16 +7,7 @@ par_person_create_flows.create_contact:
     _permission: 'create par person'
     _custom_access: '\Drupal\par_person_create_flows\Form\ParContactForm::accessCallback'
 
-par_person_create_flows.link_contact:
-  path: '/person/create/link'
-  defaults:
-    _form: '\Drupal\par_person_create_flows\Form\ParLinkContactForm'
-    _title_callback: '\Drupal\par_person_create_flows\Form\ParLinkContactForm::titleCallback'
-  requirements:
-    _permission: 'create par person'
-    _custom_access: '\Drupal\par_person_create_flows\Form\ParLinkContactForm::accessCallback'
-
-par_person_create_flows.create_account:
+par_person_create_flows.choose_account:
   path: '/person/create/account'
   defaults:
     _form: '\Drupal\par_person_create_flows\Form\ParAccountForm'

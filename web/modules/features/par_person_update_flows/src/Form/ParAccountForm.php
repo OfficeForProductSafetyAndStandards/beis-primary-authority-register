@@ -6,6 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_forms\Plugin\ParForm\ParChooseAccount;
 use Drupal\par_person_update_flows\ParFlowAccessTrait;
 use Drupal\user\Entity\Role;
 use Drupal\user\Entity\User;
@@ -26,13 +27,7 @@ class ParAccountForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function loadData() {
-    // Select the user account that is being updated.
-    $link_account_cid = $this->getFlowNegotiator()->getFormKey('user_account');
-    $user_id = $this->getFlowDataHandler()->getDefaultValues('user_id', NULL, $link_account_cid);
-    $account = !empty($user_id) ? User::load($user_id) : NULL;
-    if ($account) {
-      $this->getFlowDataHandler()->setParameter('user', $account);
-    }
+    $this->getFlowDataHandler()->setFormPermValue("ignore_account_option_" . ParChooseAccount::DELETE, TRUE);
 
     parent::loadData();
   }
