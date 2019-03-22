@@ -6,9 +6,9 @@ Feature: User management
         Then I should see "Manage your colleagues" link
 
         Examples:
-            |User                       |
-            |par_business@example.com	|
-            |par_authority@example.com	|
+            | user                      |
+            | par_business@example.com	|
+            | par_authority@example.com	|
 
 
     @user-management @ci
@@ -17,7 +17,7 @@ Feature: User management
         Then I should not see "Manage your colleagues" link
 
     @user-management @ci @smoke
-    Scenario Outline: Add new person
+    Scenario Outline: Add new person and invite user
         Given I am logged in as "par_authority_user_management@example.com"
         When I click the link text "Manage your colleagues"
 
@@ -36,7 +36,7 @@ Feature: User management
 
         # Choose to create an account
         Then the element "h1.heading-xlarge" contains the text "Give this person a user account?"
-        When I click on the radio "#edit-create-account-yes"
+        When I click on the radio "#edit-account-new"
         And I click on the button "#edit-next"
 
         # Choose authorities for the person
@@ -72,6 +72,51 @@ Feature: User management
             | par_user_management_second_officer@example.com    | Mr    | Joe           | Smith     | 01899 190 708 | 07111 000 111 | enforcement   |
             | par_user_management_second_contact@example.com    | Ms    | Hermione      | Ruth      | 01000 200 300 | 07999 999 999 | authority     |
 
+    @user-management @ci
+    Scenario Outline: Add new person without inviting the user
+        Given I am logged in as "par_authority_user_management@example.com"
+        When I click the link text "Manage your colleagues"
+
+        Then the element "h1.heading-xlarge" contains the text "People"
+        When I click the link text "Add a person"
+
+        # Enter the contact details
+        Then the element "h1.heading-xlarge" contains the text "Add contact details"
+        When I add "<title>" to the inputfield "#edit-salutation"
+        And I add "<first_name>" to the inputfield "#edit-first-name"
+        And I add "<last_name>" to the inputfield "#edit-last-name"
+        And I add "<work_phone>" to the inputfield "#edit-work-phone"
+        And I add "<mobile_phone>" to the inputfield "#edit-mobile-phone"
+        And I add "<email>" to the inputfield "#edit-email"
+        And I click on the button "#edit-next"
+
+        # Choose to create an account
+        Then the element "h1.heading-xlarge" contains the text "Give this person a user account?"
+        When I click on the radio "#edit-account-none"
+        And I click on the button "#edit-next"
+
+        # Choose authorities for the person
+        Then the element "h1.heading-xlarge" contains the text "Choose their memberships"
+        When I click on the checkbox "#edit-par-component-memberships-select input"
+        And I click on the button "#edit-next"
+
+        # Check review page
+        Then the element "h1.heading-xlarge" contains the text "Profile review"
+        And the element "#edit-name" contains the text "<title> <first_name> <last_name>"
+        And the element "#edit-email" contains the text "<email>"
+        And the element "#edit-work-phone" contains the text "<work_phone>"
+        And the element "#edit-mobile-phone" contains the text "<mobile_phone>"
+        And the element "#edit-intro" contains the text "A user account will not be created for this person."
+        And I click on the button "#edit-next"
+
+        # Choose authorities for the person
+        Then the element "h1.heading-xlarge" contains the text "You're new person has been created"
+        And I click on the button "#edit-done"
+
+        Examples:
+            | email                                             | title | first_name    | last_name | work_phone    | mobile_phone  |
+            | par_user_management_no_user@example.com           | Mrs   | Alex          | Welsh     | 01212 473 339 | 07824 994 544 |
+
 
     @user-management @ci
     Scenario: Check correct users can be managed
@@ -94,7 +139,6 @@ Feature: User management
         And the element ".user-management-list .table-scroll-wrapper tbody" contains the text "par_authority_user_management@example.com"
         And the element ".user-management-list .table-scroll-wrapper tbody" contains the text "par_user_management_officer@example.com"
         And the element ".user-management-list .table-scroll-wrapper tbody" contains the text "par_user_management_contact@example.com"
-        And the element ".user-management-list .table-scroll-wrapper tbody" contains the text "par_user_management_multiple@example.com"
         And the element ".user-management-list .table-scroll-wrapper tbody" does not contain the text "par_organisation_user_management@example.com"
 
 
