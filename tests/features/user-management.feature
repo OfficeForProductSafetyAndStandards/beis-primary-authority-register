@@ -64,7 +64,7 @@ Feature: User management
 
         # Choose authorities for the person
         Then the element "h1.heading-xlarge" contains the text "You're new person has been created"
-        And I click on the button "#edit-done"
+        And I click the link text "Done"
 
         Examples:
             | email                                             | title | first_name    | last_name | work_phone    | mobile_phone  | role          |
