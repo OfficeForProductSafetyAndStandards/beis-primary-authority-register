@@ -17,14 +17,14 @@ steps:
     route: par_person_create_flows.create_contact
     form_id: par_add_contact
     components:
-      contact_details: {}
+      contact_details: {  }
     redirect:
       cancel: 8
   2:
     route: par_person_create_flows.choose_account
     form_id: par_person_choose_account
     components:
-      choose_account: {}
+      choose_account: {  }
     form_data:
       contact_details: par_add_contact
     redirect:
@@ -33,7 +33,7 @@ steps:
     route: par_person_create_flows.choose_institution
     form_id: par_add_institution
     components:
-      memberships_select: {}
+      memberships_select: {  }
     form_data:
       choose_account: par_person_choose_account
       contact_details: par_add_contact
@@ -43,7 +43,7 @@ steps:
     route: par_person_create_flows.choose_role
     form_id: par_choose_role
     components:
-      role_select: {}
+      role_select: {  }
     form_data:
       contact_details: par_add_contact
       user_account: par_person_link
@@ -54,7 +54,7 @@ steps:
     route: par_person_create_flows.invite_contact
     form_id: par_person_invite
     components:
-      invite: {}
+      invite: {  }
     form_data:
       contact_details: par_add_contact
       user_account: par_person_link
