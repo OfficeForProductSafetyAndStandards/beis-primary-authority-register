@@ -61,7 +61,7 @@ Feature: User management
         And the element "#edit-work-phone" contains the text "<work_phone>"
         And the element "#edit-mobile-phone" contains the text "<mobile_phone>"
         And the element "#edit-intro" contains the text "An invitation will be sent to this person to invite them to join the Primary Authority Register."
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
 
         # Choose authorities for the person
         Then the element "h1.heading-xlarge" contains the text "You're new person has been created"
@@ -107,7 +107,7 @@ Feature: User management
         And the element "#edit-work-phone" contains the text "<work_phone>"
         And the element "#edit-mobile-phone" contains the text "<mobile_phone>"
         And the element "#edit-intro" contains the text "A user account will not be created for this person."
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
 
         # Choose authorities for the person
         Then the element "h1.heading-xlarge" contains the text "You're new person has been created"
@@ -198,6 +198,51 @@ Feature: User management
         When there is "1" occurences of element ".component-contact-detail .component-item"
         Then the element "#contact-detail-locations-1" contains the text "Contact at the authority: Authority for user management test"
         And the element "#contact-detail-locations-1" contains the text "Contact at the authority: Alternate authority for user management test"
+
+    @user-management @ci
+    Scenario: Check that user email addresses can be updated
+        Given I am logged in as "par_authority_user_management@example.com"
+
+        When I click the link text "Manage your colleagues"
+
+        Then the element "h1.heading-xlarge" contains the text "People"
+        When I add "par_user_management_officer@example.com" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-par-people"
+        And I click the link text "Manage contact"
+
+        # Check the profile view page.
+        Then the element "h1.heading-xlarge" contains the text "Ms Emily Davidson"
+        And the element ".component-user-detail .heading-large" contains the text "User account"
+        And the element ".component-user-detail" contains the text "par_user_management_officer@example.com"
+        When there is "2" occurences of element ".component-contact-detail .component-item"
+        Then the element "#contact-detail-locations-1" contains the text "Contact at the authority: Authority for user management test"
+        And the element "#contact-detail-locations-1" does not contain the text "Contact at the authority: Alternate authority for user management test"
+        And the element "#contact-detail-locations-2" contains the text "Contact at the authority: Alternate authority for user management test"
+
+        # Update the user.
+        When I click the link text "Update Ms Emily Davidson"
+
+        Then the element "h1.heading-xlarge" contains the text "Update contact details"
+        Then I add "Mrs" to the inputfield "#edit-salutation"
+        Then I add "Emilia" to the inputfield "#edit-first-name"
+        Then I add "Daviddson" to the inputfield "#edit-last-name"
+        And I add "01870446558" to the inputfield "#edit-work-phone"
+        And I click on the button "#edit-next"
+
+        Then the element "h1.heading-xlarge" contains the text "Update which authorities or organisations this person belongs to"
+        When I click on the button "#edit-next"
+
+        Then the element "h1.heading-xlarge" contains the text "Change the type of user"
+        When I click on the button "#edit-next"
+
+        Then the element "h1.heading-xlarge" contains the text "Profile review"
+        And the element "#edit-personal" contains the text "Mrs Emilia Daviddson"
+        And the element "#edit-contact-details" contains the text "01870446558"
+        And the element "#edit-update-all-contacts" contains the text "Would you like to update all contact records with this information?"
+        When I click on the button "#edit-save"
+
+        Then the element "h1.heading-xlarge" contains the text "Thank you for updating your profile"
+        And I click on the button "#edit-done"
 
 
     @user-management @ci @smoke
