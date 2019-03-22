@@ -129,7 +129,6 @@ Feature: User management
         # Confirm table and headings are correct.
         Then the element "h1.heading-xlarge" contains the text "People"
         And the element ".user-management-list .table-scroll-wrapper" is visible
-        When there is "3" occurences of element ".user-management-list .list-item-person"
         Then the element ".user-management-list .table-scroll-wrapper thead .views-field-last-name" contains the text "Name"
         And the element ".user-management-list .table-scroll-wrapper thead .views-field-email" contains the text "E-mail"
         And the element ".user-management-list .table-scroll-wrapper thead .views-field-par-flow-link" contains the text "Actions"

@@ -6,6 +6,7 @@ use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -34,6 +35,11 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   use ParControllerTrait;
 
   /**
+   * The response cache kill switch.
+   */
+  protected $killSwitch;
+
+  /**
    * The access result
    *
    * @var \Drupal\Core\Access\AccessResult
@@ -51,12 +57,15 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
    *   The par data manager.
    * @param \Drupal\Component\Plugin\PluginManagerInterface $plugin_manager
    *   The par form builder.
+   * @param \Drupal\Core\PageCache\ResponsePolicy\KillSwitch $kill_switch
+   *   The page cache kill switch.
    */
-  public function __construct(ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler, ParDataManagerInterface $par_data_manager, PluginManagerInterface $plugin_manager) {
+  public function __construct(ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler, ParDataManagerInterface $par_data_manager, PluginManagerInterface $plugin_manager, KillSwitch $kill_switch) {
     $this->negotiator = $negotiator;
     $this->flowDataHandler = $data_handler;
     $this->parDataManager = $par_data_manager;
     $this->formBuilder = $plugin_manager;
+    $this->killSwitch = $kill_switch;
 
     $this->setCurrentUser();
 
@@ -79,7 +88,8 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
       $container->get('par_flows.negotiator'),
       $container->get('par_flows.data_handler'),
       $container->get('par_data.manager'),
-      $container->get('plugin.manager.par_form_builder')
+      $container->get('plugin.manager.par_form_builder'),
+      $container->get('page_cache_kill_switch')
     );
   }
 

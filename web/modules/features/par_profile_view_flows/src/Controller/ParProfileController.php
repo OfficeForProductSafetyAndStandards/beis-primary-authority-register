@@ -91,6 +91,10 @@ class ParProfileController extends ParBaseController {
   }
 
   public function build($build = []) {
+    // When new contacts are added these can't clear the cache,
+    // for now we will keep this page uncached.
+    $this->killSwitch->trigger();
+
     if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
       $this->addCacheableDependency($par_data_person);
     }
