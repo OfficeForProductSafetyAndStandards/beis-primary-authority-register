@@ -2,19 +2,18 @@ Feature: User management
 
     @user-management @ci @smoke
     Scenario Outline: Verify users have permission to manage people
-        Given I login as "<user>"
-        Then I should see "Manage your colleagues" link
+        Given I am logged in as "<user>"
+        Then the element "#content" contains the text "Manage your colleagues"
 
         Examples:
             | user                      |
             | par_business@example.com	|
             | par_authority@example.com	|
 
-
     @user-management @ci
     Scenario: Verify an enforcement officer cannot added new person
-        Given I login as enforcement user
-        Then I should not see "Manage your colleagues" link
+        Given I am logged in as "par_enforcement_officer@example.com"
+        Then the element "#content" does not contains the text "Manage your colleagues"
 
     @user-management @ci @smoke
     Scenario Outline: Add new person and invite user
@@ -111,7 +110,7 @@ Feature: User management
 
         # Choose authorities for the person
         Then the element "h1.heading-xlarge" contains the text "You're new person has been created"
-        And I click on the button "#edit-done"
+        And I click the link text "Done"
 
         Examples:
             | email                                             | title | first_name    | last_name | work_phone    | mobile_phone  |
@@ -185,7 +184,7 @@ Feature: User management
         When I click on the button "#edit-save"
 
         Then the element "h1.heading-xlarge" contains the text "Thank you for updating your profile"
-        And I click on the button "#edit-done"
+        And I click the link text "Done"
 
         # Check the user details have been updated and the contact records merged.
         Then the element "h1.heading-xlarge" contains the text "People"
@@ -242,7 +241,7 @@ Feature: User management
         When I click on the button "#edit-save"
 
         Then the element "h1.heading-xlarge" contains the text "Thank you for updating your profile"
-        And I click on the button "#edit-done"
+        And I click the link text "Done"
 
 
     @user-management @ci @smoke
