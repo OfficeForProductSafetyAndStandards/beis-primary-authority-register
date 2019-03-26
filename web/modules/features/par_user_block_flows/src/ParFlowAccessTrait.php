@@ -26,14 +26,14 @@ trait ParFlowAccessTrait {
     try {
       $this->getFlowNegotiator()->setRoute($route_match);
       $this->getFlowDataHandler()->reset();
-      if ($user) {
-        $this->getFlowDataHandler()->setParameter('user', $user);
-      }
-      elseif ($par_data_person && $user = $par_data_person->getUserAccount()) {
-        $this->getFlowDataHandler()->setParameter('user', $user);
-      }
 
-      $this->getFlowDataHandler()->setParameter('par_data_person', $par_data_person);
+      $user = $user ?? $this->getFlowDataHandler()->getParameter('user');
+
+      if ($par_data_person) {
+        $this->getFlowDataHandler()
+          ->setParameter('par_data_person', $par_data_person);
+        $user = $user ?? $par_data_person->getUserAccount();
+      }
       $this->loadData();
     } catch (ParFlowException $e) {
 

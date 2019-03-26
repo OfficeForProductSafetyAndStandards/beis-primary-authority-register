@@ -186,8 +186,6 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
       return;
     }
 
-    // Start an anonymous session if required.
-    $this->startAnonymousSession();
     $this->store->set(self::TEMP_PREFIX . $cid, $data);
   }
 
