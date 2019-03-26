@@ -181,7 +181,7 @@ Feature: User management
         And the element "#par-person-review" contains the text "Would you like to update all contact records with this information?"
         When I click on the button "#edit-save"
 
-        Then the element "h1.heading-xlarge" contains the text "Thank you for updating your profile"
+        Then the element "h1.heading-xlarge" contains the text "Thank you for updating this person"
         And I click the link text "Done"
 
         # Check the user details have been updated and the contact records merged.
