@@ -10,6 +10,7 @@ default_title: null
 default_section_title: 'Create a new Person'
 description: ''
 save_method: end
+states: null
 steps:
   1:
     route: par_person_create_flows.create_contact
