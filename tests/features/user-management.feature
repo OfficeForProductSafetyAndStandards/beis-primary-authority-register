@@ -1,16 +1,16 @@
 Feature: User management
 
-    @user-management @ci @smoke
+    @user-management @ci @smoke 
     Scenario Outline: Verify users have permission to manage people
-        Given I am logged in as "<user>"
+        Given I am logged in as <user>
         Then the element "#content" contains the text "Manage your colleagues"
 
         Examples:
-            | user                      |
+            |user                       |
             | par_business@example.com	|
             | par_authority@example.com	|
 
-    @user-management @ci
+    @user-management @ci 
     Scenario: Verify an enforcement officer cannot added new person
         Given I am logged in as "par_enforcement_officer@example.com"
         Then the element "#content" does not contains the text "Manage your colleagues"
