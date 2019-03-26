@@ -2,18 +2,18 @@ Feature: User management
 
     @user-management @ci @smoke 
     Scenario Outline: Verify users have permission to manage people
-        Given I am logged in as <user>
+        Given I am logged in as "<user>"
         Then the element "#content" contains the text "Manage your colleagues"
 
         Examples:
-            |user                       |
+            | user                       |
             | par_business@example.com	|
             | par_authority@example.com	|
 
     @user-management @ci 
     Scenario: Verify an enforcement officer cannot added new person
         Given I am logged in as "par_enforcement_officer@example.com"
-        Then the element "#content" does not contains the text "Manage your colleagues"
+        Then the element "#content" does not contain the text "Manage your colleagues"
 
     @user-management @ci @smoke
     Scenario Outline: Add new person and invite user
@@ -155,8 +155,8 @@ Feature: User management
         Then the element "h1.heading-xlarge" contains the text "Mrs Sally McHaels"
         And the element ".component-user-detail .heading-large" contains the text "User account"
         And the element ".component-user-detail" contains the text "par_user_management_multiple@example.com"
-        When there is "2" occurences of element ".component-contact-detail .component-item"
-        Then the element "#contact-detail-locations-1" contains the text "Contact at the authority: Authority for user management test"
+        And there is "2" occurences of element ".component-contact-detail .component-item"
+        And the element "#contact-detail-locations-1" contains the text "Contact at the authority: Authority for user management test"
         And the element "#contact-detail-locations-1" does not contain the text "Contact at the authority: Alternate authority for user management test"
 
         # Update the user.
