@@ -4,7 +4,7 @@ Feature: User Management
     I should be able to add as new person
 
 
-    @user-management @ci
+    @user-management @ci @smoke
     Scenario Outline: Verify user in an organisation has permission to add new user
         Given I login as "<User>""
         Then I should be able to see "Manage your colleagues"
@@ -15,17 +15,17 @@ Feature: User Management
             | par_business@example.com    |
             | par_authority@example.com   |
 
-    @user-management
+    @user-management @ci @smoke
     Scenario: Verify an enforcement officer cannot add new person
         Given I am logged in as "par_enforcement_officer@example.com"
         Then I should not see "Manage your colleagues"
 
 
-    @user-management @happy-path
+    @user-management @happy-path @ci @smoke
 
     Scenario Outline: Add new person
          Given I am logged in as "par_authority@example.com"
-         And I click "Manage your colleagues" 
+         And I click "Manage your colleagues"
          And  I fill in add new person form
          And I click on create account
          And I select authority as "Upper West Side Borough Council"
@@ -40,13 +40,13 @@ Feature: User Management
          |authority        |
          |enforcement      |
 
-
+    @defect - failed
     Scenario Outline: Update user first name and phone
           Given I am logged in as "par_authority@example.com"
-          And I click "Manage your colleagues" 
+          And I click "Manage your colleagues"
           When I add "AutoTest" to the inputfield "#edit-keywords"
           And I click on the button "#edit-submit-par-people"
-          And I click the link text "Manage contact" 
+          And I click the link text "Manage contact"
           When I click the link text "Update Mr Autotest-firstname Autotest-lastname"
           And the element "h1.heading-xlarge" contains the text "Update contact details"
           And I add "Upated-AutoTest" to the inputfield "#edit-first-name"
@@ -63,54 +63,22 @@ Feature: User Management
           |Element|Updated with              |
           |#edit-name|Mr Upated-AutoTest Khan|
           |#edit-work-phone|07984563072      |
- 
+    @defect
     Scenario: Verify updated changes are saved on next time page visit
           Given I am logged in as "par_authority@example.com"
-          And I click "Manage your colleagues" 
+          And I click "Manage your colleagues"
           When I add "AutoTest" to the inputfield "#edit-keywords"
           And I click on the button "#edit-submit-par-people"
-          And I click the link text "Manage contact" 
+          And I click the link text "Manage contact"
           When I click the link text "Update Mr Autotest-firstname Autotest-lastname"
           Then the element "#edit-first-name" contains the text "Upated-AutoTest"
           And the element "#edit-last-name" contains the text "Khan"
           And the element "#edit-work-phone" contains the text "07984563072"
 
+    Scenario: Verify update user role for existing user
 
-    @user-management
-    Scenario: Add duplicate user -existing email
-        Given I login as "par_authority@example.com"
-        And I click on "Manage your colleagues" link
-        And I click on add new person
-        And I fill-in form with existing email "par_coordinator@example.com"
-        Then I should see error message user already exits
-  
-
-    @user-management @happy-path
-
-    Scenario: Verify I should be able add new user with existing user first and last name
-        Given I login as "par_authority@example.com"
-        And I click on "Manage your colleagues" link
-        And I click on add new person
-        And I fill-in form with existing user first/last name
-        And I fill-in different unique email
-        Then I should be able to create successfully
-
-
-    @user-management
-    Scenario: Update existing user
-        Given
-        When
-        Then
-
-    @user-management
-    Scenario: Update telephone
-
-    @user-management
-    Scenario: user not able to edit with existing email
-
-    Scenario: verify par user able to update the user roles for added user
-
-    Scenario: Verify par user able
+    Scenario : verify update authorities for existing user
+    
 
 
 
