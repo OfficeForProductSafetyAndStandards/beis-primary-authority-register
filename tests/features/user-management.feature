@@ -1,21 +1,21 @@
 Feature: User management
 
-    @user-management @ci @smoke 
+    @user-management 
     Scenario Outline: Verify users have permission to manage people
-        Given I am logged in as <user>
+        Given I am logged in as "<user>"
         Then the element "#content" contains the text "Manage your colleagues"
 
         Examples:
-            |user                       |
+            | user                      |
             | par_business@example.com	|
             | par_authority@example.com	|
 
-    @user-management @ci 
+    @user-management  
     Scenario: Verify an enforcement officer cannot added new person
         Given I am logged in as "par_enforcement_officer@example.com"
         Then the element "#content" does not contains the text "Manage your colleagues"
 
-    @user-management @ci @smoke
+    @user-management 
     Scenario Outline: Add new person and invite user
         Given I am logged in as "par_authority_user_management@example.com"
         When I click the link text "Manage your colleagues"
@@ -71,7 +71,7 @@ Feature: User management
             | par_user_management_second_officer@example.com    | Mr    | Joe           | Smith     | 01899 190 708 | 07111 000 111 | enforcement   |
             | par_user_management_second_contact@example.com    | Ms    | Hermione      | Ruth      | 01000 200 300 | 07999 999 999 | authority     |
 
-    @user-management @ci
+    @user-management 
     Scenario Outline: Add new person without inviting the user
         Given I am logged in as "par_authority_user_management@example.com"
         When I click the link text "Manage your colleagues"
@@ -117,7 +117,7 @@ Feature: User management
             | par_user_management_no_user@example.com           | Mrs   | Alex          | Welsh     | 01212 473 339 | 07824 994 544 |
 
 
-    @user-management @ci
+    @user-management 
     Scenario: Check correct users can be managed
         Given I am logged in as "par_authority_user_management@example.com"
 
@@ -140,7 +140,7 @@ Feature: User management
         And the element ".user-management-list .table-scroll-wrapper tbody" does not contain the text "par_organisation_user_management@example.com"
 
 
-    @user-management @ci
+    @user-management 
     Scenario: Check that users can be updated
         Given I am logged in as "par_authority_user_management@example.com"
 
@@ -197,7 +197,7 @@ Feature: User management
         Then the element "#contact-detail-locations-1" contains the text "Contact at the authority: Authority for user management test"
         And the element "#contact-detail-locations-1" contains the text "Contact at the authority: Alternate authority for user management test"
 
-    @user-management @ci
+    @user-management 
     Scenario: Check that user email addresses can be updated
         Given I am logged in as "par_authority_user_management@example.com"
 
@@ -241,7 +241,7 @@ Feature: User management
         And I click the link text "Done"
 
 
-    @user-management @ci @smoke
+    @user-management 
     Scenario: Check that existing contacts can be invited
         Given I am logged in as "par_authority_user_management@example.com"
 
