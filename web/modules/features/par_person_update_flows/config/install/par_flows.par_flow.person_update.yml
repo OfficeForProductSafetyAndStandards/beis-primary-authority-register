@@ -8,7 +8,7 @@ default_section_title: 'Update Person'
 description: ''
 save_method: end
 states:
-  - user
+  - par_data_person
 steps:
   1:
     route: par_person_update_flows.update_contact
