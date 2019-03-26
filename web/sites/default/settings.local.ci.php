@@ -11,6 +11,29 @@ $databases['default']['default'] = array (
   'driver' => 'pgsql',
 );
 
+// Files need to be stored locally.
+$settings['flysystem']['s3public'] = [
+  'name' => 'S3 Public',
+  'description' => 'The S3 store for public files.',
+  'driver' => 'local',
+  'config' => [
+    'root' => 'sites/default/files/flysystem',
+    'public' => TRUE,
+  ],
+  'serve_js' => TRUE,
+  'serve_css' => TRUE,
+];
+$settings['flysystem']['s3private'] = [
+  'name' => 'S3 Private',
+  'description' => 'The S3 store for private files.',
+  'driver' => 'local',
+  'config' => [
+    'root' => '/var/www/html/private',
+  ],
+  'serve_js' => FALSE,
+  'serve_css' => FALSE,
+];
+
 $settings['trusted_host_patterns'] = [''];
 
 $settings['config_readonly'] = FALSE;
