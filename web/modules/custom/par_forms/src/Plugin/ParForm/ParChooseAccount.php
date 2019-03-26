@@ -84,7 +84,7 @@ class ParChooseAccount extends ParFormPluginBase {
       $new_account = !empty($users) ? current($users) : NULL;
     }
     if (isset($new_account) && (!isset($existing_account) || ($existing_account->id() !== $new_account->id()))) {
-      $account_options[$new_account->id()] = 'Use the new account: ' . $new_account->getEmail();
+      $account_options[$new_account->id()] = 'Use the existing account: ' . $new_account->getEmail();
     }
 
     // If the given e-mail address isn't recognised then give the option to invite the user.

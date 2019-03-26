@@ -123,36 +123,54 @@ class ParUserDetail extends ParFormPluginBase {
         '#attributes' => ['class' => ['column-one-third']],
       ];
 
-      $params = $this->getRouteParams() + ['user' => $user_id];
-      // Try to add a block user link.
-      try {
-        $link = $this->getLinkByRoute('par_user_block_flows.block', $params, ['attributes' => ['class' => ['column-full']]]);
-        if ($link->getUrl()->access()) {
-          $form['user_account']['block'] = [
-            '#type' => 'markup',
-            '#markup' => t('@link', [
-              '@link' => $link->setText('Block user account')->toString(),
-            ]),
-          ];
-        }
-      } catch (ParFlowException $e) {
+      // @TODO There is an access checking bug in the ParFlowAccessTrait whereby
+      // when access is checked it changes the route stored in the flow negotiator
+      // and thus incorrectly invalidates the cache for any components that are
+      // loaded after this point.
+      //
+      // @example
+      //   $this->getFlowNegotiator()->setRoute($route_match);
+      //   $this->getFlowDataHandler()->reset();
+      //   $this->loadData();
+      //
+      // In this case we're using the contact_detail plugin after this plugin and
+      // only the first contact record can be found because it can't identify
+      // the data that was cached in the plugins loadData() method.
+      //
+      // This is being commented out because we don't want to enable this
+      // functionality yet anyway, but needs to be resolved asap.
+      //
+//      $params = $this->getRouteParams() + ['user' => $user_id];
+//      // Try to add a block user link.
+//      try {
+//        $link = $this->getLinkByRoute('par_user_block_flows.block', $params, ['attributes' => ['class' => ['column-full']]]);
+//        if ($link->getUrl()->access()) {
+//          $form['user_account']['block'] = [
+//            '#type' => 'markup',
+//            '#markup' => t('@link', [
+//              '@link' => $link->setText('Block user account')->toString(),
+//            ]),
+//          ];
+//        }
+//      } catch (ParFlowException $e) {
+//
+//      }
+//
+//      // Try to add a block user link.
+//      try {
+//        $link = $this->getLinkByRoute('par_user_block_flows.unblock', $params, ['attributes' => ['class' => ['column-full']]]);
+//        if ($link->getUrl()->access()) {
+//          $form['user_account']['unblock'] = [
+//            '#type' => 'markup',
+//            '#markup' => t('@link', [
+//              '@link' => $link->setText('Re-activate user account')->toString(),
+//            ]),
+//          ];
+//        }
+//      } catch (ParFlowException $e) {
+//
+//      }
 
-      }
-
-      // Try to add a block user link.
-      try {
-        $link = $this->getLinkByRoute('par_user_block_flows.unblock', $params, ['attributes' => ['class' => ['column-full']]]);
-        if ($link->getUrl()->access()) {
-          $form['user_account']['unblock'] = [
-            '#type' => 'markup',
-            '#markup' => t('@link', [
-              '@link' => $link->setText('Re-activate user account')->toString(),
-            ]),
-          ];
-        }
-      } catch (ParFlowException $e) {
-
-      }
     }
     elseif ($person_id = $this->getFlowDataHandler()->getFormPermValue('person_id', NULL)) {
       $form['contact'] = [
