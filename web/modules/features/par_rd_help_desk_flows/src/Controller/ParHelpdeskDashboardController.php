@@ -101,6 +101,7 @@ class ParHelpdeskDashboardController extends ControllerBase {
       '#markup' => "<p>{$partnership_report_link}</p>",
     ];
 
+
     // Manage users.
     $build['people'] = [
       '#type' => 'fieldset',
@@ -111,12 +112,19 @@ class ParHelpdeskDashboardController extends ControllerBase {
       '#cache' => ['contexts' => ['user.par_memberships:authority']]
     ];
 
-    $manage_users = $this->getLinkByRoute('view.par_people.people');
-    $manage_users_link = $manage_users->setText('Manage people')->toString();
-    $build['people']['people'] = [
+    $manage_users = $this->getLinkByRoute('view.user_admin_people.helpdesk_users');
+    $manage_users_link = $manage_users->setText('Manage user accounts')->toString();
+    $build['people']['users'] = [
       '#type' => 'markup',
       '#markup' => "<p>{$manage_users_link}</p>",
     ];
+
+//    $manage_users = $this->getLinkByRoute('view.par_people.people');
+//    $manage_users_link = $manage_users->setText('Manage people')->toString();
+//    $build['people']['people'] = [
+//      '#type' => 'markup',
+//      '#markup' => "<p>{$manage_users_link}</p>",
+//    ];
 
     // Manage enforcements.
     $build['enforcements'] = [
