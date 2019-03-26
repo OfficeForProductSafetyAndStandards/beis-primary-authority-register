@@ -117,6 +117,21 @@
                         "value": "b186ca9f-4b84-4182-adc3-8429230b8f25"
                     }
                 ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/118810?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "eae4bef9-6bf3-4752-9fd0-88bc2e6f4a1d"
+                    }
+                ]
             }
         ],
         "http:\/\/drupal.org\/rest\/relation\/par_data_authority\/authority\/field_regulatory_function": [

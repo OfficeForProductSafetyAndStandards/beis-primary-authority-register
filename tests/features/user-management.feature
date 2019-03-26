@@ -190,8 +190,8 @@ Feature: User management
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
-        Then the element "h1.heading-xlarge" contains the text "Mrs Emilia Daviddson"
-        And the element ".component-user-detail" contains the text "par_user_management_officer@example.com"
+        Then the element "h1.heading-xlarge" contains the text "Dr Sally McHaels"
+        And the element ".component-user-detail" contains the text "par_user_management_multiple@example.com"
         When there is "1" occurences of element ".component-contact-detail .component-item"
         Then the element "#contact-detail-locations-1" contains the text "Contact at the authority: Authority for user management test"
         And the element "#contact-detail-locations-1" contains the text "Contact at the authority: Alternate authority for user management test"
