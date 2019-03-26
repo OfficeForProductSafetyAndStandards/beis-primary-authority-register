@@ -4,4 +4,4 @@ export PATH=/bin:/usr/bin:/home/vcap/app/bin/pgsql/bin
 source /home/vcap/app/.profile.d/finalize_bp_env_vars.sh
 export TEMP=/tmp
 export HOME=/home/vcap/app
-sh drupal-update.sh $HOME
+sh drupal-update.sh

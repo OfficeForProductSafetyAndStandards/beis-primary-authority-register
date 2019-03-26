@@ -152,7 +152,7 @@ Feature: User management
         And I click the link text "Manage contact"
 
         # Check the profile view page.
-        Then the element "h1.heading-xlarge" contains the text "Mrs Sally McHaels"
+        Then the element "h1.heading-xlarge" contains the text "Sally"
         And the element ".component-user-detail .heading-large" contains the text "User account"
         And the element ".component-user-detail" contains the text "par_user_management_multiple@example.com"
         And there is "2" occurences of element ".component-contact-detail .component-item"
