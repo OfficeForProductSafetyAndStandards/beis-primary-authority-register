@@ -158,7 +158,6 @@ Feature: User management
         When there is "2" occurences of element ".component-contact-detail .component-item"
         Then the element "#contact-detail-locations-1" contains the text "Contact at the authority: Authority for user management test"
         And the element "#contact-detail-locations-1" does not contain the text "Contact at the authority: Alternate authority for user management test"
-        And the element "#contact-detail-locations-2" contains the text "Contact at the authority: Alternate authority for user management test"
 
         # Update the user.
         When I click the link text "Update Dr Sally Michaels"
@@ -209,7 +208,7 @@ Feature: User management
         And I click the link text "Manage contact"
 
         # Check the profile view page.
-        Then the element "h1.heading-xlarge" contains the text "Ms Emily Davidson"
+        Then the element "h1.heading-xlarge" contains the text "Emily Davidson"
         When I click the link text "Update Ms Emily Davidson"
 
         Then the element "h1.heading-xlarge" contains the text "Update contact details"

@@ -22,7 +22,7 @@ Feature: User Management
         Then I should not see "Manage your colleagues" link
 
 
-    @user-management @happy path
+    @user-management @happy-path
 
     Scenario: Add new person
         Given I login as "par_authority@example.com"
@@ -42,7 +42,7 @@ Feature: User Management
 
 
 
-    @user-management @happy path
+    @user-management @happy-path
 
     Scenario: Verify I should be able add new user with existing user first and last name
         Given I login as "par_authority@example.com"
