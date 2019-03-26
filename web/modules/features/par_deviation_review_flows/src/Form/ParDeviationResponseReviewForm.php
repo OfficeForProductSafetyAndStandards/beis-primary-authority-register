@@ -65,7 +65,7 @@ class ParDeviationResponseReviewForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
+    parent::validateForm($form, $form_state);
 
     // @TODO Validate that any referred actions have a primary authority to refer to.
   }

@@ -1,0 +1,83 @@
+par_invite_user_flows.link_contact:
+  path: '/person/{par_data_person}/invite/link'
+  defaults:
+    _form: '\Drupal\par_invite_user_flows\Form\ParLinkContactForm'
+    _title_callback: '\Drupal\par_invite_user_flows\Form\ParLinkContactForm::titleCallback'
+  requirements:
+    _permission: 'manage par profile'
+    _custom_access: '\Drupal\par_invite_user_flows\Form\ParLinkContactForm::accessCallback'
+    par_data_person: \d+
+  options:
+    parameters:
+      par_data_person:
+        type: entity:par_data_person
+
+par_invite_user_flows.choose_role:
+  path: '/person/{par_data_person}/invite/role'
+  defaults:
+    _form: '\Drupal\par_invite_user_flows\Form\ParRoleForm'
+    _title_callback: '\Drupal\par_invite_user_flows\Form\ParRoleForm::titleCallback'
+  requirements:
+    _permission: 'create par profile'
+    _custom_access: '\Drupal\par_invite_user_flows\Form\ParRoleForm::accessCallback'
+    par_data_person: \d+
+  options:
+    parameters:
+      par_data_person:
+        type: entity:par_data_person
+        
+par_invite_user_flows.choose_institution:
+  path: '/person/{par_data_person}/invite/membership'
+  defaults:
+    _form: '\Drupal\par_invite_user_flows\Form\ParUpdateInstitutionForm'
+    _title_callback: '\Drupal\par_invite_user_flows\Form\ParUpdateInstitutionForm::titleCallback'
+  requirements:
+    _permission: 'manage par profile'
+    _custom_access: '\Drupal\par_invite_user_flows\Form\ParUpdateInstitutionForm::accessCallback'
+    par_data_person: \d+
+  options:
+    parameters:
+      par_data_person:
+        type: entity:par_data_person
+
+par_invite_user_flows.invite_contact:
+  path: '/person/{par_data_person}/invite/contact'
+  defaults:
+    _form: '\Drupal\par_invite_user_flows\Form\ParInviteForm'
+    _title_callback: '\Drupal\par_invite_user_flows\Form\ParInviteForm::titleCallback'
+  requirements:
+    _permission: 'manage par profile'
+    _custom_access: '\Drupal\par_invite_user_flows\Form\ParInviteForm::accessCallback'
+    par_data_person: \d+
+  options:
+    parameters:
+      par_data_person:
+        type: entity:par_data_person
+
+par_invite_user_flows.review:
+  path: '/person/{par_data_person}/invite/review'
+  defaults:
+    _form: '\Drupal\par_invite_user_flows\Form\ParReviewForm'
+    _title_callback: '\Drupal\par_invite_user_flows\Form\ParReviewForm::titleCallback'
+  requirements:
+    _permission: 'manage par profile'
+    _custom_access: '\Drupal\par_invite_user_flows\Form\ParReviewForm::accessCallback'
+    par_data_person: \d+
+  options:
+    parameters:
+      par_data_person:
+        type: entity:par_data_person
+
+par_invite_user_flows.completed:
+  path: '/person/{par_data_person}/invite/completed'
+  defaults:
+    _controller: '\Drupal\par_invite_user_flows\Controller\ParConfirmedController::content'
+    _title_callback: '\Drupal\par_invite_user_flows\Controller\ParConfirmedController::titleCallback'
+  requirements:
+    _permission: 'manage par profile'
+    _custom_access: '\Drupal\par_invite_user_flows\Controller\ParConfirmedController::accessCallback'
+    par_data_person: \d+
+  options:
+    parameters:
+      par_data_person:
+        type: entity:par_data_person

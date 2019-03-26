@@ -1,0 +1,8 @@
+view own par profile:
+  title: 'View own profile'
+  description: 'Allow users to view their own user profile.'
+  restrict access: TRUE
+view par profile:
+  title: 'View profiles'
+  description: 'Allow users to view all user profiles that they have access to.'
+  restrict access: TRUE

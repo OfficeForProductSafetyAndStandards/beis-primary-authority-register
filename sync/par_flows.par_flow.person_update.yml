@@ -1,0 +1,86 @@
+uuid: 4a8d4941-51e0-4d21-be43-b72ed9bdcc16
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: gGaOjuqIklMg-2dzxOfzYEdvPc_tcn_aKsD5UT9RyJY
+id: person_update
+label: 'Person Update Flow'
+default_title: null
+default_section_title: 'Update Person'
+description: ''
+save_method: end
+states:
+  - par_data_person
+steps:
+  1:
+    route: par_person_update_flows.update_contact
+    form_id: par_person_update
+    components:
+      contact_details: {  }
+    form_data:
+      select_person: par_choose_person
+    redirect:
+      cancel: 8
+  2:
+    route: par_person_update_flows.choose_account
+    form_id: par_person_update_account
+    components:
+      choose_account: {  }
+    form_data:
+      contact_details: par_person_update
+      user_account: par_person_update_link
+    redirect:
+      cancel: 8
+  3:
+    route: par_person_update_flows.choose_institution
+    form_id: par_update_institution
+    components:
+      memberships_select: {  }
+    form_data:
+      choose_account: par_person_update_account
+      contact_details: par_person_update
+    redirect:
+      cancel: 8
+  4:
+    route: par_person_update_flows.choose_role
+    form_id: par_choose_role
+    components:
+      role_select: {  }
+    form_data:
+      contact_details: par_add_contact
+      user_account: par_person_update_link
+      choose_account: par_person_update_account
+    redirect:
+      cancel: 8
+  5:
+    route: par_person_update_flows.invite_contact
+    form_id: par_person_invite
+    components:
+      invite: {  }
+    form_data:
+      contact_details: par_add_contact
+      user_account: par_person_update_link
+      choose_account: par_person_update_account
+    redirect:
+      cancel: 8
+  6:
+    route: par_person_update_flows.edit_review
+    form_id: par_person_review
+    form_data:
+      contact_details: par_person_update
+      user_account: par_person_update_link
+      choose_account: par_person_update_account
+      select_authority: par_update_institution
+      select_organisation: par_update_institution
+      role_select: par_choose_role
+      invite: par_person_invite
+    redirect:
+      save: 7
+      cancel: 8
+  7:
+    route: par_person_update_flows.edit_completed
+    redirect:
+      done: 8
+  8:
+    route: view.par_people.people

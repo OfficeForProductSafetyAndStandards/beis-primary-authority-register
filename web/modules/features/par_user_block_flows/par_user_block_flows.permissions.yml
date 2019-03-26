@@ -1,0 +1,8 @@
+unblock user:
+  title: 'Unblock user'
+  description: 'Allow users to be blocked.'
+  restrict access: TRUE
+block user:
+  title: 'Block user'
+  description: 'Allow users to be unblocked.'
+  restrict access: TRUE

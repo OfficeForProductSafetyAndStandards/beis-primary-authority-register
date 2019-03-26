@@ -1,0 +1,4 @@
+manage par person:
+  title: 'Manage people'
+  description: 'Allow users to manage people.'
+  restrict access: TRUE

@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: par_helpdesk
-label: 'PAR Helpdesk'
+label: 'Processing Team Member'
 weight: 6
 is_admin: null
 permissions:
@@ -58,13 +58,20 @@ permissions:
   - 'approve partnerships via help desk'
   - 'assign par_enforcement role'
   - 'assign par_helpdesk role'
+  - 'block user'
   - 'bypass par_data membership'
   - 'bypass partnership journey'
   - 'cease coordinated member'
   - 'confirm partnership'
   - 'create article content'
+  - 'create authority user'
+  - 'create enforcement user'
   - 'create files'
+  - 'create helpdesk user'
+  - 'create organisation user'
   - 'create page content'
+  - 'create par person'
+  - 'create par profile'
   - 'delete any document files'
   - 'delete any image files'
   - 'delete invite entities'
@@ -128,6 +135,7 @@ permissions:
   - invite_type_invite_organisation_member
   - 'manage my authorities'
   - 'manage my organisations'
+  - 'manage par person'
   - 'manage par profile'
   - 'receive new_deviation_request notification'
   - 'receive new_enforcement_notification notification'
@@ -142,6 +150,7 @@ permissions:
   - 'review deviation request'
   - 'revoke partnerships'
   - 'search partnerships'
+  - 'unblock user'
   - 'unlock membership list'
   - 'update coordinated member'
   - 'update partnership authority details'
@@ -154,6 +163,7 @@ permissions:
   - 'view general enquiry'
   - 'view inspection feedback'
   - 'view own private files'
+  - 'view par profile'
   - 'view private files'
   - 'view published invite entities'
   - 'view unpublished invite entities'

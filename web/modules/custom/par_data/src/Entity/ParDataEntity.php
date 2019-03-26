@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\Component\Utility\Random;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\EntityEvent;
@@ -635,8 +636,13 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   An array of entities keyed by type.
    */
   public function getRelationships($target = NULL, $action = NULL, $reset = FALSE) {
+    $random = new Random();
     // Enable in memory caching for repeated entity lookups.
-    $unique_function_id = __FUNCTION__ . ':' . $this->uuid() . ':' . (isset($target) ? $target : 'null') . ':' . (isset($action) ? $action : 'null');
+    $unique_function_id = __FUNCTION__ . ':'
+      . $this->uuid() . ':'
+      . (isset($target) ? $target : 'null') . ':'
+      . (isset($action) ? $action : 'null') . ':'
+      . ($reset ? 'true' . $random->name() : 'false');
     $relationships = &drupal_static($unique_function_id);
     if (isset($relationships)) {
       return $relationships;
@@ -644,7 +650,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     // Loading the relationships is costly so caching is necessary.
     $cache = \Drupal::cache('data')->get("par_data_relationships:{$this->uuid()}");
-    if ($cache) {
+    if ($cache && !$reset) {
       $relationships = $cache->data;
     }
     else {

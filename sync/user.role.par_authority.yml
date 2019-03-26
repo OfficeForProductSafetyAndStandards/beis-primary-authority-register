@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: par_authority
-label: 'PAR Authority Member'
+label: 'Authority Member'
 weight: 3
 is_admin: null
 permissions:
@@ -31,7 +31,11 @@ permissions:
   - 'approve enforcement notice'
   - 'authority partnership journey'
   - 'confirm partnership'
+  - 'create authority user'
+  - 'create enforcement user'
   - 'create files'
+  - 'create par person'
+  - 'create par profile'
   - 'delete own document files'
   - 'delete own image files'
   - 'download any csv files'
@@ -62,8 +66,10 @@ permissions:
   - 'edit par_data_sic_code entities'
   - 'enforce organisation'
   - 'invite authority members'
+  - 'invite user'
   - invite_type_invite_organisation_member
   - 'manage my authorities'
+  - 'manage par person'
   - 'manage par profile'
   - 'raise enforcement notice'
   - 'receive new_deviation_request notification'
@@ -92,7 +98,9 @@ permissions:
   - 'view enforcement notice'
   - 'view general enquiry'
   - 'view inspection feedback'
+  - 'view own par profile'
   - 'view own private files'
+  - 'view par profile'
   - 'view unpublished par_data_advice entities'
   - 'view unpublished par_data_authority entities'
   - 'view unpublished par_data_coordinated_business entities'

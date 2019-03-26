@@ -16,14 +16,14 @@ trait ParRedirectTrait {
 
     // Automatically add the route params from the current route if needed.
     foreach ($this->getRouteParams() as $current_route_param => $value) {
-      if (in_array($current_route_param, $path_variables)) {
+      if (in_array($current_route_param, $path_variables) && !isset($route_params[$current_route_param])) {
         $route_params[$current_route_param] = $value;
       }
     }
 
     $link_options += [
       'absolute' => TRUE,
-//      'attributes' => ['class' => 'flow-link']
+      'attributes' => ['class' => 'flow-link']
     ];
     return Link::createFromRoute('', $route, $route_params, $link_options);
   }

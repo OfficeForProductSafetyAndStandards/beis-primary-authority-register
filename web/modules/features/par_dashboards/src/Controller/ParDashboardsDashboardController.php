@@ -71,7 +71,7 @@ class ParDashboardsDashboardController extends ControllerBase {
    * {@inheritdoc}
    */
   public function content() {
-    // The dashboard is to0 complex and too important a page to cache.
+    // The dashboard is too complex and too important a page to cache.
     $this->killSwitch->trigger();
     $account = $this->getCurrentUser();
     $build = [];
@@ -225,6 +225,27 @@ class ParDashboardsDashboardController extends ControllerBase {
           '#markup' => "<p>{$general_enquiries_link}</p>",
         ];
       }
+    }
+
+    // User management
+    if ($account && $people = $this->getParDataManager()->getUserPeople($account) &&
+        $this->getCurrentUser()->hasPermission('manage par profile')) {
+
+      $build['users'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('People'),
+        '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+
+      // User management link.
+      $manage_people_link = $this->getLinkByRoute('view.par_people.people')
+        ->setText('Manage your colleagues')->toString();
+      $build['users']['people'] = [
+        '#type' => 'markup',
+        '#markup' => "<p>{$manage_people_link}</p>",
+      ];
     }
 
     // User controls.

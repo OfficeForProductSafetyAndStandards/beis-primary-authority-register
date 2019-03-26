@@ -33,7 +33,16 @@ module.exports = {
                 browser.setValue(input1, text);
           });
         },  
+        
+     generaterandomString: function(length) {
+     var text = "";
+     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
+     for (var i = 0; i <length; i++)
+     text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+     return text;
+     },
        
         chooseAuthorityIfOptionPresent: function(elem, toClick){ 
             return this.api.element('css selector', elem , function (result) {
@@ -142,7 +151,7 @@ module.exports = {
                 .setValue('#edit-name', string)
                 .setValue('#edit-pass', 'TestPassword')
                 .click('#edit-submit')
-               .waitForElementVisible('#footer', 15000)
+                .waitForElementVisible('#footer', 15000)
                 .assert.containsText('body', 'Sign out')
         },
         goToPartnershipDetailPage: function(orgName, status){ 
@@ -186,6 +195,26 @@ module.exports = {
                 }
             }
             return this.click('.tota11y-toolbar-toggle');
+        },
+        fillinContactDetails: function(){
+          return client
+        .useXpath()
+        .click("//a[contains(.,'Add a person')]")
+        // browser.assert.title('Create a new Person | Add contact details | Primary Authority Register')
+        .useCss()
+        .clearValue('#edit-salutation')
+        .setValue('#edit-salutation','Mr')
+        .clearValue('#edit-first-name')
+        .setValue('#edit-first-name','Auto-Jack')
+        .clearValue('#edit-last-name')
+        .setValue('#edit-last-name','Auto-Ferndale')
+        .clearValue('#edit-work-phone')
+        .setValue('#edit-work-phone','0798888688')
+        .clearValue('#edit-email')
+        .setValue('#edit-email','AutoTest-' + this.generaterandomString(5) + '@test.com')
+        .pause(2000)
+        .click('#edit-next')
+        .pause(3000)
         },
         clickCheckboxIfUnselected: function(string) {
             return this.element('id', string, (response) => {
