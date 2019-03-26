@@ -28,12 +28,12 @@ references:
   restore_code: &restore_code
     restore_cache:
       keys:
-        - v3-repo-{{ .Branch }}-{{ .Revision }}
+        - v4-repo-{{ .Branch }}-{{ .Revision }}
 
   restore_dependencies: &restore_dependencies
     restore_cache:
       keys:
-        - v5-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+        - v6-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
 
   restore_scaffold: &restore_scaffold
     run:
@@ -97,7 +97,7 @@ jobs:
           name: "Unpacking database"
           command: cd backups && tar --no-same-owner -zxvf sanitised-db.sql.tar.gz
       - save_cache:
-          key: v3-repo-{{ .Branch }}-{{ .Revision }}
+          key: v4-repo-{{ .Branch }}-{{ .Revision }}
           paths:
             - .
 
@@ -117,7 +117,7 @@ jobs:
             npm run gulp
             cd ./tests && rm -rf node_modules && npm install
       - save_cache:
-          key: v5-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+          key: v6-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
           paths:
             - ./vendor
             - ./web/core
