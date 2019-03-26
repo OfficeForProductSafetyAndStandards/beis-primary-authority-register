@@ -4,7 +4,7 @@ Feature: User Management
     I should be able to add as new person
 
 
-    @user-management @ci @smoke
+    @user-management
     Scenario Outline: Verify user in an organisation has permission to add new user
         Given I login as "<User>""
         Then I should be able to see "Manage your colleagues"
@@ -15,13 +15,13 @@ Feature: User Management
             | par_business@example.com    |
             | par_authority@example.com   |
 
-    @user-management @ci @smoke
+    @user-management
     Scenario: Verify an enforcement officer cannot add new person
         Given I am logged in as "par_enforcement_officer@example.com"
         Then I should not see "Manage your colleagues"
 
 
-    @user-management @happy-path @ci @smoke
+    @user-management @happy-path
 
     Scenario Outline: Add new person
          Given I am logged in as "par_authority@example.com"
