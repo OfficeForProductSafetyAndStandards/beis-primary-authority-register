@@ -92,7 +92,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   protected $flowDataHandler;
 
   public function getMappings() {
-    return [
+    $mappings = [
       'partnership_id' => 'Partnership id',
       'organisation_name' => 'Organisation name',
       'address_line_1' => 'Address Line 1',
@@ -121,6 +121,8 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       'legal_entity_number_third' => 'Legal Entity Number (third)',
       'legal_entity_type_third' => 'Legal Entity Type (third)',
     ];
+
+    return array_map('strtolower', $mappings);
   }
 
   /**
@@ -218,7 +220,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
   public function getMapping($key) {
     $mappings = $this->getMappings();
-    return isset($mappings[$key]) ? strtolower($mappings[$key]) : NULL;
+    return isset($mappings[$key]) ? $mappings[$key] : NULL;
   }
 
   public function getMappingByHeading($heading) {
@@ -235,7 +237,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   protected function getConstraints() {
     /** @var ParDataPremisesType $par_data_premises_type */
     $par_data_premises_type = $this->getParDataManager()->getParBundleEntity('par_data_premises');
+    $par_data_legal_entity_type = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
 
+    $legal_entity_options = $par_data_legal_entity_type->getAllowedValues('legal_entity_type');
     $country_options = $this->getCountryRepository()->getList(NULL) + $par_data_premises_type->getAllowedValues('nation');
     $boolean_options = ['Yes', 'No', 'Y', 'N'];
     return [
@@ -257,6 +261,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
         new NotBlank([
           'message' => 'The value could not be found.',
         ]),
+      ],
+      'membership_end' => [
+        new DateTime(['format' => 'd/m/Y']),
       ],
       'legal_entity_name_first' => [
         new NotBlank([
@@ -284,6 +291,22 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       'legal_entity_type_first' => [
         new NotBlank([
           'message' => 'The value could not be found.',
+        ]),
+        new Choice([
+          'choices' => array_map('strtolower', $legal_entity_options),
+          'message' => 'The value you entered is not a valid selection, please see the Member Guidance Page for a full list of legal entity types.',
+        ]),
+      ],
+      'legal_entity_type_second' => [
+        new Choice([
+          'choices' => array_map('strtolower', $legal_entity_options),
+          'message' => 'The value you entered is not a valid selection, please see the Member Guidance Page for a full list of legal entity types.',
+        ]),
+      ],
+      'legal_entity_type_third' => [
+        new Choice([
+          'choices' => array_map('strtolower', $legal_entity_options),
+          'message' => 'The value you entered is not a valid selection, please see the Member Guidance Page for a full list of legal entity types.',
         ]),
       ],
     ];
@@ -349,7 +372,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
           case 'membership_start':
             try {
-              $date = DrupalDateTime::createFromFormat('d/m/Y', $value, NULL, ['validate_format' => FALSE]);
+              $date_fragments = explode('/', $value);
+              $format = strlen($date_fragments[2]) === 2 ? "d/m/y" : "d/m/Y";
+              $date = DrupalDateTime::createFromFormat($format, $value, NULL, ['validate_format' => FALSE]);
               $data[$column] = $date->format('Y-m-d');
             }
             catch (\Exception $e) {
@@ -360,14 +385,22 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
           case 'membership_end':
             try {
-              $date = DrupalDateTime::createFromFormat('d/m/Y', $value, NULL, ['validate_format' => FALSE]);
+              $date_fragments = explode('/', $value);
+              $format = strlen($date_fragments[2]) === 2 ? "d/m/y" : "d/m/Y";
+              $date = DrupalDateTime::createFromFormat($format, $value, NULL, ['validate_format' => FALSE]);
               $data[$column] = $date->format('Y-m-d');
             }
             catch (\Exception $e) {
 
             }
 
-            $data[$this->getMapping('ceased')] = TRUE;
+            $current_date = new DrupalDateTime();
+
+            // Only cease the membership if the expiry date is in the past.
+            if ($date < $current_date) {
+              $data[$this->getMapping('ceased')] = TRUE;
+            }
+
             break;
 
           case 'covered':
@@ -425,7 +458,6 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
         'matching' => [
           'AND' => [
             ['field_organisation.entity.organisation_name', $this->getValue($data, 'organisation_name'), '='],
-//            ['field_organisation.entity.field_legal_entity.entity.registered_name', 'Test Legal Entity', '='],
           ]
         ],
       ];
@@ -440,13 +472,14 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
             continue;
           }
 
-          // Only use this member if the first legal entity name is the same.
+          // Only use this member if the first legal entity name is the same
+          // or if there is no legal entity.
           $organisation = $member->getOrganisation(TRUE);
           $legal_entity = $organisation ? $organisation->getLegalEntity(TRUE) : NULL;
-          if (!$legal_entity
-            || ($this->getValue($data, 'legal_entity_name_first')
-              && $legal_entity->get('registered_name')->getString() === $this->getValue($data, 'legal_entity_name_first'))
-          ) {
+
+          if ($legal_entity
+              && $this->getValue($data, 'legal_entity_name_first')
+              && $legal_entity->get('registered_name')->getString() !== $this->getValue($data, 'legal_entity_name_first')) {
             continue;
           }
 
@@ -481,6 +514,10 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $normalized['par_data_coordinated_business']->set('covered_by_inspection', $this->getValue($data, 'covered'));
     if ($this->getValue($data, 'ceased') && $normalized['par_data_coordinated_business'] instanceof ParDataCoordinatedBusiness) {
       $normalized['par_data_coordinated_business']->cease($this->getValue($data, 'membership_end'), FALSE);
+    }
+    else {
+      $normalized['par_data_coordinated_business']->set('date_membership_ceased', $this->getValue($data, 'membership_end'));
+      $normalized['par_data_coordinated_business']->reinstate(FALSE);
     }
 
     // Set the organisation details.
@@ -621,7 +658,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       foreach ($data as $column => $row) {
         $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
         if ($partnership) {
-          $data[$column]['Partnership id'] = $this->getFlowDataHandler()->getParameter('par_data_partnership')->id();
+          $data[$column]['partnership id'] = $this->getFlowDataHandler()->getParameter('par_data_partnership')->id();
         }
         else {
           throw new ParDataException('The partnership can\'t be identified.');
@@ -735,6 +772,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
         $value = isset($row[$column]) ? $row[$column] : NULL;
 
         if (NULL !== $constraints) {
+          // Ensure all strings are validated as case insensitive values.
+          $value = is_string($value) ? strtolower($value) : $value;
+
           $violations = $validator->validate($value, $constraints);
 
           foreach ($violations as $violation) {
