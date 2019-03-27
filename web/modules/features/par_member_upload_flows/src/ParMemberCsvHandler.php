@@ -2,8 +2,9 @@
 
 namespace Drupal\par_member_upload_flows;
 
-use CommerceGuys\Intl\Exception\UnknownCountryException;
+use CommerceGuys\Addressing\Exception\UnknownCountryException;
 use Drupal\Component\Datetime\DateTimePlus;
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Ajax\AfterCommand;
 use Drupal\Core\Ajax\AjaxResponse;
@@ -217,7 +218,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
   public function getMapping($key) {
     $mappings = $this->getMappings();
-    return isset($mappings[$key]) ? $mappings[$key] : NULL;
+    return isset($mappings[$key]) ? strtolower($mappings[$key]) : NULL;
   }
 
   public function getMappingByHeading($heading) {
@@ -240,36 +241,50 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     return [
       'organisation_name' => [
         new Length(['max' => 500]),
-        new NotBlank(),
+        new NotBlank([
+          'message' => 'The value could not be found.',
+        ]),
       ],
       'email' => [
         new Length(['max' => 500]),
         new Email(),
-        new NotBlank(),
+        new NotBlank([
+          'message' => 'The value could not be found.',
+        ]),
       ],
       'membership_start' => [
         new DateTime(['format' => 'd/m/Y']),
-        new NotBlank(),
+        new NotBlank([
+          'message' => 'The value could not be found.',
+        ]),
       ],
       'legal_entity_name_first' => [
-        new NotBlank(),
+        new NotBlank([
+          'message' => 'The value could not be found.',
+        ]),
       ],
       'address_line_1' => [
-        new NotBlank(),
+        new NotBlank([
+          'message' => 'The value could not be found.',
+        ]),
       ],
       'nation' => [
         new NotBlank(),
         new Choice([
           'choices' => array_map('strtolower', $country_options),
+          'message' => 'The value you entered is not a valid selection, please see the Member Guidance Page for a full list of available country codes.',
         ]),
       ],
       'covered' => [
         new Choice([
           'choices' => array_map('strtolower', $boolean_options),
+          'message' => 'The value you entered is not a valid selection, please choose `Yes` or `No`.',
         ]),
       ],
       'legal_entity_type_first' => [
-        new NotBlank(),
+        new NotBlank([
+          'message' => 'The value could not be found.',
+        ]),
       ],
     ];
   }
@@ -644,9 +659,11 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     // Set the reference fields, useful for keeping track of
     // which authorities and organisations the csv belongs to.
-    $file->set('field_authority', $par_data_partnership->getAuthority(TRUE));
-    $file->set('field_organisation', $par_data_partnership->getOrganisation(TRUE));
-    $file->save();
+    if ($file) {
+      $file->set('field_authority', $par_data_partnership->getAuthority(TRUE));
+      $file->set('field_organisation', $par_data_partnership->getOrganisation(TRUE));
+      $file->save();
+    }
     
     return $file;
   }
@@ -683,8 +700,14 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     foreach ($rows as $index => $row) {
       $data[$index] = [];
 
-      foreach ($row as $column => $value) {
-        $data[$index][$column] = Xss::filter(trim($value));
+      // Clear all empty values.
+      $row = NestedArray::filter($row);
+
+      // Ignore empty rows.
+      if (!empty($row)) {
+        foreach ($row as $column => $value) {
+          $data[$index][strtolower($column)] = Xss::filter(trim($value));
+        }
       }
     }
 
@@ -707,8 +730,10 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       $validator = Validation::createValidator();
       foreach ($this->getConstraints() as $key => $constraints) {
         $column = $this->getMapping($key);
+
         // Ensure case insensitive validation.
-        $value = strtolower($row[$column]);
+        $value = isset($row[$column]) ? $row[$column] : NULL;
+
         if (NULL !== $constraints) {
           $violations = $validator->validate($value, $constraints);
 
