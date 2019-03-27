@@ -25,13 +25,13 @@ Feature: Coordinator User - Upload Members
         And I click on the button "#edit-upload"
         Then the element "h1.heading-xlarge" contains the text "CSV validation errors"
         And the element "#edit-info--description em a" contains the text "Member Guidance Page"
-        Then the element "#edit-error-list thead" contains the text "Line"
+        Then the element "#edit-error-list thead" contains the text "line"
         And the element "#edit-error-list thead" contains the text "Column"
         And the element "#edit-error-list thead" contains the text "Error"
-        And the element "#edit-error-list tbody" contains the text "Organisation name"
-        And the element "#edit-error-list tbody" contains the text "Membership Start Date"
-        And the element "#edit-error-list tbody" contains the text "Address Line 1"
-        And the element "#edit-error-list tbody" contains the text "Nation"
+        And the element "#edit-error-list tbody" contains the text "organisation name"
+        And the element "#edit-error-list tbody" contains the text "membership start date"
+        And the element "#edit-error-list tbody" contains the text "address Line 1"
+        And the element "#edit-error-list tbody" contains the text "nation"
         When I click on the button "#edit-done"
 
         # CSV PROCESSING
