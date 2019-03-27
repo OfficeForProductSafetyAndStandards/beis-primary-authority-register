@@ -957,7 +957,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       // the nature of an active partnership and can cause other data to be
       // incorrectly removed (@see PAR-1439).
       $date = $this->getDateFormatter()->format(time(), 'custom', 'Y-m-d');
-      $member->cease($date, TRUE);
+      $member->cease($date);
       // Make sure the member is added back to the partnership.
       $par_data_partnership->get('field_coordinated_business')->appendItem($member->id());
     }

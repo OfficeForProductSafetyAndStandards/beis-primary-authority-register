@@ -9,7 +9,7 @@ use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 
 /**
- * Approves a par entity.
+ * Ceases a member.
  *
  * @Action(
  *   id = "par_action_cease",
@@ -17,7 +17,7 @@ use Drupal\par_data\Entity\ParDataEntityInterface;
  *   type = "system"
  * )
  */
-class ParApproveAction extends ActionBase {
+class ParCeaseAction extends ActionBase {
 
   public function getCurrentUser() {
     return \Drupal::currentUser();
@@ -25,6 +25,10 @@ class ParApproveAction extends ActionBase {
 
   public function getAccountSwitcher() {
     return \Drupal::service('account_switcher');
+  }
+
+  public function getDateFormatter() {
+    return \Drupal::service('date.formatter');
   }
 
   /**
@@ -41,7 +45,8 @@ class ParApproveAction extends ActionBase {
       }
 
       if (method_exists($entity, 'cease')) {
-        $entity->cease();
+        $date = $this->getDateFormatter()->format(time(), 'custom', 'Y-m-d');
+        $entity->cease($date);
       }
 
       if (isset($accountSwitcher) && $this->getCurrentUser()->isAnonymous()) {
