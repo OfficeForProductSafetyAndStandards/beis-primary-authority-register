@@ -25,7 +25,7 @@ Feature: Coordinator User - Upload Members
         And I click on the button "#edit-upload"
         Then the element "h1.heading-xlarge" contains the text "CSV validation errors"
         And the element "#edit-info--description em a" contains the text "Member Guidance Page"
-        Then the element "#edit-error-list thead" contains the text "line"
+        Then the element "#edit-error-list thead" contains the text "Line"
         And the element "#edit-error-list thead" contains the text "Column"
         And the element "#edit-error-list thead" contains the text "Error"
         And the element "#edit-error-list tbody" contains the text "organisation name"
