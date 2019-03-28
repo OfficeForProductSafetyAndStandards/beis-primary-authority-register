@@ -109,6 +109,17 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  public function reinstate($save = TRUE) {
+    $this->set('date_membership_ceased', NULL);
+
+    // Reinstating a member has the same implications as unrevoking partnerships
+    // so we use the same methods and status.
+    return parent::unrevoke($save);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function destroy() {
     // Freeze memberships that have active enforcement notices.
     $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
