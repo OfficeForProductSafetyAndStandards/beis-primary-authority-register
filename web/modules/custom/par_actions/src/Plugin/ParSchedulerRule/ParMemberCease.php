@@ -18,6 +18,6 @@ use Drupal\par_actions\ParSchedulerRuleBase;
  *   action = "par_action_cease"
  * )
  */
-class ParEnforcementNoticeApprove extends ParSchedulerRuleBase {
+class ParMemberCease extends ParSchedulerRuleBase {
 
 }
