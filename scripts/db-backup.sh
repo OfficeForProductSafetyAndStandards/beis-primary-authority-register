@@ -95,8 +95,10 @@ mkdir -p $DIRECTORY
 rm -f $DIRECTORY/$FILE_NAME.sql
 
 printf "Exporting database dump...\n"
+printf "Running: `drush $DRUPAL_ALIAS sql-dump --result-file="$DIRECTORY/$FILE_NAME.sql" --extra="-O -x"`...\n"
 ../vendor/drush/drush/drush $DRUPAL_ALIAS sql-dump --result-file="$DIRECTORY/$FILE_NAME.sql" --extra="-O -x"
 
+printf "Packaging database dump...\n"
 tar -zcvf $DIRECTORY/$FILE_NAME-latest.tar.gz -C $DIRECTORY "$FILE_NAME.sql"
 tar -zcvf $DIRECTORY/$FILE_NAME-$DATE.tar.gz -C $DIRECTORY "$FILE_NAME.sql"
 
@@ -105,3 +107,5 @@ if [[ $AWS_PUSH == y ]]; then
     ../vendor/drush/drush/drush fsp s3backups $DIRECTORY/$FILE_NAME-latest.tar.gz $FILE_NAME-latest.tar.gz
     ../vendor/drush/drush/drush fsp s3backups $DIRECTORY/$FILE_NAME-$DATE.tar.gz $FILE_NAME-$DATE.tar.gz
 fi
+
+printf "Database archive completed...\n"
