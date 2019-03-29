@@ -87,6 +87,7 @@ NAME=$1
 ####################################################################################
 WEBROOT="${BASH_SOURCE%/*}/../web"
 cd $WEBROOT
+printf "Current working directory: $PWD...\n"
 
 FILE_NAME="db-dump-$NAME-unsanitized"
 DATE=$(date +%Y-%m-%d)
