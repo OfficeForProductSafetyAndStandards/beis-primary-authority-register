@@ -90,6 +90,8 @@ cd $WEBROOT
 printf "Running export as: $USER\n"
 printf "Current working directory: $PWD\n"
 
+../vendor/drush/drush/drush $DRUPAL_ALIAS status
+
 FILE_NAME="db-dump-$NAME-unsanitized"
 DATE=$(date +%Y-%m-%d)
 
