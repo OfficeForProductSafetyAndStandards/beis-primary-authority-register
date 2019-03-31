@@ -87,10 +87,7 @@ NAME=$1
 ####################################################################################
 WEBROOT="${BASH_SOURCE%/*}/../web"
 cd $WEBROOT
-printf "Running export as: $USER\n"
 printf "Current working directory: $PWD\n"
-
-../vendor/drush/drush/drush $DRUPAL_ALIAS status
 
 FILE_NAME="db-dump-$NAME-unsanitized"
 DATE=$(date +%Y-%m-%d)
@@ -100,7 +97,7 @@ rm -f $DIRECTORY/$FILE_NAME.sql
 
 printf "Exporting database dump...\n"
 printf "Running: drush $DRUPAL_ALIAS sql-dump --result-file='$DIRECTORY/$FILE_NAME.sql' --extra='-O -x'\n"
-../vendor/drush/drush/drush $DRUPAL_ALIAS sql-dump --result-file="$DIRECTORY/$FILE_NAME.sql" --extra="-O -x" --verbose --debug
+../vendor/drush/drush/drush $DRUPAL_ALIAS sql-dump --result-file="$DIRECTORY/$FILE_NAME.sql" --extra="-O -x" --verbose
 
 printf "Packaging database dump...\n"
 tar -zcvf $DIRECTORY/$FILE_NAME-latest.tar.gz -C $DIRECTORY "$FILE_NAME.sql"

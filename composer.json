@@ -161,7 +161,8 @@
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2018-07-26/allow_configurable_scheme-2988257-5.patch"
             },
             "drush/drush": {
-                "Fix SQL dump problem where extra params are passed when trying only to list tables": "./patches/3321-sql-dump-no-extra-fix.patch"
+                "Fix SQL dump problem where extra params are passed when trying only to list tables": "./patches/3321-sql-dump-no-extra-fix.patch",
+                "PGPASSFILE not getting passed to sql-dump": "https://github.com/drush-ops/drush/pull/4023.patch"
             }
         }
     },
