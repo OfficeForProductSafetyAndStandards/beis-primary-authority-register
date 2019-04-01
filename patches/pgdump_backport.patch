@@ -1,5 +1,5 @@
 diff --git a/lib/Drush/Sql/Sqlpgsql.php b/lib/Drush/Sql/Sqlpgsql.php
-index e0fc46ce..ccc1bfaf 100644
+index e0fc46ce..6725c172 100644
 --- a/lib/Drush/Sql/Sqlpgsql.php
 +++ b/lib/Drush/Sql/Sqlpgsql.php
 @@ -12,8 +12,15 @@ class Sqlpgsql extends SqlBase {
@@ -33,7 +33,7 @@ index e0fc46ce..ccc1bfaf 100644
    }
  
    public function command() {
-@@ -115,7 +122,16 @@ class Sqlpgsql extends SqlBase {
+@@ -115,7 +122,18 @@ class Sqlpgsql extends SqlBase {
      $data_only = drush_get_option('data-only');
  
      $create_db = drush_get_option('create-db');
