@@ -44,7 +44,9 @@ index e0fc46ce..ccc1bfaf 100644
 +    if (isset($pw_file)) {
 +      $environment = "PGPASSFILE={$pw_file} ";
 +      $contents = file_get_contents($pw_file);
++      $file_perms = substr(sprintf('%o', fileperms($pw_file)), -4);
 +      drush_print("PGPASSFILE={$contents}");
++      drush_print("PGPASSFILE permissions={$file_perms}");
 +    }
 +    $exec = "{$environment}pg_dump ";
 +
