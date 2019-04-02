@@ -27,8 +27,12 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
       '#attributes' => ['class' => ['form-group']],
       '#title' => 'Advice documentation',
       '#header' => [
-        'Advice document download link(s)',
+        'Issue Date',
+        'Title',
         'Type of document and regulatory functions',
+        'Action',
+        'Status',
+
       ],
       '#empty' => $this->t("There is no documentation for this partnership."),
     ];
@@ -64,9 +68,11 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
         }
       }
 
+
       if ($advice_summary) {
         $build['documentation_list']['#rows'][$key] = [
           'data' => [
+            'issue_date' => $advice->getIssueDate(),
             'document' => $this->getRenderer()->render($advice_summary),
             'type' => $advice_details,
           ],

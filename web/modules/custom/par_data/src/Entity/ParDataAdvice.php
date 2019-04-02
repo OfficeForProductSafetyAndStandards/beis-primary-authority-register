@@ -126,6 +126,13 @@ class ParDataAdvice extends ParDataEntity {
   }
 
   /**
+   * Get the issue date for this Advice.
+   */
+  public function getIssueDate() {
+    return $this->get('issue_date')->getString();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
@@ -249,7 +256,7 @@ class ParDataAdvice extends ParDataEntity {
     // Issue Date.
     $fields['issue_date'] = BaseFieldDefinition::create('datetime')
       ->setLabel(t('Issue Date'))
-      ->setDescription(t('The date this enforcement notice was issued.'))
+      ->setDescription(t('The date this advice was issued.'))
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
@@ -284,6 +291,28 @@ class ParDataAdvice extends ParDataEntity {
         'weight' => 6,
         'default_widget' => "file_generic",
         'default_formatter' => "file_default",
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Advice Status.
+    $fields['advice_status'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Advice Status'))
+      ->setDescription(t('The current status of the advice. For example, active, archived.'))
+      ->addConstraint('par_required')
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 2,
       ])
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
