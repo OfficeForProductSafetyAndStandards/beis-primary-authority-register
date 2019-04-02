@@ -156,10 +156,7 @@ Feature: User management
         And the element ".component-user-detail .heading-large" contains the text "User account"
         And the element ".component-user-detail" contains the text "par_user_management_multiple@example.com"
         And there is "2" occurences of element ".component-contact-detail .component-item"
-        And I click on the button ".contact-locations summary"
-        And the element "#contact-detail-locations-1" contains the text "Contact at the authority: Alternate authority for user management test"
-        And the element "#contact-detail-locations-1" does not contain the text "Contact at the authority: Authority for user management test"
-
+        
         # Update the user.
         When I click the link text "Update Dr Sally Michaels"
 
