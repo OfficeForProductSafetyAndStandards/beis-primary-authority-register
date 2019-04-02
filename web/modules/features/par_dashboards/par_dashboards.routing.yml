@@ -3,7 +3,7 @@ par_dashboards.dashboard:
   path: '/dashboard'
   defaults:
     _controller: '\Drupal\par_dashboards\Controller\ParDashboardsDashboardController::content'
-#    _title: 'Primary Authority Register'
     _title_callback: '\Drupal\par_dashboards\Controller\ParDashboardsDashboardController::titleCallback'
   requirements:
     _permission: 'access par dashboard'
+    _custom_access: '\Drupal\par_dashboards\Controller\ParDashboardsDashboardController::accessCallback'
