@@ -50,8 +50,8 @@ command -v cf >/dev/null 2>&1 || {
 #    VAULT_ADDR - the vault service endpoint
 #    VAULT_UNSEAL_KEY (required) - the key used to unseal the vault
 ####################################################################################
-OPTIONS=su:p:i:b:rd:v:u:t:
-LONGOPTS=single,user:,password:,instances:,database:,refresh-database,directory:,vault:,unseal:,token:
+OPTIONS=su:p:i:b:rd:v:u:t:x
+LONGOPTS=single,user:,password:,instances:,database:,refresh-database,directory:,vault:,unseal:,token:,deploy-production
 
 # -use ! and PIPESTATUS to get exit code with errexit set
 # -temporarily store output to be able to check for errors
@@ -73,6 +73,7 @@ GOVUK_CF_PWD=${GOVUK_CF_PWD:-}
 CF_INSTANCES=${CF_INSTANCES:=1}
 DB_IMPORT=${DB_IMPORT:="$PWD/backups/sanitised-db.sql"}
 DB_RESET=${DB_RESET:=n}
+DEPLOY_PRODUCTION=${DEPLOY_PRODUCTION:=n}
 BUILD_DIR=${BUILD_DIR:=$PWD}
 VAULT_ADDR=${VAULT_ADDR:="https://vault.primary-authority.beis.gov.uk:8200"}
 VAULT_UNSEAL=${VAULT_UNSEAL:-}
@@ -102,6 +103,10 @@ while true; do
             ;;
         -r|--refresh-database)
             DB_RESET=y
+            shift
+            ;;
+        -x|--deploy-production)
+            DEPLOY_PRODUCTION=y
             shift
             ;;
         -d|--directory)
@@ -138,8 +143,8 @@ if [[ $# -ne 1 ]]; then
 fi
 ENV=$1
 
-## Automated deployment to production environment isn't supported at this time
-if [[ $ENV == 'production' ]]; then
+## Automated deployment to production needs to be to the production environment.
+if [[ $ENV == 'production' ]] && [[ $DEPLOY_PRODUCTION != 'y' ]]; then
     read -r -p "Are you sure you wish to deploy to production? [y/N] " response
     case "$response" in
         [yY][eE][sS]|[yY])
@@ -227,7 +232,12 @@ printf "Authenticating with GovUK PaaS...\n"
 
 cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD
 
-cf target -o office-for-product-safety-and-standards -s primary-authority-register
+if [[ $ENV == 'production' ]] || [[ $ENV == 'production-test' ]]; then
+    cf target -o "office-for-product-safety-and-standards" -s "primary-authority-register-production"
+else
+    cf target -o "office-for-product-safety-and-standards" -s "primary-authority-register"
+fi
+
 
 
 ####################################################################################
@@ -399,7 +409,7 @@ if [[ $ENV != "production" ]]; then
     cf bind-service $TARGET_ENV $PG_BACKING_SERVICE
 
     ## Deployment to no production environments need a database
-    if [[ $DB_RESET == y ]] && [[ ! -f $DB_IMPORT ]]; then
+    if [[ $DB_RESET == 'y' ]] && [[ ! -f $DB_IMPORT ]]; then
         printf "Non-production environments need a copy of the database to seed from at '$DB_IMPORT'.\n"
         exit 5
     fi
