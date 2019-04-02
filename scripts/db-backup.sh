@@ -96,8 +96,8 @@ mkdir -p $DIRECTORY
 rm -f $DIRECTORY/$FILE_NAME.sql
 
 printf "Exporting database dump...\n"
-printf "Running: drush $DRUPAL_ALIAS sql-dump --result-file='$DIRECTORY/$FILE_NAME.sql' --extra='-O -x -w'\n"
-../vendor/drush/drush/drush $DRUPAL_ALIAS sql-dump --result-file="$DIRECTORY/$FILE_NAME.sql" --extra="-O -x -w" --verbose
+printf "Running: drush $DRUPAL_ALIAS sql-dump --result-file='$DIRECTORY/$FILE_NAME.sql'\n"
+../vendor/drush/drush/drush $DRUPAL_ALIAS sql-dump --result-file="$DIRECTORY/$FILE_NAME.sql" --verbose
 
 printf "Packaging database dump...\n"
 tar -zcvf $DIRECTORY/$FILE_NAME-latest.tar.gz -C $DIRECTORY "$FILE_NAME.sql"
