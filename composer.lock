@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "67063bc4322aff6348ebb7137824fa9e",
+    "content-hash": "9423f6c2015ce5d5f9210ba81a0454cd",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -116,16 +116,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.90.13",
+            "version": "3.91.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "69d688e81420d623270aa8f5103ac20032685675"
+                "reference": "b33f6ed79c207f5dfd38f187337a31e4c7619699"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/69d688e81420d623270aa8f5103ac20032685675",
-                "reference": "69d688e81420d623270aa8f5103ac20032685675",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/b33f6ed79c207f5dfd38f187337a31e4c7619699",
+                "reference": "b33f6ed79c207f5dfd38f187337a31e4c7619699",
                 "shasum": ""
             },
             "require": {
@@ -194,7 +194,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-03-29T18:42:16+00:00"
+            "time": "2019-04-01T18:20:23+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -4964,7 +4964,7 @@
                 },
                 "patches_applied": {
                     "Fix SQL dump problem where extra params are passed when trying only to list tables": "./patches/3321-sql-dump-no-extra-fix.patch",
-                    "PGPASSFILE not getting passed to sql-dump": "./patches/pgdump_backport.patch"
+                    "PGPASSFILE not getting passed to sql-dump": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/4023.patch"
                 }
             },
             "autoload": {
@@ -9647,7 +9647,8 @@
                 "source": "http://cgit.drupalcode.org/devel",
                 "issues": "http://drupal.org/project/devel",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            }
+            },
+            "time": "2019-01-29T21:22:48+00:00"
         },
         {
             "name": "drupal/examples",
