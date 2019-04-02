@@ -339,17 +339,17 @@ $aliases['dev'] = [
 ];
 $aliases['paas'] = [
   'user' => 1,
-    'command-specific' => [
-        'sql-dump' => [
-            'ordered-dump' => TRUE,
-            'structure-tables-key' => 'common',
-            'skip-tables-key' => 'common',
-            'extra' => '-O -x',
-        ],
-        'sql-sanitize' => [
-            'sanitize-password' => 'TestPassword',
-            'sanitize-email' => 'no',
-        ],
+  'command-specific' => [
+    'sql-dump' => [
+      'ordered-dump' => TRUE,
+      'structure-tables-key' => 'common',
+      'skip-tables-key' => 'common',
+      'extra' => '-O -x -w',
     ],
+    'sql-sanitize' => [
+      'sanitize-password' => 'TestPassword',
+      'sanitize-email' => 'no',
+    ],
+  ],
 ];
 
