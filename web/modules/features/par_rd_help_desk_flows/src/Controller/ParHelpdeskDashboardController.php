@@ -101,6 +101,15 @@ class ParHelpdeskDashboardController extends ControllerBase {
       '#markup' => "<p>{$partnership_report_link}</p>",
     ];
 
+    // Partnerships search link.
+    $search_partnerships = $this->getLinkByRoute('view.partnership_search.enforcment_flow_search_partnerships');
+    $search_link = $search_partnerships->setText('Search for a partnership')->toString();
+    $build['partnerships']['link'] = [
+      '#type' => 'markup',
+      '#markup' => "<p>{$search_link}</p>",
+      '#pre' => "<p>Search for active partnerships to check advice and raise notice of enforcement action.</p>",
+    ];
+
 
     // Manage users.
     $build['people'] = [
