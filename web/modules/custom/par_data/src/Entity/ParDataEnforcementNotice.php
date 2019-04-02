@@ -107,8 +107,12 @@ class ParDataEnforcementNotice extends ParDataEntity {
    */
   public function getReferringNotice() {
     foreach ($this->getEnforcementActions() as $action) {
-      if ($action->isReferred() && ($referred_from = $action->getActionReferral())) {
-          return $referred_from->getEnforcementNotice();
+      if ($referred_from = $action->getActionReferral(TRUE)) {
+        $referring_notice = $referred_from ? $referred_from->getEnforcementNotice(TRUE) : FALSE;
+
+        if ($referring_notice) {
+          return $referring_notice;
+        }
       }
     }
 
@@ -287,6 +291,8 @@ class ParDataEnforcementNotice extends ParDataEntity {
    *
    * @return ParDataEnforcementNotice
    *   Cloned notice entity if a referral exists or NULL.
+   *
+   * @throws ParDataException if the referral cannot be cloned
    */
   public function cloneNotice($referral_authority_id, ParDataEnforcementAction $cloned_action) {
     if ($referral_authority_id && $primary_authority = ParDataAuthority::load($referral_authority_id)) {
@@ -294,7 +300,6 @@ class ParDataEnforcementNotice extends ParDataEntity {
       $referral_notice = $this->createDuplicate();
 
       $referral_notice->set('field_primary_authority', $primary_authority->id());
-      $referral_notice->set('field_person', $primary_authority->getPerson(TRUE));
       $referral_notice->set('field_enforcement_action', $cloned_action->id());
 
       $date = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
