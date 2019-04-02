@@ -101,8 +101,11 @@ class ParDataEnforcementAction extends ParDataEntity {
   /**
    * Get the action referrals for this Enforcement Action.
    */
-  public function getActionReferral() {
-    return $this->get('field_action_referral')->referencedEntities();
+  public function getActionReferral($single = TRUE) {
+    $actions = $this->get('field_action_referral')->referencedEntities();
+    $action = !empty($actions) ? current($actions) : NULL;
+
+    return $single ? $action : $actions;
   }
 
   /**

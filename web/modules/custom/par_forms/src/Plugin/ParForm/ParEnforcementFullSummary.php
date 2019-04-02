@@ -55,6 +55,11 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
         $this->getFlowDataHandler()->setFormPermValue("pa_officer_work_phone", $primary_authority_officer->get('work_phone')->getString());
         $this->getFlowDataHandler()->setFormPermValue("pa_officer_email", $primary_authority_officer->get('email')->getString());
       }
+
+      if ($referred_notice = $par_data_enforcement_notice->getReferringNotice()) {
+        $referred_authority = $referred_notice->getPrimaryAuthority(TRUE);
+        $this->getFlowDataHandler()->setFormPermValue("referred_authority", $referred_authority->label());
+      }
     }
     // If a deviation request parameter is set use this.
     elseif ($par_data_deviation_request) {
@@ -79,7 +84,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
         $this->getFlowDataHandler()->setFormPermValue("pa_officer_email", $primary_authority_officer->get('email')->getString());
       }
     }
-    // If a deviation request parameter is set use this.
+    // If an inspeciton feedback request parameter is set use this.
     elseif ($par_data_inspection_feedback) {
       if ($enforcing_officer = $par_data_inspection_feedback->getEnforcingPerson(TRUE)) {
         $this->getFlowDataHandler()->setFormPermValue("enforcing_officer_name", $enforcing_officer->label());
@@ -102,7 +107,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
         $this->getFlowDataHandler()->setFormPermValue("pa_officer_email", $primary_authority_officer->get('email')->getString());
       }
     }
-    // If a deviation request parameter is set use this.
+    // If a general enquiry request parameter is set use this.
     elseif ($par_data_general_enquiry) {
       if ($enforcing_officer = $par_data_general_enquiry->getEnforcingPerson(TRUE)) {
         $this->getFlowDataHandler()->setFormPermValue("enforcing_officer_name", $enforcing_officer->label());
@@ -242,6 +247,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
 
     $primary_authority = $this->getDefaultValuesByKey('primary_authority', $cardinality, NULL);
     $enforced_organisation = $this->getDefaultValuesByKey('enforced_organisation', $cardinality, NULL);
+    $referring_authority = $this->getDefaultValuesByKey('referred_authority', $cardinality, NULL);
 
     // Add the details about the partnership.
     if ($primary_authority || $enforced_organisation) {
@@ -314,6 +320,20 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
             '#markup' => ', ' . $pa_officer_email,
           ];
         }
+      }
+
+      if ($referring_authority) {
+        $form['partnership']['referring_authority'] = [
+          '#type' => 'fieldset',
+          '#title' => t('Referred by'),
+          '#attributes' => ['class' => 'column-one-half'],
+          'referring_authority_name' => [
+            '#type' => 'markup',
+            '#markup' => $referring_authority,
+            '#prefix' => '<p>',
+            '#suffix' => '</p>',
+          ],
+        ];
       }
 
       if ($enforcing_authority) {
