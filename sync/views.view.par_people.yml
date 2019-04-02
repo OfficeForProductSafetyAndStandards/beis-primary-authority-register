@@ -7,7 +7,6 @@ dependencies:
     - pagerer
     - par_data
     - user
-    - views_bulk_operations
 id: par_people
 label: 'PAR People'
 module: views
@@ -26,9 +25,9 @@ display:
       access:
         type: perm
         options:
-          perm: 'access helpdesk'
+          perm: 'view par profile'
       cache:
-        type: tag
+        type: none
         options: {  }
       query:
         type: views_query
@@ -41,7 +40,7 @@ display:
       exposed_form:
         type: bef
         options:
-          submit_button: Apply
+          submit_button: Submit
           reset_button: false
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
@@ -55,18 +54,9 @@ display:
               allow_secondary: false
               secondary_label: 'Advanced options'
               autosubmit: false
+              autosubmit_exclude_textfield: false
               autosubmit_hide: false
-            first_name:
-              bef_format: default
-              more_options:
-                is_secondary: false
-                placeholder_text: ''
-            email:
-              bef_format: default
-              more_options:
-                is_secondary: false
-                placeholder_text: ''
-            last_name:
+            combine:
               bef_format: default
               more_options:
                 is_secondary: false
@@ -76,7 +66,7 @@ display:
         type: pagerer
         options:
           preset: gds_list_pagination
-          items_per_page: 10
+          items_per_page: 20
           offset: 0
           id: '0'
           total_pages: ''
@@ -92,43 +82,37 @@ display:
         type: table
         options:
           grouping: {  }
-          row_class: ''
+          row_class: list-item-person
           default_row_class: true
           override: true
           sticky: false
-          caption: ''
+          caption: 'People that you can manage'
           summary: ''
           description: ''
           columns:
-            views_bulk_operations_bulk_form: views_bulk_operations_bulk_form
+            id: id
             first_name: first_name
             last_name: last_name
-            authority_name: authority_name
             email: email
-            field_organisation: field_organisation
-            organisation_name: organisation_name
+            par_flow_link: par_flow_link
+            par_flow_link_1: par_flow_link_1
           info:
-            views_bulk_operations_bulk_form:
+            id:
+              sortable: false
+              default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
             first_name:
-              sortable: true
+              sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
             last_name:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            authority_name:
-              sortable: true
+              sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
@@ -141,86 +125,25 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            field_organisation:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            organisation_name:
+            par_flow_link:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-          default: '-1'
+            par_flow_link_1:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          default: email
           empty_table: false
       row:
         type: fields
       fields:
-        views_bulk_operations_bulk_form:
-          id: views_bulk_operations_bulk_form
-          table: views
-          field: views_bulk_operations_bulk_form
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 'Views bulk operations'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          batch: true
-          batch_size: 10
-          form_step: true
-          action_title: Action
-          selected_actions:
-            par_bulk_invite: par_bulk_invite
-          preconfiguration:
-            par_bulk_invite:
-              label_override: 'Invite members'
-              par_bulk_invite_all_authority_members: 1
-              par_bulk_invite_message_body: "Dear [par:member-name],\n\nPrimary Authority has been simplified and is now open to all UK businesses.\n\nSimplifying the scheme has required the creation of an entirely new Primary Authority Register in order to accommodate the greater volume of businesses and partnerships.\n\nIn order to access the new PA Register, please click on the following link: [site:login-url]\n\nAfter registering, you can continue to access the new PA Register at using the following link: [site:url]\n\nThanks for your help."
-              par_bulk_invite_message_subject: 'New Primary Authority Register'
-          plugin_id: views_bulk_operations_bulk_form
         id:
           id: id
           table: par_people_field_data
@@ -228,7 +151,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: ID
+          label: 'Person ID'
           exclude: true
           alter:
             alter_text: false
@@ -274,7 +197,7 @@ display:
           settings:
             thousand_separator: ''
             prefix_suffix: true
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -339,7 +262,7 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -404,7 +327,7 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -469,8 +392,9 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
-          group_columns: {  }
+          group_column: entity_id
+          group_columns:
+            value: value
           group_rows: true
           delta_limit: 0
           delta_offset: 0
@@ -482,6 +406,114 @@ display:
           entity_type: par_data_person
           entity_field: email
           plugin_id: field
+        par_flow_link:
+          id: par_flow_link
+          table: par_people_field_data
+          field: par_flow_link
+          relationship: none
+          group_type: group
+          admin_label: 'Manage person'
+          label: Actions
+          exclude: false
+          alter:
+            alter_text: true
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          title: 'Manage contact'
+          assistive_text: 'Manage {{ first_name }} {{ last_name }}'
+          link: '/person/{{ id }}'
+          hidden: 1
+          entity_type: par_data_person
+          plugin_id: par_flow_link
+        par_flow_link_1:
+          id: par_flow_link_1
+          table: par_people_field_data
+          field: par_flow_link
+          relationship: none
+          group_type: group
+          admin_label: 'Add a person'
+          label: 'PAR Flow Link'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: false
+          title: 'Add a person'
+          assistive_text: ''
+          link: /person/create/contact
+          hidden: 1
+          entity_type: par_data_person
+          plugin_id: par_flow_link
       filters:
         deleted:
           id: deleted
@@ -521,9 +553,120 @@ display:
           entity_type: par_data_person
           entity_field: deleted
           plugin_id: boolean
-      sorts: {  }
-      title: 'PAR Authority Members'
-      header: {  }
+        id_filter:
+          id: id_filter
+          table: par_people_field_data
+          field: id_filter
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: direct
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: par_data_person
+          plugin_id: par_member
+        combine:
+          id: combine
+          table: views
+          field: combine
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: combine_op
+            label: 'First name / Last name / Email'
+            description: ''
+            use_operator: false
+            operator: combine_op
+            identifier: keywords
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              par_authority: '0'
+              par_enforcement: '0'
+              par_organisation: '0'
+              par_helpdesk: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          fields:
+            first_name: first_name
+            last_name: last_name
+            email: email
+          plugin_id: combine
+      sorts:
+        last_name:
+          id: last_name
+          table: par_people_field_data
+          field: last_name
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          entity_type: par_data_person
+          entity_field: last_name
+          plugin_id: standard
+      title: People
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: true
+          content:
+            value: '{{ par_flow_link_1 }}'
+            format: full_html
+          plugin_id: text
       footer: {  }
       empty: {  }
       relationships: {  }
@@ -534,11 +677,14 @@ display:
         groups:
           1: OR
           2: AND
+      group_by: true
+      css_class: user-management-list
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
         - user.permissions
       tags: {  }
@@ -549,7 +695,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: helpdesk/members
+      path: members
       menu:
         type: tab
         title: Members
@@ -561,10 +707,11 @@ display:
         menu_name: main
       display_description: ''
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
         - user.permissions
       tags: {  }

@@ -1,0 +1,9 @@
+name: 'PAR Profile View Flows'
+type: module
+description: 'Creates the flows required to view a user profile.'
+core: 8.x
+package: PAR
+dependencies:
+  - par_data
+  - par_flows
+  - par_forms

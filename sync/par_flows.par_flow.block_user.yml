@@ -1,0 +1,18 @@
+uuid: 35a708ee-9f7f-4f76-8731-13ee21338fff
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 9s2FlmpPwyrE9VFaMaX3EbhH0YF3Fs1sxOupGz3jZeo
+id: block_user
+label: 'Block User Flow'
+default_title: null
+default_section_title: 'Block user'
+description: ''
+save_method: end
+states:
+  - user
+steps:
+  1:
+    route: par_user_block_flows.block
+    form_id: par_block_user

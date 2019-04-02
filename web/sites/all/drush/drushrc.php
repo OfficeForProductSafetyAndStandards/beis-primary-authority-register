@@ -240,7 +240,7 @@
  * commands when the "--structure-tables-key=common" option is provided.
  * You may add specific tables to the existing array or add a new element.
  */
-$options['structure-tables']['common'] = array('cache', 'cache_*', 'history', 'search_*', 'sessions', 'watchdog', 'flood');
+$options['structure-tables']['common'] = array('cache', 'cache_*', 'history', 'search_*', 'sessions', 'flood');
 
 /**
  * List of tables to be omitted entirely from SQL dumps made by the 'sql-dump'
@@ -249,7 +249,7 @@ $options['structure-tables']['common'] = array('cache', 'cache_*', 'history', 's
  * non-Drupal tables used by some other application or during a migration for
  * example.  You may add new tables to the existing array or add a new element.
  */
-$options['skip-tables']['common'] = array('migration_*', 'test*');
+$options['skip-tables']['common'] = array('migration_*', 'test*', 'watchdog', 'webprofiler');
 
 /**
  * Override specific entries in Drupal's variable system or settings.php (D6/D7 only).

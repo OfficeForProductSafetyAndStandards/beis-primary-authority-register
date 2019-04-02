@@ -75,7 +75,7 @@ class ReviewedDeviationRequestSubscriber extends ParNotificationSubscriberBase {
         // Record the recipient so that we don't send them the message twice.
         $this->recipients[$contact->getEmail] = $contact;
         // Try and get the user account associated with this contact.
-        $account = $contact->getOrLookupUserAccount();
+        $account = $contact->getUserAccount();
 
         try {
           /** @var Message $message */

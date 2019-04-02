@@ -1,9 +1,23 @@
-# PAR Invitation form.
+# PAR Invitation form
 par_invite.welcome:
   path: '/par-invite/accept/{invite}'
   defaults:
     _form: '\Drupal\par_invite\Form\ParInviteRegistrationForm'
     _title: 'Updating the Primary Authority Register'
+  requirements:
+    _permission: 'access content'
+    reg_code: ^[a-zA-Z0-9]+
+  options:
+    parameters:
+      invite:
+        type: reg_code
+
+# PAR Invitation unsuccessful
+par_invite.unsuccessful:
+  path: '/par-invite/unsuccessful/{invite}'
+  defaults:
+    _controller: '\Drupal\par_invite\Controller\ParInviteUnsuccessfulController::content'
+    _title: 'Your invitation could not be processed'
   requirements:
     _permission: 'access content'
     reg_code: ^[a-zA-Z0-9]+

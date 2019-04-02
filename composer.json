@@ -38,7 +38,7 @@
         "drupal/health_check": "1.0.0",
         "drupal/http_response_headers": "2.x-dev#de12feba1ca817352cafae68e4731344a56341c5",
         "drupal/inline_entity_form": "~1.0.0",
-        "drupal/invite": "1.x-dev#49677d79429f7a5c9b15f42e2b3c4625708559a8",
+        "drupal/invite": "1.x-dev#440ecb30d1a639ee42c1875b5401e98051b39e7a",
         "drupal/login_destination": "1.x-dev#54be8b89fdc073ca40af6b9b2eeb050e0aeb7908",
         "drupal/maillog": "1.x-dev",
         "drupal/mailsystem": "~4.1.0",
@@ -145,8 +145,7 @@
                 "Health Check doesn't check Drupal application": "https://www.drupal.org/files/issues/health_check_doesn_t-2892294-2.patch"
             },
             "drupal/invite": {
-                "Warning: current() expects parameter 1 to be array": "https://www.drupal.org/files/issues/2018-06-01/warning-2976929.2.patch",
-		        "Plugin not plugin": "https://www.drupal.org/files/issues/2018-06-07/plugin_not_plugin-2976921-2.patch"
+                "InvitePermissions must be an instance of EntityManagerWrapperInterface": "https://www.drupal.org/files/issues/2019-04-01/entity_type_manager_interface-3044935-2.patch"
             },
             "drupal/login_destination": {
                 "One time login link": "./patches/one_time_login_redirection.patch",
@@ -165,7 +164,8 @@
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2018-07-26/allow_configurable_scheme-2988257-5.patch"
             },
             "drush/drush": {
-                "Fix SQL dump problem where extra params are passed when trying only to list tables": "./patches/3321-sql-dump-no-extra-fix.patch"
+                "Fix SQL dump problem where extra params are passed when trying only to list tables": "./patches/3321-sql-dump-no-extra-fix.patch",
+                "PGPASSFILE not getting passed to sql-dump": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/4023.patch"
             }
         }
     },

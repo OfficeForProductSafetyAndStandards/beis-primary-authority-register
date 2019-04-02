@@ -113,7 +113,9 @@ When('I upload a file to the partnership advice section', function () {
     .click('#edit-regulatory-functions--wrapper > div > div > label')
     .click('#edit-advice-type-business-advice')
     .click('#edit-save')
-    .assert.containsText('.table-scroll-wrapper', 'Download test.png')
+    // @TODO Drupal renumbers existing files, had to change from:
+    // .assert.containsText('.table-scroll-wrapper', 'Download test.png')
+    .assert.containsText('.table-scroll-wrapper', 'Download test')
     // shared.assert.containsText('.table-scroll-wrapper', 'Primary Authority advice for the organisation covering: ' + result.value)
     .click('.button')
 });

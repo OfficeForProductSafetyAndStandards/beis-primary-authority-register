@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: par_organisation
-label: 'PAR Organisation Member'
+label: 'Organisation Member'
 weight: 4
 is_admin: null
 permissions:
@@ -32,6 +32,9 @@ permissions:
   - 'cease coordinated member'
   - 'confirm partnership'
   - 'create files'
+  - 'create organisation user'
+  - 'create par person'
+  - 'create par profile'
   - 'delete own document files'
   - 'delete own image files'
   - 'download any csv files'
@@ -60,8 +63,10 @@ permissions:
   - 'edit par_data_premises entities'
   - 'edit par_data_regulatory_function entities'
   - 'edit par_data_sic_code entities'
+  - 'invite user'
   - invite_type_invite_organisation_member
   - 'manage my organisations'
+  - 'manage par person'
   - 'manage par profile'
   - 'receive new_partnership_notification notification'
   - 'receive partnership_approved_notificatio notification'
@@ -72,6 +77,7 @@ permissions:
   - 'upload coordinated member'
   - 'use text format basic_html'
   - 'view own private files'
+  - 'view par profile'
   - 'view private files'
   - 'view unpublished par_data_advice entities'
   - 'view unpublished par_data_authority entities'

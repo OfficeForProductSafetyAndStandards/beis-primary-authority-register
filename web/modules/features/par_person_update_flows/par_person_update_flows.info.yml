@@ -1,0 +1,9 @@
+name: 'PAR Person Update Flows'
+type: module
+description: 'Creates the flows required to update a person.'
+core: 8.x
+package: PAR
+dependencies:
+  - par_data
+  - par_flows
+  - par_forms

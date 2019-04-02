@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: par_enforcement
-label: 'PAR Enforcement Officer'
+label: 'Enforcement Officer'
 weight: 3
 is_admin: null
 permissions:
@@ -59,7 +59,6 @@ permissions:
   - 'edit par_data_sic_code entities'
   - 'enforce organisation'
   - invite_type_invite_organisation_member
-  - 'manage par profile'
   - 'raise enforcement notice'
   - 'receive new_deviation_response notification'
   - 'receive new_enquiry_response notification'
@@ -77,6 +76,7 @@ permissions:
   - 'view general enquiry'
   - 'view inspection feedback'
   - 'view own private files'
+  - 'view par profile'
   - 'view unpublished par_data_advice entities'
   - 'view unpublished par_data_authority entities'
   - 'view unpublished par_data_coordinated_business entities'

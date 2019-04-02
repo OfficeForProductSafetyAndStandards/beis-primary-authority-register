@@ -1,0 +1,20 @@
+create par person:
+  title: 'Create people'
+  description: 'Allow users to create new people and invite them to create a user account.'
+  restrict access: TRUE
+create organisation user:
+  title: 'Create an organisation user'
+  description: 'Allow users to create organisation users.'
+  restrict access: TRUE
+create authority user:
+  title: 'Create an authority user'
+  description: 'Allow users to create authority users.'
+  restrict access: TRUE
+create enforcement user:
+  title: 'Create an enforcement user'
+  description: 'Allow users to create enforcement users.'
+  restrict access: TRUE
+create helpdesk user:
+  title: 'Create an helpdesk user'
+  description: 'Allow users to create helpdesk users.'
+  restrict access: TRUE

@@ -124,6 +124,9 @@ class ParFormBuilder extends DefaultPluginManager {
       if ($element_actions = $component->getElementActions($i)) {
         $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1] += $element_actions;
       }
+
+      // Add the component element wrappers.
+      $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1] += $component->getElementWrapper($i);
     }
 
     // Only show component actions for plugins with multiple cardinality

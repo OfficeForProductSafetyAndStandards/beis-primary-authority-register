@@ -367,6 +367,7 @@ class ParDataManager implements ParDataManagerInterface {
     }
 
     $account_people = $this->getUserPeople($account);
+
     // When we say direct we really mean by a maximum factor of two.
     // Because we must first jump through one of the core membership
     //  entities, i.e. authorities or organisations.
@@ -627,10 +628,10 @@ class ParDataManager implements ParDataManagerInterface {
    * ];
    * @endcode
    */
-  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC') {
+  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC', $conjunction = 'AND') {
     $entities = [];
 
-    $query = $this->getEntityQuery($type);
+    $query = $this->getEntityQuery($type, $conjunction);
 
     foreach ($conditions as $row) {
       foreach ($row as $condition_operator => $condition_row) {
@@ -693,6 +694,11 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * Get the PAR People that share the same email with the user account.
    *
+   * A person can be matched to a user account if:
+   * a) the user id is set on the par_data_person in field_user_account
+   * b) the person has no user account set (as above) but the email matches the user account email
+   * @see ParDataPerson::setUserAccount()
+   *
    * @param UserInterface $account
    *   A user account.
    *
@@ -700,9 +706,23 @@ class ParDataManager implements ParDataManagerInterface {
    *   PAR People related to the user account.
    */
   public function getUserPeople(UserInterface $account) {
-    return $this->entityTypeManager
-      ->getStorage('par_data_person')
-      ->loadByProperties(['email' => $account->get('mail')->getString()]);
+    $conditions = [
+      [
+        'AND' => [
+          ['field_user_account', $account->id(), 'IN'],
+          ['deleted', 1, '<>'],
+         ],
+      ],
+      [
+        'AND' => [
+          ['email', $account->get('mail')->getString()],
+          ['field_user_account', NULL, 'IS NULL'],
+          ['deleted', 1, '<>'],
+        ],
+      ],
+    ];
+
+    return $this->getEntitiesByQuery('par_data_person', $conditions, NULL, NULL, 'ASC', 'OR');
   }
 
   /**
@@ -867,7 +887,7 @@ EOT;
       try {
         $executed = $connection->query($query);
       }
-      catch (Exception $e) {
+      catch (\Exception $e) {
         var_dump($e->getMessage());
       }
     }

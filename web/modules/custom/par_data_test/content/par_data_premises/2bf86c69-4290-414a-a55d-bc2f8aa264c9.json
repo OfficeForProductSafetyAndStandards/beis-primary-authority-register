@@ -1,0 +1,154 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_premises\/214384?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_premises\/premises"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/par_data_premises\/premises\/user_id": [
+            {
+                "href": "http:\/\/default\/user\/11895?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_premises\/premises\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/11895?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 214384
+        }
+    ],
+    "type": [
+        {
+            "target_id": "premises"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "2bf86c69-4290-414a-a55d-bc2f8aa264c9"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": 64704
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/par_data_premises\/premises\/user_id": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/11895?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "bcb59c34-32d6-456a-a936-90cfeae6fc41"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_premises\/premises\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/11895?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "bcb59c34-32d6-456a-a936-90cfeae6fc41"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1544978395
+        }
+    ],
+    "changed": [
+        {
+            "value": 1544978679
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": 1544978395
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "5c167fdba85f8",
+            "lang": "en"
+        }
+    ],
+    "deleted": [
+        {
+            "value": false
+        }
+    ],
+    "revoked": [
+        {
+            "value": false
+        }
+    ],
+    "archived": [
+        {
+            "value": false
+        }
+    ],
+    "address": [
+        {
+            "langcode": null,
+            "country_code": "GB",
+            "administrative_area": "London",
+            "locality": "London",
+            "dependent_locality": null,
+            "postal_code": "N10 2LE",
+            "sorting_code": null,
+            "address_line1": "3 Rosebery Road",
+            "address_line2": "",
+            "organization": null,
+            "given_name": null,
+            "additional_name": null,
+            "family_name": null
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ]
+}
