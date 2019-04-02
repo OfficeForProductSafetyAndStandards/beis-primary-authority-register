@@ -17,6 +17,29 @@ targetEntityType: par_data_advice
 bundle: advice
 mode: default
 content:
+  advice_status:
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  advice_summary:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  advice_title:
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
   advice_type:
     type: par_list_formatter
     weight: 0
