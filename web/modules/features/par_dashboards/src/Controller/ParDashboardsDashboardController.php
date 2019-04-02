@@ -2,16 +2,21 @@
 
 namespace Drupal\par_dashboards\Controller;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\par_dashboards\ParFlowAccessTrait;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParDisplayTrait;
+use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Routing\Route;
 
 /**
  * A controller for all PAR Flow Transition pages.
@@ -65,6 +70,26 @@ class ParDashboardsDashboardController extends ControllerBase {
    */
   public function titleCallback() {
     return $this->getDefaultTitle();
+  }
+
+  /**
+   * @param \Symfony\Component\Routing\Route $route
+   *   The route.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+   *   The route match object to be checked.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The account being checked.
+   *
+   * @return AccessResult
+   */
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
+    // Disallow anyone with the permission to view the helpdesk dashboard.
+    if ($account->hasPermission('access helpdesk')) {
+      // Set an error if this action has already been reviewed.
+      return AccessResult::forbidden('Access to the standard dashboard is disabled for helpdesk users.');
+    }
+
+    return AccessResult::allowed();
   }
 
   /**
