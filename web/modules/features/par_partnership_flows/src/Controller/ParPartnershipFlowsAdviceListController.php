@@ -3,6 +3,7 @@
 namespace Drupal\par_partnership_flows\Controller;
 
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\par_flows\Controller\ParBaseController;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
@@ -30,7 +31,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
         'Issue Date',
         'Title',
         'Type of document and regulatory functions',
-        'Action',
+        'Actions',
         'Status',
 
       ],
@@ -73,7 +74,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
         $build['documentation_list']['#rows'][$key] = [
           'data' => [
             'issue_date' => $advice->getIssueDate(),
-            'document' => $this->getRenderer()->render($advice_summary),
+            'title' => $advice->getAdviceTitle(),
             'type' => $advice_details,
           ],
         ];
@@ -99,9 +100,15 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
               ->toString(),
           ],
         ];
-        $build['documentation_list']['#rows'][$key]['data']['actions'] = $this->getRenderer()->render($links);
-      }
 
+        if ($advice->getRawStatus() === 'active') {
+          $advice_action = $this->getRenderer()->render($links);
+        } else {
+          $advice_action = t('None');
+        }
+        $build['documentation_list']['#rows'][$key]['data']['actions'] = $advice_action;
+      }
+      $build['documentation_list']['#rows'][$key]['data']['status'] = $advice->getParStatus();
       // Make sure to add the document cacheability data to this form.
       $this->addCacheableDependency($advice);
       $this->addCacheableDependency(current($advice->get('document')->referencedEntities()));
@@ -109,7 +116,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
 
     // Check permissions before adding the links for all operations.
     if ($this->getFlowNegotiator()->getFlowName() === 'partnership_authority') {
-      $build['documentation_list']['#header'][] = 'Actions';
+     // $build['documentation_list']['#header'][] = 'Actions';
 
       $build['actions'] = [
         '#type' => 'fieldset',
