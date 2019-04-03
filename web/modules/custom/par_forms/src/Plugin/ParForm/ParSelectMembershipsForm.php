@@ -65,7 +65,7 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
     $this->getFlowDataHandler()->setFormPermValue('par_data_authority_id', $authority_ids);
 
     // If the user has permissions to select from all memberships.
-    if ($this->getFlowNegotiator()->getCurrentUser()->hasPermission('manage par person')) {
+    if ($this->getFlowNegotiator()->getCurrentUser()->hasPermission('assign all memberships')) {
       $organisation_options = $this->getParDataManager()->getEntitiesByProperty('par_data_organisation', 'deleted', 0);
       $authority_options = $this->getParDataManager()->getEntitiesByProperty('par_data_authority', 'deleted', 0);
     }
