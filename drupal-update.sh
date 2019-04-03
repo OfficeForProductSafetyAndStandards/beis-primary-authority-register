@@ -17,6 +17,9 @@ cd ${ROOT}/web; ../vendor/drush/drush/drush sset system.maintenance_mode 1;
 # Clear cache
 cd ${ROOT}/web; ../vendor/drush/drush/drush cr;
 
+# The chosen module requires a third party plugin which must be installed with drush
+cd ${ROOT}/web; ../vendor/bin/drush chosen-plugin;
+
 # Run db updates.
 cd ${ROOT}/web; ../vendor/drush/drush/drush updb -y;
 # Import configuration twice to fix a problem with config import when new modules are added to 'core.extensions.yml'.
