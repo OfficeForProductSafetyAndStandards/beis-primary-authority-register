@@ -62,7 +62,6 @@ references:
 jobs:
   checkout_code:
     <<: *defaults
-
     steps:
       - *restore_code
       - checkout:
@@ -103,7 +102,6 @@ jobs:
 
   compile_code:
     <<: *defaults
-
     steps:
       - *restore_code
       - *restore_dependencies
@@ -140,7 +138,6 @@ jobs:
 
   test_smoke:
     <<: *defaults
-
     steps:
       - *restore_code
       - *restore_dependencies
@@ -195,7 +192,6 @@ jobs:
 
   test_full:
     <<: *defaults
-
     steps:
       - *restore_code
       - *restore_dependencies
@@ -282,7 +278,6 @@ jobs:
 
   deploy_prod:
     <<: *defaults
-
     steps:
       - *attach_workspace
       - *restore_code
@@ -302,7 +297,6 @@ jobs:
 
   deploy_test:
     <<: *defaults
-
     steps:
       - *attach_workspace
       - *restore_code
@@ -332,18 +326,16 @@ jobs:
 
   archive_database:
     <<: *defaults
-
     steps:
       - run:
           name: "Backup production database"
           command: |
             cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD
-            cf target -o office-for-product-safety-and-standards -s primary-authority-register
+            cf target -o office-for-product-safety-and-standards -s primary-authority-register-production
             cf run-task par-beta-production "./scripts/db-backup.sh production -p" --name DB_BACKUP
 
   sanitise_database:
     <<: *defaults
-
     steps:
       - *restore_code
       - *restore_dependencies
@@ -382,7 +374,6 @@ jobs:
 
 workflows:
   version: 2.1
-
   build_test_deploy:
     jobs:
       - checkout_code:
@@ -496,7 +487,8 @@ workflows:
               only:
                 - master
     jobs:
-      - archive_database
+      - archive_database:
+          context: production
 
   db_sanitise:
     triggers:

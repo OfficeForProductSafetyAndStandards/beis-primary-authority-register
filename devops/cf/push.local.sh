@@ -232,12 +232,13 @@ printf "Authenticating with GovUK PaaS...\n"
 
 cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD
 
-if [[ $ENV == 'production' ]] || [[ $ENV == 'production-test' ]]; then
+if [[ $ENV == 'production' ]] || [[ $ENV == production-* ]]; then
     cf target -o "office-for-product-safety-and-standards" -s "primary-authority-register-production"
+elif [[ $ENV == 'staging' ]] || [[ $ENV == staging-* ]]; then
+    cf target -o "office-for-product-safety-and-standards" -s "primary-authority-register-staging"
 else
-    cf target -o "office-for-product-safety-and-standards" -s "primary-authority-register"
+    cf target -o "office-for-product-safety-and-standards" -s "primary-authority-register-development"
 fi
-
 
 
 ####################################################################################
@@ -249,10 +250,10 @@ fi
 printf "Configuring the application...\n"
 
 if [[ $ENV_ONLY == y ]]; then
-    TARGET_ENV=par-beta-$ENV
+    TARGET_ENV=beis-par-$ENV
 else
-    TARGET_ENV=par-beta-$ENV-green
-    BLUE_ENV=par-beta-$ENV
+    TARGET_ENV=beis-par-$ENV-green
+    BLUE_ENV=beis-par-$ENV
 fi
 
 PG_BACKING_SERVICE="par-pg-$ENV"
@@ -285,11 +286,11 @@ function cf_teardown {
 
         ## Remove any postgres backing services, unbind services first
         if cf service $PG_BACKING_SERVICE >/dev/null 2>&1; then
-            if cf app par-beta-$ENV >/dev/null 2>&1; then
-                cf unbind-service par-beta-$ENV $PG_BACKING_SERVICE
+            if cf app beis-par-$ENV >/dev/null 2>&1; then
+                cf unbind-service beis-par-$ENV $PG_BACKING_SERVICE
             fi
-            if [[ $ENV_ONLY != y ]] && cf app par-beta-$ENV-green >/dev/null 2>&1; then
-                cf unbind-service par-beta-$ENV-green $PG_BACKING_SERVICE
+            if [[ $ENV_ONLY != y ]] && cf app beis-par-$ENV-green >/dev/null 2>&1; then
+                cf unbind-service beis-par-$ENV-green $PG_BACKING_SERVICE
             fi
 
             ## In some instances service keys may also have to be deleted
@@ -299,19 +300,19 @@ function cf_teardown {
         fi
 
         ## Remove the main app if it exists
-        if cf app par-beta-$ENV >/dev/null 2>&1; then
-            cf delete -f par-beta-$ENV
+        if cf app beis-par-$ENV >/dev/null 2>&1; then
+            cf delete -f beis-par-$ENV
         fi
 
         ## Remove any instantiated green instances
-        if [[ $ENV_ONLY != y ]] && cf app par-beta-$ENV-green >/dev/null 2>&1; then
-            cf delete -f par-beta-$ENV-green
+        if [[ $ENV_ONLY != y ]] && cf app beis-par-$ENV-green >/dev/null 2>&1; then
+            cf delete -f beis-par-$ENV-green
         fi
 
         printf "################################################################################################\n"
         printf >&2 "This script failed to build and is tearing down any non-production instances.\n"
         printf >&2 "This could take up to 10 minutes, please do not try to rebuild until this is complete.\n"
-        printf >&2 "You can check the progress by running 'cf service $PG_BACKING_SERVICE' and 'cf app par-beta-$ENV'.\n"
+        printf >&2 "You can check the progress by running 'cf service $PG_BACKING_SERVICE' and 'cf app beis-par-$ENV'.\n"
         printf "################################################################################################\n"
 
     fi
@@ -447,7 +448,7 @@ else
     CDN_DOMAIN=$ENV-cdn.par-beta.net
 fi
 
-cf map-route $TARGET_ENV cloudapps.digital -n par-beta-$ENV
+cf map-route $TARGET_ENV cloudapps.digital -n beis-par-$ENV
 if cf service $CDN_BACKING_SERVICE >/dev/null 2>&1; then
     cf map-route $TARGET_ENV $CDN_DOMAIN
 fi
@@ -456,7 +457,7 @@ fi
 if [[ $ENV_ONLY != y ]]; then
     ## Only unmap blue routes if doing a blue-green deployment and it exists
     if cf app $BLUE_ENV >/dev/null 2>&1; then
-        cf unmap-route $BLUE_ENV cloudapps.digital -n par-beta-$ENV
+        cf unmap-route $BLUE_ENV cloudapps.digital -n beis-par-$ENV
 
         ## Only unmap cdn service if doing a blue-green deployment and it exists
         if cf service $CDN_BACKING_SERVICE >/dev/null 2>&1; then
