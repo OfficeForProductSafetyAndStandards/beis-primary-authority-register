@@ -6,7 +6,6 @@ set -o errexit -euo pipefail -o noclobber -o nounset
 
 ####################################################################################
 # Prerequisites - You'll need the following installed
-#    AWS CLI - http://docs.aws.amazon.com/cli/latest/userguide/installing.html
 #    Cloud Foundry CLI - https://docs.cloudfoundry.org/cf-cli/install-go-cli.html
 #    Vault CLI - https://www.vaultproject.io/docs/install/index.html
 ####################################################################################
@@ -22,14 +21,6 @@ fi
 command -v vault >/dev/null 2>&1 || {
     echo "################################################################################################"
     echo >&2 "Please install Vault CLI - https://www.vaultproject.io/docs/install/index.html"
-    echo "################################################################################################"
-    exit 1
-}
-
-command -v aws >/dev/null 2>&1 || {
-    echo "################################################################################################"
-    echo >&2 "Please install AWS CLI - http://docs.aws.amazon.com/cli/latest/userguide/installing.html"
-    echo "If you set it up in a Python virtual env, you may need to run workon"
     echo "################################################################################################"
     exit 1
 }
