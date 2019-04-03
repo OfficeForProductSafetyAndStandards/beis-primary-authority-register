@@ -1,5 +1,6 @@
 #!/bin/bash
 # This script will push local assets to an environment.
+# Usage: ./push.sh -z v28.0.2 -d /tmp/v28 test
 echo $BASH_VERSION
 
 set -o errexit -euo pipefail -o noclobber -o nounset
@@ -44,7 +45,8 @@ command -v cf >/dev/null 2>&1 || {
 
 ####################################################################################
 # Set required parameters
-#    ENV (required) - the password for the user account
+#    VERSION (required) - the semver tag to be deployed
+#    ENV (required) - the environment to push to
 #    AWS_KEY (required) - the user deploying the script
 #    GOVUK_CF_USER (required) - the user deploying the script
 #    GOVUK_CF_USER (required) - the user deploying the script
