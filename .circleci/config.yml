@@ -62,7 +62,6 @@ references:
 jobs:
   checkout_code:
     <<: *defaults
-
     steps:
       - *restore_code
       - checkout:
@@ -103,7 +102,6 @@ jobs:
 
   compile_code:
     <<: *defaults
-
     steps:
       - *restore_code
       - *restore_dependencies
@@ -140,7 +138,6 @@ jobs:
 
   test_smoke:
     <<: *defaults
-
     steps:
       - *restore_code
       - *restore_dependencies
@@ -195,7 +192,6 @@ jobs:
 
   test_full:
     <<: *defaults
-
     steps:
       - *restore_code
       - *restore_dependencies
@@ -280,9 +276,27 @@ jobs:
               ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE} -d /tmp/workspace $DEPLOY_ENV
             fi
 
+  deploy_prod:
+    <<: *defaults
+    steps:
+      - *attach_workspace
+      - *restore_code
+      - *restore_dependencies
+      - *restore_scaffold
+      - run:
+          name: "Deploy to production environment"
+          command: |
+            DEPLOY_ENV="production-test"
+            printf "$DEPLOY_ENV\n"
+            if ! test $(git rev-parse master) = $(git rev-parse $CIRCLE_TAG^{commit}); then
+              echo "Tags can only be deployed from the master branch"
+              exit 1
+            else
+              ./devops/cf/push.local.sh -u $GOVUK_CF_USER -p $GOVUK_CF_PWD -x -d /tmp/workspace $DEPLOY_ENV
+            fi
+
   deploy_test:
     <<: *defaults
-
     steps:
       - *attach_workspace
       - *restore_code
@@ -312,18 +326,16 @@ jobs:
 
   archive_database:
     <<: *defaults
-
     steps:
       - run:
           name: "Backup production database"
           command: |
             cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD
-            cf target -o office-for-product-safety-and-standards -s primary-authority-register
+            cf target -o office-for-product-safety-and-standards -s primary-authority-register-production
             cf run-task par-beta-production "./scripts/db-backup.sh production -p" --name DB_BACKUP
 
   sanitise_database:
     <<: *defaults
-
     steps:
       - *restore_code
       - *restore_dependencies
@@ -362,7 +374,6 @@ jobs:
 
 workflows:
   version: 2.1
-
   build_test_deploy:
     jobs:
       - checkout_code:
@@ -401,6 +412,25 @@ workflows:
       - deploy_stage:
           requires:
             - hold_stage
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - hold_prod:
+          type: approval
+          context: production
+          requires:
+            - deploy_stage
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - deploy_prod:
+          context: production
+          requires:
+            - hold_prod
           filters:
             tags:
               only: /^v.*/
@@ -457,7 +487,8 @@ workflows:
               only:
                 - master
     jobs:
-      - archive_database
+      - archive_database:
+          context: production
 
   db_sanitise:
     triggers:
