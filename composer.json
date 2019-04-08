@@ -51,6 +51,7 @@
         "drupal/queue_ui": "~2.0.0",
         "drupal/range": "~1.1.0",
         "drupal/raven": "~2.10.0",
+        "drupal/redis": "~1.1.0",
         "drupal/robotstxt": "~1.1.0",
         "drupal/role_delegation": "~1.0.0",
         "drupal/swiftmailer": "~1.0.0-beta1",
