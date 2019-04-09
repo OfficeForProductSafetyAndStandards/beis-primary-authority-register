@@ -6,7 +6,6 @@ set -o errexit -euo pipefail -o noclobber -o nounset
 
 ####################################################################################
 # Prerequisites - You'll need the following installed
-#    AWS CLI - http://docs.aws.amazon.com/cli/latest/userguide/installing.html
 #    Cloud Foundry CLI - https://docs.cloudfoundry.org/cf-cli/install-go-cli.html
 #    Vault CLI - https://www.vaultproject.io/docs/install/index.html
 ####################################################################################
@@ -22,14 +21,6 @@ fi
 command -v vault >/dev/null 2>&1 || {
     echo "################################################################################################"
     echo >&2 "Please install Vault CLI - https://www.vaultproject.io/docs/install/index.html"
-    echo "################################################################################################"
-    exit 1
-}
-
-command -v aws >/dev/null 2>&1 || {
-    echo "################################################################################################"
-    echo >&2 "Please install AWS CLI - http://docs.aws.amazon.com/cli/latest/userguide/installing.html"
-    echo "If you set it up in a Python virtual env, you may need to run workon"
     echo "################################################################################################"
     exit 1
 }
@@ -50,8 +41,8 @@ command -v cf >/dev/null 2>&1 || {
 #    VAULT_ADDR - the vault service endpoint
 #    VAULT_UNSEAL_KEY (required) - the key used to unseal the vault
 ####################################################################################
-OPTIONS=su:p:i:b:rd:v:u:t:
-LONGOPTS=single,user:,password:,instances:,database:,refresh-database,directory:,vault:,unseal:,token:
+OPTIONS=su:p:i:b:rd:v:u:t:x
+LONGOPTS=single,user:,password:,instances:,database:,refresh-database,directory:,vault:,unseal:,token:,deploy-production
 
 # -use ! and PIPESTATUS to get exit code with errexit set
 # -temporarily store output to be able to check for errors
@@ -73,6 +64,7 @@ GOVUK_CF_PWD=${GOVUK_CF_PWD:-}
 CF_INSTANCES=${CF_INSTANCES:=1}
 DB_IMPORT=${DB_IMPORT:="$PWD/backups/sanitised-db.sql"}
 DB_RESET=${DB_RESET:=n}
+DEPLOY_PRODUCTION=${DEPLOY_PRODUCTION:=n}
 BUILD_DIR=${BUILD_DIR:=$PWD}
 VAULT_ADDR=${VAULT_ADDR:="https://vault.primary-authority.beis.gov.uk:8200"}
 VAULT_UNSEAL=${VAULT_UNSEAL:-}
@@ -102,6 +94,10 @@ while true; do
             ;;
         -r|--refresh-database)
             DB_RESET=y
+            shift
+            ;;
+        -x|--deploy-production)
+            DEPLOY_PRODUCTION=y
             shift
             ;;
         -d|--directory)
@@ -138,8 +134,8 @@ if [[ $# -ne 1 ]]; then
 fi
 ENV=$1
 
-## Automated deployment to production environment isn't supported at this time
-if [[ $ENV == 'production' ]]; then
+## Automated deployment to production needs to be to the production environment.
+if [[ $ENV == 'production' ]] && [[ $DEPLOY_PRODUCTION != 'y' ]]; then
     read -r -p "Are you sure you wish to deploy to production? [y/N] " response
     case "$response" in
         [yY][eE][sS]|[yY])
@@ -227,7 +223,13 @@ printf "Authenticating with GovUK PaaS...\n"
 
 cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD
 
-cf target -o office-for-product-safety-and-standards -s primary-authority-register
+if [[ $ENV == 'production' ]] || [[ $ENV == production-* ]]; then
+    cf target -o "office-for-product-safety-and-standards" -s "primary-authority-register-production"
+elif [[ $ENV == 'staging' ]] || [[ $ENV == staging-* ]]; then
+    cf target -o "office-for-product-safety-and-standards" -s "primary-authority-register-staging"
+else
+    cf target -o "office-for-product-safety-and-standards" -s "primary-authority-register-development"
+fi
 
 
 ####################################################################################
@@ -239,10 +241,10 @@ cf target -o office-for-product-safety-and-standards -s primary-authority-regist
 printf "Configuring the application...\n"
 
 if [[ $ENV_ONLY == y ]]; then
-    TARGET_ENV=par-beta-$ENV
+    TARGET_ENV=beis-par-$ENV
 else
-    TARGET_ENV=par-beta-$ENV-green
-    BLUE_ENV=par-beta-$ENV
+    TARGET_ENV=beis-par-$ENV-green
+    BLUE_ENV=beis-par-$ENV
 fi
 
 PG_BACKING_SERVICE="par-pg-$ENV"
@@ -275,11 +277,11 @@ function cf_teardown {
 
         ## Remove any postgres backing services, unbind services first
         if cf service $PG_BACKING_SERVICE >/dev/null 2>&1; then
-            if cf app par-beta-$ENV >/dev/null 2>&1; then
-                cf unbind-service par-beta-$ENV $PG_BACKING_SERVICE
+            if cf app beis-par-$ENV >/dev/null 2>&1; then
+                cf unbind-service beis-par-$ENV $PG_BACKING_SERVICE
             fi
-            if [[ $ENV_ONLY != y ]] && cf app par-beta-$ENV-green >/dev/null 2>&1; then
-                cf unbind-service par-beta-$ENV-green $PG_BACKING_SERVICE
+            if [[ $ENV_ONLY != y ]] && cf app beis-par-$ENV-green >/dev/null 2>&1; then
+                cf unbind-service beis-par-$ENV-green $PG_BACKING_SERVICE
             fi
 
             ## In some instances service keys may also have to be deleted
@@ -289,19 +291,19 @@ function cf_teardown {
         fi
 
         ## Remove the main app if it exists
-        if cf app par-beta-$ENV >/dev/null 2>&1; then
-            cf delete -f par-beta-$ENV
+        if cf app beis-par-$ENV >/dev/null 2>&1; then
+            cf delete -f beis-par-$ENV
         fi
 
         ## Remove any instantiated green instances
-        if [[ $ENV_ONLY != y ]] && cf app par-beta-$ENV-green >/dev/null 2>&1; then
-            cf delete -f par-beta-$ENV-green
+        if [[ $ENV_ONLY != y ]] && cf app beis-par-$ENV-green >/dev/null 2>&1; then
+            cf delete -f beis-par-$ENV-green
         fi
 
         printf "################################################################################################\n"
         printf >&2 "This script failed to build and is tearing down any non-production instances.\n"
         printf >&2 "This could take up to 10 minutes, please do not try to rebuild until this is complete.\n"
-        printf >&2 "You can check the progress by running 'cf service $PG_BACKING_SERVICE' and 'cf app par-beta-$ENV'.\n"
+        printf >&2 "You can check the progress by running 'cf service $PG_BACKING_SERVICE' and 'cf app beis-par-$ENV'.\n"
         printf "################################################################################################\n"
 
     fi
@@ -399,7 +401,7 @@ if [[ $ENV != "production" ]]; then
     cf bind-service $TARGET_ENV $PG_BACKING_SERVICE
 
     ## Deployment to no production environments need a database
-    if [[ $DB_RESET == y ]] && [[ ! -f $DB_IMPORT ]]; then
+    if [[ $DB_RESET == 'y' ]] && [[ ! -f $DB_IMPORT ]]; then
         printf "Non-production environments need a copy of the database to seed from at '$DB_IMPORT'.\n"
         exit 5
     fi
@@ -437,7 +439,7 @@ else
     CDN_DOMAIN=$ENV-cdn.par-beta.net
 fi
 
-cf map-route $TARGET_ENV cloudapps.digital -n par-beta-$ENV
+cf map-route $TARGET_ENV cloudapps.digital -n beis-par-$ENV
 if cf service $CDN_BACKING_SERVICE >/dev/null 2>&1; then
     cf map-route $TARGET_ENV $CDN_DOMAIN
 fi
@@ -446,7 +448,7 @@ fi
 if [[ $ENV_ONLY != y ]]; then
     ## Only unmap blue routes if doing a blue-green deployment and it exists
     if cf app $BLUE_ENV >/dev/null 2>&1; then
-        cf unmap-route $BLUE_ENV cloudapps.digital -n par-beta-$ENV
+        cf unmap-route $BLUE_ENV cloudapps.digital -n beis-par-$ENV
 
         ## Only unmap cdn service if doing a blue-green deployment and it exists
         if cf service $CDN_BACKING_SERVICE >/dev/null 2>&1; then
