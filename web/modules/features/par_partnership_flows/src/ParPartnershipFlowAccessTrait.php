@@ -36,6 +36,7 @@ trait ParPartnershipFlowAccessTrait {
     switch ($route_match->getRouteName()) {
       case 'par_partnership_flows.advice_add':
       case 'par_partnership_flows.advice_upload_documents':
+      case 'par_partnership_flows.advice_warning_declaration':
         if ($par_data_partnership->inProgress()) {
           $this->accessResult = AccessResult::forbidden('Advice can only be added to active partnerships.');
         }
