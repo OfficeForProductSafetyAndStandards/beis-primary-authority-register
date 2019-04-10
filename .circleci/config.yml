@@ -332,7 +332,7 @@ jobs:
           command: |
             cf login -a api.cloud.service.gov.uk -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD
             cf target -o office-for-product-safety-and-standards -s primary-authority-register-production
-            cf run-task par-beta-production "./scripts/db-backup.sh production -p" --name DB_BACKUP
+            cf run-task par-beta-production "./scripts/db-backup.sh production -p" --name DB_ARCHIVE
 
   sanitise_database:
     <<: *defaults
