@@ -859,7 +859,7 @@ if (isset($db_credentials)) {
 // Set the Paas redis conneciton credentials.
 if (isset($redis_credentials)) {
   // Enable Redis services.
-  $settings['redis.connection']['interface'] = 'PhpRedis';
+  $settings['redis.connection']['interface'] = 'Predis';
   $settings['redis.connection']['host'] = $redis_credentials->host;
   $settings['redis.connection']['port'] = $redis_credentials->port;
   $settings['redis.connection']['password'] = $redis_credentials->password;

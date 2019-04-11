@@ -301,7 +301,7 @@ function cf_teardown {
             fi
 
             ## In some instances service keys may also have to be deleted
-            printf "If there are any service keys these will need to be deleted manually, see 'cf service-keys $PG_BACKING_SERVICE'"
+            printf "If there are any service keys these will need to be deleted manually, see 'cf service-keys $PG_BACKING_SERVICE'\n"
 
             cf delete-service -f $PG_BACKING_SERVICE
         fi
@@ -316,7 +316,7 @@ function cf_teardown {
             fi
 
             ## In some instances service keys may also have to be deleted
-            printf "If there are any service keys these will need to be deleted manually, see 'cf service-keys $PG_BACKING_SERVICE'"
+            printf "If there are any service keys these will need to be deleted manually, see 'cf service-keys $PG_BACKING_SERVICE'\n"
 
             cf delete-service -f $REDIS_BACKING_SERVICE
         fi
@@ -536,7 +536,7 @@ fi
 # Run post deployment scripts
 ####################################################################################
 echo "################################################################################################"
-echo >&2 "Deployment has been successfully deployed to TARGET_ENV.cloudapps.digital"
+echo >&2 "Deployment has been successfully deployed to 'https://$TARGET_ENV.cloudapps.digital'"
 echo "################################################################################################"
 
 printf "Running the post deployment scripts...\n"
