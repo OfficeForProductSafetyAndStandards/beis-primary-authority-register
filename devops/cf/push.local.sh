@@ -1,5 +1,7 @@
 #!/bin/bash
 # This script will push local assets to an environment.
+# Usage: ./push.local.sh -r -b /path/to/database/backup/${SANITISED_DATABASE} -d /path/to/build/directory $DEPLOY_ENV
+
 echo $BASH_VERSION
 
 set -o errexit -euo pipefail -o noclobber -o nounset
