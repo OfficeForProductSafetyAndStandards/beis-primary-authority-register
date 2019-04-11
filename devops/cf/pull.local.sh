@@ -1,6 +1,7 @@
 #!/bin/bash
 # This script will push local assets to an environment.
-# Usage: ./push.sh -z v28.0.2 -d /tmp/v28 test
+# Usage: ./pull.local.sh -z v28.0.2 -d /tmp/v28 test
+
 echo $BASH_VERSION
 
 set -o errexit -euo pipefail -o noclobber -o nounset
