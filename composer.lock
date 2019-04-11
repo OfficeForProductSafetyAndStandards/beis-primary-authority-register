@@ -9758,8 +9758,7 @@
                 "source": "http://cgit.drupalcode.org/devel",
                 "issues": "http://drupal.org/project/devel",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
-            },
-            "time": "2019-01-29T21:22:48+00:00"
+            }
         },
         {
             "name": "drupal/examples",
