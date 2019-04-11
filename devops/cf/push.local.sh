@@ -4,6 +4,21 @@ echo $BASH_VERSION
 
 set -o errexit -euo pipefail -o noclobber -o nounset
 
+
+####################################################################################
+# Create polling function
+# Used to check for the status of a PaaS service.
+####################################################################################
+function cf_poll {
+    I=1
+    printf "Waiting for $1 backing service...\n"
+    while [[ $(cf service $1 | awk -F '  +' '/status:/ {print $2}' | grep 'in progress') ]]
+    do
+      printf "%0.s-" $(seq 1 $I)
+      sleep 2
+    done
+}
+
 ####################################################################################
 # Prerequisites - You'll need the following installed
 #    Cloud Foundry CLI - https://docs.cloudfoundry.org/cf-cli/install-go-cli.html
@@ -249,6 +264,7 @@ fi
 
 PG_BACKING_SERVICE="par-pg-$ENV"
 CDN_BACKING_SERVICE="par-cdn-$ENV"
+REDIS_BACKING_SERVICE="par-redis-$ENV"
 
 MANIFEST="${BASH_SOURCE%/*}/manifests/manifest.$ENV.yml"
 if [[ ! -f $MANIFEST ]]; then
@@ -285,9 +301,24 @@ function cf_teardown {
             fi
 
             ## In some instances service keys may also have to be deleted
-            printf "If there are any service keys these will need to be deleted manually, see 'cf service-keys $PG_BACKING_SERVICE'"
+            printf "If there are any service keys these will need to be deleted manually, see 'cf service-keys $PG_BACKING_SERVICE'\n"
 
             cf delete-service -f $PG_BACKING_SERVICE
+        fi
+
+        ## Remove any redis backing services, unbind services first
+        if cf service $REDIS_BACKING_SERVICE >/dev/null 2>&1; then
+            if cf app beis-par-$ENV >/dev/null 2>&1; then
+                cf unbind-service beis-par-$ENV $REDIS_BACKING_SERVICE
+            fi
+            if [[ $ENV_ONLY != y ]] && cf app beis-par-$ENV-green >/dev/null 2>&1; then
+                cf unbind-service beis-par-$ENV-green $REDIS_BACKING_SERVICE
+            fi
+
+            ## In some instances service keys may also have to be deleted
+            printf "If there are any service keys these will need to be deleted manually, see 'cf service-keys $PG_BACKING_SERVICE'\n"
+
+            cf delete-service -f $REDIS_BACKING_SERVICE
         fi
 
         ## Remove the main app if it exists
@@ -312,6 +343,21 @@ trap cf_teardown ERR
 
 
 ####################################################################################
+# Create polling function
+# Used to check for the status of a PaaS service.
+####################################################################################
+function cf_poll {
+    I=1
+    printf "Waiting for $1 backing service...\n"
+    while [[ $(cf service $1 | awk -F '  +' '/status:/ {print $2}' | grep 'in progress') ]]
+    do
+      printf "%0.s-" $(seq 1 $I)
+      sleep 2
+    done
+    printf "Backing service $1 is running...\n"
+}
+
+####################################################################################
 # Waiting for cloud foundry to be ready
 # If an existing process is already in progress for this environment then wait
 # for it's completion before continuing.
@@ -328,13 +374,9 @@ do
 done
 
 ## Checking the postgres backing services
-I=1
-printf "Waiting for the postgres backing service...\n"
-while [[ $(cf service $PG_BACKING_SERVICE | awk -F '  +' '/status:/ {print $2}' | grep 'in progress') ]]
-do
-  printf "%0.s-" $(seq 1 $I)
-  sleep 2
-done
+cf_poll $PG_BACKING_SERVICE
+## Checking the redis backing services
+cf_poll $REDIS_BACKING_SERVICE
 
 
 ####################################################################################
@@ -372,9 +414,11 @@ printf "Checking and enabling backing services...\n"
 ## Ensure the right service plan is selected
 if [[ $ENV = "production" ]] || [[ $ENV = "staging" ]]; then
     PG_PLAN='medium-ha-9.5'
+    REDIS_PLAN='medium-ha-3.2'
 else
     ## The free plan can be used for any non-critical environments
     PG_PLAN='tiny-unencrypted-9.5'
+    REDIS_PLAN='tiny-3.2'
 fi
 
 if [[ $ENV != "production" ]]; then
@@ -386,19 +430,30 @@ if [[ $ENV != "production" ]]; then
         echo "################################################################################################"
         echo >&2 "The new postgres service is being created, this can take up to 10 minutes"
         echo "################################################################################################"
-        printf 'Polling RDS broker for new service.\n'
-        I=1
-        while [[ $(cf service $PG_BACKING_SERVICE | awk -F '  +' '/status:/ {print $2}') != 'create succeeded' ]]
-        do
-          printf "%0.s-" $(seq 1 $I)
-          sleep 2
-        done
 
         ## If a new db is created it needs an import
         DB_RESET=y
     fi
 
+    ## Check for the redis database service
+    if ! cf service $REDIS_BACKING_SERVICE 2>&1; then
+        printf "Creating redis service, instance of $PG_PLAN...\n"
+        cf create-service redis $REDIS_PLAN $REDIS_BACKING_SERVICE
+
+        echo "################################################################################################"
+        echo >&2 "The new redis service is being created, this can take up to 10 minutes"
+        echo "################################################################################################"
+    fi
+
+    ## Checking the postgres backing services
+    cf_poll $PG_BACKING_SERVICE
+    ## Checking the redis backing services
+    cf_poll $REDIS_BACKING_SERVICE
+
+    # Binding the postgres backing service
     cf bind-service $TARGET_ENV $PG_BACKING_SERVICE
+    # Binding the redis backing service
+    cf bind-service $TARGET_ENV $REDIS_BACKING_SERVICE
 
     ## Deployment to no production environments need a database
     if [[ $DB_RESET == 'y' ]] && [[ ! -f $DB_IMPORT ]]; then
@@ -480,6 +535,10 @@ fi
 ####################################################################################
 # Run post deployment scripts
 ####################################################################################
+echo "################################################################################################"
+echo >&2 "Deployment has been successfully deployed to 'https://$TARGET_ENV.cloudapps.digital'"
+echo "################################################################################################"
+
 printf "Running the post deployment scripts...\n"
 
 cf ssh $TARGET_ENV -c "cd app/devops/tools && python cron_runner.py"
