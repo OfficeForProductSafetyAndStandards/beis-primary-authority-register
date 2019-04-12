@@ -183,7 +183,8 @@
     "scripts": {
         "post-install-cmd": [
             "@composer drupal-scaffold",
-            "alias drush='/var/www/par/vendor/drush/drush/drush'"
+            "alias drush='/var/www/par/vendor/drush/drush/drush'",
+            "./vendor/drush/drush/drush chosen-plugin"
         ],
         "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
     }
