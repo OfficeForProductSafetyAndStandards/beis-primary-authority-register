@@ -1,6 +1,6 @@
 applications:
-- name: par-beta-staging
+- name: beis-par-staging
 memory: 4G
 disk_quota: 2048M
-host: par-beta-staging
+host: beis-par-staging
 buildpack: php_buildpack
