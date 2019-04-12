@@ -1,0 +1,4 @@
+services:
+  par_dashboards.components:
+    class: Drupal\par_dashboards\ParDashboardComponents
+    arguments: ['@par_data.manager', '@entity_type.manager', '@entity_field.manager', '@renderer', '@messenger']
