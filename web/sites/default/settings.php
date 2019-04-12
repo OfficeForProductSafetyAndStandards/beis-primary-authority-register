@@ -833,23 +833,81 @@ $settings['config_readonly_whitelist_patterns'] = [
 ];
 
 /**
- * Extract the database credentials from the VCAP_SERVICES environment variable
+ * Extract the connection credentials from the VCAP_SERVICES environment variable
  * which is configured by the PaaS service manager
  */
 if ($env_services = getenv("VCAP_SERVICES")) {
   $services = json_decode($env_services);
-  $credentials = isset($services->postgres) ? $services->postgres[0]->credentials : NULL;
+  $db_credentials = isset($services->postgres) ? $services->postgres[0]->credentials : NULL;
+  $redis_credentials = isset($services->redis) ? $services->redis[0]->credentials : NULL;
 }
-if (isset($credentials)) {
+
+// Set the PaaS database connection credentials.
+if (isset($db_credentials)) {
   $databases['default']['default'] = [
-    'database' => $credentials->name,
-    'username' => $credentials->username,
-    'password' => $credentials->password,
+    'database' => $db_credentials->name,
+    'username' => $db_credentials->username,
+    'password' => $db_credentials->password,
     'prefix' => '',
-    'host' => $credentials->host,
-    'port' => $credentials->port,
+    'host' => $db_credentials->host,
+    'port' => $db_credentials->port,
     'namespace' => 'Drupal\\Core\\Database\\Driver\\pgsql',
     'driver' => 'pgsql',
+  ];
+}
+
+// Set the Paas redis conneciton credentials.
+if (isset($redis_credentials)) {
+  // Enable Redis services.
+  $settings['redis.connection']['interface'] = 'Predis';
+  $settings['redis.connection']['scheme'] = 'tls';
+  $settings['redis.connection']['host'] = $redis_credentials->host;
+  $settings['redis.connection']['port'] = $redis_credentials->port;
+  $settings['redis.connection']['password'] = $redis_credentials->password;
+  $settings['cache']['default'] = 'cache.backend.redis';
+
+  // Apply changes to the container configuration to better leverage Redis.
+  // This includes using Redis for the lock and flood control systems, as well
+  // as the cache tag checksum. Alternatively, copy the contents of that file
+  // to your project-specific services.yml file, modify as appropriate, and
+  // remove this line.
+  $settings['container_yamls'][] = 'modules/contrib/redis/example.services.yml';
+
+  // Allow the services to work before the Redis module itself is enabled.
+  $settings['container_yamls'][] = 'modules/contrib/redis/redis.services.yml';
+
+  // Manually add the classloader path, this is required for the container cache bin definition below
+  // and allows to use it without the redis module being enabled.
+  $class_loader->addPsr4('Drupal\\redis\\', 'modules/contrib/redis/src');
+
+  // Use redis for container cache.
+  // The container cache is used to load the container definition itself, and
+  // thus any configuration stored in the container itself is not available
+  // yet. These lines force the container cache to use Redis rather than the
+  // default SQL cache.
+  $settings['bootstrap_container_definition'] = [
+    'parameters' => [],
+    'services' => [
+      'redis.factory' => [
+        'class' => 'Drupal\redis\ClientFactory',
+      ],
+      'cache.backend.redis' => [
+        'class' => 'Drupal\redis\Cache\CacheBackendFactory',
+        'arguments' => ['@redis.factory', '@cache_tags_provider.container', '@serialization.phpserialize'],
+      ],
+      'cache.container' => [
+        'class' => '\Drupal\redis\Cache\PhpRedis',
+        'factory' => ['@cache.backend.redis', 'get'],
+        'arguments' => ['container'],
+      ],
+      'cache_tags_provider.container' => [
+        'class' => 'Drupal\redis\Cache\RedisCacheTagsChecksum',
+        'arguments' => ['@redis.factory'],
+      ],
+      'serialization.phpserialize' => [
+        'class' => 'Drupal\Component\Serialization\PhpSerialize',
+      ],
+    ],
   ];
 }
 

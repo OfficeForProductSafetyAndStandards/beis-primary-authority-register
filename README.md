@@ -6,11 +6,11 @@
 
 ## Web Application
 
-Please see the [web application readme file](https://github.com/TransformCore/beis-par-beta/blob/master/web/README.md) in the web directory for more information about Drupal and how to configure the web application.
+Please see the [web application readme file](https://github.com/UKGovernmentBEIS/beis-primary-authority-register/blob/master/web/README.md) in the web directory for more information about Drupal and how to configure the web application.
 
 ## Dashboard
 
-Please see the [dashboard readme file](https://github.com/TransformCore/beis-par-beta/blob/master/dashboard/README.md) in the dashboard directory for more information.
+Please see the [dashboard readme file](https://github.com/UKGovernmentBEIS/beis-primary-authority-register/blob/master/dashboard/README.md) in the dashboard directory for more information.
 
 ## Vagrant development environment
 
@@ -72,7 +72,7 @@ The build relies on a seed database which is a sanitised version of the producti
 
 #### Backup the production database
 ```
-cf ssh par-beta-production -c "python app/devops/tools/postgres_dump.py"
+cf ssh beis-par-production -c "python app/devops/tools/postgres_dump.py"
 ```
 
 #### Sanitize the production database

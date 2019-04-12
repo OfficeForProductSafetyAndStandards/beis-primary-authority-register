@@ -1,8 +1,8 @@
 applications:
-- name: par-beta-production
+- name: beis-par-production
 memory: 4G
 disk_quota: 2048M
-host: par-beta-production
+host: beis-par-production
 buildpack: php_buildpack
 services:
 - par-pg-production

@@ -330,9 +330,9 @@ jobs:
       - run:
           name: "Backup production database"
           command: |
-            cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD
+            cf login -a api.cloud.service.gov.uk -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD
             cf target -o office-for-product-safety-and-standards -s primary-authority-register-production
-            cf run-task par-beta-production "./scripts/db-backup.sh production -p" --name DB_BACKUP
+            cf run-task beis-par-production "./scripts/db-backup.sh production -p" --name DB_ARCHIVE
 
   sanitise_database:
     <<: *defaults
@@ -487,8 +487,7 @@ workflows:
               only:
                 - master
     jobs:
-      - archive_database:
-          context: production
+      - archive_database
 
   db_sanitise:
     triggers:

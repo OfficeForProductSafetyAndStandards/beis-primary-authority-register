@@ -51,6 +51,7 @@
         "drupal/queue_ui": "~2.0.0",
         "drupal/range": "~1.1.0",
         "drupal/raven": "~2.10.0",
+        "drupal/redis": "~1.1.0",
         "drupal/robotstxt": "~1.1.0",
         "drupal/role_delegation": "~1.0.0",
         "drupal/swiftmailer": "~1.0.0-beta1",
@@ -66,6 +67,7 @@
         "drupal/xmlsitemap": "~1.0.0",
         "drush/config-extra": "~1.0.0",
         "drush/drush": "~8.1.0",
+        "predis/predis": "^1.1",
         "rapidwebltd/php-uk-bank-holidays": "~2.0.0",
         "vlucas/phpdotenv": "~2.4.0"
     },
@@ -160,6 +162,9 @@
             "drupal/password_strength": {
                 "Change user notifications to explain reason for password rejection more clearly": "./patches/password_strength_dictionary.patch"
             },
+            "drupal/redis": {
+                "Unable to override default scheme with settings": "https://www.drupal.org/files/issues/2019-04-11/3004561-5-override-default-scheme-for-predis.patch"
+            },
             "drupal/vbo_export": {
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2018-07-26/allow_configurable_scheme-2988257-5.patch"
             },
@@ -177,7 +182,7 @@
     "scripts": {
         "post-install-cmd": [
             "@composer drupal-scaffold",
-            "alias drush='/var/www/par-beta/vendor/bin/drush'"
+            "alias drush='/var/www/par/vendor/drush/drush/drush'"
         ],
         "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
     }
