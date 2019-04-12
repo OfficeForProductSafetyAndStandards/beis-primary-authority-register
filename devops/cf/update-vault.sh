@@ -1,5 +1,7 @@
 #!/bin/bash
 # This script will copy a set of vault secrets from one store to another.
+# Usage: ./update-vault.sh from-environment destination-environment
+
 echo $BASH_VERSION
 
 set -o errexit -euo pipefail -o noclobber -o nounset
