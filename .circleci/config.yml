@@ -487,8 +487,7 @@ workflows:
               only:
                 - master
     jobs:
-      - archive_database:
-          context: production
+      - archive_database
 
   db_sanitise:
     triggers:
