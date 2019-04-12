@@ -1,5 +1,5 @@
 config:
-  target: 'https://par-beta-staging.cloudapps.digital'
+  target: 'https://beis-par-staging.cloudapps.digital'
   phases:
     - duration: 30
       arrivalRate: 5

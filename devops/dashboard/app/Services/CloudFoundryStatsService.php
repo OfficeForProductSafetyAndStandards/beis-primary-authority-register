@@ -41,7 +41,7 @@ class CloudFoundryStatsService
         $resources = $appsContent->resources;
 
         foreach ($resources as $resource) {
-            if ($resource->entity->name == 'par-beta-production') {
+            if ($resource->entity->name == 'beis-par-production') {
                 $guid = $resource->metadata->guid;
             }
         }

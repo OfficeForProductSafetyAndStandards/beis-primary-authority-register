@@ -2,7 +2,7 @@
 # This script will run the Drupal scheduler every 60 seconds
 # It should be initiated as a task using
 #
-# cf run-task par-beta-$ENV "python /home/vcap/app/devops/tools/scheduler.py"
+# cf run-task beis-par-$ENV "python /home/vcap/app/devops/tools/scheduler.py"
 #######################################################################
 
 import os, sys
