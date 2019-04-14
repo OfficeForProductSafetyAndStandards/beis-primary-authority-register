@@ -35,31 +35,42 @@ class ParSelectRoleForm extends ParFormPluginBase {
 
     $roles = [];
     if ($current_user && $current_user->hasPermission('create organisation user')) {
-      $roles[] = Role::load('par_organisation');
+      $roles['par_organisation'] = Role::load('par_organisation');
     }
     if ($current_user && $current_user->hasPermission('create authority user')) {
-      $roles[] = Role::load('par_authority');
+      $roles['par_authority'] = Role::load('par_authority');
     }
     if ($current_user && $current_user->hasPermission('create enforcement user')) {
-      $roles[] = Role::load('par_enforcement');
+      $roles['par_enforcement'] = Role::load('par_enforcement');
     }
     if ($current_user && $current_user->hasPermission('create helpdesk user')) {
-      $roles[] = Role::load('par_helpdesk');
+      $roles['par_helpdesk'] = Role::load('par_helpdesk');
     }
 
     if (!empty($roles)) {
-      $role_options = $this->getParDataManager()->getEntitiesAsOptions($roles, []);
 
       if ($account) {
         $this->getFlowDataHandler()->setFormPermValue("existing_user", $account->label());
 
-        foreach (array_keys($role_options) as $option) {
+        // Some roles can only be set if the user has memberships
+        // in an authority or an organisation.
+        if (!$this->getParDataManager()->isMemberOfOrganisation($account)) {
+          unset($roles['par_organisation']);
+        }
+        if (!$this->getParDataManager()->isMemberOfAuthority($account)) {
+          unset($roles['par_authority']);
+          unset($roles['par_enforcement']);
+        }
+
+        foreach (array_keys($roles) as $option) {
           if ($account->hasRole($option)) {
             $this->getFlowDataHandler()->setFormPermValue("default_role", $option);
             break;
           }
         }
       }
+
+      $role_options = $this->getParDataManager()->getEntitiesAsOptions($roles, []);
 
       $this->getFlowDataHandler()->setFormPermValue("user_required", FALSE);
 
