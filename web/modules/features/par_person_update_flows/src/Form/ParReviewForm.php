@@ -286,9 +286,18 @@ class ParReviewForm extends ParBaseForm {
     // Update the membership authorities or organisations.
     $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_authority_cid);
     $authorities = $par_data_person->updateAuthorityMemberships($authority_ids, TRUE);
+    if ($account && empty($authorities) && $account->hasRole('par_enforcement')) {
+      $account->removeRole('par_enforcement');
+    }
+    if ($account && empty($authorities) && $account->hasRole('par_authority')) {
+      $account->removeRole('par_authority');
+    }
 
     $organisation_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_organisation_id', $select_organisation_cid);
     $organisations = $par_data_person->updateOrganisationMemberships($organisation_ids, TRUE);
+    if ($account && empty($organisations) && $account->hasRole('par_organisation')) {
+      $account->removeRole('par_organisation');
+    }
 
     // Merge all accounts (and save them) or just save the person straight up.
     if (($this->getFlowDataHandler()->getTempDataValue('update_all_contacts') === 'on' && $par_data_person->mergePeople())
