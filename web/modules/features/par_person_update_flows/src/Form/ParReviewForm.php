@@ -283,6 +283,13 @@ class ParReviewForm extends ParBaseForm {
       }
     }
 
+    // Update the membership authorities or organisations.
+    $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_authority_cid);
+    $authorities = $par_data_person->updateAuthorityMemberships($authority_ids, TRUE);
+
+    $organisation_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_organisation_id', $select_organisation_cid);
+    $organisations = $par_data_person->updateOrganisationMemberships($organisation_ids, TRUE);
+
     // Merge all accounts (and save them) or just save the person straight up.
     if (($this->getFlowDataHandler()->getTempDataValue('update_all_contacts') === 'on' && $par_data_person->mergePeople())
         || $par_data_person->save()) {
@@ -296,16 +303,6 @@ class ParReviewForm extends ParBaseForm {
             ->getMessenger()
             ->addMessage(t('The email address used to login has been updated to @email', ['@email' => $account->getEmail()]));
         }
-      }
-
-      // Update the membership authorities or organisations.
-      $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_authority_cid);
-      if ($authority_ids && (in_array($role, ['par_authority', 'par_enforcement']) || !$role)) {
-        $par_data_person->updateAuthorityMemberships($authority_ids, TRUE);
-      }
-      $organisation_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_organisation_id', $select_organisation_cid);
-      if ($organisation_ids && ($role === 'par_organisation' || !$role)) {
-        $par_data_person->updateOrganisationMemberships($organisation_ids, TRUE);
       }
 
       // Send the invite.

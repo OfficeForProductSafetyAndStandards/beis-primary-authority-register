@@ -32,15 +32,19 @@ class ParSelectRoleForm extends ParFormPluginBase {
     }
 
     $account = $this->getFlowDataHandler()->getParameter('user');
+    // Some roles can only be set if the user has memberships in an authority
+    // or an organisation, it is up to the calling form to determine this.
+    $user_has_organisation = $this->getFlowDataHandler()->getFormPermValue("user_has_organisation") ?? TRUE;
+    $user_has_authority = $this->getFlowDataHandler()->getFormPermValue("user_has_authority") ?? TRUE;
 
     $roles = [];
-    if ($current_user && $current_user->hasPermission('create organisation user')) {
+    if ($current_user && $current_user->hasPermission('create organisation user') && $user_has_organisation) {
       $roles['par_organisation'] = Role::load('par_organisation');
     }
-    if ($current_user && $current_user->hasPermission('create authority user')) {
+    if ($current_user && $current_user->hasPermission('create authority user') && $user_has_authority) {
       $roles['par_authority'] = Role::load('par_authority');
     }
-    if ($current_user && $current_user->hasPermission('create enforcement user')) {
+    if ($current_user && $current_user->hasPermission('create enforcement user') && $user_has_authority) {
       $roles['par_enforcement'] = Role::load('par_enforcement');
     }
     if ($current_user && $current_user->hasPermission('create helpdesk user')) {
@@ -51,16 +55,6 @@ class ParSelectRoleForm extends ParFormPluginBase {
 
       if ($account) {
         $this->getFlowDataHandler()->setFormPermValue("existing_user", $account->label());
-
-        // Some roles can only be set if the user has memberships
-        // in an authority or an organisation.
-        if (!$this->getParDataManager()->isMemberOfOrganisation($account)) {
-          unset($roles['par_organisation']);
-        }
-        if (!$this->getParDataManager()->isMemberOfAuthority($account)) {
-          unset($roles['par_authority']);
-          unset($roles['par_enforcement']);
-        }
 
         foreach (array_keys($roles) as $option) {
           if ($account->hasRole($option)) {
