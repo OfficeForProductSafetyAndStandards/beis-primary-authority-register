@@ -32,34 +32,39 @@ class ParSelectRoleForm extends ParFormPluginBase {
     }
 
     $account = $this->getFlowDataHandler()->getParameter('user');
+    // Some roles can only be set if the user has memberships in an authority
+    // or an organisation, it is up to the calling form to determine this.
+    $user_has_organisation = $this->getFlowDataHandler()->getFormPermValue("user_has_organisation") ?? TRUE;
+    $user_has_authority = $this->getFlowDataHandler()->getFormPermValue("user_has_authority") ?? TRUE;
 
     $roles = [];
-    if ($current_user && $current_user->hasPermission('create organisation user')) {
-      $roles[] = Role::load('par_organisation');
+    if ($current_user && $current_user->hasPermission('create organisation user') && $user_has_organisation) {
+      $roles['par_organisation'] = Role::load('par_organisation');
     }
-    if ($current_user && $current_user->hasPermission('create authority user')) {
-      $roles[] = Role::load('par_authority');
+    if ($current_user && $current_user->hasPermission('create authority user') && $user_has_authority) {
+      $roles['par_authority'] = Role::load('par_authority');
     }
-    if ($current_user && $current_user->hasPermission('create enforcement user')) {
-      $roles[] = Role::load('par_enforcement');
+    if ($current_user && $current_user->hasPermission('create enforcement user') && $user_has_authority) {
+      $roles['par_enforcement'] = Role::load('par_enforcement');
     }
     if ($current_user && $current_user->hasPermission('create helpdesk user')) {
-      $roles[] = Role::load('par_helpdesk');
+      $roles['par_helpdesk'] = Role::load('par_helpdesk');
     }
 
     if (!empty($roles)) {
-      $role_options = $this->getParDataManager()->getEntitiesAsOptions($roles, []);
 
       if ($account) {
         $this->getFlowDataHandler()->setFormPermValue("existing_user", $account->label());
 
-        foreach (array_keys($role_options) as $option) {
+        foreach (array_keys($roles) as $option) {
           if ($account->hasRole($option)) {
             $this->getFlowDataHandler()->setFormPermValue("default_role", $option);
             break;
           }
         }
       }
+
+      $role_options = $this->getParDataManager()->getEntitiesAsOptions($roles, []);
 
       $this->getFlowDataHandler()->setFormPermValue("user_required", FALSE);
 

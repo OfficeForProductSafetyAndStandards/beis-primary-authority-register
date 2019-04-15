@@ -270,23 +270,39 @@ class ParDataPerson extends ParDataEntity {
    */
   public function updateAuthorityMemberships($authorities, $save = FALSE) {
     $authorities = NestedArray::filter((array) $authorities);
+    $unset = [];
 
     $user = User::load(\Drupal::currentUser()->id());
-    $user_authorities = $this->getParDataManager()->hasMembershipsByType($user, 'par_data_authority');
-    $user_authorities_ids = $this->getParDataManager()->getEntitiesAsOptions($user_authorities);
-
     $relationships = $this->getRelationships('par_data_authority');
-    foreach ($relationships as $relationship) {
-      $id = $relationship->getEntity()->id();
-      // Any existing relationships that the current user is
-      // not allowed to update should not be removed.
-      if (!isset($user_authorities_ids[$id]) && !array_search($id, $authorities)) {
-        $authorities[] = $id;
+    if ($user->hasPermission('bypass par_data membership')) {
+      foreach ($relationships as $relationship) {
+        $id = $relationship->getEntity()->id();
+
+        // Unset any relationships that are not selected.
+        if (!array_search($id, $authorities)) {
+          $unset[] = $id;
+        }
       }
-      // Any existing relationships that the current user is
-      // allowed to update but that have been excluded should be removed.
-      if (isset($user_authorities_ids[$id]) && !array_search($id, $authorities)) {
-        $unset[] = $id;
+    }
+    else {
+      $user_authorities = $this->getParDataManager()
+        ->hasMembershipsByType($user, 'par_data_authority');
+      $user_authorities_ids = $this->getParDataManager()
+        ->getEntitiesAsOptions($user_authorities);
+
+      foreach ($relationships as $relationship) {
+        $id = $relationship->getEntity()->id();
+
+        // Any existing relationships that the current user is
+        // not allowed to update should not be removed.
+        if (!isset($user_authorities_ids[$id]) && !array_search($id, $authorities)) {
+          $authorities[] = $id;
+        }
+        // Any existing relationships that the current user is
+        // allowed to update but that have been excluded should be removed.
+        if (isset($user_authorities_ids[$id]) && !array_search($id, $authorities)) {
+          $unset[] = $id;
+        }
       }
     }
 
@@ -343,24 +359,39 @@ class ParDataPerson extends ParDataEntity {
    */
   public function updateOrganisationMemberships($organisations, $save = FALSE) {
     $organisations = NestedArray::filter((array) $organisations);
+    $unset = [];
 
     $user = User::load(\Drupal::currentUser()->id());
-    $user_organisations = $this->getParDataManager()->hasMembershipsByType($user, 'par_data_organisation');
-    $user_organisations_ids = $this->getParDataManager()->getEntitiesAsOptions($user_organisations);
-
     $relationships = $this->getRelationships('par_data_organisation');
-    foreach ($relationships as $relationship) {
-      $id = $relationship->getEntity()->id();
+    if ($user->hasPermission('bypass par_data membership')) {
+      foreach ($relationships as $relationship) {
+        $id = $relationship->getEntity()->id();
 
-      // Any existing relationships that the current user is
-      // not allowed to update should not be removed.
-      if (!isset($user_organisations_ids[$id]) && !array_search($id, $organisations)) {
-        $organisations[] = (int) $id;
+        // Unset any relationships that are not selected.
+        if (!array_search($id, $organisations)) {
+          $unset[] = $id;
+        }
       }
-      // Any existing relationships that the current user is
-      // allowed to update but that have been excluded should be removed.
-      if (isset($user_organisations_ids[$id]) && !array_search($id, $organisations)) {
-        $unset[] = (int) $id;
+    }
+    else {
+      $user_organisations = $this->getParDataManager()
+        ->hasMembershipsByType($user, 'par_data_organisation');
+      $user_organisations_ids = $this->getParDataManager()
+        ->getEntitiesAsOptions($user_organisations);
+
+      foreach ($relationships as $relationship) {
+        $id = $relationship->getEntity()->id();
+
+        // Any existing relationships that the current user is
+        // not allowed to update should be retained.
+        if (!isset($user_organisations_ids[$id]) && !array_search($id, $organisations)) {
+          $organisations[] = $id;
+        }
+        // Any existing relationships that the current user is
+        // allowed to update but that have not been selected should be removed.
+        if (isset($user_organisations_ids[$id]) && !array_search($id, $organisations)) {
+          $unset[] = $id;
+        }
       }
     }
 
