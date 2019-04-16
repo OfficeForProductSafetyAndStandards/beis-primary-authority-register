@@ -286,7 +286,7 @@ jobs:
       - run:
           name: "Deploy to production environment"
           command: |
-            DEPLOY_ENV="production-test"
+            DEPLOY_ENV="production"
             printf "$DEPLOY_ENV\n"
             if ! test $(git rev-parse master) = $(git rev-parse $CIRCLE_TAG^{commit}); then
               echo "Tags can only be deployed from the master branch"
