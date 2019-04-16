@@ -387,8 +387,8 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
             try {
               $date_fragments = explode('/', $value);
               $format = strlen($date_fragments[2]) === 2 ? "d/m/y" : "d/m/Y";
-              $date = DrupalDateTime::createFromFormat($format, $value, NULL, ['validate_format' => FALSE]);
-              $data[$column] = $date->format('Y-m-d');
+              $cease_date = DrupalDateTime::createFromFormat($format, $value, NULL, ['validate_format' => FALSE]);
+              $data[$column] = $cease_date;
             }
             catch (\Exception $e) {
 
@@ -397,7 +397,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
             $current_date = new DrupalDateTime();
 
             // Only cease the membership if the expiry date is in the past.
-            if ($date < $current_date) {
+            if ($cease_date < $current_date) {
               $data[$this->getMapping('ceased')] = TRUE;
             }
 
@@ -512,12 +512,13 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     // Set the coordinated member values.
     $normalized['par_data_coordinated_business']->set('date_membership_began', $this->getValue($data, 'membership_start'));
     $normalized['par_data_coordinated_business']->set('covered_by_inspection', $this->getValue($data, 'covered'));
+    $cease_date = $this->getValue($data, 'membership_end');
     if ($this->getValue($data, 'ceased') && $normalized['par_data_coordinated_business'] instanceof ParDataCoordinatedBusiness) {
       $normalized['par_data_coordinated_business']->cease($this->getValue($data, 'membership_end'), FALSE);
     }
     else {
       $normalized['par_data_coordinated_business']->reinstate(FALSE);
-      $normalized['par_data_coordinated_business']->set('date_membership_ceased', $this->getValue($data, 'membership_end'));
+      $normalized['par_data_coordinated_business']->set('date_membership_ceased', $cease_date->format('Y-m-d'));
     }
 
     // Set the organisation details.
@@ -619,7 +620,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       $this->getMapping('mobile_phone') => $par_data_person ? $par_data_person->get('mobile_phone')->getString() : '',
       $this->getMapping('email') => $par_data_person ? $par_data_person->get('email')->getString() : '',
       $this->getMapping('membership_start') => $par_data_coordinated_business ? $par_data_coordinated_business->get('date_membership_began')->getString() : '',
-      $this->getMapping('membership_end') => $par_data_coordinated_business ? $par_data_coordinated_business->get('date_membership_ceased')->getString() : '',
+      $this->getMapping('membership_end') => $par_data_coordinated_business ? $par_data_coordinated_business->get('date_membership_ceased')->getString() : NULL,
       $this->getMapping('covered') => $par_data_coordinated_business_type->getBooleanFieldLabel($par_data_coordinated_business->getBoolean('covered_by_inspection')),
       $this->getMapping('legal_entity_name_first') => isset($par_data_legal_entity[0]) ? $par_data_legal_entity[0]->get('registered_name')->getString() : '',
       $this->getMapping('legal_entity_type_first') => isset($par_data_legal_entity[0]) ?
@@ -956,8 +957,8 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       // As per PAR-1438 do not remove members permanently because this changes
       // the nature of an active partnership and can cause other data to be
       // incorrectly removed (@see PAR-1439).
-      $date = $this->getDateFormatter()->format(time(), 'custom', 'Y-m-d');
-      $member->cease($date);
+      $current_date = new DrupalDateTime();
+      $member->cease($current_date);
       // Make sure the member is added back to the partnership.
       $par_data_partnership->get('field_coordinated_business')->appendItem($member->id());
     }
