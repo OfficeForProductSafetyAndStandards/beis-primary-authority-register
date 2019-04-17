@@ -280,7 +280,7 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
-   * Get the advice for this Partnership.
+   * Get the advice entities for this Partnership.
    */
   public function getAdvice($single = FALSE) {
     $documents = $this->get('field_advice')->referencedEntities();
