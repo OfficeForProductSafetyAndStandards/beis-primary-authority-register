@@ -19,7 +19,7 @@ class ParCeaseDateForm extends ParFormPluginBase {
    */
   protected $entityMapping = [
     ['date_membership_ceased', 'par_data_coordinated_business', 'date_membership_ceased', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter the date the membership was ceased e.g. 2017 - 9 - 21.'
+      'You must fill in the missing information.' => 'You must enter the date the membership ended e.g. 2017-9-21.'
     ]],
   ];
 
@@ -51,7 +51,7 @@ class ParCeaseDateForm extends ParFormPluginBase {
     // Membership begin date.
     $form['date_membership_ceased'] = [
       '#type' => 'gds_date',
-      '#title' => $this->t('Enter the date the membership ceased'),
+      '#title' => $this->t('Enter the date the membership ended'),
       '#description' => $this->t('For example: 29/4/2010'),
       '#default_value' => $this->getDefaultValuesByKey('date_membership_ceased', $cardinality, $this->getFormDefaultByKey('date_membership_ceased')),
     ];

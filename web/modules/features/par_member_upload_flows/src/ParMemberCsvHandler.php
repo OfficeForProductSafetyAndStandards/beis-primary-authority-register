@@ -387,7 +387,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
             try {
               $date_fragments = explode('/', $value);
               $format = strlen($date_fragments[2]) === 2 ? "d/m/y" : "d/m/Y";
-              $cease_date = DrupalDateTime::createFromFormat($format, $value, NULL, ['validate_format' => FALSE]);
+              // Create the date, setting the time to the last possible time in the day.
+              $cease_date = DrupalDateTime::createFromFormat($format . " H:i:s", $value . " 23:59:59", NULL, ['validate_format' => FALSE]);
+
               $data[$column] = $cease_date;
             }
             catch (\Exception $e) {
