@@ -109,7 +109,9 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
     $current_date = new DrupalDateTime();
 
     // Only cease the membership if the expiry date is in the past.
-    if ($date < $current_date) {
+    // The smallest granularity captured for cease date is the day.
+    $date->modify('+1 day');
+    if ($date <= $current_date) {
       // Ceasing a member has the same purpose as revoking partnerships
       // so we use the same methods and status.
       return parent::revoke($save);
