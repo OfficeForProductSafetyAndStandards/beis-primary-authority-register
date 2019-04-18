@@ -10,3 +10,7 @@ revoke partnerships:
   title: 'Revoke partnerships'
   description: 'Revoke a partnership.'
   restrict access: TRUE
+assign all memberships:
+  title: 'Assign all memberships'
+  description: 'Assign all memberships to any user.'
+  restrict access: TRUE

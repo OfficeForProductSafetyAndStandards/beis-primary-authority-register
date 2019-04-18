@@ -2,6 +2,7 @@
 
 namespace Drupal\par_member_cease_flows\Form;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_flows\Form\ParBaseForm;
@@ -56,19 +57,16 @@ class ParMemberCeaseConfirmForm extends ParBaseForm {
     // We only want to cease members that are currently active.
     if (!$par_data_coordinated_business->isRevoked()) {
       $cid = $this->getFlowNegotiator()->getFormKey('cease_date');
-      $ceased = $par_data_coordinated_business->cease($this->getFlowDataHandler()->getTempDataValue('date_membership_ceased', $cid));
+      $date_value = $this->getFlowDataHandler()->getTempDataValue('date_membership_ceased', $cid);
 
-      if ($ceased) {
-        $this->getFlowDataHandler()->deleteStore();
-      }
-      else {
-        $message = $this->t('Cease date could not be saved for %form_id');
-        $replacements = [
-          '%form_id' => $this->getFormId(),
-        ];
-        $this->getLogger($this->getLoggerChannel())
-          ->error($message, $replacements);
-      }
+      // The format submitted by this form is expected to be in the format 2019-01-29.
+      $date_fragments = explode('-', $date_value);
+      $format = strlen($date_fragments[0]) === 2 ? "y-m-d" : "Y-m-d";
+      $cease_date = DrupalDateTime::createFromFormat($format, $date_value, NULL, ['validate_format' => FALSE]);
+
+      $par_data_coordinated_business->cease($cease_date);
+
+      $this->getFlowDataHandler()->deleteStore();
 
     }
   }
