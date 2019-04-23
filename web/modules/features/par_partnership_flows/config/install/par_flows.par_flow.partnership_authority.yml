@@ -19,7 +19,7 @@ steps:
       edit_field_authority_person: 7
       advice: 8
       inspection_plans: 14
-      save: 14
+      save: 15
   2:
     route: par_partnership_flows.about_partnership
     form_id: par_partnership_about
@@ -60,7 +60,7 @@ steps:
     route: par_partnership_flows.advice_list
     redirect:
       upload: 9
-      edit: 12
+      edit: 13
       done: 1
       cancel: 1
   9:
